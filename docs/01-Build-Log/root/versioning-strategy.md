@@ -53,7 +53,7 @@ cos release --check         # Validate readiness only
 What `cos release` does automatically:
 1. Updates `VERSION` file
 2. Moves `[Unreleased]` to `[x.y.z]` in `CHANGELOG.md`
-3. Updates version in `docs/INDEX.md`
+3. Updates version in `docs/00-MOCs/entrypoints/INDEX.md`
 4. Creates git commit + tag
 5. **Auto-updates all registered projects** (via `scripts/auto-update-projects.sh`)
 

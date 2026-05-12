@@ -261,9 +261,9 @@ The original sonnet audit (and to a lesser extent the rebuttal) under-credited s
 
 ### Prior reports (read in full)
 
-- `docs/reports/cli-anything-deep-audit-2026-05-05.md` (sonnet, original)
-- `docs/reports/cos-side-deep-rebuttal-2026-05-05.md` (rebuttal)
-- `docs/reports/primitives-and-tools-audit-2026-05-05.md` (referenced; not re-read)
+- `docs/06-Daily/reports/cli-anything-deep-audit-2026-05-05.md` (sonnet, original)
+- `docs/06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md` (rebuttal)
+- `docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md` (referenced; not re-read)
 
 ---
 

@@ -10,11 +10,11 @@ related_artifacts:
   - skills/deep-tool-research/SKILL.md
   - rules/recommendation-grounding.md
 related_research:
-  - docs/research/holaos-comparison-2026-05-10.md
-  - docs/research/helixdb-comparison-2026-05-11.md
-  - docs/research/ifixai-comparison-2026-05-11.md
-  - docs/research/megamemory-comparison-2026-05-11.md
-  - docs/reports/master-pending-2026-05-11.md
+  - docs/03-PoCs/research/holaos-comparison-2026-05-10.md
+  - docs/03-PoCs/research/helixdb-comparison-2026-05-11.md
+  - docs/03-PoCs/research/ifixai-comparison-2026-05-11.md
+  - docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
+  - docs/06-Daily/reports/master-pending-2026-05-11.md
 engram_topic_key: self-critique/cluster-c-methodology
 ---
 
@@ -43,7 +43,7 @@ Both findings reflect orchestrator behavior, not sub-agent behavior. Sub-agents 
 
 ### 2.2 Evidence
 
-**Reference (locked taxonomy).** `docs/research/holaos-comparison-2026-05-10.md` §10 and the annex set fix a 7-axis taxonomy:
+**Reference (locked taxonomy).** `docs/03-PoCs/research/holaos-comparison-2026-05-10.md` §10 and the annex set fix a 7-axis taxonomy:
 
 | Letter | Domain |
 |---|---|
@@ -99,7 +99,7 @@ Each deep evaluation contains a ranked recommendation list (typically in §6 ver
 - `holaos-comparison-2026-05-10.md` §8 ("Próximos pasos recomendados") names 5 owners + estimaciones; no citation of `master-pending-*`, sprint state, dogfood-score, or sprint capacity.
 - `helixdb-comparison-2026-05-11.md` Annex E (primitives) — same shape, ranked by analytical merit, no operational grounding.
 - `ifixai-comparison-2026-05-11.md` §6 ("Sequencing: Phase A/B/C") — sequenced without referencing `radar-2026-05-08-implementation-tracker.md`, current sprint, or prior decisions in Engram.
-- `megamemory-comparison-2026-05-11.md` §6 + Annex E — recommends "port the in-process MiniLM pipeline, nothing else" without citing memory bundle plans (`docs/architecture/memory-layer-evolution-sdd.md` is referenced but only for cross-validation, not as a capacity/sequencing signal).
+- `megamemory-comparison-2026-05-11.md` §6 + Annex E — recommends "port the in-process MiniLM pipeline, nothing else" without citing memory bundle plans (`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md` is referenced but only for cross-validation, not as a capacity/sequencing signal).
 
 ### 3.3 Signals that should have been consulted
 
@@ -107,17 +107,17 @@ Inventory check (this self-critique pass):
 
 | # | Signal | Disk evidence found | Would have changed |
 |---|---|---|---|
-| 1 | **Master pending** | `docs/reports/master-pending-2026-05-11.md` — confirms Wave 2 (memory bundle) 🟢 substrate ready, Wave 3 🟢 initial slices landed, post-v0.28.0 follow-ups F1/F2/F3 ✅. | MegaMemory MiniLM port priority drops: Wave 2 substrate is already landed; embedder port is a P2 enhancement, not P1. iFixAi DECEPTION pillar rises: master-pending shows no Wave-aligned eval coverage there. |
+| 1 | **Master pending** | `docs/06-Daily/reports/master-pending-2026-05-11.md` — confirms Wave 2 (memory bundle) 🟢 substrate ready, Wave 3 🟢 initial slices landed, post-v0.28.0 follow-ups F1/F2/F3 ✅. | MegaMemory MiniLM port priority drops: Wave 2 substrate is already landed; embedder port is a P2 enhancement, not P1. iFixAi DECEPTION pillar rises: master-pending shows no Wave-aligned eval coverage there. |
 | 2 | **Sprint state** | `.cognitive-os/sprints/sprint-b37c1353.json` (status `pending`, example fixture). No active live sprint with committed scope visible. | Holds priority assumptions to "no in-flight conflict"; absence of a live sprint means the orchestrator should have flagged capacity as *unknown*, not assumed available. |
-| 3 | **Dogfood score** | `docs/reports/orchestrator-dogfood-smoke-test-2026-04-20.md` is the latest. ~3 weeks stale relative to 2026-05-11. | Recommendation cadence should explicitly note: dogfood signal stale → re-score before committing P1 work. Orchestrator did not flag this. |
+| 3 | **Dogfood score** | `docs/06-Daily/reports/orchestrator-dogfood-smoke-test-2026-04-20.md` is the latest. ~3 weeks stale relative to 2026-05-11. | Recommendation cadence should explicitly note: dogfood signal stale → re-score before committing P1 work. Orchestrator did not flag this. |
 | 4 | **Plans inventory** | `.cognitive-os/plans/{architecture,roadmaps,features,research,archive}/` — multiple active. Notably `architecture/governed-self-improvement-roadmap.md` referenced in master-pending. | HelixDB compile-to-DSL primitive should be sequenced *after* governed-self-improvement-roadmap Phase 3, not as an independent P1. |
-| 5 | **Engram decisions** | `decision/holaos-adoption` referenced in holaOS §8.5 — orchestrator already records decisions there. The 2026-05-11 batch did NOT search for prior `decision/helixdb-adoption`, `decision/ifixai-adoption`, `decision/megamemory-adoption` before re-litigating. | Avoids re-litigating: addenda from `docs/reports/external-tools-radar-{helixdb,ifixai,megamemory}-addendum-2026-05-11.md` already carry verdicts (REJECT, ASSESS/TRIAL-PATTERNS, ASSESS/pattern-only). Deep eval recommendations must *extend* not contradict. |
+| 5 | **Engram decisions** | `decision/holaos-adoption` referenced in holaOS §8.5 — orchestrator already records decisions there. The 2026-05-11 batch did NOT search for prior `decision/helixdb-adoption`, `decision/ifixai-adoption`, `decision/megamemory-adoption` before re-litigating. | Avoids re-litigating: addenda from `docs/06-Daily/reports/external-tools-radar-{helixdb,ifixai,megamemory}-addendum-2026-05-11.md` already carry verdicts (REJECT, ASSESS/TRIAL-PATTERNS, ASSESS/pattern-only). Deep eval recommendations must *extend* not contradict. |
 | 6 | **Error-learning log** | `.cognitive-os/error-learning.jsonl` present. Not inspected during the 2026-05-11 batch. | Would catch recurring failure classes (e.g. if "HNSW port" already failed once, deprioritize). |
 | 7 | **Cost predictor** | `scripts/cost_predict.py` + `lib/cost_predictor.py` exist. Not invoked during the batch. | A 7-annex deep pass costs ~40–80K tokens orchestrator + 7× sub-agent budgets. Not predicting before launching three of them is a governance miss. |
 
 **Top 3 signals the orchestrator should have consulted** (in priority order):
 
-1. **`docs/reports/master-pending-2026-05-11.md`** — fastest source-of-truth on what's open vs closed across all surfaces; would have directly downgraded the MegaMemory embedder priority (Wave 2 substrate already landed).
+1. **`docs/06-Daily/reports/master-pending-2026-05-11.md`** — fastest source-of-truth on what's open vs closed across all surfaces; would have directly downgraded the MegaMemory embedder priority (Wave 2 substrate already landed).
 2. **Engram `decision/<tool>-adoption` queries** — prevents re-litigating prior addendum verdicts; the deep evaluation is supposed to *deepen* the existing decision, not replace it.
 3. **`.cognitive-os/plans/architecture/`** + **plans inventory** — confirms whether a recommended primitive duplicates an in-flight plan (e.g. memory-layer evolution SDD already covers MegaMemory's contribution).
 
@@ -172,5 +172,5 @@ The two derived artifacts are persisted separately by the orchestrator when invo
 
 1. **Retroactive slot-mapping appendix** for the 2026-05-11 batch (HelixDB / iFixAi / MegaMemory). Operator decision.
 2. **`scripts/lint_recommendation_grounding.py`** — markdown parser that detects priority tables and verifies the trailing grounding block. Sonnet-sized task.
-3. **`hooks/deep-research-axis-gate.sh`** — pre-commit gate that rejects any new file under `docs/research/*-annex-*-<date>.md` whose frontmatter `axis:` field is outside the locked A–G set. Sonnet-sized task.
+3. **`hooks/deep-research-axis-gate.sh`** — pre-commit gate that rejects any new file under `docs/03-PoCs/research/*-annex-*-<date>.md` whose frontmatter `axis:` field is outside the locked A–G set. Sonnet-sized task.
 4. **Dogfood score refresh** — stale by ~3 weeks (2026-04-20). Independent of this critique, but surfaced during signal inventory.

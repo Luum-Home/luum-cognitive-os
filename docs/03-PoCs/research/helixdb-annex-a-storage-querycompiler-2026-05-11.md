@@ -126,4 +126,4 @@ Anyone reimplementing the patterns above must:
 1. Not read `helix-db/src/helixc/generator/queries.rs` while writing the COS emitter.
 2. Re-derive the IR from the documented HelixQL grammar (or a re-specified COS grammar), not from the parser source.
 3. Use a different identifier set, different file layout, and different error model.
-4. Record the chain of design decisions in an ADR under `docs/architecture/adr/`, including the explicit statement that no AGPL source was copied.
+4. Record the chain of design decisions in an ADR under `docs/04-Concepts/architecture/adr/`, including the explicit statement that no AGPL source was copied.

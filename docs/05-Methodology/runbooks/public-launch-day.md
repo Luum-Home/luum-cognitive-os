@@ -7,9 +7,9 @@
 **Audience:** repository operator (single-person action; do not delegate).
 **Prerequisites:**
 
-- Readiness checklist closed: [`docs/legal/pre-public-readiness-checklist.md`](../legal/pre-public-readiness-checklist.md) (14/14)
+- Readiness checklist closed: [`docs/09-Quality/legal/pre-public-readiness-checklist.md`](../legal/pre-public-readiness-checklist.md) (14/14)
 - Transparency door published: [`TRANSPARENCY.md`](../../TRANSPARENCY.md)
-- History sanitization narrative published: [`docs/history/HISTORY-SANITIZATION-2026-05-08.md`](../history/HISTORY-SANITIZATION-2026-05-08.md)
+- History sanitization narrative published: [`docs/01-Build-Log/history/HISTORY-SANITIZATION-2026-05-08.md`](../history/HISTORY-SANITIZATION-2026-05-08.md)
 - Recovery mirror present off-repo at the operator's recovery directory
 - Local working tree clean (`git status` is empty)
 - **`node` available in PATH** (via `fnm`, `nvm`, or system install). Required by `scripts/cos-opencode-primitive-adapter-smoke` in the release-confidence bundle. Verify: `command -v node && node --version`. If missing, install before proceeding (e.g. `fnm install --lts && fnm use lts-latest`).
@@ -29,8 +29,8 @@ Walk the following surface:
 - [ ] [`TRANSPARENCY.md`](../../TRANSPARENCY.md) link from README is visible above the badges
 - [ ] [`LICENSE`](../../LICENSE) renders as `FSL-1.1-MIT`
 - [ ] [`CONTRIBUTING.md`](../../CONTRIBUTING.md) renders, AI-authorship section is intact
-- [ ] [`docs/legal/license-faq.md`](../legal/license-faq.md) renders
-- [ ] [`docs/history/`](../history/) directory listing shows all four files
+- [ ] [`docs/09-Quality/legal/license-faq.md`](../legal/license-faq.md) renders
+- [ ] [`docs/01-Build-Log/history/`](../history/) directory listing shows all four files
 - [ ] [`sbom.json`](../../sbom.json) is browsable (raw view)
 
 ### 2. Click-test critical links
@@ -40,14 +40,14 @@ From the rendered README, click each link in turn and confirm 200, not
 
 - [ ] `LICENSE` (relative)
 - [ ] `NOTICE` (relative)
-- [ ] `docs/legal/license-faq.md`
-- [ ] `docs/legal/pre-public-readiness-checklist.md`
-- [ ] `docs/history/HISTORY-SANITIZATION-2026-05-08.md`
-- [ ] `docs/history/manifest-snapshot-2026-05-07.yaml`
-- [ ] `docs/history/pre-sanitization-sha-inventory-2026-05-07.txt`
-- [ ] `docs/security/supply-chain.md`
-- [ ] `docs/security/release-signing.md`
-- [ ] `docs/security/verify-public-release.md`
+- [ ] `docs/09-Quality/legal/license-faq.md`
+- [ ] `docs/09-Quality/legal/pre-public-readiness-checklist.md`
+- [ ] `docs/01-Build-Log/history/HISTORY-SANITIZATION-2026-05-08.md`
+- [ ] `docs/01-Build-Log/history/manifest-snapshot-2026-05-07.yaml`
+- [ ] `docs/01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt`
+- [ ] `docs/09-Quality/security/supply-chain.md`
+- [ ] `docs/09-Quality/security/release-signing.md`
+- [ ] `docs/09-Quality/security/verify-public-release.md`
 
 ### 3. Smoke privacy check
 
@@ -56,7 +56,7 @@ git log --all -p | grep -E 'soporte\.esolutions' | head -20
 ```
 
 Expected output: only the two operator-written disclosure-text matches
-inside `docs/legal/pre-public-readiness-checklist.md`.
+inside `docs/09-Quality/legal/pre-public-readiness-checklist.md`.
 
 Then confirm that sanitized placeholders are present only as placeholders,
 not as real consumer names:
@@ -98,9 +98,9 @@ under the operator's recovery location, which is operator-only. The
 public tombstone is the SHA inventory:
 
 ```
-shasum -a 256 docs/history/pre-sanitization-sha-inventory-2026-05-07.txt
+shasum -a 256 docs/01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt
 # Expect: 923170ead7ef9fd7c072089a699f867e111ead1be38a84ce41eb1a4023104997
-wc -l docs/history/pre-sanitization-sha-inventory-2026-05-07.txt
+wc -l docs/01-Build-Log/history/pre-sanitization-sha-inventory-2026-05-07.txt
 # Expect: 1775
 ```
 
@@ -128,12 +128,12 @@ Manual UI step. In a browser as the repository owner:
 4. Click `I understand, change repository visibility`
 
 Take a screenshot for the launch record:
-`docs/runbooks/launch-screenshots/visibility-flip-{YYYYMMDD}.png`
+`docs/05-Methodology/runbooks/launch-screenshots/visibility-flip-{YYYYMMDD}.png`
 (operator file; not committed if empty).
 
 ### 3. Cut signed annotated tag
 
-Per [`docs/security/release-signing.md`](../security/release-signing.md).
+Per [`docs/09-Quality/security/release-signing.md`](../security/release-signing.md).
 The first public tag is `v1.0.0` (or whichever public version is decided
 at flip time):
 
@@ -144,7 +144,7 @@ git tag -v v1.0.0    # MUST succeed
 
 If the maintainer signing material is not yet published, fall back to
 the disclosed-gap path: cut an annotated (unsigned) tag and update
-[`docs/security/release-signing.md`](../security/release-signing.md) §1
+[`docs/09-Quality/security/release-signing.md`](../security/release-signing.md) §1
 within 24 hours to reflect the new tag in the unsigned-tags table.
 
 ### 4. Publish tag
@@ -183,7 +183,7 @@ directory and run `git tag -v v1.0.0`.
 
 Pre-v1.0.0 (during the unsigned-gap window): expect `error: no
 signature found`. This is the disclosed gap. Document any deviation in
-`docs/security/release-signing.md` §1.
+`docs/09-Quality/security/release-signing.md` §1.
 
 ### 4. Launch-day incident channel
 

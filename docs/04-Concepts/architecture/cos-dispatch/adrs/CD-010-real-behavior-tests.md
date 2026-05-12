@@ -101,7 +101,7 @@ that satisfy ALL of the following:
 - **Negative-path coverage becomes a reviewable PR artifact.** Reviewers are
   expected to ask "where is the error-case test?" and block the PR if absent.
 - **The policy outlives Phase 5.** Post-Phase-5 features (additional detectors,
-  new providers) adopt the same rule. `docs/architecture/cos-dispatch/test-strategy.md`
+  new providers) adopt the same rule. `docs/04-Concepts/architecture/cos-dispatch/test-strategy.md`
   is the operational companion to this ADR.
 
 ## Cross-References

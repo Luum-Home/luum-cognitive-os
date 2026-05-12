@@ -191,7 +191,7 @@ Phased rollout (`v0.13.x` → `v0.15.0`):
 
 - **Hook authors**: nothing to do. `hooks/native-agent-heartbeat.sh` still exists and does its job; it just delegates to `dispatch.handle_event` internally.
 - **Consumer authors**: prefer `canonical-events.jsonl` for new code. Read through `CanonicalEvent.from_dict` for forward-compatibility.
-- **Harness authors**: see `docs/guides/adding-a-harness-adapter.md`.
+- **Harness authors**: see `docs/05-Methodology/guides/adding-a-harness-adapter.md`.
 - **Test authors**: tests that stub stdin payloads for the CC hook continue to work unchanged.
 
 ## Acceptance summary

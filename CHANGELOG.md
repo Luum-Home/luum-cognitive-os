@@ -74,7 +74,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Hardened context-rot controls so context-budget meters and staleness invariants enforce stricter ceilings under primitive-portability load.
 - Aligned the itinerary hook event across the canonical settings driver, the cognitive-os.yaml registry, and the projected `.claude/settings.json` / `.codex/hooks.json`.
 - Verified primitive documentation alignment across docs/manifests/scripts so observable-portability claims map to runtime evidence.
-- Neutralized package-metadata commit messages during the public-launch history rewrite while preserving the Apache-2.0 to FSL-1.1-MIT transition explanation in `docs/legal/license-faq.md` per ADR-218 transparency posture.
+- Neutralized package-metadata commit messages during the public-launch history rewrite while preserving the Apache-2.0 to FSL-1.1-MIT transition explanation in `docs/09-Quality/legal/license-faq.md` per ADR-218 transparency posture.
 
 ### Fixed
 
@@ -134,21 +134,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added — ADR-176: SkillStore SQLite schema adoption + post-execution analysis trigger (2026-05-05)
 
-ADR-176 adopts OpenSpace's 6-table SQLite schema verbatim (source: HKUDS/OpenSpace @ d1e367d, `skill_engine/store.py` lines 80–166) and introduces a discipline-gated post-execution analysis trigger. Key additions: `lib/skill_store.py` (SkillStore class; 6-table schema: `skill_records`, `skill_lineage_parents`, `execution_analyses`, `skill_judgments`, `skill_tool_deps`, `skill_tags`), `scripts/migrate_skill_archive_to_store.py` (idempotent migration from `skill-archive.jsonl`), and `hooks/skill-post-execution-analysis.sh` (PostToolUse Agent, async). Discipline gate (ADR-133/134) is structurally enforced: the hook's only write path to skill-related files is `docs/reports/skill-analysis-proposals/` — no code path to live `SKILL.md` exists.
+ADR-176 adopts OpenSpace's 6-table SQLite schema verbatim (source: HKUDS/OpenSpace @ d1e367d, `skill_engine/store.py` lines 80–166) and introduces a discipline-gated post-execution analysis trigger. Key additions: `lib/skill_store.py` (SkillStore class; 6-table schema: `skill_records`, `skill_lineage_parents`, `execution_analyses`, `skill_judgments`, `skill_tool_deps`, `skill_tags`), `scripts/migrate_skill_archive_to_store.py` (idempotent migration from `skill-archive.jsonl`), and `hooks/skill-post-execution-analysis.sh` (PostToolUse Agent, async). Discipline gate (ADR-133/134) is structurally enforced: the hook's only write path to skill-related files is `docs/06-Daily/reports/skill-analysis-proposals/` — no code path to live `SKILL.md` exists.
 
 
 
 ### Added — Multi-surface UI architecture (ADR-172)
 
-- `docs/adrs/ADR-172-multi-surface-ui-architecture.md` — accepted. Declares four UI surfaces: Surface 1 (operator CLI + markdown reports), Surface 2 (Phoenix LLM-trace UI, opt-in), Surface 3 (Engram Cloud), Surface 4 (Obsidian). CLI-as-primary from ADR-170 survives as Surface 1.
-- `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md` — audit report of TUI candidates as input to a future ADR-173.
+- `docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md` — accepted. Declares four UI surfaces: Surface 1 (operator CLI + markdown reports), Surface 2 (Phoenix LLM-trace UI, opt-in), Surface 3 (Engram Cloud), Surface 4 (Obsidian). CLI-as-primary from ADR-170 survives as Surface 1.
+- `docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md` — audit report of TUI candidates as input to a future ADR-173.
 
 ### Changed — ADR-043 deprecated
 
 
 ### Changed — ADR-170 superseded
 
-- `docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` — marked Superseded by ADR-172. CLI-as-primary clause survives as Surface 1 inside ADR-172.
+- `docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` — marked Superseded by ADR-172. CLI-as-primary clause survives as Surface 1 inside ADR-172.
 
 
 - Removed 6 hook entries from `cognitive-os.yaml` (SessionStart ×2, PostToolUse Agent ×3, Stop ×1)
@@ -179,11 +179,11 @@ around interfaces that actually work today.
 
 ### Added — Docker worker accessibility
 
-- `docs/runbooks/run-cos-in-docker.md` — operator runbook for the ADR-140 worker container. Quick Start (90 seconds), bootstrap subcommand reference, BYOK env vars per ADR-139, full stack with engram-cloud profile per ADR-141, audit-trail compliance evidence per ADR-142, troubleshooting, related-docs cross-reference. Closes the maintainer-cache discoverability gap surfaced when the runbook was missing despite the underlying infrastructure being complete.
+- `docs/05-Methodology/runbooks/run-cos-in-docker.md` — operator runbook for the ADR-140 worker container. Quick Start (90 seconds), bootstrap subcommand reference, BYOK env vars per ADR-139, full stack with engram-cloud profile per ADR-141, audit-trail compliance evidence per ADR-142, troubleshooting, related-docs cross-reference. Closes the maintainer-cache discoverability gap surfaced when the runbook was missing despite the underlying infrastructure being complete.
 - `scripts/cos-cloud-worker-bootstrap.sh` — added `up-full` subcommand that activates the engram-cloud Compose profile (postgres + pgvector + engram cloud server). `down` now stops both default and engram-cloud profiles so callers do not need to know which subset was started. Usage banner now lists every subcommand with one-line descriptions and points at the runbook.
 - `README.md` — new "Headless / cloud-worker container" section in the Quick Start area, linking to the runbook. Differentiates the Docker worker (headless / CI / evaluation) from the daily-IDE-governance install path.
-- `docs/INDEX.md` — added entry for the runbook under Operational Documents.
-- `docs/getting-started.md` — new "Headless deployment via Docker" section before "Next Steps", with a decision matrix (which path for which scenario).
+- `docs/00-MOCs/entrypoints/INDEX.md` — added entry for the runbook under Operational Documents.
+- `docs/00-MOCs/entrypoints/getting-started.md` — new "Headless deployment via Docker" section before "Next Steps", with a decision matrix (which path for which scenario).
 
 ## [0.25.0] - 2026-05-05 — "Embedded-Runtime Trajectory and Enterprise-Readiness"
 
@@ -201,9 +201,9 @@ mechanically when it stops working?* are answered.
 
 ### Added — Closure Discipline Gate (ADR-143)
 
-- `docs/adrs/ADR-143-closure-discipline-gate.md` — accepted blocking maintainer gate for closing validator drift after fast agent batches.
+- `docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md` — accepted blocking maintainer gate for closing validator drift after fast agent batches.
 - `scripts/cos-closure-discipline-audit` / `scripts/cos_closure_discipline_audit.py` — quick structural audit for stale suspended-workflow references, hardcoded runtime hook counts, validation capsule minimal-repo fallback, primitive lifecycle findings, and local-CI self-wiring.
-- `docs/manual-tests/closure-discipline.md` and `tests/unit/test_closure_discipline_audit.py` — manual and automatic proof paths for closure discipline.
+- `docs/09-Quality/manual-tests/closure-discipline.md` and `tests/unit/test_closure_discipline_audit.py` — manual and automatic proof paths for closure discipline.
 
 ### Fixed — Validation closure drift from May 3 batch
 
@@ -215,15 +215,15 @@ mechanically when it stops working?* are answered.
 
 ### Documentation
 
-- `docs/architecture/cognitive-prosthesis.md` — new section *Two maturity stages: works-when-it-works, and knows-when-it-doesn't* enumerates the nine concrete mechanisms that materialise the transition (demotion-with-evidence, governance-maturity labels, silent-failure allowlist, aspirational audit, false-positive ledger, propose-only proposers per ADR-134/135, anti-self-validation, ADR-136 runway with observable triggers, falsifiable claims as release artefact). Adds the operable test for whether a capability belongs in the default profile: not only *does it work?* but *how would I know mechanically when it stops working?*.
-- `docs/architecture/dx-cloud-flow-bootstrap-plan.md` — new strategic plan for COS as runtime-of-prosthesis for cloud agent flows (vuln-fix, bug-fix, features, docs, primitive expansion) under human audit. Names the trajectory B → A (governance layer over agents → embedded runtime), the priority shifts that follow, and the bootstrap path: vulnerability remediation in `e2b` sandbox as flow #1 with explicit budget caps (zero new default-visible primitives, zero rules added to RULES-COMPACT, no Shape B activation). Includes 6 falsifiable conditions, 5 explicit non-goals, and a 3-step ordered next-action list.
-- `docs/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md` — accepted trajectory ADR. Commits direction `Framing B → Framing A` orthogonal to ADR-132's Shape A/B axis (near-term target: `(Shape A, Framing A)`). Introduces the **framing-exercise statement** required in flow skill metadata; flows without it cannot be promoted out of `lab`. Makes ADR-064 implementation completion flow-gated rather than roadmap-gated.
-- `docs/adrs/ADR-138-flow-contract-schema.md` — accepted schema ADR. Commits the required shape for `manifests/flow-contract-schema.yaml` (twelve top-level fields including `flow_id`, `lifecycle_state`, `input_source.determinism`, `success_condition.verifier`, `sandboxed_write_paths`, `blocked_actions`, hardcoded `human_approval_required: true`, `evidence_shape` with anti-self-validation independence flags, `framing_exercise_statement`, `non_goals`, `falsifiable_when`). Schema stays in `exemplary` status until the second flow registers against it unchanged; extensions land as ADR-138a or new ADR. Updated to add eight new fields from ADR-139/141/142 (`credential_source`, `billing_identity`, `provider_capabilities`, `engram_project_scope`, `air_gapped_compatible`, `tenant_id`, `audit_class`).
-- `docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md` — accepted ADR. Establishes caller-supplied credentials as the default for all COS surfaces, bans credential propagation from maintainer shell to cloud workers, defines three billing postures (`byok-maintainer`, `byok-project`, `proxied`), extends Rules §10 to provider SDK licenses, mandates generic env var names (`LLM_PRIMARY_API_KEY`), and requires `billing_identity` in every LLM audit row.
-- `docs/adrs/ADR-140-cross-os-containerized-deployment.md` — accepted ADR. Defines a Docker Compose worker stack (`docker/cos-worker/docker-compose.yml`) for Linux/macOS/Windows+WSL2 cloud worker surfaces; satisfies `bootstrap-portability.md` for container deployments; no shell profile assumption; optional services remain optional via Compose profiles.
-- `docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md` — accepted ADR. Wires upstream `engram cloud` (April 2026) as a live-sync complement to the existing git-jsonl path. Three coexisting modes: `local-only`, `git-jsonl` (not deprecated), `engram-cloud`. Local SQLite authoritative; cloud replication-only. Project-scoped bearer tokens; `ENGRAM_CLOUD_ALLOWED_PROJECTS` tenant isolation; conflict surfacing reuses the propose-only contract. Introduces `scripts/cos-engram-cloud-enroll` bootstrap wrapper. Audit bridge to `agent-audit-trail.jsonl`.
-- `docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md` — accepted ADR. Formalises `.cognitive-os/runtime/agent-audit-trail.jsonl` as the canonical compliance evidence surface. Defines `audit_class` enumeration (seven classes covering SOC 2 / ISO 27001 / GDPR relevance), `tenant_id` per-flow isolation, air-gap deployment surface (local JSONL + git-jsonl), and GDPR erasure procedure. Classifies existing governance hooks as `access_control` evidence.
-- `docs/architecture/dx-cloud-flow-bootstrap-plan.md` — updated: ADR-139..142 added as prerequisites before promoting flow #1 beyond `lab`; status updated to `ready-for-first-flow-lab`; companion docs list extended.
+- `docs/04-Concepts/architecture/cognitive-prosthesis.md` — new section *Two maturity stages: works-when-it-works, and knows-when-it-doesn't* enumerates the nine concrete mechanisms that materialise the transition (demotion-with-evidence, governance-maturity labels, silent-failure allowlist, aspirational audit, false-positive ledger, propose-only proposers per ADR-134/135, anti-self-validation, ADR-136 runway with observable triggers, falsifiable claims as release artefact). Adds the operable test for whether a capability belongs in the default profile: not only *does it work?* but *how would I know mechanically when it stops working?*.
+- `docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md` — new strategic plan for COS as runtime-of-prosthesis for cloud agent flows (vuln-fix, bug-fix, features, docs, primitive expansion) under human audit. Names the trajectory B → A (governance layer over agents → embedded runtime), the priority shifts that follow, and the bootstrap path: vulnerability remediation in `e2b` sandbox as flow #1 with explicit budget caps (zero new default-visible primitives, zero rules added to RULES-COMPACT, no Shape B activation). Includes 6 falsifiable conditions, 5 explicit non-goals, and a 3-step ordered next-action list.
+- `docs/02-Decisions/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md` — accepted trajectory ADR. Commits direction `Framing B → Framing A` orthogonal to ADR-132's Shape A/B axis (near-term target: `(Shape A, Framing A)`). Introduces the **framing-exercise statement** required in flow skill metadata; flows without it cannot be promoted out of `lab`. Makes ADR-064 implementation completion flow-gated rather than roadmap-gated.
+- `docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md` — accepted schema ADR. Commits the required shape for `manifests/flow-contract-schema.yaml` (twelve top-level fields including `flow_id`, `lifecycle_state`, `input_source.determinism`, `success_condition.verifier`, `sandboxed_write_paths`, `blocked_actions`, hardcoded `human_approval_required: true`, `evidence_shape` with anti-self-validation independence flags, `framing_exercise_statement`, `non_goals`, `falsifiable_when`). Schema stays in `exemplary` status until the second flow registers against it unchanged; extensions land as ADR-138a or new ADR. Updated to add eight new fields from ADR-139/141/142 (`credential_source`, `billing_identity`, `provider_capabilities`, `engram_project_scope`, `air_gapped_compatible`, `tenant_id`, `audit_class`).
+- `docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md` — accepted ADR. Establishes caller-supplied credentials as the default for all COS surfaces, bans credential propagation from maintainer shell to cloud workers, defines three billing postures (`byok-maintainer`, `byok-project`, `proxied`), extends Rules §10 to provider SDK licenses, mandates generic env var names (`LLM_PRIMARY_API_KEY`), and requires `billing_identity` in every LLM audit row.
+- `docs/02-Decisions/adrs/ADR-140-cross-os-containerized-deployment.md` — accepted ADR. Defines a Docker Compose worker stack (`docker/cos-worker/docker-compose.yml`) for Linux/macOS/Windows+WSL2 cloud worker surfaces; satisfies `bootstrap-portability.md` for container deployments; no shell profile assumption; optional services remain optional via Compose profiles.
+- `docs/02-Decisions/adrs/ADR-141-engram-cloud-cross-instance-replication.md` — accepted ADR. Wires upstream `engram cloud` (April 2026) as a live-sync complement to the existing git-jsonl path. Three coexisting modes: `local-only`, `git-jsonl` (not deprecated), `engram-cloud`. Local SQLite authoritative; cloud replication-only. Project-scoped bearer tokens; `ENGRAM_CLOUD_ALLOWED_PROJECTS` tenant isolation; conflict surfacing reuses the propose-only contract. Introduces `scripts/cos-engram-cloud-enroll` bootstrap wrapper. Audit bridge to `agent-audit-trail.jsonl`.
+- `docs/02-Decisions/adrs/ADR-142-compliance-audit-air-gapped-surface.md` — accepted ADR. Formalises `.cognitive-os/runtime/agent-audit-trail.jsonl` as the canonical compliance evidence surface. Defines `audit_class` enumeration (seven classes covering SOC 2 / ISO 27001 / GDPR relevance), `tenant_id` per-flow isolation, air-gap deployment surface (local JSONL + git-jsonl), and GDPR erasure procedure. Classifies existing governance hooks as `access_control` evidence.
+- `docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md` — updated: ADR-139..142 added as prerequisites before promoting flow #1 beyond `lab`; status updated to `ready-for-first-flow-lab`; companion docs list extended.
 
 ### Added — Operational Tooling and Discipline (ADRs 144–149, 168)
 
@@ -269,28 +269,28 @@ mechanically when it stops working?* are answered.
 
 ### Added — Architecture Documentation
 
-- `docs/architecture/dx-cloud-flow-bootstrap-plan.md` — strategic plan for
+- `docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md` — strategic plan for
   COS as runtime-of-prosthesis for cloud agent flows under human audit.
-- `docs/architecture/agent-capability-coverage-pipeline.md` — ACC pipeline
+- `docs/04-Concepts/architecture/agent-capability-coverage-pipeline.md` — ACC pipeline
   reference.
-- `docs/architecture/bootstrap-portability.md` — cross-OS portability
+- `docs/04-Concepts/architecture/bootstrap-portability.md` — cross-OS portability
   contract for installation and runtime.
-- `docs/architecture/concurrency-safety-core-consumer-contract.md` —
+- `docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md` —
   contract surface between core and consumer projects under concurrent
   use.
-- `docs/architecture/consumer-project-primitive-accessibility.md` —
+- `docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md` —
   accessibility guarantees for consumers.
-- `docs/architecture/cos-instance-installer.md` /
+- `docs/04-Concepts/architecture/cos-instance-installer.md` /
   `cos-service-runtime-boundary.md` — installer and service-runtime
   boundaries.
-- `docs/architecture/engram-command-contract.md` — Engram CLI contract.
-- `docs/architecture/expected-skip-registry-and-opt-in-test-lanes.md` —
+- `docs/04-Concepts/architecture/engram-command-contract.md` — Engram CLI contract.
+- `docs/04-Concepts/architecture/expected-skip-registry-and-opt-in-test-lanes.md` —
   classified skip registry; unit-lane skip policy is now explicit.
-- `docs/architecture/gdpr-erasure-procedure.md` — GDPR erasure procedure
+- `docs/04-Concepts/architecture/gdpr-erasure-procedure.md` — GDPR erasure procedure
   companion to ADR-142.
-- `docs/architecture/adr-closure-policy.md` — closure policy for ADRs that
+- `docs/04-Concepts/architecture/adr-closure-policy.md` — closure policy for ADRs that
   reach `accepted` and need their evidence linked.
-- `docs/architecture/functional-audit/scorecard-hooks.md` — hook
+- `docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md` — hook
   functional-audit scorecard.
 
 ### Changed
@@ -350,7 +350,7 @@ trigger conditions converted from prose into observable counters.
 - `scripts/cos-self-improvement-discipline-gate` — wired into `cos-ci-local.sh`,
   enforces the proposer's own discipline contract.
 - `scripts/cos-doctrine-proposer` (ADR-135) — generates proposed doctrine
-  amendments as markdown under `docs/proposals/`. `runtime_effect: none`
+  amendments as markdown under `docs/03-PoCs/proposals/`. `runtime_effect: none`
   hardcoded; the system proposes new rules but never applies them.
 - `lib/self_improvement_loop.py`, `lib/doctrine_proposer.py` — the core
   libraries. Each proposal includes `non_goals` (anti-patterns to avoid) so
@@ -395,7 +395,7 @@ trigger conditions converted from prose into observable counters.
   drill output, not as adoption signal.
 - `scripts/cos_claim_signature_audit.py` extended — claims must carry signed
   provenance to count.
-- First drill report (`docs/reports/cross-instance-consumer-e2e-2026-05-03.md`)
+- First drill report (`docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md`)
   applies the schema to its own output and explicitly disqualifies itself
   from signing the `helps-projects` claim. Doctrine applied recursively to
   its first verification artefact.
@@ -429,10 +429,10 @@ adopters to use as a frame when evaluating governance systems.
 - ADR-134 — Headless Self-Improvement Proposer
 - ADR-135 — Self-Evolving Doctrine Proposals
 - ADR-136 — Cross-Instance Learning Runway
-- `docs/architecture/cross-instance-learning-runway.md`
-- `docs/architecture/headless-self-improvement-proposer.md`
-- `docs/architecture/self-evolving-doctrine-proposals.md`
-- `docs/reports/cross-instance-consumer-e2e-2026-05-03.md` — first drill
+- `docs/04-Concepts/architecture/cross-instance-learning-runway.md`
+- `docs/04-Concepts/architecture/headless-self-improvement-proposer.md`
+- `docs/04-Concepts/architecture/self-evolving-doctrine-proposals.md`
+- `docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md` — first drill
   report, intentionally self-disqualified per the new
   anti-self-validation rule.
 
@@ -472,10 +472,10 @@ operation; CI moves from GitHub-hosted to local pre-push gates.
 - `manifests/silent-failure-allowlist.yaml` — every `|| true` / `|| :` /
   `2>/dev/null` occurrence in hooks is now classified with a rationale and
   `max_occurrences`. Growth without classification fails the audit.
-- `docs/architecture/boring-reliability-control-plane.md` — operating doctrine
+- `docs/04-Concepts/architecture/boring-reliability-control-plane.md` — operating doctrine
   for default-visible primitives: real / measurable / reversible / honest /
   evidence-backed.
-- `docs/architecture/cognitive-prosthesis.md` — rationale companion explaining
+- `docs/04-Concepts/architecture/cognitive-prosthesis.md` — rationale companion explaining
   why the system has the shape it has.
 
 ### Added — Adoption Profiles and Lifecycle Discipline
@@ -580,18 +580,18 @@ operation; CI moves from GitHub-hosted to local pre-push gates.
   layer integrity / ADR-129 safe worktree removal / ADR-130 GHA suspend /
   ADR-131 local-CI migration / ADR-132 solo-swarm fork / ADR-133 expansion
   without monsterization.
-- ADR namespace consolidated under `docs/adrs/` (ADR-087); legacy paths
+- ADR namespace consolidated under `docs/02-Decisions/adrs/` (ADR-087); legacy paths
   remain as documentation references.
-- `docs/case-studies/external-review-cycle-2026-05-02.md` — worked example
+- `docs/08-References/case-studies/external-review-cycle-2026-05-02.md` — worked example
   of one external-review absorption cycle. Sections cover the cycle, what
   made it possible, bilateral pressure, protected landing, self-triggered
   absorption, cadence asymmetry between reviewer and maintainer, what the
   cycle does not prove, and a replication template.
-- `docs/architecture/direct-main-policy.md` — operational policy for direct
+- `docs/04-Concepts/architecture/direct-main-policy.md` — operational policy for direct
   pushes to `main`.
-- `docs/reports/dx-assessment-2026-05-02.md` — the SR-level DX assessment
+- `docs/06-Daily/reports/dx-assessment-2026-05-02.md` — the SR-level DX assessment
   that triggered the absorption cycle.
-- `docs/reports/boring-reliability-audit-2026-05-03.md` — end-to-end audit
+- `docs/06-Daily/reports/boring-reliability-audit-2026-05-03.md` — end-to-end audit
   baseline of the 10 control-plane tools.
 
 ### Removed
@@ -673,8 +673,8 @@ operation; CI moves from GitHub-hosted to local pre-push gates.
 
 ### Documentation
 
-- `docs/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision (schema, formulas, decay classes, ranking weight α=0.3, asymptotic confidence β=0.15) + two addendums (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** section listing 12 caveats: heuristic synthesis, supersedes-not-written, local-only reinforcement, schema coupling, save-count proxy, dormant hooks, unvalidated thresholds, structural-only cloud-sync compat, etc.
-- `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — analysis of the LLM Wiki v2 gist (rohitg00/agentmemory) + 14 sources + post-implementation status footer.
+- `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision (schema, formulas, decay classes, ranking weight α=0.3, asymptotic confidence β=0.15) + two addendums (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** section listing 12 caveats: heuristic synthesis, supersedes-not-written, local-only reinforcement, schema coupling, save-count proxy, dormant hooks, unvalidated thresholds, structural-only cloud-sync compat, etc.
+- `docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — analysis of the LLM Wiki v2 gist (rohitg00/agentmemory) + 14 sources + post-implementation status footer.
 - `.cognitive-os/plans/features/engram-lifecycle-evolution.md` — phased plan, marked SHIPPED for Phases 1–3, Phase 4 (Obsidian export) deferred.
 
 ### Notes
@@ -713,7 +713,7 @@ Extends the template + hook + audit pattern from `skills/*/SKILL.md` (Phase 1) t
 - `templates/rule-template.md`, `templates/hook-template.sh`, `templates/adr-template.md` — canonical skeletons with `<REQUIRED>` placeholders
 - `hooks/rule-frontmatter-validator.sh` — PostToolUse Edit/Write hook for `rules/*.md`. Validates SCOPE, H1, opening section, conditional `## Contextual Trigger`. Advisory by default; BLOCK opt-in via `COS_STRICT_RULE_VALIDATION=1`.
 - `hooks/hook-header-validator.sh` — for `hooks/*.sh`. Validates shebang, SCOPE, PURPOSE, EVENT, `set -euo pipefail`. Grandfathers existing 154 hooks (only enforces for new). `COS_STRICT_HOOK_VALIDATION=1`.
-- `hooks/adr-section-validator.sh` — for `docs/adrs/ADR-*.md`. Validates required sections (Status, Context, Decision, Consequences, Alternatives rejected, Verification with ≥1 fenced code block). Cutoff at ADR-067 — pre-067 ADRs grandfathered. `COS_STRICT_ADR_VALIDATION=1`.
+- `hooks/adr-section-validator.sh` — for `docs/02-Decisions/adrs/ADR-*.md`. Validates required sections (Status, Context, Decision, Consequences, Alternatives rejected, Verification with ≥1 fenced code block). Cutoff at ADR-067 — pre-067 ADRs grandfathered. `COS_STRICT_ADR_VALIDATION=1`.
 - All 3 hooks: fast-path filter (skip Python startup if input doesn't match path pattern), bash 3.x compatible
 - Hook registration in: `apply-efficiency-profile.sh` + `set-security-profile.sh` + 3 hook-architecture-v2 profile JSONs
 - Audit tests extended: `test_rules_enforcement.py` (+4 tests), `test_hooks_contracts.py` (+1 contract), new `test_adr_contracts.py` (+5 tests)
@@ -731,7 +731,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
   - `⚠️  Restart Claude Code` reminder when binary changed
 - `scripts/check_mcp_servers.py` — diagnostic script: reads MCP configs, resolves binaries via `which -a`, checks process via `pgrep`, reports version. `--json` mode for machine readers.
 - `tests/unit/test_check_mcp_servers.py` — 8 tests covering standalone config, mcpServers format, plugin-bundled config, multi-path detection, missing-process WARN, missing-binary ERROR, JSON output validity.
-- `docs/tooling-update-protocol.md` (new, 147 lines) — protocol for updating any Claude Code-integrated tool. Covers 3-paths trap, MCP restart requirement, brew vs go install vs manual, verification post-update, rollback. Living example: engram 2026-04-27 case study.
+- `docs/05-Methodology/root/tooling-update-protocol.md` (new, 147 lines) — protocol for updating any Claude Code-integrated tool. Covers 3-paths trap, MCP restart requirement, brew vs go install vs manual, verification post-update, rollback. Living example: engram 2026-04-27 case study.
 - `skills/deps-update/SKILL.md` — adds 4 new sections: brew-first flow, multi-path resolution trap, MCP server lifecycle, backup/rollback.
 
 ### Changed — Breaking (pre-1.0)
@@ -773,20 +773,20 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Added — ADR-065 Tech Radar Curation Pipeline
 
-- `docs/adrs/ADR-065-radar-update-curation-pipeline.md` — design for `/radar-update` skill
+- `docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md` — design for `/radar-update` skill
 - `skills/radar-update/SKILL.md` + `scripts/radar_merge.py` — Phase 1: skill + merge engine + dry-run
 - `tests/unit/test_radar_merge.py` — 28 tests covering dedup, human-field preservation, classification routing, classification shift, fuzzy match, artifact parser, CHANGELOG updater, diff generation
 
 ### Added — ADR-066 Polyglot Language Boundaries
 
-- `docs/adrs/ADR-066-polyglot-language-boundaries.md` — bash/Python/Go role matrix + naming conventions + migration triggers
+- `docs/02-Decisions/adrs/ADR-066-polyglot-language-boundaries.md` — bash/Python/Go role matrix + naming conventions + migration triggers
 - `rules/python-naming.md` + `tests/audit/test_python_naming.py` — Python `snake_case` enforcement
 - `rules/bash-naming.md` + `tests/audit/test_bash_naming.py` — bash kebab-case enforcement
 - `.github/workflows/go-quality.yml` — `gofmt -l` + `go vet` CI gates for 3 Go modules
 
 ### Added — ADR-067 SKILL.md Defense-in-Depth (Phase 1)
 
-- `docs/adrs/ADR-067-frontmatter-defense-in-depth.md` — 3-layer defense pattern (template + hook + audit)
+- `docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md` — 3-layer defense pattern (template + hook + audit)
 - `templates/skill-template.md` — canonical SKILL.md skeleton with explicit `<REQUIRED>` placeholders
 - `hooks/skill-frontmatter-validator.sh` — PostToolUse Edit/Write hook (advisory by default, blocks on `COS_STRICT_SKILL_VALIDATION=1`); fast-path skips Python startup when input doesn't contain `SKILL.md` (17ms vs 70ms)
 - `tests/audit/test_skill_descriptions_nonempty.py` — 3 audit tests using fixed `_fm()` parser
@@ -794,22 +794,22 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Added — ADR-068 Adaptive Test Runner Capacity
 
-- `docs/adrs/ADR-068-adaptive-test-runner-capacity.md` — cross-platform heuristic for choosing `-n auto|N|0` based on CPU/memory/load/battery/CI
+- `docs/02-Decisions/adrs/ADR-068-adaptive-test-runner-capacity.md` — cross-platform heuristic for choosing `-n auto|N|0` based on CPU/memory/load/battery/CI
 
 ### Added — ADR-069 Research-First Protocol
 
-- `docs/adrs/ADR-069-research-first-protocol.md` — 3-phase cycle (research → operator triage → implementation) for high-risk changes (4-dimensional risk scoring)
+- `docs/02-Decisions/adrs/ADR-069-research-first-protocol.md` — 3-phase cycle (research → operator triage → implementation) for high-risk changes (4-dimensional risk scoring)
 - `templates/agent-research-only.md` — boilerplate for research-only agent prompts
 - `rules/research-first-protocol.md` + `tests/audit/test_research_reports_format.py` — operational policy + audit gate
 - 3 research reports landed using the protocol:
-  - `docs/reports/cos-init-migration-2026-04-24.md` — feasibility analysis (9 decision points)
-  - `docs/reports/adr-067-phase-2-2026-04-24.md` — defense-in-depth Phase 2 scope (15 decisions)
-  - `docs/reports/python-major-bumps-2026-04-24.md` — wrapt/rich/cryptography probe
+  - `docs/06-Daily/reports/cos-init-migration-2026-04-24.md` — feasibility analysis (9 decision points)
+  - `docs/06-Daily/reports/adr-067-phase-2-2026-04-24.md` — defense-in-depth Phase 2 scope (15 decisions)
+  - `docs/06-Daily/reports/python-major-bumps-2026-04-24.md` — wrapt/rich/cryptography probe
 
 ### Added — Skills
 
 - `/repo-scout` (renamed from `/eval-repo`, v2.0): scout external git repos for tech radar with bulk mode (`--batch <file>`), per-repo markdown artifacts, adoption signals (issue velocity, release cadence, CI health). Old `/eval-repo` kept as deprecated alias stub.
-- `/radar-update` (Phase 1): merge `/repo-scout` evaluations into `docs/patterns/ecosystem-tools.md` + `docs/blocked-tools.md` with dry-run by default
+- `/radar-update` (Phase 1): merge `/repo-scout` evaluations into `docs/04-Concepts/patterns/ecosystem-tools.md` + `docs/05-Methodology/root/blocked-tools.md` with dry-run by default
 - `/decision-triage`: aggregate unanswered operator decisions across research reports + ADRs into a single ranked view. Score-based urgency heuristic (initial 0/125 critical → 33/125 critical after improved scoring).
 - `/deps-update`: automated audit + upgrade across Python deps, engram binary, Claude Code plugins, Docker images. Modes: `--audit` (default), `--apply`, `--apply --major`, `--dry-run`.
 
@@ -819,7 +819,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 - `tests/audit/test_skill_descriptions_nonempty.py` — frontmatter contract enforcement
 - `tests/audit/test_research_reports_format.py` — research report structure validation
 - `tests/audit/test_packages_hooks_lib_symlinks.py` — packages/*/hooks/_lib symlink integrity
-- `docs/architecture/parser-coverage-audit-2026-04-24.md` — audit of 12 sibling parsers for `_fm()`-class gaps
+- `docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md` — audit of 12 sibling parsers for `_fm()`-class gaps
 
 ### Changed — Breaking (pre-1.0)
 
@@ -841,7 +841,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Documentation
 
-- `docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` — bash orchestrator vs Go package manager scope clarity (commit `583dc5c`)
+- `docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` — bash orchestrator vs Go package manager scope clarity (commit `583dc5c`)
 - `rules/research-first-protocol.md` — when to use research-first vs background agents (4-dim scoring)
 
 ### Performance
@@ -858,9 +858,9 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Known issues (deferred)
 
-- **Research report dual-location**: `.cognitive-os/reports/research/` (gitignored) vs `docs/reports/` — 3 reports exist in both, causing duplicates in `/decision-triage` output. Will be unified in next session.
+- **Research report dual-location**: `.cognitive-os/reports/research/` (gitignored) vs `docs/06-Daily/reports/` — 3 reports exist in both, causing duplicates in `/decision-triage` output. Will be unified in next session.
 - **rich 14→15 upgrade blocked**: `cognee[memory]` pins `rich<13.7.0`, breaking `[dev]+[memory]` combo. Reverted to `rich>=14`. Pending: cognee upstream upgrade.
-- **wrapt 1→2** + **cryptography deprecated `default_backend()` in hermes-agent**: deferred per `docs/reports/python-major-bumps-2026-04-24.md`.
+- **wrapt 1→2** + **cryptography deprecated `default_backend()` in hermes-agent**: deferred per `docs/06-Daily/reports/python-major-bumps-2026-04-24.md`.
 - **125 unanswered operator decisions** surfaced by `/decision-triage` (33 critical from today's research reports).
 
 ## [0.16.0] - 2026-04-24 — "Multi-Provider + Harness-Agnostic"
@@ -876,12 +876,12 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Added — ADR-063 Agent() Replication Strategy
 
-- `docs/adrs/ADR-063-agent-tool-replication-strategy.md` — reject full Agent() clone; adopt Python `claude-agent-sdk` (MIT) as triple-gated opt-in provider.
+- `docs/02-Decisions/adrs/ADR-063-agent-tool-replication-strategy.md` — reject full Agent() clone; adopt Python `claude-agent-sdk` (MIT) as triple-gated opt-in provider.
 - `pyproject.toml` — `claude-sdk = ["claude-agent-sdk>=0.1"]` optional dep.
 
 ### Added — ADR-064 Harness-Agnostic Cognitive OS
 
-- `docs/adrs/ADR-064-harness-agnostic-cognitive-os.md` — architectural decision for Codex/Cursor/bare-CLI support. Names 4 integration surfaces (event capture, hook registration, skill invocation, sub-agent spawning). 10-15 session roadmap.
+- `docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md` — architectural decision for Codex/Cursor/bare-CLI support. Names 4 integration surfaces (event capture, hook registration, skill invocation, sub-agent spawning). 10-15 session roadmap.
 
 ### Added — ADR-058 Phoenix Observability
 
@@ -890,7 +890,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Added — ADR-060 Local-Only Policy
 
-- `docs/adrs/ADR-060-local-only-optional-services.md` — pip-first, Docker-fallback, never-cloud-default.
+- `docs/02-Decisions/adrs/ADR-060-local-only-optional-services.md` — pip-first, Docker-fallback, never-cloud-default.
 - Opik removed. MemU wired with self-contained `memu-pg` backend.
 - Profile-gated services: `cognee`, `nemo-guardrails`, `jupyter` behind `--profile memory|guardrails|jupyter`.
 - `scripts/cos-bootstrap.sh` `--profile full` now correctly activates all three profiles (was silent no-op).
@@ -898,8 +898,8 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 ### Added — ADR-061 Focus Narrative + External Evidence
 
 - `README.md` rewritten governance-first (leads with "governance layer for coding agents").
-- `docs/vs-alternatives.md` — comparison with Hermes, Agent Zero, OpenClaw.
-- `docs/migration-from/{vanilla-claude-code,hermes}.md` — recipe-style migration docs.
+- `docs/08-References/root/vs-alternatives.md` — comparison with Hermes, Agent Zero, OpenClaw.
+- `docs/08-References/migration-from/{vanilla-claude-code,hermes}.md` — recipe-style migration docs.
 - `scripts/demo-governance.sh` — 5-minute governance value demo.
 - `.github/workflows/weekly-public-metrics.yml` — Monday cron, updates badges (dogfood-score, REAL%, hook-wiring).
 
@@ -947,8 +947,8 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Documentation
 
-- `docs/adrs/ADR-059-existential-validation.md` — 3-phase plan (prune humo / install-timing / core-extensions split).
-- `docs/patterns/cross-harness-authoring.md` — self-check protocol for SO-path changes.
+- `docs/02-Decisions/adrs/ADR-059-existential-validation.md` — 3-phase plan (prune humo / install-timing / core-extensions split).
+- `docs/04-Concepts/patterns/cross-harness-authoring.md` — self-check protocol for SO-path changes.
 - Package migration plan — 10 integrations mapped to future `cos` packages.
 - Plugin marketplace design — `cos install` with 6-gate security audit pipeline.
 - `install.sh` dual-mode installer (local source auto-detection + `--from` flag).
@@ -1017,15 +1017,15 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 - 4 files with unresolved merge conflict markers: `hooks/self-install.sh`, `hooks/_lib/dispatch_gate_check.py`, `lib/agent_health_monitor.py`, `lib/dispatch_helper.py`. Resolved favoring "Stashed changes" side.
 - `tests/unit/test_nemo_integration.py::test_skill_has_frontmatter` — tolerates leading `<!-- SCOPE: -->` comment (scope-governance convention).
 - `tests/unit/test_repomix_integration.py::test_config_in_yaml` — tolerates documented section removal.
-- Reconciliation: 20 plans in `.cognitive-os/plans/features/` mapped against ADRs. 11 SUPERSEDED / 4 LIVE / 3 STALE. Summary at `docs/architecture/plans-reconciliation-2026-04-21.md`.
-- ADR-038 + ADR-039 published to canonical `docs/adrs/` (publication gap closed).
+- Reconciliation: 20 plans in `.cognitive-os/plans/features/` mapped against ADRs. 11 SUPERSEDED / 4 LIVE / 3 STALE. Summary at `docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md`.
+- ADR-038 + ADR-039 published to canonical `docs/02-Decisions/adrs/` (publication gap closed).
 - ADR-003 duplicate deleted (wrong path). ADR-027a 4 PENDING items resolved. ADR-028a 6 PENDING items resolved (6 done, 2 deferred, 1 partial).
 - work-queue.json rotated (44 completed entries to Engram, 3 stale parked removed).
 
 ### Metrics this release
 
 - **22 commits** over one session.
-- 6177 / 6209 tests pass (99.5%). 32 remaining failures are pre-existing (tracked in `docs/reports/pre-existing-test-failures-2026-04-21.md`).
+- 6177 / 6209 tests pass (99.5%). 32 remaining failures are pre-existing (tracked in `docs/06-Daily/reports/pre-existing-test-failures-2026-04-21.md`).
 - Engram observations added: 15+ under `adr-047/*`, `cos-config-audit/*`, `plans-reconciliation/*`, `decision-depth-gate/*`.
 
 ---
@@ -1034,14 +1034,14 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Added — ADR-028 (full 6-pillar reliability framework)
 
-- **D1.A Observability foundation**: `lib/metric_event.py` (canonical JSONL event schema with ENOSPC-safe `append_event` returning bool), `docs/reports/metrics-census.md` (F-1..F-8 surfaced), rotation by size (>1 MiB) + age (>7 d) in `hooks/metrics-rotation.sh`, archive path aligned.
+- **D1.A Observability foundation**: `lib/metric_event.py` (canonical JSONL event schema with ENOSPC-safe `append_event` returning bool), `docs/06-Daily/reports/metrics-census.md` (F-1..F-8 surfaced), rotation by size (>1 MiB) + age (>7 d) in `hooks/metrics-rotation.sh`, archive path aligned.
 - **D1.B Process registry + reaper**: `lib/process_registry.py` + `ProcessRegistry` facade (register/deregister/cleanup_expired/detect_orphans), `scripts/so-reaper.sh`, `hooks/session-end-reap.sh`. 8 real call sites via `hooks/_lib/register-bg.sh`. Safe-kill contract: only registered PIDs can be terminated.
 - **D1.C Agent liveness (via agent_bus adapter, ADR-028b)**: `lib/agent_bus_metrics.py` bridges `cos:agent:*:heartbeat` events to MetricEvent JSONL. No parallel heartbeat system — builds on existing `lib/agent_bus.py`. Proven end-to-end with orchestrator smoke test (commit `ae84bb8`).
 - **D1.D Unified dashboard**: `scripts/so-vitals.sh` (human + `--json` modes) aggregates agents, registered processes, orphan suspects, JSONL sizes, Valkey reachability. Consumed by chaos and contract tests.
 - **D2 Contract test suite**: `tests/contracts/test_orphan_hooks.py` (130 hooks → 0 orphans), `test_fd_invariant.py`, `test_ram_ceiling.py`, `test_p95_hook_latency.py`. 4 real contracts, all behavioral.
-- **D3 Systematic audit**: `docs/reports/hook-audit-2026-04.md` — 130 hooks scanned, 18 findings (2 BLOCKER, 9 CONCERN, 7 SUGGESTION) with anti-pattern taxonomy.
+- **D3 Systematic audit**: `docs/06-Daily/reports/hook-audit-2026-04.md` — 130 hooks scanned, 18 findings (2 BLOCKER, 9 CONCERN, 7 SUGGESTION) with anti-pattern taxonomy.
 - **D4 Systematic fix**: 2/2 BLOCKERs + 9/9 CONCERNs resolved. `test-baseline-diff.sh` deleted (WS11 Bug-1 pattern). `mlflow-sync` + 5 other hooks wrapped in `timeout 30`. `rate-limit-protection.sh` reduced to deprecation shim of `token-budget-monitor.sh`.
-- **D5 SLOs + runbook + killswitch**: `rules/so-slo.md` (9 SLOs + error budget), `docs/runbooks/so-incident-runbook.md`, `scripts/so-emergency-stop.sh`, `hooks/_lib/killswitch_check.sh` sourced by 124 of 129 hooks.
+- **D5 SLOs + runbook + killswitch**: `rules/so-slo.md` (9 SLOs + error budget), `docs/05-Methodology/runbooks/so-incident-runbook.md`, `scripts/so-emergency-stop.sh`, `hooks/_lib/killswitch_check.sh` sourced by 124 of 129 hooks.
 - **D6 Chaos suite**: `tests/chaos/` 5 scenarios (MCP kill, hook timeout, disk-full ENOSPC, FD exhaustion, git-reset cascade detector). All behavioral, 1 found a real gap and flipped to pass after D4 fix.
 
 ### Added — ADR-027 (SO slimming)
@@ -1056,13 +1056,13 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 ### Added — Infrastructure
 
 - `hooks/valkey-ensure.sh` auto-starts Valkey via OrbStack when `ORCHESTRATOR_MODE=executor`.
-- `scripts/orchestrator.py` — dogfood entry point that uses `ClaudeExecutor` + `agent_bus_metrics` instead of the native Agent tool. Self-hosting loop proven (see `docs/reports/orchestrator-dogfood-smoke-test-2026-04-20.md`).
+- `scripts/orchestrator.py` — dogfood entry point that uses `ClaudeExecutor` + `agent_bus_metrics` instead of the native Agent tool. Self-hosting loop proven (see `docs/06-Daily/reports/orchestrator-dogfood-smoke-test-2026-04-20.md`).
 - 5 MetricEvent writer migrations (cost-events, consequence, skill-archive, telemetry, learning, singularity). 100% of cost-events rows migrated via `scripts/backfill-cost-events.py`.
 
 ### Changed
 
 - `rules/RULES-COMPACT.md`: added `[\`so-slo\`]` ref-key on Infra line so ADR-028 SLO catalogue is loadable via the ref-key loader.
-- `templates/agent-preamble.md`: 100 → 34 lines (trim). ~60% reduction in sub-agent context overhead (see `docs/reports/sub-agent-context-trim-2026-04-20.md`).
+- `templates/agent-preamble.md`: 100 → 34 lines (trim). ~60% reduction in sub-agent context overhead (see `docs/06-Daily/reports/sub-agent-context-trim-2026-04-20.md`).
 - `hooks/blast-radius.sh`: CRITICAL now requires `(INFRA AND SECURITY) OR file_score > 100` (was: `INFRA OR SECURITY OR file_score > 50`). Message compressed to one line.
 - `hooks/inject-phase-context.sh`: gotchas dedup per session (first agent gets full text, subsequent get pointer).
 - `hooks/_lib/task_panel_adapter.py`: skip tasks already in native Task panel (no more duplicate blocks).
@@ -1086,7 +1086,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 ### Documentation
 
 - 4 new ADRs: `ADR-027a`, `ADR-028a`, `ADR-028b`, `ADR-029`.
-- 9 audit / report documents under `docs/reports/` (metrics census, hook audit, debt register, artifact verification, reconciliation audit, smoke test, context trim, D1B TODO, validation).
+- 9 audit / report documents under `docs/06-Daily/reports/` (metrics census, hook audit, debt register, artifact verification, reconciliation audit, smoke test, context trim, D1B TODO, validation).
 
 ### Dependencies
 
@@ -1126,19 +1126,19 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
   `confidentiality-enforcer.sh` and `session-sanity.sh`.
 - `cognitive-os.yaml`: `efficiency.profile: default` and the `profiles:` map
   now defines only `default` and `full`.
-- `docs/usage/cos-status.md`: references updated to the 2-tier model.
+- `docs/05-Methodology/usage/cos-status.md`: references updated to the 2-tier model.
 
 ### Migration
 
 Users who previously ran `install.sh --lean` or `install.sh --standard` should
 drop the flag. The new `default` tier is a strict superset of the old `lean`
 tier and the same hook set as the old `standard` tier plus 10 curated skills.
-See `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md`.
+See `docs/04-Concepts/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md`.
 
 ## [0.9.0] - 2026-04-16 — "Self-Awareness"
 
 Major stabilization release following the growth crisis post-mortem. OS can now
-detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.md.
+detect its own degradation patterns. See docs/04-Concepts/architecture/POST-MORTEM-2026-04.md.
 
 ### Added
 
@@ -1196,7 +1196,7 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 - feat: scripts/setup.sh — one-command dependency install (--minimal/--standard/--full)
 - feat: scripts/doctor.sh — 12 health check categories
 - feat: .go-version + goenv integration (Go 1.25.6)
-- feat: docs/setup/dependencies.md — comprehensive manifest by package manager
+- feat: docs/05-Methodology/setup/dependencies.md — comprehensive manifest by package manager
 
 **ADRs (7 new, 16 retroactive = 22 total):**
 - ADR-006 through ADR-020: retroactive coverage of March 21 - April 13 history
@@ -1207,9 +1207,9 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 
 **Institutional memory (4 living documents):**
 - .cognitive-os/plans/roadmaps/stabilization-roadmap.md — status tracker
-- docs/architecture/FROZEN-BACKLOG.md — 30+ deferred plans
-- docs/architecture/LESSONS-LEARNED.md — 5 wounds + red flags
-- docs/architecture/POST-MORTEM-2026-04.md — full retrospective
+- docs/04-Concepts/architecture/FROZEN-BACKLOG.md — 30+ deferred plans
+- docs/04-Concepts/architecture/LESSONS-LEARNED.md — 5 wounds + red flags
+- docs/04-Concepts/architecture/POST-MORTEM-2026-04.md — full retrospective
 
 **Testing:**
 - 23 behavioral tests for 3 hook perf fixes (rate-limit-protection, dispatch-gate, completion-gate)
@@ -1217,7 +1217,7 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 - 18 tests for prompt-type hooks
 - 22 tests for pattern detector
 - 54 tests for auto-ADR detector
-- docs/testing/README.md — comprehensive testing guide
+- docs/09-Quality/testing/README.md — comprehensive testing guide
 
 ### Fixed
 
@@ -1309,7 +1309,7 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 - feat: workflow YAML files (feature-pipeline.yaml, bugfix-pipeline.yaml) in .cognitive-os/workflows/
 - fix: pre-commit hook Gate 3e made advisory (warn, not block) on malformed workflow YAML
 - fix: pre-commit hook gate labels standardized (Gate 3a–3e) for consistent detection
-- fix: docs/INDEX.md version updated to v0.8.4
+- fix: docs/00-MOCs/entrypoints/INDEX.md version updated to v0.8.4
 
 ## [0.1.0] - 2026-03-27
 

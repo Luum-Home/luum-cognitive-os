@@ -86,7 +86,7 @@ def inventory_surface() -> dict[str, Any]:
         "manifests": "manifests",
         "tests_red_team": "tests/red_team",
         "tests_security": "tests/security",
-        "docs_security": "docs/security",
+        "docs_security": "docs/09-Quality/security",
     }
     return {
         name: {
@@ -219,7 +219,7 @@ def probe_runtime_flag_registry(findings: list[Finding]) -> ProbeResult:
             "MEDIUM",
             "Runtime env flag registry is missing or undocumented",
             f"manifest={manifest.exists()} docs={docs.exists()}",
-            "Keep manifests/runtime-env-flags.yaml and docs/runtime-env-flags.md as the public contract for skips/bypasses.",
+            "Keep manifests/runtime-env-flags.yaml and docs/04-Concepts/root/runtime-env-flags.md as the public contract for skips/bypasses.",
         ))
         return ProbeResult("runtime_flag_registry", "WARN", "registry/doc missing")
     return ProbeResult("runtime_flag_registry", "PASS", "runtime flag registry and docs exist")

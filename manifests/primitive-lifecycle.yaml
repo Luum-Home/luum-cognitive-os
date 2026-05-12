@@ -2174,7 +2174,7 @@ primitives:
   - tests/contracts/test_skill_invocation_gate.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md
+    boring_reliability_artifact: docs/02-Decisions/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md
     rationale: ADR-188 introduces a blocking guard to prevent high-confidence skill-router contracts from being silently bypassed;
       the hook has contract tests for pass, warn, block, annotation, and env override behavior.
 - id: hooks/plan-claim-validator.sh
@@ -2805,7 +2805,7 @@ primitives:
   - tests/chaos/test_release_guard_exercised.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/reports/hook-registration-classification-2026-05-04.md
+    boring_reliability_artifact: docs/06-Daily/reports/hook-registration-classification-2026-05-04.md
     rationale: Deterministic low-overhead release-safety blocker promoted into PreToolUse Bash projection to prevent manual
       release drift.
 - id: hooks/research-quality-validator.sh
@@ -4198,7 +4198,7 @@ primitives:
   - codex
   - shell
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   runtime_projection: false
   behavior_evidence: explicit behavior evidence manifest for ADR-189 harness coverage
   evidence_commands:
@@ -4223,7 +4223,7 @@ primitives:
   - codex
   - shell
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   runtime_projection: false
   behavior_evidence: gap policy manifest for ADR-189 harness coverage
   evidence_commands:
@@ -4282,7 +4282,7 @@ primitives:
   - codex
   - shell
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   runtime_projection: false
   behavior_evidence: legacy scope override manifest for ADR-189 harness coverage
   evidence_commands:
@@ -4569,7 +4569,7 @@ primitives:
   projection_targets:
   - scripts/cos-active-primitive-index
   - scripts/active_primitive_index.py
-  - docs/adrs/ADR-127-active-primitive-index.md
+  - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
   behavior_evidence: control-plane-smoke-and-unit-tests
   evidence_commands:
   - scripts/cos-active-primitive-index --json
@@ -4593,7 +4593,7 @@ primitives:
   projection_targets:
   - scripts/cos-adoption-profile
   - scripts/cos_adoption_profile.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   behavior_evidence: control-plane-smoke-and-unit-tests
   evidence_commands:
   - scripts/cos-adoption-profile --profile core
@@ -4641,7 +4641,7 @@ primitives:
   - codex
   - shell
   projection_targets:
-  - docs/architecture/agent-message-bus.md
+  - docs/04-Concepts/architecture/agent-message-bus.md
   - scripts/cos-agent-message
   runtime_projection: false
   behavior_evidence: unit-tested directed message CLI for auditor to implementer communication
@@ -4669,8 +4669,8 @@ primitives:
   projection_targets:
   - scripts/cos-architecture-readiness
   - scripts/cos_architecture_readiness.py
-  - docs/adrs/ADR-127-active-primitive-index.md
-  - docs/adrs/ADR-128-data-layer-integrity-fixes.md
+  - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
+  - docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md
   behavior_evidence: architecture-readiness-smoke-and-unit-tests
   evidence_commands:
   - scripts/cos-architecture-readiness --json
@@ -4751,7 +4751,7 @@ primitives:
   projection_targets:
   - scripts/cos-boring-reliability
   - scripts/cos_boring_reliability.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   behavior_evidence: aggregate-control-plane-smoke
   evidence_commands:
   - scripts/cos-boring-reliability --profile core
@@ -4775,7 +4775,7 @@ primitives:
   projection_targets:
   - scripts/cos-ci-local.sh
   - git-hooks/pre-push
-  - docs/adrs/ADR-131-local-ci-migration.md
+  - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
   behavior_evidence: local-ci-quick-smoke
   evidence_commands:
   - bash scripts/cos-ci-local.sh quick
@@ -4800,7 +4800,7 @@ primitives:
   - scripts/cos-closure-discipline-audit
   - scripts/cos_closure_discipline_audit.py
   - scripts/cos-ci-local.sh
-  - docs/adrs/ADR-143-closure-discipline-gate.md
+  - docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md
   runtime_projection: false
   behavior_evidence: closure-discipline audit blocks stale validation infrastructure after fast agent batches
   evidence_commands:
@@ -4819,7 +4819,7 @@ primitives:
   - tests/unit/test_closure_discipline_audit.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/adrs/ADR-143-closure-discipline-gate.md
+    boring_reliability_artifact: docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md
     rationale: Converts known broad-validation drift classes into a quick local-CI gate.
 - id: scripts/cos-config-audit.sh
   kind: script
@@ -4863,7 +4863,7 @@ primitives:
   - scripts/cos-consumer-fleet-audit
   - scripts/cos_consumer_fleet_audit.py
   - lib/consumer_fleet_audit.py
-  - docs/architecture/consumer-fleet-audit.md
+  - docs/04-Concepts/architecture/consumer-fleet-audit.md
   runtime_projection: false
   behavior_evidence: read-only fleet panel joining install registry, install metadata, registry-lock audit, claim-signature
     audit, and targeted validation lanes
@@ -4974,7 +4974,7 @@ primitives:
   - scripts/cos-cross-instance-drill
   - scripts/cos_cross_instance_drill.py
   - lib/cross_instance_learning.py
-  - docs/architecture/cross-instance-learning-runway.md
+  - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   runtime_projection: false
   behavior_evidence: temporary-state manual drills for cross-instance runway scenarios
   evidence_commands:
@@ -5000,7 +5000,7 @@ primitives:
   projection_targets:
   - scripts/cos-demotion-loop-audit
   - scripts/cos_demotion_loop_audit.py
-  - docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
+  - docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
   runtime_projection: false
   behavior_evidence: demotion-loop maturity audit with tests
   evidence_commands:
@@ -5028,7 +5028,7 @@ primitives:
   projection_targets:
   - scripts/cos-dispatch-smoke
   - scripts/cos_dispatch_smoke.py
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   behavior_evidence: offline-dispatch-metrics-smoke
   evidence_commands:
   - scripts/cos-dispatch-smoke --json
@@ -5106,7 +5106,7 @@ primitives:
   - shell
   projection_targets:
   - scripts/cos-doctor-preserve.sh
-  - docs/architecture/preserve-branch-lifecycle.md
+  - docs/04-Concepts/architecture/preserve-branch-lifecycle.md
   runtime_projection: false
   behavior_evidence: behavior-test; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
@@ -5161,7 +5161,7 @@ primitives:
   - scripts/cos-doctrine-proposer
   - scripts/cos_doctrine_proposer.py
   - lib/doctrine_proposer.py
-  - docs/adrs/ADR-135-self-evolving-doctrine-proposals.md
+  - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   runtime_projection: false
   behavior_evidence: self-evolving doctrine proposal generator with unit tests
   evidence_commands:
@@ -5170,7 +5170,7 @@ primitives:
   exit_behavior: exit_0
   metrics_file: none
   docs_claim_level: advisory
-  rollback_or_repair_command: Delete or revise the generated markdown under docs/proposals; no runtime doctrine is mutated
+  rollback_or_repair_command: Delete or revise the generated markdown under docs/03-PoCs/proposals; no runtime doctrine is mutated
     by this primitive.
   sunset_criteria: Archive only if doctrine proposal generation moves into a stronger review workflow with equivalent non-runtime
     guarantees.
@@ -5288,7 +5288,7 @@ primitives:
   - scripts/cos_flow_register.py
   - manifests/flow-contract-schema.yaml
   - skills/vuln-remediation-flow/flow_contract.yaml
-  - docs/adrs/ADR-138-flow-contract-schema.md
+  - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
   runtime_projection: false
   behavior_evidence: ADR-138 flow contract registration rejects incomplete or unsafe lab flow contracts
   evidence_commands:
@@ -5314,7 +5314,7 @@ primitives:
   projection_targets:
   - scripts/cos-headless-service-drill
   - docker/cos-worker/docker-compose.yml
-  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
   runtime_projection: false
   behavior_evidence: opt-in Docker/headless service proof drill; excluded from default laptop lanes
   evidence_commands:
@@ -5434,7 +5434,7 @@ primitives:
   - tests/contracts/test_lab_first_promotion_gate.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/architecture/boring-reliability-control-plane.md
+    boring_reliability_artifact: docs/04-Concepts/architecture/boring-reliability-control-plane.md
     rationale: Control-plane gate created specifically to enforce lab-first expansion discipline.
 - id: scripts/cos-manifest-tier-claim-audit
   kind: script
@@ -5450,7 +5450,7 @@ primitives:
   - scripts/cos-manifest-tier-claim-audit
   - scripts/cos_manifest_tier_claim_audit.py
   - manifests/primitive-lifecycle.yaml
-  - docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
+  - docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
   runtime_projection: false
   behavior_evidence: manifest distribution claim audit with tests
   evidence_commands:
@@ -5535,7 +5535,7 @@ primitives:
   projection_targets:
   - scripts/cos-preamble-budget
   - scripts/cos_preamble_budget.py
-  - docs/architecture/core-adoption-preamble.md
+  - docs/04-Concepts/architecture/core-adoption-preamble.md
   behavior_evidence: control-plane-smoke-and-unit-tests
   evidence_commands:
   - scripts/cos-preamble-budget --profile core
@@ -5603,7 +5603,7 @@ primitives:
   - tests/unit/test_cross_instance_learning.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/architecture/cross-instance-learning-runway.md
+    boring_reliability_artifact: docs/04-Concepts/architecture/cross-instance-learning-runway.md
     rationale: Blocking only for deterministic registry drift; it does not project runtime behavior or expand default-visible
       hooks.
 - id: scripts/cos-release-check.sh
@@ -5650,7 +5650,7 @@ primitives:
   projection_targets:
   - scripts/cos-runtime-hook-reality
   - scripts/runtime_hook_reality.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   behavior_evidence: control-plane-smoke-and-unit-tests
   evidence_commands:
   - scripts/cos-runtime-hook-reality --fail-on-findings
@@ -5671,7 +5671,7 @@ primitives:
   - scripts/cos-self-improvement-discipline-gate
   - scripts/self_improvement_discipline_gate.py
   - scripts/cos-ci-local.sh
-  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+  - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   runtime_projection: false
   behavior_evidence: proposal discipline gate wired into quick CI with tests
   evidence_commands:
@@ -5690,7 +5690,7 @@ primitives:
   - tests/unit/test_self_improvement_discipline_gate.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/architecture/headless-self-improvement-proposer.md
+    boring_reliability_artifact: docs/04-Concepts/architecture/headless-self-improvement-proposer.md
     rationale: Control-plane gate that prevents the self-improvement loop from turning warnings into default-surface inflation.
 - id: scripts/cos-self-improvement-loop
   kind: script
@@ -5706,7 +5706,7 @@ primitives:
   - scripts/cos-self-improvement-loop
   - scripts/cos_self_improvement_loop.py
   - lib/self_improvement_loop.py
-  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+  - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   runtime_projection: false
   behavior_evidence: propose-only self-improvement loop with unit tests
   evidence_commands:
@@ -5732,7 +5732,7 @@ primitives:
   - codex
   - shell
   projection_targets:
-  - docs/architecture/cross-session-coordination-ledger.md
+  - docs/04-Concepts/architecture/cross-session-coordination-ledger.md
   - scripts/cos-session-coordination
   runtime_projection: false
   behavior_evidence: unit-tested session claim and ADR tombstone coordination CLI
@@ -5757,7 +5757,7 @@ primitives:
   - scripts/cos-session-start-budget
   - scripts/session_start_budget.py
   - scripts/_lib/settings-driver-claude-code.sh
-  - docs/architecture/agentic-kernel-philosophy.md
+  - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
   runtime_projection: false
   behavior_evidence: sessionstart-budget-smoke-and-unit-tests
   evidence_commands:
@@ -5919,7 +5919,7 @@ primitives:
   projection_targets:
   - scripts/cos-tier-claim-audit
   - scripts/cos_tier_claim_audit.py
-  - docs/adrs/ADR-133-expansion-without-monsterization.md
+  - docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md
   runtime_projection: false
   behavior_evidence: ADR tier/profile claims audit with regression tests
   evidence_commands:
@@ -5937,7 +5937,7 @@ primitives:
   - tests/audit/test_adr_tier_claims.py
   promotion_evidence:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
-    boring_reliability_artifact: docs/adrs/ADR-133-expansion-without-monsterization.md
+    boring_reliability_artifact: docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md
     rationale: Enforces profile-purity discipline for expansion without growing core/team by assertion.
 - id: scripts/cos-usage-report.sh
   kind: script
@@ -6067,7 +6067,7 @@ primitives:
   projection_targets:
   - scripts/cos-wip-safety-score
   - scripts/cos_wip_safety_score.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   behavior_evidence: control-plane-smoke-and-unit-tests
   evidence_commands:
   - scripts/cos-wip-safety-score
@@ -6329,11 +6329,11 @@ primitives:
   - shell
   projection_targets:
   - scripts/cos_primitive_harvester.py
-  - docs/architecture/primitive-harvester.md
+  - docs/04-Concepts/architecture/primitive-harvester.md
   runtime_projection: false
   behavior_evidence: primitive-harvester-proposed-improvement; behavior-test
   evidence_commands:
-  - python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json
+  - python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/06-Daily/reports/primitive-harvester-promotion-evidence-2026-05-04.json
     --json
   - python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q
   promotion_evidence:
@@ -6342,7 +6342,7 @@ primitives:
     to_state: advisory
     approved_by: operator
     promoted_on: '2026-05-04'
-    artifact: docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json
+    artifact: docs/06-Daily/reports/primitive-harvester-promotion-evidence-2026-05-04.json
     rationale: The harvester classified this session's repeated claim/evidence/Shape-B problem as an improvement to the existing
       primitive-harvester workflow; the operator asked to resolve it, so the primitive is promoted from lab sandbox to maintainer
       advisory without entering core/team or mutating runtime behavior.
@@ -7277,8 +7277,8 @@ primitives:
   - codex
   - shell
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
-  - docs/reports/primitive-harness-coverage-latest.md
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.md
   runtime_projection: false
   behavior_evidence: machine-readable harness implementation coverage report separates scope intent from IDE/harness execution
     evidence
@@ -7287,7 +7287,7 @@ primitives:
   - python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py
     -q
   rollback_or_repair_command: Revert scripts/primitive_harness_coverage.py and ADR-189 report wiring, then remove generated
-    docs/reports/primitive-harness-coverage-latest.* files.
+    docs/06-Daily/reports/primitive-harness-coverage-latest.* files.
   sunset_criteria: Replace only when a superseding ACC/harness coverage adapter emits the same state semantics and contract
     tests migrate.
   docs_claim_level: advisory
@@ -7612,7 +7612,7 @@ primitives:
   - scripts/security-red-team
   - scripts/security_red_team.py
   - manifests/security-red-team.yaml
-  - docs/security/security-red-team.md
+  - docs/09-Quality/security/security-red-team.md
   runtime_projection: false
   behavior_evidence: Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring,
     and mitigation backlog generation.
@@ -8425,7 +8425,7 @@ primitives:
   - .claude/settings.json
   - hooks/attribution-completeness-validator.sh
   runtime_projection: true
-  behavior_evidence: Pre-commit gate that requires docs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.
+  behavior_evidence: Pre-commit gate that requires docs/03-PoCs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.
   evidence_commands:
   - bash -n hooks/attribution-completeness-validator.sh
   - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q

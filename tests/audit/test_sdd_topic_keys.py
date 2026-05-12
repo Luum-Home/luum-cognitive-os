@@ -12,11 +12,11 @@ CANONICAL = "planning/{change-name}/"
 LEGACY_ALLOWED = {
     "rules/engram-organization.md",
     "rules/context-optimization.md",
-    "docs/reports/dx-assessment-2026-05-02.md",
-    "docs/reports/docs-execution-latest.md",
-    "docs/reports/docs-execution-latest.json",
-    "docs/adrs/ADR-029.md",
-    "docs/adrs/ADR-128-data-layer-integrity-fixes.md",
+    "docs/06-Daily/reports/dx-assessment-2026-05-02.md",
+    "docs/06-Daily/reports/docs-execution-latest.md",
+    "docs/06-Daily/reports/docs-execution-latest.json",
+    "docs/02-Decisions/adrs/ADR-029.md",
+    "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md",
     # MOC referencing legacy sdd/{change}/{phase} key format for human navigation
     "docs/00-MOCs/workflow.md",
 }

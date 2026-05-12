@@ -19,7 +19,7 @@ tasks:
   - id: read-adr-028
     description: Read a known file and summarize in one line
     prompt: |
-      Read the file docs/adrs/ADR-028-stabilization-os-slo.md and output a
+      Read the file docs/02-Decisions/adrs/ADR-028-stabilization-os-slo.md and output a
       single-sentence summary of its purpose. Do not edit anything.
     tools_allowed: [read_file]
 
@@ -34,7 +34,7 @@ tasks:
   - id: count-adrs
     description: List ADR files and output the total count
     prompt: |
-      List the files under docs/adrs/ matching ADR-*.md and output the
+      List the files under docs/02-Decisions/adrs/ matching ADR-*.md and output the
       total number of ADR files found. Do not edit anything.
     tools_allowed: [glob_files, run_bash]
 

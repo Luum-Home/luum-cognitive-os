@@ -34,9 +34,9 @@ def _load_yaml(path: Path) -> dict:
 
 
 def _check_patent_report(tool: str, accept_risk: bool) -> tuple[bool, str]:
-    files = sorted(glob.glob(str(ROOT / f"docs/reports/uspto-patent-{tool}-*.json")))
+    files = sorted(glob.glob(str(ROOT / f"docs/06-Daily/reports/uspto-patent-{tool}-*.json")))
     if not files:
-        return False, f"no patent report: docs/reports/uspto-patent-{tool}-*.json"
+        return False, f"no patent report: docs/06-Daily/reports/uspto-patent-{tool}-*.json"
     latest = Path(files[-1])
     try:
         data = json.loads(latest.read_text(encoding="utf-8"))
@@ -50,8 +50,8 @@ def _check_patent_report(tool: str, accept_risk: bool) -> tuple[bool, str]:
 
 def _check_tm_report(tool: str) -> tuple[bool, str]:
     pats = (
-        f"docs/reports/uspto-tm-{tool}-*.json",
-        f"docs/reports/uspto-tm-*{tool}*-*.json",
+        f"docs/06-Daily/reports/uspto-tm-{tool}-*.json",
+        f"docs/06-Daily/reports/uspto-tm-*{tool}*-*.json",
     )
     files: list[str] = []
     for p in pats:

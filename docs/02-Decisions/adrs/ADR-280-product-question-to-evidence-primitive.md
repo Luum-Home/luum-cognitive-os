@@ -3,7 +3,7 @@ adr: 280
 title: Product Question-to-Evidence Primitive
 status: accepted
 implementation_status: implemented
-classification_basis: 'implemented: ADR-280 ships manifests/product-question-bank.yaml, manifests/product-claim-evidence.yaml, lib/product_answer.py, scripts/cos-product-answer, docs/business/product-answer-playbook.md, and unit/behavior tests for evidence-backed product answers.'
+classification_basis: 'implemented: ADR-280 ships manifests/product-question-bank.yaml, manifests/product-claim-evidence.yaml, lib/product_answer.py, scripts/cos-product-answer, docs/08-References/business/product-answer-playbook.md, and unit/behavior tests for evidence-backed product answers.'
 date: 2026-05-12
 supersedes: []
 superseded_by: null
@@ -13,7 +13,7 @@ implementation_files:
   - manifests/product-claim-evidence.yaml
   - lib/product_answer.py
   - scripts/cos-product-answer
-  - docs/business/product-answer-playbook.md
+  - docs/08-References/business/product-answer-playbook.md
   - tests/unit/test_product_answer.py
   - tests/behavior/test_product_answer_cli.py
 tier: maintainer

@@ -56,7 +56,7 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/architecture/cross-session-coordination-ledger.md",
+        "docs/04-Concepts/architecture/cross-session-coordination-ledger.md",
         "scripts/cos-session-coordination"
       ],
       "runtime_projection": false
@@ -152,7 +152,7 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/architecture/cross-session-coordination-ledger.md",
+        "docs/04-Concepts/architecture/cross-session-coordination-ledger.md",
         "scripts/cos-session-coordination"
       ],
       "runtime_projection": false
@@ -160,7 +160,7 @@
   },
   "portable_id": "script-cos-session-coordination",
   "projection_targets": [
-    "docs/architecture/cross-session-coordination-ledger.md",
+    "docs/04-Concepts/architecture/cross-session-coordination-ledger.md",
     "scripts/cos-session-coordination"
   ],
   "schema_version": "portable-ai-primitive.v1",

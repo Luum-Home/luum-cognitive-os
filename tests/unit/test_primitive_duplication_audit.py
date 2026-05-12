@@ -188,5 +188,5 @@ def test_cli_writes_reports(tmp_path: Path, monkeypatch) -> None:
     )
 
     assert primitive_duplication_audit.main() == 0
-    assert (tmp_path / "docs/reports/primitive-duplication-latest.json").exists()
-    assert "Primitive Duplication Audit" in (tmp_path / "docs/reports/primitive-duplication-latest.md").read_text(encoding="utf-8")
+    assert (tmp_path / "docs/06-Daily/reports/primitive-duplication-latest.json").exists()
+    assert "Primitive Duplication Audit" in (tmp_path / "docs/06-Daily/reports/primitive-duplication-latest.md").read_text(encoding="utf-8")

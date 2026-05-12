@@ -86,7 +86,7 @@ These carry their own `SKILL.md`, `rules/*.md`, `hooks/*.sh` files. Several have
 - **F5 (no runtime)**: 5/5 squad YAMLs are ornamental. They are copied (symlinked) to `.cognitive-os/squads/` and counted in health reports, but no Python/Go code deserializes them. `repo_analyzer.py` only mentions the string "Squad Protocol" as a rule name label.
 - **F6 (broken skill ref)**: Every squad references `skills: [testing-patterns]`. No `testing-patterns` skill exists in the tree. This is a known-broken reference across 5 YAMLs.
 - **F7 (broken agentRef)**: Squads reference `backend-architect`, `security-engineer`, `sre-agent`, `devops-agent`, `engineering-manager-agent`. None exist as physical agent MD files under `agents/`. Only `test-coverage-enforcer` has a concrete MD file.
-- **F8 (template comments)**: All 4 squad YAMLs (not organization.yaml) carry `repos: []  # Add your ... repos here` — they are **example templates meant to be customized per project**, not active runtime squads. This is consistent with the "plug-and-play" design per `docs/plug-and-play.md`.
+- **F8 (template comments)**: All 4 squad YAMLs (not organization.yaml) carry `repos: []  # Add your ... repos here` — they are **example templates meant to be customized per project**, not active runtime squads. This is consistent with the "plug-and-play" design per `docs/04-Concepts/root/plug-and-play.md`.
 
 ---
 
@@ -108,7 +108,7 @@ These carry their own `SKILL.md`, `rules/*.md`, `hooks/*.sh` files. Several have
 
 | Agent | Classification | Reason |
 |-------|----------------|--------|
-| service-health-checker.md | declarative-only | Markdown guide with bash examples. No loader. Referenced by name only in docs (`docs/multi-model-factory.md`, `README.md`, `AGENTS.md`). |
+| service-health-checker.md | declarative-only | Markdown guide with bash examples. No loader. Referenced by name only in docs (`docs/04-Concepts/root/multi-model-factory.md`, `README.md`, `AGENTS.md`). |
 | stack-validator.md | declarative-only | Same — markdown guide, no runtime dispatcher. |
 | test-coverage-enforcer.md | declarative-only (with trigger metadata) | Has most structured frontmatter (name + triggers) but no code reads the triggers. Referenced by 3 squad YAMLs but purely as a name string. |
 
@@ -130,4 +130,4 @@ These carry their own `SKILL.md`, `rules/*.md`, `hooks/*.sh` files. Several have
 | Orphan / code-dead | 1/32 (3%) | N/A (all are template-shape) | 0/3 |
 | Broken cross-references | — | 5 (testing-patterns skill absent, 5 agentRefs absent) | — |
 
-**Overall verdict**: Packages have partial runtime integration via symlinks (roughly a third). Squads and agents are **ornamental YAML/Markdown**: cataloged, counted in health reports, symlinked into place, but no runtime code deserializes them. The intent per `docs/plug-and-play.md` is that squads are user-customized templates, not pre-wired runtime entities. Documentation claim "5 squads, 3 agents wired" per self-hosting-check is **nominal** (file presence), not functional.
+**Overall verdict**: Packages have partial runtime integration via symlinks (roughly a third). Squads and agents are **ornamental YAML/Markdown**: cataloged, counted in health reports, symlinked into place, but no runtime code deserializes them. The intent per `docs/04-Concepts/root/plug-and-play.md` is that squads are user-customized templates, not pre-wired runtime entities. Documentation claim "5 squads, 3 agents wired" per self-hosting-check is **nominal** (file presence), not functional.

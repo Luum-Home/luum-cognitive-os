@@ -90,7 +90,7 @@ Three pressures converge:
 ### Why Phoenix specifically
 
 [Arize Phoenix](https://phoenix.arize.com) was flagged as a "strong self-hosted
-candidate" in `docs/architecture/observability-backend-evaluation-2026-04-24.md`.
+candidate" in `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md`.
 Its defining properties for this decision:
 
 - **`pip install arize-phoenix`** — no Docker, no ClickHouse, no SeaweedFS.
@@ -131,7 +131,7 @@ Its defining properties for this decision:
    metrics, Phoenix handles LLM trace UX.
 
 4. **Cognee / Opik / Helicone / others: unchanged.** Their evaluations in
-   `docs/architecture/observability-backend-evaluation-2026-04-24.md` stand.
+   `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md` stand.
 
 5. **Self-improvement loop: unchanged.** JSONL remains the authoritative
    source (`.cognitive-os/metrics/*.jsonl`). Neither Langfuse nor Phoenix is a
@@ -163,9 +163,9 @@ Its defining properties for this decision:
 |------|--------|
 | Stop the 6 `cognitive-os-langfuse-*` containers | Done (2026-04-24) |
 | Verify `docker ps --filter name=cognitive-os-langfuse` returns empty | Done |
-| Mark status in `docs/architecture/infrastructure-service-catalog.md` | Done (this change) |
+| Mark status in `docs/04-Concepts/architecture/infrastructure-service-catalog.md` | Done (this change) |
 | Update `cognitive-os.yaml` langfuse entry with `status: deprecated` + `review_by: 2026-06-30` | Done (this change) |
-| Append §Decision to `docs/architecture/observability-backend-evaluation-2026-04-24.md` | Done (this change) |
+| Append §Decision to `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md` | Done (this change) |
 | Create `.cognitive-os/plans/features/phoenix-migration-plan.md` | Done (this change) |
 
 Volumes preserved (`docker rm` NOT executed). Rollback remains cheap.
@@ -304,9 +304,9 @@ ADR-034 reference configuration.
   decisions intact.
 - **ADR-054** — Project docs convention. Adoption note for Phoenix lands in
   `docs/02-arquitectura/` per ADR-054.
-- **`docs/architecture/observability-backend-evaluation-2026-04-24.md`** —
+- **`docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md`** —
   landscape evaluation; the appended §Decision section pins this outcome.
-- **`docs/architecture/infrastructure-service-catalog.md`** — services table
+- **`docs/04-Concepts/architecture/infrastructure-service-catalog.md`** — services table
   and decision log for both Langfuse (deprecated) and Phoenix (new).
 - **`.cognitive-os/plans/features/phoenix-migration-plan.md`** — operational
   plan tracker for Phases 1-4.

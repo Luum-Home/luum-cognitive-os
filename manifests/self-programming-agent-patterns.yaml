@@ -2,10 +2,10 @@ schema_version: self-programming-agent-patterns/v1
 status: active
 owner: platform-orchestration
 source_documents:
-  - docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md
-  - docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md
-  - docs/architecture/opensage-self-programming-patterns.md
-  - docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
+  - docs/06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md
+  - docs/03-PoCs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md
+  - docs/04-Concepts/architecture/opensage-self-programming-patterns.md
+  - docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
 policy:
   default_runtime_adoption: false
   allowed_adoption_kinds: [pattern-only, adapter-lab]
@@ -30,8 +30,8 @@ patterns:
       existing:
         - manifests/subagent-capabilities.yaml
         - manifests/agent-orchestration-adapters.yaml
-        - docs/adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md
-        - docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md
+        - docs/02-Decisions/adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md
+        - docs/02-Decisions/adrs/ADR-251-agent-orchestration-adapter-boundary.md
         - lib/agent_lifecycle.py
         - lib/agent_team.py
       planned:
@@ -54,8 +54,8 @@ patterns:
       existing:
         - lib/dynamic_tool_creator.py
         - skills/primitive-authoring/SKILL.md
-        - docs/adrs/ADR-120-conversation-to-primitive-harvester.md
-        - docs/adrs/ADR-216-tool-discovery-pre-use-gate.md
+        - docs/02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md
+        - docs/02-Decisions/adrs/ADR-216-tool-discovery-pre-use-gate.md
         - lib/license_guard.py
         - lib/credential_safe_run.py
       planned:
@@ -76,15 +76,15 @@ patterns:
       claim: Tool-isolated execution and configurable sandbox backends.
     cos_surfaces:
       existing:
-        - docs/adrs/ADR-232-sandbox-adapter-tiers.md
+        - docs/02-Decisions/adrs/ADR-232-sandbox-adapter-tiers.md
         - manifests/sandbox-adapters.yaml
         - scripts/cos-sandbox-run
         - lib/sandbox_adapter.py
-        - docs/architecture/cos-service-runtime-boundary.md
-        - docs/adrs/ADR-211-service-mode-readiness-gate.md
+        - docs/04-Concepts/architecture/cos-service-runtime-boundary.md
+        - docs/02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md
       planned:
         - manifests/primitive-contracts.yaml
-        - docs/reports/primitive-projection-fidelity-latest.json
+        - docs/06-Daily/reports/primitive-projection-fidelity-latest.json
     extraction: Use OpenSage sandbox-backend vocabulary as comparison data, while preserving COS default no-network, no-fallback, opt-in sandbox tiers.
     required_gates: [sandbox_required_flag, no_implicit_fallback, network_off_by_default, service_readiness_gate, rollback_receipts]
     observable_evidence: [sandbox_plan, dispatch_metric, service_readiness_report, primitive_intervention]
@@ -100,10 +100,10 @@ patterns:
       claim: Dedicated memory agent, hierarchical memory, and graph-based retrieval.
     cos_surfaces:
       existing:
-        - docs/architecture/memory-lifecycle.md
+        - docs/04-Concepts/architecture/memory-lifecycle.md
         - lib/engram_lifecycle.py
         - lib/memory_retrieval_benchmark.py
-        - docs/architecture/memory-layer-evolution-sdd.md
+        - docs/04-Concepts/architecture/memory-layer-evolution-sdd.md
       planned:
         - .cognitive-os/metrics/codebase-itinerary.jsonl
         - manifests/primitive-contracts.yaml
@@ -122,14 +122,14 @@ patterns:
       claim: Benchmarks such as CyberGym, Terminal-Bench, SWE-Bench Pro, and DevOps-Gym demonstrate agent behavior under workload.
     cos_surfaces:
       existing:
-        - docs/architecture/runtime-benchmark-mvp.md
-        - docs/architecture/primitive-fitness-evaluation-contract.md
+        - docs/04-Concepts/architecture/runtime-benchmark-mvp.md
+        - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
         - scripts/runtime_benchmark_report.py
         - scripts/primitive_fitness_ledger.py
-        - docs/reports/primitive-coverage-latest.json
+        - docs/06-Daily/reports/primitive-coverage-latest.json
       planned:
         - tests/contracts/test_observable_primitive_self_use.py
-        - docs/reports/primitive-projection-fidelity-latest.json
+        - docs/06-Daily/reports/primitive-projection-fidelity-latest.json
     extraction: Use OpenSage benchmark discipline to require observable primitive use, not architecture-only claims.
     required_gates: [primitive_fitness_ledger, runtime_benchmark, behavioral_proof, trace_join]
     observable_evidence: [benchmark_result, primitive_fitness_row, trace_join_report]

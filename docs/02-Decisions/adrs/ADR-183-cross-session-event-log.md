@@ -131,7 +131,7 @@ Hook `hooks/cross-session-peer-context.sh` runs at UserPromptSubmit:
 ```
 Peer orchestrator sessions detected:
 - session 1778032365-... on branch session/50c35ce9-remove-paperclip-...
-  recently writing: docs/adrs/ADR-043-*, lib/paperclip_client.py
+  recently writing: docs/02-Decisions/adrs/ADR-043-*, lib/paperclip_client.py
   topic: paperclip purge
 Coordinate before issuing conflicting changes.
 ```
@@ -313,7 +313,7 @@ must be revisited.
 
 ## Cross-References
 
-- `docs/reports/postmortem-cross-session-collision-2026-05-05.md` —
+- `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md` —
   origin.
 - ADR-182 — branch ownership lock (companion: prevents conflict;
   ADR-183 surfaces it).
@@ -324,9 +324,9 @@ must be revisited.
 - ADR-184 manager-of-managers daemon — when present, daemon consumes
   this event log to make global decisions.
 - `lib/session_bus.py` — current event-log implementation extended by this ADR.
-- `docs/architecture/cross-session-coordination-ledger.md` — claim and intake
+- `docs/04-Concepts/architecture/cross-session-coordination-ledger.md` — claim and intake
   producer for coordination events.
-- `docs/architecture/agent-message-bus.md` — directed message producer for
+- `docs/04-Concepts/architecture/agent-message-bus.md` — directed message producer for
   audit/implementation events.
 
 ## Verification

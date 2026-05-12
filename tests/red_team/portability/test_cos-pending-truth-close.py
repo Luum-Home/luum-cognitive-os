@@ -57,7 +57,7 @@ def _seed_plan(project_dir: Path, rel: str, lines: list[str]) -> Path:
 
 def test_falsification_unknown_id_exits_2(tmp_path: Path) -> None:
     _seed_ledger(tmp_path, [])
-    cp = _run(tmp_path, "--id", "nonexistent", "--proof", "docs/adrs/ADR-001-x.md")
+    cp = _run(tmp_path, "--id", "nonexistent", "--proof", "docs/02-Decisions/adrs/ADR-001-x.md")
     assert cp.returncode == 2, f"expected 2, got {cp.returncode}; stderr={cp.stderr}"
     assert "not found" in cp.stderr.lower()
 
@@ -153,7 +153,7 @@ def test_bilateral_adr_status_flip(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     _seed_ledger(tmp_path, [
-        {"id": "adr-100", "type": "adr-slice", "source": "docs/adrs/ADR-100-x.md",
+        {"id": "adr-100", "type": "adr-slice", "source": "docs/02-Decisions/adrs/ADR-100-x.md",
          "status": "verified-pending", "evidence": [], "next_action": "", "owner_adr": "ADR-100"},
     ])
     cp = _run(tmp_path, "--id", "adr-100", "--proof", "ADR-100", "--skip-refresh")

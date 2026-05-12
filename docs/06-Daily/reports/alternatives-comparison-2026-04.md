@@ -41,7 +41,7 @@ session coordination.
 
 ## Evidence links
 
-- Primitive row audit: `docs/reports/primitive-row-audit-latest.md`
-- Claim-to-proof audit: `docs/reports/claim-proof-latest.md`
-- Reduction backlog: `docs/reports/reduction-backlog-latest.md`
-- Conversation reality audit: `docs/business/conversation-reality-audit-2026-04-30.md`
+- Primitive row audit: `docs/06-Daily/reports/primitive-row-audit-latest.md`
+- Claim-to-proof audit: `docs/06-Daily/reports/claim-proof-latest.md`
+- Reduction backlog: `docs/06-Daily/reports/reduction-backlog-latest.md`
+- Conversation reality audit: `docs/08-References/business/conversation-reality-audit-2026-04-30.md`

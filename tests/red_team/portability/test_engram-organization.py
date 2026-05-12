@@ -31,6 +31,6 @@ def test_rule_contains_no_consumer_tokens() -> None:
     assert not found, (
         f"rules/engram-organization.md leaks consumer tokens: {found}. "
         "Tier 3 of the case-study leak audit (see "
-        "docs/legal/pre-public-readiness-checklist.md C2) requires the "
+        "docs/09-Quality/legal/pre-public-readiness-checklist.md C2) requires the "
         "rule body to use generic placeholders only."
     )

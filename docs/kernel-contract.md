@@ -1,1 +1,0 @@
-04-Concepts/root/kernel-contract.md

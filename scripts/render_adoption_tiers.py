@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""Render docs/adoption-tiers.md from template + live data sources.
+"""Render docs/08-References/root/adoption-tiers.md from template + live data sources.
 
 Data sources:
   - templates/security-profiles/{minimal,standard,paranoid}.json  (hook counts)
@@ -191,13 +191,13 @@ def _diff_text(a: str, b: str) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Render docs/adoption-tiers.md from template + data sources."
+        description="Render docs/08-References/root/adoption-tiers.md from template + data sources."
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=DEFAULT_OUTPUT,
-        help="Output path (default: docs/adoption-tiers.md)",
+        help="Output path (default: docs/08-References/root/adoption-tiers.md)",
     )
     parser.add_argument(
         "--check",

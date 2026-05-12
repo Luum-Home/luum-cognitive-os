@@ -118,7 +118,7 @@ class TestBumpVersionHappyPath:
             timeout=15,
         )
         # 'check' verifies all locations are consistent — should not crash
-        # returncode may be non-zero if docs/INDEX.md is out of sync (acceptable)
+        # returncode may be non-zero if docs/00-MOCs/entrypoints/INDEX.md is out of sync (acceptable)
         assert "error" not in result.stderr.lower() or result.returncode in (0, 1)
 
     def test_no_downgrade_documented_in_script(self):

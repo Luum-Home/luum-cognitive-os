@@ -261,7 +261,7 @@ _singularity_suggestion
 # WS11 baseline capture DISABLED — orphaning bug, see ADR-028 (commit 1b755cf = Bug 1 source).
 # Ran `pytest` on every session start. Full-suite runs leaked ~190 orphaned
 # processes holding ~300 MiB.
-# Anti-confirmation-bias goal preserved via global-verify.sh; see docs/adrs/ADR-028a.md §1.
+# Anti-confirmation-bias goal preserved via global-verify.sh; see docs/02-Decisions/adrs/ADR-028a.md §1.
 echo "baseline: disabled (see ADR-028a §1)" > "$SESSION_DIR/test-baseline.txt"
 
 # ─── Pending-task reminder ─────────────────────────────────────────────────────

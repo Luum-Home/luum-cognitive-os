@@ -50,7 +50,7 @@ state: installed | projected | wired | executable | behavior-proven | observable
 The canonical machine-readable report remains, for compatibility:
 
 ```text
-docs/reports/primitive-harness-coverage-latest.json
+docs/06-Daily/reports/primitive-harness-coverage-latest.json
 ```
 
 The generator also remains:
@@ -101,7 +101,7 @@ bash scripts/cos primitive harness-coverage --print-json
 
 The dashboard is observe-only until an operation path is explicitly added. Its contract is:
 
-- it consumes `docs/reports/primitive-harness-coverage-latest.json`;
+- it consumes `docs/06-Daily/reports/primitive-harness-coverage-latest.json`;
 - it exposes primitive surface counts and gap counts;
 - it does not claim hook execution or mutation authority;
 - a future TUI must declare the same observe-only vs operable distinction before being counted.

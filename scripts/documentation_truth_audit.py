@@ -23,8 +23,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_VERSION = "documentation-truth-audit.v1"
 DEFAULT_MANIFEST = Path("manifests/documentation-truth-claims.yaml")
-DEFAULT_JSON = Path("docs/reports/documentation-truth-latest.json")
-DEFAULT_MD = Path("docs/reports/documentation-truth-latest.md")
+DEFAULT_JSON = Path("docs/06-Daily/reports/documentation-truth-latest.json")
+DEFAULT_MD = Path("docs/06-Daily/reports/documentation-truth-latest.md")
 BLOCK_START = "<!-- GENERATED:documentation-truth:{marker}:start -->"
 BLOCK_END = "<!-- GENERATED:documentation-truth:{marker}:end -->"
 
@@ -79,24 +79,24 @@ def json_summary(root: Path, report: str) -> dict[str, Any]:
 def block_payload(root: Path, claim_id: str) -> list[str]:
     if claim_id == "consumer_projection_harnesses":
         harnesses = implemented_harnesses(root)
-        projection = json_summary(root, "docs/reports/primitive-projection-fidelity-latest.json")
+        projection = json_summary(root, "docs/06-Daily/reports/primitive-projection-fidelity-latest.json")
         projection_summary = projection.get("summary", {})
         return [
             "Generated documentation truth: consumer projection harnesses.",
             f"Implemented harnesses ({len(harnesses)}): {', '.join(harnesses)}.",
             f"Projection fidelity summary: {json.dumps(projection_summary, sort_keys=True)}.",
             "Structural projection is not runtime enforcement; native lifecycle enforcement remains harness-specific.",
-            "Sources: manifests/harness-projection.yaml; docs/reports/primitive-projection-fidelity-latest.json.",
+            "Sources: manifests/harness-projection.yaml; docs/06-Daily/reports/primitive-projection-fidelity-latest.json.",
         ]
     if claim_id == "primitive_authority_write_effects":
-        authority = json_summary(root, "docs/reports/primitive-authority-latest.json")
+        authority = json_summary(root, "docs/06-Daily/reports/primitive-authority-latest.json")
         summary = authority.get("summary", {})
         return [
             "Generated documentation truth: primitive authority/write-effects.",
             f"Authority audit status: {authority.get('status') or 'unknown'}.",
             f"Scripts audited: {summary.get('total_scripts', 0)}; blockers: {summary.get('block_count', 0)}; dynamic smokes: {summary.get('dynamic_smokes', 0)}; dynamic blocks: {summary.get('dynamic_blocks', 0)}.",
             "Contract surfaces: manifests/primitive-authority.yaml; scripts/primitive_authority_audit.py; ACC adapter authority_write_effects.",
-            "Sources: docs/reports/primitive-authority-latest.json; docs/adrs/ADR-276-primitive-authority-write-effects.md.",
+            "Sources: docs/06-Daily/reports/primitive-authority-latest.json; docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md.",
         ]
     if claim_id == "documentation_truth_control":
         manifest = read_yaml(root / DEFAULT_MANIFEST)
@@ -105,7 +105,7 @@ def block_payload(root: Path, claim_id: str) -> list[str]:
             "Generated documentation truth: documentation truth control.",
             f"Declared truth claims ({len(claims)}): {', '.join(claims)}.",
             "Contract surfaces: manifests/documentation-truth-claims.yaml; scripts/documentation_truth_audit.py; ACC adapter documentation_truth.",
-            "Report surfaces: docs/reports/documentation-truth-latest.json; docs/reports/documentation-truth-latest.md.",
+            "Report surfaces: docs/06-Daily/reports/documentation-truth-latest.json; docs/06-Daily/reports/documentation-truth-latest.md.",
         ]
     return [f"Generated documentation truth: {claim_id}."]
 

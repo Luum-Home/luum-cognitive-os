@@ -206,7 +206,7 @@ Every verified adoption must produce three artifacts:
 
 ### Mitigations
 
-- The per-adoption ADR template (`docs/adrs/templates/adoption-from-holaos.template.md`,
+- The per-adoption ADR template (`docs/02-Decisions/adrs/templates/adoption-from-holaos.template.md`,
   to be created) pre-populates checklist, frontmatter schema, and commit message
   template, reducing the governance friction to filling in blanks.
 - `hooks/external-pattern-cleanroom-gate.sh` automates the most error-prone checklist item
@@ -234,7 +234,7 @@ in this ADR.
    under profiles `standard` and `paranoid`; omit from `minimal`. Add to
    `.claude/settings.json` under `hooks.PreToolUse`.
 
-3. **Create `docs/adrs/templates/adoption-from-holaos.template.md`**: a
+3. **Create `docs/02-Decisions/adrs/templates/adoption-from-holaos.template.md`**: a
    pre-filled ADR template that includes the required frontmatter fields, the
    Annex F §5 checklist in copy-ready form, the §6 commit message template, and
    the three mandatory audit-trail items listed in Decision §5.

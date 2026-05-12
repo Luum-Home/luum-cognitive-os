@@ -38,7 +38,7 @@ if [ "$DRY_RUN" != "1" ] && [ -z "$ADR_REF" ]; then
 ERROR: history rewrites require ADR documentation per ADR-269.
   Re-run with --adr-ref ADR-NNN where ADR-NNN is an Accepted ADR
   documenting the rewrite rationale. If no such ADR exists, create
-  one first using docs/adrs/templates/history-rewrite.template.md.
+  one first using docs/02-Decisions/adrs/templates/history-rewrite.template.md.
 EOF
   exit 2
 fi

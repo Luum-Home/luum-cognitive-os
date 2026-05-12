@@ -85,10 +85,10 @@ def write_markdown(items: list[BacklogItem], path: Path) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate reduction sprint backlog")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--row-audit", default="docs/reports/primitive-row-audit-latest.json")
-    parser.add_argument("--claim-audit", default="docs/reports/claim-proof-latest.json")
-    parser.add_argument("--json-out", default="docs/reports/reduction-backlog-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/reduction-backlog-latest.md")
+    parser.add_argument("--row-audit", default="docs/06-Daily/reports/primitive-row-audit-latest.json")
+    parser.add_argument("--claim-audit", default="docs/06-Daily/reports/claim-proof-latest.json")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/reduction-backlog-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/reduction-backlog-latest.md")
     parser.add_argument(
         "--fail-nonzero",
         action="store_true",

@@ -20,7 +20,7 @@ from typing import Any, Iterable
 SCHEMA_VERSION = "prelaunch-audit/v1"
 PLAN_SCHEMA_VERSION = "prelaunch-rewrite-plan/v1"
 DEFAULT_PLAN_DIR = Path(".cognitive-os/prelaunch")
-DEFAULT_REPORT_DIR = Path("docs/reports")
+DEFAULT_REPORT_DIR = Path("docs/06-Daily/reports")
 
 
 @dataclass(frozen=True)

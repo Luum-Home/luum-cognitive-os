@@ -212,7 +212,7 @@ def _acc_gap_proposals(project_root: Path, project: str) -> list[dict[str, Any]]
                 title=f"Review consumer ACC gap {fid}",
                 summary=f"Consumer/project ACC report surfaced {status} for {fid}.",
                 primitive_id=sanitize_text(finding.get("primitive_id") or finding.get("path") or "", limit=180),
-                evidence={"source": "docs/acc/latest.json", "status": status, "finding_id": fid},
+                evidence={"source": "docs/07-Capabilities/acc/latest.json", "status": status, "finding_id": fid},
                 required_tests=["python3 scripts/acc_pipeline.py --project-dir . --refresh"],
             )
         )

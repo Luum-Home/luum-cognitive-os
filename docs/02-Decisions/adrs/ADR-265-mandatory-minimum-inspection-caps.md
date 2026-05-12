@@ -33,7 +33,7 @@ iFixAi (v1.0.0, Apache-2.0) defines two **mandatory-minimum inspections** at `if
 
 When either inspection falls below its required score, the overall scorecard is **capped** at `SCORE_CAP_ON_FAILURE = 0.60` (same file). The mechanic is small in code but large in semantics: a single failing inspection short-circuits the composite score.
 
-Cluster-D self-critique (see `docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md`, Finding 9) ruled that adopting this cap into COS is **governance policy, not a cheap extractable primitive**. Adoption would change the meaning of every existing 0–1 normalized score consumer in the codebase, including:
+Cluster-D self-critique (see `docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md`, Finding 9) ruled that adopting this cap into COS is **governance policy, not a cheap extractable primitive**. Adoption would change the meaning of every existing 0–1 normalized score consumer in the codebase, including:
 
 - `lib/dogfood_scorer.py` and `skills/dogfood-score`
 - `skills/agent-kpis`
@@ -84,7 +84,7 @@ python3 -m pytest tests/audit/test_adr_contracts.py -q -k ADR-265
 ## Related
 
 - ADR-247 — Manifest-driven postmortem regression audits (repo-level audit layer; orthogonal to the per-run scoring layer this ADR governs).
-- `docs/research/ifixai-annex-a-taxonomy-2026-05-11.md` — full enumeration of the 32 inspections including B01 and B08.
-- `docs/research/ifixai-annex-e-primitives-2026-05-11.md` — Primitive #4 (calibration disclosure) and the reclassification of the mandatory-minimum entry.
-- `docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` — Finding 9, the cluster-D ruling underpinning this ADR.
+- `docs/03-PoCs/research/ifixai-annex-a-taxonomy-2026-05-11.md` — full enumeration of the 32 inspections including B01 and B08.
+- `docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md` — Primitive #4 (calibration disclosure) and the reclassification of the mandatory-minimum entry.
+- `docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` — Finding 9, the cluster-D ruling underpinning this ADR.
 - `ifixai/scoring/mandatory_minimums.py:6-11` — upstream source.

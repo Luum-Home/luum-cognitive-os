@@ -157,7 +157,7 @@ licenses are classified into four buckets:
 
 Source: `sbom.json` post-dedup, enriched with installed PyPI classifier
 metadata from `.venv/` and the per-component operator decisions recorded in
-[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
+[`docs/09-Quality/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
 
 | Status      | Count |
 | ----------- | -----:|
@@ -222,7 +222,7 @@ itself. Operators who do not deploy the dashboard never pull these binaries.
 ### 3.5 UNKNOWN — 0 entries (resolved 2026-05-08)
 
 All previously-UNKNOWN entries have been individually classified in
-[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
+[`docs/09-Quality/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
 The summary below is preserved for historical context — the resolution
 document is now the system-of-record.
 
@@ -251,7 +251,7 @@ actually problematic; they were syft metadata-discovery gaps:
 
 **Resolution (2026-05-08):** every UNKNOWN entry was individually
 classified against its upstream `LICENSE` file. See
-[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md)
+[`docs/09-Quality/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md)
 for the per-row table (name, version, registry URL, LICENSE URL, resolved
 SPDX, bucket). Outcome: 99 OK, 1 REVIEW (`chardet`), 0 BLOCKED. Automated
 SBOM SPDX-enrichment (`cyclonedx-py environment`, `cyclonedx-gomod mod`
@@ -332,7 +332,7 @@ root-level lockfile by design.
 
 - **Sigstore / cosign signing of release artifacts** — planned for the first
   public release tag. Concrete steps and consumer-side verification commands
-  are documented in `docs/security/release-signing.md`. Currently
+  are documented in `docs/09-Quality/security/release-signing.md`. Currently
   `git tag -v v0.27.1` reports "no signature found"; this is the documented
   gap, not tampering.
 - **Detached SBOM signature** — `sbom.json.sig` shipped alongside `sbom.json`.
@@ -499,7 +499,7 @@ who follow the disclosure process above.
 - `manifests/cross-stack-license-audit.yaml` — toolchain policy (syft+grype primary, trivy secondary)
 - `manifests/dependencies.yaml` — third-party CLI tool inventory with install instructions
 - `rules/license-policy.md` — license bucket policy (BLOCK / REVIEW / OK)
-- `docs/legal/pre-public-readiness-checklist.md` — public-release readiness gate (item M1 = SBOM, M2 = signed releases)
+- `docs/09-Quality/legal/pre-public-readiness-checklist.md` — public-release readiness gate (item M1 = SBOM, M2 = signed releases)
 - `LICENSE` — project license (FSL-1.1-MIT for Python lib; Apache-2.0 for the npm/binary distribution)
 - `NOTICE` — third-party attribution
 - `ATTRIBUTION.md` — additional credits

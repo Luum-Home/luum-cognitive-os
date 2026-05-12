@@ -33,15 +33,15 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
         assert script in text
 
     for report in (
-        "docs/reports/primitive-row-audit-latest.json",
-        "docs/reports/claim-proof-latest.json",
-        "docs/reports/reduction-backlog-latest.json",
-        "docs/reports/primitive-surface-reduction-latest.json",
-        "docs/reports/primitive-usage-map-latest.json",
-        "docs/reports/primitive-coverage-latest.json",
-        "docs/reports/primitive-coverage-latest.md",
-        "docs/reports/primitive-coverage-latest.sarif",
-        "docs/reports/docs-execution-latest.json",
+        "docs/06-Daily/reports/primitive-row-audit-latest.json",
+        "docs/06-Daily/reports/claim-proof-latest.json",
+        "docs/06-Daily/reports/reduction-backlog-latest.json",
+        "docs/06-Daily/reports/primitive-surface-reduction-latest.json",
+        "docs/06-Daily/reports/primitive-usage-map-latest.json",
+        "docs/06-Daily/reports/primitive-coverage-latest.json",
+        "docs/06-Daily/reports/primitive-coverage-latest.md",
+        "docs/06-Daily/reports/primitive-coverage-latest.sarif",
+        "docs/06-Daily/reports/docs-execution-latest.json",
     ):
         assert report in text
 

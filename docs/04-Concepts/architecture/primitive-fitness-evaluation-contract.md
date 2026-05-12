@@ -110,14 +110,14 @@ scripts/cos-primitive-fitness-ledger --project-dir .
 
 The ledger scans primitive fitness report JSON files from:
 
-- `docs/reports/primitive-fitness/*.json`
+- `docs/06-Daily/reports/primitive-fitness/*.json`
 - `.cognitive-os/reports/primitive-fitness/*.json`
 - `.cognitive-os/metrics/primitive-fitness-reports/*.json`
 
 and writes:
 
-- `docs/reports/primitive-fitness-ledger-latest.json`
-- `docs/reports/primitive-fitness-ledger-latest.md`
+- `docs/06-Daily/reports/primitive-fitness-ledger-latest.json`
+- `docs/06-Daily/reports/primitive-fitness-ledger-latest.md`
 
 It groups verdicts by primitive family (`hooks`, `skills`, `scripts`, `rules`,
 `other`) and maps them into ACC statuses: `promote → aligned`,

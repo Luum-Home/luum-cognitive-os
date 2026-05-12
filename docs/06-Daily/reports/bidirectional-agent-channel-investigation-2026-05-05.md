@@ -36,7 +36,7 @@ The bus defines five channel lanes per agent:
 
 The `question/answer` pair is the explicit **bidirectional** contract: an agent can block waiting for an orchestrator answer (timeout: 300 s). This is the most direct match for what the operator recalls.
 
-**ADR**: ADR-042 (`docs/adrs/ADR-042-valkey-local-daemon.md`) governs Valkey's runtime model — local daemon via `scripts/cos-valkey-local.sh`, demoted from Docker to `profiles: [legacy]`, with file-based fallback chain in `agent_bus.py`.
+**ADR**: ADR-042 (`docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md`) governs Valkey's runtime model — local daemon via `scripts/cos-valkey-local.sh`, demoted from Docker to `profiles: [legacy]`, with file-based fallback chain in `agent_bus.py`.
 
 ### 2. hcom — Cross-Terminal Agent Communication
 
@@ -46,13 +46,13 @@ Research into `hcom` (github.com/aannoo/claude-hook-comms, MIT, Rust+Python) as 
 
 ### 3. ADR-116 P1.3 — Inter-Session Pub/Sub Bus
 
-**Source**: `docs/adrs/ADR-116-multi-session-coordination-primitives.md`, lines 75–83
+**Source**: `docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md`, lines 75–83
 
 Proposed `lib/session_bus.py` + `scripts/session_event_watcher.py`: an append-only `.cognitive-os/sessions/events.jsonl` fanned to in-session listeners via a tail watcher. Listed artifacts "to create" — design-only as of 2026-05-02.
 
 ### 4. ADR-024 — Task Panel Bridge (first "bidirectional adapter")
 
-**Source**: `docs/adrs/ADR-024-task-panel-bridge.md` line 17
+**Source**: `docs/02-Decisions/adrs/ADR-024-task-panel-bridge.md` line 17
 
 Describes itself as "the first full bidirectional adapter." Scope is narrower: correlates COS task_id with Claude Code's native `tool_use_id` via `hooks/_lib/task_bridge.py`. Status: Accepted and implemented. This is a UI/metadata bridge, not a general-purpose messaging bus.
 
@@ -139,8 +139,8 @@ Validation added in this slice covers fallback interrupt artifacts, Valkey-pendi
 | `packages/skill-governance/hooks/agent-bus-monitor.sh` | SessionStart hook |
 | `scripts/cos-valkey-local.sh` | Valkey local daemon script |
 | `cognitive-os.yaml` lines 449–474 | Valkey `on_demand` config, env vars |
-| `docs/adrs/ADR-042-valkey-local-daemon.md` | Valkey extraction from Docker |
-| `docs/adrs/ADR-024-task-panel-bridge.md` | First "bidirectional adapter" (UI scope) |
-| `docs/adrs/ADR-116-multi-session-coordination-primitives.md` lines 75–96 | P1.3 inter-session pub/sub (design-only) |
-| `docs/adrs/ADR-183-cross-session-event-log.md` | Tonight's cross-session event log proposal |
-| `docs/adrs/ADR-185-cross-agent-audit-findings.md` | Tonight's audit findings queue proposal |
+| `docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md` | Valkey extraction from Docker |
+| `docs/02-Decisions/adrs/ADR-024-task-panel-bridge.md` | First "bidirectional adapter" (UI scope) |
+| `docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md` lines 75–96 | P1.3 inter-session pub/sub (design-only) |
+| `docs/02-Decisions/adrs/ADR-183-cross-session-event-log.md` | Tonight's cross-session event log proposal |
+| `docs/02-Decisions/adrs/ADR-185-cross-agent-audit-findings.md` | Tonight's audit findings queue proposal |

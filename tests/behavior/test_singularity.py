@@ -323,7 +323,7 @@ class TestMonitorStaleDocs:
         """Entries in stale-docs.jsonl trigger STALE_DOCS event."""
         entries = [
             {"file": "docs/api.md", "reason": "code changed"},
-            {"file": "docs/setup.md", "reason": "config updated"},
+            {"file": "docs/05-Methodology/setup.md", "reason": "config updated"},
         ]
         metrics_dir = tmp_path / "metrics"
         metrics_dir.mkdir()
@@ -1433,7 +1433,7 @@ class TestBuildPipelinePrompt:
         """STALE_DOCS prompt includes affected file names."""
         event = _make_event(
             EventType.STALE_DOCS,
-            details={"count": 2, "files": ["docs/api.md", "docs/setup.md"]},
+            details={"count": 2, "files": ["docs/api.md", "docs/05-Methodology/setup.md"]},
         )
         prompt = _build_pipeline_prompt(event)
         assert "docs/api.md" in prompt

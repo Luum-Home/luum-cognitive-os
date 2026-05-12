@@ -62,7 +62,7 @@ elif echo "$FILE_PATH" | grep -qE '(domain/entities/|entity\.go|_entity\.go|enti
 # --- Config changes ---
 elif echo "$FILE_PATH" | grep -qE '(config/|\.config\.ts|configuration\.ts|application\.properties|application\.yml)'; then
   CHANGE_TYPE="config"
-  STALE_DOCS="docs/setup/"
+  STALE_DOCS="docs/05-Methodology/setup/"
 
 # --- Use case changes ---
 elif echo "$FILE_PATH" | grep -qE '(application/use.?cases?/|_usecase\.go|usecase\.go|\.usecase\.ts|UseCase\.java)'; then
@@ -77,17 +77,17 @@ elif echo "$FILE_PATH" | grep -qE '(\.module\.ts|routes\.go|router\.go|\.routes\
 # --- Cognitive OS hooks ---
 elif echo "$FILE_PATH" | grep -qE '\hooks/'; then
   CHANGE_TYPE="hook"
-  STALE_DOCS=".cognitive-os/docs/hooks.md .cognitive-os/docs/overview.md"
+  STALE_DOCS=".cognitive-os/docs/05-Methodology/root/hooks.md .cognitive-os/docs/00-MOCs/entrypoints/overview.md"
 
 # --- Cognitive OS rules ---
 elif echo "$FILE_PATH" | grep -qE '\.cognitive-os/rules/'; then
   CHANGE_TYPE="rule"
-  STALE_DOCS=".cognitive-os/docs/rules.md .cognitive-os/docs/overview.md"
+  STALE_DOCS=".cognitive-os/docs/05-Methodology/root/rules.md .cognitive-os/docs/00-MOCs/entrypoints/overview.md"
 
 # --- Docker compose ---
 elif echo "$FILE_PATH" | grep -qE 'docker-compose.*\.(yml|yaml)$'; then
   CHANGE_TYPE="docker"
-  STALE_DOCS="docs/setup/docker-architecture.md"
+  STALE_DOCS="docs/05-Methodology/setup/docker-architecture.md"
 
 else
   # No doc mapping for this file type

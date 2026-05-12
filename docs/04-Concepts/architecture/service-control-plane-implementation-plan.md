@@ -18,7 +18,7 @@ providers, OpenAI-compatible gateways, and local model runtimes are executor or
 provider-gateway candidates, not ingress surfaces.
 
 Research inventory: `manifests/remote-control-plane-alternatives.yaml`. Human
-report: `docs/reports/remote-control-plane-alternatives-2026-05-05.md`.
+report: `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md`.
 
 ## Target architecture
 
@@ -63,7 +63,7 @@ Artifacts:
 
 - `manifests/service-control-plane-schema.yaml`
 - `manifests/provider-executor-contracts.yaml`
-- `docs/manual-tests/service-control-plane-proof-drills.md`
+- `docs/09-Quality/manual-tests/service-control-plane-proof-drills.md`
 
 Acceptance criteria:
 
@@ -73,7 +73,7 @@ from pathlib import Path
 for path in [
   "manifests/service-control-plane-schema.yaml",
   "manifests/provider-executor-contracts.yaml",
-  "docs/manual-tests/service-control-plane-proof-drills.md",
+  "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md",
 ]:
     assert Path(path).exists(), path
 PY

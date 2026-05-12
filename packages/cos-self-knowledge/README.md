@@ -31,4 +31,4 @@ artifacts under `.cognitive-os/self-knowledge/` as part of the same change.
 
 ## References
 
-- `docs/adrs/ADR-037-self-knowledge-base.md`
+- `docs/02-Decisions/adrs/ADR-037-self-knowledge-base.md`

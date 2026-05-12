@@ -1,7 +1,7 @@
 # Orchestration Coverage Gap Analysis — 2026-05-06
 
 **Status**: Active — research-driven; per-gap deep-dives spawned in parallel
-**Author**: Operator session 2026-05-06 (inline assessment, follow-up agents launched into `docs/research/orchestration-gaps/`)
+**Author**: Operator session 2026-05-06 (inline assessment, follow-up agents launched into `docs/03-PoCs/research/orchestration-gaps/`)
 **Trigger**: Operator question — *"¿estamos seguros que en materia de orquestación estamos cubriendo todo lo que las otras herramientas cubren, en sus versiones más recientes?"*
 **Companion**: [`multi-agent-orchestration-prior-art-2026-05-06.md`](multi-agent-orchestration-prior-art-2026-05-06.md) — 79-source research focused on git/concurrency/stash. This document is wider: covers orchestration as a whole, not just the slice that produced the bug.
 
@@ -103,7 +103,7 @@ The frontier we're comparing against (versions current as of May 2026):
 
 ## Research agendas spawned (12 parallel agents)
 
-Each agent produces one report under `docs/research/orchestration-gaps/`. Constraints: no code modifications, ≥10 sources per agent, honest about uncertainty, save discoveries to engram before returning.
+Each agent produces one report under `docs/03-PoCs/research/orchestration-gaps/`. Constraints: no code modifications, ≥10 sources per agent, honest about uncertainty, save discoveries to engram before returning.
 
 | # | Topic | Output file |
 |---|---|---|
@@ -121,7 +121,7 @@ Each agent produces one report under `docs/research/orchestration-gaps/`. Constr
 | 12 | Tool discovery + dynamic registration patterns | `tool-discovery-dynamic-registration.md` |
 
 After all 12 agents return, the synthesis pass produces:
-- `docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md` — ranked implementation plan
+- `docs/03-PoCs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md` — ranked implementation plan
 - ADR proposals for the top 4 critical gaps
 - A "we don't pursue this" appendix listing the conscious non-coverage with rationale
 

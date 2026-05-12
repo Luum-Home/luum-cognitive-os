@@ -267,7 +267,7 @@ class TestEngramUnavailable:
         """enrich_with_engram marks all decisions PENDING when engram unavailable."""
         decisions = [
             dt.Decision(
-                source_path="docs/reports/test.md",
+                source_path="docs/06-Daily/reports/test.md",
                 source_type="report",
                 section="Open Questions",
                 text="Should we do X?",
@@ -310,14 +310,14 @@ class TestEngramUnavailable:
 class TestSpecMandated:
     """The 6 tests explicitly required by the decision-triage feature spec.
 
-    ALL tests use tmp_path + synthetic markdown. No real docs/reports/, docs/adrs/,
+    ALL tests use tmp_path + synthetic markdown. No real docs/06-Daily/reports/, docs/02-Decisions/adrs/,
     or .cognitive-os/reports/research/ files are read or modified.
     """
 
     # ── Spec test 1: scan_research_reports ──────────────────────────────────
 
     def test_scan_research_reports_extracts_from_both_dirs(self, tmp_path):
-        """scan_research_reports extracts decisions from both docs/reports/ and
+        """scan_research_reports extracts decisions from both docs/06-Daily/reports/ and
         .cognitive-os/reports/research/ using synthetic fixtures."""
         reports_dir = tmp_path / "reports"
         research_dir = tmp_path / "research"
@@ -371,7 +371,7 @@ class TestSpecMandated:
     def test_filter_unanswered_drops_answered_decisions(self, tmp_path):
         """filter_unanswered removes decisions whose topic_slug is in answered map."""
         decision = dt.Decision(
-            source_path="docs/reports/test.md",
+            source_path="docs/06-Daily/reports/test.md",
             source_type="report",
             section="Open Questions",
             text="Should we do X?",
@@ -386,7 +386,7 @@ class TestSpecMandated:
     def test_filter_unanswered_keeps_unanswered_decisions(self, tmp_path):
         """filter_unanswered retains decisions not in the answered map."""
         decision = dt.Decision(
-            source_path="docs/reports/test.md",
+            source_path="docs/06-Daily/reports/test.md",
             source_type="report",
             section="Open Questions",
             text="Should we do Y?",
@@ -402,7 +402,7 @@ class TestSpecMandated:
     def test_sort_by_urgency_orders_high_medium_low(self, tmp_path):
         """sort_by_urgency returns HIGH (critical) → MEDIUM (important) → LOW (soft)."""
         low = dt.Decision(
-            source_path="docs/reports/old.md",
+            source_path="docs/06-Daily/reports/old.md",
             source_type="report",
             section="Open Questions",
             text="eventually we should decide this",
@@ -410,7 +410,7 @@ class TestSpecMandated:
             urgency="soft",
         )
         high = dt.Decision(
-            source_path="docs/reports/new.md",
+            source_path="docs/06-Daily/reports/new.md",
             source_type="report",
             section="Decision Points",
             text="this is a blocker for release",
@@ -418,7 +418,7 @@ class TestSpecMandated:
             urgency="critical",
         )
         medium = dt.Decision(
-            source_path="docs/reports/mid.md",
+            source_path="docs/06-Daily/reports/mid.md",
             source_type="report",
             section="Open Questions",
             text="should we use option A or B?",

@@ -27,7 +27,7 @@ verification:
 **Status**: Accepted — primitives implemented or superseded by newer safety boundaries
 **Date**: 2026-05-02
 **Author**: Maintainer
-**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file coordination), ADR-104 (startup circuit breaker), `docs/incidents/2026-05-02-false-done-compounding.md`
+**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file coordination), ADR-104 (startup circuit breaker), `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
 
 ## Status
 
@@ -145,7 +145,7 @@ rm -f .cognitive-os/runtime/stash-leak-alarm.json
 
 A cross-session reconciler would periodically compare plan file state across worktrees and active sessions, detecting `[x]` divergence before it compounds. This is deferred: the four primitives above address the immediate failure modes; a reconciler requires session-to-session IPC that does not yet exist in the stack.
 
-Tracking reference: see `docs/architecture/FROZEN-BACKLOG.md`.
+Tracking reference: see `docs/04-Concepts/architecture/FROZEN-BACKLOG.md`.
 
 ---
 
@@ -208,7 +208,7 @@ Verified manually: orchestrator runs bilateral commands and documents exit codes
 
 ## References
 
-- Incident: `docs/incidents/2026-05-02-false-done-compounding.md`
+- Incident: `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
 - ADR-105: bilateral claim verification contract (companion ADR)
 - ADR-088: provenance markers (extends X-COS-Session trailer convention)
 - ADR-089: multi-session git coordination (git-index layer)

@@ -1,6 +1,6 @@
 """Contract: reference/optional services must declare a future `review_by` date.
 
-Backs `docs/architecture/infrastructure-service-catalog.md` §Sunset Policy.
+Backs `docs/04-Concepts/architecture/infrastructure-service-catalog.md` §Sunset Policy.
 
 Scope:
 - Every service whose `mode` in `cognitive-os.yaml` is one of
@@ -150,7 +150,7 @@ def test_review_by_is_declared(service_name):
     assert "review_by" in cfg, (
         f"{service_name}: sunset policy requires services.{service_name}.review_by "
         "(YYYY-MM-DD) in cognitive-os.yaml. "
-        "See docs/architecture/infrastructure-service-catalog.md §Sunset Policy."
+        "See docs/04-Concepts/architecture/infrastructure-service-catalog.md §Sunset Policy."
     )
 
 

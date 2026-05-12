@@ -259,7 +259,7 @@ All COS files read with line ranges during this audit:
 **Engram topics queried**: none required (all evidence was in source files).
 
 **Prior reports accepted as given (external-side evidence not re-verified)**:
-- `docs/reports/openspace-deep-audit-2026-05-05.md`
-- `docs/reports/openharness-deep-audit-2026-05-05.md`
-- `docs/reports/cli-anything-deep-audit-2026-05-05.md`
-- `docs/reports/cos-self-observability-deep-review-2026-05-05.md`
+- `docs/06-Daily/reports/openspace-deep-audit-2026-05-05.md`
+- `docs/06-Daily/reports/openharness-deep-audit-2026-05-05.md`
+- `docs/06-Daily/reports/cli-anything-deep-audit-2026-05-05.md`
+- `docs/06-Daily/reports/cos-self-observability-deep-review-2026-05-05.md`

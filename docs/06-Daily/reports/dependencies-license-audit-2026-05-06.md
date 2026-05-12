@@ -169,7 +169,7 @@ Three git submodules under `.claude/plugins/`:
 
 ### The discrepancy
 
-ADR-058 (`docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`) states:
+ADR-058 (`docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`) states:
 > "Apache 2.0 license (versus Langfuse's MIT with enterprise features behind a commercial tier — Phoenix is fully OSS)"
 
 This is **factually incorrect as of current Phoenix documentation**. The Phoenix server is licensed under **Elastic License 2.0 (ELv2)**, not Apache 2.0. Arize-AI changed the license of the main `arize-phoenix` package after the original ADR was written.
@@ -246,7 +246,7 @@ The `arize-phoenix` ELv2 package is **not bundled** in COS and **not provided to
 
 ### 7c. Runtime configuration / documentation changes
 
-1. **ADR-058 correction**: done — `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md` states ELv2 for the server and explains the local-use boundary.
+1. **ADR-058 correction**: done — `docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md` states ELv2 for the server and explains the local-use boundary.
 2. **`cognitive-os.yaml` and install docs**: done — Phoenix is documented as an optional operator-installed dependency lane governed by ELv2, with Apache-2.0 bridge/client packages where applicable.
 3. **Node dashboard**: Document that `lightningcss` and `sharp-libvips` are build-time/native transitive deps from Next.js with MPL-2.0 / LGPL-3.0 respectively. If the dashboard is ever distributed as a product (not just a dev tool), full NOTICE requirements apply.
 

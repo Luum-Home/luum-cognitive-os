@@ -75,7 +75,7 @@ def test_document_only_for_architecture_decision_without_action_layer() -> None:
 
     assert payload["decision"] == "DOCUMENT_ONLY"
     assert payload["primitive_type"] == "documentation-decision"
-    assert any(path.startswith("docs/adrs/") for path in payload["artifact_plan"])
+    assert any(path.startswith("docs/02-Decisions/adrs/") for path in payload["artifact_plan"])
 
 
 def test_discard_small_non_repeatable_chat() -> None:

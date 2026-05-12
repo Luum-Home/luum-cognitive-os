@@ -50,7 +50,7 @@ Sub-pillar 1.A — Metrics census (audit existing):
   (fix the consumer).
 - Rotation policy: size-based (1 MiB cap) + age-based (7 days) per file.
 - Schema unification: one `MetricEvent` base schema all writers extend.
-- Deliverable: `docs/reports/metrics-census.md` with triage table.
+- Deliverable: `docs/06-Daily/reports/metrics-census.md` with triage table.
 
 Sub-pillar 1.B — Process registry + reaper (hooks and subprocesses):
 
@@ -117,7 +117,7 @@ bug immediately.
   timeout, `pytest`/`pip`/`docker` calls without reaping, infinite `sleep`,
   loops without break condition.
 - Severity: BLOCKER / CONCERN / SUGGESTION.
-- Output: `docs/reports/hook-audit-{date}.md`.
+- Output: `docs/06-Daily/reports/hook-audit-{date}.md`.
 
 No fixes in this pillar; just the inventory.
 
@@ -146,7 +146,7 @@ New `rules/so-slo.md`:
 | Full-suite runs / session | = 1 | 0 tolerance |
 | JSONL growth | < 1 MiB / session | — |
 
-New `docs/runbooks/so-incident-runbook.md`:
+New `docs/05-Methodology/runbooks/so-incident-runbook.md`:
 
 - Symptoms: slow session, high CPU, high RAM.
 - Diagnosis commands: `scripts/so-vitals.sh`.

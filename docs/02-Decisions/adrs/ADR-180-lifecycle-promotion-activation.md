@@ -34,7 +34,7 @@ ADR-177 ("Activate Skill Lifecycle Promotion Ladder") records the doctrinal
 decision to wake the dormant promotion ladder. The `lib/skill_lifecycle_promoter.py`
 module landed there as the first cut, embedded inside the doctrine-proposer.
 
-The gap analysis in `docs/reports/lifecycle-promotion-gap-2026-05-05.md`
+The gap analysis in `docs/06-Daily/reports/lifecycle-promotion-gap-2026-05-05.md`
 documents two operational symptoms that ADR-177 alone does not resolve:
 
 1. Sandbox skills (18 on disk) never promote because no scheduled job evaluates
@@ -70,7 +70,7 @@ For each primitive at `lifecycle_state: sandbox`, query SkillStore for
 - `judge_avg >= 0.8`
 
 emit a propose-only artifact at
-`docs/reports/promotion-proposals/<YYYY-MM-DD>/<skill-name>.md`. The script
+`docs/06-Daily/reports/promotion-proposals/<YYYY-MM-DD>/<skill-name>.md`. The script
 **never** modifies `manifests/primitive-lifecycle.yaml` or the registry lock.
 All activity is logged to `.cognitive-os/metrics/promotion-proposals.jsonl`.
 
@@ -87,7 +87,7 @@ Killswitch: `DISABLE_PROMOTION_PROPOSER=1` in environment short-circuits.
 
 For each primitive at `advisory` or `blocking` with zero records in
 `record_count` over the demotion window (default 90 days), emit a demotion
-proposal at `docs/reports/demotion-proposals/<YYYY-MM-DD>/<skill-name>.md`.
+proposal at `docs/06-Daily/reports/demotion-proposals/<YYYY-MM-DD>/<skill-name>.md`.
 Same propose-only contract; logs to
 `.cognitive-os/metrics/demotion-proposals.jsonl`.
 
@@ -173,7 +173,7 @@ bash scripts/cos-promotion-proposer --dry-run                          # exits 0
 - ADR-135 — self-evolving doctrine proposer (propose-only).
 - ADR-176 — SkillStore SQLite schema (data substrate for this ADR).
 - ADR-177 — Activate Skill Lifecycle Promotion Ladder (doctrinal precondition).
-- `docs/reports/lifecycle-promotion-gap-2026-05-05.md` — gap analysis that
+- `docs/06-Daily/reports/lifecycle-promotion-gap-2026-05-05.md` — gap analysis that
   motivated this ADR.
 
 ## Verification
@@ -209,14 +209,14 @@ After this ADR:
 - "Did the promoter ever modify a live manifest?" — Check `tests/contracts/test_promotion_propose_only.py`; if it passes, the answer is no.
 
 **Does not answer:**
-- "Should I accept this proposal?" — Proposals in `docs/reports/promotion-proposals/` and `docs/reports/demotion-proposals/` require operator review and manual application.
+- "Should I accept this proposal?" — Proposals in `docs/06-Daily/reports/promotion-proposals/` and `docs/06-Daily/reports/demotion-proposals/` require operator review and manual application.
 - "Are the thresholds well-calibrated?" — The initial thresholds (50 records, 0.85 success, 0.8 judge avg, 90-day demotion window) are conventional; the first 90 days of operation will calibrate them via the metrics log.
 
 ### Daily operational pattern
 
 1. **Automated**: the weekly hook fires automatically during SessionStart (at most once per 7 days). No operator action needed for normal operation.
 2. **On-demand check**: `scripts/cos-promotion-proposer --dry-run` or `scripts/cos-demotion-proposer --dry-run` to see current candidate state.
-3. **When a proposal appears** in `docs/reports/promotion-proposals/<date>/` or `docs/reports/demotion-proposals/<date>/`: review the evidence, then manually apply the promotion/demotion to `manifests/primitive-lifecycle.yaml` if appropriate.
+3. **When a proposal appears** in `docs/06-Daily/reports/promotion-proposals/<date>/` or `docs/06-Daily/reports/demotion-proposals/<date>/`: review the evidence, then manually apply the promotion/demotion to `manifests/primitive-lifecycle.yaml` if appropriate.
 4. **Disable**: set `DISABLE_PROMOTION_PROPOSER=1` to short-circuit the promoter.
 
 ### Reading guide for cold readers
@@ -224,7 +224,7 @@ After this ADR:
 1. ADR-177 is the doctrinal precondition — read it first for the lifecycle ladder definition and `lifecycle_state` meanings in `manifests/primitive-lifecycle.yaml`.
 2. ADR-176 (SkillStore) is the data substrate — the proposers query `lib.skill_store.SkillStore` directly.
 3. The propose-only invariant test at `tests/contracts/test_promotion_propose_only.py` is the safety guarantee: if it passes, no live manifest was modified.
-4. The `docs/reports/lifecycle-promotion-gap-2026-05-05.md` gap analysis documents the three operational symptoms that motivated this ADR — useful context for understanding why the weekly hook and metrics trail were needed.
+4. The `docs/06-Daily/reports/lifecycle-promotion-gap-2026-05-05.md` gap analysis documents the three operational symptoms that motivated this ADR — useful context for understanding why the weekly hook and metrics trail were needed.
 
 ## Alternatives rejected
 

@@ -108,7 +108,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/FROZEN-BACKLOG.md
+## File: docs/04-Concepts/architecture/FROZEN-BACKLOG.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -119,7 +119,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/LESSONS-LEARNED.md
+## File: docs/04-Concepts/architecture/LESSONS-LEARNED.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -130,7 +130,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/POST-MORTEM-2026-04.md
+## File: docs/04-Concepts/architecture/POST-MORTEM-2026-04.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -144,7 +144,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-006-agpl-license-compliance.md
+## File: docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -154,7 +154,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-009-package-architecture.md
+## File: docs/02-Decisions/adrs/ADR-009-package-architecture.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -168,7 +168,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-017-stabilization-freeze.md
+## File: docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -185,7 +185,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-019-scope-tagging.md
+## File: docs/02-Decisions/adrs/ADR-019-scope-tagging.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -203,7 +203,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-020-contamination-fix.md
+## File: docs/02-Decisions/adrs/ADR-020-contamination-fix.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -215,7 +215,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-021-vendor-agnostic-with-adapters.md
+## File: docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -224,7 +224,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-026-r2-r3-design-review.md
+## File: docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -232,7 +232,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/ADR-026a-decisions.md
+## File: docs/02-Decisions/adrs/ADR-026a-decisions.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -241,7 +241,7 @@ compatibility.
 
 ---
 
-## File: docs/adrs/README.md  <!-- moved 2026-04-30 (ADR-087); architecture/adrs/README.md removed 2026-05-12 -->
+## File: docs/02-Decisions/adrs/README.md  <!-- moved 2026-04-30 (ADR-087); architecture/adrs/README.md removed 2026-05-12 -->
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -250,7 +250,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/behavioral-test-contracts.md
+## File: docs/04-Concepts/architecture/behavioral-test-contracts.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -258,7 +258,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/bootstrap-portability.md
+## File: docs/04-Concepts/architecture/bootstrap-portability.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -266,7 +266,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/core-vs-extensions-audit-2026-04-20.md
+## File: docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -281,15 +281,15 @@ compatibility.
 
 ---
 
-## File: docs/architecture/core-vs-extensions-migration-plan.md
+## File: docs/04-Concepts/architecture/core-vs-extensions-migration-plan.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
-| 174 | "`docs/patterns/{plan-first,dogfooding,os-vs-project,ecosystem-tools,component-classification…}` (via `git mv`)" | A | Reference to a filename `component-classification.md` — proper noun (file path). The prose does not use "component" generically here. No prose change; the file rename is a separate task. |
+| 174 | "`docs/04-Concepts/patterns/{plan-first,dogfooding,os-vs-project,ecosystem-tools,component-classification…}` (via `git mv`)" | A | Reference to a filename `component-classification.md` — proper noun (file path). The prose does not use "component" generically here. No prose change; the file rename is a separate task. |
 
 ---
 
-## File: docs/architecture/cos-dispatch/README.md
+## File: docs/04-Concepts/architecture/cos-dispatch/README.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -297,7 +297,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cos-dispatch/adr-detection.md
+## File: docs/04-Concepts/architecture/cos-dispatch/adr-detection.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -306,7 +306,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md
+## File: docs/04-Concepts/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -314,7 +314,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cos-dispatch/test-strategy.md
+## File: docs/04-Concepts/architecture/cos-dispatch/test-strategy.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -327,7 +327,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md
+## File: docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -336,7 +336,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cos-vs-project-overlap-analysis.md
+## File: docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -345,7 +345,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cross-harness-authoring.md
+## File: docs/04-Concepts/architecture/cross-harness-authoring.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -358,7 +358,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cross-platform-ci.md
+## File: docs/04-Concepts/architecture/cross-platform-ci.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -367,7 +367,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/cross-runtime-portability.md
+## File: docs/04-Concepts/architecture/cross-runtime-portability.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -376,15 +376,15 @@ compatibility.
 
 ---
 
-## File: docs/architecture/functional-audit/f1-cleanup.md
+## File: docs/04-Concepts/architecture/functional-audit/f1-cleanup.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
-| 32 | "…`docs/component-audit.md`, and others" | A | Filename reference. The document being cited is an audit of agentic components — rename the file in a separate pass. No prose change here beyond the filename. |
+| 32 | "…`docs/06-Daily/root/component-audit.md`, and others" | A | Filename reference. The document being cited is an audit of agentic components — rename the file in a separate pass. No prose change here beyond the filename. |
 
 ---
 
-## File: docs/architecture/functional-audit/scorecard-install-scripts.md
+## File: docs/04-Concepts/architecture/functional-audit/scorecard-install-scripts.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -392,7 +392,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/functional-audit/scorecard-rules.md
+## File: docs/04-Concepts/architecture/functional-audit/scorecard-rules.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -400,7 +400,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/functional-audit/scorecard-skills.md
+## File: docs/04-Concepts/architecture/functional-audit/scorecard-skills.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -408,7 +408,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/functional-audit/sprint-2a-orphan-fate.md
+## File: docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -417,7 +417,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/functional-audit/startup-baseline-2026-04-20.md
+## File: docs/04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -425,7 +425,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md
+## File: docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -433,7 +433,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md
+## File: docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-C-updaters.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -441,7 +441,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md
+## File: docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -449,7 +449,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/memory-lifecycle.md
+## File: docs/04-Concepts/architecture/memory-lifecycle.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -459,7 +459,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/observability-backend-evaluation-2026-04-24.md
+## File: docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -467,7 +467,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/path-portability-and-privacy.md
+## File: docs/04-Concepts/architecture/path-portability-and-privacy.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -477,7 +477,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/plans-reconciliation-2026-04-21.md
+## File: docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -486,7 +486,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/project-consumption-patterns.md
+## File: docs/04-Concepts/architecture/project-consumption-patterns.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -494,7 +494,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/stabilization-roadmap.md
+## File: docs/04-Concepts/architecture/stabilization-roadmap.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -503,7 +503,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/tooling-stack-rationalization.md
+## File: docs/04-Concepts/architecture/tooling-stack-rationalization.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -511,7 +511,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/why-skills-and-rules-became-claude-centered.md
+## File: docs/04-Concepts/architecture/why-skills-and-rules-became-claude-centered.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -524,19 +524,19 @@ compatibility.
 ### Class A — to migrate (64)
 
 High-density files:
-- `docs/adrs/ADR-019-scope-tagging.md` — 10 hits (every occurrence of "component" refers to skills/hooks/rules)
-- `docs/adrs/ADR-017-stabilization-freeze.md` — 10 hits (wiring, registration, lifecycle of OS primitives)
-- `docs/adrs/ADR-009-package-architecture.md` — 7 hits (375 skills/hooks/rules/libs reclassification)
-- `docs/architecture/POST-MORTEM-2026-04.md` — 7 hits (aspirational hooks/skills/rules count)
-- `docs/adrs/ADR-020-contamination-fix.md` — 5 hits (OS hooks/skills/rules contamination)
-- `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` — 2 hits (OS primitives + table header)
-- `docs/architecture/cross-harness-authoring.md` — 6 hits (portability of skills/hooks/rules)
+- `docs/02-Decisions/adrs/ADR-019-scope-tagging.md` — 10 hits (every occurrence of "component" refers to skills/hooks/rules)
+- `docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md` — 10 hits (wiring, registration, lifecycle of OS primitives)
+- `docs/02-Decisions/adrs/ADR-009-package-architecture.md` — 7 hits (375 skills/hooks/rules/libs reclassification)
+- `docs/04-Concepts/architecture/POST-MORTEM-2026-04.md` — 7 hits (aspirational hooks/skills/rules count)
+- `docs/02-Decisions/adrs/ADR-020-contamination-fix.md` — 5 hits (OS hooks/skills/rules contamination)
+- `docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md` — 2 hits (OS primitives + table header)
+- `docs/04-Concepts/architecture/cross-harness-authoring.md` — 6 hits (portability of skills/hooks/rules)
 - `AGENTS.md` — 2 prose hits (architecture table + description)
 - `CHANGELOG.md` — 5 hits (primitive counts, wiring, linter)
 - `cmd/cos/README.md` — 3 hits (cos manages skills/hooks/rules/agents)
 - `skills/CATALOG-COMPACT.md` and `skills/CATALOG.md` — 10 hits combined (skill descriptions)
-- `docs/architecture/memory-lifecycle.md` — 3 hits (table headers for hooks/libs)
-- `docs/architecture/path-portability-and-privacy.md` — 3 hits (hooks, skills, rules, docs)
+- `docs/04-Concepts/architecture/memory-lifecycle.md` — 3 hits (table headers for hooks/libs)
+- `docs/04-Concepts/architecture/path-portability-and-privacy.md` — 3 hits (hooks, skills, rules, docs)
 
 Selected list:
 - AGENTS.md:13 — "universal OS components"
@@ -551,51 +551,51 @@ Selected list:
 - cmd/cos/README.md:108 — `cos map [component]`
 - skills/CATALOG-COMPACT.md:37,38,43,73 — skill description text
 - skills/CATALOG.md:20,25,210,213,214,242 — skill description text
-- docs/architecture/FROZEN-BACKLOG.md:34,59,64,245 — primitives/backlog items
-- docs/architecture/LESSONS-LEARNED.md:17,19,34,122 — lesson data points
-- docs/architecture/POST-MORTEM-2026-04.md:13,56,142,150,207,236,263 — mortem metrics
-- docs/adrs/ADR-009-package-architecture.md:10,14,16,17,31,33,37 — all hits
-- docs/adrs/ADR-017-stabilization-freeze.md:10,22,25,27,31,32,39,41 — all hits
-- docs/adrs/ADR-019-scope-tagging.md:10,14,16,31,32,33,37,40 — all hits
-- docs/adrs/ADR-020-contamination-fix.md:10,14,19,34,38 — all hits
-- docs/adrs/ADR-021-vendor-agnostic-with-adapters.md:90,98 — all hits
-- docs/adrs/README.md:18,28 (was docs/architecture/adrs/README.md, removed 2026-05-12) — ADR titles
-- docs/architecture/behavioral-test-contracts.md:89 — section heading
-- docs/architecture/core-vs-extensions-audit-2026-04-20.md:9,17,49,124,262,282 — table headers + prose
-- docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md:41 — package manager description
-- docs/architecture/cross-harness-authoring.md:52,57,61,99,163,184 — all hits
-- docs/architecture/cross-runtime-portability.md:13,25 — table headers
-- docs/architecture/functional-audit/startup-baseline-2026-04-20.md:50 — table header
-- docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md:22 — component sync
-- docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md:187 — comment in bash block
-- docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md:34 — test function reference
-- docs/architecture/memory-lifecycle.md:86,97,107 — table headers
-- docs/architecture/path-portability-and-privacy.md:8,63,68 — AI-facing components
-- docs/architecture/stabilization-roadmap.md:59,109 — stale refs + aspirational count
-- docs/architecture/why-skills-and-rules-became-claude-centered.md:66 — universal OS components
+- docs/04-Concepts/architecture/FROZEN-BACKLOG.md:34,59,64,245 — primitives/backlog items
+- docs/04-Concepts/architecture/LESSONS-LEARNED.md:17,19,34,122 — lesson data points
+- docs/04-Concepts/architecture/POST-MORTEM-2026-04.md:13,56,142,150,207,236,263 — mortem metrics
+- docs/02-Decisions/adrs/ADR-009-package-architecture.md:10,14,16,17,31,33,37 — all hits
+- docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md:10,22,25,27,31,32,39,41 — all hits
+- docs/02-Decisions/adrs/ADR-019-scope-tagging.md:10,14,16,31,32,33,37,40 — all hits
+- docs/02-Decisions/adrs/ADR-020-contamination-fix.md:10,14,19,34,38 — all hits
+- docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md:90,98 — all hits
+- docs/02-Decisions/adrs/README.md:18,28 (was docs/04-Concepts/architecture/adrs/README.md, removed 2026-05-12) — ADR titles
+- docs/04-Concepts/architecture/behavioral-test-contracts.md:89 — section heading
+- docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md:9,17,49,124,262,282 — table headers + prose
+- docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md:41 — package manager description
+- docs/04-Concepts/architecture/cross-harness-authoring.md:52,57,61,99,163,184 — all hits
+- docs/04-Concepts/architecture/cross-runtime-portability.md:13,25 — table headers
+- docs/04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md:50 — table header
+- docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md:22 — component sync
+- docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-C-updaters.md:187 — comment in bash block
+- docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md:34 — test function reference
+- docs/04-Concepts/architecture/memory-lifecycle.md:86,97,107 — table headers
+- docs/04-Concepts/architecture/path-portability-and-privacy.md:8,63,68 — AI-facing components
+- docs/04-Concepts/architecture/stabilization-roadmap.md:59,109 — stale refs + aspirational count
+- docs/04-Concepts/architecture/why-skills-and-rules-became-claude-centered.md:66 — universal OS components
 
 ### Class B — keep (15)
 
 All instances in `AGENTS.md:55–68` where "component" is used in the carve-out policy definition itself (the policy explaining when "component" remains valid), plus:
 - `.claude/plugins/pi-mono/AGENTS.md:64,216` — Ink UI framework components (React/Ink)
-- `docs/architecture/cos-vs-project-overlap-analysis.md:13` — `/plan-design-system-component` slash-command (Atomic Design)
-- `docs/architecture/project-consumption-patterns.md:48` — "Component architecture (Opus)" for UI/UX in a reference project
+- `docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md:13` — `/plan-design-system-component` slash-command (Atomic Design)
+- `docs/04-Concepts/architecture/project-consumption-patterns.md:48` — "Component architecture (Opus)" for UI/UX in a reference project
 
 ### Class C — keep (31)
 
 Grouped by reason:
 
 **Infrastructure/dependencies** (ADR-006, observability):
-- `docs/adrs/ADR-006-agpl-license-compliance.md:14,21,31` — Redis, MinIO, software licensing
-- `docs/architecture/observability-backend-evaluation-2026-04-24.md:82` — MLflow, Langfuse, Valkey
-- `docs/architecture/tooling-stack-rationalization.md:101` — generic tool duplication checklist
+- `docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md:14,21,31` — Redis, MinIO, software licensing
+- `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md:82` — MLflow, Langfuse, Valkey
+- `docs/04-Concepts/architecture/tooling-stack-rationalization.md:101` — generic tool duplication checklist
 
 **Go software architecture** (cos-dispatch):
-- `docs/architecture/cos-dispatch/README.md:38` — Go binary component diagram
-- `docs/architecture/cos-dispatch/adr-detection.md:11,152` — Go type headings (ADRDetector, ADRGenerator)
-- `docs/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md:28` — Go interface pattern
-- `docs/adrs/ADR-026-r2-r3-design-review.md:252` — config loader code modules
-- `docs/adrs/ADR-026a-decisions.md:104,107` — config loader code modules
+- `docs/04-Concepts/architecture/cos-dispatch/README.md:38` — Go binary component diagram
+- `docs/04-Concepts/architecture/cos-dispatch/adr-detection.md:11,152` — Go type headings (ADRDetector, ADRGenerator)
+- `docs/04-Concepts/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md:28` — Go interface pattern
+- `docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md:252` — config loader code modules
+- `docs/02-Decisions/adrs/ADR-026a-decisions.md:104,107` — config loader code modules
 
 **Test pyramid terminology** (cos-dispatch/test-strategy.md):
 - Lines 21, 25, 38, 42, 79, 167 — "Component test" as test layer name (Unit/Component/Integration/Binary)
@@ -617,42 +617,42 @@ Grouped by reason:
 - `AGENTS.md:64` — The sentence teaches the correct term ("OS component" → "OS primitive") but uses "OS component" as the thing to avoid. Keeping the sentence is the right call; it is part of the migration rationale, not a drift violation.
 - `README.md:8` — "REAL Components" badge. Badge label tracks health of agentic primitives but is also a metric name that may be referenced in badge JSON URLs. Migrating requires coordinating badge infrastructure.
 - `CHANGELOG.md:308` — `/component-reality-check` skill name in a description. The skill name is a proper noun; the description text around it is migratable, but the slash-command itself needs a rename tracked separately.
-- `docs/architecture/bootstrap-portability.md:145` — `component-lint.sh` filename in a sentence listing scripts. Prose references a proper noun; the file rename is a separate task.
-- `docs/architecture/core-vs-extensions-audit-2026-04-20.md:256` — `component-lint.sh` in a migration plan list. Same as above.
-- `docs/architecture/plans-reconciliation-2026-04-21.md:27` — "all have shipped components + ADR" — could be software modules (C) or could include hook implementations (A). Needs author confirmation.
+- `docs/04-Concepts/architecture/bootstrap-portability.md:145` — `component-lint.sh` filename in a sentence listing scripts. Prose references a proper noun; the file rename is a separate task.
+- `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md:256` — `component-lint.sh` in a migration plan list. Same as above.
+- `docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md:27` — "all have shipped components + ADR" — could be software modules (C) or could include hook implementations (A). Needs author confirmation.
 
 ---
 
 ## Migration plan (Phase 2 hint)
 
 ### Files needing >5 Class A edits
-- `docs/adrs/ADR-017-stabilization-freeze.md` — 10 hits
-- `docs/adrs/ADR-019-scope-tagging.md` — 10 hits
-- `docs/adrs/ADR-009-package-architecture.md` — 7 hits
-- `docs/architecture/POST-MORTEM-2026-04.md` — 7 hits
-- `docs/architecture/cross-harness-authoring.md` — 6 hits
-- `docs/adrs/ADR-020-contamination-fix.md` — 5 hits
+- `docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md` — 10 hits
+- `docs/02-Decisions/adrs/ADR-019-scope-tagging.md` — 10 hits
+- `docs/02-Decisions/adrs/ADR-009-package-architecture.md` — 7 hits
+- `docs/04-Concepts/architecture/POST-MORTEM-2026-04.md` — 7 hits
+- `docs/04-Concepts/architecture/cross-harness-authoring.md` — 6 hits
+- `docs/02-Decisions/adrs/ADR-020-contamination-fix.md` — 5 hits
 - `skills/CATALOG.md` — 6 hits
-- `docs/architecture/FROZEN-BACKLOG.md` — 4 hits
-- `docs/architecture/LESSONS-LEARNED.md` — 4 hits
+- `docs/04-Concepts/architecture/FROZEN-BACKLOG.md` — 4 hits
+- `docs/04-Concepts/architecture/LESSONS-LEARNED.md` — 4 hits
 
 ### Files with 1–5 Class A edits
 - `AGENTS.md` (2), `CHANGELOG.md` (5), `cmd/cos/README.md` (3)
 - `skills/CATALOG-COMPACT.md` (4)
-- `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` (2)
-- `docs/adrs/README.md` (2; previously at docs/architecture/adrs/README.md, removed 2026-05-12)
-- `docs/architecture/behavioral-test-contracts.md` (1)
-- `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (5)
-- `docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` (1)
-- `docs/architecture/cross-runtime-portability.md` (2)
-- `docs/architecture/functional-audit/startup-baseline-2026-04-20.md` (1)
-- `docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md` (1)
-- `docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md` (1)
-- `docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` (1)
-- `docs/architecture/memory-lifecycle.md` (3)
-- `docs/architecture/path-portability-and-privacy.md` (3)
-- `docs/architecture/stabilization-roadmap.md` (2)
-- `docs/architecture/why-skills-and-rules-became-claude-centered.md` (1)
+- `docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md` (2)
+- `docs/02-Decisions/adrs/README.md` (2; previously at docs/04-Concepts/architecture/adrs/README.md, removed 2026-05-12)
+- `docs/04-Concepts/architecture/behavioral-test-contracts.md` (1)
+- `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` (5)
+- `docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` (1)
+- `docs/04-Concepts/architecture/cross-runtime-portability.md` (2)
+- `docs/04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md` (1)
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md` (1)
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-C-updaters.md` (1)
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` (1)
+- `docs/04-Concepts/architecture/memory-lifecycle.md` (3)
+- `docs/04-Concepts/architecture/path-portability-and-privacy.md` (3)
+- `docs/04-Concepts/architecture/stabilization-roadmap.md` (2)
+- `docs/04-Concepts/architecture/why-skills-and-rules-became-claude-centered.md` (1)
 
 ### Estimated total Class A edits: 64
 
@@ -668,7 +668,7 @@ Status updated: 2026-04-29 (pass 2 — applied feasible items, deferred items wi
   **APPLIED** — SKILL.md frontmatter `name:` updated to `primitive-reality-check`. Directory rename DEFERRED: same reasoning as component-classifier above. Slash-command `/component-reality-check` remains functional until directory rename lands.
 
 - Script: `component-lint.sh` → `primitive-lint.sh`
-  **DEFERRED** — Consumer count is high: `tests/behavior/test_upgrade_script.py`, `tests/behavior/test_secondary_script_portability.py`, `docs/cos-package-manager.md` (3 references), and `scripts/upgrade.sh` (2 references) all reference the path by exact name. Renaming without updating all consumers would break behavior tests. Requires a coordinated multi-file rename pass.
+  **DEFERRED** — Consumer count is high: `tests/behavior/test_upgrade_script.py`, `tests/behavior/test_secondary_script_portability.py`, `docs/07-Capabilities/root/cos-package-manager.md` (3 references), and `scripts/upgrade.sh` (2 references) all reference the path by exact name. Renaming without updating all consumers would break behavior tests. Requires a coordinated multi-file rename pass.
 
 - Rule file: `component-classification.md` → `primitive-classification.md`
   **DEFERRED** — `hooks/self-install.sh` line 360 registers this file by exact name for hook injection. Renaming without updating self-install.sh (forbidden scope) would silently drop the rule from hook context. Requires a coordinated hooks + docs pass.

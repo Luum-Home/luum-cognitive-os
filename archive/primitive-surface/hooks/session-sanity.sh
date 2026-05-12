@@ -123,7 +123,7 @@ printf '{"timestamp":"%s","session_id":"%s","project":"%s","project_dir":"%s","s
   >> "$SESSION_LOG" 2>/dev/null || true
 
 # Check 4: show COS roadmap position (surface pending work for next session)
-ROADMAP_FILE="$PROJECT_DIR/docs/release/roadmap-v1.0-full-e2e.md"
+ROADMAP_FILE="$PROJECT_DIR/docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md"
 if [ -f "$ROADMAP_FILE" ]; then
   # Extract "Current position" line from the pickup section
   POSITION=$(grep -m1 "^\*\*Current position\*\*" "$ROADMAP_FILE" 2>/dev/null | sed 's/^\*\*Current position\*\*: //' | sed 's/\*\*//g')
@@ -142,7 +142,7 @@ if [ -f "$ROADMAP_FILE" ]; then
     echo "Profile: $PROFILE | Skills: $SKILLS_COUNT | Hooks wired: $HOOKS_WIRED" >&2
     [ -n "$POSITION" ] && echo "Roadmap: $POSITION" >&2
     [ -n "$NEXT_SESSION" ] && echo "Next:    $NEXT_SESSION" >&2
-    echo "Read:    docs/release/roadmap-v1.0-full-e2e.md" >&2
+    echo "Read:    docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md" >&2
     echo "Hist:    bash scripts/cos-sessions.sh --last 5" >&2
     echo "" >&2
   fi

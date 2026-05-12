@@ -320,7 +320,7 @@
         {
           "commit": "fd1210bc440fd973c2fc0684121862ebfff977f6",
           "fixture_like": false,
-          "sample": "-| M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) in `memory_relations` | \ud83d\udfe1 Slice 0 benchmark ready; schema not started | A \u00a7\ud83d\udd0d2c; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-lay"
+          "sample": "-| M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) in `memory_relations` | \ud83d\udfe1 Slice 0 benchmark ready; schema not started | A \u00a7\ud83d\udd0d2c; [`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-lay"
         }
       ],
       "severity": "info"

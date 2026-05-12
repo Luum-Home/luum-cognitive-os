@@ -127,9 +127,9 @@ def test_product_answer_cli_competitors_uses_local_radar_before_browsing() -> No
     assert report["question_id"] == "competitors"
     assert "local Tech Radar" in report["answer_long"]
     assert "Use internet research only for volatile" in report["answer_long"]
-    assert "docs/reports/external-tools-radar-INDEX.md" in report["approved_sources"]
-    assert "docs/vs-alternatives.md" in report["approved_sources"]
-    assert "docs/component-sources.md" in report["approved_sources"]
+    assert "docs/06-Daily/reports/external-tools-radar-INDEX.md" in report["approved_sources"]
+    assert "docs/08-References/root/vs-alternatives.md" in report["approved_sources"]
+    assert "docs/04-Concepts/root/component-sources.md" in report["approved_sources"]
     assert any(
         "Do not browse by default" in boundary
         for claim in report["claims"]
@@ -150,7 +150,7 @@ def test_product_answer_cli_routes_vanilla_usage_question() -> None:
     report = json.loads(result.stdout)
     assert report["question_id"] == "vanilla_usage"
     assert "Use vanilla IDE-agent setups" in report["answer_short"]
-    assert "docs/business/cos-vs-vanilla-dx-review.md" in report["approved_sources"]
+    assert "docs/08-References/business/cos-vs-vanilla-dx-review.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "vanilla_boundary" for claim in report["claims"])
     assert "COS is always better than vanilla IDE agents" in report["unsafe_claims_to_avoid"]
 
@@ -168,7 +168,7 @@ def test_product_answer_cli_routes_runtime_surface_question() -> None:
     report = json.loads(result.stdout)
     assert report["question_id"] == "runtime_surfaces"
     assert "operator CLI" in report["answer_long"]
-    assert "docs/adrs/ADR-211-service-mode-readiness-gate.md" in report["approved_sources"]
+    assert "docs/02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "service_mode_readiness_partial" for claim in report["claims"])
     assert "COS is already a polished SaaS dashboard" in report["unsafe_claims_to_avoid"]
 
@@ -186,7 +186,7 @@ def test_product_answer_cli_routes_alternative_choice_question() -> None:
     report = json.loads(result.stdout)
     assert report["question_id"] == "alternatives_choice"
     assert "Use Hermes, Agent Zero, or OpenClaw" in report["answer_short"]
-    assert "docs/vs-alternatives.md" in report["approved_sources"]
+    assert "docs/08-References/root/vs-alternatives.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "alternative_complementarity" for claim in report["claims"])
     assert "browse only for volatile current facts" in report["answer_long"]
 
@@ -209,7 +209,7 @@ def test_product_answer_cli_routes_ssr_primitive_enablement_question() -> None:
     report = json.loads(result.stdout)
     assert report["question_id"] == "ssr_primitive_enablement"
     assert "governed skills" in report["answer_short"]
-    assert "docs/architecture/ssr-agentic-primitive-enablement-gaps.md" in report["approved_sources"]
+    assert "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "ssr_primitive_enablement_gap_backlog" for claim in report["claims"])
     assert "COS autonomously rewrites itself from chat" in report["unsafe_claims_to_avoid"]
 

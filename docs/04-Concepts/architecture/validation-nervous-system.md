@@ -133,10 +133,10 @@ base.
 
 ## Related artifacts
 
-- `docs/testing.md`
-- `docs/testing/test-runner-roles.md`
-- `docs/adrs/ADR-072-test-lane-taxonomy.md`
-- `docs/adrs/ADR-073-test-architecture-role-registry.md`
+- `docs/09-Quality/root/testing.md`
+- `docs/09-Quality/testing/test-runner-roles.md`
+- `docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md`
+- `docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md`
 - `.cognitive-os/plans/architecture/test-resource-governance-sprint.md`
 - `.codex/skills/test-matrix/SKILL.md`
 - `.cognitive-os/test-lanes.yaml`

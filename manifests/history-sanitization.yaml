@@ -81,7 +81,7 @@ rules:
     value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE
     replacement: <consumer-service>
     required: false
-    rationale: Replace consumer-project service name used in worked examples (workflows/, docs/hooks.md, packages/verification-audit/, tests/arena/) before the rename to a generic service name landed.
+    rationale: Replace consumer-project service name used in worked examples (workflows/, docs/05-Methodology/root/hooks.md, packages/verification-audit/, tests/arena/) before the rename to a generic service name landed.
   - id: consumer-service-name-2
     mode: literal
     value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE_2

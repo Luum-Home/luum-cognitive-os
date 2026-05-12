@@ -51,7 +51,7 @@ Both write to the closure-trail and refresh the aggregator.
 
 1. Confirm the ledger id exists:
 
-       python3 -c "import json; d=json.load(open('docs/reports/pending-truth-latest.json')); ids=[i['id'] for i in d['items'] if i['status']=='verified-pending']; print('\n'.join(ids[:20]))"
+       python3 -c "import json; d=json.load(open('docs/06-Daily/reports/pending-truth-latest.json')); ids=[i['id'] for i in d['items'] if i['status']=='verified-pending']; print('\n'.join(ids[:20]))"
 
 2. Determine the proof reference. Acceptable forms:
    - `path:line`     e.g. `lib/foo.py:42`
@@ -77,7 +77,7 @@ For closing implementation_status / classification_basis on an ADR:
        python3 scripts/cos-adr-close --adr <NNN> --status implemented --basis "<short basis>"
 
 Use this when the closure is about the decision lifecycle, not a task.
-The script refreshes `docs/adrs/INDEX.md` and `docs/reports/adr-partial-backlog-latest.{json,md}`.
+The script refreshes `docs/02-Decisions/adrs/INDEX.md` and `docs/06-Daily/reports/adr-partial-backlog-latest.{json,md}`.
 
 ### C. Batch closure (multiple items)
 
@@ -146,4 +146,4 @@ Report whether the band moved (HIGH | MEDIUM | LOW | ZERO).
 - ADR-275 §2 (close primitive contract)
 - ADR-105 (bilateral discipline)
 - Sibling: `session-pending-brief` (discover what to close)
-- Architecture: `docs/architecture/pending-truth-architecture.md` Layer 3
+- Architecture: `docs/04-Concepts/architecture/pending-truth-architecture.md` Layer 3

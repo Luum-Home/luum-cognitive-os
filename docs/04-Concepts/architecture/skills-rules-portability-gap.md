@@ -191,6 +191,6 @@ and
 
 ## References
 
-- `docs/architecture/bootstrap-portability.md`
-- `docs/architecture/cross-harness-authoring.md`
-- `docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- `docs/04-Concepts/architecture/cross-harness-authoring.md`
+- `docs/02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md`

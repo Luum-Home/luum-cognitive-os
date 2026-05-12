@@ -11,7 +11,7 @@ superseded_by: null
 extends: [ADR-094, ADR-105, ADR-182]
 implementation_files:
   - hooks/_lib/bypass-resolver.sh
-  - docs/security/bypass-cheatsheet.md
+  - docs/09-Quality/security/bypass-cheatsheet.md
   - hooks/destructive-git-blocker.sh
   - hooks/git-commit-scope-guard.sh
   - hooks/branch-ownership-lock.sh
@@ -83,7 +83,7 @@ Semantics:
 3. Every gate hook listed in `implementation_files` switches its bypass
    check to call `cos_bypass_allows <stable-key>`. Existing envs continue
    to work for one release as aliases.
-4. A canonical cheatsheet at `docs/security/bypass-cheatsheet.md` lists every
+4. A canonical cheatsheet at `docs/09-Quality/security/bypass-cheatsheet.md` lists every
    key, what it disables, the audit-trail entry it produces, and an example
    invocation.
 
@@ -97,7 +97,7 @@ Stable keys are short, hook-aligned, and lower_snake_case, e.g.
 
 Before this ADR: seven separately named bypass environment variables, each with a different naming convention and scope. There was no single reference document listing them all.
 
-After this ADR: one allowlist variable (`COS_BYPASS`) and one resolver (`hooks/_lib/bypass-resolver.sh`) cover all gate bypasses. The canonical reference is `docs/security/bypass-cheatsheet.md`.
+After this ADR: one allowlist variable (`COS_BYPASS`) and one resolver (`hooks/_lib/bypass-resolver.sh`) cover all gate bypasses. The canonical reference is `docs/09-Quality/security/bypass-cheatsheet.md`.
 
 **Stable key mapping (legacy env → new key):**
 
@@ -130,7 +130,7 @@ echo "destructive_git,commit_guard" > .cognitive-os/runtime/bypass.env
 rm .cognitive-os/runtime/bypass.env
 ```
 
-**To discover which key to use:** consult `docs/security/bypass-cheatsheet.md` — it lists every key, what it disables, the audit-trail entry produced, and an example invocation.
+**To discover which key to use:** consult `docs/09-Quality/security/bypass-cheatsheet.md` — it lists every key, what it disables, the audit-trail entry produced, and an example invocation.
 
 **To verify the resolver is wired correctly:**
 ```bash
@@ -142,7 +142,7 @@ grep -RIn "cos_bypass_allows" hooks/
 
 If you encounter this ADR without session context:
 
-1. Read `docs/security/bypass-cheatsheet.md` for the complete and current key list — this is the single document to consult during an incident.
+1. Read `docs/09-Quality/security/bypass-cheatsheet.md` for the complete and current key list — this is the single document to consult during an incident.
 2. Read `hooks/_lib/bypass-resolver.sh` for the resolution logic: it checks `COS_BYPASS`, then back-compat env vars, then `.cognitive-os/runtime/bypass.env`.
 3. The original incident (2026-05-08) had the operator pasting bypass envs 8+ times by trial and error — the cheatsheet and resolver exist to eliminate that friction without removing the governance value of the individual gates.
 4. The runtime file (`.cognitive-os/runtime/bypass.env`) is the mechanism that makes `PreToolUse` hooks see the same bypass scope as bash hooks — use it whenever inline env-var form fails.
@@ -169,7 +169,7 @@ If you encounter this ADR without session context:
 ### Positive
 
 - One name (`COS_BYPASS`) to learn and one document
-  (`docs/security/bypass-cheatsheet.md`) to consult.
+  (`docs/09-Quality/security/bypass-cheatsheet.md`) to consult.
 - `PreToolUse` hooks see the same bypass scope as bash hooks because the
   resolver reads from a runtime file, not just process env.
 - Audit-trail entries cite a stable key, so `agent-heartbeat.jsonl` analysis
@@ -187,7 +187,7 @@ If you encounter this ADR without session context:
    resolves both `COS_BYPASS` and back-compat envs.
 2. Every hook in `implementation_files` calls the resolver instead of reading
    its bypass env directly.
-3. `docs/security/bypass-cheatsheet.md` lists at least the seven stable keys
+3. `docs/09-Quality/security/bypass-cheatsheet.md` lists at least the seven stable keys
    replacing the legacy envs and shows example invocations for each.
 4. `tests/behavior/test_bypass_resolver.py` covers: allowlist hit, allowlist
    miss, back-compat alias hit, runtime-file precedence, whitespace tolerance.
@@ -198,5 +198,5 @@ If you encounter this ADR without session context:
 
 ```bash
 python3 -m pytest tests/behavior/test_bypass_resolver.py -q
-grep -RIn "COS_BYPASS" hooks/ docs/security/bypass-cheatsheet.md
+grep -RIn "COS_BYPASS" hooks/ docs/09-Quality/security/bypass-cheatsheet.md
 ```

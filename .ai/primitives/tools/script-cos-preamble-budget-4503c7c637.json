@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-preamble-budget",
         "scripts/cos_preamble_budget.py",
-        "docs/architecture/core-adoption-preamble.md"
+        "docs/04-Concepts/architecture/core-adoption-preamble.md"
       ],
       "runtime_projection": false
     }
@@ -155,7 +155,7 @@
       "projection_targets": [
         "scripts/cos-preamble-budget",
         "scripts/cos_preamble_budget.py",
-        "docs/architecture/core-adoption-preamble.md"
+        "docs/04-Concepts/architecture/core-adoption-preamble.md"
       ],
       "runtime_projection": false
     }
@@ -164,7 +164,7 @@
   "projection_targets": [
     "scripts/cos-preamble-budget",
     "scripts/cos_preamble_budget.py",
-    "docs/architecture/core-adoption-preamble.md"
+    "docs/04-Concepts/architecture/core-adoption-preamble.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-preamble-budget",

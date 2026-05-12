@@ -7,7 +7,7 @@ Create a unified duplication audit that finds repeated Bash, Python, YAML/config
 ## Phase 1 — Advisory audit
 
 - Implement `scripts/primitive_duplication_audit.py`.
-- Emit JSON and Markdown reports under `docs/reports/`.
+- Emit JSON and Markdown reports under `docs/06-Daily/reports/`.
 - Cover Python function repeats, Bash function repeats, YAML structural repeats, exact/near file copies, and primitive overlap.
 - Add unit tests with small fixtures.
 - Add ACC refresh adapter.

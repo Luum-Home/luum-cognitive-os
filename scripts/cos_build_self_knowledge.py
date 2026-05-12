@@ -6,7 +6,7 @@ cos_build_self_knowledge.py — Generate the COS self-knowledge index.
 Produces four artifacts under .cognitive-os/self-knowledge/:
   api-surface.json    — module → {classes, functions, shebang_bash_entrypoints}
   dep-graph.json      — {source: [targets]} for Python imports + Bash sources
-  glossary.md         — H2/H3 headings + first sentence from docs/adrs + docs/guides
+  glossary.md         — H2/H3 headings + first sentence from docs/02-Decisions/adrs + docs/05-Methodology/guides
   codebase-summary.md — top subsystems, most-imported modules, ADR index
   .mtime              — ISO-8601 timestamp of last successful build
 
@@ -203,7 +203,7 @@ def _build_glossary(project_dir: Path) -> str:
     entries: dict[str, str] = {}
 
     sources: list[Path] = []
-    for pattern in ["docs/adrs/*.md", "docs/guides/*.md"]:
+    for pattern in ["docs/02-Decisions/adrs/*.md", "docs/05-Methodology/guides/*.md"]:
         sources.extend(project_dir.glob(pattern))
 
     for doc in sorted(sources):

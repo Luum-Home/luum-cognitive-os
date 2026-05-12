@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted — Slices A–F implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-223 (worktree-per-write-agent), ADR-225 (branch-per-task), ADR-228 (retry/budget), ADR-233 (agent-team file IPC)  
-**Source**: [`docs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md)
+**Source**: [`docs/03-PoCs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md)
 
 ---
 

@@ -1,7 +1,7 @@
 # Next-Session Plan — DORMANT + ASPIRATIONAL → REAL
 
 **Date**: 2026-04-20 (handoff to session N+1)
-**Anchor**: `docs/reports/aspirational-audit-2026-04-20.md` (68.5% dormant+aspirational ratio)
+**Anchor**: `docs/06-Daily/reports/aspirational-audit-2026-04-20.md` (68.5% dormant+aspirational ratio)
 **Target**: reduce ratio to < 40% by converting the following 13 items.
 
 Every item below has a concrete **first step** (≤ 15 min to verify), **effort estimate**, and **verification command** that proves it flipped to REAL.
@@ -191,7 +191,7 @@ Expected post-sweep metrics:
 
 ```bash
 # 1. Load the plan + engram state
-cat docs/reports/next-session-plan-dormant-to-real.md | head -60
+cat docs/06-Daily/reports/next-session-plan-dormant-to-real.md | head -60
 
 # 2. Re-run the audit to get current baseline
 python3 scripts/aspirational_audit.py --dry-run

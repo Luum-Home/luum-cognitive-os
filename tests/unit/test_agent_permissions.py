@@ -122,7 +122,7 @@ class TestCheck:
         self, mgr: AgentPermissionManager, granted_agent: str
     ):
         """Should allow access to a path matching allowed_paths."""
-        assert mgr.check(granted_agent, "write", "docs/setup.md") is True
+        assert mgr.check(granted_agent, "write", "docs/05-Methodology/setup.md") is True
 
     def test_check_blocks_unpermitted_path(
         self, mgr: AgentPermissionManager, granted_agent: str
@@ -180,7 +180,7 @@ class TestCheck:
             tools=["Read"],
             level=PermissionLevel.READ,
         )
-        assert mgr.check("reader", "write", "docs/README.md") is False
+        assert mgr.check("reader", "write", "docs/00-MOCs/entrypoints/README.md") is False
 
     def test_check_denies_no_grant(self, mgr: AgentPermissionManager):
         """Agent without any grant should be denied."""
@@ -379,7 +379,7 @@ class TestAuditTrail:
         self, mgr: AgentPermissionManager, granted_agent: str
     ):
         """Every check should produce an audit log entry."""
-        mgr.check(granted_agent, "write", "docs/setup.md")  # allowed
+        mgr.check(granted_agent, "write", "docs/05-Methodology/setup.md")  # allowed
         mgr.check(granted_agent, "write", "src/main.py")  # denied
         trail = mgr.get_audit_trail()
         assert len(trail) == 2

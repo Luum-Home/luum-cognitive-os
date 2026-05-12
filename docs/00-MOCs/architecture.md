@@ -4,29 +4,29 @@ System design, patterns, and structural references. Read this when you're design
 
 ## Start here
 
-1. [`docs/architecture.md`](../architecture.md) — high-level system overview
-2. [`docs/architecture-principles.md`](../architecture-principles.md) — the principles that constrain design choices
-3. [`docs/architecture/`](../architecture/) — detailed architecture notes per surface
+1. [`docs/04-Concepts/architecture.md`](../architecture.md) — high-level system overview
+2. [`docs/04-Concepts/architecture-principles.md`](../architecture-principles.md) — the principles that constrain design choices
+3. [`docs/04-Concepts/architecture/`](../architecture/) — detailed architecture notes per surface
 
 ## Core surfaces
 
-- **Hooks**: [`docs/architecture/`](../architecture/) + see [ADR-010](../adrs/ADR-010-hook-architecture-v2.md). Profiles: lean/standard/full via `scripts/apply-efficiency-profile.sh`.
-- **Skills**: [`docs/skills/`](../skills/) — skill registry, lifecycle, invocation conventions
+- **Hooks**: [`docs/04-Concepts/architecture/`](../architecture/) + see [ADR-010](../adrs/ADR-010-hook-architecture-v2.md). Profiles: lean/standard/full via `scripts/apply-efficiency-profile.sh`.
+- **Skills**: [`docs/07-Capabilities/skills/`](../skills/) — skill registry, lifecycle, invocation conventions
 - **Rules**: `rules/` (project root) + [`rules/RULES-COMPACT.md`](../../rules/RULES-COMPACT.md) — compact index of all governance rules
-- **Primitives**: [`docs/capabilities/`](../capabilities/) + see [ADR-009](../adrs/ADR-009-package-architecture.md) for the 375-primitive package architecture
-- **Adapters / harnesses**: [`docs/architecture/cross-tool-landscape.md`](../architecture/cross-tool-landscape.md) — cross-tool portability tiers
+- **Primitives**: [`docs/07-Capabilities/capabilities/`](../capabilities/) + see [ADR-009](../adrs/ADR-009-package-architecture.md) for the 375-primitive package architecture
+- **Adapters / harnesses**: [`docs/04-Concepts/architecture/cross-tool-landscape.md`](../architecture/cross-tool-landscape.md) — cross-tool portability tiers
 
 ## Patterns
 
-- [`docs/patterns/`](../patterns/) — reusable design patterns (ADW patterns, ecosystem-tools, etc.)
-- [`docs/adw-patterns.md`](../adw-patterns.md) — Autonomous Developer Workflow schema
-- [`docs/agent-teams.md`](../agent-teams.md) — multi-agent orchestration conventions
+- [`docs/04-Concepts/patterns/`](../patterns/) — reusable design patterns (ADW patterns, ecosystem-tools, etc.)
+- [`docs/08-References/root/adw-patterns.md`](../adw-patterns.md) — Autonomous Developer Workflow schema
+- [`docs/07-Capabilities/root/agent-teams.md`](../agent-teams.md) — multi-agent orchestration conventions
 
 ## Where things live (canonical paths)
 
 | Concept | Path |
 |---|---|
-| Source of truth for ADRs | `docs/adrs/` |
+| Source of truth for ADRs | `docs/02-Decisions/adrs/` |
 | Hook implementations | `hooks/` (most are symlinks to `packages/*/hooks/`) |
 | Python libraries | `lib/` (some are symlinks to `packages/*/lib/`) |
 | Scripts | `scripts/` |
@@ -41,8 +41,8 @@ Many `hooks/*.sh` and `lib/*.py` files are symlinks into `packages/*/`. Before c
 
 - [ADR-008 Multi-tool support](../adrs/ADR-008-multi-tool-support.md)
 - [ADR-021 Vendor-agnostic with adapters](../adrs/ADR-021-vendor-agnostic-with-adapters.md)
-- [`docs/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md)
-- [`docs/architecture/ide-agnostic-primitive-projection.md`](../architecture/ide-agnostic-primitive-projection.md)
+- [`docs/04-Concepts/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md)
+- [`docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md`](../architecture/ide-agnostic-primitive-projection.md)
 
 ## Related MOCs
 

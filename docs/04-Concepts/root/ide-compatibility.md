@@ -8,7 +8,7 @@ Last reviewed: 2026-05-04.
 
 This document no longer uses `FULL`, `HIGH`, or percentage-based compatibility labels. Those labels implied runtime behavior that was not always manually tested.
 
-Use the proof levels from `docs/architecture/harness-proof-levels.md` instead:
+Use the proof levels from `docs/04-Concepts/architecture/harness-proof-levels.md` instead:
 
 | Proof level | Meaning |
 |---|---|
@@ -22,8 +22,8 @@ Use the proof levels from `docs/architecture/harness-proof-levels.md` instead:
 
 - Implemented and planned harness projection metadata: `manifests/harness-projection.yaml`
 - Broader candidate backlog: `manifests/ai-agent-harness-landscape.yaml`
-- Current landscape review: `docs/reports/ai-agent-harness-landscape-2026-05-04.md`
-- Proof-level doctrine: `docs/architecture/harness-proof-levels.md`
+- Current landscape review: `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md`
+- Proof-level doctrine: `docs/04-Concepts/architecture/harness-proof-levels.md`
 
 ## Current implemented COS projection
 

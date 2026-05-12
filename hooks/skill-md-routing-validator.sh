@@ -87,7 +87,7 @@ To add routing patterns, include in frontmatter:
     - pattern: "YOUR_INTENT_PATTERN"
       confidence: 0.80
 
-See: docs/adrs/ADR-174-auto-derived-primitive-routing.md
+See: docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md
 
 This warning is non-blocking. The write will proceed.
 WARNING

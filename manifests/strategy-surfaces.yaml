@@ -70,7 +70,7 @@ surfaces:
       ever copy these to docs/.
     exit_path: |
       Sanitize to counts/categories, write a NEW file under
-      docs/reports/, leave raw artifact in place. Never `mv`/`cp`.
+      docs/06-Daily/reports/, leave raw artifact in place. Never `mv`/`cp`.
 
   # ── PRIVATE ──────────────────────────────────────────────────────
   - level: private
@@ -110,7 +110,7 @@ surfaces:
       audited claims they describe are either fixed or accepted as
       "known weaknesses."
     exit_path: |
-      Per-document review. Some can become docs/reports/ entries
+      Per-document review. Some can become docs/06-Daily/reports/ entries
       after the underlying issue is closed; others are permanently
       private (operator forensic record).
 
@@ -119,7 +119,7 @@ surfaces:
     paths:
       - ".cognitive-os/strategy/research/11-cross-stack-license-audit-tools.md"
     rationale: |
-      Superseded by ADR-212 + docs/reports/cross-stack-license-audit-
+      Superseded by ADR-212 + docs/06-Daily/reports/cross-stack-license-audit-
       tools-2026-05-06.md. Kept for historical traceability of the
       decision path, not for re-use. Two parts of the original
       analysis were wrong (Trivy as primary, supply-chain risk
@@ -128,10 +128,10 @@ surfaces:
       None. Public version already exists; this private original is
       a frozen historical record.
 
-  # ── SANITIZED-EXPORT (public docs/reports/) ──────────────────────
+  # ── SANITIZED-EXPORT (public docs/06-Daily/reports/) ──────────────────────
   - level: sanitized-export
     paths:
-      - "docs/reports/*.md"
+      - "docs/06-Daily/reports/*.md"
     rationale: |
       Reports authored to be public from the start, or sanitized
       derivatives of private reports. Subject to PII grep, secret
@@ -142,11 +142,11 @@ surfaces:
   # ── PUBLIC ───────────────────────────────────────────────────────
   - level: public
     paths:
-      - "docs/adrs/*.md"
-      - "docs/research/*.md"
-      - "docs/business/*.md"
-      - "docs/manual-tests/*.md"
-      - "docs/runbooks/*.md"
+      - "docs/02-Decisions/adrs/*.md"
+      - "docs/03-PoCs/research/*.md"
+      - "docs/08-References/business/*.md"
+      - "docs/09-Quality/manual-tests/*.md"
+      - "docs/05-Methodology/runbooks/*.md"
       - "README.md"
       - "LICENSE"
       - "NOTICE"
@@ -176,11 +176,11 @@ hard_rules:
       - ".cognitive-os/strategy/**/*"
 
   - rule: |
-      docs/reports/ files MUST have passed `cos secret audit --strict`
+      docs/06-Daily/reports/ files MUST have passed `cos secret audit --strict`
       AND a PII grep (`/Users/`, operator email, host names) before
       being committed for the first time.
     applies_to:
-      - "docs/reports/*.md"
+      - "docs/06-Daily/reports/*.md"
     enforcement_status: proposed
 
   - rule: |
@@ -206,10 +206,10 @@ audit_signals:
 # Cross-references.
 references:
   adrs:
-    - "docs/adrs/ADR-202-private-content-cross-harness-portability-boundary.md"
-    - "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
-    - "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
-    - "docs/adrs/ADR-218-history-sanitization-toolchain.md"
+    - "docs/02-Decisions/adrs/ADR-202-private-content-cross-harness-portability-boundary.md"
+    - "docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
+    - "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+    - "docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md"
   related_manifests:
     - "manifests/cross-stack-license-audit.yaml"
     - "manifests/cross-stack-secret-audit.yaml"
@@ -238,5 +238,5 @@ open_questions:
       and create the public derivative?
     initial_answer: |
       Yes. Entry stays at its original level; new public-level entry
-      is added; the new file is written under docs/reports/ with a
+      is added; the new file is written under docs/06-Daily/reports/ with a
       header citing the (now-public) origin.

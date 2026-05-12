@@ -30,11 +30,11 @@ def write_fixture(root: Path, doc_text: str, block_text: str | None = None) -> P
         "claims": {
             "sample_claim": {
                 "severity": "high",
-                "source_reports": ["docs/reports/source.json"],
-                "required_docs": ["docs/architecture/doc.md"],
+                "source_reports": ["docs/06-Daily/reports/source.json"],
+                "required_docs": ["docs/04-Concepts/architecture/doc.md"],
                 "required_phrases": ["current phrase"],
                 "forbidden_phrases": ["stale phrase"],
-                "generated_block": {"doc": "docs/architecture/doc.md", "marker": "sample_claim", "required": True},
+                "generated_block": {"doc": "docs/04-Concepts/architecture/doc.md", "marker": "sample_claim", "required": True},
             }
         },
     }
@@ -66,7 +66,7 @@ def test_audit_blocks_stale_generated_block(tmp_path: Path) -> None:
 def test_update_generated_repairs_block(tmp_path: Path) -> None:
     manifest = write_fixture(tmp_path, "current phrase")
 
-    changed = documentation_truth_audit.update_block(tmp_path, "docs/architecture/doc.md", "sample_claim", "sample_claim")
+    changed = documentation_truth_audit.update_block(tmp_path, "docs/04-Concepts/architecture/doc.md", "sample_claim", "sample_claim")
     report = documentation_truth_audit.build_report(tmp_path, manifest)
 
     assert changed is True

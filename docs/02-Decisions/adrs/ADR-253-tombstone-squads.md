@@ -30,7 +30,7 @@ Tombstone
 The `packages/squads/` orchestration package (multi-agent team coordination
 via YAML squad definitions) was archived to `packages/_archived/squads/`
 during Sprint 2A on 2026-04-16 after the audit recorded in
-`docs/architecture/functional-audit/scorecard-packages-squads-agents.md`
+`docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md`
 (F5–F8: 0% runtime integration). The de-facto tombstone lives in
 `packages/_archived/squads/README.md` but no formal ADR-tombstone existed,
 breaking the convention set by ADR-003 / ADR-004 / ADR-005 / ADR-043 /
@@ -54,7 +54,7 @@ See **[ADR-251 — Agent Orchestration Adapter Boundary](ADR-251-agent-orchestra
   and may be deleted in a future cleanup without further ADR.
 
 ## Context
-Surfaced by `docs/reports/cross-check-C-orchestration-2026-05-08.md` §🔍3
+Surfaced by `docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md` §🔍3
 during the 2026-05-08 tech-radar cross-check pass. The audit confirmed:
 intentional dormancy, ADR-251 is the redesign, but the formal ADR-tombstone
 slot was empty.

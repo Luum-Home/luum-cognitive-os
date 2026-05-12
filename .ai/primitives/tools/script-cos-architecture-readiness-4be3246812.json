@@ -58,8 +58,8 @@
       "projection_targets": [
         "scripts/cos-architecture-readiness",
         "scripts/cos_architecture_readiness.py",
-        "docs/adrs/ADR-127-active-primitive-index.md",
-        "docs/adrs/ADR-128-data-layer-integrity-fixes.md"
+        "docs/02-Decisions/adrs/ADR-127-active-primitive-index.md",
+        "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md"
       ],
       "runtime_projection": false
     }
@@ -156,8 +156,8 @@
       "projection_targets": [
         "scripts/cos-architecture-readiness",
         "scripts/cos_architecture_readiness.py",
-        "docs/adrs/ADR-127-active-primitive-index.md",
-        "docs/adrs/ADR-128-data-layer-integrity-fixes.md"
+        "docs/02-Decisions/adrs/ADR-127-active-primitive-index.md",
+        "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md"
       ],
       "runtime_projection": false
     }
@@ -166,8 +166,8 @@
   "projection_targets": [
     "scripts/cos-architecture-readiness",
     "scripts/cos_architecture_readiness.py",
-    "docs/adrs/ADR-127-active-primitive-index.md",
-    "docs/adrs/ADR-128-data-layer-integrity-fixes.md"
+    "docs/02-Decisions/adrs/ADR-127-active-primitive-index.md",
+    "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-architecture-readiness",

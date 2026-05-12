@@ -12,8 +12,8 @@ The default operation is dry-run.  Callers must pass ``write=True`` (or the
 wrapper script's ``--write`` flag) before any vault files are created or
 modified.
 
-ADR reference: ``docs/adrs/ADR-071-engram-lifecycle-evolution.md`` Phase 4.
-Research: ``docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md``.
+ADR reference: ``docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md`` Phase 4.
+Research: ``docs/03-PoCs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md``.
 
 NOT (cross-reference)
 ---------------------

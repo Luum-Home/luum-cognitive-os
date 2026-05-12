@@ -67,8 +67,8 @@ RUNTIME_DIR = ROOT_DIR / ".cognitive-os" / "runtime"
 INDEX_FILE = RUNTIME_DIR / "ast-similarity-index.json"
 BASELINE_FILE = ROOT_DIR / "manifests" / "ast-similarity-baseline.yaml"
 DEFAULT_ALLOWLIST = [
-    "docs/research/",
-    "docs/adrs/",
+    "docs/03-PoCs/research/",
+    "docs/02-Decisions/adrs/",
 ]
 MIN_BODY_LINES = 3  # skip trivial stubs shorter than this
 

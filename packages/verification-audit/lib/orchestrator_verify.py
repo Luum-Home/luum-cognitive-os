@@ -122,7 +122,7 @@ def extract_high_stakes_claims(agent_output: str) -> List[HighStakesClaim]:
       Pass 1 — delegate to lib.ground_truth.extract_claims(), then filter
                only claims whose text contains a HIGH_STAKES_VERBS verb.
       Pass 2 — direct regex scan for verbs the general extractor may have
-               missed (e.g. "The 3 hooks have been archived to docs/archive/").
+               missed (e.g. "The 3 hooks have been archived to docs/99-Archive/archive/").
 
     Returns deduplicated list sorted by verb then target.
     """

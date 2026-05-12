@@ -3,7 +3,7 @@
 # Portability test for scripts/run-redteam-scenario.sh (KD6 gate, §2.2).
 #
 # Contract invariants per design §2.2:
-#   1. Non-SO mini-repo: tempdir uses non-SO structure (attic/ not docs/archive/hooks/)
+#   1. Non-SO mini-repo: tempdir uses non-SO structure (attic/ not docs/99-Archive/archive/hooks/)
 #   2. Bilateral assertion: runner works from non-SO scenarios-dir + out-dir
 #   3. Falsification probe: running with non-default --scenarios-dir that has
 #      a broken scenario causes exit 3 (error), proving runner does NOT fall

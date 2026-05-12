@@ -6,7 +6,7 @@
 
 OpenClaw is an open-source AI agent framework that demonstrates production-grade patterns for LLM agent reliability, self-improvement, and operational resilience. We analyzed its codebase to extract the best patterns applicable to our Cognitive OS.
 
-> **2026-04-08 update**: The Pi Coding Agent investigation confirmed that Pi is the execution engine behind OpenClaw (160K+ stars). OpenClaw's resilience model and multi-channel features run on Pi's double-while agent loop and 7-package architecture. Patterns attributed to "OpenClaw" below derive partly from Pi's core design. See `docs/competitive-landscape.md` for Pi's full entry and `docs/patterns-adopted.md` for Pi-specific patterns (file mutation queue, compaction cut-points, structural tests, settings override) added 2026-04-08.
+> **2026-04-08 update**: The Pi Coding Agent investigation confirmed that Pi is the execution engine behind OpenClaw (160K+ stars). OpenClaw's resilience model and multi-channel features run on Pi's double-while agent loop and 7-package architecture. Patterns attributed to "OpenClaw" below derive partly from Pi's core design. See `docs/08-References/root/competitive-landscape.md` for Pi's full entry and `docs/08-References/root/patterns-adopted.md` for Pi-specific patterns (file mutation queue, compaction cut-points, structural tests, settings override) added 2026-04-08.
 
 ## Adopted Patterns
 

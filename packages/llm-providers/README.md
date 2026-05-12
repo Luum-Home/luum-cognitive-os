@@ -22,6 +22,6 @@ allowing code to import as `from lib.providers.qwen import QwenProvider`.
 
 ## Design
 
-See [ADR-062](../../docs/adrs/ADR-062-multi-provider-agent-loop.md) for the full
+See [ADR-062](../../docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md) for the full
 architecture decision: provider priority order, Qwen-primary strategy, Claude SDK
 opt-in flag, and fallback chain configuration.

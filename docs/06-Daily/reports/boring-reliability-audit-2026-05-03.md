@@ -3,9 +3,9 @@
 **Auditor:** Claude Sonnet 4.6 (read-only + execution audit, no code changes)
 **Date:** 2026-05-03
 **Repo:** luum-cognitive-os (main branch)
-**Reference doc:** `docs/architecture/boring-reliability-control-plane.md`
+**Reference doc:** `docs/04-Concepts/architecture/boring-reliability-control-plane.md`
 **Trigger:** Follow-up to the 2026-05-02 DX assessment
-(`docs/reports/dx-assessment-2026-05-02.md`). The boring-reliability commits
+(`docs/06-Daily/reports/dx-assessment-2026-05-02.md`). The boring-reliability commits
 (`b04efb67`, `fe43587d`, `e0a3d400`) introduced 10 operator tools claiming to
 address several findings from the assessment. This report verifies each tool
 end-to-end so future sessions can measure progress against a real baseline,
@@ -86,7 +86,7 @@ not against the existence of files.
 
 - **Status:** REAL — but the value is partial.
 - **Note:** The `core` profile resolves only one preamble file
-  (`docs/architecture/core-adoption-preamble.md`, 823 bytes / ~205 tokens).
+  (`docs/04-Concepts/architecture/core-adoption-preamble.md`, 823 bytes / ~205 tokens).
   `AGENTS.md` is not included in the `core` profile's `PROFILE_RULE_FILES`.
   The 800-token estimate therefore omits anything Claude Code loads from
   `AGENTS.md` at session start. If the budget is meant to reflect the full
@@ -149,7 +149,7 @@ can re-run the same tools and compare to track movement.
 | Theatre layer (trust/blast/review advisory) | `cos-runtime-hook-reality` + adoption-profile | REAL — 29 `real_blocking`, 59 `real_advisory`, 28 `observe_only`, all classified, no `documented_but_not_projected`. |
 | False positives in gates | `cos-false-positive-ledger` | WORKS but NOISY — see Finding #1, substring match inflates count. |
 | WIP loss in multi-orchestrator | `cos-wip-safety-score` + `cos-recovery-drill` | REAL — score 92/100, 3/3 drill scenarios pass. |
-| Onboarding 1-day SR | `docs/getting-started/core-30-minute-onboarding.md` | NOT VERIFIED IN THIS AUDIT — out of scope for tool audit; doc exists but its claim is "30 minutes", which would require live new-developer testing to verify. |
+| Onboarding 1-day SR | `docs/05-Methodology/getting-started/core-30-minute-onboarding.md` | NOT VERIFIED IN THIS AUDIT — out of scope for tool audit; doc exists but its claim is "30 minutes", which would require live new-developer testing to verify. |
 
 ---
 

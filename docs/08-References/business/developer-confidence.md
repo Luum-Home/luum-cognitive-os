@@ -128,6 +128,6 @@ The DX and safety claim is only valid when backed by visible checks:
 
 - memory lifecycle: `scripts/cos-doctor-memory-lifecycle.sh`
 - host readiness: `scripts/cos-doctor-tools.sh`
-- onboarding proof: `docs/manual-tests/first-run-onboarding.md`
-- proof paths: `docs/manual-tests/proof-paths.md`
-- master plan checklist: `docs/business/master-plan-checklist.md`
+- onboarding proof: `docs/09-Quality/manual-tests/first-run-onboarding.md`
+- proof paths: `docs/09-Quality/manual-tests/proof-paths.md`
+- master plan checklist: `docs/08-References/business/master-plan-checklist.md`

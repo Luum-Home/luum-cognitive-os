@@ -16,8 +16,8 @@ implementation_files:
   - scripts/cos-adoption-profile
   - scripts/cos-runtime-hook-reality
   - scripts/cos-silent-failure-audit
-  - docs/architecture/boring-reliability-control-plane.md
-  - docs/architecture/cognitive-prosthesis.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/cognitive-prosthesis.md
 tier: maintainer
 tags: [ui, cli, superseded]
 ---
@@ -58,7 +58,7 @@ Concretely:
 - `scripts/cos-doctrine-proposer`, `scripts/cos-self-improvement-loop`, `scripts/cos-adoption-profile`, `scripts/cos-runtime-hook-reality`, `scripts/cos-silent-failure-audit`, `scripts/cos-tier-claim-audit`, `scripts/cos-cross-instance-drill`, `scripts/cos-recovery-drill` are operator tools.
 - `scripts/cos-pr-review.sh` covers manual code-review workflows.
 - `scripts/cos-cloud-worker-bootstrap.sh` covers cross-OS deployment (ADR-140 surface).
-- The `docs/reports/` directory is the durable artefact surface: audit reports, baseline snapshots, case studies. Markdown, git-tracked, dated.
+- The `docs/06-Daily/reports/` directory is the durable artefact surface: audit reports, baseline snapshots, case studies. Markdown, git-tracked, dated.
 
 
 ### Complementary surface — Phoenix as opt-in LLM-trace UI
@@ -88,9 +88,9 @@ This decision **does not** prevent a future UI. It declares the **default** is C
 
 ## Border Cases
 
-- **External buyer asks for a UI demo.** The answer is: `bash scripts/cos-boring-reliability --profile core --json | jq .`, plus the markdown reports under `docs/reports/`. If the buyer's evaluation requires a web rendering, that is a Shape B trigger per ADR-132 — not an emergency build of a custom UI under Shape A.
+- **External buyer asks for a UI demo.** The answer is: `bash scripts/cos-boring-reliability --profile core --json | jq .`, plus the markdown reports under `docs/06-Daily/reports/`. If the buyer's evaluation requires a web rendering, that is a Shape B trigger per ADR-132 — not an emergency build of a custom UI under Shape A.
 - **Phoenix is in the explicit observability dependency lane, not the core lock.** Phoenix has a web UI for LLM observability (`uv run phoenix serve` on port 6006). It is OpenTelemetry-aligned and trace-shaped. It does not model COS lifecycle / doctrine / demotion. It can co-exist as an LLM-trace UI without being the COS governance UI. ADR-058 already governs Phoenix's role as the trace surface; ADR-170 does not change that.
-- **Someone clones the repo and looks for a UI.** The README, `docs/getting-started.md`, and `docs/INDEX.md` all point at the CLI surfaces and the runbook for the Docker worker. The `dashboard/ARCHIVED.md` notice closes off the abandoned route. Discoverability is now operator-CLI-shaped, matching the decision.
+- **Someone clones the repo and looks for a UI.** The README, `docs/00-MOCs/entrypoints/getting-started.md`, and `docs/00-MOCs/entrypoints/INDEX.md` all point at the CLI surfaces and the runbook for the Docker worker. The `dashboard/ARCHIVED.md` notice closes off the abandoned route. Discoverability is now operator-CLI-shaped, matching the decision.
 
 ## Consequences
 
@@ -98,12 +98,12 @@ This decision **does not** prevent a future UI. It declares the **default** is C
 
 - Zero new web surface to maintain. Aligns with the *"Subtraction + maturity-driven"* clause in `cognitive-prosthesis.md`.
 - Future buyers are evaluated against operator usability, not against a half-functional dashboard.
-- The doctrine compounds: every audit, every demotion, every proposal flows through `docs/reports/` as durable evidence. The CLI is the interaction model; markdown is the durability layer.
+- The doctrine compounds: every audit, every demotion, every proposal flows through `docs/06-Daily/reports/` as durable evidence. The CLI is the interaction model; markdown is the durability layer.
 
 **Negative / trade-offs.**
 
 - **No graphical demo.** A pitch that depends on a screen-share of moving parts has to use terminal output. Reduces visual appeal in some sales contexts. Mitigated by the strength of the markdown artefacts (case study, audits, ADRs).
-- **Higher onboarding bar for non-CLI users.** A buyer expecting Notion/Linear/Jira-style UI gets terminal output. The runbook ([`docs/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md)) is the first softener; the CLI surface itself is the second.
+- **Higher onboarding bar for non-CLI users.** A buyer expecting Notion/Linear/Jira-style UI gets terminal output. The runbook ([`docs/05-Methodology/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md)) is the first softener; the CLI surface itself is the second.
 
 ## Alternatives rejected
 
@@ -115,7 +115,7 @@ This decision **does not** prevent a future UI. It declares the **default** is C
 The CLI-as-primary-UI decision holds while **all** of the following remain true. If any breaks for the indicated duration, ADR-170 must be revisited:
 
 1. **CLI usability.** A new operator running `bash scripts/cos-boring-reliability --profile core` for the first time understands the system's state within 5 minutes of reading the output. Tested by re-onboarding evidence whenever someone external is exposed to the system. (Onboarding-failure signal.)
-2. **Markdown reports as evidence surface.** `docs/reports/` continues to receive new dated artefacts at a cadence of at least one per major decision cycle. Reports remain readable without web rendering. If reports go silent for 60 days during normal maintenance, the decision is broken. (Evidence-graveyard signal.)
+2. **Markdown reports as evidence surface.** `docs/06-Daily/reports/` continues to receive new dated artefacts at a cadence of at least one per major decision cycle. Reports remain readable without web rendering. If reports go silent for 60 days during normal maintenance, the decision is broken. (Evidence-graveyard signal.)
 3. **No external buyer requires a graphical UI for evaluation.** If three independent external evaluators cite "no UI" as a blocker within 6 months, this is a Shape B trigger and the decision is revisited. (Buyer-demand signal.)
 
 If conditions 1-3 hold for one calendar year, the decision is judged correct and the system stabilises around CLI-first.
@@ -124,8 +124,8 @@ If conditions 1-3 hold for one calendar year, the decision is judged correct and
 
 - [ADR-058](ADR-058-observability-migration-langfuse-to-phoenix.md) — Phoenix as LLM trace surface; unchanged by this ADR.
 - [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — Shape A/B fork criteria; "buyer requires UI" is a Shape B trigger.
-- [`docs/architecture/boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md) — the operating doctrine the CLI surface enacts.
-- [`docs/architecture/cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — the rationale layer; the CLI-first decision is consistent with *"Subtraction + maturity-driven"*.
+- [`docs/04-Concepts/architecture/boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md) — the operating doctrine the CLI surface enacts.
+- [`docs/04-Concepts/architecture/cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — the rationale layer; the CLI-first decision is consistent with *"Subtraction + maturity-driven"*.
 
 ---
 
@@ -145,7 +145,7 @@ What ADR-172 changed:
   Phoenix as a "complementary surface"; ADR-172 elevates it to Surface 2 with
   a defined contract. Engram Cloud (Surface 3) is new in ADR-172.
 - **Named Obsidian / markdown reader as Surface 4.** ADR-170 implicitly relied
-  on "markdown reports under docs/reports/" but did not name the reader
+  on "markdown reports under docs/06-Daily/reports/" but did not name the reader
   surface. ADR-172 makes it explicit and contracted.
 
 What ADR-172 did NOT change from ADR-170:

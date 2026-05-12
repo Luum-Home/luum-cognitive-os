@@ -43,10 +43,10 @@ def test_claim_ledger_blocks_same_adr_number_for_other_session(tmp_path: Path) -
 
 
 def test_release_claim_allows_next_session(tmp_path: Path) -> None:
-    assert acquire_claim(tmp_path, kind="path", subject="docs/adrs/ADR-171.md", session_id="s1").status == "acquired"
-    assert release_claim(tmp_path, kind="path", subject="docs/adrs/ADR-171.md", session_id="s1").status == "released"
+    assert acquire_claim(tmp_path, kind="path", subject="docs/02-Decisions/adrs/ADR-171.md", session_id="s1").status == "acquired"
+    assert release_claim(tmp_path, kind="path", subject="docs/02-Decisions/adrs/ADR-171.md", session_id="s1").status == "released"
 
-    assert acquire_claim(tmp_path, kind="path", subject="docs/adrs/ADR-171.md", session_id="s2").status == "acquired"
+    assert acquire_claim(tmp_path, kind="path", subject="docs/02-Decisions/adrs/ADR-171.md", session_id="s2").status == "acquired"
 
 
 def test_adr_tombstone_findings_block_active_adr_file(tmp_path: Path) -> None:

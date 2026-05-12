@@ -197,7 +197,7 @@ grep -nE 'self-install|cos-init|install-cos|apply-efficiency-profile' <repo-root
 | File | Change | Lines |
 |---|---|---|
 | `scripts/cos-init.sh` | Add `.claude/skills/cos/` as a second skills-install destination by looping over `SKILL_DESTS`. `skills_installed` counter guarded to increment only on the driver-path pass. | +31 / −25 (net +6) |
-| `docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md` | **NEW** — this file. | +N/A (new) |
+| `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md` | **NEW** — this file. | +N/A (new) |
 
 No other files touched. Scope guard honoured: `cos-init-global.sh` and `cos-bootstrap.sh`
 not modified (no bug).

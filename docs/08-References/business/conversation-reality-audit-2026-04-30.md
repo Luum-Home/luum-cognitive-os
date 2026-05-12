@@ -91,7 +91,7 @@ python3 -m pytest tests/contracts/ -q
 
 ### Outputs
 
-- `docs/reports/reality-matrix-2026-04.md`
+- `docs/06-Daily/reports/reality-matrix-2026-04.md`
 - deletion/demotion candidates grouped by primitive type
 - list of product claims that need wording changes
 
@@ -130,7 +130,7 @@ Capture:
 
 ### Outputs
 
-- `docs/reports/dx-efficiency-baseline-2026-04.md`
+- `docs/06-Daily/reports/dx-efficiency-baseline-2026-04.md`
 - recommended default profile limits
 - hooks to disable, merge, or make async
 
@@ -272,7 +272,7 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 - [x] Capture current dogfood score and dimension breakdown.
 - [x] Count primitive families: hooks, rules, skills, agents, memory, MCP/tools, config/projection, metrics, tests, docs/ADRs.
 - [x] Record initial hook wiring, skill coverage, metrics emptiness, and hook latency snapshot.
-- [x] Create `docs/reports/primitive-gap-matrix-2026-04.md` with row-level findings.
+- [x] Create `docs/06-Daily/reports/primitive-gap-matrix-2026-04.md` with row-level findings.
 - [x] Define final severity taxonomy for gaps: blocker, high, medium, low.
 
 ### 1. Hooks
@@ -428,8 +428,8 @@ This keeps current known debt visible while preventing the SO from growing new u
 ### 13. Periodic Automation
 
 - [x] Add a repository script that generates a primitive gap snapshot from current repo evidence.
-- [x] Append periodic snapshots to `docs/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs.
-- [x] Generate a latest Markdown report at `docs/reports/primitive-gap-latest.md`.
+- [x] Append periodic snapshots to `docs/06-Daily/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs.
+- [x] Generate a latest Markdown report at `docs/06-Daily/reports/primitive-gap-latest.md`.
 - [x] Add a scheduled GitHub Actions workflow for weekly primitive gap snapshots.
 - [x] Add regression-based escalation so new primitive gaps fail against the tracked baseline.
 - [x] Wire row-level primitive audit, claim-to-proof audit, and reduction backlog generation into the weekly workflow.
@@ -443,7 +443,7 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Verify existing reinvention barrier scope (`hooks/reinvention-check.sh`).
 - [x] Confirm current barrier is code/file-creation oriented and advisory, not a complete documentation duplicate guard.
 - [x] Add automated near-duplicate Markdown scan.
-- [x] Store current duplicate-doc baseline at `docs/reports/docs-duplicate-baseline.json`.
+- [x] Store current duplicate-doc baseline at `docs/06-Daily/reports/docs-duplicate-baseline.json`.
 - [x] Fail weekly audit on new duplicate documentation pairs versus baseline.
 - [ ] Add row-level doc claim ownership so agents know which existing doc to update instead of creating another.
 - [x] Add pre-write hook guidance for docs creation prompts: search/update before create.
@@ -473,14 +473,14 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Add a family-specific hook surface reducer with plan/apply-safe modes.
 - [x] Apply safe hook reduction for demoted, unregistered, untested root hooks.
 - [x] Move safe hook removals to `archive/primitive-surface/hooks/` instead of deleting them.
-- [x] Generate a durable surface reduction report at `docs/reports/primitive-surface-reduction-latest.md`.
+- [x] Generate a durable surface reduction report at `docs/06-Daily/reports/primitive-surface-reduction-latest.md`.
 - [x] Wire the weekly primitive gap workflow to refresh the hook surface reduction plan.
 - [ ] Review optional symlink aliases with package owners before removing aliases.
 
 ### 18. Primitive Usage / Consumer Coverage
 
 - [x] Add a static consumer map for Python scripts and other primitive families.
-- [x] Generate `docs/reports/primitive-usage-map-latest.md` and JSON from `scripts/primitive_usage_map.py`.
+- [x] Generate `docs/06-Daily/reports/primitive-usage-map-latest.md` and JSON from `scripts/primitive_usage_map.py`.
 - [x] Wire the weekly primitive gap workflow to refresh the scripts usage map.
 - [x] Add an OS-only `/primitive-usage-map` skill so maintainers can ask which skills/hooks/rules/tests/docs consume each primitive.
 - [x] Add an OS-only `/primitive-surface-reduction` skill that wraps the reducer and keeps it out of target projects.

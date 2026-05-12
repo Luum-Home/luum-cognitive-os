@@ -68,7 +68,7 @@ See ADR-273 §Operational Guide for the full reading model.
 | `plan:so-existential-validation-2026-04-24:commit-archival-batch-once-dormant-test-marker-wor` | unverified | **verified-pending** | Commit archival batch once DORMANT test/marker work reduces  |
 | `plan:so-existential-validation-2026-04-24:dormant-aspirational-ratio-0-25-hard` | unverified | **verified-pending** | `dormant_aspirational_ratio < 0.25` (hard). |
 | `plan:so-existential-validation-2026-04-24:aspirational-count-0-hard-either-resolved-or-remov` | unverified | **obsolete** | ASPIRATIONAL count == 0 (hard — either resolved or removed). |
-| `plan:so-existential-validation-2026-04-24:docs-archive-receives-items-history-preserved-no-d` | unverified | **verified-pending** | `docs/archive/` receives items (history preserved, no deleti |
+| `plan:so-existential-validation-2026-04-24:docs-archive-receives-items-history-preserved-no-d` | unverified | **verified-pending** | `docs/99-Archive/archive/` receives items (history preserved, no deleti |
 | `plan:so-existential-validation-2026-04-24:dogfood-score-skill-coverage-or-hook-wiring-improv` | unverified | **verified-pending** | dogfood-score `skill_coverage` or `hook_wiring` improves ≥10 |
 | `plan:so-existential-validation-2026-04-24:if-elapsed-s-300-and-manual-steps-3-and-errors-0-k` | unverified | **verified-pending** | If `elapsed_s < 300` AND `manual_steps <= 3` AND `errors ==  |
 | `plan:so-existential-validation-2026-04-24:else-demote-claim-in-readme-to-scripted-install-n-` | unverified | **verified-pending** | Else: demote claim in README to "scripted install (N min, M  |
@@ -106,8 +106,8 @@ See ADR-273 §Operational Guide for the full reading model.
 | `plan:hook-architecture-v2:profile-json-files-and-set-security-profile-sh-scr` | unverified | **verified-pending** | Profile JSON files and set-security-profile.sh script are in |
 | `plan:hook-architecture-v2:no-hook-file-references-missing-from-any-profile` | unverified | **verified-pending** | No hook file references missing from any profile |
 | `plan:hook-architecture-v2:profile-subset-relationships-maintained` | unverified | **verified-pending** | Profile subset relationships maintained |
-| `plan:hook-architecture-v2:hook-counts-documented-in-docs-hook-security-profi` | unverified | **verified-done** | Hook counts documented in `docs/hook-security-profiles.md` m |
-| `plan:hook-architecture-v2:docs-hook-security-profiles-md-comparison-matrix-i` | unverified | **verified-done** | `docs/hook-security-profiles.md` comparison matrix is up to  |
+| `plan:hook-architecture-v2:hook-counts-documented-in-docs-hook-security-profi` | unverified | **verified-done** | Hook counts documented in `docs/09-Quality/root/hook-security-profiles.md` m |
+| `plan:hook-architecture-v2:docs-hook-security-profiles-md-comparison-matrix-i` | unverified | **verified-done** | `docs/09-Quality/root/hook-security-profiles.md` comparison matrix is up to  |
 | `plan:workflow-engine:lib-workflow-engine-py-and-lib-workflow-types-py-e` | unverified | **verified-pending** | `lib/workflow_engine.py` and `lib/workflow_types.py` exist a |
 | `plan:workflow-engine:networkx-added-to-requirements-txt-and-importable` | unverified | **verified-pending** | `networkx` added to `requirements.txt` and importable |
 | `plan:workflow-engine:sdd-pipeline-yaml-and-ci-check-yaml-exist-in-cogni` | unverified | **verified-pending** | `sdd-pipeline.yaml` and `ci-check.yaml` exist in `.cognitive |

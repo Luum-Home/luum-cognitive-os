@@ -18,7 +18,7 @@ def test_runtime_change_selects_targeted_before_laptop(project_root) -> None:
 
 @pytest.mark.unit
 def test_docs_manifest_change_selects_audit_only(project_root) -> None:
-    plan = plan_tests(project_root, changed_files=["docs/adrs/ADR-237-test-execution-efficiency-protocol.md"])
+    plan = plan_tests(project_root, changed_files=["docs/02-Decisions/adrs/ADR-237-test-execution-efficiency-protocol.md"])
     assert [lane.name for lane in plan.lanes] == ["audit"]
 
 

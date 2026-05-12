@@ -68,7 +68,7 @@ The repository already has real Git and landing primitives:
 - `scripts/merge-to-main.sh`, `scripts/cos-merge-queue.sh`,
   `scripts/cos-merge-queue-worker.sh`, and `lib/merge_queue.py` provide a
   governed local landing path.
-- `docs/architecture/protected-landing-contract.md` defines vendor-neutral
+- `docs/04-Concepts/architecture/protected-landing-contract.md` defines vendor-neutral
   protected landing across GitHub, GitLab, Gitea/Forgejo, Bitbucket, bare Git,
   and unknown remotes.
 - `hooks/git-context-capture.sh` and `lib/git_context.py` record session-end Git
@@ -96,7 +96,7 @@ not Cognitive OS agentic primitives.
 The architecture document is:
 
 ```text
-docs/architecture/harness-action-receipts.md
+docs/04-Concepts/architecture/harness-action-receipts.md
 ```
 
 ## Trust levels
@@ -171,7 +171,7 @@ Receipts should be stored according to their role:
 | `.cognitive-os/metrics/vcs-actions.jsonl` | Append-only audit for all receipts, including advisory harness directives. | all |
 | `.cognitive-os/sessions/events.jsonl` | Inter-session coordination. | `verified` and `authoritative` by default |
 | `.cognitive-os/sessions/<session>/git-context.json` | Session-end Git summary. | `observed`, `verified`, `authoritative` |
-| `docs/reports/*.md` and dashboard | Human-visible reporting. | all, with trust labels visible |
+| `docs/06-Daily/reports/*.md` and dashboard | Human-visible reporting. | all, with trust labels visible |
 
 Advisory receipts must not close tasks, release claims, suppress collision
 warnings, or satisfy high-stakes verification. They are UI/audit hints until
@@ -228,9 +228,9 @@ Implementation remains incremental.
 
 ```text
 ACCEPTANCE CRITERIA:
-1. `docs/architecture/harness-action-receipts.md` defines harness directives, action receipts, trust levels, schema, storage, adapters, and anti-patterns.
-2. `docs/adrs/ADR-190-harness-action-receipts.md` records the decision that Codex `::git-*` directives are not agentic primitives.
-3. `docs/README.md` links both documents from the documentation index.
+1. `docs/04-Concepts/architecture/harness-action-receipts.md` defines harness directives, action receipts, trust levels, schema, storage, adapters, and anti-patterns.
+2. `docs/02-Decisions/adrs/ADR-190-harness-action-receipts.md` records the decision that Codex `::git-*` directives are not agentic primitives.
+3. `docs/00-MOCs/entrypoints/README.md` links both documents from the documentation index.
 4. `lib/harness_action_receipts.py` validates schema, parses Codex directives, appends JSONL receipts, and promotes supported receipts from advisory to observed only after local Git evidence.
 5. `scripts/cos-action-receipt` exposes emit, parse-codex, validate, append, and JSON output modes.
 6. Unit tests cover schema validation, trust levels, Codex directive parsing, Git-state promotion, pre-push promotion, provider promotion, JSONL append, stats/report output, and CLI behavior.
@@ -249,9 +249,9 @@ bash -n scripts/cos-action-receipt hooks/direct-main-guard.sh hooks/git-commit-s
 python3 - <<'PY'
 from pathlib import Path
 for path in [
-    'docs/architecture/harness-action-receipts.md',
-    'docs/adrs/ADR-190-harness-action-receipts.md',
-    'docs/README.md',
+    'docs/04-Concepts/architecture/harness-action-receipts.md',
+    'docs/02-Decisions/adrs/ADR-190-harness-action-receipts.md',
+    'docs/00-MOCs/entrypoints/README.md',
     'lib/harness_action_receipts.py',
     'scripts/cos-action-receipt',
     'tests/unit/test_harness_action_receipts.py',

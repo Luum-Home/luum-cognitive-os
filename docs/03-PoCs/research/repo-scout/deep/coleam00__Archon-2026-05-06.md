@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:50 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (Harness builder focused on deterministic/repeatable AI coding)
 deep_verdict: TRIAL — strong patterns but TS-only and pre-1.0; pattern adoption only
 deepwiki_url: https://deepwiki.com/coleam00/Archon

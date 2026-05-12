@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted — Slices A–E implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-203 (subagent capability contract), ADR-211 (service mode readiness), ADR-225 (branch-per-task — reserved); depends on ADR-226 (event-sourced session bus); pairs with ADR-233 (cross-session agent teams)
-**Source**: [`docs/research/orchestration-gaps/agent-to-agent-handoff.md`](../research/orchestration-gaps/agent-to-agent-handoff.md). Production failure rate of 41–87% on state-of-the-art open-source multi-agent systems (MAST 2025 paper). The #1 production failure mode is the infinite handoff loop: agent A delegates to B who delegates to C who re-delegates back to A. **Zero frameworks prevent this.** Cognitive OS today has no handoff protocol at all — every cross-agent call routes through the orchestrator — but ADR-211 service mode and ADR-233 cross-session teams both anticipate one. This ADR ships the protocol.
+**Source**: [`docs/03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md`](../research/orchestration-gaps/agent-to-agent-handoff.md). Production failure rate of 41–87% on state-of-the-art open-source multi-agent systems (MAST 2025 paper). The #1 production failure mode is the infinite handoff loop: agent A delegates to B who delegates to C who re-delegates back to A. **Zero frameworks prevent this.** Cognitive OS today has no handoff protocol at all — every cross-agent call routes through the orchestrator — but ADR-211 service mode and ADR-233 cross-session teams both anticipate one. This ADR ships the protocol.
 
 ---
 
@@ -267,7 +267,7 @@ The tests must prove:
 3. **Slice C — Permission intersection** (~30 LOC). Wire `lib/agent_capability_index.py` (existing). Emit scoped-down event. Tests T1+T5.
 4. **Slice D — Hook integration** (~30 LOC). Register `HandoffRequested`, `HandoffCompleted`, `HandoffCycleDetected`, etc. as ADR-226 event types. Tests T2+T3.
 5. **Slice E — Manifest + audit test** (~rule-only + ~30 LOC test). `manifests/handoff-protocol.yaml` + CI test asserting no raw `dispatch_to_agent` calls in `hooks/`, `scripts/`, `lib/`. Tests T9 audit.
-6. **Slice F — Operator runbook** at `docs/runbooks/handoff-troubleshooting.md`. Three flows: cycle-detected, blast-radius-block, depth-exceeded.
+6. **Slice F — Operator runbook** at `docs/05-Methodology/runbooks/handoff-troubleshooting.md`. Three flows: cycle-detected, blast-radius-block, depth-exceeded.
 
 Total: ~180 LOC. Slice B alone (cycle dedup) is the <1-day high-ROI MVP.
 

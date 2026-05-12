@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This artifact records the ADR namespace and semantic-collision cleanup performed after an audit of `docs/adrs/`.
+This artifact records the ADR namespace and semantic-collision cleanup performed after an audit of `docs/02-Decisions/adrs/`.
 
 ## Acceptance criteria
 

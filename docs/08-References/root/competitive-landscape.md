@@ -641,9 +641,9 @@ The AI agent ecosystem has developed specialized infrastructure patterns. Cognit
 ### Sources
 
 See also:
-- `docs/gateway-architecture.md` — detailed gateway comparison (11 tools)
-- `docs/research/wisc-framework-analysis.md` — context management research
-- `docs/tool-stack.md` — full tech radar with ADOPT/WATCH/SKIP verdicts
+- `docs/04-Concepts/root/gateway-architecture.md` — detailed gateway comparison (11 tools)
+- `docs/03-PoCs/research/wisc-framework-analysis.md` — context management research
+- `docs/04-Concepts/root/tool-stack.md` — full tech radar with ADOPT/WATCH/SKIP verdicts
 
 ### Sources
 

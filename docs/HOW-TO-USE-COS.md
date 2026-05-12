@@ -1,1 +1,0 @@
-00-MOCs/entrypoints/HOW-TO-USE-COS.md

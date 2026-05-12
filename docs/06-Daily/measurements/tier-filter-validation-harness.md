@@ -142,7 +142,7 @@ Anyone can re-run the harness at any time:
 python3 scripts/validate_tier_filter.py \
   --approach=synthetic \
   --n=30 \
-  --output=docs/measurements/tier-filter-validation-$(date +%F).json
+  --output=docs/06-Daily/measurements/tier-filter-validation-$(date +%F).json
 ```
 
 Or with real session replay (when more ref-key-bearing sessions accumulate):
@@ -151,7 +151,7 @@ Or with real session replay (when more ref-key-bearing sessions accumulate):
 python3 scripts/validate_tier_filter.py \
   --approach=replay \
   --n=30 \
-  --output=docs/measurements/tier-filter-validation-$(date +%F).json
+  --output=docs/06-Daily/measurements/tier-filter-validation-$(date +%F).json
 ```
 
 Results accumulate over time; compare runs to track drift in the recommendation.

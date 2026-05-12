@@ -23,7 +23,7 @@ tags: [concurrency, worktree, governance, session-safety, postmortem-2026-05-05]
 ## Status
 
 **Accepted.** Implemented as the ADR-182 branch-lock hook, library, CLI wrappers, and contract tests. Filed in response to the cross-session collision incident
-documented in `docs/reports/postmortem-cross-session-collision-2026-05-05.md`.
+documented in `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md`.
 
 ## Context
 
@@ -209,7 +209,7 @@ Before this ADR, two concurrent Claude Code sessions could hold the same
 branch simultaneously with no mutual visibility. A second session issuing
 `git commit` or `git push` on a branch already held by the first session
 would succeed silently, producing the destructive race documented in
-`docs/reports/postmortem-cross-session-collision-2026-05-05.md`.
+`docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md`.
 
 After this ADR:
 
@@ -303,9 +303,9 @@ commit), the implementation is broken and ADR-182 must be revisited.
 
 ## Cross-References
 
-- `docs/reports/postmortem-cross-session-collision-2026-05-05.md` —
+- `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md` —
   origin incident.
-- `docs/reports/session-state-forensics-2026-05-05.md` — forensic
+- `docs/06-Daily/reports/session-state-forensics-2026-05-05.md` — forensic
   detail.
 - ADR-088 commit_provenance — complementary post-hoc audit.
 - ADR-111 concurrency_safety — passive primitives this ADR makes
@@ -314,9 +314,9 @@ commit), the implementation is broken and ADR-182 must be revisited.
   prevents conflicts; ADR-183 surfaces awareness of peers).
 - ADR-184 manager-of-managers daemon — supersedes this lock when daemon
   is the only writer, but ADR-182 is operative until then.
-- `docs/architecture/cross-session-coordination-ledger.md` — worktree intake
+- `docs/04-Concepts/architecture/cross-session-coordination-ledger.md` — worktree intake
   and intent claims.
-- `docs/architecture/agent-message-bus.md` — auditor-to-operator directed
+- `docs/04-Concepts/architecture/agent-message-bus.md` — auditor-to-operator directed
   findings and acknowledgement.
 
 ## Verification

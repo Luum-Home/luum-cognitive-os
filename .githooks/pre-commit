@@ -29,7 +29,7 @@ if [ -f "$BLOCKED_STRINGS_FILE" ]; then
     while IFS= read -r staged_path; do
       [ -z "$staged_path" ] && continue
       case "$staged_path" in
-        .githooks/*|tests/*|.engram/exports/*|docs/architecture/POST-MORTEM*|docs/business/*|templates/blocked-strings.example.txt)
+        .githooks/*|tests/*|.engram/exports/*|docs/04-Concepts/architecture/POST-MORTEM*|docs/08-References/business/*|templates/blocked-strings.example.txt)
           continue
           ;;
       esac
@@ -46,7 +46,7 @@ if [ -f "$BLOCKED_STRINGS_FILE" ]; then
       echo "$VIOLATIONS" >&2
       echo "" >&2
       echo "  Edit the file or move the content to a path Gate 1 ignores" >&2
-      echo "  (.githooks/, tests/, .engram/exports/, docs/architecture/POST-MORTEM*, docs/business/)." >&2
+      echo "  (.githooks/, tests/, .engram/exports/, docs/04-Concepts/architecture/POST-MORTEM*, docs/08-References/business/)." >&2
       echo "  Template + setup: templates/blocked-strings.example.txt" >&2
       exit 1
     fi
@@ -296,7 +296,7 @@ if [ -n "$staged_tests_new" ]; then
     else
       echo "BLOCKED: New test file(s) contain only structural assertions (path.exists, is_file, 'in content')."
       echo "  Add assertions that test return values, side effects, or error handling."
-      echo "  See docs/testing/mutation-testing.md for guidance."
+      echo "  See docs/09-Quality/testing/mutation-testing.md for guidance."
       exit 1
     fi
   fi

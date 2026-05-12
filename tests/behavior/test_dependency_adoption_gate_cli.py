@@ -52,10 +52,10 @@ def test_dependency_adoption_gate_cli_blocks_without_evidence(project_root: Path
 def test_dependency_adoption_gate_cli_passes_with_evidence(project_root: Path, tmp_path: Path) -> None:
     repo = _init_repo(tmp_path)
     (repo / "requirements.txt").write_text("httpx==0.27.0\n", encoding="utf-8")
-    evidence = repo / "docs/reports/repo-forensics-httpx.md"
+    evidence = repo / "docs/06-Daily/reports/repo-forensics-httpx.md"
     evidence.parent.mkdir(parents=True)
     evidence.write_text("# Repo Forensics — httpx\n", encoding="utf-8")
-    _git(repo, "add", "requirements.txt", "docs/reports/repo-forensics-httpx.md")
+    _git(repo, "add", "requirements.txt", "docs/06-Daily/reports/repo-forensics-httpx.md")
 
     result = subprocess.run(
         [
@@ -73,4 +73,4 @@ def test_dependency_adoption_gate_cli_passes_with_evidence(project_root: Path, t
     assert result.returncode == 0
     payload = json.loads(result.stdout)
     assert payload["status"] == "pass"
-    assert payload["evidence_files"] == ["docs/reports/repo-forensics-httpx.md"]
+    assert payload["evidence_files"] == ["docs/06-Daily/reports/repo-forensics-httpx.md"]

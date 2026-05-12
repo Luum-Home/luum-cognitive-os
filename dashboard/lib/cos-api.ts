@@ -272,12 +272,12 @@ export async function getPrimitiveProjectionFidelitySummary(): Promise<Primitive
       harnessStatus: countProjectionRows(report.items || [], "harness"),
       fidelityStatus: countProjectionRows(report.items || [], "status"),
       pendingContracts: pendingPrimitiveContracts(report.items || []),
-      reportPath: "docs/reports/primitive-projection-fidelity-latest.json",
+      reportPath: "docs/06-Daily/reports/primitive-projection-fidelity-latest.json",
       consumesReport: true,
       mode: "observe-only",
     };
   } catch {
-    return { contracts: 0, projectionRows: 0, aligned: 0, gaps: 0, unknown: 0, pendingRuntimeSmoke: 0, harnessStatus: {}, fidelityStatus: {}, pendingContracts: [], reportPath: "docs/reports/primitive-projection-fidelity-latest.json", consumesReport: false, mode: "observe-only" };
+    return { contracts: 0, projectionRows: 0, aligned: 0, gaps: 0, unknown: 0, pendingRuntimeSmoke: 0, harnessStatus: {}, fidelityStatus: {}, pendingContracts: [], reportPath: "docs/06-Daily/reports/primitive-projection-fidelity-latest.json", consumesReport: false, mode: "observe-only" };
   }
 }
 
@@ -291,12 +291,12 @@ export async function getOpenCodePrimitiveAdapterSmokeSummary(): Promise<OpenCod
       supportedPrimitives: Array.isArray(report.supported_primitives) ? report.supported_primitives.length : 0,
       ledgerRows: Number(report.ledger_row_count || 0),
       events: Array.isArray((report.plugin || {}).events) ? (report.plugin || {}).events.map(String) : [],
-      reportPath: "docs/reports/opencode-primitive-adapter-smoke-latest.json",
+      reportPath: "docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.json",
       consumesReport: true,
       mode: "observe-only",
     };
   } catch {
-    return { status: "unavailable", version: "", supportedPrimitives: 0, ledgerRows: 0, events: [], reportPath: "docs/reports/opencode-primitive-adapter-smoke-latest.json", consumesReport: false, mode: "observe-only" };
+    return { status: "unavailable", version: "", supportedPrimitives: 0, ledgerRows: 0, events: [], reportPath: "docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.json", consumesReport: false, mode: "observe-only" };
   }
 }
 

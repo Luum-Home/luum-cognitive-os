@@ -75,7 +75,7 @@ prove the external tap distribution. The external tap remains unproven until
 
 Files:
 
-- `docs/adrs/ADR-192-surface-5-adopt-bubbletea.md`
+- `docs/02-Decisions/adrs/ADR-192-surface-5-adopt-bubbletea.md`
 - `cmd/cos/internal/tui/proof.go`
 - `cmd/cos/internal/tui/proof_test.go`
 - `cmd/cos/go.mod`
@@ -90,7 +90,7 @@ cd cmd/cos && go test ./...
 
 Files:
 
-- `docs/adrs/ADR-193-cosd-local-network-api.md`
+- `docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md`
 - `scripts/cosd`
 - `scripts/cos_daemon.py`
 - `tests/integration/test_cosd_daemon.py`

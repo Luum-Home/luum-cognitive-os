@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:58 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (190-probe offensive corpus, single Go binary; complements Aguara defense)
 deep_verdict: ADOPT — comprehensive Go-binary red-team corpus; complementary to snyk/agent-scan and Aguara
 deepwiki_url: https://deepwiki.com/praetorian-inc/augustus

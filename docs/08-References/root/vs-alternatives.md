@@ -8,7 +8,7 @@ current tool handles what it does well, and Cognitive OS adds the verification,
 safety, and portability discipline it lacks.
 
 See [ADR-059](adrs/ADR-059-existential-validation.md) and
-[docs/business/durable-product-master-plan.md](business/durable-product-master-plan.md)
+[docs/08-References/business/durable-product-master-plan.md](business/durable-product-master-plan.md)
 for the product strategy that drives this framing.
 
 ---
@@ -63,7 +63,7 @@ they do not conflict with Hermes's own skill runner.
 **When to use both**: your project needs the skill breadth Hermes provides AND
 you want verifiable, audited execution.
 
-See [docs/migration-from/from-hermes.md](migration-from/from-hermes.md).
+See [docs/08-References/migration-from/from-hermes.md](migration-from/from-hermes.md).
 
 ---
 

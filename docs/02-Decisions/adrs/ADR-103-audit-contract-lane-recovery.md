@@ -61,7 +61,7 @@ The lane registry remains the source of truth:
   `.cognitive-os/plans/architecture/`.
 - The pytest wrapper becomes more portable across worktrees without `.venv`.
 - Parallel cos-test runs preserve self-install isolation through load groups.
-- Report Markdown that must be committed lives under `docs/reports/`; runtime
+- Report Markdown that must be committed lives under `docs/06-Daily/reports/`; runtime
   `.cognitive-os/reports/` stays transient.
 
 ## Verification

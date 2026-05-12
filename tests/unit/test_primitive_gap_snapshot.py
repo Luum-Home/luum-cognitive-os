@@ -29,7 +29,7 @@ def test_collect_reports_hook_wiring_and_metrics(tmp_path: Path) -> None:
     write(tmp_path / ".cognitive-os/metrics/empty.jsonl", "")
     write(tmp_path / "manifests/reduction-demotions.json", '{"demotions":[{"family":"metrics","path":".cognitive-os/metrics/empty.jsonl"}]}')
     write(tmp_path / ".cognitive-os/metrics/hook-timing.jsonl", '{"duration_ms": 10}\n{"duration_ms": 30}\n')
-    write(tmp_path / "docs/adrs/ADR-001-demo.md", "# ADR-001\n")
+    write(tmp_path / "docs/02-Decisions/adrs/ADR-001-demo.md", "# ADR-001\n")
     write(tmp_path / "docs/index.md", "ADR-001\n")
     write(tmp_path / "cognitive-os.yaml", "project:\n  phase: reconstruction\n")
 
@@ -68,7 +68,7 @@ def test_cli_writes_trend_and_markdown(tmp_path: Path, monkeypatch) -> None:
             str(tmp_path),
             "--trend",
             "--markdown",
-            "docs/reports/snapshot.md",
+            "docs/06-Daily/reports/snapshot.md",
         ],
     )
 
@@ -76,7 +76,7 @@ def test_cli_writes_trend_and_markdown(tmp_path: Path, monkeypatch) -> None:
 
     assert exit_code == 0
     assert (tmp_path / ".cognitive-os/metrics/primitive-gap-snapshot.jsonl").exists()
-    assert (tmp_path / "docs/reports/snapshot.md").exists()
+    assert (tmp_path / "docs/06-Daily/reports/snapshot.md").exists()
 
 
 def test_compare_regressions_detects_unproven_growth() -> None:
@@ -114,7 +114,7 @@ def test_cli_fails_on_regression_against_trend(tmp_path: Path, monkeypatch) -> N
         ],
         "hook_latency": {"p95_ms": 0},
     }
-    write(tmp_path / "docs/reports/history.jsonl", primitive_gap_snapshot.json.dumps(previous) + "\n")
+    write(tmp_path / "docs/06-Daily/reports/history.jsonl", primitive_gap_snapshot.json.dumps(previous) + "\n")
     monkeypatch.setattr(
         sys,
         "argv",
@@ -123,26 +123,26 @@ def test_cli_fails_on_regression_against_trend(tmp_path: Path, monkeypatch) -> N
             "--project-root",
             str(tmp_path),
             "--trend-path",
-            "docs/reports/history.jsonl",
+            "docs/06-Daily/reports/history.jsonl",
             "--fail-on-regression",
             "--regression-report",
-            "docs/reports/regressions.md",
+            "docs/06-Daily/reports/regressions.md",
             "--markdown",
-            "docs/reports/snapshot.md",
+            "docs/06-Daily/reports/snapshot.md",
         ],
     )
 
     exit_code = primitive_gap_snapshot.main()
 
     assert exit_code == 1
-    assert "Regressions" in (tmp_path / "docs/reports/regressions.md").read_text(encoding="utf-8")
+    assert "Regressions" in (tmp_path / "docs/06-Daily/reports/regressions.md").read_text(encoding="utf-8")
 
 
 def test_generated_snapshot_reports_do_not_influence_evidence_counts(tmp_path: Path) -> None:
-    write(tmp_path / "docs/reports/primitive-gap-latest.json", '{"family":"mcp_tools"}\n')
-    write(tmp_path / "docs/reports/primitive-gap-latest.md", "mcp_tools\n")
-    write(tmp_path / "docs/reports/primitive-gap-regressions.md", "mcp regression\n")
-    write(tmp_path / "docs/reports/ordinary.md", "mcp\n")
+    write(tmp_path / "docs/06-Daily/reports/primitive-gap-latest.json", '{"family":"mcp_tools"}\n')
+    write(tmp_path / "docs/06-Daily/reports/primitive-gap-latest.md", "mcp_tools\n")
+    write(tmp_path / "docs/06-Daily/reports/primitive-gap-regressions.md", "mcp regression\n")
+    write(tmp_path / "docs/06-Daily/reports/ordinary.md", "mcp\n")
 
     files = primitive_gap_snapshot.text_files(tmp_path, ["docs"])
     names = {path.name for path in files}

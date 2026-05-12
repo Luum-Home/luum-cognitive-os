@@ -3,9 +3,9 @@ title: External Tool Intelligence Plane and Project Overlays
 status: proposed
 date: 2026-05-08
 related:
-  - docs/reports/external-tools-radar-INDEX.md
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
+  - docs/06-Daily/reports/external-tools-radar-INDEX.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
   - manifests/cross-stack-adoption-truth.yaml
   - manifests/capability-coverage.yaml
 ---
@@ -87,13 +87,13 @@ Sources:
 The OS repository owns the deep research and reusable adoption intelligence:
 
 ```text
-docs/reports/external-tools-radar-INDEX.md
-docs/reports/external-tools-radar-YYYY-MM-DD.md
-docs/reports/external-tools-master-inventory-YYYY-MM-DD.{md,json}
-docs/reports/external-tools-reassessment-scope-YYYY-MM-DD.{md,json}
-docs/reports/external-tools-deep-dive/{tool-id}.md
-docs/architecture/external-tool-adoption-doctrine.md
-docs/architecture/external-tool-adapter-taxonomy.md
+docs/06-Daily/reports/external-tools-radar-INDEX.md
+docs/06-Daily/reports/external-tools-radar-YYYY-MM-DD.md
+docs/06-Daily/reports/external-tools-master-inventory-YYYY-MM-DD.{md,json}
+docs/06-Daily/reports/external-tools-reassessment-scope-YYYY-MM-DD.{md,json}
+docs/06-Daily/reports/external-tools-deep-dive/{tool-id}.md
+docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
 manifests/external-tools-adoption.yaml
 ```
 
@@ -114,8 +114,8 @@ tools:
     adoption_kind: dependency
     license: Apache-2.0
     source_of_truth:
-      radar_report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md
-      deep_dive: docs/reports/external-tools-deep-dive/fastmcp.md
+      radar_report: docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md
+      deep_dive: docs/06-Daily/reports/external-tools-deep-dive/fastmcp.md
     allowed_surfaces:
       os_repo: true
       consumer_projects: optional

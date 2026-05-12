@@ -1,8 +1,8 @@
 # Plans Discovery Triage — 2026-05-11
 
-**Scope**: 31 untouched plans (the 15 P2/P3 plans triaged 2026-05-10 by Opus are excluded) + revalidation of the 8-item "Recommended Order of Attack" from `docs/reports/pending-plans-audit-2026-04-30.md`.
+**Scope**: 31 untouched plans (the 15 P2/P3 plans triaged 2026-05-10 by Opus are excluded) + revalidation of the 8-item "Recommended Order of Attack" from `docs/06-Daily/reports/pending-plans-audit-2026-04-30.md`.
 
-**Method**: Per plan: head -50/-80 + grep of checkbox totals (`- [x]` vs `- [ ]`) + grep of `Status:` / `RECONCILIATION` headers + cross-check against `CHANGELOG.md` (Unreleased + [0.28.0]), recent ADRs (199–260), `docs/reports/radar-2026-05-08-implementation-tracker.md`, P2/P3 reconciliation reports, and `git log v0.27.1..HEAD`. Read-only; no plan files were modified.
+**Method**: Per plan: head -50/-80 + grep of checkbox totals (`- [x]` vs `- [ ]`) + grep of `Status:` / `RECONCILIATION` headers + cross-check against `CHANGELOG.md` (Unreleased + [0.28.0]), recent ADRs (199–260), `docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md`, P2/P3 reconciliation reports, and `git log v0.27.1..HEAD`. Read-only; no plan files were modified.
 
 ---
 
@@ -42,7 +42,7 @@ Plus 8 attack-order items revalidated (§2): 1 STILL-PENDING, 2 CLOSED-BY-X, 3 C
 | 10 | `memory-layer-evolution-wave2.md` | ACTIVE (current sprint) | 8 DONE / 0 OPEN at top header; CHANGELOG Unreleased adds Wave 2 M1/M3 opt-in retrieval modes (`retrieval_strategy="wave2-m1-m3"`), Slice 0 benchmarks, M1 default decision record. Plan body says implementation blocked until Slice 0 lands — Slice 0 has landed (commit e6b41fd43). Slices 1+2 marked `[x]`. | Continue active Wave 2 development; promote M1 from opt-in once multi-hop blocker closes. | Multi-session |
 | 11 | `multi-ide-swarm-testbed-plan.md` | PARTIAL | Phase 1/2/3 enumerated; `scripts/claim_task.py`, `cos-governed-agent.sh`, `cos-governed-edit.sh`, `tests/chaos/test_multi_ide_swarm_safety.py` all exist. Most blocking primitives shipped. | Confirm Phase 3 reconciliation (watermark/reaper, status composer task-claim visibility) — close or mark partial. | 1 session |
 | 12 | `multi-session-coordination-primitives-plan.md` | PARTIAL | 4 DONE / 18 OPEN. ADR-116. Batch 0 quick wins done (task-claim ledger, coordination-status CLI, push-time collision detection). | Batch 1 (work identity everywhere) is next logical slice. | 2 sessions |
-| 13 | `pending-attack-plan-2026-05-02.md` | SUPERSEDED-BY-ADR (informational) | Pre-v0.28.0 analysis doc; baseline ratios cited (32.7%); now overtaken by post-v0.28.0 reality matrix (a4d758b3d), consumer fleet panel (2dd2e0144), control-plane audit (ADR-248). | Move to `docs/reports/archive/` — it is a snapshot report, not a plan. | 5 min |
+| 13 | `pending-attack-plan-2026-05-02.md` | SUPERSEDED-BY-ADR (informational) | Pre-v0.28.0 analysis doc; baseline ratios cited (32.7%); now overtaken by post-v0.28.0 reality matrix (a4d758b3d), consumer fleet panel (2dd2e0144), control-plane audit (ADR-248). | Move to `docs/06-Daily/reports/archive/` — it is a snapshot report, not a plan. | 5 min |
 | 14 | `phase1-dx-active-primitive-index.md` | ARCHIVE-CANDIDATE | Body describes shipped surface (`scripts/active_primitive_index.py`, `scripts/cos-active-primitive-index`, `scripts/cos_architecture_readiness.py`); validation block + remaining-followup section read as DONE. ADR-127 ships the active index already. | Archive after a one-line `RECONCILIATION STATUS: DONE` header. | 10 min |
 | 15 | `primitive-harvester-implementation-plan.md` | PARTIAL | `scripts/cos_primitive_harvester.py` + `skills/primitive-harvester/SKILL.md` exist (CHANGELOG references "Primitive observability/portability/contracts wave"); Phase 2 integration + Phase 3 governed drafting not closed. | Wire harvester into session-close hook (Phase 2). | 1 session |
 | 16 | `skills-rules-canonicalization-workplan.md` | PARTIAL | 23 DONE / 0 OPEN — Phase 1 freeze-current-behavior fully checked. Remaining Phases 2+ not enumerated in checkbox form. | Audit Phases 2+ scope; either close or open follow-up plan. | 30 min audit |
@@ -71,7 +71,7 @@ Plus 8 attack-order items revalidated (§2): 1 STILL-PENDING, 2 CLOSED-BY-X, 3 C
 
 ## §2 — 8-Item Audit Attack Order Revalidation
 
-Source: `docs/reports/pending-plans-audit-2026-04-30.md` §Recommended Order of Attack.
+Source: `docs/06-Daily/reports/pending-plans-audit-2026-04-30.md` §Recommended Order of Attack.
 
 | # | Original Item | Original Estimate | Current Status | Evidence | Keep/Drop |
 |---|---|---|---|---|---|
@@ -99,7 +99,7 @@ Source: `docs/reports/pending-plans-audit-2026-04-30.md` §Recommended Order of 
 - **Audit item #1 (ADR-068 Row 2)** was probably already closed *at audit time*; the test name shows in `tests/unit/test_detect_runner_capacity.py:123`. The audit should have grep'd before recommending.
 - **Audit items #4 and #7** are the same plan (`hook-architecture-v2`). Listing it twice double-counted residual scope.
 - **Plan #22 (`component-scope-classification.md`)** header reads "DONE — All 4 phases complete. Verified 2026-05-02" but a paragraph two lines below contradicts itself and Phase 4 deliverables don't appear in `scripts/self-install.sh` or `cmd/cos`. The header should be re-edited or the plan re-opened.
-- **Plan #13 (`pending-attack-plan-2026-05-02.md`)** is a report, not a plan; it should live under `docs/reports/` not `.cognitive-os/plans/`.
+- **Plan #13 (`pending-attack-plan-2026-05-02.md`)** is a report, not a plan; it should live under `docs/06-Daily/reports/` not `.cognitive-os/plans/`.
 - **Plan #5 (`core-vs-extensions-migration-plan.md`)** is a v0.14→v1.0 roadmap — it cannot be "completed" the same way a sprint plan can; it should not be triaged with checkbox semantics.
 
 ---
@@ -110,7 +110,7 @@ These are listed for the orchestrator's next housekeeping commit, NOT for this r
 
 1. **Archive 3 plans now**: `audit-contract-lane-recovery-plan.md`, `auto-rollback-hardening-2026-05-02.md`, `phase1-dx-active-primitive-index.md` — move to `.cognitive-os/plans/archive/`.
 2. **Archive 2 SUPERSEDED plans**: `docker-to-pip-migration.md`, `project-audit-package.md`.
-3. **Relocate 1 report-shaped file**: `pending-attack-plan-2026-05-02.md` → `docs/reports/archive/`.
+3. **Relocate 1 report-shaped file**: `pending-attack-plan-2026-05-02.md` → `docs/06-Daily/reports/archive/`.
 4. **Re-open 1 plan**: rewrite `component-scope-classification.md` header to `PARTIAL` and queue Phase 4.
 5. **Archive 3 SDD artifacts** when `test-runner-ergonomics` archives via `/sdd-archive`.
 6. **Track 6 ACTIVE/in-flight plans** in next sprint planning: #1 adr-064, #9 maintainer-agent, #10 memory-wave2 (already current), #22 component-scope-Phase-4, #26 phoenix-Phase-1, #25 docs-to-skills.

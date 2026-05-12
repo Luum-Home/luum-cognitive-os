@@ -4,14 +4,14 @@ date: 2026-05-06
 status: final
 phase: 3 (synthesis)
 parent_artifacts:
-  - docs/reports/external-tools-inventory-2026-05-06.md
-  - docs/reports/external-tools-radar-2026-05-06.md
-  - docs/reports/external-tools-radar-deep-2026-05-06.md
-  - docs/reports/external-tools-radar-deep-tier2-2026-05-06.md
-  - docs/reports/external-tools-radar-monitor-followup-2026-05-06.md
-  - docs/research/repo-scout/cluster-*-2026-05-06.md (20 cluster reports)
-  - docs/research/repo-scout/deep/<owner>__<repo>-2026-05-06.md (63 deep audits)
-  - docs/research/repo-scout/monitor-followup/<owner>__<repo>-2026-05-06.md (43 followups)
+  - docs/06-Daily/reports/external-tools-inventory-2026-05-06.md
+  - docs/06-Daily/reports/external-tools-radar-2026-05-06.md
+  - docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md
+  - docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md
+  - docs/06-Daily/reports/external-tools-radar-monitor-followup-2026-05-06.md
+  - docs/03-PoCs/research/repo-scout/cluster-*-2026-05-06.md (20 cluster reports)
+  - docs/03-PoCs/research/repo-scout/deep/<owner>__<repo>-2026-05-06.md (63 deep audits)
+  - docs/03-PoCs/research/repo-scout/monitor-followup/<owner>__<repo>-2026-05-06.md (43 followups)
 engram_topic_keys:
   - tech-radar/phase2-deep-2026-05-06
   - tech-radar/phase2-deep-tier2-2026-05-06
@@ -24,7 +24,7 @@ budget_tool_calls_used: 0 (pure synthesis, no gh api)
 
 > Phase 3 synthesis closing the research loop opened by `external-tools-inventory-2026-05-06.md`. This report consolidates 258 inventory entries, 20 cluster shallow scouts, 63 source-level deep audits, and 43 monitor follow-ups into a single decision-ready artifact: gap matrix (where they lead), moat matrix (where COS leads), priority queue (what to do next), monitor list (what to re-scout when), reject summary (what is permanently filtered), falsifiable claims (what we predict), and cross-cutting findings (what no single repo report could surface).
 >
-> **Method**: pure synthesis — no new `gh api`, no clones, no WebFetch. Every claim cites a source artifact under `docs/research/repo-scout/` or `docs/reports/`. Engram observation persisted at the end under topic_key `tech-radar/comparative-matrix-2026-05-06`.
+> **Method**: pure synthesis — no new `gh api`, no clones, no WebFetch. Every claim cites a source artifact under `docs/03-PoCs/research/repo-scout/` or `docs/06-Daily/reports/`. Engram observation persisted at the end under topic_key `tech-radar/comparative-matrix-2026-05-06`.
 
 ---
 
@@ -38,13 +38,13 @@ budget_tool_calls_used: 0 (pure synthesis, no gh api)
 
    ┌──────────────────────────────────────────────────────────────────────────────┐
    │                            INVENTORY (258 repos)                             │
-   │   Source: docs/reports/external-tools-inventory-2026-05-06.md (258 rows)     │
+   │   Source: docs/06-Daily/reports/external-tools-inventory-2026-05-06.md (258 rows)     │
    └──────────────────────────────────────────────────────────────────────────────┘
                                           │
                                           ▼
    ┌──────────────────────────────────────────────────────────────────────────────┐
    │                  CLUSTER SHALLOW TRIAGE (~235 evaluated)                     │
-   │   20 cluster reports under docs/research/repo-scout/cluster-*-2026-05-06.md  │
+   │   20 cluster reports under docs/03-PoCs/research/repo-scout/cluster-*-2026-05-06.md  │
    │   196 numbered triage entries + cross-cluster aliases & duplicates           │
    └──────────────────────────────────────────────────────────────────────────────┘
                   │                                              │
@@ -54,7 +54,7 @@ budget_tool_calls_used: 0 (pure synthesis, no gh api)
                   ▼                                              ▼
    ┌────────────────────────────────────┐         ┌──────────────────────────────┐
    │   DEEP AUDITS (63 source-level)    │         │   REJECTS / DEFERRED          │
-   │   docs/research/repo-scout/deep/   │         │   ~150 incl. license, off-    │
+   │   docs/03-PoCs/research/repo-scout/deep/   │         │   ~150 incl. license, off-    │
    │   - 22 tier-1 (top priority)       │         │   theme, archived, 404,       │
    │   - 41 tier-2 (TUI substrates +    │         │   star-inflation, harness-    │
    │     orchestration/observability)   │         │   of-harness duplicates       │
@@ -63,7 +63,7 @@ budget_tool_calls_used: 0 (pure synthesis, no gh api)
                   ▼
    ┌──────────────────────────────────────────────────────────────────────────────┐
    │                    MONITOR FOLLOW-UP (43 light-deep)                         │
-   │   docs/research/repo-scout/monitor-followup/                                  │
+   │   docs/03-PoCs/research/repo-scout/monitor-followup/                                  │
    │   - 4 promoted to TRIAL                                                       │
    │   - 37 confirmed MONITOR                                                      │
    │   - 2 REJECT (license / star-integrity)                                       │
@@ -80,11 +80,11 @@ budget_tool_calls_used: 0 (pure synthesis, no gh api)
 
 | Stage | Count | Source |
 |---|---:|---|
-| Inventory rows (URLs harvested across all docs/) | 258 | `docs/reports/external-tools-inventory-2026-05-06.md` (258 ` \| \` rows) |
+| Inventory rows (URLs harvested across all docs/) | 258 | `docs/06-Daily/reports/external-tools-inventory-2026-05-06.md` (258 ` \| \` rows) |
 | Cluster shallow triage entries (numbered) | 196 | 20 `cluster-*-2026-05-06.md` files; some duplicates across clusters (e.g., `aaif-goose/goose` ↔ `block/goose`) |
 | Pass-to-deep candidates (shallow → deep) | ~95 | tier-1 22 + tier-2 41 + 32 deferred to monitor-followup |
-| Deep audits completed (source-level, single artifact each) | 63 | `docs/research/repo-scout/deep/` (62 + 1 sister batch overflow) |
-| Monitor follow-up (light-deep) | 43 | `docs/research/repo-scout/monitor-followup/` |
+| Deep audits completed (source-level, single artifact each) | 63 | `docs/03-PoCs/research/repo-scout/deep/` (62 + 1 sister batch overflow) |
+| Monitor follow-up (light-deep) | 43 | `docs/03-PoCs/research/repo-scout/monitor-followup/` |
 | Total individually evaluated | ~235 | 196 cluster entries + 43 monitor follow-ups − overlap |
 | Rejected (license / archived / off-theme / 404 / star-inflation / duplicate / stale / harness-of-harness) | ~150 | enumerated §6 (≥80 named below) |
 | Final ADOPT (post-deep) | 18 | tier-1 deep §Summary Table |
@@ -111,29 +111,29 @@ Grouped by COS surface. Each row = (their feature, our gap, source repo + cited 
 
 | Their feature | COS gap | Source (repo + artifact) | Integration effort |
 |---|---|---|---|
-| Cross-harness skill packaging — same SKILL.md emitted under `.claude-plugin/skills/`, `.codex-plugin/skills/`, `.cursor-plugin/skills/`, `.opencode/`, `gemini-extension.json` | COS skills currently CC-shaped only; `lib/harness_adapter/` covers events but not skill packaging | `obra/superpowers` (`docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md`); `affaan-m/everything-claude-code` (`.agents/skills/<name>/{SKILL.md, agents/openai.yaml}`); `MemPalace/mempalace` | medium (≤1wk) — emit shim from `cognitive-os-init`, no rule changes |
-| 18 self-contained ACI tool packages each with `bin/` (+ optional `lib/`); `tools/registry/` is a tool-that-registers-tools (dynamic-tool-creation primitive) | COS has skills + dynamic-tool-creation rule but no canonical Unix-tool ergonomics for skill-as-binary | `SWE-agent/SWE-agent` (`docs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md`, deep §Architecture lists `tools/{registry, web_browser, windowed_*}`) | medium (≤1wk pilot on one skill) |
+| Cross-harness skill packaging — same SKILL.md emitted under `.claude-plugin/skills/`, `.codex-plugin/skills/`, `.cursor-plugin/skills/`, `.opencode/`, `gemini-extension.json` | COS skills currently CC-shaped only; `lib/harness_adapter/` covers events but not skill packaging | `obra/superpowers` (`docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md`); `affaan-m/everything-claude-code` (`.agents/skills/<name>/{SKILL.md, agents/openai.yaml}`); `MemPalace/mempalace` | medium (≤1wk) — emit shim from `cognitive-os-init`, no rule changes |
+| 18 self-contained ACI tool packages each with `bin/` (+ optional `lib/`); `tools/registry/` is a tool-that-registers-tools (dynamic-tool-creation primitive) | COS has skills + dynamic-tool-creation rule but no canonical Unix-tool ergonomics for skill-as-binary | `SWE-agent/SWE-agent` (`docs/03-PoCs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md`, deep §Architecture lists `tools/{registry, web_browser, windowed_*}`) | medium (≤1wk pilot on one skill) |
 | 455 SKILL.md files in a single tree — used as forcing function for skill-coverage gap analysis | COS has ~150 skills (skills/ scope); no published gap analysis vs major catalogs | `affaan-m/everything-claude-code` (deep §Strengths "455 SKILL.md") | small (≤2d) — diff against `.atl/skill-registry.md` |
-| Skill-manifest JSON Schema (validates skill metadata) | COS skill registry is markdown-only, no schema validation in CI | `dmgrok/agent_skills_directory` (`docs/research/repo-scout/deep/dmgrok__agent_skills_directory-2026-05-06.md`) | small (≤1d) — lift schema only |
-| AGENTS.md spec emit (cross-harness contract document) | COS has CLAUDE.md + RULES-COMPACT.md but no AGENTS.md emitter | `agentsmd/agents.md` (`docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md`); deep recommendation #5 | small (≤½d) — add to `cognitive-os-init` |
+| Skill-manifest JSON Schema (validates skill metadata) | COS skill registry is markdown-only, no schema validation in CI | `dmgrok/agent_skills_directory` (`docs/03-PoCs/research/repo-scout/deep/dmgrok__agent_skills_directory-2026-05-06.md`) | small (≤1d) — lift schema only |
+| AGENTS.md spec emit (cross-harness contract document) | COS has CLAUDE.md + RULES-COMPACT.md but no AGENTS.md emitter | `agentsmd/agents.md` (`docs/03-PoCs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md`); deep recommendation #5 | small (≤½d) — add to `cognitive-os-init` |
 
 ### 2.2 harness adapters / dispatch / cross-harness surface
 
 | Their feature | COS gap | Source | Integration effort |
 |---|---|---|---|
-| 11-harness golden testdata corpus: aider, amazonq, amp, auggie, claude, codex, copilot, cursor, gemini, goose, opencode — covers `first_message`, multi-line input, thinking blocks, confirmation_box, auto-accept-edits, initialization {ready, not_ready} | `lib/harness_adapter/` has CC adapter only; no fixture coverage matrix for new harnesses | `coder/agentapi` (`docs/research/repo-scout/deep/coder__agentapi-2026-05-06.md`, "What to use" §) | small (≤1d testdata vendor + 3-5d msgfmt parser port) |
-| Provider/plugin entry-point architecture with cassette-based LLM tests (replay fixtures under `tests/cassettes/`) | `lib/dispatch.py` has provider matrix but no record-replay LLM test pattern; `tests/conftest.py` has lane registry but no cassette layer | `simonw/llm` (`docs/research/repo-scout/deep/simonw__llm-2026-05-06.md`); `BeehiveInnovations/pal-mcp-server` (`tests/{gemini,openai}_cassettes/`) — two independent confirmations per deep §Cross-Cutting #1 | medium (≤1wk) — wrap dispatch + add cassette pytest plugin |
-| 30+ provider plugins + 8 memory-backend plugins as drop-in catalogs | `lib/dispatch.py` defaults `qwen,claude` (ADR-049); 5 additional providers max via env. Engram is the single memory backend | `NousResearch/hermes-agent` (`docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md`) — caveat 8388-issue backlog | medium (≤1wk) — selective pattern lift, NOT vendor |
-| Sub-100µs router overhead at 5k RPS | `lib/dispatch.py` is in-process and not benchmarked at high RPS | `maximhq/bifrost` (`docs/research/repo-scout/monitor-followup/maximhq__bifrost-2026-05-06.md`) | large — would require ops infra externalization |
+| 11-harness golden testdata corpus: aider, amazonq, amp, auggie, claude, codex, copilot, cursor, gemini, goose, opencode — covers `first_message`, multi-line input, thinking blocks, confirmation_box, auto-accept-edits, initialization {ready, not_ready} | `lib/harness_adapter/` has CC adapter only; no fixture coverage matrix for new harnesses | `coder/agentapi` (`docs/03-PoCs/research/repo-scout/deep/coder__agentapi-2026-05-06.md`, "What to use" §) | small (≤1d testdata vendor + 3-5d msgfmt parser port) |
+| Provider/plugin entry-point architecture with cassette-based LLM tests (replay fixtures under `tests/cassettes/`) | `lib/dispatch.py` has provider matrix but no record-replay LLM test pattern; `tests/conftest.py` has lane registry but no cassette layer | `simonw/llm` (`docs/03-PoCs/research/repo-scout/deep/simonw__llm-2026-05-06.md`); `BeehiveInnovations/pal-mcp-server` (`tests/{gemini,openai}_cassettes/`) — two independent confirmations per deep §Cross-Cutting #1 | medium (≤1wk) — wrap dispatch + add cassette pytest plugin |
+| 30+ provider plugins + 8 memory-backend plugins as drop-in catalogs | `lib/dispatch.py` defaults `qwen,claude` (ADR-049); 5 additional providers max via env. Engram is the single memory backend | `NousResearch/hermes-agent` (`docs/03-PoCs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md`) — caveat 8388-issue backlog | medium (≤1wk) — selective pattern lift, NOT vendor |
+| Sub-100µs router overhead at 5k RPS | `lib/dispatch.py` is in-process and not benchmarked at high RPS | `maximhq/bifrost` (`docs/03-PoCs/research/repo-scout/monitor-followup/maximhq__bifrost-2026-05-06.md`) | large — would require ops infra externalization |
 
 ### 2.3 memory / RAG surface
 
 | Their feature | COS gap | Source | Integration effort |
 |---|---|---|---|
-| Bi-temporal edges + cross-encoder reranking on KG memory | Engram observations are point-in-time only; no bi-temporal validity intervals; no reranker | `getzep/graphiti` (`docs/research/repo-scout/deep/getzep__graphiti-2026-05-06.md`) — adopt-mode = algorithm port | medium (≤1wk schema, ≤2wk reranker) |
-| Dual-level (entity-level + relation-level) retrieval for KG-RAG (EMNLP 2025 paper) | Engram retrieval is single-level vector + topic_key | `HKUDS/LightRAG` (`docs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md`) | medium (≤1wk algorithm port) |
-| Personalized PageRank multi-hop retrieval (NeurIPS 2024) | Engram has no multi-hop traversal | `OSU-NLP-Group/HippoRAG` (`docs/research/repo-scout/deep/OSU-NLP-Group__HippoRAG-2026-05-06.md`) — frozen reference (8mo stale) | medium (≤1wk port) |
-| Hypergraph extraction from raw text | Engram extracts pairwise relations only | `yifanfeng97/Hyper-Extract` (`docs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md`) — Apache-2.0 (manually verified) | small-medium (≤1wk algorithm only) |
+| Bi-temporal edges + cross-encoder reranking on KG memory | Engram observations are point-in-time only; no bi-temporal validity intervals; no reranker | `getzep/graphiti` (`docs/03-PoCs/research/repo-scout/deep/getzep__graphiti-2026-05-06.md`) — adopt-mode = algorithm port | medium (≤1wk schema, ≤2wk reranker) |
+| Dual-level (entity-level + relation-level) retrieval for KG-RAG (EMNLP 2025 paper) | Engram retrieval is single-level vector + topic_key | `HKUDS/LightRAG` (`docs/03-PoCs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md`) | medium (≤1wk algorithm port) |
+| Personalized PageRank multi-hop retrieval (NeurIPS 2024) | Engram has no multi-hop traversal | `OSU-NLP-Group/HippoRAG` (`docs/03-PoCs/research/repo-scout/deep/OSU-NLP-Group__HippoRAG-2026-05-06.md`) — frozen reference (8mo stale) | medium (≤1wk port) |
+| Hypergraph extraction from raw text | Engram extracts pairwise relations only | `yifanfeng97/Hyper-Extract` (`docs/03-PoCs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md`) — Apache-2.0 (manually verified) | small-medium (≤1wk algorithm only) |
 | Community-summarization RAG pattern | cognee-integration skill does not aggregate at community granularity | `microsoft/graphrag` (monitor-followup) | medium (pattern extraction into cognee-integration) |
 | Memory-type taxonomy (semantic / episodic / procedural / working) | Engram observation types are flat (`bugfix \| decision \| architecture \| discovery \| pattern \| config \| preference`) | `Mirix-AI/MIRIX` (monitor-followup) | small (taxonomy extraction only) |
 | Sleep-time / self-improvement memory loop | `self-improvement-protocol` skill exists but no asynchronous memory consolidation pass | `letta-ai/letta` (monitor-followup) — Apache-2.0 allows pattern adoption | medium (extract sleep-time pattern) |
@@ -154,8 +154,8 @@ Grouped by COS surface. Each row = (their feature, our gap, source repo + cited 
 
 | Their feature | COS gap | Source | Integration effort |
 |---|---|---|---|
-| Skill-aware + MCP-aware security scanner with malicious-skill negative tests | Aguara covers runtime; `secret-audit` skill is grep-based; no skill manifest scanner | `snyk/agent-scan` (`docs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md`) — CI 10/10 | medium (≤1wk wire as pre-commit + pre-publish gate) |
-| 50+ probe families, 28+ generators, 4 multiturn red-team strategies (binary CI gate) | `red-team` skill exists but lacks probe-family coverage breadth; no multiturn strategies | `praetorian-inc/augustus` (`docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md`) | medium (≤1wk periodic CI gate) |
+| Skill-aware + MCP-aware security scanner with malicious-skill negative tests | Aguara covers runtime; `secret-audit` skill is grep-based; no skill manifest scanner | `snyk/agent-scan` (`docs/03-PoCs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md`) — CI 10/10 | medium (≤1wk wire as pre-commit + pre-publish gate) |
+| 50+ probe families, 28+ generators, 4 multiturn red-team strategies (binary CI gate) | `red-team` skill exists but lacks probe-family coverage breadth; no multiturn strategies | `praetorian-inc/augustus` (`docs/03-PoCs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md`) | medium (≤1wk periodic CI gate) |
 | Cassette-replay testing for LLM-touching code paths | Cited in §2.2 above; security-relevant because it removes nondeterminism in adversarial tests | `simonw/llm` + `pal-mcp-server` (deep §Cross-Cutting #1) | medium |
 | Externalized agent gateway with provenance + observability hooks | `lib/dispatch.py` writes `llm-dispatch.jsonl` but no externalized gateway | `agentgateway/agentgateway` (monitor-followup) | large — out of scope at current scale |
 | E2B sandbox infrastructure (Apache-2.0) | `[e2b-integration]` skill exists; sandbox infra is consumed, not self-hosted | `e2b-dev/infra` (monitor-followup) | n/a (companion to existing skill) |
@@ -164,7 +164,7 @@ Grouped by COS surface. Each row = (their feature, our gap, source repo + cited 
 
 | Their feature | COS gap | Source | Integration effort |
 |---|---|---|---|
-| Edit-block diff-format for LLM code edits + 38-language tree-sitter repo-map | COS has `tree-sitter-analyzer` integration but no edit-block protocol for agent diffs | `Aider-AI/aider` (`docs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md`) | medium (≤1wk pattern lift) |
+| Edit-block diff-format for LLM code edits + 38-language tree-sitter repo-map | COS has `tree-sitter-analyzer` integration but no edit-block protocol for agent diffs | `Aider-AI/aider` (`docs/03-PoCs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md`) | medium (≤1wk pattern lift) |
 | CTF + agent trajectories eval corpus | No COS trajectory benchmark beyond `cognitive-os-benchmark` skill stub | `SWE-agent/SWE-agent` (deep) | medium (≤1wk corpus vendor + harness) |
 | GEPA optimizer integrated bidirectionally with DSPy (`dspy/teleprompt/gepa/` ↔ `src/gepa/adapters/{dspy_adapter, dspy_full_program_adapter}`) | No skill-level prompt optimizer pipeline; `optimize-skill` skill is heuristic | `stanfordnlp/dspy` + `gepa-ai/gepa` (deep §Cross-Cutting #3) | medium-large (≤1wk pilot, scope a paired adoption ADR) |
 | CLI demo recorder for skill GIFs | No skill-feature documentation pipeline | `charmbracelet/vhs` (tier-2 §3 TRIAL) | small (≤1d) |

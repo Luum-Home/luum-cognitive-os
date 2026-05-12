@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:35 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (Dual-level retrieval algorithm; portable into Engram)
 deep_verdict: ADOPT (algorithm-only) — repo is a full RAG framework, but we adopt only the dual-level retrieval logic
 deepwiki_url: https://deepwiki.com/HKUDS/LightRAG

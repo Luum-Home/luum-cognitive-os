@@ -33,4 +33,4 @@ To add a new infrastructure category:
 1. Add the keyword pattern to `infra-intent-detector.sh` following the existing format
 2. Add a suggestion string that references where to find the stack component in config
 3. Update this rules file with the new mapping row
-4. Update `.cognitive-os/docs/infra-intent.md` with the new category
+4. Update `.cognitive-os/docs/04-Concepts/root/infra-intent.md` with the new category

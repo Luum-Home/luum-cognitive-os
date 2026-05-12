@@ -7,11 +7,11 @@ and emits a bounded human-readable summary + JSON for any IDE/harness
 SessionStart hook.
 
 Sources scanned (each optional; missing files = empty section):
-  docs/reports/pending-truth-latest.json          (ADR-273)
-  docs/reports/operational-guide-audit-latest.json (ADR-274)
-  docs/reports/adr-partial-backlog-latest.json   (ADR lifecycle lane)
+  docs/06-Daily/reports/pending-truth-latest.json          (ADR-273)
+  docs/06-Daily/reports/operational-guide-audit-latest.json (ADR-274)
+  docs/06-Daily/reports/adr-partial-backlog-latest.json   (ADR lifecycle lane)
   .cognitive-os/tasks/control-plane-remediation.jsonl (ADR-248)
-  docs/runbooks/*-staging/                         (operator-deploy queues)
+  docs/05-Methodology/runbooks/*-staging/                         (operator-deploy queues)
   git status + ahead/behind                        (branch state)
 
 Usage:
@@ -91,7 +91,7 @@ def _git(cwd: Path, *args: str) -> str:
 
 
 def collect_pending_truth(root: Path, limit: int) -> dict[str, Any]:
-    payload = _load_json(root / "docs/reports/pending-truth-latest.json")
+    payload = _load_json(root / "docs/06-Daily/reports/pending-truth-latest.json")
     if not payload:
         return {"total": 0, "by_status": {}, "top_actionable": []}
     items = payload.get("items", []) or []
@@ -122,7 +122,7 @@ def collect_pending_truth(root: Path, limit: int) -> dict[str, Any]:
 
 
 def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
-    payload = _load_json(root / "docs/reports/operational-guide-audit-latest.json")
+    payload = _load_json(root / "docs/06-Daily/reports/operational-guide-audit-latest.json")
     if not payload:
         return {"total_p0": 0, "total_p1": 0, "top_backfill": []}
     summary = payload.get("summary", {})
@@ -149,7 +149,7 @@ def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
 
 
 def collect_adr_partials(root: Path, limit: int) -> dict[str, Any]:
-    payload = _load_json(root / "docs/reports/adr-partial-backlog-latest.json")
+    payload = _load_json(root / "docs/06-Daily/reports/adr-partial-backlog-latest.json")
     if not payload:
         return {"total": 0, "by_implementation_status": {}, "missing_partial_remaining": 0, "top_actionable": []}
     items = payload.get("items", []) or []
@@ -205,7 +205,7 @@ def collect_control_plane(root: Path) -> dict[str, Any]:
 
 
 def collect_staged_deployments(root: Path) -> dict[str, Any]:
-    runbooks = root / "docs/runbooks"
+    runbooks = root / "docs/05-Methodology/runbooks"
     if not runbooks.is_dir():
         return {"dirs": []}
     staged: list[str] = []

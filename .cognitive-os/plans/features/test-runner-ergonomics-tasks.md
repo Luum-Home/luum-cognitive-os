@@ -217,10 +217,10 @@
 ## Batch 7 — ADR and docs (parallel-safe with Batch 6, after Batch 3+5 complete)
 
 - T7.1
-  - **Title**: Write `docs/adrs/ADR-069-test-lane-taxonomy.md`
-  - **Deliverable**: `docs/adrs/ADR-069-test-lane-taxonomy.md` — sections per design §10: context, decision (cos-test canonical, YAML registry, marker auto-inject, escalation ladder), lane taxonomy table (9 lanes), parallel-safe contract definition, why marker-based not file-based split, consequences, rollout cross-reference, status: Proposed. File is ≥ 150 lines
+  - **Title**: Write `docs/02-Decisions/adrs/ADR-069-test-lane-taxonomy.md`
+  - **Deliverable**: `docs/02-Decisions/adrs/ADR-069-test-lane-taxonomy.md` — sections per design §10: context, decision (cos-test canonical, YAML registry, marker auto-inject, escalation ladder), lane taxonomy table (9 lanes), parallel-safe contract definition, why marker-based not file-based split, consequences, rollout cross-reference, status: Proposed. File is ≥ 150 lines
   - **Dependencies**: T1.1 (YAML schema finalized), T3.6 (cos-test interface finalized)
-  - **Verify**: `ls docs/adrs/ADR-069-test-lane-taxonomy.md` exits 0; `wc -l docs/adrs/ADR-069-test-lane-taxonomy.md | awk '{print $1}'` ≥ 150
+  - **Verify**: `ls docs/02-Decisions/adrs/ADR-069-test-lane-taxonomy.md` exits 0; `wc -l docs/02-Decisions/adrs/ADR-069-test-lane-taxonomy.md | awk '{print $1}'` ≥ 150
   - **Model**: opus
   - **Effort**: M
 

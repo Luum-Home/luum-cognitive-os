@@ -4,7 +4,7 @@
 
 ADR-180. Reads lib.skill_store.SkillStore + manifests/primitive-lifecycle.yaml.
 For sandbox primitives meeting evidence thresholds, emits a proposal artifact
-under docs/reports/promotion-proposals/<date>/<name>.md.
+under docs/06-Daily/reports/promotion-proposals/<date>/<name>.md.
 
 NEVER modifies primitive-lifecycle.yaml or agentic-primitive-registry.lock.yaml.
 """

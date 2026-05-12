@@ -52,7 +52,7 @@ The proposer reads control-plane evidence and emits proposed doctrine amendments
 under:
 
 ```text
-docs/proposals/
+docs/03-PoCs/proposals/
 ```
 
 Generated proposals are markdown with:
@@ -103,7 +103,7 @@ python3 -m pytest tests/unit/test_doctrine_proposer.py -q
 scripts/cos-doctrine-proposer --profile core --json
 ```
 
-`--write` must write only under `docs/proposals/`.
+`--write` must write only under `docs/03-PoCs/proposals/`.
 
 ## Cross-instance learning boundary
 

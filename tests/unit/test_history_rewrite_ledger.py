@@ -22,9 +22,9 @@ from lib.history_rewrite_ledger import (
 def _bootstrap(project_dir: Path, *, with_adr: bool = True, ledger_seed: dict | None = None) -> None:
     (project_dir / "manifests").mkdir(parents=True, exist_ok=True)
     (project_dir / ".cognitive-os/recovery").mkdir(parents=True, exist_ok=True)
-    (project_dir / "docs/adrs").mkdir(parents=True, exist_ok=True)
+    (project_dir / "docs/02-Decisions/adrs").mkdir(parents=True, exist_ok=True)
     if with_adr:
-        (project_dir / "docs/adrs/ADR-999-test.md").write_text(
+        (project_dir / "docs/02-Decisions/adrs/ADR-999-test.md").write_text(
             "---\nadr: 999\ntitle: Test ADR\nstatus: accepted\n---\n\n# ADR-999\n",
             encoding="utf-8",
         )
@@ -113,8 +113,8 @@ def test_validate_adr_accepted_status_field(tmp_path: Path) -> None:
 
 
 def test_validate_adr_accepted_status_section(tmp_path: Path) -> None:
-    (tmp_path / "docs/adrs").mkdir(parents=True, exist_ok=True)
-    (tmp_path / "docs/adrs/ADR-500-section.md").write_text(
+    (tmp_path / "docs/02-Decisions/adrs").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs/02-Decisions/adrs/ADR-500-section.md").write_text(
         "# ADR-500\n\n## Status\n\nAccepted (2026-01-01).\n",
         encoding="utf-8",
     )
@@ -123,7 +123,7 @@ def test_validate_adr_accepted_status_section(tmp_path: Path) -> None:
 
 
 def test_validate_adr_missing(tmp_path: Path) -> None:
-    (tmp_path / "docs/adrs").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs/02-Decisions/adrs").mkdir(parents=True, exist_ok=True)
     ok, _ = validate_adr_accepted(tmp_path, "ADR-001")
     assert ok is False
 

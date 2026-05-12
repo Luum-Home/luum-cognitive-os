@@ -18,11 +18,11 @@ VERSION_FILE="$PROJECT_ROOT/VERSION"
 # 1. VERSION (source of truth)
 # 2. cmd/cos/internal/cli/root.go (dynamic VERSION-file fallback)
 # 3. cmd/cos-test/internal/cli/root.go (dynamic VERSION-file fallback)
-# 4. docs/INDEX.md (version in header)
+# 4. docs/00-MOCs/entrypoints/INDEX.md (version in header)
 
 COS_ROOT_GO="$PROJECT_ROOT/cmd/cos/internal/cli/root.go"
 COS_TEST_ROOT_GO="$PROJECT_ROOT/cmd/cos-test/internal/cli/root.go"
-INDEX_MD="$PROJECT_ROOT/docs/INDEX.md"
+INDEX_MD="$PROJECT_ROOT/docs/00-MOCs/entrypoints/INDEX.md"
 
 get_version() {
   if [ ! -f "$VERSION_FILE" ]; then
@@ -91,10 +91,10 @@ update_all_locations() {
     echo "  Updated cmd/cos-test/internal/cli/root.go"
   fi
 
-  # 4. docs/INDEX.md
+  # 4. docs/00-MOCs/entrypoints/INDEX.md
   if [ -f "$INDEX_MD" ]; then
     portable_sed_inplace "s/Cognitive OS v${old_ver}/Cognitive OS v${new_ver}/g" "$INDEX_MD"
-    echo "  Updated docs/INDEX.md"
+    echo "  Updated docs/00-MOCs/entrypoints/INDEX.md"
   fi
 }
 
@@ -148,16 +148,16 @@ check_consistency() {
     echo "  [SKIP] cmd/cos-test/internal/cli/root.go not found"
   fi
 
-  # Check docs/INDEX.md
+  # Check docs/00-MOCs/entrypoints/INDEX.md
   if [ -f "$INDEX_MD" ]; then
     if head -1 "$INDEX_MD" | grep -q "v${ver}"; then
-      echo "  [OK] docs/INDEX.md heading contains version $ver"
+      echo "  [OK] docs/00-MOCs/entrypoints/INDEX.md heading contains version $ver"
     else
-      echo "  [MISMATCH] docs/INDEX.md heading does not contain 'v${ver}'"
+      echo "  [MISMATCH] docs/00-MOCs/entrypoints/INDEX.md heading does not contain 'v${ver}'"
       ok=false
     fi
   else
-    echo "  [SKIP] docs/INDEX.md not found"
+    echo "  [SKIP] docs/00-MOCs/entrypoints/INDEX.md not found"
   fi
 
   echo ""

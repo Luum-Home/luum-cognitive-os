@@ -34,10 +34,10 @@ Result: **one minor release** (v0.20.0) covering ADR-071 Phases 1+2+3, plus oper
 
 ### Documentation
 
-- `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — analysis of the LLM Wiki v2 gist + 14 sources.
-- `docs/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision + addendum (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** (12 items) + **Future Work** (F1–F6 + F7–F8 with triggers).
-- `docs/upstream-blockers.md` — durable tracking for `default_backend()` (cryptography 49.0.0), `rich 14→15` (cognee unpin), `wrapt 1→2` (OTel transitive).
-- `docs/adrs/ADR-064-harness-agnostic-cognitive-os.md` — status review note 2026-04-27. Kept Proposed (Surfaces 2-4 unimplemented, verification suite missing). Codex/Cursor hook vocabularies confirmed compatible (web evidence).
+- `docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — analysis of the LLM Wiki v2 gist + 14 sources.
+- `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision + addendum (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** (12 items) + **Future Work** (F1–F6 + F7–F8 with triggers).
+- `docs/08-References/root/upstream-blockers.md` — durable tracking for `default_backend()` (cryptography 49.0.0), `rich 14→15` (cognee unpin), `wrapt 1→2` (OTel transitive).
+- `docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md` — status review note 2026-04-27. Kept Proposed (Surfaces 2-4 unimplemented, verification suite missing). Codex/Cursor hook vocabularies confirmed compatible (web evidence).
 
 ### Plan audit (5 plans triaged, headers updated)
 

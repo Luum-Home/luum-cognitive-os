@@ -212,7 +212,7 @@ WARNING: New hooks MUST be registered in scripts/apply-efficiency-profile.sh und
   # Workflow trap
   if echo "$AGENT_PROMPT" | grep -qiE 'workflow|pipeline.*yaml|\.cognitive-os/workflows'; then
     GOTCHAS="${GOTCHAS}
-WARNING: Workflow YAMLs in .cognitive-os/workflows/ must follow the schema in docs/adw-patterns.md. Steps have type: agent|script|gate."
+WARNING: Workflow YAMLs in .cognitive-os/workflows/ must follow the schema in docs/08-References/root/adw-patterns.md. Steps have type: agent|script|gate."
   fi
 
   # Plans directory trap

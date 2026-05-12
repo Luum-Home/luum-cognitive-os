@@ -9,7 +9,7 @@ When a PR or agent task adds a new skill, hook, rule, or lib:
 1. Run `/component-classifier` on the new agentic primitive
 2. If CORE: place in the appropriate root directory (skills/, hooks/, rules/, lib/)
 3. If PACKAGE: create or update a cos package in packages/{name}/
-4. Document the classification in docs/component-audit.md
+4. Document the classification in docs/06-Daily/root/component-audit.md
 
 ## Classification Criteria
 

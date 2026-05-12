@@ -28,8 +28,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_VERSION = "primitive-authority-audit.v1"
 DEFAULT_MANIFEST = Path("manifests/primitive-authority.yaml")
-DEFAULT_JSON = Path("docs/reports/primitive-authority-latest.json")
-DEFAULT_MD = Path("docs/reports/primitive-authority-latest.md")
+DEFAULT_JSON = Path("docs/06-Daily/reports/primitive-authority-latest.json")
+DEFAULT_MD = Path("docs/06-Daily/reports/primitive-authority-latest.md")
 VALID_MODES = {
     "observe-only",
     "propose-only",
@@ -43,7 +43,7 @@ WRITE_ATTRS = {"write_text", "write_bytes", "mkdir", "touch", "unlink", "symlink
 WRITE_FUNCS = {"open", "copy2", "copy", "copyfile", "copytree", "rmtree", "move", "remove", "unlink", "makedirs"}
 SHELL_MUTATING_CMD_RE = re.compile(r"(^|[;&|]\s*)(cp|mv|rm|rsync|tee|ln)\b")
 SHELL_REDIRECT_RE = re.compile(r"(?<![0-9&])>{1,2}\s*(?P<target>[^\s;&|]+)")
-PATH_LITERAL_RE = re.compile(r"(?P<path>(?:\.?/?(?:hooks|rules|skills|scripts|templates|manifests|\.claude|\.codex|\.cursor|\.cognitive-os|docs/reports|docs/proposals|\.github/workflows|secrets|src|lib|app|packages|internal|cmd)/)[A-Za-z0-9_./{}@:+,=-]+|\.env(?:\.[A-Za-z0-9_-]+)?)")
+PATH_LITERAL_RE = re.compile(r"(?P<path>(?:\.?/?(?:hooks|rules|skills|scripts|templates|manifests|\.claude|\.codex|\.cursor|\.cognitive-os|docs/06-Daily/reports|docs/03-PoCs/proposals|\.github/workflows|secrets|src|lib|app|packages|internal|cmd)/)[A-Za-z0-9_./{}@:+,=-]+|\.env(?:\.[A-Za-z0-9_-]+)?)")
 
 
 def rel(root: Path, path: Path) -> str:
@@ -178,9 +178,9 @@ def derive_authority(path: str, scope: str, row: dict[str, Any], manifest_entry:
 
 def classify_surface(path: str) -> str:
     normalized = path[2:] if path.startswith("./") else path
-    if normalized.startswith((".cognitive-os/improvements/proposals/", "docs/proposals/")):
+    if normalized.startswith((".cognitive-os/improvements/proposals/", "docs/03-PoCs/proposals/")):
         return "os_review_artifacts"
-    if normalized.startswith(("docs/reports/", ".cognitive-os/reports/")):
+    if normalized.startswith(("docs/06-Daily/reports/", ".cognitive-os/reports/")):
         return "reports"
     if normalized.startswith(".cognitive-os/metrics/"):
         return "metrics"

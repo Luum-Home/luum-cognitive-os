@@ -62,7 +62,7 @@ Every sub-agent handoff that claims closure must include a compact, machine-chec
 ## Verifiable Claims
 - verb: archived
   target: hooks/example.sh
-  evidence: scripts/verify-archived.sh --archive-dir docs/archive/hooks --source-dir hooks --manifest example.sh --config-globs '.claude/settings.json,cognitive-os.yaml' -> exit 0
+  evidence: scripts/verify-archived.sh --archive-dir docs/99-Archive/archive/hooks --source-dir hooks --manifest example.sh --config-globs '.claude/settings.json,cognitive-os.yaml' -> exit 0
 - verb: done
   target: .cognitive-os/plans/current.md
   evidence: python3 scripts/verify_plan_claims.py .cognitive-os/plans/current.md -> PASS

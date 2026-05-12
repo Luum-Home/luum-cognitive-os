@@ -130,7 +130,7 @@ func (v *ContentPolicyValidator) Validate(_ context.Context, hookCtx *hook.Conte
 		FixHint:     "Remove the prohibited content before retrying.",
 		Reference: validator.Reference{
 			Code: "COS-POL-001",
-			URL:  "docs/architecture/cos-dispatch/content-policy.md",
+			URL:  "docs/04-Concepts/architecture/cos-dispatch/content-policy.md",
 		},
 		Details: map[string]string{
 			"file":       path,

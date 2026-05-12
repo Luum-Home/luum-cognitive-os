@@ -6,7 +6,7 @@ use std::path::{Path, PathBuf};
 use yaml_rust2::{Yaml, YamlLoader};
 
 pub const SCHEMA_VERSION: &str = "script-exposure-audit/v1";
-pub const DEFAULT_LEDGER: &str = "docs/reports/primitive-readiness-ledger-scripts-latest.json";
+pub const DEFAULT_LEDGER: &str = "docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json";
 pub const DEFAULT_DISPOSITIONS: &str = "manifests/script-exposure-dispositions.yaml";
 
 const PRIORITIES: [&str; 5] = ["P0", "P1", "P2", "P3", "OK"];

@@ -22,16 +22,16 @@ classification_basis: explicit proposed status without accepted status
 **Proposed** — 2026-04-24. Builds on `/repo-scout` (formerly `/eval-repo`,
 v2.0.1) and reuses the same per-repo evaluation pipeline. Closes the manual
 curation gap between per-repo evaluation artifacts and the canonical radar
-documents (`docs/patterns/ecosystem-tools.md`, `docs/blocked-tools.md`).
+documents (`docs/04-Concepts/patterns/ecosystem-tools.md`, `docs/05-Methodology/root/blocked-tools.md`).
 
 ## Context
 
 The Cognitive OS publishes a curated tech radar across two hand-edited
 documents:
 
-- `docs/patterns/ecosystem-tools.md` (367 lines) — ADOPT / TRIAL / ASSESS
+- `docs/04-Concepts/patterns/ecosystem-tools.md` (367 lines) — ADOPT / TRIAL / ASSESS
   entries with usage examples and adoption notes.
-- `docs/blocked-tools.md` (132 lines) — REJECT entries (AGPL/SSPL/BUSL
+- `docs/05-Methodology/root/blocked-tools.md` (132 lines) — REJECT entries (AGPL/SSPL/BUSL
   license-blocked tools) per `rules/license-policy.md`.
 
 Per-repo evaluation already exists. `skills/repo-scout/SKILL.md` (v2.0.1)
@@ -99,11 +99,11 @@ a fresh eval.
 
 | Classification | Target document | Section |
 |---|---|---|
-| ADOPT | `docs/patterns/ecosystem-tools.md` | `## Adopted` (or existing top-level section) |
-| TRIAL | `docs/patterns/ecosystem-tools.md` | `## Trial` |
-| ASSESS | `docs/patterns/ecosystem-tools.md` | `### (ASSESS)` subsection — promotion candidates |
-| HOLD | `docs/patterns/ecosystem-tools.md` | `### (HOLD)` subsection alongside ASSESS |
-| REJECT | `docs/blocked-tools.md` | grouped by license family (AGPL / SSPL / BUSL / other) |
+| ADOPT | `docs/04-Concepts/patterns/ecosystem-tools.md` | `## Adopted` (or existing top-level section) |
+| TRIAL | `docs/04-Concepts/patterns/ecosystem-tools.md` | `## Trial` |
+| ASSESS | `docs/04-Concepts/patterns/ecosystem-tools.md` | `### (ASSESS)` subsection — promotion candidates |
+| HOLD | `docs/04-Concepts/patterns/ecosystem-tools.md` | `### (HOLD)` subsection alongside ASSESS |
+| REJECT | `docs/05-Methodology/root/blocked-tools.md` | grouped by license family (AGPL / SSPL / BUSL / other) |
 
 ASSESS and HOLD live in subsections of the same file so a reviewer can
 promote (move to ADOPT/TRIAL) or demote (move to REJECT) with a single
@@ -319,8 +319,8 @@ Phase 3 tests encode each of these as a golden-file assertion.
 
 - `skills/repo-scout/SKILL.md` (v2.0.1) — per-repo eval, delegated unchanged
 - `rules/license-policy.md` — license → REJECT mapping
-- `docs/patterns/ecosystem-tools.md` — canonical ADOPT/TRIAL/ASSESS doc
-- `docs/blocked-tools.md` — canonical REJECT doc
+- `docs/04-Concepts/patterns/ecosystem-tools.md` — canonical ADOPT/TRIAL/ASSESS doc
+- `docs/05-Methodology/root/blocked-tools.md` — canonical REJECT doc
 - ADR-048 — docker container freshness (structurally similar curation gap)
 - ADR-062 — multi-provider agent loop (orthogonal, not used by this skill)
 - ADR-063 — agent tool replication strategy (orthogonal)

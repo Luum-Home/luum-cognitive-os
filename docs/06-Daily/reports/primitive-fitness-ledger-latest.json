@@ -3,7 +3,7 @@
   "items": [],
   "schema_version": "primitive-fitness-ledger.v1",
   "source_globs": [
-    "docs/reports/primitive-fitness/*.json",
+    "docs/06-Daily/reports/primitive-fitness/*.json",
     ".cognitive-os/reports/primitive-fitness/*.json",
     ".cognitive-os/metrics/primitive-fitness-reports/*.json"
   ],

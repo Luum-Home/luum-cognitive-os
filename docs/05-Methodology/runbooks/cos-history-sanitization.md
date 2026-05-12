@@ -190,7 +190,7 @@ COS_HISTORY_SANITIZE_CONSUMER_CODENAME_A                    0   PASS
 …
 [smoke] tombstone branch:    history-sanitization-<ts>
 [smoke] latest report:       .cognitive-os/reports/history-sanitization/<ts>.json
-[smoke] sha inventory:       docs/history/pre-sanitization-sha-inventory-<date>.txt
+[smoke] sha inventory:       docs/01-Build-Log/history/pre-sanitization-sha-inventory-<date>.txt
 [smoke] tokens resolved:     11 of 11 env vars
 [smoke] PASS — 0 leaked tokens across HEAD + tombstone + all refs
 ```
@@ -236,7 +236,7 @@ for auditors verifying that:
 2. No replacement rule introduced a new leak (every configured token has
    0 hits on the tombstone too — the smoke script asserts this).
 3. The pre-rewrite SHA inventory in
-   `docs/history/pre-sanitization-sha-inventory-*.txt` is preserved as a
+   `docs/01-Build-Log/history/pre-sanitization-sha-inventory-*.txt` is preserved as a
    separate audit trail (not rewritten, not redacted) so a future auditor
    can correlate pre/post commit counts and rule application.
 
@@ -333,7 +333,7 @@ After any recovery, regenerate the SHA inventory and the post-execute
 report so auditors have a coherent timeline:
 
 ```bash
-git rev-list --all --pretty=oneline > docs/history/pre-sanitization-sha-inventory-$(date +%Y-%m-%d).txt
+git rev-list --all --pretty=oneline > docs/01-Build-Log/history/pre-sanitization-sha-inventory-$(date +%Y-%m-%d).txt
 python3 scripts/cos-history-sanitization --dry-run --json > .cognitive-os/reports/history-sanitization/recovery-$(date -u +%Y%m%dT%H%M%SZ).json
 ```
 

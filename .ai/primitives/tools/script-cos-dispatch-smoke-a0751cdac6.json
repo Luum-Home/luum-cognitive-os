@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-dispatch-smoke",
         "scripts/cos_dispatch_smoke.py",
-        "docs/runbooks/llm-dispatch.md"
+        "docs/05-Methodology/runbooks/llm-dispatch.md"
       ],
       "runtime_projection": false
     }
@@ -156,7 +156,7 @@
       "projection_targets": [
         "scripts/cos-dispatch-smoke",
         "scripts/cos_dispatch_smoke.py",
-        "docs/runbooks/llm-dispatch.md"
+        "docs/05-Methodology/runbooks/llm-dispatch.md"
       ],
       "runtime_projection": false
     }
@@ -165,7 +165,7 @@
   "projection_targets": [
     "scripts/cos-dispatch-smoke",
     "scripts/cos_dispatch_smoke.py",
-    "docs/runbooks/llm-dispatch.md"
+    "docs/05-Methodology/runbooks/llm-dispatch.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-dispatch-smoke",

@@ -82,7 +82,7 @@ def _run_hook(project_dir: Path, env: dict | None = None) -> subprocess.Complete
         INDEX_MTIME=$(date -r "$MTIME_FILE" +%s 2>/dev/null || echo 0)
         NEWEST_MTIME=0
         for dir in "$PROJECT_DIR/lib" "$PROJECT_DIR/hooks" "$PROJECT_DIR/scripts" \\
-                   "$PROJECT_DIR/docs/adrs" "$PROJECT_DIR/packages"; do
+                   "$PROJECT_DIR/docs/02-Decisions/adrs" "$PROJECT_DIR/packages"; do
           if [ ! -d "$dir" ]; then continue; fi
           while IFS= read -r -d '' f; do
             FILE_MTIME=$(date -r "$f" +%s 2>/dev/null || echo 0)

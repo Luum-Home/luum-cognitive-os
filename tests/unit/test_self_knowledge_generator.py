@@ -69,7 +69,7 @@ def fake_project(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
 
-    # docs/adrs/
+    # docs/02-Decisions/adrs/
     adrs = tmp_path / "docs" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-test.md").write_text(

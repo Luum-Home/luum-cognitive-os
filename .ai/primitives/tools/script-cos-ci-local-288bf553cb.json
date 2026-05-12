@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-ci-local.sh",
         "git-hooks/pre-push",
-        "docs/adrs/ADR-131-local-ci-migration.md"
+        "docs/02-Decisions/adrs/ADR-131-local-ci-migration.md"
       ],
       "runtime_projection": false
     }
@@ -155,7 +155,7 @@
       "projection_targets": [
         "scripts/cos-ci-local.sh",
         "git-hooks/pre-push",
-        "docs/adrs/ADR-131-local-ci-migration.md"
+        "docs/02-Decisions/adrs/ADR-131-local-ci-migration.md"
       ],
       "runtime_projection": false
     }
@@ -164,7 +164,7 @@
   "projection_targets": [
     "scripts/cos-ci-local.sh",
     "git-hooks/pre-push",
-    "docs/adrs/ADR-131-local-ci-migration.md"
+    "docs/02-Decisions/adrs/ADR-131-local-ci-migration.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-ci-local.sh",

@@ -1,6 +1,6 @@
 # P3 Plan Triage — 2026-05-10 (Opus refinement 2026-05-11)
 
-**Scope**: 5 P3 zero-progress plans triaged against the External Tool Adoption Doctrine (`docs/architecture/external-tool-adoption-doctrine.md`, ratified by ADR-254), the radar-2026-05-08 implementation tracker, the CHANGELOG `[0.28.0]` + `[Unreleased]` sections, and the current ADR ledger (ceiling: ADR-258).
+**Scope**: 5 P3 zero-progress plans triaged against the External Tool Adoption Doctrine (`docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`, ratified by ADR-254), the radar-2026-05-08 implementation tracker, the CHANGELOG `[0.28.0]` + `[Unreleased]` sections, and the current ADR ledger (ceiling: ADR-258).
 
 **Method**: this report carries two passes layered together.
 
@@ -14,7 +14,7 @@ A `RECONCILIATION STATUS` HTML comment carrying both passes was placed at the to
 | # | Plan file | Sonnet | Opus | Headline reason |
 |---|---|---|---|---|
 | 1 | `.cognitive-os/plans/features/agent-escalation-capabilities.md` | ARCHIVE | **ARCHIVE w/ SCOPE-REDUCTION** | Phases 1+2 (typed capability signals + re-dispatch handoff) survive as unique value; Phase 3 (budget + retry counts) TOMBSTONED-in-place because ADR-228 + dispatch-gate now own that territory |
-| 2 | `.cognitive-os/plans/features/workflow-engine.md` | TOMBSTONE | **TOMBSTONE (strengthened)** | Stronger reason than doctrine alone: `.cognitive-os/workflows/` + `docs/adw-patterns.md` already provide lightweight ADW substrate; recommend formal ADR-tombstone slot |
+| 2 | `.cognitive-os/plans/features/workflow-engine.md` | TOMBSTONE | **TOMBSTONE (strengthened)** | Stronger reason than doctrine alone: `.cognitive-os/workflows/` + `docs/08-References/root/adw-patterns.md` already provide lightweight ADW substrate; recommend formal ADR-tombstone slot |
 | 3 | `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md` | ACTIVATE | **ACTIVATE w/ SCOPE-REDUCTION** | Phases 1, 4, 6 DELIVERED by ADR-247/248 + cos-cleanup.sh + ADR-072/237; Phase 5 PARTIAL via cos status; only Phases 2, 3, 7, 8 are net-new active work |
 | 4 | `.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md` | ARCHIVE | **ARCHIVE (confirmed)** | T-W3-bench is one-workload narrow vs this plan's 8×6×9 matrix and prior-art comparison; subsumption hypothesis tested and rejected |
 | 5 | `.cognitive-os/plans/archive/token-optimization-masterplan.md` | TOMBSTONE | **TOMBSTONE (unchanged)** | Already in archive/; all 8 workstreams superseded by ADR-027/044/049 + shipped runtime + ToolSearch metrics |
@@ -42,16 +42,16 @@ A `RECONCILIATION STATUS` HTML comment carrying both passes was placed at the to
 
 **Sonnet decision**: TOMBSTONE (rationale: doctrine "Distributed workflow engines: DEFER"). **Opus decision**: TOMBSTONE confirmed — but Sonnet's rationale is the *weaker* of two available reasons.
 
-**Deep check posed**: does the existing `.cognitive-os/workflows/` substrate (per `docs/adw-patterns.md`) already provide a lightweight workflow capability, making this TOMBSTONE-by-coexistence rather than TOMBSTONE-by-doctrine?
+**Deep check posed**: does the existing `.cognitive-os/workflows/` substrate (per `docs/08-References/root/adw-patterns.md`) already provide a lightweight workflow capability, making this TOMBSTONE-by-coexistence rather than TOMBSTONE-by-doctrine?
 
 **Opus finding**: Yes. The doctrine clause targets *distributed* engines (Temporal, NATS, Firecracker, OPA) — heavy multi-host runtimes. The plan's proposed `lib/workflow_engine.py` (YAML + networkx + asyncio, in-process) does not strictly fall under that clause; doctrine alone is a thin reason to TOMBSTONE. The stronger reason is **coexistence with shipped substrate**:
 
 - `.cognitive-os/workflows/feature-pipeline.yaml` and `.cognitive-os/workflows/bugfix-pipeline.yaml` already exist.
-- `docs/adw-patterns.md` documents the ADW (AI Developer Workflow) model with 5 named pipelines: feature, bugfix, refactor, sre, review. Each YAML defines steps with `type: agent|script|gate`, `skill`, `model`, `inputs`, `outputs`, `success_criteria`.
+- `docs/08-References/root/adw-patterns.md` documents the ADW (AI Developer Workflow) model with 5 named pipelines: feature, bugfix, refactor, sre, review. Each YAML defines steps with `type: agent|script|gate`, `skill`, `model`, `inputs`, `outputs`, `success_criteria`.
 - ADR-036 sprint orchestration primitives (MVP shipped 2026-04-20: CLI + manifest + canonical events + example spec), `@event_wrap`, and ADR-226 cover batch launching and event emission.
 - Building `WorkflowEngine`/`WorkflowParser`/`DAGBuilder`/`StateManager`/`WorkflowScheduler`/`ConditionEvaluator`/`RetryPolicy`/`WorkflowHookEmitter` as a separate Python engine would duplicate this without adding governance value the existing ADW substrate lacks.
 
-**ADR-tombstone recommendation**: open an `adr-tombstone` slot to formally close the workflow-engine concept and reference `docs/adw-patterns.md` + `.cognitive-os/workflows/` as the canonical lightweight workflow substrate. This is the only TOMBSTONE in this batch worth a formal ADR slot.
+**ADR-tombstone recommendation**: open an `adr-tombstone` slot to formally close the workflow-engine concept and reference `docs/08-References/root/adw-patterns.md` + `.cognitive-os/workflows/` as the canonical lightweight workflow substrate. This is the only TOMBSTONE in this batch worth a formal ADR slot.
 
 ### 3. `operational-stability-friction-reduction.md` — ACTIVATE with SCOPE-REDUCTION (Sonnet→Opus delta)
 
@@ -78,7 +78,7 @@ A `RECONCILIATION STATUS` HTML comment carrying both passes was placed at the to
 
 **Deep check posed**: does T-W3-bench (Wave 3 hardening — repo-map benchmarking) already cover the benchmark substrate need? If yes, TOMBSTONE not ARCHIVE.
 
-**Opus finding**: No. Evidence from `docs/reports/radar-2026-05-08-implementation-tracker.md`:
+**Opus finding**: No. Evidence from `docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md`:
 
 > **T-W3-bench** | Wave 3 hardening — repo-map benchmarking against pure `lib/context_diet.py`. 🔲 follow-up | Compare graph-rank token efficiency on real codebases before promoting `lib/repo_map.py` past optional pilot.
 
@@ -93,7 +93,7 @@ T-W3-bench is one comparison: `lib/repo_map.py` graph-rank vs pure `lib/context_
 | Plan | Sonnet | Opus | Disagreement type | Why Opus diverged |
 |---|---|---|---|---|
 | 1 agent-escalation | ARCHIVE | ARCHIVE w/ SCOPE-REDUCTION | Granularity refinement | Sonnet missed that ADR-228 + dispatch-gate cover Phase 3 specifically but not Phases 1+2 — the plan deserves a phase-level split |
-| 2 workflow-engine | TOMBSTONE (doctrine) | TOMBSTONE (coexistence) | Rationale strengthening + ADR-tombstone recommendation | Sonnet's doctrine clause is the weaker reason; the ADW substrate in `.cognitive-os/workflows/` + `docs/adw-patterns.md` is the stronger reason. Plus formal ADR-tombstone slot recommended |
+| 2 workflow-engine | TOMBSTONE (doctrine) | TOMBSTONE (coexistence) | Rationale strengthening + ADR-tombstone recommendation | Sonnet's doctrine clause is the weaker reason; the ADW substrate in `.cognitive-os/workflows/` + `docs/08-References/root/adw-patterns.md` is the stronger reason. Plus formal ADR-tombstone slot recommended |
 | 3 operational-stability | ACTIVATE | ACTIVATE w/ SCOPE-REDUCTION | Phase-by-phase delivery audit | Sonnet correctly saw overlap but didn't separate DELIVERED phases from net-new ones — 4 of 8 phases are already done by shipped ADRs |
 | 4 runtime-comparison | ARCHIVE | ARCHIVE | None — confirmed | Subsumption hypothesis tested against T-W3-bench scope, explicitly rejected. Confirmation has audit value |
 | 5 token-optimization | TOMBSTONE | TOMBSTONE | None | Unchanged. Confirmation noted in reconciliation comment for audit trail |
@@ -102,7 +102,7 @@ T-W3-bench is one comparison: `lib/repo_map.py` graph-rank vs pure `lib/context_
 
 One ADR-tombstone slot recommended from this batch:
 
-- **workflow-engine.md** → formal ADR-tombstone (open an `adr-tombstone` skill slot). Citation chain: `.cognitive-os/workflows/` + `docs/adw-patterns.md` + ADR-036 sprint orchestration primitives. Tombstone declaration: "Lightweight ADW substrate (YAML pipelines + adw-patterns.md + ADR-036) is the canonical workflow capability. No bespoke Python `WorkflowEngine` runtime will be built. If a Shape-B federation/cluster trigger fires per ADR-132, revisit via ADR-254 manifest/audit/research-check path."
+- **workflow-engine.md** → formal ADR-tombstone (open an `adr-tombstone` skill slot). Citation chain: `.cognitive-os/workflows/` + `docs/08-References/root/adw-patterns.md` + ADR-036 sprint orchestration primitives. Tombstone declaration: "Lightweight ADW substrate (YAML pipelines + adw-patterns.md + ADR-036) is the canonical workflow capability. No bespoke Python `WorkflowEngine` runtime will be built. If a Shape-B federation/cluster trigger fires per ADR-132, revisit via ADR-254 manifest/audit/research-check path."
 
 No ADR-tombstone needed for the other four:
 - agent-escalation: archived in parts, Phase 3 tombstoned-in-place via reconciliation comment — phase-level scope, ADR overkill.

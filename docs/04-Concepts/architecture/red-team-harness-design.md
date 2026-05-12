@@ -4,7 +4,7 @@
 **Phase**: reconstruction
 **Date**: 2026-05-02
 **Status**: DESIGNED — awaiting `sdd-apply`
-**Inputs**: `docs/architecture/red-team-harness-proposal.md`, engram observations 16454 (explore) + 16474 (proposal)
+**Inputs**: `docs/04-Concepts/architecture/red-team-harness-proposal.md`, engram observations 16454 (explore) + 16474 (proposal)
 **Author**: orchestrator (foreground; dispatch gate blocked by parallel validation capsule)
 
 ---
@@ -42,7 +42,7 @@ replay:
     # Multi-line text that will be fed to lib/orchestrator_verify.py as if
     # an agent had emitted it. Used to test verification logic without
     # actually dispatching an agent.
-    The 3 hooks have been archived to docs/archive/hooks/.
+    The 3 hooks have been archived to docs/99-Archive/archive/hooks/.
   expected_extracted_claims:
     - verb: archived
       target: hooks/completeness-check.sh
@@ -78,7 +78,7 @@ initial_state:
       content: |
         #!/bin/bash
         echo "live hook"
-    - path: docs/archive/hooks/completeness-check.sh
+    - path: docs/99-Archive/archive/hooks/completeness-check.sh
       mode: 0644
       content: |
         #!/bin/bash
@@ -124,7 +124,7 @@ expected_fail_mode:
   detection_exit_code: 1   # expect non-zero; success means the trap was caught
 ```
 
-`${SOURCE_DIR}` and `${ARCHIVE_DIR}` are scenario-level template vars that the runner substitutes. The defaults (`hooks/`, `docs/archive/hooks/`) are overridable per-scenario, which is what makes the scenario `both`-portable: a consumer project can declare its own dirs.
+`${SOURCE_DIR}` and `${ARCHIVE_DIR}` are scenario-level template vars that the runner substitutes. The defaults (`hooks/`, `docs/99-Archive/archive/hooks/`) are overridable per-scenario, which is what makes the scenario `both`-portable: a consumer project can declare its own dirs.
 
 ### 1.6 `grading_rubric` block
 
@@ -173,7 +173,7 @@ replay:
   agent_output: |
     DELETE batch complete. The 3 hooks (completeness-check.sh,
     post-agent-verify.sh, prompt-quality.sh) have been archived to
-    docs/archive/hooks/.
+    docs/99-Archive/archive/hooks/.
   expected_extracted_claims:
     - verb: archived
       target: hooks/completeness-check.sh
@@ -196,13 +196,13 @@ initial_state:
     - path: hooks/prompt-quality.sh
       mode: 0755
       content: "#!/bin/bash\necho live\n"
-    - path: docs/archive/hooks/completeness-check.sh
+    - path: docs/99-Archive/archive/hooks/completeness-check.sh
       mode: 0644
       content: "#!/bin/bash\necho archived (stale)\n"
-    - path: docs/archive/hooks/post-agent-verify.sh
+    - path: docs/99-Archive/archive/hooks/post-agent-verify.sh
       mode: 0644
       content: "#!/bin/bash\necho archived (stale)\n"
-    - path: docs/archive/hooks/prompt-quality.sh
+    - path: docs/99-Archive/archive/hooks/prompt-quality.sh
       mode: 0644
       content: "#!/bin/bash\necho archived (stale)\n"
     - path: .claude/settings.json
@@ -347,7 +347,7 @@ Bash artifacts use `.bats` (Bash Automated Testing System; already present in `t
 
 Every portability test MUST satisfy 4 invariants:
 
-1. **Non-SO mini-repo**: test creates a tempdir, populates non-SO file structure (e.g., `attic/scripts/` instead of `docs/archive/hooks/`), runs the component with explicit flags pointing into that mini-repo. NEVER references SO paths.
+1. **Non-SO mini-repo**: test creates a tempdir, populates non-SO file structure (e.g., `attic/scripts/` instead of `docs/99-Archive/archive/hooks/`), runs the component with explicit flags pointing into that mini-repo. NEVER references SO paths.
 2. **Bilateral assertion**: test asserts BOTH (a) component succeeds in mini-repo AND (b) component does NOT silently use SO paths (no env var leakage check).
 3. **Falsification probe**: test includes a deliberate "trap" — sabotages an input — and asserts component fails. If the component passes when it shouldn't, that's a rubber-stamp test and CI catches it.
 4. **Documented mini-repo**: test names files clearly so "mini-repo" structure is obvious in code review.
@@ -579,7 +579,7 @@ run-redteam-scenario.sh \
 **Flags**:
 - `--scenario` (required): scenario id (resolved from `--scenarios-dir`) or full path to YAML
 - `--scenarios-dir` (default: `tests/red_team/scenarios/`): override for portability
-- `--out-dir` (default: `docs/reports/redteam/`): per-scenario JSON output dir
+- `--out-dir` (default: `docs/06-Daily/reports/redteam/`): per-scenario JSON output dir
 - `--mode` (default: `replay` if `COS_REDTEAM_LIVE!=1`, else `live`): explicit override
 - `--mini-repo-keep`: do not destroy tempdir on exit (debugging)
 - `--json`: emit JSON only (no human text)
@@ -629,8 +629,8 @@ python3 scripts/redteam-aggregate.py \
 
 **Flags**:
 - `--input-dir` (required): directory of per-scenario JSONs from `run-redteam-scenario.sh`
-- `--output-json` (default: `docs/reports/redteam-baseline.json`)
-- `--output-md` (default: `docs/reports/redteam-baseline.md`)
+- `--output-json` (default: `docs/06-Daily/reports/redteam-baseline.json`)
+- `--output-md` (default: `docs/06-Daily/reports/redteam-baseline.md`)
 - `--baseline-compare PATH`: optional prior baseline; emit diff section if provided
 
 **Output JSON schema** (versioned):
@@ -723,7 +723,7 @@ Each wave declares: input artifacts, output artifacts, gate criteria, blast radi
 
 ### W6 — Contract + docs + lane + driver wiring
 - **Inputs**: W5 (baseline format stable)
-- **Outputs**: `tests/contracts/test_redteam_baseline.py`, `templates/contracts/test_redteam_baseline.template.py`, `tests/contracts/test_redteam_portability_coverage.py`, `hooks/scope-marker-portability-gate.sh`, `docs/RED-TEAM-COVERAGE.md`, `docs/RED-TEAM-CHANGELOG.md`, `.cognitive-os/test-lanes.yaml` (modify), `scripts/apply-efficiency-profile.sh` (modify — register portability gate hook), template portability test
+- **Outputs**: `tests/contracts/test_redteam_baseline.py`, `templates/contracts/test_redteam_baseline.template.py`, `tests/contracts/test_redteam_portability_coverage.py`, `hooks/scope-marker-portability-gate.sh`, `docs/01-Build-Log/root/RED-TEAM-COVERAGE.md`, `docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md`, `.cognitive-os/test-lanes.yaml` (modify), `scripts/apply-efficiency-profile.sh` (modify — register portability gate hook), template portability test
 - **Gate**: contract tests pass in `red_team` lane; portability coverage assertion passes for all 9 `both` artifacts; harness-driver-parity test passes for Codex; `cos_init.py --install-scope project --dry-run` rehearsal
 - **Blast radius**: 8 files
 - **Rollback**: revert; lane stays empty; warn-only CI tolerates absence
@@ -743,7 +743,7 @@ Each wave declares: input artifacts, output artifacts, gate criteria, blast radi
 | `scripts/apply-efficiency-profile.sh` | W2 (plan-claim-validator entry), W6 (scope-marker-portability-gate entry) |
 | `.cognitive-os/test-lanes.yaml` | W6 only |
 | `rules/trust-score.md` | W2 only |
-| `docs/RED-TEAM-CHANGELOG.md` | W6 only (created), W3-W5 entries appended only when scenarios stabilize |
+| `docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md` | W6 only (created), W3-W5 entries appended only when scenarios stabilize |
 
 **Merge-conflict avoidance with parallel sessions**: only `templates/agent-preamble.md` and `scripts/apply-efficiency-profile.sh` are likely 3-way candidates. Strategy: rebase before each wave commit; if conflict, prefer parallel session's content for unrelated regions, append harness regions explicitly delimited with `# === RED-TEAM-HARNESS START ===` / `# === RED-TEAM-HARNESS END ===` block fences.
 
@@ -845,7 +845,7 @@ R10 is the recursive false-done. Mitigation has 3 layers:
 
 ## 8. Cross-Harness Authoring §Self-Check Compliance
 
-All 9 `both` components pass the 5-item self-check from `docs/architecture/cross-harness-authoring.md`:
+All 9 `both` components pass the 5-item self-check from `docs/04-Concepts/architecture/cross-harness-authoring.md`:
 
 1. **Path independence**: all `both` artifacts use `--archive-dir`/`--source-dir`/`--scenarios-dir`/`--out-dir`/`COS_PLAN_GLOB` env contract; NO hardcoded SO paths
 2. **Driver-agnostic registration**: hooks register via `apply-efficiency-profile.sh` (not raw settings)

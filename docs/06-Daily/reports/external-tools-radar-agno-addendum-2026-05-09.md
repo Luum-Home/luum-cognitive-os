@@ -1,16 +1,16 @@
 ---
 report_type: external-tools-radar-targeted-addendum
 scope: agno-agi/agno + agno-agi/dash + agno-agi/scout
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 generated_at: 2026-05-09
 status: documentation-before-implementation
 source_artifacts:
-  - docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md
+  - docs/03-PoCs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md
 related_docs:
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
-  - docs/reports/external-tools-radar-full-reassessment-2026-05-08.md
-  - docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
+  - docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md
+  - docs/06-Daily/reports/external-tools-radar-openswarm-addendum-2026-05-09.md
 ---
 
 # External Tools Radar Addendum — Agno Suite 2026-05-09
@@ -118,8 +118,8 @@ ACCEPTANCE CRITERIA:
 
 ## Source evidence
 
-- Deep evaluation: `docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`
+- Deep evaluation: `docs/03-PoCs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`
 - GitHub repository: <https://github.com/agno-agi/agno>
 - GitHub repository: <https://github.com/agno-agi/dash>
 - GitHub repository: <https://github.com/agno-agi/scout>
-- Prior Claw cluster: `docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md`
+- Prior Claw cluster: `docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md`

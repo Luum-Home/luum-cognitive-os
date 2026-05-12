@@ -14,9 +14,9 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh
 
 Outputs:
 
-- `docs/acc/latest-compact.md` — context-diet entrypoint for agents and humans.
-- `docs/acc/latest.json` — machine-readable ACC report and drift baseline. Do not load this whole file into agent context unless debugging the pipeline.
-- `docs/acc/latest.md` — human review summary.
+- `docs/07-Capabilities/acc/latest-compact.md` — context-diet entrypoint for agents and humans.
+- `docs/07-Capabilities/acc/latest.json` — machine-readable ACC report and drift baseline. Do not load this whole file into agent context unless debugging the pipeline.
+- `docs/07-Capabilities/acc/latest.md` — human review summary.
 - `.cognitive-os/metrics/acc-pipeline-history.jsonl` — append-only local history.
 
 ## Adapter flow
@@ -27,7 +27,7 @@ existing tools / ledgers
   -> capability rows
   -> mapping status classifier
   -> ACC score + findings
-  -> docs/acc/latest.json + latest.md
+  -> docs/07-Capabilities/acc/latest.json + latest.md
   -> local JSONL history
   -> Engram handoff when mem tools are surfaced to the agent
 ```
@@ -38,13 +38,13 @@ ACC/readiness reports are intentionally machine-readable and can be large. Agent
 
 ```bash
 python3 scripts/acc_pipeline.py --project-dir . --brief
-cat docs/acc/latest-compact.md
+cat docs/07-Capabilities/acc/latest-compact.md
 ```
 
 Do not `cat` these files into an agent conversation unless the task is debugging report generation itself:
 
-- `docs/acc/latest.json`
-- `docs/reports/primitive-readiness-ledger-*.json`
+- `docs/07-Capabilities/acc/latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-*.json`
 
 Subagents should receive selected rows or findings only. Use Python/JQ snippets to extract those rows instead of passing complete ledgers.
 
@@ -53,8 +53,8 @@ Subagents should receive selected rows or findings only. Use Python/JQ snippets 
 | Adapter | Source | Role |
 |---|---|---|
 | `cos_coverage` | `scripts/cos_coverage.py --json --refresh` | Existing ACC counts and trend. |
-| `script_readiness` | `docs/reports/primitive-readiness-ledger-scripts-latest.json` | Script primitive representation and consumer accessibility. |
-| `family_readiness:{hooks,skills,rules}` | `docs/reports/primitive-readiness-ledger-*-latest.json` | Hook/skill/rule representation and consumer accessibility. |
+| `script_readiness` | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | Script primitive representation and consumer accessibility. |
+| `family_readiness:{hooks,skills,rules}` | `docs/06-Daily/reports/primitive-readiness-ledger-*-latest.json` | Hook/skill/rule representation and consumer accessibility. |
 | `docs_execution` | `scripts/docs_execution_audit.py` output when available | Stale/docs-reality signal. |
 | `primitive_coverage` | `scripts/primitive_coverage.py` output when available | Coverage/actionable-gap signal. |
 | `primitive_gap_snapshot` | `scripts/primitive_gap_snapshot.py` output when available | Family risk signal. |
@@ -89,7 +89,7 @@ python3 scripts/acc_pipeline.py --project-dir . --brief --fail-new
 python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
 ```
 
-`--fail-new` compares the current report with `--baseline` (default: `docs/acc/latest.json`) before writing the new report. It blocks new `missing`, `partial`, `stale`, `overexposed`, or `unverified` capabilities/findings. In strict mode, which is the default, it also blocks newly discovered capabilities that are aligned only by broad local-surface defaults such as `scripts/**`, `rules/*.md`, or `skills/**/SKILL.md`.
+`--fail-new` compares the current report with `--baseline` (default: `docs/07-Capabilities/acc/latest.json`) before writing the new report. It blocks new `missing`, `partial`, `stale`, `overexposed`, or `unverified` capabilities/findings. In strict mode, which is the default, it also blocks newly discovered capabilities that are aligned only by broad local-surface defaults such as `scripts/**`, `rules/*.md`, or `skills/**/SKILL.md`.
 
 Use `--allow-new-local-defaults` only when an operator intentionally wants to tolerate a new local-only surface for one run. The durable fix is an exact row in `manifests/primitive-consumer-availability.yaml`, lifecycle metadata, or real projection proof.
 

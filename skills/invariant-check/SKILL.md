@@ -72,14 +72,14 @@ The skill review step appends these to the appropriate test file (e.g., `tests/u
 ## Example: ADR-047 CPU Threshold
 
 ### Before
-- `docs/adrs/ADR-047-session-lifecycle-management.md` line 344: "both phases use 5.0 %"
+- `docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md` line 344: "both phases use 5.0 %"
 - `lib/session_watchdog_lib.py` line 323: `_CPU_IDLE_THRESHOLD_PCT = 5.0`
 - Nothing enforces the pairing. If a future edit drops one to 1.0 the system silently desyncs.
 
 ### Run
 ```bash
 python3 scripts/invariant_check_helper.py \
-  docs/adrs/ADR-047-session-lifecycle-management.md \
+  docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md \
   lib/session_watchdog_lib.py
 ```
 

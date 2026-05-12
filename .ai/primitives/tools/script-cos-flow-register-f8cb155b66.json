@@ -60,7 +60,7 @@
         "scripts/cos_flow_register.py",
         "manifests/flow-contract-schema.yaml",
         "skills/vuln-remediation-flow/flow_contract.yaml",
-        "docs/adrs/ADR-138-flow-contract-schema.md"
+        "docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md"
       ],
       "runtime_projection": false
     }
@@ -159,7 +159,7 @@
         "scripts/cos_flow_register.py",
         "manifests/flow-contract-schema.yaml",
         "skills/vuln-remediation-flow/flow_contract.yaml",
-        "docs/adrs/ADR-138-flow-contract-schema.md"
+        "docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md"
       ],
       "runtime_projection": false
     }
@@ -170,7 +170,7 @@
     "scripts/cos_flow_register.py",
     "manifests/flow-contract-schema.yaml",
     "skills/vuln-remediation-flow/flow_contract.yaml",
-    "docs/adrs/ADR-138-flow-contract-schema.md"
+    "docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-flow-register.sh",

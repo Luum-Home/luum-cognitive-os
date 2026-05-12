@@ -17,11 +17,11 @@ PEER_HOOK = REPO / "hooks" / "cross-session-peer-context.sh"
 
 
 def test_append_event_standardizes_schema_and_reads_by_type(tmp_path: Path) -> None:
-    row = append_event("file_write_intent", {"path": "docs/adrs/ADR-183.md"}, project_dir=tmp_path, session_id="s1")
+    row = append_event("file_write_intent", {"path": "docs/02-Decisions/adrs/ADR-183.md"}, project_dir=tmp_path, session_id="s1")
 
     assert row["schema_version"] == 1
     assert row["event_type"] == "file-write-intent"
-    assert read_events(project_dir=tmp_path, event_type="file-write-intent")[0]["payload"]["path"] == "docs/adrs/ADR-183.md"
+    assert read_events(project_dir=tmp_path, event_type="file-write-intent")[0]["payload"]["path"] == "docs/02-Decisions/adrs/ADR-183.md"
 
 
 def test_peers_summarizes_recent_live_peer(tmp_path: Path) -> None:
@@ -46,11 +46,11 @@ def test_event_emit_hook_maps_write_payload(tmp_path: Path) -> None:
 
 
 def test_peer_context_hook_emits_additional_context_for_peer(tmp_path: Path) -> None:
-    append_event("file-write-intent", {"branch": "session/peer", "path": "docs/adrs/ADR-171.md", "topic_keywords": ["adr"]}, project_dir=tmp_path, session_id="peer")
+    append_event("file-write-intent", {"branch": "session/peer", "path": "docs/02-Decisions/adrs/ADR-171.md", "topic_keywords": ["adr"]}, project_dir=tmp_path, session_id="peer")
     env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "me"}
     res = subprocess.run(["bash", str(PEER_HOOK)], text=True, capture_output=True, env=env, timeout=10)
 
     assert res.returncode == 0
     out = json.loads(res.stdout)
     assert "Peer orchestrator sessions detected" in out["additionalContext"]
-    assert "docs/adrs/ADR-171.md" in out["additionalContext"]
+    assert "docs/02-Decisions/adrs/ADR-171.md" in out["additionalContext"]

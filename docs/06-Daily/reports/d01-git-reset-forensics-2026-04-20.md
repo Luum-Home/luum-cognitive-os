@@ -79,7 +79,7 @@ found in the first 100 reflog entries.
 
 ## 3. Comparison with prior forensic report
 
-A prior forensic report (`docs/reports/bug2-reset-cascade-forensics-2026-04-20.md`)
+A prior forensic report (`docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md`)
 was produced earlier today by a read-only sub-agent from git history reconstruction.
 That report identified the root cause correctly via commit body evidence:
 

@@ -141,8 +141,8 @@ does not block this ADR.
 | `scripts/apply-efficiency-profile.sh` | Registered `memory-prefetch.sh|async` under UserPromptSubmit |
 | `tests/unit/test_memory_manager.py` | New — 30 unit tests, MemoryManager + context fencing |
 | `tests/unit/test_engram_memory_provider.py` | New — 23 unit tests, EngramMemoryProvider + scanner smoke |
-| `docs/adrs/ADR-078-mid-task-memory-tool.md` | This file |
-| `docs/research-log.md` | Appended section "2026-04-30: Mid-task memory tool (Tier 1 #5)" |
+| `docs/02-Decisions/adrs/ADR-078-mid-task-memory-tool.md` | This file |
+| `docs/03-PoCs/root/research-log.md` | Appended section "2026-04-30: Mid-task memory tool (Tier 1 #5)" |
 
 ---
 
@@ -168,7 +168,7 @@ python3 -m pytest tests/behavior/test_core_skills_check.py -q --tb=short
 - Hermes `memory_manager.py`: `.claude/plugins/hermes-agent/agent/memory_manager.py`
 - Hermes `memory_provider.py`: `.claude/plugins/hermes-agent/agent/memory_provider.py`
 - Hermes license: MIT (confirmed at adoption, see `.cognitive-os/adoption-registry.yaml`)
-- ADR-074: `docs/adrs/ADR-074-tier-0-learning-loop-closure.md`
-- ADR-075: `docs/adrs/ADR-075-stage2-selective-expansion.md`
+- ADR-074: `docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md`
+- ADR-075: `docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md`
 - Engram topic: `hermes-learning-loop-source-map`
 - Engram topic (this impl): `cos/midtask-memory-tool-impl`

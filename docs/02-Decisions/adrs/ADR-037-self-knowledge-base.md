@@ -69,7 +69,7 @@ Forward dependency graph. Parses `import lib.X` (Python) and `source hooks/_lib/
 ```
 
 ### `glossary.md`
-Extracted from H2/H3 headings in `docs/adrs/*.md` and `docs/guides/*.md`, with the first sentence
+Extracted from H2/H3 headings in `docs/02-Decisions/adrs/*.md` and `docs/05-Methodology/guides/*.md`, with the first sentence
 of each ADR section. Deduped. Sorted alphabetically. Enables fast "what does X mean" lookups.
 
 ### `codebase-summary.md`
@@ -92,7 +92,7 @@ of each ADR section. Deduped. Sorted alphabetically. Enables fast "what does X m
 `hooks/self-knowledge-refresh.sh` runs at SessionStart.
 
 1. Reads `.mtime` stamp from the index.
-2. Compares against newest mtime in `lib/`, `hooks/`, `scripts/`, `docs/adrs/`, `packages/*/lib/`.
+2. Compares against newest mtime in `lib/`, `hooks/`, `scripts/`, `docs/02-Decisions/adrs/`, `packages/*/lib/`.
 3. If stale (or index missing): rebuilds in background (`nohup python3 ... &`).
 4. Always exits 0 — never blocks session startup.
 5. Logs to `.cognitive-os/metrics/self-knowledge-refresh.jsonl`.

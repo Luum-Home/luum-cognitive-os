@@ -19,7 +19,7 @@
 
 ## Pre-conditions
 
-- Tool's Annex F exists at `docs/research/<tool>-annex-f-*.md` (or
+- Tool's Annex F exists at `docs/03-PoCs/research/<tool>-annex-f-*.md` (or
   `.private/...` for BSL-restricted material).
 - Annex F frontmatter currently has `reviewed-by-legal: pending`.
 - Tool has a primary adoption ADR (ADR-NNN, status Accepted).
@@ -41,7 +41,7 @@ python3 scripts/cos-uspto-patent-search \
     --keywords "agent runtime,LLM agent,agent-computer platform"
 ```
 
-Output: `docs/reports/uspto-patent-<tool>-<date>.{json,md}`
+Output: `docs/06-Daily/reports/uspto-patent-<tool>-<date>.{json,md}`
 
 Required to proceed: report file exists. CLI returns 0 even on empty
 results — operator inspects markdown for CRITICAL findings.
@@ -60,7 +60,7 @@ python3 scripts/cos-uspto-trademark-search --mark "holaOS"
 python3 scripts/cos-uspto-trademark-search --mark "Holaboss"
 ```
 
-Output: `docs/reports/uspto-tm-<mark>-<date>.{json,md}`
+Output: `docs/06-Daily/reports/uspto-tm-<mark>-<date>.{json,md}`
 
 Operator notes any LIVE matches in IC 009 (software products) or
 IC 042 (software services).
@@ -115,7 +115,7 @@ Store memo securely: `.private/legal-memos/<tool>-YYYY-MM-DD.pdf`
 ```bash
 python3 scripts/cos-legal-approve \
     --adr ADR-NNN \
-    --annex-f docs/research/<tool>-annex-f-*.md \
+    --annex-f docs/03-PoCs/research/<tool>-annex-f-*.md \
     --counsel "Counsel Name, Firm LLP" \
     --memo .private/legal-memos/<tool>-YYYY-MM-DD.pdf \
     --decision approved \
@@ -126,7 +126,7 @@ Decisions:
 - `approved` — clean adoption authorized
 - `approved-with-conditions` — requires `--conditions "..."` flag;
   operator must `--ack-conditions` during unfreeze
-- `rejected` — adoption blocked; tool moves to `docs/blocked-tools.md`
+- `rejected` — adoption blocked; tool moves to `docs/05-Methodology/root/blocked-tools.md`
 
 Effects:
 - Updates Annex F frontmatter: `reviewed-by-legal: yes` plus counsel
@@ -196,13 +196,13 @@ Tools in `manifests/legal-review-ledger.yaml` with `decision: pending`:
 | Tool | Annex F | Source |
 |---|---|---|
 | holaOS | `.private/external-pattern-research/external-pattern-annex-f-compliance-cleanroom.md` | ADR-259 clean-room |
-| Hermes Agent | `docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (vendored 6 files) |
-| Pi coding-agent | `docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (1 file) |
-| HKUDS/OpenHarness | `docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (1 file) |
-| Sprut Agent Kit | `docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (1 file) |
-| HelixDB | `docs/research/helixdb-annex-f-*-2026-05-11.md` | ASSESS clean-room reference |
-| iFixAi | `docs/research/ifixai-annex-f-*-2026-05-11.md` | TRIAL Apache-2.0 |
-| MegaMemory | `docs/research/megamemory-annex-f-*-2026-05-11.md` | TRIAL MIT port pending |
+| Hermes Agent | `docs/03-PoCs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (vendored 6 files) |
+| Pi coding-agent | `docs/03-PoCs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (1 file) |
+| HKUDS/OpenHarness | `docs/03-PoCs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (1 file) |
+| Sprut Agent Kit | `docs/03-PoCs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md` | retroactive (1 file) |
+| HelixDB | `docs/03-PoCs/research/helixdb-annex-f-*-2026-05-11.md` | ASSESS clean-room reference |
+| iFixAi | `docs/03-PoCs/research/ifixai-annex-f-*-2026-05-11.md` | TRIAL Apache-2.0 |
+| MegaMemory | `docs/03-PoCs/research/megamemory-annex-f-*-2026-05-11.md` | TRIAL MIT port pending |
 
 All 8 require steps 1-8 before respective unfreeze.
 
@@ -224,4 +224,4 @@ All 8 require steps 1-8 before respective unfreeze.
 - ADR-270 — Legal compliance workflow automation (this runbook)
 - ADR-271 — Clean-room detection tier-2 (AST similarity)
 - `rules/license-policy.md` — SPDX classification table
-- `docs/reports/license-compliance-audit-2026-05-11.md` — global audit
+- `docs/06-Daily/reports/license-compliance-audit-2026-05-11.md` — global audit

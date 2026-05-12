@@ -16,7 +16,7 @@ Crystallisation v1 is intentionally deterministic — NO LLM call.
 The digest is constructed from constituent observation titles and content via
 text deduplication.  A future phase may upgrade to LLM synthesis.
 
-ADR reference: ``docs/adrs/ADR-071-engram-lifecycle-evolution.md``
+ADR reference: ``docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md``
 
 NOT (cross-reference)
 ----------------------

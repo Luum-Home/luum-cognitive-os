@@ -12,7 +12,7 @@ AGENTS.md §Carve-out is respected: UI/frontend components, microservice
 components, build/test components, and third-party library components are
 explicitly NOT flagged.
 
-Cross-reference: ADR-072 (docs/adrs/ADR-072-test-lane-taxonomy.md) uses
+Cross-reference: ADR-072 (docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md) uses
 "primitive" for lane-taxonomy entities — consistent with this vocabulary
 decision.
 
@@ -102,7 +102,7 @@ CARVE_OUT_PATTERNS: list[re.Pattern[str]] = [
 # ---------------------------------------------------------------------------
 # Curated audit set (from the mission definition)
 # ---------------------------------------------------------------------------
-_TOP_ARCH_MD = sorted(PROJECT_ROOT.glob("docs/architecture/*.md"))
+_TOP_ARCH_MD = sorted(PROJECT_ROOT.glob("docs/04-Concepts/architecture/*.md"))
 
 
 def _audit_files() -> list[Path]:

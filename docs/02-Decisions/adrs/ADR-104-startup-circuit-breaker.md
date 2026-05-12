@@ -19,7 +19,7 @@ classification_basis: implementation/shipped/delivered evidence
 **Status**: Accepted
 **Date**: 2026-05-01
 **Author**: Maintainer
-**Related**: ADR-086 (hook execution observability), ADR-088 (provenance markers), ADR-098 (multi-agent file coordination), `docs/incidents/2026-05-01-session-multi-spawn-hang.md`
+**Related**: ADR-086 (hook execution observability), ADR-088 (provenance markers), ADR-098 (multi-agent file coordination), `docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md`
 
 ## Status
 
@@ -130,7 +130,7 @@ This lets future RCA distinguish normal hook execution from subagent gating, saf
 - Unit/integration tests simulate repeated `SessionStart` invocations and assert safe mode activates.
 - Tests assert manual kill-switch file and env flags skip `SessionStart` hook bodies.
 - Tests assert expired safe mode does not suppress normal startup.
-- Manual proof path: `docs/manual-tests/claude-code-startup-hang-regression.md`.
+- Manual proof path: `docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md`.
 
 Runnable proof:
 

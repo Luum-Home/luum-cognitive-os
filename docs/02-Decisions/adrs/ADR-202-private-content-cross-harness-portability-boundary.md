@@ -19,7 +19,7 @@ classification_basis: explicit accepted/implemented status
 **Status**: Accepted — conservative manifest and audit substrate implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-008, ADR-081, ADR-111, ADR-124, ADR-136, ADR-190, ADR-193, ADR-194, ADR-196, ADR-201  
-**Report**: `docs/reports/private-content-portability-gap-2026-05-06.md`
+**Report**: `docs/06-Daily/reports/private-content-portability-gap-2026-05-06.md`
 
 ---
 

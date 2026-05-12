@@ -56,15 +56,15 @@ LICENSE
 NOTICE
 README.md
 cmd/cos/internal/security/license.go
-docs/business/executive-summary.md
-docs/business/features.md
-docs/business/open-source-design.md
-docs/business/roadmap.md
-docs/business/value-proposition.md
+docs/08-References/business/executive-summary.md
+docs/08-References/business/features.md
+docs/08-References/business/open-source-design.md
+docs/08-References/business/roadmap.md
+docs/08-References/business/value-proposition.md
 pyproject.toml
 ```
 
-The patch switches public-facing license posture from Apache-2.0 to `FSL-1.1-MIT`, updates Homebrew metadata, docs/business positioning, and records that FSL is blocked as a dependency license but allowed as the project's own license.
+The patch switches public-facing license posture from Apache-2.0 to `FSL-1.1-MIT`, updates Homebrew metadata, docs/08-References/business positioning, and records that FSL is blocked as a dependency license but allowed as the project's own license.
 
 ## Decision
 

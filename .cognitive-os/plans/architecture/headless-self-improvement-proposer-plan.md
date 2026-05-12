@@ -4,7 +4,7 @@ related-adr: ADR-134
 
 <!--
 RECONCILIATION STATUS: NEAR-COMPLETE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Status:
 - Phase 1 (Proposal loop): DONE (all 7 items already checked).
 - Phase 2 (Doctrine proposer): DONE (all 4 items already checked).
@@ -39,7 +39,7 @@ dashboard and without allowing uncontrolled self-modification.
 - [x] Add `scripts/cos-doctrine-proposer`.
 - [x] Read false-positive, direct-main-bypass, demotion-loop, and tier-claim
       evidence.
-- [x] Write proposal markdown under `docs/proposals/`.
+- [x] Write proposal markdown under `docs/03-PoCs/proposals/`.
 - [x] Require any doctrine amendment to start as proposed with
       `runtime_effect: none`, never default-on.
 

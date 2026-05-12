@@ -16,8 +16,8 @@ implementation_files:
   - tests/contracts/test_acc_pipeline_contract.py
   - tests/contracts/test_harness_implementation_phases.py
   - tests/contracts/test_ai_agent_harness_landscape.py
-  - docs/manual-tests/rules-mcp-structural-projection.md
-  - docs/architecture/kiro-lifecycle-adapter-design.md
+  - docs/09-Quality/manual-tests/rules-mcp-structural-projection.md
+  - docs/04-Concepts/architecture/kiro-lifecycle-adapter-design.md
 tier: maintainer
 tags: [harness, portability, rules, mcp, cline, continue, kilo, zed, augment, goose, aider, kiro]
 ---
@@ -86,7 +86,7 @@ ADR-159 added AGENTS.md-native harnesses. This ADR adds the rules/MCP/context ba
 
 - `scripts/cos_init.py` accepts the seven new harness IDs and writes the project-local files listed in §Decision.
 - `manifests/harness-projection.yaml` marks all seven as `implemented` with `structural` proof level.
-- `docs/architecture/kiro-lifecycle-adapter-design.md` records the staged adapter path for Kiro — this is a design artifact, not an implementation claim. Kiro remains `planned`/`none` in `manifests/ai-agent-harness-landscape.yaml`.
+- `docs/04-Concepts/architecture/kiro-lifecycle-adapter-design.md` records the staged adapter path for Kiro — this is a design artifact, not an implementation claim. Kiro remains `planned`/`none` in `manifests/ai-agent-harness-landscape.yaml`.
 - Generated MCP/settings placeholders contain no credentials and grant no tools by default.
 
 The operator benefit: consumer projects can receive project-local guidance for these tools without any global IDE settings or manual file creation.
@@ -95,7 +95,7 @@ The operator benefit: consumer projects can receive project-local guidance for t
 
 **Answers:**
 - "Does COS project structural files for Cline / Continue.dev / Kilo Code / Zed AI / Augment / Goose / Aider?" — yes; run `python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new` to verify.
-- "What Kiro implementation plan exists?" — read `docs/architecture/kiro-lifecycle-adapter-design.md`; it documents the event-mapping stages required before native-lifecycle promotion.
+- "What Kiro implementation plan exists?" — read `docs/04-Concepts/architecture/kiro-lifecycle-adapter-design.md`; it documents the event-mapping stages required before native-lifecycle promotion.
 - "Are MCP placeholders safe to commit?" — yes; they contain no credentials and grant no tools.
 
 **Does not answer:**
@@ -106,8 +106,8 @@ The operator benefit: consumer projects can receive project-local guidance for t
 
 1. Run `python3 -m pytest tests/behavior/test_consumer_project_projection.py -q` to verify the seven harnesses appear in the projection count.
 2. Read `manifests/harness-projection.yaml` for proof level per harness.
-3. Read `docs/architecture/kiro-lifecycle-adapter-design.md` for the staged Kiro path.
-4. Inspect `docs/manual-tests/rules-mcp-structural-projection.md` for the manual proof checklist.
+3. Read `docs/04-Concepts/architecture/kiro-lifecycle-adapter-design.md` for the staged Kiro path.
+4. Inspect `docs/09-Quality/manual-tests/rules-mcp-structural-projection.md` for the manual proof checklist.
 5. The file paths generated per harness are listed in §Decision; they are all project-local and safe to inspect.
 
 ## Alternatives rejected
@@ -132,5 +132,5 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
 
 - `scripts/cos_init.py` accepts the seven new harness IDs and writes project-local files only.
 - `manifests/harness-projection.yaml` marks the seven new harnesses as implemented structural projection.
-- `docs/architecture/kiro-lifecycle-adapter-design.md` records the staged Kiro adapter path.
+- `docs/04-Concepts/architecture/kiro-lifecycle-adapter-design.md` records the staged Kiro adapter path.
 - Behavior and contract tests assert generated files, ACC projection counts, proof levels, and landscape status.

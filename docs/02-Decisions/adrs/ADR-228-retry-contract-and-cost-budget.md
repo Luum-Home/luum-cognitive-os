@@ -260,7 +260,7 @@ The tests must prove:
 7. **Slice G — retry attempt loop in `lib/dispatch.py`** (implemented 2026-05-07). When the dispatch gate is active, failed provider calls are classified and retried according to `manifests/retry-contract.yaml`; retry events and provider attempt counts are emitted in metrics. Tests T2/T3.
 8. **Slice H — Circuit breaker chaos hardening** (~60 LOC). Per-provider file-backed state is active; remaining work is kill/recovery chaos around half-open probes. Tests T7.
 9. **Slice I — `cost_predictor` integration** (~20 LOC wiring). Connect `get_real_model_prices()` into `pre_call_check` estimation. Closes the prediction-vs-actual loop.
-10. **Slice J — Operator runbook** at `docs/runbooks/cost-budget-and-retry.md`. Three recovery flows: budget-hit, circuit-open, classifier-unknown.
+10. **Slice J — Operator runbook** at `docs/05-Methodology/runbooks/cost-budget-and-retry.md`. Three recovery flows: budget-hit, circuit-open, classifier-unknown.
 
 Total: ~350 LOC + rule consolidation (net-negative bash equivalent).
 

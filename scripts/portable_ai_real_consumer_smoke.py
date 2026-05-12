@@ -196,7 +196,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true", help="Run validation without updating tracked latest reports (default).")
-    mode.add_argument("--write-report", action="store_true", help="Update tracked docs/reports/*-latest artifacts.")
+    mode.add_argument("--write-report", action="store_true", help="Update tracked docs/06-Daily/reports/*-latest artifacts.")
     args = parser.parse_args(argv)
     report = build_report(args.project_dir, args.registry, max(args.limit, 1))
     if args.write_report:

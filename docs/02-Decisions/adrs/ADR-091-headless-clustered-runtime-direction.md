@@ -17,18 +17,18 @@ partial_remaining_basis: explicit body remaining signal
 
 # ADR-091: Headless and Clustered Runtime Direction
 
-<!-- Renumbered-from: ADR-027 (docs/architecture/adrs/027-headless-clustered-runtime-direction.md) -->
+<!-- Renumbered-from: ADR-027 (docs/04-Concepts/architecture/adrs/027-headless-clustered-runtime-direction.md) -->
 <!-- Renumbered-to: ADR-091 (ADR-087 migration, 2026-04-30) -->
-<!-- Note: ADR-027 in docs/adrs/ is a different decision (SO Slimming — Test Strategy). -->
+<!-- Note: ADR-027 in docs/02-Decisions/adrs/ is a different decision (SO Slimming — Test Strategy). -->
 
 - **Status**: Accepted as direction, not yet implemented as a production cluster
 - **Date**: 2026-04-28
 - **Decision owner**: Cognitive OS maintainers
 - **Related**:
-  - `docs/business/durable-product-master-plan.md`
-  - `docs/architecture/bootstrap-portability.md`
-  - `docs/architecture/capability-centric-runtime-enforcement.md`
-  - `docs/architecture/runtime-hardcoding-discipline.md`
+  - `docs/08-References/business/durable-product-master-plan.md`
+  - `docs/04-Concepts/architecture/bootstrap-portability.md`
+  - `docs/04-Concepts/architecture/capability-centric-runtime-enforcement.md`
+  - `docs/04-Concepts/architecture/runtime-hardcoding-discipline.md`
   - `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md`
 
 ## Status

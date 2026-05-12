@@ -23,7 +23,7 @@ CONTRACT
 - Timeouts are applied to every network call; default values are conservative
   (1s for health, 5s for data calls).
 
-ADR reference: ``docs/adrs/ADR-071-engram-lifecycle-evolution.md``
+ADR reference: ``docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md``
 Safety rule:   ``rules/engram-api-safety.md``
 """
 

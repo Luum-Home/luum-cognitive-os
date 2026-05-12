@@ -240,7 +240,7 @@ ubuntu-latest]` matrix.
 
 ## Cross-references
 
-- Source: `docs/reports/dx-assessment-2026-05-02.md` (CI failure
+- Source: `docs/06-Daily/reports/dx-assessment-2026-05-02.md` (CI failure
   cluster, originally attributed to test-suite drift).
 - Related: ADR-128 (data-layer integrity), ADR-129 (safe worktree
   removal). All three are products of the 2026-05-02 DX audit.

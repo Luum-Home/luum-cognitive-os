@@ -128,10 +128,10 @@ Any change claiming to "train", "teach", "improve", or "self-improve" an agent m
 
 ## Cross-links
 
-- `docs/overview.md` — product-level self-improvement loop.
-- `docs/architecture.md` — MAPE-K runtime architecture.
-- `docs/self-improvement-loop.md` — implementation guide for failure-driven self-improvement.
+- `docs/00-MOCs/entrypoints/overview.md` — product-level self-improvement loop.
+- `docs/04-Concepts/architecture.md` — MAPE-K runtime architecture.
+- `docs/04-Concepts/root/self-improvement-loop.md` — implementation guide for failure-driven self-improvement.
 - `skills/agent-kpis/SKILL.md` — KPI dashboard and trend persistence.
 - `skills/self-improve/SKILL.md` — self-improvement procedure.
 - `rules/self-improvement-protocol.md` — governance rule for proposed improvements.
-- `docs/research/ifixai-annex-e-primitives-2026-05-11.md` — planned eval judge-isolation and per-run manifest primitives.
+- `docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md` — planned eval judge-isolation and per-run manifest primitives.

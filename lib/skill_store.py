@@ -12,7 +12,7 @@ COS-namespace adjustments documented in ADR-176:
   - skill_applied (INTEGER) maps to status boolean
 
 Discipline gate: this module has NO write path to live SKILL.md files.
-All write paths go to the SQLite DB or to docs/reports/skill-analysis-proposals/.
+All write paths go to the SQLite DB or to docs/06-Daily/reports/skill-analysis-proposals/.
 
 Python 3.9+ compatible. Standard library only (sqlite3, hashlib, threading).
 """

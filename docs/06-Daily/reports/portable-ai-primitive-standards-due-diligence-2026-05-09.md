@@ -69,7 +69,7 @@ avoid making `.ai` / portable primitive decisions from local intuition only.
 | 11 | [OpenCode agents](https://opencode.ai/docs/agents/) | agents, permissions, subagents | Agent/profile adapter evidence. |
 | 12 | [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills) | `SKILL.md` folders with progressive loading | Skill contract alignment. |
 | 13 | [Claude Code hooks](https://code.claude.com/docs/en/hooks) | lifecycle hooks including tool events | Native lifecycle enforcement model. |
-| 14 | [Trigger.dev Skills](https://trigger.dev/docs/skills) | portable Agent Skills installable across assistants | External validation of SKILL.md portability. |
+| 14 | [Trigger.dev Skills](https://trigger.dev/docs/07-Capabilities/skills) | portable Agent Skills installable across assistants | External validation of SKILL.md portability. |
 | 15 | [mdskills.ai docs](https://www.mdskills.ai/docs) | directory of skills, plugins, MCP, rules and specs | Ecosystem packaging signal. |
 | 16 | [Agent Skills specification](https://agentskills.my/specification) | SKILL.md open standard, discovery/activation/resources | Strong input for skill primitive shape. |
 | 17 | [agentskills GitHub](https://github.com/agentskills/agentskills) | Agent Skills spec repository | Source repo for skill standard. |
@@ -85,7 +85,7 @@ avoid making `.ai` / portable primitive decisions from local intuition only.
 | 27 | [Amp manual](https://ampcode.com/manual) | hierarchical `AGENTS.md` locations | Strong AGENTS.md multi-scope signal. |
 | 28 | [Android Studio Gemini agent files](https://developer.android.com/studio/gemini/agent-files) | `AGENTS.md` plus `GEMINI.md` precedence | Gemini adapter precedence rule. |
 | 29 | [Codex AGENTS.md docs](https://github.com/openai/codex/blob/main/docs/agents_md.md) | Codex AGENTS.md discovery/scoping | Codex adapter baseline. |
-| 30 | [Aider conventions](https://aider.chat/docs/usage/conventions.html) | `--read CONVENTIONS.md` guidance | Advisory adapter path; repo-map adjacent. |
+| 30 | [Aider conventions](https://aider.chat/docs/05-Methodology/usage/conventions.html) | `--read CONVENTIONS.md` guidance | Advisory adapter path; repo-map adjacent. |
 | 31 | [Goose docs](https://goose-docs.ai/) | MCP-heavy local agent | Runtime/tool ecosystem signal. |
 | 32 | [OpenLeash](https://openleash.ai/) | pre-action authorization sidecar for agents | Candidate pattern for intervention ledger authorization. |
 | 33 | [APort / OAP explainer](https://aport.io/blog/what-is-aport-pre-action-authorization-ai-agents/) | Open Agent Passport idea | Candidate pattern for signed authorization. |

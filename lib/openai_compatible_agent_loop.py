@@ -26,8 +26,8 @@ Safety rails (hard-coded, not config-overridable):
     - token_budget cap (default 100K)
     - tools_allowed filter returned as tool-result error (not Python exception)
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
-           docs/adrs/ADR-051-qwen-agent-loop.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
+           docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md
 """
 
 from __future__ import annotations

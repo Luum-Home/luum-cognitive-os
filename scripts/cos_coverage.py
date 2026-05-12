@@ -5,7 +5,7 @@
 Composes data from:
   - .cognitive-os/metrics/aspirational-audit.jsonl   (REAL/DORMANT/ASPIRATIONAL counts)
   - .cognitive-os/coverage-tiers.json                (tier breakdown A/B/C/D)
-  - docs/reports/claim-proof-latest.md               (mapped/unmapped/weak-proof counts)
+  - docs/06-Daily/reports/claim-proof-latest.md               (mapped/unmapped/weak-proof counts)
   - .cognitive-os/metrics/coverage-history.jsonl     (trend vs last snapshot)
 
 Cache: .cognitive-os/runtime/coverage-snapshot.json (TTL 30s) to keep p95 < 300ms.

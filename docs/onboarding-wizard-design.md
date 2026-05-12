@@ -1,1 +1,0 @@
-04-Concepts/root/onboarding-wizard-design.md

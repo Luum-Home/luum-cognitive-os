@@ -100,7 +100,7 @@ introduced.  It is wired into a weekly SessionStart hook
    unchanged or with override).
 5. If `fp_rate < 5%` AND `total_entries > 30`, emits a human-reviewable
    Markdown proposal at
-   `docs/reports/promotion-proposals/<date>/validator-advisory-to-blocking.md`.
+   `docs/06-Daily/reports/promotion-proposals/<date>/validator-advisory-to-blocking.md`.
 6. Appends an evaluation log entry to
    `.cognitive-os/metrics/validator-promotion-evaluations.jsonl`.
 
@@ -192,7 +192,7 @@ New auto-generated skills should now include `routing_patterns:` at creation tim
 
 1. When an auto-generated skill appears, inspect its frontmatter for `routing_patterns:`, `lifecycle_state`, and `distribution`.
 2. Let `hooks/validator-soak-weekly.sh` collect advisory validator metrics and write proposal artifacts when thresholds are met.
-3. Review any `docs/reports/promotion-proposals/*/validator-advisory-to-blocking.md` output manually.
+3. Review any `docs/06-Daily/reports/promotion-proposals/*/validator-advisory-to-blocking.md` output manually.
 4. If promotion is desired, use ADR-174c or a successor decision to approve the blocking-mode change explicitly.
 
 ### When sources disagree

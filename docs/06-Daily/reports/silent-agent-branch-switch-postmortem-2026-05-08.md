@@ -215,7 +215,7 @@ is lost.
 3. `git switch fix/c4-portability-test-failures --allow-branch-switch` exits 0
    and logs `reason=branch_switch_override`.
 4. Existing destructive-git blocker tests still pass.
-5. This post-mortem is linked from `docs/README.md`.
+5. This post-mortem is linked from `docs/00-MOCs/entrypoints/README.md`.
 
 ## Follow-up recommendations
 

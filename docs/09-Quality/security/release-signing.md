@@ -33,7 +33,7 @@ git tag -v v0.27.1
 ```
 
 This is a **known gap**, tracked under M1/M2 of
-`docs/legal/pre-public-readiness-checklist.md`. The first tag intended
+`docs/09-Quality/legal/pre-public-readiness-checklist.md`. The first tag intended
 for general public consumption (`v1.0.0` or the first tag flipped to
 `public-release: true` in release notes — whichever lands first) MUST be
 signed per §3 below; until then, consumers should treat the tags as
@@ -46,7 +46,7 @@ therefore:
 - Source provenance: git history + force-push audit (see ADR-218 and the
   `history-sanitization-*` tombstone branch).
 - Artifact provenance: SBOM (`sbom.json` + sha256, regeneratable per
-  `docs/security/supply-chain.md` §1.3).
+  `docs/09-Quality/security/supply-chain.md` §1.3).
 - Cryptographic attestation: **not yet wired**. See §3.
 
 ---
@@ -65,7 +65,7 @@ any one of them.
    ```
 2. **`sbom.json` + `sbom.json.sha256`.** Already shipped today. The SBOM
    is the CycloneDX 1.6 file at the repo root, regeneratable per
-   `docs/security/supply-chain.md` §1.3.
+   `docs/09-Quality/security/supply-chain.md` §1.3.
 3. **Detached signature for the SBOM** so the SBOM cannot be swapped
    without breaking verification (cosign or GPG output).
 4. **Release-notes hash manifest.** A `RELEASE-MANIFEST.txt` listing the
@@ -132,7 +132,7 @@ GPG path:
 
 ```bash
 gpg --quick-generate-key "Luum Cognitive OS Release <release@example.invalid>" rsa4096 sign 2y
-gpg --armor --export release@example.invalid > docs/security/release-signing-id.asc
+gpg --armor --export release@example.invalid > docs/09-Quality/security/release-signing-id.asc
 SIGNID=$(gpg --list-secret-keys --keyid-format=long release@example.invalid | awk '/sec/ {split($2,a,"/"); print a[2]; exit}')
 git config --local user.signingkey "$SIGNID"
 git config --local tag.gpgSign true
@@ -296,7 +296,7 @@ The SBOM is attestable two ways once §3 lands:
    the detached-signature flow in §4.3 is sufficient and simpler.
 
 The release page MUST link the SBOM signature next to the SBOM itself.
-The `docs/security/supply-chain.md` §5 procedure already requires
+The `docs/09-Quality/security/supply-chain.md` §5 procedure already requires
 `sbom.json` + `sbom.json.sha256` on every release; once signed releases
 are wired, that section gains `sbom.json.sig` + `sbom.json.cert` to the
 required-file list.
@@ -319,7 +319,7 @@ What signing does NOT cover (out of scope for this document):
 
 - Compromise of the upstream package registry (PyPI, npm, Go module
   proxy). Mitigated separately by `uv.lock` / `package-lock.json` /
-  `go.sum` hash verification — see `docs/security/supply-chain.md` §4.
+  `go.sum` hash verification — see `docs/09-Quality/security/supply-chain.md` §4.
 - Build-step compromise (a malicious CI runner producing a "correctly
   signed" but malicious artifact). Mitigated by SLSA-style provenance,
   tracked as future work in supply-chain §4.2.
@@ -345,8 +345,8 @@ What signing does NOT cover (out of scope for this document):
 
 ## 8. Cross-References
 
-- `docs/security/supply-chain.md` — SBOM, license audit, dependency pinning
-- `docs/legal/pre-public-readiness-checklist.md` — M1 (supply chain), M2 (signed releases / onboarding)
+- `docs/09-Quality/security/supply-chain.md` — SBOM, license audit, dependency pinning
+- `docs/09-Quality/legal/pre-public-readiness-checklist.md` — M1 (supply chain), M2 (signed releases / onboarding)
 - ADR-218 — git history sanitization (provenance baseline)
 - ADR-238 — supply-chain audit follow-ups (UNKNOWN SPDX enrichment)
 - `manifests/dependencies.yaml` — third-party CLI tool inventory

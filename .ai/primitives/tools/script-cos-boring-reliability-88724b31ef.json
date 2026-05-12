@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-boring-reliability",
         "scripts/cos_boring_reliability.py",
-        "docs/architecture/boring-reliability-control-plane.md"
+        "docs/04-Concepts/architecture/boring-reliability-control-plane.md"
       ],
       "runtime_projection": false
     }
@@ -155,7 +155,7 @@
       "projection_targets": [
         "scripts/cos-boring-reliability",
         "scripts/cos_boring_reliability.py",
-        "docs/architecture/boring-reliability-control-plane.md"
+        "docs/04-Concepts/architecture/boring-reliability-control-plane.md"
       ],
       "runtime_projection": false
     }
@@ -164,7 +164,7 @@
   "projection_targets": [
     "scripts/cos-boring-reliability",
     "scripts/cos_boring_reliability.py",
-    "docs/architecture/boring-reliability-control-plane.md"
+    "docs/04-Concepts/architecture/boring-reliability-control-plane.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-boring-reliability",

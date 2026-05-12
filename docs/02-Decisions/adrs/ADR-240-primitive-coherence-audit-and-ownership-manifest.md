@@ -23,7 +23,7 @@ Accepted — Slice A implemented.
 **Date**: 2026-05-08  
 **Owner**: platform-safety  
 **Related**: ADR-149, ADR-199, ADR-200, ADR-211, ADR-218, ADR-219, ADR-238  
-**Post-mortem**: `docs/reports/primitive-coherence-drift-postmortem-2026-05-08.md`
+**Post-mortem**: `docs/06-Daily/reports/primitive-coherence-drift-postmortem-2026-05-08.md`
 
 ## Context
 
@@ -56,7 +56,7 @@ New artifacts:
 - `manifests/primitive-coherence.yaml`
 - `scripts/primitive-coherence-audit.py`
 - `tests/unit/test_primitive_coherence_audit.py`
-- `docs/reports/primitive-coherence-drift-postmortem-2026-05-08.md`
+- `docs/06-Daily/reports/primitive-coherence-drift-postmortem-2026-05-08.md`
 
 The audit detects contradictions before operators or agents attempt to repair
 them. Slice A is intentionally read-only.

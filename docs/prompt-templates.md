@@ -1,1 +1,0 @@
-05-Methodology/root/prompt-templates.md

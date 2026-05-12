@@ -97,7 +97,7 @@ read-side and capture closure deltas:
        --update-generated --fail-on-block
    ```
    If audit reports **a NEW contradiction discovered this session**
-   (compare against `docs/reports/documentation-truth-latest.json` prior
+   (compare against `docs/06-Daily/reports/documentation-truth-latest.json` prior
    to this run):
 
    - Classify the contradiction per `rules/session-close-doc-truth.md`:
@@ -114,7 +114,7 @@ read-side and capture closure deltas:
    - Re-run the audit; verify pass.
 
 7. ACC adapter check: read summary from
-   `docs/reports/documentation-truth-latest.json`. If the
+   `docs/06-Daily/reports/documentation-truth-latest.json`. If the
    `documentation_truth` adapter shows new ACC capability degradation,
    surface in §Follow-ups.
 

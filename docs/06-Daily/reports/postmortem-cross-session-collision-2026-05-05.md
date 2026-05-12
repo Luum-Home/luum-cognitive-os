@@ -64,7 +64,7 @@ disk.
 | 23:00 (approx) | Operator notices "many uncommitted changes across worktrees" and asks orchestrator to verify state. |
 | 23:05–23:15 | Forensics: `git log main..HEAD` reveals 3 commits operator did not authorize. Per-commit diff inspection identifies content overlap (commit 1) versus content collision (commits 2, 3). ADR-171/173/179 collisions confirmed. |
 | 23:15 | Two in-flight agents stopped pre-emptively to prevent further drift. |
-| 23:30 | Forensics report drafted (`docs/reports/session-state-forensics-2026-05-05.md`). |
+| 23:30 | Forensics report drafted (`docs/06-Daily/reports/session-state-forensics-2026-05-05.md`). |
 | ~23:45 | Manifest schema migrated v1 → v2 to expose the categorical truth that the flat "86.5% coverage" had been masking. Tests updated; 74/76 pass. |
 | 23:50 | Operator asks for post-mortem. |
 
@@ -73,9 +73,9 @@ disk.
 ### Direct impact (this incident)
 
 - **Two ADR files lost from disk** (recoverable from agent JSONL outputs):
-  - `docs/adrs/ADR-171-reject-paperclip-integration.md` (~12 KB, full
+  - `docs/02-Decisions/adrs/ADR-171-reject-paperclip-integration.md` (~12 KB, full
     rejection ADR with falsifiable claim, drafted earlier tonight).
-  - `docs/adrs/ADR-179-rules-auto-derive-routing.md` (drafted by agent
+  - `docs/02-Decisions/adrs/ADR-179-rules-auto-derive-routing.md` (drafted by agent
     `a7360daf` earlier tonight).
 - **Three ADR number slots compromised**: 171, 173, 179 now occupied by
   generic "Reserved architecture decision slot" tombstones.
@@ -196,7 +196,7 @@ No COS automation detected:
 | Run `git log main..HEAD` and per-commit diff | 23:15–23:25 | 3 unauthorized commits identified; per-file impact mapped. |
 | Verify ADR collision via `ls` | 23:30 | Confirmed `ADR-171-tombstone.md` exists; `ADR-171-reject-paperclip-integration.md` absent. |
 | Search stash + reflog + git fsck for recovery | 23:35 | Lost ADRs not in any git object. Confirmed recovery path is agent JSONL outputs. |
-| Draft forensics report | 23:30–23:45 | `docs/reports/session-state-forensics-2026-05-05.md` lands; classifies commits, lists collisions, documents recovery options. |
+| Draft forensics report | 23:30–23:45 | `docs/06-Daily/reports/session-state-forensics-2026-05-05.md` lands; classifies commits, lists collisions, documents recovery options. |
 | Migrate manifest schema v1 → v2 | 23:45–23:55 | Categorical truth restored. Coverage broken out by canonical (51.2 %), runtime-projection (40.3 %), package-bundled (28.4 %); legacy flat 86.5 % deprecated. Tests updated; 74/76 pass. |
 | Draft post-mortem (this document) | 23:55+ | Records timeline, root causes, action items, lessons. |
 
@@ -309,9 +309,9 @@ perform this safely.
 
 ## Cross-references
 
-- `docs/reports/session-state-forensics-2026-05-05.md` — forensic detail
+- `docs/06-Daily/reports/session-state-forensics-2026-05-05.md` — forensic detail
   per commit and per file.
-- `docs/reports/lifecycle-promotion-gap-2026-05-05.md` — earlier in this
+- `docs/06-Daily/reports/lifecycle-promotion-gap-2026-05-05.md` — earlier in this
   session, identifies the doctrine-vs-enforcement pattern that recurs
   here at the concurrency layer.
 - ADR-088 — commit_provenance attribution (post-hoc audit infra).

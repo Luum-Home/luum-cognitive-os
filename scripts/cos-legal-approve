@@ -41,7 +41,7 @@ def find_adr_path(adr_ref: str) -> Path | None:
     """Find an ADR file by reference. When multiple ADRs share a number
     (e.g. one Proposed, one Accepted), prefer the Accepted one."""
     num = adr_ref.replace("ADR-", "")
-    matches = [Path(p) for p in sorted(glob.glob(str(ROOT / f"docs/adrs/ADR-{num}-*.md")))]
+    matches = [Path(p) for p in sorted(glob.glob(str(ROOT / f"docs/02-Decisions/adrs/ADR-{num}-*.md")))]
     if not matches:
         return None
     # Prefer Accepted; fall back to first match.

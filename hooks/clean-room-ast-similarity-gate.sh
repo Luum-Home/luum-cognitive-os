@@ -122,7 +122,7 @@ $MATCH_SUMMARY
        python3 scripts/cos_clean_room_ast_similarity.py --baseline
        git add manifests/ast-similarity-baseline.yaml && git commit ...
   2. If this is a derivative work requiring documentation:
-       Create/update the per-tool Annex F at docs/research/<tool>-annex-f-*.md
+       Create/update the per-tool Annex F at docs/03-PoCs/research/<tool>-annex-f-*.md
   3. Emergency bypass (creates audit trail):
        COS_ALLOW_AST_SIMILARITY=1 git commit ...        (T2-specific bypass)
        COS_ALLOW_CLEAN_ROOM_BYPASS=1 git commit ...     (shared T1+T2 bypass)
@@ -132,7 +132,7 @@ $MATCH_SUMMARY
 
   Tiers T3-T5 are not enforced by this hook. If your change involves
   paraphrased adaptation or design-level reuse from an upstream tool, file
-  or update the per-tool Annex F (docs/research/<tool>-annex-f-*.md) before
+  or update the per-tool Annex F (docs/03-PoCs/research/<tool>-annex-f-*.md) before
   commit. See rules/clean-room-detection-limits.md for the full matrix.
 
 EOF

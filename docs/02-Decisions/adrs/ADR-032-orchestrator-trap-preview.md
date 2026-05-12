@@ -100,7 +100,7 @@ The script reads traps from `templates/project-gotchas.md` at runtime. No hardco
 
 ```bash
 # AC1: ADR file exists
-test -f docs/adrs/ADR-032-orchestrator-trap-preview.md
+test -f docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md
 
 # AC2: script exists and is executable
 test -x scripts/compose_agent_prompt.py

@@ -69,7 +69,7 @@ Sources:
 
 ### Existing product contract
 
-`docs/architecture/memory-lifecycle.md` already states the right durable memory
+`docs/04-Concepts/architecture/memory-lifecycle.md` already states the right durable memory
 contract: do not rely on one chat window or one vendor harness; capture user
 intent, protect content, flush before compaction, record shutdown outcomes,
 recover pending work at next start, and verify the loop with an executable
@@ -391,7 +391,7 @@ Acceptance criteria:
 2. A contract test proves Codex can generate the backlog without Claude env vars.
 3. A contract test proves Claude can generate the same schema with richer event
    coverage.
-4. A docs contract keeps this research linked from `docs/README.md`.
+4. A docs contract keeps this research linked from `docs/00-MOCs/entrypoints/README.md`.
 
 ## Implementation Update — 2026-05-02
 

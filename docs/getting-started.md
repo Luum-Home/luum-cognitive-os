@@ -1,1 +1,0 @@
-00-MOCs/entrypoints/getting-started.md

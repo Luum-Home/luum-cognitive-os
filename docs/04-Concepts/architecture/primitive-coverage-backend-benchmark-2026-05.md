@@ -22,8 +22,8 @@ Conclusion:
 
 Generated benchmark outputs:
 
-- JSON: [`docs/reports/primitive-coverage-backend-benchmark-2026-05-01.json`](../reports/primitive-coverage-backend-benchmark-2026-05-01.json)
-- Markdown: [`docs/reports/primitive-coverage-backend-benchmark-2026-05-01.md`](../reports/primitive-coverage-backend-benchmark-2026-05-01.md)
+- JSON: [`docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.json`](../reports/primitive-coverage-backend-benchmark-2026-05-01.json)
+- Markdown: [`docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md`](../reports/primitive-coverage-backend-benchmark-2026-05-01.md)
 - Harness: [`scripts/primitive_backend_benchmark.py`](../../scripts/primitive_backend_benchmark.py)
 - Tests: [`tests/unit/test_primitive_backend_benchmark.py`](../../tests/unit/test_primitive_backend_benchmark.py)
 
@@ -77,7 +77,7 @@ The first benchmark is intentionally a metadata/protocol benchmark:
 2. Inspect README, LICENSE, and package metadata.
 3. Do not vendor, import, or install candidate code by default.
 4. Score candidates using the COS question matrix.
-5. Emit JSON and Markdown under `docs/reports/`.
+5. Emit JSON and Markdown under `docs/06-Daily/reports/`.
 6. Keep the benchmark dependency-free so it can run in CI.
 
 This avoids contaminating the repository with AGPL/custom-licensed code and

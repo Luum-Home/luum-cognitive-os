@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: COMPLETE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 All 5 phases of this plan are shipped per the body's "Last updated: 2026-05-01 / Status: ALL PHASES (1-5) COMPLETE" header. Post-v0.28.0 reinforcement:
 - Phase 3 (timing): scripts/hook-timing-wrapper.sh + tests/audit/test_hook_latency_budget.py confirmed; integrated into the radar tracker H4 follow-ups.
 - Phase 4 (hook composition): hooks/_lib/hook-pipe.sh + tests/audit/test_hook_pipe.py confirmed.
@@ -198,7 +198,7 @@ Trust Report output from the agent, but `trust-score-validator.sh` also reads it
 `trust-score-validator.sh` runs before `completion-gate.sh`, the validator has no effect on
 blocking the gate.
 
-**Proposed**: Document the canonical execution order for each event in `docs/hooks.md` and
+**Proposed**: Document the canonical execution order for each event in `docs/05-Methodology/root/hooks.md` and
 enforce it in the generator scripts. No new runtime mechanism needed — order is enforced
 by hook group declaration order.
 
@@ -281,25 +281,25 @@ script is the tool users actually run. They diverge significantly:
 | TaskCreated | ❌ Not in profile JSONs | ❌ None | Add to both |
 | TaskCompleted | ❌ Not in profile JSONs | ❌ None | Add to both |
 
-### Missing hooks in profile JSONs (vs. docs/hook-security-profiles.md)
+### Missing hooks in profile JSONs (vs. docs/09-Quality/root/hook-security-profiles.md)
 
 The paranoid profile JSON has 47 hooks. The docs say paranoid should have 62.
 15 hooks documented in docs/ are missing from the JSON file:
 
 | Hook | Documented in | Missing from |
 |------|--------------|-------------|
-| `audit-id-enricher.sh` | docs/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
+| `audit-id-enricher.sh` | docs/09-Quality/root/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
 | `confidentiality-enforcer.sh` | live settings.json, docs | Profile JSONs, set-security-profile.sh |
-| `clarification-interceptor.sh` | docs/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
-| `reinvention-check.sh` | docs/hook-security-profiles.md (paranoid) | Profile JSONs |
-| `confidence-gate.sh` | docs/hook-security-profiles.md (paranoid) | Profile JSONs |
+| `clarification-interceptor.sh` | docs/09-Quality/root/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
+| `reinvention-check.sh` | docs/09-Quality/root/hook-security-profiles.md (paranoid) | Profile JSONs |
+| `confidence-gate.sh` | docs/09-Quality/root/hook-security-profiles.md (paranoid) | Profile JSONs |
 | `git-context-capture.sh` | live settings.json | Profile JSONs, set-security-profile.sh |
 | `session-changelog.sh` | live settings.json | Profile JSONs, set-security-profile.sh |
-| `auto-rollback-trigger.sh` | docs/hook-security-profiles.md (paranoid) | Profile JSONs |
-| `session-resume.sh` | docs/hook-security-profiles.md (paranoid) | set-security-profile.sh paranoid |
-| `teammate-idle.sh` | docs/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
-| `task-created.sh` | docs/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
-| `task-completed.sh` | docs/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
+| `auto-rollback-trigger.sh` | docs/09-Quality/root/hook-security-profiles.md (paranoid) | Profile JSONs |
+| `session-resume.sh` | docs/09-Quality/root/hook-security-profiles.md (paranoid) | set-security-profile.sh paranoid |
+| `teammate-idle.sh` | docs/09-Quality/root/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
+| `task-created.sh` | docs/09-Quality/root/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
+| `task-completed.sh` | docs/09-Quality/root/hook-security-profiles.md (standard+) | Profile JSONs, set-security-profile.sh |
 | `predev-completeness-check.sh` | live settings.json | Profile JSONs, set-security-profile.sh |
 | `inject-phase-context.sh` | live settings.json | set-security-profile.sh standard |
 | `agent-prelaunch.sh` | live settings.json | set-security-profile.sh standard |
@@ -456,7 +456,7 @@ multi-agent events.
 All standard hooks plus: all remaining safety mesh layers, external scanners, observability,
 full governance.
 
-Full list in `docs/hook-security-profiles.md`. That doc is authoritative for paranoid.
+Full list in `docs/09-Quality/root/hook-security-profiles.md`. That doc is authoritative for paranoid.
 
 ---
 
@@ -551,14 +551,14 @@ automatically — no per-hook source changes required.
 - [x] Create `hooks/_lib/hook-pipe.sh` with `hook_emit` and `hook_read` functions — 124 lines, includes `hook_pipe_clear`
 - [x] Update `clarification-gate.sh` to emit `score` to the pipe — emits `clarification_score` to `PreToolUse` namespace
 - [x] Update `blast-radius.sh` to read `clarification_score` and adjust threshold — lowers HIGH from 40→20 when score ≥ 30
-- [x] Add documentation to `docs/hooks.md` — "Hook Composition" section with function table, data flow table, and usage guide
+- [x] Add documentation to `docs/05-Methodology/root/hooks.md` — "Hook Composition" section with function table, data flow table, and usage guide
 - [x] Add test: `test_hook_pipe_data_sharing` — 10 tests in `tests/audit/test_hook_pipe.py` (all pass)
 
 **Evidence**:
 - `hooks/_lib/hook-pipe.sh` exists (124 lines); bash -n passes
 - `clarification-gate.sh` sources hook-pipe.sh and calls `hook_emit "clarification_score"`
 - `blast-radius.sh` reads `clarification_score` via `hook_read`, uses `HIGH_THRESHOLD` variable
-- `docs/hooks.md` documents "Hook Composition" with `hook_emit`/`hook_read`/`hook_pipe_clear`
+- `docs/05-Methodology/root/hooks.md` documents "Hook Composition" with `hook_emit`/`hook_read`/`hook_pipe_clear`
 - `tests/audit/test_hook_pipe.py`: 10 tests, all pass
 
 **Estimated cost**: 1 session (sonnet). **Priority**: LOW.
@@ -591,7 +591,7 @@ automatically — no per-hook source changes required.
 - `.cognitive-os/plans/features/hook-architecture-v2-settings-minimal.json` — no change needed
 - `.cognitive-os/plans/features/hook-architecture-v2-settings-paranoid.json` — add missing hooks
 - `tests/behavior/test_hook_architecture_v2.py` — add new test cases
-- `docs/hook-security-profiles.md` — update hook counts and comparison matrix
+- `docs/09-Quality/root/hook-security-profiles.md` — update hook counts and comparison matrix
 
 ### Phase 3 (performance)
 - `hooks/dispatch-gate.sh` through `hooks/trust-score-validator.sh` (15 files)
@@ -664,5 +664,5 @@ automatically — no per-hook source changes required.
 - [ ] Profile JSON files and set-security-profile.sh script are in sync (no divergence)
 - [ ] No hook file references missing from any profile
 - [ ] Profile subset relationships maintained
-- [ ] Hook counts documented in `docs/hook-security-profiles.md` match actual counts (within tolerance)
-- [ ] `docs/hook-security-profiles.md` comparison matrix is up to date
+- [ ] Hook counts documented in `docs/09-Quality/root/hook-security-profiles.md` match actual counts (within tolerance)
+- [ ] `docs/09-Quality/root/hook-security-profiles.md` comparison matrix is up to date

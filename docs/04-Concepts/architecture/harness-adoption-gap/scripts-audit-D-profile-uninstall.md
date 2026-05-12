@@ -314,11 +314,11 @@ grep -cE "(claude|cognitive-os)/skills" scripts/apply-efficiency-profile.sh
 
 ## Cross-references
 
-- `docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` — the decision
+- `docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` — the decision
   this audit validates is correctly extended to the cluster's scripts.
-- `docs/architecture/harness-adoption-gap/diagnosis.md` — root-cause analysis of the ghost
+- `docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md` — root-cause analysis of the ghost
   skills gap.
-- `docs/architecture/harness-adoption-gap/scripts-audit.md` — the parent audit (other
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md` — the parent audit (other
   clusters); this document is the Cluster D supplement.
 - `templates/project-gotchas.md` lines 9 and 11 — documents the
   "`settings.json` is GENERATED" and "48/93 hooks intentionally not wired" design intent.

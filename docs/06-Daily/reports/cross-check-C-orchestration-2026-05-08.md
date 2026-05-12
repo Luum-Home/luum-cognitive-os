@@ -7,7 +7,7 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 **Veredicto:** **MEJOR_NUESTRO (post-archival realism)** vs. *competing externals*; **REGRESIÓN intencional, formalizada** vs. *internal historical claim*.
 
 **Estado actual:**
-- `packages/_archived/squads/` exists with explicit README dating archival to **Sprint 2A, 2026-04-16**, citing the Capa-3 functional audit (`docs/architecture/functional-audit/scorecard-packages-squads-agents.md` F5–F8).
+- `packages/_archived/squads/` exists with explicit README dating archival to **Sprint 2A, 2026-04-16**, citing the Capa-3 functional audit (`docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md` F5–F8).
 - Audit findings are unambiguous: 5/5 squad YAMLs were "0% runtime integration" — no Python/Go loader, broken `skills: [testing-patterns]` refs (skill does not exist), broken `agentRef:` refs (`backend-architect`, `security-engineer`, `sre-agent`, `devops-agent`, `engineering-manager-agent` have no `agents/*.md`).
 - One survivor: `squads/organization.yaml` kept at root *as a user-init template only*, still with no runtime loader.
 - `rules/squad-protocol.md` and `skills/squad-manager/` remain as governance/skill surface but are decoupled from the dead YAML wiring.
@@ -15,10 +15,10 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 
 **ADR-251 status:** `Accepted — Slice A implemented` (frontmatter `status: accepted`, body §Status). Slice A artefacts present: `manifests/agent-orchestration-adapters.yaml`, `scripts/agent-orchestration-boundary-audit.py`, `scripts/agent-orchestration-benchmark.py`, `tests/unit/test_agent_orchestration_boundary_audit.py`, `tests/unit/test_agent_orchestration_benchmark.py` (all listed in `implementation_files:`). The "research/ADR-251 lo marca pending" framing in the prompt is **stale** — ADR-251 has moved past pending. What remains pending is the *adoption of external orchestration adapters* (LangGraph / AutoGen / CrewAI / OpenAI Agents SDK) behind that boundary, not Slice A itself.
 
-**External anchor:** `docs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md` deep-evaluated `awslabs/agent-squad` (Apache-2.0, ~7.6k★) at `MONITOR_CONFIRMED` — explicitly noted overlap with `skill_router.best_match` and "would compete with existing skill_router". This is the correct verdict: the *concept* is mature externally, but adopting awslabs/agent-squad would re-introduce the same kind of routing bespoke we just archived.
+**External anchor:** `docs/03-PoCs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md` deep-evaluated `awslabs/agent-squad` (Apache-2.0, ~7.6k★) at `MONITOR_CONFIRMED` — explicitly noted overlap with `skill_router.best_match` and "would compete with existing skill_router". This is the correct verdict: the *concept* is mature externally, but adopting awslabs/agent-squad would re-introduce the same kind of routing bespoke we just archived.
 
 **¿Reactivar, formalizar tombstone, o re-diseñar?:**
-- **Tombstone is NOT owed.** The archival README *is* the tombstone — it is dated, cites the audit, lists the un-archive preconditions (loader, agentRef resolution, skills resolution, governance gate wiring), and points at the design doc (`docs/plug-and-play.md`).
+- **Tombstone is NOT owed.** The archival README *is* the tombstone — it is dated, cites the audit, lists the un-archive preconditions (loader, agentRef resolution, skills resolution, governance gate wiring), and points at the design doc (`docs/04-Concepts/root/plug-and-play.md`).
 - **Already re-designed.** ADR-251 is the redesign: instead of growing a bespoke "squad runtime", COS becomes the *governance plane* and external orchestrators (LangGraph et al.) plug in as adapters. The adapter manifest + boundary audit + benchmark trio is the load-bearing primitive, not a YAML squad loader.
 - **Reactivation gate:** un-archive only after a YAML loader resolves agentRef + skills against real artefacts. That is the same gate the README sets and is consistent with `[component-reality-check]` (`scripts/aspirational_audit.py`).
 - **Recommendation:** add an explicit ADR-tombstone entry pointing `_archived/squads/` → ADR-251 as `Superseded-by`, so future readers don't have to triangulate README + audit + ADR. The slot exists in the tombstone series (ADR-003/004/005/043/046/085/214/229 are tombstones) but no squad-tombstone ADR currently bridges the two artefacts.
@@ -35,7 +35,7 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 - `lib/shadow_git.py` (canonical substrate). Implements `snapshot()` via `git init --bare` + `GIT_INDEX_FILE=<temp>` + `git hash-object -w` + `git update-index --add --cacheinfo` + `git write-tree`. The user's `.git/index` is provably untouched (the index is a sibling of the bare repo at `repo.parent / "shadow.index"`).
 - `manifests/shadow-git.yaml` (declarative manifest matching ADR-227 §"Manifest declaration").
 - `hooks/auto-checkpoint.sh`, `hooks/pre-agent-snapshot.sh`, `hooks/post-agent-snapshot-restore.sh`, `hooks/pre-cleanup-snapshot.sh` (lifecycle wiring).
-- `docs/runbooks/shadow-git-rollback.md` (operator-facing runbook).
+- `docs/05-Methodology/runbooks/shadow-git-rollback.md` (operator-facing runbook).
 - `lib/snapshot_manager.py`, `lib/checkpoint_manager.py` (related; checkpoint orchestration).
 - `scripts/cos-rollback` (CLI surface specified in ADR-227).
 - ADR-227 frontmatter: "Slices A–F implemented (2026-05-07)", complementary ADR-224 ("shadow-state snapshots — off-repo") and ADR-099 / ADR-200 / ADR-220 are wired in.
@@ -71,7 +71,7 @@ Cline's shadow-git is documented at <https://github.com/cline/cline> (`src/integ
 - `HarnessName` enum lists 8 harness slots: `claude_code`, `codex`, `bare_cli`, `opencode`, `aider`, `cursor`, `continue`, `unknown`. Three of the eight (`opencode`, `cursor`, `continue`) are slots without adapter files yet — this matches ADR-033's "passive POC for Aider, additive expansion later".
 - ADR-033b adds duration correlation + Aider hardening; ADR-034 adds live streaming. Active line of work.
 
-**Comparison with agentapi (deep-evaluated at `docs/research/repo-scout/deep/coder__agentapi-2026-05-06.md`, 8.7/10, ADOPT):**
+**Comparison with agentapi (deep-evaluated at `docs/03-PoCs/research/repo-scout/deep/coder__agentapi-2026-05-06.md`, 8.7/10, ADOPT):**
 
 | Dimension | agentapi (Go, MIT) | `lib/harness_adapter/` (Python) |
 |---|---|---|
@@ -104,4 +104,4 @@ These overlap *only* on "harness fingerprinting" — the question of "is this ou
 1. **Squad-tombstone ADR** — slot a new tombstone (e.g. ADR-253-tombstone) that names `packages/_archived/squads/` and points to ADR-251 as `Superseded-by`. Cleans up the cross-reference path.
 2. **agentapi testdata vendor** — small, MIT-clean, immediately strengthens harness adapter test coverage. Tracked under ADR-033b/034 line of work.
 
-**Acceptance criteria status:** each item cites ≥1 file/ADR (`ADR-251`, `packages/_archived/squads/README.md`, `docs/architecture/functional-audit/scorecard-packages-squads-agents.md`; `ADR-227`, `lib/shadow_git.py`, `manifests/shadow-git.yaml`, `hooks/auto-checkpoint.sh`; `ADR-033`, `lib/harness_adapter/base.py`) and ≥1 external reference (awslabs/agent-squad, cline/cline, coder/agentapi). No claim flagged as ASPIRATIONAL after grounded code inspection.
+**Acceptance criteria status:** each item cites ≥1 file/ADR (`ADR-251`, `packages/_archived/squads/README.md`, `docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md`; `ADR-227`, `lib/shadow_git.py`, `manifests/shadow-git.yaml`, `hooks/auto-checkpoint.sh`; `ADR-033`, `lib/harness_adapter/base.py`) and ≥1 external reference (awslabs/agent-squad, cline/cline, coder/agentapi). No claim flagged as ASPIRATIONAL after grounded code inspection.

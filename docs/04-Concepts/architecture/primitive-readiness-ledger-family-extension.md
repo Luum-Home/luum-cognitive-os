@@ -6,20 +6,20 @@
 
 `ADR-146` implements the first family ledger for `scripts/`. `scripts/primitive_family_readiness_ledger.py` extends the same machine-readable pattern to `hooks/`, `skills/`, and `rules/`. The generated reports are:
 
-- `docs/reports/primitive-readiness-ledger-scripts-latest.json`
-- `docs/reports/primitive-readiness-ledger-scripts-latest.md`
-- `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
-- `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
-- `docs/reports/primitive-readiness-ledger-hooks-latest.json`
-- `docs/reports/primitive-readiness-ledger-hooks-latest.md`
-- `docs/reports/primitive-readiness-ledger-skills-latest.json`
-- `docs/reports/primitive-readiness-ledger-skills-latest.md`
-- `docs/reports/primitive-readiness-ledger-rules-latest.json`
-- `docs/reports/primitive-readiness-ledger-rules-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.md`
 
 The script ledger now has explicit overrides for formerly low-confidence rows in `manifests/primitive-readiness-script-overrides.yaml`. The protected install/profile/projection surfaces and the remaining script agentic primitives now have ADR-126 `candidate` lifecycle entries where they remain plausible primitives. The generated script lifecycle backlog is therefore closed; future script work is promotion, downgrade, or archive from candidate state.
 
-All family ledgers emit `consumer_accessibility`, because SO-local documentation is not automatically visible to downstream projects. The current downstream projection boundary is documented in `docs/architecture/consumer-project-primitive-accessibility.md`.
+All family ledgers emit `consumer_accessibility`, because SO-local documentation is not automatically visible to downstream projects. The current downstream projection boundary is documented in `docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md`.
 
 ## Protected install/profile surfaces
 

@@ -42,7 +42,7 @@ WEAK_PATTERNS = (
     r"\bgrep\s+-rn?\s+['\"]?ADR-?\d{1,4}",
     r"\bgrep\b.*\bADR-?\d{1,4}\b",
     r"\bfind\b.*\bADR-?\d{1,4}\b",
-    r"\bls\b.*docs/adrs/ADR-?\d{1,4}",
+    r"\bls\b.*docs/02-Decisions/adrs/ADR-?\d{1,4}",
 )
 INVALID_PATTERNS = (
     r"^\s*$",

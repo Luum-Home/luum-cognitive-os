@@ -4,7 +4,7 @@ owner: maintainer
 registered_on: "2026-05-04"
 input_source:
   type: manual
-  identifier: docs/architecture/dx-cloud-flow-bootstrap-plan.md#flow-1
+  identifier: docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md#flow-1
   determinism: deterministic
 success_condition:
   description: Produces a propose-only vulnerability-remediation bundle with tests, rescan evidence, and human review status.
@@ -14,7 +14,7 @@ success_condition:
     rescan_clean: true
     reviewer_signature: true
 sandboxed_write_paths:
-  - docs/proposals/vuln-remediation-flow-results-*.md
+  - docs/03-PoCs/proposals/vuln-remediation-flow-results-*.md
   - .cognitive-os/proposals/vuln-remediation-flow-*.md
   - .cognitive-os/metrics/llm-dispatch.jsonl
 blocked_actions:

@@ -59,7 +59,7 @@ Each finding maps to a `SelfImprovementProposal` dataclass (frozen, immutable) w
 
 **Safety contract**: `scripts/self_improvement_discipline_gate.py` validates every plan before it can be used. Regex patterns reject any proposal containing `auto_merge`, `auto_promote`, `promote_to_core`, `extend_warning_budget`, `invent_roi`. The discipline gate is an explicit veto layer that runs before any proposal reaches an operator.
 
-**Doctrine proposer** (`lib/doctrine_proposer.py`): reads same audit sources, emits Markdown proposals under `docs/proposals/` with `status: proposed`, `runtime_effect: none`. Cannot touch live rules, hooks, skills, ADR statuses.
+**Doctrine proposer** (`lib/doctrine_proposer.py`): reads same audit sources, emits Markdown proposals under `docs/03-PoCs/proposals/` with `status: proposed`, `runtime_effect: none`. Cannot touch live rules, hooks, skills, ADR statuses.
 
 **Cross-instance runway** (ADR-136): `cos-export-consumer-evidence` / `cos-import-consumer-evidence` — bilateral evidence exchange as YAML files. Portable Engram bundles (propose-only import). Registry locks. No live federation; shape-B triggers not yet fired.
 
@@ -133,9 +133,9 @@ Since verdict is **pattern-only**, the first step is a contained spike:
 - `gh api repos/HKUDS/OpenSpace/contents/<path>` — base64 file fetch for 4 source files
 
 **COS files read:**
-- `/docs/adrs/ADR-134-headless-self-improvement-proposer.md`
-- `/docs/adrs/ADR-135-self-evolving-doctrine-proposals.md`
-- `/docs/adrs/ADR-136-cross-instance-learning-runway.md`
+- `/docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md`
+- `/docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md`
+- `/docs/02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md`
 - `/scripts/cos_self_improvement_loop.py`
 - `/scripts/cos_doctrine_proposer.py`
 - `/lib/self_improvement_loop.py`

@@ -152,7 +152,7 @@ contents or raw secret/private values.
 | Observable self-use | `lib/trace_joiner.py`, `scripts/cos-observe-primitives`, `tests/contracts/test_observable_primitive_self_use.py` |
 | Consumer UX | `scripts/cos-adapters`, `tests/contracts/test_consumer_adapter_ux.py` |
 
-OpenCode is now split by proof level: the signed runtime slice covers 20 primitives through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and `docs/reports/opencode-primitive-adapter-smoke-latest.md`; the remaining registry-backed contracts are intentionally `structural-advisory` in OpenCode until a future signed smoke promotes them.
+OpenCode is now split by proof level: the signed runtime slice covers 20 primitives through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and `docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.md`; the remaining registry-backed contracts are intentionally `structural-advisory` in OpenCode until a future signed smoke promotes them.
 
 ## OpenCode adapter note
 
@@ -168,7 +168,7 @@ opencode.json / AGENTS.md advisory context
   -> primitive-interventions.jsonl row for comparable COS evidence
 ```
 
-The current COS proof is no longer structural for the signed runtime slice: `cos_init.py --harness opencode` now projects `opencode.json` plus `.opencode/plugins/cos-primitive-guard.js`. Runtime enforcement may be claimed only for primitives listed in `docs/reports/opencode-primitive-adapter-smoke-latest.json`; all other primitives remain structural-advisory backlog until they have signed smoke evidence.
+The current COS proof is no longer structural for the signed runtime slice: `cos_init.py --harness opencode` now projects `opencode.json` plus `.opencode/plugins/cos-primitive-guard.js`. Runtime enforcement may be claimed only for primitives listed in `docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.json`; all other primitives remain structural-advisory backlog until they have signed smoke evidence.
 
 ## Consequences
 

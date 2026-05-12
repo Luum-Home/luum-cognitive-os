@@ -1,6 +1,6 @@
 # Prompt-Driven Governance
 
-## ADR-012 (docs/adrs/ADR-012-prompt-driven-governance.md): Move governance hooks from imperative bash to declarative prompt templates
+## ADR-012 (docs/02-Decisions/adrs/ADR-012-prompt-driven-governance.md): Move governance hooks from imperative bash to declarative prompt templates
 
 ### Status
 Proposed

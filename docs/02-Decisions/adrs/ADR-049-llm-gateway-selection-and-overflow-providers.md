@@ -599,7 +599,7 @@ docker ps --filter name=cognitive-os- --format '{{.Names}}' | grep -E 'litellm|b
 # (should return empty)
 
 # ADR trail intact
-grep -r 'ADR-049' docs/adrs/ADR-022.md docs/adrs/ADR-028.md rules/model-routing.md
+grep -r 'ADR-049' docs/02-Decisions/adrs/ADR-022.md docs/02-Decisions/adrs/ADR-028.md rules/model-routing.md
 ```
 
 ## Open questions (non-blocking)
@@ -662,7 +662,7 @@ Corrected architecture (Option B, implemented as mega-plan C1-C7):
 | C2 | `lib/dispatch.py` abstract router + JSONL metrics foundation | ✅ |
 | C3 | `rules/llm-dispatch.md` + gotcha + ref-key | ✅ |
 | C4 | `/llm-status` skill (`scripts/llm_status.py`) | ✅ |
-| C5 | `docs/runbooks/llm-dispatch.md` operational guide | ✅ |
+| C5 | `docs/05-Methodology/runbooks/llm-dispatch.md` operational guide | ✅ |
 | C6 | ADR-049 update (this section) + ADR-050/052/053 stubs | ✅ |
 | C6.5 | `claude-code-router` research (NO-GO verdict) | ✅ |
 | C7 | ADR-051 Phase 1 Qwen agent loop (Read/Edit/Bash tools) | ✅ |

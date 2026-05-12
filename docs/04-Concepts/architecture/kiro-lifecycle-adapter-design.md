@@ -43,7 +43,7 @@ Kiro event JSON
 | `scripts/cos_init.py` Kiro driver | Generate project-local Kiro config only after the config path/syntax is signed. |
 | `tests/unit/test_kiro_hook_adapter.py` | Contract-test event mapping and exit code behavior without Kiro installed. |
 | `tests/behavior/test_consumer_project_projection.py` | Assert generated Kiro files in a temp consumer project. |
-| `docs/manual-tests/kiro-lifecycle-runtime-smoke.md` | Optional account-backed smoke path. |
+| `docs/09-Quality/manual-tests/kiro-lifecycle-runtime-smoke.md` | Optional account-backed smoke path. |
 
 ## Promotion gates
 

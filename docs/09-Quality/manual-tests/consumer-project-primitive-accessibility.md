@@ -25,7 +25,7 @@ Purpose: prove that primitive readiness claims are grounded in downstream projec
    python3 - <<'PY'
    import json
    for family in ('scripts', 'hooks', 'skills', 'rules'):
-       path = f'docs/reports/primitive-readiness-ledger-{family}-latest.json'
+       path = f'docs/06-Daily/reports/primitive-readiness-ledger-{family}-latest.json'
        data = json.load(open(path))
        print(family, data['summary']['consumer_accessibility'])
        assert 'consumer_accessibility' in data['summary']

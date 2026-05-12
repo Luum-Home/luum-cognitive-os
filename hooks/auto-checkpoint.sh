@@ -5,7 +5,7 @@
 # PostToolUse hook on Bash|Edit|Write
 # Runs lightweight -- only does real work every N minutes
 #
-# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md §2.
+# Complements ADR-028 D1.C agent heartbeat; see docs/02-Decisions/adrs/ADR-028a.md §2.
 # This hook persists session-level state (WS13). D1.C writes per-agent liveness
 # files under .cognitive-os/tasks/. Both are required; neither replaces the other.
 #

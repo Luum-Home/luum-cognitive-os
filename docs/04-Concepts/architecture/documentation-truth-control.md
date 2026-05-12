@@ -22,8 +22,8 @@ Each claim declares:
 
 The auditor is `scripts/documentation_truth_audit.py`, with CLI wrapper `scripts/cos-documentation-truth-audit`. It emits:
 
-- `docs/reports/documentation-truth-latest.json`
-- `docs/reports/documentation-truth-latest.md`
+- `docs/06-Daily/reports/documentation-truth-latest.json`
+- `docs/06-Daily/reports/documentation-truth-latest.md`
 
 ACC consumes the report through the `documentation_truth` adapter.
 
@@ -31,9 +31,9 @@ ACC consumes the report through the `documentation_truth` adapter.
 
 | Claim | Purpose | Primary source |
 |---|---|---|
-| `consumer_projection_harnesses` | Prevents projection docs from reverting to stale Claude/Codex-only claims. | `docs/reports/primitive-projection-fidelity-latest.json` |
-| `primitive_authority_write_effects` | Prevents authority docs from describing ADR-276 as a pending gap after implementation. | `docs/reports/primitive-authority-latest.json` |
-| `documentation_truth_control` | Keeps this control discoverable in docs and ACC. | `docs/reports/documentation-truth-latest.json` |
+| `consumer_projection_harnesses` | Prevents projection docs from reverting to stale Claude/Codex-only claims. | `docs/06-Daily/reports/primitive-projection-fidelity-latest.json` |
+| `primitive_authority_write_effects` | Prevents authority docs from describing ADR-276 as a pending gap after implementation. | `docs/06-Daily/reports/primitive-authority-latest.json` |
+| `documentation_truth_control` | Keeps this control discoverable in docs and ACC. | `docs/06-Daily/reports/documentation-truth-latest.json` |
 
 ## Generated truth block
 
@@ -41,14 +41,14 @@ ACC consumes the report through the `documentation_truth` adapter.
 Generated documentation truth: documentation truth control.
 Declared truth claims (5): consumer_projection_harnesses, documentation_truth_control, primitive_authority_write_effects, session_pending_protocol, subprocess_timeout_discipline.
 Contract surfaces: manifests/documentation-truth-claims.yaml; scripts/documentation_truth_audit.py; ACC adapter documentation_truth.
-Report surfaces: docs/reports/documentation-truth-latest.json; docs/reports/documentation-truth-latest.md.
+Report surfaces: docs/06-Daily/reports/documentation-truth-latest.json; docs/06-Daily/reports/documentation-truth-latest.md.
 <!-- GENERATED:documentation-truth:documentation_truth_control:end -->
 
 ## Operating model
 
 1. Update source report or manifest.
 2. Run `python3 scripts/documentation_truth_audit.py --project-dir . --update-generated`.
-3. Commit changed docs/reports together with source changes.
+3. Commit changed docs/06-Daily/reports together with source changes.
 4. Contract tests fail if a required phrase, source report, or generated block drifts.
 
 ## Boundary

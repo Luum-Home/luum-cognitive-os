@@ -4,7 +4,7 @@
 **Phase**: reconstruction (rewrite > patch)
 **Date**: 2026-05-02
 **Status**: PROPOSED — awaiting operator commit decision
-**Cross-refs**: ADR-105 (claim verification contract), ADR-106 (multi-session safety primitives), ADR-107 (human-approved rollback), `docs/architecture/POST-MORTEM-2026-04.md` and post-mortem 2026-05-02 (false-done compounding), `docs/architecture/cross-harness-authoring.md`, RULES-COMPACT §13 (naming) and §14 (lane taxonomy).
+**Cross-refs**: ADR-105 (claim verification contract), ADR-106 (multi-session safety primitives), ADR-107 (human-approved rollback), `docs/04-Concepts/architecture/POST-MORTEM-2026-04.md` and post-mortem 2026-05-02 (false-done compounding), `docs/04-Concepts/architecture/cross-harness-authoring.md`, RULES-COMPACT §13 (naming) and §14 (lane taxonomy).
 
 ---
 
@@ -46,7 +46,7 @@ Meta-invariant: the harness itself must be red-teamed. Any component shipped as 
 | KD1 | **Replay-only by default**, live opt-in via `COS_REDTEAM_LIVE=1` | Replay is deterministic, cheap, CI-safe. Live exercises the real verification pipeline but adds flakiness; gate behind explicit opt-in. |
 | KD2 | **Tempdir mini-repos** for fixtures (NOT git worktrees) | The exploration documented worktree-mutation hazards as an actual incident pattern. Tempdirs are inert, disposable, parallel-safe. |
 | KD3 | Scenarios `both` live under **`tests/red_team/scenarios/`** in SO; propagated via `cos_init` scope filtering | Single source of truth in SO; consumers receive copies with `version:` field. |
-| KD4 | Aggregator output = **`docs/reports/redteam-baseline.{json,md}`** (project-local) | Each repo has its own baseline. Optional `--hub-url` flag reserved for future fleet view (out of scope). |
+| KD4 | Aggregator output = **`docs/06-Daily/reports/redteam-baseline.{json,md}`** (project-local) | Each repo has its own baseline. Optional `--hub-url` flag reserved for future fleet view (out of scope). |
 | KD5 | **Evolution**: scenarios versioned in SO; consumers pull via `cos pull-scenarios` (skill OUT of scope here). This change ships only the structure: `version:` + `min_harness_version:` fields, plus `RED-TEAM-CHANGELOG.md`. | Keeps current change focused; pull tooling is a separable concern. |
 | KD6 | **Every `both` component ships with a CI-pinned portability test BEFORE its scope marker is committed** (gate, not backlog) | R10 mitigation: refusing to red-team the harness itself would be the recursive false-done this project exists to prevent. Accepted +7h cost to estimate. |
 | KD7 | **Skill name = `redteam-harness`** (no hyphen) | The hyphenated `red-team` skill already exists for Promptfoo integration; no name collision. |
@@ -78,10 +78,10 @@ Sequencing wave (W0–W6 + W7 portability rehearsal). Reuse = leverage existing 
 | 14 | `skills/redteam-harness/SKILL.md` (`audience: both`, `bin/cos-skill run` entry) | both | 3 | New | W5 | YES (`cos-skill describe` in non-SO repo) |
 | 15 | `tests/contracts/test_redteam_baseline.py` | os-only | 3 | New | W6 | No |
 | 16 | `templates/contracts/test_redteam_baseline.template.py` (consumer-customizable) | both | 3 | New | W6 | YES (instantiate template in fake consumer) |
-| 17 | `docs/RED-TEAM-COVERAGE.md` (verb→scenario map) | os-only | 3 | New | W6 | No |
+| 17 | `docs/01-Build-Log/root/RED-TEAM-COVERAGE.md` (verb→scenario map) | os-only | 3 | New | W6 | No |
 | 18 | `.cognitive-os/test-lanes.yaml` registration (lane `red_team`, parallel-safe rationale) | os-only | 3 | Modify | W6 | No |
 | 19 | `.claude/settings.json` hook registration via `scripts/apply-efficiency-profile.sh` (driver-projected) | os-only (driver-projected) | 3 | Modify | W6 | No (verified by harness-driver-parity test) |
-| 20 | `docs/RED-TEAM-CHANGELOG.md` (versioned scenario log, structure-only) | both | 3 | New | W6 | No |
+| 20 | `docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md` (versioned scenario log, structure-only) | both | 3 | New | W6 | No |
 
 **Net split**: 9 `both` + 8 `os-only` + 1 driver-projected + 2 (template + changelog) = 20 components across 3 layers.
 
@@ -100,7 +100,7 @@ Sequencing wave (W0–W6 + W7 portability rehearsal). Reuse = leverage existing 
 | OQ7 (aggregator output format) | JSON (machine) + Markdown (human review). Schema documented in skill body. | Dual-format covers CI gating + post-mortem reading. |
 | OQ8 (orchestrator_verify.py home) | `packages/verification-audit/lib/orchestrator_verify.py` (real file) + symlink `lib/orchestrator_verify.py`. | KD9. Matches existing package convention. |
 | OQ9 (scenario distribution) | **Copy-with-version**: SO ships scenarios under `tests/red_team/scenarios/`; `cos_init --install-scope project` copies to consumer. `cos_init --upgrade` re-syncs. `version:` field tracks staleness. | Reproducibility wins over single-source-of-truth pull-on-demand at this maturity. Reference (shared install path) creates consumer-side coupling we cannot yet manage. |
-| OQ10 (aggregator destination) | **Project-local default**: `docs/reports/redteam-baseline.{json,md}`. Optional `--hub-url` flag reserved (no hub implementation in this change). | Each project needs its own baseline; fleet view is premature. |
+| OQ10 (aggregator destination) | **Project-local default**: `docs/06-Daily/reports/redteam-baseline.{json,md}`. Optional `--hub-url` flag reserved (no hub implementation in this change). | Each project needs its own baseline; fleet view is premature. |
 | OQ11 (evolution / pull mechanism) | **Push-via-cos_init-upgrade** with `RED-TEAM-CHANGELOG.md`; the consumer-pull skill `cos pull-scenarios` is OUT of scope but the structure (versioned YAMLs + changelog) lands here. | Defers tooling complexity; scenarios remain useful via existing `cos_init` upgrade path. |
 
 ---
@@ -147,12 +147,12 @@ Each wave is **independently mergeable** unless noted. DoD per wave is verified 
 ### W5 — Runner + aggregator + skill (Layer 3, all `both`)
 - **Delivers**: `scripts/run-redteam-scenario.sh`, `scripts/redteam-aggregate.py`, `skills/redteam-harness/SKILL.md`. Skill canonical entry: `bin/cos-skill run redteam-harness`.
 - **Dependencies**: W3, W4 (scenarios must exist).
-- **DoD**: `bin/cos-skill run redteam-harness` produces `docs/reports/redteam-baseline.{json,md}` with all 6 scenarios graded; portability tests for runner + aggregator + skill execute from a fake consumer mini-repo. snake_case (Python) / kebab-case (shell) per RULES §13.
+- **DoD**: `bin/cos-skill run redteam-harness` produces `docs/06-Daily/reports/redteam-baseline.{json,md}` with all 6 scenarios graded; portability tests for runner + aggregator + skill execute from a fake consumer mini-repo. snake_case (Python) / kebab-case (shell) per RULES §13.
 - **Blast radius**: high (new skill, new scripts, schema introduced).
 - **Mergeable independently**: YES (warn-only on CI).
 
 ### W6 — Contract test + docs + lane registration + driver wiring
-- **Delivers**: `tests/contracts/test_redteam_baseline.py` (os-only, asserts SO baseline), `templates/contracts/test_redteam_baseline.template.py` (both, consumer-customizable), `docs/RED-TEAM-COVERAGE.md` verb-map, `docs/RED-TEAM-CHANGELOG.md` (structure only), `.cognitive-os/test-lanes.yaml` lane `red_team` (parallel-safety reason: tempdir-isolated fixtures, no shared mutation), and hook registration through `scripts/apply-efficiency-profile.sh` (driver-projected).
+- **Delivers**: `tests/contracts/test_redteam_baseline.py` (os-only, asserts SO baseline), `templates/contracts/test_redteam_baseline.template.py` (both, consumer-customizable), `docs/01-Build-Log/root/RED-TEAM-COVERAGE.md` verb-map, `docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md` (structure only), `.cognitive-os/test-lanes.yaml` lane `red_team` (parallel-safety reason: tempdir-isolated fixtures, no shared mutation), and hook registration through `scripts/apply-efficiency-profile.sh` (driver-projected).
 - **Dependencies**: W5 (baseline file format must be stable).
 - **DoD**: contract test runs in `red_team` lane, completes; lane registration parsed by `cos-test`; harness-driver-parity test confirms hook fires under Codex driver; `cos_init.py --install-scope project --dry-run` in fake consumer dir shows all `both` files propagate, no `os-only` leaks.
 - **Blast radius**: high (CI lane registration, hook chain, driver projection — but warn-only).
@@ -186,7 +186,7 @@ Each wave is **independently mergeable** unless noted. DoD per wave is verified 
 
 ## Acceptance Criteria (whole change)
 
-- [ ] All 6 scenarios run via `bin/cos-skill run redteam-harness` and produce `docs/reports/redteam-baseline.{json,md}`.
+- [ ] All 6 scenarios run via `bin/cos-skill run redteam-harness` and produce `docs/06-Daily/reports/redteam-baseline.{json,md}`.
 - [ ] `cos_init.py --install-scope project --dry-run` against a fake consumer dir: 9 `both` files propagate, 8 `os-only` files do not (W7 rehearsal asserts this).
 - [ ] All 9 `both` components have a passing portability test in `tests/red_team/portability/` (KD6 gate).
 - [ ] Driver-projected hook registration works under both Claude Code and Codex drivers (harness-driver-parity test passes).
@@ -208,7 +208,7 @@ The following areas are touched by parallel sessions today. Coexistence strategy
 | Parallel work | Path | Coexistence |
 |---|---|---|
 | `auto-repair-rollback` package (ADR-107 implementation) | `packages/auto-repair-rollback/**` | No overlap. Harness consumes ADR-105 contract; ADR-107 implements rollback flow. Independent. |
-| ADR-107 (human-approved rollback) | `docs/adrs/ADR-107-human-approved-rollback.md` | Read-only reference. No edits. |
+| ADR-107 (human-approved rollback) | `docs/02-Decisions/adrs/ADR-107-human-approved-rollback.md` | Read-only reference. No edits. |
 | `scripts/adr_implementation_ledger.py` (untracked, parallel session) | `scripts/adr_implementation_ledger.py` | No file overlap. Harness writes its own scripts under `scripts/run-redteam-scenario.sh` and `scripts/redteam-aggregate.py`. Both adhere to RULES §13 snake_case Python / kebab-case shell. |
 | `tests/contracts/test_primitive_scope_classification.py` (untracked, parallel) | `tests/contracts/test_primitive_scope_classification.py` | Different test file. Harness adds `test_redteam_baseline.py`. No collision. |
 | Various hooks under `hooks/` (modified, parallel) | `hooks/edit-lock-*.sh`, `hooks/skill-frontmatter-validator.sh`, etc. | Harness adds **only** `hooks/plan-claim-validator.sh` (new file, no edit). Pre-commit warning about settings.json explicitly addressed via `scripts/apply-efficiency-profile.sh` registration. |

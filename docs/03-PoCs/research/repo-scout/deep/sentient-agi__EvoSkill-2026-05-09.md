@@ -3,7 +3,7 @@ evaluated_at: 2026-05-09 23:20 UTC
 engram_id: pending
 deepwiki_url: null
 batch: targeted-user-request
-parent_radar: docs/reports/external-tools-radar-INDEX.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-INDEX.md
 introduced_by_commit: 418a37ca680a1264086df420a96db07dcd064ace
 last_verified_commit: 418a37ca680a1264086df420a96db07dcd064ace
 source_url: https://github.com/sentient-agi/EvoSkill
@@ -154,9 +154,9 @@ ACCEPTANCE CRITERIA:
 - GitHub repository: <https://github.com/sentient-agi/EvoSkill>
 - arXiv paper: <https://arxiv.org/abs/2603.02766>
 - Source commit audited: `418a37ca680a1264086df420a96db07dcd064ace`
-- Targeted addendum: `docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`
-- Adoption doctrine: `docs/architecture/external-tool-adoption-doctrine.md`
-- Adapter taxonomy: `docs/architecture/external-tool-adapter-taxonomy.md`
+- Targeted addendum: `docs/06-Daily/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`
+- Adoption doctrine: `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`
+- Adapter taxonomy: `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`
 
 ### Raw Metrics
 

@@ -9,8 +9,8 @@ Falsification probes:
 
 1. Non-commit Bash input must exit 0 with no side effects.
 2. The recursive-detection filter must reject canonical ADR paths
-   (`docs/adrs/ADR-NNN-*.md`). If the filter pattern drifts back to the
-   removed `docs/architecture/adrs/` namespace, this test fails.
+   (`docs/02-Decisions/adrs/ADR-NNN-*.md`). If the filter pattern drifts back to the
+   removed `docs/04-Concepts/architecture/adrs/` namespace, this test fails.
 3. The filter must NOT swallow non-ADR paths.
 """
 
@@ -51,11 +51,11 @@ def test_non_commit_bash_exits_zero() -> None:
 
 def test_filter_rejects_canonical_adr_path() -> None:
     """Falsification: if the filter ever points at a non-canonical namespace
-    (e.g. the removed docs/architecture/adrs/ stubs), this fails."""
+    (e.g. the removed docs/04-Concepts/architecture/adrs/ stubs), this fails."""
     pattern = _extract_filter_pattern()
     canonical_paths = [
-        "docs/adrs/ADR-100-example.md",
-        "docs/adrs/INDEX.md",
+        "docs/02-Decisions/adrs/ADR-100-example.md",
+        "docs/02-Decisions/adrs/INDEX.md",
     ]
     result = subprocess.run(
         ["grep", "-v", pattern],
@@ -65,7 +65,7 @@ def test_filter_rejects_canonical_adr_path() -> None:
     )
     # grep -v returning empty stdout means all lines matched the pattern (i.e. were filtered out).
     assert result.stdout.strip() == "", (
-        f"filter pattern {pattern!r} must reject canonical docs/adrs/ paths; "
+        f"filter pattern {pattern!r} must reject canonical docs/02-Decisions/adrs/ paths; "
         f"leaked: {result.stdout!r}"
     )
 

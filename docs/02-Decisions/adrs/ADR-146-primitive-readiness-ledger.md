@@ -41,8 +41,8 @@ python3 scripts/primitive_readiness_ledger.py --project-dir .
 
 Canonical generated reports:
 
-- `docs/reports/primitive-readiness-ledger-scripts-latest.json`
-- `docs/reports/primitive-readiness-ledger-scripts-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md`
 
 The JSON report is the machine-readable surface. Each script row declares:
 
@@ -113,12 +113,12 @@ The first low-confidence script pass is closed through `manifests/primitive-read
 
 The lifecycle ratchet added ADR-126 candidate metadata first for protected install/profile/projection surfaces, because those scripts can change how downstream projects receive primitives by profile or harness. It then closed the remaining script lifecycle backlog by adding candidate lifecycle rows for the remaining plausible script agentic primitives. The generated lifecycle backlog is now an audit report expected to stay empty unless new agentic scripts appear without lifecycle metadata:
 
-- `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
-- `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
 
 Candidate entries are visible in the lifecycle manifest, but they are not active/default-visible primitives until a later promotion changes their lifecycle state and passes the normal evidence gates. Future script work is promotion, downgrade, or archive from candidate state, not first-pass missing-metadata discovery.
 
-Family extension is implemented through `scripts/primitive_family_readiness_ledger.py` and tracked in `docs/architecture/primitive-readiness-ledger-family-extension.md`.
+Family extension is implemented through `scripts/primitive_family_readiness_ledger.py` and tracked in `docs/04-Concepts/architecture/primitive-readiness-ledger-family-extension.md`.
 
 ## 2026-05-04 Protected Install/Profile Surfaces
 
@@ -148,8 +148,8 @@ This keeps the ledger honest for VS Code/Copilot, Cursor, Windsurf, Google Antig
 
 `scripts/primitive_family_readiness_ledger.py` now emits the same readiness shape for hooks, skills, and rules using family-specific role taxonomies. The generated reports are:
 
-- `docs/reports/primitive-readiness-ledger-hooks-latest.json`
-- `docs/reports/primitive-readiness-ledger-skills-latest.json`
-- `docs/reports/primitive-readiness-ledger-rules-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json`
 
-Consumer-project projection proof is separated from ledger classification in `docs/architecture/consumer-project-primitive-accessibility.md`. Current automated projection proof signs native lifecycle/settings installs for Claude Code and OpenAI Codex, and structural project-local projection for the implemented harnesses covered by `tests/behavior/test_consumer_project_projection.py`. Structural projection is not runtime enforcement; planned harnesses remain unsigned until they get explicit projection drivers and temp-project proof.
+Consumer-project projection proof is separated from ledger classification in `docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md`. Current automated projection proof signs native lifecycle/settings installs for Claude Code and OpenAI Codex, and structural project-local projection for the implemented harnesses covered by `tests/behavior/test_consumer_project_projection.py`. Structural projection is not runtime enforcement; planned harnesses remain unsigned until they get explicit projection drivers and temp-project proof.

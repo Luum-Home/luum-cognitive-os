@@ -103,7 +103,7 @@ Bifrost (github.com/maximhq/bifrost) is a Go-based high-performance AI gateway w
 - Provider fallback chains
 - Could replace/complement LiteLLM for production deployments
 
-See: docs/tool-stack.md for evaluation status.
+See: docs/04-Concepts/root/tool-stack.md for evaluation status.
 
 ## AI Gateway Landscape — Open Source Comparison
 

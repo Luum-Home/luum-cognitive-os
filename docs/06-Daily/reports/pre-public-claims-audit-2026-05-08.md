@@ -5,10 +5,10 @@
 Task D audit of public-facing claims in the pre-public surface. I treated these files as the public claim surface because `manifests/public-claim-evidence.yaml` includes them:
 
 - `README.md`
-- `docs/business/executive-summary.md`
-- `docs/business/kubernetes-for-agents.md`
-- `docs/business/value-proposition.md`
-- `docs/business/features.md`
+- `docs/08-References/business/executive-summary.md`
+- `docs/08-References/business/kubernetes-for-agents.md`
+- `docs/08-References/business/value-proposition.md`
+- `docs/08-References/business/features.md`
 
 Non-goals for this task: history sanitization and license FAQ cleanup. Existing edits in those areas were not touched.
 
@@ -41,14 +41,14 @@ Non-goals for this task: history sanitization and license FAQ cleanup. Existing 
 | Signed product claims | PARTIAL | `cos-claim-signature-audit`: 3 claims; 2 signed; `helps-projects` remains unsigned but info-only because no non-maintainer 30+ day adoption report exists. | Kept external adoption/help claim bounded; no unsupported unasterisked proof added. |
 | ADR tier claims | REAL | `cos-tier-claim-audit`: 247 ADRs, `finding_count=0`. | No edits. |
 | Manifest distribution tier claims | PARTIAL | `cos-manifest-tier-claim-audit`: `status=warn`, 249 findings: 95 maintainer-knowledge-dependent, 76 core/team without strong evidence, 69 candidate-to-lab/advisory, 9 candidate second-demote. | No broad demotions in this task; tracked as a remaining risk. |
-| Kubernetes-scale / millions-of-agents positioning | ROADMAP | `docs/business/kubernetes-for-agents.md` marks Phase 2+ items unchecked and says production claims need explicit proof. | Changed current-state bullets from auto-improving/auto-repair to governed proposal/workflow wording. |
-| Self-improvement / self-healing | PARTIAL | `docs/business/features.md` labels Self-Improvement Loop and SRE/Self-Healing as DORMANT/propose-only; ADR-201/204/206 gate autonomous mutation. | Changed `value-proposition` wording from “learns from its mistakes” / “autonomous engineering teams” to governed wording. |
+| Kubernetes-scale / millions-of-agents positioning | ROADMAP | `docs/08-References/business/kubernetes-for-agents.md` marks Phase 2+ items unchecked and says production claims need explicit proof. | Changed current-state bullets from auto-improving/auto-repair to governed proposal/workflow wording. |
+| Self-improvement / self-healing | PARTIAL | `docs/08-References/business/features.md` labels Self-Improvement Loop and SRE/Self-Healing as DORMANT/propose-only; ADR-201/204/206 gate autonomous mutation. | Changed `value-proposition` wording from “learns from its mistakes” / “autonomous engineering teams” to governed wording. |
 
 ## Files Changed
 
-- `docs/reports/pre-public-claims-audit-2026-05-08.md` — this audit report.
-- `docs/business/value-proposition.md` — minimal wording demotion: self-improvement is governed proposals; footer says governed engineering teams instead of autonomous engineering teams.
-- `docs/business/kubernetes-for-agents.md` — minimal wording demotion: current-state skills/SRE bullets now say governed improvement proposals / governed repair workflow.
+- `docs/06-Daily/reports/pre-public-claims-audit-2026-05-08.md` — this audit report.
+- `docs/08-References/business/value-proposition.md` — minimal wording demotion: self-improvement is governed proposals; footer says governed engineering teams instead of autonomous engineering teams.
+- `docs/08-References/business/kubernetes-for-agents.md` — minimal wording demotion: current-state skills/SRE bullets now say governed improvement proposals / governed repair workflow.
 
 ## Remaining Risks
 

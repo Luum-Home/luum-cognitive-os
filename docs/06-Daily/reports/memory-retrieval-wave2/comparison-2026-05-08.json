@@ -12,7 +12,7 @@
       "delta_temporal_correct": 0,
       "fixed_fixtures": [],
       "passed": 0,
-      "path": "docs/reports/memory-retrieval-wave2/current-local-2026-05-08.json",
+      "path": "docs/06-Daily/reports/memory-retrieval-wave2/current-local-2026-05-08.json",
       "regressed_fixtures": [],
       "score": 0,
       "source_supported": 2,
@@ -31,7 +31,7 @@
         "procedural-runbook-current"
       ],
       "passed": 3,
-      "path": "docs/reports/memory-retrieval-wave2/dual-level-local-2026-05-08.json",
+      "path": "docs/06-Daily/reports/memory-retrieval-wave2/dual-level-local-2026-05-08.json",
       "regressed_fixtures": [],
       "score": 39,
       "source_supported": 3,
@@ -50,7 +50,7 @@
         "procedural-runbook-current"
       ],
       "passed": 3,
-      "path": "docs/reports/memory-retrieval-wave2/graph-path-local-2026-05-08.json",
+      "path": "docs/06-Daily/reports/memory-retrieval-wave2/graph-path-local-2026-05-08.json",
       "regressed_fixtures": [],
       "score": 39,
       "source_supported": 3,
@@ -69,7 +69,7 @@
         "procedural-runbook-current"
       ],
       "passed": 3,
-      "path": "docs/reports/memory-retrieval-wave2/memory-class-local-2026-05-08.json",
+      "path": "docs/06-Daily/reports/memory-retrieval-wave2/memory-class-local-2026-05-08.json",
       "regressed_fixtures": [],
       "score": 39,
       "source_supported": 3,
@@ -87,7 +87,7 @@
         "procedural-runbook-current"
       ],
       "passed": 2,
-      "path": "docs/reports/memory-retrieval-wave2/temporal-local-2026-05-08.json",
+      "path": "docs/06-Daily/reports/memory-retrieval-wave2/temporal-local-2026-05-08.json",
       "regressed_fixtures": [],
       "score": 26,
       "source_supported": 2,
@@ -108,7 +108,7 @@
       "procedural-runbook-current"
     ],
     "passed": 3,
-    "path": "docs/reports/memory-retrieval-wave2/graph-path-local-2026-05-08.json",
+    "path": "docs/06-Daily/reports/memory-retrieval-wave2/graph-path-local-2026-05-08.json",
     "regressed_fixtures": [],
     "score": 39,
     "source_supported": 3,

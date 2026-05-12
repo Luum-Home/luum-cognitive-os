@@ -1,1 +1,0 @@
-05-Methodology/root/configurable-quality-gates.md

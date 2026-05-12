@@ -60,7 +60,7 @@ recurring failure modes:
 
 The 2026-05-06 repo-scout incident is the documented case. Earlier sessions
 recorded the same anti-pattern in
-`docs/reports/audit-corpus-revalidation-2026-05-05.md` (operator caught
+`docs/06-Daily/reports/audit-corpus-revalidation-2026-05-05.md` (operator caught
 "did you use the canonical /repo-scout?" with same answer: no).
 
 ## Decision
@@ -266,9 +266,9 @@ make test-laptop
 
 ## Cross-References
 
-- `docs/reports/external-tools-radar-2026-05-06.md` — origin batch where the
+- `docs/06-Daily/reports/external-tools-radar-2026-05-06.md` — origin batch where the
   failure was visible.
-- `docs/reports/audit-corpus-revalidation-2026-05-05.md` — earlier instance
+- `docs/06-Daily/reports/audit-corpus-revalidation-2026-05-05.md` — earlier instance
   of same anti-pattern (operator caught "did you use canonical primitive?").
 - `skills/repo-scout/SKILL.md` — the skill that was bypassed; v2.0.1 already
   has Step 7 (Deep Evaluation) that would have produced source-level audits

@@ -14,7 +14,7 @@ classification_basis: explicit prose status migration for previously prose-only 
 
 # ADR-039 — Reinvention Phase B-β (semantic embeddings)
 
-> Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/adrs/`.
+> Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/02-Decisions/adrs/`.
 
 ## Status
 

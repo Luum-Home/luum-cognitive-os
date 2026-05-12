@@ -135,8 +135,8 @@ This ADR governance review evaluates policy, boundary, risk, consequence, and al
 
 | Decision area | Evidence | Governance reading | Confidence |
 |---|---|---|---|
-| Boundary | docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md:1-40 defines the prior UI decision | docs/adrs/ADR-172-multi-surface-ui-architecture.md:1-70 changes the accepted positioning | Confidence: HIGH |
-| Risk | docs/adrs/ADR-125-governance-tools-value-boundary.md:20-55 names false-positive governance cost | docs/adrs/ADR-188-orchestrator-skill-invocation-gate.md:1-80 requires guardrails | Confidence: MEDIUM |
+| Boundary | docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md:1-40 defines the prior UI decision | docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md:1-70 changes the accepted positioning | Confidence: HIGH |
+| Risk | docs/02-Decisions/adrs/ADR-125-governance-tools-value-boundary.md:20-55 names false-positive governance cost | docs/02-Decisions/adrs/ADR-188-orchestrator-skill-invocation-gate.md:1-80 requires guardrails | Confidence: MEDIUM |
 
 ## Verdict
 

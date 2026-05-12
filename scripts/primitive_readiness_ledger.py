@@ -29,7 +29,7 @@ from typing import Any
 import yaml
 
 REPO_IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules"}
-REPO_IGNORE_PREFIXES = ("docs/reports/", ".claude/plugins/", "dashboard/.next/")
+REPO_IGNORE_PREFIXES = ("docs/06-Daily/reports/", ".claude/plugins/", "dashboard/.next/")
 SCRIPT_SUFFIXES = {".py", ".sh", ".js", ".mjs", ".txt", ""}
 ROLES = {
     "agentic-primitive",
@@ -546,10 +546,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--overrides", default="manifests/primitive-readiness-script-overrides.yaml")
     parser.add_argument("--protected-install-surfaces", default="manifests/primitive-readiness-protected-install-surfaces.yaml")
-    parser.add_argument("--json-out", default="docs/reports/primitive-readiness-ledger-scripts-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-readiness-ledger-scripts-latest.md")
-    parser.add_argument("--lifecycle-backlog-json-out", default="docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json")
-    parser.add_argument("--lifecycle-backlog-md-out", default="docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md")
+    parser.add_argument("--lifecycle-backlog-json-out", default="docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json")
+    parser.add_argument("--lifecycle-backlog-md-out", default="docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md")
     parser.add_argument("--fail-low-confidence", action="store_true", help="Exit non-zero when any row has low confidence")
     parser.add_argument("--fail-agentic-without-lifecycle", action="store_true", help="Exit non-zero when an agentic primitive lacks lifecycle metadata")
     return parser.parse_args()

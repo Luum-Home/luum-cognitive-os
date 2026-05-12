@@ -36,7 +36,7 @@ The architecture exists, but the developer journey is still too fragmented.
 | ID | Gap | Impact on SSR developer | Existing related primitive | Proposed fix | Priority |
 |---|---|---|---|---|---|
 | G1 | No single "which COS primitive answers my question?" router for meta/product/architecture questions. | User must know whether to invoke `product-answer`, `primitive-harvester`, `primitive-authoring`, `analyze-improvements`, or `primitive-usage-map`. | `skills/product-answer`, `skills/catalog-full`, `skills/primitive-usage-map` | Add a question-router skill/script that maps natural-language questions to skill, script, evidence docs, and safe claims. | P0 |
-| G2 | Docs explain the system by internal artifact family, not by developer jobs-to-be-done. | An SSR developer sees many ADRs but not the shortest safe path. | `docs/README.md`, `docs/adoption-tiers.md` | Add a "primitive enablement for developers" guide with examples: repeated request → skill; risky gate → hook; policy → rule; evidence question → product-answer. | P0 |
+| G2 | Docs explain the system by internal artifact family, not by developer jobs-to-be-done. | An SSR developer sees many ADRs but not the shortest safe path. | `docs/00-MOCs/entrypoints/README.md`, `docs/08-References/root/adoption-tiers.md` | Add a "primitive enablement for developers" guide with examples: repeated request → skill; risky gate → hook; policy → rule; evidence question → product-answer. | P0 |
 | G3 | Conversation-to-primitive is advisory and not routinely invoked when repeated intent appears in chat. | The system can classify primitive opportunities, but the user may need to ask explicitly. | `scripts/cos_primitive_harvester.py`, `skills/primitive-harvester` | Add a lightweight trigger/checklist in relevant answering skills and session wrap-up: "should this become a primitive?" with no auto-mutation. | P1 |
 | G4 | Governed self-improvement is documented but feels less automatic than Agent Zero/OpenClaw/Hermes. | Product promise may be misunderstood as autonomous mutation. | ADR-083, ADR-201, primitive fitness, `scripts/cos_governed_self_improvement.py` | Expose a plain-language self-improvement status answer: what is automatic, what is draft-only, what requires approval, and what is missing. | P0 |
 | G5 | Key Learnings capture is evidence, not behavior, and this boundary is easy to miss. | User may expect a chat learning to instantly change a skill. | `scripts/cos-key-learnings-capture`, key-learning docs | Surface "memory vs evidence vs promoted primitive" in product-answer and developer guide. | P1 |
@@ -92,10 +92,10 @@ The architecture exists, but the developer journey is still too fragmented.
 
 ### Add docs
 
-1. `docs/guides/primitive-enablement-for-developers.md` — friendly path for
+1. `docs/05-Methodology/guides/primitive-enablement-for-developers.md` — friendly path for
    SSR/senior developers.
-2. `docs/guides/which-primitive-should-i-use.md` — question-to-skill lookup.
-3. `docs/reports/primitive-enablement-gap-review-<date>.md` — periodic review of
+2. `docs/05-Methodology/guides/which-primitive-should-i-use.md` — question-to-skill lookup.
+3. `docs/06-Daily/reports/primitive-enablement-gap-review-<date>.md` — periodic review of
    this backlog.
 
 ### Add tests and gates
@@ -129,7 +129,7 @@ Avoid saying:
 
 1. Product answer can route the Spanish SSR primitive-enablement question to a
    dedicated evidence-backed answer.
-2. The gap backlog is linked from `docs/README.md`.
-3. The execution backlog is visible from `docs/business/master-plan-checklist.md`.
+2. The gap backlog is linked from `docs/00-MOCs/entrypoints/README.md`.
+3. The execution backlog is visible from `docs/08-References/business/master-plan-checklist.md`.
 4. The answer preserves the governed self-improvement boundary: detect/propose
    can be automatic; runtime mutation is gated.

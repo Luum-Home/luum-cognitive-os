@@ -112,11 +112,11 @@ ADR-187 (`ADR-187-surface-5-adoption-proof-contract.md`) **estableció el proof 
 La premisa "cero imports TUI, todo bash" del audit es **outdated**: el proof slice Go ya importa Bubble Tea (`cmd/cos/internal/tui/proof.go`). El bash `scripts/cos-tui` se mantiene como bridge legacy mientras Surface 5 nace en Go. **No hay gap abierto.**
 
 **Archivos consultados:**
-- `docs/adrs/ADR-187-surface-5-adoption-proof-contract.md`
-- `docs/adrs/ADR-192-surface-5-adopt-bubbletea.md`
-- `docs/adrs/ADR-195-surface-5-operable-tui-contract.md`
-- `docs/adrs/ADR-197-surface-5-operable-actions.md`
-- `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md` (526 líneas, 60+ repos auditados)
+- `docs/02-Decisions/adrs/ADR-187-surface-5-adoption-proof-contract.md`
+- `docs/02-Decisions/adrs/ADR-192-surface-5-adopt-bubbletea.md`
+- `docs/02-Decisions/adrs/ADR-195-surface-5-operable-tui-contract.md`
+- `docs/02-Decisions/adrs/ADR-197-surface-5-operable-actions.md`
+- `docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md` (526 líneas, 60+ repos auditados)
 - `cmd/cos/internal/tui/proof.go` (referenciado en ADR-192)
 
 **Referencia externa:** https://github.com/charmbracelet/bubbletea (MIT, 42k stars).

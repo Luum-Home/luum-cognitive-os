@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """audit_adrs.py — Validate ADR YAML frontmatter and implementation file existence.
 
-Walks docs/adrs/*.md, parses the YAML
+Walks docs/02-Decisions/adrs/*.md, parses the YAML
 frontmatter block (between leading --- delimiters), and reports:
 
   MISSING_FRONTMATTER      — ADR has no YAML frontmatter (warn only)
@@ -169,10 +169,10 @@ def _collect_adr_files() -> list[Path]:
 
     Deduplicates by ADR identity, not only numeric slot. This preserves
     legitimate suffixed follow-ups such as ADR-174b/ADR-174c while still letting
-    docs/adrs/ take precedence over deprecated redirect stubs with the same key.
+    docs/02-Decisions/adrs/ take precedence over deprecated redirect stubs with the same key.
     """
     by_key: dict[str | None, Path] = {}
-    # Process docs/adrs first so it takes precedence
+    # Process docs/02-Decisions/adrs first so it takes precedence
     for d in ADR_DIRS:
         if not d.exists():
             continue
@@ -182,7 +182,7 @@ def _collect_adr_files() -> list[Path]:
             key = _adr_record_key(p)
             if key is None:
                 continue
-            # Only insert if not yet seen (first dir wins = docs/adrs takes precedence)
+            # Only insert if not yet seen (first dir wins = docs/02-Decisions/adrs takes precedence)
             if key not in by_key:
                 by_key[key] = p
     return sorted(by_key.values(), key=_adr_sort_key)

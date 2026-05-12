@@ -1,1 +1,0 @@
-05-Methodology/root/rules-consolidation-plan.md

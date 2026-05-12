@@ -1,1 +1,0 @@
-09-Quality/root/stress-test-strategy.md

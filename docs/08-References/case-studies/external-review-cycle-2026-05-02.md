@@ -21,7 +21,7 @@ A senior/Solutions-Architect read of the repository was solicited explicitly. Th
 - ADR programme had volume but no demonstrated retirement discipline; lifecycle states were paper.
 - Recommendation: a `--minimal` tier and a hard threshold on default-visible primitives, or the surface would re-inflate within sprints.
 
-Captured at: [`docs/business/cos-vs-vanilla-dx-review.md`](../business/cos-vs-vanilla-dx-review.md), [`docs/reports/dx-assessment-2026-05-02.md`](../reports/dx-assessment-2026-05-02.md).
+Captured at: [`docs/08-References/business/cos-vs-vanilla-dx-review.md`](../business/cos-vs-vanilla-dx-review.md), [`docs/06-Daily/reports/dx-assessment-2026-05-02.md`](../reports/dx-assessment-2026-05-02.md).
 
 ### Step 2 — Strategic reframing (decision capture)
 
@@ -56,7 +56,7 @@ demotion_evidence:
 sunset_criteria: archive after 90 days with no opt-in use
 ```
 
-Proof artefact: [`docs/reports/lifecycle-demotion-task-completed-2026-05-03.md`](../reports/lifecycle-demotion-task-completed-2026-05-03.md). Implementation commit: `97307e34 feat: prove lifecycle demotion semantics`.
+Proof artefact: [`docs/06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md`](../reports/lifecycle-demotion-task-completed-2026-05-03.md). Implementation commit: `97307e34 feat: prove lifecycle demotion semantics`.
 
 The demotion is intentionally small. It exercises the semantics without asking for organisational courage. The next demotions are expected to be larger and ROI-driven.
 
@@ -127,13 +127,13 @@ over the governed path, the choice becomes evidence, not folklore.
 
 The "Protected landing" sub-cycle above documents *what happened*. Worth naming separately is *the structural property it demonstrates*: the system absorbed friction it produced **about itself, during its own documentation pass**, and converted that friction into a doctrine artefact within the same wall-clock.
 
-Concretely: the friction with `direct-main-guard.sh` happened during the documentation pass for this case study. Approximately 40 minutes after the recovery, commit `95239a50 fix: audit direct main bypasses` landed on `main` — hardening the guard by ~80 lines, adding unit tests for the bypass paths, and creating [`docs/architecture/direct-main-policy.md`](../architecture/direct-main-policy.md). The fix targets the exact failure mode the documentation pass surfaced.
+Concretely: the friction with `direct-main-guard.sh` happened during the documentation pass for this case study. Approximately 40 minutes after the recovery, commit `95239a50 fix: audit direct main bypasses` landed on `main` — hardening the guard by ~80 lines, adding unit tests for the bypass paths, and creating [`docs/04-Concepts/architecture/direct-main-policy.md`](../architecture/direct-main-policy.md). The fix targets the exact failure mode the documentation pass surfaced.
 
 The structural difference from the main external-review cycle: the main cycle absorbed an **external** input (a senior review). This sub-cycle absorbed an **internal** input (the cycle's own friction) and produced the same class of artefact — gate hardening, tests, policy doc — without an external trigger. **The cycle ate its own friction.**
 
 The implication for durability: a system that codifies its own internal friction has a feedback loop the external-review cycle does not have to keep providing. The first external cycle is a trigger; subsequent improvements can be self-triggered by the cost of running the system itself. The next operator hitting the same friction inherits the hardened gate, not the recovery procedure.
 
-For external adopters evaluating the doctrine, this turns into a **falsifiable claim**: if the doctrine is real, the system should consume its own friction over time, which means low long-term operational overhead from recurring failure modes. If after several months of use the same friction recurs *without* producing a hardening commit and a corresponding policy doc, the claim is wrong and the doctrine is not behaving as written. The micro-cycle documented above is the first data point; subsequent ones can be tracked by correlating dates of `docs/architecture/*-policy.md` additions against `git log --grep='^fix: audit'` entries on `main`.
+For external adopters evaluating the doctrine, this turns into a **falsifiable claim**: if the doctrine is real, the system should consume its own friction over time, which means low long-term operational overhead from recurring failure modes. If after several months of use the same friction recurs *without* producing a hardening commit and a corresponding policy doc, the claim is wrong and the doctrine is not behaving as written. The micro-cycle documented above is the first data point; subsequent ones can be tracked by correlating dates of `docs/04-Concepts/architecture/*-policy.md` additions against `git log --grep='^fix: audit'` entries on `main`.
 
 The naming matters because this property is what allows the system to scale without continuous external pressure. External review is what produced this case study. Internal friction-absorption is what will produce the next twenty improvements without a second external review being required.
 
@@ -158,7 +158,7 @@ After the cycle had absorbed external review (main cycle) and absorbed its own i
 The mechanism landed as two ADRs in sequence within minutes of each other:
 
 - [ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md) — `cos-self-improvement-loop` reads control-plane evidence and emits bounded **operational** proposals (gate refactors, configuration changes, scoped fixes). Propose-only mode, human approval required, sandboxed write paths, blocked actions list.
-- [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md) — `cos-doctrine-proposer` reads the same evidence and emits proposed **doctrine amendments** as markdown under `docs/proposals/`. Status `proposed`, `runtime_effect: none`. The system proposes new rules; it does not apply them.
+- [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md) — `cos-doctrine-proposer` reads the same evidence and emits proposed **doctrine amendments** as markdown under `docs/03-PoCs/proposals/`. Status `proposed`, `runtime_effect: none`. The system proposes new rules; it does not apply them.
 
 On first execution against the live audit data, the doctrine proposer generated **five concrete amendments**, each grounded in observation rather than speculation:
 
@@ -181,9 +181,9 @@ Each proposal is structured the same way other primitives in the system are stru
 
 The presence of `non_goals` in every proposal is the signal that the proposer is not naive: it knows what kind of over-correction the doctrine is meant to prevent and refuses to propose it. That property is what allows the system to propose changes to itself without becoming unsafe.
 
-The ceiling, named explicitly in ADR-135: *"This must not become autonomous policy mutation. Doctrine is governance surface."* All amendments land as markdown under `docs/proposals/` with `runtime_effect: none`. The next operator decides whether each one becomes part of the doctrine; the system does not promote its own proposals.
+The ceiling, named explicitly in ADR-135: *"This must not become autonomous policy mutation. Doctrine is governance surface."* All amendments land as markdown under `docs/03-PoCs/proposals/` with `runtime_effect: none`. The next operator decides whether each one becomes part of the doctrine; the system does not promote its own proposals.
 
-For external adopters, this turns into another **falsifiable claim**: if the doctrine proposer is real, subsequent runs against new audit data should produce new proposals when the data shifts (and stop producing existing proposals when their evidence is resolved). If after several months of evolving audit data the proposal set is static, the loop is broken. The first generation is the baseline; subsequent ones can be tracked by `git log docs/proposals/` and correlating timestamps with audit-event volume.
+For external adopters, this turns into another **falsifiable claim**: if the doctrine proposer is real, subsequent runs against new audit data should produce new proposals when the data shifts (and stop producing existing proposals when their evidence is resolved). If after several months of evolving audit data the proposal set is static, the loop is broken. The first generation is the baseline; subsequent ones can be tracked by `git log docs/03-PoCs/proposals/` and correlating timestamps with audit-event volume.
 
 The recursion now reaches four levels: external review → ADRs and enforcement → audit subsystem observing the system → audit subsystem proposing amendments to the rules that govern it. The fifth level — auto-application of approved amendments — is **deliberately not built**. That is the boundary between "self-improving under governed human review" and "autonomous self-modifying software". The product claim sits on the right side of that boundary by design.
 
@@ -266,7 +266,7 @@ The fourth refusal closes the most subtle attack vector — one that became visi
 
 The fix is structural. `manifests/external-adoption-evidence.yaml` codifies the schema of an admissible external-help claim: `independence.maintainer_owned: false`, `independence.same_machine: false`, `independence.same_repo: false`, `independence.self_reported: false`, plus a `provenance.producer` block carrying type, identity, optional signature, and timestamp. Evidence with any `independence` flag set to `true` is rejected as drill output, not as adoption signal. The system **refuses to validate itself with its own data**.
 
-The first drill report — [`docs/reports/cross-instance-consumer-e2e-2026-05-03.md`](../reports/cross-instance-consumer-e2e-2026-05-03.md) — applies that schema to its own output and explicitly disqualifies itself: *"This is a drill report, not external adoption evidence. The generated consumer evidence is maintainer-owned, same-machine, same-repo, and self-reported; it must not sign the helps-projects product claim."* The doctrine is applied to the doctrine's own first verification artefact.
+The first drill report — [`docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md`](../reports/cross-instance-consumer-e2e-2026-05-03.md) — applies that schema to its own output and explicitly disqualifies itself: *"This is a drill report, not external adoption evidence. The generated consumer evidence is maintainer-owned, same-machine, same-repo, and self-reported; it must not sign the helps-projects product claim."* The doctrine is applied to the doctrine's own first verification artefact.
 
 For external adopters, this is the falsifiable claim: a system that builds Shape B's runway should not also operate Shape B, and a system that runs drills should not also count drill output as adoption signal. If `cos-federation-trigger-audit` reports zero observed triggers and federation primitives are nonetheless executing in production, the discipline is broken. If the runway primitives never activate after triggers fire, the runway is decorative. If `manifests/external-adoption-evidence.yaml` accumulates entries with `maintainer_owned: true` *and* those entries are used to sign claims, the anti-self-validation is broken. The healthy state is **dormant runway with continuous trigger observability and zero self-signed adoption evidence**.
 

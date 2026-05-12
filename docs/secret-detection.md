@@ -1,1 +1,0 @@
-09-Quality/root/secret-detection.md

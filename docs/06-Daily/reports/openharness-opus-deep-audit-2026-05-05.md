@@ -4,7 +4,7 @@
 **Model**: opus (per user request for architectural-decision rigor)
 **Status**: read-only audit; no source modified outside this report.
 **Trigger**: prior sonnet audit + sonnet rebuttal both contained numerical errors and asymmetric depth. User asked: "tenemos que estar muy seguros".
-**Inputs**: `docs/reports/openharness-deep-audit-2026-05-05.md` and `docs/reports/cos-side-deep-rebuttal-2026-05-05.md` treated as hypotheses, not facts.
+**Inputs**: `docs/06-Daily/reports/openharness-deep-audit-2026-05-05.md` and `docs/06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md` treated as hypotheses, not facts.
 
 ---
 

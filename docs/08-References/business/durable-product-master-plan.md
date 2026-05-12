@@ -441,8 +441,8 @@ Deliverables (all in `main`):
 - consumers (Tier 2): ADR-225/231/233 — branch-per-task, MCP server (FastMCP, 8 tools), cross-session agent-team file-IPC
 - opt-in adapters (Tier 3): ADR-224/232/234/235/236 — shadow-state safety net, sandbox tiers (Bubblewrap/Seatbelt), policy-as-code, detached-agent daemon, deferred tool loading
 - substrate-consumer guardrail: `scripts/validate_substrate_consumers.py` (14/14 PASS on 2026-05-07)
-- public tracking: `docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`
-- second case study: `docs/business/case-study.md` §"Case Study 2"
+- public tracking: `docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`
+- second case study: `docs/08-References/business/case-study.md` §"Case Study 2"
 
 Posture: Phase 5 closed the orchestration coverage gap structurally, but T6 (perf budget multi-platform), T7 (chaos), T8 (cross-harness end-to-end), T9 (adoption truth re-run), T10 (audit invariants extension) are explicit hardening pendings. Phase 6 picks those up.
 

@@ -48,7 +48,7 @@ that high-risk smokes run in an isolated environment.
 
 OpenAI's local shell guide states that arbitrary shell commands are dangerous and
 that execution should be sandboxed or protected with strict allow/deny lists.
-Source: [OpenAI Local shell guide](https://developers.openai.com/api/docs/guides/tools-local-shell).
+Source: [OpenAI Local shell guide](https://developers.openai.com/api/docs/05-Methodology/guides/tools-local-shell).
 
 **Implication for COS:** `scripts/security-red-team` and
 `scripts/cos-credential-safe-run` are aligned with this guidance, but the rest of

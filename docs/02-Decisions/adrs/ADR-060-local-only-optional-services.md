@@ -64,7 +64,7 @@ require proprietary cloud to function are removed from the catalog.
 
 ### Operating Rule addendum (added to catalog)
 
-See `docs/architecture/infrastructure-service-catalog.md` §Operating Rule
+See `docs/04-Concepts/architecture/infrastructure-service-catalog.md` §Operating Rule
 (amended 2026-04-24): every new optional service must declare a pip
 OR Docker-with-local-backend supported path. Cloud-only services are
 rejected at the Necessity Gate.
@@ -127,8 +127,8 @@ MemU's `memu-pg` is rolled back by `docker compose down memu-pg && docker volume
 - ADR-027 — SO slimming (predecessor)
 - ADR-058 — Langfuse → Phoenix migration (immediate precedent for the pattern)
 - ADR-059 — Existential validation (the broader "is SO worth it" framing that produced this principle)
-- `docs/architecture/infrastructure-service-catalog.md` — Operating Rule + decision log (updated with this ADR)
-- `docs/architecture/observability-backend-evaluation-2026-04-24.md` — evaluation that confirmed Phoenix suffices
+- `docs/04-Concepts/architecture/infrastructure-service-catalog.md` — Operating Rule + decision log (updated with this ADR)
+- `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md` — evaluation that confirmed Phoenix suffices
 
 ## Open questions
 

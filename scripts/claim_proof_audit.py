@@ -76,7 +76,7 @@ def audit(root: Path) -> list[ClaimRow]:
                 or stripped.startswith("#")
                 or stripped.startswith("|")
                 or stripped.startswith("- No ")
-                or (rel.startswith("docs/adrs/") and len(stripped) < 120)
+                or (rel.startswith("docs/02-Decisions/adrs/") and len(stripped) < 120)
                 or "does not " in stripped.lower()
                 or "not called automatically" in stripped.lower()
                 or "blocked-by:" in stripped.lower()
@@ -131,8 +131,8 @@ def write_markdown(rows: list[ClaimRow], path: Path) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit product claims against proof corpus")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--json-out", default="docs/reports/claim-proof-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/claim-proof-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/claim-proof-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/claim-proof-latest.md")
     parser.add_argument("--fail-unmapped", action="store_true", help="Exit non-zero when any strong claim has no proof signal")
     return parser.parse_args()
 

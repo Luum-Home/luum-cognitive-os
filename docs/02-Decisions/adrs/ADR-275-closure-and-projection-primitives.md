@@ -20,7 +20,7 @@ implementation_files:
 - scripts/cos-pending-truth-close
 - tests/red_team/portability/test_cos-session-start-projector.py
 - tests/red_team/portability/test_cos-pending-truth-close.py
-- docs/runbooks/adr-275-session-start-hook-staging/
+- docs/05-Methodology/runbooks/adr-275-session-start-hook-staging/
 tier: maintainer
 tags:
 - pending-truth
@@ -73,7 +73,7 @@ protocol.md` displays:
 It does NOT surface:
 - The 279 ledger items (or their top-N most-actionable)
 - The 55 P0 operational-guide backfills
-- Staging dirs awaiting operator deploy (`docs/runbooks/*-staging/`)
+- Staging dirs awaiting operator deploy (`docs/05-Methodology/runbooks/*-staging/`)
 - The current session branch's commits-ahead state
 
 So an agent or operator who joins cold has to discover the queue manually,
@@ -113,10 +113,10 @@ contract) instead of two single-instance fixes.
 `scripts/cos-session-start-projector` reads — in a single pass, cached
 for 60s to avoid hammering on rapid re-runs:
 
-- `docs/reports/pending-truth-latest.json`
-- `docs/reports/operational-guide-audit-latest.json`
+- `docs/06-Daily/reports/pending-truth-latest.json`
+- `docs/06-Daily/reports/operational-guide-audit-latest.json`
 - `.cognitive-os/tasks/control-plane-remediation.jsonl`
-- `docs/runbooks/*-staging/` directory listing
+- `docs/05-Methodology/runbooks/*-staging/` directory listing
 - `git status --porcelain` + `git log --oneline @{u}..HEAD`
 
 Emits a single human-readable summary block AND a machine-readable JSON
@@ -141,7 +141,7 @@ suggested_next_actions:  # ranked, ≤ 5
 
 `suggested_next_actions` synthesises the cheapest unblocking moves across
 all sources (e.g., "deploy 3 staged hooks under
-`docs/runbooks/adr-273-slice-c-staging/`" outranks "backfill ADR-X" if
+`docs/05-Methodology/runbooks/adr-273-slice-c-staging/`" outranks "backfill ADR-X" if
 deploying unblocks future hook firings).
 
 ### 2. Close primitive (Slice A, this ADR)
@@ -188,7 +188,7 @@ without going through the close primitive are LOW. The `closure-trail.jsonl`
 becomes the audit of who closed what with which proof — visible at
 session-start via the projector.
 
-### 4. Hook wiring (Slice B, staged in `docs/runbooks/adr-275-session-start-hook-staging/`)
+### 4. Hook wiring (Slice B, staged in `docs/05-Methodology/runbooks/adr-275-session-start-hook-staging/`)
 
 The projector is invoked from `SessionStart` across all three harnesses
 per ADR-008:
@@ -230,7 +230,7 @@ from this ADR forward.
 |---|---|---|
 | "What's the most actionable thing right now?" | discover manually | `cos-session-start-projector` top-N |
 | "Did this item get closed legitimately?" | trust the editor | check `closure-trail.jsonl` for proof |
-| "Are there hooks staged that I should deploy?" | grep `docs/runbooks/*-staging/` | listed in projection summary |
+| "Are there hooks staged that I should deploy?" | grep `docs/05-Methodology/runbooks/*-staging/` | listed in projection summary |
 | "Is this branch ahead of upstream?" | `git status` manually | shown at session start |
 
 Does NOT answer:
@@ -275,7 +275,7 @@ If you encounter ADR-275 cold:
 3. Inspect a recent entry in `.cognitive-os/audit/closure-trail.jsonl`
    to see what a real closure looks like.
 4. The hook wiring across the 3 harnesses lives in
-   `docs/runbooks/adr-275-session-start-hook-staging/`; if SessionStart
+   `docs/05-Methodology/runbooks/adr-275-session-start-hook-staging/`; if SessionStart
    isn't firing the projector, the patch wasn't deployed yet.
 5. The projector is read-only (no mutation), so running it is always
    safe; the close primitive mutates and writes to the closure trail,
@@ -315,14 +315,14 @@ If you encounter ADR-275 cold:
 python3 scripts/cos-session-start-projector --json | python3 -c "import json,sys; d=json.load(sys.stdin); assert d['schema_version']=='session-start-projection/v1'; print('OK projector schema')"
 
 # Slice A — close primitive (dry-run on a known ledger item)
-python3 scripts/cos-pending-truth-close --id <existing-id> --proof docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md --dry-run
+python3 scripts/cos-pending-truth-close --id <existing-id> --proof docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md --dry-run
 
 # Portability proofs
 python3 -m pytest tests/red_team/portability/test_cos-session-start-projector.py -q
 python3 -m pytest tests/red_team/portability/test_cos-pending-truth-close.py -q
 
 # Slice B (operator) — apply hook patch
-ls docs/runbooks/adr-275-session-start-hook-staging/
+ls docs/05-Methodology/runbooks/adr-275-session-start-hook-staging/
 ```
 
 ## Follow-ups
@@ -350,15 +350,15 @@ ls docs/runbooks/adr-275-session-start-hook-staging/
   - `scripts/cos-adr-partial-ledger` — partial/blocked/deferred ADR
     backlog ledger; the ADR-decision analogue of
     `cos-pending-truth-aggregator`. Emits
-    `docs/reports/adr-partial-backlog-latest.{json,md}` which the
+    `docs/06-Daily/reports/adr-partial-backlog-latest.{json,md}` which the
     `cos-session-start-projector` reads as the `adr_partials` section
     of its summary.
   - `scripts/cos-adr-partial-audit` — control-plane audit emitting
     findings into the `adr-partial-lifecycle` audit ID (registered in
     `manifests/control-plane-audits.yaml` hourly + pre-public lanes).
-  - `docs/adrs/STATUS-TAXONOMY.md` — canonical status vocabulary both
+  - `docs/02-Decisions/adrs/STATUS-TAXONOMY.md` — canonical status vocabulary both
     primitives consume.
-- **`docs/architecture/pending-truth-architecture.md`** — 4-layer
+- **`docs/04-Concepts/architecture/pending-truth-architecture.md`** — 4-layer
   architectural map (Obtain / Project / Close / Prevent Drift) that
   unifies both halves into one cold-readable diagram.
 - ADR-008 — multi-tool support / cross-harness portability (the hook

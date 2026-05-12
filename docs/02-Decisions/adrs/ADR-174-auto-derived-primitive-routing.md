@@ -137,7 +137,7 @@ proving that the ADR-174 proof-of-concept skills are actually loaded from
 
 ```
 # 1. ADR document exists and is accepted
-ls docs/adrs/ADR-174-auto-derived-primitive-routing.md
+ls docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md
 
 # 2. Implementation
 python3 -c "from lib.skill_router import _load_routing_from_frontmatter; print('OK')"
@@ -254,7 +254,7 @@ Measurement: `scripts/dogfood_score.py` dimension `skill_coverage`.
 
 ## Cross-References
 
-- **Profile-aware routing note**: `docs/architecture/profile-aware-skill-routing.md` documents the profile-scoped router index, service cache invalidation, and lazy catalog contracts added after this ADR.
+- **Profile-aware routing note**: `docs/04-Concepts/architecture/profile-aware-skill-routing.md` documents the profile-scoped router index, service cache invalidation, and lazy catalog contracts added after this ADR.
 
 - **ADR-133**: Auto-skill-generation — same "declare in artifact, derive at
   runtime" pattern applied to skill creation.
@@ -274,7 +274,7 @@ Measurement: `scripts/dogfood_score.py` dimension `skill_coverage`.
   warns when new skill content lacks `routing_patterns:`.
 - **manifests/skill-routing-coverage.yaml**: Machine-readable baseline,
   meta-command exceptions, and unrouted skill backlog.
-- **docs/reports/skill-router-primitive-routing-postmortem-2026-05-05.md**:
+- **docs/06-Daily/reports/skill-router-primitive-routing-postmortem-2026-05-05.md**:
   Investigation that separates global router coverage from profile-specific
   primitive projection.
 

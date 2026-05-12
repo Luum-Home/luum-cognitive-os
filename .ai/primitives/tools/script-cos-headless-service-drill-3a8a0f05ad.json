@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-headless-service-drill",
         "docker/cos-worker/docker-compose.yml",
-        "docs/manual-tests/headless-docker-service-runtime.md"
+        "docs/09-Quality/manual-tests/headless-docker-service-runtime.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
       "projection_targets": [
         "scripts/cos-headless-service-drill",
         "docker/cos-worker/docker-compose.yml",
-        "docs/manual-tests/headless-docker-service-runtime.md"
+        "docs/09-Quality/manual-tests/headless-docker-service-runtime.md"
       ],
       "runtime_projection": false
     }
@@ -166,7 +166,7 @@
   "projection_targets": [
     "scripts/cos-headless-service-drill",
     "docker/cos-worker/docker-compose.yml",
-    "docs/manual-tests/headless-docker-service-runtime.md"
+    "docs/09-Quality/manual-tests/headless-docker-service-runtime.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-headless-service-drill",

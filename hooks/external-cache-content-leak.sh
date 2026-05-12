@@ -117,5 +117,5 @@ echo "     Review manifests/verbatim-detection-baseline.yaml, then commit both."
 echo "  3. Emergency bypass (audit-logged):" >&2
 echo "       COS_ALLOW_VERBATIM_LEAK=1 git commit ..." >&2
 echo "" >&2
-echo "Reference: docs/adrs/ADR-267-*.md §Layer 1 Hook #2" >&2
+echo "Reference: docs/02-Decisions/adrs/ADR-267-*.md §Layer 1 Hook #2" >&2
 exit 1

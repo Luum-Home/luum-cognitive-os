@@ -69,7 +69,7 @@ def test_cos_codex_exec_model_is_public_provider_smoke_contract() -> None:
     assert flag["bypasses_safety_primitive"] is False
     assert "scripts/cos_service_control_plane.py" in flag["owner_files"]
     assert "scripts/cos-headless-service-drill" in flag["owner_files"]
-    assert "docs/manual-tests/headless-docker-service-runtime.md" in flag["documentation"]
+    assert "docs/09-Quality/manual-tests/headless-docker-service-runtime.md" in flag["documentation"]
 
 
 def test_runtime_env_flags_doc_links_manifest_and_cos_skip_dotenv() -> None:

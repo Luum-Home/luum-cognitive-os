@@ -19,7 +19,7 @@ import cos_adoption_profile
 TOKEN_DIVISOR = 4
 BUDGETS = {"core": 3200, "team": 5000, "maintainer": 8000, "lab": 20000}
 PROFILE_RULE_FILES = {
-    "core": ["AGENTS.md", "docs/architecture/core-adoption-preamble.md"],
+    "core": ["AGENTS.md", "docs/04-Concepts/architecture/core-adoption-preamble.md"],
     "team": ["AGENTS.md", "rules/RULES-COMPACT.md"],
     "maintainer": ["AGENTS.md", "rules/RULES-COMPACT.md", "cognitive-os.yaml"],
     "lab": ["AGENTS.md", "rules/RULES-COMPACT.md", "cognitive-os.yaml"],

@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:42 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (HTTP normalization across 6+ agent CLIs; ADR-033 fit)
 deep_verdict: ADOPT — clean Go HTTP API normalizer with comprehensive harness testdata
 deepwiki_url: https://deepwiki.com/coder/agentapi

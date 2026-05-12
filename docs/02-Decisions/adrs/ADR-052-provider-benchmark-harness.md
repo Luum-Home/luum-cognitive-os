@@ -5,7 +5,7 @@ title: Provider Benchmark Harness
 status: implemented
 implementation_status: implemented
 implementation_files:
-  - docs/benchmarks/provider-quality-smoke.yaml
+  - docs/08-References/benchmarks/provider-quality-smoke.yaml
   - scripts/benchmark-providers
   - scripts/benchmark_providers.py
   - tests/unit/test_provider_benchmark_and_optimizer.py
@@ -50,7 +50,7 @@ providers on real tasks.
 
 ```bash
 python3 scripts/benchmark_providers.py \
-  --task-set docs/benchmarks/provider-quality-smoke.yaml \
+  --task-set docs/08-References/benchmarks/provider-quality-smoke.yaml \
   --providers qwen,claude \
   --runs 3 \
   --judge claude   # use Claude to rate Qwen's outputs (LLM-as-judge)
@@ -61,10 +61,10 @@ Output: per-provider quality score, cost, latency, and per-task details as JSON;
 ### Task sets
 
 Curated YAML files per skill category can extend the shipped smoke set:
-- `docs/benchmarks/provider-quality-smoke.yaml` — architectural reasoning
-- `docs/benchmarks/code-implementation-tasks.yaml` — write function X
-- `docs/benchmarks/classification-tasks.yaml` — tag/label prompts
-- `docs/benchmarks/summarization-tasks.yaml` — compress N lines
+- `docs/08-References/benchmarks/provider-quality-smoke.yaml` — architectural reasoning
+- `docs/08-References/benchmarks/code-implementation-tasks.yaml` — write function X
+- `docs/08-References/benchmarks/classification-tasks.yaml` — tag/label prompts
+- `docs/08-References/benchmarks/summarization-tasks.yaml` — compress N lines
 
 Each task has: prompt, expected-properties (checklist the judge verifies),
 ground truth (optional for automated eval).
@@ -137,7 +137,7 @@ Use the shipped benchmark harness as the no-cost quality smoke before trusting p
 
 ### Daily operational pattern
 
-1. Add or update task-set YAML under `docs/benchmarks/` when a provider-quality question becomes repeatable.
+1. Add or update task-set YAML under `docs/08-References/benchmarks/` when a provider-quality question becomes repeatable.
 2. Run `scripts/benchmark-providers` or `python3 scripts/benchmark_providers.py` against the smoke task set for a local baseline.
 3. Treat JSON/JSONL output as evidence for ADR-053 routing proposals, not as an automatic dispatch change.
 4. If enabling real providers or judge scoring, record the run context and cost because that mode is outside the no-cost contract.
@@ -148,7 +148,7 @@ If benchmark output conflicts with anecdotal session quality, prefer reproducibl
 
 ### Reading guide for cold readers
 
-Start with `docs/benchmarks/provider-quality-smoke.yaml`, then inspect `scripts/benchmark_providers.py` and `tests/unit/test_provider_benchmark_and_optimizer.py`. The ADR is implemented for deterministic offline evidence; curated task expansion, live adapters, and subjective judge rotation remain future operational work.
+Start with `docs/08-References/benchmarks/provider-quality-smoke.yaml`, then inspect `scripts/benchmark_providers.py` and `tests/unit/test_provider_benchmark_and_optimizer.py`. The ADR is implemented for deterministic offline evidence; curated task expansion, live adapters, and subjective judge rotation remain future operational work.
 
 ## Related
 
@@ -157,7 +157,7 @@ Start with `docs/benchmarks/provider-quality-smoke.yaml`, then inspect `scripts/
 - ADR-051 — agent loop (tool-use tasks need it)
 - ADR-053 — auto-optimizer (the ultimate consumer)
 - `lib/dispatch.py` — instrumented; benchmark reuses metrics schema
-- `docs/benchmarks/provider-quality-smoke.yaml` — shipped smoke task set
+- `docs/08-References/benchmarks/provider-quality-smoke.yaml` — shipped smoke task set
 
 ## Open questions
 

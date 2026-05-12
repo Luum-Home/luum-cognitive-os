@@ -1,6 +1,6 @@
 # Cognitive OS — test + dev targets
 # All python invocations go through `uv run` so UV-managed deps
-# (fastmcp, openai SDK, etc.) are visible. See docs/reports/next-session-handoff-2026-04-20.md.
+# (fastmcp, openai SDK, etc.) are visible. See docs/06-Daily/reports/next-session-handoff-2026-04-20.md.
 #
 # DEPRECATION NOTICE (ADR-072): The test-fast, test-unit, test-all, test-no-docker-shard-a,
 # and test-no-docker-shard-b targets are deprecated in favour of `cos-test`.

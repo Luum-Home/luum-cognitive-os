@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:58 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (Agent/MCP/skill-specific security scanner; clean delta vs Aguara)
 deep_verdict: ADOPT — Snyk-backed, CI-perfect, skill-aware security scanning is a clean delta vs Aguara
 deepwiki_url: https://deepwiki.com/snyk/agent-scan

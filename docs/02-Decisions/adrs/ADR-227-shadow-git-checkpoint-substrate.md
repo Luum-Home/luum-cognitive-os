@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted — Slices A–F implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-223 (agent lifecycle reconstruction — reserved), ADR-224 (shadow-state snapshots — reserved); depends on ADR-226 (event-sourced session bus)
-**Source**: [`docs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Hermes, Kilo.ai, and `git-shadow` independently converged on the same primitive: a bare git repo *outside* the project, `git write-tree` after every tool call, tree SHA stored alongside conversation context. No hypervisor, no cloud, no service.
+**Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Hermes, Kilo.ai, and `git-shadow` independently converged on the same primitive: a bare git repo *outside* the project, `git write-tree` after every tool call, tree SHA stored alongside conversation context. No hypervisor, no cloud, no service.
 
 ---
 
@@ -213,7 +213,7 @@ The tests must prove:
 4. **Slice D — Conversation-only and atomic combined modes** (~40 LOC). Calls into ADR-226's `truncate_session(seq)`. Restore lock. Tests T2+T7.
 5. **Slice E — `cos rollback` CLI** (~60 LOC). Diff preview, interactive confirmation, `--yes` flag, refusal paths. Tests T3+T4.
 6. **Slice F — Event-envelope wiring** (~30 LOC). PostToolUse hook captures `file_tree_sha`; governance event producers (blast-radius, policy-check, audit) auto-populate. Tests T2.
-7. **Slice G — Operator runbook** at `docs/runbooks/shadow-git-rollback.md`. Three canonical recipes; troubleshooting for "I rolled back but the conversation didn't" → mode=conversation_only.
+7. **Slice G — Operator runbook** at `docs/05-Methodology/runbooks/shadow-git-rollback.md`. Three canonical recipes; troubleshooting for "I rolled back but the conversation didn't" → mode=conversation_only.
 
 Total: ~290 LOC.
 

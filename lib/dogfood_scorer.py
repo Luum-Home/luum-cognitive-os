@@ -312,9 +312,9 @@ class DogfoodScorer:
         either a test file OR a skill file. Rejected/Superseded ADRs are
         excluded from the denominator.
         """
-        adr_dir = self.repo / "docs/adrs"
+        adr_dir = self.repo / "docs/02-Decisions/adrs"
         if not adr_dir.is_dir():
-            return None, "docs/adrs/ missing"
+            return None, "docs/02-Decisions/adrs/ missing"
         adrs = sorted(adr_dir.glob("ADR-*.md"))
         if not adrs:
             return None, "no ADRs found"
@@ -449,10 +449,10 @@ class DogfoodScorer:
         (a) fraction of ADRs that reference only files which still exist,
         (b) fraction of plans/features/*.md whose mtime is within 90 days.
         """
-        adr_dir = self.repo / "docs/adrs"
+        adr_dir = self.repo / "docs/02-Decisions/adrs"
         plans_dir = self.repo / ".cognitive-os/plans/features"
         if not adr_dir.is_dir() and not plans_dir.is_dir():
-            return None, "no docs/adrs nor plans/features"
+            return None, "no docs/02-Decisions/adrs nor plans/features"
 
         # (a) ADR file-reference health. A ref resolves if the path exists OR
         # its basename appears anywhere under hooks/, scripts/, lib/, rules/,
@@ -521,7 +521,7 @@ class DogfoodScorer:
     def _score_primitive_observability(self) -> tuple[Optional[float], str]:
         """Measure whether primitive architecture is observable, not just documented."""
         contracts_path = self.repo / "manifests/primitive-contracts.yaml"
-        projection_path = self.repo / "docs/reports/primitive-projection-fidelity-latest.json"
+        projection_path = self.repo / "docs/06-Daily/reports/primitive-projection-fidelity-latest.json"
         intervention_path = self.repo / ".cognitive-os/metrics/primitive-interventions.jsonl"
         itinerary_path = self.repo / ".cognitive-os/metrics/codebase-itinerary.jsonl"
         if not contracts_path.exists():

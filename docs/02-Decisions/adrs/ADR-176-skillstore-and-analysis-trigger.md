@@ -29,7 +29,7 @@ Accepted.
 
 ### OpenSpace Opus Audit Verdict
 
-The `docs/reports/openspace-opus-deep-audit-2026-05-05.md` Opus-level audit of
+The `docs/06-Daily/reports/openspace-opus-deep-audit-2026-05-05.md` Opus-level audit of
 `github.com/HKUDS/OpenSpace` @ commit `d1e367d0ed4722d67f1f3b95d816ba4a959288d2`
 identified **two HIGH-confidence adoptions** from a pattern-only verdict:
 
@@ -101,7 +101,7 @@ When an Agent tool completes:
 3. If the execution meets the "candidate for evolution" heuristic (3+ tool issues
    OR `status=error` AND `duration_ms > 30000`):
    - Write a **propose-only** artifact to
-     `docs/reports/skill-analysis-proposals/<YYYY-MM-DD>/<skill_name>.md`.
+     `docs/06-Daily/reports/skill-analysis-proposals/<YYYY-MM-DD>/<skill_name>.md`.
    - The artifact contains observations and suggested changes but **never modifies**
      the live `SKILL.md`.
    - The discipline gate is enforced: the hook has no write path to `packages/*/SKILL.md`
@@ -135,7 +135,7 @@ OpenSpace schema source:
    of `skill_lineage_parents` and returns a list of `(skill_id, depth)` tuples.
 4. Hook fires within 200ms on a synthetic `PostToolUse` JSON payload.
 5. When `candidate_for_evolution=1` is set, a proposal file appears in
-   `docs/reports/skill-analysis-proposals/` and **no** `SKILL.md` is modified.
+   `docs/06-Daily/reports/skill-analysis-proposals/` and **no** `SKILL.md` is modified.
 6. Migration script reports record counts and exits 0 with `--dry-run`.
 
 ## Border Cases
@@ -173,24 +173,24 @@ After this ADR:
 |---|---|---|
 | Skill execution storage | Flat JSONL, O(n) grep | SQLite at `.cognitive-os/skill_store.db` with indexed queries and JOIN support |
 | Post-execution analysis | Periodic manual audit | `hooks/skill-post-execution-analysis.sh` fires on every `PostToolUse Agent` completion |
-| Skill evolution proposals | None | Propose-only artifacts at `docs/reports/skill-analysis-proposals/<date>/<skill>.md` when heuristic fires |
+| Skill evolution proposals | None | Propose-only artifacts at `docs/06-Daily/reports/skill-analysis-proposals/<date>/<skill>.md` when heuristic fires |
 | Live skill rewrites | No guard | Structurally impossible from the hook — no write path exists to `packages/*/SKILL.md` |
 
 ### What this answers (and what it doesn't)
 
 **Answers:**
 - "Which skills have the highest error rates?" — `SkillStore.query_lineage()` and the `execution_analyses` table; standard SQL queries on `.cognitive-os/skill_store.db`.
-- "Is there a proposal to improve skill X today?" — Check `docs/reports/skill-analysis-proposals/<today>/`.
+- "Is there a proposal to improve skill X today?" — Check `docs/06-Daily/reports/skill-analysis-proposals/<today>/`.
 - "Was a skill rewrite proposed or auto-applied?" — Only proposals exist; the discipline gate makes auto-apply structurally impossible. Check `tests/integration/test_skill_post_execution_hook.py::test_discipline_gate_blocks_live_write`.
 
 **Does not answer:**
-- "Should I accept a skill improvement proposal?" — The operator reads proposals in `docs/reports/skill-analysis-proposals/` and applies them manually; this ADR does not automate acceptance.
+- "Should I accept a skill improvement proposal?" — The operator reads proposals in `docs/06-Daily/reports/skill-analysis-proposals/` and applies them manually; this ADR does not automate acceptance.
 - "What the OpenSpace evolver or analyzer logic does" — Those were explicitly rejected. The schema was adopted, not the behavior.
 
 ### Daily operational pattern
 
 1. Skill execution data flows automatically via the hook — no operator action needed during normal operation.
-2. When a proposal appears in `docs/reports/skill-analysis-proposals/`: read it, evaluate the suggested changes, apply manually to the relevant `SKILL.md` if appropriate.
+2. When a proposal appears in `docs/06-Daily/reports/skill-analysis-proposals/`: read it, evaluate the suggested changes, apply manually to the relevant `SKILL.md` if appropriate.
 3. To migrate historical data: `python3 scripts/migrate_skill_archive_to_store.py --dry-run` then `--apply`.
 4. To disable the hook temporarily: set `DISABLE_HOOK_SKILL_POST_EXECUTION_ANALYSIS=1`.
 
@@ -199,7 +199,7 @@ The hook is async (`"async": true`) — it never blocks the main session.
 ### Reading guide for cold readers
 
 1. The schema origin is `openspace/skill_engine/store.py` at commit `d1e367d0ed4722d67f1f3b95d816ba4a959288d2`, lines 80–166. The COS port is `lib/skill_store.py`. The key adaption: `analyzed_by` maps to model-name instead of user-id.
-2. The **propose-only discipline gate** is the critical constraint: the hook can write to `docs/reports/skill-analysis-proposals/` but has zero write access to `packages/*/SKILL.md` or `.claude/skills/`. This is enforced by absence of the write path, not by a runtime check.
+2. The **propose-only discipline gate** is the critical constraint: the hook can write to `docs/06-Daily/reports/skill-analysis-proposals/` but has zero write access to `packages/*/SKILL.md` or `.claude/skills/`. This is enforced by absence of the write path, not by a runtime check.
 3. `.cognitive-os/skill_store.db` must be in `.gitignore` — it is a binary runtime artifact.
 4. `tests/contracts/test_promotion_propose_only.py` (from ADR-180) provides the invariant test that the proposer never modifies live manifests.
 
@@ -226,7 +226,7 @@ The hook is async (`"async": true`) — it never blocks the main session.
 
 - [ADR-133](ADR-133-expansion-without-monsterization.md) — expansion-without-monsterization
 - [ADR-134](ADR-134-headless-self-improvement-proposer.md) — propose-only doctrine + discipline gate
-- `docs/reports/openspace-opus-deep-audit-2026-05-05.md` — source audit, §5 Observability + §1 Loop architecture
+- `docs/06-Daily/reports/openspace-opus-deep-audit-2026-05-05.md` — source audit, §5 Observability + §1 Loop architecture
 
 ## Migration Plan
 

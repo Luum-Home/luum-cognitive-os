@@ -3,7 +3,7 @@
 **Status**: Research — no code changes
 **Date**: 2026-05-06
 **Scope**: Event sourcing patterns for agent orchestrators; COS gap analysis relative to field state
-**Companion**: `docs/research/orchestration-coverage-gap-analysis-2026-05-06.md` — identifies streaming/replay as a partial-coverage gap
+**Companion**: `docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md` — identifies streaming/replay as a partial-coverage gap
 
 ---
 
@@ -181,7 +181,7 @@ The following table maps the pattern landscape to implementations and their appl
 
 ## 4. Deterministic Replay Implications for COS
 
-The orchestration coverage gap analysis (`docs/research/orchestration-coverage-gap-analysis-2026-05-06.md`) identifies "replay timeline + restore-by-checkpoint" as a critical gap: "Engram captures memory; nothing for 'rewind and re-execute'."
+The orchestration coverage gap analysis (`docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md`) identifies "replay timeline + restore-by-checkpoint" as a critical gap: "Engram captures memory; nothing for 'rewind and re-execute'."
 
 Event sourcing is the enabling primitive for replay. Without it, replay requires:
 - A full filesystem snapshot (Devin's VM hypervisor snapshots)

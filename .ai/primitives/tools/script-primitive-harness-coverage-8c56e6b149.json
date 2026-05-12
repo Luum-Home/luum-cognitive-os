@@ -56,8 +56,8 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/reports/primitive-harness-coverage-latest.json",
-        "docs/reports/primitive-harness-coverage-latest.md"
+        "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "docs/06-Daily/reports/primitive-harness-coverage-latest.md"
       ],
       "runtime_projection": false
     }
@@ -153,16 +153,16 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/reports/primitive-harness-coverage-latest.json",
-        "docs/reports/primitive-harness-coverage-latest.md"
+        "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "docs/06-Daily/reports/primitive-harness-coverage-latest.md"
       ],
       "runtime_projection": false
     }
   },
   "portable_id": "script-primitive-harness-coverage",
   "projection_targets": [
-    "docs/reports/primitive-harness-coverage-latest.json",
-    "docs/reports/primitive-harness-coverage-latest.md"
+    "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+    "docs/06-Daily/reports/primitive-harness-coverage-latest.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/primitive_harness_coverage.py",

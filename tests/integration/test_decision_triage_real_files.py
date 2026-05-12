@@ -2,7 +2,7 @@
 
 Real-file integration tests for scripts/decision_triage.py.
 
-Runs against actual docs/reports/*.md and docs/adrs/ADR-*.md.
+Runs against actual docs/06-Daily/reports/*.md and docs/02-Decisions/adrs/ADR-*.md.
 MUST NOT modify any source files.
 
 Moved from tests/unit/test_decision_triage.py (TestRealFilesIntegration class).
@@ -29,7 +29,7 @@ pytestmark = pytest.mark.integration
 @pytest.mark.integration
 @pytest.mark.timeout(300)
 class TestRealFilesIntegration:
-    """Runs against actual docs/reports/*.md and docs/adrs/ADR-*.md.
+    """Runs against actual docs/06-Daily/reports/*.md and docs/02-Decisions/adrs/ADR-*.md.
     MUST NOT modify any source files.
     """
 

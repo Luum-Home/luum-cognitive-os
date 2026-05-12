@@ -17,8 +17,8 @@ from pathlib import Path
 from typing import Iterable
 
 PROTECTED_PREFIXES = (
-    "docs/research/",
-    "docs/reports/",
+    "docs/03-PoCs/research/",
+    "docs/06-Daily/reports/",
     "plans/",
     ".cognitive-os/plans/",
 )

@@ -39,7 +39,7 @@ Result: **2 commits**, **30 engram decisions closed**, **5 install-timing baseli
 These exist on disk under `.cognitive-os/` but are not version-controlled:
 
 - `.cognitive-os/metrics/install-timing.jsonl` — 5 baseline records, mean 38.8s / p95 43s (budget 300s, 257s headroom).
-- `docs/reports/install-timing-baseline-2026-05-01.md` — narrative baseline document.
+- `docs/06-Daily/reports/install-timing-baseline-2026-05-01.md` — narrative baseline document.
 - `.cognitive-os/reports/punch-list-{hooks,skills,lib,rules}.md` — 59 ASPIRATIONAL hooks, 10 skills, 1 DORMANT lib (jupyter_client), 0 rules.
 - `.cognitive-os/reports/prune-baseline.json` — today's audit baseline (`dormant_aspirational_ratio=0.3521`, ASPIRATIONAL=58 — drifted from the plan's April 24 figures of 0.381 / 71).
 - `.cognitive-os/plans/features/so-existential-validation-2026-04-24.md` — 9 checkboxes ticked total (6 from Phase 1 commit, 3 more from batch 2).
@@ -75,7 +75,7 @@ Sub-agent fan-out (initially the leading hypothesis from the SRE agent's RCA) wa
 - `tests/integration/test_settings_atomic_write.py` — 8 tests including a structural invariant on the `mktemp` template, a codebase audit scanning for other unsafe `mktemp`+`mv` patterns (currently 0 hits), and a stress test with a concurrent reader thread.
 - `tests/integration/test_profile_drift_autoapply_flock.py` — 5 tests including 5-worker concurrent invocation asserting exactly-1-apply AND non-blocking lock (wall time < 4s).
 
-All 13 tests pass. Full postmortem: [`docs/incidents/2026-05-01-session-multi-spawn-hang.md`](incidents/2026-05-01-session-multi-spawn-hang.md).
+All 13 tests pass. Full postmortem: [`docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md`](incidents/2026-05-01-session-multi-spawn-hang.md).
 
 **Operator workaround** (only needed if your local checkout is pre-fix):
 
@@ -96,7 +96,7 @@ export COS_DISABLE_PROFILE_AUTOAPPLY=1
 
 **Cross-references**:
 - Engram: `incident/2026-05-01-session-3-spawn-hang`.
-- Postmortem: `docs/incidents/2026-05-01-session-multi-spawn-hang.md`.
+- Postmortem: `docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md`.
 - ADR-071 §F8 (profile-drift-autoapply), ADR-064 (multi-harness / Codex adapter), ADR-088 (provenance marker for concurrent session tracing).
 
 ## Pending — not blockers

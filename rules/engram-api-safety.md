@@ -105,5 +105,5 @@ curl -X DELETE http://127.0.0.1:7437/observations/1
 
 - `lib/engram_http_client.py` — the only approved production client for PATCH
 - `lib/engram_lifecycle.py` — uses `engram_http_client.update_observation()` in `reinforce()`
-- `docs/adrs/ADR-071-engram-lifecycle-evolution.md` — addendum 2026-04-27 documents the incident
+- `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` — addendum 2026-04-27 documents the incident
 - `rules/credential-management.md` — related data-protection conventions

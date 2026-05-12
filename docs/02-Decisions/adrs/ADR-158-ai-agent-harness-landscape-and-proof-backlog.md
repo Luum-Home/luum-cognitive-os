@@ -9,10 +9,10 @@ supersedes: []
 superseded_by: null
 implementation_files:
   - manifests/ai-agent-harness-landscape.yaml
-  - docs/reports/ai-agent-harness-landscape-2026-05-04.md
-  - docs/ide-compatibility.md
+  - docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md
+  - docs/04-Concepts/root/ide-compatibility.md
   - tests/contracts/test_ai_agent_harness_landscape.py
-  - docs/manual-tests/ai-agent-harness-landscape-review.md
+  - docs/09-Quality/manual-tests/ai-agent-harness-landscape-review.md
 tier: maintainer
 tags: [harness, portability, proof-level, acc, landscape]
 ---
@@ -25,7 +25,7 @@ tags: [harness, portability, proof-level, acc, landscape]
 
 ## Context
 
-Cognitive OS previously kept broad compatibility claims in prose documents, especially `docs/ide-compatibility.md`. Those lists were useful for ambition, but some labels such as `FULL` or `HIGH` implied runtime support based only on documentation reading.
+Cognitive OS previously kept broad compatibility claims in prose documents, especially `docs/04-Concepts/root/ide-compatibility.md`. Those lists were useful for ambition, but some labels such as `FULL` or `HIGH` implied runtime support based only on documentation reading.
 
 The agentic coding ecosystem has also changed quickly. Current official docs show additional or under-modeled surfaces such as Gemini CLI, Kiro, Cline, Goose, Amp, JetBrains Junie, Factory Droid, Qoder, Tabnine Agent, hosted GitHub Copilot coding agent, and hosted MCP-enabled builders.
 
@@ -64,7 +64,7 @@ Hosted agents and provider integrations must stay distinct from local consumer-p
 
 ### What changes for the operator
 
-Before this ADR, compatibility claims lived in `docs/ide-compatibility.md` as
+Before this ADR, compatibility claims lived in `docs/04-Concepts/root/ide-compatibility.md` as
 prose labels (`FULL`, `HIGH`) with no machine-readable backing. Keeping the list
 accurate required manual review of every vendor release and individual judgement
 on what "FULL" meant.
@@ -75,7 +75,7 @@ After this ADR:
   backlog. Every candidate surface carries a `proof_level` drawn from the
   four-value vocabulary: `native-lifecycle`, `runtime-smoke`, `structural`,
   `none`.
-- `docs/ide-compatibility.md` now points at proof-level metadata instead of
+- `docs/04-Concepts/root/ide-compatibility.md` now points at proof-level metadata instead of
   free-form percentage claims. Do not update the prose table; update the manifest
   and regenerate.
 - A candidate moves from landscape backlog to `manifests/harness-projection.yaml`
@@ -90,7 +90,7 @@ After this ADR:
   full COS hook surface is exercised. `none` means the candidate is backlog only.
 - "What is the next harness to implement?" — Read the `next_action` field on each
   candidate entry in the landscape manifest; the report at
-  `docs/reports/ai-agent-harness-landscape-2026-05-04.md` lists priority order.
+  `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md` lists priority order.
 - "Can I claim GitHub Copilot hosted agent support?" — Only after the proof_level
   is at least `structural`. Until then: "tracked in backlog, not yet implemented."
 
@@ -114,7 +114,7 @@ When a new harness or hosted agent surface is discovered:
 3. When a structural test exists, update `proof_level` to `structural` and open a
    PR to `manifests/harness-projection.yaml` to register the projection surface.
 
-Do not update `docs/ide-compatibility.md` manually. That file is generated from
+Do not update `docs/04-Concepts/root/ide-compatibility.md` manually. That file is generated from
 the manifest. Any hand-edit will be overwritten.
 
 ### Reading guide for cold readers
@@ -123,7 +123,7 @@ If you are reading this ADR without prior context:
 
 1. Open `manifests/ai-agent-harness-landscape.yaml` — it lists every candidate
    surface and its current proof level.
-2. Read `docs/reports/ai-agent-harness-landscape-2026-05-04.md` for the rationale
+2. Read `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md` for the rationale
    behind the four proof levels and the priority ordering.
 3. The key constraint: proof levels flow upward (`none` → `structural` →
    `runtime-smoke` → `native-lifecycle`) and never downward without a new entry.
@@ -150,6 +150,6 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
 ## Implementation Evidence
 
 - `manifests/ai-agent-harness-landscape.yaml` records candidate surfaces with proof levels, availability boundary, projection surface, official sources, and next action.
-- `docs/reports/ai-agent-harness-landscape-2026-05-04.md` summarizes repo docs reviewed, official-doc-backed candidates, gaps, and priority order.
-- `docs/ide-compatibility.md` now points to proof-level metadata rather than percentage-like compatibility claims.
+- `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md` summarizes repo docs reviewed, official-doc-backed candidates, gaps, and priority order.
+- `docs/04-Concepts/root/ide-compatibility.md` now points to proof-level metadata rather than percentage-like compatibility claims.
 - Contract tests enforce required candidate fields and ensure implemented projection remains a subset of the landscape.

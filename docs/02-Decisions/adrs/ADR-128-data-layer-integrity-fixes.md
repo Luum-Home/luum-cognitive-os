@@ -172,5 +172,5 @@ python3 -m py_compile \
 - `tests/audit/test_version_consistency.py`
 - `tests/audit/test_sdd_topic_keys.py`
 - `skills/sdd-continue/SKILL.md`
-- `docs/engram-namespaces.md`
-- `docs/automation.md`
+- `docs/04-Concepts/root/engram-namespaces.md`
+- `docs/05-Methodology/root/automation.md`

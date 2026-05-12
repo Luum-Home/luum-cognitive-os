@@ -81,7 +81,7 @@ def _is_agent_training_claim(line: str) -> bool:
 def test_manifest_schema_and_canonical_doc_exist() -> None:
     manifest = _manifest()
     assert manifest["schema_version"] == "agent-training-harness.v1"
-    assert manifest["canonical_doc"] == "docs/architecture/agent-training-harness.md"
+    assert manifest["canonical_doc"] == "docs/04-Concepts/architecture/agent-training-harness.md"
     assert manifest["position"]["training_mode"] == "operational-learning"
     assert manifest["position"]["provider_weight_training"] is False
     assert manifest["position"]["default_auto_apply"] is False
@@ -123,7 +123,7 @@ def test_operational_training_claims_stay_on_authoritative_or_pointer_paths() ->
 
     assert offenders == [], (
         "Agent-training claims must live in the canonical doc/manifest or pointer docs. "
-        "Link to docs/architecture/agent-training-harness.md or add explicit evidence before expanding claims:\n"
+        "Link to docs/04-Concepts/architecture/agent-training-harness.md or add explicit evidence before expanding claims:\n"
         + "\n".join(offenders[:50])
     )
 

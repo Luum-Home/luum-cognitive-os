@@ -52,7 +52,7 @@ This governance must apply to both the SO repository and consumer projects. The 
 Implement Preserve Branch Governance:
 
 1. ADR-110 defines the policy.
-2. `docs/architecture/preserve-branch-lifecycle.md` defines lifecycle states.
+2. `docs/04-Concepts/architecture/preserve-branch-lifecycle.md` defines lifecycle states.
 3. `scripts/cos-doctor-preserve.sh` reports missing manifests, mixed-scope branches, integrated branches, non-ancestor tips, and delete candidates.
 4. Tests prove all five required scenarios automatically.
 

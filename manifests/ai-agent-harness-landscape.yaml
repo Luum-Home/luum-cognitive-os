@@ -158,7 +158,7 @@ candidates:
   - mcp
   official_sources:
   - https://kiro.dev/docs/cli/hooks/
-  - https://kiro.dev/docs/getting-started/first-project/
+  - https://kiro.dev/docs/05-Methodology/getting-started/first-project/
   next_action: Official docs expose lifecycle/tool hooks; design an adapter mapping
     before promotion.
 - id: cline
@@ -213,7 +213,7 @@ candidates:
   - CONVENTIONS.md
   - .aider.conf.yml
   official_sources:
-  - https://aider.chat/docs/usage/conventions.html
+  - https://aider.chat/docs/05-Methodology/usage/conventions.html
   next_action: Implemented structural CONVENTIONS.md and `.aider.conf.yml`; add runtime/model
     smoke when available.
 - id: goose

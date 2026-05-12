@@ -37,26 +37,26 @@ Files moved via `git mv` and all citations updated in the same changeset:
 
 | Old path | New path |
 |---|---|
-| `docs/architecture/plans/adr-064-implementation-plan.md` | `.cognitive-os/plans/architecture/adr-064-implementation-plan.md` |
-| `docs/architecture/plans/governed-self-improvement-roadmap.md` | `.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md` |
-| `docs/architecture/plans/headless-clustered-runtime-plan.md` | `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md` |
-| `docs/architecture/plans/runtime-comparison-benchmark-plan.md` | `.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md` |
-| `docs/architecture/core-vs-extensions-migration-plan.md` | `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` |
-| `docs/architecture/skills-rules-canonicalization-workplan.md` | `.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md` |
+| `docs/04-Concepts/architecture/plans/adr-064-implementation-plan.md` | `.cognitive-os/plans/architecture/adr-064-implementation-plan.md` |
+| `docs/04-Concepts/architecture/plans/governed-self-improvement-roadmap.md` | `.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md` |
+| `docs/04-Concepts/architecture/plans/headless-clustered-runtime-plan.md` | `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md` |
+| `docs/04-Concepts/architecture/plans/runtime-comparison-benchmark-plan.md` | `.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md` |
+| `docs/04-Concepts/architecture/core-vs-extensions-migration-plan.md` | `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` |
+| `docs/04-Concepts/architecture/skills-rules-canonicalization-workplan.md` | `.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md` |
 | `docs/plans/SO-RELIABILITY-MEGA-PLAN.md` | `.cognitive-os/plans/roadmaps/so-reliability-mega-plan.md` |
 | `docs/roadmaps/adr-049-050-051-mega-plan.md` | `.cognitive-os/plans/roadmaps/adr-049-050-051-mega-plan.md` |
-| `docs/architecture/stabilization-roadmap.md` | `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` |
-| `docs/archive/plans/token-optimization-masterplan.md` | `.cognitive-os/plans/archive/token-optimization-masterplan.md` |
+| `docs/04-Concepts/architecture/stabilization-roadmap.md` | `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` |
+| `docs/99-Archive/archive/plans/token-optimization-masterplan.md` | `.cognitive-os/plans/archive/token-optimization-masterplan.md` |
 
 **Anomaly resolved (2026-04-30 follow-up)**: the test-resource-governance sprint plan
 was not in this ADR's migration table but was discovered during execution. It is a sprint plan
 tied to ADR-072/073 (test lane taxonomy) and now lives at
 `.cognitive-os/plans/architecture/test-resource-governance-sprint.md`. The directory
-`docs/architecture/plans/` was then removed.
+`docs/04-Concepts/architecture/plans/` was then removed.
 
 Hook updated: `hooks/session-startup-protocol.sh` now indexes
 `.cognitive-os/plans/architecture/` and `.cognitive-os/plans/roadmaps/` instead of
-`docs/architecture/plans/`, `docs/plans/`, and `docs/roadmaps/`.
+`docs/04-Concepts/architecture/plans/`, `docs/plans/`, and `docs/roadmaps/`.
 
 Enforcement test created: `tests/audit/test_plan_locations.py`.
 
@@ -74,11 +74,11 @@ least seven directories with no governing rule:
 |---|---|---|
 | `.cognitive-os/plans/features/` | 16 | SDD artifacts, short-lived feature work |
 | `.cognitive-os/plans/research/` | 2 | Pre-decision research |
-| `docs/architecture/plans/` | 5 | Cross-cutting and ADR-linked |
+| `docs/04-Concepts/architecture/plans/` | 5 | Cross-cutting and ADR-linked |
 | `docs/plans/` | 1 | Orphan (`SO-RELIABILITY-MEGA-PLAN.md`) |
 | `docs/roadmaps/` | 1 | Multi-ADR mega-plan |
-| `docs/archive/plans/` | 1 | Superseded token-optimization work |
-| `docs/architecture/` (root, no subdir) | 2 | Plans landed outside any plans subdir |
+| `docs/99-Archive/archive/plans/` | 1 | Superseded token-optimization work |
+| `docs/04-Concepts/architecture/` (root, no subdir) | 2 | Plans landed outside any plans subdir |
 
 None of these directories is indexed by `hooks/session-startup-protocol.sh`.
 As of today, 10+ plan files are invisible to startup-protocol discovery.
@@ -92,7 +92,7 @@ ADR-028. Because `docs/plans/` was not indexed at SessionStart, the prior plan
 was invisible and the duplication was not caught until manual review.
 
 **Incident 2 — 2026-04-30**: An agent authored
-`docs/architecture/plans/adr-064-implementation-plan.md` to record the
+`docs/04-Concepts/architecture/plans/adr-064-implementation-plan.md` to record the
 implementation plan for cross-harness authoring. ADR-064 and ADR-081 already
 captured the same sequencing decisions. The file was invisible to the agent
 that wrote ADR-081, which re-derived the dependency order independently.
@@ -106,7 +106,7 @@ the canonical source, creating a second divergence.
 
 Some directories exist by intent (`.cognitive-os/plans/features/` was created
 explicitly for SDD artifacts), others by accident (plans landing in
-`docs/architecture/` root, plans landing in `docs/roadmaps/` because there was
+`docs/04-Concepts/architecture/` root, plans landing in `docs/roadmaps/` because there was
 no canonical roadmap location). The core tension is:
 
 - **Operational plans** (SDD feature work, short-lived, tied to a sprint or
@@ -138,7 +138,7 @@ is defensible only if the boundary is explicit, enforceable, and indexed.
 
 ```
 .cognitive-os/plans/         — operational: feature-scoped, short-lived
-docs/architecture/plans/     — architectural: cross-cutting, ADR-linked
+docs/04-Concepts/architecture/plans/     — architectural: cross-cutting, ADR-linked
 docs/roadmaps/               — strategic: time-horizon-based
 ```
 
@@ -149,7 +149,7 @@ Justification by trade-off:
 | Concern | Option A | Option B |
 |---|---|---|
 | Discoverability | Single root → one glob pattern indexes everything | Three roots → three glob patterns, sync risk |
-| ADR coupling | `architecture/` subdir named for the relationship | `docs/architecture/plans/` implies the ADR hierarchy is the organizing principle, which is sometimes wrong (roadmaps are not architecture-driven) |
+| ADR coupling | `architecture/` subdir named for the relationship | `docs/04-Concepts/architecture/plans/` implies the ADR hierarchy is the organizing principle, which is sometimes wrong (roadmaps are not architecture-driven) |
 | Agent compliance | Agents that do not know the convention land in `.cognitive-os/plans/` by default (they already do) — the convention formalizes the current gravity | Agents must choose between two roots; without a convention document they always pick wrong |
 | Archival semantics | `archive/` subdir is explicit, excluded from indexing by path prefix | Archival must be handled per-root; no shared mechanism |
 | Migration cost | Move 6 files from `docs/` trees into `.cognitive-os/plans/architecture/` and `roadmaps/` | Move 16 files in the opposite direction |
@@ -220,12 +220,12 @@ moves in this ADR — this is design only. Migration is a follow-up task.
 
 | Current path | Target path | Rationale |
 |---|---|---|
-| `docs/architecture/plans/adr-064-implementation-plan.md` | `.cognitive-os/plans/architecture/adr-064-implementation-plan.md` | ADR-linked, cross-cutting |
-| `docs/architecture/plans/governed-self-improvement-roadmap.md` | `.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md` | Architectural scope, not time-horizon strategic |
-| `docs/architecture/plans/headless-clustered-runtime-plan.md` | `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md` | Architectural, cross-cutting |
-| `docs/architecture/plans/runtime-comparison-benchmark-plan.md` | `.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md` | Architectural scope |
-| `docs/architecture/core-vs-extensions-migration-plan.md` | `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` | Plan at wrong depth in docs/architecture/ |
-| `docs/architecture/skills-rules-canonicalization-workplan.md` | `.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md` | Plan at wrong depth in docs/architecture/ |
+| `docs/04-Concepts/architecture/plans/adr-064-implementation-plan.md` | `.cognitive-os/plans/architecture/adr-064-implementation-plan.md` | ADR-linked, cross-cutting |
+| `docs/04-Concepts/architecture/plans/governed-self-improvement-roadmap.md` | `.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md` | Architectural scope, not time-horizon strategic |
+| `docs/04-Concepts/architecture/plans/headless-clustered-runtime-plan.md` | `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md` | Architectural, cross-cutting |
+| `docs/04-Concepts/architecture/plans/runtime-comparison-benchmark-plan.md` | `.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md` | Architectural scope |
+| `docs/04-Concepts/architecture/core-vs-extensions-migration-plan.md` | `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` | Plan at wrong depth in docs/04-Concepts/architecture/ |
+| `docs/04-Concepts/architecture/skills-rules-canonicalization-workplan.md` | `.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md` | Plan at wrong depth in docs/04-Concepts/architecture/ |
 
 ### Files to move into `.cognitive-os/plans/roadmaps/`
 
@@ -233,27 +233,27 @@ moves in this ADR — this is design only. Migration is a follow-up task.
 |---|---|---|
 | `docs/plans/SO-RELIABILITY-MEGA-PLAN.md` | `.cognitive-os/plans/roadmaps/so-reliability-mega-plan.md` | Multi-ADR, cross-cutting roadmap; was root of Incident 1 |
 | `docs/roadmaps/adr-049-050-051-mega-plan.md` | `.cognitive-os/plans/roadmaps/adr-049-050-051-mega-plan.md` | Multi-ADR roadmap in a now-deprecated location |
-| `docs/architecture/stabilization-roadmap.md` | `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` | Time-horizon roadmap, not ADR-linked |
-| `docs/architecture/plans/runtime-comparison-benchmark-plan.md` | (covered above under architecture — verify intent before moving) | May belong in research if it is pre-decision |
+| `docs/04-Concepts/architecture/stabilization-roadmap.md` | `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` | Time-horizon roadmap, not ADR-linked |
+| `docs/04-Concepts/architecture/plans/runtime-comparison-benchmark-plan.md` | (covered above under architecture — verify intent before moving) | May belong in research if it is pre-decision |
 
 ### Files to move into `.cognitive-os/plans/archive/`
 
 | Current path | Target path | Rationale |
 |---|---|---|
-| `docs/archive/plans/token-optimization-masterplan.md` | `.cognitive-os/plans/archive/token-optimization-masterplan.md` | Already considered archived; consolidate |
+| `docs/99-Archive/archive/plans/token-optimization-masterplan.md` | `.cognitive-os/plans/archive/token-optimization-masterplan.md` | Already considered archived; consolidate |
 
 ### Files that stay in place (no move required)
 
 | Path | Reason |
 |---|---|
-| `docs/plan-system.md` | Documentation about the plan system itself, not a plan |
-| `docs/rules-consolidation-plan.md` | Evaluate: may belong in architecture after migration |
-| `docs/roadmap.md` | Top-level product roadmap; may serve as entry point pointing into `.cognitive-os/plans/roadmaps/` |
-| `docs/architecture/plans-reconciliation-2026-04-21.md` | Audit artifact; belongs in `docs/reports/`, not plans — no move under this ADR |
-| `docs/business/` files | Business-scoped; outside plan convention scope; evaluate separately |
-| `docs/release/roadmap-v1.0-full-e2e.md` | Release artifact; outside plan convention scope |
-| `docs/reports/merge-readiness-master-plan-2026-04-23.md` | Report artifact; keep in reports |
-| `docs/reports/next-session-plan-dormant-to-real.md` | Session artifact; keep in reports |
+| `docs/04-Concepts/root/plan-system.md` | Documentation about the plan system itself, not a plan |
+| `docs/05-Methodology/root/rules-consolidation-plan.md` | Evaluate: may belong in architecture after migration |
+| `docs/01-Build-Log/root/roadmap.md` | Top-level product roadmap; may serve as entry point pointing into `.cognitive-os/plans/roadmaps/` |
+| `docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md` | Audit artifact; belongs in `docs/06-Daily/reports/`, not plans — no move under this ADR |
+| `docs/08-References/business/` files | Business-scoped; outside plan convention scope; evaluate separately |
+| `docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md` | Release artifact; outside plan convention scope |
+| `docs/06-Daily/reports/merge-readiness-master-plan-2026-04-23.md` | Report artifact; keep in reports |
+| `docs/06-Daily/reports/next-session-plan-dormant-to-real.md` | Session artifact; keep in reports |
 
 ### Timing
 
@@ -321,7 +321,7 @@ Left as an open question for the team.
 - **One-time migration cost** — 6–10 files must move. Each move requires
   updating any cross-references (ADR bodies, engram entries, hook scripts that
   reference old paths).
-- **`docs/architecture/plans/` becomes a deprecated location** — existing
+- **`docs/04-Concepts/architecture/plans/` becomes a deprecated location** — existing
   tooling or agent prompts that hard-code this path will produce files in the
   wrong place until they are updated. The audit test catches violations at the
   next CI run.
@@ -338,9 +338,9 @@ Left as an open question for the team.
 The `docs/roadmaps/` directory currently holds one file
 (`adr-049-050-051-mega-plan.md`) which belongs in `.cognitive-os/plans/roadmaps/`
 under this ADR. Once migration is complete, `docs/roadmaps/` would be empty
-and should be removed. However, `docs/roadmap.md` (note: file, not directory)
+and should be removed. However, `docs/01-Build-Log/root/roadmap.md` (note: file, not directory)
 is a top-level entry point that may be meaningful to human readers browsing the
-repo. Recommended resolution: keep `docs/roadmap.md` as a human-readable
+repo. Recommended resolution: keep `docs/01-Build-Log/root/roadmap.md` as a human-readable
 index that links into `.cognitive-os/plans/roadmaps/`; remove the empty
 `docs/roadmaps/` directory after migration.
 

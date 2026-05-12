@@ -9,8 +9,8 @@ a unified diff (dry-run) or writes in place (--apply).
 Usage:
     python3 scripts/radar_merge.py \\
         --artifacts .cognitive-os/reports/repo-scout/owner_repo.md [owner2_repo2.md ...] \\
-        --ecosystem-tools docs/patterns/ecosystem-tools.md \\
-        --blocked-tools docs/blocked-tools.md \\
+        --ecosystem-tools docs/04-Concepts/patterns/ecosystem-tools.md \\
+        --blocked-tools docs/05-Methodology/root/blocked-tools.md \\
         [--apply] \\
         [--changelog CHANGELOG.md] \\
         [--output-diff path/to/output.diff]
@@ -23,7 +23,7 @@ Design contract:
   - The merge engine rewrites only the frontmatter block (---...---) of each entry.
   - Everything after the frontmatter until the next ### heading is preserved verbatim.
 
-ADR: docs/adrs/ADR-065-radar-update-curation-pipeline.md
+ADR: docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md
 """
 
 from __future__ import annotations
@@ -654,13 +654,13 @@ def main(argv: list[str] | None = None) -> int:
         "--ecosystem-tools",
         required=True,
         metavar="FILE",
-        help="Path to docs/patterns/ecosystem-tools.md",
+        help="Path to docs/04-Concepts/patterns/ecosystem-tools.md",
     )
     parser.add_argument(
         "--blocked-tools",
         required=True,
         metavar="FILE",
-        help="Path to docs/blocked-tools.md",
+        help="Path to docs/05-Methodology/root/blocked-tools.md",
     )
     parser.add_argument(
         "--apply",
@@ -754,8 +754,8 @@ def main(argv: list[str] | None = None) -> int:
         all_actions.extend(blk_actions)
 
     # Generate diffs
-    eco_diff = generate_diff(eco_original, eco_text, "docs/patterns/ecosystem-tools.md")
-    blk_diff = generate_diff(blk_original, blk_text, "docs/blocked-tools.md")
+    eco_diff = generate_diff(eco_original, eco_text, "docs/04-Concepts/patterns/ecosystem-tools.md")
+    blk_diff = generate_diff(blk_original, blk_text, "docs/05-Methodology/root/blocked-tools.md")
     combined_diff = eco_diff + blk_diff
 
     # Print diff to stdout

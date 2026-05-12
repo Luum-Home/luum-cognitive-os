@@ -5,7 +5,7 @@ Extracted from lib/qwen_provider.py — that module remains as a backward-compat
 shim that re-exports everything from here. This wrapper exposes the canonical
 provider interface: is_configured(), get_client(), MODEL_MAP, call().
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
 """
 
 from __future__ import annotations

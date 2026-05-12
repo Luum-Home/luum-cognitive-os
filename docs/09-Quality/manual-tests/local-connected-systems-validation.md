@@ -32,7 +32,7 @@ checks spread through docs:
 | `scripts/cos-doctor-tools.sh` | Verifies active harness, driver settings, dependency wiring, and Engram host state. |
 | `scripts/cos-doctor-memory-lifecycle.sh` | Verifies session memory lifecycle hooks and Engram paths. |
 | `scripts/cos-bootstrap.sh` | Starts optional/reference infrastructure services when a full profile explicitly requests them. |
-| `docs/architecture/infrastructure-service-catalog.md` | Explains why each service exists and whether it is core, optional, or reference-only. |
+| `docs/04-Concepts/architecture/infrastructure-service-catalog.md` | Explains why each service exists and whether it is core, optional, or reference-only. |
 
 The validation flow must treat `manifests/dependencies.yaml` as the inventory
 contract. If a tool or service is needed by the SO, it should be declared there
@@ -194,7 +194,7 @@ Acceptance criteria:
 
 - services started by Docker are limited to the selected profile;
 - optional/reference services are not required for the core local runtime;
-- service purpose and status match `docs/architecture/infrastructure-service-catalog.md`;
+- service purpose and status match `docs/04-Concepts/architecture/infrastructure-service-catalog.md`;
 - logs and health results are written outside tracked source files.
 
 ### 6. Run a persistent test summary

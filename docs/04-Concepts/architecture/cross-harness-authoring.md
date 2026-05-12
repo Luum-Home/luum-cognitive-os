@@ -206,6 +206,6 @@ reference without copying large architecture documents into every install.
 
 ## References
 
-- `docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md`
-- `docs/architecture/bootstrap-portability.md`
-- `docs/architecture/cross-runtime-portability.md`
+- `docs/02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- `docs/04-Concepts/architecture/cross-runtime-portability.md`

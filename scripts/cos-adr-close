@@ -4,7 +4,7 @@
 
 Scope: ADR DECISION records. Updates frontmatter fields (status,
 implementation_status, classification_basis, evidence) and refreshes
-docs/adrs/INDEX.md + docs/reports/adr-partial-backlog-latest.{json,md}.
+docs/02-Decisions/adrs/INDEX.md + docs/06-Daily/reports/adr-partial-backlog-latest.{json,md}.
 
 For closing TASK items in plans / follow-ups / user-requests /
 audit-findings, use the companion primitive `scripts/cos-pending-truth-close`
@@ -12,8 +12,8 @@ audit-findings, use the companion primitive `scripts/cos-pending-truth-close`
 `cos-session-start-projector` consumes both into a single ranked
 action list at session start across the 3 harnesses.
 
-Canonical status vocabulary: `docs/adrs/STATUS-TAXONOMY.md`.
-Architectural map: `docs/architecture/pending-truth-architecture.md`.
+Canonical status vocabulary: `docs/02-Decisions/adrs/STATUS-TAXONOMY.md`.
+Architectural map: `docs/04-Concepts/architecture/pending-truth-architecture.md`.
 
 Documentation-truth discipline (ADR-277 + `rules/session-close-doc-truth.md`):
 when this script flips an ADR from `partial` to `implemented` (or any

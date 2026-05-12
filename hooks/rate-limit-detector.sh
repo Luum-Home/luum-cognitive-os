@@ -25,7 +25,7 @@
 #   stdin: JSON with `tool_name`, `tool_input`, `tool_response` fields.
 #   We only care about tool_response.error or tool_response.stderr contents.
 #
-# Reference: docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
+# Reference: docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
 
 set -uo pipefail
 
@@ -98,7 +98,7 @@ else
   cat >&2 <<'ADV'
 [rate-limit-detector] Claude Code subscription rate-limit detected.
   No direct-SDK overflow module found (lib/qwen_provider.py missing).
-  See docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
+  See docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
   for the recommended overflow stack.
 ADV
 fi

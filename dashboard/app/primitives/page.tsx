@@ -151,9 +151,9 @@ export default async function PrimitivesPage() {
         <ul className="mt-4 list-disc space-y-2 pl-5 text-sm">
           <li><code>{fidelity.reportPath}</code></li>
           <li><code>{openCode.reportPath}</code></li>
-          <li><code>docs/reports/portable-ai-consumer-smoke-latest.json</code></li>
-          <li><code>docs/reports/portable-ai-real-consumer-smoke-latest.json</code></li>
-          <li><code>docs/reports/primitive-service-headless-smoke-latest.json</code></li>
+          <li><code>docs/06-Daily/reports/portable-ai-consumer-smoke-latest.json</code></li>
+          <li><code>docs/06-Daily/reports/portable-ai-real-consumer-smoke-latest.json</code></li>
+          <li><code>docs/06-Daily/reports/primitive-service-headless-smoke-latest.json</code></li>
           <li><code>manifests/primitive-contracts.yaml</code></li>
           {runtimeEvidence.reportPaths.map((path) => <li key={path}><code>{path}</code></li>)}
         </ul>

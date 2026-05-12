@@ -3,7 +3,7 @@
 """Unified Agent Capability Coverage (ACC) pipeline.
 
 The pipeline composes existing Cognitive OS readiness ledgers and coverage tools
-into the ACC report shape described by docs/agent-capability-coverage.md.
+into the ACC report shape described by docs/07-Capabilities/root/agent-capability-coverage.md.
 It is deliberately adapter-based: existing tools remain authoritative for their
 slice, while this script normalizes their outputs into capabilities, findings,
 score, gate outcome, and persistence metadata.
@@ -55,11 +55,11 @@ DEFAULT_THRESHOLDS = {
     "maintenance": {"minimum_acc": 0.85, "minimum_effective_acc": 0.80, "critical_missing_allowed": 0},
 }
 READINESS_FILES = {
-    "scripts": "docs/reports/primitive-readiness-ledger-scripts-latest.json",
-    "hooks": "docs/reports/primitive-readiness-ledger-hooks-latest.json",
-    "skills": "docs/reports/primitive-readiness-ledger-skills-latest.json",
-    "rules": "docs/reports/primitive-readiness-ledger-rules-latest.json",
-    "templates": "docs/reports/primitive-readiness-ledger-templates-latest.json",
+    "scripts": "docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json",
+    "hooks": "docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json",
+    "skills": "docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json",
+    "rules": "docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json",
+    "templates": "docs/06-Daily/reports/primitive-readiness-ledger-templates-latest.json",
 }
 DEFAULT_PROJECTION_HARNESSES = ("claude", "codex")
 DEFAULT_PROJECTION_PROFILES = ("default", "full")
@@ -698,7 +698,7 @@ def load_proof_drill_claim_map(root: Path, evidence_by_id: dict[str, dict[str, A
 def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
     path = root / "docs" / "reports" / "proof-drill-evidence-latest.json"
     if not path.exists():
-        return AdapterStatus("unverified", "docs/reports/proof-drill-evidence-latest.json", error="missing proof drill evidence report"), [], []
+        return AdapterStatus("unverified", "docs/06-Daily/reports/proof-drill-evidence-latest.json", error="missing proof drill evidence report"), [], []
     data = read_json(path)
     rows = data.get("rows", []) if isinstance(data, dict) else []
     capabilities: list[Capability] = []
@@ -760,7 +760,7 @@ def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capabilit
 def load_primitive_fitness_ledger(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
     path = root / "docs" / "reports" / "primitive-fitness-ledger-latest.json"
     if not path.exists():
-        return AdapterStatus("unverified", "docs/reports/primitive-fitness-ledger-latest.json", error="missing primitive fitness ledger"), [], []
+        return AdapterStatus("unverified", "docs/06-Daily/reports/primitive-fitness-ledger-latest.json", error="missing primitive fitness ledger"), [], []
     data = read_json(path)
     rows = data.get("items", []) if isinstance(data, dict) else []
     capabilities: list[Capability] = []
@@ -838,7 +838,7 @@ def load_primitive_fitness_ledger(root: Path) -> tuple[AdapterStatus, list[Capab
 def load_harness_coverage(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
     path = root / "docs" / "reports" / "primitive-harness-coverage-latest.json"
     if not path.exists():
-        return AdapterStatus("unverified", "docs/reports/primitive-harness-coverage-latest.json", error="missing harness coverage report"), [], []
+        return AdapterStatus("unverified", "docs/06-Daily/reports/primitive-harness-coverage-latest.json", error="missing harness coverage report"), [], []
     data = read_json(path)
     rows = data.get("items", []) if isinstance(data, dict) else []
     capabilities: list[Capability] = []
@@ -1313,8 +1313,8 @@ def compact_summary(payload: dict[str, Any], max_findings: int = 8) -> dict[str,
         "top_findings": top_findings,
         "new_debt": payload.get("new_debt", {"status": "not_evaluated", "count": 0, "items": []}),
         "context_diet": {
-            "read_this_first": "docs/acc/latest-compact.md",
-            "avoid_loading": ["docs/acc/latest.json", "docs/reports/primitive-readiness-ledger-*.json"],
+            "read_this_first": "docs/07-Capabilities/acc/latest-compact.md",
+            "avoid_loading": ["docs/07-Capabilities/acc/latest.json", "docs/06-Daily/reports/primitive-readiness-ledger-*.json"],
             "query_json_instead": "Use small Python/jq queries for selected rows; do not cat full JSON reports into agent context.",
         },
     }
@@ -1327,7 +1327,7 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# Agent Capability Coverage — Compact",
         "",
-        "> Context diet entrypoint. Read this before opening `docs/acc/latest.json`.",
+        "> Context diet entrypoint. Read this before opening `docs/07-Capabilities/acc/latest.json`.",
         "",
         f"Generated: {compact['generated_at']}",
         f"Gate: {gate_data['status']} ({gate_data['phase']})",
@@ -1481,14 +1481,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--refresh", action="store_true", help="Run source adapters before reading reports")
     parser.add_argument("--include-slow", action="store_true", help="Include slower primitive coverage adapter")
-    parser.add_argument("--json-out", default="docs/acc/latest.json")
-    parser.add_argument("--md-out", default="docs/acc/latest.md")
-    parser.add_argument("--compact-out", default="docs/acc/latest-compact.md")
+    parser.add_argument("--json-out", default="docs/07-Capabilities/acc/latest.json")
+    parser.add_argument("--md-out", default="docs/07-Capabilities/acc/latest.md")
+    parser.add_argument("--compact-out", default="docs/07-Capabilities/acc/latest-compact.md")
     parser.add_argument("--brief", action="store_true", help="Print compact JSON summary only; do not write reports or append history")
     parser.add_argument("--fail-on-block", action="store_true", help="Exit non-zero when gate status is block")
     parser.add_argument("--fail-on-warn", action="store_true", help="Treat warnings as blocking")
     parser.add_argument("--fail-new", action="store_true", help="Block when current ACC introduces new debt versus --baseline")
-    parser.add_argument("--baseline", default="docs/acc/latest.json", help="Baseline ACC JSON used by --fail-new")
+    parser.add_argument("--baseline", default="docs/07-Capabilities/acc/latest.json", help="Baseline ACC JSON used by --fail-new")
     parser.add_argument("--allow-new-local-defaults", action="store_true", help="With --fail-new, do not block new capabilities that only match broad local-default patterns")
     return parser.parse_args()
 

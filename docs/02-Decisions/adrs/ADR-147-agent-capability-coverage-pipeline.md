@@ -23,13 +23,13 @@ Accepted — 2026-05-04
 
 ## Context
 
-`docs/agent-capability-coverage.md` defines Agent Capability Coverage (ACC): the degree to which real system capabilities are represented as agentic primitives that agents can discover, reason about, and invoke. The repository already has the pieces needed to approximate ACC for Cognitive OS itself:
+`docs/07-Capabilities/root/agent-capability-coverage.md` defines Agent Capability Coverage (ACC): the degree to which real system capabilities are represented as agentic primitives that agents can discover, reason about, and invoke. The repository already has the pieces needed to approximate ACC for Cognitive OS itself:
 
 - `scripts/cos_coverage.py` summarizes REAL/DORMANT/ASPIRATIONAL and claim-proof coverage.
 - `scripts/primitive_readiness_ledger.py` classifies scripts and emits lifecycle/consumer-accessibility metadata.
 - `scripts/primitive_family_readiness_ledger.py` classifies hooks, skills, and rules.
 - `scripts/docs_execution_audit.py`, `scripts/primitive_gap_snapshot.py`, and `scripts/primitive_coverage.py` audit documentation and primitive evidence.
-- `docs/architecture/consumer-project-primitive-accessibility.md` separates SO-local documentation from downstream project projection.
+- `docs/04-Concepts/architecture/consumer-project-primitive-accessibility.md` separates SO-local documentation from downstream project projection.
 
 Before this ADR, agents had to run these surfaces manually and interpret them by conversation context. That was error-prone: the system could have script ledgers, family ledgers, docs audits, and coverage metrics without a single ACC report that says which capabilities are aligned, partial, missing, stale, overexposed, or unverified.
 
@@ -45,8 +45,8 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh
 
 Canonical generated artifacts:
 
-- `docs/acc/latest.json`
-- `docs/acc/latest.md`
+- `docs/07-Capabilities/acc/latest.json`
+- `docs/07-Capabilities/acc/latest.md`
 - `.cognitive-os/metrics/acc-pipeline-history.jsonl`
 
 The pipeline MUST:
@@ -87,13 +87,13 @@ This is conservative. It should not claim broad consumer availability unless pro
 
 - Future agents get one ACC entrypoint instead of re-running manual command bundles.
 - Existing tools remain useful and testable as adapters.
-- Generated `docs/acc/latest.json` becomes the offline drift baseline required by `docs/agent-capability-coverage.md`.
+- Generated `docs/07-Capabilities/acc/latest.json` becomes the offline drift baseline required by `docs/07-Capabilities/root/agent-capability-coverage.md`.
 - Engram remains the preferred canonical memory store when surfaced, but local JSONL history is the deterministic fallback.
 - The first pipeline is SO-oriented. Project-specific endpoint/event/job adapters remain future work.
 
 ## Alternatives rejected
 
-- **Keep ACC as a manual checklist in `docs/agent-capability-coverage.md`**: rejected because manual execution was already drifting from readiness ledgers and docs execution reports.
+- **Keep ACC as a manual checklist in `docs/07-Capabilities/root/agent-capability-coverage.md`**: rejected because manual execution was already drifting from readiness ledgers and docs execution reports.
 - **Fold ACC into `primitive_readiness_ledger.py`**: rejected because readiness is per primitive family, while ACC is a cross-adapter capability view.
 - **Claim consumer-project coverage from SO-local documentation alone**: rejected because downstream IDE/project availability requires projection evidence, not just repository-local docs.
 
@@ -101,7 +101,7 @@ This is conservative. It should not claim broad consumer availability unless pro
 
 ```text
 ACCEPTANCE CRITERIA:
-1. `python3 scripts/acc_pipeline.py --project-dir . --refresh` writes `docs/acc/latest.json` and `docs/acc/latest.md`.
+1. `python3 scripts/acc_pipeline.py --project-dir . --refresh` writes `docs/07-Capabilities/acc/latest.json` and `docs/07-Capabilities/acc/latest.md`.
 2. The JSON report includes ACC scores, thresholds, weights, capabilities, findings, adapter statuses, and persistence status.
 3. Readiness ledgers are consumed as adapters for scripts, hooks, skills, and rules.
 4. The report distinguishes SO-local from consumer-project accessibility.
@@ -122,8 +122,8 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh
 - Implemented in `scripts/acc_pipeline.py`: ACC adapter orchestration, capability mapping, threshold evaluation, local history persistence, and Markdown/JSON report generation.
 - Implemented in `tests/unit/test_acc_pipeline.py`: mapping and report-shape unit coverage.
 - Implemented in `tests/contracts/test_acc_pipeline_contract.py`: repository-level report generation contract.
-- Implemented in `docs/architecture/agent-capability-coverage-pipeline.md`: architecture and adapter boundaries.
-- Implemented in `docs/manual-tests/agent-capability-coverage-pipeline.md`: operator refresh and inspection workflow.
+- Implemented in `docs/04-Concepts/architecture/agent-capability-coverage-pipeline.md`: architecture and adapter boundaries.
+- Implemented in `docs/09-Quality/manual-tests/agent-capability-coverage-pipeline.md`: operator refresh and inspection workflow.
 
 ## 2026-05-04 Consumer Projection Adapter
 

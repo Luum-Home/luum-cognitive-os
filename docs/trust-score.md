@@ -1,1 +1,0 @@
-04-Concepts/root/trust-score.md

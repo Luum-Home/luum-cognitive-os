@@ -45,9 +45,9 @@ ORPHAN=2 (`agent-escalation-capabilities`, `component-scope-classification`), CO
 ## Section 2 — ADR-by-ADR verification
 
 ### ADR-025 / ADR-026 / ADR-026a
-Not present on disk (`ls docs/adrs/` shows only ADR-027/027a/028/028a/028b/029). Referenced from
+Not present on disk (`ls docs/02-Decisions/adrs/` shows only ADR-027/027a/028/028a/028b/029). Referenced from
 commits (`4439db9 docs(adr-025): replace commit TBD with 0db8c14`, `7bd601f docs(adr-026a)`).
-**Gap**: missing from the current `docs/adrs/` directory. Either moved or the referenced work
+**Gap**: missing from the current `docs/02-Decisions/adrs/` directory. Either moved or the referenced work
 landed without the ADR being persisted in the audited location. Contradiction #4 below.
 
 ### ADR-027 (SO Slimming) — PROPOSED
@@ -117,12 +117,12 @@ So the plan is partially contradictory (claims 80% reduction is needed) AND part
 ### C3 — JSONL rotation threshold (ADR-027 D3 vs ADR-028 D1.A)
 Both ADRs own `hooks/rotate-metrics.sh`. ADR-027 §D3 documents **2 MiB**; ADR-028 §D1.A sets **1 MiB**
 and says "this ADR amends the thresholds" (ADR-028.md:110). Both numbers remain in their respective
-documents. Grep confirms: `docs/adrs/ADR-028.md:118` "1 MiB (tighter than ADR-027's initial 2 MiB)".
+documents. Grep confirms: `docs/02-Decisions/adrs/ADR-028.md:118` "1 MiB (tighter than ADR-027's initial 2 MiB)".
 Amendment is textual, not a formal supersedes block; downstream readers of ADR-027 would not know.
 
 ### C4 — Missing ADR-025/026/026a on disk
 Commits reference `ADR-025` (`0db8c14` + `4439db9`), `ADR-026` (`80e3262`), and `ADR-026a` (`7bd601f`).
-`ls docs/adrs/` shows only 027/027a/028/028a/028b/029. Either the files are stored elsewhere or they
+`ls docs/02-Decisions/adrs/` shows only 027/027a/028/028a/028b/029. Either the files are stored elsewhere or they
 were removed after the commits referenced them — either way the ADR log is non-contiguous without
 explanation.
 
@@ -144,7 +144,7 @@ feature documentation.
 | F3 | CONTRADICTS_REALITY | `hook-architecture-v2.md` §1.1 | Claims "21 hooks / 4 events" live; reality: 49 registered / 130 files per #11833. |
 | F4 | CONTRADICTS_REALITY | `workflow-engine.md` | Plan references `task_dag.py` + `pipeline_executor.py` + `workload_scheduler.py`. All 3 **deleted** at commit `503f9db` (Engram #11779). |
 | F5 | CONTRADICTS_REALITY | `stabilization-mega-plan.md` §3 | Mandates 90% wiring rate. Reality: 49/130 hooks registered (37%), balance on EXCLUDED whitelist. Wiring-validator + vulture/ruff stack not built. |
-| F6 | ORPHAN | ADR-025/026/026a references | Commits reference ADRs not in `docs/adrs/`. |
+| F6 | ORPHAN | ADR-025/026/026a references | Commits reference ADRs not in `docs/02-Decisions/adrs/`. |
 | F7 | CONTRADICTS_REALITY | `status-report-april-11.md` | WS11 listed DONE with commit; but WS11 code deleted at `92cf485`. Report is now historical. |
 
 ---
@@ -170,7 +170,7 @@ Ordered by ROI (effort vs unblocked value).
    ADR-028 D3's audit result (49 registered / 82 whitelisted). **Effort: 0.25 session.**
 
 5. **Locate or re-author ADR-025/026/026a**: grep history for commit messages and confirm whether the
-   files exist outside `docs/adrs/`. If missing, create stub ADRs with the commit SHA that implemented
+   files exist outside `docs/02-Decisions/adrs/`. If missing, create stub ADRs with the commit SHA that implemented
    them. **Effort: 0.5 session.**
 
 6. **Build `lib/ref_key_loader.py`** — ADR-027a §1 kept it in D2 scope. Only outstanding D2 artifact.
@@ -202,7 +202,7 @@ Ordered by ROI (effort vs unblocked value).
 | Duplicate tools inventory | Engram #11623 |
 | Mega-plan aspirational-real audit | Engram #11624 |
 | Prior reconciliation analysis | Engram #11552 |
-| ADR-027/028/029 text | `docs/adrs/ADR-027.md`, `ADR-028.md`, `ADR-029.md` |
+| ADR-027/028/029 text | `docs/02-Decisions/adrs/ADR-027.md`, `ADR-028.md`, `ADR-029.md` |
 | `global-verify.sh` exists | `hooks/global-verify.sh` (8958 B, 2026-04-20) |
 | `ref_key_loader.py` missing | `ls lib/ref_key_loader.py` → No such file |
 | `compact-claude-md.py` missing | `ls scripts/compact-claude-md.py` → No such file |

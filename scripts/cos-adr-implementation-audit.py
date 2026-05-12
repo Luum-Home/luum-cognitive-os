@@ -27,7 +27,7 @@ from typing import Any
 
 SCHEMA_VERSION = "adr-implementation-audit/v1"
 ALLOWLIST_PATH = "manifests/adr-implementation-runtime-allowlist.yaml"
-ADR_GLOB = "docs/adrs/ADR-*.md"
+ADR_GLOB = "docs/02-Decisions/adrs/ADR-*.md"
 
 
 def _resolve_project_dir(arg: str | None) -> Path:

@@ -5,7 +5,7 @@
 # When code lands that may close a pending-truth item, emit additionalContext
 # suggesting the operator/agent mark the source plan checkbox.
 # Non-blocking; nudge only.
-# STAGING: not yet deployed to hooks/. See docs/runbooks/adr-273-slice-c-staging/README.md
+# STAGING: not yet deployed to hooks/. See docs/05-Methodology/runbooks/adr-273-slice-c-staging/README.md
 
 set -uo pipefail
 
@@ -15,7 +15,7 @@ source "$(dirname "$0")/_lib/common.sh" 2>/dev/null || true
 type check_disabled_env >/dev/null 2>&1 && check_disabled_env "pending-truth-drift-detector"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
-LEDGER="$PROJECT_DIR/docs/reports/pending-truth-latest.json"
+LEDGER="$PROJECT_DIR/docs/06-Daily/reports/pending-truth-latest.json"
 
 [ -f "$LEDGER" ] || exit 0
 

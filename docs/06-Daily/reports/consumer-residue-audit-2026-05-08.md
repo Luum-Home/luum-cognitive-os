@@ -22,7 +22,7 @@ Out of scope: commit author/committer metadata. This audit did not rewrite histo
 
 The audit used three layers:
 
-1. Manifest/config review: `manifests/history-sanitization.yaml` and `docs/runbooks/cos-history-sanitization.md`.
+1. Manifest/config review: `manifests/history-sanitization.yaml` and `docs/05-Methodology/runbooks/cos-history-sanitization.md`.
 2. Exact tracked-`HEAD` scans with `git grep` for public regex classes and known suspicious consumer/service token classes.
 3. Reachable-history scans using `git rev-list --all`, `git cat-file --batch-check`, and `git cat-file --batch` over small reachable blobs, plus `git log --all -G` for macOS project-path diffs.
 
@@ -35,13 +35,13 @@ The current shell had zero `COS_HISTORY_SANITIZE_*` values set, so the manifest-
 Status: partially fixed in the working tree; still present in committed `HEAD` and history until committed/rewrite-scanned.
 
 - A known suspicious consumer service-name token class (`token_hash=ef60af13a829`) appeared in tracked `HEAD` in two files.
-- One occurrence is in the explicit retained case-study surface: `docs/business/case-study.md`.
-- One occurrence was a generic architecture instruction in `docs/stress-test-strategy.md`; this was safe to redact content-only and has been changed to `reference-service` in the working tree.
+- One occurrence is in the explicit retained case-study surface: `docs/08-References/business/case-study.md`.
+- One occurrence was a generic architecture instruction in `docs/09-Quality/root/stress-test-strategy.md`; this was safe to redact content-only and has been changed to `reference-service` in the working tree.
 - After the working-tree redaction, `git grep -I -n -i -F <raw-token> -- .` finds only the retained case-study occurrence.
 
 Recommended action:
 
-- Commit the content-only redaction in `docs/stress-test-strategy.md`.
+- Commit the content-only redaction in `docs/09-Quality/root/stress-test-strategy.md`.
 - If public history must be zero-hit outside retained case-study material, run the manifest-backed rewrite with the private value assigned to one of:
   - `COS_HISTORY_SANITIZE_CONSUMER_SERVICE`
   - `COS_HISTORY_SANITIZE_CONSUMER_SERVICE_2`
@@ -81,7 +81,7 @@ Recommended action:
 Status: historical residue; no current `HEAD` hit found by focused `git grep`.
 
 - Focused `HEAD` scan for `/Users/.../(Projects|projects)/...` returned no current tracked-file hits.
-- `git log --all -G'/Users/.../(Projects|projects)/...' --name-only` shows reachable historical diffs touching old docs/rules/scanner files, including `docs/HOW-TO-USE-COS.md`, harness-adoption audit docs, legacy `.claude/rules/cos/*`, `docs/testing/README.md`, `lib/confidentiality_scanner.py`, and `rules/confidentiality-protection.md`.
+- `git log --all -G'/Users/.../(Projects|projects)/...' --name-only` shows reachable historical diffs touching old docs/rules/scanner files, including `docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md`, harness-adoption audit docs, legacy `.claude/rules/cos/*`, `docs/09-Quality/testing/README.md`, `lib/confidentiality_scanner.py`, and `rules/confidentiality-protection.md`.
 
 Recommended action:
 
@@ -136,8 +136,8 @@ git log --all -G'<home>/.../(Projects|projects)/...' --name-only --pretty=format
 
 ## Remaining findings
 
-1. Retained case-study consumer-token occurrence remains in `docs/business/case-study.md` by current policy.
-2. Committed `HEAD` and reachable history still contain the redacted `docs/stress-test-strategy.md` token until the working-tree change is committed and/or history is rewritten.
+1. Retained case-study consumer-token occurrence remains in `docs/08-References/business/case-study.md` by current policy.
+2. Committed `HEAD` and reachable history still contain the redacted `docs/09-Quality/root/stress-test-strategy.md` token until the working-tree change is committed and/or history is rewritten.
 3. Reachable history still has macOS project-path diffs unless `COS_HISTORY_SANITIZE_HOME_PREFIX` and `COS_HISTORY_SANITIZE_REPO_PATH` are used in the history rewrite.
 4. Exact private configured-token proof remains pending because this shell had no private `COS_HISTORY_SANITIZE_*` values loaded.
 

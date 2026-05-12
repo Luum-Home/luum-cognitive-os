@@ -166,7 +166,7 @@ into architecture readiness as `runtime-hook-reality`.
 `lifecycle_state: demoted`. The hook remains in the repository for opt-in task
 systems, but it is no longer projected by default and no longer counts toward the
 active/default-visible surface. Proof is documented in
-`docs/reports/lifecycle-demotion-task-completed-2026-05-03.md`.
+`docs/06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md`.
 
 This does not mean every hook is product-core. Many projected hooks remain
 `lab`/`sandbox` or advisory because this repository is the maintainer runtime,
@@ -200,7 +200,7 @@ blocking unsafe state. The hard compaction path remains
 The hook remains available for opt-in maintainer sessions, but it is no longer
 projected by default in `.claude/settings.json`. Candidate resolution is
 documented in
-`docs/reports/second-demotion-candidate-resolution-2026-05-03.md`.
+`docs/06-Daily/reports/second-demotion-candidate-resolution-2026-05-03.md`.
 
 After this transition, the lifecycle governor has repeated demotion behavior
 (`demotion_count >= 2`), but the ROI dashboard still has not signed a demotion

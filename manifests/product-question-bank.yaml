@@ -22,10 +22,10 @@ questions:
     - positioning
     approved_sources:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/product-messaging.md
-    - docs/business/cos-vs-vanilla-dx-review.md
-    - docs/business/value-proposition.md
-    - docs/architecture/agentic-kernel-philosophy.md
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
+    - docs/08-References/business/value-proposition.md
+    - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
     related_claims:
     - differentiator_behavioral_governance
     - claim_verification_wedge
@@ -71,8 +71,8 @@ questions:
     - tracing
     approved_sources:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/feature-reality-audit.md
-    - docs/business/product-messaging.md
+    - docs/08-References/business/feature-reality-audit.md
+    - docs/08-References/business/product-messaging.md
     related_claims:
     - generic_tracing_is_not_unique
     - cross_harness_behavioral_intelligence
@@ -104,11 +104,11 @@ questions:
     - existing
     - answer
     approved_sources:
-    - docs/adrs/ADR-120-conversation-to-primitive-harvester.md
-    - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
-    - docs/adrs/ADR-206-aspirational-claim-decommission-gate.md
-    - docs/architecture/primitive-fitness-evaluation-contract.md
-    - docs/architecture/claim-verification-matrix.md
+    - docs/02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md
+    - docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+    - docs/02-Decisions/adrs/ADR-206-aspirational-claim-decommission-gate.md
+    - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+    - docs/04-Concepts/architecture/claim-verification-matrix.md
     related_claims:
     - claim_verification_wedge
     - governed_self_improvement
@@ -147,10 +147,10 @@ questions:
     - comercial
     - commercial
     approved_sources:
-    - docs/adrs/ADR-280-product-question-to-evidence-primitive.md
-    - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
-    - docs/adrs/ADR-206-aspirational-claim-decommission-gate.md
-    - docs/architecture/primitive-fitness-evaluation-contract.md
+    - docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md
+    - docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+    - docs/02-Decisions/adrs/ADR-206-aspirational-claim-decommission-gate.md
+    - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
     related_claims:
     - product_answer_primitive
     - governed_self_improvement
@@ -183,8 +183,8 @@ questions:
     - frase
     approved_sources:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/product-messaging.md
-    - docs/business/value-proposition.md
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/value-proposition.md
     related_claims:
     - differentiator_behavioral_governance
     - claim_verification_wedge
@@ -218,8 +218,8 @@ questions:
     - go-to-market
     approved_sources:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/value-proposition.md
-    - docs/business/cos-vs-vanilla-dx-review.md
+    - docs/08-References/business/value-proposition.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
     related_claims:
     - icp_vp_engineering
     - differentiator_behavioral_governance
@@ -297,11 +297,11 @@ questions:
     - comparison
     approved_sources:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/feature-reality-audit.md
-    - docs/business/product-messaging.md
-    - docs/reports/external-tools-radar-INDEX.md
-    - docs/vs-alternatives.md
-    - docs/component-sources.md
+    - docs/08-References/business/feature-reality-audit.md
+    - docs/08-References/business/product-messaging.md
+    - docs/06-Daily/reports/external-tools-radar-INDEX.md
+    - docs/08-References/root/vs-alternatives.md
+    - docs/04-Concepts/root/component-sources.md
     related_claims:
     - competitor_positioning_factcheck_required
     - generic_tracing_is_not_unique
@@ -348,10 +348,10 @@ questions:
     - throwaway
     - exploratory
     approved_sources:
-    - docs/business/cos-vs-vanilla-dx-review.md
-    - docs/vs-alternatives.md
-    - docs/adoption-tiers.md
-    - docs/auto-repair-system.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
+    - docs/08-References/root/vs-alternatives.md
+    - docs/08-References/root/adoption-tiers.md
+    - docs/04-Concepts/root/auto-repair-system.md
     related_claims:
     - vanilla_boundary
     - differentiator_behavioral_governance
@@ -392,15 +392,15 @@ questions:
     - ide
     - tui
     approved_sources:
-    - docs/getting-started-quick.md
-    - docs/README.md
-    - docs/adrs/ADR-172-multi-surface-ui-architecture.md
-    - docs/adrs/ADR-193-cosd-local-network-api.md
-    - docs/adrs/ADR-194-cosd-secure-remote-api.md
-    - docs/adrs/ADR-211-service-mode-readiness-gate.md
-    - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
-    - docs/dashboard-architecture.md
-    - docs/onboarding-wizard-design.md
+    - docs/00-MOCs/entrypoints/getting-started-quick.md
+    - docs/00-MOCs/entrypoints/README.md
+    - docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md
+    - docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md
+    - docs/02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md
+    - docs/02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md
+    - docs/01-Build-Log/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+    - docs/04-Concepts/root/dashboard-architecture.md
+    - docs/04-Concepts/root/onboarding-wizard-design.md
     related_claims:
     - runtime_surfaces_cli_ui_service
     - service_mode_readiness_partial
@@ -439,10 +439,10 @@ questions:
     - alternatives
     - en su lugar
     approved_sources:
-    - docs/vs-alternatives.md
-    - docs/component-sources.md
-    - docs/business/competitive-reassessment-openclaw-hermes-2026-04.md
-    - docs/reports/external-tools-radar-INDEX.md
+    - docs/08-References/root/vs-alternatives.md
+    - docs/04-Concepts/root/component-sources.md
+    - docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md
+    - docs/06-Daily/reports/external-tools-radar-INDEX.md
     related_claims:
     - alternative_complementarity
     - competitor_positioning_factcheck_required
@@ -492,12 +492,12 @@ questions:
     - openclaw
     - hermes
     approved_sources:
-    - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
-    - docs/architecture/primitive-harvester.md
-    - docs/adrs/ADR-083-governed-self-improvement-loop.md
-    - docs/architecture/primitive-fitness-evaluation-contract.md
-    - docs/architecture/key-learnings-capture-self-improvement.md
-    - docs/architecture/memory-lifecycle.md
+    - docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md
+    - docs/04-Concepts/architecture/primitive-harvester.md
+    - docs/02-Decisions/adrs/ADR-083-governed-self-improvement-loop.md
+    - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+    - docs/04-Concepts/architecture/key-learnings-capture-self-improvement.md
+    - docs/04-Concepts/architecture/memory-lifecycle.md
     - skills/primitive-harvester/SKILL.md
     - skills/primitive-authoring/SKILL.md
     - skills/analyze-improvements/SKILL.md

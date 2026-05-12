@@ -2,9 +2,9 @@
 title: Memory Layer Evolution SDD
 status: sdd-started
 date: 2026-05-08
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 source_reports:
-  - docs/reports/cross-check-A-memory-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md
 related_tools: [Graphiti, LightRAG, HippoRAG, MIRIX, DSPy]
 ---
 

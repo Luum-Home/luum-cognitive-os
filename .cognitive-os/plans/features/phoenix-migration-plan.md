@@ -1,6 +1,6 @@
 # Phoenix Migration Plan — Langfuse → Arize Phoenix
 
-> Canonical ADR: `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`
+> Canonical ADR: `docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`
 > Created: 2026-04-24
 > Owner column values: `operator` = human maintainer (decision-making + ops).
 > Status values: `pending` | `in-progress` | `done` | `blocked`.
@@ -19,7 +19,7 @@ deprecate Langfuse, adopt Arize Phoenix (`mode: pip`, no Docker).
 | # | Task | Owner | Status | Dependency | Exit criterion |
 |---|------|-------|--------|------------|----------------|
 | 0.1 | Stop all 6 `cognitive-os-langfuse-*` containers | operator | done | — | `docker ps --filter name=cognitive-os-langfuse` empty |
-| 0.2 | Write ADR-058 | operator | done | — | `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md` exists |
+| 0.2 | Write ADR-058 | operator | done | — | `docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md` exists |
 | 0.3 | Update `infrastructure-service-catalog.md` (Langfuse deprecated, Phoenix added, decision log) | operator | done | 0.2 | Langfuse row reads `Deprecated (phase 2 removal) — see ADR-058`; phoenix row present |
 | 0.4 | Update `cognitive-os.yaml` (Langfuse `status: deprecated`, new `phoenix:` entry) | operator | done | 0.2 | `grep "phoenix:" cognitive-os.yaml` matches; langfuse has `status: deprecated` |
 | 0.5 | Append §Decision to `observability-backend-evaluation-2026-04-24.md` | operator | done | 0.2 | §Decision heading present at end of doc |
@@ -80,5 +80,5 @@ re-running the historical `scripts/setup-langfuse.sh` manually.
 
 - ADR-058 — canonical decision and rationale
 - ADR-034 — predecessor observability backend selection (now partially superseded)
-- `docs/architecture/observability-backend-evaluation-2026-04-24.md` §Decision (2026-04-24 pin)
-- `docs/architecture/infrastructure-service-catalog.md` — services table + decision logs
+- `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md` §Decision (2026-04-24 pin)
+- `docs/04-Concepts/architecture/infrastructure-service-catalog.md` — services table + decision logs

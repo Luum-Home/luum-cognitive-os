@@ -39,12 +39,12 @@ Six local stashes exist on the active branch. They are auto-pre-agent snapshots 
 
 | Stash | Files | File-list digest | First paths |
 |---|---:|---|---|
-| `stash@{0}` | 47 | `453724efda38` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/INDEX.md, M	docs/adrs/ADR-043-paperclip-local-daemon.md, M	docs/adrs/ADR-044-context-payload-slimming.md` |
-| `stash@{1}` | 47 | `453724efda38` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/INDEX.md, M	docs/adrs/ADR-043-paperclip-local-daemon.md, M	docs/adrs/ADR-044-context-payload-slimming.md` |
-| `stash@{2}` | 47 | `453724efda38` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/INDEX.md, M	docs/adrs/ADR-043-paperclip-local-daemon.md, M	docs/adrs/ADR-044-context-payload-slimming.md` |
-| `stash@{3}` | 42 | `c27610b7448d` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/INDEX.md, M	docs/adrs/ADR-043-paperclip-local-daemon.md, M	docs/adrs/ADR-044-context-payload-slimming.md` |
-| `stash@{4}` | 42 | `c27610b7448d` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/INDEX.md, M	docs/adrs/ADR-043-paperclip-local-daemon.md, M	docs/adrs/ADR-044-context-payload-slimming.md` |
-| `stash@{5}` | 40 | `5f489c0a4c75` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/INDEX.md, M	docs/adrs/ADR-043-paperclip-local-daemon.md, M	docs/adrs/ADR-044-context-payload-slimming.md` |
+| `stash@{0}` | 47 | `453724efda38` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/00-MOCs/entrypoints/INDEX.md, M	docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md, M	docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` |
+| `stash@{1}` | 47 | `453724efda38` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/00-MOCs/entrypoints/INDEX.md, M	docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md, M	docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` |
+| `stash@{2}` | 47 | `453724efda38` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/00-MOCs/entrypoints/INDEX.md, M	docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md, M	docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` |
+| `stash@{3}` | 42 | `c27610b7448d` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/00-MOCs/entrypoints/INDEX.md, M	docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md, M	docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` |
+| `stash@{4}` | 42 | `c27610b7448d` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/00-MOCs/entrypoints/INDEX.md, M	docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md, M	docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` |
+| `stash@{5}` | 40 | `5f489c0a4c75` | `M	CHANGELOG.md, M	README.md, M	VERSION, M	cognitive-os.yaml, M	docker-compose.cognitive-os.yml, M	docs/00-MOCs/entrypoints/INDEX.md, M	docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md, M	docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` |
 
 ## Notable findings
 
@@ -73,94 +73,94 @@ Six local stashes exist on the active branch. They are auto-pre-agent snapshots 
 | ` M` | `cognitive-os.yaml` | `other` | `REJECT_MALFORMED_OR_STALE_CONFIG_DRIFT` | Diff shows stale/malformed fragments and omitted newer governance hooks; keep active branch config. |
 | ` M` | `dashboard/ARCHIVED.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
 | ` M` | `docker-compose.cognitive-os.yml` | `other` | `REJECT_MALFORMED_OR_STALE_CONFIG_DRIFT` | Diff shows stale/malformed fragments and omitted newer governance hooks; keep active branch config. |
-| ` M` | `docs/INDEX.md` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
-| ` M` | `docs/SESSION-ADR-CLOSURE-2026-05-04.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/acc/latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-009-package-architecture.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-018-docker-to-pip-migration.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-027.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-042-valkey-local-daemon.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` D` | `docs/adrs/ADR-043-paperclip-local-daemon.md` | `rejected-surface` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
-| ` M` | `docs/adrs/ADR-045-postgres-local-daemon.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-091-headless-clustered-runtime-direction.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-092-harness-skills-sync-path.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-093-simplify-profiles.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-169-dashboard-formal-demotion.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
-| ` M` | `docs/architecture.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/FROZEN-BACKLOG.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/POST-MORTEM-2026-04.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/core-vs-extensions-audit-2026-04-20.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/core-vs-extensions.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/functional-audit/scorecard-hooks.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/functional-audit/scorecard-packages-squads-agents.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/functional-audit/scorecard-skills.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/harness-adoption-gap/diagnosis.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/host-cli-bridge-security-boundary.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/infrastructure-service-catalog.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/plans-reconciliation-2026-04-21.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/service-control-plane-implementation-plan.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/architecture/tooling-stack-rationalization.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/archive/plans/docs-hook-rule-candidates.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/archive/plans/docs-rescan-results.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/competitive-analysis.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/component-audit.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/component-sources.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/dashboard-architecture.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/faq.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/getting-started.md` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
-| ` M` | `docs/hook-security-profiles.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/manual-tests/local-connected-systems-validation.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/manual-tests/remote-control-plane-boundary.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/manual-tests/task-lifecycle-worktree-pr-flow.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/multi-model-factory.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/onboarding-wizard-design.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/00-MOCs/entrypoints/INDEX.md` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
+| ` M` | `docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/01-Build-Log/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/07-Capabilities/acc/latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-009-package-architecture.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-018-docker-to-pip-migration.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-027.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` D` | `docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md` | `rejected-surface` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
+| ` M` | `docs/02-Decisions/adrs/ADR-045-postgres-local-daemon.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-093-simplify-profiles.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-169-dashboard-formal-demotion.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
+| ` M` | `docs/04-Concepts/architecture.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/FROZEN-BACKLOG.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/POST-MORTEM-2026-04.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/core-vs-extensions.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/functional-audit/scorecard-skills.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/host-cli-bridge-security-boundary.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/infrastructure-service-catalog.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/architecture/tooling-stack-rationalization.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/99-Archive/archive/plans/docs-hook-rule-candidates.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/99-Archive/archive/plans/docs-rescan-results.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/08-References/root/competitive-analysis.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/root/component-audit.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/component-sources.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/dashboard-architecture.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/00-MOCs/entrypoints/faq.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/00-MOCs/entrypoints/getting-started.md` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
+| ` M` | `docs/09-Quality/root/hook-security-profiles.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/09-Quality/manual-tests/local-connected-systems-validation.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/09-Quality/manual-tests/remote-control-plane-boundary.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/09-Quality/manual-tests/task-lifecycle-worktree-pr-flow.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/multi-model-factory.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/onboarding-wizard-design.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
 | ` D` | `docs/paperclip-integration.md` | `rejected-surface` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
-| ` M` | `docs/plug-and-play.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/release/v1.0-release-criteria.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/artifact-verification-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/aspirational-audit-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/aspirational-audit-2026-05-02.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/aspirational-audit-2026-05-03.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/aspirational-audit-2026-05-05.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/claim-proof-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/d1b-clients-todo.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/debt-register-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/docker-image-review-2026-05-04.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/docs-execution-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/docs-execution-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/hook-audit-2026-04.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/metrics-census.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/next-session-handoff-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` D` | `docs/reports/paperclip-integration-audit-2026-05-05.md` | `rejected-surface,generated-or-report` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
-| ` D` | `docs/reports/paperclip-live-smoke-2026-05-05.md` | `rejected-surface,generated-or-report` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
-| ` M` | `docs/reports/pre-existing-test-failures-2026-04-21.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-coverage-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-coverage-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-duplication-triage-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-readiness-ledger-hooks-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-readiness-ledger-hooks-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-readiness-ledger-rules-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-readiness-ledger-scripts-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-readiness-ledger-scripts-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-readiness-ledger-skills-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/primitive-row-audit-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/prune-triage-2026-05-01.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/punch-list-hooks.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/reconciliation-audit-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/remote-control-plane-alternatives-2026-05-05.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/test-suite-repair-ledger-2026-04-24.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/reports/validation-worktree-mutation-postmortem-2026-05-02.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/roadmap.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/self-usage-audit.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/setup/dependencies.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/testing.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/tool-stack.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| ` M` | `docs/ui-platforms-evaluation.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/plug-and-play.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/01-Build-Log/release/v1.0-release-criteria.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/artifact-verification-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/aspirational-audit-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/aspirational-audit-2026-05-02.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/aspirational-audit-2026-05-03.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/aspirational-audit-2026-05-05.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/claim-proof-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/d1b-clients-todo.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/debt-register-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/docker-image-review-2026-05-04.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/docs-execution-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/docs-execution-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/hook-audit-2026-04.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/metrics-census.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/next-session-handoff-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` D` | `docs/06-Daily/reports/paperclip-integration-audit-2026-05-05.md` | `rejected-surface,generated-or-report` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
+| ` D` | `docs/06-Daily/reports/paperclip-live-smoke-2026-05-05.md` | `rejected-surface,generated-or-report` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
+| ` M` | `docs/06-Daily/reports/pre-existing-test-failures-2026-04-21.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-coverage-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-coverage-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-duplication-triage-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/primitive-row-audit-latest.json` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/prune-triage-2026-05-01.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/punch-list-hooks.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/reconciliation-audit-2026-04-20.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/reports/validation-worktree-mutation-postmortem-2026-05-02.md` | `generated-or-report` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/01-Build-Log/root/roadmap.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/06-Daily/root/self-usage-audit.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/05-Methodology/setup/dependencies.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/09-Quality/root/testing.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/tool-stack.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| ` M` | `docs/04-Concepts/root/ui-platforms-evaluation.md` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
 | ` M` | `env.example` | `other` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
 | ` D` | `hooks/_lib/paperclip-notify.sh` | `rejected-surface` | `NO_ACTION_PURGE_ALREADY_LANDED` | The active branch already removed active runtime/test/package files for the rejected surface. |
 | ` M` | `hooks/_lib/registration-allowlist.txt` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
@@ -246,17 +246,17 @@ Six local stashes exist on the active branch. They are auto-pre-agent snapshots 
 | ` M` | `tests/unit/test_reverse_engineer.py` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
 | ` M` | `tests/unit/test_skill_router.py` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
 | ` M` | `tests/unit/test_smart_infra.py` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
-| `??` | `docs/adrs/ADR-003-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| `??` | `docs/adrs/ADR-004-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| `??` | `docs/adrs/ADR-005-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| `??` | `docs/adrs/ADR-043-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| `??` | `docs/adrs/ADR-046-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| `??` | `docs/adrs/ADR-085-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
-| `??` | `docs/adrs/ADR-171-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
-| `??` | `docs/adrs/ADR-172-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
-| `??` | `docs/adrs/ADR-173-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
-| `??` | `docs/adrs/ADR-174-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
-| `??` | `docs/adrs/ADR-175-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
+| `??` | `docs/02-Decisions/adrs/ADR-003-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| `??` | `docs/02-Decisions/adrs/ADR-004-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| `??` | `docs/02-Decisions/adrs/ADR-005-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| `??` | `docs/02-Decisions/adrs/ADR-043-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| `??` | `docs/02-Decisions/adrs/ADR-046-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| `??` | `docs/02-Decisions/adrs/ADR-085-tombstone.md` | `adr-tombstone` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
+| `??` | `docs/02-Decisions/adrs/ADR-171-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
+| `??` | `docs/02-Decisions/adrs/ADR-172-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
+| `??` | `docs/02-Decisions/adrs/ADR-173-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
+| `??` | `docs/02-Decisions/adrs/ADR-174-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
+| `??` | `docs/02-Decisions/adrs/ADR-175-tombstone.md` | `adr-tombstone` | `REJECT_COLLIDES_WITH_ACTIVE_ADR_NUMBERS` | The active branch owns these ADR numbers with real decisions; tombstones would reintroduce the collision pattern. |
 | `??` | `manifests/skill-routing-coverage.yaml` | `skill-routing` | `REJECT_OR_ALREADY_SUPERSEDED_BY_ADR174_V2` | The active branch has the newer routing coverage/schema contract; session50 is older or identical. |
 | `??` | `scripts/adr_tombstone.py` | `adr-tombstone-tool` | `REJECT_OLDER_TOMBSTONE_TOOL` | The active branch has the safer tombstone tool that refuses active ADR replacement by default. |
 | `??` | `scripts/cos-adr-tombstone` | `adr-tombstone-tool` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |

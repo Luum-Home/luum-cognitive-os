@@ -12,7 +12,7 @@ checks:
     message: Shared bypass resolver is missing; hooks may keep divergent bypass semantics.
     paths:
       - hooks/_lib/bypass-resolver.sh
-      - docs/security/bypass-cheatsheet.md
+      - docs/09-Quality/security/bypass-cheatsheet.md
       - tests/behavior/test_bypass_resolver.py
 
   - id: bypass-target-hook-not-using-resolver

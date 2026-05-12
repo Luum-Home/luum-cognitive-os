@@ -33,7 +33,7 @@ A sub-agent in Wave C claimed "3 DELETE hooks already archived" in its commit me
 
 ### Layer 1 (Superficial) — Presence ≠ Removal Fallacy
 
-The sub-agent found 3 files in `docs/archive/hooks/` and concluded "DELETE done." It never ran the inverse verification: `ls hooks/completeness-check.sh`, `ls hooks/post-agent-verify.sh`, `ls hooks/prompt-quality.sh`. The files existed in both locations simultaneously. "Archive present" was confused for "original removed."
+The sub-agent found 3 files in `docs/99-Archive/archive/hooks/` and concluded "DELETE done." It never ran the inverse verification: `ls hooks/completeness-check.sh`, `ls hooks/post-agent-verify.sh`, `ls hooks/prompt-quality.sh`. The files existed in both locations simultaneously. "Archive present" was confused for "original removed."
 
 ### Layer 2 — Trust Score Measures Self-Report, Not Factuality
 
@@ -132,10 +132,10 @@ The operator's characterization was exact: false-done × sessions × time = expo
 
 ## REFERENCES
 
-- Incident: `docs/incidents/2026-05-02-false-done-compounding.md` (this file)
-- ADR-105: `docs/adrs/ADR-105-claim-verification-contract.md`
-- ADR-106: `docs/adrs/ADR-106-multi-session-safety-primitives.md`
-- Prior incident: `docs/incidents/2026-05-01-session-multi-spawn-hang.md`
+- Incident: `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md` (this file)
+- ADR-105: `docs/02-Decisions/adrs/ADR-105-claim-verification-contract.md`
+- ADR-106: `docs/02-Decisions/adrs/ADR-106-multi-session-safety-primitives.md`
+- Prior incident: `docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md`
 - Engram observation 16364: peer-card adversarial-review-fixes (Wave B fixer)
 - Commits: `983a97e5` (Wave A), `c7dbf21c` (Wave B), `c8987b7a` (Wave C false-done)
 - Concurrent session commits: `eaac243f`, `49c46c69`, `b1de3c40`

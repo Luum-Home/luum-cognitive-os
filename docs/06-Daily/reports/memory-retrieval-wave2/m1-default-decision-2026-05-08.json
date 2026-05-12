@@ -2,9 +2,9 @@
   "schema_version": "memory-default-decision/v1",
   "date": "2026-05-08",
   "question": "Should M1 temporal validity / supersession-aware retrieval become the default strategy?",
-  "baseline_report": "docs/reports/memory-retrieval-wave2/current-local-2026-05-08.json",
-  "candidate_report": "docs/reports/memory-retrieval-wave2/temporal-local-2026-05-08.json",
-  "comparison_report": "docs/reports/memory-retrieval-wave2/comparison-2026-05-08.json",
+  "baseline_report": "docs/06-Daily/reports/memory-retrieval-wave2/current-local-2026-05-08.json",
+  "candidate_report": "docs/06-Daily/reports/memory-retrieval-wave2/temporal-local-2026-05-08.json",
+  "comparison_report": "docs/06-Daily/reports/memory-retrieval-wave2/comparison-2026-05-08.json",
   "decision": {
     "default_flip": false,
     "keep_default": "current",

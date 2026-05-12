@@ -151,7 +151,7 @@ candidates, **out of scope for this ADR's Phase 1**:
 |---|---|---|---|
 | `rules/*.md` | `# Title`, `## Purpose`, `## Rule`, `## Contextual Trigger` sections | Required sections present on Write/Edit | All present in CI |
 | `hooks/*.sh` | Header comment with description, scope, exit codes, dependencies | Header present + executable bit set | Bash `set -euo pipefail`; no `cd` without restoring |
-| `docs/adrs/ADR-*.md` | `## Status`, `## Context`, `## Decision`, `## Consequences`, `## Alternatives rejected` | Required sections on Write/Edit | All present in CI; numbering monotonic |
+| `docs/02-Decisions/adrs/ADR-*.md` | `## Status`, `## Context`, `## Decision`, `## Consequences`, `## Alternatives rejected` | Required sections on Write/Edit | All present in CI; numbering monotonic |
 
 Phase 2 sequencing is opportunistic: when an analog incident occurs (e.g., an
 ADR ships missing `## Alternatives rejected`), elevate that artifact to the
@@ -279,7 +279,7 @@ Phase 2 extends the defense-in-depth pattern (template + hook + audit) from
 |---|---|---|---|
 | `rules/*.md` | `templates/rule-template.md` | `hooks/rule-frontmatter-validator.sh` | `tests/audit/test_rules_enforcement.py` (extended) |
 | `hooks/*.sh` | `templates/hook-template.sh` | `hooks/hook-header-validator.sh` | `tests/audit/test_hooks_contracts.py` (extended) |
-| `docs/adrs/ADR-*.md` | `templates/adr-template.md` | `hooks/adr-section-validator.sh` | `tests/audit/test_adr_contracts.py` (new) |
+| `docs/02-Decisions/adrs/ADR-*.md` | `templates/adr-template.md` | `hooks/adr-section-validator.sh` | `tests/audit/test_adr_contracts.py` (new) |
 
 Operator decisions ratified for Phase 2:
 - Hooks default to WARN; opt-in BLOCK via `COS_STRICT_RULE_VALIDATION=1` /
@@ -291,7 +291,7 @@ Operator decisions ratified for Phase 2:
 - ADR enforcement cutoff: ADR-067+. Pre-067 ADRs grandfathered.
 
 For the full research, operator triage decisions, and open questions resolved in
-Phase 2, see `docs/reports/adr-067-phase-2-2026-04-24.md`.
+Phase 2, see `docs/06-Daily/reports/adr-067-phase-2-2026-04-24.md`.
 
 ## Related
 

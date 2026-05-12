@@ -169,7 +169,7 @@ func (v *PromptQualityValidator) Validate(_ context.Context, hookCtx *hook.Conte
 		FixHint:     "Improve prompt quality before launching the agent.",
 		Reference: validator.Reference{
 			Code: "COS-QUAL-002",
-			URL:  "docs/architecture/cos-dispatch/prompt-quality.md",
+			URL:  "docs/04-Concepts/architecture/cos-dispatch/prompt-quality.md",
 		},
 		Details: map[string]string{
 			"score":         fmt.Sprintf("%d", total),

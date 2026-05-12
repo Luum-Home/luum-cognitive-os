@@ -53,7 +53,7 @@ and ship the next minor release. Two consecutive releases shipped today:
 - **2 sibling parsers had the SAME bug**:
   `lib/pattern_detector._parse_frontmatter_keys` +
   `lib/smart_access.get_skill_frontmatter`. Audit at
-  `docs/architecture/parser-coverage-audit-2026-04-24.md`.
+  `docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md`.
 - **17 `packages/*/hooks/` directories were missing `_lib` symlinks** —
   same latent bug as `quality-gates` (which crashed `completion-gate.sh`
   earlier today). All fixed in one pass + audit test added.
@@ -114,7 +114,7 @@ and ship the next minor release. Two consecutive releases shipped today:
 - 🔲 **125 unanswered operator decisions** surfaced by `/decision-triage`
   (33 classified as critical from today's research reports)
 - 🔲 **Research report dual-location**: `.cognitive-os/reports/research/`
-  (gitignored) vs `docs/reports/` — 3 reports duplicated in
+  (gitignored) vs `docs/06-Daily/reports/` — 3 reports duplicated in
   `/decision-triage` output. Unify next session.
 - 🔲 **ADR-067 Phase 2** implementation (defense-in-depth for rules/, hooks/,
   ADRs/) — research done, awaiting operator triage of ~15 decisions.
@@ -144,7 +144,7 @@ and ship the next minor release. Two consecutive releases shipped today:
 ## Relevant Files
 
 ### Released artifacts
-- `docs/adrs/ADR-{065,066,067,068,069}-*.md` — 5 architectural decisions
+- `docs/02-Decisions/adrs/ADR-{065,066,067,068,069}-*.md` — 5 architectural decisions
 - `skills/{repo-scout,radar-update,decision-triage,deps-update}/SKILL.md` — 4 new skills
 - `scripts/{radar_merge,decision_triage,deps-update}.py` — supporting implementations
 - `templates/skill-template.md`, `templates/agent-research-only.md` — canonical templates
@@ -154,13 +154,13 @@ and ship the next minor release. Two consecutive releases shipped today:
 - `.github/workflows/go-quality.yml` — Go CI
 
 ### Operator decisions awaiting triage
-- `docs/reports/cos-init-migration-2026-04-24.md`
-- `docs/reports/adr-067-phase-2-2026-04-24.md`
-- `docs/reports/python-major-bumps-2026-04-24.md`
+- `docs/06-Daily/reports/cos-init-migration-2026-04-24.md`
+- `docs/06-Daily/reports/adr-067-phase-2-2026-04-24.md`
+- `docs/06-Daily/reports/python-major-bumps-2026-04-24.md`
 
 ### Audits / analysis (read-only outputs)
-- `docs/architecture/parser-coverage-audit-2026-04-24.md`
-- `docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md`
+- `docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md`
+- `docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md`
 - `.cognitive-os/reports/deps-audit-2026-04-24.md`
 - `.cognitive-os/reports/claude-agent-sdk-surface-2026-04-24.md`
 

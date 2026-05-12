@@ -201,7 +201,7 @@ The wrapper now redirects stdout to stderr for diagnostic hooks on context-beari
 - Engram: `incident/2026-05-01-session-3-spawn-hang` (full RCA report from SRE agent)
 - ADR-071 §F8 (`profile-drift-autoapply.sh` design — should reference this incident in addendum)
 - ADR-088 (provenance marker — helps trace concurrent sub-agent sessions)
-- `docs/SESSION-HANDOFF-2026-05-01.md` §"Active incident" (operator-facing summary)
+- `docs/01-Build-Log/SESSION-HANDOFF-2026-05-01.md` §"Active incident" (operator-facing summary)
 - `tests/integration/test_profile_drift_autoapply_flock.py`
 - `tests/integration/test_settings_atomic_write.py`
 - `scripts/_lib/settings-driver-claude-code.sh` lines 377-390 (the fix)

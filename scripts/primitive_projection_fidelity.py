@@ -22,10 +22,10 @@ if str(ROOT) not in sys.path:
 from lib.primitive_contracts import load_contracts
 
 SCHEMA_VERSION = "primitive-projection-fidelity.v1"
-DEFAULT_COVERAGE = Path("docs/reports/primitive-harness-coverage-latest.json")
-DEFAULT_JSON = Path("docs/reports/primitive-projection-fidelity-latest.json")
-DEFAULT_MD = Path("docs/reports/primitive-projection-fidelity-latest.md")
-DEFAULT_OPENCODE_SMOKE = Path("docs/reports/opencode-primitive-adapter-smoke-latest.json")
+DEFAULT_COVERAGE = Path("docs/06-Daily/reports/primitive-harness-coverage-latest.json")
+DEFAULT_JSON = Path("docs/06-Daily/reports/primitive-projection-fidelity-latest.json")
+DEFAULT_MD = Path("docs/06-Daily/reports/primitive-projection-fidelity-latest.md")
+DEFAULT_OPENCODE_SMOKE = Path("docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.json")
 ENFORCED_FIDELITY = {"native-lifecycle-enforced", "governed-wrapper-enforced", "ci-enforced"}
 NON_ENFORCED_FIDELITY = {"structural-advisory", "documented-only", "unsupported"}
 PLUGIN_CAPABLE = "host-plugin-lifecycle-capable"

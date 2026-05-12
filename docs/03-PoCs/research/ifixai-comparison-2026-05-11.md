@@ -7,8 +7,8 @@ source-repo: ".cognitive-os/external-source-cache/iFixAi/ (Apache-2.0, v1.0.0 / 
 license_constraint: "Apache-2.0 — adoption allowed (with attribution), but pattern extraction is the preferred posture for evals (upstream-disclosed uncalibrated thresholds, open-core drift risk)."
 parent_phase: "Phase 10 — iFixAi deep annex set (extends Phase 8 shallow eval)"
 prior_artifacts:
-  - docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md
-  - docs/reports/external-tools-radar-ifixai-addendum-2026-05-11.md
+  - docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md
+  - docs/06-Daily/reports/external-tools-radar-ifixai-addendum-2026-05-11.md
 classification: "ASSESS / TRIAL-PATTERNS — pattern-only adoption, optional CLI-adapter behind manifest."
 ---
 

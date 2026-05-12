@@ -162,5 +162,5 @@ skill). IMPL/PARTIAL/ASPIR per the usual tri-state, advisory-only.
 2. Extend sdd-design (external) with a matching `--project-dir` arg?
    — Tracked as follow-up task; blocked on access to the external
    skill's repo.
-3. Should `rules-export` also mirror `docs/adrs/` as a snapshot? —
+3. Should `rules-export` also mirror `docs/02-Decisions/adrs/` as a snapshot? —
    Deferred; ADRs already have stable URLs, a snapshot may stale fast.

@@ -5,7 +5,7 @@
 ## Repo Navigation
 
 ```bash
-rg --files hooks lib cmd/cos internal/provider pkg/hook docs/business docs/architecture
+rg --files hooks lib cmd/cos internal/provider pkg/hook docs/08-References/business docs/04-Concepts/architecture
 rg -n "COGNITIVE_OS_PROJECT_DIR|CODEX_PROJECT_DIR|CLAUDE_PROJECT_DIR" hooks lib scripts cmd/cos
 rg -n "settings.json|hooks.json|COGNITIVE_OS_HARNESS" scripts cmd/cos hooks tests docs
 ```
@@ -30,7 +30,7 @@ python3 -m pytest tests/integration/test_project_settings_generation.py tests/be
 
 ```bash
 rg -n "governable|verifiable|portable|easy to adopt|hard to outgrow" README.md docs
-rg -n "squad|organization|control plane|dashboard" README.md docs/business docs/README.md
+rg -n "squad|organization|control plane|dashboard" README.md docs/08-References/business docs/00-MOCs/entrypoints/README.md
 ```
 
 ## Safe Search Targets By Theme
@@ -38,5 +38,5 @@ rg -n "squad|organization|control plane|dashboard" README.md docs/business docs/
 - bootstrap: `scripts/cos-init.sh`, `install.sh`, `hooks/self-install.sh`
 - portability: `lib/paths.py`, `lib/config_loader.py`, `lib/dispatch.py`, `lib/record_completion.py`, `cmd/cos/internal/installer/`
 - provider core: `internal/provider/`, `pkg/hook/context.go`
-- product wedge: `README.md`, `docs/business/`, `docs/README.md`
-- runtime contracts: `manifests/kernel-contract.yaml`, `docs/kernel-contract.md`
+- product wedge: `README.md`, `docs/08-References/business/`, `docs/00-MOCs/entrypoints/README.md`
+- runtime contracts: `manifests/kernel-contract.yaml`, `docs/04-Concepts/root/kernel-contract.md`

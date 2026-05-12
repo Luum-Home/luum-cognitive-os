@@ -111,7 +111,7 @@ func updateChangelog(content, version string) string {
 }
 
 // updateDocsIndex replaces the version reference in the first line heading of
-// docs/INDEX.md. The expected format is: "# ... — vX.Y.Z"
+// docs/00-MOCs/entrypoints/INDEX.md. The expected format is: "# ... — vX.Y.Z"
 func updateDocsIndex(content, newVersion string) string {
 	lines := strings.SplitN(content, "\n", 2)
 	if len(lines) == 0 {
@@ -318,7 +318,7 @@ func runRelease(cmd *cobra.Command, args []string) error {
 		fmt.Println("  Actions:")
 		fmt.Printf("    1. Update VERSION file to %s\n", targetVersion)
 		fmt.Println("    2. Update CHANGELOG.md (rename [Unreleased] section)")
-		fmt.Printf("    3. Update docs/INDEX.md version to v%s\n", targetVersion)
+		fmt.Printf("    3. Update docs/00-MOCs/entrypoints/INDEX.md version to v%s\n", targetVersion)
 		fmt.Printf("    4. git commit -m \"release: v%s\"\n", targetVersion)
 		fmt.Printf("    5. git tag v%s\n", targetVersion)
 		fmt.Println()
@@ -346,21 +346,21 @@ func runRelease(cmd *cobra.Command, args []string) error {
 		fmt.Printf("%s Updated CHANGELOG.md\n", ui.IconCheck)
 	}
 
-	// Step 2b: Update docs/INDEX.md version reference.
+	// Step 2b: Update docs/00-MOCs/entrypoints/INDEX.md version reference.
 	docsIndexPath := filepath.Join(projectRoot, "docs", "INDEX.md")
 	docsIndexData, err := os.ReadFile(docsIndexPath)
 	if err != nil {
-		fmt.Printf("%s docs/INDEX.md not found, skipping version update\n", ui.IconWarning)
+		fmt.Printf("%s docs/00-MOCs/entrypoints/INDEX.md not found, skipping version update\n", ui.IconWarning)
 	} else {
 		updated := updateDocsIndex(string(docsIndexData), targetVersion)
 		if err := os.WriteFile(docsIndexPath, []byte(updated), 0644); err != nil {
-			return fmt.Errorf("writing docs/INDEX.md: %w", err)
+			return fmt.Errorf("writing docs/00-MOCs/entrypoints/INDEX.md: %w", err)
 		}
-		fmt.Printf("%s Updated docs/INDEX.md version to v%s\n", ui.IconCheck, targetVersion)
+		fmt.Printf("%s Updated docs/00-MOCs/entrypoints/INDEX.md version to v%s\n", ui.IconCheck, targetVersion)
 	}
 
 	// Step 3: Git commit.
-	gitAdd := exec.Command("git", "add", "VERSION", "CHANGELOG.md", "docs/INDEX.md")
+	gitAdd := exec.Command("git", "add", "VERSION", "CHANGELOG.md", "docs/00-MOCs/entrypoints/INDEX.md")
 	gitAdd.Dir = projectRoot
 	if out, err := gitAdd.CombinedOutput(); err != nil {
 		return fmt.Errorf("git add failed: %w\n%s", err, string(out))

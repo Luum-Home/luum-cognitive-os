@@ -3,7 +3,7 @@
 """ADR Router — Suggest relevant Architecture Decision Records from prompt context.
 
 Analogous to ``lib/skill_router.py`` (ADR-174) and ``lib/rule_router.py`` (ADR-179),
-but for ADRs under ``docs/adrs/``. See ADR-181.
+but for ADRs under ``docs/02-Decisions/adrs/``. See ADR-181.
 
 Each ADR may have YAML frontmatter::
 

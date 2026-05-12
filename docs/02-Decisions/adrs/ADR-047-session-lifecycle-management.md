@@ -263,7 +263,7 @@ a prompt submit = first observable activity = TTFT satisfied.
 
 > Status: NOT YET IMPLEMENTED. This is an independent workstream that can proceed
 > in parallel with Phase A or Phase B. Feasibility research landed in
-> `docs/research/engram-mcp-sharing-feasibility-2026-04-20.md` (verdict: shared-socket
+> `docs/03-PoCs/research/engram-mcp-sharing-feasibility-2026-04-20.md` (verdict: shared-socket
 > INFEASIBLE with current binary — semaphore approach remains the chosen path).
 
 **Decision**: adopt a **semaphore** limiting concurrent `engram mcp` children,
@@ -368,7 +368,7 @@ all_activity_stale(session) =
 
 ### Acceptance Criteria for Phase B Activation
 
-1. `grep -c "parent_dead_or_orphaned" docs/adrs/ADR-047-session-lifecycle-management.md` ≥ 2
+1. `grep -c "parent_dead_or_orphaned" docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md` ≥ 2
 2. `hooks/session-heartbeat.sh` exists, is executable, and is registered in `scripts/apply-efficiency-profile.sh`
 3. `should_kill()` exported from `scripts/so_session_watchdog.py` with all 4 checks
 4. All 6 new unit tests pass: `python3 -m pytest tests/unit/test_session_watchdog.py -v`

@@ -1,1 +1,0 @@
-07-Capabilities/root/agent-capability-coverage.md

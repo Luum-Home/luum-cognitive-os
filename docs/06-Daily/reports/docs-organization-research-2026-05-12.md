@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-AI-native documentation in 2026 must serve two equal audiences: human contributors and LLM coding agents (Claude Code, Cursor, Aider, Codex). Research across five threads shows that no single framework dominates — Diátaxis wins for user-facing product docs, vault-numbered schemas win for engineering knowledge bases, and a thin AI-consumability layer (llms.txt + AGENTS.md) is the lowest-friction add-on that yields the largest agent-performance gain. The single most important finding from an ETH Zurich study is that **LLM-generated context files reduce task success rates by ~3% while increasing inference costs 20%** — human-curated, concise instruction files outperform by ~4 percentage points. For this repo's 1,135-file docs tree, the top priority is eliminating the `archive/` vs `archived/` split, capping ADR sprawl (currently 281 ADRs), and publishing a root-level `docs/INDEX.md` that doubles as the `llms.txt` seed.
+AI-native documentation in 2026 must serve two equal audiences: human contributors and LLM coding agents (Claude Code, Cursor, Aider, Codex). Research across five threads shows that no single framework dominates — Diátaxis wins for user-facing product docs, vault-numbered schemas win for engineering knowledge bases, and a thin AI-consumability layer (llms.txt + AGENTS.md) is the lowest-friction add-on that yields the largest agent-performance gain. The single most important finding from an ETH Zurich study is that **LLM-generated context files reduce task success rates by ~3% while increasing inference costs 20%** — human-curated, concise instruction files outperform by ~4 percentage points. For this repo's 1,135-file docs tree, the top priority is eliminating the `archive/` vs `archived/` split, capping ADR sprawl (currently 281 ADRs), and publishing a root-level `docs/00-MOCs/entrypoints/INDEX.md` that doubles as the `llms.txt` seed.
 
 ---
 
@@ -42,7 +42,7 @@ The numbered-prefix vault schema (00-MOCs, 01-Build-Log, 02-Decisions, 03-PoCs, 
 2. **Link stability suffers** — AI agents that cache or index paths break when the tree shifts
 3. **Most GitHub vault templates** (DuskWasHere, BryanHogan, Berteaux) have already dropped numbered prefixes in favor of semantic names by 2024
 
-The MOC (Map of Content) concept is still valuable as a **navigation artifact**, not a directory naming scheme. A `docs/INDEX.md` with explicit category sections achieves the same orientation without the rename penalty.
+The MOC (Map of Content) concept is still valuable as a **navigation artifact**, not a directory naming scheme. A `docs/00-MOCs/entrypoints/INDEX.md` with explicit category sections achieves the same orientation without the rename penalty.
 
 **Johnny.Decimal** is numerically rigorous: 10 areas, each with up to 10 categories, giving a two-digit code (e.g., `22.04`). It enables memorizable addresses but is brittle in collaborative repos where PR reviewers can't share the mental model.
 
@@ -50,7 +50,7 @@ The MOC (Map of Content) concept is still valuable as a **navigation artifact**,
 - `docs/projects/` → active work
 - `docs/areas/` → ongoing concerns (architecture, security)
 - `docs/resources/` → reference material
-- `docs/archive/` → completed, read-only
+- `docs/99-Archive/archive/` → completed, read-only
 
 The PARA Archive is **singular** — not `archive/` AND `archived/`.
 
@@ -81,7 +81,7 @@ The compass model (action↔cognition × study↔work) makes content type determ
 - Internal research and proposals
 - Operational runbooks that are also AI-agent instructions
 
-**Verdict**: Use Diátaxis for `docs/getting-started/`, `docs/guides/`, `docs/reference/`. Use vault/PARA or a flat semantic structure for the engineering-internal material.
+**Verdict**: Use Diátaxis for `docs/05-Methodology/getting-started/`, `docs/05-Methodology/guides/`, `docs/reference/`. Use vault/PARA or a flat semantic structure for the engineering-internal material.
 
 **Source**: [diataxis.fr](https://diataxis.fr/); [Canonical adoption](https://ubuntu.com/blog/diataxis-a-new-foundation-for-canonical-documentation); [Python adoption](https://discuss.python.org/t/adopting-the-diataxis-framework-for-python-documentation/15072); [Sequin blog](https://blog.sequinstream.com/we-fixed-our-documentation-with-the-diataxis-framework/)
 
@@ -96,7 +96,7 @@ The compass model (action↔cognition × study↔work) makes content type determ
 - Companion: `llms-full.txt` concatenates all linked pages for deep ingestion
 - ~10% of websites have it by May 2026; Anthropic, Stripe, Cursor, Cloudflare ship examples
 - **Critical finding**: A 300,000-domain study (SERanking, November 2025) found `llms.txt` adds "noise rather than predictive signal" for AI citations in search. Real value is for **IDE agents** (Cursor, Continue, Cline) — not web crawlers
-- For a `docs/` tree, the equivalent is a `docs/INDEX.md` or `docs/llms.txt` pointing to subdirectories
+- For a `docs/` tree, the equivalent is a `docs/00-MOCs/entrypoints/INDEX.md` or `docs/llms.txt` pointing to subdirectories
 
 **AGENTS.md (now under Linux Foundation / Agentic AI Foundation, donated December 2025)**:
 - Hierarchical merging: nested files override parents; user prompts override files
@@ -131,17 +131,17 @@ The compass model (action↔cognition × study↔work) makes content type determ
 ### Finding 5: Anti-Patterns — The Most Damaging Are Duplication, ADR Sprawl, and Stale Structural Maps
 **Confidence**: medium-high (75/100)
 
-**1. Duplicate archive directories** (`archive/` AND `archived/`): This repo has both, with only 3 items each. This is the canonical "broken window" anti-pattern — contributors don't know which to use, so both accumulate inconsistently. **Fix**: merge into single `docs/archive/`, resolve in one PR.
+**1. Duplicate archive directories** (`archive/` AND `archived/`): This repo has both, with only 3 items each. This is the canonical "broken window" anti-pattern — contributors don't know which to use, so both accumulate inconsistently. **Fix**: merge into single `docs/99-Archive/archive/`, resolve in one PR.
 
 **2. ADR sprawl beyond ~50-100**: This repo has **281 ADRs**. Known problems at this scale:
 - Discovery cost grows linearly — agents context-spending to find relevant ADRs
 - Cross-referencing degrades (superseded chains become long)
 - Cognitive load prevents humans from reading the ADR log as intended
-- Best practice: Never edit accepted ADRs; write a new superseding ADR and link back. Change old status to `Superseded by ADR-NNN`. No hard limit exists in the literature, but teams report pain after ~50-100 active (non-superseded) ADRs. The solution is aggressive supersession + a `docs/adrs/INDEX.md` that lists only active decisions.
+- Best practice: Never edit accepted ADRs; write a new superseding ADR and link back. Change old status to `Superseded by ADR-NNN`. No hard limit exists in the literature, but teams report pain after ~50-100 active (non-superseded) ADRs. The solution is aggressive supersession + a `docs/02-Decisions/adrs/INDEX.md` that lists only active decisions.
 
 **3. Deep nesting (>3 levels)**: LLMs lose orientation. This repo has 34 subdirectories at depth-1 which is acceptable; problems arise if subdirectories nest further.
 
-**4. README-everywhere vs. single-source-of-truth**: Each subdirectory having its own README creates update burden and contradictions. The alternative is a central `docs/INDEX.md` with explicit subdirectory descriptions, and only one root `README.md` at the repo root.
+**4. README-everywhere vs. single-source-of-truth**: Each subdirectory having its own README creates update burden and contradictions. The alternative is a central `docs/00-MOCs/entrypoints/INDEX.md` with explicit subdirectory descriptions, and only one root `README.md` at the repo root.
 
 **5. Stale doc detection**:
 - Git age: `git log --diff-filter=M --format="%ai %s" -- docs/**/*.md | sort` surfaces files not touched in >6 months
@@ -149,7 +149,7 @@ The compass model (action↔cognition × study↔work) makes content type determ
 - Broken links: tools like `markdown-link-check` or `lychee` (Rust) run in CI
 - The anti-pattern is treating stale docs as authoritative — agents will quote them confidently
 
-**6. 119 loose .md files at docs root**: This is the most urgent structural problem. Agents and humans scanning the directory see noise. These files should be routed to semantic subdirectories or surfaced only through `docs/INDEX.md`.
+**6. 119 loose .md files at docs root**: This is the most urgent structural problem. Agents and humans scanning the directory see noise. These files should be routed to semantic subdirectories or surfaced only through `docs/00-MOCs/entrypoints/INDEX.md`.
 
 **Source**: [ADR GitHub org](https://adr.github.io/); [AWS ADR guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html); [Fern LLM docs](https://buildwithfern.com/post/how-to-write-llm-friendly-documentation)
 
@@ -168,12 +168,12 @@ The compass model (action↔cognition × study↔work) makes content type determ
 ### What We Think (Medium Confidence)
 - The Karpathy LLM Wiki pattern (AI-maintained interlinked markdown wiki) will become the dominant internal engineering docs pattern for AI-native teams by 2027
 - Johnny.Decimal is the wrong tool for collaborative repos; PARA's semantic names scale better
-- A `docs/INDEX.md` file functioning as the repo's llms.txt is more durable than actual `/llms.txt` for code repos (no web hosting required)
+- A `docs/00-MOCs/entrypoints/INDEX.md` file functioning as the repo's llms.txt is more durable than actual `/llms.txt` for code repos (no web hosting required)
 - The 119 loose root-level docs files in this repo are the primary barrier to agent navigation
 
 ### What We Don't Know (Gaps)
 - No authoritative data on optimal ADR count before adopting a consolidation/index strategy
-- No research specifically on how deeply nested `docs/reports/` sub-folders affect LLM vector retrieval accuracy
+- No research specifically on how deeply nested `docs/06-Daily/reports/` sub-folders affect LLM vector retrieval accuracy
 - Limited data on whether front-matter YAML (e.g., `---\ntopic: adr\n---`) materially improves LLM parsing vs. inline headers
 - The Karpathy LLM Wiki pattern (April 2026) is very new — no longitudinal data on maintenance quality
 
@@ -239,13 +239,13 @@ docs/
 ### Migration Priority Order
 
 **Priority 1 (1 day, no content changes):**
-1. Merge `docs/archived/` into `docs/archive/` — update any internal links
-2. Create `docs/INDEX.md` with one-line descriptions for every subdirectory and the 119 root-level files (this alone dramatically improves agent orientation)
-3. Create `docs/adrs/INDEX.md` with a table of Active/Superseded ADR status
+1. Merge `docs/99-Archive/archived/` into `docs/99-Archive/archive/` — update any internal links
+2. Create `docs/00-MOCs/entrypoints/INDEX.md` with one-line descriptions for every subdirectory and the 119 root-level files (this alone dramatically improves agent orientation)
+3. Create `docs/02-Decisions/adrs/INDEX.md` with a table of Active/Superseded ADR status
 
 **Priority 2 (1 week, light restructuring):**
 4. Move the 119 root-level .md files into appropriate semantic subdirectories (most belong in `03-reference/` or `04-explanation/`)
-5. Add `docs/AGENTS.md` with: what docs/ contains, which subdirs agents should read for which tasks, link to adrs/INDEX.md, note on report generation patterns
+5. Add `docs/00-MOCs/entrypoints/AGENTS.md` with: what docs/ contains, which subdirs agents should read for which tasks, link to adrs/INDEX.md, note on report generation patterns
 
 **Priority 3 (1 month, content-level):**
 6. Classify each ADR as Active or Superseded; update superseded ADRs with forward links
@@ -255,10 +255,10 @@ docs/
 
 ### AI-Consumability Layer (add at any time, low effort)
 
-- **`docs/INDEX.md`** serves as internal `llms.txt` — H2 sections per category, markdown links, one-line descriptions
-- **`docs/AGENTS.md`** (under 150 lines) — tells coding agents: where to find architecture decisions (adrs/INDEX.md), how reports are named, what the runbooks/ folder is for, build/test commands if not already in root AGENTS.md
+- **`docs/00-MOCs/entrypoints/INDEX.md`** serves as internal `llms.txt` — H2 sections per category, markdown links, one-line descriptions
+- **`docs/00-MOCs/entrypoints/AGENTS.md`** (under 150 lines) — tells coding agents: where to find architecture decisions (adrs/INDEX.md), how reports are named, what the runbooks/ folder is for, build/test commands if not already in root AGENTS.md
 - **Heading discipline in all new docs**: H2 for major sections, H3 for subsections, H4 never. Each section self-contained (no "as mentioned above")
-- **Canonical phrasing table** in docs/AGENTS.md: define terms agents must use consistently (e.g., "primitive" not "tool", "harness" not "runner")
+- **Canonical phrasing table** in docs/00-MOCs/entrypoints/AGENTS.md: define terms agents must use consistently (e.g., "primitive" not "tool", "harness" not "runner")
 
 ---
 
@@ -329,13 +329,13 @@ docs/
 
 ## Recommendations
 
-1. **Immediate: Create `docs/INDEX.md` as a human-curated navigation hub** — This single file, functioning as the repo's internal llms.txt, will improve agent orientation more than any structural reorganization. Include one-line descriptions of every subdirectory and categorize the 119 loose root files. Keep under 500 lines. Update on every major docs addition.
+1. **Immediate: Create `docs/00-MOCs/entrypoints/INDEX.md` as a human-curated navigation hub** — This single file, functioning as the repo's internal llms.txt, will improve agent orientation more than any structural reorganization. Include one-line descriptions of every subdirectory and categorize the 119 loose root files. Keep under 500 lines. Update on every major docs addition.
 
-2. **Immediate: Merge `docs/archived/` into `docs/archive/`** — The dual-archive is the clearest broken-window anti-pattern in this repo. Three items in each; consolidation takes <30 minutes and prevents future confusion.
+2. **Immediate: Merge `docs/99-Archive/archived/` into `docs/99-Archive/archive/`** — The dual-archive is the clearest broken-window anti-pattern in this repo. Three items in each; consolidation takes <30 minutes and prevents future confusion.
 
-3. **Short-term: Create `docs/adrs/INDEX.md` with Active/Superseded status table** — At 281 ADRs, the collection is past the human-navigable threshold. An index listing only non-superseded decisions (with links) restores navigability for both humans and agents. Mark superseded ADRs with forward links in their header. Aim to surface <80 "live" decisions.
+3. **Short-term: Create `docs/02-Decisions/adrs/INDEX.md` with Active/Superseded status table** — At 281 ADRs, the collection is past the human-navigable threshold. An index listing only non-superseded decisions (with links) restores navigability for both humans and agents. Mark superseded ADRs with forward links in their header. Aim to surface <80 "live" decisions.
 
-4. **Short-term: Add `docs/AGENTS.md` (150 lines max)** — Tells coding agents: which subdirectory to read for each task type, how reports are named, what runbooks/ contains, the canonical term list. Human-curated only — do not auto-generate.
+4. **Short-term: Add `docs/00-MOCs/entrypoints/AGENTS.md` (150 lines max)** — Tells coding agents: which subdirectory to read for each task type, how reports are named, what runbooks/ contains, the canonical term list. Human-curated only — do not auto-generate.
 
 5. **Medium-term: Route 119 loose root docs into semantic subdirectories** — Use the Diátaxis quadrants as a classification guide: session-handoffs → `reports/`, capability docs → `reference/`, design philosophy → `explanation/`, HOW-TO-USE-COS.md → `getting-started/`.
 

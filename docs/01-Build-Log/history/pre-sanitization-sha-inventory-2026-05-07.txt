@@ -20,7 +20,7 @@ c4545852331f80d6a818a5b23fa4e6a58a6fb30f 2026-05-07 01:20:17 -0300 feat(tools): 
 3a9ab855abe4c5f565dfc07ef9724ee1fc4c5711 2026-05-07 01:18:34 -0300 feat(sandbox): expose opt-in microvm and contree runners
 23fd36dc455bfb2e2eb9e7bf67c7e860d19025a4 2026-05-07 01:17:21 -0300 feat(agent-daemon): activate service and kill process trees
 f208abd1f3345f60af139777b14c010b38b5b362 2026-05-07 01:14:57 -0300 feat(policy): migrate hooks to policy-as-code projection
-2b8149578d1752763178eaab9260ff6be23f28fd 2026-05-07 01:13:22 -0300 docs(research): expose INDEX.md from root README and docs/README.md
+2b8149578d1752763178eaab9260ff6be23f28fd 2026-05-07 01:13:22 -0300 docs(research): expose INDEX.md from root README and docs/00-MOCs/entrypoints/README.md
 997e477a14cc18ad946bda7806b1414278004f65 2026-05-07 01:13:08 -0300 docs: refresh research index entry
 276dec672e2ff3102e331da020569ba7bf8b28b4 2026-05-07 01:13:07 -0300 feat(mcp): add streamable http registration and trust pins
 1e92ad21b041ada76ea6a4ffc4a8f92c232aaac0 2026-05-07 01:11:20 -0300 docs(research): add navigable INDEX.md cataloging ~325 research artifacts
@@ -95,9 +95,9 @@ bc7ec12cd577c05184300cca4bcc687be57ec5cb 2026-05-06 20:42:44 -0300 index on clau
 340fcd3d3e14f97ca35d0cc79edea8f76c3984bd 2026-05-06 20:42:19 -0300 feat(work-inventory): add ownership liveness preflight
 78153b0ad748cdca0faa8baddc6216889deb718f 2026-05-06 20:41:20 -0300 feat(credibility): add credibility & transparency audit toolchain
 02e97bcd4b3f3680afbb01959a0c7a78e19702f9 2026-05-06 20:40:29 -0300 chore(privacy): redact operator email from preserve-manifests
-6b03625f4e81c6afdfd19c87e1350fc55249f29a 2026-05-06 20:34:45 -0300 chore(reports): move dependencies-license-audit to docs/reports
+6b03625f4e81c6afdfd19c87e1350fc55249f29a 2026-05-06 20:34:45 -0300 chore(reports): move dependencies-license-audit to docs/06-Daily/reports
 45c44a6a1860ea595e205cf9ec9124fc97cefb14 2026-05-06 20:34:12 -0300 fix(tool-discovery): block ad-hoc Trivy scans
-e1a3d488874bb8e9d99d7c3a923ee022b6a4cd4b 2026-05-06 20:33:27 -0300 chore(reports): move secret-protection-effectiveness audit to docs/reports
+e1a3d488874bb8e9d99d7c3a923ee022b6a4cd4b 2026-05-06 20:33:27 -0300 chore(reports): move secret-protection-effectiveness audit to docs/06-Daily/reports
 c80e0351b3578fbfe60176e3e96a8eb0d602f5c0 2026-05-06 20:32:17 -0300 docs(license): correct Phoenix ELv2 boundary
 1a51f6e37e88bc558c44ed8085e4e3a5701a01b3 2026-05-06 20:26:35 -0300 fix(security): wire secret detector across tool writes
 82b1b02bad857a1d400e4d574dfa773f8f3730d6 2026-05-06 20:19:56 -0300 feat(secret-audit): add cross-stack audit substrate
@@ -1451,7 +1451,7 @@ ef9fe5f4e5389a32523fe6064f6f00514622c6f5 2026-04-16 22:20:02 -0300 feat: capa-3 
 0dea17eb75919ff9354874271bd4dab2bddc1055 2026-04-16 22:17:14 -0300 feat: restore UX2 new hooks + Sprint 5 capa-4 observability infrastructure
 49ee77f8f8615bf107c9927547992ce304e1ac9a 2026-04-16 22:15:07 -0300 feat: restore UX5 cos-status + UX6 cos-update + Sprint 4 v1.0 canary
 b4f470f3736dc97d6c4a86ce2f57d9b3f8efbad9 2026-04-16 22:13:43 -0300 fix: restore UX3 perf fix (cognitive-os.sh) + UX2 rate-limiter actionable output
-c0db69899e36802c08817f070cd828fc03373be3 2026-04-16 22:09:04 -0300 refactor: Sprint 2a — archive squads/agents + move declarative rules to docs/patterns
+c0db69899e36802c08817f070cd828fc03373be3 2026-04-16 22:09:04 -0300 refactor: Sprint 2a — archive squads/agents + move declarative rules to docs/04-Concepts/patterns
 1e8a6fd2c8205bc6a137e5df38180ac592e55678 2026-04-16 22:08:00 -0300 fix: restore skill frontmatter + arena path + audit marker (post-revert recovery)
 682b0665092283504765f3e33d4c132bbcc72494 2026-04-16 21:06:00 -0300 fix: harness-gap systemic audit — 4 install scripts hardened
 ab3322cc61b270798a63806a14aaa3a3543203c6 2026-04-16 21:02:54 -0300 feat(cos-dispatch): Phase 5.4 Cursor/Windsurf provider hardening + flag semantics

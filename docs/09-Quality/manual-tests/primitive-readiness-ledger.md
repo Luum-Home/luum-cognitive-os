@@ -6,7 +6,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
 
 - Run from repository root.
 - Python dependencies are installed.
-- Working tree can contain unrelated changes; this test only writes latest reports under `docs/reports/`.
+- Working tree can contain unrelated changes; this test only writes latest reports under `docs/06-Daily/reports/`.
 
 ## Steps
 
@@ -21,7 +21,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    ```bash
    python3 - <<'PY'
    import json
-   data = json.load(open('docs/reports/primitive-readiness-ledger-scripts-latest.json'))
+   data = json.load(open('docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json'))
    print(data['summary'])
    assert data['target_family'] == 'scripts'
    assert data['summary']['total_scripts'] > 0
@@ -36,7 +36,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    ```bash
    python3 - <<'PY'
    import json
-   data = json.load(open('docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json'))
+   data = json.load(open('docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json'))
    print(data['summary'])
    assert data['purpose'] == 'agentic primitives missing ADR-126 lifecycle metadata'
    assert data['summary']['total'] == 0
@@ -46,7 +46,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
 4. Inspect the Markdown report:
 
    ```bash
-   head -40 docs/reports/primitive-readiness-ledger-scripts-latest.md
+   head -40 docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md
    ```
 
 5. Pick three rows, one each from `agentic-primitive`, `maintainer-tool`, and either `driver-specific` or `migration-only`. Confirm the row has a believable `role_source`, `confidence`, evidence, consumers, `consumer_accessibility`, and next action.
@@ -56,7 +56,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    ```bash
    python3 - <<'PY'
    import json
-   data = json.load(open('docs/reports/primitive-readiness-ledger-scripts-latest.json'))
+   data = json.load(open('docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json'))
    print(data['summary']['consumer_accessibility'])
    assert data['summary']['consumer_accessibility'].get('install-profile-managed', 0) > 0
    assert any(row['consumer_accessibility'] in {'so-local-only', 'skill-referenced-not-projectable'} for row in data['scripts'])

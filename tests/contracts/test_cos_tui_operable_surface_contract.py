@@ -38,7 +38,7 @@ def _write_stub_project(root: Path) -> None:
     for name in ["primitive_harness_coverage.py", "primitive_harness_partials.py"]:
         path = scripts / name
         path.write_text(
-            "#!/usr/bin/env python3\nfrom pathlib import Path\nPath('docs/reports/stub-ran.txt').write_text('ran')\nprint('ok')\n",
+            "#!/usr/bin/env python3\nfrom pathlib import Path\nPath('docs/06-Daily/reports/stub-ran.txt').write_text('ran')\nprint('ok')\n",
             encoding="utf-8",
         )
         path.chmod(0o755)

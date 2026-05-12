@@ -27,7 +27,7 @@ Accepted
 **Date**: 2026-05-06
 **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
-**Source**: Synthesis of 11 orchestration-gap research reports (`docs/research/orchestration-gaps/`). The replay-timeline, retry-classifier, cost-ledger, and cross-session agent-team gaps all share the same prerequisite: per-session sequencing + memoized step wrapping on top of the existing flight recorder.
+**Source**: Synthesis of 11 orchestration-gap research reports (`docs/03-PoCs/research/orchestration-gaps/`). The replay-timeline, retry-classifier, cost-ledger, and cross-session agent-team gaps all share the same prerequisite: per-session sequencing + memoized step wrapping on top of the existing flight recorder.
 **Evaluation contract**: [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml) — C1/C2/C3/C4.
 
 ---

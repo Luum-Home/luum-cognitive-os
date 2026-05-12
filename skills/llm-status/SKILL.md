@@ -139,8 +139,8 @@ uv run python3 scripts/llm_status.py --providers
 ## Related
 
 - `rules/llm-dispatch.md` — normative rule
-- `docs/adrs/ADR-062-multi-provider-agent-loop.md` — multi-provider cascade
-- `docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md`
+- `docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md` — multi-provider cascade
+- `docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md`
 - `scripts/smoke-multi-provider-fallback.sh` — exercises all configured providers
 - `scripts/smoke-qwen-fallback.sh` — Qwen-specific verification
 - `scripts/cos-config-audit.sh` — `meta.llm_providers_reachable` contract

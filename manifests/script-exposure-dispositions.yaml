@@ -998,7 +998,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-100-resource-governed-test-execution.md
+  - docs/02-Decisions/adrs/ADR-100-resource-governed-test-execution.md
   - tests/integration/test_adr100_live_headroom_check.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1007,7 +1007,7 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/primitive-consumer-availability.yaml
-  - docs/architecture/adr-verification-evidence-contract.md
+  - docs/04-Concepts/architecture/adr-verification-evidence-contract.md
   - tests/audit/test_adr_contracts.py
   - tests/unit/test_adr_verification_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1018,7 +1018,7 @@ scripts:
   consumers:
   - manifests/capability-coverage.yaml
   - manifests/control-plane-audits.yaml
-  - docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md
+  - docs/02-Decisions/adrs/ADR-251-agent-orchestration-adapter-boundary.md
   - tests/audit/test_python_naming.py
   - tests/unit/test_agent_orchestration_boundary_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1027,15 +1027,15 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/legal/operator-data-scan.md
-  - docs/legal/pre-public-readiness-checklist.md
+  - docs/09-Quality/legal/operator-data-scan.md
+  - docs/09-Quality/legal/pre-public-readiness-checklist.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/audit_engram_topic_keys.py
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-246-release-transaction-freeze.md
+  - docs/02-Decisions/adrs/ADR-246-release-transaction-freeze.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/auto-tune-routing
@@ -1043,7 +1043,7 @@ scripts:
   evidence: doc/only
   consumers:
   - manifests/primitive-consumer-availability.yaml
-  - docs/adrs/ADR-053-dispatch-auto-optimizer.md
+  - docs/02-Decisions/adrs/ADR-053-dispatch-auto-optimizer.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/auto-update-projects.sh
@@ -1051,13 +1051,13 @@ scripts:
   owner: maintainer/operator workflow
   consumers:
   - .claude/settings.local.json
-  - docs/adrs/ADR-093-simplify-profiles.md
-  - docs/architecture/bootstrap-portability.md
-  - docs/architecture/consumer-fleet-audit.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/functional-audit/scorecard-install-scripts.md
-  - docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
-  - docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md
+  - docs/02-Decisions/adrs/ADR-093-simplify-profiles.md
+  - docs/04-Concepts/architecture/bootstrap-portability.md
+  - docs/04-Concepts/architecture/consumer-fleet-audit.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/functional-audit/scorecard-install-scripts.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-C-updaters.md
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
 - path: scripts/check-upstream-changes.sh
@@ -1069,7 +1069,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/path-portability-and-privacy.md
+  - docs/04-Concepts/architecture/path-portability-and-privacy.md
   - tests/unit/test_check_absolute_paths.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1083,7 +1083,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/quality/test-coverage-report.md
+  - docs/09-Quality/quality/test-coverage-report.md
   - rules/python-naming.md
   - tests/architecture/test_wiring.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1098,11 +1098,11 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-149-primitive-duplication-audit.md
-  - docs/architecture/bootstrap-portability.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/primitive-duplication-audit.md
-  - docs/cos-package-manager.md
+  - docs/02-Decisions/adrs/ADR-149-primitive-duplication-audit.md
+  - docs/04-Concepts/architecture/bootstrap-portability.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/primitive-duplication-audit.md
+  - docs/07-Capabilities/root/cos-package-manager.md
   - scripts/upgrade.sh
   - tests/behavior/test_secondary_script_portability.py
   - tests/behavior/test_upgrade_script.py
@@ -1112,8 +1112,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-270-legal-compliance-workflow-automation.md
-  - docs/runbooks/legal-review-workflow.md
+  - docs/02-Decisions/adrs/ADR-270-legal-compliance-workflow-automation.md
+  - docs/05-Methodology/runbooks/legal-review-workflow.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-adr-implementation-audit.py
@@ -1122,7 +1122,7 @@ scripts:
   consumers:
   - manifests/adr-implementation-runtime-allowlist.yaml
   - manifests/control-plane-audits.yaml
-  - docs/adrs/ADR-281-adr-implementation-reality-audit.md
+  - docs/02-Decisions/adrs/ADR-281-adr-implementation-reality-audit.md
   - tests/audit/test_python_naming.py
   - tests/red_team/portability/test_cos-adr-implementation-audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1133,9 +1133,9 @@ scripts:
   consumers:
   - manifests/control-plane-audits.yaml
   - docs/00-MOCs/operations.md
-  - docs/adrs/ADR-275-closure-and-projection-primitives.md
-  - docs/adrs/ADR-281-adr-implementation-reality-audit.md
-  - docs/architecture/pending-truth-architecture.md
+  - docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md
+  - docs/02-Decisions/adrs/ADR-281-adr-implementation-reality-audit.md
+  - docs/04-Concepts/architecture/pending-truth-architecture.md
   - tests/unit/test_adr_partial_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1143,9 +1143,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/SESSION-HANDOFF-2026-05-04.md
-  - docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md
-  - docs/architecture/gdpr-erasure-procedure.md
+  - docs/01-Build-Log/SESSION-HANDOFF-2026-05-04.md
+  - docs/02-Decisions/adrs/ADR-142-compliance-audit-air-gapped-surface.md
+  - docs/04-Concepts/architecture/gdpr-erasure-procedure.md
   - tests/audit/test_adr_139_141_142_cloud_surfaces.py
   - tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1154,8 +1154,8 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-116-multi-session-coordination-primitives.md
-  - docs/architecture/harness-action-receipts.md
+  - docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md
+  - docs/04-Concepts/architecture/harness-action-receipts.md
   - scripts/cos_architecture_readiness.py
   - tests/behavior/test_branch_writer_lease.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -1164,7 +1164,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-182-branch-ownership-lock.md
+  - docs/02-Decisions/adrs/ADR-182-branch-ownership-lock.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-capability-matrix
@@ -1173,8 +1173,8 @@ scripts:
   consumers:
   - manifests/capability-coverage.yaml
   - manifests/control-plane-audits.yaml
-  - docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md
-  - docs/capabilities/MATRIX.md
+  - docs/02-Decisions/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md
+  - docs/07-Capabilities/capabilities/MATRIX.md
   - tests/unit/test_capability_matrix.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1182,11 +1182,11 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
-  - docs/architecture/claim-signature-audit.md
-  - docs/architecture/consumer-fleet-audit.md
-  - docs/architecture/headless-self-improvement-proposer.md
-  - docs/case-studies/external-review-cycle-2026-05-02.md
+  - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
+  - docs/04-Concepts/architecture/claim-signature-audit.md
+  - docs/04-Concepts/architecture/consumer-fleet-audit.md
+  - docs/04-Concepts/architecture/headless-self-improvement-proposer.md
+  - docs/08-References/case-studies/external-review-cycle-2026-05-02.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-cloud-worker-bootstrap.sh
@@ -1195,28 +1195,28 @@ scripts:
   consumers:
   - manifests/primitive-behavior-evidence.yaml
   - README.md
-  - docs/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md
-  - docs/adrs/ADR-140-cross-os-containerized-deployment.md
-  - docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md
-  - docs/adrs/ADR-172-multi-surface-ui-architecture.md
-  - docs/architecture/bootstrap-portability.md
-  - docs/architecture/cos-service-runtime-boundary.md
+  - docs/02-Decisions/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md
+  - docs/02-Decisions/adrs/ADR-140-cross-os-containerized-deployment.md
+  - docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md
+  - docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md
+  - docs/04-Concepts/architecture/bootstrap-portability.md
+  - docs/04-Concepts/architecture/cos-service-runtime-boundary.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-context-budget-report
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/architecture/context-budget-observability.md
-  - docs/architecture/context-rot-token-budget-controls.md
+  - docs/04-Concepts/architecture/context-budget-observability.md
+  - docs/04-Concepts/architecture/context-rot-token-budget-controls.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-counsel-outreach-draft
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-270-legal-compliance-workflow-automation.md
-  - docs/runbooks/legal-review-workflow.md
+  - docs/02-Decisions/adrs/ADR-270-legal-compliance-workflow-automation.md
+  - docs/05-Methodology/runbooks/legal-review-workflow.md
   - tests/unit/test_cos_counsel_outreach_draft.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1224,15 +1224,15 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/architecture/boring-reliability-control-plane.md
-  - docs/architecture/cognitive-prosthesis.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/cognitive-prosthesis.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-deferred-tool-plan
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md
+  - docs/02-Decisions/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md
   - tests/behavior/test_deferred_tool_plan_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1240,7 +1240,7 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-180-lifecycle-promotion-activation.md
+  - docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md
   - scripts/cos_demotion_proposer.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -1249,12 +1249,12 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/tool-discovery-preuse.yaml
-  - docs/adrs/ADR-168-cross-device-dependency-installation.md
-  - docs/adrs/ADR-216-tool-discovery-pre-use-gate.md
-  - docs/adrs/ADR-218-history-sanitization-toolchain.md
-  - docs/architecture/primitive-fitness-evaluation-contract.md
-  - docs/legal/m3-adr-sweep-report.md
-  - docs/setup/cross-device-dependencies.md
+  - docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md
+  - docs/02-Decisions/adrs/ADR-216-tool-discovery-pre-use-gate.md
+  - docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md
+  - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+  - docs/09-Quality/legal/m3-adr-sweep-report.md
+  - docs/05-Methodology/setup/cross-device-dependencies.md
   - tests/contracts/test_cross_device_dependencies.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1262,18 +1262,18 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-108-concurrent-agent-safety-layer.md
-  - docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md
-  - docs/architecture/concurrency-safety-core-consumer-contract.md
-  - docs/architecture/concurrent-agent-safety-master.md
+  - docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md
+  - docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md
+  - docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md
+  - docs/04-Concepts/architecture/concurrent-agent-safety-master.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-doctor-work-inventory.sh
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md
-  - docs/architecture/concurrency-safety-core-consumer-contract.md
+  - docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md
+  - docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md
   - scripts/cos-doctor-concurrency.sh
   - tests/behavior/test_cos_work_inventory.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -1282,8 +1282,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-277-documentation-truth-control.md
-  - docs/architecture/documentation-truth-control.md
+  - docs/02-Decisions/adrs/ADR-277-documentation-truth-control.md
+  - docs/04-Concepts/architecture/documentation-truth-control.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-dspy-pilot
@@ -1295,13 +1295,13 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/SESSION-HANDOFF-2026-05-04.md
-  - docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md
-  - docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md
-  - docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md
-  - docs/architecture/cos-service-runtime-boundary.md
-  - docs/architecture/engram-command-contract.md
-  - docs/manual-tests/engram-cloud-docker-sync.md
+  - docs/01-Build-Log/SESSION-HANDOFF-2026-05-04.md
+  - docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md
+  - docs/02-Decisions/adrs/ADR-141-engram-cloud-cross-instance-replication.md
+  - docs/02-Decisions/adrs/ADR-142-compliance-audit-air-gapped-surface.md
+  - docs/04-Concepts/architecture/cos-service-runtime-boundary.md
+  - docs/04-Concepts/architecture/engram-command-contract.md
+  - docs/09-Quality/manual-tests/engram-cloud-docker-sync.md
   - scripts/cos-engram-cloud-docker-smoke
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -1319,10 +1319,10 @@ scripts:
   - manifests/flow-contract-schema.yaml
   - manifests/primitive-contracts.yaml
   - manifests/primitive-lifecycle.yaml
-  - docs/adrs/ADR-136-cross-instance-learning-runway.md
-  - docs/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md
-  - docs/adrs/ADR-138-flow-contract-schema.md
-  - docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md
+  - docs/02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md
+  - docs/02-Decisions/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md
+  - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
+  - docs/02-Decisions/adrs/ADR-141-engram-cloud-cross-instance-replication.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-events.sh
@@ -1330,7 +1330,7 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/adr-closure-metadata.yaml
-  - docs/SESSION-ADR-CLOSURE-2026-05-04.md
+  - docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md
   - tests/red_team/portability/test_cos-events.py
   - tests/red_team/portability/test_event_bus.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1340,17 +1340,17 @@ scripts:
   evidence: doc/only
   consumers:
   - manifests/primitive-authority.yaml
-  - docs/architecture/consumer-fleet-audit.md
-  - docs/architecture/cross-instance-learning-runway.md
-  - docs/architecture/primitive-fitness-evaluation-contract.md
-  - docs/manual-tests/consumer-improvement-proposals.md
+  - docs/04-Concepts/architecture/consumer-fleet-audit.md
+  - docs/04-Concepts/architecture/cross-instance-learning-runway.md
+  - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+  - docs/09-Quality/manual-tests/consumer-improvement-proposals.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-external-source-fetch
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-255-feature-to-external-tool-due-diligence.md
+  - docs/02-Decisions/adrs/ADR-255-feature-to-external-tool-due-diligence.md
   - tests/unit/test_feature_tool_due_diligence_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1358,17 +1358,17 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
-  - docs/architecture/boring-reliability-control-plane.md
-  - docs/architecture/cognitive-prosthesis.md
-  - docs/case-studies/external-review-cycle-2026-05-02.md
+  - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/cognitive-prosthesis.md
+  - docs/08-References/case-studies/external-review-cycle-2026-05-02.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-feature-tool-scan
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-255-feature-to-external-tool-due-diligence.md
+  - docs/02-Decisions/adrs/ADR-255-feature-to-external-tool-due-diligence.md
   - tests/unit/test_feature_tool_due_diligence_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1379,18 +1379,18 @@ scripts:
   - manifests/capability-coverage.yaml
   - manifests/history-rewrite-ledger.yaml
   - manifests/postmortem-regression-audit.yaml
-  - docs/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md
-  - docs/adrs/ADR-243-post-rewrite-push-collision-exception.md
-  - docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md
-  - docs/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md
-  - docs/adrs/INDEX.md
+  - docs/02-Decisions/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md
+  - docs/02-Decisions/adrs/ADR-243-post-rewrite-push-collision-exception.md
+  - docs/02-Decisions/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md
+  - docs/02-Decisions/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md
+  - docs/02-Decisions/adrs/INDEX.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-fleet-confidence-export
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-210-fleet-aggregated-confidence-boundary.md
+  - docs/02-Decisions/adrs/ADR-210-fleet-aggregated-confidence-boundary.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-friction-report
@@ -1416,8 +1416,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/functional-audit/sprint-5-observability.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/functional-audit/sprint-5-observability.md
   - tests/behavior/test_ghost_skills_check.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1425,7 +1425,7 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-118-multi-ide-swarm-testbed.md
+  - docs/02-Decisions/adrs/ADR-118-multi-ide-swarm-testbed.md
   - scripts/cos_architecture_readiness.py
   - tests/behavior/test_phase2_wiring.py
   - tests/chaos/test_multi_ide_swarm_safety.py
@@ -1436,7 +1436,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-118-multi-ide-swarm-testbed.md
+  - docs/02-Decisions/adrs/ADR-118-multi-ide-swarm-testbed.md
   - tests/chaos/test_multi_ide_swarm_safety.py
   - tests/unit/test_governed_wrappers.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1445,9 +1445,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/standalone-ship-readiness-2026-05-06.md
-  - docs/architecture/surface-5-and-secure-cosd-roadmap.md
-  - docs/business/master-plan-checklist.md
+  - docs/04-Concepts/architecture/standalone-ship-readiness-2026-05-06.md
+  - docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md
+  - docs/08-References/business/master-plan-checklist.md
   - tests/contracts/test_headless_runtime_contract.py
   - tests/contracts/test_standalone_distribution_contract.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1472,7 +1472,7 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/architecture/surface-5-and-secure-cosd-roadmap.md
+  - docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md
   - scripts/cos-headless-pipeline
   - scripts/cos_architecture_readiness.py
   - tests/behavior/test_headless_safe_mode.py
@@ -1483,9 +1483,9 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/primitive-coherence.yaml
-  - docs/legal/pre-public-readiness-checklist.md
-  - docs/onboarding/walkthrough.md
-  - docs/runbooks/cos-history-sanitization.md
+  - docs/09-Quality/legal/pre-public-readiness-checklist.md
+  - docs/05-Methodology/onboarding/walkthrough.md
+  - docs/05-Methodology/runbooks/cos-history-sanitization.md
   - tests/behavior/test_history_sanitization_smoke.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1493,8 +1493,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/standalone-ship-readiness-2026-05-06.md
-  - docs/release/v1.0-release-criteria.md
+  - docs/04-Concepts/architecture/standalone-ship-readiness-2026-05-06.md
+  - docs/01-Build-Log/release/v1.0-release-criteria.md
   - tests/contracts/test_standalone_distribution_contract.py
   - tests/integration/test_fresh_install_canary.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1504,19 +1504,19 @@ scripts:
   evidence: doc/only
   consumers:
   - manifests/primitive-authority.yaml
-  - docs/architecture/consumer-fleet-audit.md
-  - docs/architecture/cross-instance-learning-runway.md
-  - docs/manual-tests/consumer-improvement-proposals.md
+  - docs/04-Concepts/architecture/consumer-fleet-audit.md
+  - docs/04-Concepts/architecture/cross-instance-learning-runway.md
+  - docs/09-Quality/manual-tests/consumer-improvement-proposals.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-init-global.sh
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/functional-audit/scorecard-install-scripts.md
-  - docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
-  - docs/architecture/harness-adoption-gap/scripts-audit.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/functional-audit/scorecard-install-scripts.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md
   - tests/audit/shell_test_utils.py
   - tests/audit/test_install_scripts.py
   - tests/behavior/test_cos_index_and_global_init.py
@@ -1531,10 +1531,10 @@ scripts:
   - manifests/cos-instance-profiles.yaml
   - manifests/primitive-consumer-availability.yaml
   - manifests/primitive-contracts.yaml
-  - docs/adrs/ADR-163-cos-instance-installer.md
-  - docs/adrs/ADR-164-host-cli-bridge-security-boundary.md
-  - docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md
-  - docs/adrs/ADR-184-manager-of-managers-daemon.md
+  - docs/02-Decisions/adrs/ADR-163-cos-instance-installer.md
+  - docs/02-Decisions/adrs/ADR-164-host-cli-bridge-security-boundary.md
+  - docs/02-Decisions/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md
+  - docs/02-Decisions/adrs/ADR-184-manager-of-managers-daemon.md
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
 - path: scripts/cos-integration-shard-plan
@@ -1551,8 +1551,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-279-orphan-repo-scan-process-audit.md
-  - docs/business/master-plan-checklist.md
+  - docs/02-Decisions/adrs/ADR-279-orphan-repo-scan-process-audit.md
+  - docs/08-References/business/master-plan-checklist.md
   - tests/audit/test_python_naming.py
   - tests/red_team/portability/test_cos-orphan-process-audit.py
   - tests/red_team/portability/test_orphan_process_audit.py
@@ -1563,8 +1563,8 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/policy-as-code.yaml
-  - docs/adrs/ADR-234-approval-policies-as-code.md
-  - docs/architecture/provenance.md
+  - docs/02-Decisions/adrs/ADR-234-approval-policies-as-code.md
+  - docs/04-Concepts/architecture/provenance.md
   - tests/behavior/test_policy_settings_projection_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1577,8 +1577,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/portable-ai-consumer-package-spec.md
-  - docs/business/master-plan-checklist.md
+  - docs/04-Concepts/architecture/portable-ai-consumer-package-spec.md
+  - docs/08-References/business/master-plan-checklist.md
   - tests/contracts/test_portable_ai_consumer_package.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1592,7 +1592,7 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/primitive-authority.yaml
-  - docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
+  - docs/02-Decisions/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
   - tests/contracts/test_primitive_closure_smokes.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1601,7 +1601,7 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/primitive-behavior-evidence.yaml
-  - docs/adrs/ADR-045-postgres-local-daemon.md
+  - docs/02-Decisions/adrs/ADR-045-postgres-local-daemon.md
   - tests/contracts/test_projectable_script_surface_evidence.py
   - tests/integration/test_postgres_local_daemon.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1612,10 +1612,10 @@ scripts:
   consumers:
   - manifests/capability-coverage.yaml
   - manifests/control-plane-audits.yaml
-  - docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md
-  - docs/adrs/ADR-248-control-plane-audit-loop.md
-  - docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md
-  - docs/runbooks/postmortem-regression-audit.md
+  - docs/02-Decisions/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md
+  - docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md
+  - docs/02-Decisions/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md
+  - docs/05-Methodology/runbooks/postmortem-regression-audit.md
   - tests/unit/test_postmortem_regression_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1624,10 +1624,10 @@ scripts:
   evidence: doc/only
   consumers:
   - README.md
-  - docs/adrs/ADR-130-suspend-claude-api-workflows.md
-  - docs/adrs/ADR-131-local-ci-migration.md
-  - docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md
-  - docs/adrs/ADR-172-multi-surface-ui-architecture.md
+  - docs/02-Decisions/adrs/ADR-130-suspend-claude-api-workflows.md
+  - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
+  - docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md
+  - docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-pre-public-risk-audit
@@ -1638,9 +1638,9 @@ scripts:
   - manifests/primitive-behavior-contracts.yaml
   - manifests/primitive-coherence.yaml
   - manifests/release-freeze.yaml
-  - docs/adrs/ADR-240-primitive-coherence-audit-and-ownership-manifest.md
-  - docs/adrs/ADR-246-release-transaction-freeze.md
-  - docs/adrs/ADR-248-control-plane-audit-loop.md
+  - docs/02-Decisions/adrs/ADR-240-primitive-coherence-audit-and-ownership-manifest.md
+  - docs/02-Decisions/adrs/ADR-246-release-transaction-freeze.md
+  - docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md
   - tests/behavior/test_pre_public_risk_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1648,8 +1648,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-276-primitive-authority-write-effects.md
-  - docs/adrs/ADR-281-adr-implementation-reality-audit.md
+  - docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md
+  - docs/02-Decisions/adrs/ADR-281-adr-implementation-reality-audit.md
   - tests/red_team/portability/test_cos-primitive-authority-audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1657,9 +1657,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/primitive-fitness-evaluation-contract.md
-  - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
-  - docs/business/master-plan-checklist.md
+  - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+  - docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md
+  - docs/08-References/business/master-plan-checklist.md
   - rules/self-improvement-protocol.md
   - tests/behavior/test_primitive_fitness_cli.py
   - tests/unit/test_primitive_fitness_ledger.py
@@ -1669,9 +1669,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/architecture/primitive-fitness-evaluation-contract.md
-  - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
-  - docs/business/master-plan-checklist.md
+  - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+  - docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md
+  - docs/08-References/business/master-plan-checklist.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-primitive-service-headless-smoke
@@ -1683,8 +1683,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-202-private-content-cross-harness-portability-boundary.md
-  - docs/business/master-plan-checklist.md
+  - docs/02-Decisions/adrs/ADR-202-private-content-cross-harness-portability-boundary.md
+  - docs/08-References/business/master-plan-checklist.md
   - tests/behavior/test_private_content_projection_guard.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1697,14 +1697,14 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-232-sandbox-adapter-tiers.md
+  - docs/02-Decisions/adrs/ADR-232-sandbox-adapter-tiers.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-python-stdin-antipattern-audit
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/architecture/python-stdin-heredoc-trap.md
+  - docs/04-Concepts/architecture/python-stdin-heredoc-trap.md
   - scripts/cos-ci-local.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -1713,10 +1713,10 @@ scripts:
   evidence: doc/only
   consumers:
   - manifests/primitive-contracts.yaml
-  - docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md
-  - docs/adrs/ADR-172-multi-surface-ui-architecture.md
-  - docs/architecture/boring-reliability-control-plane.md
-  - docs/getting-started/core-30-minute-onboarding.md
+  - docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md
+  - docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
+  - docs/05-Methodology/getting-started/core-30-minute-onboarding.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-registry.sh
@@ -1724,20 +1724,20 @@ scripts:
   owner: maintainer/operator workflow
   consumers:
   - .claude/settings.local.json
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
-  - docs/architecture/harness-adoption-gap/scripts-audit.md
-  - docs/getting-started.md
-  - docs/legal/operator-paths-scrub-report.md
-  - docs/legal/pre-public-readiness-checklist.md
-  - docs/versioning-strategy.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md
+  - docs/00-MOCs/entrypoints/getting-started.md
+  - docs/09-Quality/legal/operator-paths-scrub-report.md
+  - docs/09-Quality/legal/pre-public-readiness-checklist.md
+  - docs/01-Build-Log/root/versioning-strategy.md
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
 - path: scripts/cos-release-external-readiness
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-198-release-external-readiness-gate.md
+  - docs/02-Decisions/adrs/ADR-198-release-external-readiness-gate.md
   - tests/contracts/test_release_external_readiness.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1766,7 +1766,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-283-script-exposure-audit-and-invocation-ratchet.md
+  - docs/02-Decisions/adrs/ADR-283-script-exposure-audit-and-invocation-ratchet.md
   - tests/behavior/test_script_exposure_audit_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1774,9 +1774,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/architecture/opensage-self-programming-patterns.md
-  - docs/architecture/primitive-contract-registry-implementation-plan.md
-  - docs/business/master-plan-checklist.md
+  - docs/04-Concepts/architecture/opensage-self-programming-patterns.md
+  - docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md
+  - docs/08-References/business/master-plan-checklist.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos-session-spawn.sh
@@ -1788,9 +1788,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/bootstrap-portability.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/runbooks/so-incident-runbook.md
+  - docs/04-Concepts/architecture/bootstrap-portability.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/05-Methodology/runbooks/so-incident-runbook.md
   - tests/behavior/test_secondary_script_portability.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1798,9 +1798,9 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-104-startup-circuit-breaker.md
-  - docs/incidents/2026-05-01-session-multi-spawn-hang.md
-  - docs/manual-tests/claude-code-startup-hang-regression.md
+  - docs/02-Decisions/adrs/ADR-104-startup-circuit-breaker.md
+  - docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md
+  - docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md
   - tests/integration/test_startup_circuit_breaker.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1812,7 +1812,7 @@ scripts:
   - manifests/documentation-truth-claims.yaml
   - manifests/primitive-consumer-availability.yaml
   - manifests/subprocess-timeout-allowlist.yaml
-  - docs/adrs/ADR-278-subprocess-run-timeout-discipline.md
+  - docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md
   - tests/audit/test_python_naming.py
   - tests/red_team/portability/test_cos-subprocess-timeout-audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1822,8 +1822,8 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/external-tools-adoption.yaml
-  - docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
-  - docs/architecture/external-tool-intelligence-plane.md
+  - docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
+  - docs/04-Concepts/architecture/external-tool-intelligence-plane.md
   - tests/behavior/test_external_tool_intelligence_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1831,7 +1831,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
+  - docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
   - tests/behavior/test_external_tool_intelligence_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1839,8 +1839,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
-  - docs/architecture/external-tool-intelligence-plane.md
+  - docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
+  - docs/04-Concepts/architecture/external-tool-intelligence-plane.md
   - tests/behavior/test_external_tool_intelligence_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1848,8 +1848,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
-  - docs/architecture/external-tool-intelligence-plane.md
+  - docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md
+  - docs/04-Concepts/architecture/external-tool-intelligence-plane.md
   - tests/behavior/test_external_tool_intelligence_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1858,21 +1858,21 @@ scripts:
   owner: maintainer/operator workflow
   consumers:
   - manifests/adr-closure-metadata.yaml
-  - docs/SESSION-ADR-CLOSURE-2026-05-04.md
-  - docs/SESSION-HANDOFF-2026-04-17.md
-  - docs/adrs/ADR-025-install-update-loop.md
-  - docs/adrs/ADR-026-r2-r3-design-review.md
-  - docs/adrs/ADR-048-docker-container-image-freshness.md
-  - docs/adrs/ADR-093-simplify-profiles.md
-  - docs/architecture/bootstrap-portability.md
+  - docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md
+  - docs/01-Build-Log/SESSION-HANDOFF-2026-04-17.md
+  - docs/02-Decisions/adrs/ADR-025-install-update-loop.md
+  - docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md
+  - docs/02-Decisions/adrs/ADR-048-docker-container-image-freshness.md
+  - docs/02-Decisions/adrs/ADR-093-simplify-profiles.md
+  - docs/04-Concepts/architecture/bootstrap-portability.md
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
 - path: scripts/cos-uspto-patent-search
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-270-legal-compliance-workflow-automation.md
-  - docs/runbooks/legal-review-workflow.md
+  - docs/02-Decisions/adrs/ADR-270-legal-compliance-workflow-automation.md
+  - docs/05-Methodology/runbooks/legal-review-workflow.md
   - tests/unit/test_uspto_patent_search.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1880,8 +1880,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-270-legal-compliance-workflow-automation.md
-  - docs/runbooks/legal-review-workflow.md
+  - docs/02-Decisions/adrs/ADR-270-legal-compliance-workflow-automation.md
+  - docs/05-Methodology/runbooks/legal-review-workflow.md
   - tests/unit/test_uspto_trademark_search.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1889,13 +1889,13 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-109-validation-capsule-worktree-isolation.md
-  - docs/adrs/ADR-113-validation-capsule-liveness.md
-  - docs/adrs/ADR-129-safe-worktree-removal.md
-  - docs/architecture/preserve-branch-lifecycle.md
-  - docs/architecture/validation-capsule.md
-  - docs/business/master-plan-checklist.md
-  - docs/manual-tests/validation-capsule.md
+  - docs/02-Decisions/adrs/ADR-109-validation-capsule-worktree-isolation.md
+  - docs/02-Decisions/adrs/ADR-113-validation-capsule-liveness.md
+  - docs/02-Decisions/adrs/ADR-129-safe-worktree-removal.md
+  - docs/04-Concepts/architecture/preserve-branch-lifecycle.md
+  - docs/04-Concepts/architecture/validation-capsule.md
+  - docs/08-References/business/master-plan-checklist.md
+  - docs/09-Quality/manual-tests/validation-capsule.md
   - scripts/cos_closure_discipline_audit.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -1903,7 +1903,7 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-131-local-ci-migration.md
+  - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
   - scripts/install-launchd-jobs.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -1911,7 +1911,7 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-131-local-ci-migration.md
+  - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
   - scripts/install-launchd-jobs.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -1920,15 +1920,15 @@ scripts:
   evidence: doc/only
   consumers:
   - manifests/agent-orchestration-adapters.yaml
-  - docs/adrs/ADR-115-safe-worktree-sweeper.md
-  - docs/architecture/worktree-sweeper.md
+  - docs/02-Decisions/adrs/ADR-115-safe-worktree-sweeper.md
+  - docs/04-Concepts/architecture/worktree-sweeper.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/cos_chaos_template.py
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-041.md
+  - docs/02-Decisions/adrs/ADR-041.md
   - rules/python-naming.md
   - tests/unit/test_chaos_template.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -1937,8 +1937,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md
-  - docs/architecture/multi-session-orchestration-audit-2026-05-02.md
+  - docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md
+  - docs/04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md
   - tests/red_team/portability/cos_concurrent_status_test.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1946,7 +1946,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-262-evolve-loop-spike.md
+  - docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md
   - tests/unit/test_cos_evolve_tick.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1954,10 +1954,10 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-262-evolve-loop-spike.md
-  - docs/architecture/key-learnings-capture-self-improvement.md
-  - docs/architecture/primitive-fitness-evaluation-contract.md
-  - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
+  - docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md
+  - docs/04-Concepts/architecture/key-learnings-capture-self-improvement.md
+  - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+  - docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md
   - rules/self-improvement-protocol.md
   - tests/behavior/test_governed_self_improvement_cli.py
   - tests/behavior/test_primitive_fitness_cli.py
@@ -1967,7 +1967,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/memory-lifecycle.md
+  - docs/04-Concepts/architecture/memory-lifecycle.md
   - tests/behavior/test_profile_bootstrap_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -1975,10 +1975,10 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-072-test-lane-taxonomy.md
-  - docs/adrs/ADR-073-test-architecture-role-registry.md
-  - docs/business/conversation-reality-audit-2026-04-30.md
-  - docs/testing/test-runner-roles.md
+  - docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md
+  - docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md
+  - docs/08-References/business/conversation-reality-audit-2026-04-30.md
+  - docs/09-Quality/testing/test-runner-roles.md
   - rules/python-naming.md
   - tests/audit/test_test_runner_role_taxonomy.py
   - tests/unit/test_test_quality_auditor.py
@@ -1989,10 +1989,10 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/adr-closure-metadata.yaml
-  - docs/SESSION-ADR-CLOSURE-2026-05-04.md
-  - docs/adrs/ADR-034-harness-agnostic-live-streaming.md
-  - docs/adrs/ADR-036-sprint-orchestration-primitives.md
-  - docs/upstream-blockers.md
+  - docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md
+  - docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md
+  - docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md
+  - docs/08-References/root/upstream-blockers.md
   - rules/python-naming.md
   - tests/integration/test_cos_watch_renders.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -2007,7 +2007,7 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/acc/latest.md
+  - docs/07-Capabilities/acc/latest.md
   - scripts/install-credibility-tools.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -2029,12 +2029,12 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-089-multi-session-git-coordination.md
-  - docs/adrs/ADR-098-multi-agent-file-coordination.md
-  - docs/adrs/ADR-190-harness-action-receipts.md
-  - docs/architecture/concurrency-safety-core-consumer-contract.md
-  - docs/architecture/harness-action-receipts.md
-  - docs/architecture/multi-session-orchestration-audit-2026-05-02.md
+  - docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md
+  - docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md
+  - docs/02-Decisions/adrs/ADR-190-harness-action-receipts.md
+  - docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md
+  - docs/04-Concepts/architecture/harness-action-receipts.md
+  - docs/04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md
   - scripts/cos-doctor-concurrency.sh
   - scripts/cos-session-spawn.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2045,19 +2045,19 @@ scripts:
   consumers:
   - .claude/settings.local.json
   - manifests/primitive-behavior-evidence.yaml
-  - docs/adrs/ADR-168-cross-device-dependency-installation.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/driver-specific-script-surfaces.md
-  - docs/architecture/harness-adoption-gap/scripts-audit.md
-  - docs/onboarding-wizard-design.md
-  - docs/patterns/ecosystem-tools.md
+  - docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/driver-specific-script-surfaces.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md
+  - docs/04-Concepts/root/onboarding-wizard-design.md
+  - docs/04-Concepts/patterns/ecosystem-tools.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/install-credibility-tools.sh
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/acc/latest.md
+  - docs/07-Capabilities/acc/latest.md
   - scripts/credibility-audit.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
@@ -2067,10 +2067,10 @@ scripts:
   consumers:
   - manifests/dependencies.yaml
   - manifests/history-sanitization.yaml
-  - docs/acc/latest.md
-  - docs/adrs/ADR-218-history-sanitization-toolchain.md
-  - docs/runbooks/cos-history-sanitization.md
-  - docs/security/supply-chain.md
+  - docs/07-Capabilities/acc/latest.md
+  - docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md
+  - docs/05-Methodology/runbooks/cos-history-sanitization.md
+  - docs/09-Quality/security/supply-chain.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/install-goreleaser.sh
@@ -2078,11 +2078,11 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/dependencies.yaml
-  - docs/adrs/ADR-191-cos-binary-release-pipeline.md
-  - docs/architecture/standalone-ship-readiness-2026-05-06.md
-  - docs/architecture/surface-5-and-secure-cosd-roadmap.md
-  - docs/security/supply-chain.md
-  - docs/setup/dependencies.md
+  - docs/02-Decisions/adrs/ADR-191-cos-binary-release-pipeline.md
+  - docs/04-Concepts/architecture/standalone-ship-readiness-2026-05-06.md
+  - docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md
+  - docs/09-Quality/security/supply-chain.md
+  - docs/05-Methodology/setup/dependencies.md
   - tests/contracts/test_standalone_distribution_contract.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2092,31 +2092,31 @@ scripts:
   consumers:
   - .claude/settings.local.json
   - manifests/primitive-behavior-evidence.yaml
-  - docs/adrs/ADR-168-cross-device-dependency-installation.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/driver-specific-script-surfaces.md
-  - docs/architecture/harness-adoption-gap/scripts-audit.md
-  - docs/onboarding-wizard-design.md
-  - docs/patterns/ecosystem-tools.md
+  - docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/driver-specific-script-surfaces.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md
+  - docs/04-Concepts/root/onboarding-wizard-design.md
+  - docs/04-Concepts/patterns/ecosystem-tools.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/install-obsidian-local.sh
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-168-cross-device-dependency-installation.md
-  - docs/manual-tests/engram-obsidian-export.md
-  - docs/setup/cross-device-dependencies.md
-  - docs/setup/obsidian-local.md
+  - docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md
+  - docs/09-Quality/manual-tests/engram-obsidian-export.md
+  - docs/05-Methodology/setup/cross-device-dependencies.md
+  - docs/05-Methodology/setup/obsidian-local.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/install-pre-commit.sh
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/harness-adoption-gap/scripts-audit.md
-  - docs/onboarding-wizard-design.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md
+  - docs/04-Concepts/root/onboarding-wizard-design.md
   - rules/pre-commit-gate.md
   - tests/behavior/test_safety_mesh.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -2125,9 +2125,9 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/acc/latest.md
-  - docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md
-  - docs/manual-tests/cross-stack-license-audit-cli.md
+  - docs/07-Capabilities/acc/latest.md
+  - docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md
+  - docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md
   - scripts/install-trivy.sh
   - scripts/license-audit-syft-grype.sh
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2137,9 +2137,9 @@ scripts:
   owner: maintainer/operator workflow
   consumers:
   - manifests/tool-discovery-preuse.yaml
-  - docs/acc/latest.md
-  - docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md
-  - docs/manual-tests/cross-stack-license-audit-cli.md
+  - docs/07-Capabilities/acc/latest.md
+  - docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md
+  - docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md
   - scripts/license-audit-trivy.sh
   - tests/unit/test_tool_discovery_preuse.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2149,9 +2149,9 @@ scripts:
   evidence: doc/only
   consumers:
   - manifests/tool-discovery-preuse.yaml
-  - docs/acc/latest.md
-  - docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md
-  - docs/adrs/ADR-267-license-compliance-enforcement-architecture.md
+  - docs/07-Capabilities/acc/latest.md
+  - docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md
+  - docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/license-audit-trivy.sh
@@ -2159,9 +2159,9 @@ scripts:
   owner: maintainer/operator workflow
   consumers:
   - manifests/tool-discovery-preuse.yaml
-  - docs/acc/latest.md
-  - docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md
-  - docs/adrs/ADR-267-license-compliance-enforcement-architecture.md
+  - docs/07-Capabilities/acc/latest.md
+  - docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md
+  - docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md
   - scripts/install-trivy.sh
   - tests/unit/test_tool_discovery_preuse.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2170,11 +2170,11 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-168-cross-device-dependency-installation.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/manual-tests/local-connected-systems-validation.md
-  - docs/setup/cross-device-dependencies.md
-  - docs/testing.md
+  - docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/09-Quality/manual-tests/local-connected-systems-validation.md
+  - docs/05-Methodology/setup/cross-device-dependencies.md
+  - docs/09-Quality/root/testing.md
   - scripts/cos-doctor-tools.sh
   - tests/contracts/test_local_connected_systems_validation_docs.py
   - tests/contracts/test_session_start_tooling_contract.py
@@ -2184,7 +2184,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/measurements/stage2-expansion-baseline.md
+  - docs/06-Daily/measurements/stage2-expansion-baseline.md
   - tests/unit/test_measure_expansion.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2193,9 +2193,9 @@ scripts:
   owner: maintainer/operator workflow
   consumers:
   - manifests/dependencies.yaml
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
-  - docs/architecture/harness-adoption-gap/scripts-audit.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md
+  - docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md
   - scripts/cos_init.py
   - tests/behavior/test_coexistence.py
   - tests/integration/test_auto_update_flow.py
@@ -2206,8 +2206,8 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/SESSION-HANDOFF-2026-05-04.md
-  - docs/adrs/ADR-106-multi-session-safety-primitives.md
+  - docs/01-Build-Log/SESSION-HANDOFF-2026-05-04.md
+  - docs/02-Decisions/adrs/ADR-106-multi-session-safety-primitives.md
   - tests/behavior/test_plan_lock_cli.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2215,7 +2215,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
+  - docs/02-Decisions/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/portable_ai_real_consumer_smoke.py
@@ -2223,8 +2223,8 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/primitive-authority.yaml
-  - docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
-  - docs/architecture/primitive-authority-write-effects.md
+  - docs/02-Decisions/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
+  - docs/04-Concepts/architecture/primitive-authority-write-effects.md
   - tests/contracts/test_primitive_authority_docs.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2239,7 +2239,7 @@ scripts:
   consumers:
   - manifests/capability-coverage.yaml
   - manifests/control-plane-audits.yaml
-  - docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md
+  - docs/02-Decisions/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md
   - tests/audit/test_python_naming.py
   - tests/unit/test_primitive_behavior_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -2253,18 +2253,18 @@ scripts:
   - manifests/primitive-behavior-contracts.yaml
   - manifests/primitive-coherence.yaml
   - manifests/release-freeze.yaml
-  - docs/adrs/ADR-240-primitive-coherence-audit-and-ownership-manifest.md
-  - docs/adrs/ADR-246-release-transaction-freeze.md
-  - docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md
+  - docs/02-Decisions/adrs/ADR-240-primitive-coherence-audit-and-ownership-manifest.md
+  - docs/02-Decisions/adrs/ADR-246-release-transaction-freeze.md
+  - docs/02-Decisions/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/proof-drill-evidence-record
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md
-  - docs/architecture/proof-drill-and-smoke-opt-in-primitives.md
-  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/02-Decisions/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md
+  - docs/04-Concepts/architecture/proof-drill-and-smoke-opt-in-primitives.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
   - scripts/cos-headless-service-drill
   - tests/unit/test_proof_drill_evidence_record.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2275,19 +2275,19 @@ scripts:
   consumers:
   - manifests/adr-closure-metadata.yaml
   - manifests/product-zones.yaml
-  - docs/SESSION-ADR-CLOSURE-2026-05-04.md
-  - docs/SESSION-HANDOFF-2026-04-17.md
-  - docs/adrs/ADR-025-install-update-loop.md
-  - docs/adrs/ADR-064-harness-agnostic-cognitive-os.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md
+  - docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md
+  - docs/01-Build-Log/SESSION-HANDOFF-2026-04-17.md
+  - docs/02-Decisions/adrs/ADR-025-install-update-loop.md
+  - docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
     workflow or wrapper; keep explicit instead of creating a narrow implementation skill.'
 - path: scripts/run_skill_efficacy_smoke.py
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/architecture/agentic-mastery-operations.md
+  - docs/04-Concepts/architecture/agentic-mastery-operations.md
   - tests/unit/test_run_skill_efficacy_smoke.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2295,15 +2295,15 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md
+  - docs/02-Decisions/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/session-leak-diagnostic.sh
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-047-session-lifecycle-management.md
-  - docs/architecture/bootstrap-portability.md
+  - docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md
+  - docs/04-Concepts/architecture/bootstrap-portability.md
   - tests/behavior/test_secondary_script_portability.py
   - tests/unit/test_session_leak_detection.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -2316,10 +2316,10 @@ scripts:
   - manifests/dependencies.yaml
   - manifests/primitive-behavior-evidence.yaml
   - README.md
-  - docs/adrs/ADR-263-tool-replay-budget-ledger.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/getting-started.md
-  - docs/migration-from/from-vanilla-claude-code.md
+  - docs/02-Decisions/adrs/ADR-263-tool-replay-budget-ledger.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/00-MOCs/entrypoints/getting-started.md
+  - docs/08-References/migration-from/from-vanilla-claude-code.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/skill-router-retrieval-audit.py
@@ -2328,7 +2328,7 @@ scripts:
   consumers:
   - manifests/capability-coverage.yaml
   - manifests/control-plane-audits.yaml
-  - docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md
+  - docs/02-Decisions/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md
   - tests/audit/test_python_naming.py
   - tests/unit/test_skill_router_retrieval_audit.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
@@ -2337,10 +2337,10 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-028.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/driver-specific-script-surfaces.md
-  - docs/runbooks/so-incident-runbook.md
+  - docs/02-Decisions/adrs/ADR-028.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/driver-specific-script-surfaces.md
+  - docs/05-Methodology/runbooks/so-incident-runbook.md
   - scripts/apply-efficiency-profile.sh
   - tests/contracts/test_killswitch.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2349,13 +2349,13 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/adrs/ADR-028.md
-  - docs/adrs/ADR-028a.md
-  - docs/adrs/ADR-028b.md
-  - docs/adrs/ADR-047-session-lifecycle-management.md
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
-  - docs/architecture/functional-audit/startup-baseline-2026-04-20.md
-  - docs/runbooks/so-incident-runbook.md
+  - docs/02-Decisions/adrs/ADR-028.md
+  - docs/02-Decisions/adrs/ADR-028a.md
+  - docs/02-Decisions/adrs/ADR-028b.md
+  - docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md
+  - docs/05-Methodology/runbooks/so-incident-runbook.md
   - rules/so-slo.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2363,8 +2363,8 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/architecture/concurrency-safety-core-consumer-contract.md
-  - docs/architecture/multi-session-orchestration-audit-2026-05-02.md
+  - docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md
+  - docs/04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md
   - scripts/cos-doctor-concurrency.sh
   - tests/behavior/test_stash_leak_alarm.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2373,7 +2373,7 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: evidence/only
   consumers:
-  - docs/agent-capability-coverage.md
+  - docs/07-Capabilities/root/agent-capability-coverage.md
   - tests/red_team/portability/test_statusline-coverage.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2381,10 +2381,10 @@ scripts:
   resolution: operator_workflow
   owner: maintainer/operator workflow
   consumers:
-  - docs/adrs/ADR-072-test-lane-taxonomy.md
-  - docs/adrs/ADR-073-test-architecture-role-registry.md
-  - docs/testing-cognitive-os-suite.md
-  - docs/testing/test-runner-roles.md
+  - docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md
+  - docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md
+  - docs/09-Quality/root/testing-cognitive-os-suite.md
+  - docs/09-Quality/testing/test-runner-roles.md
   - scripts/test-all.sh
   - tests/audit/test_test_runner_role_taxonomy.py
   rationale: 'ADR-283 P2 review: remaining script-orchestrated shell/no-extension workflow is a top-level maintainer/operator
@@ -2393,12 +2393,12 @@ scripts:
   resolution: documented_maintainer_tool
   evidence: doc/only
   consumers:
-  - docs/business/case-study.md
-  - docs/business/durable-product-master-plan.md
-  - docs/business/master-plan-checklist.md
-  - docs/business/master-plan-execution-requirements.md
-  - docs/business/open-source-design.md
-  - docs/research/INDEX.md
+  - docs/08-References/business/case-study.md
+  - docs/08-References/business/durable-product-master-plan.md
+  - docs/08-References/business/master-plan-checklist.md
+  - docs/08-References/business/master-plan-execution-requirements.md
+  - docs/08-References/business/open-source-design.md
+  - docs/03-PoCs/research/INDEX.md
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
 - path: scripts/validate_tier_filter.py
@@ -2406,9 +2406,9 @@ scripts:
   evidence: evidence/only
   consumers:
   - manifests/hook-quality.yaml
-  - docs/legal/operator-data-scan.md
-  - docs/measurements/tier-filter-validation-2026-05-01.md
-  - docs/measurements/tier-filter-validation-harness.md
+  - docs/09-Quality/legal/operator-data-scan.md
+  - docs/06-Daily/measurements/tier-filter-validation-2026-05-01.md
+  - docs/06-Daily/measurements/tier-filter-validation-harness.md
   - tests/unit/test_validate_tier_filter.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
@@ -2417,7 +2417,7 @@ scripts:
   evidence: evidence/only
   consumers:
   - .claude/settings.local.json
-  - docs/architecture/core-vs-extensions-audit-2026-04-20.md
+  - docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md
   - tests/unit/test_bump_version.py
   - tests/unit/test_cross_platform_discipline.py
   - tests/unit/test_portable_sh.py
@@ -2425,7 +2425,7 @@ scripts:
     until stale evidence is proven.'
 - path: scripts/cos-rust-transpiler-eval
   resolution: documented_maintainer_tool
-  evidence: docs/architecture/rust-transpiler-evaluation-lane.md and docs/reports/rust-transpiler-eval-2026-05-12.md
+  evidence: docs/04-Concepts/architecture/rust-transpiler-evaluation-lane.md and docs/06-Daily/reports/rust-transpiler-eval-2026-05-12.md
   rationale: Rust migration lab lane is an explicit maintainer diagnostic command, not a default agent-facing primitive.
 - path: scripts/cos_rust_transpiler_eval.py
   resolution: internal_backend

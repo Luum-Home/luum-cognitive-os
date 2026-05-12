@@ -22,8 +22,8 @@ PROTECTED_COSD_GLOBS = (
     "infra/cosd/**",
     "scripts/cosd",
     "scripts/cos_daemon.py",
-    "docs/adrs/ADR-193-cosd-local-network-api.md",
-    "docs/adrs/ADR-194-cosd-secure-remote-api.md",
+    "docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md",
+    "docs/02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md",
 )
 APPROVAL_ENV = "COS_ALLOW_COSD_AUTH_CONFIG_WRITE"
 

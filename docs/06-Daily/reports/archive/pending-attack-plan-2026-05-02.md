@@ -34,7 +34,7 @@
 | **Wire DORMANT-import-orphan → REAL** | grep `import X` AND no caller → either add caller (wire) or `git rm` X | ~40 estimate | 30min/item × 40 = 20h |
 | **Activate DORMANT-config-no-test → REAL** | hook in settings.json but no test exercises it → write smoke test | ~50 estimate | 45min/item × 50 = 37h |
 | **Mark DORMANT-deferred-with-trigger → ON_DEMAND** | add `@on-demand` / `@manual-trigger` marker per Wave C-style batch | ~60 estimate | 5min/item × 60 = 5h |
-| **Archive DORMANT-deprecated → ARCHIVE** | `git mv` to `docs/archive/` per ADR-105 bilateral verify | ~25 estimate | 15min/item × 25 = 6.25h |
+| **Archive DORMANT-deprecated → ARCHIVE** | `git mv` to `docs/99-Archive/archive/` per ADR-105 bilateral verify | ~25 estimate | 15min/item × 25 = 6.25h |
 | **Convert ASPIRATIONAL-IMPLEMENT → REAL** | per IMPLEMENT batch §2 below | 15 | 7.5h |
 
 **Math to ratio < 25%**:
@@ -61,13 +61,13 @@
 
 ### Path forward
 
-`docs/reports/pending-attack-plan-2026-05-02.md` (this file) → next session pick a batch → `sdd-new dormant-batch-Bx` per batch → execute.
+`docs/06-Daily/reports/pending-attack-plan-2026-05-02.md` (this file) → next session pick a batch → `sdd-new dormant-batch-Bx` per batch → execute.
 
 ---
 
 ## 2. IMPLEMENT batch from prune-triage-2026-05-01.md
 
-Source: `docs/reports/prune-triage-2026-05-01.md`. 15 items (12 hooks + 3 skills) classified IMPLEMENT — complete code, clear value, ≤4h batch effort.
+Source: `docs/06-Daily/reports/prune-triage-2026-05-01.md`. 15 items (12 hooks + 3 skills) classified IMPLEMENT — complete code, clear value, ≤4h batch effort.
 
 ### IMPLEMENT hooks (12 items, ~6h total)
 

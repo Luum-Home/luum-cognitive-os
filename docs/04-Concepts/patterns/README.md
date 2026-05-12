@@ -18,7 +18,7 @@ to separate **enforceable rules** from **documentation**.
 | Location | Purpose | Enforced by |
 |----------|---------|-------------|
 | `rules/*.md` | Behavioral rules the system enforces | Hooks (primary) + agent-mandatory-rules template (secondary) |
-| `docs/patterns/*.md` | Reference patterns humans read | None — documentation only |
+| `docs/04-Concepts/patterns/*.md` | Reference patterns humans read | None — documentation only |
 
 If a pattern in this directory later grows enforcement machinery (hook or
 template injection), it should be moved back into `rules/` and indexed in
@@ -40,7 +40,7 @@ template injection), it should be moved back into `rules/` and indexed in
 
 - `rules/RULES-COMPACT.md` still indexes these patterns by key (e.g.
   `[plan-first]`, `[dogfooding]`). Consumers resolving those keys should look
-  in `docs/patterns/` first, then fall back to `rules/` for historical
+  in `docs/04-Concepts/patterns/` first, then fall back to `rules/` for historical
   compatibility.
 - `hooks/self-install.sh` still lists these names in `EXCLUDED_RULES` as
   "contextual" — the installer silently skips names it cannot find, so the

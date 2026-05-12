@@ -8,7 +8,7 @@ source_artifacts:
   - .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.md
   - .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.analysis.json
   - .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.raw.json
-  - docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md
+  - docs/06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md
 ---
 
 # opensage-agent/opensage-adk Deep Analysis — 2026-05-09
@@ -48,7 +48,7 @@ source_artifacts:
 | Reverse engineering | Main surfaces mapped: agents, session managers, sandbox backends, memory, plugins, toolbox, bash tools, evaluation, CLI, and templates. |
 | Build/test smoke | `python3 -m compileall -q src/opensage tests` passed. Full tests deferred because they require Docker/Neo4j/provider/sandbox dependencies. |
 | Threat model | Dynamic tool generation, privileged Docker, remote/k8s sandboxing, provider secrets, and Neo4j memory retention are the primary hazards. |
-| Radar update | Added ASSESS entry to `docs/patterns/ecosystem-tools.md` and `packages/ecosystem-tools/rules/ecosystem-tools.md`; manifest marks pattern-only. |
+| Radar update | Added ASSESS entry to `docs/04-Concepts/patterns/ecosystem-tools.md` and `packages/ecosystem-tools/rules/ecosystem-tools.md`; manifest marks pattern-only. |
 | Docs-to-artifact | This deep report and the radar addendum were created as durable artifacts. |
 | Impact analysis | Recommendation is pattern extraction only; any runnable adapter requires a manifest-backed lab and rollback path. |
 

@@ -164,7 +164,7 @@ contracts when it is produced by Cognitive OS.
 
 ### Required follow-up work
 
-- Consumer-package spec is now implemented by `docs/architecture/portable-ai-consumer-package-spec.md` and `scripts/cos-portable-ai-consumer-package-smoke`; extend it only when new consumer UX surfaces are added.
+- Consumer-package spec is now implemented by `docs/04-Concepts/architecture/portable-ai-consumer-package-spec.md` and `scripts/cos-portable-ai-consumer-package-smoke`; extend it only when new consumer UX surfaces are added.
 - Extend the first-party adapter compiler beyond the starter slice while
   preserving the ADR-272 boundary: external structural backends can emit advisory
   files only behind COS fidelity filters.

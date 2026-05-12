@@ -12,9 +12,9 @@ implementation_files:
   - manifests/primitive-authority.yaml
   - scripts/primitive_authority_audit.py
   - scripts/cos-primitive-authority-audit
-  - docs/architecture/primitive-authority-write-effects.md
-  - docs/reports/primitive-authority-latest.json
-  - docs/reports/primitive-authority-latest.md
+  - docs/04-Concepts/architecture/primitive-authority-write-effects.md
+  - docs/06-Daily/reports/primitive-authority-latest.json
+  - docs/06-Daily/reports/primitive-authority-latest.md
   - tests/contracts/test_primitive_authority_contract.py
   - tests/contracts/test_primitive_authority_static_audit.py
   - tests/contracts/test_primitive_authority_dynamic_smoke.py
@@ -75,8 +75,8 @@ Authority can be explicit per path or derived from existing sources:
 Add `scripts/primitive_authority_audit.py` and wrapper
 `scripts/cos-primitive-authority-audit` to produce JSON and Markdown reports at:
 
-- `docs/reports/primitive-authority-latest.json`
-- `docs/reports/primitive-authority-latest.md`
+- `docs/06-Daily/reports/primitive-authority-latest.json`
+- `docs/06-Daily/reports/primitive-authority-latest.md`
 
 The audit has two layers:
 
@@ -146,7 +146,7 @@ Treat `manifests/primitive-authority.yaml` as the write-effects authority ledger
 
 1. Before adding or changing a script with write behavior, classify its authority mode in `manifests/primitive-authority.yaml` or ensure the derived default is correct.
 2. Run `scripts/cos-primitive-authority-audit` after changing scripts, projection code, protected config policy, or primitive scope manifests.
-3. Review `docs/reports/primitive-authority-latest.{json,md}` for block findings before trusting ACC coverage.
+3. Review `docs/06-Daily/reports/primitive-authority-latest.{json,md}` for block findings before trusting ACC coverage.
 4. Add dynamic smoke coverage only for safe-to-run representative paths; do not claim exhaustive argument-space proof.
 
 ### When sources disagree
@@ -155,5 +155,5 @@ If scope/projection metadata says a primitive is visible to consumers but author
 
 ### Reading guide for cold readers
 
-Start with `docs/architecture/primitive-authority-write-effects.md`, then inspect `manifests/primitive-authority.yaml` and `scripts/primitive_authority_audit.py`. The first ratchet catches high-confidence write-boundary contradictions; broader dynamic proof is intentionally incremental.
+Start with `docs/04-Concepts/architecture/primitive-authority-write-effects.md`, then inspect `manifests/primitive-authority.yaml` and `scripts/primitive_authority_audit.py`. The first ratchet catches high-confidence write-boundary contradictions; broader dynamic proof is intentionally incremental.
 

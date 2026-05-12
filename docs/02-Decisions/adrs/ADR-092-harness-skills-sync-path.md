@@ -14,7 +14,7 @@ classification_basis: 'self-install resolves claude skills destinations and sync
 
 # ADR-092: Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination
 
-<!-- Renumbered-from: ADR-001 (docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md) -->
+<!-- Renumbered-from: ADR-001 (docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md) -->
 <!-- Renumbered-to: ADR-092 (ADR-087 migration, 2026-04-30) -->
 
 ## Status
@@ -134,8 +134,8 @@ when skills require a manual install step — they fall behind.
 - The `.claude/skills/` directory should be added to `.gitignore` alongside
   `.cognitive-os/skills/` since it contains generated symlinks, not source files.
 
-**Cross-references:** `docs/architecture/harness-adoption-gap/diagnosis.md` (root cause
-analysis, hypothesis ranking, Experiment 1 confirmation); `docs/os-vs-project-separation.md`
+**Cross-references:** `docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md` (root cause
+analysis, hypothesis ranking, Experiment 1 confirmation); `docs/04-Concepts/root/os-vs-project-separation.md`
 (kernel vs driver layer convention).
 
 ## Verification

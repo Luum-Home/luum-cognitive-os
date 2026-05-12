@@ -2,8 +2,8 @@
   "backup_mirror": "<redacted-local-backup-mirror>",
   "boundary_tag_recommended": "v0.27.1-pre-history-rewrite",
   "executed_at": "20260508T061208Z",
-  "policy": "Rewrite executed. The backup mirror is the rollback path. Operator must (1) verify counts above, (2) re-tag versions onto post-rewrite equivalent SHAs, (3) copy this report to docs/reports/, (4) write disclosure doc, (5) force-push origin/main only after 1-4.",
-  "policy_reference": "docs/adrs/ADR-218-history-sanitization-toolchain.md",
+  "policy": "Rewrite executed. The backup mirror is the rollback path. Operator must (1) verify counts above, (2) re-tag versions onto post-rewrite equivalent SHAs, (3) copy this report to docs/06-Daily/reports/, (4) write disclosure doc, (5) force-push origin/main only after 1-4.",
+  "policy_reference": "docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md",
   "post_rewrite": {
     "commit_count": 2440,
     "head": "db846adb6290456b431bfc191b08543f56a2e8d7"

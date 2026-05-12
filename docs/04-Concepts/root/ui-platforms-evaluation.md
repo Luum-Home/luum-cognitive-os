@@ -142,7 +142,7 @@ AGPL-3.0 license blocks code adoption per `rules/license-policy.md`. The memory 
 
 ### Agent Zero (WATCH)
 
-Custom license with restrictions. The plugin marketplace UI and self-updater dashboard are the most relevant patterns. Already documented in `docs/component-sources.md` and `docs/ecosystem-comparison.md`.
+Custom license with restrictions. The plugin marketplace UI and self-updater dashboard are the most relevant patterns. Already documented in `docs/04-Concepts/root/component-sources.md` and `docs/04-Concepts/root/ecosystem-comparison.md`.
 
 **Verdict**: Watch for marketplace patterns. Do not adopt code.
 
@@ -180,8 +180,8 @@ Build a unified React web app combining:
 
 ## Cross-Reference
 
-- For external tool integrations: see `docs/component-sources.md`
-- For competitive positioning: see `docs/competitive-analysis.md`
-- For feature-by-feature comparison: see `docs/ecosystem-comparison.md`
+- For external tool integrations: see `docs/04-Concepts/root/component-sources.md`
+- For competitive positioning: see `docs/08-References/root/competitive-analysis.md`
+- For feature-by-feature comparison: see `docs/04-Concepts/root/ecosystem-comparison.md`
 - For license policy: see `rules/license-policy.md`
 - For infrastructure services: see `rules/infra-health.md`

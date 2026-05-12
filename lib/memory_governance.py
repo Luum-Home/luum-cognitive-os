@@ -6,7 +6,7 @@ carries a verification policy, a staleness policy, a staleness threshold in
 seconds, and a recall score multiplier.  Unknown types receive a no-op default
 so existing observations are never affected.
 
-ADR reference: docs/adrs/ADR-261-memory-governance-v2.md
+ADR reference: docs/02-Decisions/adrs/ADR-261-memory-governance-v2.md
 Pattern source: .private/external-pattern-research/annex-a-memory.md §Feature 1 (clean-room rewrite)
 
 Public interface

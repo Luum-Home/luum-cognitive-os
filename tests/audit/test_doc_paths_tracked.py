@@ -7,7 +7,7 @@ ROOT CAUSE: ADR-069 §5 originally specified `.cognitive-os/reports/research/` a
 canonical storage path for research reports. Since `.cognitive-os/` is gitignored,
 reports ended up duplicated at two paths, inflating /decision-triage counts by 3x.
 
-FIX (2026-04-27): ADR-069 §5 updated to use `docs/reports/` (git-tracked). This test
+FIX (2026-04-27): ADR-069 §5 updated to use `docs/06-Daily/reports/` (git-tracked). This test
 FAILS if any ADR/rule/template references `.cognitive-os/<something>/<something>.md`
 as an authoritative storage path without an explicit opt-out annotation.
 """
@@ -44,7 +44,7 @@ SCAN_DIRS = [
 # Files exempted because they discuss the bug/fix itself (the fix documenting the old path)
 EXEMPTED_FILES = {
     # SESSION-HANDOFF files reference the old path to describe what was wrong
-    "docs/SESSION-HANDOFF-2026-04-25.md",
+    "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md",
 }
 
 
@@ -57,7 +57,7 @@ def test_no_authoritative_storage_in_gitignored_paths() -> None:
     reports to `.cognitive-os/reports/research/`, which is gitignored. After the fix,
     ADRs and rules MUST NOT direct agents to store permanent artifacts under .cognitive-os/.
 
-    Scope: Only docs/adrs/, rules/, templates/ — these are the authoritative source-of-truth
+    Scope: Only docs/02-Decisions/adrs/, rules/, templates/ — these are the authoritative source-of-truth
     documents. Session handoffs and ad-hoc docs may reference the old paths for context.
 
     Note: Other .cognitive-os/ paths (runtime/, metrics/, sprints/, sessions/) are FINE
@@ -101,7 +101,7 @@ def test_no_authoritative_storage_in_gitignored_paths() -> None:
     assert not violations, (
         f"Found {len(violations)} reference(s) in ADRs/rules/templates citing "
         f".cognitive-os/reports/research/ or .cognitive-os/decisions/ as authoritative "
-        f"storage. This is the ADR-069 §5 anti-pattern. Use docs/reports/ instead. "
+        f"storage. This is the ADR-069 §5 anti-pattern. Use docs/06-Daily/reports/ instead. "
         f"To exempt a legitimate contextual reference, add `<!-- gitignored-runtime: yes -->` "
         f"on an adjacent line. Violations (first 5): {violations[:5]}"
     )
@@ -136,7 +136,7 @@ def test_gitignored_paths_do_not_have_committed_md_files() -> None:
 
     assert not violations, (
         f"Found {len(violations)} .md file(s) committed under .cognitive-os/reports|decisions/. "
-        f"These MUST live at docs/reports/ or docs/decisions/ instead — .cognitive-os/ is "
+        f"These MUST live at docs/06-Daily/reports/ or docs/decisions/ instead — .cognitive-os/ is "
         f"gitignored and causes duplicate-counting in /decision-triage. "
         f"Move these files and update any references. "
         f"Violations: {violations}"
@@ -145,21 +145,21 @@ def test_gitignored_paths_do_not_have_committed_md_files() -> None:
 
 @pytest.mark.audit
 def test_docs_reports_dir_exists_and_is_tracked() -> None:
-    """Verify that docs/reports/ exists and contains at least one git-tracked file.
+    """Verify that docs/06-Daily/reports/ exists and contains at least one git-tracked file.
 
     This is the positive flip of the above: after ADR-069 §5 fix, reports MUST be
     in this directory. If it's empty, something is wrong with the migration.
     """
     reports_dir = REPO / "docs" / "reports"
     assert reports_dir.is_dir(), (
-        f"docs/reports/ does not exist. After ADR-069 §5 fix, this directory MUST "
+        f"docs/06-Daily/reports/ does not exist. After ADR-069 §5 fix, this directory MUST "
         f"exist and contain research reports. Create it and move reports from "
         f".cognitive-os/reports/research/ here."
     )
 
     try:
         tracked_output = subprocess.check_output(
-            ["git", "ls-files", "--", "docs/reports/*.md"],
+            ["git", "ls-files", "--", "docs/06-Daily/reports/*.md"],
             cwd=REPO,
             text=True,
             timeout=10,
@@ -174,6 +174,6 @@ def test_docs_reports_dir_exists_and_is_tracked() -> None:
     md_files = list(reports_dir.glob("*.md"))
     if md_files:
         assert tracked, (
-            f"docs/reports/ contains {len(md_files)} .md file(s) but none are git-tracked. "
-            f"Add them with `git add docs/reports/*.md`."
+            f"docs/06-Daily/reports/ contains {len(md_files)} .md file(s) but none are git-tracked. "
+            f"Add them with `git add docs/06-Daily/reports/*.md`."
         )

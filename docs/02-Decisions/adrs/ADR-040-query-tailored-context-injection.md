@@ -38,7 +38,7 @@ Add a `PreToolUse:Agent` hook — `hooks/query-tailored-context-inject.sh` — t
 
 1. Extracts the task description from the agent's prompt (first paragraph or first 500 chars).
 2. Attempts cosine embedding search via `EmbeddingsIndex`; falls back to Jaccard `SemanticIndex` if `sentence-transformers` is absent.
-3. Also searches the ADR index (all `.md` files under `docs/adrs/`) and recent `debt-register.jsonl` entries.
+3. Also searches the ADR index (all `.md` files under `docs/02-Decisions/adrs/`) and recent `debt-register.jsonl` entries.
 4. Returns the **top-3** relevant snippets, capped at ~1 000 tokens of injected text.
 5. Caches results by `hash(task_text)` — repeated identical tasks skip re-embedding.
 6. Exits `0` silently (with empty output) when the self-knowledge index is missing.

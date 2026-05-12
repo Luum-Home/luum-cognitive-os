@@ -13,7 +13,7 @@ implementation_files:
   - manifests/harness-implementation-phases.yaml
   - tests/behavior/test_consumer_project_projection.py
   - tests/contracts/test_acc_pipeline_contract.py
-  - docs/manual-tests/qwen-code-structural-projection.md
+  - docs/09-Quality/manual-tests/qwen-code-structural-projection.md
 tier: maintainer
 tags: [harness, qwen, projection, acc, portability]
 ---
@@ -92,7 +92,7 @@ After this ADR:
 
 1. Run `python3 scripts/cos_init.py --default --harness qwen-code --project-dir /tmp/test-qwen` and inspect `.qwen/settings.json` and `QWEN.md`.
 2. Read `manifests/harness-projection.yaml` entry for `qwen-code` — note the `structural-proof` limitation annotation.
-3. Read `docs/manual-tests/qwen-code-structural-projection.md` for the expected file assertions and their rationale.
+3. Read `docs/09-Quality/manual-tests/qwen-code-structural-projection.md` for the expected file assertions and their rationale.
 4. Consult `manifests/harness-implementation-phases.yaml` to understand where Qwen sits relative to other Phase 3 harnesses (Kimi Code is the sibling).
 
 ## Alternatives rejected

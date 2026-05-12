@@ -635,7 +635,7 @@ Installing Cognitive OS v0.2.1...
     /run-tests        Run your test suite
     /sdd-new          Start a new feature with SDD
 
-  Documentation: https://github.com/Luum-Home/luum-agent-os/docs/getting-started.md
+  Documentation: https://github.com/Luum-Home/luum-agent-os/docs/00-MOCs/entrypoints/getting-started.md
 ```
 
 ---

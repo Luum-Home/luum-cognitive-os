@@ -4,8 +4,8 @@
 > public flip, what was preserved, and how to verify any claim in this
 > repository against your own clone.
 
-[![CI](https://img.shields.io/badge/CI-local%20(ADR--131)-blue.svg)](docs/adrs/ADR-131-local-ci-migration.md)
-[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-orange.svg)](docs/legal/license-faq.md)
+[![CI](https://img.shields.io/badge/CI-local%20(ADR--131)-blue.svg)](docs/02-Decisions/adrs/ADR-131-local-ci-migration.md)
+[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-orange.svg)](docs/09-Quality/legal/license-faq.md)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
 <!-- BADGES:START -->
 ![Dogfood Score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/dogfood.json)
@@ -23,7 +23,7 @@ unverified completions.
 Before Cognitive OS: your coding agent can silently fabricate a passing test
 result, overwrite a working file with a broken one, claim "done" without
 verifying, or exhaust your API budget in an unchecked loop. After Cognitive
-OS: a 14-layer safety mesh ([details](docs/safety-mesh.md): 12 fire as PreTool/PostTool hooks, 2 are library/conditional) intercepts each failure mode at the right lifecycle
+OS: a 14-layer safety mesh ([details](docs/04-Concepts/root/safety-mesh.md): 12 fire as PreTool/PostTool hooks, 2 are library/conditional) intercepts each failure mode at the right lifecycle
 point — before launch, after completion, or on retry exhaustion.
 
 Concrete examples of what it prevents:
@@ -47,7 +47,7 @@ bash scripts/demo-governance.sh
 
 The script launches a minimal agent, intercepts a fabricated trust report, and
 prints a single-screen summary of what hook fired and what was prevented.
-See [docs/manual-tests/proof-paths.md](docs/manual-tests/proof-paths.md) for
+See [docs/09-Quality/manual-tests/proof-paths.md](docs/09-Quality/manual-tests/proof-paths.md) for
 the full walkthrough.
 
 ## Cognitive OS is NOT
@@ -62,7 +62,7 @@ the full walkthrough.
 - **NOT a dashboard product** — governance fires whether or not any UI is
   running. The operator-facing surface is four cooperating layers (CLI,
   Phoenix traces, Engram Cloud memory, Obsidian/markdown reader), not a
-  single web dashboard. See [ADR-172](docs/adrs/ADR-172-multi-surface-ui-architecture.md).
+  single web dashboard. See [ADR-172](docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md).
 
 ## Quick Start
 
@@ -103,15 +103,15 @@ After install, `git push` runs `scripts/cos-ci-local.sh quick` (~30s).
 Use `COS_PRE_PUSH_TIER=full git push` for a deeper gate, or `--no-verify`
 to bypass for a single push. PR review is on demand:
 `bash scripts/cos-pr-review.sh prep <PR>`. Full architecture in
-[ADR-131](docs/adrs/ADR-131-local-ci-migration.md).
+[ADR-131](docs/02-Decisions/adrs/ADR-131-local-ci-migration.md).
 
-See [docs/getting-started.md](docs/getting-started.md) for detailed setup and
-[docs/migration-from/from-vanilla-claude-code.md](docs/migration-from/from-vanilla-claude-code.md)
+See [docs/00-MOCs/entrypoints/getting-started.md](docs/00-MOCs/entrypoints/getting-started.md) for detailed setup and
+[docs/08-References/migration-from/from-vanilla-claude-code.md](docs/08-References/migration-from/from-vanilla-claude-code.md)
 for a step-by-step migration from stock Claude Code.
 
 ## Why Cognitive OS instead of X?
 
-See [docs/vs-alternatives.md](docs/vs-alternatives.md) for a grounded comparison
+See [docs/08-References/root/vs-alternatives.md](docs/08-References/root/vs-alternatives.md) for a grounded comparison
 against Hermes-agent, pi-mono, Agent Zero, and OpenClaw — including where each
 wins and when you should stack Cognitive OS on top rather than replace.
 
@@ -156,7 +156,7 @@ bash scripts/cos-cloud-worker-bootstrap.sh self-test
 
 Cross-OS (Linux / macOS / Windows + WSL2). BYOK credentials per ADR-139.
 Full stack with engram-cloud replication via `up-full`. See the operator
-runbook: [`docs/runbooks/run-cos-in-docker.md`](docs/runbooks/run-cos-in-docker.md).
+runbook: [`docs/05-Methodology/runbooks/run-cos-in-docker.md`](docs/05-Methodology/runbooks/run-cos-in-docker.md).
 
 **Configuration** — main config in `cognitive-os.yaml`:
 `project.phase`, `project.name`, `project.type`, model routing, quality gates.
@@ -168,16 +168,16 @@ any harness that supports lifecycle hooks.
 **REAL** (production, hook-enforced), **DORMANT** (code present but
 feature-flagged off / opt-in), or **ASPIRATIONAL** (scaffolded, loop not
 yet closed). The reconciliation lives in
-[`docs/legal/h1-feature-status-audit.md`](docs/legal/h1-feature-status-audit.md);
-the public-facing matrix in [`docs/business/features.md`](docs/business/features.md)
+[`docs/09-Quality/legal/h1-feature-status-audit.md`](docs/09-Quality/legal/h1-feature-status-audit.md);
+the public-facing matrix in [`docs/08-References/business/features.md`](docs/08-References/business/features.md)
 is annotated. In particular, "self-improvement" and "self-healing"
 (MAPE-K, singularity) are propose-only and human-gated — autonomous
 production mutation is **not** claimed.
 
-**Roadmap**: [docs/roadmap.md](docs/roadmap.md)
+**Roadmap**: [docs/01-Build-Log/root/roadmap.md](docs/01-Build-Log/root/roadmap.md)
 
-**Research catalog**: [docs/research/INDEX.md](docs/research/INDEX.md) — navigable index of ~325 research artifacts (prior-art reports, gap analyses, external-tool deep dives, operational audits, postmortems).
+**Research catalog**: [docs/03-PoCs/research/INDEX.md](docs/03-PoCs/research/INDEX.md) — navigable index of ~325 research artifacts (prior-art reports, gap analyses, external-tool deep dives, operational audits, postmortems).
 
 **Contributing**: see [CONTRIBUTING.md](CONTRIBUTING.md) — AI-authorship policy, commit conventions, DCO sign-off.
 
-**License**: FSL-1.1-MIT — see [LICENSE](LICENSE) and the [License FAQ](docs/legal/license-faq.md).
+**License**: FSL-1.1-MIT — see [LICENSE](LICENSE) and the [License FAQ](docs/09-Quality/legal/license-faq.md).

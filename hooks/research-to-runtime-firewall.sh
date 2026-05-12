@@ -71,6 +71,6 @@ echo ".cognitive-os/external-source-cache/. Research-only clones cannot feed" >&
 echo "runtime modules — keeps clean-room defendibility intact." >&2
 for f in "${FOUND[@]}"; do echo "  - $f" >&2; done
 echo "Resolve: remove the cache reference from runtime code (extract behavioral" >&2
-echo "spec to docs/research/ first), OR COS_ALLOW_RESEARCH_RUNTIME_LEAK=1 ..." >&2
-echo "Reference: docs/adrs/ADR-267-*.md §Layer 1 Hook #6" >&2
+echo "spec to docs/03-PoCs/research/ first), OR COS_ALLOW_RESEARCH_RUNTIME_LEAK=1 ..." >&2
+echo "Reference: docs/02-Decisions/adrs/ADR-267-*.md §Layer 1 Hook #6" >&2
 exit 1

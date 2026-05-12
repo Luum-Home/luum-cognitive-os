@@ -28,12 +28,12 @@ _should_run_control_plane_audit() {
     Agent) return 0 ;;
     Write|Edit|MultiEdit)
       case "$target_path" in
-        docs/reports/*|*/docs/reports/*|docs/history/*|*/docs/history/*|docs/business/*|*/docs/business/*) return 0 ;;
+        docs/06-Daily/reports/*|*/docs/06-Daily/reports/*|docs/01-Build-Log/history/*|*/docs/01-Build-Log/history/*|docs/08-References/business/*|*/docs/08-References/business/*) return 0 ;;
       esac
       return 1
       ;;
     Bash)
-      printf '%s' "$command" | grep -Eq '(^|[;&|[:space:]])git[[:space:]]+commit\b|(^|[;&|[:space:]])git[[:space:]]+push\b|(^|[;&|[:space:]])git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset|clean[[:space:]]+-f|restore|revert|worktree[[:space:]]+(add|remove|move|prune|repair|lock|unlock)|branch[[:space:]]+-D|rebase|pull[^;&|]*--rebase)\b|cos-history-sanitization[^;&|]*(--execute)|cos[[:space:]]+history[[:space:]]+sanitize[^;&|]*(--execute)|git-filter-repo|docs/reports/|docs/history/HISTORY-SANITIZATION'
+      printf '%s' "$command" | grep -Eq '(^|[;&|[:space:]])git[[:space:]]+commit\b|(^|[;&|[:space:]])git[[:space:]]+push\b|(^|[;&|[:space:]])git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset|clean[[:space:]]+-f|restore|revert|worktree[[:space:]]+(add|remove|move|prune|repair|lock|unlock)|branch[[:space:]]+-D|rebase|pull[^;&|]*--rebase)\b|cos-history-sanitization[^;&|]*(--execute)|cos[[:space:]]+history[[:space:]]+sanitize[^;&|]*(--execute)|git-filter-repo|docs/06-Daily/reports/|docs/01-Build-Log/history/HISTORY-SANITIZATION'
       return $?
       ;;
   esac

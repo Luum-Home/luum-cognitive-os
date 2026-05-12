@@ -66,7 +66,7 @@ sections.
 - `lib/shadow_git.py` — substrate (owned by ADR-227)
 - `scripts/cos-rollback` — preview/restore CLI (owned by ADR-227)
 - `manifests/shadow-git.yaml` — retention declaration (owned by ADR-227)
-- `docs/runbooks/shadow-git-rollback.md` — operator runbook (owned by ADR-227)
+- `docs/05-Methodology/runbooks/shadow-git-rollback.md` — operator runbook (owned by ADR-227)
 
 No code or manifest moved as part of this consolidation; only the ADR record
 was tombstoned. Cross-references in other ADRs (223, 227) that name ADR-224

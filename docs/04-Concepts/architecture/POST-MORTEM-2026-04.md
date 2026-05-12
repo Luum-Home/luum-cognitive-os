@@ -180,8 +180,8 @@ Mapped to each root cause:
 ### For "documentation debt"
 - `templates/agent-mandatory-rules.md`: injected into every sub-agent via SubagentStart
 - `.cognitive-os/plans/roadmaps/stabilization-roadmap.md`: living tracker of remaining work
-- `docs/architecture/FROZEN-BACKLOG.md`: consolidated deferred work (30+ plans)
-- `docs/architecture/LESSONS-LEARNED.md`: the 5 wounds + red flags (sibling to this post-mortem)
+- `docs/04-Concepts/architecture/FROZEN-BACKLOG.md`: consolidated deferred work (30+ plans)
+- `docs/04-Concepts/architecture/LESSONS-LEARNED.md`: the 5 wounds + red flags (sibling to this post-mortem)
 - 22 ADRs documenting all major decisions
 
 ### For "metadata-as-implementation"

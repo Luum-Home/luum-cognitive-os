@@ -17,8 +17,8 @@ CORE_PATHS = [
     "docs",
 ]
 IGNORED_PREFIXES = (
-    "docs/research/",
-    "docs/reports/",
+    "docs/03-PoCs/research/",
+    "docs/06-Daily/reports/",
 )
 IGNORED_PARTS = {".git", ".venv", "node_modules", "__pycache__", ".pytest_cache"}
 PRIVATE_OR_CONSUMER_TERMS = (

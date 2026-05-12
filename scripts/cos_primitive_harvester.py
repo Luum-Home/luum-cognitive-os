@@ -185,7 +185,7 @@ def artifact_plan_for(candidate: str, primitive_type: str, decision: str, existi
         ])
         return base
     if primitive_type == "documentation-decision":
-        return [f"docs/adrs/ADR-XXX-{candidate}.md", f"docs/architecture/{candidate}.md"]
+        return [f"docs/02-Decisions/adrs/ADR-XXX-{candidate}.md", f"docs/04-Concepts/architecture/{candidate}.md"]
     artifacts = [f"skills/{candidate}/SKILL.md"]
     if primitive_type in {"action-layer-script", "skill-and-script"}:
         artifacts.insert(0, f"scripts/cos_{candidate.replace('-', '_')}.py")
@@ -194,8 +194,8 @@ def artifact_plan_for(candidate: str, primitive_type: str, decision: str, existi
     artifacts.extend([
         f"tests/behavior/test_{candidate.replace('-', '_')}.py",
         f"tests/red_team/portability/test_{candidate.replace('-', '_')}_portability.py",
-        f"docs/adrs/ADR-XXX-{candidate}.md",
-        f"docs/architecture/{candidate}.md",
+        f"docs/02-Decisions/adrs/ADR-XXX-{candidate}.md",
+        f"docs/04-Concepts/architecture/{candidate}.md",
     ])
     return artifacts
 

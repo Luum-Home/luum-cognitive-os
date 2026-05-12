@@ -224,7 +224,7 @@ def audit_rules(root: Path, tests: str, runtime: str) -> list[Row]:
 
 def audit_metrics(root: Path, tests: str, runtime: str, demotions: set[tuple[str, str]]) -> list[Row]:
     rows: list[Row] = []
-    metric_paths = repo_files(root, (".cognitive-os/metrics/*.jsonl", "docs/reports/*.jsonl"))
+    metric_paths = repo_files(root, (".cognitive-os/metrics/*.jsonl", "docs/06-Daily/reports/*.jsonl"))
     mentioned = metric_names(runtime + "\n" + tests)
     for path in metric_paths:
         name = path.name
@@ -298,8 +298,8 @@ def write_markdown(rows: list[Row], path: Path) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate row-level primitive audit evidence")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--json-out", default="docs/reports/primitive-row-audit-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-row-audit-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-row-audit-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-row-audit-latest.md")
     return parser.parse_args()
 
 

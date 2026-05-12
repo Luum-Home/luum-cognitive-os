@@ -62,7 +62,7 @@ def is_allowed_context(path: Path, line: str) -> bool:
         "tests/audit/test_engram_command_contract.py",
     }:
         return True
-    if relative == "docs/architecture/engram-command-contract.md" and line.lstrip().startswith("- `"):
+    if relative == "docs/04-Concepts/architecture/engram-command-contract.md" and line.lstrip().startswith("- `"):
         return True
     return False
 

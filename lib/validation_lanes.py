@@ -94,7 +94,7 @@ def recommend_lane(changed_files: Iterable[str]) -> LaneRecommendation:
     if any(path in {"cognitive-os.yaml", "manifests/hook-quality.yaml"} or path.startswith((".claude/", ".codex/", "manifests/")) for path in files):
         rationale.append("projection or harness artifact changes require landing lane")
         return LaneRecommendation("landing", rationale, files)
-    if all(path.startswith("docs/adrs/") or path.startswith(".cognitive-os/plans/") or path.endswith(".md") for path in files):
+    if all(path.startswith("docs/02-Decisions/adrs/") or path.startswith(".cognitive-os/plans/") or path.endswith(".md") for path in files):
         rationale.append("ADR/docs-only diff fits fast lane")
         return LaneRecommendation("fast", rationale, files)
     if any(path.startswith("tests/") for path in files):

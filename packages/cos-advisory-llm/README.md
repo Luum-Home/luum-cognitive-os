@@ -18,4 +18,4 @@ This is the first extension extracted from monolithic `hooks/` per `.cognitive-o
 
 ## Migration debt
 
-Tracked as row D43 in `docs/reports/debt-register-2026-04-20.md` (status: PARTIAL — advisory-llm extracted; other packs pending per migration plan).
+Tracked as row D43 in `docs/06-Daily/reports/debt-register-2026-04-20.md` (status: PARTIAL — advisory-llm extracted; other packs pending per migration plan).

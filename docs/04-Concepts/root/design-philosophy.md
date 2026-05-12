@@ -171,7 +171,7 @@ The Singularity controller is the organism's unconscious processes -- monitoring
 - Trivial tasks -> direct action, no overhead (ignore the shadow)
 - Critical tasks -> full governance pipeline (run from the lion)
 - Phase modifies thresholds: reconstruction = aggressive bypass (safe territory), production = conservative (dangerous territory)
-- Research-backed: ETH Zurich paper (`docs/research/minimal-context-principle.md`) shows context overhead REDUCES performance on simple tasks (overreacting wastes energy)
+- Research-backed: ETH Zurich paper (`docs/03-PoCs/research/minimal-context-principle.md`) shows context overhead REDUCES performance on simple tasks (overreacting wastes energy)
 
 The adaptive bypass is the organism's survival instinct: respond proportionally, conserve energy, but never ignore a real threat. A typo fix costs ~200 tokens with bypass vs ~3,000 tokens with full orchestration. That 93% savings compounds across hundreds of tasks.
 
@@ -253,7 +253,7 @@ After every session:
     Healthy symbiosis
 ```
 
-The Minimal Context Principle (from the ETH Zurich paper documented in `docs/research/minimal-context-principle.md`) is the scientific backing: context that doesn't help HURTS. A good symbiont knows when to be quiet. The efficiency profiles are the first step -- `lean` is the symbiont in a small host, `full` is the symbiont in a large host that needs full governance.
+The Minimal Context Principle (from the ETH Zurich paper documented in `docs/03-PoCs/research/minimal-context-principle.md`) is the scientific backing: context that doesn't help HURTS. A good symbiont knows when to be quiet. The efficiency profiles are the first step -- `lean` is the symbiont in a small host, `full` is the symbiont in a large host that needs full governance.
 
 **Implementation path**: Add overhead tracking to `hooks/session-cleanup.sh`. Calculate ratio from `metrics/skill-metrics.jsonl`. Log to `metrics/symbiosis.jsonl`. Alert when parasitic.
 
@@ -269,9 +269,9 @@ COS + kagent = mutualism (COS orchestrates, kagent provides K8s runtime)
 COS + Skills.sh = commensalism (COS consumes skills, doesn't affect the registry)
 ```
 
-The execution backends architecture (`docs/execution-backends.md`) IS the ecosystem model. COS doesn't try to be every organism -- it plays its role (governance, memory, quality) and cooperates with specialists (execution). The `execution.backends` config in `cognitive-os.yaml` defines the ecosystem. Each backend is a species: `claude-code` is the native resident, `cursor` is the specialist hunter, `kagent` is the scaled colony, `agentfield` is the distributed swarm.
+The execution backends architecture (`docs/04-Concepts/root/execution-backends.md`) IS the ecosystem model. COS doesn't try to be every organism -- it plays its role (governance, memory, quality) and cooperates with specialists (execution). The `execution.backends` config in `cognitive-os.yaml` defines the ecosystem. Each backend is a species: `claude-code` is the native resident, `cursor` is the specialist hunter, `kagent` is the scaled colony, `agentfield` is the distributed swarm.
 
-**Implementation path**: Already designed in `docs/execution-backends.md` and `docs/distributed-architecture.md`. Phase 1 (multi-project orchestration) is the organism learning to live in a colony. Phase 2 (distributed COS) is the ecosystem forming.
+**Implementation path**: Already designed in `docs/04-Concepts/root/execution-backends.md` and `docs/04-Concepts/root/distributed-architecture.md`. Phase 1 (multi-project orchestration) is the organism learning to live in a colony. Phase 2 (distributed COS) is the ecosystem forming.
 
 ## Design Principles (Biological)
 
@@ -288,7 +288,7 @@ Like muscles: skills get stronger through use, not through manual configuration.
 Like development: a child needs training wheels. An adult doesn't. Capability levels (`rules/capability-levels.md`) let the organism shed scaffolding as the underlying model improves. More features does not equal more mature. The `model_capability.auto_disable` config in `cognitive-os.yaml` explicitly maps maturity to which components become unnecessary. Level 3 disables context management. Level 5 disables eleven hooks. The organism becomes lighter as it becomes wiser.
 
 ### 5. Be Symbiotic, Not Parasitic
-Like gut bacteria: provide more value than you consume. If the overhead exceeds the benefit, reduce yourself. The minimal context principle (`docs/research/minimal-context-principle.md`) is a survival rule: parasites get eliminated by the host. RULES-COMPACT.md exists at ~2,890 tokens instead of the full ~17,500 because the organism learned that less governance means better outcomes for simple tasks. The efficiency profiles (`cognitive-os.yaml` `efficiency.profiles`) are the organism self-sizing: `lean` at ~6,000 tokens, `standard` at ~8,000, `full` at ~142,000.
+Like gut bacteria: provide more value than you consume. If the overhead exceeds the benefit, reduce yourself. The minimal context principle (`docs/03-PoCs/research/minimal-context-principle.md`) is a survival rule: parasites get eliminated by the host. RULES-COMPACT.md exists at ~2,890 tokens instead of the full ~17,500 because the organism learned that less governance means better outcomes for simple tasks. The efficiency profiles (`cognitive-os.yaml` `efficiency.profiles`) are the organism self-sizing: `lean` at ~6,000 tokens, `standard` at ~8,000, `full` at ~142,000.
 
 ### 6. Reproduce Adapted
 Like species adapting to environments: each project installation is adapted to its host (stack, size, industry, phase). Same genome, different phenotype. `lean` for small projects, `full` for enterprise, `fintech` for financial services. The quality presets in `cognitive-os.yaml` (`quality.presets`) encode this: `fintech` requires 80% coverage and idempotency tests. `startup` requires 50% coverage and no integration tests. Same organism, different survival strategy.

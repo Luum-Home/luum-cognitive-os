@@ -102,8 +102,8 @@ python3 scripts/primitive_readiness_ledger.py --project-dir .
 for family in hooks skills rules; do
   python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family "$family"
 done
-python3 scripts/primitive_usage_map.py --project-dir . --target-family scripts --md-out docs/reports/primitive-usage-map-latest.md --json-out docs/reports/primitive-usage-map-latest.json
-python3 scripts/primitive_coverage.py --project-dir . --adapter cognitive-os --format markdown --out docs/reports/primitive-coverage-latest.md
+python3 scripts/primitive_usage_map.py --project-dir . --target-family scripts --md-out docs/06-Daily/reports/primitive-usage-map-latest.md --json-out docs/06-Daily/reports/primitive-usage-map-latest.json
+python3 scripts/primitive_coverage.py --project-dir . --adapter cognitive-os --format markdown --out docs/06-Daily/reports/primitive-coverage-latest.md
 ```
 
 The script readiness ledger is the canonical machine-readable script role surface. The family readiness ledger provides first-pass role and consumer-accessibility rows for hooks, skills, and rules. Usage and coverage reports remain supporting evidence.
@@ -225,7 +225,7 @@ python3 scripts/claim_task.py acquire <task_id> \
 
 This is a coordination primitive, not a file lock. It prevents duplicate logical work when all agents follow the SO contract. Same-file mutation safety still belongs to edit/file-lock primitives such as `edit-coop` and `concurrent-write-guard`.
 
-Relevant implementation: `scripts/claim_task.py` and `lib/task_claim_ledger.py`; broader contract: `docs/architecture/concurrency-safety-core-consumer-contract.md` and ADR-118.
+Relevant implementation: `scripts/claim_task.py` and `lib/task_claim_ledger.py`; broader contract: `docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md` and ADR-118.
 
 ## Repeatable cycle checklist
 
@@ -237,7 +237,7 @@ Relevant implementation: `scripts/claim_task.py` and `lib/task_claim_ledger.py`;
 6. Run docs execution audit and fix hard gaps before adding new claims.
 7. Review lifecycle manifest changes for distribution, supported harnesses, evidence commands, and rollback paths.
 8. Update this document if a new family, harness, or automation loop becomes canonical.
-9. Link new artifacts from `docs/README.md` and `docs/business/master-plan-checklist.md`.
+9. Link new artifacts from `docs/00-MOCs/entrypoints/README.md` and `docs/08-References/business/master-plan-checklist.md`.
 10. Record session summary with accomplished work, next steps, and relevant files.
 
 Acceptance criteria for a cycle:
@@ -269,20 +269,20 @@ Until then, use narrower language: `maintainer tool`, `Claude-supported primitiv
 ## Related artifacts
 
 - `manifests/primitive-lifecycle.yaml`
-- `docs/adrs/ADR-120-conversation-to-primitive-harvester.md`
-- `docs/adrs/ADR-124-cos-distribution-boundaries.md`
-- `docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md`
-- `docs/adrs/ADR-127-active-primitive-index.md`
-- `docs/adrs/ADR-133-expansion-without-monsterization.md`
-- `docs/architecture/primitive-harvester.md`
-- `docs/architecture/headless-self-improvement-proposer.md`
-- `docs/architecture/self-evolving-doctrine-proposals.md`
-- `docs/architecture/harness-engineering.md`
-- `docs/architecture/harness-driver-parity.md`
-- `docs/reports/primitive-gap-latest.md`
-- `docs/reports/primitive-coverage-latest.md`
-- `docs/reports/primitive-usage-map-latest.md`
-- `docs/reports/primitive-readiness-ledger-scripts-latest.json`
-- `docs/adrs/ADR-146-primitive-readiness-ledger.md`
-- `docs/architecture/primitive-readiness-ledger-family-extension.md`
+- `docs/02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md`
+- `docs/02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md`
+- `docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md`
+- `docs/02-Decisions/adrs/ADR-127-active-primitive-index.md`
+- `docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md`
+- `docs/04-Concepts/architecture/primitive-harvester.md`
+- `docs/04-Concepts/architecture/headless-self-improvement-proposer.md`
+- `docs/04-Concepts/architecture/self-evolving-doctrine-proposals.md`
+- `docs/04-Concepts/architecture/harness-engineering.md`
+- `docs/04-Concepts/architecture/harness-driver-parity.md`
+- `docs/06-Daily/reports/primitive-gap-latest.md`
+- `docs/06-Daily/reports/primitive-coverage-latest.md`
+- `docs/06-Daily/reports/primitive-usage-map-latest.md`
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json`
+- `docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md`
+- `docs/04-Concepts/architecture/primitive-readiness-ledger-family-extension.md`
 - `manifests/primitive-readiness-script-overrides.yaml`

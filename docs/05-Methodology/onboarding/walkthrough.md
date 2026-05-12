@@ -221,12 +221,12 @@ Pick the path that matches your goal:
 
 | Goal | File |
 |------|------|
-| Detailed setup, dependency matrix | [`docs/getting-started.md`](../getting-started.md) |
-| Migrating from stock Claude Code | [`docs/migration-from/from-vanilla-claude-code.md`](../migration-from/from-vanilla-claude-code.md) |
-| Architecture decisions | [`docs/adrs/`](../adrs/) (start with ADR-001, ADR-093, ADR-131) |
-| All the demo paths | [`docs/manual-tests/proof-paths.md`](../manual-tests/proof-paths.md) |
-| Why-not-X comparison | [`docs/vs-alternatives.md`](../vs-alternatives.md) |
-| Public-readiness audit | [`docs/legal/pre-public-readiness-checklist.md`](../legal/pre-public-readiness-checklist.md) |
+| Detailed setup, dependency matrix | [`docs/00-MOCs/entrypoints/getting-started.md`](../getting-started.md) |
+| Migrating from stock Claude Code | [`docs/08-References/migration-from/from-vanilla-claude-code.md`](../migration-from/from-vanilla-claude-code.md) |
+| Architecture decisions | [`docs/02-Decisions/adrs/`](../adrs/) (start with ADR-001, ADR-093, ADR-131) |
+| All the demo paths | [`docs/09-Quality/manual-tests/proof-paths.md`](../manual-tests/proof-paths.md) |
+| Why-not-X comparison | [`docs/08-References/root/vs-alternatives.md`](../vs-alternatives.md) |
+| Public-readiness audit | [`docs/09-Quality/legal/pre-public-readiness-checklist.md`](../legal/pre-public-readiness-checklist.md) |
 
 ---
 

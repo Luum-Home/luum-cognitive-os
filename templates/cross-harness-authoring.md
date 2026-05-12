@@ -64,5 +64,5 @@ Before calling a change portable, ask:
 
 ## References
 
-- `docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md`
-- `docs/architecture/cross-harness-authoring.md`
+- `docs/02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md`
+- `docs/04-Concepts/architecture/cross-harness-authoring.md`

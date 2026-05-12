@@ -53,7 +53,7 @@ scripts/cos-agent-message send \
   --to-session operator \
   --type audit_finding \
   --severity block \
-  --target docs/adrs/ADR-171-tombstone.md \
+  --target docs/02-Decisions/adrs/ADR-171-tombstone.md \
   --body "ADR-171 collides with active session ownership."
 ```
 

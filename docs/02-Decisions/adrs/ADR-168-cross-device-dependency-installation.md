@@ -10,7 +10,7 @@ supersedes: []
 superseded_by: null
 implementation_files:
   - manifests/dependencies.yaml
-  - docs/setup/cross-device-dependencies.md
+  - docs/05-Methodology/setup/cross-device-dependencies.md
   - scripts/cos-deps-install.sh
   - scripts/cos-doctor-tools.sh
   - scripts/manifest-check.sh
@@ -102,7 +102,7 @@ Required behavior:
 7. Emit a machine-readable JSON report for `cos-status`, `cos-doctor-tools`, and
    future ACC evidence.
 
-Docs must include `docs/setup/cross-device-dependencies.md`, explaining:
+Docs must include `docs/05-Methodology/setup/cross-device-dependencies.md`, explaining:
 
 - what travels through git, Docker, Engram sync/cloud, or package manifests;
 - what must be installed per machine;
@@ -150,7 +150,7 @@ After this ADR:
 **Answers:**
 - "What is safe to install automatically on a fresh machine?" — `--profile core --apply` installs only portable, non-auth-bound dependencies for the detected platform.
 - "Which dependencies require manual steps?" — The JSON report from `--dry-run --json` lists them in the `manual` and `auth_bound` buckets with `manual_url`.
-- "What travels through git vs. what must be set up per-machine?" — `docs/setup/cross-device-dependencies.md` documents git/Docker/Engram/package-manifest/manual boundaries.
+- "What travels through git vs. what must be set up per-machine?" — `docs/05-Methodology/setup/cross-device-dependencies.md` documents git/Docker/Engram/package-manifest/manual boundaries.
 
 **Does not answer:**
 - "Is the installation complete?" — Auth-bound tools (MCP auth, provider tokens, browser state) are never installed automatically by design.
@@ -170,9 +170,9 @@ After this ADR:
 ### Reading guide for cold readers
 
 1. Read `manifests/dependencies.yaml` for the full dependency inventory — each entry declares whether it is auth-bound, which profiles need it, and how to install it per platform.
-2. Read `docs/setup/cross-device-dependencies.md` for the boundary map: what travels via git/Docker/Engram, what must be installed per-machine, and which tools are manual-only.
+2. Read `docs/05-Methodology/setup/cross-device-dependencies.md` for the boundary map: what travels via git/Docker/Engram, what must be installed per-machine, and which tools are manual-only.
 3. The critical invariant is: never copy credentials between devices. `tests/contracts/test_cross_device_dependencies.py` enforces this — a failing test means a `never_copy` boundary is missing for a credential-carrying entry.
-4. The `partial` implementation status means `scripts/setup.sh` may still be the legacy path for some dependencies — check `docs/setup/cross-device-dependencies.md` §Legacy for which paths are not yet delegated.
+4. The `partial` implementation status means `scripts/setup.sh` may still be the legacy path for some dependencies — check `docs/05-Methodology/setup/cross-device-dependencies.md` §Legacy for which paths are not yet delegated.
 
 ## Alternatives rejected
 
@@ -186,7 +186,7 @@ After this ADR:
 
 ## Implementation plan
 
-1. **Audit and docs** — create `docs/setup/cross-device-dependencies.md` with the
+1. **Audit and docs** — create `docs/05-Methodology/setup/cross-device-dependencies.md` with the
    current surface inventory and target contract.
 2. **Schema v2** — extend `manifests/dependencies.yaml` and
    `lib/manifest_loader.py` to validate platform install targets, `scope`,
@@ -210,7 +210,7 @@ After this ADR:
    non-auth-bound dependencies for the detected platform.
 4. Auth-bound tools report manual instructions and never read/copy credential
    paths.
-5. `docs/setup/cross-device-dependencies.md` lists git/Docker/Engram/package
+5. `docs/05-Methodology/setup/cross-device-dependencies.md` lists git/Docker/Engram/package
    manifest/manual boundaries.
 6. `scripts/setup.sh` either delegates to the new installer or is documented as a
    legacy wrapper.

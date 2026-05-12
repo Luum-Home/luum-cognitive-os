@@ -6,7 +6,7 @@ This document explains how to leverage the OS's own tooling to build both itself
 
 ## Philosophy
 
-The OS has 5 self-awareness mechanisms. When you work with it, **let them do their job**. Don't bypass the pre-commit hooks, don't skip the ADR prompts, don't disable the pattern detector. Each one was built to prevent a specific wound (see `docs/architecture/LESSONS-LEARNED.md`).
+The OS has 5 self-awareness mechanisms. When you work with it, **let them do their job**. Don't bypass the pre-commit hooks, don't skip the ADR prompts, don't disable the pattern detector. Each one was built to prevent a specific wound (see `docs/04-Concepts/architecture/LESSONS-LEARNED.md`).
 
 ## Self-Construction (Building the OS itself)
 
@@ -15,8 +15,8 @@ The OS has 5 self-awareness mechanisms. When you work with it, **let them do the
 1. **Start:** Open Claude Code in `<repo-root>`. Read the 4 living documents to recover context:
    ```
    Read .cognitive-os/plans/roadmaps/stabilization-roadmap.md
-   Read docs/architecture/FROZEN-BACKLOG.md
-   Read docs/architecture/LESSONS-LEARNED.md
+   Read docs/04-Concepts/architecture/FROZEN-BACKLOG.md
+   Read docs/04-Concepts/architecture/LESSONS-LEARNED.md
    Read memory files in ~/.claude/projects/.../memory/
    ```
 
@@ -33,13 +33,13 @@ The OS has 5 self-awareness mechanisms. When you work with it, **let them do the
      - Gate 3a: new hooks must be registered in both profile scripts
      - Gate 3e: imports must resolve
      - Gate 3f: new tests must be behavioral (not structural-only)
-   - `adr-detector.sh` runs async on `git commit`. It analyzes the diff and, if the change is architectural (dependency, config, hooks, license, large deletion, integration, structure, breaking), generates an ADR draft in `docs/adrs/`.
+   - `adr-detector.sh` runs async on `git commit`. It analyzes the diff and, if the change is architectural (dependency, config, hooks, license, large deletion, integration, structure, breaking), generates an ADR draft in `docs/02-Decisions/adrs/`.
 
 4. **End:** `engram-auto-sync.sh` runs on Stop event. It exports project-scoped observations to `.engram/exports/` and commits them. Next time you clone on another device, `engram-auto-import.sh` reconstructs local engram.
 
 ### Red flags (stop signs)
 
-Before merging any significant change, check `docs/architecture/LESSONS-LEARNED.md` for the 10 red flags. Any active flag → STOP and investigate.
+Before merging any significant change, check `docs/04-Concepts/architecture/LESSONS-LEARNED.md` for the 10 red flags. Any active flag → STOP and investigate.
 
 ### When you need to add something new
 
@@ -71,7 +71,7 @@ Before merging any significant change, check `docs/architecture/LESSONS-LEARNED.
 
 ### When you need to change architecture
 
-1. The change triggers `adr-detector.sh` — a draft ADR appears in `docs/adrs/`
+1. The change triggers `adr-detector.sh` — a draft ADR appears in `docs/02-Decisions/adrs/`
 2. Review the draft, flesh it out, change status from Draft to Accepted
 3. Link related ADRs (supersedes, related to)
 4. Include in the commit message: "Includes ADR-NNN"
@@ -215,7 +215,7 @@ cr-report /tmp/mut.db
 - `hooks/_lib/dispatch_gate_check.py` — consolidated dispatch logic
 - `hooks/_lib/session_init_helper.py` — consolidated session init
 - `hooks/_lib/singularity-suggestion.sh` — extracted for testability
-- `hooks/_lib/task_panel_adapter.py` — ADR-021 (docs/adrs/ADR-021-vendor-agnostic-with-adapters.md) first impl
+- `hooks/_lib/task_panel_adapter.py` — ADR-021 (docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md) first impl
 - `hooks/_lib/recap_adapter.py` — /recap integration
 - `templates/agent-mandatory-rules.md` — injected into every sub-agent
 
@@ -223,6 +223,6 @@ cr-report /tmp/mut.db
 
 See:
 - `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` — current status
-- `docs/architecture/FROZEN-BACKLOG.md` — what to unfreeze
-- `docs/architecture/LESSONS-LEARNED.md` — what NOT to repeat
-- `docs/architecture/POST-MORTEM-2026-04.md` — history
+- `docs/04-Concepts/architecture/FROZEN-BACKLOG.md` — what to unfreeze
+- `docs/04-Concepts/architecture/LESSONS-LEARNED.md` — what NOT to repeat
+- `docs/04-Concepts/architecture/POST-MORTEM-2026-04.md` — history

@@ -22,13 +22,13 @@ the overhead, producing *data*, not claims.
 
 ## What it does
 
-1. Loads task set from `docs/benchmarks/so-vs-vanilla-tasks.yaml`
+1. Loads task set from `docs/08-References/benchmarks/so-vs-vanilla-tasks.yaml`
 2. For each task, invokes `scripts/so_vs_vanilla_benchmark.py` to run it
    twice — once with `COS_DISABLE_ALL_GOVERNANCE=1` (vanilla) and once
    with full governance (SO)
 3. Captures tokens, cost, latency, trust-score, and a "success signal"
    per task (regex/heuristic defined in the yaml)
-4. Emits `docs/benchmarks/so-vs-vanilla-results-<timestamp>.md` plus
+4. Emits `docs/08-References/benchmarks/so-vs-vanilla-results-<timestamp>.md` plus
    a machine-readable JSON sibling
 5. Reports a Verdict section per task (SO_WIN / VANILLA_WIN / TIE /
    INCONCLUSIVE) plus aggregate cost-overhead ratio and trust-delta mean
@@ -48,7 +48,7 @@ python scripts/so_vs_vanilla_benchmark.py --repeats 1
 
 ## Acceptance (what "done" means for a benchmark run)
 
-1. Report file written to `docs/benchmarks/so-vs-vanilla-results-*.md`
+1. Report file written to `docs/08-References/benchmarks/so-vs-vanilla-results-*.md`
 2. Every task has a verdict (not INCONCLUSIVE for all tasks)
 3. JSON sibling exists for programmatic consumption
 4. `COS_DISABLE_ALL_GOVERNANCE=1` mode is visibly cheaper in the report
@@ -71,7 +71,7 @@ prepared to execute.
 ## Related
 
 - `scripts/so_vs_vanilla_benchmark.py` — harness
-- `docs/benchmarks/so-vs-vanilla-tasks.yaml` — task set
+- `docs/08-References/benchmarks/so-vs-vanilla-tasks.yaml` — task set
 - `tests/unit/test_so_vs_vanilla_benchmark.py` — unit tests
 - `hooks/_lib/killswitch_check.sh` — master kill-switch
 - `skills/arena/SKILL.md` — generic simulation arena (different purpose)

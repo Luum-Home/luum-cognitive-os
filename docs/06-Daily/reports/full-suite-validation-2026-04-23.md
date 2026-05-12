@@ -38,7 +38,7 @@ substantial legacy, environment, and contract drift failures.
   source files.
 - `hooks/self-install.sh` now writes relative symlinks for self-hosting
   projections, avoiding machine-specific absolute paths in tracked projections.
-- Declarative patterns moved to `docs/patterns/` remain documented patterns,
+- Declarative patterns moved to `docs/04-Concepts/patterns/` remain documented patterns,
   not recreated enforceable rules.
 
 ## Remaining Failure Families

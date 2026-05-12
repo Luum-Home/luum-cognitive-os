@@ -2,7 +2,7 @@
 evaluated_at: 2026-05-09
 engram_id: pending
 batch: targeted-post-reassessment
-parent_radar: docs/reports/external-tools-radar-INDEX.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-INDEX.md
 repos:
   - agno-agi/agno
   - agno-agi/dash
@@ -177,6 +177,6 @@ ACCEPTANCE CRITERIA:
 - GitHub: <https://github.com/agno-agi/agno>
 - GitHub: <https://github.com/agno-agi/dash>
 - GitHub: <https://github.com/agno-agi/scout>
-- Related COS doctrine: `docs/architecture/external-tool-adoption-doctrine.md`
-- Related COS taxonomy: `docs/architecture/external-tool-adapter-taxonomy.md`
-- Prior Claw comparison context: `docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md`
+- Related COS doctrine: `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`
+- Related COS taxonomy: `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`
+- Prior Claw comparison context: `docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md`

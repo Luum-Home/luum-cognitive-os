@@ -30,7 +30,7 @@ remaining_in_scope: true
 **Status**: Accepted — Partially Implemented
 **Date**: 2026-05-02
 **Author**: Maintainer
-**Related**: ADR-088 (provenance markers), ADR-098 (multi-agent file coordination), ADR-104 (startup circuit breaker), `docs/incidents/2026-05-02-false-done-compounding.md`
+**Related**: ADR-088 (provenance markers), ADR-098 (multi-agent file coordination), ADR-104 (startup circuit breaker), `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
 
 ## Status
 
@@ -38,7 +38,7 @@ Accepted — Partially Implemented. The contract is now backed by `hooks/claim-v
 
 ## Context
 
-On 2026-05-02, a sub-agent committed a plan as "done" based on a partial verification: 3 files present in `docs/archive/hooks/` was treated as proof that "3 DELETE hooks already archived." The inverse check — that the originals were absent from `hooks/` and absent from `settings.json` — was never run. The files existed in both locations. One "archive" was a symlink.
+On 2026-05-02, a sub-agent committed a plan as "done" based on a partial verification: 3 files present in `docs/99-Archive/archive/hooks/` was treated as proof that "3 DELETE hooks already archived." The inverse check — that the originals were absent from `hooks/` and absent from `settings.json` — was never run. The files existed in both locations. One "archive" was a symlink.
 
 This is a **bilateral claim failure**: the agent verified one half of a two-sided predicate and reported the whole predicate as true.
 
@@ -103,7 +103,7 @@ A domain-specific helper `scripts/verify-archived.sh <file>` SHALL be implemente
 
 ```bash
 # Exit 0 only when ALL three hold:
-# 1. docs/archive/hooks/<file> exists AND is a regular file (not symlink)
+# 1. docs/99-Archive/archive/hooks/<file> exists AND is a regular file (not symlink)
 # 2. hooks/<file> does not exist
 # 3. grep -r <file> .claude/settings.json cognitive-os.yaml → empty
 ```
@@ -173,9 +173,9 @@ python3 -m pytest tests/audit/test_adr_contracts.py tests/contracts/test_orchest
 
 ## References
 
-- Matrix: `docs/architecture/claim-verification-matrix.md`
+- Matrix: `docs/04-Concepts/architecture/claim-verification-matrix.md`
 
-- Incident: `docs/incidents/2026-05-02-false-done-compounding.md`
+- Incident: `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
 - ADR-106: multi-session safety primitives (companion ADR)
 - ADR-088: provenance markers (commit-level evidence chain)
 - `rules/adversarial-review.md`: forced-findings review policy

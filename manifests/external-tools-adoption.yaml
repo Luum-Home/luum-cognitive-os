@@ -2,10 +2,10 @@ schema_version: external-tools-adoption/v1
 status: active
 owner: platform-safety
 source_documents:
-  - docs/architecture/external-tool-intelligence-plane.md
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
-  - docs/reports/external-tools-radar-full-reassessment-2026-05-08.md
+  - docs/04-Concepts/architecture/external-tool-intelligence-plane.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
+  - docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md
 policy:
   consumer_projects_use_overlay: true
   overlay_template: templates/external-tools-overlay.yaml
@@ -73,7 +73,7 @@ tools:
     adoption_kind: dependency
     license: Apache-2.0
     package_names: [openai]
-    source_of_truth: {adr: docs/adrs/ADR-049-provider-routing-and-fallback.md}
+    source_of_truth: {adr: docs/02-Decisions/adrs/ADR-049-provider-routing-and-fallback.md}
     allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
     evidence: {consumers: [lib/qwen_provider.py, pyproject.toml], tests: []}
     status: active
@@ -114,7 +114,7 @@ tools:
     adoption_kind: dependency
     license: UNKNOWN
     package_names: [pytest-smell]
-    source_of_truth: {report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    source_of_truth: {report: docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     evidence: {consumers: [], tests: []}
     status: cleanup_required
@@ -155,7 +155,7 @@ tools:
     adoption_kind: dependency
     license: MIT
     package_names: [langfuse]
-    source_of_truth: {report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    source_of_truth: {report: docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     evidence: {consumers: [], tests: []}
     status: cleanup_required
@@ -186,7 +186,7 @@ tools:
     adoption_kind: dependency
     license: UNKNOWN
     package_names: [memu]
-    source_of_truth: {report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    source_of_truth: {report: docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     evidence: {consumers: [], tests: []}
     status: verify_package_then_cleanup
@@ -227,7 +227,7 @@ tools:
     adoption_kind: dependency
     license: MIT
     package_names: [litellm]
-    source_of_truth: {adr: docs/adrs/ADR-049-provider-routing-and-fallback.md, report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    source_of_truth: {adr: docs/02-Decisions/adrs/ADR-049-provider-routing-and-fallback.md, report: docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     evidence: {consumers: [], tests: []}
     status: cleanup_required
@@ -288,7 +288,7 @@ tools:
     adoption_kind: dependency
     license: Apache-2.0
     package_names: [fastmcp]
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md, deep_dive: docs/reports/external-tools-deep-dive/fastmcp.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md, deep_dive: docs/06-Daily/reports/external-tools-deep-dive/fastmcp.md}
     allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [packages/mcp-server/cos_mcp.py], tests: [tests/unit/test_cos_mcp_server.py]}
@@ -300,7 +300,7 @@ tools:
     adoption_kind: pattern-only
     license: Apache-2.0
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md, repo_scout: .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md, repo_scout: .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [], tests: []}
@@ -312,7 +312,7 @@ tools:
     adoption_kind: pattern-only
     license: Apache-2.0
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-taskingai-addendum-2026-05-09.md, repo_scout: .cognitive-os/reports/repo-scout/TaskingAI_TaskingAI.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-taskingai-addendum-2026-05-09.md, repo_scout: .cognitive-os/reports/repo-scout/TaskingAI_TaskingAI.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [], tests: []}
@@ -324,7 +324,7 @@ tools:
     adoption_kind: trial-overlay-standard
     license: MIT
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [.ai, scripts/portable_ai_overlay.py], tests: [tests/contracts/test_portable_ai_overlay.py]}
@@ -336,7 +336,7 @@ tools:
     adoption_kind: conformance-reference
     license: MIXED
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [skills], tests: []}
@@ -348,7 +348,7 @@ tools:
     adoption_kind: adapter-runtime-transport
     license: UNKNOWN
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [], tests: []}
@@ -360,7 +360,7 @@ tools:
     adoption_kind: adapter-design
     license: UNKNOWN
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [manifests/harness-driver-capabilities.yaml, manifests/primitive-contracts.yaml], tests: [tests/contracts/test_primitive_projection_fidelity.py]}
@@ -372,7 +372,7 @@ tools:
     adoption_kind: ledger-hardening-pattern
     license: UNKNOWN
     package_names: []
-    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
     allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [.cognitive-os/metrics/primitive-interventions.jsonl], tests: [tests/contracts/test_primitive_intervention_ledger.py]}

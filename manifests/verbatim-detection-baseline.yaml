@@ -5,42 +5,42 @@ note: |
   reviewed and is permitted (e.g. attribution comments, MIT-vendored with
   proper headers). New hits NOT in this file block commits.
 accepted:
-  - cos_file: docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md
+  - cos_file: docs/03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md
     cache_file: iFixAi/ifixai/providers/resolver.py
     fingerprint: f71c5b9770db5237aba3f1d3e02b8df1e4df153d54b8be0a9f00726df2f0cf7f
     risk: HIGH
     cos_lines: 20-31
     cache_lines: 47-58
     note: seeded by --baseline run on 2026-05-11
-  - cos_file: docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md
+  - cos_file: docs/03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md
     cache_file: iFixAi/ifixai/providers/resolver.py
     fingerprint: cff4d59e2ddfb407d6f41ee064f577554f7558d1027d424db1b661301740ddc1
     risk: MEDIUM
     cos_lines: 61-69
     cache_lines: 134-142
     note: seeded by --baseline run on 2026-05-11
-  - cos_file: docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md
+  - cos_file: docs/03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md
     cache_file: iFixAi/ifixai/cli/_imecore_prompt.py
     fingerprint: 9fe7fd2224d63dbdc67d5b62bc8d3ad4f128d780dfda0c5bcbe07bf433b03e6b
     risk: HIGH
     cos_lines: 112-121
     cache_lines: 12-21
     note: seeded by --baseline run on 2026-05-11
-  - cos_file: docs/research/ifixai-annex-b-cross-judge-2026-05-11.md
+  - cos_file: docs/03-PoCs/research/ifixai-annex-b-cross-judge-2026-05-11.md
     cache_file: iFixAi/ifixai/providers/resolver.py
     fingerprint: 157757c247d7847cea35a41e5d742742b34ce71c1120ed5b550d7ddc112bd563
     risk: MEDIUM
     cos_lines: 56-64
     cache_lines: 144-152
     note: seeded by --baseline run on 2026-05-11
-  - cos_file: docs/research/helixdb-annex-d-license-opencore-risk-2026-05-11.md
+  - cos_file: docs/03-PoCs/research/helixdb-annex-d-license-opencore-risk-2026-05-11.md
     cache_file: helix-db/helix-db/Cargo.toml
     fingerprint: f839432a4feb3bee4d11191024421297f82a9bccda28935b562cc3319b2a75b7
     risk: HIGH
     cos_lines: 102-112
     cache_lines: 79-89
     note: seeded by --baseline run on 2026-05-11
-  - cos_file: docs/research/megamemory-annex-b-embeddings-port-2026-05-11.md
+  - cos_file: docs/03-PoCs/research/megamemory-annex-b-embeddings-port-2026-05-11.md
     cache_file: MegaMemory/src/embeddings.ts
     fingerprint: c869322baa2fec106e49493c6579e61dddd204b705b898df20804b1b38fcc06d
     risk: MEDIUM

@@ -11,8 +11,8 @@ extends: [ADR-067, ADR-097, ADR-105, ADR-144, ADR-244, ADR-273]
 implementation_files:
   - scripts/cos-operational-guide-audit.py
   - hooks/adr-section-validator.sh
-  - docs/reports/operational-guide-audit-latest.json
-  - docs/reports/operational-guide-audit-latest.md
+  - docs/06-Daily/reports/operational-guide-audit-latest.json
+  - docs/06-Daily/reports/operational-guide-audit-latest.md
   - tests/red_team/portability/test_cos-operational-guide-audit.py
 tier: maintainer
 tags: [adr-contract, documentation, operational-guide, drift-prevention, anti-overclaim, postmortem-2026-05-12]
@@ -96,12 +96,12 @@ An §Operational Guide MUST include at least 3 of these 5 sub-sections:
 
 ### 3. Audit (Phase 1, this ADR)
 
-`scripts/cos-operational-guide-audit.py` scans `docs/adrs/ADR-*.md`,
+`scripts/cos-operational-guide-audit.py` scans `docs/02-Decisions/adrs/ADR-*.md`,
 identifies ADRs subject to the contract, and reports presence/absence of
 §Operational Guide with sub-section coverage. Emits:
 
-- `docs/reports/operational-guide-audit-latest.json` (machine-readable)
-- `docs/reports/operational-guide-audit-latest.md` (human-readable + backfill list)
+- `docs/06-Daily/reports/operational-guide-audit-latest.json` (machine-readable)
+- `docs/06-Daily/reports/operational-guide-audit-latest.md` (human-readable + backfill list)
 
 ### 4. Gate (Phase 1, this ADR)
 
@@ -173,7 +173,7 @@ are tracked as work items, not silently tolerated.
 3. `adr-section-validator.sh` fires on Write/Edit, warns if missing.
 4. If pushing to main: `cos-operational-guide-audit` runs and reports.
 5. Periodically (weekly), operator reads
-   `docs/reports/operational-guide-audit-latest.md` and picks P0 backfill items.
+   `docs/06-Daily/reports/operational-guide-audit-latest.md` and picks P0 backfill items.
 
 ### When sources disagree
 
@@ -189,7 +189,7 @@ believes the ADR doesn't need one (e.g., pure architectural decision):
 
 If you encounter ADR-274 cold:
 
-1. Read `docs/reports/operational-guide-audit-latest.md` for the current
+1. Read `docs/06-Daily/reports/operational-guide-audit-latest.md` for the current
    audit state (which ADRs comply, which need backfill).
 2. Read this ADR §Decision for the contract.
 3. Check `hooks/adr-section-validator.sh` for the gate implementation.
@@ -231,9 +231,9 @@ If you encounter ADR-274 cold:
 python3 scripts/cos-operational-guide-audit.py --write
 
 # View backfill list
-cat docs/reports/operational-guide-audit-latest.md | head -50
+cat docs/06-Daily/reports/operational-guide-audit-latest.md | head -50
 
-# Validator (Phase 1) — triggers on PostToolUse Edit on docs/adrs/ADR-*.md
+# Validator (Phase 1) — triggers on PostToolUse Edit on docs/02-Decisions/adrs/ADR-*.md
 # Default advisory; strict mode:
 COS_STRICT_ADR_VALIDATION=1 bash hooks/adr-section-validator.sh < /dev/null
 
@@ -261,11 +261,11 @@ python3 -m pytest tests/red_team/portability/test_cos-operational-guide-audit.py
   closures used the close primitive. Together they make the §OG contract
   self-correcting (audit → projector surfaces → operator closes via
   primitive → trust signal updates).
-- **`docs/adrs/STATUS-TAXONOMY.md`** — canonical decision/implementation
+- **`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`** — canonical decision/implementation
   status vocabulary that the audit consumes when deciding whether an
   ADR is `subject_to_contract` (must be `accepted | implemented`,
   not `tombstone | superseded`).
-- **`docs/architecture/pending-truth-architecture.md`** — 4-layer map
+- **`docs/04-Concepts/architecture/pending-truth-architecture.md`** — 4-layer map
   of the read/project/close/drift system this ADR is part of.
 - ADR-067 — ADR section contract (existing baseline; this ADR extends)
 - ADR-097 — Documentation execution audit (audit pattern this ADR follows)

@@ -20,7 +20,7 @@ Advance policy: advance on timeout (local can be slow or unavailable).
 Model availability depends on what the operator has pulled. Default model map
 assumes large-RAM machine (40GB+). Smaller defaults can be set via env.
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
 """
 
 from __future__ import annotations

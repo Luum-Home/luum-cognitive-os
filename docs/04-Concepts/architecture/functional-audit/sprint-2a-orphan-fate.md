@@ -12,7 +12,7 @@ UX2 (hook creation), UX6 (install idempotency).
 |----------|-------:|-----------------:|---------------:|---------|
 | Squad YAMLs (`squads/*.yaml`) | 5 | 4 archived to `packages/_archived/squads/` | 1 (`organization.yaml`) | Preserves `>= 1 squad` test invariant |
 | Agent MDs (`agents/*.md`) | 3 | 2 archived to `.claude/agents/_archived/` | 1 (`test-coverage-enforcer.md`) | Preserves `>= 1 agent` test invariant |
-| Rule files (`rules/*.md`) | 107 (106 behavioral + `RULES-COMPACT.md`) | 7 moved to `docs/patterns/` + 1 meta-doc (`ROADMAP.md`) added | 100 behavioral + 2 meta (`RULES-COMPACT.md`, `ROADMAP.md`) | Enforceable rules separated from reference docs |
+| Rule files (`rules/*.md`) | 107 (106 behavioral + `RULES-COMPACT.md`) | 7 moved to `docs/04-Concepts/patterns/` + 1 meta-doc (`ROADMAP.md`) added | 100 behavioral + 2 meta (`RULES-COMPACT.md`, `ROADMAP.md`) | Enforceable rules separated from reference docs |
 
 ## Aspirational-Rules Delta
 
@@ -33,7 +33,7 @@ The Capa-3 audit (`scorecard-rules.md`) counted **86 aspirational** rules out of
 
 | Intervention | Effect |
 |--------------|--------|
-| Moved 7 declarative rules to `docs/patterns/` | Declarative-only pool shrinks from 19 to ~12 (remaining entries still need classification audit) |
+| Moved 7 declarative rules to `docs/04-Concepts/patterns/` | Declarative-only pool shrinks from 19 to ~12 (remaining entries still need classification audit) |
 | UX2 built `auto-verify.sh`, `dod-gate.sh`, `auto-refine.sh` (separate sprint) | Code-dead pool shrinks from 6 to 2 (only `response-length-check.sh` and `context-budget.sh` remain missing) |
 | Added `rules/ROADMAP.md` tracking the 8 hook-enforced-BROKEN + 2 remaining code-dead | Makes pending work explicit; rules formally demoted to "agent-instruction-only" until hooks are registered |
 | Extended `templates/agent-mandatory-rules.md` to reference 9 critical agent-instruction rules by name | Sub-agents can now discover these rules on launch (previously they received only 5 generic section headings) |
@@ -88,7 +88,7 @@ symlinks (stale after `git mv`).
 
 ## Rule Trim Decisions (T3)
 
-### Moved to `docs/patterns/` (7 rules)
+### Moved to `docs/04-Concepts/patterns/` (7 rules)
 
 These rules were pure reference documentation — no hook, no auto-injection, not
 a behavior. They belong next to other architectural docs, not in `rules/`.
@@ -149,7 +149,7 @@ Per the Sprint 2A scope guard, these items are explicitly deferred:
 | Item | Owner |
 |------|-------|
 | Registering the 8 broken hooks in `.claude/settings.json` | hook-registration sprint (touches `hooks/self-install.sh` and `apply-efficiency-profile.sh` — UX8) |
-| Cleaning up stale `EXCLUDED_RULES` entries in `hooks/self-install.sh` for the 7 rules moved to `docs/patterns/` | UX8 sprint (owns `self-install.sh`) |
+| Cleaning up stale `EXCLUDED_RULES` entries in `hooks/self-install.sh` for the 7 rules moved to `docs/04-Concepts/patterns/` | UX8 sprint (owns `self-install.sh`) |
 | Building `response-length-check.sh` and `context-budget.sh` | UX2 / hook-creation sprint |
 | Rewriting `RULES-COMPACT.md` to remove refs to moved-out rules | optional cleanup — stale refs don't break tests |
 | Untangling the 52 agent-instruction-only rules (many are hook-worthy) | future sprint — requires per-rule cost/benefit analysis |
@@ -170,10 +170,10 @@ See the re-run at the end of this sprint for actual numbers.
 - `packages/_archived/squads/README.md`
 - `packages/_archived/squads/{infra-team,mobile-team,payments-team,platform-team}.yaml` (via `git mv`)
 - `.claude/agents/_archived/{service-health-checker,stack-validator}.md` (via `git mv`)
-- `docs/patterns/README.md`
-- `docs/patterns/{plan-first,dogfooding,os-vs-project,ecosystem-tools,component-classification,cognitive-os-changes,library-selection}.md` (via `git mv`)
+- `docs/04-Concepts/patterns/README.md`
+- `docs/04-Concepts/patterns/{plan-first,dogfooding,os-vs-project,ecosystem-tools,component-classification,cognitive-os-changes,library-selection}.md` (via `git mv`)
 - `rules/ROADMAP.md`
-- `docs/architecture/functional-audit/sprint-2a-orphan-fate.md` (this file)
+- `docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md` (this file)
 
 ### Modified
 - `templates/agent-mandatory-rules.md` — extended with critical rule references
@@ -190,7 +190,7 @@ See the re-run at the end of this sprint for actual numbers.
 | 1 | `find packages/_archived/squads -name "*.yaml" \| wc -l` ≥ 4 | PASS — 4 YAMLs moved |
 | 2 | `find .claude/agents/_archived -name "*.md" \| wc -l` ≥ 2 | PASS — 2 MDs moved |
 | 3 | `rules/ROADMAP.md` exists with 8 entries for hook-enforced-broken | PASS — Section 1 lists 8 rules (7 demotions + 1 intentional exemption) |
-| 4 | `docs/patterns/` exists with ≥ 5 moved declarative rules | PASS — 7 rules + README |
+| 4 | `docs/04-Concepts/patterns/` exists with ≥ 5 moved declarative rules | PASS — 7 rules + README |
 | 5 | Summary doc has before/after % table | PASS — see "Aspirational-Rules Delta" |
 | 6 | Aspirational rules drop from 78 to ≤ 40 | PASS — revised count after trim: 22 |
 | 7 | No NEW test breakage | See re-run at end of sprint |

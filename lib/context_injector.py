@@ -13,7 +13,7 @@ Search strategy (preference order):
 Both indices are pre-built by ADR-029b/039 and cached under
 .cognitive-os/reinvention-index.{json,embeddings.*}.
 
-ADR lookup: scans docs/adrs/*.md filenames + first-paragraph excerpts using
+ADR lookup: scans docs/02-Decisions/adrs/*.md filenames + first-paragraph excerpts using
 the Jaccard index for lightweight matching (ADRs are not in the code index).
 
 Debt register: reads last 50 entries from .cognitive-os/debt-register.jsonl

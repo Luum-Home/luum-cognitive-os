@@ -10,8 +10,8 @@ superseded_by: null
 implementation_files:
   - manifests/proof-drill-registry.yaml
   - skills/proof-drill/SKILL.md
-  - docs/architecture/proof-drill-and-smoke-opt-in-primitives.md
-  - docs/manual-tests/proof-drill-registry.md
+  - docs/04-Concepts/architecture/proof-drill-and-smoke-opt-in-primitives.md
+  - docs/09-Quality/manual-tests/proof-drill-registry.md
   - tests/contracts/test_proof_drill_registry.py
 tier: maintainer
 tags: [testing, proof-drills, smoke, primitives, self-build, consumer-projects]
@@ -31,7 +31,7 @@ The repo already had several verification surfaces:
 - consumer-project test selection through `skills/run-tests/SKILL.md`;
 - one-off provider smokes such as `scripts/smoke-qwen-fallback.sh`;
 - Docker/headless and service-control-plane proof ladders documented under
-  `docs/architecture/` and `docs/manual-tests/`.
+  `docs/04-Concepts/architecture/` and `docs/09-Quality/manual-tests/`.
 
 Those surfaces were useful but scattered. Agents could confuse three different
 jobs: building this SO, testing a project that implements it, and qualifying an
@@ -74,7 +74,7 @@ Create a governed proof-drill/smoke-opt-in primitive layer:
 
 ### What changes for the operator
 
-Before this ADR, verification surfaces were scattered: `skills/cognitive-os-test/SKILL.md`, `skills/run-tests/SKILL.md`, `scripts/smoke-qwen-fallback.sh`, and various `docs/architecture/` proof ladders coexisted without a machine-readable registry. Agents could confuse SO self-build checks with consumer-project checks, or accidentally add expensive provider smokes to default lanes. After this ADR:
+Before this ADR, verification surfaces were scattered: `skills/cognitive-os-test/SKILL.md`, `skills/run-tests/SKILL.md`, `scripts/smoke-qwen-fallback.sh`, and various `docs/04-Concepts/architecture/` proof ladders coexisted without a machine-readable registry. Agents could confuse SO self-build checks with consumer-project checks, or accidentally add expensive provider smokes to default lanes. After this ADR:
 
 - `manifests/proof-drill-registry.yaml` is the single machine-readable registry of standard test lanes, smoke opt-ins, proof drills, and manual proofs. Each entry declares `scope: os-self | consumer-project | both`.
 - `skills/proof-drill/SKILL.md` teaches agents how to select the correct validation lane without polluting default `make test-laptop` or CI lanes.

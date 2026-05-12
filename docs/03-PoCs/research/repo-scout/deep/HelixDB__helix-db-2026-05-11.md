@@ -9,11 +9,11 @@ source_artifacts:
   - https://github.com/HelixDB/helix-db
   - https://www.helix-db.com/
 related_docs:
-  - docs/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
+  - docs/06-Daily/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
   - rules/license-policy.md
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
-  - docs/reports/cross-check-A-memory-2026-05-08.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
+  - docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md
 ---
 
 # HelixDB / helix-db Deep Analysis — 2026-05-11
@@ -30,7 +30,7 @@ The repository is still worth tracking as a **pattern reference** for: LMDB-back
 
 1. License posture is verified against `rules/license-policy.md` before any scoring proceeds. AGPL-3.0 is BLOCK.
 2. Bidirectional verdict is computed against Engram + COS memory stack (Cognee/ChromaDB) using the Phase 3 vocabulary (MEJOR_NUESTRO / IGUAL / MEJOR_EXTERNO / NO_COMPARABLE).
-3. Adoption kind is assigned per `docs/architecture/external-tool-adapter-taxonomy.md`.
+3. Adoption kind is assigned per `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`.
 4. Deep eval covers identity, architecture, weighted scoring, primitive extraction candidates, risks, and rollback/exit path.
 5. Two artifacts written (this deep eval + the radar addendum) and INDEX appended.
 
@@ -39,7 +39,7 @@ The repository is still worth tracking as a **pattern reference** for: LMDB-back
 - GitHub repository: <https://github.com/HelixDB/helix-db> (snapshot 2026-05-11 via `gh repo view --json`).
 - Landing page: <https://www.helix-db.com/>
 - Latest release tag: `v2.3.4` published 2026-03-31.
-- Existing COS memory cross-check: `docs/reports/cross-check-A-memory-2026-05-08.md`.
+- Existing COS memory cross-check: `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md`.
 - No prior Engram observation for `HelixDB` / `helix-db` was found in this project (mem_search to be confirmed at close).
 
 Network access was used only to fetch the public GitHub metadata JSON and the landing page summary; deeper source-tree forensics (clone, hql-tests, helix-container internals) were **not** performed in this pass and are marked unverified upstream.
@@ -102,14 +102,14 @@ The non-license average (~3.0/5) is the reason this gets HOLD-as-pattern-only ra
 - **For dependency / runtime / library embedding:** **REJECT.** AGPL-3.0 viral terms incompatible with COS's local-first, Apache/MIT-friendly distribution posture; would taint any COS process that links or remote-calls in an AGPL-defined "network use" sense.
 - **For pattern study (clean-room schema/algorithm port):** **HOLD / pattern-only.** Same posture used for AGPL/SSPL/BSL projects in prior phases: no source copying, no derivative work; ideas only, with explicit attribution to the public README.
 
-This split mirrors how COS handled SSPL/AGPL DBs in Phase 2 (see `docs/blocked-tools.md` convention).
+This split mirrors how COS handled SSPL/AGPL DBs in Phase 2 (see `docs/05-Methodology/root/blocked-tools.md` convention).
 
 ## Bidirectional verdict vs current COS memory stack
 
-- vs **Engram** (project's persistent memory; canonical reference `docs/reports/cross-check-A-memory-2026-05-08.md`): **MEJOR_NUESTRO for governance, NO_COMPARABLE for storage tier.** Engram owns lifecycle, privacy classes, project scoping, receipts, and portability — HelixDB owns none of that. HelixDB is a storage substrate; Engram is a governance memory product. They live at different layers.
+- vs **Engram** (project's persistent memory; canonical reference `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md`): **MEJOR_NUESTRO for governance, NO_COMPARABLE for storage tier.** Engram owns lifecycle, privacy classes, project scoping, receipts, and portability — HelixDB owns none of that. HelixDB is a storage substrate; Engram is a governance memory product. They live at different layers.
 - vs **Cognee**: **NO_COMPARABLE.** Cognee is a knowledge-graph + RAG framework; HelixDB is a DB. Different layers.
 - vs **ChromaDB**: **IGUAL → MEJOR_EXTERNO on paper** for unified graph+vector, but **MEJOR_NUESTRO operationally** because ChromaDB is Apache-2.0 and already adoptable; HelixDB's AGPL closes the door.
-- vs **LMDB direct** (which COS could in principle embed itself): HelixDB's value-add over raw LMDB is HelixQL + the vector primitives. Those are exactly the parts an in-house clean-room would have to re-derive — and Engram already has graph patterns documented in `docs/architecture/memory-layer-evolution-sdd.md`.
+- vs **LMDB direct** (which COS could in principle embed itself): HelixDB's value-add over raw LMDB is HelixQL + the vector primitives. Those are exactly the parts an in-house clean-room would have to re-derive — and Engram already has graph patterns documented in `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`.
 
 Net: HelixDB does not displace anything in the COS stack today, and cannot be embedded.
 
@@ -120,7 +120,7 @@ Worth studying as design references — not as code imports:
 1. **Compiled type-safe query DSL pattern.** HelixQL's "compile queries, don't interpret them at the hot path" is a strong pattern for any future first-party COS memory query surface. Compare against current Engram retrieval call shape.
 2. **Unified graph+vector primary types.** The schema posture (graph node = vector-carrying entity, not a sidecar collection) is a useful schema-port reference for Engram's temporal-graph evolution alongside Graphiti.
 3. **LMDB as the durable substrate for graph+vector.** LMDB has been a recurring shortlist option in the cross-check-A memory work; HelixDB's existence is corroborating signal, not a new idea.
-4. **MCP-first surface on a database.** The pattern of "the DB itself exposes MCP tools, not just a client SDK" is interesting for COS's MCP exposure story (see `docs/architecture/external-tool-adoption-doctrine.md` MCP row).
+4. **MCP-first surface on a database.** The pattern of "the DB itself exposes MCP tools, not just a client SDK" is interesting for COS's MCP exposure story (see `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md` MCP row).
 5. **Built-in embedding function.** A schema-level "vectorize this field" annotation is a pattern worth comparing with Engram's current per-observation embedding flow.
 
 All five are `pattern-only` per the adapter taxonomy. None should produce code copies.
@@ -143,7 +143,7 @@ Top risks ranked:
 
 ## Final recommendation
 
-- Tag HelixDB **REJECT** for runtime/dependency adoption in `docs/blocked-tools.md` territory (this report flags it; the actual ledger update is `/radar-update --apply` work, not this pass).
+- Tag HelixDB **REJECT** for runtime/dependency adoption in `docs/05-Methodology/root/blocked-tools.md` territory (this report flags it; the actual ledger update is `/radar-update --apply` work, not this pass).
 - Keep it **HOLD / pattern-only** in the radar for clean-room schema and DSL pattern study.
 - Revisit only if upstream relicenses to Apache-2.0 / MIT / BSD, **or** if COS's Engram graph-memory work explicitly needs a compiled-DSL reference and HelixQL is still the best public example at that time.
 

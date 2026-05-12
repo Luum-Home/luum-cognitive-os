@@ -18,8 +18,8 @@ from lib.consumer_fleet_audit import build_report as build_consumer_report
 from scripts.portable_ai_overlay import build_overlay
 
 SCHEMA_VERSION = "portable-ai-consumer-impact.v1"
-DEFAULT_JSON = Path("docs/reports/portable-ai-consumer-impact-latest.json")
-DEFAULT_MD = Path("docs/reports/portable-ai-consumer-impact-latest.md")
+DEFAULT_JSON = Path("docs/06-Daily/reports/portable-ai-consumer-impact-latest.json")
+DEFAULT_MD = Path("docs/06-Daily/reports/portable-ai-consumer-impact-latest.md")
 
 
 def _count_prefix(files: dict[str, str], prefix: str) -> int:

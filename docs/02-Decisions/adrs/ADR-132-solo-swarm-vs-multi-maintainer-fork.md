@@ -9,7 +9,7 @@ implementation_files: []
 implementation_status: not-applicable
 tier: maintainer
 tags: [strategy, adoption, governance, future-work, architecture-fork]
-status_taxonomy: docs/adrs/STATUS-TAXONOMY.md
+status_taxonomy: docs/02-Decisions/adrs/STATUS-TAXONOMY.md
 ---
 
 # ADR-132: Solo-Swarm vs Multi-Maintainer Fork — Documenting the Pending Strategic Decision
@@ -216,7 +216,7 @@ forking later is possible without rebuilding from scratch:
 5. **The maintainer's mental cache** — the things that are obvious
    only because the maintainer wrote them — should be progressively
    externalised into ADRs, the boring-reliability dashboard, and
-   `docs/architecture/`. Goal: the gap between what is documented
+   `docs/04-Concepts/architecture/`. Goal: the gap between what is documented
    and what is true should keep shrinking.
 6. **Silent-failure allowances MUST carry transferability metadata.**
    An allowance owned only by the original maintainer is permitted in
@@ -315,13 +315,13 @@ a clear beneficiary.
   Shape B would need to be per-environment, not per-maintainer)
 - ADR-130 / ADR-131 — local-CI migration (locks the system into
   Shape A explicitly: maintainer's machine is the SPOF)
-- `docs/architecture/boring-reliability-control-plane.md` — the
+- `docs/04-Concepts/architecture/boring-reliability-control-plane.md` — the
   doctrine that prevents Shape A from monsterising, and the spine
   of any future Shape B
-- `docs/reports/dx-assessment-2026-05-02.md` — the assessment that
+- `docs/06-Daily/reports/dx-assessment-2026-05-02.md` — the assessment that
   surfaced the question this ADR answers (or rather: defers
   honestly)
-- `docs/reports/boring-reliability-audit-2026-05-03.md` — baseline
+- `docs/06-Daily/reports/boring-reliability-audit-2026-05-03.md` — baseline
   metrics that would need parity in any Shape B
 
 ## Decision

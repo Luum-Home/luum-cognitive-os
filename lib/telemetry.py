@@ -17,7 +17,7 @@ Design constraints (HALT triggers from the sprint brief):
   to ``<stem>.<UTC-timestamp>.jsonl`` and a fresh file is started.
 
 This module is intentionally small so it can be imported cheaply from hooks
-and scripts. See ``docs/architecture/functional-audit/sprint-5-observability.md``
+and scripts. See ``docs/04-Concepts/architecture/functional-audit/sprint-5-observability.md``
 for the aggregation/analysis layer.
 """
 

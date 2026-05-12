@@ -1,1 +1,0 @@
-04-Concepts/root/zero-touch-engineering.md

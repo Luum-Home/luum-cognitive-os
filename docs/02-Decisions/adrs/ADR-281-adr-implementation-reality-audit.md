@@ -105,7 +105,7 @@ for plan checkboxes.
 
 `scripts/cos-adr-implementation-audit.py`:
 
-- Scans `docs/adrs/ADR-*.md`
+- Scans `docs/02-Decisions/adrs/ADR-*.md`
 - For each with `implementation_status: implemented`:
   - Parses `implementation_files:`
   - Cross-checks each path against repository disk + the runtime

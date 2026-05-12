@@ -1,12 +1,12 @@
 ---
 related-docs:
-  - docs/architecture/concurrent-agent-safety-master.md
-  - docs/architecture/concurrent-agent-scenario-test-matrix.md
-  - docs/adrs/ADR-108-concurrent-agent-safety-layer.md
-  - docs/adrs/ADR-089-multi-session-git-coordination.md
-  - docs/adrs/ADR-098-multi-agent-file-coordination.md
-  - docs/adrs/ADR-105-claim-verification-contract.md
-  - docs/adrs/ADR-106-multi-session-safety-primitives.md
+  - docs/04-Concepts/architecture/concurrent-agent-safety-master.md
+  - docs/04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md
+  - docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md
+  - docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md
+  - docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md
+  - docs/02-Decisions/adrs/ADR-105-claim-verification-contract.md
+  - docs/02-Decisions/adrs/ADR-106-multi-session-safety-primitives.md
 status: implemented-initial-slice
 created: 2026-05-02
 ---
@@ -31,22 +31,22 @@ All proof in this plan is automatic. Manual validation may be used while debuggi
 
 ### Deliverable
 
-`docs/architecture/concurrent-agent-safety-master.md` contains the canonical scenario matrix and acceptance criteria.
+`docs/04-Concepts/architecture/concurrent-agent-safety-master.md` contains the canonical scenario matrix and acceptance criteria.
 
 ### Acceptance Criteria
 
 ```bash
-test -f docs/architecture/concurrent-agent-safety-master.md
-grep -q "Two agents edit the same file" docs/architecture/concurrent-agent-safety-master.md
-grep -q "False done in plan" docs/architecture/concurrent-agent-safety-master.md
-grep -q "Stash leak" docs/architecture/concurrent-agent-safety-master.md
+test -f docs/04-Concepts/architecture/concurrent-agent-safety-master.md
+grep -q "Two agents edit the same file" docs/04-Concepts/architecture/concurrent-agent-safety-master.md
+grep -q "False done in plan" docs/04-Concepts/architecture/concurrent-agent-safety-master.md
+grep -q "Stash leak" docs/04-Concepts/architecture/concurrent-agent-safety-master.md
 ```
 
 ## Phase 1 — ADR
 
 ### Deliverable
 
-Create `docs/adrs/ADR-108-concurrent-agent-safety-layer.md`.
+Create `docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md`.
 
 ### Required Decision
 
@@ -64,9 +64,9 @@ The ADR should decide that Cognitive OS owns a Concurrent Agent Safety Layer com
 ### Acceptance Criteria
 
 ```bash
-test -f docs/adrs/ADR-108-concurrent-agent-safety-layer.md
-grep -q "Concurrent Agent Safety Layer" docs/adrs/ADR-108-concurrent-agent-safety-layer.md
-grep -q "automated scenario" docs/adrs/ADR-108-concurrent-agent-safety-layer.md
+test -f docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md
+grep -q "Concurrent Agent Safety Layer" docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md
+grep -q "automated scenario" docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md
 python3 -m pytest tests/audit/test_adr_contracts.py -q
 ```
 
@@ -209,7 +209,7 @@ python3 -m pytest tests/behavior/test_cos_doctor_concurrency.py -v
 - ADR exists.
 - Three mandatory scenarios are automated.
 - `cos doctor concurrency` or shell fallback summarizes the posture.
-- Docs link the testbed from `docs/README.md` and the master checklist.
+- Docs link the testbed from `docs/00-MOCs/entrypoints/README.md` and the master checklist.
 
 ## Implementation Evidence
 

@@ -40,7 +40,7 @@ Agentic primitives that already exist (Apache-2.0):
 1. Register both hooks in `.claude/settings.json` (Stop + SessionStart, async)
 2. Create `.engram/exports/` directory and add to git
 3. Test round-trip: export on device A → commit → pull on device B → import → verify engram has same data
-4. Document pattern in `docs/setup/cross-device-memory.md`
+4. Document pattern in `docs/05-Methodology/setup/cross-device-memory.md`
 
 **Alternatives evaluated:**
 - Engram cloud (Postgres): real-time but requires server — deferred
@@ -56,7 +56,7 @@ Agentic primitives that already exist (Apache-2.0):
 
 **Status (2026-04-20):** MVP delivered — audit complete, migration plan approved, first extension (`cos-advisory-llm`) extracted as proof-of-concept with backwards-compat symlinks. 14 packs and shim cleanup remain (21 waves → v1.0).
 
-- Audit: `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (581 agentic primitives classified: 126 CORE, 453 EXTENSION, 2 REMOVE).
+- Audit: `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` (581 agentic primitives classified: 126 CORE, 453 EXTENSION, 2 REMOVE).
 - Plan: `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` (21 waves, one pack per minor version).
 - POC: `packages/cos-advisory-llm/` (3 LLM hooks moved, symlinks at `hooks/*-llm.sh`, both profiles smoke-tested green).
 - Debt row D43 → PARTIAL.
@@ -197,12 +197,12 @@ Not detailed in session summaries; check engram when resuming.
 **Blocks:** Need cos-dispatch Phase 3+ for proper plugin model
 
 ### 14. Onboarding Wizard (TUI) — engram #1819
-**Design:** Complete (`docs/onboarding-wizard-design.md`)
+**Design:** Complete (`docs/04-Concepts/root/onboarding-wizard-design.md`)
 **Implementation:** Partial — `cos setup` command exists
 **Remaining:** Full TUI polish
 
 ### 15. Security Stack Master — engram #1781
-**Status:** docs/security-stack.md exists
+**Status:** docs/04-Concepts/root/security-stack.md exists
 **Integration:** Partial — 5 layers wired, 3 pending
 
 ### 16. Agnix Integration — engram #1664
@@ -319,7 +319,7 @@ Topic keys for searching:
 
 **Status:** ✅ Root cause fixed in same session it was discovered. No longer a frozen item.
 
-**Moved to:** [`docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md`](harness-adoption-gap/ADR-001-harness-skills-sync-path.md)
+**Moved to:** [`docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md`](harness-adoption-gap/ADR-001-harness-skills-sync-path.md)
 
 **Summary of resolution** (full detail in ADR-001 + `diagnosis.md`):
 - Root cause: `hooks/self-install.sh` synced `skills/` → `.cognitive-os/skills/` (wrong destination). Claude Code harness reads `{project}/.claude/skills/`.

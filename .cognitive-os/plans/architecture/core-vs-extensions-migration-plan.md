@@ -170,7 +170,7 @@ Exceptions:
 
 ## Acceptance criteria satisfied
 
-- AC1 (audit exhaustive): `docs/architecture/core-vs-extensions-audit-2026-04-20.md` classifies all 581 agentic primitives (22% CORE, 78% EXTENSIONS+REMOVE).
+- AC1 (audit exhaustive): `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` classifies all 581 agentic primitives (22% CORE, 78% EXTENSIONS+REMOVE).
 - AC2 (≥3 waves): 21 waves defined above.
 - AC3 (≥1 hook in `packages/cos-advisory-llm/hooks/`): see Wave 1 execution in this session.
 - AC4 (`apply-efficiency-profile.sh default` still succeeds): verified in this session's smoke test.

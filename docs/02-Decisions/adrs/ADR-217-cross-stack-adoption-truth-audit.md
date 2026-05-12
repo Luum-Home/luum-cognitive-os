@@ -44,9 +44,9 @@ agreement:
 1. **Lockfiles** (`pyproject.toml` + `uv.lock`, `go.mod` + `go.sum`,
    `dashboard/package-lock.json`, `.gitmodules`) — what is actually integrated.
 2. **`NOTICE`** at the repo root — what we publicly accredit.
-3. **`docs/component-sources.md`** — manual status declarations
+3. **`docs/04-Concepts/root/component-sources.md`** — manual status declarations
    (OPTIONAL/EVALUATED/WATCH/PLANNED/Listed in NOTICE).
-4. **`docs/reports/external-tools-inventory-*.md`** — research buckets
+4. **`docs/06-Daily/reports/external-tools-inventory-*.md`** — research buckets
    (3 deep-audited / 17 upstream-or-own / 76 surface-investigated /
    162 pending /repo-scout).
 
@@ -84,9 +84,9 @@ The audit MUST:
   `pyproject.toml [project] dependencies`, Go direct via `go.mod` `require`
   blocks, Node via `dashboard/package.json`, submodules via `.gitmodules`).
 - Parse `NOTICE` into structured entries (name, URL, declared license).
-- Parse `docs/component-sources.md` into structured rows
+- Parse `docs/04-Concepts/root/component-sources.md` into structured rows
   (name, URL, license, status).
-- Parse `docs/reports/external-tools-inventory-*.md` into bucketed URL sets.
+- Parse `docs/06-Daily/reports/external-tools-inventory-*.md` into bucketed URL sets.
 - Emit unified matrix with one row per dep:
   ```
   name | url | in_lockfile | in_notice | component_sources_status |
@@ -112,7 +112,7 @@ The manifest MUST declare:
 - Allowlist for submodules used as code-reading references (e.g., hermes-agent
   per ADR-080, caveman per ADR-067) where lockfile mismatch is expected.
 - Marketing-doc paths to scan for aspirational-claim leak detection
-  (`docs/business/*.md`, `README.md`, future `docs/landing-*.md`).
+  (`docs/08-References/business/*.md`, `README.md`, future `docs/landing-*.md`).
 
 ## Enforcement and integration
 
@@ -160,7 +160,7 @@ Not yet active: ADR-211 readiness consumption, ADR-206/208 downstream consumptio
 
 ## Alternatives rejected
 
-- **Treat adoption as `docs/component-sources.md` is enough**: rejected. The
+- **Treat adoption as `docs/04-Concepts/root/component-sources.md` is enough**: rejected. The
   manual table drifts; nobody reconciles it weekly.
 - **Per-stack tools** (e.g., `pip-licenses` adoption matrix, `go list -m`
   inventory): rejected. Different output formats, no cross-stack truth.
@@ -182,7 +182,7 @@ The behavior tests must prove:
 - A `NOTICE` entry whose name does not appear in any lockfile/submodule is
   classified `DEAD_IN_NOTICE`.
 - A `component-sources.md` entry with `Status=PLANNED` whose name appears in
-  `docs/business/*.md` as a feature is classified `ASPIRATIONAL_PLANNED`.
+  `docs/08-References/business/*.md` as a feature is classified `ASPIRATIONAL_PLANNED`.
 - Transitive-only deps in the manifest allowlist are NOT flagged as
   `INTEGRATED_UNTRACKED`.
 - `--strict` exits 1 on any DEAD/ASPIRATIONAL/OVERCLAIMED finding.

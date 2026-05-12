@@ -18,7 +18,7 @@ or turning broad test failures into startup/session overhead.
 
 ## Verification Paths
 
-- `docs/adrs/ADR-103-audit-contract-lane-recovery.md`
+- `docs/02-Decisions/adrs/ADR-103-audit-contract-lane-recovery.md`
 - `scripts/docs_execution_audit.py --project-dir . --fail-hard-gaps`
 - `scripts/primitive_coverage.py --project-dir . --adapter cognitive-os --format json --fail-actionable-gaps`
 - `python3 -m pytest tests/unit/test_primitive_coverage.py tests/unit/test_primitive_gap_snapshot.py tests/unit/test_primitive_row_audit.py -q`
@@ -33,5 +33,5 @@ or turning broad test failures into startup/session overhead.
 ## Notes
 
 This plan intentionally lives under `.cognitive-os/plans/architecture/` because
-`docs/business/master-plan-checklist.md` links to plan artifacts from that
+`docs/08-References/business/master-plan-checklist.md` links to plan artifacts from that
 location. If the plan is moved later, update the checklist in the same commit.

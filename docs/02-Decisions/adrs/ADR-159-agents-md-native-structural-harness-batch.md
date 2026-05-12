@@ -16,7 +16,7 @@ implementation_files:
   - tests/contracts/test_acc_pipeline_contract.py
   - tests/contracts/test_harness_implementation_phases.py
   - tests/contracts/test_ai_agent_harness_landscape.py
-  - docs/manual-tests/agents-md-native-structural-projection.md
+  - docs/09-Quality/manual-tests/agents-md-native-structural-projection.md
 tier: maintainer
 tags: [harness, portability, agents-md, gemini, warp, amp, junie, qoder, factory, kiro]
 ---
@@ -112,7 +112,7 @@ Generated files are limited to the paths listed in §Decision. No account-backed
 2. Read `manifests/harness-projection.yaml` to see which harnesses are `implemented`, `planned`, or `blocked`.
 3. Read `manifests/ai-agent-harness-landscape.yaml` for Kiro's lifecycle-investigation status and the evidence required before native-lifecycle promotion.
 4. The generated files for each harness are listed in §Decision; inspect them in a temp-project install to see what COS writes.
-5. `docs/manual-tests/agents-md-native-structural-projection.md` contains the manual proof checklist for this batch.
+5. `docs/09-Quality/manual-tests/agents-md-native-structural-projection.md` contains the manual proof checklist for this batch.
 
 ## Alternatives rejected
 

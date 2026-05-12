@@ -11,7 +11,7 @@ license: MIT
 audience: os-dev
 metadata:
   author: luum
-  adr: docs/adrs/ADR-065-radar-update-curation-pipeline.md
+  adr: docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md
 summary_line: >
   Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md
   while preserving human-authored prose. Dry-run by default, --apply writes.
@@ -29,9 +29,9 @@ routing_patterns:
 
 # `/radar-update` — Tech Radar Curation Pipeline
 
-> **ADR**: `docs/adrs/ADR-065-radar-update-curation-pipeline.md`
+> **ADR**: `docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md`
 > **Delegates to**: `/repo-scout` (v2.0.1) — all per-repo evaluation is reused unchanged.
-> **Target docs**: `docs/patterns/ecosystem-tools.md` (ADOPT/TRIAL/ASSESS/HOLD) and `docs/blocked-tools.md` (REJECT).
+> **Target docs**: `docs/04-Concepts/patterns/ecosystem-tools.md` (ADOPT/TRIAL/ASSESS/HOLD) and `docs/05-Methodology/root/blocked-tools.md` (REJECT).
 
 ## Invocation
 
@@ -83,11 +83,11 @@ Auto-owned fields are stored in a YAML frontmatter block (`---…---`) at the to
 
 | Classification | Target document | Section |
 |----------------|-----------------|---------|
-| ADOPT | `docs/patterns/ecosystem-tools.md` | Existing top-level section or appended |
-| TRIAL | `docs/patterns/ecosystem-tools.md` | `### (TRIAL)` subsection |
-| ASSESS | `docs/patterns/ecosystem-tools.md` | `### (ASSESS)` subsection |
-| HOLD | `docs/patterns/ecosystem-tools.md` | `### (HOLD)` subsection |
-| REJECT | `docs/blocked-tools.md` | Grouped by license family (AGPL / GPL / SSPL / ELv2 / other) |
+| ADOPT | `docs/04-Concepts/patterns/ecosystem-tools.md` | Existing top-level section or appended |
+| TRIAL | `docs/04-Concepts/patterns/ecosystem-tools.md` | `### (TRIAL)` subsection |
+| ASSESS | `docs/04-Concepts/patterns/ecosystem-tools.md` | `### (ASSESS)` subsection |
+| HOLD | `docs/04-Concepts/patterns/ecosystem-tools.md` | `### (HOLD)` subsection |
+| REJECT | `docs/05-Methodology/root/blocked-tools.md` | Grouped by license family (AGPL / GPL / SSPL / ELv2 / other) |
 
 ASSESS and HOLD live as subsections so a reviewer can promote (move to ADOPT/TRIAL) or demote (move to REJECT) with a single section move.
 
@@ -158,15 +158,15 @@ For each artifact, extract (using the Python merge engine):
 # Dry-run (default)
 python3 scripts/radar_merge.py \
     --artifacts "${ARTIFACTS[@]}" \
-    --ecosystem-tools docs/patterns/ecosystem-tools.md \
-    --blocked-tools docs/blocked-tools.md \
+    --ecosystem-tools docs/04-Concepts/patterns/ecosystem-tools.md \
+    --blocked-tools docs/05-Methodology/root/blocked-tools.md \
     --output-diff .cognitive-os/reports/radar-update/$(date +%Y%m%dT%H%M%S).diff
 
 # Apply mode
 python3 scripts/radar_merge.py \
     --artifacts "${ARTIFACTS[@]}" \
-    --ecosystem-tools docs/patterns/ecosystem-tools.md \
-    --blocked-tools docs/blocked-tools.md \
+    --ecosystem-tools docs/04-Concepts/patterns/ecosystem-tools.md \
+    --blocked-tools docs/05-Methodology/root/blocked-tools.md \
     --apply \
     --changelog CHANGELOG.md
 ```
@@ -184,8 +184,8 @@ The merge engine (see `scripts/radar_merge.py`) handles:
 If NOT `--apply`:
 
 ```
---- a/docs/patterns/ecosystem-tools.md
-+++ b/docs/patterns/ecosystem-tools.md
+--- a/docs/04-Concepts/patterns/ecosystem-tools.md
++++ b/docs/04-Concepts/patterns/ecosystem-tools.md
 @@ -42,0 +43,18 @@
 +### some-tool — Short description (ADOPT)
 +
@@ -309,9 +309,9 @@ Use `--force` to bypass the cache and re-evaluate from scratch.
 ## Related
 
 - `skills/repo-scout/SKILL.md` (v2.0.1) — per-repo evaluation, delegated unchanged
-- `docs/adrs/ADR-065-radar-update-curation-pipeline.md` — full design spec
+- `docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md` — full design spec
 - `scripts/radar_merge.py` — merge engine implementation
 - `tests/unit/test_radar_merge.py` — unit tests for merge engine
 - `rules/license-policy.md` — license → REJECT mapping
-- `docs/patterns/ecosystem-tools.md` — canonical ADOPT/TRIAL/ASSESS/HOLD doc
-- `docs/blocked-tools.md` — canonical REJECT doc
+- `docs/04-Concepts/patterns/ecosystem-tools.md` — canonical ADOPT/TRIAL/ASSESS/HOLD doc
+- `docs/05-Methodology/root/blocked-tools.md` — canonical REJECT doc

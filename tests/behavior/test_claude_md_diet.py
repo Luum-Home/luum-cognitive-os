@@ -153,7 +153,7 @@ class TestExcludedRulesCount:
             if not rule_path.exists() and not pattern_path.exists() and not pattern_path.is_symlink():
                 missing.append(rule)
         assert not missing, (
-            f"EXCLUDED_RULES entries that resolve to neither rules/ nor docs/patterns/: {missing}\n"
+            f"EXCLUDED_RULES entries that resolve to neither rules/ nor docs/04-Concepts/patterns/: {missing}\n"
             f"Remove ghost entries, restore rule files, or document declarative patterns."
         )
 

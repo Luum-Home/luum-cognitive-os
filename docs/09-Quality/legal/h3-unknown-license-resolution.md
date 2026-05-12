@@ -1,7 +1,7 @@
 # H3 — UNKNOWN-License Resolution
 
 > Closes the residual gap on H3 (Provenance / clean-room audit) of
-> `docs/legal/pre-public-readiness-checklist.md`. Each row below records an
+> `docs/09-Quality/legal/pre-public-readiness-checklist.md`. Each row below records an
 > operator decision for an SBOM component that `syft 1.44.0` left without an
 > SPDX license identifier. Methodology, evidence, and final bucket counts are
 > reported here.
@@ -17,10 +17,10 @@ jq '.components[] | select(.licenses == null or .licenses == [])' sbom.json
 ```
 
 **Raw count of UNKNOWN component records:** 186 (157 unique by name+version).
-The "14" figure cited in earlier drafts of `docs/security/supply-chain.md`
+The "14" figure cited in earlier drafts of `docs/09-Quality/security/supply-chain.md`
 referred to the REVIEW bucket (LGPL `@img/sharp-libvips-*` binaries), not the
 UNKNOWN bucket; it is corrected by §1 of this document and by the updated
-table in `docs/security/supply-chain.md` §3.2.
+table in `docs/09-Quality/security/supply-chain.md` §3.2.
 
 ---
 
@@ -53,7 +53,7 @@ table in `docs/security/supply-chain.md` §3.2.
 license has been stable across many releases. None of the resolved licenses
 are exotic, dual-license combinations needing case-by-case interpretation
 (except the already-handled `@img/sharp-libvips-*` REVIEW set documented in
-`docs/security/supply-chain.md` §3.4). The classifications here therefore
+`docs/09-Quality/security/supply-chain.md` §3.4). The classifications here therefore
 ride on canonical, verifiable upstream LICENSE files rather than ambiguous
 or contested metadata.
 
@@ -70,7 +70,7 @@ upstream of syft.
 
 These six entries are own-project files that syft picked up as components.
 They are licensed under this repository's `LICENSE` (FSL-1.1-MIT — see
-`/LICENSE` and `docs/legal/license-faq.md`).
+`/LICENSE` and `docs/09-Quality/legal/license-faq.md`).
 
 | Name                                                   | Type | Decision    |
 | ------------------------------------------------------ | ---- | ----------- |
@@ -205,7 +205,7 @@ encoding-detection dependency (e.g. by `requests`/`docker`/etc. on certain
 platforms). It is a pure-Python library, used as a detector (no
 modification, no static linkage). LGPL-2.1 §6 covers this dynamic-use case
 identically to the `sharp`/libvips disposition already approved in
-`docs/security/supply-chain.md` §3.4: distribution requires we preserve the
+`docs/09-Quality/security/supply-chain.md` §3.4: distribution requires we preserve the
 copyright/license notice and permit relinkage. **Disposition: APPROVED.**
 Notice retained via `THIRD_PARTY_NOTICES` aggregation pattern (M1 follow-up
 work, ADR-238).
@@ -299,7 +299,7 @@ total is 157 rows. Bucket distribution is identical either way: 0 BLOCKED.)
 ### 6.2 Project-wide license-bucket counts (post-resolution)
 
 Combining this document with the prior baseline in
-`docs/security/supply-chain.md` §3.2:
+`docs/09-Quality/security/supply-chain.md` §3.2:
 
 | Bucket   | Prior baseline | UNKNOWN resolved here | Final |
 | -------- | -------------:| ---------------------:| -----:|
@@ -344,9 +344,9 @@ manual classification step. ADR-238 captures the automation follow-up.
 
 ## 7. Cross-references
 
-- `docs/legal/pre-public-readiness-checklist.md` §H3 (status flipped to
+- `docs/09-Quality/legal/pre-public-readiness-checklist.md` §H3 (status flipped to
   `done` on the same commit that lands this document)
-- `docs/security/supply-chain.md` §3.2 (license-status table updated)
-- `docs/architecture/provenance.md` §6 (provenance audit summary)
+- `docs/09-Quality/security/supply-chain.md` §3.2 (license-status table updated)
+- `docs/04-Concepts/architecture/provenance.md` §6 (provenance audit summary)
 - `rules/license-policy.md` (bucket policy)
 - ADR-238 (SBOM SPDX-enrichment automation follow-up)

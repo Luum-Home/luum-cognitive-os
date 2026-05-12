@@ -171,7 +171,7 @@ class TestDisciplineGate:
         original_content = "# original SKILL.md content — must not be modified"
         fake_skill_md.write_text(original_content)
 
-        # Set up docs/reports/skill-analysis-proposals
+        # Set up docs/06-Daily/reports/skill-analysis-proposals
         proposals_dir = tmp_path / "docs" / "reports" / "skill-analysis-proposals"
         proposals_dir.mkdir(parents=True, exist_ok=True)
 

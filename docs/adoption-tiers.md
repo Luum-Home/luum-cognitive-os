@@ -1,1 +1,0 @@
-08-References/root/adoption-tiers.md

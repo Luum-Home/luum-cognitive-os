@@ -34,7 +34,7 @@ implementation assistants. The policy is:
   debugging. Published commits should still present verified contributor metadata.
 
 For clean-room and prior-art provenance notes, see
-[`docs/architecture/provenance.md`](docs/architecture/provenance.md).
+[`docs/04-Concepts/architecture/provenance.md`](docs/04-Concepts/architecture/provenance.md).
 
 For the public-launch transparency disclosure (history rewrite, license
 transition, build-provenance posture, dogfood property), see

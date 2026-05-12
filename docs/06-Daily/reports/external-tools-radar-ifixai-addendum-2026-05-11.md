@@ -1,17 +1,17 @@
 ---
 report_type: external-tools-radar-targeted-addendum
 scope: ifixai-ai/iFixAi
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 generated_at: 2026-05-11
 status: documentation-before-implementation
 related_adrs: [ADR-065, ADR-247, ADR-254]
 source_artifacts:
-  - docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md
+  - docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md
 related_docs:
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
-  - docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md
-  - docs/reports/external-tools-radar-full-reassessment-2026-05-08.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
+  - docs/06-Daily/reports/external-tools-radar-evoskill-addendum-2026-05-09.md
+  - docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md
 ---
 
 > **License attribution.** Code excerpts in this document are quoted from `ifixai-ai/iFixAi` v1.0.0 (Apache License 2.0, Copyright 2026 iMe — see https://github.com/ifixai-ai/iFixAi/blob/main/LICENSE). Quoted under Apache-2.0 §4.b (reproduction with attribution). See [`../research/ifixai-annex-d-provider-imeisplit-2026-05-11.md`](../research/ifixai-annex-d-provider-imeisplit-2026-05-11.md) for license disposition + iMe open-core risk analysis, and [`../research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md`](../research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol. No COS code derives from iFixAi source; pattern extraction is recommended over direct vendoring per addendum and cluster-D self-critique Finding 9.
@@ -108,7 +108,7 @@ not adoption proof.
 
 1. **Misalignment taxonomy** — fabrication / manipulation / deception / unpredictability / opacity, as a vocabulary reference in COS eval/red-team lane prompts and reports.
 2. **Cross-judge-by-default rule** — "SUT must not grade itself unless explicitly opted in"; mirror the `--eval-mode self` escape and tiebreak order.
-3. **Content-addressed reproducibility manifest** — pattern for COS eval artifacts under `docs/reports/`.
+3. **Content-addressed reproducibility manifest** — pattern for COS eval artifacts under `docs/06-Daily/reports/`.
 4. **Standards-crosswalk structure** — `ifixai/mappings/` as a reference shape (do not re-export specific mappings without independent review).
 5. **Calibration caveat boilerplate** — standardize "drift-signal, not certified score" labelling in COS scorecards.
 6. **Provider-extras installation pattern** — keeps core deps lean; aligns with COS llm-dispatch optionality.
@@ -133,7 +133,7 @@ after upstream ships at least one empirically-calibrated baseline.
 ACCEPTANCE CRITERIA:
 1. iFixAi remains an ASSESS / pattern-only radar entry until an adoption-manifest row exists in manifests/external-tools-adoption.yaml.
 2. Any CLI-adapter trial pins a release tag (>= v1.0.0), runs in an isolated temp workdir, and uses dedicated low-privilege provider keys (no reuse of COS production keys).
-3. The COS wrapper records: SUT provider+model, judge provider+model, fixture hash, manifest hash, pass/fail per pillar, threshold policy version, cost, and rollback command, written under docs/reports/.
+3. The COS wrapper records: SUT provider+model, judge provider+model, fixture hash, manifest hash, pass/fail per pillar, threshold policy version, cost, and rollback command, written under docs/06-Daily/reports/.
 4. Absolute letter grades carry a "drift-signal, not certified score" label in any COS report citing iFixAi.
 5. No COS skill, rule, or hook treats an iFixAi scorecard as authoritative for promotion, release-gating, or external security claims without an additional human-reviewed audit.
 6. Default COS install remains unchanged; no requirement on the ifixai package without a separate ADR.
@@ -142,8 +142,8 @@ ACCEPTANCE CRITERIA:
 
 ## Rollback path
 
-1. **pattern-only rollback**: delete the pattern reference doc and any citations in `docs/architecture/` or `docs/patterns/ecosystem-tools.md`. No runtime impact.
-2. **CLI-adapter rollback** (if ever trialled): remove the `red-team` lane invocation, drop the manifest row in `manifests/external-tools-adoption.yaml`, purge cached scorecards under `docs/reports/ifixai-runs/`. Adapter is self-contained — no schema or rule depends on it.
+1. **pattern-only rollback**: delete the pattern reference doc and any citations in `docs/04-Concepts/architecture/` or `docs/04-Concepts/patterns/ecosystem-tools.md`. No runtime impact.
+2. **CLI-adapter rollback** (if ever trialled): remove the `red-team` lane invocation, drop the manifest row in `manifests/external-tools-adoption.yaml`, purge cached scorecards under `docs/06-Daily/reports/ifixai-runs/`. Adapter is self-contained — no schema or rule depends on it.
 3. **Tombstone trigger**: upstream archives the repo, license changes, or open-core fork diverges past the documented OSS scope.
 
 ## Decision ledger row
@@ -154,7 +154,7 @@ ACCEPTANCE CRITERIA:
 
 ## Source evidence
 
-- Deep evaluation: `docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md`
+- Deep evaluation: `docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md`
 - GitHub repository: <https://github.com/ifixai-ai/iFixAi>
 - Homepage: <https://www.ifixai.ai/>
 - COS comparables: `skills/red-team`, `skills/redteam-harness`, `skills/security-red-team`, `skills/deepeval-integration`, `skills/promptfoo-integration`, `skills/ragas-integration`

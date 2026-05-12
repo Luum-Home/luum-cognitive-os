@@ -435,10 +435,10 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 - [private clean-room research dossier] §Tool-replay budget ledger — especificación abstracta del patrón adoptado
 - [private compliance dossier — see internal records] — protocolo clean-room y checklist de compliance
-- `docs/adrs/ADR-259-external-pattern-adoption-posture.md` — ADR paraguas (postura patterns-only)
-- `docs/adrs/ADR-016-context-diet.md` — ADR de Context Diet (relacionado: gestión de headroom)
-- `docs/adrs/ADR-049-llm-dispatch.md` — LLM Dispatch (destino de la métrica `chars_saved_per_session`)
-- `docs/adrs/ADR-186-budget-enforcement.md` — Budget Enforcement ADR-186 (complementario, no reemplazado)
+- `docs/02-Decisions/adrs/ADR-259-external-pattern-adoption-posture.md` — ADR paraguas (postura patterns-only)
+- `docs/02-Decisions/adrs/ADR-016-context-diet.md` — ADR de Context Diet (relacionado: gestión de headroom)
+- `docs/02-Decisions/adrs/ADR-049-llm-dispatch.md` — LLM Dispatch (destino de la métrica `chars_saved_per_session`)
+- `docs/02-Decisions/adrs/ADR-186-budget-enforcement.md` — Budget Enforcement ADR-186 (complementario, no reemplazado)
 - `hooks/result-truncator.sh` — hook PostToolUse a modificar en D2
 - `lib/smart_truncator.py` — truncador actual, queda como fallback
 - `rules/result-management.md` — regla `result-management` (a actualizar para documentar modos PREVIEW y REFERENCE_ONLY)

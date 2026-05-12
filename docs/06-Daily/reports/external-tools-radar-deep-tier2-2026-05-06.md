@@ -3,8 +3,8 @@ report_type: external-tools-radar-deep-tier2
 date: 2026-05-06
 batch: phase2-deep-remaining (41 repos)
 sister_batch: phase2-deep-tier1 (top-22)
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
-parent_inventory: docs/reports/external-tools-inventory-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
+parent_inventory: docs/06-Daily/reports/external-tools-inventory-2026-05-06.md
 total_repos: 41
 budget_used_tool_calls: ~165 (gh api metadata×41 + tags×41 + runs×41 + trees×41 + sources×16 + license-resolve×3)
 ---
@@ -177,7 +177,7 @@ Sister batch (tier-1 top-22) covered: superpowers, agents.md, everything-claude-
 
 ## 8. Artifacts
 
-Per-repo deep evaluations (41 files) written under `docs/research/repo-scout/deep/`:
+Per-repo deep evaluations (41 files) written under `docs/03-PoCs/research/repo-scout/deep/`:
 
 ```
 <owner>__<repo>-2026-05-06.md   (one per repo, with full proof pack section for SURFACE-5 candidates)

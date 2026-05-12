@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: ACTIVATE WITH SCOPE REDUCTION — 2026-05-11 (Opus refinement of 2026-05-10 Sonnet pass)
-Reconciled-by: P3 plan triage Opus re-triage (see docs/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
+Reconciled-by: P3 plan triage Opus re-triage (see docs/06-Daily/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
 Decision: ACTIVATE — but only Phases 2, 3, 7, 8. Phases 1, 4, 5, 6 are MOSTLY-DELIVERED and should be closed out (acceptance items checked off, not re-implemented).
 Opus rationale (delta from Sonnet full ACTIVATE): Sonnet correctly identified strong overlap with shipped ADRs but recommended full ACTIVATE alongside governance umbrellas. Opus deeper read shows the overlap is large enough that several phases are effectively *done* and should not be re-planned — they should be reconciled via checking off acceptance items:
   • Phase 1 (friction telemetry): DELIVERED. ADR-248 control-plane audit loop ships findings-by-ADR metrics, recurrence count, time-to-remediate, false-positive rate, plus the remediation queue at `.cognitive-os/tasks/control-plane-remediation.jsonl`. ADR-247 manifest-driven postmortem-regression audits give the per-class evidence.

@@ -99,7 +99,7 @@ at the scheduled moment, so a Monday-morning sleep does not skip the
 audit. Logs land at `~/Library/Logs/cos/<name>.{out,err}.log`.
 
 Outputs land under `.cognitive-os/reports/weekly/<date>/` for the
-config audit and under `docs/reports/` for the primitive-gap and
+config audit and under `docs/06-Daily/reports/` for the primitive-gap and
 public-metrics outputs (matching the directories the workflows used).
 
 ### Layer 3 — CLI on-demand for Claude review
@@ -322,7 +322,7 @@ If you encounter this ADR without context:
 ## Cross-references
 
 - ADR-130 — suspended the eleven workflows that this ADR migrates.
-- `docs/reports/dx-assessment-2026-05-02.md` — the assessment that
+- `docs/06-Daily/reports/dx-assessment-2026-05-02.md` — the assessment that
   surfaced the GitHub Actions billing issue.
 - Future engram topic key: `backlog/local-ci-migration` — already
   noted as the tracking key from prior sessions.

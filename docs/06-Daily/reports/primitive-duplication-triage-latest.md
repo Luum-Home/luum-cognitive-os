@@ -4,7 +4,7 @@ Generated: 2026-05-04
 
 ## Summary
 
-Source report: `docs/reports/primitive-duplication-latest.json`.
+Source report: `docs/06-Daily/reports/primitive-duplication-latest.json`.
 
 | Common home | Kind | Count | Triage |
 |---|---:|---:|---|
@@ -56,5 +56,5 @@ Source report: `docs/reports/primitive-duplication-latest.json`.
 
 1. Extract one cluster per commit.
 2. Keep behavioral tests for the touched hooks/scripts passing.
-3. Regenerate `docs/reports/primitive-duplication-latest.*` after extraction.
+3. Regenerate `docs/06-Daily/reports/primitive-duplication-latest.*` after extraction.
 4. Do not mark a duplicate as resolved unless the report count drops or an intentional-duplication allowlist is added.

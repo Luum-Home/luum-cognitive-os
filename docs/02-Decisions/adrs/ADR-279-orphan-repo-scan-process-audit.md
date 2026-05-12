@@ -32,7 +32,7 @@ pipelines were still running after the sessions that launched them had ended.
 The visible pattern was:
 
 - `/bin/zsh -c source ~/.claude/shell-snapshots/snapshot-zsh-...` wrappers
-  running repo scans for `holaos-cleanroom` and `docs/architecture/adrs`.
+  running repo scans for `holaos-cleanroom` and `docs/04-Concepts/architecture/adrs`.
 - Child `ugrep` processes scanning `.cognitive-os/` and `.codex/`.
 - Some processes already had `PPID=1`, proving their original parent exited
   without reaping them.
@@ -64,7 +64,7 @@ when all of these are true:
 2. elapsed runtime is at least `--older-than-seconds` (default: 3600).
 3. command shape is a conservative repo scan:
    - `ugrep`, `grep`, `find`, or `rg` scanning `.cognitive-os`, `.codex`,
-     `docs/architecture`, `docs/archive`, or `docs/archived`; or
+     `docs/04-Concepts/architecture`, `docs/99-Archive/archive`, or `docs/99-Archive/archived`; or
    - a Claude shell-snapshot wrapper containing a grep/find-style repo scan.
 4. the current audit process is never eligible.
 

@@ -4,9 +4,9 @@ Multi-step processes: SDD pipeline, sprints, self-improvement loops, agent orche
 
 ## Start here
 
-1. [`docs/HOW-TO-USE-COS.md`](../HOW-TO-USE-COS.md) — single-page intro to how the OS is used day to day
-2. [`docs/agent-teams.md`](../agent-teams.md) — orchestrator vs. sub-agent model
-3. [`docs/runbooks/`](../runbooks/) — step-by-step operational playbooks
+1. [`docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md`](../HOW-TO-USE-COS.md) — single-page intro to how the OS is used day to day
+2. [`docs/07-Capabilities/root/agent-teams.md`](../agent-teams.md) — orchestrator vs. sub-agent model
+3. [`docs/05-Methodology/runbooks/`](../runbooks/) — step-by-step operational playbooks
 
 ## SDD (Spec-Driven Development)
 
@@ -18,26 +18,26 @@ The full pipeline: explore → propose → spec → design → tasks → apply �
 
 ## Agent orchestration
 
-- [`docs/agent-teams.md`](../agent-teams.md) + [`docs/agent-teams-testing.md`](../agent-teams-testing.md)
-- [`docs/agent-quality.md`](../agent-quality.md) — quality gates
-- [`docs/agent-efficiency-strategy.md`](../agent-efficiency-strategy.md) — model routing (Opus/Sonnet/Haiku)
-- [`docs/agent-capability-coverage.md`](../agent-capability-coverage.md)
+- [`docs/07-Capabilities/root/agent-teams.md`](../agent-teams.md) + [`docs/07-Capabilities/root/agent-teams-testing.md`](../agent-teams-testing.md)
+- [`docs/07-Capabilities/root/agent-quality.md`](../agent-quality.md) — quality gates
+- [`docs/07-Capabilities/root/agent-efficiency-strategy.md`](../agent-efficiency-strategy.md) — model routing (Opus/Sonnet/Haiku)
+- [`docs/07-Capabilities/root/agent-capability-coverage.md`](../agent-capability-coverage.md)
 
 ## Sprints & change management
 
 - [ADR-036 Sprint orchestration primitives](../adrs/ADR-036-sprint-orchestration-primitives.md)
-- [`docs/business/master-plan-checklist.md`](../business/master-plan-checklist.md) — current high-level plan
-- [`docs/guides/`](../guides/) — operator guides for specific workflows
+- [`docs/08-References/business/master-plan-checklist.md`](../business/master-plan-checklist.md) — current high-level plan
+- [`docs/05-Methodology/guides/`](../guides/) — operator guides for specific workflows
 
 ## Self-improvement & autonomy
 
 - [`docs/`](../) loose files: `self-improvement-protocol.md`, `auto-library.md`, `auto-refine-*.md` (search root)
-- [`docs/measurements/`](../measurements/) — historical measurement snapshots driving improvements
-- [`docs/research/`](../research/) — open research investigations
+- [`docs/06-Daily/measurements/`](../measurements/) — historical measurement snapshots driving improvements
+- [`docs/03-PoCs/research/`](../research/) — open research investigations
 
 ## Runbooks
 
-Specific operational procedures: see [`docs/runbooks/`](../runbooks/). Examples include the legal-review-workflow (ADR-270), release procedures, incident response, etc.
+Specific operational procedures: see [`docs/05-Methodology/runbooks/`](../runbooks/). Examples include the legal-review-workflow (ADR-270), release procedures, incident response, etc.
 
 ## Session lifecycle
 

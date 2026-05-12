@@ -53,7 +53,7 @@ The AI coding tool landscape in 2026 mirrors the browser wars. Each tool has its
 | Claude Code | SKILL.md (YAML frontmatter) | .claude/agents/*.md with model/color/tools | Per-agent MEMORY.md + MCP | Full native |
 | Cursor | .mdc rules (auto/manual) | Composer 2 (10 parallel workers) | Partial MCP | Partial |
 | Windsurf | No formal system | Cascade model | Partial MCP | Partial |
-| OpenCode | Skills system (docs/skills) | Dual Plan/Build agents | MCP native | Full |
+| OpenCode | Skills system (docs/07-Capabilities/skills) | Dual Plan/Build agents | MCP native | Full |
 | Gemini CLI | No formal system | No | MCP support | Yes |
 | Kiro | Spec-driven | No | MCP | .kiro/mcp.json |
 

@@ -1,1 +1,0 @@
-04-Concepts/root/model-evolution-resilience.md

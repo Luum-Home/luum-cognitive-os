@@ -357,7 +357,7 @@ check_docs_integrity() {
 import re, sys
 from pathlib import Path
 
-docs = [Path('README.md'), Path('CONTRIBUTING.md'), Path('docs/README.md')]
+docs = [Path('README.md'), Path('CONTRIBUTING.md'), Path('docs/00-MOCs/entrypoints/README.md')]
 errors = 0
 
 def normalize(target):

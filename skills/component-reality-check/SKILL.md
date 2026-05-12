@@ -75,7 +75,7 @@ When invoked:
 4. **If `--strict` and ratio > 0.40**: exit with non-zero code so CI can gate on it.
 
 5. **Next steps section** (always include): suggest actions per category:
-   - DORMANT >180 days: candidate for `docs/archive/` or promotion with behavioral test.
+   - DORMANT >180 days: candidate for `docs/99-Archive/archive/` or promotion with behavioral test.
    - `ASPIRATIONAL`: either implement the missing dependency OR remove the reference.
    - Newly added (<7d): give it time; re-check next week.
 

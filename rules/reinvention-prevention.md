@@ -18,7 +18,7 @@ print(guard.format_report(results))
 1. **Upstream submodules** — search `.claude/plugins/hermes-agent` and `.claude/plugins/pi-mono` first
 2. **Our own `lib/`** — check if we already have a partial implementation
 3. **Adoption registry** — `.cognitive-os/adoption-registry.yaml` for prior decisions
-4. **Competitive docs** — `docs/competitive-landscape.md` for evaluated tools
+4. **Competitive docs** — `docs/08-References/root/competitive-landscape.md` for evaluated tools
 
 ## Decision Ladder
 

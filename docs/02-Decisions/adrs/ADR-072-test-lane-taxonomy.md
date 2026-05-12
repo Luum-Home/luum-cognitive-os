@@ -145,7 +145,7 @@ Legacy scripts that still exist for compatibility MUST declare `ROLE` and
 | `scripts/run-all-tests.sh` | Legacy release/integrity sweep | Release hardening only; not daily iteration. |
 
 The operator-facing role taxonomy lives in
-`docs/testing/test-runner-roles.md`.
+`docs/09-Quality/testing/test-runner-roles.md`.
 
 ## Lane registry
 

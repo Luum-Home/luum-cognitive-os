@@ -7,18 +7,18 @@ source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2, commit e0b
 scope: research-only
 license_constraint: "MIT — adoption legally clean, but pattern extraction preferred for runtime independence (single-author project, <10k node ceiling, redundant runtime vs Engram)"
 related_docs:
-  - docs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md
-  - docs/reports/external-tools-radar-megamemory-addendum-2026-05-11.md
-  - docs/research/holaos-comparison-2026-05-10.md
-  - docs/architecture/memory-layer-evolution-sdd.md
-  - docs/reports/cross-check-A-memory-2026-05-08.md
+  - docs/03-PoCs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md
+  - docs/06-Daily/reports/external-tools-radar-megamemory-addendum-2026-05-11.md
+  - docs/03-PoCs/research/holaos-comparison-2026-05-10.md
+  - docs/04-Concepts/architecture/memory-layer-evolution-sdd.md
+  - docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md
 ---
 
 # MegaMemory Deep Comparison — luum-agent-os vs MegaMemory
 
 > Phase-3 axis verdicts: MEJOR_NUESTRO / IGUAL / MEJOR_EXTERNO / NO_COMPARABLE.
 > Research-only artifact, parallel to the holaOS comparison shape. Adoption decision
-> is already taken (ASSESS / pattern-only) in `docs/reports/external-tools-radar-megamemory-addendum-2026-05-11.md`;
+> is already taken (ASSESS / pattern-only) in `docs/06-Daily/reports/external-tools-radar-megamemory-addendum-2026-05-11.md`;
 > this corpus drills the why behind that verdict and pins port surfaces.
 
 ---
@@ -45,7 +45,7 @@ License is clean MIT — direct vendoring is legally allowed. But the runtime is
 
 - **License**: MIT. `LICENSE` file inspected in the clone.
 - **Per `rules/license-policy.md`**: ALLOW (no AGPL/SSPL/BUSL drag, no branding clauses).
-- **Adoption kind** (`docs/architecture/external-tool-adapter-taxonomy.md`): **algorithm port** — pattern-only.
+- **Adoption kind** (`docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`): **algorithm port** — pattern-only.
 - **Why not runtime adoption** despite a permissive license:
   - Single-author project, stated <10k node ceiling, no bi-temporal model.
   - Engram already covers concept-graph shape with richer typed relations (`supersedes`, `conflicts_with`, `related`, `compatible`, `scoped`, `not_conflict`).
@@ -83,7 +83,7 @@ The whole thing fits in one head. That is partly its appeal and partly its limit
 MegaMemory is compared along two axes:
 
 1. **vs Engram** (our in-house persistent memory) — the closest one-for-one peer.
-2. **vs the planned memory bundle** (Graphiti / LightRAG / HippoRAG / MIRIX, per `docs/architecture/memory-layer-evolution-sdd.md`) — the family that MegaMemory is implicitly competing with for the same slot.
+2. **vs the planned memory bundle** (Graphiti / LightRAG / HippoRAG / MIRIX, per `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`) — the family that MegaMemory is implicitly competing with for the same slot.
 
 A condensed verdict matrix:
 

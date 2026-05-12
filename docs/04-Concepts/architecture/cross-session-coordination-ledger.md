@@ -39,7 +39,7 @@ not provide.
 |---|---|---|
 | `task` | `paperclip-disposition` | duplicate task ownership |
 | `adr-number` | `ADR-171` | ADR number reuse or tombstone collision |
-| `path` | `docs/adrs/ADR-171-reject-paperclip-integration.md` | exact path ownership collision |
+| `path` | `docs/02-Decisions/adrs/ADR-171-reject-paperclip-integration.md` | exact path ownership collision |
 | `policy` | `paperclip-disposition` | incompatible cleanup policy work |
 | `skill` | `adr-tombstone` | duplicate skill creation |
 | `primitive` | `cross-session-coordination` | duplicate agentic primitive work |
@@ -90,7 +90,7 @@ scripts/cos-agent-message send \
   --to-session operator-session \
   --type audit_finding \
   --severity block \
-  --target docs/adrs/ADR-171-tombstone.md \
+  --target docs/02-Decisions/adrs/ADR-171-tombstone.md \
   --body "ADR-171 is semantically owned by the Paperclip rejection decision; do not tombstone it."
 ```
 

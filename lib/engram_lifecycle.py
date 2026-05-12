@@ -11,7 +11,7 @@ Use this module when you want search results ranked by actual epistemic state
 rather than text relevance alone.  Frequently confirmed, recently accessed
 observations surface above stale ones with equal BM25+vector relevance.
 
-ADR reference: ``docs/adrs/ADR-071-engram-lifecycle-evolution.md``
+ADR reference: ``docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md``
 
 Trailer schema (appended to the end of observation content):
 

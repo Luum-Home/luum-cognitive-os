@@ -260,7 +260,7 @@ The tests must prove:
    shape).
 6. Behavior tests (round-trip on a fixture repo, refusal paths, backup
    verification).
-7. Operator runbook in `docs/runbooks/history-sanitization.md`.
+7. Operator runbook in `docs/05-Methodology/runbooks/history-sanitization.md`.
 
 ## Pre-launch posture
 

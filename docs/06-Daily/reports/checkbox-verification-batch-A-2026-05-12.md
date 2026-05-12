@@ -43,7 +43,7 @@ Notes on plans with zero open checkboxes (1, 3, 5, 6):
 
 | Line | Checkbox text (abbreviated) | Status | Evidence |
 |---:|---|---|---|
-| 17 | Update product messaging to avoid claiming continuous self-improvement | AMBIGUOUS | `docs/reports/session-backlog-latest.md:127` still lists this as pending. No grep hits for "continuous self-improvement" in `README.md` / top-level docs, but no positive proof of an audited messaging pass either. Recommend manual review. |
+| 17 | Update product messaging to avoid claiming continuous self-improvement | AMBIGUOUS | `docs/06-Daily/reports/session-backlog-latest.md:127` still lists this as pending. No grep hits for "continuous self-improvement" in `README.md` / top-level docs, but no positive proof of an audited messaging pass either. Recommend manual review. |
 | 30 | Roll up skill metrics (invocations, success/failure, override rate, trust pass, verification pass, time-to-complete) | TRULY PENDING | `lib/performance_ledger.py:compute_rollups` groups by `(source_stream, subject_id, status)` and counts valid/suspect/corrupt. The named metrics (override rate, trust pass, time-to-complete, etc.) are NOT computed. `.cognitive-os/reports/performance-ledger-latest.json` confirms generic stream/subject rollups only. |
 | 32 | Roll up provider/router metrics (chosen provider, fallback rate, latency, cost, retry) | TRULY PENDING | Same as line 30 — no provider/router-specific aggregation in `lib/performance_ledger.py`. `lib/outcome_metrics.py` computes dispatch latency percentiles but is not wired to the ledger rollup output and does not address fallback rate/error class/retry count. |
 | 34 | Roll up primitive metrics (dispatch, skill routing, state retention, repair, validation) | TRULY PENDING | No per-primitive rollup function in `lib/performance_ledger.py`. |
@@ -95,7 +95,7 @@ Plan 4 totals: 6 DONE, 7 PENDING, 5 AMBIGUOUS, 0 OBSOLETE.
 | 79 | Gate public claims against current evidence; decommission unsupported claims | VERIFIED-DONE | `lib/public_claim_gate.py:scan` + `scripts/cos-public-claim-gate` + `tests/.../test_public_claim_gate.py`. ADR-206 accepted. |
 | 80 | Skill performance lifecycle states and demotion/archive receipts | VERIFIED-DONE | `lib/skill_lifecycle_promoter.py` (lifecycle_state, demote/archive paths) + `scripts/run_skill_lifecycle_promotion_smoke.py` + `tests/.../test_skill_lifecycle_promoter.py`. ADR-207 accepted. `scripts/migrate_skill_archive_to_store.py` migrates receipts. |
 | 81 | Imported-pattern closure audit (producer/consumer/scheduler/evaluator/tests) | VERIFIED-DONE | `lib/imported_pattern_closure.py:39,54` references producer/consumer/scheduler/evaluator + `scripts/cos-imported-pattern-closure-audit` + `tests/.../test_imported_pattern_closure.py`. ADR-208 accepted. |
-| 83 | Full closure audit for imported patterns claimed active/core/self-improving | AMBIGUOUS | The closure-audit library/script exists (line 81), but "full audit run with all active/core/self-improving claimed patterns" is a recurring exercise, not a one-time deliverable. No archived audit report at `docs/reports/imported-pattern-closure-*.md` after 2026-05-06. Plan-owner decision. |
+| 83 | Full closure audit for imported patterns claimed active/core/self-improving | AMBIGUOUS | The closure-audit library/script exists (line 81), but "full audit run with all active/core/self-improving claimed patterns" is a recurring exercise, not a one-time deliverable. No archived audit report at `docs/06-Daily/reports/imported-pattern-closure-*.md` after 2026-05-06. Plan-owner decision. |
 | 87 | Maintainer experiment/canary schema | VERIFIED-DONE | `lib/maintainer_experiment.py` + `tests/.../test_maintainer_experiment_contract.py`. ADR-209 accepted. |
 | 88 | Outcome-failure queue and regression handling | TRULY PENDING | `evaluate_outcome` exists but no queue/regression-handling persistence layer (see Plan 2 line 82). |
 | 93 | Keep future-only until ADR-202 and ADR-201 enforcement is proven | TRULY PENDING | This is a posture commitment, not an implementation. Status will remain pending until both ADRs are operationally proven. |
@@ -120,7 +120,7 @@ Disagreements between the **per-checkbox** truth and the **plan-level** summary
 the audit/reconciliation reports previously asserted:
 
 1. **Plan 2 (Maintainer / ADR-201 loop)** — The plan-level reconciliation
-   (`docs/reports/session-backlog-latest.md:127`) reports "23/40 tasks done".
+   (`docs/06-Daily/reports/session-backlog-latest.md:127`) reports "23/40 tasks done".
    Bilateral verification confirms Phases 1–3 are mostly shipped (ledger,
    PromoteFromTelemetry, maintainer runner) but **Phase 1 metric rollups
    (lines 30–37) are NOT implemented as specified**. The performance-ledger

@@ -185,7 +185,7 @@ class TestMetricsLog:
         if not lib_link.exists():
             lib_link.symlink_to(PROJECT_ROOT / "lib")
 
-        # Create a minimal docs/adrs dir
+        # Create a minimal docs/02-Decisions/adrs dir
         adrs_dir = tmp_path / "docs" / "adrs"
         adrs_dir.mkdir(parents=True)
 

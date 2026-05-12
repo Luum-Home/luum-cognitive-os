@@ -17,11 +17,11 @@ dependencies:
   - rules/license-policy.md
   - rules/recommendation-grounding.md
 inspired_by:
-  - docs/research/holaos-comparison-2026-05-10.md
+  - docs/03-PoCs/research/holaos-comparison-2026-05-10.md
 diverges_from:
-  - docs/research/helixdb-comparison-2026-05-11.md
-  - docs/research/ifixai-comparison-2026-05-11.md
-  - docs/research/megamemory-comparison-2026-05-11.md
+  - docs/03-PoCs/research/helixdb-comparison-2026-05-11.md
+  - docs/03-PoCs/research/ifixai-comparison-2026-05-11.md
+  - docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
 ---
 
 # `/deep-tool-research <tool>` — Canonical Deep Evaluation Pipeline
@@ -73,8 +73,8 @@ mem_save per annex (topic_key: research/<tool>/annex-<a..g>, type: pattern, scop
 ## 4. Prerequisites
 
 - Source cache present at `.cognitive-os/external-source-cache/<tool>/` (shallow clone, license-scanned).
-- Shallow `repo-scout` deep-dive landed at `docs/research/repo-scout/deep/<owner>__<repo>-<date>.md`.
-- Radar addendum landed at `docs/reports/external-tools-radar-<tool>-addendum-<date>.md` (carries the initial verdict that motivates the deep pass).
+- Shallow `repo-scout` deep-dive landed at `docs/03-PoCs/research/repo-scout/deep/<owner>__<repo>-<date>.md`.
+- Radar addendum landed at `docs/06-Daily/reports/external-tools-radar-<tool>-addendum-<date>.md` (carries the initial verdict that motivates the deep pass).
 - License grade resolved per `rules/license-policy.md`. If BLOCK, Annex F drives the clean-room protocol; if ALLOW, Annex F still required (records attribution path).
 
 ## 5. Engram topic keys
@@ -93,8 +93,8 @@ mem_save per annex (topic_key: research/<tool>/annex-<a..g>, type: pattern, scop
 
 ## 6. File naming contract
 
-- Parent: `docs/research/<tool>-comparison-<date>.md`
-- Annexes: `docs/research/<tool>-annex-<letter>-<short-slug>-<date>.md` where `<letter>` is one of `a,b,c,d,e,f,g` and `<short-slug>` is descriptive (e.g. `memory`, `cost-budget`).
+- Parent: `docs/03-PoCs/research/<tool>-comparison-<date>.md`
+- Annexes: `docs/03-PoCs/research/<tool>-annex-<letter>-<short-slug>-<date>.md` where `<letter>` is one of `a,b,c,d,e,f,g` and `<short-slug>` is descriptive (e.g. `memory`, `cost-budget`).
 
 The letter slot is canonical. The short slug is local color.
 
@@ -102,7 +102,7 @@ The letter slot is canonical. The short slug is local color.
 
 A `/deep-tool-research` invocation passes acceptance iff:
 
-1. **Slot completeness** — 7 annex files exist with letters A–G, no gaps, no extra letters. Verified by `ls docs/research/<tool>-annex-*-<date>.md | wc -l == 7`.
+1. **Slot completeness** — 7 annex files exist with letters A–G, no gaps, no extra letters. Verified by `ls docs/03-PoCs/research/<tool>-annex-*-<date>.md | wc -l == 7`.
 2. **Slot fidelity** — each annex frontmatter declares `axis: <A|B|C|D|E|F|G>` matching one of the locked names in §2. Verified by yq/grep.
 3. **Parent §9 annex map** — references all 7 letters with file links. Verified by grep on the parent doc.
 4. **Engram persistence** — 9 topic keys present per §5. Verified by `mem_search` count.

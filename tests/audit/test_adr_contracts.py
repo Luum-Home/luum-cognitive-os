@@ -1,4 +1,4 @@
-"""ADR-067 Phase 2 — Audit tests for docs/adrs/ADR-*.md section contracts.
+"""ADR-067 Phase 2 — Audit tests for docs/02-Decisions/adrs/ADR-*.md section contracts.
 
 Enforces the field contract defined in ADR-067 Phase 2 for ADR-067 and later.
 Pre-067 ADRs are explicitly grandfathered (cutoff per operator decision #2).
@@ -144,7 +144,7 @@ ENFORCED_ADR_IDS = [p.name for p in ENFORCED_ADRS]
 
 @pytest.mark.audit
 def test_adrs_directory_not_empty() -> None:
-    """Sanity: docs/adrs/ contains at least 10 ADR files."""
+    """Sanity: docs/02-Decisions/adrs/ contains at least 10 ADR files."""
     assert len(ALL_ADRS) >= 10, (
         f"Expected >= 10 ADR files in {ADRS_DIR}, found {len(ALL_ADRS)}"
     )
@@ -371,7 +371,7 @@ def test_adr_105_reflects_implemented_claim_verification_primitives() -> None:
         "hooks/orchestrator-claim-gate.sh",
         "scripts/orchestrator_claim_gate.py",
         "lib/orchestrator_verify.py",
-        "docs/architecture/claim-verification-matrix.md",
+        "docs/04-Concepts/architecture/claim-verification-matrix.md",
     ]
     missing = [ref for ref in required_refs if ref not in text]
     assert not missing, f"ADR-105 missing implemented primitive refs: {missing}"

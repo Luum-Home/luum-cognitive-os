@@ -17,10 +17,10 @@ claims:
     approved_wording: Cognitive OS makes coding agents verifiable, governable, coordinated,
       and portable with executable evidence for what they did.
     evidence:
-    - docs/business/product-messaging.md
-    - docs/business/cos-vs-vanilla-dx-review.md
-    - docs/business/value-proposition.md
-    - docs/architecture/agentic-kernel-philosophy.md
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
+    - docs/08-References/business/value-proposition.md
+    - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
     - .cognitive-os/strategy/01-commercial-brief-v2.md
     boundaries:
     - Do not frame COS as another IDE, generic tracing dashboard, or model wrapper.
@@ -34,8 +34,8 @@ claims:
     approved_wording: Cognitive OS checks whether the agent actually verified the
       work it claims is done.
     evidence:
-    - docs/architecture/claim-verification-matrix.md
-    - docs/adrs/ADR-105-claim-verification-contract.md
+    - docs/04-Concepts/architecture/claim-verification-matrix.md
+    - docs/02-Decisions/adrs/ADR-105-claim-verification-contract.md
     - scripts/orchestrator_claim_gate.py
     - scripts/verify_plan_claims.py
     - tests/contracts/test_orchestrator_claim_gate.py
@@ -50,10 +50,10 @@ claims:
     approved_wording: Cognitive OS records normalized evidence so teams can compare
       agent behavior across supported harnesses.
     evidence:
-    - docs/model-evolution-resilience.md
-    - docs/architecture/ide-agnostic-primitive-projection.md
-    - docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
-    - docs/business/cos-vs-vanilla-dx-review.md
+    - docs/04-Concepts/root/model-evolution-resilience.md
+    - docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md
+    - docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
     boundaries:
     - Do not claim universal cross-IDE runtime parity.
     - Do not claim competitors lack all cross-IDE observability.
@@ -66,8 +66,8 @@ claims:
     approved_wording: Cognitive OS is designed to connect agent cost to verified outcomes,
       not only token usage.
     evidence:
-    - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
-    - docs/architecture/primitive-fitness-evaluation-contract.md
+    - docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+    - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
     - lib/performance_ledger.py
     - scripts/cos-performance-ledger
     boundaries:
@@ -82,10 +82,10 @@ claims:
     approved_wording: Cognitive OS can attach governance events to replayable receipts
       and restore-oriented checkpoints where the substrate is enabled.
     evidence:
-    - docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md
+    - docs/02-Decisions/adrs/ADR-227-shadow-git-checkpoint-substrate.md
     - lib/shadow_git.py
-    - docs/business/product-messaging.md
-    - docs/business/value-proposition.md
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/value-proposition.md
     boundaries:
     - Avoid implying every harness and deployment mode has identical rewind semantics.
   governed_self_improvement:
@@ -96,8 +96,8 @@ claims:
     approved_wording: Cognitive OS can propose primitive improvements from telemetry
       under human approval.
     evidence:
-    - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
-    - docs/architecture/primitive-fitness-evaluation-contract.md
+    - docs/02-Decisions/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+    - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
     - scripts/cos-promote-from-telemetry
     - scripts/cos-maintainer-agent
     boundaries:
@@ -113,8 +113,8 @@ claims:
       evidence-backed behavioral governance.
     evidence:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/product-messaging.md
-    - docs/business/feature-reality-audit.md
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/feature-reality-audit.md
     boundaries:
     - Do not claim agent-step tracing or framework-agnostic support as unique by itself.
   product_answer_primitive:
@@ -126,7 +126,7 @@ claims:
     approved_wording: COS answers product questions from versioned evidence manifests
       and reports claim safety alongside the answer.
     evidence:
-    - docs/adrs/ADR-280-product-question-to-evidence-primitive.md
+    - docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md
     - manifests/product-question-bank.yaml
     - manifests/product-claim-evidence.yaml
     - lib/product_answer.py
@@ -143,8 +143,8 @@ claims:
       managing AI-assisted development risk across a real team.
     evidence:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/value-proposition.md
-    - docs/business/cos-vs-vanilla-dx-review.md
+    - docs/08-References/business/value-proposition.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
     boundaries:
     - Do not imply ICP validation is complete without customer discovery.
   pricing_strategy_internal_only:
@@ -170,11 +170,11 @@ claims:
     approved_wording: COS should position above generic tracing by focusing on evidence-backed behavioral governance. For previously analyzed tools, start from the local Tech Radar and external-tool manifests; use fresh verification for volatile public claims.
     evidence:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - docs/business/feature-reality-audit.md
-    - docs/business/product-messaging.md
-    - docs/reports/external-tools-radar-INDEX.md
-    - docs/vs-alternatives.md
-    - docs/component-sources.md
+    - docs/08-References/business/feature-reality-audit.md
+    - docs/08-References/business/product-messaging.md
+    - docs/06-Daily/reports/external-tools-radar-INDEX.md
+    - docs/08-References/root/vs-alternatives.md
+    - docs/04-Concepts/root/component-sources.md
     boundaries:
     - Do not say competitors cannot do cross-IDE observability without fresh research.
     - Do not use stale named-competitor claims publicly.
@@ -186,10 +186,10 @@ claims:
     summary: Vanilla IDE-agent workflows are preferred for small, low-risk, one-agent exploratory work; COS becomes valuable when governance, coordination, audit, cost, or recovery risk appears.
     approved_wording: Use vanilla for low-risk speed; add Cognitive OS when you need verifiable, coordinated, recoverable agent work.
     evidence:
-    - docs/business/cos-vs-vanilla-dx-review.md
-    - docs/vs-alternatives.md
-    - docs/adoption-tiers.md
-    - docs/auto-repair-system.md
+    - docs/08-References/business/cos-vs-vanilla-dx-review.md
+    - docs/08-References/root/vs-alternatives.md
+    - docs/08-References/root/adoption-tiers.md
+    - docs/04-Concepts/root/auto-repair-system.md
     boundaries:
     - Do not claim COS is always better than vanilla workflows.
     - Do not recommend the full SO for throwaway or one-agent low-risk work.
@@ -200,14 +200,14 @@ claims:
     summary: COS has CLI/operator surfaces, documented multi-surface UI direction, local cosd API work, and headless service proof drills, but full hosted/cloud service and polished dashboard claims are maturity-scoped.
     approved_wording: COS is CLI-first today, can be used through IDE and non-IDE/headless proof paths, and has cosd/service/UI work under readiness gates.
     evidence:
-    - docs/getting-started-quick.md
-    - docs/README.md
-    - docs/adrs/ADR-172-multi-surface-ui-architecture.md
-    - docs/adrs/ADR-193-cosd-local-network-api.md
-    - docs/adrs/ADR-194-cosd-secure-remote-api.md
-    - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
-    - docs/dashboard-architecture.md
-    - docs/onboarding-wizard-design.md
+    - docs/00-MOCs/entrypoints/getting-started-quick.md
+    - docs/00-MOCs/entrypoints/README.md
+    - docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md
+    - docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md
+    - docs/02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md
+    - docs/01-Build-Log/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+    - docs/04-Concepts/root/dashboard-architecture.md
+    - docs/04-Concepts/root/onboarding-wizard-design.md
     boundaries:
     - Do not claim polished SaaS/web dashboard readiness without a current shipped-slice proof.
     - Do not claim provider-backed service execution without explicit auth/runtime proof.
@@ -218,10 +218,10 @@ claims:
     summary: Service-mode launch claims are gated by ADR-211; some headless/local service proof exists, but autonomous/cloud service mode is not an unrestricted public claim.
     approved_wording: Service/headless usage is possible only within documented readiness and proof boundaries; cloud/autonomous claims remain gated.
     evidence:
-    - docs/adrs/ADR-211-service-mode-readiness-gate.md
-    - docs/adrs/ADR-193-cosd-local-network-api.md
-    - docs/adrs/ADR-194-cosd-secure-remote-api.md
-    - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+    - docs/02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md
+    - docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md
+    - docs/02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md
+    - docs/01-Build-Log/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
     boundaries:
     - Do not say COS can safely run as a fully autonomous hosted service unless the readiness gate is green.
     - Remote cosd exposure requires explicit allow-remote plus bearer-token auth.
@@ -232,10 +232,10 @@ claims:
     summary: Hermes, Agent Zero, and OpenClaw have different centers of gravity; COS is complementary as the engineering governance/evidence layer rather than a direct replacement for their UX/autonomy/orchestration breadth.
     approved_wording: Use Hermes, Agent Zero, or OpenClaw for their agent/runtime strengths; add COS when engineering governance, verification, and audit receipts matter.
     evidence:
-    - docs/vs-alternatives.md
-    - docs/component-sources.md
-    - docs/business/competitive-reassessment-openclaw-hermes-2026-04.md
-    - docs/reports/external-tools-radar-INDEX.md
+    - docs/08-References/root/vs-alternatives.md
+    - docs/04-Concepts/root/component-sources.md
+    - docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md
+    - docs/06-Daily/reports/external-tools-radar-INDEX.md
     boundaries:
     - Do not claim COS fully replaces Hermes, Agent Zero, or OpenClaw.
     - Do not publish current named-feature comparisons without checking local radar freshness and external facts when needed.
@@ -246,11 +246,11 @@ claims:
     summary: COS has primitives that help developers convert repeated agent work into governed reusable primitives, but the developer-facing question-to-primitive path needs a clearer router, guide, and report surface.
     approved_wording: Cognitive OS helps developers turn repeated agent work into governed, tested, reusable agentic primitives; it detects and proposes improvements, while promotion stays evidence-gated and human-approved unless explicitly configured otherwise.
     evidence:
-    - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
-    - docs/architecture/primitive-harvester.md
-    - docs/adrs/ADR-083-governed-self-improvement-loop.md
-    - docs/architecture/primitive-fitness-evaluation-contract.md
-    - docs/architecture/key-learnings-capture-self-improvement.md
+    - docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md
+    - docs/04-Concepts/architecture/primitive-harvester.md
+    - docs/02-Decisions/adrs/ADR-083-governed-self-improvement-loop.md
+    - docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md
+    - docs/04-Concepts/architecture/key-learnings-capture-self-improvement.md
     - skills/primitive-harvester/SKILL.md
     - skills/primitive-authoring/SKILL.md
     boundaries:

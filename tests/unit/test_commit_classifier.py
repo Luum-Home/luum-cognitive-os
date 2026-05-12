@@ -53,8 +53,8 @@ class TestClassifyFiles:
         assert result == {"docs": ["README.md"]}
 
     def test_docs_directory(self):
-        result = classify_files(["docs/architecture.md"])
-        assert result == {"docs": ["docs/architecture.md"]}
+        result = classify_files(["docs/04-Concepts/architecture.md"])
+        assert result == {"docs": ["docs/04-Concepts/architecture.md"]}
 
     def test_packages_directory(self):
         result = classify_files(["packages/agent-coordination/rules/agent-bus.md"])

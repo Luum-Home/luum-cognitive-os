@@ -104,7 +104,7 @@ See `RULES-COMPACT.md` for the full thematic index with trigger conditions.
 | Caution | LGPL v2.1/v3 (dynamic link only), MPL 2.0, Artistic 2.0 | Conditional |
 | Blocked | AGPL v3, SSPL, BSL, ELv2, Commons Clause, FSL | Forbidden for SaaS |
 
-**Procedure**: Check license before adding any dependency. Transitive dependencies count. Dual-licensed tools need commercial license evaluation. Document decisions in `docs/research/license-analysis.md`.
+**Procedure**: Check license before adding any dependency. Transitive dependencies count. Dual-licensed tools need commercial license evaluation. Document decisions in `docs/03-PoCs/research/license-analysis.md`.
 
 **Exception**: AGPL/SSPL tools allowed ONLY as completely separate containers with no code modifications, communicating via public API.
 

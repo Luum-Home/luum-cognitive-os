@@ -176,7 +176,7 @@ fatal: not a git repository: .claude/plugins/hermes-agent/../../../.git/modules/
 
 For critical, long-running scheduling (Singularity MAPE-K loop, periodic KPI checks), always prefer the portable alternatives. `CronCreate` is acceptable for one-off session experiments but must not be used as the sole scheduling mechanism for production workflows.
 
-> For detailed setup examples for each scheduling option, see [`docs/singularity.md#scheduling-options`](../singularity.md#scheduling-options).
+> For detailed setup examples for each scheduling option, see [`docs/04-Concepts/root/singularity.md#scheduling-options`](../singularity.md#scheduling-options).
 
 Each feature has a graceful degradation: COS detects the tool via env vars and silently disables unsupported features rather than failing.
 

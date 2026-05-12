@@ -38,8 +38,8 @@ archives:
       - skills/**
       - templates/**
       - manifests/**
-      - docs/quickstart.md
-      - docs/getting-started.md
+      - docs/00-MOCs/entrypoints/quickstart.md
+      - docs/00-MOCs/entrypoints/getting-started.md
 
 checksum:
   name_template: checksums.txt

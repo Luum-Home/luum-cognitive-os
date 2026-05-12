@@ -11,7 +11,7 @@ merges them into the ranked result set.
 Traversal is bounded at 2 hops by default to prevent combinatorial explosion.
 Only read-only SQLite access is used — the module NEVER writes to the database.
 
-ADR reference: ``docs/adrs/ADR-071-engram-lifecycle-evolution.md``
+ADR reference: ``docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md``
 
 NOT (cross-reference)
 ----------------------

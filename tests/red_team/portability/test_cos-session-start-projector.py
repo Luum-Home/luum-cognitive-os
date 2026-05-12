@@ -90,7 +90,7 @@ def test_bilateral_all_sources_populated(tmp_path: Path) -> None:
          "status": "verified-done", "next_action": "", "owner_adr": None},
     ])
     _seed_og_audit(tmp_path, [
-        {"adr": "ADR-100-x", "adr_num": 100, "path": "docs/adrs/ADR-100-x.md",
+        {"adr": "ADR-100-x", "adr_num": 100, "path": "docs/02-Decisions/adrs/ADR-100-x.md",
          "verdict": "missing", "priority": "P0", "age_days": 1, "tier": "maintainer",
          "status": "accepted", "subsection_count": 0},
     ])
@@ -113,7 +113,7 @@ def test_bilateral_all_sources_populated(tmp_path: Path) -> None:
 def test_falsification_only_og_present(tmp_path: Path) -> None:
     """Falsification: only OG audit present, pending+cp+staged empty."""
     _seed_og_audit(tmp_path, [
-        {"adr": "ADR-101-y", "adr_num": 101, "path": "docs/adrs/ADR-101-y.md",
+        {"adr": "ADR-101-y", "adr_num": 101, "path": "docs/02-Decisions/adrs/ADR-101-y.md",
          "verdict": "missing", "priority": "P1", "age_days": 100, "tier": "maintainer",
          "status": "accepted", "subsection_count": 0},
     ])
@@ -126,7 +126,7 @@ def test_falsification_only_og_present(tmp_path: Path) -> None:
 def test_suggested_actions_rank_staged_first(tmp_path: Path) -> None:
     """Bilateral: staged dirs outrank backfill items in suggested_next_actions."""
     _seed_og_audit(tmp_path, [
-        {"adr": f"ADR-{200+i}-z", "adr_num": 200 + i, "path": f"docs/adrs/ADR-{200+i}-z.md",
+        {"adr": f"ADR-{200+i}-z", "adr_num": 200 + i, "path": f"docs/02-Decisions/adrs/ADR-{200+i}-z.md",
          "verdict": "missing", "priority": "P0", "age_days": 1, "tier": "maintainer",
          "status": "accepted", "subsection_count": 0}
         for i in range(3)
@@ -194,7 +194,7 @@ def test_adr_partial_backlog_is_first_class_projector_source(tmp_path: Path) -> 
     _seed_adr_partial_backlog(tmp_path, [
         {
             "adr": "ADR-234",
-            "path": "docs/adrs/ADR-234-approval-policies-as-code.md",
+            "path": "docs/02-Decisions/adrs/ADR-234-approval-policies-as-code.md",
             "implementation_status": "partial",
             "classification_basis": "advisory implementation exists; blocking promotion remains pending",
             "remaining": "blocking promotion remains pending",
@@ -203,7 +203,7 @@ def test_adr_partial_backlog_is_first_class_projector_source(tmp_path: Path) -> 
         },
         {
             "adr": "ADR-236",
-            "path": "docs/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md",
+            "path": "docs/02-Decisions/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md",
             "implementation_status": "partial",
             "classification_basis": "Slices A-D implemented; transport remains explicitly not implemented",
             "remaining": "transport remains explicitly not implemented",

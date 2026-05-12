@@ -13,7 +13,7 @@ extends: [ADR-212, ADR-215, ADR-216, ADR-239, ADR-240, ADR-242, ADR-243, ADR-244
 implementation_files:
   - manifests/postmortem-regression-audit.yaml
   - scripts/cos-postmortem-regression-audit
-  - docs/runbooks/postmortem-regression-audit.md
+  - docs/05-Methodology/runbooks/postmortem-regression-audit.md
 tier: maintainer
 tags: [audits, manifests, external-tools, no-hardcoding, primitive-coherence]
 ---

@@ -1,6 +1,6 @@
 # Cross-Harness Authoring Pattern
 
-> Full spec: `docs/architecture/cross-harness-authoring.md`
+> Full spec: `docs/04-Concepts/architecture/cross-harness-authoring.md`
 
 ## Agent Self-Check (5 items, SO-only)
 

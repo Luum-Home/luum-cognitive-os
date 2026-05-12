@@ -49,7 +49,7 @@ def test_authority_manifest_names_derivation_inputs() -> None:
         "manifests/primitive-scope-classification.yaml",
         "manifests/primitive-consumer-availability.yaml",
         "manifests/primitive-projection-profiles.yaml",
-        "docs/reports/primitive-readiness-ledger-scripts-latest.json",
+        "docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json",
         "manifests/protected-config-write-policy.yaml",
     }
     assert expected <= inputs

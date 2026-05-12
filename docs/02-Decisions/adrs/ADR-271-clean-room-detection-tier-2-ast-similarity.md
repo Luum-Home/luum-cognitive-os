@@ -81,7 +81,7 @@ slot after Hook #7 lib-symlink-invariant in commit `01929d8c`).
   commit).
 - `--format json|text|markdown`.
 - `--allowlist <path>` — exclude path-prefixes (e.g. attribution-quoted code in
-  docs/research/).
+  docs/03-PoCs/research/).
 - `--ci` — exit 1 on any non-baseline match.
 
 ### Bypass
@@ -169,7 +169,7 @@ merger).
   authoritative) → hook does NOT fire (canonical path skipped).
 - Baseline accept: add a known false-positive to baseline.yaml → re-run on
   same commit → hook passes.
-- Allowlist exclude: add `docs/research/` to allowlist → annex F quotes ignored.
+- Allowlist exclude: add `docs/03-PoCs/research/` to allowlist → annex F quotes ignored.
 
 ```bash
 bash -n hooks/clean-room-ast-similarity-gate.sh

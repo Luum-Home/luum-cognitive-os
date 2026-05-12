@@ -68,8 +68,8 @@ def test_create_tombstone_force_replaces_old_file_and_updates_references(tmp_pat
     target = project / result.path
     assert target.exists()
     assert not old.exists()
-    assert result.removed_paths == ["docs/adrs/ADR-007-old-system.md"]
-    assert result.updated_references == ["docs/README.md"]
+    assert result.removed_paths == ["docs/02-Decisions/adrs/ADR-007-old-system.md"]
+    assert result.updated_references == ["docs/00-MOCs/entrypoints/README.md"]
     assert "ADR-007-tombstone.md" in readme.read_text(encoding="utf-8")
     assert "legacy-token" not in target.read_text(encoding="utf-8")
 
@@ -123,5 +123,5 @@ def test_cli_json_dry_run(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["ok"] is True
     assert payload["wrote"] is False
-    assert payload["path"] == "docs/adrs/ADR-011-tombstone.md"
+    assert payload["path"] == "docs/02-Decisions/adrs/ADR-011-tombstone.md"
     assert not (project / payload["path"]).exists()

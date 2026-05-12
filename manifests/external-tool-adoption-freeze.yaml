@@ -28,10 +28,10 @@ unfreeze_requires:
   - trademark-search-documented
 
 gated_path_globs:
-  - 'docs/research/*-annex-*-*.md'
-  - 'docs/research/*-comparison-*.md'
-  - 'docs/reports/external-tools-radar-*.md'
-  - 'docs/research/repo-scout/deep/*.md'
+  - 'docs/03-PoCs/research/*-annex-*-*.md'
+  - 'docs/03-PoCs/research/*-comparison-*.md'
+  - 'docs/06-Daily/reports/external-tools-radar-*.md'
+  - 'docs/03-PoCs/research/repo-scout/deep/*.md'
   - 'manifests/external-tools-adoption.yaml'
 
 freeze_history:

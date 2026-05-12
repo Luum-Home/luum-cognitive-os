@@ -59,7 +59,7 @@ def test_explore_allows_explicit_parent_persistence(manifest):
 def test_general_purpose_allows_file_artifact_requirement(manifest):
     result = evaluate(
         "general-purpose",
-        "Research this and write docs/reports/output.md",
+        "Research this and write docs/06-Daily/reports/output.md",
         manifest,
     )
 
@@ -97,7 +97,7 @@ def test_hook_payload_blocks_explore_file_artifact(manifest):
             "tool_name": "Agent",
             "tool_input": {
                 "subagent_type": "Explore",
-                "prompt": "Investigate and write docs/reports/agent-output.md",
+                "prompt": "Investigate and write docs/06-Daily/reports/agent-output.md",
             },
         },
         manifest,
@@ -113,7 +113,7 @@ def test_hook_payload_without_selected_type_passes_advisory(manifest):
     from scripts.subagent_launch_preflight import evaluate_hook_payload
 
     result = evaluate_hook_payload(
-        {"tool_name": "Agent", "tool_input": {"prompt": "Write docs/reports/output.md"}},
+        {"tool_name": "Agent", "tool_input": {"prompt": "Write docs/06-Daily/reports/output.md"}},
         manifest,
     )
 

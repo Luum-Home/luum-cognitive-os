@@ -32,7 +32,7 @@ entries:
       - "lib/review_agent.py"
       - "packages/agent-lifecycle/lib/review_agent.py"
       - "packages/verification-audit/lib/error_classifier.py"
-    annex_f: "docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       Backfill: ports predate ADR-259/ADR-267. Exact copyright line from upstream LICENSE
       not extracted (confirmed MIT, copyright holder NousResearch). Precise copyright year
@@ -49,7 +49,7 @@ entries:
     attribution: "Ports HttpHookDefinition and PromptHookDefinition from HKUDS/OpenHarness (MIT), adapted to COS conventions."
     cos_files:
       - "lib/hook_types.py"
-    annex_f: "docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       Commit hash recorded at source: 7873f0d109174a57b3b1af7aa5397a6b3b0bd551.
       Source path: src/openharness/hooks/schemas.py. MIT confirmed via WebFetch
@@ -63,7 +63,7 @@ entries:
     attribution: "PENDING — upstream URL and copyright holder must be supplied before attribution can be authored"
     cos_files:
       - "lib/file_mutation_queue.py"
-    annex_f: "docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       BLOCKED pending upstream identification. MIT claimed inline only.
       Two GitHub searches returned zero matching repositories. No upstream URL, commit
@@ -79,7 +79,7 @@ entries:
     attribution: "PENDING — cannot be authored; copyright holder and license file unverifiable"
     cos_files:
       - "packages/verification-audit/lib/research_scoring.py"
-    annex_f: "docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       Worst-case attribution profile: COS source file contains only bare name reference
       with no URL, commit, license, or copyright. Upstream MIT claimed in README but
@@ -93,7 +93,7 @@ entries:
     copyright: "Copyright (c) HelixDB contributors (GNU AGPL-3.0)"
     attribution: "Clean-room derived from behavioral spec; no helix-db source referenced. Design patterns documented in Annex F."
     cos_files: []
-    annex_f: "docs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       REJECT runtime / TRIAL-PATTERNS pattern-only. AGPL-3.0 §13 triggers copyleft on
       any network interaction. Three authorised TRIAL-PATTERNS primitives: typed-ADT
@@ -107,7 +107,7 @@ entries:
     copyright: "Copyright 2026 iMe"
     attribution: "Original work © 2026 iMe (Apache-2.0). Pattern-only adoption. Modified by Cognitive OS contributors."
     cos_files: []
-    annex_f: "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       Apache-2.0. Pattern-only preferred over vendoring (uncalibrated thresholds,
       iMe open-core split risk, project age ~1 week at eval). Pinned to v1.0.0
@@ -122,7 +122,7 @@ entries:
     copyright: "Copyright (c) 2026 0xk3vin"
     attribution: "Original work © 2026 0xk3vin (MIT). Port/pattern adoption by Cognitive OS contributors."
     cos_files: []
-    annex_f: "docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
+    annex_f: "docs/03-PoCs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
     notes: >
       MIT confirmed verbatim. Copyright: "MIT License / Copyright (c) 2026 0xk3vin".
       Pattern-only preferred (single-author bus factor, <10k node ceiling, MCP fragmentation

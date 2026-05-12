@@ -61,7 +61,7 @@ Is the OS broken if this agentic primitive is removed?
 1. **Read the agentic primitive** — understand what it does
 2. **Check dependencies** — what depends on it? `grep -rl "{primitive}" hooks/ rules/ skills/ lib/`
 3. **Apply decision tree** — walk through the criteria
-4. **Check existing audit** — `docs/component-audit.md` for precedent
+4. **Check existing audit** — `docs/06-Daily/root/component-audit.md` for precedent
 5. **Output classification** with reasoning
 
 ## Output Format

@@ -19,12 +19,12 @@ chat/web/API ingress is separate from provider execution, and no credential
    `reference-only`, with `provider_strategy: delegates-to-cos`.
 4. Confirm `openclaw`, `agent-zero`, and `opencode-current` are present.
 5. Confirm `pinchy` is `license_posture: blocked`.
-6. Open `docs/reports/remote-control-plane-alternatives-2026-05-05.md`.
+6. Open `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md`.
 7. Confirm Telegram/chat/webhook surfaces are described as untrusted ingress,
    not direct execution.
 8. Confirm the report includes the phrase `No credential scraping` and rejects
    reading vendor token stores.
-9. Open `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md`.
+9. Open `docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md`.
 10. Confirm the Decision section separates `remote ingress` from
     `provider/executor adapters`.
 11. Run the automated checks below.
@@ -41,7 +41,7 @@ python3 scripts/acc_pipeline.py --project-dir . --brief
 
 - Contract tests pass.
 - ADR audit/location tests pass.
-- ACC brief completes without loading `docs/acc/latest.json` into context.
+- ACC brief completes without loading `docs/07-Capabilities/acc/latest.json` into context.
 - No secrets or credential values are present in the manifest, report, or ADR.
 
 ## Evidence captured on 2026-05-05

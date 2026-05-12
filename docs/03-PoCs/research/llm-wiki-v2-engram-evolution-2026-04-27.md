@@ -2,7 +2,7 @@
 
 **Date**: 2026-04-27
 **Author**: Architecture review (Software Architect agent)
-**ADR**: [`docs/adrs/ADR-071-engram-lifecycle-evolution.md`](../adrs/ADR-071-engram-lifecycle-evolution.md)
+**ADR**: [`docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md`](../adrs/ADR-071-engram-lifecycle-evolution.md)
 **Plan**: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../.cognitive-os/plans/features/engram-lifecycle-evolution.md)
 
 ---

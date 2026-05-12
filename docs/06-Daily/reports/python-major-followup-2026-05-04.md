@@ -48,4 +48,4 @@ The useful progress is stricter evidence:
 
 ## Resolution update — ADR-145
 
-The second-pass blockers are still true inside their optional lanes, but they no longer block the core maintainer lock. ADR-145 moved heavy lanes to `requirements/dependency-lanes/`; see `docs/reports/python-major-lane-resolution-2026-05-04.md`.
+The second-pass blockers are still true inside their optional lanes, but they no longer block the core maintainer lock. ADR-145 moved heavy lanes to `requirements/dependency-lanes/`; see `docs/06-Daily/reports/python-major-lane-resolution-2026-05-04.md`.

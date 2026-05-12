@@ -32,9 +32,9 @@ already has enough concrete feature surfaces to define the first useful product.
 
 | Existing COS feature | Current command/artifact | TUI value | Secure `cosd` value |
 |---|---|---|---|
-| Standalone ship readiness | `docs/architecture/standalone-ship-readiness-2026-05-06.md`, `.goreleaser.yaml`, `scripts/install-goreleaser.sh` | Show release readiness and exact missing external steps. | None initially; release remains operator/local. |
+| Standalone ship readiness | `docs/04-Concepts/architecture/standalone-ship-readiness-2026-05-06.md`, `.goreleaser.yaml`, `scripts/install-goreleaser.sh` | Show release readiness and exact missing external steps. | None initially; release remains operator/local. |
 | Runtime/status health | `scripts/cos-status.sh --json` | Overview tab: profile, harness, hooks, skills, rules, health. | Read-only `/status` can expose daemon-side health. |
-| ACC / primitive coverage | `scripts/cos-coverage --json --refresh`, `docs/reports/primitive-harness-coverage-latest.json` | Coverage tab: gaps, partials, surface counts, stale cache. | Optional read endpoint later; not a write path. |
+| ACC / primitive coverage | `scripts/cos-coverage --json --refresh`, `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | Coverage tab: gaps, partials, surface counts, stale cache. | Optional read endpoint later; not a write path. |
 | Boring reliability | `scripts/cos-boring-reliability --json` | Reliability tab: false positives, WIP safety, runtime reality, preamble budget. | Optional read endpoint later. |
 | Harness action receipts | `scripts/cos-action-receipt stats/report`, `.cognitive-os/metrics/vcs-actions.jsonl` | Receipts tab with trust labels: advisory/observed/verified/authoritative. | Write/audit semantics should reuse receipt trust vocabulary. |
 | `cosd` ADR arbiter | `scripts/cosd status`, `serve`, `serve-unix`, `.cognitive-os/cosd/*` | Daemon tab: queue depth, last arbitrations, submit/process actions. | Core API: health/status/submit/process plus auth/audit for remote writes. |

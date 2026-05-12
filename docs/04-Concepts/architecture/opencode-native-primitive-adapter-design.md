@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented for the signed runtime slice — 20 registry-backed primitives are projected through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and verified by `docs/reports/opencode-primitive-adapter-smoke-latest.md`. Remaining registry-backed primitives stay `structural-advisory` for OpenCode until their own smoke is signed.
+Implemented for the signed runtime slice — 20 registry-backed primitives are projected through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and verified by `docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.md`. Remaining registry-backed primitives stay `structural-advisory` for OpenCode until their own smoke is signed.
 
 ## Purpose
 
@@ -43,7 +43,7 @@ The future adapter implementation should generate or validate:
 - `packages/opencode-adapter/plugins/cos-primitive-guard.js` as the canonical plugin source;
 - `.opencode/plugins/cos-primitive-guard.js` projected into OpenCode consumer installs;
 - `.cognitive-os/metrics/primitive-interventions.jsonl` rows;
-- `docs/reports/opencode-primitive-adapter-smoke-latest.md`.
+- `docs/06-Daily/reports/opencode-primitive-adapter-smoke-latest.md`.
 
 ## Runtime smoke acceptance
 

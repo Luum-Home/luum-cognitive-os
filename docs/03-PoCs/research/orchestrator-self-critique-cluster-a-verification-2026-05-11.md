@@ -78,7 +78,7 @@ REGISTERED_PROVIDERS: tuple[str, ...] = (
 1. Downgrade Finding 1 from "potentially hallucinated refs" to **"should-have-spot-checked"**. No doc rerun needed for the HelixDB / iFixAi clusters based on this 10-sample.
 2. Adopt a **spot-check rule**: when an Opus sub-agent returns >10 file:line refs, the orchestrator MUST sample 5–10% (min 5) before forwarding. This is a single bash call wrapping `grep -nE` against the source cache + a few `Read`s; total cost ~$0.02 vs the ~$0.50–$1.00 already spent on the sub-agent.
 3. **Do NOT extend this verdict to the MegaMemory cluster** — the original finding sampled only HelixDB/iFixAi refs; MegaMemory was not in scope here. A separate sample run is warranted before treating MegaMemory annexes as verified.
-4. Add a hook (`hooks/research-ref-spotcheck.sh`) that, on detection of `*.md` files under `docs/research/` containing >10 `file:line` patterns, suggests a `/spot-check-refs` skill invocation.
+4. Add a hook (`hooks/research-ref-spotcheck.sh`) that, on detection of `*.md` files under `docs/03-PoCs/research/` containing >10 `file:line` patterns, suggests a `/spot-check-refs` skill invocation.
 
 ---
 
@@ -88,7 +88,7 @@ REGISTERED_PROVIDERS: tuple[str, ...] = (
 
 1. Fetched `https://github.com/qdrant/fastembed/blob/main/LICENSE` — extracted SPDX from the file body.
 2. Fetched `https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2` — extracted license from model card metadata.
-3. Cross-checked the claim in `docs/research/megamemory-annex-b-embeddings-port-2026-05-11.md` (lines 159, 166, 173, 281, 283).
+3. Cross-checked the claim in `docs/03-PoCs/research/megamemory-annex-b-embeddings-port-2026-05-11.md` (lines 159, 166, 173, 281, 283).
 
 ### Evidence
 

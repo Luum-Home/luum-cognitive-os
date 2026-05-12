@@ -1,1 +1,0 @@
-08-References/root/recommended-stack.md

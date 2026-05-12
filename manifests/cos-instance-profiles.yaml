@@ -81,9 +81,9 @@ profiles:
   - scripts/cos-auth-probe --provider claude --mode account-session --json
   - scripts/cos-queue-drain --json
   evidence_sources:
-  - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
-  - docs/architecture/cos-service-runtime-boundary.md
-  - docs/architecture/service-control-plane-implementation-plan.md
+  - docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md
+  - docs/04-Concepts/architecture/cos-service-runtime-boundary.md
+  - docs/04-Concepts/architecture/service-control-plane-implementation-plan.md
   proof_drill_ids:
   - os-pytest-summary
 - id: docker-headless
@@ -113,8 +113,8 @@ profiles:
   - COS_RUN_HEADLESS_SERVICE_DOCKER=1 python3 -m pytest tests/integration/test_headless_service_drill.py
     -q
   evidence_sources:
-  - docs/manual-tests/headless-docker-service-runtime.md
-  - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
+  - docs/01-Build-Log/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
   - docker/cos-worker/docker-compose.yml
   proof_drill_ids:
   - headless-docker-service-drill
@@ -142,9 +142,9 @@ profiles:
   - scripts/cos-auth-probe --provider codex --mode account-session --json
   - scripts/cos-auth-probe --provider claude --mode account-session --json
   evidence_sources:
-  - docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md
-  - docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md
-  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md
+  - docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
   proof_drill_ids:
   - headless-codex-provider-smoke
 - id: vm
@@ -171,8 +171,8 @@ profiles:
   smoke_commands:
   - scripts/cos-headless-service-drill --json
   evidence_sources:
-  - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
-  - docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md
+  - docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md
+  - docs/04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md
   proof_drill_ids:
   - service-control-plane-manual-proof
 - id: k8s
@@ -198,8 +198,8 @@ profiles:
   smoke_commands:
   - kubectl get namespace cognitive-os
   evidence_sources:
-  - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
-  - docs/adrs/ADR-140-cross-os-containerized-deployment.md
+  - docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md
+  - docs/02-Decisions/adrs/ADR-140-cross-os-containerized-deployment.md
   proof_drill_ids:
   - service-control-plane-manual-proof
 blocked_behaviors:

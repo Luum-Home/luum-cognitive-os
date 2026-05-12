@@ -194,4 +194,4 @@ cat manifests/subprocess-timeout-allowlist.yaml
 - ADR-275 — Closure & projection (the projector surfaces this audit's coverage_pct)
 - ADR-277 — Documentation truth control (a claim in the manifest forbids stale
   phrases like "subprocess.run with no timeout is harmless")
-- `docs/architecture/pending-truth-architecture.md` — 4-layer map
+- `docs/04-Concepts/architecture/pending-truth-architecture.md` — 4-layer map

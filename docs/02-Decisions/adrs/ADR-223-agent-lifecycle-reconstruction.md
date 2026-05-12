@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted — Slices A–D implemented (2026-05-07)
 **Date**: 2026-05-07
 **Related**: ADR-213 (preflight before snapshot), ADR-219 (work ownership), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture tactical mitigation), ADR-226 (event-sourced session bus), ADR-227 (shadow-git checkpoint substrate), ADR-224 (shadow-state snapshots)
-**Source**: `docs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/research/orchestration-gaps/background-agent-patterns.md`, and the operator incident where auto-pre-agent stashes hid WIP after blocked launches.
+**Source**: `docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/03-PoCs/research/orchestration-gaps/background-agent-patterns.md`, and the operator incident where auto-pre-agent stashes hid WIP after blocked launches.
 **Evaluation contract**: `manifests/orchestration-research-evaluation.yaml` — C1/C2/C3/C4.
 
 ---

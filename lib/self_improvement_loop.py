@@ -91,7 +91,7 @@ def proposals_from_boring_reliability(report: dict[str, Any]) -> list[SelfImprov
                     candidate_action="propose_roi_signed_demote_or_explicit_deferral",
                     allowed_write_paths=[
                         "manifests/primitive-lifecycle.yaml",
-                        "docs/reports/",
+                        "docs/06-Daily/reports/",
                         ".cognitive-os/improvements/proposals/",
                     ],
                     required_tests=[
@@ -119,7 +119,7 @@ def proposals_from_boring_reliability(report: dict[str, Any]) -> list[SelfImprov
                 allowed_write_paths=[
                     "scripts/cos_false_positive_ledger.py",
                     "tests/unit/",
-                    "docs/reports/",
+                    "docs/06-Daily/reports/",
                     ".cognitive-os/improvements/proposals/",
                 ],
                 required_tests=[
@@ -145,7 +145,7 @@ def proposals_from_boring_reliability(report: dict[str, Any]) -> list[SelfImprov
                 candidate_action="add_evidence_or_demote_primitive",
                 allowed_write_paths=[
                     "manifests/primitive-lifecycle.yaml",
-                    "docs/adrs/",
+                    "docs/02-Decisions/adrs/",
                     "tests/audit/",
                     ".cognitive-os/improvements/proposals/",
                 ],
@@ -172,7 +172,7 @@ def proposals_from_boring_reliability(report: dict[str, Any]) -> list[SelfImprov
                 candidate_action="classify_transferability_or_defer_shape_b",
                 allowed_write_paths=[
                     "manifests/silent-failure-allowlist.yaml",
-                    "docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md",
+                    "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md",
                     "tests/unit/test_silent_failure_audit.py",
                     ".cognitive-os/improvements/proposals/",
                 ],
@@ -208,7 +208,7 @@ def proposals_from_claim_signature(report: dict[str, Any]) -> list[SelfImproveme
                     allowed_write_paths=[
                         "manifests/primitive-lifecycle.yaml",
                         ".cognitive-os/improvements/proposals/",
-                        "docs/reports/",
+                        "docs/06-Daily/reports/",
                     ],
                     required_tests=[
                         "python3 scripts/cos-claim-signature-audit --json",
@@ -231,7 +231,7 @@ def proposals_from_claim_signature(report: dict[str, Any]) -> list[SelfImproveme
                     candidate_action="request_or_import_consumer_evidence",
                     allowed_write_paths=[
                         "manifests/external-adoption-evidence.yaml",
-                        "docs/manual-tests/",
+                        "docs/09-Quality/manual-tests/",
                         ".cognitive-os/improvements/proposals/",
                     ],
                     required_tests=[
@@ -253,7 +253,7 @@ def proposals_from_claim_signature(report: dict[str, Any]) -> list[SelfImproveme
                     candidate_action="propose_roi_evidence_collection_or_demote_review",
                     allowed_write_paths=[
                         "manifests/primitive-lifecycle.yaml",
-                        "docs/reports/",
+                        "docs/06-Daily/reports/",
                         ".cognitive-os/improvements/proposals/",
                     ],
                     required_tests=[

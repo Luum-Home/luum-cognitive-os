@@ -34,16 +34,16 @@ Finding 6 of the 2026-05-11 self-critique: the orchestrator produced a P1/P2/P3 
 
 | # | Signal | Source path / call | What it constrains |
 |---|---|---|---|
-| 1 | **Master pending consolidated** | `docs/reports/master-pending-<latest>.md` | Whether the new item collides with active waves, post-release follow-ups, or already-parked work. Highest-priority signal. |
+| 1 | **Master pending consolidated** | `docs/06-Daily/reports/master-pending-<latest>.md` | Whether the new item collides with active waves, post-release follow-ups, or already-parked work. Highest-priority signal. |
 | 2 | **Sprint state** | `.cognitive-os/sprints/sprint-<id>.json` + `.cognitive-os/sprints/launch/` | Current committed scope. Items competing with committed sprint tasks must justify themselves against capacity. |
 | 3 | **Plans inventory** | `.cognitive-os/plans/{features,architecture,roadmaps,research}/` | Whether the recommendation duplicates an already-drafted plan (don't re-rank an existing plan as if it were new). |
-| 4 | **Session backlog** | `.cognitive-os/sessions/default/backlog.md` (promoted as `docs/reports/session-backlog-latest.md`) | Raw work surface accumulated across sessions. |
-| 5 | **Dogfood score** | `scripts/dogfood_score.py` + recent `docs/reports/orchestrator-dogfood-*` reports | Self-build maturity. Constrains whether COS can absorb the recommended primitive without regressing dogfood. |
+| 4 | **Session backlog** | `.cognitive-os/sessions/default/backlog.md` (promoted as `docs/06-Daily/reports/session-backlog-latest.md`) | Raw work surface accumulated across sessions. |
+| 5 | **Dogfood score** | `scripts/dogfood_score.py` + recent `docs/06-Daily/reports/orchestrator-dogfood-*` reports | Self-build maturity. Constrains whether COS can absorb the recommended primitive without regressing dogfood. |
 | 6 | **Engram decisions** | `mem_search(query: "decision/<topic>")` | Whether a prior decision already accepted/rejected this direction. Re-litigating without new evidence is forbidden. |
 | 7 | **Error-learning log** | `.cognitive-os/error-learning.jsonl` | Whether the new work is in a class with recurring failures. |
 | 8 | **Cost prediction** | `/cost-predict` / `scripts/cost_predict.py` | Whether the recommended path fits within the project's historical cost envelope. |
-| 9 | **Primitive readiness ledgers** | `docs/reports/primitive-readiness-ledger-<family>-latest.md` | Whether prerequisite primitives exist or must be built first. |
-| 10 | **Radar trackers** | `docs/reports/radar-<date>-implementation-tracker.md`, `docs/reports/external-tools-radar-*-latest.md` | Whether parallel external-tool adoption is already in flight. |
+| 9 | **Primitive readiness ledgers** | `docs/06-Daily/reports/primitive-readiness-ledger-<family>-latest.md` | Whether prerequisite primitives exist or must be built first. |
+| 10 | **Radar trackers** | `docs/06-Daily/reports/radar-<date>-implementation-tracker.md`, `docs/06-Daily/reports/external-tools-radar-*-latest.md` | Whether parallel external-tool adoption is already in flight. |
 
 **Minimum citation set** per priority table: §1 (master pending) + §2 (sprint state) + one more from §3–§10, selected by relevance.
 
@@ -58,7 +58,7 @@ Each citation appears as a bullet under the priority table:
 
 ### Grounding (per rules/recommendation-grounding.md)
 
-- **Master pending (`docs/reports/master-pending-2026-05-11.md`)**: rows §1 Wave 2 and §2 F2/F3 are closed; this recommendation does NOT collide. New rows for the recommended items appended to §10.
+- **Master pending (`docs/06-Daily/reports/master-pending-2026-05-11.md`)**: rows §1 Wave 2 and §2 F2/F3 are closed; this recommendation does NOT collide. New rows for the recommended items appended to §10.
 - **Sprint state (`.cognitive-os/sprints/sprint-b37c1353.json`)**: status `pending`, no in-flight scope conflict. Capacity assumption: 1 Opus + 2 Sonnet slots free.
 - **Engram (`mem_search "decision/<tool>-adoption"`)**: prior decision exists at observation #N — extends rather than contradicts.
 - **Dogfood score**: inspected, neutral (latest report 2026-04-20; no recent regression in the affected lane).

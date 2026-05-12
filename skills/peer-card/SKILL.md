@@ -106,4 +106,4 @@ consolidation. The agent must not fabricate justifications.
 - Hook integration: `hooks/user-prompt-capture.sh` calls
   `python3 -m lib.peer_card hook` with the prompt on stdin.
 - Tests: `tests/unit/test_peer_card.py`.
-- ADR: `docs/adrs/ADR-077-peer-card-local-model.md`.
+- ADR: `docs/02-Decisions/adrs/ADR-077-peer-card-local-model.md`.

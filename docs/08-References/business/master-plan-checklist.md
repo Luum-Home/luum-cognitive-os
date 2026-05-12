@@ -11,21 +11,21 @@
 ## 1. Product Promise
 
 - [ ] Keep the [Primitive Readiness Continuity Plan](../architecture/primitive-readiness-continuity-plan.md) current in every SO evolution cycle: refresh primitive index, gap snapshot, coverage, docs audit, script role classification, and harness proof before claiming universal agent-tool support.
-- [x] Machine-readable script primitive readiness ledger exists through `scripts/primitive_readiness_ledger.py`, [ADR-146](../adrs/ADR-146-primitive-readiness-ledger.md), and `docs/reports/primitive-readiness-ledger-scripts-latest.json`; remaining work is triage/ratchet, not first-pass visibility.
+- [x] Machine-readable script primitive readiness ledger exists through `scripts/primitive_readiness_ledger.py`, [ADR-146](../adrs/ADR-146-primitive-readiness-ledger.md), and `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json`; remaining work is triage/ratchet, not first-pass visibility.
 - [x] Hooks/skills/rules ledger extension is staged in [Primitive Readiness Ledger Family Extension Plan](../architecture/primitive-readiness-ledger-family-extension.md).
-- [x] Finish the script lifecycle backlog in `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`; script agentic primitives now have lifecycle rows or non-agentic roles, with promotion/downgrade/archive remaining as candidate-state work.
+- [x] Finish the script lifecycle backlog in `docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`; script agentic primitives now have lifecycle rows or non-agentic roles, with promotion/downgrade/archive remaining as candidate-state work.
 - [x] Script readiness low-confidence triage is closed through `manifests/primitive-readiness-script-overrides.yaml`; `python3 scripts/primitive_readiness_ledger.py --fail-low-confidence` exits 0.
 - [x] Profile-managed install/projection scripts are protected from naive demotion through `manifests/primitive-readiness-protected-install-surfaces.yaml` and lifecycle backlog `priority: protected`.
 - [x] Protected install/profile scripts have candidate lifecycle metadata in `manifests/primitive-lifecycle.yaml` without changing runtime projection; remaining script lifecycle backlog is 0 rows.
-- [x] Script readiness now tracks `consumer_accessibility` so repository-local docs/skills are not mistaken for downstream project availability.
-- [x] Hooks/skills/rules readiness ledgers exist through `scripts/primitive_family_readiness_ledger.py` and the generated `docs/reports/primitive-readiness-ledger-{hooks,skills,rules}-latest.*` reports.
+- [x] Script readiness now tracks `consumer_accessibility` so repository-local docs/07-Capabilities/skills are not mistaken for downstream project availability.
+- [x] Hooks/skills/rules readiness ledgers exist through `scripts/primitive_family_readiness_ledger.py` and the generated `docs/06-Daily/reports/primitive-readiness-ledger-{hooks,skills,rules}-latest.*` reports.
 - [x] Consumer-project projection proof is documented in [Consumer Project Primitive Accessibility](../architecture/consumer-project-primitive-accessibility.md) and automated for implemented native/structural harnesses by `tests/behavior/test_consumer_project_projection.py`; structural projection does not imply runtime enforcement.
 - [x] Primitive write authority is documented and implemented through [ADR-276](../adrs/ADR-276-primitive-authority-write-effects.md), [Primitive Authority and Write-Effects Boundary](../architecture/primitive-authority-write-effects.md), `manifests/primitive-authority.yaml`, `scripts/primitive_authority_audit.py`, dynamic filesystem-delta smokes, and ACC `authority_write_effects`.
 - [x] Documentation truth drift is contract-tested through [ADR-277](../adrs/ADR-277-documentation-truth-control.md), [Documentation Truth Control](../architecture/documentation-truth-control.md), `manifests/documentation-truth-claims.yaml`, `scripts/documentation_truth_audit.py`, generated truth blocks, and ACC `documentation_truth`.
 - [x] ADR verification evidence levels are documented in [ADR Verification Evidence Contract](../architecture/adr-verification-evidence-contract.md) so ADR-067 `## Verification` blocks cannot rely on grep-only theater.
-- [x] Harness implementation coverage is separated from `SCOPE` intent through [ADR-189](../adrs/ADR-189-harness-implementation-coverage.md), `scripts/primitive_harness_coverage.py`, and `docs/reports/primitive-harness-coverage-latest.json`, so agents can see Claude/Codex/Shell-CI primitive differences without overclaiming parity.
+- [x] Harness implementation coverage is separated from `SCOPE` intent through [ADR-189](../adrs/ADR-189-harness-implementation-coverage.md), `scripts/primitive_harness_coverage.py`, and `docs/06-Daily/reports/primitive-harness-coverage-latest.json`, so agents can see Claude/Codex/Shell-CI primitive differences without overclaiming parity.
 - [x] OpenSage-inspired self-programming patterns are constrained by a pattern-only manifest and audit (`manifests/self-programming-agent-patterns.yaml`, `scripts/cos-self-programming-pattern-audit`) before any dynamic agent/tool/memory/sandbox runtime adoption.
-- [x] Unified ACC pipeline exists through `scripts/acc_pipeline.py`, [ADR-147](../adrs/ADR-147-agent-capability-coverage-pipeline.md), and `docs/acc/latest.json`; it consumes readiness ledgers and existing audit tools instead of requiring manual interpretation.
+- [x] Unified ACC pipeline exists through `scripts/acc_pipeline.py`, [ADR-147](../adrs/ADR-147-agent-capability-coverage-pipeline.md), and `docs/07-Capabilities/acc/latest.json`; it consumes readiness ledgers and existing audit tools instead of requiring manual interpretation.
 - [x] The README expresses the same core product promise as the master plan.
 - [x] CONTRIBUTING is aligned with the product-core narrative instead of subsystem sprawl.
 - [x] The product promise is documented in [Durable Product Master Plan](durable-product-master-plan.md).
@@ -236,7 +236,7 @@
 - [x] Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).
 - [x] Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/archive/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed before the parallel flip.
 - [x] Validation capsules are documented and implemented in [ADR-109](../adrs/ADR-109-validation-capsule-worktree-isolation.md), [Validation Capsule](../architecture/validation-capsule.md), and `scripts/cos-validation-capsule.sh`, separating release validation from the global hook killswitch.
-- [ ] Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).
+- [ ] Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).
 - [ ] Execute the remaining ADR implementation backlog through [ADR Implementation Closure Session — 2026-05-04](../SESSION-ADR-CLOSURE-2026-05-04.md) and [Session Handoff — 2026-05-04](../SESSION-HANDOFF-2026-05-04.md): reconcile all ADRs up to ADR-138 before implementation, then continue current cloud-flow/concurrency/stash/doc-drift closure.
 
 - [x] ADR-119 session filesystem reaper archives stale clean session directories, preserves pending content, and emits aggregate session-volume alarms.
@@ -330,7 +330,7 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 
 ### 9.5 Tombstone
 
-- [x] **ADR status taxonomy** — `docs/adrs/STATUS-TAXONOMY.md` separates decision status, implementation status, and index bucket; ADR-044/132/174b/174c/238/253 are canonical fixtures.
+- [x] **ADR status taxonomy** — `docs/02-Decisions/adrs/STATUS-TAXONOMY.md` separates decision status, implementation status, and index bucket; ADR-044/132/174b/174c/238/253 are canonical fixtures.
 - [x] **ADR-229** consolidated into ADR-228 (cost-budget + retry-contract on the same code path).
 
 ### 9.6 Conscious non-coverage (do not pursue this cycle)
@@ -349,9 +349,9 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 - [x] Strategy research/09 dogfood metrics — §7 added with 8 reproducible orchestration-line metrics.
 - [x] Strategy 03-self-bite-pattern — marked CLOSED 2026-05-07 with chain of resolving ADRs.
 - [x] Strategy 01-commercial-brief-v2 — patched §2/§5/§7/§9/§12 + new §16 with 5 cuñas + post-landing fold rotation.
-- [x] Public docs/business/value-proposition — added 4 new "What It Does" entries + "upstream gaps" table linking each ADR to its issue/limitation.
-- [x] Public docs/business/features — Feature Overview 13→19 + new sections §6/§7/§8 (replay, cost+retry, handoff).
-- [x] Public docs/business/roadmap — Current State counts refreshed; "What works end-to-end" expanded with 5 new shippables.
-- [x] Public docs/business/executive-summary — Problem section expanded with replay-Devin-framing and $47K-incident framing.
+- [x] Public docs/08-References/business/value-proposition — added 4 new "What It Does" entries + "upstream gaps" table linking each ADR to its issue/limitation.
+- [x] Public docs/08-References/business/features — Feature Overview 13→19 + new sections §6/§7/§8 (replay, cost+retry, handoff).
+- [x] Public docs/08-References/business/roadmap — Current State counts refreshed; "What works end-to-end" expanded with 5 new shippables.
+- [x] Public docs/08-References/business/executive-summary — Problem section expanded with replay-Devin-framing and $47K-incident framing.
 
 - [x] **ADR-279** Orphan Repo-Scan Process Audit — `scripts/cos-orphan-process-audit.py` + `lib/orphan_process_audit.py` detect stale PPID=1 Claude/zsh/grep-style repo scans, stay dry-run by default, require explicit `--kill`, and carry behavior tests.

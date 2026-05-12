@@ -49,11 +49,11 @@ ADOPTION_EVIDENCE_PATHS = (
 )
 
 ADOPTION_EVIDENCE_PREFIXES = (
-    "docs/reports/repo-scout-",
-    "docs/reports/repo-forensics-",
-    "docs/reports/tool-adoption-",
-    "docs/reports/dependency-adoption-",
-    "docs/architecture/primitive-coverage-backend-benchmark",
+    "docs/06-Daily/reports/repo-scout-",
+    "docs/06-Daily/reports/repo-forensics-",
+    "docs/06-Daily/reports/tool-adoption-",
+    "docs/06-Daily/reports/dependency-adoption-",
+    "docs/04-Concepts/architecture/primitive-coverage-backend-benchmark",
     ".cognitive-os/research/tool-adoption/",
     ".cognitive-os/strategy/research/",
 )
@@ -89,7 +89,7 @@ class GateResult:
             "message": self.message,
             "required_actions": [
                 "Run /repo-scout or /repo-forensics for newly adopted external tools.",
-                "Record the result in docs/reports/repo-scout-* or manifests/dependency-adoption-evidence.yaml.",
+                "Record the result in docs/06-Daily/reports/repo-scout-* or manifests/dependency-adoption-evidence.yaml.",
                 "For imported patterns, add/refresh manifests/imported-pattern-closures.yaml per ADR-208.",
             ],
         }

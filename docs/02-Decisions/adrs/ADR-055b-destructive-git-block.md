@@ -21,7 +21,7 @@ partial_remaining_basis: explicit body remaining signal
 **Date**: 2026-04-21
 **Supersedes**: partial warn-only behavior of `hooks/destructive-git-blocker.sh`
   for user/orchestrator context (previously documented as "warn-only by design"
-  in `docs/reports/bug2-reset-cascade-forensics-2026-04-20.md §5`).
+  in `docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md §5`).
 **Relates to**: ADR-003 (Agent Git Safety, Mechanism C), ADR-055a (reserved),
   r5-stash-residue (work-queue parked item — closed by this ADR).
 

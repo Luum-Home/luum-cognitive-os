@@ -173,7 +173,7 @@ claim Kubernetes or cluster superiority until Phase 4 passes a real smoke test.
 - ADR-033: Harness-agnostic event capture (canonical events must be emitted in
   headless mode through the same adapter interface)
 - ADR-064: Cross-harness authoring guide
-- docs/manual-tests/local-connected-systems-validation.md (Phase 0 exit criteria)
+- docs/09-Quality/manual-tests/local-connected-systems-validation.md (Phase 0 exit criteria)
 
 ## Verification
 

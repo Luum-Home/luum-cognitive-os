@@ -9,7 +9,7 @@ supersedes: []
 superseded_by: null
 implementation_files:
   - scripts/cos-audit-archive
-  - docs/architecture/gdpr-erasure-procedure.md
+  - docs/04-Concepts/architecture/gdpr-erasure-procedure.md
   - docker/cos-worker/entrypoint.sh
   - tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py
   - tests/audit/test_adr_139_141_142_cloud_surfaces.py
@@ -142,7 +142,7 @@ audit_class: access_control|change_management|availability|processing_integrity|
 1. Every audit row produced by a cloud worker flow carries `tenant_id` and `audit_class`.
 2. A flow running in `local-only` Engram mode produces all required audit rows without any network call.
 3. `scripts/cos-audit-archive` exists and compresses rows older than a configurable window without deleting them (dry-run tested).
-4. The GDPR erasure procedure is documented in `docs/architecture/gdpr-erasure-procedure.md` (created lazily when the first flow enters `advisory` state).
+4. The GDPR erasure procedure is documented in `docs/04-Concepts/architecture/gdpr-erasure-procedure.md` (created lazily when the first flow enters `advisory` state).
 5. The `audit_class` enumeration is added to the ADR-138 flow contract schema; CI rejects a flow contract missing the field.
 
 ## Border Cases
@@ -205,7 +205,7 @@ After this ADR:
   retention window without deleting them — use this to manage log size
   during a SOC 2 audit window without truncating evidence.
 - GDPR erasure procedure is documented in
-  `docs/architecture/gdpr-erasure-procedure.md`. Each erasure is
+  `docs/04-Concepts/architecture/gdpr-erasure-procedure.md`. Each erasure is
   recorded in the audit trail with `audit_class: privacy`.
 
 ### What this answers (and what it doesn't)
@@ -240,7 +240,7 @@ After this ADR:
    grep '"tenant_id": "my-flow-' .cognitive-os/runtime/agent-audit-trail.jsonl
    ```
 4. For GDPR erasure: follow
-   `docs/architecture/gdpr-erasure-procedure.md`. After erasure,
+   `docs/04-Concepts/architecture/gdpr-erasure-procedure.md`. After erasure,
    append a row with `audit_class: privacy`, `event:
    observation_erased`, and the observation ID.
 
@@ -278,5 +278,5 @@ python3 -m pytest tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py t
 - Implemented in `docker/cos-worker/entrypoint.sh`: cloud-worker audit rows carry `tenant_id`, `audit_class`, credential source, billing identity, and Engram project scope.
 - Implemented in `scripts/cos-engram-cloud-enroll` and `scripts/engram-sync.sh`: Engram Cloud enrollment/sync rows use `audit_class: sync` and `tenant_id`.
 - Implemented in `scripts/cos-audit-archive`: old audit rows are copied into gzip archives without truncating or deleting the source JSONL.
-- Implemented in `docs/architecture/gdpr-erasure-procedure.md`: GDPR erasure workflow and required privacy audit row shape.
+- Implemented in `docs/04-Concepts/architecture/gdpr-erasure-procedure.md`: GDPR erasure workflow and required privacy audit row shape.
 - Validated by `tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py`, `tests/audit/test_adr_139_141_142_cloud_surfaces.py`, and `tests/audit/test_flow_contract_schema.py`.

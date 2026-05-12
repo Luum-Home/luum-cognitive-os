@@ -1,8 +1,8 @@
 # SCOPE: both
 """Reinvention-gate Phase B — semantic similarity index (Jaccard + Embeddings).
 
-See: docs/adrs/ADR-029b-reinvention-phase-b-semantic.md
-     docs/adrs/ADR-039-reinvention-phase-b-beta-embeddings.md
+See: docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md
+     docs/02-Decisions/adrs/ADR-039-reinvention-phase-b-beta-embeddings.md
 
 Two index implementations:
 

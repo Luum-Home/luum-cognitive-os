@@ -112,7 +112,7 @@ required_flow_shape:
 - `lifecycle_state` MUST start at `lab` for any new flow ([ADR-133](ADR-133-expansion-without-monsterization.md)). Promotion requires the same evidence block ADR-126 mandates for `default-on` primitives.
 - `input_source.determinism: deterministic` is a precondition for promotion beyond `advisory`. `best-effort` flows stay in `lab` / `sandbox` until the input source becomes deterministic or until evidence shows best-effort is acceptable for the flow class.
 - `success_condition.verifier` MUST be runnable from CI without maintainer-machine assumptions. A verifier that requires `~/.claude/` or `~/.engram/` violates [`bootstrap-portability.md`](../architecture/bootstrap-portability.md).
-- `sandboxed_write_paths` MUST exclude `manifests/`, `rules/`, `docs/adrs/`, and `.cognitive-os/runtime/` by default. A flow that needs to write into any of these requires an explicit per-path opt-in and a reason field.
+- `sandboxed_write_paths` MUST exclude `manifests/`, `rules/`, `docs/02-Decisions/adrs/`, and `.cognitive-os/runtime/` by default. A flow that needs to write into any of these requires an explicit per-path opt-in and a reason field.
 - `blocked_actions` MUST include the five entries above as a minimum. Flow-specific additions are allowed; removals are not. The list mirrors the proposer constants from ADR-134.
 - `human_approval_required: true` is hardcoded in the schema. A flow that proposes to remove this field fails validation. The trajectory committed in ADR-137 is `Framing B → Framing A`, not `human-in-loop → autonomous`.
 - `evidence_shape.independence` mirrors `manifests/external-adoption-evidence.yaml` (commit `d4535df`). A flow whose evidence is `maintainer_owned: true` produces drill output, not adoption signal.

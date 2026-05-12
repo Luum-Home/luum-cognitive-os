@@ -142,7 +142,7 @@ Deliverables:
   `lib.claude_executor.ClaudeExecutor.run(...)`. Emits CSV (stable columns) +
   Markdown report (per-task winner on cost/latency) + one JSONL record per
   `(task, provider)` pair to `.cognitive-os/metrics/parity-results.jsonl`.
-- `docs/benchmarks/parity-smoke.yaml` — 4-task smoke set (read-file, grep,
+- `docs/08-References/benchmarks/parity-smoke.yaml` — 4-task smoke set (read-file, grep,
   glob, no-tool reasoning). Designed to stress each tool path once.
 - `tests/unit/test_parity_harness.py` — 14 tests. Dependency-injected
   providers (`qwen_fn`, `claude_fn` args on `run_task`) so the suite NEVER

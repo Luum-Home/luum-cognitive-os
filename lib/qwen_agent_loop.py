@@ -9,7 +9,7 @@ Any code that imported from this module continues to work unchanged:
     from lib.qwen_agent_loop import run_agent, AgentLoopResult
     from lib.qwen_agent_loop import TOOL_SCHEMAS, ALL_TOOL_NAMES, TOOL_IMPLS
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md (Phase 1)
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md (Phase 1)
 """
 
 from lib.openai_compatible_agent_loop import (  # noqa: F401 — re-export for backward compat

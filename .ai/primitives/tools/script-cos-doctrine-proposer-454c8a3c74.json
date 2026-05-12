@@ -59,7 +59,7 @@
         "scripts/cos-doctrine-proposer",
         "scripts/cos_doctrine_proposer.py",
         "lib/doctrine_proposer.py",
-        "docs/adrs/ADR-135-self-evolving-doctrine-proposals.md"
+        "docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-doctrine-proposer",
         "scripts/cos_doctrine_proposer.py",
         "lib/doctrine_proposer.py",
-        "docs/adrs/ADR-135-self-evolving-doctrine-proposals.md"
+        "docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-doctrine-proposer",
     "scripts/cos_doctrine_proposer.py",
     "lib/doctrine_proposer.py",
-    "docs/adrs/ADR-135-self-evolving-doctrine-proposals.md"
+    "docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-doctrine-proposer",

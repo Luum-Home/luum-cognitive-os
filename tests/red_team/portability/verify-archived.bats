@@ -3,7 +3,7 @@
 # Portability test for scripts/verify-archived.sh (KD6 gate, §2.2).
 #
 # Contract invariants per design §2.2:
-#   1. Non-SO mini-repo: tempdir with non-SO structure (attic/ not docs/archive/hooks/)
+#   1. Non-SO mini-repo: tempdir with non-SO structure (attic/ not docs/99-Archive/archive/hooks/)
 #   2. Bilateral assertion: succeeds in mini-repo AND does not rely on SO paths
 #   3. Falsification probe: deliberate trap causes expected failure
 #   4. Documented mini-repo: names clearly indicate test structure
@@ -12,7 +12,7 @@ SCRIPT="scripts/verify-archived.sh"
 
 setup() {
   TMP="$(mktemp -d)"
-  # Mini-repo with non-SO directory names (attic/scripts, not docs/archive/hooks/)
+  # Mini-repo with non-SO directory names (attic/scripts, not docs/99-Archive/archive/hooks/)
   mkdir -p "$TMP/attic/scripts" "$TMP/scripts"
   printf '#!/bin/bash\necho original\n' > "$TMP/scripts/old.sh"
   printf '#!/bin/bash\necho archived copy\n' > "$TMP/attic/scripts/old.sh"
@@ -72,7 +72,7 @@ teardown() {
     --manifest    "old.sh"
   [ "$status" -eq 0 ]
   # Output must not contain SO-specific paths
-  [[ "$output" != *"docs/archive/hooks"* ]]
+  [[ "$output" != *"docs/99-Archive/archive/hooks"* ]]
   [[ "$output" != *"hooks/self-install"* ]]
 }
 

@@ -2,9 +2,9 @@
 title: Skill Description “Use when” Migration
 date: 2026-05-08
 status: draft-before-implementation
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 source_reports:
-  - docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md
 related_tools: [Superpowers]
 ---
 

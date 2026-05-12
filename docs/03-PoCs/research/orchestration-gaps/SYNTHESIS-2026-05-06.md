@@ -3,7 +3,7 @@
 **Date**: 2026-05-06
 **Status**: Active — ranks ADR-worthy proposals from 11 parallel research reports
 **Constraints**: Honors C1 (permissive licenses), C2 (footprint discipline), C3 (test tiers T1–T10), C4 (verdict block format) — promoted from prose into the canonical contract at [`manifests/orchestration-research-evaluation.yaml`](../../../manifests/orchestration-research-evaluation.yaml). The gap-analysis prose at [`../orchestration-coverage-gap-analysis-2026-05-06.md`](../orchestration-coverage-gap-analysis-2026-05-06.md) remains the human-readable rationale; the manifest is the normative source.
-**Inputs**: 11 reports under `docs/research/orchestration-gaps/`, ~42,000 words combined, ~230 sources cited
+**Inputs**: 11 reports under `docs/03-PoCs/research/orchestration-gaps/`, ~42,000 words combined, ~230 sources cited
 **Note on numbers below**: LOC and timeline estimates are reported by the underlying research agents and intentionally optimistic. Treat them as direction, not commitment. Per C3, T6 budgets are *measured first* — see the ADR-226 patch — rather than asserted up front.
 
 ---
@@ -280,4 +280,4 @@ This is a constraint on *how to build*, not a list of features to build.
 - SCORE: 82 STATUS: HIGH EVIDENCE: 11 reports + 230 sources UNCERTAINTIES: 4
 - WHAT I VERIFIED: each verdict block fills C4's 6 fields; license claims cross-checked against research-cited SPDX; footprint claims cross-checked against C2 surfaces; effort sizes are agent-reported and operator should sanity-check
 - UNSURE ABOUT: (a) whether `@event_wrap` decorator interacts cleanly with existing `dispatch.py` retry logic — needs prototype; (b) whether Bubblewrap is shipped on operator's macOS path (it isn't — Seatbelt is the macOS path; needs explicit branching in adapter); (c) license verification on Hermes shadow-git pattern (pattern reuse, not code reuse, so likely OK but operator should confirm); (d) whether Anthropic's `defer_loading` is exposed in the SDK version COS pins
-- HUMAN SHOULD CHECK: ADR slot numbers (this synthesis assumed 222 as ceiling; please verify against current `docs/adrs/` listing); confirmation that the operator wants 11 new ADRs vs. consolidating some pairs (231+223; 230+232; 226+233 are obvious consolidation candidates)
+- HUMAN SHOULD CHECK: ADR slot numbers (this synthesis assumed 222 as ceiling; please verify against current `docs/02-Decisions/adrs/` listing); confirmation that the operator wants 11 new ADRs vs. consolidating some pairs (231+223; 230+232; 226+233 are obvious consolidation candidates)

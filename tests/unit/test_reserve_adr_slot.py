@@ -112,7 +112,7 @@ def test_expired_reservation_does_not_block_slot(tmp_path: Path):
             "owner": "test",
             "reserved_at": "2000-01-01T00:00:00+00:00",
             "expires_at": "2000-01-01T01:00:00+00:00",
-            "path": "docs/adrs/ADR-005-expired-reservation.md",
+            "path": "docs/02-Decisions/adrs/ADR-005-expired-reservation.md",
         }]
     }))
 
@@ -187,7 +187,7 @@ def test_cleanup_removes_expired(tmp_path: Path):
                 "owner": "test",
                 "reserved_at": "2000-01-01T00:00:00+00:00",
                 "expires_at": "2000-01-01T01:00:00+00:00",
-                "path": "docs/adrs/ADR-001-expired.md",
+                "path": "docs/02-Decisions/adrs/ADR-001-expired.md",
             },
             {
                 "number": 2,
@@ -198,7 +198,7 @@ def test_cleanup_removes_expired(tmp_path: Path):
                 "owner": "test",
                 "reserved_at": "2999-01-01T00:00:00+00:00",
                 "expires_at": "2999-01-01T01:00:00+00:00",
-                "path": "docs/adrs/ADR-002-active.md",
+                "path": "docs/02-Decisions/adrs/ADR-002-active.md",
             },
         ]
     }))

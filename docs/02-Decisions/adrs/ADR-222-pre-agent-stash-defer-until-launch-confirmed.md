@@ -46,7 +46,7 @@ The structural property we need is not "stash runs after preflight." It is: **st
 
 This is what `auto-pre-agent` is trying to express. The current implementation expresses it incorrectly: it captures *speculatively at PreToolUse, hoping the launch happens*, and orphans the capture when it doesn't. The corrected expression is: capture *eagerly into a candidate*, but **only commit the capture to the stash store when the agent actually starts executing**.
 
-This ADR specifies the corrected expression. It does **not** answer the larger question of whether `git stash` should be the capture primitive at all (the prior-art research report `docs/research/multi-agent-orchestration-prior-art-2026-05-06.md` argues it should not, and recommends worktree-per-write-agent as the long-term replacement). ADR-222 holds the line on correctness for as long as `git stash` is the implementation.
+This ADR specifies the corrected expression. It does **not** answer the larger question of whether `git stash` should be the capture primitive at all (the prior-art research report `docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md` argues it should not, and recommends worktree-per-write-agent as the long-term replacement). ADR-222 holds the line on correctness for as long as `git stash` is the implementation.
 
 ## Decision
 
@@ -197,7 +197,7 @@ The tests must prove:
 6. CI audit test `tests/audit/test_pre_agent_hook_ordering.py`.
 7. Unit tests for plan-builder, plan-consumer, plan-TTL-sweep.
 8. Behavior tests for the four scenarios (blocked-preflight, crashed-agent, completed-agent, late-launch-within-TTL).
-9. Operator runbook update `docs/runbooks/agent-snapshot-recovery.md` — describe two-phase, add troubleshooting for "I see a plan but no marker" (= preflight blocked; expected).
+9. Operator runbook update `docs/05-Methodology/runbooks/agent-snapshot-recovery.md` — describe two-phase, add troubleshooting for "I see a plan but no marker" (= preflight blocked; expected).
 10. Migration: one-release-cycle legacy reader (piggyback on ADR-221's legacy path).
 
 ## Implementation status (2026-05-07)

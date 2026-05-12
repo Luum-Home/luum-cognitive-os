@@ -1,7 +1,7 @@
 ---
 title: "MegaMemory Annex C — MCP Tool Surface & Conflict-Merge"
 date: 2026-05-11
-parent: docs/research/megamemory-comparison-2026-05-11.md
+parent: docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
 source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 ---
 

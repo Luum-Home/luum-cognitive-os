@@ -58,7 +58,7 @@ def test_detects_claude_snapshot_shell_wrapper_repo_scan() -> None:
             etime_seconds=90000,
             command=(
                 "/bin/zsh -c source $HOME/.claude/shell-snapshots/"
-                "snapshot-zsh-abc.sh && eval 'grep -rln docs/architecture/adrs .cognitive-os/'"
+                "snapshot-zsh-abc.sh && eval 'grep -rln docs/04-Concepts/architecture/adrs .cognitive-os/'"
             ),
         )
     ]

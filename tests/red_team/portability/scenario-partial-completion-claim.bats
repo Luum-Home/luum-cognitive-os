@@ -86,7 +86,7 @@ BATSEOF
   run python3 -c "
 import yaml
 content = open('$SCENARIOS_DIR/partial-completion-claim.yaml').read()
-forbidden = ['docs/archive/hooks', 'hooks/self-install', '.cognitive-os/plans']
+forbidden = ['docs/99-Archive/archive/hooks', 'hooks/self-install', '.cognitive-os/plans']
 hits = [p for p in forbidden if p in content]
 assert not hits, f'SO-specific paths found: {hits}'
 print('OK')

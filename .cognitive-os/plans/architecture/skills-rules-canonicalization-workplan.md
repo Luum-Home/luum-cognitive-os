@@ -154,6 +154,6 @@ needs that driver surface even though it is no longer the source-of-truth.
 
 ## References
 
-- `docs/architecture/skills-rules-portability-gap.md`
-- `docs/architecture/skills-rules-canonicalization-risk-analysis.md`
-- `docs/architecture/why-skills-and-rules-became-claude-centered.md`
+- `docs/04-Concepts/architecture/skills-rules-portability-gap.md`
+- `docs/04-Concepts/architecture/skills-rules-canonicalization-risk-analysis.md`
+- `docs/04-Concepts/architecture/why-skills-and-rules-became-claude-centered.md`

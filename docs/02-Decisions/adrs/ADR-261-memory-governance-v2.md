@@ -84,7 +84,7 @@ stale penalty. The design is approximately 150 LOC of pure logic in the referenc
 The research annex also identifies two memory types — `procedure` and `blocker` — that are
 present in the reference system but absent from luum's vocabulary. `procedure` (how to
 perform an operation or release) maps directly to content already maintained in
-`docs/runbooks/`. `blocker` (known issue that prevents a class of actions) is a useful
+`docs/05-Methodology/runbooks/`. `blocker` (known issue that prevents a class of actions) is a useful
 category for tracking hard constraints across sessions. Both are worth adopting regardless of
 the broader feature.
 

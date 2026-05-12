@@ -553,7 +553,7 @@ harnesses:
   next_action: Design Kiro hook adapter mapping before any native-lifecycle promotion.
   research_sources:
   - https://kiro.dev/docs/cli/hooks/
-  - https://kiro.dev/docs/getting-started/first-project/
+  - https://kiro.dev/docs/05-Methodology/getting-started/first-project/
 - id: cline
   display_name: Cline
   status: implemented
@@ -725,8 +725,8 @@ harnesses:
   next_action: Add optional Goose CLI runtime smoke when provider credentials are
     available; add MCP only through official Goose extension/config path.
   research_sources:
-  - https://block.github.io/goose/docs/guides/goose-cli-commands
-  - https://block.github.io/goose/docs/guides/config-file/
+  - https://block.github.io/goose/docs/05-Methodology/guides/goose-cli-commands
+  - https://block.github.io/goose/docs/05-Methodology/guides/config-file/
   default_command:
   - python3
   - scripts/cos_init.py
@@ -754,7 +754,7 @@ harnesses:
   - Aider remains rules/context-only; no MCP or hooks are generated.
   next_action: Add optional Aider dry-run/model smoke when API credentials are available.
   research_sources:
-  - https://aider.chat/docs/usage/conventions.html
+  - https://aider.chat/docs/05-Methodology/usage/conventions.html
   default_command:
   - python3
   - scripts/cos_init.py

@@ -58,7 +58,7 @@ Impact of IMPLEMENT batch: wiring all 12 items removes them from ASPIRATIONAL an
 | 11 | `hooks/auto-verify.sh` | hook | IMPLEMENT | ROADMAP.md §2.1. 276 lines. PostToolUse Agent. Automatic verification pass after agent writes. Direct Phase 1 quality improvement. | 30 min |
 | 12 | `hooks/background-agent-reminder.sh` | hook | DEFER | PostToolUse Agent (24 lines). Reminder functionality partially covered by orchestrator rules. Low urgency; defer. | Phase 2 |
 | 13 | `hooks/code-review-on-commit.sh` | hook | DEFER | PreToolUse Bash git-commit pattern (96 lines). Requires LLM call on every commit — latency and cost concern. Needs cost governance analysis before enabling. | Phase 2 |
-| 14 | `hooks/completeness-check.sh` | hook | DELETE | Explicitly superseded by `completeness-check-llm.sh`. Both hooks exist; the LLM variant is the current standard. Retaining the regex variant creates classification noise and is actively misleading. Archive to `docs/archive/hooks/`. | 5 min |
+| 14 | `hooks/completeness-check.sh` | hook | DELETE | Explicitly superseded by `completeness-check-llm.sh`. Both hooks exist; the LLM variant is the current standard. Retaining the regex variant creates classification noise and is actively misleading. Archive to `docs/99-Archive/archive/hooks/`. | 5 min |
 | 15 | `hooks/concurrent-write-guard.sh` | hook | DEFER | PreToolUse Edit/Write (128 lines). Coordination locking feature depends on session-concurrency infrastructure. Phase 3 concern. | Phase 3 |
 | 16 | `hooks/context-diet.sh` | hook | DEFER | PostToolUse Agent (208 lines). Context management hook — high complexity, touches session state. Needs isolated testing before wiring. | Phase 2 |
 | 17 | `hooks/contextual-rule-loader.sh` | hook | DEFER | SubagentStart (151 lines). Dynamic rule loading — high value but risk of rule conflicts. Needs rule-loading design review first. | Phase 2 |
@@ -84,12 +84,12 @@ Impact of IMPLEMENT batch: wiring all 12 items removes them from ASPIRATIONAL an
 | 37 | `hooks/package-sync.sh` | hook | DEFER | CI/developer-triggered (63 lines). Not a Claude event hook. Add @manual-trigger marker. No settings.json entry needed. | Phase 2 (add marker) |
 | 39 | `hooks/parry-scan.sh` | hook | DEFER | Parry security integration (56 lines). External dependency — Parry service not confirmed active. Add @on-demand marker with Parry guard. | Phase 2 |
 | 40 | `hooks/pattern-check.sh` | hook | DEFER | PreToolUse Edit/Write (48 lines). Anti-pattern checker — low line count suggests incomplete implementation. Verify before wiring. | Phase 2 |
-| 41 | `hooks/post-agent-verify.sh` | hook | DELETE | Explicitly superseded by `completion-gate.sh` (registered at PostToolUse Agent). Both hooks serve the same purpose; completion-gate.sh is the current standard. Archive to `docs/archive/hooks/`. | 5 min |
+| 41 | `hooks/post-agent-verify.sh` | hook | DELETE | Explicitly superseded by `completion-gate.sh` (registered at PostToolUse Agent). Both hooks serve the same purpose; completion-gate.sh is the current standard. Archive to `docs/99-Archive/archive/hooks/`. | 5 min |
 | 42 | `hooks/pre-agent-snapshot.sh` | hook | DEFER | PreToolUse Agent (208 lines). Snapshot before agent launch. High value but high blast radius — fires on every agent launch. Needs sampling/throttle design before wiring. | Phase 2 |
 | 43 | `hooks/pre-cleanup-snapshot.sh` | hook | DEFER | Manual/admin-triggered (82 lines). Not a Claude event hook. Add @manual-trigger marker. | Phase 2 (add marker) |
 | 44 | `hooks/private-mode-gate.sh` | hook | IMPLEMENT | PreToolUse (20 lines). Blocks Engram persistence tools when `/tmp/claude-private-mode-active` is set. Complete, minimal implementation. Directly supports `/private` skill. One settings.json entry. | 15 min |
 | 45 | `hooks/private-mode-metrics-gate.sh` | hook | IMPLEMENT | PostToolUse (small). Suppresses metrics emission in private mode. Companion to private-mode-gate.sh. Same wiring effort, same clear value. | 15 min |
-| 46 | `hooks/prompt-quality.sh` | hook | DELETE | Explicitly superseded by `prompt-quality-llm.sh`. Regex variant is inferior in every dimension. Retaining adds ASPIRATIONAL noise. Archive to `docs/archive/hooks/`. | 5 min |
+| 46 | `hooks/prompt-quality.sh` | hook | DELETE | Explicitly superseded by `prompt-quality-llm.sh`. Regex variant is inferior in every dimension. Retaining adds ASPIRATIONAL noise. Archive to `docs/99-Archive/archive/hooks/`. | 5 min |
 | 47 | `hooks/recap-sync.sh` | hook | DEFER | Stop event (45 lines). Syncs session recap to external system. External dependency unclear. Evaluate target system before wiring. | Phase 2 |
 | 48 | `hooks/release-guard.sh` | hook | DEFER | PreToolUse Bash (57 lines). Guards release operations. Value is clear but needs release workflow definition before wiring (what commands constitute "release"?). | Phase 2 |
 | 49 | `hooks/scope-creep-detector.sh` | hook | DEFER | PostToolUse Agent (105 lines). Scope enforcement. Scope-proportionality rule is already hook-enforced per RULES-COMPACT.md — verify there is no duplication before wiring. | Phase 2 |
@@ -128,10 +128,10 @@ Impact of IMPLEMENT batch: wiring all 12 items removes them from ASPIRATIONAL an
 Archive superseded hooks. These reduce ASPIRATIONAL count immediately with zero regression risk because active replacements are already registered.
 
 ```
-git mv hooks/completeness-check.sh docs/archive/hooks/
-git mv hooks/post-agent-verify.sh docs/archive/hooks/
-git mv hooks/prompt-quality.sh docs/archive/hooks/
-# Create docs/archive/hooks/ first if it does not exist (prerequisite noted in prune-triage-2026-04-24.md)
+git mv hooks/completeness-check.sh docs/99-Archive/archive/hooks/
+git mv hooks/post-agent-verify.sh docs/99-Archive/archive/hooks/
+git mv hooks/prompt-quality.sh docs/99-Archive/archive/hooks/
+# Create docs/99-Archive/archive/hooks/ first if it does not exist (prerequisite noted in prune-triage-2026-04-24.md)
 ```
 
 Effect: ASPIRATIONAL → -3 (from 69 to 66).
@@ -213,7 +213,7 @@ Before executing `git mv` on the 3 DELETE items, confirm:
 - [ ] `completeness-check-llm.sh` is registered in `settings.json` and fires (check `hook-health.jsonl`)
 - [ ] `prompt-quality-llm.sh` is registered in `settings.json` and fires
 - [ ] `completion-gate.sh` is registered in `settings.json` and fires (currently confirmed per grep)
-- [ ] `docs/archive/hooks/` directory exists (create with `mkdir -p`)
+- [ ] `docs/99-Archive/archive/hooks/` directory exists (create with `mkdir -p`)
 - [ ] No CI test asserts on the presence of the deleted files by name
 
 ---
@@ -225,7 +225,7 @@ Before executing `git mv` on the 3 DELETE items, confirm:
 **Evidence**:
 - Command run: `python3 scripts/aspirational_audit.py --json` → 669 total, 69 ASPIRATIONAL
 - Full item list extracted via Python import of `aspirational_audit.Auditor` directly
-- Punch lists `docs/reports/punch-list-hooks.md` and `punch-list-skills.md` cross-referenced (59 + 10 = 69, consistent)
+- Punch lists `docs/06-Daily/reports/punch-list-hooks.md` and `punch-list-skills.md` cross-referenced (59 + 10 = 69, consistent)
 - `settings.json` checked for active replacements of DELETE candidates
 - Hook body line counts checked for all 59 hook items as implementation completeness proxy
 - Skill SKILL.md sizes and frontmatter checked for all 10 skill items

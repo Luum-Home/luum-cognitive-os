@@ -16,7 +16,7 @@ implementation_files:
   - hooks/skill-router-bash-gate.sh
   - tests/audit/test_hook_enforced_exclusions.py
   - tests/behavior/test_skill_router_bash_gate.py
-  - docs/manual-tests/hook-enforced-rule-projection.md
+  - docs/09-Quality/manual-tests/hook-enforced-rule-projection.md
 tier: maintainer
 tags: [hooks, rules, projection, validation, startup]
 ---
@@ -200,4 +200,4 @@ bash scripts/_lib/settings-driver-codex.sh --check
 
 Manual:
 
-See `docs/manual-tests/hook-enforced-rule-projection.md`.
+See `docs/09-Quality/manual-tests/hook-enforced-rule-projection.md`.

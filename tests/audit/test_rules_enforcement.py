@@ -36,7 +36,7 @@ REGISTRATION_ALLOWLIST = PROJECT_ROOT / "hooks" / "_lib" / "registration-allowli
 COMPACT_EXEMPT: set[str] = {
     "RULES-COMPACT.md",  # the index itself
     "ROADMAP.md",         # Sprint 2A roadmap for broken/pending rule wiring (meta-doc, not a rule)
-    # Note: plan-first.md was moved to docs/patterns/ in Sprint 2A and is no longer in rules/
+    # Note: plan-first.md was moved to docs/04-Concepts/patterns/ in Sprint 2A and is no longer in rules/
 }
 
 # Rules whose claim of hook-enforcement is intentionally not wired in settings.json
@@ -141,7 +141,7 @@ def _is_runtime_generated_ref(ref: str) -> bool:
 DOCUMENTED_REMOVED_OR_FUTURE_REFS: set[str] = {
     "lib/workload_scheduler.py",  # rules document its removal and fallback path
     "lib/task_dag.py",  # rules document its removal and retained conceptual guidance
-    "docs/research/license-analysis.md",  # optional research artifact, not a runtime contract
+    "docs/03-PoCs/research/license-analysis.md",  # optional research artifact, not a runtime contract
     "hooks/_lib/hook-runtime-probe.sh",  # SO-SLO future probe reference
     "lib/agent_heartbeat.py",  # SO-SLO future telemetry reference
     "scripts/so-slo-report.sh",  # SO-SLO future reporting reference

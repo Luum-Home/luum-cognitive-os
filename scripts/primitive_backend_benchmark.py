@@ -314,7 +314,7 @@ def estimate_repo_text_bytes(project_dir: Path) -> dict[str, Any]:
         total += size
         file_count += 1
         rel = path.relative_to(project_dir).as_posix()
-        if rel.startswith("docs/reports/primitive-") or rel.startswith("docs/architecture/primitive-coverage"):
+        if rel.startswith("docs/06-Daily/reports/primitive-") or rel.startswith("docs/04-Concepts/architecture/primitive-coverage"):
             report_bytes += size
             report_files.append(rel)
     return {
@@ -420,8 +420,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Benchmark candidate backends for primitive coverage")
     parser.add_argument("--candidates-dir", default=os.environ.get("COS_CANDIDATES_DIR", "/tmp/cos-code-intel-candidates"))
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--json-out", default="docs/reports/primitive-coverage-backend-benchmark-2026-05-01.json")
-    parser.add_argument("--markdown-out", default="docs/reports/primitive-coverage-backend-benchmark-2026-05-01.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.json")
+    parser.add_argument("--markdown-out", default="docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md")
     parser.add_argument("--stdout", action="store_true", help="Print JSON report to stdout instead of writing files")
     return parser.parse_args(argv)
 

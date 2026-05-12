@@ -3,7 +3,7 @@
 **Date**: 2026-05-05
 **Status**: read-only review
 **Branch inspected**: `session/41961ce2-paperclip-rejection-multi-surface` (HEAD: `aeb391b0`)
-**Trigger**: Operator asked for file-level classification rather than commit-level after the cross-session collision incident (see `docs/reports/postmortem-cross-session-collision-2026-05-05.md`).
+**Trigger**: Operator asked for file-level classification rather than commit-level after the cross-session collision incident (see `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md`).
 
 ---
 
@@ -13,8 +13,8 @@
 - **Disposition counts**: KEEP 62 | DELETE 29 | RECOVER 9 | RECONCILE 4 | REVERT 7 | operator-decision-needed 13
 - **Top 5 files needing operator decision**:
   1. `lib/skill_router.py` — diverged in both worktrees (session41 WIP adds profile-aware cache + `SkillRoutingIndexCache`; session50 WIP adds ADR-174 frontmatter routing; neither is committed; incompatible changes)
-  2. `docs/adrs/ADR-172-multi-surface-ui-architecture.md` — exists as **accepted ADR** in session41 WIP but as a **tombstone** in session50 WIP
-  3. `docs/adrs/ADR-174-auto-derived-primitive-routing.md` — committed in session41, but session50 has `ADR-174-tombstone.md` as untracked WIP claiming the same number
+  2. `docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md` — exists as **accepted ADR** in session41 WIP but as a **tombstone** in session50 WIP
+  3. `docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md` — committed in session41, but session50 has `ADR-174-tombstone.md` as untracked WIP claiming the same number
   4. `.claude/settings.json` — committed in session41 (stripped to 4 lines); session50 WIP carries its own divergent delta from `2aba0fe9`
   5. `manifests/skill-routing-coverage.yaml` — 267-line file added in session41 (committed), 701-line WIP version in current working tree; session50 WIP has its own version
 - **Confirmed conflicts**: 4 (ADR-172, ADR-174/ADR-174b, `lib/skill_router.py`, `manifests/skill-routing-coverage.yaml`)
@@ -108,18 +108,18 @@ All 29 paperclip deletions are **aligned** across both session41 commits and rep
 | Path | Category | State on `main` (9d7598dd) | State on `session/41961ce2` HEAD (aeb391b0) | State on `session/50c35ce9` HEAD (2aba0fe9) | State in WIP | Conflict? | Disposition | Operator decision? |
 |---|---|---|---|---|---|---|---|---|
 | `lib/skill_router.py` | lib-routing | present (sha e02cd2fd, 1188 lines) | modified (sha 007487fa) — profile-alias table + `SkillRoutingIndexCache` added in commit 1 | present (sha d6515291 — same as main) | modified — additional 185-line WIP diff on top of session41 HEAD (adds `_canonical_profile`, `_skill_md_checksum`, `SkillRoutingIndexCache` class); session50 WIP has 531-line diff adding ADR-174 frontmatter routing loader | YES — two independent WIP features that touch the same file from different angles | RECONCILE | yes |
-| `docs/adrs/ADR-172-multi-surface-ui-architecture.md` | adr | absent | absent (added only in WIP, not committed) | absent | untracked — full ADR titled "Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian", status: accepted, supersedes: ADR-170 | YES — session50 WIP has `ADR-172-tombstone.md` claiming the same number as a reserved slot | RECONCILE | yes |
-| `docs/adrs/ADR-174-auto-derived-primitive-routing.md` | adr | absent | present (committed in commit 1, sha added) | absent | committed (via session41) | YES — session50 WIP has `ADR-174-tombstone.md` as untracked, treating 174 as a reserved slot; session41 already committed ADR-174 as an accepted ADR | RECONCILE | yes |
-| `docs/adrs/ADR-174b-prevention-followup.md` | adr | absent | absent | absent | untracked WIP only — extends ADR-174 with auto-generation and soak-driven promotion | YES — number collision with ADR-174; the "bis" suffix is non-standard | RECONCILE | yes |
+| `docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md` | adr | absent | absent (added only in WIP, not committed) | absent | untracked — full ADR titled "Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian", status: accepted, supersedes: ADR-170 | YES — session50 WIP has `ADR-172-tombstone.md` claiming the same number as a reserved slot | RECONCILE | yes |
+| `docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md` | adr | absent | present (committed in commit 1, sha added) | absent | committed (via session41) | YES — session50 WIP has `ADR-174-tombstone.md` as untracked, treating 174 as a reserved slot; session41 already committed ADR-174 as an accepted ADR | RECONCILE | yes |
+| `docs/02-Decisions/adrs/ADR-174b-prevention-followup.md` | adr | absent | absent | absent | untracked WIP only — extends ADR-174 with auto-generation and soak-driven promotion | YES — number collision with ADR-174; the "bis" suffix is non-standard | RECONCILE | yes |
 | `manifests/skill-routing-coverage.yaml` | manifest | absent | present (committed in commit 1, 267 lines) | absent | modified — 701-line WIP version extends the committed file; session50 WIP also has an untracked version | YES — WIP version is 2.6x larger than committed; session50 parallel WIP | RECONCILE | yes |
 | `.claude/settings.json` | settings | present (sha 360a8077, full hook config ~719 lines) | modified (sha eb904ac1, stripped to 4 lines — most hooks removed) | present (same sha as main — session50 is behind main) | committed (session41 version) — also has session50 WIP delta | YES — session41 committed a drastic strip of settings.json; session50 WIP independently modifies the same file | RECONCILE | yes |
-| `docs/adrs/ADR-171-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — tombstone with title "Reserved architecture decision slot" implies ADR-171 was never written; but the operator's task description calls it a "newly committed-by-mistake" ADR, implying there was intended content | RECOVER | yes |
-| `docs/adrs/ADR-173-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — same as ADR-171: slot is tombstoned as "reserved" suggesting original content was lost | RECOVER | yes |
-| `docs/adrs/ADR-179-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — same pattern: "Reserved architecture decision" tombstone. Post-mortem mentions `ADR-179-rules-auto-derive-routing.md` as a named file that was lost | RECOVER | yes |
-| `docs/adrs/ADR-175-research-quality-enforcement.md` | adr | absent | absent | absent | untracked WIP only | NO content conflict (only in session41 WIP), but ADR-175 has no committed counterpart | RECOVER | yes |
-| `docs/adrs/ADR-178-openharness-primitive-adoption.md` | adr | absent | absent | absent | untracked WIP only | NO | RECOVER | yes |
-| `docs/adrs/ADR-180-lifecycle-promotion-activation.md` | adr | absent | absent | absent | untracked WIP only | NO | RECOVER | yes |
-| `docs/adrs/ADR-181-adr-relevance-suggester.md` | adr | absent | absent | absent | untracked WIP only | NO | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-171-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — tombstone with title "Reserved architecture decision slot" implies ADR-171 was never written; but the operator's task description calls it a "newly committed-by-mistake" ADR, implying there was intended content | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-173-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — same as ADR-171: slot is tombstoned as "reserved" suggesting original content was lost | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-179-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — same pattern: "Reserved architecture decision" tombstone. Post-mortem mentions `ADR-179-rules-auto-derive-routing.md` as a named file that was lost | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-175-research-quality-enforcement.md` | adr | absent | absent | absent | untracked WIP only | NO content conflict (only in session41 WIP), but ADR-175 has no committed counterpart | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-178-openharness-primitive-adoption.md` | adr | absent | absent | absent | untracked WIP only | NO | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md` | adr | absent | absent | absent | untracked WIP only | NO | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-181-adr-relevance-suggester.md` | adr | absent | absent | absent | untracked WIP only | NO | RECOVER | yes |
 
 ---
 
@@ -148,14 +148,14 @@ All 29 paperclip deletions are **aligned** across both session41 commits and rep
 | `packages/paperclip-integration/skills/paperclip-dashboard/SKILL.md` | paperclip | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
 | `skills/paperclip-dashboard/` | paperclip | present (skill dir) | deleted (commit 3) | present | deleted | NO | DELETE | no |
 | `docs/paperclip-integration.md` | paperclip | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
-| `docs/reports/paperclip-integration-audit-2026-05-05.md` | report | present | deleted (commit 2) | present | deleted | NO — intentional purge | DELETE | no |
-| `docs/reports/paperclip-live-smoke-2026-05-05.md` | report | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
+| `docs/06-Daily/reports/paperclip-integration-audit-2026-05-05.md` | report | present | deleted (commit 2) | present | deleted | NO — intentional purge | DELETE | no |
+| `docs/06-Daily/reports/paperclip-live-smoke-2026-05-05.md` | report | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
 | `infra/paperclip/init-config.sh` | paperclip | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
 | `scripts/cos-paperclip-local.sh` | paperclip | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
 | `tests/behavior/test_paperclip_integration_complete.py` | test | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
 | `tests/integration/test_paperclip_local_daemon.py` | test | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
 | `tests/unit/test_paperclip_client.py` | test | present | deleted (commit 2) | present | deleted | NO | DELETE | no |
-| `docs/adrs/ADR-043-paperclip-local-daemon.md` | adr | present (accepted ADR) | deleted (commit 2) + replaced by `ADR-043-tombstone.md` (commit 3) | present (same as main) | deleted+tombstoned | NO — deliberate rejection tombstone | DELETE+KEEP tombstone | no |
+| `docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md` | adr | present (accepted ADR) | deleted (commit 2) + replaced by `ADR-043-tombstone.md` (commit 3) | present (same as main) | deleted+tombstoned | NO — deliberate rejection tombstone | DELETE+KEEP tombstone | no |
 
 ---
 
@@ -183,14 +183,14 @@ All 29 paperclip deletions are **aligned** across both session41 commits and rep
 
 | Path | Category | State on `main` | State on `session/41961ce2` HEAD | State on `session/50c35ce9` HEAD | WIP | Conflict? | Disposition | Operator decision? |
 |---|---|---|---|---|---|---|---|---|
-| `docs/adrs/ADR-003-tombstone.md` | adr | absent (ADR-003 never on main) | present (commit 3) | absent | committed | NO | KEEP | no |
-| `docs/adrs/ADR-004-tombstone.md` | adr | absent | present (commit 3) | absent | committed | NO | KEEP | no |
-| `docs/adrs/ADR-005-tombstone.md` | adr | absent | present (commit 3) | absent | committed | NO | KEEP | no |
-| `docs/adrs/ADR-046-tombstone.md` | adr | absent (ADR-046 never on main) | present (commit 3) | absent | committed | NO | KEEP | no |
-| `docs/adrs/ADR-085-tombstone.md` | adr | absent (ADR-085 never on main) | present (commit 3) | absent | committed | NO | KEEP | no |
-| `docs/adrs/ADR-171-tombstone.md` | adr | absent | present (commit 3) — title "Reserved architecture decision slot" | absent | committed | YES (content expected, see RECOVER section) | RECOVER | yes |
-| `docs/adrs/ADR-173-tombstone.md` | adr | absent | present (commit 3) — title "Reserved architecture decision slot" | absent | committed | YES (content expected) | RECOVER | yes |
-| `docs/adrs/ADR-179-tombstone.md` | adr | absent | present (commit 3) — title "Reserved architecture decision" | absent | committed | YES — post-mortem named this as `ADR-179-rules-auto-derive-routing.md`, implying it had real content | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-003-tombstone.md` | adr | absent (ADR-003 never on main) | present (commit 3) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-004-tombstone.md` | adr | absent | present (commit 3) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-005-tombstone.md` | adr | absent | present (commit 3) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-046-tombstone.md` | adr | absent (ADR-046 never on main) | present (commit 3) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-085-tombstone.md` | adr | absent (ADR-085 never on main) | present (commit 3) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-171-tombstone.md` | adr | absent | present (commit 3) — title "Reserved architecture decision slot" | absent | committed | YES (content expected, see RECOVER section) | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-173-tombstone.md` | adr | absent | present (commit 3) — title "Reserved architecture decision slot" | absent | committed | YES (content expected) | RECOVER | yes |
+| `docs/02-Decisions/adrs/ADR-179-tombstone.md` | adr | absent | present (commit 3) — title "Reserved architecture decision" | absent | committed | YES — post-mortem named this as `ADR-179-rules-auto-derive-routing.md`, implying it had real content | RECOVER | yes |
 
 ---
 
@@ -198,9 +198,9 @@ All 29 paperclip deletions are **aligned** across both session41 commits and rep
 
 | Path | Category | State on `main` | State on `session/41961ce2` HEAD | State on `session/50c35ce9` HEAD | WIP | Conflict? | Disposition | Operator decision? |
 |---|---|---|---|---|---|---|---|---|
-| `docs/adrs/ADR-174-auto-derived-primitive-routing.md` | adr | absent | present (committed commit 1) | absent | committed — but session50 WIP has `ADR-174-tombstone.md` as untracked | YES — number collision with session50 | RECONCILE | yes |
-| `docs/adrs/ADR-176-skillstore-and-analysis-trigger.md` | adr | absent | present (committed commit 1) | absent | committed | NO | KEEP | no |
-| `docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md` | adr | absent | present (committed commit 1) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md` | adr | absent | present (committed commit 1) | absent | committed — but session50 WIP has `ADR-174-tombstone.md` as untracked | YES — number collision with session50 | RECONCILE | yes |
+| `docs/02-Decisions/adrs/ADR-176-skillstore-and-analysis-trigger.md` | adr | absent | present (committed commit 1) | absent | committed | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md` | adr | absent | present (committed commit 1) | absent | committed | NO | KEEP | no |
 
 ---
 
@@ -210,18 +210,18 @@ These ADRs were modified to strip paperclip references or update status. No conf
 
 | Path | Modified in | Conflict? | Disposition | Operator decision? |
 |---|---|---|---|---|
-| `docs/adrs/ADR-009-package-architecture.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-018-docker-to-pip-migration.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-027.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-042-valkey-local-daemon.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-045-postgres-local-daemon.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-091-headless-clustered-runtime-direction.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-092-harness-skills-sync-path.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-093-simplify-profiles.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-169-dashboard-formal-demotion.md` | commit 2 | NO | KEEP | no |
-| `docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-009-package-architecture.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-018-docker-to-pip-migration.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-027.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-045-postgres-local-daemon.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-093-simplify-profiles.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-169-dashboard-formal-demotion.md` | commit 2 | NO | KEEP | no |
+| `docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` | commit 2 | NO | KEEP | no |
 
 ---
 
@@ -330,7 +330,7 @@ The session41 WIP and session50 WIP cannot be trivially merged as they add unrel
 
 ---
 
-### 2. `docs/adrs/ADR-172-multi-surface-ui-architecture.md` vs `ADR-172-tombstone.md`
+### 2. `docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md` vs `ADR-172-tombstone.md`
 
 **Divergence**: 
 - Session41 working tree: untracked `ADR-172-multi-surface-ui-architecture.md` — an **accepted** ADR defining multi-surface UI architecture (CLI, Phoenix, Engram Cloud, Obsidian), supersedes ADR-170
@@ -340,7 +340,7 @@ These are mutually exclusive. The tombstone was presumably generated by an autom
 
 ---
 
-### 3. `docs/adrs/ADR-174-auto-derived-primitive-routing.md` vs `ADR-174-tombstone.md` (session50)
+### 3. `docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md` vs `ADR-174-tombstone.md` (session50)
 
 **Divergence**:
 - Session41 commit 1: ADR-174 is a committed, accepted ADR ("Auto-Derived Primitive Routing for Skills and Rules")
@@ -380,7 +380,7 @@ All 29 paperclip deletions are confirmed aligned across session41 commits with n
 The following new files from session41 commit 1 are unique to session41 with no conflicts:
 - `lib/skill_store.py`, `lib/skill_lifecycle_promoter.py`
 - `hooks/orchestrator-decision-trace.sh`, `hooks/skill-md-routing-validator.sh`, `hooks/skill-post-execution-analysis.sh`, `hooks/skill-router-prompt-suggest.sh`
-- `docs/adrs/ADR-176-skillstore-and-analysis-trigger.md`, `docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md`
+- `docs/02-Decisions/adrs/ADR-176-skillstore-and-analysis-trigger.md`, `docs/02-Decisions/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md`
 - `manifests/adr-closure-metadata.yaml` (modified, paperclip refs stripped)
 - All 12 modified ADRs (ADR-009, 018, 027, 042, 045, 091, 092, 093, 161, 162, 169, 170) — reference updates only
 - `CHANGELOG.md`, `Makefile`, `docker-compose.cognitive-os.yml`, `cognitive-os.yaml`, `.codex/hooks.json`
@@ -392,7 +392,7 @@ The following new files from session41 commit 1 are unique to session41 with no 
 
 ### ADR-171: Original content unknown
 
-The tombstone `docs/adrs/ADR-171-tombstone.md` (committed in `aeb391b0`) has title "Reserved architecture decision slot" — the slot was never a real ADR in any tracked branch. However the post-mortem implies session41 was generating ADRs in this range. **Recovery source**: search agent JSONL files in `/private/tmp/claude-501/` for any draft with `adr: 171` in frontmatter. If not found, the tombstone is correct and no recovery is needed.
+The tombstone `docs/02-Decisions/adrs/ADR-171-tombstone.md` (committed in `aeb391b0`) has title "Reserved architecture decision slot" — the slot was never a real ADR in any tracked branch. However the post-mortem implies session41 was generating ADRs in this range. **Recovery source**: search agent JSONL files in `/private/tmp/claude-501/` for any draft with `adr: 171` in frontmatter. If not found, the tombstone is correct and no recovery is needed.
 
 ### ADR-173: Original content unknown
 
@@ -405,15 +405,15 @@ Post-mortem explicitly names this file as lost. The tombstone's title "Reserved 
 ### Untracked WIP ADRs (risk of loss on branch switch or stash)
 
 The following 9 untracked files exist only in the session41 working tree and will be lost if the worktree is cleaned or the branch is switched without staging:
-- `docs/adrs/ADR-172-multi-surface-ui-architecture.md`
-- `docs/adrs/ADR-174b-prevention-followup.md`
-- `docs/adrs/ADR-175-research-quality-enforcement.md`
-- `docs/adrs/ADR-178-openharness-primitive-adoption.md`
-- `docs/adrs/ADR-180-lifecycle-promotion-activation.md`
-- `docs/adrs/ADR-181-adr-relevance-suggester.md`
-- `docs/adrs/ADR-182-branch-ownership-lock.md`
-- `docs/adrs/ADR-183-cross-session-event-log.md`
-- `docs/adrs/ADR-184-manager-of-managers-daemon.md`
+- `docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md`
+- `docs/02-Decisions/adrs/ADR-174b-prevention-followup.md`
+- `docs/02-Decisions/adrs/ADR-175-research-quality-enforcement.md`
+- `docs/02-Decisions/adrs/ADR-178-openharness-primitive-adoption.md`
+- `docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md`
+- `docs/02-Decisions/adrs/ADR-181-adr-relevance-suggester.md`
+- `docs/02-Decisions/adrs/ADR-182-branch-ownership-lock.md`
+- `docs/02-Decisions/adrs/ADR-183-cross-session-event-log.md`
+- `docs/02-Decisions/adrs/ADR-184-manager-of-managers-daemon.md`
 
 **Recovery**: Stage and commit immediately, or copy to a safe location before any worktree operations.
 

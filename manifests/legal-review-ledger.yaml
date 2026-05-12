@@ -31,7 +31,7 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md
 
   - tool: pi-coding-agent
     adr_ref: ADR-259
@@ -42,7 +42,7 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md
 
   - tool: openharness
     adr_ref: ADR-259
@@ -53,7 +53,7 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md
 
   - tool: sprut-agent-kit
     adr_ref: ADR-259
@@ -64,7 +64,7 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md
 
   - tool: helixdb
     adr_ref: ADR-259
@@ -75,7 +75,7 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md
 
   - tool: megamemory
     adr_ref: ADR-259
@@ -86,7 +86,7 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md
 
   - tool: ifixai
     adr_ref: ADR-259
@@ -97,4 +97,4 @@ entries:
     conditions: null
     review_date: null
     reviewed_at: null
-    annex_f_path: docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md
+    annex_f_path: docs/03-PoCs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md

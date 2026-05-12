@@ -108,7 +108,7 @@ further before deciding the repair:
    evidence across sessions.
 9. Use `inventory.md` to pick the next repair batch instead of scanning terminal
    scrollback or rerunning a slow suite just to recover the list.
-10. Record the decision in `docs/reports/test-suite-repair-ledger-2026-04-24.md`
+10. Record the decision in `docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md`
    if the change affects doctrine, historical interpretation, or future repair work.
 
 ## Guardrails
@@ -124,8 +124,8 @@ further before deciding the repair:
 
 ## Required References
 
-- `docs/architecture/behavioral-test-contracts.md`
-- `docs/reports/test-suite-repair-ledger-2026-04-24.md`
+- `docs/04-Concepts/architecture/behavioral-test-contracts.md`
+- `docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md`
 
 ## Done When
 

@@ -162,7 +162,7 @@ contracts:
     - rules/**/*.md
     - hooks/**/*.sh
     - scripts/**
-    - docs/adrs/ADR-*.md
+    - docs/02-Decisions/adrs/ADR-*.md
   requires:
   - inspect_tool_target
   - search_existing_primitives
@@ -8418,7 +8418,7 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - docs/reports/primitive-harness-coverage-latest.json
+    - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -8472,7 +8472,7 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - docs/reports/primitive-harness-coverage-latest.json
+    - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -8588,7 +8588,7 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - docs/reports/primitive-harness-coverage-latest.json
+    - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9029,7 +9029,7 @@ contracts:
     projection_targets:
     - scripts/cos-active-primitive-index
     - scripts/active_primitive_index.py
-    - docs/adrs/ADR-127-active-primitive-index.md
+    - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9084,7 +9084,7 @@ contracts:
     projection_targets:
     - scripts/cos-adoption-profile
     - scripts/cos_adoption_profile.py
-    - docs/architecture/boring-reliability-control-plane.md
+    - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9194,7 +9194,7 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - docs/architecture/agent-message-bus.md
+    - docs/04-Concepts/architecture/agent-message-bus.md
     - scripts/cos-agent-message
   requires:
   - respect_declared_scope
@@ -9251,8 +9251,8 @@ contracts:
     projection_targets:
     - scripts/cos-architecture-readiness
     - scripts/cos_architecture_readiness.py
-    - docs/adrs/ADR-127-active-primitive-index.md
-    - docs/adrs/ADR-128-data-layer-integrity-fixes.md
+    - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
+    - docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9420,7 +9420,7 @@ contracts:
     projection_targets:
     - scripts/cos-boring-reliability
     - scripts/cos_boring_reliability.py
-    - docs/architecture/boring-reliability-control-plane.md
+    - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9475,7 +9475,7 @@ contracts:
     projection_targets:
     - scripts/cos-ci-local.sh
     - git-hooks/pre-push
-    - docs/adrs/ADR-131-local-ci-migration.md
+    - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9532,7 +9532,7 @@ contracts:
     - scripts/cos-closure-discipline-audit
     - scripts/cos_closure_discipline_audit.py
     - scripts/cos-ci-local.sh
-    - docs/adrs/ADR-143-closure-discipline-gate.md
+    - docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9644,7 +9644,7 @@ contracts:
     - scripts/cos-consumer-fleet-audit
     - scripts/cos_consumer_fleet_audit.py
     - lib/consumer_fleet_audit.py
-    - docs/architecture/consumer-fleet-audit.md
+    - docs/04-Concepts/architecture/consumer-fleet-audit.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9866,7 +9866,7 @@ contracts:
     - scripts/cos-cross-instance-drill
     - scripts/cos_cross_instance_drill.py
     - lib/cross_instance_learning.py
-    - docs/architecture/cross-instance-learning-runway.md
+    - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9921,7 +9921,7 @@ contracts:
     projection_targets:
     - scripts/cos-demotion-loop-audit
     - scripts/cos_demotion_loop_audit.py
-    - docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
+    - docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -9976,7 +9976,7 @@ contracts:
     projection_targets:
     - scripts/cos-dispatch-smoke
     - scripts/cos_dispatch_smoke.py
-    - docs/runbooks/llm-dispatch.md
+    - docs/05-Methodology/runbooks/llm-dispatch.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -10199,7 +10199,7 @@ contracts:
     - scripts/cos-doctrine-proposer
     - scripts/cos_doctrine_proposer.py
     - lib/doctrine_proposer.py
-    - docs/adrs/ADR-135-self-evolving-doctrine-proposals.md
+    - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -10479,7 +10479,7 @@ contracts:
     - scripts/cos_flow_register.py
     - manifests/flow-contract-schema.yaml
     - skills/vuln-remediation-flow/flow_contract.yaml
-    - docs/adrs/ADR-138-flow-contract-schema.md
+    - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -10535,7 +10535,7 @@ contracts:
     projection_targets:
     - scripts/cos-headless-service-drill
     - docker/cos-worker/docker-compose.yml
-    - docs/manual-tests/headless-docker-service-runtime.md
+    - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -10814,7 +10814,7 @@ contracts:
     - scripts/cos-manifest-tier-claim-audit
     - scripts/cos_manifest_tier_claim_audit.py
     - manifests/primitive-lifecycle.yaml
-    - docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
+    - docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -10981,7 +10981,7 @@ contracts:
     projection_targets:
     - scripts/cos-preamble-budget
     - scripts/cos_preamble_budget.py
-    - docs/architecture/core-adoption-preamble.md
+    - docs/04-Concepts/architecture/core-adoption-preamble.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -11205,7 +11205,7 @@ contracts:
     projection_targets:
     - scripts/cos-runtime-hook-reality
     - scripts/runtime_hook_reality.py
-    - docs/architecture/boring-reliability-control-plane.md
+    - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -11263,7 +11263,7 @@ contracts:
     - scripts/cos-self-improvement-discipline-gate
     - scripts/self_improvement_discipline_gate.py
     - scripts/cos-ci-local.sh
-    - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+    - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -11319,7 +11319,7 @@ contracts:
     - scripts/cos-self-improvement-loop
     - scripts/cos_self_improvement_loop.py
     - lib/self_improvement_loop.py
-    - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+    - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -11372,7 +11372,7 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - docs/architecture/cross-session-coordination-ledger.md
+    - docs/04-Concepts/architecture/cross-session-coordination-ledger.md
     - scripts/cos-session-coordination
   requires:
   - respect_declared_scope
@@ -11430,7 +11430,7 @@ contracts:
     - scripts/cos-session-start-budget
     - scripts/session_start_budget.py
     - scripts/_lib/settings-driver-claude-code.sh
-    - docs/architecture/agentic-kernel-philosophy.md
+    - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -11765,7 +11765,7 @@ contracts:
     projection_targets:
     - scripts/cos-tier-claim-audit
     - scripts/cos_tier_claim_audit.py
-    - docs/adrs/ADR-133-expansion-without-monsterization.md
+    - docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -12037,7 +12037,7 @@ contracts:
     projection_targets:
     - scripts/cos-wip-safety-score
     - scripts/cos_wip_safety_score.py
-    - docs/architecture/boring-reliability-control-plane.md
+    - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -14339,8 +14339,8 @@ contracts:
     kind: documented_or_on_demand
     runtime_projection: false
     projection_targets:
-    - docs/reports/primitive-harness-coverage-latest.json
-    - docs/reports/primitive-harness-coverage-latest.md
+    - docs/06-Daily/reports/primitive-harness-coverage-latest.json
+    - docs/06-Daily/reports/primitive-harness-coverage-latest.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -14995,7 +14995,7 @@ contracts:
     - scripts/security-red-team
     - scripts/security_red_team.py
     - manifests/security-red-team.yaml
-    - docs/security/security-red-team.md
+    - docs/09-Quality/security/security-red-team.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -16326,7 +16326,7 @@ contracts:
     runtime_projection: false
     projection_targets:
     - scripts/cos-doctor-preserve.sh
-    - docs/architecture/preserve-branch-lifecycle.md
+    - docs/04-Concepts/architecture/preserve-branch-lifecycle.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -16380,7 +16380,7 @@ contracts:
     runtime_projection: false
     projection_targets:
     - scripts/cos_primitive_harvester.py
-    - docs/architecture/primitive-harvester.md
+    - docs/04-Concepts/architecture/primitive-harvester.md
   requires:
   - respect_declared_scope
   - preserve_privacy
@@ -16397,7 +16397,7 @@ contracts:
     proof_tests:
     - tests/behavior/test_cos_primitive_harvester.py
     evidence_commands:
-    - python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json
+    - python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/06-Daily/reports/primitive-harvester-promotion-evidence-2026-05-04.json
       --json
     - python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q
   projection:
@@ -16927,7 +16927,7 @@ contracts:
   source: hooks/attribution-completeness-validator.sh
   lifecycle_ref: hooks/attribution-completeness-validator.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate requiring docs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.
+  intent: Pre-commit gate requiring docs/03-PoCs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true

@@ -42,7 +42,7 @@ def test_missing_portable_primitive_tools_are_registered_as_non_dependencies() -
             "service_mode": False,
             "docker_runtime": False,
         }
-        assert row["source_of_truth"]["radar_report"] == "docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md"
+        assert row["source_of_truth"]["radar_report"] == "docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md"
 
 
 def test_radar_addendum_and_indexes_link_all_required_entries() -> None:

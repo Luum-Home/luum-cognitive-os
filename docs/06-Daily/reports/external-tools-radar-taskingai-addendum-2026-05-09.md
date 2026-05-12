@@ -7,9 +7,9 @@ source_artifacts:
   - .cognitive-os/reports/repo-scout/TaskingAI_TaskingAI.md
   - .cognitive-os/reports/repo-scout/TaskingAI_TaskingAI.analysis.json
   - .cognitive-os/reports/repo-scout/TaskingAI_TaskingAI.raw.json
-  - docs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md
+  - docs/03-PoCs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md
 related_docs:
-  - docs/patterns/ecosystem-tools.md
+  - docs/04-Concepts/patterns/ecosystem-tools.md
   - manifests/external-tools-adoption.yaml
 ---
 
@@ -32,7 +32,7 @@ TaskingAI is worth deeper analysis because it packages several AI-application pr
 | Architecture scan | Multi-service FastAPI/React stack: backend, inference, plugin, frontend, Nginx, Postgres/pgvector, Redis. |
 | Test/build smoke | Python `compileall` passed for backend/inference/plugin app trees. Frontend build skipped because `npm` is unavailable in this runtime. |
 | Security scan | Advisory concern: CI workflows contain hardcoded crypto-like env values; do not reuse. No first-party security scanner config found in shallow scan. |
-| Radar merge | Added canonical HOLD entry to `docs/patterns/ecosystem-tools.md`; manifest marks it pattern-only and disallowed as default dependency. |
+| Radar merge | Added canonical HOLD entry to `docs/04-Concepts/patterns/ecosystem-tools.md`; manifest marks it pattern-only and disallowed as default dependency. |
 
 ## What COS should learn from it
 

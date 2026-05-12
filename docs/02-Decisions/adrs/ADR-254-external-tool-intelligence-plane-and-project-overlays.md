@@ -67,7 +67,7 @@ This ADR lands the first complete slice:
   radar views.
 - `scripts/cos-tool-research-check` — validates new-tool research packets before
   dependencies or public claims are added.
-- `docs/reports/external-tools-deep-dive/` — deep-dive location for tools that
+- `docs/06-Daily/reports/external-tools-deep-dive/` — deep-dive location for tools that
   move past candidate/pilot/adopt thresholds.
 
 ## Rules

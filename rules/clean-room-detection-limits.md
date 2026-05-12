@@ -78,13 +78,13 @@ Generic phrasing for the bottom of every error block:
 
 > Tiers T3-T5 are not enforced by this hook. If your change involves paraphrased
 > adaptation or design-level reuse from an upstream tool, file or update the
-> per-tool Annex F (`docs/research/<tool>-annex-f-*.md`) before commit.
+> per-tool Annex F (`docs/03-PoCs/research/<tool>-annex-f-*.md`) before commit.
 > See `rules/clean-room-detection-limits.md` for the full matrix.
 
 ## Open questions
 
 1. **Pseudocode detection** — should the verbatim hash hook also scan
-   `docs/research/*-annex-*.md` for verbatim cache blocks? Annexes legitimately
+   `docs/03-PoCs/research/*-annex-*.md` for verbatim cache blocks? Annexes legitimately
    quote upstream under attribution; pre-commit warn (not block) on these is the
    likely answer. Deferred until T2 lands.
 2. **Cross-language drift** — `lib/file_mutation_queue.py` was ported from a

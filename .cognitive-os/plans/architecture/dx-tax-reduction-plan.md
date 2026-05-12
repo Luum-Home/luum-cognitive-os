@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status (best-effort cross-check against current code):
 - Phase 1 (cognitive load): PARTIAL — readiness/active surface primitives shipped (scripts/cos-status.sh, primitive_lifecycle.py); first-run docs decision tree still informal.
 - Phase 2 (token tax): PARTIAL — RULES-COMPACT.md exists; ToolSearch token-delta metrics shipped (lib/deferred_tool_loading.py + scripts/cos-deferred-tool-plan --token-delta; CHANGELOG [Unreleased]/Added). Distribution-specific budgets still aspirational.

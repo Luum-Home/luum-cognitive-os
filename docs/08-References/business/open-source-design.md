@@ -637,7 +637,7 @@ For an existing project, migration looks like this:
 
 ### ADR-226 / ADR-227 / ADR-228 / ADR-230: Orchestration substrate (load-bearing for the OSS surface)
 
-**Status**: Accepted (Slice A or further) as of 2026-05-07. Tracking detail in [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+**Status**: Accepted (Slice A or further) as of 2026-05-07. Tracking detail in [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
 
 **Context**: Prior to 2026-05-07, the framework's three pillars (governance, observability, cross-harness portability) had partial substrate. Governance gates lived in scattered hooks. Observability had `session_bus` as an event log without monotonic sequencing or per-session streams. Replay was aspirational. Cost gates were async dashboards (the November 2025 industry $47K incident showed this is insufficient). Multi-agent handoff had no protocol — cycle-induced failure rate of 41–87% per the MAST 2025 paper. Multi-agent state isolation depended on `git stash` as automation primitive (industry-recognized anti-pattern since 2012; Anthropic shipped the same class of bug as issue #11005).
 

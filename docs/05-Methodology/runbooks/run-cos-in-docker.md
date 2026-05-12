@@ -197,7 +197,7 @@ COS_WORKSPACE="$PWD" bash scripts/cos-cloud-worker-bootstrap.sh self-test
 - [ADR-142](../adrs/ADR-142-compliance-audit-air-gapped-surface.md) — audit trail compliance surface
 - [ADR-139](../adrs/ADR-139-account-agnostic-multi-provider-runtime.md) — BYOK credential posture
 - [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) — why this surface exists at all
-- [`docs/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md) — the portability gate this stack satisfies
-- [`docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md`](../architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research that informed ADR-140
-- [`docs/manual-tests/headless-docker-service-runtime.md`](../manual-tests/headless-docker-service-runtime.md) — manual test of the worker surface
-- [`docs/manual-tests/engram-cloud-docker-sync.md`](../manual-tests/engram-cloud-docker-sync.md) — manual test of the engram-cloud profile
+- [`docs/04-Concepts/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md) — the portability gate this stack satisfies
+- [`docs/04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md`](../architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research that informed ADR-140
+- [`docs/09-Quality/manual-tests/headless-docker-service-runtime.md`](../manual-tests/headless-docker-service-runtime.md) — manual test of the worker surface
+- [`docs/09-Quality/manual-tests/engram-cloud-docker-sync.md`](../manual-tests/engram-cloud-docker-sync.md) — manual test of the engram-cloud profile

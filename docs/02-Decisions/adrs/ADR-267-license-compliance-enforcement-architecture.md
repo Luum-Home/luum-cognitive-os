@@ -30,7 +30,7 @@ Accepted (2026-05-11)
 
 ## Context
 
-After the 2026-05-11 multi-tool deep-research batch (HelixDB / iFixAi / MegaMemory; 19 docs across `docs/research/*-annex-*-2026-05-11.md` + 3 radar addenda + 4 self-critique cluster reports + 3 ADRs Proposed: ADR-261..266) and the pre-commit license audit triggered by operator, two enforcement gaps were surfaced that compound risk over time:
+After the 2026-05-11 multi-tool deep-research batch (HelixDB / iFixAi / MegaMemory; 19 docs across `docs/03-PoCs/research/*-annex-*-2026-05-11.md` + 3 radar addenda + 4 self-critique cluster reports + 3 ADRs Proposed: ADR-261..266) and the pre-commit license audit triggered by operator, two enforcement gaps were surfaced that compound risk over time:
 
 - **Gap 1**: Every new external-tool adoption goes through `/repo-scout` + `/deep-tool-research` and produces an Annex F (compliance / clean-room protocol). Each individual adoption is **defendible under fair-use / clean-room doctrine** today. The risk is *accumulation*: we do not have mechanical limits or signals that say "we now hold N tools pending legal validation; further adoption raises aggregate risk."
 - **Gap 2**: Hook coverage on the actual commit-time defenses is *paper-thin*. The two existing clean-room gates (`hooks/external-pattern-cleanroom-gate.sh`, `hooks/external-pattern-cleanroom-gate.sh`) are tool-specific or hardcoded to absent paths (`/tmp/upstream-pattern-source/`) and currently skip silently in most sessions. `rules/license-policy.md` is policy text, not enforcement; no hook reads it on `git commit`.
@@ -61,7 +61,7 @@ The two scenarios the operator wants ready for:
 
 **Scenario A — OSS public:**
 
-- ✅ Research-only research paths (`docs/research/`) are separated from runtime (`lib/`, `packages/`, `scripts/`). The 2026-05-11 batch did NOT vendor code into runtime.
+- ✅ Research-only research paths (`docs/03-PoCs/research/`) are separated from runtime (`lib/`, `packages/`, `scripts/`). The 2026-05-11 batch did NOT vendor code into runtime.
 - ✅ Attribution headers present in the 18 research annexes (after the compliance pass).
 - ❌ No SBOM auto-generated at commit.
 - ❌ No SPDX-License-Identifier required on new source files.
@@ -88,9 +88,9 @@ Implementation order matches Sprint plan below; numbering matches the original a
 |---|---|---|---|---|
 | 1 | `dependency-license-classifier.sh` | A + B | ~0.5 PW | Pre-commit. If staged modifies `requirements.txt` / `pyproject.toml` / `package.json` / `Cargo.toml`, runs `pip-licenses` (Python) or `npx license-checker` (Node) or `cargo-license` (Rust) on the *new* package set and blocks commit if any dependency's SPDX appears in BLOCKER list of `rules/license-policy.md`. |
 | 2 | `external-cache-content-leak.sh` | A + B | ~0.5 PW | Generalises `external-pattern-cleanroom-gate.sh`. Scans staged content against the whole tree under `.cognitive-os/external-source-cache/` (instead of one hardcoded path). Blocks if any string longer than N characters in a staged file matches a string in any cached clone. |
-| 3 | `adoption-freeze-gate.sh` | B (critical) | ~0.3 PW | Reads `manifests/external-tool-adoption-freeze.yaml`. If `frozen: true`, blocks any commit touching `docs/research/*-annex-*`, `docs/reports/external-tools-radar-*`, or `manifests/external-tools-adoption.yaml`. This is the kill-switch for "STOP new adoptions until legal review". |
+| 3 | `adoption-freeze-gate.sh` | B (critical) | ~0.3 PW | Reads `manifests/external-tool-adoption-freeze.yaml`. If `frozen: true`, blocks any commit touching `docs/03-PoCs/research/*-annex-*`, `docs/06-Daily/reports/external-tools-radar-*`, or `manifests/external-tools-adoption.yaml`. This is the kill-switch for "STOP new adoptions until legal review". |
 | 4 | `spdx-header-required.sh` | A | ~0.3 PW | Pre-commit. New files in `lib/` / `packages/` / `scripts/` MUST include `SPDX-License-Identifier:` in the first 5 lines. Blocks if missing. |
-| 5 | `attribution-completeness-validator.sh` | A + B | ~0.5 PW | Pre-commit. Files in `docs/research/*-annex-*` containing code-fence blocks MUST have a top-of-file licence-attribution header AND each verbatim block MUST have a block-level source-path attribution. Blocks if missing. Closes the gap the 2026-05-11 batch nearly tripped on. |
+| 5 | `attribution-completeness-validator.sh` | A + B | ~0.5 PW | Pre-commit. Files in `docs/03-PoCs/research/*-annex-*` containing code-fence blocks MUST have a top-of-file licence-attribution header AND each verbatim block MUST have a block-level source-path attribution. Blocks if missing. Closes the gap the 2026-05-11 batch nearly tripped on. |
 | 6 | `research-to-runtime-firewall.sh` | A + B | ~0.5 PW | Pre-commit. Blocks if code in `lib/` / `packages/` / `scripts/` imports from or copies content from `.cognitive-os/external-source-cache/`. Closes the research→runtime leak path. |
 
 **Total**: ~2.6 PW. All six hooks must be registered in the security profile JSONs (minimal / standard / paranoid), in `.claude/settings.json`, and in `scripts/apply-efficiency-profile.sh`, per the contract established by ADR-265 / ADR-266 follow-up audit.
@@ -115,13 +115,13 @@ Operator flips `frozen: true` when entering pre-commercial / pre-SaaS phase. Hoo
 
 #### `scripts/cos-adoption-debt-audit` (new)
 
-CLI that walks `docs/research/*-annex-f-*-2026-*.md` and counts:
+CLI that walks `docs/03-PoCs/research/*-annex-f-*-2026-*.md` and counts:
 
 - Tools with Annex F present but no `reviewed-by-legal: yes` marker in the frontmatter (= **adoption debt**).
 - Tools with Annex F present and `reviewed-by-legal: yes` (= cleared).
 - Tools with Annex F missing entirely (= incomplete pipeline; should not exist).
 
-Output: JSON + Markdown report at `docs/reports/adoption-debt-latest.{json,md}`. Run weekly via cron or on demand. Aggregates the "compounding risk" signal the operator flagged.
+Output: JSON + Markdown report at `docs/06-Daily/reports/adoption-debt-latest.{json,md}`. Run weekly via cron or on demand. Aggregates the "compounding risk" signal the operator flagged.
 
 ### Layer 3 — Policy ADR (separate, future)
 
@@ -158,7 +158,7 @@ Hooks reduce the probability of error and force consistent process; they do not 
 
 - Six new hooks add ~30-80 ms cumulative to each `git commit` (estimate based on similar string-scan hooks in repo). Latency budget must be checked.
 - `external-cache-content-leak.sh` (#2) will have false positives on common-token matches; needs careful threshold tuning. May initially block legitimate commits while tuned.
-- `attribution-completeness-validator.sh` (#5) only runs on the `docs/research/*-annex-*` glob — if the orchestrator invents a different doc structure for the next tool, the gap re-opens.
+- `attribution-completeness-validator.sh` (#5) only runs on the `docs/03-PoCs/research/*-annex-*` glob — if the orchestrator invents a different doc structure for the next tool, the gap re-opens.
 - `dependency-license-classifier.sh` (#1) depends on external classifier tools (`pip-licenses`, `license-checker`, `cargo-license`) being installed locally. Missing tool → hook either blocks (annoying) or skips (defeats purpose). Decision deferred to implementation.
 - The freeze mechanism (#3) is a heavy switch — if turned on and the orchestrator does not realise it, sessions silently fail commits. Needs a startup-time banner that flags `frozen: true`.
 
@@ -218,10 +218,10 @@ Each hook ships with golden-file tests proving:
 
 - Hook #1: AGPL dep added to `pyproject.toml` → block. MIT dep added → pass.
 - Hook #2: a staged file containing a ≥40-char string also present in `.cognitive-os/external-source-cache/helix-db/` → block. Generic tokens only → pass.
-- Hook #3: `frozen: true` + commit touching `docs/research/*-annex-*` → block. `frozen: false` → pass.
+- Hook #3: `frozen: true` + commit touching `docs/03-PoCs/research/*-annex-*` → block. `frozen: false` → pass.
 - Hook #4: new `lib/foo.py` without SPDX header → block. With `# SPDX-License-Identifier: Apache-2.0` → pass.
-- Hook #5: new `docs/research/*-annex-*` file with code-fence block and no attribution → block. With per-block source paths → pass.
-- Hook #6: new file in `lib/` importing or string-referencing `.cognitive-os/external-source-cache/` → block. Pure reference in `docs/research/` → pass.
+- Hook #5: new `docs/03-PoCs/research/*-annex-*` file with code-fence block and no attribution → block. With per-block source paths → pass.
+- Hook #6: new file in `lib/` importing or string-referencing `.cognitive-os/external-source-cache/` → block. Pure reference in `docs/03-PoCs/research/` → pass.
 
 `scripts/cos-adoption-debt-audit` ships with a fixture-driven test: 3 annex-F files with mixed `reviewed-by-legal` values → audit reports correct counts.
 
@@ -242,9 +242,9 @@ python3 -m py_compile scripts/cos_verbatim_copy_detector.py scripts/cos_lib_syml
 - ADR-261..264 — holaOS adoption ADRs — original motivation for clean-room enforcement
 - ADR-265 — mandatory-minimum inspection caps — example of governance-policy reclassification this ADR makes auditable
 - ADR-266 — protected-config-write-guard Bash coverage — same hook-coverage-gap class
-- `docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` Finding 9 — surfaced the mandatory-minimum cap as governance, not primitive; precedent for compliance-as-content
-- `docs/architecture/external-tool-adoption-doctrine.md` — adopt commodity mechanisms, build governance semantics
-- `docs/architecture/external-tool-adapter-taxonomy.md` — adoption kinds (dependency / CLI adapter / schema port / algorithm port / testdata vendor / operator-installed / pattern-only)
+- `docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` Finding 9 — surfaced the mandatory-minimum cap as governance, not primitive; precedent for compliance-as-content
+- `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md` — adopt commodity mechanisms, build governance semantics
+- `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md` — adoption kinds (dependency / CLI adapter / schema port / algorithm port / testdata vendor / operator-installed / pattern-only)
 
 ## Implementation Status (2026-05-11)
 
@@ -256,7 +256,7 @@ Phase 1 + Phase 2 Layer-1 hooks landed in two sessions (2026-05-11). Status of t
 | 2 | `hooks/external-cache-content-leak.sh` | landed | Generalises `external-pattern-cleanroom-gate.sh` to the whole `.cognitive-os/external-source-cache/` tree. Bypass: `COS_ALLOW_EXTERNAL_CACHE_LEAK=1`. Log: `external-cache-content-leak.jsonl`. |
 | 3 | `hooks/adoption-freeze-gate.sh` | landed (Phase 1) | Reads `manifests/external-tool-adoption-freeze.yaml`; blocks gated paths when `frozen: true`. Bypass: `COS_ALLOW_ADOPTION_FREEZE_BYPASS=1`, manifest-only toggle via `COS_ALLOW_FREEZE_TOGGLE=1`. |
 | 4 | `hooks/spdx-header-required.sh` | landed | NEW files under `lib/`, `packages/*/lib/`, `scripts/` (.py/.sh/.js/.ts) MUST carry `SPDX-License-Identifier:` in first 10 lines. Existing files at hook-install snapshot time are grandfathered (`manifests/spdx-grandfather.txt`). Bypass: `COS_ALLOW_MISSING_SPDX=1`. |
-| 5 | `hooks/attribution-completeness-validator.sh` | landed | `docs/research/*-annex-*.md` must carry `Source-Pattern:` + `License:` + `Clean-Room-Protocol:` and per-block attribution for verbatim code fences. Bypass: `COS_ALLOW_INCOMPLETE_ATTRIBUTION=1`. |
+| 5 | `hooks/attribution-completeness-validator.sh` | landed | `docs/03-PoCs/research/*-annex-*.md` must carry `Source-Pattern:` + `License:` + `Clean-Room-Protocol:` and per-block attribution for verbatim code fences. Bypass: `COS_ALLOW_INCOMPLETE_ATTRIBUTION=1`. |
 | 6 | `hooks/research-to-runtime-firewall.sh` | landed | Blocks runtime files referencing `.cognitive-os/external-source-cache/`. Bypass: `COS_ALLOW_RESEARCH_RUNTIME_LEAK=1`. |
 
 Layer 2 (governance manifests + adoption-debt audit) and Layer 3 (legal-review-gate ADR) remain on the original roadmap and are tracked as Phase 3 / Phase 4 follow-ups.

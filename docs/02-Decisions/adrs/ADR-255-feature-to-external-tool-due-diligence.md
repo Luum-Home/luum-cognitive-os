@@ -19,7 +19,7 @@ Accepted — Slice A implemented
 
 **Date**: 2026-05-08  
 **Owner**: platform-safety  
-**Related**: ADR-252, ADR-254, ADR-250, ADR-251, `docs/architecture/external-tool-adoption-doctrine.md`
+**Related**: ADR-252, ADR-254, ADR-250, ADR-251, `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`
 
 ## Context
 
@@ -59,7 +59,7 @@ when COS keeps building the feature itself.
 - `scripts/cos-feature-tool-scan`
 - `scripts/cos-external-source-fetch`
 - `scripts/cos-feature-vs-tool-benchmark`
-- `docs/reports/external-tools-deep-dive/{tool-id}.md`
+- `docs/06-Daily/reports/external-tools-deep-dive/{tool-id}.md`
 - `.cognitive-os/external-source-cache/` as a gitignored scratch cache
 
 ## Policy

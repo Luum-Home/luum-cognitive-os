@@ -151,5 +151,5 @@ if [ "$FAIL" -gt 0 ]; then
 fi
 
 echo ""
-echo "All tests passed. For interactive testing, see docs/agent-teams-testing.md"
+echo "All tests passed. For interactive testing, see docs/07-Capabilities/root/agent-teams-testing.md"
 exit 0

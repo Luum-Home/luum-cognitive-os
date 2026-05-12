@@ -9,8 +9,8 @@ supersedes: []
 superseded_by: null
 extends: [ADR-172]
 implementation_files:
-  - docs/reports/surface-5-tui-ui-candidates-2026-05-05.md
-  - docs/adrs/ADR-172-multi-surface-ui-architecture.md
+  - docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md
+  - docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md
 tier: maintainer
 tags: [ui, surface-5, research-gate, governance, multi-surface]
 partial_remaining: follow-up ADR exists.
@@ -105,7 +105,7 @@ After this ADR:
   falsifiable fit claim against ADR-172's four-surface architecture.
 - The CLI (Surface 1 in ADR-172) remains the authoritative operator state
   surface until that follow-up ADR exists.
-- Candidate reports (e.g., `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md`)
+- Candidate reports (e.g., `docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md`)
   may cite ADR-173 as the gate, but they are not evidence of adoption.
 
 ### What this answers (and what it doesn't)
@@ -124,9 +124,9 @@ After this ADR:
 
 If you encounter this ADR without session context:
 
-1. Read ADR-172 (`docs/adrs/ADR-172-multi-surface-ui-architecture.md`) to
+1. Read ADR-172 (`docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md`) to
    understand the four-surface architecture that Surface 5 would extend.
-2. Read `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md` for the
+2. Read `docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md` for the
    operator's initial candidate survey and the inputs that motivated this gate.
 3. This ADR is a **negative** decision: it explicitly blocks adoption rather
    than accepting it. The "Accepted" status means the gate policy is accepted —

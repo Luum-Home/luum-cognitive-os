@@ -298,7 +298,7 @@ is launched. See the proposed `reinvention-check.sh` hook wiring
 - [ ] Update `scripts/so-vitals.sh` agent-count code path to call
       `AgentBusMetrics().list_live()` once the adapter lands.
 - [ ] Prefix ADR-028 D1.C original text (lines 166–214) with:
-      `> **Superseded by ADR-028b.** See docs/adrs/ADR-028b.md.`
+      `> **Superseded by ADR-028b.** See docs/02-Decisions/adrs/ADR-028b.md.`
 - [ ] Update ADR-028a §2 consumer-boundary table to reference
       `.cognitive-os/agent-bus/{agent_id}/heartbeat.jsonl` instead of
       `.cognitive-os/tasks/{agent_id}.heartbeat`.

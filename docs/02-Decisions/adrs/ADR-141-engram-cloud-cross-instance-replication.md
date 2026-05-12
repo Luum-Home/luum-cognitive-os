@@ -290,4 +290,4 @@ python3 -m pytest tests/audit/test_adr_139_141_142_cloud_surfaces.py tests/unit/
 - Implemented in `docker/cos-worker/docker-compose.yml`: local `engram-cloud` profile with Postgres/pgvector database and `cos-engram-cloud` service running `engram cloud serve`.
 - Implemented in `scripts/cos-engram-cloud-docker-smoke`: repeatable local proof that starts the Compose profile, enrolls `luum-agent-os` and `cos-consumer-e2e-drill`, saves one observation per project using a temporary Engram home, syncs each project through `scripts/engram-sync.sh --cloud`, and verifies project-scoped rows in `cloud_chunks`.
 - Validated by `tests/audit/test_adr_139_141_142_cloud_surfaces.py`, `tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py`, and optional testcontainers lane `tests/integration/test_engram_cloud_docker.py`.
-- Manual proof documented in `docs/manual-tests/engram-cloud-docker-sync.md`.
+- Manual proof documented in `docs/09-Quality/manual-tests/engram-cloud-docker-sync.md`.

@@ -80,12 +80,12 @@ python3 -m pytest tests/unit/test_cos_task_claims.py \
 | ADR-139 Account-Agnostic Runtime | Policy only; enforcement pending. | `credential_source`, `billing_identity`, `provider_capabilities` are ADR fields but no flow register gate exists. | Enforce through ADR-138 register audit. |
 | ADR-140 Cross-OS Container Worker | Not implemented. | Missing `docker/cos-worker/docker-compose.yml`. | Add worker Compose stack and container smoke test. |
 | ADR-141 Engram Cloud Replication | Not implemented in ADR shape. | Missing `scripts/cos-engram-cloud-enroll`; no `ENGRAM_CLOUD_AUTOSYNC` wrapper evidence. | Add enroll wrapper, local-only fallback, sync audit row. |
-| ADR-142 Compliance/Audit/Air-gap | Policy only; implementation pending. | Missing `scripts/cos-audit-archive`, `docs/architecture/gdpr-erasure-procedure.md`, flow schema fields. | Add audit archive and GDPR doc after schema exists. |
+| ADR-142 Compliance/Audit/Air-gap | Policy only; implementation pending. | Missing `scripts/cos-audit-archive`, `docs/04-Concepts/architecture/gdpr-erasure-procedure.md`, flow schema fields. | Add audit archive and GDPR doc after schema exists. |
 | ADR-116 Multi-Session Coordination | Partially implemented. | Task ledger, merge queue, session lifecycle, coordination status, work inventory, content-hash dedupe, and work identity exist; 39 targeted tests passed. Names differ from ADR (`work_identity.py` vs `work_fingerprint.py`). | Reconcile ADR/docs to actual names and close remaining primitives. |
 | ADR-117 Stash Reversibility | Incomplete, as ADR says. | R1 exists; missing `lib/stash_ops.py` and `hooks/_lib/stash_lock.sh`; budget/lock/audit not universally enforced. | Implement R2-R4 and add stash-operation contract tests. |
 | ADR-106 Multi-Session Safety | Partial. | Stash alarm, plan claim validator, orchestrator gate, claim verifiers exist. `scripts/plan-lock.sh` and explicit provenance trailer guard are missing. | Decide/fix claim-gate scope regression; add plan lock/provenance surfaces or update ADR. |
 | ADR-108 Concurrent-Agent Safety Layer | Slices exist; umbrella layer incomplete. | Concurrent status composer and Codex/Claude projection tests pass; no unified Agent Work Ledger / Resource Lease runtime. | Promote slices into explicit composer/ledger contract. |
-| ADR-111 Core/Consumer Boundary | Mostly implemented; docs drift. | ADR says implemented; projection tests pass. `docs/business/master-plan-checklist.md` still has ADR-111 checkbox open. | Reconcile master-plan checkbox with evidence. |
+| ADR-111 Core/Consumer Boundary | Mostly implemented; docs drift. | ADR says implemented; projection tests pass. `docs/08-References/business/master-plan-checklist.md` still has ADR-111 checkbox open. | Reconcile master-plan checkbox with evidence. |
 | ADR-123 Operational Stability | Early slices only. | `scripts/cos-status.sh` and `tests/behavior/test_cos_status.py` exist/pass; maturity/profile/repair/status phases remain unchecked in plan. | Continue phase plan: friction report → guard maturity → adaptive profiles → repair CLI. |
 | ADR-132 Solo-Swarm vs Multi-Maintainer Fork | Exploration only. | ADR explicitly has no implementation acceptance criteria. | No technical implementation until strategic trigger fires. |
 | ADR-064 Harness-Agnostic COS | More implemented than stale docs say. | `bin/cos-skill`, `bin/cos-agent`, Codex/bare adapters, settings drivers, demo script exist; targeted tests passed. | Reconcile stale docs and add/rename final harness parity contract if needed. |
@@ -116,7 +116,7 @@ Deliverables:
 
 - `skills/vuln-remediation-flow/SKILL.md`
 - `skills/vuln-remediation-flow/flow_contract.yaml`
-- `docs/architecture/vuln-remediation-flow.md`
+- `docs/04-Concepts/architecture/vuln-remediation-flow.md`
 - `manifests/federation-triggers.yaml` gains `framing_a_flows_active` or an equivalent counter
 
 Acceptance criteria:
@@ -134,7 +134,7 @@ Deliverables:
 - `docker/cos-worker/docker-compose.yml`
 - `scripts/cos-engram-cloud-enroll`
 - `scripts/cos-audit-archive`
-- `docs/architecture/gdpr-erasure-procedure.md`
+- `docs/04-Concepts/architecture/gdpr-erasure-procedure.md`
 
 Acceptance criteria:
 
@@ -205,7 +205,7 @@ bash scripts/_lib/settings-driver-codex.sh --check
 scripts/cos-closure-discipline-audit --fail-on-findings --json
 
 # Start Step 1
-$EDITOR docs/adrs/ADR-138-flow-contract-schema.md
+$EDITOR docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
 $EDITOR manifests/flow-contract-schema.yaml
 $EDITOR scripts/cos-flow-register.sh
 ```
@@ -213,9 +213,9 @@ $EDITOR scripts/cos-flow-register.sh
 ## 2026-05-04 Codex continuation
 
 The ADR-137+ review was preserved as
-[`docs/reports/adr-137-plus-implementation-review-2026-05-04.md`](reports/adr-137-plus-implementation-review-2026-05-04.md)
-and linked from `docs/README.md` and
-`docs/business/master-plan-checklist.md`.
+[`docs/06-Daily/reports/adr-137-plus-implementation-review-2026-05-04.md`](reports/adr-137-plus-implementation-review-2026-05-04.md)
+and linked from `docs/00-MOCs/entrypoints/README.md` and
+`docs/08-References/business/master-plan-checklist.md`.
 
 The short implementation classification remains:
 

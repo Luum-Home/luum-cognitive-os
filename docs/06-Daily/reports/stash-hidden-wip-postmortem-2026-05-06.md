@@ -157,6 +157,6 @@ cover late blockers after snapshot. The missing smoke/automated tests are:
 
 ## Evidence links
 
-- `docs/research/multi-agent-orchestration-prior-art-2026-05-06.md`
-- `docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md`
-- `docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md`
+- `docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md`
+- `docs/02-Decisions/adrs/ADR-221-stash-ref-by-sha-not-by-position.md`
+- `docs/02-Decisions/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md`

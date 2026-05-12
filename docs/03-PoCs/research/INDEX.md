@@ -1,6 +1,6 @@
 # Research Index
 
-> Browsable index of every research artifact in the repo, public and (by reference) private. Generated 2026-05-07. Re-run `find docs/research docs/reports docs/architecture docs/business -name '*.md'` to verify.
+> Browsable index of every research artifact in the repo, public and (by reference) private. Generated 2026-05-07. Re-run `find docs/03-PoCs/research docs/06-Daily/reports docs/04-Concepts/architecture docs/08-References/business -name '*.md'` to verify.
 
 **Total**: ~538 markdown research/audit/forensics artifacts across 6 directories. Coverage: 151+ external tools evaluated, 15 frontier orchestration systems in prior-art, 11 orchestration gaps, 138 operational reports, 4 reusable audits with multiple editions.
 
@@ -17,13 +17,13 @@
 | [§5 Architecture research](#5-architecture-research-10-files) | Backend evaluations, benchmarks, control-plane research |
 | [§6 Business research](#6-business-research-4-files) | Reality audits, competitive re-assessments |
 | [§7 Strategy private](#7-strategy-private-gitignored-11-files) | `.cognitive-os/strategy/research/` — gitignored |
-| [§8 Other audits](#8-other-audits-and-measurements) | `docs/measurements/`, `docs/manual-tests/`, etc. |
+| [§8 Other audits](#8-other-audits-and-measurements) | `docs/06-Daily/measurements/`, `docs/09-Quality/manual-tests/`, etc. |
 
 ---
 
 ## 1. Top-level research
 
-`docs/research/*.md` — individual tool/topic evaluations.
+`docs/03-PoCs/research/*.md` — individual tool/topic evaluations.
 
 | File | Topic | Date |
 |---|---|---|
@@ -41,7 +41,7 @@
 
 ## 2. Orchestration line (2026-05-06/07)
 
-`docs/research/orchestration-gaps/*.md` — 13 files. Outcome: 14 ADRs (220–236, ADR-229 tombstone) drafted + Slice-A-implemented.
+`docs/03-PoCs/research/orchestration-gaps/*.md` — 13 files. Outcome: 14 ADRs (220–236, ADR-229 tombstone) drafted + Slice-A-implemented.
 
 | File | Topic |
 |---|---|
@@ -66,7 +66,7 @@
 
 ## 3. Repo-scout (129 files)
 
-`docs/research/repo-scout/` — external tools landscape. Three sub-levels:
+`docs/03-PoCs/research/repo-scout/` — external tools landscape. Three sub-levels:
 
 ### 3.1 Clusters (20 files — thematic groupings)
 
@@ -95,7 +95,7 @@
 
 ### 3.2 Deep dives (64 files)
 
-`docs/research/repo-scout/deep/` — per-tool deep analysis (mostly 2026-05-06, with targeted addenda as requested).
+`docs/03-PoCs/research/repo-scout/deep/` — per-tool deep analysis (mostly 2026-05-06, with targeted addenda as requested).
 
 **Coding agents / orchestrators (15)**:
 [Aider-AI__aider](repo-scout/deep/Aider-AI__aider-2026-05-06.md) ·
@@ -179,7 +179,7 @@
 
 ### 3.3 Monitor follow-up (43 files)
 
-`docs/research/repo-scout/monitor-followup/` — tools to keep watching (all dated 2026-05-06).
+`docs/03-PoCs/research/repo-scout/monitor-followup/` — tools to keep watching (all dated 2026-05-06).
 
 **LLM gateways**:
 [BerriAI__litellm](repo-scout/monitor-followup/BerriAI__litellm-2026-05-06.md) ·
@@ -246,7 +246,7 @@
 
 ## 4. Operational reports (138 files)
 
-`docs/reports/*.md` — too many to list individually. Categorized by purpose:
+`docs/06-Daily/reports/*.md` — too many to list individually. Categorized by purpose:
 
 ### 4.1 Repeated audits (multi-edition, valuable for trend)
 
@@ -365,7 +365,7 @@
 
 ## 5. Architecture research (10 files)
 
-Research-flavored architecture docs in `docs/architecture/`.
+Research-flavored architecture docs in `docs/04-Concepts/architecture/`.
 
 | File | Topic |
 |---|---|
@@ -394,7 +394,7 @@ Plus topic-audits:
 
 ## 6. Business research (4 files)
 
-Research-flavored business docs in `docs/business/`.
+Research-flavored business docs in `docs/08-References/business/`.
 
 | File | Type |
 |---|---|
@@ -431,22 +431,22 @@ Plus 6 raw scanner artifacts (`audit/*.json`, `audit/*.csv`, `audit/secrets-and-
 
 | File | Type |
 |---|---|
-| [docs/component-audit.md](../component-audit.md) | Component audit |
-| [docs/complexity-audit.md](../complexity-audit.md) | Complexity audit |
-| [docs/self-usage-audit.md](../self-usage-audit.md) | Self-usage audit |
-| [docs/measurements/cos-duplication-audit-2026-04-30.md](../measurements/cos-duplication-audit-2026-04-30.md) | Duplication audit |
-| [docs/measurements/cos-adr-namespace-audit-2026-04-30.md](../measurements/cos-adr-namespace-audit-2026-04-30.md) | ADR namespace audit |
-| [docs/manual-tests/primitive-duplication-audit.md](../manual-tests/primitive-duplication-audit.md) | Manual primitive dup audit |
-| [docs/manual-tests/cross-stack-license-audit-cli.md](../manual-tests/cross-stack-license-audit-cli.md) | CLI license audit manual test |
+| [docs/06-Daily/root/component-audit.md](../component-audit.md) | Component audit |
+| [docs/06-Daily/root/complexity-audit.md](../complexity-audit.md) | Complexity audit |
+| [docs/06-Daily/root/self-usage-audit.md](../self-usage-audit.md) | Self-usage audit |
+| [docs/06-Daily/measurements/cos-duplication-audit-2026-04-30.md](../measurements/cos-duplication-audit-2026-04-30.md) | Duplication audit |
+| [docs/06-Daily/measurements/cos-adr-namespace-audit-2026-04-30.md](../measurements/cos-adr-namespace-audit-2026-04-30.md) | ADR namespace audit |
+| [docs/09-Quality/manual-tests/primitive-duplication-audit.md](../manual-tests/primitive-duplication-audit.md) | Manual primitive dup audit |
+| [docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md](../manual-tests/cross-stack-license-audit-cli.md) | CLI license audit manual test |
 
 ---
 
 ## How this index stays current
 
-- Re-run `find docs/research docs/reports docs/architecture docs/business -name '*.md'` to spot new files.
-- New per-tool research → `docs/research/repo-scout/deep/<owner>__<repo>-<date>.md`.
-- New per-gap research → `docs/research/<topic>-<date>.md` or `docs/research/<line-of-work>/<topic>.md`.
-- New operational reports → `docs/reports/<topic>-<date>.md`.
+- Re-run `find docs/03-PoCs/research docs/06-Daily/reports docs/04-Concepts/architecture docs/08-References/business -name '*.md'` to spot new files.
+- New per-tool research → `docs/03-PoCs/research/repo-scout/deep/<owner>__<repo>-<date>.md`.
+- New per-gap research → `docs/03-PoCs/research/<topic>-<date>.md` or `docs/03-PoCs/research/<line-of-work>/<topic>.md`.
+- New operational reports → `docs/06-Daily/reports/<topic>-<date>.md`.
 - After re-running, append new entries to the relevant section above. **Do not rewrite — append**.
 
 If this index drifts more than 7 days from disk reality, regenerate from `find` output and review with the operator.

@@ -144,7 +144,7 @@ The clone's `.github/workflows/ci.yml` runs ruff, bandit, and pytest plus the va
 
 ## 6. Comparison with ADR-247 manifest doctrine
 
-COS already has a manifest doctrine: ADR-247 (`docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md`) plus `manifests/postmortem-regression-audit.yaml`. The relevant points:
+COS already has a manifest doctrine: ADR-247 (`docs/02-Decisions/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md`) plus `manifests/postmortem-regression-audit.yaml`. The relevant points:
 
 | Property | ADR-247 manifest | iFixAi `RunManifest` |
 |---|---|---|
@@ -204,4 +204,4 @@ The governance fixture has its own digest (`governance_fixture_digest`) recorded
 - Reproducibility doc: `docs/reproducibility.md` in the clone (L1-62).
 - Fixture schema: `ifixai/fixtures/schema.json`, `ifixai/fixtures/smoke_tiny.yaml`, `ifixai/fixtures/default/fixture.yaml`, `ifixai/fixtures/examples/*.yaml`.
 - Governance fixture: `ifixai/providers/governance_fixture.py`, `ifixai/providers/governance_mixin.py`.
-- COS comparison: `docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md`, `manifests/postmortem-regression-audit.yaml`.
+- COS comparison: `docs/02-Decisions/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md`, `manifests/postmortem-regression-audit.yaml`.

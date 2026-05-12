@@ -221,7 +221,7 @@ func TestReleaseUpdatesAllFiles(t *testing.T) {
 `
 	os.WriteFile(filepath.Join(dir, "CHANGELOG.md"), []byte(changelog), 0644)
 
-	// Create docs/INDEX.md.
+	// Create docs/00-MOCs/entrypoints/INDEX.md.
 	os.MkdirAll(filepath.Join(dir, "docs"), 0755)
 	docsIndex := "# Cognitive OS Documentation Index — v0.2.0\n\n> Description.\n"
 	os.WriteFile(filepath.Join(dir, "docs", "INDEX.md"), []byte(docsIndex), 0644)
@@ -234,7 +234,7 @@ func TestReleaseUpdatesAllFiles(t *testing.T) {
 	updatedCl := updateChangelog(string(clData), newVersion)
 	os.WriteFile(filepath.Join(dir, "CHANGELOG.md"), []byte(updatedCl), 0644)
 
-	// Update docs/INDEX.md.
+	// Update docs/00-MOCs/entrypoints/INDEX.md.
 	idxData, _ := os.ReadFile(filepath.Join(dir, "docs", "INDEX.md"))
 	updatedIdx := updateDocsIndex(string(idxData), newVersion)
 	os.WriteFile(filepath.Join(dir, "docs", "INDEX.md"), []byte(updatedIdx), 0644)
@@ -252,14 +252,14 @@ func TestReleaseUpdatesAllFiles(t *testing.T) {
 		t.Error("CHANGELOG should preserve [0.2.0]")
 	}
 
-	// Verify docs/INDEX.md.
+	// Verify docs/00-MOCs/entrypoints/INDEX.md.
 	finalIdx, _ := os.ReadFile(filepath.Join(dir, "docs", "INDEX.md"))
 	idxStr := string(finalIdx)
 	if !strings.Contains(idxStr, "v0.3.0") {
-		t.Error("docs/INDEX.md should contain v0.3.0")
+		t.Error("docs/00-MOCs/entrypoints/INDEX.md should contain v0.3.0")
 	}
 	if strings.Contains(idxStr, "v0.2.0") {
-		t.Error("docs/INDEX.md should not contain old version v0.2.0")
+		t.Error("docs/00-MOCs/entrypoints/INDEX.md should not contain old version v0.2.0")
 	}
 }
 

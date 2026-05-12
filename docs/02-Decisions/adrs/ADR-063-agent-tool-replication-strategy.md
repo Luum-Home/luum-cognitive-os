@@ -151,7 +151,7 @@ AND prefers Claude Code native (subscription-billed) over API (token-billed).
 
 ## Verification
 
-- `docs/adrs/ADR-063-*.md` exists and states the decision.
+- `docs/02-Decisions/adrs/ADR-063-*.md` exists and states the decision.
 - Research report lands within 1 week (blocked on research agent output).
 - `lib/providers/claude_sdk.py` added as part of ADR-062 Phase 3 (opt-in).
 - No file in `lib/` attempts to reimplement MCP protocol or Claude Code

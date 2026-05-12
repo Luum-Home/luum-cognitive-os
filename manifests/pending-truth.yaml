@@ -23,11 +23,11 @@ source_surfaces:
     match: '^- \[ \]'
     note: "Every unmarked checkbox becomes one ledger item"
   - kind: adr-slice
-    glob: docs/adrs/ADR-*.md
+    glob: docs/02-Decisions/adrs/ADR-*.md
     match: '^status: (proposed|draft|in-progress)'
     note: "Every non-accepted/non-tombstone ADR becomes one ledger item"
   - kind: follow-up
-    path: docs/reports/radar-2026-05-08-implementation-tracker.md
+    path: docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md
     match: '🔲|🟡 follow-up'
     note: "Every open follow-up row in the radar tracker"
   - kind: user-request
@@ -81,7 +81,7 @@ items:
 
   - id: 'adr-slice:ADR-273:slice-B-verifier'
     type: adr-slice
-    source: docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md
+    source: docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md
     status: unverified
     last_verified: null
     evidence:
@@ -94,12 +94,12 @@ items:
 
   - id: 'follow-up:radar-2026-05-08:T-W3-bench'
     type: follow-up
-    source: docs/reports/radar-2026-05-08-implementation-tracker.md
+    source: docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md
     status: unverified
     last_verified: null
     evidence:
       - kind: file_exists
-        path: docs/reports/repo-map-benchmark-latest.json
+        path: docs/06-Daily/reports/repo-map-benchmark-latest.json
         result: 'check on next aggregator run'
     next_action: 'Wave 3 hardening — repo-map benchmarking vs context_diet.py'
     owner_adr: null
@@ -113,7 +113,7 @@ items:
     evidence:
       - kind: grep
         pattern: 'fragility|snapshot.*literal|threshold.*absolute'
-        path: docs/reports/
+        path: docs/06-Daily/reports/
         result: 'no comprehensive sweep doc found'
     next_action: |
       Audit 6357 passing tests for fragility patterns (literal snapshots,

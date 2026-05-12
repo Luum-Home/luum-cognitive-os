@@ -53,7 +53,7 @@ _STUB_MARKER = "# Moved"
 #   .cognitive-os/plans/           — implementation plans (e.g. adr-049-050-051-mega-plan.md
 #                                    is a sprint plan, not an ADR).
 #   .cognitive-os/snapshots/       — pre-agent preservation copies. These may
-#                                    contain historical docs/adrs files verbatim
+#                                    contain historical docs/02-Decisions/adrs files verbatim
 #                                    and are not canonical ADR locations.
 #   docs/06-Daily/reports/         — audit/report artifacts that reference ADRs by number.
 #   docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md
@@ -63,9 +63,9 @@ ALLOWLIST_RELATIVE: list[str] = [
     ".cognitive-os/pending-tasks/",
     ".cognitive-os/plans/",
     ".cognitive-os/snapshots/",
-    "docs/reports/",
     "docs/06-Daily/reports/",
-    "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",
+    "docs/06-Daily/reports/",
+    "docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",
     "docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",
 ]
 
@@ -118,7 +118,7 @@ def _is_redirect_stub(path: Path) -> bool:
 def _skip_directory(parts: tuple[str, ...]) -> bool:
     """Return True if this path should be skipped entirely."""
     # Local validation/session worktrees can contain full repository copies,
-    # including their own canonical docs/adrs tree. They are runtime artifacts,
+    # including their own canonical docs/02-Decisions/adrs tree. They are runtime artifacts,
     # not source ADR locations for the current checkout.
     if ".claude" in parts:
         idx = parts.index(".claude")
@@ -220,7 +220,7 @@ def test_renumbered_adrs_have_front_matter_comment() -> None:
     """ADRs migrated with a number change must carry a Renumbered-from comment.
 
     This test verifies the four files renumbered during the ADR-087 migration:
-      - ADR-091 (was 027 in the old docs/architecture/adrs/ namespace, removed 2026-05-12)
+      - ADR-091 (was 027 in the old docs/04-Concepts/architecture/adrs/ namespace, removed 2026-05-12)
       - ADR-092 (was ADR-001 in harness-adoption-gap/)
       - ADR-093 (was ADR-002 in harness-adoption-gap/)
       - ADR-094 (was ADR-003 in harness-adoption-gap/)

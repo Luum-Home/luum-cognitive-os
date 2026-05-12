@@ -49,7 +49,7 @@ Targeted query:
 python3 - <<'PY'
 import json
 from pathlib import Path
-payload = json.loads(Path('docs/acc/latest.json').read_text())
+payload = json.loads(Path('docs/07-Capabilities/acc/latest.json').read_text())
 counts = payload['adapters']['consumer_projection']['summary']['by_harness_profile']
 print('kimi-code/default=', counts['kimi-code/default'])
 print('kimi-code/full=', counts['kimi-code/full'])
@@ -67,7 +67,7 @@ If Kimi Code CLI is installed and authenticated, run from the temp project:
 kimi --work-dir . --mcp-config-file .kimi/mcp.json --prompt "Summarize the Cognitive OS instructions for this project."
 ```
 
-Expected: Kimi responds using the projected `AGENTS.md` context. Record results under `docs/reports/` if performed.
+Expected: Kimi responds using the projected `AGENTS.md` context. Record results under `docs/06-Daily/reports/` if performed.
 
 This test is optional and must not block default CI.
 

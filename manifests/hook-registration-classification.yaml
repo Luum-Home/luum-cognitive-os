@@ -335,7 +335,7 @@ entries:
 - path: hooks/attribution-completeness-validator.sh
   status: active
   rationale: |
-    ADR-267 Hook #5 (Layer 1). Pre-commit gate for docs/research/*-annex-*.md
+    ADR-267 Hook #5 (Layer 1). Pre-commit gate for docs/03-PoCs/research/*-annex-*.md
     requiring Source-Pattern / License / Clean-Room-Protocol header fields plus
     per-block source attribution on verbatim code fences.
     Bypass: COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 (logged).

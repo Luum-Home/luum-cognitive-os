@@ -202,7 +202,7 @@ def make_repo(tmp_path: Path) -> Path:
                     "delta": 4.0,
                     "baseline_score": 80,
                     "candidate_score": 84,
-                    "source_report": "docs/reports/primitive-fitness/projected.json",
+                    "source_report": "docs/06-Daily/reports/primitive-fitness/projected.json",
                     "missing_signals": [],
                     "safety_regressions": [],
                 }
@@ -292,7 +292,7 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert any(cap["id"] == "template:templates/quality.md" for cap in payload["capabilities"])
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
-    assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
+    assert compact["context_diet"]["read_this_first"] == "docs/07-Capabilities/acc/latest-compact.md"
 
 
 def test_projected_readiness_row_becomes_aligned(tmp_path: Path) -> None:

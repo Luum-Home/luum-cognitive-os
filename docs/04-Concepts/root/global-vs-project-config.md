@@ -315,4 +315,4 @@ Global hooks in `~/.claude/settings.json` are technically possible but not recom
 - [Feature #11626: Automatic merge request](https://github.com/anthropics/claude-code/issues/11626)
 - `rules/os-vs-project.md` -- COS universal vs project separation principle
 - `rules/context-optimization.md` -- Progressive loading protocol
-- `docs/rules-loading-architecture.md` -- How rules accumulate
+- `docs/04-Concepts/root/rules-loading-architecture.md` -- How rules accumulate

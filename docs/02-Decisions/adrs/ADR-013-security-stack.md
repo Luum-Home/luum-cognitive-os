@@ -48,7 +48,7 @@ P0 integrations (Semgrep AI, MCP-Scan, Promptfoo) were implemented immediately. 
 
 ## Consequences
 
-- `docs/security-stack.md` became the master security document, superseding the partial safety-mesh.md.
+- `docs/04-Concepts/root/security-stack.md` became the master security document, superseding the partial safety-mesh.md.
 - 72 behavior tests were created to validate security tool integrations.
 - The 8-layer model provides clear responsibility boundaries, making it easy to identify gaps when new threat vectors emerge.
 - The security stack influenced the hook profile system (ADR-010): the paranoid profile enables all security hooks, while minimal disables advisory-only ones.

@@ -1,7 +1,7 @@
 # Core vs Extensions — Design Criteria
 
 > **Status:** ACTIVE design reference for Phase 3 of `so-existential-validation`.
-> **Source audit:** `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (126 CORE / 581 total).
+> **Source audit:** `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` (126 CORE / 581 total).
 > **Migration plan:** `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md`.
 > **Last updated:** 2026-05-02 (distilled from 2026-04-20 audit; no new classifications made here).
 

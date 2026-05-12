@@ -10,9 +10,9 @@ superseded_by: null
 implementation_files:
   - scripts/primitive_duplication_audit.py
   - tests/unit/test_primitive_duplication_audit.py
-  - docs/architecture/primitive-duplication-audit.md
-  - docs/architecture/primitive-duplication-audit-implementation-plan.md
-  - docs/manual-tests/primitive-duplication-audit.md
+  - docs/04-Concepts/architecture/primitive-duplication-audit.md
+  - docs/04-Concepts/architecture/primitive-duplication-audit-implementation-plan.md
+  - docs/09-Quality/manual-tests/primitive-duplication-audit.md
 tier: maintainer
 tags: [primitive-readiness, duplication, refactoring, acc, projection]
 ---
@@ -40,8 +40,8 @@ Those controls do not answer the maintainer question we now need for SO evolutio
 
 Add `scripts/primitive_duplication_audit.py` as the first unified duplication audit for agentic primitive and configuration surfaces. The audit is dependency-free and emits both machine-readable and human-readable reports:
 
-- `docs/reports/primitive-duplication-latest.json`
-- `docs/reports/primitive-duplication-latest.md`
+- `docs/06-Daily/reports/primitive-duplication-latest.json`
+- `docs/06-Daily/reports/primitive-duplication-latest.md`
 
 The audit classifies findings into SO-specific categories:
 
@@ -84,8 +84,8 @@ After this ADR: a single command produces one report covering all SO surface typ
 ```bash
 python3 scripts/primitive_duplication_audit.py --project-root . --json
 # Writes:
-#   docs/reports/primitive-duplication-latest.json
-#   docs/reports/primitive-duplication-latest.md
+#   docs/06-Daily/reports/primitive-duplication-latest.json
+#   docs/06-Daily/reports/primitive-duplication-latest.md
 ```
 
 Each finding includes a `kind` (exact-copy, near-copy, yaml-structural-repeat, bash-function-repeat, python-function-repeat, primitive-overlap), a `recommendation`, and a `proposed_common_home`. Findings are advisory — they do not block CI until the operator decides to gate on them.
@@ -106,14 +106,14 @@ Each finding includes a `kind` (exact-copy, near-copy, yaml-structural-repeat, b
 If the human review and the audit report disagree on whether two functions are truly duplicates:
 - Check the `kind`: `near-copy` uses token-shingle similarity and can produce false positives if thresholds are too loose. Review the normalized forms in the finding detail.
 - Check the `proposed_common_home`: if the finding suggests `lib/` but the function is in a harness-specific hook for isolation, the duplication is intentional — label it in the ACC adapter or add an exclusion pattern.
-- The report at `docs/reports/primitive-duplication-latest.md` is authoritative for the current scan. Rerun with `--json` after any exclusion changes to confirm the finding disappears.
+- The report at `docs/06-Daily/reports/primitive-duplication-latest.md` is authoritative for the current scan. Rerun with `--json` after any exclusion changes to confirm the finding disappears.
 
 ### Reading guide for cold readers
 
 1. Run `python3 scripts/primitive_duplication_audit.py --project-root . --json` to get the current duplication state.
-2. Read `docs/reports/primitive-duplication-latest.md` for the human-readable findings with recommendations.
-3. Read `docs/architecture/primitive-duplication-audit.md` for the design rationale (why each `kind` maps to its `proposed_common_home`).
-4. Read `docs/manual-tests/primitive-duplication-audit.md` for the expected output shape across finding types.
+2. Read `docs/06-Daily/reports/primitive-duplication-latest.md` for the human-readable findings with recommendations.
+3. Read `docs/04-Concepts/architecture/primitive-duplication-audit.md` for the design rationale (why each `kind` maps to its `proposed_common_home`).
+4. Read `docs/09-Quality/manual-tests/primitive-duplication-audit.md` for the expected output shape across finding types.
 5. The audit is an ACC adapter — it runs alongside readiness/projection debt reporting during ACC refresh, not as a separate CI gate.
 
 ## Alternatives rejected
@@ -137,4 +137,4 @@ python3 -m py_compile scripts/primitive_duplication_audit.py scripts/acc_pipelin
 
 - Implemented in `scripts/primitive_duplication_audit.py`: unified duplicate detection and JSON/Markdown report generation.
 - Implemented in `tests/unit/test_primitive_duplication_audit.py`: Python, Bash, YAML, and CLI report coverage.
-- Documented in `docs/architecture/primitive-duplication-audit.md` and `docs/manual-tests/primitive-duplication-audit.md`.
+- Documented in `docs/04-Concepts/architecture/primitive-duplication-audit.md` and `docs/09-Quality/manual-tests/primitive-duplication-audit.md`.

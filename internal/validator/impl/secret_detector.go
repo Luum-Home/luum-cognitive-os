@@ -114,7 +114,7 @@ func (v *SecretDetectorValidator) Validate(_ context.Context, hookCtx *hook.Cont
 		FixHint:     hint,
 		Reference: validator.Reference{
 			Code: "COS-SEC-002",
-			URL:  "docs/architecture/cos-dispatch/secret-detector.md",
+			URL:  "docs/04-Concepts/architecture/cos-dispatch/secret-detector.md",
 		},
 		Details: map[string]string{
 			"file":    path,

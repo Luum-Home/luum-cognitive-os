@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# PURPOSE: Validate section contract for docs/adrs/ADR-*.md on Write/Edit (ADR-067 Phase 2)
+# PURPOSE: Validate section contract for docs/02-Decisions/adrs/ADR-*.md on Write/Edit (ADR-067 Phase 2)
 # EVENT: PostToolUse
 # MATCHER: Edit|Write
 # EXIT_CODES: 0=advisory/pass, 2=block (strict mode only)
 # Bash 3.x compatible. Cutoff: ADR-067+. Field contract: ADR-067 Phase 2.
 set -euo pipefail
-# Fires when an agent writes or edits a file matching docs/adrs/ADR-*.md.
+# Fires when an agent writes or edits a file matching docs/02-Decisions/adrs/ADR-*.md.
 #
 # Behavior:
 #   Default:     WARN to stderr (exit 0) — advisory only.
@@ -50,8 +50,8 @@ except Exception:
     print('')
 " 2>/dev/null || true)"
 
-# Only process docs/adrs/ADR-NNN-*.md paths
-if ! printf '%s' "$FILE_PATH" | grep -qE '(^|/)docs/adrs/ADR-[0-9]'; then
+# Only process docs/02-Decisions/adrs/ADR-NNN-*.md paths
+if ! printf '%s' "$FILE_PATH" | grep -qE '(^|/)docs/02-Decisions/adrs/ADR-[0-9]'; then
     exit 0
 fi
 

@@ -5,7 +5,7 @@
       "command": "COS_CLAUDE_EXEC_MODEL=sonnet scripts/cos-worker-run-once --project-dir /tmp/cos-claude-provider.6NbDJQ --worker-id host-claude-proof --allow-provider-call --json",
       "does_not_prove": "Container credential inheritance, remote ingress, VM, Kubernetes, or non-host Claude execution.",
       "evidence_artifacts": [
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md",
         "/tmp/cos-claude-provider.6NbDJQ/.cognitive-os/service/artifacts/task-claude-provider-proof/lease-7c3a6639c9e0"
       ],
       "exit_code": 0,
@@ -19,7 +19,7 @@
       "command": "COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=gpt-5.4 scripts/cos-headless-service-drill --json --keep-workspace",
       "does_not_prove": "Claude provider execution, container credential inheritance, remote ingress, VM, Kubernetes, or unconfigured providers.",
       "evidence_artifacts": [
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md",
         "/tmp/cos-headless-service.Ul85fJ/.cognitive-os/service/artifacts/task-headless-codex-provider-drill/lease-4e02aee4c48d"
       ],
       "exit_code": 0,
@@ -32,8 +32,8 @@
       "command": "scripts/cos-headless-service-drill --json",
       "does_not_prove": "Provider-backed Codex/Claude execution or remote cloud worker support.",
       "evidence_artifacts": [
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
-        "docs/reports/proof-drill-evidence-latest.json",
+        "docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/06-Daily/reports/proof-drill-evidence-latest.json",
         "/tmp/cos-headless-service.4VpVjp/.cognitive-os/service/artifacts/task-headless-service-drill/lease-f54e6542ba02"
       ],
       "exit_code": 0,
@@ -47,7 +47,7 @@
       "command": "bash scripts/smoke-multi-provider-fallback.sh",
       "does_not_prove": "Providers skipped as unconfigured.",
       "evidence_artifacts": [
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
+        "docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md"
       ],
       "exit_code": 0,
       "id": "multi-provider-fallback-live-smoke",
@@ -59,7 +59,7 @@
       "command": "bash scripts/smoke-qwen-fallback.sh",
       "does_not_prove": "Other providers, IDE harness projection, or account-free consumer support.",
       "evidence_artifacts": [
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
+        "docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md"
       ],
       "exit_code": 0,
       "id": "qwen-fallback-live-smoke",
@@ -69,5 +69,5 @@
     }
   ],
   "schema_version": "proof-drill-evidence.v1",
-  "source_report": "docs/reports/proof-drill-evidence-latest.json"
+  "source_report": "docs/06-Daily/reports/proof-drill-evidence-latest.json"
 }

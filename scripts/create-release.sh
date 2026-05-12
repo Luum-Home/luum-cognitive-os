@@ -21,11 +21,11 @@ if [ -f "$CHANGELOG_PATH" ]; then
     echo "Updated CHANGELOG.md: [Unreleased] -> [${VERSION}] - ${TODAY}"
 fi
 
-# Update docs/INDEX.md version reference
-INDEX_PATH="$PROJECT_ROOT/docs/INDEX.md"
+# Update docs/00-MOCs/entrypoints/INDEX.md version reference
+INDEX_PATH="$PROJECT_ROOT/docs/00-MOCs/entrypoints/INDEX.md"
 if [ -f "$INDEX_PATH" ]; then
     perl -i -pe "s/v[0-9]+\\.[0-9]+\\.[0-9]+/v${VERSION}/ if \$. == 1" "$INDEX_PATH"
-    echo "Updated docs/INDEX.md version to v${VERSION}"
+    echo "Updated docs/00-MOCs/entrypoints/INDEX.md version to v${VERSION}"
 fi
 
 # Count actual components
@@ -100,11 +100,11 @@ bash scripts/cos-init.sh --full       # Everything
 
 ## Links
 
-- [Quick Start](docs/quickstart.md)
-- [Getting Started](docs/getting-started.md)
-- [Architecture Principles](docs/architecture-principles.md)
-- [FAQ](docs/faq.md)
-- [Roadmap](docs/roadmap.md)
+- [Quick Start](docs/00-MOCs/entrypoints/quickstart.md)
+- [Getting Started](docs/00-MOCs/entrypoints/getting-started.md)
+- [Architecture Principles](docs/04-Concepts/architecture-principles.md)
+- [FAQ](docs/00-MOCs/entrypoints/faq.md)
+- [Roadmap](docs/01-Build-Log/root/roadmap.md)
 
 ## License
 

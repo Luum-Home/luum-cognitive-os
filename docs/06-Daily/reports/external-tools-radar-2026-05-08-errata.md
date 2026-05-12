@@ -1,8 +1,8 @@
 ---
 report_type: external-tools-radar-errata
 date: 2026-05-08
-source_index: docs/reports/external-tools-radar-INDEX.md
-source_radar: docs/reports/external-tools-radar-2026-05-08.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
+source_radar: docs/06-Daily/reports/external-tools-radar-2026-05-08.md
 status: append-only-errata
 ---
 
@@ -16,17 +16,17 @@ prevents future implementation work from acting on stale claims.
 
 **Stale statements**
 
-- `docs/reports/external-tools-radar-2026-05-08.md` Wave 1 H1 asks to create
+- `docs/06-Daily/reports/external-tools-radar-2026-05-08.md` Wave 1 H1 asks to create
   ADR-253 tombstone for squads.
-- `docs/reports/cross-check-C-orchestration-2026-05-08.md` and
-  `docs/reports/cross-check-E-observability-debt-2026-05-08.md` say no squad
+- `docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md` and
+  `docs/06-Daily/reports/cross-check-E-observability-debt-2026-05-08.md` say no squad
   tombstone exists.
 
 **Current reality**
 
-- `docs/adrs/ADR-253-tombstone-squads.md` exists and records the squads
+- `docs/02-Decisions/adrs/ADR-253-tombstone-squads.md` exists and records the squads
   tombstone/supersedence boundary.
-- `docs/reports/external-tools-radar-INDEX.md` already lists ADR-253 in Phase
+- `docs/06-Daily/reports/external-tools-radar-INDEX.md` already lists ADR-253 in Phase
   3.B.
 
 **Action**
@@ -132,13 +132,13 @@ choose one of:
 
 ## E9 — Phase 2 cluster path correction
 
-The index previously implied a `docs/research/repo-scout/clusters/` subdir.
-The actual cluster files are directly under `docs/research/repo-scout/` as
+The index previously implied a `docs/03-PoCs/research/repo-scout/clusters/` subdir.
+The actual cluster files are directly under `docs/03-PoCs/research/repo-scout/` as
 `cluster-*-2026-05-06.md`.
 
 ## E10 — Phase 0 `cos-vs-vanilla` date is a narrative date, not commit date
 
-The index lists `docs/business/cos-vs-vanilla-dx-review.md` under 2026-03-27,
+The index lists `docs/08-References/business/cos-vs-vanilla-dx-review.md` under 2026-03-27,
 but git provenance reports later creation/review dates. Treat this row as
 "origin framing" rather than exact artifact creation date unless provenance is
 added.

@@ -12,9 +12,9 @@ implementation_files:
   - manifests/documentation-truth-claims.yaml
   - scripts/documentation_truth_audit.py
   - scripts/cos-documentation-truth-audit
-  - docs/architecture/documentation-truth-control.md
-  - docs/reports/documentation-truth-latest.json
-  - docs/reports/documentation-truth-latest.md
+  - docs/04-Concepts/architecture/documentation-truth-control.md
+  - docs/06-Daily/reports/documentation-truth-latest.json
+  - docs/06-Daily/reports/documentation-truth-latest.md
   - tests/contracts/test_documentation_truth_audit.py
   - tests/unit/test_documentation_truth_audit.py
   - tests/unit/test_acc_documentation_truth_adapter.py
@@ -47,8 +47,8 @@ Each claim declares:
 
 Add `scripts/documentation_truth_audit.py` and `scripts/cos-documentation-truth-audit` to audit those claims and produce:
 
-- `docs/reports/documentation-truth-latest.json`
-- `docs/reports/documentation-truth-latest.md`
+- `docs/06-Daily/reports/documentation-truth-latest.json`
+- `docs/06-Daily/reports/documentation-truth-latest.md`
 
 Add generated truth blocks to docs where facts should be report-derived instead of hand-maintained.
 
@@ -68,7 +68,7 @@ Wire the output into ACC as adapter `documentation_truth` so stale or contradict
 | Surface | Before ADR-277 | After ADR-277 |
 |---|---|---|
 | Volatile prose claims | maintained by hand, drift detected ad-hoc in review | declared in `manifests/documentation-truth-claims.yaml`, audited each run |
-| Stale phrases | discovered when a reader catches them | flagged as findings in `docs/reports/documentation-truth-latest.{json,md}` |
+| Stale phrases | discovered when a reader catches them | flagged as findings in `docs/06-Daily/reports/documentation-truth-latest.{json,md}` |
 | Generated truth blocks | optional convention | required at declared anchor; auditor enforces block presence + freshness |
 | ACC capability coverage | independent of doc currentness | `documentation_truth` adapter feeds claim results into ACC; stale docs lower capability classification |
 
@@ -81,14 +81,14 @@ Wire the output into ACC as adapter `documentation_truth` so stale or contradict
    python3 scripts/documentation_truth_audit.py --project-dir . --json --fail-on-block
    ```
    (or via `scripts/cos-documentation-truth-audit`).
-4. The audit refreshes `docs/reports/documentation-truth-latest.{json,md}` and writes any declared generated truth blocks.
+4. The audit refreshes `docs/06-Daily/reports/documentation-truth-latest.{json,md}` and writes any declared generated truth blocks.
 5. Stale or contradictory claims surface in ACC via the `documentation_truth` adapter on the next ACC run.
 
 ### Reading guide for cold readers
 
 1. Open `manifests/documentation-truth-claims.yaml` to see which claims are tracked.
-2. Read `docs/architecture/documentation-truth-control.md` for the design + extension protocol.
-3. Read `docs/reports/documentation-truth-latest.md` for current claim health.
+2. Read `docs/04-Concepts/architecture/documentation-truth-control.md` for the design + extension protocol.
+3. Read `docs/06-Daily/reports/documentation-truth-latest.md` for current claim health.
 4. Run the audit in `--json` mode to inspect machine findings (`severity`, `code`, `claim_id`, `surface`).
 5. Contract tests at `tests/contracts/test_documentation_truth_audit.py` show valid claim shapes.
 
@@ -116,9 +116,9 @@ The implementation is validated by:
 ls -la manifests/documentation-truth-claims.yaml
 ls -la scripts/documentation_truth_audit.py
 ls -la scripts/cos-documentation-truth-audit
-ls -la docs/architecture/documentation-truth-control.md
-ls -la docs/reports/documentation-truth-latest.json
-ls -la docs/reports/documentation-truth-latest.md
+ls -la docs/04-Concepts/architecture/documentation-truth-control.md
+ls -la docs/06-Daily/reports/documentation-truth-latest.json
+ls -la docs/06-Daily/reports/documentation-truth-latest.md
 ls -la tests/contracts/test_documentation_truth_audit.py
 ls -la tests/unit/test_documentation_truth_audit.py
 ```

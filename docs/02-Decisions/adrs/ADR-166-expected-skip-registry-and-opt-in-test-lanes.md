@@ -11,7 +11,7 @@ implementation_files:
   - manifests/test-skip-registry.yaml
   - scripts/test_skip_registry.py
   - scripts/pytest-with-summary.sh
-  - docs/architecture/expected-skip-registry-and-opt-in-test-lanes.md
+  - docs/04-Concepts/architecture/expected-skip-registry-and-opt-in-test-lanes.md
   - tests/unit/test_test_skip_registry.py
 tier: maintainer
 tags: [testing, validation, skips, laptop-lane, opt-in-lanes]

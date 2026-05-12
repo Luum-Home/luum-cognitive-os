@@ -21,9 +21,9 @@ across hooks, scripts, tests, and docs.
 |---|---|---|
 | Hook suppression | `DISABLE_HOOK_BLAST_RADIUS`, `DISABLE_HOOK_RATE_LIMITER`, `DISABLE_HOOK_SEMGREP_SCAN` | `rules/hook-security-profiles.md` |
 | Common hook implementation | `check_disabled_env` | `hooks/_lib/common.sh` |
-| LLM dispatch | `COS_DISABLE_QWEN`, `COS_FORCE_CLAUDE_PRIMARY`, `COS_DISABLE_LLM_FALLBACK` | `rules/llm-dispatch.md`, `docs/runbooks/llm-dispatch.md` |
-| Startup safe mode | `COS_STARTUP_SAFE_MODE`, `COS_DISABLE_SESSIONSTART_HOOKS` | `docs/adrs/ADR-104-startup-circuit-breaker.md` |
-| Test opt-ins | `COS_RUN_HEADLESS_SERVICE_DOCKER`, `COS_RUN_DATABASE_CONTAINERS`, `COS_RUN_OPTIONAL_APP_SERVICES` | `docs/testing.md` |
+| LLM dispatch | `COS_DISABLE_QWEN`, `COS_FORCE_CLAUDE_PRIMARY`, `COS_DISABLE_LLM_FALLBACK` | `rules/llm-dispatch.md`, `docs/05-Methodology/runbooks/llm-dispatch.md` |
+| Startup safe mode | `COS_STARTUP_SAFE_MODE`, `COS_DISABLE_SESSIONSTART_HOOKS` | `docs/02-Decisions/adrs/ADR-104-startup-circuit-breaker.md` |
+| Test opt-ins | `COS_RUN_HEADLESS_SERVICE_DOCKER`, `COS_RUN_DATABASE_CONTAINERS`, `COS_RUN_OPTIONAL_APP_SERVICES` | `docs/09-Quality/root/testing.md` |
 | Safety bypass or allow flags | `COS_ALLOW_CONCURRENT_WRITES`, `COS_ALLOW_DESTRUCTIVE_GIT`, `COS_ALLOW_DIRECT_MAIN` | Distributed in hooks, tests, and docs |
 | Optional services and scanners | `SEMGREP_ENABLED`, `AGUARA_ENABLED`, `AGENT_BUS_ENABLED`, `BIFROST_ENABLED` | Distributed in hooks, tests, reports, and subsystem docs |
 | Watchdog and observability | `COS_SESSION_WATCHDOG_DISABLE`, `SO_WATCHDOG_DRY_RUN`, `COS_MLFLOW_HOTPATH_ENABLED` | Distributed in watchdog, observability, and test files |
@@ -46,7 +46,7 @@ DISABLE_HOOK_BLAST_RADIUS=true
 ### Test opt-ins
 
 Optional and heavy test lanes use `COS_RUN_*` flags documented in
-`docs/testing.md`. These flags are explicit opt-ins and prevent Docker,
+`docs/09-Quality/root/testing.md`. These flags are explicit opt-ins and prevent Docker,
 external services, or heavyweight tests from running in default lanes.
 
 Example:
@@ -58,7 +58,7 @@ COS_RUN_HEADLESS_SERVICE_DOCKER=1 bash scripts/pytest-with-summary.sh -- tests/i
 ### LLM dispatch controls
 
 LLM routing has subsystem-specific kill switches documented in
-`rules/llm-dispatch.md` and `docs/runbooks/llm-dispatch.md`.
+`rules/llm-dispatch.md` and `docs/05-Methodology/runbooks/llm-dispatch.md`.
 
 Examples:
 
@@ -74,11 +74,11 @@ The initial investigation found no single source of truth for all runtime flags.
 At that time, the repository did not contain a central artifact such as:
 
 - `manifests/runtime-env-flags.yaml`
-- `docs/runtime-env-flags.md`
+- `docs/04-Concepts/root/runtime-env-flags.md`
 - `rules/env-flags.md`
 
 That gap is now partially closed by `manifests/runtime-env-flags.yaml` and
-`docs/runtime-env-flags.md`. The manifest is a public-flag registry, not an
+`docs/04-Concepts/root/runtime-env-flags.md`. The manifest is a public-flag registry, not an
 exhaustive grep dump of every local shell variable.
 
 ## Implication for new flags
@@ -97,7 +97,7 @@ properties:
 ## Recommended follow-up
 
 1. Keep `manifests/runtime-env-flags.yaml` current for public runtime flags.
-2. Keep `docs/runtime-env-flags.md` aligned with the manifest.
+2. Keep `docs/04-Concepts/root/runtime-env-flags.md` aligned with the manifest.
 3. Maintain a contract test that validates required fields for each public flag:
    name, family, default, allowed values, owner file, documentation link,
    risk level, and whether it can bypass a safety primitive.

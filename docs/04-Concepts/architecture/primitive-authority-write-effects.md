@@ -32,7 +32,7 @@ Those facts answer “where is it visible?” They do not fully answer “what m
 | Class | May read | May write | Must not write |
 |---|---|---|---|
 | `observe-only` | SO or consumer evidence declared by the command | Generated reports, metrics, or stdout only | Live hooks, rules, skills, scripts, manifests, consumer source files, credentials. |
-| `propose-only` | Sanitized consumer evidence and SO review context | Review artifacts such as `.cognitive-os/improvements/proposals/` or `docs/proposals/` | Runtime state, live primitive files, policy manifests, consumer runtime files, raw vaults, credentials. |
+| `propose-only` | Sanitized consumer evidence and SO review context | Review artifacts such as `.cognitive-os/improvements/proposals/` or `docs/03-PoCs/proposals/` | Runtime state, live primitive files, policy manifests, consumer runtime files, raw vaults, credentials. |
 | `profile-projection-write` | SO primitive sources and selected project metadata | Declared projection roots such as `.cognitive-os/`, harness settings files, shell/CI driver symlinks, generated workflows, and install metadata | User-global config, unrelated consumer source, SO source while running inside a consumer project. |
 | `project-local-write` | Current project state | Explicit project-local generated artifacts or project-local primitive extensions | The source SO checkout, user-global config, secrets, unrelated sibling projects. |
 | `os-maintainer-write` | SO repository state | SO repository files within the task scope | Consumer repositories, user-global config, credentials, unrelated worktrees. |
@@ -56,7 +56,7 @@ Those facts answer “where is it visible?” They do not fully answer “what m
 ADR-276 implements the first authority ratchet:
 
 - `manifests/primitive-authority.yaml` declares authority modes, writable surfaces, derivation rules, explicit high-risk rows, and blocking contradictions.
-- `scripts/primitive_authority_audit.py` statically scans scripts for obvious Python and shell write operations, derives authority from existing scope/projection/readiness manifests, and writes `docs/reports/primitive-authority-latest.{json,md}`.
+- `scripts/primitive_authority_audit.py` statically scans scripts for obvious Python and shell write operations, derives authority from existing scope/projection/readiness manifests, and writes `docs/06-Daily/reports/primitive-authority-latest.{json,md}`.
 - The same auditor runs a dynamic write-effects audit with filesystem-delta smokes for the initial safe-to-run slice: consumer improvement export/import, Shell/CI projection, and Codex `cos_init` projection.
 - ACC consumes the report as `authority_write_effects`.
 
@@ -90,5 +90,5 @@ Generated documentation truth: primitive authority/write-effects.
 Authority audit status: pass.
 Scripts audited: 536; blockers: 0; dynamic smokes: 4; dynamic blocks: 0.
 Contract surfaces: manifests/primitive-authority.yaml; scripts/primitive_authority_audit.py; ACC adapter authority_write_effects.
-Sources: docs/reports/primitive-authority-latest.json; docs/adrs/ADR-276-primitive-authority-write-effects.md.
+Sources: docs/06-Daily/reports/primitive-authority-latest.json; docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md.
 <!-- GENERATED:documentation-truth:primitive_authority_write_effects:end -->

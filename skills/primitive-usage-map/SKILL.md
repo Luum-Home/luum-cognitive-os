@@ -55,8 +55,8 @@ Write custom report files:
 ```bash
 python3 scripts/primitive_usage_map.py \
   --target-family scripts \
-  --json-out docs/reports/primitive-usage-map-scripts.json \
-  --md-out docs/reports/primitive-usage-map-scripts.md
+  --json-out docs/06-Daily/reports/primitive-usage-map-scripts.json \
+  --md-out docs/06-Daily/reports/primitive-usage-map-scripts.md
 ```
 
 ## Interpretation

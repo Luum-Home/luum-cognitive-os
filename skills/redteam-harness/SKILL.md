@@ -65,7 +65,7 @@ Or with jq if you have baseline JSON:
 
 ```bash
 jq '.scenarios[] | [.id, .status, .verb, .severity] | @tsv' \
-  docs/reports/redteam-baseline.json
+  docs/06-Daily/reports/redteam-baseline.json
 ```
 
 ### 2. Run a Single Scenario (Replay Mode)
@@ -112,27 +112,27 @@ done
 
 python3 scripts/redteam_aggregate.py \
   --input-dir "$OUT" \
-  --output-json docs/reports/redteam-baseline.json \
-  --output-md  docs/reports/redteam-baseline.md
+  --output-json docs/06-Daily/reports/redteam-baseline.json \
+  --output-md  docs/06-Daily/reports/redteam-baseline.md
 ```
 
 ### 4. Aggregate Baseline (from existing JSON results)
 
 ```bash
 python3 scripts/redteam_aggregate.py \
-  --input-dir docs/reports/redteam \
-  --output-json docs/reports/redteam-baseline.json \
-  --output-md  docs/reports/redteam-baseline.md
+  --input-dir docs/06-Daily/reports/redteam \
+  --output-json docs/06-Daily/reports/redteam-baseline.json \
+  --output-md  docs/06-Daily/reports/redteam-baseline.md
 ```
 
 ### 5. Compare Against Prior Baseline
 
 ```bash
 python3 scripts/redteam_aggregate.py \
-  --input-dir docs/reports/redteam \
-  --output-json docs/reports/redteam-baseline-new.json \
-  --output-md  docs/reports/redteam-baseline-new.md \
-  --baseline-compare docs/reports/redteam-baseline.json
+  --input-dir docs/06-Daily/reports/redteam \
+  --output-json docs/06-Daily/reports/redteam-baseline-new.json \
+  --output-md  docs/06-Daily/reports/redteam-baseline-new.md \
+  --baseline-compare docs/06-Daily/reports/redteam-baseline.json
 ```
 
 The Markdown output will include a **Baseline Diff** section showing new

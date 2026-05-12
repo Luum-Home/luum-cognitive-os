@@ -41,7 +41,7 @@ def test_current_capability_matrix_passes_and_covers_recent_adrs() -> None:
 
 
 def test_capability_matrix_blocks_uncovered_accepted_adr(tmp_path: Path) -> None:
-    write(tmp_path / "docs/adrs/ADR-999-demo.md", "# ADR-999\n\n## Status\nAccepted\n")
+    write(tmp_path / "docs/02-Decisions/adrs/ADR-999-demo.md", "# ADR-999\n\n## Status\nAccepted\n")
     manifest = tmp_path / "capabilities.yaml"
     manifest.write_text(
         yaml.safe_dump(
@@ -51,7 +51,7 @@ def test_capability_matrix_blocks_uncovered_accepted_adr(tmp_path: Path) -> None
                     "adr_coverage": {"min": 999, "max": 999, "require_accepted_or_resolved_adr_covered": True},
                     "public_claim_allowed_levels": ["REAL", "PARTIAL", "RESOLVED"],
                     "real_requires": {"implementation": True, "consumers": True, "tests": True, "receipt_or_audit": True},
-                    "generated_outputs": {"matrix_md": "docs/capabilities/MATRIX.md", "latest_json": "docs/reports/capability-coverage-latest.json"},
+                    "generated_outputs": {"matrix_md": "docs/07-Capabilities/capabilities/MATRIX.md", "latest_json": "docs/06-Daily/reports/capability-coverage-latest.json"},
                 },
                 "capabilities": [],
             },
@@ -67,7 +67,7 @@ def test_capability_matrix_blocks_uncovered_accepted_adr(tmp_path: Path) -> None
 
 
 def test_capability_matrix_blocks_real_capability_without_behavioral_evidence(tmp_path: Path) -> None:
-    write(tmp_path / "docs/adrs/ADR-100-demo.md", "# ADR-100\n\n## Status\nAccepted\n")
+    write(tmp_path / "docs/02-Decisions/adrs/ADR-100-demo.md", "# ADR-100\n\n## Status\nAccepted\n")
     write(tmp_path / "lib/demo.py", "")
     manifest = tmp_path / "capabilities.yaml"
     manifest.write_text(
@@ -78,7 +78,7 @@ def test_capability_matrix_blocks_real_capability_without_behavioral_evidence(tm
                     "adr_coverage": {"min": 100, "max": 100, "require_accepted_or_resolved_adr_covered": True},
                     "public_claim_allowed_levels": ["REAL", "PARTIAL", "RESOLVED"],
                     "real_requires": {"implementation": True, "consumers": True, "tests": True, "receipt_or_audit": True},
-                    "generated_outputs": {"matrix_md": "docs/capabilities/MATRIX.md", "latest_json": "docs/reports/capability-coverage-latest.json"},
+                    "generated_outputs": {"matrix_md": "docs/07-Capabilities/capabilities/MATRIX.md", "latest_json": "docs/06-Daily/reports/capability-coverage-latest.json"},
                 },
                 "capabilities": [
                     {
@@ -112,7 +112,7 @@ def test_capability_matrix_blocks_real_capability_without_behavioral_evidence(tm
 
 
 def test_capability_matrix_write_and_check_generated_roundtrip(tmp_path: Path) -> None:
-    write(tmp_path / "docs/adrs/ADR-101-demo.md", "# ADR-101\n\n## Status\nAccepted\n")
+    write(tmp_path / "docs/02-Decisions/adrs/ADR-101-demo.md", "# ADR-101\n\n## Status\nAccepted\n")
     write(tmp_path / "lib/demo.py", "")
     write(tmp_path / "tests/test_demo.py", "def test_demo():\n    assert True\n")
     manifest = tmp_path / "capabilities.yaml"
@@ -124,7 +124,7 @@ def test_capability_matrix_write_and_check_generated_roundtrip(tmp_path: Path) -
                     "adr_coverage": {"min": 101, "max": 101, "require_accepted_or_resolved_adr_covered": True},
                     "public_claim_allowed_levels": ["REAL", "PARTIAL", "RESOLVED"],
                     "real_requires": {"implementation": True, "consumers": True, "tests": True, "receipt_or_audit": True},
-                    "generated_outputs": {"matrix_md": "docs/capabilities/MATRIX.md", "latest_json": "docs/reports/capability-coverage-latest.json"},
+                    "generated_outputs": {"matrix_md": "docs/07-Capabilities/capabilities/MATRIX.md", "latest_json": "docs/06-Daily/reports/capability-coverage-latest.json"},
                 },
                 "capabilities": [
                     {
@@ -153,5 +153,5 @@ def test_capability_matrix_write_and_check_generated_roundtrip(tmp_path: Path) -
 
     assert write_payload["status"] == "pass"
     assert check_payload["status"] == "pass"
-    assert (tmp_path / "docs/capabilities/MATRIX.md").exists()
-    assert (tmp_path / "docs/reports/capability-coverage-latest.json").exists()
+    assert (tmp_path / "docs/07-Capabilities/capabilities/MATRIX.md").exists()
+    assert (tmp_path / "docs/06-Daily/reports/capability-coverage-latest.json").exists()

@@ -26,7 +26,7 @@ Proposed (2026-05-02). R1 has landed; R2-R4 remain in flight and are governed by
 
 ## Context
 
-On 2026-05-02, a compounding false-done incident produced **5 or more involuntary revert events in a single session**. Post-mortem analysis (see `docs/incidents/2026-05-02-false-done-compounding.md` and `docs/reports/stash-resolution-2026-05-01.md`) identified a shared root cause: `git stash` operations in OS hooks were:
+On 2026-05-02, a compounding false-done incident produced **5 or more involuntary revert events in a single session**. Post-mortem analysis (see `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md` and `docs/06-Daily/reports/stash-resolution-2026-05-01.md`) identified a shared root cause: `git stash` operations in OS hooks were:
 
 - **Anonymous** — stash messages were auto-generated (`WIP on branch`), making forensic identification unreliable
 - **Destructive on failure** — hooks used `git stash pop`, which drops the stash entry on apply even when the apply itself partially fails, losing work silently
@@ -182,10 +182,10 @@ python3 -m pytest tests/integration/test_stash_lock.py -q
 
 ## References
 
-- ADR-105 — Claim Verification Contract (`docs/adrs/ADR-105-claim-verification-contract.md`)
-- ADR-106 — Multi-Session Safety Primitives (`docs/adrs/ADR-106-multi-session-safety-primitives.md`)
-- ADR-113 — Validation Capsule Liveness (`docs/adrs/ADR-113-validation-capsule-liveness.md`)
-- ADR-116 — Multi-Session Coordination Primitives (`docs/adrs/ADR-116-multi-session-coordination-primitives.md`)
-- Post-mortem: `docs/incidents/2026-05-02-false-done-compounding.md`
-- Investigation report: `docs/reports/stash-resolution-2026-05-01.md`
+- ADR-105 — Claim Verification Contract (`docs/02-Decisions/adrs/ADR-105-claim-verification-contract.md`)
+- ADR-106 — Multi-Session Safety Primitives (`docs/02-Decisions/adrs/ADR-106-multi-session-safety-primitives.md`)
+- ADR-113 — Validation Capsule Liveness (`docs/02-Decisions/adrs/ADR-113-validation-capsule-liveness.md`)
+- ADR-116 — Multi-Session Coordination Primitives (`docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md`)
+- Post-mortem: `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
+- Investigation report: `docs/06-Daily/reports/stash-resolution-2026-05-01.md`
 - Revert-investigation task context: R1 (landed), R2–R4 (in flight)

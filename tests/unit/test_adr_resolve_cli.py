@@ -32,7 +32,7 @@ def test_resolves_tool_gate_to_adr_216() -> None:
     assert payload["found"] is True
     assert payload["matches_expectation"] is True
     assert payload["adr"]["status"] == "accepted"
-    assert payload["adr"]["path"] == "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md"
+    assert payload["adr"]["path"] == "docs/02-Decisions/adrs/ADR-216-tool-discovery-pre-use-gate.md"
 
 
 def test_detects_adr_214_tool_gate_mismatch_and_suggests_216() -> None:

@@ -1,6 +1,6 @@
 # Primitive Readiness Review — 2026-05-04
 
-> First continuity-cycle review produced after `docs/architecture/primitive-readiness-continuity-plan.md`. This is a working report, not a final readiness sign-off.
+> First continuity-cycle review produced after `docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md`. This is a working report, not a final readiness sign-off.
 
 ## Lifecycle Manifest Surface
 

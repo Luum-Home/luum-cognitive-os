@@ -87,7 +87,7 @@ func (v *TokenBudgetMonitorValidator) Validate(_ context.Context, hookCtx *hook.
 			FixHint: "To force continue: set RATE_LIMIT_OVERRIDE=true",
 			Reference: validator.Reference{
 				Code: "COS-RATE-002",
-				URL:  "docs/architecture/cos-dispatch/token-budget-monitor.md",
+				URL:  "docs/04-Concepts/architecture/cos-dispatch/token-budget-monitor.md",
 			},
 			Details: map[string]string{
 				"tokens_used": strconv.FormatInt(tokens, 10),
@@ -105,7 +105,7 @@ func (v *TokenBudgetMonitorValidator) Validate(_ context.Context, hookCtx *hook.
 			FixHint: "Wait until the next hour or set RATE_LIMIT_OVERRIDE=true",
 			Reference: validator.Reference{
 				Code: "COS-RATE-003",
-				URL:  "docs/architecture/cos-dispatch/token-budget-monitor.md",
+				URL:  "docs/04-Concepts/architecture/cos-dispatch/token-budget-monitor.md",
 			},
 			Details: map[string]string{
 				"agents": strconv.Itoa(agents),
@@ -120,7 +120,7 @@ func (v *TokenBudgetMonitorValidator) Validate(_ context.Context, hookCtx *hook.
 				pct, tokens, v.hourlyTokens, agents),
 			Reference: validator.Reference{
 				Code: "COS-RATE-004",
-				URL:  "docs/architecture/cos-dispatch/token-budget-monitor.md",
+				URL:  "docs/04-Concepts/architecture/cos-dispatch/token-budget-monitor.md",
 			},
 		}
 	}

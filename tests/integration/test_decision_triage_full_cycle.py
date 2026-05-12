@@ -72,7 +72,7 @@ def test_full_decision_cycle() -> None:
     """Full cycle: create temp report → triage finds it → mark answered → re-run → ANSWERED.
 
     Verifies all 5 fixes work together:
-    - Fix 1: Report in docs/reports/ (git-tracked path, not gitignored)
+    - Fix 1: Report in docs/06-Daily/reports/ (git-tracked path, not gitignored)
     - Fix 2: --mark-answered argument works
     - Fix 3: engram CLI cross-ref works (not lib.engram import)
     - Fix 5: Live integration test passes
@@ -87,7 +87,7 @@ def test_full_decision_cycle() -> None:
     report_path = None
 
     try:
-        # Step 1: Create temp report in docs/reports/ (Fix 1: correct path)
+        # Step 1: Create temp report in docs/06-Daily/reports/ (Fix 1: correct path)
         report_path = _create_temp_report(test_id, REPORTS_DIR)
         assert report_path.exists(), f"Test report not created at {report_path}"
 
@@ -108,7 +108,7 @@ def test_full_decision_cycle() -> None:
         ]
         assert len(test_decisions) >= 1, (
             f"Expected at least 1 decision from test report {test_id}, "
-            f"got 0. Triage may not be scanning docs/reports/ correctly. "
+            f"got 0. Triage may not be scanning docs/06-Daily/reports/ correctly. "
             f"All sources: {list({d.get('source_path', '') for d in decisions})[:5]}"
         )
 
@@ -212,7 +212,7 @@ def test_critical_decision_count_reduced() -> None:
         f"Found {critical_count} critical decisions (target: <= 10). "
         f"The systemic cleanup (ADR-069 §5 fix, Fix 1-3) should reduce this from 33. "
         f"If count is still high, check: "
-        f"(1) docs/reports/ may have old reports with Decision Points sections, "
+        f"(1) docs/06-Daily/reports/ may have old reports with Decision Points sections, "
         f"(2) engram observations under decision/* may be missing, "
         f"(3) urgency classifier thresholds in decision_triage.py may need tuning. "
         f"Top critical decisions: "

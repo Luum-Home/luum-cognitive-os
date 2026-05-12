@@ -57,7 +57,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos-doctor-preserve.sh",
-        "docs/architecture/preserve-branch-lifecycle.md"
+        "docs/04-Concepts/architecture/preserve-branch-lifecycle.md"
       ],
       "runtime_projection": false
     }
@@ -153,7 +153,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos-doctor-preserve.sh",
-        "docs/architecture/preserve-branch-lifecycle.md"
+        "docs/04-Concepts/architecture/preserve-branch-lifecycle.md"
       ],
       "runtime_projection": false
     }
@@ -161,7 +161,7 @@
   "portable_id": "script-cos-doctor-preserve",
   "projection_targets": [
     "scripts/cos-doctor-preserve.sh",
-    "docs/architecture/preserve-branch-lifecycle.md"
+    "docs/04-Concepts/architecture/preserve-branch-lifecycle.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-doctor-preserve",

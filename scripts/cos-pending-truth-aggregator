@@ -4,7 +4,7 @@
 
 Read-only walk of plan checkboxes, ADR proposed/draft, radar tracker
 follow-ups, user-requests jsonl, and active-tasks. Emit normalized items
-to docs/reports/pending-truth-latest.{json,md}.
+to docs/06-Daily/reports/pending-truth-latest.{json,md}.
 
 This script does NOT verify items against code — that's Slice B's job
 (scripts/cos-pending-truth-verify, tracked as follow-up). All items
@@ -34,10 +34,10 @@ PLAN_GLOBS = [
     ".cognitive-os/plans/architecture/*.md",
     ".cognitive-os/plans/roadmaps/*.md",
 ]
-ADR_GLOB = "docs/adrs/ADR-*.md"
+ADR_GLOB = "docs/02-Decisions/adrs/ADR-*.md"
 USER_REQ_GLOB = ".cognitive-os/sessions/*/user-requests.jsonl"
 ACTIVE_TASKS = ".cognitive-os/tasks/active-tasks.json"
-RADAR_TRACKER = "docs/reports/radar-2026-05-08-implementation-tracker.md"
+RADAR_TRACKER = "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md"
 
 OPEN_CHECKBOX_RE = re.compile(r"^- \[ \]\s+(.+)$", re.MULTILINE)
 ADR_STATUS_RE = re.compile(r"^(?:status|\*\*Status\*\*):\s*(.+?)$", re.MULTILINE | re.IGNORECASE)
@@ -272,7 +272,7 @@ def render_md(payload: dict[str, Any]) -> str:
         "If a plan checkbox says `[ ]` but ledger says `verified-done`, the plan is stale.",
         "",
         "See ADR-273 §Operational Guide for the full reading model. See",
-        "`docs/reports/historical-pending-analysis-2026-05-12.md` for the bilateral-verification",
+        "`docs/06-Daily/reports/historical-pending-analysis-2026-05-12.md` for the bilateral-verification",
         "evidence that motivated this ledger (25% of checkboxes were mismarked-done).",
         "",
         f"**Total items**: {payload['summary']['total_items']}",
@@ -320,7 +320,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="ADR-273 Slice A pending-truth aggregator")
     parser.add_argument("--project-dir", default=None, help="Project root (default: env or cwd)")
     parser.add_argument("--json", action="store_true", help="Print JSON to stdout (default)")
-    parser.add_argument("--write", action="store_true", help="Write json + md reports to docs/reports/")
+    parser.add_argument("--write", action="store_true", help="Write json + md reports to docs/06-Daily/reports/")
     args = parser.parse_args(argv)
 
     root = _resolve_project_dir(args.project_dir)

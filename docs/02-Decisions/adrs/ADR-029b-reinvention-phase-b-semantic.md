@@ -239,8 +239,8 @@ escalating to embeddings.
 ## 10. Acceptance criteria (this ADR)
 
 ```
-test -f docs/adrs/ADR-029b-reinvention-phase-b-semantic.md
-grep -c '^## ' docs/adrs/ADR-029b-reinvention-phase-b-semantic.md  # ≥ 10 (all sections present)
+test -f docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md
+grep -c '^## ' docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md  # ≥ 10 (all sections present)
 test -f lib/reinvention_semantic.py
 python3 -c "from lib.reinvention_semantic import SemanticIndex; s=SemanticIndex(); s.build_index('.'); assert len(s.items) > 10"
 pytest tests/unit/test_reinvention_semantic.py -v  # 5/5 pass

@@ -5,7 +5,7 @@ Phase 4 of hook-architecture-v2. Tests verify:
   - hook_emit and hook_read functions are defined
   - clarification-gate.sh emits clarification_score to the pipe
   - blast-radius.sh reads clarification_score from the pipe
-  - hook-pipe.sh is documented in docs/hooks.md
+  - hook-pipe.sh is documented in docs/05-Methodology/root/hooks.md
 """
 
 from __future__ import annotations
@@ -125,21 +125,21 @@ def test_blast_radius_adjusts_threshold_from_pipe():
 
 @pytest.mark.audit
 def test_hook_pipe_documented_in_hooks_md():
-    """docs/hooks.md must document the hook composition / pipe library."""
+    """docs/05-Methodology/root/hooks.md must document the hook composition / pipe library."""
     hooks_doc = REPO / "docs" / "hooks.md"
-    assert hooks_doc.exists(), "docs/hooks.md not found"
+    assert hooks_doc.exists(), "docs/05-Methodology/root/hooks.md not found"
 
     content = _read(hooks_doc)
     assert "hook-pipe.sh" in content, (
-        "docs/hooks.md does not mention hook-pipe.sh. "
-        "Phase 4 requires documenting the pipe library in docs/hooks.md."
+        "docs/05-Methodology/root/hooks.md does not mention hook-pipe.sh. "
+        "Phase 4 requires documenting the pipe library in docs/05-Methodology/root/hooks.md."
     )
     assert "hook_emit" in content, (
-        "docs/hooks.md does not document hook_emit. "
+        "docs/05-Methodology/root/hooks.md does not document hook_emit. "
         "Phase 4 requires documenting both hook_emit and hook_read."
     )
     assert "hook_read" in content, (
-        "docs/hooks.md does not document hook_read."
+        "docs/05-Methodology/root/hooks.md does not document hook_read."
     )
 
 

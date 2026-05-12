@@ -65,7 +65,7 @@ BREAKING_CHANGE_PATTERNS = re.compile(
     r"|(swagger\.json$)"
 )
 
-ADR_PATH_PATTERN = re.compile(r"^docs/adrs/")
+ADR_PATH_PATTERN = re.compile(r"^docs/02-Decisions/adrs/")
 
 
 # ---------------------------------------------------------------------------
@@ -153,7 +153,7 @@ def generate_adr_draft(
     Returns the path to the created ADR file.
     """
     project_dir = str(project_dir)
-    adrs_dir = os.path.join(project_dir, "docs", "adrs")
+    adrs_dir = os.path.join(project_dir, "docs", "02-Decisions", "adrs")
     os.makedirs(adrs_dir, exist_ok=True)
 
     commit_message = _git(

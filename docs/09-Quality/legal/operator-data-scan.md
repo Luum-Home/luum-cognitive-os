@@ -22,17 +22,17 @@ git grep -Il '/Users/<operator-home>' HEAD \
 git grep -IlE '<operator-name-lower>|<operator-name-display>' HEAD
 
 # UUID — checked all UUIDs in non-test tracked files; verified they are
-# auto-generated agent session IDs in docs/history/ (excluded) or test fixtures (excluded)
+# auto-generated agent session IDs in docs/01-Build-Log/history/ (excluded) or test fixtures (excluded)
 git grep -IlE '[0-9a-f]{8}-...' HEAD \
-  | grep -vE '^(docs/history/|tests/|docs/legal/pre-public)'
+  | grep -vE '^(docs/01-Build-Log/history/|tests/|docs/09-Quality/legal/pre-public)'
 ```
 
 ### Skip list applied
 
 | Path pattern | Reason |
 |---|---|
-| `docs/history/` | Pre-sanitization archive — intentionally frozen |
-| `docs/legal/pre-public-readiness-checklist.md` | The checklist itself |
+| `docs/01-Build-Log/history/` | Pre-sanitization archive — intentionally frozen |
+| `docs/09-Quality/legal/pre-public-readiness-checklist.md` | The checklist itself |
 | `tests/` | Test fixtures; excluded per task spec |
 | `scripts/audit-consumer-dependence.sh` | Public-safe placeholder token list; real tokens must be supplied via private token file |
 | `manifests/history-sanitization.yaml` | Legitimate replacement rules |
@@ -119,7 +119,7 @@ _SESSION_DIR = Path(
 
 ### Category: personal MCP server UUIDs
 
-No personal MCP server UUIDs found in any tracked committed file outside the excluded paths. UUIDs found in `docs/history/` are auto-generated agent session IDs covered by the skip list. UUIDs in `tests/` are synthetic fixtures.
+No personal MCP server UUIDs found in any tracked committed file outside the excluded paths. UUIDs found in `docs/01-Build-Log/history/` are auto-generated agent session IDs covered by the skip list. UUIDs in `tests/` are synthetic fixtures.
 
 ---
 

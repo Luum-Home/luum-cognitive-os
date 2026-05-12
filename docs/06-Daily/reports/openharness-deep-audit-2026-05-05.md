@@ -140,6 +140,6 @@ The two primitives worth extracting today without adopting the harness:
 | `lib/harness_adapter/base.py` | Read (local) | 2026-05-05 |
 | `lib/harness_adapter/dispatch.py` | Read (local) | 2026-05-05 |
 | `lib/harness_adapter/claude_code.py` | Read (local) | 2026-05-05 |
-| `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` | Read (local) | 2026-05-05 |
-| `docs/adrs/ADR-033-harness-agnostic-event-capture.md` | Read (local) | 2026-05-05 |
+| `docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md` | Read (local) | 2026-05-05 |
+| `docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md` | Read (local) | 2026-05-05 |
 | `scripts/_lib/settings-driver-claude-code.sh` | Read (local) | 2026-05-05 |

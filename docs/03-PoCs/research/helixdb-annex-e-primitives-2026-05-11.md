@@ -17,7 +17,7 @@ verdict_pattern_history:
 ## §1 — Verdict
 
 - **Runtime / dependency**: REJECT (AGPL-3.0 BLOCK — see parent §4 and addendum).
-- **Pattern lane**: TRIAL-PATTERNS. Promoted from HOLD on 2026-05-11 after cluster-B coherence audit: the top 3 primitives below (E.1 typed-ADT MCP surface, E.2 reranker fusion, E.3 hoisted-embedding / IO-continuation) total 3-5 PW clean-room cost — consistent with TRIAL-PATTERNS doctrine in `docs/architecture/external-tool-adapter-taxonomy.md`. Precedent: iFixAi (Phase 12) — same shape, TRIAL-PATTERNS posture. Primitives §E.4-E.9 remain HOLD/conditional/anti-recommended as already noted.
+- **Pattern lane**: TRIAL-PATTERNS. Promoted from HOLD on 2026-05-11 after cluster-B coherence audit: the top 3 primitives below (E.1 typed-ADT MCP surface, E.2 reranker fusion, E.3 hoisted-embedding / IO-continuation) total 3-5 PW clean-room cost — consistent with TRIAL-PATTERNS doctrine in `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`. Precedent: iFixAi (Phase 12) — same shape, TRIAL-PATTERNS posture. Primitives §E.4-E.9 remain HOLD/conditional/anti-recommended as already noted.
 
 Ranking criterion: **extraction value = alignment with COS roadmap × novelty over already-shipped Engram × clean-room cost⁻¹**.
 
@@ -187,5 +187,5 @@ Across all primitives:
 1. **No code copy.** Not even one-liners, not even constants like `k=60` cited *from helix* (cite the paper instead).
 2. **No identifier reuse.** Rename everything to the COS verb space.
 3. **No file-layout mirroring.** Place the Python equivalents where they fit COS conventions, not where HelixDB places the Rust ones.
-4. **Every adoption must have an ADR** under `docs/architecture/adr/` that names this annex, names the helix file refs *as evidence the design exists*, and explicitly states that the implementation was written from first principles.
+4. **Every adoption must have an ADR** under `docs/04-Concepts/architecture/adr/` that names this annex, names the helix file refs *as evidence the design exists*, and explicitly states that the implementation was written from first principles.
 5. **Pre-commit license-audit** required on any PR adding `helix`-pattern code: `git diff` must contain zero strings copied from `.cognitive-os/external-source-cache/helix-db/`.

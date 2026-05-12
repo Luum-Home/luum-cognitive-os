@@ -13,7 +13,7 @@
       "owner": "",
       "partial_remaining": "License enforcement for additional blocked tools is tracked by ADR-267; this ADR remains partial only for the broader compliance-enforcement follow-up beyond the original Redis/MinIO/AutoCodeRover replacements.",
       "partial_remaining_basis": "manual follow-up mapping after audit",
-      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "path": "docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md",
       "remaining": "License enforcement for additional blocked tools is tracked by ADR-267; this ADR remains partial only for the broader compliance-enforcement follow-up beyond the original Redis/MinIO/AutoCodeRover replacements.",
       "remaining_in_scope": true,
       "title": "AGPL License Compliance -- Replace Redis and MinIO"
@@ -30,7 +30,7 @@
       "owner": "",
       "partial_remaining": "architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "path": "docs/02-Decisions/adrs/ADR-008-multi-tool-support.md",
       "remaining": "architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation",
       "remaining_in_scope": null,
       "title": "Multi-Tool Support -- Not Claude Code-Only"
@@ -47,7 +47,7 @@
       "owner": "",
       "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/adrs/ADR-013-security-stack.md",
+      "path": "docs/02-Decisions/adrs/ADR-013-security-stack.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
       "title": "Security Stack -- 8 Layers, 32 Tools"
@@ -64,7 +64,7 @@
       "owner": "",
       "partial_remaining": "Runtime model-capability auto-calibration remains partial; the pipeline uses configurable thresholds rather than automatically calibrated fast/full-path selection.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "path": "docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md",
       "remaining": "Runtime model-capability auto-calibration remains partial; the pipeline uses configurable thresholds rather than automatically calibrated fast/full-path selection.",
       "remaining_in_scope": true,
       "title": "SDD Fast Path -- Skip Phases for Capable Models"
@@ -81,7 +81,7 @@
       "owner": "",
       "partial_remaining": "Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "remaining": "Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules.",
       "remaining_in_scope": true,
       "title": "Rules-to-Hooks Migration -- From Context to Enforcement"
@@ -98,7 +98,7 @@
       "owner": "",
       "partial_remaining": "Dynamic per-task rule selection remains partial; contextual rule loading exists, but selection overhead still needs to stay below the cost of compact always-active context.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-016-context-diet.md",
+      "path": "docs/02-Decisions/adrs/ADR-016-context-diet.md",
       "remaining": "Dynamic per-task rule selection remains partial; contextual rule loading exists, but selection overhead still needs to stay below the cost of compact always-active context.",
       "remaining_in_scope": true,
       "title": "Context Diet -- Token Optimization Strategy"
@@ -115,7 +115,7 @@
       "owner": "",
       "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "path": "docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
       "title": "Stabilization Freeze -- No New Features Until Wiring Complete"
@@ -132,7 +132,7 @@
       "owner": "",
       "partial_remaining": "Phase 3 local/optional service treatment remains the open scope: services that cannot be replaced by pip libraries must stay explicitly governed as local services.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-018-docker-to-pip-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-018-docker-to-pip-migration.md",
       "remaining": "Phase 3 local/optional service treatment remains the open scope: services that cannot be replaced by pip libraries must stay explicitly governed as local services.",
       "remaining_in_scope": true,
       "title": "Docker-to-pip Migration -- Service Infrastructure Change"
@@ -149,7 +149,7 @@
       "owner": "",
       "partial_remaining": "The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full agentic primitive audit was complete.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-019-scope-tagging.md",
+      "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md",
       "remaining": "The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full agentic primitive audit was complete.",
       "remaining_in_scope": true,
       "title": "Scope Tagging -- Agentic Primitive Audience Classification"
@@ -166,7 +166,7 @@
       "owner": "",
       "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "path": "docs/02-Decisions/adrs/ADR-020-contamination-fix.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
       "title": "Contamination Fix -- Remove Project-Specific Code from OS"
@@ -183,7 +183,7 @@
       "owner": "",
       "partial_remaining": "`.cognitive-os/` directory remains the canonical state (works in any tool) 2.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-021-vendor-agnostic-with-adapters.md",
+      "path": "docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md",
       "remaining": "`.cognitive-os/` directory remains the canonical state (works in any tool) 2.",
       "remaining_in_scope": true,
       "title": "Vendor-Agnostic State with Provider Adapters"
@@ -200,7 +200,7 @@
       "owner": "",
       "partial_remaining": "The legacy Bash hook still runs in parallel as the 4.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-022-prompt-type-hooks-adoption.md",
+      "path": "docs/02-Decisions/adrs/ADR-022-prompt-type-hooks-adoption.md",
       "remaining": "The legacy Bash hook still runs in parallel as the 4.",
       "remaining_in_scope": true,
       "title": "Prompt-Type Hooks Adoption (Haiku-Evaluated Advisories)"
@@ -217,7 +217,7 @@
       "owner": "",
       "partial_remaining": "updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-023-updated-input-pattern.md",
+      "path": "docs/02-Decisions/adrs/ADR-023-updated-input-pattern.md",
       "remaining": "updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present",
       "remaining_in_scope": null,
       "title": "Mutate, Don't Block \u2014 `updatedInput` for PreToolUse Hooks"
@@ -234,7 +234,7 @@
       "owner": "",
       "partial_remaining": "Deferred**: valuable but orthogonal; doesn't solve in-session visibility",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-024-task-panel-bridge.md",
+      "path": "docs/02-Decisions/adrs/ADR-024-task-panel-bridge.md",
       "remaining": "Deferred**: valuable but orthogonal; doesn't solve in-session visibility",
       "remaining_in_scope": true,
       "title": "Task Panel Bridge \u2014 Correlate COS Tasks with Claude Code tool_use_id"
@@ -251,7 +251,7 @@
       "owner": "",
       "partial_remaining": "Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-025-install-update-loop.md",
+      "path": "docs/02-Decisions/adrs/ADR-025-install-update-loop.md",
       "remaining": "Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up",
       "remaining_in_scope": true,
       "title": "Install/Update Loop \u2014 Closing the Advisory-Only Gap"
@@ -268,7 +268,7 @@
       "owner": "",
       "partial_remaining": "Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "remaining": "Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision.",
       "remaining_in_scope": true,
       "title": "R2 and R3 Consolidation \u2014 Design Review"
@@ -285,7 +285,7 @@
       "owner": "",
       "partial_remaining": "Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-026a-decisions.md",
+      "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md",
       "remaining": "Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist.",
       "remaining_in_scope": true,
       "title": "R2 and R3 Design Review \u2014 Proposed Decisions (Addendum)"
@@ -302,7 +302,7 @@
       "owner": "",
       "partial_remaining": "Add pytest tests asserting old JSONL rows still parse + migrate cleanly.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-028c.md",
+      "path": "docs/02-Decisions/adrs/ADR-028c.md",
       "remaining": "Add pytest tests asserting old JSONL rows still parse + migrate cleanly.",
       "remaining_in_scope": true,
       "title": "Addendum: MetricEvent schema versioning + migration strategy"
@@ -319,7 +319,7 @@
       "owner": "",
       "partial_remaining": "gate (Phase B) is future work and requires a similarity threshold mechanism.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-029.md",
+      "path": "docs/02-Decisions/adrs/ADR-029.md",
       "remaining": "gate (Phase B) is future work and requires a similarity threshold mechanism.",
       "remaining_in_scope": true,
       "title": "Anti-reinvention gate (reinvention-check.sh wired)"
@@ -336,7 +336,7 @@
       "owner": "",
       "partial_remaining": "What was explicitly deferred**:",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-029b-reinvention-phase-b-semantic.md",
+      "path": "docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md",
       "remaining": "What was explicitly deferred**:",
       "remaining_in_scope": true,
       "title": "Reinvention gate Phase B: semantic similarity"
@@ -353,7 +353,7 @@
       "owner": "",
       "partial_remaining": "Post-commit banner remains deferred; invoking /session-wrapup externally would require daemon/API/auth work that this ADR intentionally did not implement.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "remaining": "Post-commit banner remains deferred; invoking /session-wrapup externally would require daemon/API/auth work that this ADR intentionally did not implement.",
       "remaining_in_scope": true,
       "title": "Auto-trigger session-wrapup (Q1 prompt-match + Q2 commit banner)"
@@ -370,7 +370,7 @@
       "owner": "",
       "partial_remaining": "Correctness remains the responsibility of `sdd-verify` and adversarial review.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-031.md",
+      "path": "docs/02-Decisions/adrs/ADR-031.md",
       "remaining": "Correctness remains the responsibility of `sdd-verify` and adversarial review.",
       "remaining_in_scope": true,
       "title": "Continuous Aspirational/Dormant/Real Audit"
@@ -387,7 +387,7 @@
       "owner": "",
       "partial_remaining": "Prepending a warning is safe; rewriting an instruction is not.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "path": "docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md",
       "remaining": "Prepending a warning is safe; rewriting an instruction is not.",
       "remaining_in_scope": true,
       "title": "Orchestrator-side trap awareness before Agent launch"
@@ -404,7 +404,7 @@
       "owner": "",
       "partial_remaining": "The Executor will become a capture source via its own adapter entry (future work).",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-033-harness-agnostic-event-capture.md",
+      "path": "docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md",
       "remaining": "The Executor will become a capture source via its own adapter entry (future work).",
       "remaining_in_scope": true,
       "title": "Harness-agnostic event capture layer"
@@ -421,7 +421,7 @@
       "owner": "",
       "partial_remaining": "Wave 2** (not implemented in this ADR) will:",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-033b-duration-correlation-and-aider-hardening.md",
+      "path": "docs/02-Decisions/adrs/ADR-033b-duration-correlation-and-aider-hardening.md",
       "remaining": "Wave 2** (not implemented in this ADR) will:",
       "remaining_in_scope": true,
       "title": "Duration Correlation and Aider Version Dispatch Hardening"
@@ -438,7 +438,7 @@
       "owner": "",
       "partial_remaining": "Status**: Not yet implemented \u2014 planned as a follow-up task",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-035-worktree-cwd-enforcement.md",
+      "path": "docs/02-Decisions/adrs/ADR-035-worktree-cwd-enforcement.md",
       "remaining": "Status**: Not yet implemented \u2014 planned as a follow-up task",
       "remaining_in_scope": true,
       "title": "Worktree CWD Enforcement: 3-Layer Defense"
@@ -455,7 +455,7 @@
       "owner": "",
       "partial_remaining": "Remaining for follow-up passes**: ~38 Tier B agentic primitives, primarily executor",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-041.md",
+      "path": "docs/02-Decisions/adrs/ADR-041.md",
       "remaining": "Remaining for follow-up passes**: ~38 Tier B agentic primitives, primarily executor",
       "remaining_in_scope": true,
       "title": "Exercised Coverage Pipeline (MVP)"
@@ -472,7 +472,7 @@
       "owner": "",
       "partial_remaining": "remains accessible via `--profile legacy` for CI environments without a",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-042-valkey-local-daemon.md",
+      "path": "docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md",
       "remaining": "remains accessible via `--profile legacy` for CI environments without a",
       "remaining_in_scope": true,
       "title": "Valkey Local Daemon \u2014 Extract from Docker (D34 Partial)"
@@ -492,7 +492,7 @@
       "owner": "",
       "partial_remaining": "Deferred tools list (tool names only, schemas loaded via ToolSearch) 6.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "remaining": "Deferred tools list (tool names only, schemas loaded via ToolSearch) 6.",
       "remaining_in_scope": true,
       "title": "Context Payload Slimming \u2014 Non-Rule Startup Payloads"
@@ -509,7 +509,7 @@
       "owner": "",
       "partial_remaining": "It remains accessible for CI environments without a local binary.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-045-postgres-local-daemon.md",
+      "path": "docs/02-Decisions/adrs/ADR-045-postgres-local-daemon.md",
       "remaining": "It remains accessible for CI environments without a local binary.",
       "remaining_in_scope": true,
       "title": "PostgreSQL Local Daemon \u2014 Extract from Docker (D34)"
@@ -526,7 +526,7 @@
       "owner": "",
       "partial_remaining": "It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 \u2014 see ADR-171), and ADR-045.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-048-docker-container-image-freshness.md",
+      "path": "docs/02-Decisions/adrs/ADR-048-docker-container-image-freshness.md",
       "remaining": "It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 \u2014 see ADR-171), and ADR-045.",
       "remaining_in_scope": true,
       "title": "Docker Container Image Freshness"
@@ -543,7 +543,7 @@
       "owner": "",
       "partial_remaining": "Deferred to follow-ups (see \"Open questions\" below):",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-050-per-skill-routing-policy.md",
+      "path": "docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md",
       "remaining": "Deferred to follow-ups (see \"Open questions\" below):",
       "remaining_in_scope": true,
       "title": "Per-Skill Routing Policy"
@@ -560,7 +560,7 @@
       "owner": "",
       "partial_remaining": "\u2014 Deferred; convention over enforcement for v1.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-054-project-docs-convention.md",
+      "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md",
       "remaining": "\u2014 Deferred; convention over enforcement for v1.",
       "remaining_in_scope": true,
       "title": "Project Documentation Convention (10 Categories)"
@@ -577,7 +577,7 @@
       "owner": "",
       "partial_remaining": "`sdd-design` extension deferred.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-055-docs-convention-enforcement.md",
+      "path": "docs/02-Decisions/adrs/ADR-055-docs-convention-enforcement.md",
       "remaining": "`sdd-design` extension deferred.",
       "remaining_in_scope": true,
       "title": "Docs Convention Enforcement + Skill Writers"
@@ -594,7 +594,7 @@
       "owner": "",
       "partial_remaining": "`{blocked, override, bypassed}` and context fields (`reason`, `context`,",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-055b-destructive-git-block.md",
+      "path": "docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md",
       "remaining": "`{blocked, override, bypassed}` and context fields (`reason`, `context`,",
       "remaining_in_scope": true,
       "title": "Destructive Git Op Block (User Context Elevation)"
@@ -611,7 +611,7 @@
       "owner": "",
       "partial_remaining": "Deferred. Design only.**",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md",
+      "path": "docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md",
       "remaining": "Deferred. Design only.**",
       "remaining_in_scope": true,
       "title": "Adaptive Agent() dispatch: 3-tier auto-switch Claude \u2192 Qwen"
@@ -628,7 +628,7 @@
       "owner": "",
       "partial_remaining": "produces agentic primitives that look portable in theory while still depending on one",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md",
+      "path": "docs/02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md",
       "remaining": "produces agentic primitives that look portable in theory while still depending on one",
       "remaining_in_scope": true,
       "title": "Cross-Harness Authoring and Driver Projection"
@@ -645,7 +645,7 @@
       "owner": "",
       "partial_remaining": "Rollback remains cheap.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md",
+      "path": "docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md",
       "remaining": "Rollback remains cheap.",
       "remaining_in_scope": true,
       "title": "Observability Migration: Langfuse \u2192 Arize Phoenix"
@@ -662,7 +662,7 @@
       "owner": "",
       "partial_remaining": "for enterprise but orthogonal to default. Deferred.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-060-local-only-optional-services.md",
+      "path": "docs/02-Decisions/adrs/ADR-060-local-only-optional-services.md",
       "remaining": "for enterprise but orthogonal to default. Deferred.",
       "remaining_in_scope": true,
       "title": "Local-Only Policy for Optional Services"
@@ -679,7 +679,7 @@
       "owner": "",
       "partial_remaining": "No item is \"documented as future work\"; all land in this ADR's scope.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md",
+      "path": "docs/02-Decisions/adrs/ADR-061-focus-narrative-and-external-evidence.md",
       "remaining": "No item is \"documented as future work\"; all land in this ADR's scope.",
       "remaining_in_scope": true,
       "title": "Focus Narrative and External Evidence"
@@ -696,7 +696,7 @@
       "owner": "",
       "partial_remaining": "Research report lands within 1 week (blocked on research agent output).",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-063-agent-tool-replication-strategy.md",
+      "path": "docs/02-Decisions/adrs/ADR-063-agent-tool-replication-strategy.md",
       "remaining": "Research report lands within 1 week (blocked on research agent output).",
       "remaining_in_scope": true,
       "title": "Agent() Tool Replication Strategy"
@@ -713,7 +713,7 @@
       "owner": "",
       "partial_remaining": "Surfaces 2-4 and the Codex/Cursor adapter files were not yet implemented.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md",
+      "path": "docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md",
       "remaining": "Surfaces 2-4 and the Codex/Cursor adapter files were not yet implemented.",
       "remaining_in_scope": true,
       "title": "Harness-Agnostic Cognitive OS"
@@ -730,7 +730,7 @@
       "owner": "",
       "partial_remaining": "Test outcomes remain deterministic regardless of detected capacity.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-068-adaptive-test-runner-capacity.md",
+      "path": "docs/02-Decisions/adrs/ADR-068-adaptive-test-runner-capacity.md",
       "remaining": "Test outcomes remain deterministic regardless of detected capacity.",
       "remaining_in_scope": true,
       "title": "Adaptive Test Runner Capacity Detection"
@@ -747,7 +747,7 @@
       "owner": "",
       "partial_remaining": "Phases 2\u20134 are scoped and planned but not implemented until Phase 1 is verified.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "remaining": "Phases 2\u20134 are scoped and planned but not implemented until Phase 1 is verified.",
       "remaining_in_scope": true,
       "title": "Engram Lifecycle Evolution via Wrapper Layer"
@@ -764,7 +764,7 @@
       "owner": "",
       "partial_remaining": "deferred. It has now blocked iteration speed for 5 days.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-072-test-lane-taxonomy.md",
+      "path": "docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md",
       "remaining": "deferred. It has now blocked iteration speed for 5 days.",
       "remaining_in_scope": true,
       "title": "Test Lane Taxonomy & Escalation Ladder"
@@ -781,7 +781,7 @@
       "owner": "",
       "partial_remaining": "Resource-governance follow-up remains: continue reducing selector duplication by exposing focused test-plan APIs and requiring future gates to prefer persisted reports before direct scanner/executor fallback.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-073-test-architecture-role-registry.md",
+      "path": "docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md",
       "remaining": "Resource-governance follow-up remains: continue reducing selector duplication by exposing focused test-plan APIs and requiring future gates to prefer persisted reports before direct scanner/executor fallback.",
       "remaining_in_scope": true,
       "title": "Test Architecture Role Registry"
@@ -798,7 +798,7 @@
       "owner": "",
       "partial_remaining": "Tier-1 learning-loop follow-ups remain out of scope: deploy promotion paths and extend user-prompt capture with feedback_type wiring.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-074-tier-0-learning-loop-closure.md",
+      "path": "docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md",
       "remaining": "Tier-1 learning-loop follow-ups remain out of scope: deploy promotion paths and extend user-prompt capture with feedback_type wiring.",
       "remaining_in_scope": true,
       "title": "Tier-0 Learning-Loop Closure"
@@ -815,7 +815,7 @@
       "owner": "",
       "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/adrs/ADR-075-stage2-selective-expansion.md",
+      "path": "docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
       "title": "Stage 2 Selective Expansion \u2014 Tier-Based Ref-Key Filtering"
@@ -832,7 +832,7 @@
       "owner": "",
       "partial_remaining": "is unrecognized, so this is safe but not restrictive in Hermes. A follow-up",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md",
+      "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md",
       "remaining": "is unrecognized, so this is safe but not restrictive in Hermes. A follow-up",
       "remaining_in_scope": true,
       "title": "SKILL.md Frontmatter Alignment with Hermes Spec"
@@ -849,7 +849,7 @@
       "owner": "",
       "partial_remaining": "Deferred until a concrete retrieval gap is observed.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-077-peer-card-local-model.md",
+      "path": "docs/02-Decisions/adrs/ADR-077-peer-card-local-model.md",
       "remaining": "Deferred until a concrete retrieval gap is observed.",
       "remaining_in_scope": true,
       "title": "Peer-Card Local User-Memory Model (Replaces Honcho)"
@@ -866,7 +866,7 @@
       "owner": "",
       "partial_remaining": "Automated per-turn invocation (the full Hermes pattern) is a follow-up item and",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-078-mid-task-memory-tool.md",
+      "path": "docs/02-Decisions/adrs/ADR-078-mid-task-memory-tool.md",
       "remaining": "Automated per-turn invocation (the full Hermes pattern) is a follow-up item and",
       "remaining_in_scope": true,
       "title": "Mid-Task Memory Tool (Port from Hermes)"
@@ -883,7 +883,7 @@
       "owner": "",
       "partial_remaining": "`IS_SELF_HOSTING` detection is still present.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-079-corerules-applies-to-self-hosting.md",
+      "path": "docs/02-Decisions/adrs/ADR-079-corerules-applies-to-self-hosting.md",
       "remaining": "`IS_SELF_HOSTING` detection is still present.",
       "remaining_in_scope": true,
       "title": "CORE_RULES applies to self-hosting mode"
@@ -900,7 +900,7 @@
       "owner": "",
       "partial_remaining": "Deferred from this slice:",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-081-codex-harness-adapter.md",
+      "path": "docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md",
       "remaining": "Deferred from this slice:",
       "remaining_in_scope": true,
       "title": "Codex Harness Adapter"
@@ -917,7 +917,7 @@
       "owner": "",
       "partial_remaining": "Migration is a follow-up task.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-082-plan-location-convention.md",
+      "path": "docs/02-Decisions/adrs/ADR-082-plan-location-convention.md",
       "remaining": "Migration is a follow-up task.",
       "remaining_in_scope": true,
       "title": "Plan Location Convention"
@@ -934,7 +934,7 @@
       "owner": "",
       "partial_remaining": "The approval gate prevents silent runtime drift while still surfacing",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-083-governed-self-improvement-loop.md",
+      "path": "docs/02-Decisions/adrs/ADR-083-governed-self-improvement-loop.md",
       "remaining": "The approval gate prevents silent runtime drift while still surfacing",
       "remaining_in_scope": true,
       "title": "Governed Self-Improvement Loop"
@@ -951,7 +951,7 @@
       "owner": "",
       "partial_remaining": "The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin \u2014 this is deferred.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md",
       "remaining": "The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin \u2014 this is deferred.",
       "remaining_in_scope": true,
       "title": "Hook Execution Observability"
@@ -968,7 +968,7 @@
       "owner": "",
       "partial_remaining": "Migration is a single follow-up task.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-087-adr-namespace-consolidation.md",
+      "path": "docs/02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md",
       "remaining": "Migration is a single follow-up task.",
       "remaining_in_scope": true,
       "title": "ADR Namespace Consolidation"
@@ -985,7 +985,7 @@
       "owner": "",
       "partial_remaining": "Deferred to a follow-up if collisions are observed there.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-089-multi-session-git-coordination.md",
+      "path": "docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md",
       "remaining": "Deferred to a follow-up if collisions are observed there.",
       "remaining_in_scope": true,
       "title": "Multi-Session Git Coordination"
@@ -1002,7 +1002,7 @@
       "owner": "",
       "partial_remaining": "(similar to how `repair-status` warns about pending repairs).",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-090-auto-skill-repair.md",
+      "path": "docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md",
       "remaining": "(similar to how `repair-status` warns about pending repairs).",
       "remaining_in_scope": true,
       "title": "Auto-skill repair via failure-threshold signals"
@@ -1019,7 +1019,7 @@
       "owner": "",
       "partial_remaining": "Status**: Accepted as direction, not yet implemented as a production cluster",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-091-headless-clustered-runtime-direction.md",
+      "path": "docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md",
       "remaining": "Status**: Accepted as direction, not yet implemented as a production cluster",
       "remaining_in_scope": true,
       "title": "Headless and Clustered Runtime Direction"
@@ -1036,7 +1036,7 @@
       "owner": "",
       "partial_remaining": "any follow-up install step.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-093-simplify-profiles.md",
+      "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md",
       "remaining": "any follow-up install step.",
       "remaining_in_scope": true,
       "title": "Simplify Install Profiles \u2014 Collapse 3-Tier System to `default` + `--full`"
@@ -1053,7 +1053,7 @@
       "owner": "",
       "partial_remaining": "perspective, because the tool was not blocked and produced no alert.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-094-agent-git-safety.md",
+      "path": "docs/02-Decisions/adrs/ADR-094-agent-git-safety.md",
       "remaining": "perspective, because the tool was not blocked and produced no alert.",
       "remaining_in_scope": true,
       "title": "Agent Git Operations Safety \u2014 Layered Prevention of Destructive Git Ops"
@@ -1070,7 +1070,7 @@
       "owner": "",
       "partial_remaining": "semantic deduplication against the 146-skill catalog is deferred.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md",
+      "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md",
       "remaining": "semantic deduplication against the 146-skill catalog is deferred.",
       "remaining_in_scope": true,
       "title": "Skill synthesis driven by success patterns"
@@ -1087,7 +1087,7 @@
       "owner": "",
       "partial_remaining": "The parent task is never blocked waiting for review.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-096-review-agent-pattern.md",
+      "path": "docs/02-Decisions/adrs/ADR-096-review-agent-pattern.md",
       "remaining": "The parent task is never blocked waiting for review.",
       "remaining_in_scope": true,
       "title": "Review-agent pattern (Hermes-style audit loop)"
@@ -1104,7 +1104,7 @@
       "owner": "",
       "partial_remaining": "Agents and maintainers can ask what remains without loading all docs into context.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-097-documentation-execution-audit.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-documentation-execution-audit.md",
       "remaining": "Agents and maintainers can ask what remains without loading all docs into context.",
       "remaining_in_scope": true,
       "title": "Documentation Execution Audit"
@@ -1121,7 +1121,7 @@
       "owner": "",
       "partial_remaining": "metric (yet to be added) shows >5% blocked-edit rate.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md",
+      "path": "docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md",
       "remaining": "metric (yet to be added) shows >5% blocked-edit rate.",
       "remaining_in_scope": true,
       "title": "Multi-Agent File Coordination"
@@ -1138,7 +1138,7 @@
       "owner": "",
       "partial_remaining": "Operator lane can use reserved tokens after normal lane is blocked.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "path": "docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md",
       "remaining": "Operator lane can use reserved tokens after normal lane is blocked.",
       "remaining_in_scope": true,
       "title": "Intent-Aware Rate Limiter Flow Control"
@@ -1155,7 +1155,7 @@
       "owner": "",
       "partial_remaining": "Queue draining unblocked:** stale records no longer cause permanent saturation.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-102-task-tracker-lifecycle.md",
+      "path": "docs/02-Decisions/adrs/ADR-102-task-tracker-lifecycle.md",
       "remaining": "Queue draining unblocked:** stale records no longer cause permanent saturation.",
       "remaining_in_scope": true,
       "title": "Task tracker lifecycle: pending \u2192 in_progress \u2192 terminal, with PID capture and zombie reaper"
@@ -1180,7 +1180,7 @@
       "owner": "",
       "partial_remaining": "Add domain-specific verifiers when new claim verbs need richer bilateral predicates beyond the current generic verification hooks/scripts.",
       "partial_remaining_basis": "manual correction from ADR Status section",
-      "path": "docs/adrs/ADR-105-claim-verification-contract.md",
+      "path": "docs/02-Decisions/adrs/ADR-105-claim-verification-contract.md",
       "remaining": "Add domain-specific verifiers when new claim verbs need richer bilateral predicates beyond the current generic verification hooks/scripts.",
       "remaining_in_scope": true,
       "title": "Bilateral Claim Verification Contract"
@@ -1197,7 +1197,7 @@
       "owner": "",
       "partial_remaining": "The destructive git blocker continues proving `git revert` is blocked by default.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-107-human-approved-rollback.md",
+      "path": "docs/02-Decisions/adrs/ADR-107-human-approved-rollback.md",
       "remaining": "The destructive git blocker continues proving `git revert` is blocked by default.",
       "remaining_in_scope": true,
       "title": "Human-Approved Rollback Boundary"
@@ -1214,7 +1214,7 @@
       "owner": "",
       "partial_remaining": "Preserved WIP remains recoverable without becoming invisible operational debt.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-110-preserve-branch-governance.md",
+      "path": "docs/02-Decisions/adrs/ADR-110-preserve-branch-governance.md",
       "remaining": "Preserved WIP remains recoverable without becoming invisible operational debt.",
       "remaining_in_scope": true,
       "title": "Preserve Branch Governance"
@@ -1231,7 +1231,7 @@
       "owner": "",
       "partial_remaining": "Session filesystem cleanup is archive-first and content-aware; pending requests/tasks keep the session directory.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md",
+      "path": "docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md",
       "remaining": "Session filesystem cleanup is archive-first and content-aware; pending requests/tasks keep the session directory.",
       "remaining_in_scope": true,
       "title": "Core/Consumer Boundary for Concurrent-Agent Safety"
@@ -1256,7 +1256,7 @@
       "owner": "",
       "partial_remaining": "Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2).",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-116-multi-session-coordination-primitives.md",
+      "path": "docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md",
       "remaining": "Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2).",
       "remaining_in_scope": true,
       "title": "Multi-Session Coordination Primitives"
@@ -1273,7 +1273,7 @@
       "owner": "",
       "partial_remaining": "Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-118-multi-ide-swarm-testbed.md",
+      "path": "docs/02-Decisions/adrs/ADR-118-multi-ide-swarm-testbed.md",
       "remaining": "Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run.",
       "remaining_in_scope": true,
       "title": "Multi-IDE Swarm Safety Testbed"
@@ -1290,7 +1290,7 @@
       "owner": "",
       "partial_remaining": "primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-120-conversation-to-primitive-harvester.md",
+      "path": "docs/02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md",
       "remaining": "primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation",
       "remaining_in_scope": null,
       "title": "Conversation-to-Primitive Harvester"
@@ -1313,7 +1313,7 @@
       "owner": "",
       "partial_remaining": "program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-121-foundation-hardening-program.md",
+      "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md",
       "remaining": "program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open",
       "remaining_in_scope": null,
       "title": "Foundation Hardening Program"
@@ -1330,7 +1330,7 @@
       "owner": "",
       "partial_remaining": "`lab` primitives remain indexed but do not count as active or default-visible adoption surface.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-127-active-primitive-index.md",
+      "path": "docs/02-Decisions/adrs/ADR-127-active-primitive-index.md",
       "remaining": "`lab` primitives remain indexed but do not count as active or default-visible adoption surface.",
       "remaining_in_scope": true,
       "title": "Active Primitive Index"
@@ -1347,7 +1347,7 @@
       "owner": "",
       "partial_remaining": "Generated doctrine still needs human judgment.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-135-self-evolving-doctrine-proposals.md",
+      "path": "docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md",
       "remaining": "Generated doctrine still needs human judgment.",
       "remaining_in_scope": true,
       "title": "Self-Evolving Doctrine Proposals"
@@ -1364,7 +1364,7 @@
       "owner": "",
       "partial_remaining": "Reports Shape A `deferred` until Shape-B thresholds fire.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-136-cross-instance-learning-runway.md",
+      "path": "docs/02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md",
       "remaining": "Reports Shape A `deferred` until Shape-B thresholds fire.",
       "remaining_in_scope": true,
       "title": "Cross-Instance Learning Runway"
@@ -1381,7 +1381,7 @@
       "owner": "",
       "partial_remaining": "Project-specific endpoint/event/job adapters remain future work.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md",
+      "path": "docs/02-Decisions/adrs/ADR-147-agent-capability-coverage-pipeline.md",
       "remaining": "Project-specific endpoint/event/job adapters remain future work.",
       "remaining_in_scope": true,
       "title": "Agent Capability Coverage Pipeline"
@@ -1394,16 +1394,16 @@
       "follow_up_adr": "",
       "implementation_files": [
         "manifests/task-lifecycle-schema.yaml",
-        "docs/manual-tests/task-lifecycle-worktree-pr-flow.md",
+        "docs/09-Quality/manual-tests/task-lifecycle-worktree-pr-flow.md",
         "tests/contracts/test_task_lifecycle_schema.py",
-        "docs/architecture/service-control-plane-implementation-plan.md"
+        "docs/04-Concepts/architecture/service-control-plane-implementation-plan.md"
       ],
       "implementation_status": "partial",
       "number": "162",
       "owner": "",
       "partial_remaining": "implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md",
+      "path": "docs/02-Decisions/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md",
       "remaining": "implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up",
       "remaining_in_scope": null,
       "title": "Task Lifecycle, Interruption, Question, Worktree, and PR Protocol"
@@ -1418,8 +1418,8 @@
         "manifests/cos-instance-profiles.yaml",
         "scripts/cos-instance-init",
         "scripts/cos_instance_init.py",
-        "docs/architecture/cos-instance-installer.md",
-        "docs/manual-tests/cos-instance-installer.md",
+        "docs/04-Concepts/architecture/cos-instance-installer.md",
+        "docs/09-Quality/manual-tests/cos-instance-installer.md",
         "tests/contracts/test_cos_instance_profiles.py"
       ],
       "implementation_status": "partial",
@@ -1427,7 +1427,7 @@
       "owner": "",
       "partial_remaining": "first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-163-cos-instance-installer.md",
+      "path": "docs/02-Decisions/adrs/ADR-163-cos-instance-installer.md",
       "remaining": "first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked",
       "remaining_in_scope": null,
       "title": "Cognitive OS Instance Installer"
@@ -1440,7 +1440,7 @@
       "follow_up_adr": "",
       "implementation_files": [
         "manifests/dependencies.yaml",
-        "docs/setup/cross-device-dependencies.md",
+        "docs/05-Methodology/setup/cross-device-dependencies.md",
         "scripts/cos-deps-install.sh",
         "scripts/cos-doctor-tools.sh",
         "scripts/manifest-check.sh"
@@ -1450,7 +1450,7 @@
       "owner": "",
       "partial_remaining": "`scripts/setup.sh` delegation remain incremental follow-up work.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-168-cross-device-dependency-installation.md",
+      "path": "docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md",
       "remaining": "`scripts/setup.sh` delegation remain incremental follow-up work.",
       "remaining_in_scope": true,
       "title": "Cross-Device Dependency Installation Contract"
@@ -1462,15 +1462,15 @@
       "decision_status": "accepted",
       "follow_up_adr": "",
       "implementation_files": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/adrs/ADR-172-multi-surface-ui-architecture.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md"
       ],
       "implementation_status": "deferred",
       "number": "173",
       "owner": "",
       "partial_remaining": "follow-up ADR exists.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-173-surface-5-research-gate.md",
+      "path": "docs/02-Decisions/adrs/ADR-173-surface-5-research-gate.md",
       "remaining": "follow-up ADR exists.",
       "remaining_in_scope": true,
       "title": "Surface 5 Research Gate \u2014 No Custom TUI/UI Adoption Without Source-Level Proof"
@@ -1487,7 +1487,7 @@
       "owner": "",
       "partial_remaining": "AgentHookDefinition**: intentionally deferred (not in scope for ADR-178);",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-178-openharness-primitive-adoption.md",
+      "path": "docs/02-Decisions/adrs/ADR-178-openharness-primitive-adoption.md",
       "remaining": "AgentHookDefinition**: intentionally deferred (not in scope for ADR-178);",
       "remaining_in_scope": true,
       "title": "OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile)"
@@ -1512,7 +1512,7 @@
       "owner": "",
       "partial_remaining": "initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-179-rules-auto-derive-routing.md",
+      "path": "docs/02-Decisions/adrs/ADR-179-rules-auto-derive-routing.md",
       "remaining": "initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete",
       "remaining_in_scope": null,
       "title": "Auto-Derived Rule Routing for Agent-Instruction Rules"
@@ -1529,7 +1529,7 @@
       "owner": "",
       "partial_remaining": "`hooks/direct-main-guard.sh` emits `vcs.push.blocked` and `vcs.bypass`;",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-190-harness-action-receipts.md",
+      "path": "docs/02-Decisions/adrs/ADR-190-harness-action-receipts.md",
       "remaining": "`hooks/direct-main-guard.sh` emits `vcs.push.blocked` and `vcs.bypass`;",
       "remaining_in_scope": true,
       "title": "Harness Action Receipts and VCS Event Telemetry"
@@ -1546,7 +1546,7 @@
       "owner": "",
       "partial_remaining": "The in-repo `Formula/cognitive-os.rb` remains a `--HEAD` developer formula so",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-191-cos-binary-release-pipeline.md",
+      "path": "docs/02-Decisions/adrs/ADR-191-cos-binary-release-pipeline.md",
       "remaining": "The in-repo `Formula/cognitive-os.rb` remains a `--HEAD` developer formula so",
       "remaining_in_scope": true,
       "title": "COS Binary Release Pipeline"
@@ -1563,7 +1563,7 @@
       "owner": "",
       "partial_remaining": "The API surface remains narrow enough to test without adding FastAPI, gRPC, or",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-193-cosd-local-network-api.md",
+      "path": "docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md",
       "remaining": "The API surface remains narrow enough to test without adding FastAPI, gRPC, or",
       "remaining_in_scope": true,
       "title": "cosd Local Network API"
@@ -1580,7 +1580,7 @@
       "owner": "",
       "partial_remaining": "7. TLS is not implemented inside `cosd` v1; remote deployments must use a",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-194-cosd-secure-remote-api.md",
+      "path": "docs/02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md",
       "remaining": "7. TLS is not implemented inside `cosd` v1; remote deployments must use a",
       "remaining_in_scope": true,
       "title": "cosd Secure Remote API Guardrails"
@@ -1597,7 +1597,7 @@
       "owner": "",
       "partial_remaining": "Operable actions are intentionally deferred behind confirmation and receipt",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-195-surface-5-operable-tui-contract.md",
+      "path": "docs/02-Decisions/adrs/ADR-195-surface-5-operable-tui-contract.md",
       "remaining": "Operable actions are intentionally deferred behind confirmation and receipt",
       "remaining_in_scope": true,
       "title": "Surface 5 Operable TUI Contract"
@@ -1614,7 +1614,7 @@
       "owner": "",
       "partial_remaining": "or drains one queued task, while provider calls remain blocked unless an operator",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-196-cosd-task-api-and-provider-boundary.md",
+      "path": "docs/02-Decisions/adrs/ADR-196-cosd-task-api-and-provider-boundary.md",
       "remaining": "or drains one queued task, while provider calls remain blocked unless an operator",
       "remaining_in_scope": true,
       "title": "cosd Task API and Provider Boundary"
@@ -1631,7 +1631,7 @@
       "owner": "",
       "partial_remaining": "ADR-195 accepted a read-only Bubble Tea Surface 5 MVP and deferred mutation",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-197-surface-5-operable-actions.md",
+      "path": "docs/02-Decisions/adrs/ADR-197-surface-5-operable-actions.md",
       "remaining": "ADR-195 accepted a read-only Bubble Tea Surface 5 MVP and deferred mutation",
       "remaining_in_scope": true,
       "title": "Surface 5 Operable Actions"
@@ -1648,7 +1648,7 @@
       "owner": "",
       "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md",
+      "path": "docs/02-Decisions/adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
       "title": "Signal Quality and Reward Integrity Boundary"
@@ -1665,7 +1665,7 @@
       "owner": "",
       "partial_remaining": "Phoenix/OpenTelemetry may visualize traces, but local trace JSON remains the",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md",
+      "path": "docs/02-Decisions/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md",
       "remaining": "Phoenix/OpenTelemetry may visualize traces, but local trace JSON remains the",
       "remaining_in_scope": true,
       "title": "Cross-Stream Trace Joiner and Flight Recorder"
@@ -1682,7 +1682,7 @@
       "owner": "",
       "partial_remaining": "demoted to future work;",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-206-aspirational-claim-decommission-gate.md",
+      "path": "docs/02-Decisions/adrs/ADR-206-aspirational-claim-decommission-gate.md",
       "remaining": "demoted to future work;",
       "remaining_in_scope": true,
       "title": "Aspirational Claim Decommission Gate"
@@ -1699,7 +1699,7 @@
       "owner": "",
       "partial_remaining": "packaging, memory, and review patterns, but deferred the consumer/scheduler/",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-208-imported-pattern-closure-contract.md",
+      "path": "docs/02-Decisions/adrs/ADR-208-imported-pattern-closure-contract.md",
       "remaining": "packaging, memory, and review patterns, but deferred the consumer/scheduler/",
       "remaining_in_scope": true,
       "title": "Imported Pattern Closure Contract"
@@ -1716,7 +1716,7 @@
       "owner": "",
       "partial_remaining": "Some proposals remain unexecutable until metrics exist.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-209-maintainer-reconciler-experiment-contract.md",
+      "path": "docs/02-Decisions/adrs/ADR-209-maintainer-reconciler-experiment-contract.md",
       "remaining": "Some proposals remain unexecutable until metrics exist.",
       "remaining_in_scope": true,
       "title": "Maintainer Reconciler Experiment Contract"
@@ -1733,7 +1733,7 @@
       "owner": "",
       "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/adrs/ADR-211-service-mode-readiness-gate.md",
+      "path": "docs/02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md",
       "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
       "remaining_in_scope": null,
       "title": "Service-Mode Readiness Gate"
@@ -1750,7 +1750,7 @@
       "owner": "",
       "partial_remaining": "known-bad scanner versions (when populated) are blocked;",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md",
+      "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md",
       "remaining": "known-bad scanner versions (when populated) are blocked;",
       "remaining_in_scope": true,
       "title": "Cross-Stack Secret Audit Toolchain"
@@ -1767,7 +1767,7 @@
       "owner": "",
       "partial_remaining": "162 pending /repo-scout).",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-217-cross-stack-adoption-truth-audit.md",
+      "path": "docs/02-Decisions/adrs/ADR-217-cross-stack-adoption-truth-audit.md",
       "remaining": "162 pending /repo-scout).",
       "remaining_in_scope": true,
       "title": "Cross-Stack Adoption Truth Audit Toolchain"
@@ -1784,7 +1784,7 @@
       "owner": "",
       "partial_remaining": "var is set. Default public-readiness rewrites remain blob-only to preserve",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-218-history-sanitization-toolchain.md",
+      "path": "docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md",
       "remaining": "var is set. Default public-readiness rewrites remain blob-only to preserve",
       "remaining_in_scope": true,
       "title": "History Sanitization Toolchain"
@@ -1801,7 +1801,7 @@
       "owner": "",
       "partial_remaining": "Manifest declaration**: deferred.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-220-worktree-divergence-audit.md",
+      "path": "docs/02-Decisions/adrs/ADR-220-worktree-divergence-audit.md",
       "remaining": "Manifest declaration**: deferred.",
       "remaining_in_scope": true,
       "title": "Worktree Divergence Audit Toolchain"
@@ -1818,7 +1818,7 @@
       "owner": "",
       "partial_remaining": "Remaining follow-up: update `stash_provenance` / SessionStart reapply to persist and consume `stash_sha`; add grep-based audit tests forbidding position refs in apply/drop/show code paths.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md",
+      "path": "docs/02-Decisions/adrs/ADR-221-stash-ref-by-sha-not-by-position.md",
       "remaining": "Remaining follow-up: update `stash_provenance` / SessionStart reapply to persist and consume `stash_sha`; add grep-based audit tests forbidding position refs in apply/drop/show code paths.",
       "remaining_in_scope": true,
       "title": "Stash References by SHA, Not by Position"
@@ -1835,7 +1835,7 @@
       "owner": "",
       "partial_remaining": "Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-225-branch-per-task-mode.md",
+      "path": "docs/02-Decisions/adrs/ADR-225-branch-per-task-mode.md",
       "remaining": "Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented",
       "remaining_in_scope": null,
       "title": "Branch-Per-Task Mode"
@@ -1852,7 +1852,7 @@
       "owner": "",
       "partial_remaining": "Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-226-event-sourced-session-bus.md",
+      "path": "docs/02-Decisions/adrs/ADR-226-event-sourced-session-bus.md",
       "remaining": "Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections.",
       "remaining_in_scope": true,
       "title": "Event-Sourced Session Bus"
@@ -1869,7 +1869,7 @@
       "owner": "",
       "partial_remaining": "Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md",
+      "path": "docs/02-Decisions/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md",
       "remaining": "Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented",
       "remaining_in_scope": null,
       "title": "Deferred Tool Loading + ToolSearch Adoption"
@@ -1882,7 +1882,7 @@
       "follow_up_adr": "",
       "implementation_files": [
         "hooks/_lib/bypass-resolver.sh",
-        "docs/security/bypass-cheatsheet.md",
+        "docs/09-Quality/security/bypass-cheatsheet.md",
         "hooks/destructive-git-blocker.sh",
         "hooks/git-commit-scope-guard.sh",
         "hooks/branch-ownership-lock.sh",
@@ -1895,7 +1895,7 @@
       "owner": "",
       "partial_remaining": "Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md",
+      "path": "docs/02-Decisions/adrs/ADR-241-consolidated-cos-bypass-allowlist.md",
       "remaining": "Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion",
       "remaining_in_scope": null,
       "title": "Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist"
@@ -1917,7 +1917,7 @@
       "owner": "",
       "partial_remaining": "Slice A read-only/lock-file freeze exists; future slices explicitly remain open",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-246-release-transaction-freeze.md",
+      "path": "docs/02-Decisions/adrs/ADR-246-release-transaction-freeze.md",
       "remaining": "Slice A read-only/lock-file freeze exists; future slices explicitly remain open",
       "remaining_in_scope": null,
       "title": "Release Transaction Freeze for Destructive and Public-State Operations"
@@ -1938,7 +1938,7 @@
       "owner": "",
       "partial_remaining": "hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-248-control-plane-audit-loop.md",
+      "path": "docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md",
       "remaining": "hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open",
       "remaining_in_scope": null,
       "title": "Control-Plane Audit Loop for ADR-239+ Primitive Drift"
@@ -1959,7 +1959,7 @@
       "owner": "",
       "partial_remaining": "Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md",
+      "path": "docs/02-Decisions/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md",
       "remaining": "Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope",
       "remaining_in_scope": null,
       "title": "Primitive Behavioral Proof and Anti-Overfit Testing"
@@ -1973,8 +1973,8 @@
       "implementation_files": [
         "manifests/capability-coverage.yaml",
         "scripts/cos-capability-matrix",
-        "docs/capabilities/MATRIX.md",
-        "docs/reports/capability-coverage-latest.json",
+        "docs/07-Capabilities/capabilities/MATRIX.md",
+        "docs/06-Daily/reports/capability-coverage-latest.json",
         "tests/unit/test_capability_matrix.py"
       ],
       "implementation_status": "partial",
@@ -1982,7 +1982,7 @@
       "owner": "",
       "partial_remaining": "Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md",
+      "path": "docs/02-Decisions/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md",
       "remaining": "Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete",
       "remaining_in_scope": null,
       "title": "Capability Coverage Matrix and Feature Reality Ledger"
@@ -1999,7 +1999,7 @@
       "owner": "",
       "partial_remaining": "quarantined by a follow-up cleanup plan.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",
+      "path": "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",
       "remaining": "quarantined by a follow-up cleanup plan.",
       "remaining_in_scope": true,
       "title": "External Tool Intelligence Plane and Project Overlays"
@@ -2016,7 +2016,7 @@
       "owner": "",
       "partial_remaining": "Phase 5 canonical migration remains deferred; .ai stays a generated non-canonical overlay until a future ADR explicitly promotes it.",
       "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md",
+      "path": "docs/02-Decisions/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md",
       "remaining": "Phase 5 canonical migration remains deferred; .ai stays a generated non-canonical overlay until a future ADR explicitly promotes it.",
       "remaining_in_scope": true,
       "title": "Portable `.ai` Overlay for Agentic Primitives"
@@ -2033,7 +2033,7 @@
       "owner": "",
       "partial_remaining": "documentation text) is categorically blocked. A formal clean-room process",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-259-external-pattern-adoption-posture.md",
+      "path": "docs/02-Decisions/adrs/ADR-259-external-pattern-adoption-posture.md",
       "remaining": "documentation text) is categorically blocked. A formal clean-room process",
       "remaining_in_scope": true,
       "title": "holaOS Adoption Posture: Patterns-Only Library with Clean-Room Rewrite"
@@ -2050,7 +2050,7 @@
       "owner": "",
       "partial_remaining": "Decision deferred to implementation.",
       "partial_remaining_basis": "explicit body remaining signal",
-      "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md",
+      "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md",
       "remaining": "Decision deferred to implementation.",
       "remaining_in_scope": true,
       "title": "License-Compliance Enforcement Architecture"
@@ -2065,8 +2065,8 @@
         "manifests/pending-truth.yaml",
         "scripts/cos-pending-truth-aggregator",
         "scripts/cos-pending-truth-verify",
-        "docs/reports/pending-truth-latest.json",
-        "docs/reports/pending-truth-latest.md",
+        "docs/06-Daily/reports/pending-truth-latest.json",
+        "docs/06-Daily/reports/pending-truth-latest.md",
         "tests/red_team/portability/test_cos-pending-truth-aggregator.py"
       ],
       "implementation_status": "partial",
@@ -2074,7 +2074,7 @@
       "owner": "",
       "partial_remaining": "Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
+      "path": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
       "remaining": "Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization",
       "remaining_in_scope": null,
       "title": "Pending Truth Ledger and Bilateral Verification Loop"
@@ -2088,8 +2088,8 @@
       "implementation_files": [
         "scripts/cos-operational-guide-audit.py",
         "hooks/adr-section-validator.sh",
-        "docs/reports/operational-guide-audit-latest.json",
-        "docs/reports/operational-guide-audit-latest.md",
+        "docs/06-Daily/reports/operational-guide-audit-latest.json",
+        "docs/06-Daily/reports/operational-guide-audit-latest.md",
         "tests/red_team/portability/test_cos-operational-guide-audit.py"
       ],
       "implementation_status": "partial",
@@ -2097,7 +2097,7 @@
       "owner": "",
       "partial_remaining": "Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
+      "path": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
       "remaining": "Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope",
       "remaining_in_scope": null,
       "title": "Operational Guide Required for Maintainer-Tier Capability ADRs"
@@ -2113,14 +2113,14 @@
         "scripts/cos-pending-truth-close",
         "tests/red_team/portability/test_cos-session-start-projector.py",
         "tests/red_team/portability/test_cos-pending-truth-close.py",
-        "docs/runbooks/adr-275-session-start-hook-staging/"
+        "docs/05-Methodology/runbooks/adr-275-session-start-hook-staging/"
       ],
       "implementation_status": "partial",
       "number": "275",
       "owner": "",
       "partial_remaining": "Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review",
       "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md",
+      "path": "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
       "remaining": "Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review",
       "remaining_in_scope": null,
       "title": "Closure & Projection Primitives (Pending-Truth Read/Write Symmetry)"
@@ -2142,7 +2142,7 @@
       "owner": "",
       "partial_remaining": "",
       "partial_remaining_basis": "",
-      "path": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "path": "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md",
       "remaining": "Audit + allowlist + test-default shipped; per-call backfill (984 of 1824 calls) tracked as Phase 2.",
       "remaining_in_scope": null,
       "title": "subprocess.run Timeout Discipline"

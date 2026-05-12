@@ -153,7 +153,7 @@ Derived from these wounds. Apply before adding new code:
 - Session summaries in engram (topic_key `session/*`, `audit/*`)
 - ADRs documenting the fixes: ADR-001 to ADR-022
 - Stabilization roadmap: `.cognitive-os/plans/roadmaps/stabilization-roadmap.md`
-- Frozen backlog: `docs/architecture/FROZEN-BACKLOG.md`
+- Frozen backlog: `docs/04-Concepts/architecture/FROZEN-BACKLOG.md`
 - Memory files: `~/.claude/projects/.../memory/` (loaded every session)
 
 ---
@@ -165,7 +165,7 @@ Derived from these wounds. Apply before adding new code:
 
 ## 2026-05-02 — STASH MUTATION WITHOUT COORDINATION (SILENT-REVERT INCIDENT)
 
-**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/stash-resolution-2026-05-01.md` | ADR-117
+**Reference:** `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md` | `docs/06-Daily/reports/stash-resolution-2026-05-01.md` | ADR-117
 
 **What happened:** During the same 2026-05-02 false-done compounding session, a parallel agent's pre-agent-snapshot hook pushed 59 modified files onto the stash and never restored them. Because the stash entry was anonymous and no audit trail existed, the missing files were invisible to all subsequent agents in the session. Their observations of the working tree were invalid, contributing to cascading false-done reports and 5+ revert events. The stash leak was only discovered during a manual adversarial review.
 
@@ -184,9 +184,9 @@ Derived from these wounds. Apply before adding new code:
 
 ## 2026-05-02 — FALSE-DONE COMPOUNDING
 
-**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | ADR-105 | ADR-106
+**Reference:** `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md` | ADR-105 | ADR-106
 
-**What happened:** A sub-agent (Wave C) claimed "3 DELETE hooks already archived" in a commit message. The claim was a bilateral failure: the files existed in `docs/archive/hooks/` but also remained live in `hooks/`, one was still registered in `.claude/settings.json`, and one archive copy was a symlink. The plan was marked `[x]` on this basis and committed to main. Concurrently, a parallel agent stash-leaked 59 modified files (never re-applied), and a second orchestrator session committed 3 uncoordinated fixes to main. Adversarial review — triggered manually by the operator — caught both HIGH findings before the session ended.
+**What happened:** A sub-agent (Wave C) claimed "3 DELETE hooks already archived" in a commit message. The claim was a bilateral failure: the files existed in `docs/99-Archive/archive/hooks/` but also remained live in `hooks/`, one was still registered in `.claude/settings.json`, and one archive copy was a symlink. The plan was marked `[x]` on this basis and committed to main. Concurrently, a parallel agent stash-leaked 59 modified files (never re-applied), and a second orchestrator session committed 3 uncoordinated fixes to main. Adversarial review — triggered manually by the operator — caught both HIGH findings before the session ended.
 
 **New wound: Presence ≠ Removal Fallacy.** Agents default to the optimistic partial: "archive present" ≠ "original absent + config refs gone." This is structurally different from the five existing wounds but compounds them.
 

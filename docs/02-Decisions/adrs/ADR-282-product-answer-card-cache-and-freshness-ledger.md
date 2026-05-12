@@ -12,7 +12,7 @@ implementation_files:
   - lib/product_answer.py
   - scripts/cos-product-answer
   - scripts/cos-product-answer-refresh
-  - docs/business/product-answer-playbook.md
+  - docs/08-References/business/product-answer-playbook.md
   - tests/unit/test_product_answer.py
   - tests/behavior/test_product_answer_cli.py
 tier: maintainer
@@ -88,7 +88,7 @@ trust_score: 78
 source_hashes:
   manifests/product-question-bank.yaml: sha256...
   manifests/product-claim-evidence.yaml: sha256...
-  docs/business/product-messaging.md: sha256...
+  docs/08-References/business/product-messaging.md: sha256...
 ```
 
 The body is the compact ADR-280 Markdown answer.

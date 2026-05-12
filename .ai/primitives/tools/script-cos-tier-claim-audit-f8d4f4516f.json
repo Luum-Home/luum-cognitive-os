@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-tier-claim-audit",
         "scripts/cos_tier_claim_audit.py",
-        "docs/adrs/ADR-133-expansion-without-monsterization.md"
+        "docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md"
       ],
       "runtime_projection": false
     }
@@ -155,7 +155,7 @@
       "projection_targets": [
         "scripts/cos-tier-claim-audit",
         "scripts/cos_tier_claim_audit.py",
-        "docs/adrs/ADR-133-expansion-without-monsterization.md"
+        "docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md"
       ],
       "runtime_projection": false
     }
@@ -164,7 +164,7 @@
   "projection_targets": [
     "scripts/cos-tier-claim-audit",
     "scripts/cos_tier_claim_audit.py",
-    "docs/adrs/ADR-133-expansion-without-monsterization.md"
+    "docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-tier-claim-audit",

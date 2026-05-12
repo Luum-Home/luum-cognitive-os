@@ -13,7 +13,7 @@ implementation_files:
   - manifests/harness-implementation-phases.yaml
   - tests/behavior/test_consumer_project_projection.py
   - tests/contracts/test_acc_pipeline_contract.py
-  - docs/manual-tests/kimi-code-cli-structural-projection.md
+  - docs/09-Quality/manual-tests/kimi-code-cli-structural-projection.md
 tier: maintainer
 tags: [harness, kimi, cli, projection, acc, portability]
 ---
@@ -99,7 +99,7 @@ kimi --work-dir . --mcp-config-file .kimi/mcp.json
 
 1. Run `python3 scripts/cos_init.py --default --harness kimi-code --project-dir /tmp/test-kimi` and inspect `AGENTS.md`, `.kimi/mcp.json`, and `.kimi/README.md`.
 2. Read `manifests/harness-projection.yaml` entry for `kimi-code` — note the `structural-cli-proof` limitation annotation alongside Qwen.
-3. Read `docs/manual-tests/kimi-code-cli-structural-projection.md` for expected file assertions and their rationale.
+3. Read `docs/09-Quality/manual-tests/kimi-code-cli-structural-projection.md` for expected file assertions and their rationale.
 4. Compare with ADR-156 (Qwen Code): both are Phase 3 structural harnesses; Kimi targets the CLI surface while Qwen targets project settings + context files.
 
 ## Alternatives rejected

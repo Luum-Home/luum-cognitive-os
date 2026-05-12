@@ -1,6 +1,6 @@
 # Orchestration ADR Implementation Checklist — 2026-05-07
 
-**Scope**: ADRs derived from `docs/research/orchestration-gaps/` after the C1–C4 evaluation contract.
+**Scope**: ADRs derived from `docs/03-PoCs/research/orchestration-gaps/` after the C1–C4 evaluation contract.
 
 ## Status legend
 

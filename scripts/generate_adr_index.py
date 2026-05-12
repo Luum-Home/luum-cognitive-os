@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate docs/adrs/INDEX.md from ADR metadata.
+"""Generate docs/02-Decisions/adrs/INDEX.md from ADR metadata.
 
-The generator follows docs/adrs/STATUS-TAXONOMY.md: decision status, implementation
+The generator follows docs/02-Decisions/adrs/STATUS-TAXONOMY.md: decision status, implementation
 status, and index bucket are separate concepts.
 """
 from __future__ import annotations
@@ -191,7 +191,7 @@ def render_table(rows: list[AdrRow]) -> list[str]:
 def adr_paths() -> list[Path]:
     """Return committed/staged ADR files so local untracked drafts do not dirty the index."""
     result = subprocess.run(
-        ["git", "ls-files", "docs/adrs/ADR-*.md"],
+        ["git", "ls-files", "docs/02-Decisions/adrs/ADR-*.md"],
         cwd=ROOT,
         text=True,
         stdout=subprocess.PIPE,
@@ -241,7 +241,7 @@ def generate() -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="Fail if docs/adrs/INDEX.md is not current")
+    parser.add_argument("--check", action="store_true", help="Fail if docs/02-Decisions/adrs/INDEX.md is not current")
     args = parser.parse_args()
 
     rendered = generate()

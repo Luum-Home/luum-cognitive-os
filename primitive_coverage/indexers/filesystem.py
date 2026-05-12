@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Iterable
 
 IGNORED_PARTS = {".git", ".venv", "node_modules", "__pycache__", ".pytest_cache"}
-IGNORED_PREFIXES = ("docs/reports/", "archive/")
+IGNORED_PREFIXES = ("docs/06-Daily/reports/", "archive/")
 
 
 def read_text(path: Path) -> str:

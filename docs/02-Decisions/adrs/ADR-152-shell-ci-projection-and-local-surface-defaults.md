@@ -98,7 +98,7 @@ bash -n hooks/_lib/artifact-status.sh hooks/auto-verify.sh hooks/dod-gate.sh
 1. Read `manifests/shell-ci-projection.yaml` to see which commands are declared for shell/CI projection.
 2. Run `python3 scripts/project_shell_ci.py --project-root . --profile default` to see what gets generated in a temp consumer project.
 3. Read `hooks/_lib/artifact-status.sh` to understand the centralized artifact-status loading contract.
-4. Check `docs/acc/latest.json` for current `partial_weight`, `unverified_weight`, and `stale_weight` — all should be 0 for the declared scope after a successful ACC refresh.
+4. Check `docs/07-Capabilities/acc/latest.json` for current `partial_weight`, `unverified_weight`, and `stale_weight` — all should be 0 for the declared scope after a successful ACC refresh.
 
 ## Alternatives rejected
 
@@ -121,4 +121,4 @@ bash -n hooks/_lib/artifact-status.sh hooks/auto-verify.sh hooks/dod-gate.sh
 - `scripts/project_shell_ci.py` implements shell/CI projection.
 - `scripts/acc_pipeline.py` merges shell/CI command proof into consumer projection.
 - `hooks/_lib/artifact-status.sh` centralizes artifact status loading.
-- `docs/acc/latest.json` reports `partial_weight=0`, `unverified_weight=0`, and `stale_weight=0` for declared ACC scope.
+- `docs/07-Capabilities/acc/latest.json` reports `partial_weight=0`, `unverified_weight=0`, and `stale_weight=0` for declared ACC scope.

@@ -8,7 +8,7 @@ limits and unavailability; treat as best-effort).
 Configuration:
     OPENROUTER_API_KEY   — from openrouter.ai dashboard
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
 """
 
 from __future__ import annotations

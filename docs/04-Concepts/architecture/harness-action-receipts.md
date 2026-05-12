@@ -111,7 +111,7 @@ action receipts should compose with these instead of replacing them.
 | Orchestrator claim gate | `hooks/orchestrator-claim-gate.sh`, `scripts/orchestrator_claim_gate.py` | Blocks high-stakes commit/push claims without evidence. Receipts should not count as independent evidence unless verified. |
 | Scope-marker portability gate | `hooks/scope-marker-portability-gate.sh` | Checks staged `SCOPE: both` artifacts for portability proof. |
 | Merge queue | `scripts/merge-to-main.sh`, `scripts/cos-merge-queue.sh`, `scripts/cos-merge-queue-worker.sh`, `lib/merge_queue.py` | Authoritative local landing path; emits queue events and should produce `vcs.merge.land` receipts. |
-| Protected landing contract | `docs/architecture/protected-landing-contract.md` | Vendor-neutral invariant for shared branch advancement. Receipts must report whether landing was locally queued, server-protected, provider-native, or unknown. |
+| Protected landing contract | `docs/04-Concepts/architecture/protected-landing-contract.md` | Vendor-neutral invariant for shared branch advancement. Receipts must report whether landing was locally queued, server-protected, provider-native, or unknown. |
 | Git context capture | `hooks/git-context-capture.sh`, `lib/git_context.py` | Stop-time session audit; can summarize receipts and verify start/end commit state. |
 | Event bus | `lib/event_bus.py` | Inter-session channel for verified or authoritative receipts that affect coordination. |
 | Branch writer leases | `scripts/cos_branch_lease.py`, `scripts/cos-branch-lease` | Same-branch write ownership; receipts can carry lease owner/session metadata. |
@@ -153,7 +153,7 @@ scripts/cos-action-receipt parse-codex \
   --promote-git --append --json
 
 scripts/cos-action-receipt stats --json
-scripts/cos-action-receipt report --output docs/reports/vcs-action-receipts-latest.md --json
+scripts/cos-action-receipt report --output docs/06-Daily/reports/vcs-action-receipts-latest.md --json
 ```
 
 The implementation intentionally does not change enforcement behavior. Receipts
@@ -249,7 +249,7 @@ Receipts have different storage needs depending on trust and use.
 | `.cognitive-os/metrics/vcs-actions.jsonl` | Append-only local audit of all receipts, including advisory. | all |
 | `.cognitive-os/sessions/events.jsonl` | Cross-session coordination events that other agents may act on. | `verified`, `authoritative` only by default |
 | `.cognitive-os/sessions/<session>/git-context.json` | End-of-session summary and commit/diff record. | `observed`, `verified`, `authoritative` |
-| `docs/reports/*.md` / dashboard | Human reporting. | all, with trust labels visible |
+| `docs/06-Daily/reports/*.md` / dashboard | Human reporting. | all, with trust labels visible |
 
 Advisory harness directives should not be broadcast through the coordination bus
 unless an adapter clearly marks them advisory and consumers refuse to close tasks

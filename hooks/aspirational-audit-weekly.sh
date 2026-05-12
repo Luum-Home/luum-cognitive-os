@@ -109,7 +109,7 @@ is_high=$(python3 -c "print('1' if float('${ratio}') > 0.40 else '0')" 2>/dev/nu
 if [[ "${is_high}" == "1" ]]; then
     ratio_pct=$(python3 -c "print(f'{float(\"${ratio}\")*100:.0f}')" 2>/dev/null || echo "?")
     today=$(date +%Y-%m-%d)
-    echo "📊 Aspirational audit: ${ratio_pct}% dormant/aspirational (${total} components). Review: docs/reports/aspirational-audit-${today}.md" >&2
+    echo "📊 Aspirational audit: ${ratio_pct}% dormant/aspirational (${total} components). Review: docs/06-Daily/reports/aspirational-audit-${today}.md" >&2
 fi
 
 exit 0

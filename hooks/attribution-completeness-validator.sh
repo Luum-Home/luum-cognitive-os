@@ -2,7 +2,7 @@
 # SCOPE: os-only
 # attribution-completeness-validator.sh — ADR-267 Hook #5.
 #
-# Pre-commit gate. For staged files matching docs/research/*-annex-*.md:
+# Pre-commit gate. For staged files matching docs/03-PoCs/research/*-annex-*.md:
 #   1. The first 30 lines (or YAML frontmatter) MUST mention:
 #        Source-Pattern:, License:, Clean-Room-Protocol:
 #      (any markdown-recognizable form — frontmatter, list, comment).
@@ -49,7 +49,7 @@ STAGED="$(git -C "$ROOT_DIR" diff --cached --name-only --diff-filter=ACMR 2>/dev
 ANNEX=()
 while IFS= read -r f; do
   case "$f" in
-    docs/research/*-annex-*.md) ANNEX+=("$f") ;;
+    docs/03-PoCs/research/*-annex-*.md) ANNEX+=("$f") ;;
   esac
 done <<< "$STAGED"
 
@@ -128,5 +128,5 @@ echo "" >&2
 echo "Required header fields (first 30 lines): Source-Pattern, License, Clean-Room-Protocol." >&2
 echo "Code fences need '# from <path>' / '// from <path>' / 'Source:' / '**Source**' line." >&2
 echo "Bypass (logged): COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 git commit ..." >&2
-echo "Reference: docs/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
+echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
 exit 1

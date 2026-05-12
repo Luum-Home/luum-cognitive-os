@@ -19,41 +19,41 @@ jobs:
         run: |
           python3 scripts/primitive_gap_snapshot.py \
             --trend \
-            --trend-path docs/reports/primitive-gap-history.jsonl \
-            --markdown docs/reports/primitive-gap-latest.md \
-            --regression-report docs/reports/primitive-gap-regressions.md \
+            --trend-path docs/06-Daily/reports/primitive-gap-history.jsonl \
+            --markdown docs/06-Daily/reports/primitive-gap-latest.md \
+            --regression-report docs/06-Daily/reports/primitive-gap-regressions.md \
             --fail-on-regression \
             --fail-on-gap \
-            --json > docs/reports/primitive-gap-latest.json
+            --json > docs/06-Daily/reports/primitive-gap-latest.json
 
       - name: Run documentation duplicate audit
         run: |
           python3 scripts/docs_duplicate_audit.py \
-            --baseline docs/reports/docs-duplicate-baseline.json \
-            --markdown docs/reports/docs-duplicate-latest.md \
+            --baseline docs/06-Daily/reports/docs-duplicate-baseline.json \
+            --markdown docs/06-Daily/reports/docs-duplicate-latest.md \
             --fail-new \
-            --json > docs/reports/docs-duplicate-latest.json
+            --json > docs/06-Daily/reports/docs-duplicate-latest.json
 
       - name: Run primitive row audit
         run: |
           python3 scripts/primitive_row_audit.py \
-            --json-out docs/reports/primitive-row-audit-latest.json \
-            --md-out docs/reports/primitive-row-audit-latest.md
+            --json-out docs/06-Daily/reports/primitive-row-audit-latest.json \
+            --md-out docs/06-Daily/reports/primitive-row-audit-latest.md
 
       - name: Run claim-to-proof audit
         run: |
           python3 scripts/claim_proof_audit.py \
-            --json-out docs/reports/claim-proof-latest.json \
-            --md-out docs/reports/claim-proof-latest.md \
+            --json-out docs/06-Daily/reports/claim-proof-latest.json \
+            --md-out docs/06-Daily/reports/claim-proof-latest.md \
             --fail-unmapped
 
       - name: Generate reduction backlog
         run: |
           python3 scripts/reduction_backlog.py \
-            --row-audit docs/reports/primitive-row-audit-latest.json \
-            --claim-audit docs/reports/claim-proof-latest.json \
-            --json-out docs/reports/reduction-backlog-latest.json \
-            --md-out docs/reports/reduction-backlog-latest.md \
+            --row-audit docs/06-Daily/reports/primitive-row-audit-latest.json \
+            --claim-audit docs/06-Daily/reports/claim-proof-latest.json \
+            --json-out docs/06-Daily/reports/reduction-backlog-latest.json \
+            --md-out docs/06-Daily/reports/reduction-backlog-latest.md \
             --fail-nonzero
 
       - name: Plan hook surface reduction
@@ -61,37 +61,37 @@ jobs:
           python3 scripts/primitive_surface_reduce.py \
             --family hooks \
             --plan \
-            --json-out docs/reports/primitive-surface-reduction-latest.json \
-            --md-out docs/reports/primitive-surface-reduction-latest.md
+            --json-out docs/06-Daily/reports/primitive-surface-reduction-latest.json \
+            --md-out docs/06-Daily/reports/primitive-surface-reduction-latest.md
 
       - name: Map primitive consumers
         run: |
           python3 scripts/primitive_usage_map.py \
             --target-family scripts \
-            --json-out docs/reports/primitive-usage-map-latest.json \
-            --md-out docs/reports/primitive-usage-map-latest.md
+            --json-out docs/06-Daily/reports/primitive-usage-map-latest.json \
+            --md-out docs/06-Daily/reports/primitive-usage-map-latest.md
 
       - name: Generate generic primitive coverage reports
         run: |
           python3 scripts/primitive_coverage.py \
             --adapter cognitive-os \
             --format json \
-            --out docs/reports/primitive-coverage-latest.json
+            --out docs/06-Daily/reports/primitive-coverage-latest.json
           python3 scripts/primitive_coverage.py \
             --adapter cognitive-os \
             --format markdown \
-            --out docs/reports/primitive-coverage-latest.md
+            --out docs/06-Daily/reports/primitive-coverage-latest.md
           python3 scripts/primitive_coverage.py \
             --adapter cognitive-os \
             --format sarif \
-            --out docs/reports/primitive-coverage-latest.sarif \
+            --out docs/06-Daily/reports/primitive-coverage-latest.sarif \
             --fail-actionable-gaps
 
       - name: Run documentation execution audit
         run: |
           python3 scripts/docs_execution_audit.py \
-            --json-out docs/reports/docs-execution-latest.json \
-            --md-out docs/reports/docs-execution-latest.md \
+            --json-out docs/06-Daily/reports/docs-execution-latest.json \
+            --md-out docs/06-Daily/reports/docs-execution-latest.md \
             --fail-hard-gaps
 
       - name: Upload primitive gap snapshot artifact
@@ -100,54 +100,54 @@ jobs:
         with:
           name: primitive-gap-snapshot
           path: |
-            docs/reports/primitive-gap-latest.json
-            docs/reports/primitive-gap-latest.md
-            docs/reports/primitive-gap-regressions.md
-            docs/reports/primitive-gap-history.jsonl
-            docs/reports/docs-duplicate-baseline.json
-            docs/reports/docs-duplicate-latest.json
-            docs/reports/docs-duplicate-latest.md
-            docs/reports/primitive-row-audit-latest.json
-            docs/reports/primitive-row-audit-latest.md
-            docs/reports/claim-proof-latest.json
-            docs/reports/claim-proof-latest.md
-            docs/reports/reduction-backlog-latest.json
-            docs/reports/reduction-backlog-latest.md
-            docs/reports/primitive-surface-reduction-latest.json
-            docs/reports/primitive-surface-reduction-latest.md
-            docs/reports/primitive-usage-map-latest.json
-            docs/reports/primitive-usage-map-latest.md
-            docs/reports/primitive-coverage-latest.json
-            docs/reports/primitive-coverage-latest.md
-            docs/reports/primitive-coverage-latest.sarif
-            docs/reports/docs-execution-latest.json
-            docs/reports/docs-execution-latest.md
+            docs/06-Daily/reports/primitive-gap-latest.json
+            docs/06-Daily/reports/primitive-gap-latest.md
+            docs/06-Daily/reports/primitive-gap-regressions.md
+            docs/06-Daily/reports/primitive-gap-history.jsonl
+            docs/06-Daily/reports/docs-duplicate-baseline.json
+            docs/06-Daily/reports/docs-duplicate-latest.json
+            docs/06-Daily/reports/docs-duplicate-latest.md
+            docs/06-Daily/reports/primitive-row-audit-latest.json
+            docs/06-Daily/reports/primitive-row-audit-latest.md
+            docs/06-Daily/reports/claim-proof-latest.json
+            docs/06-Daily/reports/claim-proof-latest.md
+            docs/06-Daily/reports/reduction-backlog-latest.json
+            docs/06-Daily/reports/reduction-backlog-latest.md
+            docs/06-Daily/reports/primitive-surface-reduction-latest.json
+            docs/06-Daily/reports/primitive-surface-reduction-latest.md
+            docs/06-Daily/reports/primitive-usage-map-latest.json
+            docs/06-Daily/reports/primitive-usage-map-latest.md
+            docs/06-Daily/reports/primitive-coverage-latest.json
+            docs/06-Daily/reports/primitive-coverage-latest.md
+            docs/06-Daily/reports/primitive-coverage-latest.sarif
+            docs/06-Daily/reports/docs-execution-latest.json
+            docs/06-Daily/reports/docs-execution-latest.md
 
       - name: Commit primitive gap trend
         run: |
           git config user.name "cognitive-os-bot"
           git config user.email "bot@luum.ai"
           git add \
-            docs/reports/primitive-gap-latest.json \
-            docs/reports/primitive-gap-latest.md \
-            docs/reports/primitive-gap-regressions.md \
-            docs/reports/primitive-gap-history.jsonl \
-            docs/reports/docs-duplicate-latest.json \
-            docs/reports/docs-duplicate-latest.md \
-            docs/reports/primitive-row-audit-latest.json \
-            docs/reports/primitive-row-audit-latest.md \
-            docs/reports/claim-proof-latest.json \
-            docs/reports/claim-proof-latest.md \
-            docs/reports/reduction-backlog-latest.json \
-            docs/reports/reduction-backlog-latest.md \
-            docs/reports/primitive-surface-reduction-latest.json \
-            docs/reports/primitive-surface-reduction-latest.md \
-            docs/reports/primitive-usage-map-latest.json \
-            docs/reports/primitive-usage-map-latest.md \
-            docs/reports/primitive-coverage-latest.json \
-            docs/reports/primitive-coverage-latest.md \
-            docs/reports/primitive-coverage-latest.sarif \
-            docs/reports/docs-execution-latest.json \
-            docs/reports/docs-execution-latest.md
+            docs/06-Daily/reports/primitive-gap-latest.json \
+            docs/06-Daily/reports/primitive-gap-latest.md \
+            docs/06-Daily/reports/primitive-gap-regressions.md \
+            docs/06-Daily/reports/primitive-gap-history.jsonl \
+            docs/06-Daily/reports/docs-duplicate-latest.json \
+            docs/06-Daily/reports/docs-duplicate-latest.md \
+            docs/06-Daily/reports/primitive-row-audit-latest.json \
+            docs/06-Daily/reports/primitive-row-audit-latest.md \
+            docs/06-Daily/reports/claim-proof-latest.json \
+            docs/06-Daily/reports/claim-proof-latest.md \
+            docs/06-Daily/reports/reduction-backlog-latest.json \
+            docs/06-Daily/reports/reduction-backlog-latest.md \
+            docs/06-Daily/reports/primitive-surface-reduction-latest.json \
+            docs/06-Daily/reports/primitive-surface-reduction-latest.md \
+            docs/06-Daily/reports/primitive-usage-map-latest.json \
+            docs/06-Daily/reports/primitive-usage-map-latest.md \
+            docs/06-Daily/reports/primitive-coverage-latest.json \
+            docs/06-Daily/reports/primitive-coverage-latest.md \
+            docs/06-Daily/reports/primitive-coverage-latest.sarif \
+            docs/06-Daily/reports/docs-execution-latest.json \
+            docs/06-Daily/reports/docs-execution-latest.md
           git diff --staged --quiet || git commit -m "chore(audit): weekly primitive gap snapshot $(date -u +%Y-%m-%d)"
           git push

@@ -27,7 +27,7 @@ tags: [git-safety, worktree, agent-lifecycle, concurrency, postmortem-2026-05-08
 
 Accepted. This ADR records the corrective decision after the 2026-05-08
 branch-shift incident pattern documented in
-`docs/reports/silent-agent-branch-switch-postmortem-2026-05-08.md`.
+`docs/06-Daily/reports/silent-agent-branch-switch-postmortem-2026-05-08.md`.
 
 ## Context
 

@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:58 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (LLM-native crawler — markdown + structured extraction — for agent web-research/RAG ingestion)
 deep_verdict: ADOPT — production-ready, CI-perfect, drop-in for COS web-research / RAG ingestion
 deepwiki_url: https://deepwiki.com/unclecode/crawl4ai

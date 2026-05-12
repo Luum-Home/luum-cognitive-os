@@ -12,11 +12,11 @@ These tools have been vendored, ported, or adapted into COS source files. Each e
 
 ### Hermes Agent
 
-- **Status**: ![ALLOWED](https://img.shields.io/badge/status-ALLOWED-green)  
-- **License (SPDX)**: `MIT`  
-- **Upstream**: https://github.com/NousResearch/Hermes-Function-Calling  
-- **Copyright**: Copyright (c) NousResearch  
-- **Attribution**: Original work © NousResearch, ported and adapted by Cognitive OS contributors  
+- **Status**: ![ALLOWED](https://img.shields.io/badge/status-ALLOWED-green)
+- **License (SPDX)**: `MIT`
+- **Upstream**: https://github.com/NousResearch/Hermes-Function-Calling
+- **Copyright**: Copyright (c) NousResearch
+- **Attribution**: Original work © NousResearch, ported and adapted by Cognitive OS contributors
 - **COS files**:
   - `lib/memory_manager.py`
   - `lib/context_compressor.py`
@@ -25,7 +25,7 @@ These tools have been vendored, ported, or adapted into COS source files. Each e
   - `lib/review_agent.py`
   - `packages/agent-lifecycle/lib/review_agent.py`
   - `packages/verification-audit/lib/error_classifier.py`
-- **Annex F**: `docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Annex F**: `docs/03-PoCs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md`
 
 <details><summary>Compliance notes</summary>
 
@@ -39,14 +39,14 @@ lifecycle/lib/review_agent.py — tracked separately.
 
 ### HKUDS/OpenHarness
 
-- **Status**: ![ALLOWED](https://img.shields.io/badge/status-ALLOWED-green)  
-- **License (SPDX)**: `MIT`  
-- **Upstream**: https://github.com/HKUDS/OpenHarness  
-- **Copyright**: Copyright (c) 2025 OpenHarness Contributors  
-- **Attribution**: Ports HttpHookDefinition and PromptHookDefinition from HKUDS/OpenHarness (MIT), adapted to COS conventions.  
+- **Status**: ![ALLOWED](https://img.shields.io/badge/status-ALLOWED-green)
+- **License (SPDX)**: `MIT`
+- **Upstream**: https://github.com/HKUDS/OpenHarness
+- **Copyright**: Copyright (c) 2025 OpenHarness Contributors
+- **Attribution**: Ports HttpHookDefinition and PromptHookDefinition from HKUDS/OpenHarness (MIT), adapted to COS conventions.
 - **COS files**:
   - `lib/hook_types.py`
-- **Annex F**: `docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Annex F**: `docs/03-PoCs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md`
 
 <details><summary>Compliance notes</summary>
 
@@ -58,14 +58,14 @@ inline at lib/hook_types.py lines 4-6.
 
 ### Pi coding-agent
 
-- **Status**: ![HOLD](https://img.shields.io/badge/status-HOLD-orange)  
-- **License (SPDX)**: `MIT`  
-- **Upstream**: UNKNOWN  
-- **Copyright**: MISSING — upstream not identifiable  
-- **Attribution**: PENDING — upstream URL and copyright holder must be supplied before attribution can be authored  
+- **Status**: ![HOLD](https://img.shields.io/badge/status-HOLD-orange)
+- **License (SPDX)**: `MIT`
+- **Upstream**: UNKNOWN
+- **Copyright**: MISSING — upstream not identifiable
+- **Attribution**: PENDING — upstream URL and copyright holder must be supplied before attribution can be authored
 - **COS files**:
   - `lib/file_mutation_queue.py`
-- **Annex F**: `docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Annex F**: `docs/03-PoCs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md`
 
 <details><summary>Compliance notes</summary>
 
@@ -78,14 +78,14 @@ commit hash. Do NOT distribute until resolved.
 
 ### Sprut Agent Kit
 
-- **Status**: ![BLOCKED](https://img.shields.io/badge/status-BLOCKED-red)  
-- **License (SPDX)**: `MIT`  
-- **Upstream**: https://github.com/AlekseiUL/sprut-agent-kit  
-- **Copyright**: MISSING — LICENSE file returned HTTP 404; copyright holder unknown  
-- **Attribution**: PENDING — cannot be authored; copyright holder and license file unverifiable  
+- **Status**: ![BLOCKED](https://img.shields.io/badge/status-BLOCKED-red)
+- **License (SPDX)**: `MIT`
+- **Upstream**: https://github.com/AlekseiUL/sprut-agent-kit
+- **Copyright**: MISSING — LICENSE file returned HTTP 404; copyright holder unknown
+- **Attribution**: PENDING — cannot be authored; copyright holder and license file unverifiable
 - **COS files**:
   - `packages/verification-audit/lib/research_scoring.py`
-- **Annex F**: `docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Annex F**: `docs/03-PoCs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md`
 
 <details><summary>Compliance notes</summary>
 
@@ -97,12 +97,12 @@ Copyright holder and year unknown. HOLD — cannot distribute until attribution 
 
 ### HelixDB
 
-- **Status**: ![TRIAL-PATTERNS](https://img.shields.io/badge/status-TRIAL--PATTERNS-yellow)  
-- **License (SPDX)**: `AGPL-3.0`  
-- **Upstream**: https://github.com/HelixDB/helix-db  
-- **Copyright**: Copyright (c) HelixDB contributors (GNU AGPL-3.0)  
-- **Attribution**: Clean-room derived from behavioral spec; no helix-db source referenced. Design patterns documented in Annex F.  
-- **Annex F**: `docs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Status**: ![TRIAL-PATTERNS](https://img.shields.io/badge/status-TRIAL--PATTERNS-yellow)
+- **License (SPDX)**: `AGPL-3.0`
+- **Upstream**: https://github.com/HelixDB/helix-db
+- **Copyright**: Copyright (c) HelixDB contributors (GNU AGPL-3.0)
+- **Attribution**: Clean-room derived from behavioral spec; no helix-db source referenced. Design patterns documented in Annex F.
+- **Annex F**: `docs/03-PoCs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md`
 
 > **OSS MODE WARNING**: This entry has a copyleft license (`AGPL-3.0`). Runtime inclusion is blocked per `rules/license-policy.md`.
 
@@ -117,12 +117,12 @@ upstream code vendored.
 
 ### iFixAi
 
-- **Status**: ![PATTERN-ONLY](https://img.shields.io/badge/status-PATTERN--ONLY-blue)  
-- **License (SPDX)**: `Apache-2.0`  
-- **Upstream**: https://github.com/ifixai-ai/iFixAi  
-- **Copyright**: Copyright 2026 iMe  
-- **Attribution**: Original work © 2026 iMe (Apache-2.0). Pattern-only adoption. Modified by Cognitive OS contributors.  
-- **Annex F**: `docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Status**: ![PATTERN-ONLY](https://img.shields.io/badge/status-PATTERN--ONLY-blue)
+- **License (SPDX)**: `Apache-2.0`
+- **Upstream**: https://github.com/ifixai-ai/iFixAi
+- **Copyright**: Copyright 2026 iMe
+- **Attribution**: Original work © 2026 iMe (Apache-2.0). Pattern-only adoption. Modified by Cognitive OS contributors.
+- **Annex F**: `docs/03-PoCs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md`
 
 <details><summary>Compliance notes</summary>
 
@@ -135,12 +135,12 @@ mechanic blocked pending ADR-265.
 
 ### MegaMemory
 
-- **Status**: ![PATTERN-ONLY](https://img.shields.io/badge/status-PATTERN--ONLY-blue)  
-- **License (SPDX)**: `MIT`  
-- **Upstream**: UNKNOWN — upstream repository URL not recorded  
-- **Copyright**: Copyright (c) 2026 0xk3vin  
-- **Attribution**: Original work © 2026 0xk3vin (MIT). Port/pattern adoption by Cognitive OS contributors.  
-- **Annex F**: `docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md`  
+- **Status**: ![PATTERN-ONLY](https://img.shields.io/badge/status-PATTERN--ONLY-blue)
+- **License (SPDX)**: `MIT`
+- **Upstream**: UNKNOWN — upstream repository URL not recorded
+- **Copyright**: Copyright (c) 2026 0xk3vin
+- **Attribution**: Original work © 2026 0xk3vin (MIT). Port/pattern adoption by Cognitive OS contributors.
+- **Annex F**: `docs/03-PoCs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md`
 
 <details><summary>Compliance notes</summary>
 
@@ -153,12 +153,12 @@ repository URL not recorded — gap flagged.
 
 ### holaOS
 
-- **Status**: ![HOLD](https://img.shields.io/badge/status-HOLD-orange)  
-- **License (SPDX)**: `PROPRIETARY`  
-- **Upstream**: CONFIDENTIAL  
-- **Copyright**: CONFIDENTIAL — see internal compliance dossier  
-- **Attribution**: Reference: internal compliance dossier (Apache-2.0 modified BSL-like terms; distribution restricted)  
-- **Annex F**: `internal compliance dossier`  
+- **Status**: ![HOLD](https://img.shields.io/badge/status-HOLD-orange)
+- **License (SPDX)**: `PROPRIETARY`
+- **Upstream**: CONFIDENTIAL
+- **Copyright**: CONFIDENTIAL — see internal compliance dossier
+- **Attribution**: Reference: internal compliance dossier (Apache-2.0 modified BSL-like terms; distribution restricted)
+- **Annex F**: `internal compliance dossier`
 
 <details><summary>Compliance notes</summary>
 

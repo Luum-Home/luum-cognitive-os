@@ -38,10 +38,10 @@ done
 
 Generated reports:
 
-- `docs/reports/primitive-readiness-ledger-scripts-latest.json`
-- `docs/reports/primitive-readiness-ledger-hooks-latest.json`
-- `docs/reports/primitive-readiness-ledger-skills-latest.json`
-- `docs/reports/primitive-readiness-ledger-rules-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json`
+- `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json`
 
 Each row includes `consumer_accessibility` and `consumer_access_next_action`. Treat `so-local-only`, `repo-skill-not-projectable`, and `skill-referenced-not-projectable` as not available to consumer projects until an install/profile/package path proves otherwise.
 
@@ -96,5 +96,5 @@ Generated documentation truth: consumer projection harnesses.
 Implemented harnesses (22): agents-md, aider, amp-code, augment-code, claude, cline, codex, continue-dev, cursor, factory-droid, gemini-cli, goose, jetbrains-junie, kilo-code, kimi-code, opencode, qoder, qwen-code, shell-ci, vscode-copilot, warp, zed-ai.
 Projection fidelity summary: {"aligned": 1845, "contracts": 308, "gaps": 3, "pending_runtime_smoke": 0, "projection_rows": 1848, "unknown": 0}.
 Structural projection is not runtime enforcement; native lifecycle enforcement remains harness-specific.
-Sources: manifests/harness-projection.yaml; docs/reports/primitive-projection-fidelity-latest.json.
+Sources: manifests/harness-projection.yaml; docs/06-Daily/reports/primitive-projection-fidelity-latest.json.
 <!-- GENERATED:documentation-truth:consumer_projection_harnesses:end -->

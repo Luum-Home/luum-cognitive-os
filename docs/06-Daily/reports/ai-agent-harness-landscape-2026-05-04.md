@@ -4,7 +4,7 @@
 
 This report reconciles Cognitive OS repository documentation with current official/product documentation for agentic coding IDEs, CLIs, and hosted coding agents. It is intentionally a **candidate landscape**, not an implementation claim.
 
-The operating rule is the proof-level doctrine from `docs/architecture/harness-proof-levels.md`:
+The operating rule is the proof-level doctrine from `docs/04-Concepts/architecture/harness-proof-levels.md`:
 
 - `native-lifecycle`: COS lifecycle hooks/events are projected and tested for that harness.
 - `runtime-smoke`: a real account-backed CLI/IDE smoke was executed and recorded.
@@ -15,13 +15,13 @@ The operating rule is the proof-level doctrine from `docs/architecture/harness-p
 
 The old broad list lives mainly in:
 
-- `docs/ide-compatibility.md`
-- `docs/business/portability-plan.md`
-- `docs/business/features.md`
-- `docs/component-sources.md`
-- `docs/distributed-architecture.md`
-- `docs/architecture/multi-ide-harness-implementation-plan.md`
-- `docs/architecture/harness-implementation-roadmap.md`
+- `docs/04-Concepts/root/ide-compatibility.md`
+- `docs/08-References/business/portability-plan.md`
+- `docs/08-References/business/features.md`
+- `docs/04-Concepts/root/component-sources.md`
+- `docs/04-Concepts/root/distributed-architecture.md`
+- `docs/04-Concepts/architecture/multi-ide-harness-implementation-plan.md`
+- `docs/04-Concepts/architecture/harness-implementation-roadmap.md`
 - `manifests/harness-projection.yaml`
 
 The important finding is that older docs used compatibility labels such as `FULL` and `HIGH` from documentation analysis alone. That language is now too strong. The maintained contract is proof-level based.

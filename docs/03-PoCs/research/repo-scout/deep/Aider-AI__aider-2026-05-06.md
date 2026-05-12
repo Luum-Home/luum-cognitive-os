@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:58 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (Edit-block diff format + repo-map context-selection heuristic)
 deep_verdict: ADOPT — mature production tool; lift edit-block format + tree-sitter repo map
 deepwiki_url: https://deepwiki.com/Aider-AI/aider

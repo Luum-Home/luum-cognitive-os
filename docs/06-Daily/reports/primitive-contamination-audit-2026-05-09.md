@@ -18,9 +18,9 @@ The safety requirement is: **do not delete or rewrite primitives until current c
 
 - `skills/verification-before-completion/SKILL.md` now uses generic service placeholders instead of a domain-specific verification row.
 - `rules/definition-of-done.md` now says “externally irreversible operations” instead of naming a specific domain.
-- `docs/business/open-source-design.md` now uses `regulated-domain-auditor.md` instead of a blockchain-specific plugin example.
-- `docs/legal/pre-public-readiness-checklist.md` no longer prints raw private token values; it points to external/private evidence.
-- `docs/component-sources.md`, `docs/roadmap.md`, and `docs/rules.md` were genericized where older prose still contained stack/domain examples.
+- `docs/08-References/business/open-source-design.md` now uses `regulated-domain-auditor.md` instead of a blockchain-specific plugin example.
+- `docs/09-Quality/legal/pre-public-readiness-checklist.md` no longer prints raw private token values; it points to external/private evidence.
+- `docs/04-Concepts/root/component-sources.md`, `docs/01-Build-Log/root/roadmap.md`, and `docs/05-Methodology/root/rules.md` were genericized where older prose still contained stack/domain examples.
 - `scripts/primitive_usage_map.py` now ignores `.claude/plugins/` and prefilters target literals before regex matching so full primitive audits are practical.
 
 ## Consumer project inventory
@@ -40,9 +40,9 @@ Interpretation: the currently visible local consumers do **not** appear to rely 
 
 Generated reports:
 
-- `docs/reports/primitive-usage-map-skills.md`
-- `docs/reports/primitive-usage-map-hooks.md`
-- `docs/reports/primitive-usage-map-rules.md`
+- `docs/06-Daily/reports/primitive-usage-map-skills.md`
+- `docs/06-Daily/reports/primitive-usage-map-hooks.md`
+- `docs/06-Daily/reports/primitive-usage-map-rules.md`
 
 Summary from the latest run:
 
@@ -56,7 +56,7 @@ Interpretation: usage maps are static reachability, not runtime proof. Many hook
 
 ## Remaining risk
 
-- Some docs under `docs/research/` and generated report snapshots can still mention domain terms as historical research examples. This pass excluded those from the public/core contamination gate.
+- Some docs under `docs/03-PoCs/research/` and generated report snapshots can still mention domain terms as historical research examples. This pass excluded those from the public/core contamination gate.
 - The Trail of Bits optional security skill source includes specialized protocol audit capabilities. That should remain an optional external package description, not a default OS primitive.
 - Current grep checks are lexical. A stronger contract should classify “core vs package vs consumer-local” by frontmatter/tag and fail when raw consumer tokens appear in core paths.
 

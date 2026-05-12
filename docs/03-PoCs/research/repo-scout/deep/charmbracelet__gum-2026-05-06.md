@@ -3,7 +3,7 @@ evaluated_at: 2026-05-06 06:45 UTC
 engram_id: pending
 deepwiki_url: https://deepwiki.com/charmbracelet/gum
 batch: phase2-deep-tier2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 sister_batch: phase2-deep-tier1 (top-22)
 ---
 
@@ -64,10 +64,10 @@ Files cited (read directly via `gh api .../contents/<path>`):
 - **Star-inflation flag**: no
 
 ### Cross-References
-- Parent radar: `docs/reports/external-tools-radar-2026-05-06.md`
-- Sister batch (tier-1 top-22): wrote to `docs/research/repo-scout/deep/`
-- ADR-173 (research gate): `docs/adrs/ADR-173-surface-5-research-gate.md`
-- ADR-187 (proof contract): `docs/adrs/ADR-187-surface-5-adoption-proof-contract.md`
+- Parent radar: `docs/06-Daily/reports/external-tools-radar-2026-05-06.md`
+- Sister batch (tier-1 top-22): wrote to `docs/03-PoCs/research/repo-scout/deep/`
+- ADR-173 (research gate): `docs/02-Decisions/adrs/ADR-173-surface-5-research-gate.md`
+- ADR-187 (proof contract): `docs/02-Decisions/adrs/ADR-187-surface-5-adoption-proof-contract.md`
 
 ### Raw Metrics
 <details>

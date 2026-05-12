@@ -29,9 +29,9 @@ Decision: **keep the skill, strip the broken reference**.
 The skill is referenced in:
 - `skills/CATALOG.md`
 - `skills/CATALOG-COMPACT.md`
-- `docs/architecture.md`, `docs/singularity.md`, `docs/os-vs-project-separation.md`, `docs/component-audit.md`, and others
+- `docs/04-Concepts/architecture.md`, `docs/04-Concepts/root/singularity.md`, `docs/04-Concepts/root/os-vs-project-separation.md`, `docs/06-Daily/root/component-audit.md`, and others
 
-Removing the skill would orphan these consumers. The `coverage-gate.sh` hook was referenced only in the skill's own Integration section (as an optional integration point) and in `docs/configurable-quality-gates.md` / `docs/complexity-audit.md` (docs only, not functional code).
+Removing the skill would orphan these consumers. The `coverage-gate.sh` hook was referenced only in the skill's own Integration section (as an optional integration point) and in `docs/05-Methodology/root/configurable-quality-gates.md` / `docs/06-Daily/root/complexity-audit.md` (docs only, not functional code).
 
 Action: removed the `coverage-gate.sh` bullet from the Integration section and added the comment `<!-- coverage-gate.sh deferred; hook not yet implemented -->` in its place. The skill itself (the `/coverage-report` command) is fully functional without the hook.
 

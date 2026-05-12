@@ -54,7 +54,7 @@ Targeted query:
 python3 - <<'PY'
 import json
 from pathlib import Path
-payload = json.loads(Path('docs/acc/latest.json').read_text())
+payload = json.loads(Path('docs/07-Capabilities/acc/latest.json').read_text())
 counts = payload['adapters']['consumer_projection']['summary']['by_harness_profile']
 print('qwen-code/default=', counts['qwen-code/default'])
 print('qwen-code/full=', counts['qwen-code/full'])
@@ -66,7 +66,7 @@ Expected: both Qwen counts are positive and status is `implemented`.
 
 ## Test 3 — Optional account-backed runtime smoke
 
-If an operator has Qwen Code installed and authenticated, open the temp project or run Qwen Code from the temp project and verify it recognizes `QWEN.md`/settings context. Record results under `docs/reports/` if performed.
+If an operator has Qwen Code installed and authenticated, open the temp project or run Qwen Code from the temp project and verify it recognizes `QWEN.md`/settings context. Record results under `docs/06-Daily/reports/` if performed.
 
 This is optional and must not block default CI.
 
@@ -76,7 +76,7 @@ Structural projection is not enough to claim real Qwen delegation. To promote Qw
 
 1. **API auth probe**: implement and pass `scripts/cos-auth-probe --provider qwen --mode api-key --json`, using `ALIBABA_QWEN_API_KEY` only through environment-variable or explicitly documented secret injection. The probe must return `ready`, `auth_required`, `unsupported`, or `unsafe` and must not print or persist token material.
 2. **CLI/account auth probe**: if testing Qwen Code CLI account mode, implement a separate probe such as `scripts/cos-auth-probe --provider qwen-code --mode account-session --json`. This must be distinct from the API-key path because Qwen API credentials and Qwen Code CLI account/session credentials are different runtime surfaces.
-3. **Temp-repo smoke with redacted artifacts**: run a temporary repository task that writes an evidence bundle under `.cognitive-os/service/artifacts/` or `docs/reports/`, with stdout/stderr redacted before persistence. The artifact should include the prompt summary, provider id, model/runtime id, auth mode, result status, and proof that no credentials were recorded.
+3. **Temp-repo smoke with redacted artifacts**: run a temporary repository task that writes an evidence bundle under `.cognitive-os/service/artifacts/` or `docs/06-Daily/reports/`, with stdout/stderr redacted before persistence. The artifact should include the prompt summary, provider id, model/runtime id, auth mode, result status, and proof that no credentials were recorded.
 4. **Real `qwen_agent_loop` tool smoke**: execute `lib/qwen_agent_loop.py` against a real Qwen-backed client in a temp workspace and require at least one safe `read_file`, one safe `edit_file`, and one harmless `run_bash` round trip. The task must remain propose-only unless the temp workspace is disposable.
 5. **Dispatch metric evidence**: append or capture a `.cognitive-os/metrics/llm-dispatch.jsonl` row where `provider_used` is `qwen` or `qwen-code`, not `offline_dispatch_smoke`. The row must include execution-profile data, success/failure status, token counts when available, and no credential material.
 6. **Runtime boundary statement**: the report for any smoke must state which path was tested: `ALIBABA_QWEN_API_KEY` direct API dispatch, Qwen Code CLI account/session dispatch, or a gateway/provider bundle that happens to expose Qwen models.

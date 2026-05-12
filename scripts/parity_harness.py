@@ -15,8 +15,8 @@ auto-optimizer) can consume the same record regardless of the underlying
 provider.
 
 Usage:
-    python3 scripts/parity_harness.py --tasks docs/benchmarks/parity-smoke.yaml
-    python3 scripts/parity_harness.py --tasks ... --report docs/benchmarks/out.md
+    python3 scripts/parity_harness.py --tasks docs/08-References/benchmarks/parity-smoke.yaml
+    python3 scripts/parity_harness.py --tasks ... --report docs/08-References/benchmarks/out.md
     python3 scripts/parity_harness.py --tasks ... --only-qwen    # debug mode
     python3 scripts/parity_harness.py --tasks ... --dry-run      # no providers
 
@@ -24,7 +24,7 @@ The tests in tests/unit/test_parity_harness.py exercise the pure-python layer
 (YAML loading, CSV/MD rendering, run_task with injected providers). No real
 API call is ever made in the test suite.
 
-Reference: docs/adrs/ADR-051-qwen-agent-loop.md §"Phase 4"
+Reference: docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md §"Phase 4"
 """
 from __future__ import annotations
 
@@ -547,7 +547,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         description="ADR-051 Phase 4 — parity harness for Claude vs Qwen.",
     )
     p.add_argument("--tasks", required=True, type=Path,
-                   help="YAML task-set file (see docs/benchmarks/parity-smoke.yaml).")
+                   help="YAML task-set file (see docs/08-References/benchmarks/parity-smoke.yaml).")
     p.add_argument("--jsonl", type=Path,
                    default=_PROJECT_ROOT / ".cognitive-os" / "metrics" / "parity-results.jsonl",
                    help="Append-only JSONL output. Default under .cognitive-os/metrics/.")

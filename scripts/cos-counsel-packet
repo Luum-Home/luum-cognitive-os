@@ -19,9 +19,9 @@ EXISTING_ADRS = ["ADR-259", "ADR-267", "ADR-269"]
 
 
 def _find_annex_f(tool: str) -> Path | None:
-    # Look in docs/research/<tool>-annex-f-*.md and .private/external-pattern-research/
+    # Look in docs/03-PoCs/research/<tool>-annex-f-*.md and .private/external-pattern-research/
     candidates: list[Path] = []
-    candidates.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/research/{tool}-annex-f-*.md")))
+    candidates.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/03-PoCs/research/{tool}-annex-f-*.md")))
     candidates.extend(Path(p) for p in glob.glob(str(ROOT / f".private/external-pattern-research/{tool}*annex-f*.md")))
     candidates.extend(Path(p) for p in glob.glob(str(ROOT / f".private/external-pattern-research/annex-f-*.md")))
     return candidates[0] if candidates else None
@@ -29,9 +29,9 @@ def _find_annex_f(tool: str) -> Path | None:
 
 def _find_uspto_reports(tool: str) -> list[Path]:
     reports: list[Path] = []
-    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/reports/uspto-patent-{tool}-*.json")))
-    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/reports/uspto-tm-{tool}-*.json")))
-    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/reports/uspto-tm-*{tool}*-*.json")))
+    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/06-Daily/reports/uspto-patent-{tool}-*.json")))
+    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/06-Daily/reports/uspto-tm-{tool}-*.json")))
+    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/06-Daily/reports/uspto-tm-*{tool}*-*.json")))
     return sorted(set(reports))
 
 
@@ -40,7 +40,7 @@ def _find_license_snapshot(tool: str) -> list[Path]:
     for pattern in (
         f".private/external-source-cache/{tool}/LICENSE*",
         f".private/external-pattern-research/{tool}*LICENSE*",
-        f"docs/research/{tool}-LICENSE*",
+        f"docs/03-PoCs/research/{tool}-LICENSE*",
     ):
         matches.extend(Path(p) for p in glob.glob(str(ROOT / pattern)))
     return matches
@@ -74,7 +74,7 @@ def _find_cleanroom_evidence(tool: str) -> list[Path]:
 def _find_adr(adr_ref: str) -> Path | None:
     """adr_ref like "ADR-259"; prefer an Accepted status when multiple match."""
     num = adr_ref.replace("ADR-", "")
-    matches = sorted(glob.glob(str(ROOT / f"docs/adrs/ADR-{num}-*.md")))
+    matches = sorted(glob.glob(str(ROOT / f"docs/02-Decisions/adrs/ADR-{num}-*.md")))
     if not matches:
         return None
     accepted_re = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)

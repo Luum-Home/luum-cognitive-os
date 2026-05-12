@@ -1,7 +1,7 @@
 """Integration tests for hooks/post-agent-snapshot-restore.sh.
 
 Validates the post-agent stash-restore hook that closes the silent-revert
-root cause identified in docs/reports/revert-investigation-2026-05-02.md.
+root cause identified in docs/06-Daily/reports/revert-investigation-2026-05-02.md.
 
 Each test executes the hook via subprocess in a temporary git repo so
 the tests are fully hermetic and never touch the real working tree.

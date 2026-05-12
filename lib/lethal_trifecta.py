@@ -34,9 +34,9 @@ _EXTERNAL_ACTION_PATTERNS = [
 
 
 _RESEARCH_DOC_WRITE_PREFIXES = (
-    PurePosixPath("docs/research"),
-    PurePosixPath("docs/reports"),
-    PurePosixPath("docs/adrs"),
+    PurePosixPath("docs/03-PoCs/research"),
+    PurePosixPath("docs/06-Daily/reports"),
+    PurePosixPath("docs/02-Decisions/adrs"),
 )
 
 _EXTERNAL_TOOL_NAMES = {

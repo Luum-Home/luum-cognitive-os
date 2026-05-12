@@ -1,1 +1,0 @@
-08-References/root/bmad-v6-patterns.md

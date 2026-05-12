@@ -21,7 +21,7 @@ from typing import Any
 from urllib import error, request
 
 API_URL = "https://search.patentsview.org/api/v1/patent/"
-DEFAULT_REPORTS_DIR = Path("docs/reports")
+DEFAULT_REPORTS_DIR = Path("docs/06-Daily/reports")
 
 
 def _classify(patent: dict[str, Any], keywords: list[str]) -> str:

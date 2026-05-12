@@ -44,8 +44,8 @@ flags:
   - scripts/smoke-qwen-fallback.sh
   - lib/qwen_provider.py
   documentation:
-  - docs/runtime-env-flags.md
-  - docs/runbooks/llm-dispatch.md
+  - docs/04-Concepts/root/runtime-env-flags.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: When truthy, Qwen live-smoke paths must not load repo-local .env and
@@ -61,8 +61,8 @@ flags:
   - scripts/cos-credential-safe-run
   - scripts/cos_credential_safe_run.py
   documentation:
-  - docs/runtime-env-flags.md
-  - docs/manual-tests/credential-safe-script-runner.md
+  - docs/04-Concepts/root/runtime-env-flags.md
+  - docs/09-Quality/manual-tests/credential-safe-script-runner.md
   risk_level: high
   bypasses_safety_primitive: false
   description: Explicit operator approval flag for allowlisted credential-safe scripts
@@ -92,7 +92,7 @@ flags:
   - scripts/orchestrator.py
   documentation:
   - rules/llm-dispatch.md
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Skip Qwen as an LLM dispatch provider.
@@ -106,7 +106,7 @@ flags:
   - scripts/orchestrator.py
   documentation:
   - rules/llm-dispatch.md
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Force Claude-first routing for LLM dispatch.
@@ -121,7 +121,7 @@ flags:
   - scripts/smoke-qwen-fallback.sh
   documentation:
   - rules/llm-dispatch.md
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Disable fallback cascade and surface provider errors directly.
@@ -134,7 +134,7 @@ flags:
   owner_files:
   - hooks/session-init.sh
   documentation:
-  - docs/adrs/ADR-104-startup-circuit-breaker.md
+  - docs/02-Decisions/adrs/ADR-104-startup-circuit-breaker.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Skip heavy SessionStart hook bodies during startup incident recovery.
@@ -147,7 +147,7 @@ flags:
   owner_files:
   - hooks/session-init.sh
   documentation:
-  - docs/adrs/ADR-104-startup-circuit-breaker.md
+  - docs/02-Decisions/adrs/ADR-104-startup-circuit-breaker.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Disable SessionStart hook bodies for startup circuit breaker recovery.
@@ -160,7 +160,7 @@ flags:
   owner_files:
   - tests/integration/test_headless_service_drill.py
   documentation:
-  - docs/testing.md
+  - docs/09-Quality/root/testing.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Opt in to Docker/headless service integration proof drills.
@@ -173,9 +173,9 @@ flags:
   - scripts/cos_service_control_plane.py
   - scripts/cos-headless-service-drill
   documentation:
-  - docs/runtime-env-flags.md
-  - docs/manual-tests/headless-docker-service-runtime.md
-  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  - docs/04-Concepts/root/runtime-env-flags.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
+  - docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Optional model pin for explicit Codex host provider proof drills when
@@ -189,7 +189,7 @@ flags:
   owner_files:
   - tests/integration/test_databases.py
   documentation:
-  - docs/testing.md
+  - docs/09-Quality/root/testing.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Opt in to database container integration tests.
@@ -202,7 +202,7 @@ flags:
   owner_files:
   - hooks/concurrent-write-guard-codex-proxy.sh
   documentation:
-  - docs/architecture/concurrent-agent-safety-master.md
+  - docs/04-Concepts/architecture/concurrent-agent-safety-master.md
   risk_level: high
   bypasses_safety_primitive: true
   description: Explicitly bypass concurrent write guard in controlled situations.
@@ -215,7 +215,7 @@ flags:
   owner_files:
   - hooks/auto-checkpoint.sh
   documentation:
-  - docs/trust-model.md
+  - docs/04-Concepts/root/trust-model.md
   risk_level: high
   bypasses_safety_primitive: true
   description: Allow destructive git-related recovery behavior when explicitly set.
@@ -228,7 +228,7 @@ flags:
   owner_files:
   - hooks/direct-main-guard.sh
   documentation:
-  - docs/architecture/direct-main-policy.md
+  - docs/04-Concepts/architecture/direct-main-policy.md
   risk_level: high
   bypasses_safety_primitive: true
   description: One-off emergency bypass for direct main/master work.
@@ -267,7 +267,7 @@ flags:
   owner_files:
   - hooks/agent-bus-monitor.sh
   documentation:
-  - docs/architecture/concurrent-agent-safety-master.md
+  - docs/04-Concepts/architecture/concurrent-agent-safety-master.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Enable optional agent bus monitoring.
@@ -280,7 +280,7 @@ flags:
   owner_files:
   - lib/bifrost_client.py
   documentation:
-  - docs/research/claude-code-router-evaluation-2026-04-21.md
+  - docs/03-PoCs/research/claude-code-router-evaluation-2026-04-21.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Enable optional Bifrost gateway client path.
@@ -294,7 +294,7 @@ flags:
   - scripts/so_session_watchdog.py
   - lib/session_watchdog_lib.py
   documentation:
-  - docs/architecture/session-start-runtime-diet.md
+  - docs/04-Concepts/architecture/session-start-runtime-diet.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Disable session watchdog launcher/records for a session.
@@ -308,7 +308,7 @@ flags:
   - scripts/so_session_watchdog.py
   - lib/session_watchdog_lib.py
   documentation:
-  - docs/architecture/session-start-runtime-diet.md
+  - docs/04-Concepts/architecture/session-start-runtime-diet.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Keep watchdog in dry-run mode unless explicitly disabled.
@@ -321,7 +321,7 @@ flags:
   owner_files:
   - lib/record_completion.py
   documentation:
-  - docs/architecture/local-connected-systems-validation.md
+  - docs/04-Concepts/architecture/local-connected-systems-validation.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Enable MLflow hot-path completion recording.
@@ -335,8 +335,8 @@ flags:
   - hooks/protected-config-write-guard.sh
   - manifests/protected-config-write-policy.yaml
   documentation:
-  - docs/runtime-env-flags.md
-  - docs/security/cognitive-os-agent-security-research-2026-05-05.md
+  - docs/04-Concepts/root/runtime-env-flags.md
+  - docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md
   risk_level: high
   bypasses_safety_primitive: true
   description: Explicit operator bypass for writes to agent control-plane config such
@@ -352,8 +352,8 @@ flags:
   - manifests/network-egress-policy.yaml
   - scripts/network_egress_guard.py
   documentation:
-  - docs/runtime-env-flags.md
-  - docs/security/cognitive-os-agent-security-research-2026-05-05.md
+  - docs/04-Concepts/root/runtime-env-flags.md
+  - docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md
   risk_level: high
   bypasses_safety_primitive: true
   description: Explicit operator bypass for exfiltration-shaped external network shell
@@ -367,7 +367,7 @@ flags:
   owner_files:
   - hooks/dangerous-env-flag-detector.sh
   documentation:
-  - docs/runtime-env-flags.md
+  - docs/04-Concepts/root/runtime-env-flags.md
   risk_level: medium
   bypasses_safety_primitive: false
   description: Disables the advisory detector that reports active high-risk Cognitive

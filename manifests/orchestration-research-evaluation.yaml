@@ -5,7 +5,7 @@
 # machine-readable manifest. Consumers: SYNTHESIS-2026-05-06.md, every
 # ADR derived from the 11 gap reports, future research synthesizers.
 #
-# Source of decisions: docs/research/orchestration-coverage-gap-analysis-
+# Source of decisions: docs/03-PoCs/research/orchestration-coverage-gap-analysis-
 # 2026-05-06.md §"Synthesis constraints (binding for SYNTHESIS-...)".
 #
 # This manifest is normative. If a downstream artifact contradicts it,
@@ -277,7 +277,7 @@ governance:
     every downstream ADR that needs re-evaluation.
 
   enforcement_status:
-    research_reports: "active — applies to all 11 reports under docs/research/orchestration-gaps/"
+    research_reports: "active — applies to all 11 reports under docs/03-PoCs/research/orchestration-gaps/"
     synthesis: "active — patches SYNTHESIS-2026-05-06.md"
     adrs:
       "226-230": "active — verdict blocks declared in source"
@@ -298,17 +298,17 @@ governance:
 # =============================================================================
 references:
   source_of_constraints:
-    - "docs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
-    - "docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md"
+    - "docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
+    - "docs/03-PoCs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md"
   consumed_by:
-    - "docs/adrs/ADR-226-event-sourced-session-bus.md"
-    - "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
-    - "docs/adrs/ADR-228-retry-contract-and-cost-budget.md"
-    - "docs/adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md"
-    - "docs/adrs/ADR-223-*.md (reserved)"
-    - "docs/adrs/ADR-224-*.md (reserved)"
-    - "docs/adrs/ADR-225-*.md (reserved)"
-    - "docs/adrs/ADR-231-*.md to ADR-236-*.md (proposed)"
+    - "docs/02-Decisions/adrs/ADR-226-event-sourced-session-bus.md"
+    - "docs/02-Decisions/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
+    - "docs/02-Decisions/adrs/ADR-228-retry-contract-and-cost-budget.md"
+    - "docs/02-Decisions/adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md"
+    - "docs/02-Decisions/adrs/ADR-223-*.md (reserved)"
+    - "docs/02-Decisions/adrs/ADR-224-*.md (reserved)"
+    - "docs/02-Decisions/adrs/ADR-225-*.md (reserved)"
+    - "docs/02-Decisions/adrs/ADR-231-*.md to ADR-236-*.md (proposed)"
   related_manifests:
     - "manifests/strategy-surfaces.yaml"     # ADR-202 surface boundary
     - "manifests/cross-stack-license-audit.yaml"  # ADR-212; license audit consumer

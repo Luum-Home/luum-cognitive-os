@@ -37,7 +37,7 @@ A new external due-diligence sweep reviewed 40+ current sources across `.ai` /
 VERSA, AGENTS.md, Agent Skills, host-specific rule systems, OpenCode runtime
 surfaces, MCP, ACP, A2A, and pre-action authorization systems:
 
-- `docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md`
+- `docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md`
 
 The key finding is that `.ai` is no longer just a local product-packaging idea:
 VERSA / dotAIslash proposes a portable `.ai/` folder with canonical primitives,
@@ -141,7 +141,7 @@ governance.
 ### Phase 4 — consumer fleet impact
 
 Implemented by `scripts/portable_ai_consumer_impact.py` and
-`docs/reports/portable-ai-consumer-impact-latest.md`. The report is read-only and
+`docs/06-Daily/reports/portable-ai-consumer-impact-latest.md`. The report is read-only and
 keeps canonical migration blocked. `scripts/portable_ai_consumer_smoke.py` also writes the generated overlay into a disposable consumer fixture and verifies adapter manifests, registry-backed portable contracts, lifecycle-derived rows, and no canonical mutation.
 
 Release-hardening adds `scripts/portable_ai_real_consumer_smoke.py`, exposed as

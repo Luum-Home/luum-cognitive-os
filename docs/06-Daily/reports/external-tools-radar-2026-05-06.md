@@ -5,7 +5,7 @@ source_clusters: 20
 total_repos_audited: 235
 total_pass_to_deep: 95
 top_priority_count: 22
-parent_inventory: docs/reports/external-tools-inventory-2026-05-06.md
+parent_inventory: docs/06-Daily/reports/external-tools-inventory-2026-05-06.md
 budget_used_tool_calls: ~22
 ---
 
@@ -151,28 +151,28 @@ Decomposition guard: if any single deep audit exceeds $1.50, sub-decompose per `
 ## 7. Cross-References
 
 Source cluster reports (all dated 2026-05-06):
-- `docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md`
-- `docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md`
-- `docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md`
-- `docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md`
-- `docs/research/repo-scout/cluster-agent-swe-2026-05-06.md`
-- `docs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md`
-- `docs/research/repo-scout/cluster-browser-automation-2026-05-06.md`
-- `docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md`
-- `docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md`
-- `docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md`
-- `docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md`
-- `docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md`
-- `docs/research/repo-scout/cluster-memory-obsidian-2026-05-06.md`
-- `docs/research/repo-scout/cluster-memory-vector-2026-05-06.md`
-- `docs/research/repo-scout/cluster-observability-eval-2026-05-06.md`
-- `docs/research/repo-scout/cluster-security-supply-2026-05-06.md`
-- `docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md`
-- `docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md`
-- `docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md`
-- `docs/research/repo-scout/cluster-tui-rust-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-agent-swe-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-browser-automation-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-memory-obsidian-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-observability-eval-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md`
+- `docs/03-PoCs/research/repo-scout/cluster-tui-rust-2026-05-06.md`
 
-Parent inventory: `docs/reports/external-tools-inventory-2026-05-06.md`.
+Parent inventory: `docs/06-Daily/reports/external-tools-inventory-2026-05-06.md`.
 
 ## 8. Open Questions (operator)
 

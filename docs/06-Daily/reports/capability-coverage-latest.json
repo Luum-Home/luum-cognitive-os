@@ -414,8 +414,8 @@
     }
   ],
   "outputs": {
-    "latest_json": "docs/reports/capability-coverage-latest.json",
-    "matrix_md": "docs/capabilities/MATRIX.md"
+    "latest_json": "docs/06-Daily/reports/capability-coverage-latest.json",
+    "matrix_md": "docs/07-Capabilities/capabilities/MATRIX.md"
   },
   "schema_version": "capability-coverage/v1",
   "status": "pass",

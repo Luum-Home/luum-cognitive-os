@@ -208,10 +208,10 @@ source of truth going forward."**
 
 ## References
 
-- `docs/adrs/ADR-008-multi-tool-support.md`
-- `docs/adrs/ADR-015-rules-to-hooks-migration.md`
-- `docs/rules-loading-architecture.md`
-- `docs/global-vs-project-config.md`
-- `docs/os-vs-project-separation.md`
-- `docs/architecture/skills-rules-portability-gap.md`
-- `docs/architecture/skills-rules-canonicalization-risk-analysis.md`
+- `docs/02-Decisions/adrs/ADR-008-multi-tool-support.md`
+- `docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md`
+- `docs/04-Concepts/root/rules-loading-architecture.md`
+- `docs/04-Concepts/root/global-vs-project-config.md`
+- `docs/04-Concepts/root/os-vs-project-separation.md`
+- `docs/04-Concepts/architecture/skills-rules-portability-gap.md`
+- `docs/04-Concepts/architecture/skills-rules-canonicalization-risk-analysis.md`

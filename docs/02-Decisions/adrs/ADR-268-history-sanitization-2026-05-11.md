@@ -32,7 +32,7 @@ Accepted (2026-05-11)
 Between 2026-04-25 and 2026-05-09 the orchestrator ingested a public external pattern set (here referred to generically as the "external pattern") and produced ADRs 259-264 plus a series of Annex-F clean-room artifacts. The attribution paper trail is preserved in those ADRs and in the recovery bundle. However, the historical commit messages, several library file headers, and a number of Engram observations referenced the original tool name verbatim (including a non-anglosajon nickname used internally in early notes). Two factors combined to motivate a defensive cleanup pass on 2026-05-11:
 
 1. Pre-commercial pivot. The repository is moving toward either OSS-public or commercial / SaaS positioning (see ADR-267 Context). Commit logs are a low-effort discovery surface that does not benefit from carrying a verbatim third-party tool name when the clean-room derivation has already been documented in the ADRs. The ADRs are the canonical paper trail; the commit messages are not.
-2. License-compliance audit findings. `docs/reports/license-compliance-audit-2026-05-11.md` flagged the discoverability surface (commit subjects + Engram observations + a small number of `lib/*.py` headers that referenced the upstream name without any structural need) as an unnecessary risk multiplier for future legal review.
+2. License-compliance audit findings. `docs/06-Daily/reports/license-compliance-audit-2026-05-11.md` flagged the discoverability surface (commit subjects + Engram observations + a small number of `lib/*.py` headers that referenced the upstream name without any structural need) as an unnecessary risk multiplier for future legal review.
 
 This ADR documents the sanitization so that the action is auditable, reversible, and cannot be mistaken for concealment.
 
@@ -48,8 +48,8 @@ Preserved as-is:
 
 - ADRs 259-264 retain the original attribution (including license, Annex-F path, clean-room protocol) and constitute the canonical paper trail.
 - Recovery bundle at `.cognitive-os/recovery/pre-history-sanitization-2026-05-11.bundle` captures the full pre-sanitization commit graph.
-- License-compliance audit report at `docs/reports/license-compliance-audit-2026-05-11.md` retains the original findings verbatim.
-- Annex-F documents under `docs/research/*-annex-*-2026-*.md` retain their attribution headers.
+- License-compliance audit report at `docs/06-Daily/reports/license-compliance-audit-2026-05-11.md` retains the original findings verbatim.
+- Annex-F documents under `docs/03-PoCs/research/*-annex-*-2026-*.md` retain their attribution headers.
 
 ## Rationale
 
@@ -99,7 +99,7 @@ Reversal preserves the ADR paper trail because ADRs 259-264 were never touched.
 
 ## References
 
-- `docs/reports/license-compliance-audit-2026-05-11.md` — original audit findings that motivated this action
+- `docs/06-Daily/reports/license-compliance-audit-2026-05-11.md` — original audit findings that motivated this action
 - ADR-259 — external-pattern adoption posture (attribution preserved)
 - ADR-260..264 — per-tool Annex-F and adoption ADRs (attribution preserved)
 - ADR-267 — license-compliance enforcement architecture (forward enforcement replacing ad-hoc discipline)

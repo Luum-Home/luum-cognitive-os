@@ -85,7 +85,7 @@ const beforeCases = [
   ['large-file-advisor', 'read', { filePath: `${root}/large-private-file.txt` }, false],
   ['reinvention-check', 'agent', { prompt: 'create duplicate_helper.py for a duplicate primitive' }, false],
   ['adr-relevance-suggest', 'agent', { prompt: 'change architecture and find ADR context' }, false],
-  ['adr-section-validator', 'write', { filePath: 'docs/adrs/ADR-999-private.md', content: 'missing sections' }, false],
+  ['adr-section-validator', 'write', { filePath: 'docs/02-Decisions/adrs/ADR-999-private.md', content: 'missing sections' }, false],
   ['agent-bash-cwd-enforcer', 'bash', { command: 'cd .. && pwd' }, false],
   ['agent-control-inbound-guard', 'bash', { command: 'echo x > .cognitive-os/agent-control/inbox/private.json' }, true],
   ['claim-validator', 'agent', { prompt: 'claim completed with no evidence' }, true],
@@ -215,7 +215,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true", help="Run validation without updating tracked latest reports (default).")
-    mode.add_argument("--write-report", action="store_true", help="Update tracked docs/reports/*-latest artifacts.")
+    mode.add_argument("--write-report", action="store_true", help="Update tracked docs/06-Daily/reports/*-latest artifacts.")
     mode.add_argument("--no-write", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     report = build_report()

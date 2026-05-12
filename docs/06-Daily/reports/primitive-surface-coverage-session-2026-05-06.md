@@ -18,8 +18,8 @@ Close the next primitive surface coverage cut by making partial harness debt ins
 
 - Added prioritized partial report generator:
   - `scripts/primitive_harness_partials.py`
-  - `docs/reports/primitive-harness-partials-latest.json`
-  - `docs/reports/primitive-harness-partials-latest.md`
+  - `docs/06-Daily/reports/primitive-harness-partials-latest.json`
+  - `docs/06-Daily/reports/primitive-harness-partials-latest.md`
 - Added operable TUI with safety gates:
   - `scripts/cos-tui`
   - `cos tui --snapshot`

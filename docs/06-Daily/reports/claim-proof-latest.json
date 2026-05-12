@@ -53,7 +53,7 @@
       "evidence": "approve, architecture, detect, draft, executable, governed, plan, plans",
       "line": 14,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -61,7 +61,7 @@
       "evidence": "architecture, enforcement, execution, governance, headless, local, manifest, plan",
       "line": 16,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -69,7 +69,7 @@
       "evidence": "business, comparison, competitive, competitive-reassessment-openclaw-hermes-2026-04, current, deployment, gaps, governance",
       "line": 19,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -77,7 +77,7 @@
       "evidence": "automatic, boundaries, connected, dependency, install, local, local-connected-systems-validation, manual-tests",
       "line": 22,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -85,7 +85,7 @@
       "evidence": "across, adr-064, architecture, automatic, claude, code, codex, consumer",
       "line": 35,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -93,7 +93,7 @@
       "evidence": "architecture, before, capability-centric, choose, dispatch, enforcement, execution, gateways",
       "line": 40,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -101,7 +101,7 @@
       "evidence": "absolute, architecture, blocking, code, developer-home, docs, path, path-portability-and-privacy",
       "line": 42,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -109,7 +109,7 @@
       "evidence": "audit, baseline, docs-duplicate-latest, documentation, duplicate, latest, prevention, report",
       "line": 64,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -117,7 +117,7 @@
       "evidence": "enforceable, manifests, product, product-zones, taxonomy, yaml, zones",
       "line": 77,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -125,7 +125,7 @@
       "evidence": "already, below, bottom, builds, each, governance, layer, layers",
       "line": 126,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -133,7 +133,7 @@
       "evidence": "between, enforce, evaluate, governance, manager, operational, organization, performance",
       "line": 327,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -141,7 +141,7 @@
       "evidence": "closed, cycle, data, every, execution, executions, feedback, future",
       "line": 356,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -149,7 +149,7 @@
       "evidence": "auto-detection, skills, system",
       "line": 515,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -157,7 +157,7 @@
       "evidence": "agent-checkpoint, agent-prelaunch, auto-repair-dispatcher, block-prod-urls, conversation-capture, error-learning, error-pattern-detector, hooks",
       "line": 516,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -165,7 +165,7 @@
       "evidence": "agent-kpis, auto-repair, constitutional-gates, error-learning, fault-tolerance, license-policy, model-routing, more",
       "line": 517,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -173,7 +173,7 @@
       "evidence": "detection, error, learning, loop, measurement, model, optimization, pattern",
       "line": 519,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -181,7 +181,7 @@
       "evidence": "automatic, fault, recovery, registration, task, tolerance",
       "line": 520,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -189,7 +189,7 @@
       "evidence": "designed, identity, layer, phase, rules, stack",
       "line": 533,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -197,7 +197,7 @@
       "evidence": "architecture, autonomous, infrastructure, target",
       "line": 548,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -205,7 +205,7 @@
       "evidence": "applies, changes, engine, organization, proposes, retrospective",
       "line": 554,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -213,7 +213,7 @@
       "evidence": "agpl, blocked, blocked-tools, component, components, decisions, elv2, license",
       "line": 574,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -221,7 +221,7 @@
       "evidence": "blocked, blocked-tools, licenses, saas, safety, tools, verdicts",
       "line": 583,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/README.md",
+      "path": "docs/00-MOCs/entrypoints/README.md",
       "status": "mapped"
     },
     {
@@ -229,7 +229,7 @@
       "evidence": "automatic, complex, converted, generation, reusable, skill, skills, solutions",
       "line": 121,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/case-study.md",
+      "path": "docs/08-References/business/case-study.md",
       "status": "mapped"
     },
     {
@@ -237,7 +237,7 @@
       "evidence": "automatically, constitutional, enforced, gates, manual, needed, quality, review",
       "line": 122,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/case-study.md",
+      "path": "docs/08-References/business/case-study.md",
       "status": "mapped"
     },
     {
@@ -245,7 +245,7 @@
       "evidence": "around, capture, creation, execution, experience, gateway, hermes, memory",
       "line": 12,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -253,7 +253,7 @@
       "evidence": "central, discipline, governance, keeping, make, memory, must, native",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -261,7 +261,7 @@
       "evidence": "because, claims, community, external, hermes, native, openclaw, possible",
       "line": 21,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -269,7 +269,7 @@
       "evidence": "first-class, product, promise, self-improvement",
       "line": 65,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -277,7 +277,7 @@
       "evidence": "approval, auto-promote, before, explicitly, opts, project, promotion, require",
       "line": 101,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -285,7 +285,7 @@
       "evidence": "governed, native, safe, self-improvement, version",
       "line": 104,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -293,7 +293,7 @@
       "evidence": "hermes, hermes-agent, https, self-improvement",
       "line": 190,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -301,7 +301,7 @@
       "evidence": "clawhub, example, https, self-improvement, skills",
       "line": 191,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md",
       "status": "mapped"
     },
     {
@@ -309,7 +309,7 @@
       "evidence": "automatic, hidden, manual, practice, system, without",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -317,7 +317,7 @@
       "evidence": "blocked, explain, failures, what",
       "line": 145,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -325,7 +325,7 @@
       "evidence": "blocker, define, final, gaps, high, medium, severity, taxonomy",
       "line": 276,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -333,7 +333,7 @@
       "evidence": "enforcement, hooks, identify, rules, tests",
       "line": 309,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -341,7 +341,7 @@
       "evidence": "automatically, happen, manually, memory, verify, versus, which, writes",
       "line": 331,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -349,7 +349,7 @@
       "evidence": "between, default, drift, full, identify, profile, self-hosting, standard",
       "line": 356,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -357,7 +357,7 @@
       "evidence": "advisory-only, block, failures, gates, identify, quality, real, versus",
       "line": 377,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -365,7 +365,7 @@
       "evidence": "baseline, comparing, each, enforces, fails, family, level, previous",
       "line": 417,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -373,7 +373,7 @@
       "evidence": "current, debt, default, growing, keeps, known, preventing, surface",
       "line": 426,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -381,7 +381,7 @@
       "evidence": "blocker, creation, high, issue, regressions",
       "line": 438,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -389,7 +389,7 @@
       "evidence": "automated, markdown, near-duplicate, scan",
       "line": 445,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -397,7 +397,7 @@
       "evidence": "commit, confirm, enforced, previously, provenance, trailers, were",
       "line": 453,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
     },
     {
@@ -405,7 +405,7 @@
       "evidence": "favor, human, maintenance, over, phases, production, review, safety",
       "line": 98,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/developer-confidence.md",
+      "path": "docs/08-References/business/developer-confidence.md",
       "status": "mapped"
     },
     {
@@ -413,7 +413,7 @@
       "evidence": "advanced, auto-repair, behavior, exceed, proven",
       "line": 320,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/durable-product-master-plan.md",
+      "path": "docs/08-References/business/durable-product-master-plan.md",
       "status": "mapped"
     },
     {
@@ -421,7 +421,7 @@
       "evidence": "automated, claims, product-facing, tests",
       "line": 354,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/durable-product-master-plan.md",
+      "path": "docs/08-References/business/durable-product-master-plan.md",
       "status": "mapped"
     },
     {
@@ -429,7 +429,7 @@
       "evidence": "budgets, core, explicit, have, hooks, initialization, self-hosting",
       "line": 359,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/durable-product-master-plan.md",
+      "path": "docs/08-References/business/durable-product-master-plan.md",
       "status": "mapped"
     },
     {
@@ -437,7 +437,7 @@
       "evidence": "defects, false, known, lands, prevents, progress, where, work",
       "line": 73,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/execution-discipline.md",
+      "path": "docs/08-References/business/execution-discipline.md",
       "status": "mapped"
     },
     {
@@ -445,7 +445,7 @@
       "evidence": "layer, never, only, source, truth, useful",
       "line": 89,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/execution-discipline.md",
+      "path": "docs/08-References/business/execution-discipline.md",
       "status": "mapped"
     },
     {
@@ -453,7 +453,7 @@
       "evidence": "architecture, bugs, control, nothing, prevents, quality, skipping, tests",
       "line": 12,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/executive-summary.md",
+      "path": "docs/08-References/business/executive-summary.md",
       "status": "mapped"
     },
     {
@@ -461,7 +461,7 @@
       "evidence": "context, developers, errors, fixing, handling, quality, result, should",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/executive-summary.md",
+      "path": "docs/08-References/business/executive-summary.md",
       "status": "mapped"
     },
     {
@@ -469,7 +469,7 @@
       "evidence": "continuously, detected, errors, feedback, fewer, improved, learned, loop",
       "line": 70,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/executive-summary.md",
+      "path": "docs/08-References/business/executive-summary.md",
       "status": "mapped"
     },
     {
@@ -477,7 +477,7 @@
       "evidence": "after, automatic, conventions, decisions, discoveries, fire, fixes, save",
       "line": 34,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -485,7 +485,7 @@
       "evidence": "automatically, before, close, compaction, context, each, saved, session",
       "line": 36,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -493,7 +493,7 @@
       "evidence": "alternative, change, lighter, openspec, skills, tracking",
       "line": 72,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -501,7 +501,7 @@
       "evidence": "enforced, gates, infrastructure, quality",
       "line": 80,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -509,7 +509,7 @@
       "evidence": "always, directly, microservices, mobile, never, through",
       "line": 83,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -517,7 +517,7 @@
       "evidence": "always, code, environment, never, secrets, variables",
       "line": 86,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -525,7 +525,7 @@
       "evidence": "additional, enforcement, paths, proof",
       "line": 91,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -533,7 +533,7 @@
       "evidence": "agpl, automatically, blocks, dependencies, elv2, license, policy, sspl",
       "line": 93,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -541,7 +541,7 @@
       "evidence": "fire, hooks, posttooluse, pretooluse, runtime, sessionstart",
       "line": 94,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -549,7 +549,7 @@
       "evidence": "configurable, coverage, fintech, industry, startup, thresholds",
       "line": 95,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -557,7 +557,7 @@
       "evidence": "automatic, build, capture, error, failures, learning, lint, test",
       "line": 132,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -565,7 +565,7 @@
       "evidence": "automatic, complex, converted, generation, reusable, skill, skills, solutions",
       "line": 135,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -573,7 +573,7 @@
       "evidence": "across, efficiency, kpis, metrics, okrs, quality, security, self-improvement",
       "line": 137,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -581,7 +581,7 @@
       "evidence": "accidental, blocking, hook, interactions, prevents, production, systems",
       "line": 172,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -589,7 +589,7 @@
       "evidence": "automatic, blocking, compliance, dependencies, incompatible, license",
       "line": 176,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -597,7 +597,7 @@
       "evidence": "blocking, command, dangerous, docker, drop, force, prevents, production",
       "line": 177,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -605,7 +605,7 @@
       "evidence": "designed, identity, layers, stack",
       "line": 179,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -613,7 +613,7 @@
       "evidence": "automatic, model, right, routing, selection, task",
       "line": 200,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -621,7 +621,7 @@
       "evidence": "active, always, constraints, loaded, rules",
       "line": 218,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -629,7 +629,7 @@
       "evidence": "auto-detected, based, detected, generated, skills, technologies",
       "line": 220,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -637,7 +637,7 @@
       "evidence": "actions, allows, automated, explicit, only, policy, project, safe",
       "line": 249,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/features.md",
+      "path": "docs/08-References/business/features.md",
       "status": "mapped"
     },
     {
@@ -645,7 +645,7 @@
       "evidence": "containers, didn, doesn, invent, kubernetes, made, makes, scale",
       "line": 5,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -653,7 +653,7 @@
       "evidence": "based, metrics, performance",
       "line": 325,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -661,7 +661,7 @@
       "evidence": "adaptation, error, learning, skill",
       "line": 326,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -669,7 +669,7 @@
       "evidence": "discoverable, skills, system, versioned",
       "line": 438,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -677,7 +677,7 @@
       "evidence": "auto-repair, escalation, tier",
       "line": 442,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -685,7 +685,7 @@
       "evidence": "automated, pass, quality, skills, tests",
       "line": 488,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -693,7 +693,7 @@
       "evidence": "chart, deployment, helm, self-hosted",
       "line": 497,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -701,7 +701,7 @@
       "evidence": "control, guarantees, plane",
       "line": 502,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -709,7 +709,7 @@
       "evidence": "architecture, became, because, built, containers, every, extensible, kubernetes",
       "line": 511,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -717,7 +717,7 @@
       "evidence": "contributors, github, kubernetes, runs, stars, there, took",
       "line": 520,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -725,7 +725,7 @@
       "evidence": "clear, commercial, containers, ever, faster, fintech, foundation, growing",
       "line": 522,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/kubernetes-for-agents.md",
+      "path": "docs/08-References/business/kubernetes-for-agents.md",
       "status": "mapped"
     },
     {
@@ -733,7 +733,7 @@
       "evidence": "active, assuming, auto-update, claude, driver, harness, instead, paths",
       "line": 56,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-checklist.md",
+      "path": "docs/08-References/business/master-plan-checklist.md",
       "status": "mapped"
     },
     {
@@ -741,7 +741,7 @@
       "evidence": "auto-update, claude, codex-first, compatibility, even, git-triggered, install, installations",
       "line": 57,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-checklist.md",
+      "path": "docs/08-References/business/master-plan-checklist.md",
       "status": "mapped"
     },
     {
@@ -749,7 +749,7 @@
       "evidence": "active, advisory, automatic, codex-first, command, deep, dependency, detection",
       "line": 85,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-checklist.md",
+      "path": "docs/08-References/business/master-plan-checklist.md",
       "status": "mapped"
     },
     {
@@ -757,7 +757,7 @@
       "evidence": "auto-load, claude, codex, lifecycle, memory, portable, sessions",
       "line": 87,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-checklist.md",
+      "path": "docs/08-References/business/master-plan-checklist.md",
       "status": "mapped"
     },
     {
@@ -765,7 +765,7 @@
       "evidence": "against, bootstrap, competitive, competitive-reassessment-openclaw-hermes-2026-04, deployment, documented, gaps, hermes",
       "line": 145,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-checklist.md",
+      "path": "docs/08-References/business/master-plan-checklist.md",
       "status": "mapped"
     },
     {
@@ -773,7 +773,7 @@
       "evidence": "architecture, behavior, cognitive-os, covered, detect, documented, draft, execution",
       "line": 147,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-checklist.md",
+      "path": "docs/08-References/business/master-plan-checklist.md",
       "status": "mapped"
     },
     {
@@ -781,7 +781,7 @@
       "evidence": "automation, code, enforcement, onboarding, product, requires",
       "line": 14,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-execution-requirements.md",
+      "path": "docs/08-References/business/master-plan-execution-requirements.md",
       "status": "mapped"
     },
     {
@@ -789,7 +789,7 @@
       "evidence": "across, boundary, enforceable, make, more, next, runtime, step",
       "line": 59,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-execution-requirements.md",
+      "path": "docs/08-References/business/master-plan-execution-requirements.md",
       "status": "mapped"
     },
     {
@@ -797,7 +797,7 @@
       "evidence": "flows, onboarding, optimize, self-install",
       "line": 182,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/master-plan-execution-requirements.md",
+      "path": "docs/08-References/business/master-plan-execution-requirements.md",
       "status": "mapped"
     },
     {
@@ -805,7 +805,7 @@
       "evidence": "extracting, operating, platform, real-world, system, universal",
       "line": 3,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/open-source-design.md",
+      "path": "docs/08-References/business/open-source-design.md",
       "status": "mapped"
     },
     {
@@ -813,7 +813,7 @@
       "evidence": "already, detect-stack, exists, nearly, step",
       "line": 313,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/open-source-design.md",
+      "path": "docs/08-References/business/open-source-design.md",
       "status": "mapped"
     },
     {
@@ -821,7 +821,7 @@
       "evidence": "blocking, command, dangerous, debugging, examples, fault, memory, protocol",
       "line": 529,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/open-source-design.md",
+      "path": "docs/08-References/business/open-source-design.md",
       "status": "mapped"
     },
     {
@@ -829,7 +829,7 @@
       "evidence": "core, decision, depend, domains, logic, never, only, other",
       "line": 614,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/open-source-design.md",
+      "path": "docs/08-References/business/open-source-design.md",
       "status": "mapped"
     },
     {
@@ -837,7 +837,7 @@
       "evidence": "after, cognitive-os, command, consequences, even, explicit, files, installation",
       "line": 626,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/open-source-design.md",
+      "path": "docs/08-References/business/open-source-design.md",
       "status": "mapped"
     },
     {
@@ -845,7 +845,7 @@
       "evidence": "configuration, context, could, environment, file, json, list, live",
       "line": 632,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/open-source-design.md",
+      "path": "docs/08-References/business/open-source-design.md",
       "status": "mapped"
     },
     {
@@ -853,7 +853,7 @@
       "evidence": "alerts, batch, during, flooding, notification, periods, prevent",
       "line": 130,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -861,7 +861,7 @@
       "evidence": "bypass, critical, never, severity",
       "line": 137,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -869,7 +869,7 @@
       "evidence": "alerts, always, batched, criteria, critical, during, immediately, minute",
       "line": 140,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -877,7 +877,7 @@
       "evidence": "completion, engram, entry, file, flag, marker, prevent, re-run",
       "line": 196,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -885,7 +885,7 @@
       "evidence": "after, automatically, completion, criteria, first, initializes, never, re-runs",
       "line": 200,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -893,7 +893,7 @@
       "evidence": "builder, envelope, implement, messages, outgoing",
       "line": 227,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -901,7 +901,7 @@
       "evidence": "block, check, criticality, depending, failure, handling, warn",
       "line": 246,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -909,7 +909,7 @@
       "evidence": "criteria, critical, environment, every, failures, health, logged, operation",
       "line": 249,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -917,7 +917,7 @@
       "evidence": "between, configuration, conflicts, criteria, dry-run, environments, gracefully, handled",
       "line": 307,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -925,7 +925,7 @@
       "evidence": "auto-create, basic, implement, schemas, test, tests",
       "line": 319,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -933,7 +933,7 @@
       "evidence": "agentic, coverage, enforcement, minimum, primitive, thresholds",
       "line": 320,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -941,7 +941,7 @@
       "evidence": "agentic, below, blocks, coverage, criteria, have, meets, merges",
       "line": 324,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -949,7 +949,7 @@
       "evidence": "automated, days, pattern, release, releases, workflow",
       "line": 337,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "path": "docs/08-References/business/openclaw-implementation-roadmap.md",
       "status": "mapped"
     },
     {
@@ -957,7 +957,7 @@
       "evidence": "alerts, balance, critical, deadline, enforcement, fintech, monitoring, move",
       "line": 15,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -965,7 +965,7 @@
       "evidence": "alerts, applies, batch, batches, caps, channel, configurable, consolidated",
       "line": 81,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -973,7 +973,7 @@
       "evidence": "after, async, before, blocking, bootstrap, command, compact, does",
       "line": 95,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -981,7 +981,7 @@
       "evidence": "audit, auth, auto-retry, cleanup, command, compact, compliance, cost",
       "line": 99,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -989,7 +989,7 @@
       "evidence": "after, checks, completed, contains, does, environment, executes, execution",
       "line": 109,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -997,7 +997,7 @@
       "evidence": "audit, automated, compliance, configure, create, data, developers, encryption",
       "line": 113,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1005,7 +1005,7 @@
       "evidence": "access, configure, could, dangerous, direct, enable, fintech, limits",
       "line": 141,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1013,7 +1013,7 @@
       "evidence": "automatic, dependencies, envelope, hooks, lifecycle, pattern, wrapping",
       "line": 187,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1021,7 +1021,7 @@
       "evidence": "account, across, alerts, automated, before, certificates, credential, credentials",
       "line": 207,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1029,7 +1029,7 @@
       "evidence": "auth, certificate, cloud, credential, credentials, expiration, expired, fintech",
       "line": 211,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1037,7 +1037,7 @@
       "evidence": "against, comprehensive, coverage, create, does, enforcement, includes, infrastructure",
       "line": 249,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1045,7 +1045,7 @@
       "evidence": "across, advisory, automated, breaking, change, changelog, coordination, detection",
       "line": 263,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1053,7 +1053,7 @@
       "evidence": "across, advisory, audit, automated, bumps, changelog, compliance, dependencies",
       "line": 267,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1061,7 +1061,7 @@
       "evidence": "assign, background, blocking, coding, collect, delegates, does, environments",
       "line": 277,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/openclaw-remaining-patterns.md",
+      "path": "docs/08-References/business/openclaw-remaining-patterns.md",
       "status": "mapped"
     },
     {
@@ -1069,7 +1069,7 @@
       "evidence": "hooks, rules, skills",
       "line": 8,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/portability-plan.md",
+      "path": "docs/08-References/business/portability-plan.md",
       "status": "mapped"
     },
     {
@@ -1077,7 +1077,7 @@
       "evidence": "foundation, linux, standard, universal",
       "line": 28,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/portability-plan.md",
+      "path": "docs/08-References/business/portability-plan.md",
       "status": "mapped"
     },
     {
@@ -1085,7 +1085,7 @@
       "evidence": "auto-generated, canonical, configs, markdown, per-tool, rules",
       "line": 30,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/portability-plan.md",
+      "path": "docs/08-References/business/portability-plan.md",
       "status": "mapped"
     },
     {
@@ -1093,7 +1093,7 @@
       "evidence": "already, none, problem, skill, standard, universal",
       "line": 39,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/portability-plan.md",
+      "path": "docs/08-References/business/portability-plan.md",
       "status": "mapped"
     },
     {
@@ -1101,7 +1101,7 @@
       "evidence": "config, differs, location, problem, protocol, tool, universal",
       "line": 48,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/portability-plan.md",
+      "path": "docs/08-References/business/portability-plan.md",
       "status": "mapped"
     },
     {
@@ -1109,7 +1109,7 @@
       "evidence": "already, foundation, linux, multiple, pushing, standard, support, tools",
       "line": 166,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/portability-plan.md",
+      "path": "docs/08-References/business/portability-plan.md",
       "status": "mapped"
     },
     {
@@ -1117,7 +1117,7 @@
       "evidence": "engineering, operations, requiring, teams, without",
       "line": 43,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/product-messaging.md",
+      "path": "docs/08-References/business/product-messaging.md",
       "status": "mapped"
     },
     {
@@ -1125,7 +1125,7 @@
       "evidence": "adaptation, error, feedback, learning, loop, measurement, self-improvement, skill",
       "line": 27,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1133,7 +1133,7 @@
       "evidence": "constitutional, enforcement, gates, hooks, quality",
       "line": 28,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1141,7 +1141,7 @@
       "evidence": "code, extract, goal, original, project, publish, specific, universal",
       "line": 37,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1149,7 +1149,7 @@
       "evidence": "compliance, deployment, enterprise, goal, readiness, self-hosted, support",
       "line": 130,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1157,7 +1157,7 @@
       "evidence": "chart, deployments, helm, kubernetes, production",
       "line": 135,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1165,7 +1165,7 @@
       "evidence": "agpl, blocking, compliance, dependency, license, reports, scanning, sspl",
       "line": 144,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1173,7 +1173,7 @@
       "evidence": "data, dedicated, engram, guarantees, instances, isolation",
       "line": 153,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/roadmap.md",
+      "path": "docs/08-References/business/roadmap.md",
       "status": "mapped"
     },
     {
@@ -1181,7 +1181,7 @@
       "evidence": "architecture, block, code, control, conventions, dependencies, depends, developer",
       "line": 12,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/value-proposition.md",
+      "path": "docs/08-References/business/value-proposition.md",
       "status": "mapped"
     },
     {
@@ -1189,7 +1189,7 @@
       "evidence": "automatic, blocking, configurable, coverage, dependencies, errors, guaranteed, immutable",
       "line": 37,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/value-proposition.md",
+      "path": "docs/08-References/business/value-proposition.md",
       "status": "mapped"
     },
     {
@@ -1197,7 +1197,7 @@
       "evidence": "detects, each, efficient, failure, last, model, more, patterns",
       "line": 41,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/value-proposition.md",
+      "path": "docs/08-References/business/value-proposition.md",
       "status": "mapped"
     },
     {
@@ -1205,7 +1205,7 @@
       "evidence": "access, action, audit, blocking, cannot, commands, complete, dangerous",
       "line": 43,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/value-proposition.md",
+      "path": "docs/08-References/business/value-proposition.md",
       "status": "mapped"
     },
     {
@@ -1213,7 +1213,7 @@
       "evidence": "audit, automated, compliance, enterprise, enterprises, fintech, need, security",
       "line": 67,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/value-proposition.md",
+      "path": "docs/08-References/business/value-proposition.md",
       "status": "mapped"
     },
     {
@@ -1221,7 +1221,7 @@
       "evidence": "autonomous, capabilities, coding, combine, cross-session, discovery, first, governance",
       "line": 74,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/business/value-proposition.md",
+      "path": "docs/08-References/business/value-proposition.md",
       "status": "mapped"
     },
     {
@@ -1229,7 +1229,7 @@
       "evidence": "agpl, agpl-3, apache, audit, being, block, changed, commercial",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "path": "docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md",
       "status": "mapped"
     },
     {
@@ -1237,7 +1237,7 @@
       "evidence": "agpl, block, component, dependencies, established, exempt, policy, sspl",
       "line": 21,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "path": "docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md",
       "status": "mapped"
     },
     {
@@ -1245,7 +1245,7 @@
       "evidence": "adds, cloud, cost, dependency, docker, external, instead, maintains",
       "line": 26,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "path": "docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md",
       "status": "mapped"
     },
     {
@@ -1253,7 +1253,7 @@
       "evidence": "agpl, audit, automatically, blocking, install, later, licenses, manager",
       "line": 32,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "path": "docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md",
       "status": "mapped"
     },
     {
@@ -1261,7 +1261,7 @@
       "evidence": "additional, agpl, blocked, during, ecosystem, evaluation, five, four",
       "line": 33,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "path": "docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md",
       "status": "mapped"
     },
     {
@@ -1269,7 +1269,7 @@
       "evidence": "added, concepts, conceptual, drivers, filesystem, framework, init, kernel",
       "line": 21,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-007-cognitive-os-rebrand.md",
+      "path": "docs/02-Decisions/adrs/ADR-007-cognitive-os-rebrand.md",
       "status": "mapped"
     },
     {
@@ -1277,7 +1277,7 @@
       "evidence": "already, bridge, capabilities, claude, cline, code, context7, continue",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "path": "docs/02-Decisions/adrs/ADR-008-multi-tool-support.md",
       "status": "mapped"
     },
     {
@@ -1285,7 +1285,7 @@
       "evidence": "aider, change, claude, content, file, format, formats, location",
       "line": 18,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "path": "docs/02-Decisions/adrs/ADR-008-multi-tool-support.md",
       "status": "mapped"
     },
     {
@@ -1293,7 +1293,7 @@
       "evidence": "adapter, build, cheaper, create, engine, execution, hook, native",
       "line": 25,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "path": "docs/02-Decisions/adrs/ADR-008-multi-tool-support.md",
       "status": "mapped"
     },
     {
@@ -1301,7 +1301,7 @@
       "evidence": "blocking, both, cannot, dangerous, enforcement, fully, hooks, layer",
       "line": 26,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "path": "docs/02-Decisions/adrs/ADR-008-multi-tool-support.md",
       "status": "mapped"
     },
     {
@@ -1309,7 +1309,7 @@
       "evidence": "agentic, core, every, hooks, installation, irreducible, kernel, libs",
       "line": 16,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
       "status": "mapped"
     },
     {
@@ -1317,13 +1317,13 @@
       "evidence": "agentic, cos-package, each, hooks, libs, manifest, optional, organized",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
       "status": "mapped"
     },
     {
       "line": 21,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
       "status": "mapped"
     },
     {
@@ -1331,7 +1331,7 @@
       "evidence": "agpl, analysis, before, block, built, check, dependency, every",
       "line": 27,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "path": "docs/02-Decisions/adrs/ADR-009-package-architecture.md",
       "status": "mapped"
     },
     {
@@ -1339,7 +1339,7 @@
       "evidence": "advisory, approximately, architecture, between, block, blocking, capabilities, claude",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-010-hook-architecture-v2.md",
+      "path": "docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md",
       "status": "mapped"
     },
     {
@@ -1347,7 +1347,7 @@
       "evidence": "advisory, async, blockers, eliminate, enforcement, gates, hooks, latency",
       "line": 24,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-010-hook-architecture-v2.md",
+      "path": "docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md",
       "status": "mapped"
     },
     {
@@ -1355,7 +1355,7 @@
       "evidence": "audit, auto-discover, because, each, file, hook, hooks, inspecting",
       "line": 39,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-010-hook-architecture-v2.md",
+      "path": "docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md",
       "status": "mapped"
     },
     {
@@ -1363,7 +1363,7 @@
       "evidence": "apache, attack, because, bifrost, budget, chain, code, comprehensive",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md",
+      "path": "docs/02-Decisions/adrs/ADR-011-dual-gateway-bifrost-litellm.md",
       "status": "mapped"
     },
     {
@@ -1371,7 +1371,7 @@
       "evidence": "adds, architecture, azure, bedrock, cloud, cost, dependency, external",
       "line": 28,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md",
+      "path": "docs/02-Decisions/adrs/ADR-011-dual-gateway-bifrost-litellm.md",
       "status": "mapped"
     },
     {
@@ -1379,7 +1379,7 @@
       "evidence": "assumption-tracker, clarification-gate, convert, hooks, language, natural, poorly, prompt-quality",
       "line": 16,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-012-prompt-driven-governance.md",
+      "path": "docs/02-Decisions/adrs/ADR-012-prompt-driven-governance.md",
       "status": "mapped"
     },
     {
@@ -1387,7 +1387,7 @@
       "evidence": "bash, better, checks, content-policy, deterministic, error-learning, evaluation, exact",
       "line": 18,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-012-prompt-driven-governance.md",
+      "path": "docs/02-Decisions/adrs/ADR-012-prompt-driven-governance.md",
       "status": "mapped"
     },
     {
@@ -1395,7 +1395,7 @@
       "evidence": "analysis, auto, best, code, config, hardcoded, hooks, injection",
       "line": 16,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-013-security-stack.md",
+      "path": "docs/02-Decisions/adrs/ADR-013-security-stack.md",
       "status": "mapped"
     },
     {
@@ -1403,7 +1403,7 @@
       "evidence": "anthropic_chain, chain, comparison, fast, gemini, gpt-4o, implementation, model_catalog",
       "line": 24,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "path": "docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md",
       "status": "mapped"
     },
     {
@@ -1411,7 +1411,7 @@
       "evidence": "always, anthropic, apply, both, critical, evaluator, fast, finding",
       "line": 26,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "path": "docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md",
       "status": "mapped"
     },
     {
@@ -1419,7 +1419,7 @@
       "evidence": "adopted, auto-detect, capability, checks, configurable, decide, dynamically, model",
       "line": 31,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "path": "docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md",
       "status": "mapped"
     },
     {
@@ -1427,7 +1427,7 @@
       "evidence": "adds, because, call, choose, decide, detailed, model, needs",
       "line": 33,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "path": "docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md",
       "status": "mapped"
     },
     {
@@ -1435,7 +1435,7 @@
       "evidence": "approximately, arxiv, automatically, because, behavior, compacts, confirmed, consuming",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1443,7 +1443,7 @@
       "evidence": "automatically, checks, content, converted, costs, detection, enforcement, examples",
       "line": 16,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1451,7 +1451,7 @@
       "evidence": "context, converted, evaluation, examples, invoked, kept, loaded, on-demand",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1459,7 +1459,7 @@
       "evidence": "behavioral, cannot, commit, communication, contracts, enforced, examples, guidelines",
       "line": 18,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1467,7 +1467,7 @@
       "evidence": "array, context, enforced, entirely, excluded, excluded_rules, fully, hooks",
       "line": 20,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1475,7 +1475,7 @@
       "evidence": "characters, context, loaded, reduced, reduction, result, rules, rules-compact",
       "line": 22,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1483,7 +1483,7 @@
       "evidence": "active, because, compress, consume, context, enforcement, fundamental, keep",
       "line": 26,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1491,7 +1491,7 @@
       "evidence": "behavioral, enforced, entirely, guidelines, hooks, mechanically, only, principles",
       "line": 27,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1499,7 +1499,7 @@
       "evidence": "adopted, based, contextual, dynamic, enforce, exists, hooks, instead",
       "line": 28,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1507,7 +1507,7 @@
       "evidence": "adding, array, became, excluded_rules, exclusion, hook, list, maintenance",
       "line": 34,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1515,7 +1515,7 @@
       "evidence": "cannot, converted, deterministic, differently, enforcement, hooks, interpreted, rules",
       "line": 35,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1523,7 +1523,7 @@
       "evidence": "annotations, documentation, enforced, even, guarantees, hook, longer, need",
       "line": 36,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
       "status": "mapped"
     },
     {
@@ -1531,7 +1531,7 @@
       "evidence": "approximately, arxiv, before, claude, confirmed, context, cost, degradation",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-016-context-diet.md",
+      "path": "docs/02-Decisions/adrs/ADR-016-context-diet.md",
       "status": "mapped"
     },
     {
@@ -1539,7 +1539,7 @@
       "evidence": "assumption-tracking, auto-disable, blast-radius, clarification-gate, confidence-gate, hooks, level, model-routing",
       "line": 22,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-016-context-diet.md",
+      "path": "docs/02-Decisions/adrs/ADR-016-context-diet.md",
       "status": "mapped"
     },
     {
@@ -1547,7 +1547,7 @@
       "evidence": "already, compress, compressed, diet, document, enforcement, exclusively, exists",
       "line": 35,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-016-context-diet.md",
+      "path": "docs/02-Decisions/adrs/ADR-016-context-diet.md",
       "status": "mapped"
     },
     {
@@ -1555,7 +1555,7 @@
       "evidence": "accumulated, accumulating, added, after, agentic, audit, automated, because",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "path": "docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md",
       "status": "mapped"
     },
     {
@@ -1563,7 +1563,7 @@
       "evidence": "agentic, become, cannot, check, created, effect, enforcement, gates",
       "line": 39,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "path": "docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md",
       "status": "mapped"
     },
     {
@@ -1571,7 +1571,7 @@
       "evidence": "after, audit, commit, commits, date, dropped, enforcement, failures",
       "line": 43,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "path": "docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md",
       "status": "mapped"
     },
     {
@@ -1579,7 +1579,7 @@
       "evidence": "adds, alternatives, architecture, because, dependencies, entirely, everything, external",
       "line": 38,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-018-docker-to-pip-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-018-docker-to-pip-migration.md",
       "status": "mapped"
     },
     {
@@ -1587,7 +1587,7 @@
       "evidence": "deployment, development, distinction, docker, established, infrastructure, manages, migration",
       "line": 46,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-018-docker-to-pip-migration.md",
+      "path": "docs/02-Decisions/adrs/ADR-018-docker-to-pip-migration.md",
       "status": "mapped"
     },
     {
@@ -1595,7 +1595,7 @@
       "evidence": "added, adr-015, agentic, always, audiences, being, capabilities, classification",
       "line": 10,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-019-scope-tagging.md",
+      "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md",
       "status": "mapped"
     },
     {
@@ -1603,7 +1603,7 @@
       "evidence": "claude, files, full, invocation, memory, model, most, pattern",
       "line": 24,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "path": "docs/02-Decisions/adrs/ADR-020-contamination-fix.md",
       "status": "mapped"
     },
     {
@@ -1611,7 +1611,7 @@
       "evidence": "because, copy, customizations, each, fork, fragments, gets, maintenance",
       "line": 29,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "path": "docs/02-Decisions/adrs/ADR-020-contamination-fix.md",
       "status": "mapped"
     },
     {
@@ -1619,7 +1619,7 @@
       "evidence": "agentic, future, hook, os-only, paths, primitive, primitives, project-specific",
       "line": 38,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "path": "docs/02-Decisions/adrs/ADR-020-contamination-fix.md",
       "status": "mapped"
     },
     {
@@ -1627,7 +1627,7 @@
       "evidence": "behavior, changes, current, exercise, fewest, force, most, need",
       "line": 84,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "status": "mapped"
     },
     {
@@ -1635,7 +1635,7 @@
       "evidence": "current, effort, files, high, prompt_builder, queue_drainer, rewrite, singularity",
       "line": 92,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "status": "mapped"
     },
     {
@@ -1643,7 +1643,7 @@
       "evidence": "behavior, binary-missing, blocked, classification, consumer, contract, dataclass, fail",
       "line": 204,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "status": "mapped"
     },
     {
@@ -1651,7 +1651,7 @@
       "evidence": "blocking, breaks, consumers, dict, either, engram_client, expect, format",
       "line": 214,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "status": "mapped"
     },
     {
@@ -1659,7 +1659,7 @@
       "evidence": "choose, cognitive-os, config_loader, direct, enforced, except, future, import",
       "line": 265,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "status": "mapped"
     },
     {
@@ -1667,7 +1667,7 @@
       "evidence": "characterization, test_engram_client, test_safe_engram_contract, tests, unit",
       "line": 287,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "path": "docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md",
       "status": "mapped"
     },
     {
@@ -1675,7 +1675,7 @@
       "evidence": "blocked, branch, consumer, cos_mcp, depends, exposes, genuinely, mcp-server",
       "line": 141,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026a-decisions.md",
+      "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md",
       "status": "mapped"
     },
     {
@@ -1683,7 +1683,7 @@
       "evidence": "accurate, anchored_summarizer, both, confirmed, docstring, embedded, engram_client, file",
       "line": 234,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-026a-decisions.md",
+      "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md",
       "status": "mapped"
     },
     {
@@ -1691,7 +1691,7 @@
       "evidence": "adr-027a, blocks, claude, deduplicate, engram, files, independently, inline",
       "line": 359,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-027.md",
+      "path": "docs/02-Decisions/adrs/ADR-027.md",
       "status": "mapped"
     },
     {
@@ -1699,7 +1699,7 @@
       "evidence": "adr-027, already, blocks, cognitive-os, json, mark, queue, resolved",
       "line": 190,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-027a.md",
+      "path": "docs/02-Decisions/adrs/ADR-027a.md",
       "status": "mapped"
     },
     {
@@ -1707,7 +1707,7 @@
       "evidence": "about, adr-028a, baseline, changed, claim, clean, currently, example",
       "line": 95,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-028.md",
+      "path": "docs/02-Decisions/adrs/ADR-028.md",
       "status": "mapped"
     },
     {
@@ -1715,7 +1715,7 @@
       "evidence": "accumulates, auto-repair, cognitive-os-health, data, empty, error-pattern-detector, fires, history",
       "line": 238,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-028a.md",
+      "path": "docs/02-Decisions/adrs/ADR-028a.md",
       "status": "mapped"
     },
     {
@@ -1723,7 +1723,7 @@
       "evidence": "because, cause, cognitive_os_session_id, created, directory, exits, fire, hooks",
       "line": 240,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-028a.md",
+      "path": "docs/02-Decisions/adrs/ADR-028a.md",
       "status": "mapped"
     },
     {
@@ -1731,7 +1731,7 @@
       "evidence": "also, before, change, diagnose, disk, extending, files, land",
       "line": 242,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-028a.md",
+      "path": "docs/02-Decisions/adrs/ADR-028a.md",
       "status": "mapped"
     },
     {
@@ -1739,7 +1739,7 @@
       "evidence": "advisory-only, auto-trigger, each, forced, invocation, manual, mechanisms, neither",
       "line": 15,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "status": "mapped"
     },
     {
@@ -1747,7 +1747,7 @@
       "evidence": "advisory, append, block, commit, commit-nudge, current, existing, exists",
       "line": 49,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "status": "mapped"
     },
     {
@@ -1755,7 +1755,7 @@
       "evidence": "archive, auto-trigger, banner, call, cannot, claude, code, context",
       "line": 56,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "status": "mapped"
     },
     {
@@ -1763,7 +1763,7 @@
       "evidence": "actually, auto-trigger, behaviour, claude, code, honours, observable, only",
       "line": 72,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "status": "mapped"
     },
     {
@@ -1771,7 +1771,7 @@
       "evidence": "cerremos, common, este, false, false-positive, false-positives, file, fires",
       "line": 138,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "status": "mapped"
     },
     {
@@ -1779,7 +1779,7 @@
       "evidence": "above, advisory, auto-trigger, case, detected, fails, ignores, integration",
       "line": 140,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-030.md",
+      "path": "docs/02-Decisions/adrs/ADR-030.md",
       "status": "mapped"
     },
     {
@@ -1787,7 +1787,7 @@
       "evidence": "appended, apply-efficiency-profile, both, chose, claude, concrete, description, directly",
       "line": 15,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "path": "docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md",
       "status": "mapped"
     },
     {
@@ -1795,7 +1795,7 @@
       "evidence": "adding, break, broken, cannot, ones, only, prevent, prompt",
       "line": 36,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "path": "docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md",
       "status": "mapped"
     },
     {
@@ -1803,7 +1803,7 @@
       "evidence": "automated, behavioural, draft, gate, mandate, orchestrator, orchestrator-prompt-compose, possible",
       "line": 47,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "path": "docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md",
       "status": "mapped"
     },
     {
@@ -1811,7 +1811,7 @@
       "evidence": "adding, automatically, file, list, next, picks, project-gotchas, read",
       "line": 48,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "path": "docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md",
       "status": "mapped"
     },
     {
@@ -1819,7 +1819,7 @@
       "evidence": "adapters, canonical, contract, dataclasses, enforces, events, harness, import",
       "line": 134,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-033-harness-agnostic-event-capture.md",
+      "path": "docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md",
       "status": "mapped"
     },
     {
@@ -1827,7 +1827,7 @@
       "evidence": "adapter, both, canonical, consumers, events, guarantee, migration, pace",
       "line": 171,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-033-harness-agnostic-event-capture.md",
+      "path": "docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md",
       "status": "mapped"
     },
     {
@@ -1835,7 +1835,7 @@
       "evidence": "artifact, batch, canonical, declarative, describe, drives, durable, events",
       "line": 15,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "path": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md",
       "status": "mapped"
     },
     {
@@ -1843,7 +1843,7 @@
       "evidence": "after, auto-register, base, canonicalevent, events, from_dict, harness_adapter, importable",
       "line": 94,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "path": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md",
       "status": "mapped"
     },
     {
@@ -1851,7 +1851,7 @@
       "evidence": "base, capture, commits, consolidated, enforce, guardrails, implement, rollback",
       "line": 206,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "path": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md",
       "status": "mapped"
     },
     {
@@ -1859,7 +1859,7 @@
       "evidence": "adr-029b, adr-037, api-surface, assets, cognitive-os, cosine, dep-graph, embeddingsindex",
       "line": 19,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-040-query-tailored-context-injection.md",
+      "path": "docs/02-Decisions/adrs/ADR-040-query-tailored-context-injection.md",
       "status": "mapped"
     },
     {
@@ -1867,7 +1867,7 @@
       "evidence": "blocked, catalog, claude, commands, frontmatter, generator, migration, phase",
       "line": 3,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1875,7 +1875,7 @@
       "evidence": "adr-037, adr-043, classification, orchestrator-prompt-compose, paired, related, rule, work",
       "line": 6,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1883,7 +1883,7 @@
       "evidence": "chars, current, description, field, frontmatter, harness, listing, save",
       "line": 79,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1891,7 +1891,7 @@
       "evidence": "always, benefit, context, first, keeping, mitigated, model, models",
       "line": 107,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1899,7 +1899,7 @@
       "evidence": "conservative, reduction, rule, savings, stacks, tokens",
       "line": 123,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1907,7 +1907,7 @@
       "evidence": "actionable, audit, coordination, emit, error, hook, index, narrative",
       "line": 136,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1915,7 +1915,7 @@
       "evidence": "context-watchdog, interaction, later, pushes, slim, startup, thresholds, warning",
       "line": 151,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1923,7 +1923,7 @@
       "evidence": "added, chars, convention, description, entirely, errors, every, exceeds",
       "line": 159,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1931,7 +1931,7 @@
       "evidence": "alone, catalog, catalog-compact, chars, compact, description, file, first_sentence",
       "line": 160,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md",
       "status": "mapped"
     },
     {
@@ -1939,7 +1939,7 @@
       "evidence": "build, dumps, large, max_chars, output, piped, prevent, run_bash",
       "line": 60,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-051-qwen-agent-loop.md",
+      "path": "docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md",
       "status": "mapped"
     },
     {
@@ -1947,7 +1947,7 @@
       "evidence": "after, asymptotic, becomes, certain, confidence, converges, ensures, exactly",
       "line": 88,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -1955,7 +1955,7 @@
       "evidence": "access, actually, become, creates, more, observations, over, reinforcement",
       "line": 109,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -1963,7 +1963,7 @@
       "evidence": "acceptable, accumulate, additional, automated, call, computation, decay, each",
       "line": 115,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -1971,7 +1971,7 @@
       "evidence": "claimed, commit, daemon, engram, exposes, false, fully, functional",
       "line": 209,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -1979,7 +1979,7 @@
       "evidence": "accidental, ad-hoc, after, alternate, clients, curl, daemon, discovery",
       "line": 211,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -1987,7 +1987,7 @@
       "evidence": "against, best-effort, confidence, daemon, documented, does, end-to-end, engram",
       "line": 247,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -1995,7 +1995,7 @@
       "evidence": "bypasses, causes, change, changes, closed, column, corruption, directly",
       "line": 257,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -2003,7 +2003,7 @@
       "evidence": "auto-start, cognitive-os, daemon, engram, failures, false, hook, jsonl",
       "line": 265,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -2011,7 +2011,7 @@
       "evidence": "action, block, concrete, cost, defensible, deferred, each, estimated",
       "line": 283,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
     },
     {
@@ -2019,7 +2019,7 @@
       "evidence": "context, design, dominated, enforcement, engram, exceeded, execution, follow-up",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md",
       "status": "mapped"
     },
     {
@@ -2027,7 +2027,7 @@
       "evidence": "attached, avoid, blocking, blocks, cognitive-os, compact, cos_hook_timing_fifo, fifo",
       "line": 46,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md",
       "status": "mapped"
     },
     {
@@ -2035,7 +2035,7 @@
       "evidence": "content-policy, destructive-rm-blocker, hooks, inject-phase-context, latency, measured, observability, optimize",
       "line": 73,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md",
       "status": "mapped"
     },
     {
@@ -2043,7 +2043,7 @@
       "evidence": "blind, breaks, creates, every, hook, hooks, inconsistent, instrument",
       "line": 81,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md",
       "status": "mapped"
     },
     {
@@ -2051,7 +2051,7 @@
       "evidence": "advisory, audit, automatically, classifies, documentation, evidence, execution, first",
       "line": 13,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-097-documentation-execution-audit.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-documentation-execution-audit.md",
       "status": "mapped"
     },
     {
@@ -2059,7 +2059,7 @@
       "evidence": "agent-prelaunch, before, block, cancel, caused, count, crash, diagnosis",
       "line": 14,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md",
       "status": "mapped"
     },
     {
@@ -2067,7 +2067,7 @@
       "evidence": "active-tasks, agent_health_monitor, always, because, check, classify_task, code, dead",
       "line": 17,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md",
       "status": "mapped"
     },
     {
@@ -2075,7 +2075,7 @@
       "evidence": "accumulated, automatic, cleanup, delegates, in_progress, invisible, null, only",
       "line": 20,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md",
       "status": "mapped"
     },
     {
@@ -2083,7 +2083,7 @@
       "evidence": "cover, generous, intentionally, kills, marks, minute, never, only",
       "line": 59,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md",
       "status": "mapped"
     },
     {
@@ -2091,7 +2091,7 @@
       "evidence": "acceptable, before, cleans, cleanup, crashed, every, given, leaves",
       "line": 88,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "path": "docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md",
       "status": "mapped"
     },
     {
@@ -2099,7 +2099,7 @@
       "evidence": "auto-recovered, context, created, inspect, knowing, original, path, recover",
       "line": 70,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md",
+      "path": "docs/02-Decisions/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md",
       "status": "mapped"
     },
     {
@@ -2107,7 +2107,7 @@
       "evidence": "explicitly, files, invariant, launch, never, restored, stability, stable",
       "line": 98,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md",
+      "path": "docs/02-Decisions/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md",
       "status": "mapped"
     },
     {
@@ -2115,7 +2115,7 @@
       "evidence": "already, behavioral, blocked, bursts, control, design, detecting, dropping",
       "line": 21,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "path": "docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md",
       "status": "mapped"
     },
     {
@@ -2123,7 +2123,7 @@
       "evidence": "applies, bucket, burst_multiplier, capacity, ceil, default, effective_limit, multiplier",
       "line": 38,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "path": "docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md",
       "status": "mapped"
     },
     {
@@ -2131,7 +2131,7 @@
       "evidence": "bottom, bucket, consume, default, lane, normal, operator, operator_reserve_ratio",
       "line": 44,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "path": "docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md",
       "status": "mapped"
     },
     {
@@ -2139,7 +2139,7 @@
       "evidence": "block, boundaries, bucket, bypass, compatibility, concurrent, config, controlled",
       "line": 125,
       "next_action": "keep claim but ensure proof remains current",
-      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "path": "docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md",
       "status": "mapped"
     }
   ]

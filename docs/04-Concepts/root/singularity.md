@@ -244,7 +244,7 @@ Singularity launches Claude pipelines autonomously, which costs tokens and money
 
 The Singularity can be triggered in five ways. Choose based on persistence and vendor requirements.
 
-> For the full portability comparison across IDEs, see [`docs/architecture/cross-runtime-portability.md#scheduling--recurring-tasks`](architecture/cross-runtime-portability.md#scheduling--recurring-tasks).
+> For the full portability comparison across IDEs, see [`docs/04-Concepts/architecture/cross-runtime-portability.md#scheduling--recurring-tasks`](architecture/cross-runtime-portability.md#scheduling--recurring-tasks).
 
 | Option | Persists across sessions | Survives reboots | Independent of Claude Code | Best for |
 |--------|--------------------------|-----------------|---------------------------|----------|

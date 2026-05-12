@@ -5,7 +5,7 @@
 **Commit at run time:** `418fb217`
 **Run host:** macOS (darwin 25.4.0), Python 3.14.4, Go (system toolchain)
 **Run date:** 2026-05-07
-**Audit item:** C4 — `docs/legal/pre-public-readiness-checklist.md`
+**Audit item:** C4 — `docs/09-Quality/legal/pre-public-readiness-checklist.md`
 
 ---
 
@@ -235,6 +235,6 @@ ruff check .
 
 ## Footer
 
-- Generated for checklist item **C4** of `docs/legal/pre-public-readiness-checklist.md`.
+- Generated for checklist item **C4** of `docs/09-Quality/legal/pre-public-readiness-checklist.md`.
 - Run logs preserved at `/tmp/c4-pytest-full.log`, `/tmp/c4-pytest-summary.log`, `/tmp/c4-go-root.log`, `/tmp/c4-go-cos.log`, `/tmp/c4-go-cos-test.log`, `/tmp/c4-gofmt.log`, `/tmp/c4-govet.log`, `/tmp/c4-ruff.log`, `/tmp/c4-audit.log`, `/tmp/c4-portability.log` (these are local-only; not committed).
 - This report is a **point-in-time snapshot.** Re-run on every release branch.

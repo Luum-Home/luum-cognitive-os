@@ -140,7 +140,7 @@ sub-agent. This is documented in the runbook as a known limitation.
 
 ### Option C — Runbook disclaimer
 
-`docs/measurements/hook-timing-runbook.md` gains a "Commit provenance trailer —
+`docs/06-Daily/measurements/hook-timing-runbook.md` gains a "Commit provenance trailer —
 known limitations" section documenting: depth-10 cap, fork-and-orphan edge case,
 screen/tmux stripped-env case, and the one-time artifact on the commit that
 installs the fix. Includes verification commands.

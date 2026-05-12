@@ -87,7 +87,7 @@ Health:     ❌ 2 issues
 ## References
 
 - Script source: `scripts/cos-status.sh`
-- JSON contract documented: `docs/usage/cos-status.md`
+- JSON contract documented: `docs/05-Methodology/usage/cos-status.md`
 - Part of the 10 core adoption skills listed in ADR-002
 
 ## Prerequisites

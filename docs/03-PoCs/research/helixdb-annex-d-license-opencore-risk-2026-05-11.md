@@ -152,6 +152,6 @@ This is *clean-room cost only* — does not include the ADR + license audit + CO
 
 License: blocking, end of discussion.
 
-Trapdoor: real, mechanical, and the AGPL half is being positioned to depend on closed components. Even if the license flipped to MIT tomorrow, the open-core trajectory would still warrant caution per `docs/architecture/external-tool-adoption-doctrine.md`.
+Trapdoor: real, mechanical, and the AGPL half is being positioned to depend on closed components. Even if the license flipped to MIT tomorrow, the open-core trajectory would still warrant caution per `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`.
 
 Pattern lane: open for the three primitives in Annex E §1–§3, with the cost figures above.

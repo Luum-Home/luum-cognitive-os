@@ -33,8 +33,8 @@ Note on sdk package name:
   ImportError gracefully so the cascade skips this provider when the package
   is not installed.
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
-           docs/adrs/ADR-063-agent-tool-replication-strategy.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
+           docs/02-Decisions/adrs/ADR-063-agent-tool-replication-strategy.md
            .cognitive-os/reports/claude-agent-sdk-surface-2026-04-24.md
 """
 

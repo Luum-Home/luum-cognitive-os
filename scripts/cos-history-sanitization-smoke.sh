@@ -173,7 +173,7 @@ TOMBSTONE_REF=$(git -C "${REPO}" for-each-ref --format='%(refname:short)' \
   'refs/heads/tombstone/pre-history-rewrite-*' 2>/dev/null | head -n1 || true)
 
 # ── Verify SHA inventory preserved ──────────────────────────────────────────
-SHA_INVENTORY=$(ls -1 "${REPO}"/docs/history/pre-sanitization-sha-inventory-*.txt 2>/dev/null | head -n1 || true)
+SHA_INVENTORY=$(ls -1 "${REPO}"/docs/01-Build-Log/history/pre-sanitization-sha-inventory-*.txt 2>/dev/null | head -n1 || true)
 
 # ── Emit results ────────────────────────────────────────────────────────────
 if [[ "${JSON}" -eq 1 ]]; then

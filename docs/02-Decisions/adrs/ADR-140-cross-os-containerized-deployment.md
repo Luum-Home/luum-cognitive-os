@@ -100,7 +100,7 @@ Windows-native Docker (without WSL2) is not a supported target. The invariant is
 1. `docker/cos-worker/docker-compose.yml` exists and `docker compose up` on a fresh Linux environment (no Python, no `~/.claude/`) starts the worker without error.
 2. The worker container can run at least one hook (e.g., `git-commit-scope-guard.sh`) and write to `.cognitive-os/runtime/agent-audit-trail.jsonl` in the bind-mounted workspace.
 3. No environment variable in the Compose file contains a vendor brand name (per ADR-139 §5). API keys use `LLM_PRIMARY_API_KEY` / `LLM_FALLBACK_API_KEY`.
-4. `docs/architecture/bootstrap-portability.md` is updated to reflect that the Compose stack satisfies the `cos-init` portability gate for worker surfaces.
+4. `docs/04-Concepts/architecture/bootstrap-portability.md` is updated to reflect that the Compose stack satisfies the `cos-init` portability gate for worker surfaces.
 
 ## Border Cases
 
@@ -167,6 +167,6 @@ workspace.
   runs a hook smoke and writes `agent-audit-trail.jsonl`.
 - Implemented in `scripts/cos-cloud-worker-bootstrap.sh`: thin wrapper around
   Docker Compose for `config`, `self-test`, `up`, and `down`.
-- Reflected in `docs/architecture/bootstrap-portability.md`: the Compose worker
+- Reflected in `docs/04-Concepts/architecture/bootstrap-portability.md`: the Compose worker
   is the container-surface portability proof for ADR-140.
 - Validated by `tests/audit/test_adr_140_cos_worker_compose.py`.

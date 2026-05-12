@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:35 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (AGENTS.md cross-harness spec primitive COS lacks)
 deep_verdict: ADOPT (spec only — there is no library to vendor)
 deepwiki_url: https://deepwiki.com/agentsmd/agents.md

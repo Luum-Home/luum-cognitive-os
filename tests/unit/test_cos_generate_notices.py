@@ -53,7 +53,7 @@ MINIMAL_MANIFEST_TEXT = textwrap.dedent("""\
         attribution: "Ported by test."
         cos_files:
           - "lib/fake.py"
-        annex_f: "docs/research/fake-annex-f.md"
+        annex_f: "docs/03-PoCs/research/fake-annex-f.md"
         notes: >
           This is a test entry.
 
@@ -64,7 +64,7 @@ MINIMAL_MANIFEST_TEXT = textwrap.dedent("""\
         copyright: "Copyright (c) 2025 AGPL Corp"
         attribution: "Pattern only."
         cos_files: []
-        annex_f: "docs/research/agpl-annex-f.md"
+        annex_f: "docs/03-PoCs/research/agpl-annex-f.md"
         notes: >
           Copyleft — rejected at runtime.
 """)

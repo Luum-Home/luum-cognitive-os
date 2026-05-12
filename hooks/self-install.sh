@@ -299,7 +299,7 @@ done
 #   full    — every non-excluded rule file (opt-in: COS_SYNC_ALL_RULES=1 or config)
 #   lean    — RULES-COMPACT.md only (legacy)
 #
-# See docs/rules-loading-architecture.md for the rationale.
+# See docs/04-Concepts/root/rules-loading-architecture.md for the rationale.
 
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 

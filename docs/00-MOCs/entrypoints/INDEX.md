@@ -336,7 +336,7 @@ These files record inter-session continuity state — read the most recent one t
 | Rules | 119 markdown rules | `rules/` |
 | Skills | 166 top-level `SKILL.md` files | `skills/` |
 | Lib modules | 316 top-level Python files | `lib/` |
-| ADRs | 282 `ADR-*.md` files, including suffixed follow-ups | `docs/adrs/` |
+| ADRs | 282 `ADR-*.md` files, including suffixed follow-ups | `docs/02-Decisions/adrs/` |
 | Docs | 1 209 files, including 1 140 markdown files | `docs/` |
 | Tests | 3 086 `test_*` files | `tests/` |
 

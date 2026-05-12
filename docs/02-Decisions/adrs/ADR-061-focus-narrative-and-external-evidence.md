@@ -27,13 +27,13 @@ validation check (ADR-059) that ADR-059 Phase 1-3 does NOT cover.
 ADR-059 addresses internal drift (prune, install timing, core-vs-extensions
 split). The 2026-04-24 conversation surfaced 5 additional gaps between the
 SO's current state and the master plan doctrine
-(`docs/business/durable-product-master-plan.md`):
+(`docs/08-References/business/durable-product-master-plan.md`):
 
 a. **Focus narrative missing** — README still presents 8 centers of gravity.
 b. **No reproducible governance demo** — master plan asks for a "short workflow
    that demos the governance value"; none exists.
 c. **No competitive positioning doc** — master plan names Hermes/Agent Zero/
-   OpenClaw as comparables; no `docs/vs-alternatives.md` explains differences.
+   OpenClaw as comparables; no `docs/08-References/root/vs-alternatives.md` explains differences.
 d. **No migration path from vanilla/competitors** — users of Hermes or bare
    Claude Code have no doc showing how to layer the SO on top.
 e. **Internal-only reliability evidence** — dogfood-score and aspirational-audit
@@ -70,14 +70,14 @@ step. No item is "documented as future work"; all land in this ADR's scope.
 
 ### c) Competitive positioning
 
-- New `docs/vs-alternatives.md` comparing Cognitive OS to Hermes, Agent Zero,
+- New `docs/08-References/root/vs-alternatives.md` comparing Cognitive OS to Hermes, Agent Zero,
   OpenClaw, pi-mono on: scope, governance depth, verification, portability,
   install complexity, test coverage.
 - Honest — where each wins and loses.
 
 ### d) Migration paths
 
-- New `docs/migration-from/` directory with at least:
+- New `docs/08-References/migration-from/` directory with at least:
   - `from-vanilla-claude-code.md` — adopt SO as governance layer on existing
     Claude Code project
   - `from-hermes.md` — stack SO on top of Hermes skill catalog
@@ -99,8 +99,8 @@ step. No item is "documented as future work"; all land in this ADR's scope.
 - `README.md` lead paragraph mentions "governance layer" before any feature list.
 - `bash scripts/demo-governance.sh` runs in < 5 minutes with `exit 0` or emits
   a clear summary of what hook fired.
-- `docs/vs-alternatives.md` contains ≥ 3 rows (us + 2 comparables minimum).
-- `docs/migration-from/from-vanilla-claude-code.md` exists with at least 1
+- `docs/08-References/root/vs-alternatives.md` contains ≥ 3 rows (us + 2 comparables minimum).
+- `docs/08-References/migration-from/from-vanilla-claude-code.md` exists with at least 1
   copy-pasteable command block.
 - README has ≥ 2 dynamic badges sourced from `.cognitive-os/metrics/*.json`.
 - Weekly cron workflow lands in `.github/workflows/` or equivalent.
@@ -128,8 +128,8 @@ step. No item is "documented as future work"; all land in this ADR's scope.
 - ADR-058 — Langfuse migration (reference for how to ship a crisp ADR + plan)
 - ADR-059 — Existential validation (this ADR is the complement)
 - ADR-060 — Local-only policy
-- `docs/business/durable-product-master-plan.md` — source doctrine
-- `docs/safety-mesh.md` — the governance content the demo showcases
+- `docs/08-References/business/durable-product-master-plan.md` — source doctrine
+- `docs/04-Concepts/root/safety-mesh.md` — the governance content the demo showcases
 
 ## Open questions
 

@@ -42,7 +42,7 @@ rsync -av --delete \
   --exclude='CHANGELOG.md' \
   --exclude='.gitignore' \
   --exclude='.last-sync' \
-  --exclude='docs/business/' \
+  --exclude='docs/08-References/business/' \
   --exclude='examples/' \
   --exclude='metrics/*.jsonl' \
   --exclude='tasks/active-tasks.json' \
@@ -58,9 +58,9 @@ if [ -f "${CLAUDE_PROJECT_DIR}/docker-compose.cognitive-os.yml" ]; then
 fi
 
 # Also sync business docs if they exist
-if [ -d "${CLAUDE_PROJECT_DIR}/docs/business" ]; then
-  mkdir -p "$COGNITIVE_OS_REPO/docs/business"
-  rsync -av --delete "${CLAUDE_PROJECT_DIR}/docs/business/" "$COGNITIVE_OS_REPO/docs/business/" > /dev/null 2>&1
+if [ -d "${CLAUDE_PROJECT_DIR}/docs/08-References/business" ]; then
+  mkdir -p "$COGNITIVE_OS_REPO/docs/08-References/business"
+  rsync -av --delete "${CLAUDE_PROJECT_DIR}/docs/08-References/business/" "$COGNITIVE_OS_REPO/docs/08-References/business/" > /dev/null 2>&1
 fi
 
 # Auto-commit if there are changes

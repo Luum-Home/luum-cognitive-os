@@ -137,7 +137,7 @@ func (v *CompletenessCheckerValidator) Validate(_ context.Context, hookCtx *hook
 		FixHint:     "Run /exhaustive-prompt before launching the agent.",
 		Reference: validator.Reference{
 			Code: "COS-QUAL-001",
-			URL:  "docs/architecture/cos-dispatch/completeness-check.md",
+			URL:  "docs/04-Concepts/architecture/cos-dispatch/completeness-check.md",
 		},
 	}
 }

@@ -12,7 +12,7 @@ SDK handles correctly.
 Configuration:
     GEMINI_API_KEY   — from Google AI Studio (aistudio.google.com)
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
 """
 
 from __future__ import annotations

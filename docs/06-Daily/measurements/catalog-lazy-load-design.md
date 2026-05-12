@@ -91,7 +91,7 @@ Exit codes: 0=healthy, 1=degraded (recommend revert), 2=insufficient data.
 
 It reads the 24h aggregator output and compares the `suspected_missed_skills`
 per-session rate against the baseline in
-`docs/measurements/lazy-catalog-baseline.json`.
+`docs/06-Daily/measurements/lazy-catalog-baseline.json`.
 
 **Revert condition**: `current_rate > 2× baseline_rate AND current_rate > 5%`
 
@@ -107,11 +107,11 @@ export COS_LAZY_CATALOG=0  # in ~/.zshrc or ~/.bashrc
 
 ## Baseline
 
-`docs/measurements/lazy-catalog-baseline.json` — initial synthetic baseline
+`docs/06-Daily/measurements/lazy-catalog-baseline.json` — initial synthetic baseline
 of 5% miss rate (estimated pre-implementation). Update after 72h of real data:
 
 ```bash
-python3 scripts/check_lazy_catalog_health.py --json > docs/measurements/lazy-catalog-baseline.json
+python3 scripts/check_lazy_catalog_health.py --json > docs/06-Daily/measurements/lazy-catalog-baseline.json
 ```
 
 ## Opt-Out

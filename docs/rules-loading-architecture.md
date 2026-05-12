@@ -1,1 +1,0 @@
-04-Concepts/root/rules-loading-architecture.md

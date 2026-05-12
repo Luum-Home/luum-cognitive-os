@@ -288,9 +288,9 @@ All tools use permissive licenses (Apache 2.0), compatible with COS's license po
 
 ## References
 
-- `docs/distributed-architecture.md` -- Multi-project and distributed COS vision
-- `docs/integrations/cursor-cloud-agents.md` -- Cursor integration design
-- `docs/architecture.md` -- Current system architecture and component inventory
+- `docs/04-Concepts/root/distributed-architecture.md` -- Multi-project and distributed COS vision
+- `docs/08-References/integrations/cursor-cloud-agents.md` -- Cursor integration design
+- `docs/04-Concepts/architecture.md` -- Current system architecture and component inventory
 - `rules/resource-governance.md` -- Budget enforcement and model downgrade chain
 - `rules/definition-of-done.md` -- Task complexity classification
 - `rules/agent-security.md` -- Permission system and least privilege

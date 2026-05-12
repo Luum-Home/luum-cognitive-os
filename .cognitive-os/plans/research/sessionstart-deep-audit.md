@@ -29,11 +29,11 @@ SessionStart. The user wants a real, measured analysis of:
   agent `a6a0...` finishes — wait for it if not done).
 - Today's commits: `61d5703`, `991b24a`, `3912338`, `c8a5259`, `e93e3b7`,
   `f360fe4`, `0c2583f` (plus whatever lands from the 3 still-running agents).
-- Existing measurements: `docs/measurements/stage2-expansion-baseline.md`.
+- Existing measurements: `docs/06-Daily/measurements/stage2-expansion-baseline.md`.
 
 ## Deliverables
 
-### 1. `docs/measurements/sessionstart-baseline.md`
+### 1. `docs/06-Daily/measurements/sessionstart-baseline.md`
 
 Two side-by-side tables. For each component injected at SessionStart, list:
 
@@ -103,7 +103,7 @@ is enough.
 
 ### 5. Research log entry
 
-Append to `docs/research-log.md`:
+Append to `docs/03-PoCs/root/research-log.md`:
 "## 2026-04-30: SessionStart deep audit (self-host vs client)"
 
 ## Acceptance criteria

@@ -41,15 +41,15 @@ rot or token waste:
 
 | Risk from long sessions | Current COS control | Primary files | Current status |
 |---|---|---|---|
-| Silent token growth per prompt | Runtime budget accounting | `lib/context_budget.py`, `hooks/context-budget-meter.sh`, `hooks/_lib/context_budget_lib.sh`, `docs/adrs/ADR-186-context-budget-enforcement.md` | Implemented and registered for Claude settings; metrics available in `.cognitive-os/metrics/context-budget.jsonl`. |
-| Large static startup preamble | Runtime diet and preamble accounting | `scripts/cos-session-start-budget`, `scripts/session_start_budget.py`, `docs/architecture/session-start-runtime-diet.md`, `scripts/cos_preamble_budget.py` | Implemented; core profile is small, maintainer/current profile may remain heavier for self-hosting. |
+| Silent token growth per prompt | Runtime budget accounting | `lib/context_budget.py`, `hooks/context-budget-meter.sh`, `hooks/_lib/context_budget_lib.sh`, `docs/02-Decisions/adrs/ADR-186-context-budget-enforcement.md` | Implemented and registered for Claude settings; metrics available in `.cognitive-os/metrics/context-budget.jsonl`. |
+| Large static startup preamble | Runtime diet and preamble accounting | `scripts/cos-session-start-budget`, `scripts/session_start_budget.py`, `docs/04-Concepts/architecture/session-start-runtime-diet.md`, `scripts/cos_preamble_budget.py` | Implemented; core profile is small, maintainer/current profile may remain heavier for self-hosting. |
 | Loading every rule/skill by default | Progressive context loading | `rules/context-optimization.md`, `skills/CATALOG-COMPACT.md`, `rules/RULES-COMPACT.md`, `lib/context_diet.py`, `hooks/context-diet.sh` | Partially active; compact catalogs exist, context-diet code exists, but hook activation must be verified per harness/profile. |
-| Irrelevant ADR/rule/context injection | Query-tailored context | `hooks/query-tailored-context-inject.sh`, `lib/context_injector.py`, `docs/adrs/ADR-040-query-tailored-context-injection.md` | Implemented and registered for Agent-like launches in Claude settings. |
-| Forgetting decisions before compaction | Pre-compaction flush and durable summaries | `hooks/pre-compaction-flush.sh`, `lib/anchored_summarizer.py`, `hooks/session-summary-reminder.sh`, `docs/architecture/memory-lifecycle.md` | Implemented; backed by behavior, contract, and integration tests. |
+| Irrelevant ADR/rule/context injection | Query-tailored context | `hooks/query-tailored-context-inject.sh`, `lib/context_injector.py`, `docs/02-Decisions/adrs/ADR-040-query-tailored-context-injection.md` | Implemented and registered for Agent-like launches in Claude settings. |
+| Forgetting decisions before compaction | Pre-compaction flush and durable summaries | `hooks/pre-compaction-flush.sh`, `lib/anchored_summarizer.py`, `hooks/session-summary-reminder.sh`, `docs/04-Concepts/architecture/memory-lifecycle.md` | Implemented; backed by behavior, contract, and integration tests. |
 | Re-discovering known facts | Memory-first retrieval | `hooks/memory-prefetch.sh`, `lib/memory_manager.py`, Engram MCP tools, `rules/token-economy.md` | Implemented as best-effort memory prefetch and required agent behavior. |
 | Failed retries polluting the active thread | Escalation and rollback planning | `rules/agent-escalation.md`, `rules/auto-rollback.md`, `hooks/auto-rollback-trigger.sh` | Doctrine and hooks exist; this is not equivalent to Claude `/rewind`, but it reduces repeated failed-loop contamination. |
 | HTML/web pages pasted directly into context | LLM-ready web extraction | `lib/web_crawler.py`, `skills/web-crawler/SKILL.md` | Implemented for web pages via Crawl4AI when installed, with stdlib fallback. |
-| Sub-agent result bloat | Compact result contracts | `docs/architecture/token-efficient-agent-messaging.md` | Documented; use bounded digests and JSONL/event extraction for large agent output. |
+| Sub-agent result bloat | Compact result contracts | `docs/04-Concepts/architecture/token-efficient-agent-messaging.md` | Documented; use bounded digests and JSONL/event extraction for large agent output. |
 
 ## Budget layers
 
@@ -191,17 +191,17 @@ satisfy at least one of these measurable outcomes:
 
 ## Related documents
 
-- `docs/adrs/ADR-016-context-diet.md`
-- `docs/adrs/ADR-040-query-tailored-context-injection.md`
-- `docs/adrs/ADR-044-context-payload-slimming.md`
-- `docs/adrs/ADR-047-session-lifecycle-management.md`
-- `docs/adrs/ADR-078-mid-task-memory-tool.md`
-- `docs/adrs/ADR-186-context-budget-enforcement.md`
-- `docs/architecture/context-budget-observability.md`
-- `docs/architecture/memory-lifecycle.md`
-- `docs/architecture/session-start-runtime-diet.md`
-- `docs/architecture/token-efficient-agent-messaging.md`
-- `docs/research/minimal-context-principle.md`
+- `docs/02-Decisions/adrs/ADR-016-context-diet.md`
+- `docs/02-Decisions/adrs/ADR-040-query-tailored-context-injection.md`
+- `docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md`
+- `docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md`
+- `docs/02-Decisions/adrs/ADR-078-mid-task-memory-tool.md`
+- `docs/02-Decisions/adrs/ADR-186-context-budget-enforcement.md`
+- `docs/04-Concepts/architecture/context-budget-observability.md`
+- `docs/04-Concepts/architecture/memory-lifecycle.md`
+- `docs/04-Concepts/architecture/session-start-runtime-diet.md`
+- `docs/04-Concepts/architecture/token-efficient-agent-messaging.md`
+- `docs/03-PoCs/research/minimal-context-principle.md`
 - `rules/context-management.md`
 - `rules/context-optimization.md`
 - `rules/token-economy.md`

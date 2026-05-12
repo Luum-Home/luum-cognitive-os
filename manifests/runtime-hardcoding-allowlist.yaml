@@ -81,5 +81,5 @@ verification:
   contract_tests:
     - tests/contracts/test_runtime_hardcoding.py
   primary_docs:
-    - docs/architecture/runtime-hardcoding-discipline.md
-    - docs/business/master-plan-checklist.md
+    - docs/04-Concepts/architecture/runtime-hardcoding-discipline.md
+    - docs/08-References/business/master-plan-checklist.md

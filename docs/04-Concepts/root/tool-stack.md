@@ -276,7 +276,7 @@ Fine-tuning and training infrastructure for custom models.
 
 ### Notes
 - Unsloth's Apache-2.0 core is safe for use; the AGPL-3.0 Studio module must be avoided per license policy.
-- Relevant only for separate provider-specific model workflows; the COS harness training contract remains operational learning, not provider-weight fine-tuning (see `docs/architecture/agent-training-harness.md`).
+- Relevant only for separate provider-specific model workflows; the COS harness training contract remains operational learning, not provider-weight fine-tuning (see `docs/04-Concepts/architecture/agent-training-harness.md`).
 
 ---
 
@@ -454,7 +454,7 @@ Actionable patterns identified from deep analysis of WATCH repos.
 ### Notes
 - 7 tools in ADOPT ring have clear integration paths with existing Cognitive OS infrastructure.
 - 19 tools in WATCH ring are monitored for patterns and ideas, not direct integration.
-- 5 additional tools were evaluated but blocked by license policy (AGPL/GPL) — see `docs/blocked-tools.md`.
+- 5 additional tools were evaluated but blocked by license policy (AGPL/GPL) — see `docs/05-Methodology/root/blocked-tools.md`.
 - agnix is the only linter purpose-built for Claude Code configuration files.
 - parry fills a gap in our prompt injection defenses with a dedicated ML-based scanner.
 - Trail of Bits Skills bring professional security audit expertise as reusable skills.

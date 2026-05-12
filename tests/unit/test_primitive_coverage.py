@@ -112,9 +112,9 @@ def test_weekly_workflow_generates_generic_primitive_coverage_reports() -> None:
     text = WORKFLOW.read_text()
 
     assert "scripts/primitive_coverage.py" in text
-    assert "docs/reports/primitive-coverage-latest.json" in text
-    assert "docs/reports/primitive-coverage-latest.md" in text
-    assert "docs/reports/primitive-coverage-latest.sarif" in text
+    assert "docs/06-Daily/reports/primitive-coverage-latest.json" in text
+    assert "docs/06-Daily/reports/primitive-coverage-latest.md" in text
+    assert "docs/06-Daily/reports/primitive-coverage-latest.sarif" in text
 
 
 def test_cos_reduction_backlog_empty_makes_weak_rows_non_actionable(tmp_path: Path) -> None:

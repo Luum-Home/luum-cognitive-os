@@ -127,6 +127,6 @@ sprint's roadmap.
 
 ## Cross-reference
 
-- Audit source: `docs/architecture/functional-audit/scorecard-rules.md`
+- Audit source: `docs/04-Concepts/architecture/functional-audit/scorecard-rules.md`
 - Test contract: `tests/audit/test_rules_enforcement.py`
-- This file's orchestration: `docs/architecture/functional-audit/sprint-2a-orphan-fate.md`
+- This file's orchestration: `docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md`

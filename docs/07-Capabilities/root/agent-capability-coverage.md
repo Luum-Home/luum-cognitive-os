@@ -299,8 +299,8 @@ ACC has four persistence layers with distinct purposes. Mixing them silently is 
 | Layer | Location | Purpose | Mutability |
 |---|---|---|---|
 | Canonical manifest | Engram, topic key `acc/{project}/manifest` | Single source of truth for current capability state. Versioned by engram. | Mutable, incremental |
-| Reviewable snapshot | `docs/acc/acc-{revision}.json` and `acc-{revision}.md` | Human review, PR diffing, CI artefact. Generated from the canonical manifest. | Append-only |
-| Drift ground truth | `docs/acc/latest.json` (symlink to most recent snapshot) | Last committed manifest used to compute drift when engram is unavailable. | Updated by snapshot generator |
+| Reviewable snapshot | `docs/07-Capabilities/acc/acc-{revision}.json` and `acc-{revision}.md` | Human review, PR diffing, CI artefact. Generated from the canonical manifest. | Append-only |
+| Drift ground truth | `docs/07-Capabilities/acc/latest.json` (symlink to most recent snapshot) | Last committed manifest used to compute drift when engram is unavailable. | Updated by snapshot generator |
 | Historical evidence | Engram, topic key `acc/{project}/findings/{capability_id}` | Per-capability trace of status transitions, mapping changes, and adapter provenance. | Append-only |
 
 Rationale:
@@ -395,7 +395,7 @@ Rules:
 
 A compliant ACC specification implementation must satisfy:
 
-1. `docs/agent-capability-coverage.md` contains no embedded formula images.
+1. `docs/07-Capabilities/root/agent-capability-coverage.md` contains no embedded formula images.
 2. All ACC formulas are represented as searchable text.
 3. The document uses **agentic primitives** terminology for the agentic layer.
 4. The document separates **Core Portable Contract** from **Optional Adapters**.
@@ -405,7 +405,7 @@ A compliant ACC specification implementation must satisfy:
 8. Adapter failure degrades to `unverified` evidence rather than pretending full coverage.
 9. The document declares explicit integration with the host system's skill registry, rules index, hooks profile, and engram memory, with a read-only adapter contract for each.
 10. The document declares the relationship to `component-reality-check` and `aspirational_audit`, including the subsumption rule and the reconstruction-vs-production migration contract.
-11. The document defines a primary canonical store (engram), a reviewable snapshot store (`docs/acc/`), a drift baseline (`docs/acc/latest.json`), and a per-capability evidence store (engram), with their mutability and purpose.
+11. The document defines a primary canonical store (engram), a reviewable snapshot store (`docs/07-Capabilities/acc/`), a drift baseline (`docs/07-Capabilities/acc/latest.json`), and a per-capability evidence store (engram), with their mutability and purpose.
 
 ## Future Test Contract
 
@@ -426,7 +426,7 @@ Suggested assertions:
 - the ACC manifest example includes `mapping_status`, `confidence`, and `evidence`;
 - the ACC doc contains a section titled `Integration with existing COS subsystems` referencing skill registry, rules index, hooks profile, and engram;
 - the ACC doc contains a section titled `Relationship to component-reality-check / aspirational_audit` declaring the subsumption rule;
-- the ACC doc contains a section titled `Storage and persistence` declaring engram as canonical, `docs/acc/` as snapshot store, and `docs/acc/latest.json` as drift baseline;
+- the ACC doc contains a section titled `Storage and persistence` declaring engram as canonical, `docs/07-Capabilities/acc/` as snapshot store, and `docs/07-Capabilities/acc/latest.json` as drift baseline;
 - the ACC doc references `lifecycle_status` as a capability attribute.
 
 A later behavior test can validate a small fixture repository:
@@ -462,7 +462,7 @@ outcome = block
 
 ## Implementation Status — 2026-05-04
 
-ADR-147 implements the first unified ACC orchestrator in `scripts/acc_pipeline.py`. It consumes the existing COS readiness ledgers and audit reports, emits `docs/acc/latest.json` plus `docs/acc/latest.md`, appends local history under `.cognitive-os/metrics/acc-pipeline-history.jsonl`, and preserves the Engram boundary honestly: the script reports Engram as unavailable unless a real bridge is configured, and the agent remains responsible for calling memory tools when surfaced.
+ADR-147 implements the first unified ACC orchestrator in `scripts/acc_pipeline.py`. It consumes the existing COS readiness ledgers and audit reports, emits `docs/07-Capabilities/acc/latest.json` plus `docs/07-Capabilities/acc/latest.md`, appends local history under `.cognitive-os/metrics/acc-pipeline-history.jsonl`, and preserves the Engram boundary honestly: the script reports Engram as unavailable unless a real bridge is configured, and the agent remains responsible for calling memory tools when surfaced.
 
 This implementation covers Cognitive OS agentic primitives first: scripts, hooks, skills, rules, docs claims, primitive coverage, and consumer-project accessibility. Application-specific adapters for endpoints, events, jobs, integrations, and workflows remain future adapters that should emit the same capability row shape.
 
@@ -489,7 +489,7 @@ bash scripts/cos-coverage --refresh
 **Output fields (--json)**:
 - `coverage_pct` — REAL / (REAL + DORMANT + ASPIRATIONAL) * 100
 - `real`, `dormant`, `aspirational`, `on_demand`, `metadata` — component counts from `aspirational-audit.jsonl`
-- `mapped`, `weak_proof`, `unmapped` — claim-proof counts from `docs/reports/claim-proof-latest.md`
+- `mapped`, `weak_proof`, `unmapped` — claim-proof counts from `docs/06-Daily/reports/claim-proof-latest.md`
 - `tiers` — tier counts A/B/C/D from `cos_classify_coverage.py`
 - `trend` — delta arrows vs last daily snapshot (`up` / `down` / `flat`)
 - `generated_at` — UTC timestamp of snapshot

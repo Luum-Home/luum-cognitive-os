@@ -55,7 +55,7 @@
 | Agent customization overrides | BMAD Method v6 | `packages/agent-coordination/rules/agent-customization.md` | ADOPTED |
 | Cognitive load monitoring | WISC Framework (Cole Medin) | `rules/cognitive-load.md` (context thresholds, degradation detection) | ADOPTED |
 | Adaptive bypass | ETH Zurich research (arxiv 2602.11988) | `rules/adaptive-bypass.md` (skip governance for trivial tasks) | ADOPTED |
-| GitHub index repo for plugins | Agent Zero | `docs/cos-package-manager.md` Section 6 (centralized index with YAML manifests, community PRs) | ADOPTED (pattern) |
+| GitHub index repo for plugins | Agent Zero | `docs/07-Capabilities/root/cos-package-manager.md` Section 6 (centralized index with YAML manifests, community PRs) | ADOPTED (pattern) |
 | Plugin/skill creation workflow | Agent Zero | `skill-creator` skill + `cos init` + `cos-package.yaml` generation | ADOPTED (pattern) |
 | Plugin security scanning | Agent Zero | Aguara + content-policy + secret-detector (broader than Agent Zero's scanner) | ADOPTED (expanded) |
 | Memory scanning (mid-task retrieval) | Hermes Agent | `lib/memory_scanner.py`: scans Engram mid-task for relevant past context | ADOPTED |
@@ -83,7 +83,7 @@
 | Sandbox sampling for large changes | `rules/sandbox-sampling.md` | Classify-sample-verify-scale workflow for >100 files |
 | Broken window policy | `rules/broken-window-policy.md` | "Pre-existing" is not a valid excuse; fix what you find |
 | 14-layer security mesh | Multiple rules and hooks | Defense-in-depth from content policy to pentesting readiness |
-| cos package manager with MVS | `cmd/cos/` + `docs/cos-package-manager.md` | Full dependency resolution, quality scoring, lock files |
+| cos package manager with MVS | `cmd/cos/` + `docs/07-Capabilities/root/cos-package-manager.md` | Full dependency resolution, quality scoring, lock files |
 | Prompt composition from templates | `rules/prompt-composition.md` | Reusable prompt building blocks in templates/ |
 | Scout pattern | `rules/scout-pattern.md` | Structured codebase reconnaissance before implementation |
 | Auto-repair with circuit breaker | `rules/auto-repair.md` | Autonomous error fixing with safety limits |
@@ -107,8 +107,8 @@ OpenClaw contributed the 4-tier fault tolerance model that COS adopted and expan
 - Agent Zero: [github.com/agent0ai/agent-zero](https://github.com/agent0ai/agent-zero)
 - Agent Zero Plugins Index: [github.com/agent0ai/a0-plugins](https://github.com/agent0ai/a0-plugins)
 - Agent Zero Website: [agent-zero.ai](https://agent-zero.ai)
-- OpenClaw: Referenced in `docs/component-sources.md` under Research and Design Influences
-- BMAD Method v6: Referenced in `docs/component-sources.md`
+- OpenClaw: Referenced in `docs/04-Concepts/root/component-sources.md` under Research and Design Influences
+- BMAD Method v6: Referenced in `docs/04-Concepts/root/component-sources.md`
 - Tactical Agentic Coding: [agenticengineer.com](https://agenticengineer.com)
 - Hermes Agent (Nous Research): Added as git submodule 2026-04-08, MIT license, 9431 LOC, 465 test files
 - Pi Coding Agent: Added as git submodule 2026-04-08, MIT license, 7-package monorepo, 161 test files, powers OpenClaw

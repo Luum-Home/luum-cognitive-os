@@ -27,7 +27,7 @@ def _base_plan(candidate_action: str = "classify_or_refine_false_positive_events
                     "delete_without_reversible_path",
                 ],
                 "allowed_write_paths": [
-                    "docs/reports/",
+                    "docs/06-Daily/reports/",
                     ".cognitive-os/improvements/proposals/",
                 ],
             }

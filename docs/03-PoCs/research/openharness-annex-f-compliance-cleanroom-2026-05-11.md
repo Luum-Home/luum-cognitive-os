@@ -73,7 +73,7 @@ HKUDS/OpenHarness — hook schemas
 ```
 
 MIT does not require a separate NOTICE file (unlike Apache-2.0), but COS policy
-(`docs/architecture/supply-chain-defense.md`) mandates NOTICE entries for all vendored
+(`docs/04-Concepts/architecture/supply-chain-defense.md`) mandates NOTICE entries for all vendored
 code regardless of license tier.
 
 ## 5. Why this is backfill

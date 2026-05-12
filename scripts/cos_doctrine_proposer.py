@@ -178,7 +178,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=PROJECT_ROOT)
     parser.add_argument("--profile", choices=["core", "team", "maintainer", "lab"], default="core")
-    parser.add_argument("--write", action="store_true", help="write markdown proposal under docs/proposals")
+    parser.add_argument("--write", action="store_true", help="write markdown proposal under docs/03-PoCs/proposals")
     parser.add_argument("--json", action="store_true", help="accepted for CLI consistency; output is always JSON")
     args = parser.parse_args(argv)
 

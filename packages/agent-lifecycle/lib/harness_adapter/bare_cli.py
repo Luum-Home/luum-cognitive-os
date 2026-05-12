@@ -40,7 +40,7 @@ Example::
     {"event": "session_start", "session_id": "abc123", "harness": "bare_cli",
      "cwd": "/workspace/project", "started_at": 1714500000.0}
 
-Reference: docs/adrs/ADR-064-harness-agnostic-cognitive-os.md Surface 4,
+Reference: docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md Surface 4,
            manifests/harness-driver-capabilities.yaml bare_cli entry.
 """
 

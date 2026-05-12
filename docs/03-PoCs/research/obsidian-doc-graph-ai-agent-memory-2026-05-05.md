@@ -21,11 +21,11 @@
 
 | File | Role | Status |
 |---|---|---|
-| `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` | Primary prior research. It compared Obsidian, Karpathy-style LLM Wiki, LLM Wiki v2, Mem0, Zep/Graphiti, Cognee, Letta, GraphRAG, HippoRAG, LightRAG, and related memory tools. | Current. |
-| `docs/adrs/ADR-071-engram-lifecycle-evolution.md` | Accepted decision: extend Engram with lifecycle trailers, confidence/decay, crystallization, and graph traversal instead of making Obsidian primary memory. | Current; Phases 1–3 marked done. |
+| `docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` | Primary prior research. It compared Obsidian, Karpathy-style LLM Wiki, LLM Wiki v2, Mem0, Zep/Graphiti, Cognee, Letta, GraphRAG, HippoRAG, LightRAG, and related memory tools. | Current. |
+| `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` | Accepted decision: extend Engram with lifecycle trailers, confidence/decay, crystallization, and graph traversal instead of making Obsidian primary memory. | Current; Phases 1–3 marked done. |
 | `.cognitive-os/plans/features/engram-lifecycle-evolution.md` | Execution plan for ADR-071. | Phases 1–3 shipped; Phase 4 manual export shipped and opt-in automation added. |
-| `docs/adrs/ADR-037-self-knowledge-base.md` | Earlier self-knowledge index for the repo: API surface, dependency graph, glossary, and summary. | Accepted; implemented by self-knowledge builder. |
-| `docs/architecture/memory-lifecycle.md` | Operator map of which hooks/libraries/tests save and recover memory. | Current orientation doc. |
+| `docs/02-Decisions/adrs/ADR-037-self-knowledge-base.md` | Earlier self-knowledge index for the repo: API surface, dependency graph, glossary, and summary. | Accepted; implemented by self-knowledge builder. |
+| `docs/04-Concepts/architecture/memory-lifecycle.md` | Operator map of which hooks/libraries/tests save and recover memory. | Current orientation doc. |
 | `infra/cognee/README.md` | Optional Cognee service with NetworkX + LanceDB default backends. | Optional external memory/RAG surface, not primary. |
 
 ### Code found
@@ -194,7 +194,7 @@ Recommended shape:
    - Runs incremental export only if a project config points to a vault.
 
 4. Documentation
-   - Add a manual test under `docs/manual-tests/engram-obsidian-export.md`.
+   - Add a manual test under `docs/09-Quality/manual-tests/engram-obsidian-export.md`.
    - Update ADR-071 with a Phase 4 addendum only after tests pass.
 
 ### Do not do yet
@@ -253,7 +253,7 @@ $HOME/.cognitive-os/obsidian-vaults/luum-agent-os
 
 That location is intentionally outside the repository. It is an operator-local
 workspace for browsing generated notes in Obsidian, not a versioned project
-artifact. Manual proof path: `docs/manual-tests/engram-obsidian-export.md`.
+artifact. Manual proof path: `docs/09-Quality/manual-tests/engram-obsidian-export.md`.
 
 Optional automation is now implemented in `hooks/engram-obsidian-export-on-stop.sh`.
 The hook exits 0 without exporting unless `COS_OBSIDIAN_VAULT` is set. With that
@@ -276,9 +276,9 @@ would create duplicate sources of truth.
 `docs/` should not be copied wholesale into Engram, and Engram exports should not
 be promoted into `docs/` automatically. Instead:
 
-- formal decisions live in `docs/adrs/`;
-- setup and operational instructions live in `docs/setup/` and `docs/runbooks/`;
-- manual proof evidence lives in `docs/manual-tests/`;
+- formal decisions live in `docs/02-Decisions/adrs/`;
+- setup and operational instructions live in `docs/05-Methodology/setup/` and `docs/05-Methodology/runbooks/`;
+- manual proof evidence lives in `docs/09-Quality/manual-tests/`;
 - raw or semi-structured memory lives in Engram;
 - Obsidian links those surfaces for navigation.
 

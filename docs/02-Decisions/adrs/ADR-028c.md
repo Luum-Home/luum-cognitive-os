@@ -28,7 +28,7 @@ Changes are classified:
 - **Additive (minor)**: add optional field to `payload` or top-level. No version bump.
   Readers MUST tolerate unknown fields (existing `from_dict` already folds extras into payload).
 - **Semantic (backward-compatible)**: redefine existing field meaning while preserving shape.
-  Version stays the same; document in `docs/adrs/ADR-028c-schema-changelog.md` (create when first used).
+  Version stays the same; document in `docs/02-Decisions/adrs/ADR-028c-schema-changelog.md` (create when first used).
 - **Breaking (major)**: rename/remove required field, change type, restructure payload.
   Version increments by 1. Migration script MUST ship in same commit under
   `scripts/migrate_metric_event_v{N}_to_v{N+1}.py`.

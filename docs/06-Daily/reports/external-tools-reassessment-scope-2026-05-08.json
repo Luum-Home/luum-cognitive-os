@@ -17,10 +17,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/deep/affaan-m__everything-claude-code-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/affaan-m__everything-claude-code-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -36,15 +36,15 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "agents-orchestration-routing"
@@ -62,8 +62,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/agentgateway__agentgateway-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/agentgateway__agentgateway-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -82,9 +82,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/deep/agentscope-ai__agentscope-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/agentscope-ai__agentscope-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -103,9 +103,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
-        "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -124,12 +124,12 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -148,11 +148,11 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/anomalyco__opencode-2026-05-06.md",
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/anomalyco__opencode-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -169,7 +169,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-C-orchestration-2026-05-08.md"
+        "docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md"
       ],
       "confidence": "medium",
       "domain": "agents-orchestration-routing"
@@ -187,8 +187,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -207,10 +207,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md",
-        "docs/research/repo-scout/deep/BeehiveInnovations__pal-mcp-server-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/BeehiveInnovations__pal-mcp-server-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -228,8 +228,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/BerriAI__litellm-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/BerriAI__litellm-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -264,10 +264,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/cline__cline-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/cline__cline-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -286,10 +286,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md",
-        "docs/research/repo-scout/deep/coder__agentapi-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/coder__agentapi-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -308,9 +308,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
-        "docs/research/repo-scout/deep/coleam00__Archon-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/coleam00__Archon-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -329,9 +329,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/deep/ComposioHQ__agent-orchestrator-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/ComposioHQ__agent-orchestrator-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -350,9 +350,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/deep/continuedev__continue-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/continuedev__continue-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -368,11 +368,11 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-monitor-followup-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "agents-orchestration-routing"
@@ -391,9 +391,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/orchestration-gaps/agent-to-agent-handoff.md",
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/crewAIInc__crewAI-2026-05-06.md"
+        "docs/03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/crewAIInc__crewAI-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -412,10 +412,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
-        "docs/research/repo-scout/deep/dmgrok__agent_skills_directory-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/dmgrok__agent_skills_directory-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -434,9 +434,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/dollspace-gay__OpenClaudia-2026-05-06.md"
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/dollspace-gay__OpenClaudia-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -454,8 +454,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/FoundationAgents__MetaGPT-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/FoundationAgents__MetaGPT-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -474,10 +474,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
-        "docs/research/repo-scout/deep/gepa-ai__gepa-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/gepa-ai__gepa-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -496,9 +496,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/InternLM__WildClawBench-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/InternLM__WildClawBench-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -517,9 +517,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -540,9 +540,9 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-monitor-followup-2026-05-06.md",
         "packages/advisor-mcp/cos-package.yaml",
         "packages/advisor-mcp/requirements.txt",
         "requirements.txt",
@@ -565,9 +565,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/luongnv89__claude-howto-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/luongnv89__claude-howto-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -586,9 +586,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md",
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/maximhq__bifrost-2026-05-06.md"
+        "docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/maximhq__bifrost-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -606,8 +606,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
-        "docs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -626,9 +626,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/MiniMax-AI__MiniMax-M2-2026-05-06.md"
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/MiniMax-AI__MiniMax-M2-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -647,10 +647,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/deep/musistudio__claude-code-router-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/musistudio__claude-code-router-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -669,14 +669,14 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/dependencies-license-audit-2026-05-06.md",
-        "docs/reports/docs-execution-latest.json",
-        "docs/reports/docs-execution-latest.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/orchestration-gaps/cost-aware-routing.md",
-        "docs/research/orchestration-gaps/replay-timeline-architectures.md",
-        "docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
-        "docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
+        "docs/06-Daily/reports/dependencies-license-audit-2026-05-06.md",
+        "docs/06-Daily/reports/docs-execution-latest.json",
+        "docs/06-Daily/reports/docs-execution-latest.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md",
+        "docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -695,11 +695,11 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-swe-2026-05-06.md",
-        "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-swe-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -718,11 +718,11 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/deep/openclaw__openclaw-2026-05-06.md",
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/openclaw__openclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -742,9 +742,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/deep/OpenHands__OpenHands-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/OpenHands__OpenHands-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -763,10 +763,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
-        "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -785,9 +785,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/QwenLM__qwen-code-2026-05-06.md"
+        "docs/06-Daily/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/QwenLM__qwen-code-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -806,9 +806,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/RooCodeInc__Roo-Code-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/RooCodeInc__Roo-Code-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -827,9 +827,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/shanraisshan__claude-code-best-practice-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/shanraisshan__claude-code-best-practice-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -848,9 +848,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/sigoden__aichat-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/sigoden__aichat-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -869,10 +869,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
-        "docs/research/repo-scout/deep/simonw__llm-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/simonw__llm-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -891,11 +891,11 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md",
-        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
-        "docs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -914,10 +914,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
-        "docs/research/repo-scout/deep/stanfordnlp__dspy-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/stanfordnlp__dspy-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -936,10 +936,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-agent-swe-2026-05-06.md",
-        "docs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md"
+        "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-swe-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -958,9 +958,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/TheR1D__shell_gpt-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/TheR1D__shell_gpt-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "agents-orchestration-routing"
@@ -1380,11 +1380,11 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
-        "docs/reports/external-tools-radar-2026-05-08-errata.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md"
+        "docs/06-Daily/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md"
       ],
       "confidence": "medium",
       "domain": "mcp-integration"
@@ -1400,12 +1400,12 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "mcp-integration"
@@ -1425,11 +1425,11 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
-        "docs/reports/external-tools-radar-2026-05-08-errata.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
         "packages/advisor-mcp/cos-package.yaml",
         "packages/advisor-mcp/requirements.txt",
         "packages/mcp-server/cos-package.yaml"
@@ -1547,11 +1547,11 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/primitive-coverage-backend-benchmark-2026-05.md",
-        "docs/reports/primitive-coverage-backend-benchmark-2026-05-01.json",
-        "docs/reports/primitive-coverage-backend-benchmark-2026-05-01.md",
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/CodeGraphContext__CodeGraphContext-2026-05-06.md"
+        "docs/04-Concepts/architecture/primitive-coverage-backend-benchmark-2026-05.md",
+        "docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.json",
+        "docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/CodeGraphContext__CodeGraphContext-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1569,11 +1569,11 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md",
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-monitor-followup-2026-05-06.md",
         "requirements.txt",
         "requirements/dependency-lanes/memory.txt"
       ],
@@ -1594,9 +1594,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
-        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/DavidAnson__markdownlint-cli2-2026-05-06.md"
+        "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/DavidAnson__markdownlint-cli2-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1614,8 +1614,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1633,8 +1633,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/devwhodevs__engraph-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/devwhodevs__engraph-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1650,16 +1650,16 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-errata.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -1678,9 +1678,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/egdev6__engram-monitor-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/egdev6__engram-monitor-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1699,10 +1699,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/external-tool-adoption-doctrine.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/deep/getzep__graphiti-2026-05-06.md"
+        "docs/04-Concepts/architecture/external-tool-adoption-doctrine.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/getzep__graphiti-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1718,15 +1718,15 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -1742,15 +1742,15 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -1769,9 +1769,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1787,7 +1787,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-C-orchestration-2026-05-08.md"
+        "docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -1805,8 +1805,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/letta-ai__letta-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/letta-ai__letta-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1822,15 +1822,15 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -1849,9 +1849,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
-        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/lycheeverse__lychee-2026-05-06.md"
+        "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/lycheeverse__lychee-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1870,9 +1870,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
-        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/lycheeverse__lychee-action-2026-05-06.md"
+        "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/lycheeverse__lychee-action-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1891,10 +1891,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/deep/MemPalace__mempalace-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/MemPalace__mempalace-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1913,9 +1913,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/memvid__memvid-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/memvid__memvid-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1934,10 +1934,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/deep/Mibayy__token-savior-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/Mibayy__token-savior-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1955,8 +1955,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/microsoft__graphrag-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/microsoft__graphrag-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -1972,12 +1972,12 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-monitor-followup-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -1996,9 +1996,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/Mirix-AI__MIRIX-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/Mirix-AI__MIRIX-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2033,12 +2033,12 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md",
-        "docs/adrs/ADR-081-codex-harness-adapter.md",
-        "docs/architecture/cross-tool-task-recovery-research-2026-05.md",
-        "docs/reports/primitive-coverage-latest.json",
-        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
+        "docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md",
+        "docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md",
+        "docs/04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.md",
+        "docs/06-Daily/reports/primitive-coverage-latest.json",
+        "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2057,9 +2057,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/deep/OSU-NLP-Group__HippoRAG-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/OSU-NLP-Group__HippoRAG-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2093,8 +2093,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/rohitg00__agentmemory-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/rohitg00__agentmemory-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2113,9 +2113,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/safishamsi__graphify-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/safishamsi__graphify-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2131,12 +2131,12 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-A-memory-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "memory-rag"
@@ -2154,8 +2154,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/topoteretes__cognee-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/topoteretes__cognee-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2174,9 +2174,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
-        "docs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "memory-rag"
@@ -2242,13 +2242,13 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-E-observability-debt-2026-05-08.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-errata.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/cross-check-E-observability-debt-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
         "requirements.txt"
       ],
       "confidence": "medium",
@@ -2267,10 +2267,10 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-E-observability-debt-2026-05-08.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/cross-check-E-observability-debt-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
         "requirements.txt"
       ],
       "confidence": "medium",
@@ -2319,12 +2319,12 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-E-observability-debt-2026-05-08.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md"
+        "docs/06-Daily/reports/cross-check-E-observability-debt-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md"
       ],
       "confidence": "medium",
       "domain": "observability-eval-optimization"
@@ -2342,8 +2342,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
-        "docs/research/repo-scout/deep/e2b-dev__infra-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/e2b-dev__infra-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "sandbox-runtime-testing"
@@ -2359,7 +2359,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-08.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md"
       ],
       "confidence": "medium",
       "domain": "sandbox-runtime-testing"
@@ -2396,9 +2396,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/dependencies-license-audit-2026-05-06.md",
-        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
-        "docs/research/repo-scout/deep/testcontainers__testcontainers-python-2026-05-06.md"
+        "docs/06-Daily/reports/dependencies-license-audit-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/testcontainers__testcontainers-python-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "sandbox-runtime-testing"
@@ -2414,7 +2414,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-INDEX.md"
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md"
       ],
       "confidence": "medium",
       "domain": "security-supply-chain-guardrails"
@@ -2433,10 +2433,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/dependencies-license-audit-2026-05-06.md",
-        "docs/reports/plugin-caveman-review-2026-04-20.md",
-        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+        "docs/06-Daily/reports/dependencies-license-audit-2026-05-06.md",
+        "docs/06-Daily/reports/plugin-caveman-review-2026-04-20.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "security-supply-chain-guardrails"
@@ -2471,8 +2471,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
-        "docs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "security-supply-chain-guardrails"
@@ -2488,7 +2488,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-INDEX.md"
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md"
       ],
       "confidence": "medium",
       "domain": "security-supply-chain-guardrails"
@@ -2504,16 +2504,16 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
-        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "tui-cli-devtools"
@@ -2532,9 +2532,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/allinurl__goaccess-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/allinurl__goaccess-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2553,9 +2553,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/antonmedv__fx-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/antonmedv__fx-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2574,9 +2574,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/aristocratos__btop-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/aristocratos__btop-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2592,12 +2592,12 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-errata.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md"
+        "docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md"
       ],
       "confidence": "medium",
       "domain": "tui-cli-devtools"
@@ -2616,9 +2616,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__bubbles-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__bubbles-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2637,10 +2637,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__bubbletea-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__bubbletea-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2659,9 +2659,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__glamour-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__glamour-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2680,9 +2680,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__gum-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__gum-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2701,9 +2701,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__huh-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__huh-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2722,9 +2722,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__lipgloss-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__lipgloss-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2743,9 +2743,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__soft-serve-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__soft-serve-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2764,9 +2764,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
-        "docs/research/repo-scout/deep/charmbracelet__vhs-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/charmbracelet__vhs-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2785,9 +2785,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/ClementTsang__bottom-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/ClementTsang__bottom-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2806,9 +2806,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md",
-        "docs/research/repo-scout/deep/crossterm-rs__crossterm-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-rust-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/crossterm-rs__crossterm-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2827,9 +2827,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/derailed__k9s-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/derailed__k9s-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2848,9 +2848,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/dlvhdr__gh-dash-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/dlvhdr__gh-dash-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2869,9 +2869,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/gitui-org__gitui-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/gitui-org__gitui-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2890,9 +2890,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/hatoo__oha-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/hatoo__oha-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2911,9 +2911,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/jarun__nnn-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/jarun__nnn-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2932,9 +2932,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/jesseduffield__lazydocker-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/jesseduffield__lazydocker-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2953,9 +2953,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/jesseduffield__lazygit-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/jesseduffield__lazygit-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2974,9 +2974,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/junegunn__fzf-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/junegunn__fzf-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -2995,10 +2995,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/nearai__ironclaw-2026-05-06.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/nearai__ironclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -3018,10 +3018,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/nullclaw__nullclaw-2026-05-06.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/nullclaw__nullclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -3041,10 +3041,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/qhkm__zeptoclaw-2026-05-06.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/qhkm__zeptoclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -3064,10 +3064,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/qwibitai__nanoclaw-2026-05-06.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/qwibitai__nanoclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -3087,9 +3087,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md",
-        "docs/research/repo-scout/deep/ratatui__ratatui-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-rust-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/ratatui__ratatui-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3124,9 +3124,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/sachaos__viddy-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/sachaos__viddy-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3145,10 +3145,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/sipeed__picoclaw-2026-05-06.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/sipeed__picoclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -3165,15 +3165,15 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
-        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
-        "docs/reports/external-tools-inventory-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
-        "docs/reports/external-tools-radar-2026-05-08.md",
-        "docs/reports/external-tools-radar-INDEX.md",
-        "docs/reports/external-tools-radar-deep-2026-05-06.md",
-        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+        "docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md",
+        "docs/06-Daily/reports/external-tools-radar-INDEX.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/06-Daily/reports/external-tools-radar-deep-tier2-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "tui-cli-devtools"
@@ -3192,9 +3192,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/sxyazi__yazi-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/sxyazi__yazi-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3213,9 +3213,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/Textualize__rich-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/Textualize__rich-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3234,9 +3234,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md",
-        "docs/research/repo-scout/deep/Textualize__textual-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/Textualize__textual-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3255,9 +3255,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/tstack__lnav-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/tstack__lnav-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3276,9 +3276,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/wagoodman__dive-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/wagoodman__dive-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3297,9 +3297,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/wtfutil__wtf-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/wtfutil__wtf-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3318,9 +3318,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/yorukot__superfile-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/yorukot__superfile-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3339,9 +3339,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
-        "docs/research/repo-scout/deep/zellij-org__zellij-2026-05-06.md"
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/zellij-org__zellij-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "tui-cli-devtools"
@@ -3360,10 +3360,10 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
-        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/zeroclaw-labs__zeroclaw-2026-05-06.md",
+        "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/zeroclaw-labs__zeroclaw-2026-05-06.md",
         "manifests/remote-control-plane-alternatives.yaml"
       ],
       "confidence": "high",
@@ -3493,7 +3493,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-inventory-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-inventory-2026-05-06.md"
       ],
       "confidence": "medium",
       "domain": "uncategorized"
@@ -3512,9 +3512,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
-        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/mattpocock__skills-2026-05-06.md"
+        "docs/06-Daily/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/mattpocock__skills-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "uncategorized"
@@ -3580,8 +3580,8 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/nashsu__AutoCLI-2026-05-06.md"
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/nashsu__AutoCLI-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "uncategorized"
@@ -3597,7 +3597,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-08.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md"
       ],
       "confidence": "medium",
       "domain": "uncategorized"
@@ -3613,7 +3613,7 @@
         "radar-term"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-08.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-08.md"
       ],
       "confidence": "medium",
       "domain": "uncategorized"
@@ -3648,9 +3648,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/architecture/cos-dispatch/README.md",
-        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
-        "docs/research/repo-scout/monitor-followup/smykla-skalski__klaudiush-2026-05-06.md"
+        "docs/04-Concepts/architecture/cos-dispatch/README.md",
+        "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/monitor-followup/smykla-skalski__klaudiush-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "uncategorized"
@@ -3669,9 +3669,9 @@
         "repo-scout-file"
       ],
       "paths": [
-        "docs/reports/external-tools-radar-2026-05-06.md",
-        "docs/research/repo-scout/cluster-browser-automation-2026-05-06.md",
-        "docs/research/repo-scout/deep/unclecode__crawl4ai-2026-05-06.md"
+        "docs/06-Daily/reports/external-tools-radar-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/cluster-browser-automation-2026-05-06.md",
+        "docs/03-PoCs/research/repo-scout/deep/unclecode__crawl4ai-2026-05-06.md"
       ],
       "confidence": "high",
       "domain": "uncategorized"

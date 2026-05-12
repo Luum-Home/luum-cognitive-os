@@ -18,7 +18,7 @@ file does not inspect blocked secret paths such as `.env`, `*.key`, `*.pem`,
 | `lib/` | 234 | Provider dispatch, permissions, memory, metrics, orchestration. |
 | `tests/red_team/` | 51 | Existing adversarial/portability scenarios. |
 | `tests/security/` | 1 | New unified security-red-team runner tests. |
-| `docs/security/` | 4 | Security control docs and red-team plans. |
+| `docs/09-Quality/security/` | 4 | Security control docs and red-team plans. |
 
 ## Security-oriented hooks found
 

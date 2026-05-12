@@ -1,5 +1,5 @@
 schema_version: agent-training-harness.v1
-canonical_doc: docs/architecture/agent-training-harness.md
+canonical_doc: docs/04-Concepts/architecture/agent-training-harness.md
 created_on: 2026-05-12
 status: active
 position:
@@ -71,19 +71,19 @@ improvement_targets:
     requires_human_review_when: Changing rubric, threshold, fixture, or judge model.
 claim_policy:
   required_for_claims:
-    - Link to docs/architecture/agent-training-harness.md or this manifest.
+    - Link to docs/04-Concepts/architecture/agent-training-harness.md or this manifest.
     - State whether the claim is operational learning or provider-weight training.
     - Name at least one evidence source when claiming measurable improvement.
     - Avoid implying fine-tuning, RL, or provider-weight training unless a separate implementation exists.
   current_authoritative_paths:
-    - docs/architecture/agent-training-harness.md
+    - docs/04-Concepts/architecture/agent-training-harness.md
     - manifests/agent-training-harness.yaml
-    - docs/reports/agent-training-harness-gap-audit-2026-05-12.md
+    - docs/06-Daily/reports/agent-training-harness-gap-audit-2026-05-12.md
   allowed_pointer_paths:
-    - docs/README.md
-    - docs/overview.md
-    - docs/architecture.md
-    - docs/self-improvement-loop.md
+    - docs/00-MOCs/entrypoints/README.md
+    - docs/00-MOCs/entrypoints/overview.md
+    - docs/04-Concepts/architecture.md
+    - docs/04-Concepts/root/self-improvement-loop.md
 validation:
   audit_test: tests/audit/test_agent_training_harness_claims.py
   targeted_command: python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q

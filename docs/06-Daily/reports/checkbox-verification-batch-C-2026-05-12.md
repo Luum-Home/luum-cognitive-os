@@ -145,7 +145,7 @@ Phase 3 wave-execution work that is not present.
 | 51 | Commit archival batch once DORMANT work reduces ratio | **VERIFIED-PENDING** | No such ratio-gated archival commit found post-0.28.0. |
 | 55 | Exit: `dormant_aspirational_ratio < 0.25` (hard) | **VERIFIED-PENDING** | Same as line 50. |
 | 56 | Exit: ASPIRATIONAL count == 0 (hard) | **AMBIGUOUS** | Last 100 records show only 4 ASPIRATIONAL of 100 sampled — close but not zero; full-corpus aggregate not certified. |
-| 57 | `docs/archive/` receives items | **VERIFIED-PENDING** | Plan-side wording; archival path exists but exit-criteria-grade certification absent. |
+| 57 | `docs/99-Archive/archive/` receives items | **VERIFIED-PENDING** | Plan-side wording; archival path exists but exit-criteria-grade certification absent. |
 | 58 | dogfood-score skill_coverage or hook_wiring +10 pts (soft) | **VERIFIED-PENDING** | No dogfood-score uplift commit verified vs. 65.66 baseline. |
 
 ### Phase 2 — Install timing

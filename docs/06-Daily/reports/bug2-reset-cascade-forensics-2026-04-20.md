@@ -23,11 +23,11 @@ Entire incident → mitigation arc compressed into a single ~17-minute recovery 
 
 ## 2. Mechanism (evidence-based, not hypothesis)
 
-ADR-003 `docs/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` lines 9-25 explicitly states the sub-agent executed `git stash pop`, then `git checkout HEAD -- <file>` against scope-forbidden files. Cumulative effect: ~22 files reverted to HEAD.
+ADR-003 `docs/04-Concepts/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` lines 9-25 explicitly states the sub-agent executed `git stash pop`, then `git checkout HEAD -- <file>` against scope-forbidden files. Cumulative effect: ~22 files reverted to HEAD.
 
 **Causal chain:**
 
-1. Sub-agent told to "archive squads, move rules to `docs/patterns/`" (work eventually committed as `c0db698`). Scope guard was textual-only in the prompt.
+1. Sub-agent told to "archive squads, move rules to `docs/04-Concepts/patterns/`" (work eventually committed as `c0db698`). Scope guard was textual-only in the prompt.
 2. Agent ran `git stash push` for a clean tree.
 3. `git stash pop` conflicted / partially applied — tree in ambiguous state.
 4. Agent reached for `git checkout HEAD -- <file>` (and plausibly `git reset --hard` on other files) as "clean up the mess". Didn't realize those paths were the in-flight UX-sprint files (UX1/2/3/5/6/8 + F1-cleanup + audit-cleanup + orchestrator inline fixes) — scope-forbidden but NOT runtime-enforced.
@@ -101,7 +101,7 @@ If `CLAUDE_AGENT_ID` is empty, blocker only warns. Mis-propagated env (sub-shell
 
 Reflog entries 2026-04-17 show "stash WIP before agent work, pop after" pattern persisted past the incident. User's own WIP stash parallel to auto-pre-agent stashes can `git stash pop` the wrong entry and re-enact from user context.
 
-**Resolution (ADR-055b, 2026-04-21)**: elevated `hooks/destructive-git-blocker.sh` from warn-only to BLOCK in user context. Destructive git ops (stash pop/drop/apply, reset --hard, checkout --, clean -f[dx], branch -D, rebase --abort, restore, revert, worktree) now fail with exit 2 unless the user explicitly opts in via `COS_ALLOW_DESTRUCTIVE_GIT=1` env or `--allow-destructive` inline flag. SO-internal bypass contexts (CI=1, PYTEST_CURRENT_TEST, COS_GIT_BYPASS=1) do NOT apply when agent context is active. See `docs/adrs/ADR-055b-destructive-git-block.md`. Work-queue item `r5-stash-residue` moved to `completed_2026_04_21`.
+**Resolution (ADR-055b, 2026-04-21)**: elevated `hooks/destructive-git-blocker.sh` from warn-only to BLOCK in user context. Destructive git ops (stash pop/drop/apply, reset --hard, checkout --, clean -f[dx], branch -D, rebase --abort, restore, revert, worktree) now fail with exit 2 unless the user explicitly opts in via `COS_ALLOW_DESTRUCTIVE_GIT=1` env or `--allow-destructive` inline flag. SO-internal bypass contexts (CI=1, PYTEST_CURRENT_TEST, COS_GIT_BYPASS=1) do NOT apply when agent context is active. See `docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md`. Work-queue item `r5-stash-residue` moved to `completed_2026_04_21`.
 
 ## Fixes landed in this commit
 

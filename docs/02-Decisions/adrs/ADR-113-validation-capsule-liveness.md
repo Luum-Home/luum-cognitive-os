@@ -20,7 +20,7 @@ classification_basis: implementation/shipped/delivered evidence
 Accepted — 2026-05-02.
 **Deciders**: orchestrator (incident-driven)
 **Supersedes**: extends ADR-106 (multi-session safety primitives) §P3 (orchestrator bilateral verification gate); does NOT supersede ADR-098 (multi-agent file coordination)
-**Cross-refs**: ADR-105 (claim verification contract), ADR-106 (multi-session safety primitives), `docs/incidents/2026-05-02-false-done-compounding.md`
+**Cross-refs**: ADR-105 (claim verification contract), ADR-106 (multi-session safety primitives), `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
 
 ## Context
 
@@ -208,7 +208,7 @@ Idempotent. Never blocks session start. Logs but does not warn unless ≥1 lock 
 - [ ] `hooks/validation-lock-cleanup.sh` runs at SessionStart; cleans only locks ≥60s old; logs to JSONL
 - [ ] Tests cover: heartbeat staleness, activity staleness, status command output schema, break command targeting + audit, P5 cleanup idempotency, race-window protection
 - [ ] No regression: existing TTL + PID checks still work
-- [ ] Documentation: `docs/runbooks/validation-capsule-recovery.md` (NEW) explains operator workflows
+- [ ] Documentation: `docs/05-Methodology/runbooks/validation-capsule-recovery.md` (NEW) explains operator workflows
 
 ## Verification
 
@@ -220,7 +220,7 @@ bash scripts/cos-validation-status.sh --help
 
 ## References
 
-- Incident: `docs/incidents/2026-05-02-false-done-compounding.md` §Multi-session race
+- Incident: `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md` §Multi-session race
 - Related: ADR-098 (multi-agent file coordination), ADR-106 (multi-session safety primitives), ADR-099 (pre-agent snapshot)
 - Code: `hooks/_lib/validation-lock.sh`, `scripts/cos-validation-capsule.sh`, `tests/unit/test_validation_capsule.py`
 - Bypass deprecation: `COS_VALIDATION_ALLOW_CONCURRENT_AGENTS=1` retains emergency function but is no longer the recommended escape

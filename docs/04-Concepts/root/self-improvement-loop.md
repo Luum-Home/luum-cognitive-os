@@ -2,7 +2,7 @@
 
 > How Cognitive OS learns from its own failures and automatically gets better.
 
-> Scope note: this is operational learning through harness evidence and governed primitive updates. See [`docs/architecture/agent-training-harness.md`](architecture/agent-training-harness.md) for the canonical training contract and non-goals.
+> Scope note: this is operational learning through harness evidence and governed primitive updates. See [`docs/04-Concepts/architecture/agent-training-harness.md`](architecture/agent-training-harness.md) for the canonical training contract and non-goals.
 
 ## The Problem
 

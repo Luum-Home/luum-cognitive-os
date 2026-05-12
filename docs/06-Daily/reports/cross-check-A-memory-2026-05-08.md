@@ -1,6 +1,6 @@
 # Cross-check Part A: Memory & RAG (2026-05-08)
 
-Phase: reconstruction. Read-only audit. Sources: `lib/skill_router.py`, `lib/skill_routing.py`, `lib/cognee_client.py`, `lib/engram_client.py`, `lib/engram_http_client.py`, `lib/engram_graph_walker.py`, `lib/engram_lifecycle.py`, `lib/memory.py`; deep dives under `docs/research/repo-scout/deep/`; MIRIX follow-up.
+Phase: reconstruction. Read-only audit. Sources: `lib/skill_router.py`, `lib/skill_routing.py`, `lib/cognee_client.py`, `lib/engram_client.py`, `lib/engram_http_client.py`, `lib/engram_graph_walker.py`, `lib/engram_lifecycle.py`, `lib/memory.py`; deep dives under `docs/03-PoCs/research/repo-scout/deep/`; MIRIX follow-up.
 
 ---
 
@@ -105,7 +105,7 @@ Phase: reconstruction. Read-only audit. Sources: `lib/skill_router.py`, `lib/ski
 **Delta:**
 1. Nuestros tipos son orientados-a-acción del desarrollador (`bugfix`, `decision`) y mezclan dimensiones — un `bugfix` *es* episódico+procedural a la vez.
 2. No hay distinción entre memoria **working** (contexto de sesión, debe expirar) y persistente. `lib/memory_decay.py` existe pero no está acoplado a la dimensión working/episodic.
-3. No hay concepto de "procedural" como first-class — los runbooks viven en `docs/runbooks/`, separados de Engram.
+3. No hay concepto de "procedural" como first-class — los runbooks viven en `docs/05-Methodology/runbooks/`, separados de Engram.
 
 **Recomendación:** **adoptar-patrón** (taxonomy overlay), **no adoptar-código** (MIRIX es framework de personal-AI con captura de pantalla, irrelevante).
 

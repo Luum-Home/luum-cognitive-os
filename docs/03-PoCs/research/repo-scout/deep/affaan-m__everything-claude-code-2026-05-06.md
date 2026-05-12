@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:35 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (Skills/instincts/memory model + cross-harness abstraction)
 deep_verdict: ADOPT (with caveats — confirm anomalous fork count is real)
 deepwiki_url: https://deepwiki.com/affaan-m/everything-claude-code

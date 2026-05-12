@@ -3,7 +3,7 @@
 All tests mock the HTTP transport layer so no real daemon is required.
 Covers both the requests-backed and urllib-backed code paths.
 
-ADR reference: docs/adrs/ADR-071-engram-lifecycle-evolution.md (addendum 2026-04-27)
+ADR reference: docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md (addendum 2026-04-27)
 """
 
 from __future__ import annotations

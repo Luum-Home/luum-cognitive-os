@@ -14,12 +14,12 @@ fail() { echo "[FAIL] $1 — $2"; FAIL=$((FAIL+1)); }
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
 
-mkdir -p "$WORK_DIR/manifests" "$WORK_DIR/.cognitive-os/recovery" "$WORK_DIR/docs/adrs" "$WORK_DIR/lib" "$WORK_DIR/scripts"
+mkdir -p "$WORK_DIR/manifests" "$WORK_DIR/.cognitive-os/recovery" "$WORK_DIR/docs/02-Decisions/adrs" "$WORK_DIR/lib" "$WORK_DIR/scripts"
 ln -s "$ROOT_DIR/lib/history_rewrite_ledger.py" "$WORK_DIR/lib/history_rewrite_ledger.py"
 ln -s "$ROOT_DIR/scripts/cos-history-rewrite-audit" "$WORK_DIR/scripts/cos-history-rewrite-audit"
 
 # Seed accepted ADR
-cat > "$WORK_DIR/docs/adrs/ADR-777-test.md" <<'EOF'
+cat > "$WORK_DIR/docs/02-Decisions/adrs/ADR-777-test.md" <<'EOF'
 ---
 adr: 777
 title: Test ADR
@@ -80,7 +80,7 @@ rc=$?
 if [ "$rc" -ne 0 ]; then pass "duplicate register rejected"; else fail "duplicate register rejected" "got rc=0"; fi
 
 # Test 8: register with non-accepted ADR fails
-cat > "$WORK_DIR/docs/adrs/ADR-778-proposed.md" <<'EOF'
+cat > "$WORK_DIR/docs/02-Decisions/adrs/ADR-778-proposed.md" <<'EOF'
 ---
 adr: 778
 title: Proposed

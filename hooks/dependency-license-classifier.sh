@@ -68,5 +68,5 @@ echo "Per rules/license-policy.md the staged dep-manifest changes reference" >&2
 echo "a license category that blocks commercial / SaaS use." >&2
 for f in "${FOUND[@]}"; do echo "  - $f" >&2; done
 echo "Resolve: remove the dep, OR COS_ALLOW_LICENSE_CLASSIFIER_BYPASS=1 ..." >&2
-echo "Reference: rules/license-policy.md + docs/adrs/ADR-267-*.md" >&2
+echo "Reference: rules/license-policy.md + docs/02-Decisions/adrs/ADR-267-*.md" >&2
 exit 1

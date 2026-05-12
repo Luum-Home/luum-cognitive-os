@@ -9,7 +9,7 @@ Cursor, and similar IDE-agent runtimes.
 
 ## Source reports
 
-This review consolidates the current two-agent read-only assessment plus the frozen raw snapshot in `docs/reports/dx-assessment-2026-05-02.md`. The raw report is intentionally preserved as evidence; this document is the product/DX synthesis.
+This review consolidates the current two-agent read-only assessment plus the frozen raw snapshot in `docs/06-Daily/reports/dx-assessment-2026-05-02.md`. The raw report is intentionally preserved as evidence; this document is the product/DX synthesis.
 
 ## Executive verdict
 
@@ -69,7 +69,7 @@ Evidence anchors:
 - `hooks/plan-claim-validator.sh`
 - `scripts/orchestrator_claim_gate.py`
 - `scripts/verify_plan_claims.py`
-- `docs/architecture/claim-verification-matrix.md`
+- `docs/04-Concepts/architecture/claim-verification-matrix.md`
 - `tests/contracts/test_orchestrator_claim_gate.py`
 
 ### 3. Local protected landing before remote branch protection
@@ -80,8 +80,8 @@ agent actions before they become commits or pushes.
 Evidence anchors:
 
 - `hooks/direct-main-guard.sh`
-- `docs/architecture/direct-main-policy.md`
-- `docs/architecture/protected-landing-contract.md`
+- `docs/04-Concepts/architecture/direct-main-policy.md`
+- `docs/04-Concepts/architecture/protected-landing-contract.md`
 - `tests/unit/test_direct_main_guard.py`
 
 ### 4. WIP preservation and recovery
@@ -110,7 +110,7 @@ Evidence anchors:
 - `pkg/hook/context.go`
 - `internal/provider/`
 - `manifests/harness-driver-capabilities.yaml`
-- `docs/architecture/harness-driver-parity.md`
+- `docs/04-Concepts/architecture/harness-driver-parity.md`
 
 ## Current DX costs and risks
 

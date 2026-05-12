@@ -3,7 +3,7 @@
 # Portability test for tests/red_team/scenarios/archive-presence-fallacy.yaml (KD6 gate, §2.2).
 #
 # Contract invariants per design §2.2:
-#   1. Non-SO mini-repo: tempdir uses attic/ not docs/archive/hooks/
+#   1. Non-SO mini-repo: tempdir uses attic/ not docs/99-Archive/archive/hooks/
 #   2. Bilateral assertion: detection succeeds in mini-repo, no SO path reliance
 #   3. Falsification probe: scenario with NO originals still live must NOT pass detection
 #   4. Documented mini-repo: names clearly indicate test structure
@@ -13,7 +13,7 @@ VERIFY_SCRIPT="scripts/verify-archived.sh"
 
 setup() {
   TMP="$(mktemp -d)"
-  # Mini-repo with non-SO directory names (attic/hooks, not docs/archive/hooks/)
+  # Mini-repo with non-SO directory names (attic/hooks, not docs/99-Archive/archive/hooks/)
   mkdir -p "$TMP/attic/hooks" "$TMP/active-hooks" "$TMP/.claude"
 
   # Seed: source files still present (the "false-done" state)
@@ -89,7 +89,7 @@ teardown() {
     --source-dir  "$TMP/active-hooks" \
     --manifest    "completeness-check.sh,post-agent-verify.sh,prompt-quality.sh"
   [ "$status" -eq 0 ]
-  [[ "$output" != *"docs/archive/hooks"* ]]
+  [[ "$output" != *"docs/99-Archive/archive/hooks"* ]]
   [[ "$output" != *"luum-agent-os"* ]]
 }
 

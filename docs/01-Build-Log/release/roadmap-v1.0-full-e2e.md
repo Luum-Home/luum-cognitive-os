@@ -27,7 +27,7 @@ Session N delivered the **foundations** for everything downstream:
 - Sprint 4 canary: `scripts/cos-release-check.sh` + core-skills-check + 11 integration tests
 - Sprint 2a orphan-fate decisions: 5 squads + 3 agents archived, aspirational rules trimmed
 - 6 skill frontmatter bugs fixed (all have `name:` field now)
-- Skill authoring docs established (`docs/usage/skill-authoring.md`)
+- Skill authoring docs established (`docs/05-Methodology/usage/skill-authoring.md`)
 - Roadmap committed (this file)
 
 **Empirical state at close**: aspirational ratio dropped from 49% → ~25-30% (exact number per audit re-run at session close).
@@ -38,7 +38,7 @@ Session N delivered the **foundations** for everything downstream:
 |---|---------|-------|--------------|
 | N+2 | 113 skills E2E | Parameterized tests for non-core 113 skills + random-sample manual QA | Volume — ~20 min of test execution alone; cannot fit in same session as N+1 without compaction risk |
 | N+3 | Hooks E2E | Trigger harness + per-wired-hook test + archive 41 orphans | Parallel-safe with N+2/4/5, but each sprint ~5-8 agents |
-| N+4 | Rules E2E | Hook-enforced via N+3 harness; agent-instruction via scenario tests; declarative → `docs/patterns/` | Builds on N+3 hook harness |
+| N+4 | Rules E2E | Hook-enforced via N+3 harness; agent-instruction via scenario tests; declarative → `docs/04-Concepts/patterns/` | Builds on N+3 hook harness |
 | N+5 | Install + Upgrade E2E × 5 scenarios | Fresh install parameterized (default/full/upgrade/broken/minimal) + real-machine manual QA | Needs real tmp-machine scenarios — cannot fully automate without actual box |
 | N+6 | cos-dispatch integration E2E | 5 vendors × 2 events × 2 scenarios (20 golden) + load + chaos | Needs real vendor payloads as fixtures |
 | N+7 | CI + release gate + v1.0 canary | `.github/workflows/e2e.yml` + coverage dashboard + 3 real client projects + **tag v1.0.0** | Requires N+1..N+6 green + 3 actual external projects |
@@ -66,7 +66,7 @@ Each session starts by reading this section. Then:
 
 **100% = each component is either:**
 - ✅ **Functional + E2E tested** (automated test verifies documented behavior)
-- 📦 **Archived** (under `_archived/` or `docs/patterns/`, outside main flow, documented rationale)
+- 📦 **Archived** (under `_archived/` or `docs/04-Concepts/patterns/`, outside main flow, documented rationale)
 
 Nothing lives in the "exists but doesn't do what it promises" state.
 
@@ -78,7 +78,7 @@ Nothing lives in the "exists but doesn't do what it promises" state.
 | N+1 | Skills E2E core | `tests/e2e/skill_invocation_harness.py` + 10 core skills | `docs/qa/core-skills-manual-qa.md` + human run-through | 25% → ~20% |
 | N+2 | Skills E2E rest | Parameterized tests for 113 remaining skills | Random sample 20 human-verified | 20% → ~15% |
 | N+3 | Hooks E2E | `tests/e2e/hook_trigger_harness.py` + per-wired-hook tests; orphans archived | Rate-limiter/blast-radius/gotchas-injection screenshots | 15% → ~8% |
-| N+4 | Rules E2E | Hook-enforced via N+3; agent-instruction via scenario tests; declarative → `docs/patterns/` | Auto-injected context review | 8% → ~3% |
+| N+4 | Rules E2E | Hook-enforced via N+3; agent-instruction via scenario tests; declarative → `docs/04-Concepts/patterns/` | Auto-injected context review | 8% → ~3% |
 | N+5 | Install + Upgrade E2E | 5 scenarios parameterized (default/full/upgrade/broken/minimal) | Real-machine onboarding video | 3% → ~1% |
 | N+6 | cos-dispatch integration E2E | 5 vendors × 2 events × 2 scenarios = 20 golden tests; load + chaos suite | Real Claude Code session trace | 1% → ~0.5% |
 | N+7 | CI + release gate + canary | `.github/workflows/e2e.yml`; coverage dashboard; release gate blocks on E2E fail | 3 real client projects run full playbook → tag v1.0.0 | ~0% |
@@ -114,9 +114,9 @@ If a session fails to meet gate: reassessment, potentially borrow from N+8 buffe
 ## Reference
 
 - User decision: 2026-04-16 session, after capa-3 audit revealed 49% aspirational
-- Baseline empirical evidence: `docs/architecture/functional-audit/scorecard-*.md`
-- Prior gap analysis: `docs/architecture/FROZEN-BACKLOG.md`
-- Release criteria: `docs/release/v1.0-release-criteria.md`
+- Baseline empirical evidence: `docs/04-Concepts/architecture/functional-audit/scorecard-*.md`
+- Prior gap analysis: `docs/04-Concepts/architecture/FROZEN-BACKLOG.md`
+- Release criteria: `docs/01-Build-Log/release/v1.0-release-criteria.md`
 
 ---
 

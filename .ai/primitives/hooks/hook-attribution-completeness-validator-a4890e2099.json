@@ -14,7 +14,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "Pre-commit gate requiring docs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.",
+    "intent": "Pre-commit gate requiring docs/03-PoCs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.",
     "present": true,
     "projection_fidelity": {
       "claude": {
@@ -63,7 +63,7 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Pre-commit gate that requires docs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.",
+    "behavior_evidence": "Pre-commit gate that requires docs/03-PoCs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.",
     "evidence_commands": [
       "bash -n hooks/attribution-completeness-validator.sh",
       "python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q"
@@ -109,7 +109,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "Pre-commit gate requiring docs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.",
+    "intent": "Pre-commit gate requiring docs/03-PoCs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

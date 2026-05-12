@@ -115,7 +115,7 @@ PHOENIX_COLLECTOR_ENDPOINT=http://phoenix.internal.example.com/v1/traces
 
 ## Related
 
-- ADR-058 — `docs/adrs/ADR-058-observability-migration-*.md`
+- ADR-058 — `docs/02-Decisions/adrs/ADR-058-observability-migration-*.md`
 - `lib/record_completion.py` — `_send_otel_trace()` is the primary emitter
 - `requirements/dependency-lanes/observability.txt` — explicit heavy lane for
   `arize-phoenix` / `arize-phoenix-otel`

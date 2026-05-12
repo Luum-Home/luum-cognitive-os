@@ -4,10 +4,10 @@ subject: portable-primitive-standards-and-adapter-runtime-tools
 generated_at: 2026-05-09
 status: assess-trial-patterns
 related_docs:
-  - docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md
-  - docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
-  - docs/architecture/ide-agnostic-primitive-projection.md
-  - docs/ide-compatibility.md
+  - docs/06-Daily/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md
+  - docs/02-Decisions/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md
+  - docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md
+  - docs/04-Concepts/root/ide-compatibility.md
   - manifests/external-tools-adoption.yaml
 ---
 
@@ -165,8 +165,8 @@ Implementation impact:
 
 1. Add these entries to `manifests/external-tools-adoption.yaml` as
    pattern/spec-only rows.
-2. Add this addendum to `docs/reports/external-tools-radar-INDEX.md`.
-3. Link from `docs/patterns/ecosystem-tools.md` under EVALUATE/TRIAL/MONITOR.
+2. Add this addendum to `docs/06-Daily/reports/external-tools-radar-INDEX.md`.
+3. Link from `docs/04-Concepts/patterns/ecosystem-tools.md` under EVALUATE/TRIAL/MONITOR.
 4. Keep ADR-258 `.ai` generation non-canonical until VERSA-style conformance is
    tested against COS consumer projects.
 5. Draft a dedicated OpenCode adapter design before changing OpenCode fidelity
@@ -176,7 +176,7 @@ Implementation impact:
 
 - [VERSA / dotAIslash](https://dotaislash.github.io/)
 - [mdskills.ai docs](https://www.mdskills.ai/docs)
-- [Trigger.dev Skills](https://trigger.dev/docs/skills)
+- [Trigger.dev Skills](https://trigger.dev/docs/07-Capabilities/skills)
 - [Zed ACP](https://zed.dev/acp)
 - [OpenCode permissions](https://opencode.ai/docs/permissions/)
 - [OpenCode plugins](https://dev.opencode.ai/docs/plugins/)

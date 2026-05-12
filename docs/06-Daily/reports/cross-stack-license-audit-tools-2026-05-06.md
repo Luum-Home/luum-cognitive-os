@@ -27,7 +27,7 @@ but not as a blind primary CI action.
 
 Implemented artifacts:
 
-- `docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md`
+- `docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md`
 - `manifests/cross-stack-license-audit.yaml`
 - `lib/cross_stack_license_audit.py`
 - `scripts/cos-cross-stack-license-audit`

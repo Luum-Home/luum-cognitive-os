@@ -38,13 +38,13 @@ layers:
 
 | Area | Local artifacts | Status |
 |---|---|---|
-| Qwen Code structural projection | `docs/adrs/ADR-156-qwen-code-structural-harness-projection.md`, `docs/manual-tests/qwen-code-structural-projection.md`, `scripts/cos_init.py`, `manifests/harness-projection.yaml` | Implemented structural projection, no account-backed runtime smoke. |
-| Kimi Code CLI structural projection | `docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md`, `docs/manual-tests/kimi-code-cli-structural-projection.md`, `scripts/cos_init.py` | Implemented structural projection, no account-backed runtime smoke. |
-| Broad harness landscape | `docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md`, `docs/reports/ai-agent-harness-landscape-2026-05-04.md`, `manifests/ai-agent-harness-landscape.yaml` | Candidate backlog and proof-level discipline. |
+| Qwen Code structural projection | `docs/02-Decisions/adrs/ADR-156-qwen-code-structural-harness-projection.md`, `docs/09-Quality/manual-tests/qwen-code-structural-projection.md`, `scripts/cos_init.py`, `manifests/harness-projection.yaml` | Implemented structural projection, no account-backed runtime smoke. |
+| Kimi Code CLI structural projection | `docs/02-Decisions/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md`, `docs/09-Quality/manual-tests/kimi-code-cli-structural-projection.md`, `scripts/cos_init.py` | Implemented structural projection, no account-backed runtime smoke. |
+| Broad harness landscape | `docs/02-Decisions/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md`, `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md`, `manifests/ai-agent-harness-landscape.yaml` | Candidate backlog and proof-level discipline. |
 | AGENTS.md and rules/MCP batches | ADR-159, ADR-160, manual tests, ACC contract tests | Structural support for multiple IDE/CLI surfaces. |
-| Multi-provider runtime posture | `docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md`, `manifests/provider-executor-contracts.yaml` | Credential and billing policy implemented as contracts. |
-| Remote/headless boundary | `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md`, `docs/reports/remote-control-plane-alternatives-2026-05-05.md` | Remote ingress separated from provider execution. |
-| Headless worker proof | `docs/manual-tests/headless-docker-service-runtime.md`, `scripts/cos-headless-service-drill`, `tests/integration/test_headless_service_drill.py` | Local no-model queue/worker proof; provider-backed smoke still open. |
+| Multi-provider runtime posture | `docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md`, `manifests/provider-executor-contracts.yaml` | Credential and billing policy implemented as contracts. |
+| Remote/headless boundary | `docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md`, `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md` | Remote ingress separated from provider execution. |
+| Headless worker proof | `docs/09-Quality/manual-tests/headless-docker-service-runtime.md`, `scripts/cos-headless-service-drill`, `tests/integration/test_headless_service_drill.py` | Local no-model queue/worker proof; provider-backed smoke still open. |
 | Model routing code | `lib/model_catalog.py`, `lib/model_router.py`, `lib/model_recommender.py`, `lib/openai_compatible_agent_loop.py`, `lib/qwen_agent_loop.py` | Local selection/loop code exists; catalog prices/capabilities need current re-verification before product claims. |
 
 ## Ecosystem findings from the web pass
@@ -191,7 +191,7 @@ Kimi legacy URL returned 404; the canonical Kimi docs were also fetched and used
 | 29 | [DeepSeek pricing docs](https://api-docs.deepseek.com/quick_start/pricing) | Cost/provider currentness input. |
 | 30 | [DeepSeek API upgrade](https://api-docs.deepseek.com/news/news0725/) | Function-calling/OpenAI-compatible input. |
 | 31 | [DeepSeek Coder GitHub](https://github.com/deepseek-ai/DeepSeek-Coder) | Model/code prior art. |
-| 32 | [MiniMax AI coding tools](https://platform.minimax.io/docs/guides/text-ai-coding-tools) | Coding-tool recipes. |
+| 32 | [MiniMax AI coding tools](https://platform.minimax.io/docs/05-Methodology/guides/text-ai-coding-tools) | Coding-tool recipes. |
 | 33 | [MiniMax other tools](https://platform.minimax.io/docs/token-plan/other-tools) | Anthropic/OpenAI-compatible setup. |
 | 34 | [MiniMax-M2 GitHub](https://github.com/MiniMax-AI/MiniMax-M2) | Agentic/coding model and tool calling. |
 | 35 | [MiniMax CLI docs](https://platform.minimax.io/docs/token-plan/minimax-cli) | Provider CLI surface. |

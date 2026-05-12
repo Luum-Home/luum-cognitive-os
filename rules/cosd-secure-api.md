@@ -58,8 +58,8 @@ review and `COS_ALLOW_COSD_AUTH_CONFIG_WRITE=1` when made through hooks:
 - `scripts/cosd`
 - `scripts/cos_daemon.py`
 - `infra/cosd/**`
-- `docs/adrs/ADR-193-cosd-local-network-api.md`
-- `docs/adrs/ADR-194-cosd-secure-remote-api.md`
+- `docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md`
+- `docs/02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md`
 
 ## Enforcement
 

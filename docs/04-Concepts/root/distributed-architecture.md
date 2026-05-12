@@ -398,8 +398,8 @@ This requires an adapter layer per tool:
 
 ## References
 
-- `docs/architecture.md` — Current system architecture
-- `docs/overview.md` — Vision and component inventory
+- `docs/04-Concepts/architecture.md` — Current system architecture
+- `docs/00-MOCs/entrypoints/overview.md` — Vision and component inventory
 - `rules/singularity.md` — MAPE-K autonomous loop
 - `rules/session-concurrency.md` — Multi-session isolation model
 - `rules/agent-communication.md` — Valkey Agent Bus protocol

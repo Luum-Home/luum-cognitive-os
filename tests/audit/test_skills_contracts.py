@@ -7,7 +7,7 @@ Run explicitly with:
 
 Each test is parameterized per skill, so failures name the exact skill that violates
 the contract. This module is the authoritative source for the scorecard in
-`docs/architecture/functional-audit/scorecard-skills.md`.
+`docs/04-Concepts/architecture/functional-audit/scorecard-skills.md`.
 
 Contracts under test:
 

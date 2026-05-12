@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 1 (validation capsule hardening): DONE (all 5 acceptance items checked).
 - Phase 2 (single-writer main): MOSTLY DONE — branch-worktree-closure primitive cited; ADR-242 git-filter-repo wrapper preserves remote and ADR-243 post-rewrite push collision exception close the head-drift gap; ADR-246 release-transaction freeze covers high-risk publish paths; queue worker default-push acceptance item not formally checked but covered by protected-publication policy.

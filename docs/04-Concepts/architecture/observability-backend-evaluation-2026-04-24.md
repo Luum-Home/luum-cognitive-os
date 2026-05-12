@@ -121,7 +121,7 @@ For this repository:
 - [Portkey AI Gateway](https://portkey.ai/docs/product/ai-gateway)
 - [Portkey Open Source](https://portkey.ai/docs/product/open-source)
 - [Lunary Observability](https://docs.lunary.ai/docs/features/observability)
-- [Lunary OpenTelemetry Integration](https://lunary.ai/docs/integrations/opentelemetry/overview)
+- [Lunary OpenTelemetry Integration](https://lunary.ai/docs/08-References/integrations/opentelemetry/overview)
 - [Laminar Documentation](https://docs.laminar.sh/)
 - [Laminar](https://laminar.sh/)
 - [Agenta Documentation](https://docs.agenta.ai/)
@@ -147,7 +147,7 @@ For this repository:
 extension, replacing Langfuse.** Langfuse is deprecated with a phased removal
 plan through 2026-06-30.
 
-Recorded in: `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`.
+Recorded in: `docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`.
 
 ### Summary
 

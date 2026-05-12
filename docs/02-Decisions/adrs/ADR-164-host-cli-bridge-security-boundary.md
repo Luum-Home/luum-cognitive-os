@@ -11,8 +11,8 @@ superseded_by: null
 implementation_files:
   - manifests/host-cli-bridge-contract.yaml
   - manifests/cos-instance-implementation-phases.yaml
-  - docs/architecture/host-cli-bridge-security-boundary.md
-  - docs/manual-tests/host-cli-bridge-security-boundary.md
+  - docs/04-Concepts/architecture/host-cli-bridge-security-boundary.md
+  - docs/09-Quality/manual-tests/host-cli-bridge-security-boundary.md
   - tests/contracts/test_host_cli_bridge_contract.py
 tier: maintainer
 tags: [host-cli-bridge, credentials, codex, claude, docker, cosd, provider-adapters]

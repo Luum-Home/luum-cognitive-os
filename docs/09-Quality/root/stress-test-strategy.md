@@ -50,7 +50,7 @@ Orchestrator (this session)
 Each agent follows an identical pattern:
 
 1. Read monolith domain (use cases, routes, data access)
-2. Research open-source tools that apply (from `docs/research/`)
+2. Research open-source tools that apply (from `docs/03-PoCs/research/`)
 3. Create Go service in `${SERVICES_ROOT}/{domain}/`
 4. Follow reference-service clean architecture (skills loaded)
 5. Implement mock provider via plugin architecture

@@ -11,7 +11,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// schemaSQL is the embedded subset of docs/architecture/cos-dispatch/schema.sql
+// schemaSQL is the embedded subset of docs/04-Concepts/architecture/cos-dispatch/schema.sql
 // covering all 5 tables: executions, detected_patterns, generated_artifacts,
 // failure_sequences, session_summaries. Wrapped in IF NOT EXISTS so calling
 // NewTracker on an existing database is a no-op.

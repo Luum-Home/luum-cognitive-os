@@ -35,12 +35,12 @@ mkdir -p "$TMP_DIR/docs"
 #   1. README lacks installation instructions + has broken link
 #   2. BUDGET has dates that don't close + no ROI
 #   3. SPEC has a typo / missing tilde
-cat > "$TMP_DIR/docs/README.md" <<'EOF'
+cat > "$TMP_DIR/docs/00-MOCs/entrypoints/README.md" <<'EOF'
 # Projecto Demo
 
 Este es un proyecto demo.
 
-Ver [arquitectura](docs/architecture/overview.md) para mas detalles.
+Ver [arquitectura](docs/04-Concepts/architecture/overview.md) para mas detalles.
 EOF
 
 cat > "$TMP_DIR/docs/BUDGET.md" <<'EOF'

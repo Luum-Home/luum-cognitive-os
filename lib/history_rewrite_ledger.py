@@ -41,7 +41,7 @@ SCHEMA_VERSION = "history-rewrite-ledger/v1"
 DEFAULT_LEDGER_PATH = Path("manifests/history-rewrite-ledger.yaml")
 RECOVERY_DIR = Path(".cognitive-os/recovery")
 BUNDLE_GLOB = "pre-history-sanitization-*.bundle"
-ADR_DIR = Path("docs/adrs")
+ADR_DIR = Path("docs/02-Decisions/adrs")
 ADR_RE = re.compile(r"^ADR-\d{3,4}$")
 
 
@@ -149,7 +149,7 @@ def find_entries_with_missing_adr(project_dir: Path) -> list[LedgerEntry]:
 
 
 def _find_adr_file(project_dir: Path, adr_ref: str) -> Path | None:
-    """Locate the file for a given ADR-NNN reference under docs/adrs/."""
+    """Locate the file for a given ADR-NNN reference under docs/02-Decisions/adrs/."""
     adr_dir = Path(project_dir) / ADR_DIR
     if not adr_dir.exists():
         return None

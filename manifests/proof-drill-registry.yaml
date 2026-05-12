@@ -94,7 +94,7 @@ entries:
   destructive_scope: read_only
   docs:
   - skills/cognitive-os-test/SKILL.md
-  - docs/testing.md
+  - docs/09-Quality/root/testing.md
   automated_checks:
   - tests/audit/test_marker_coverage.py
   - tests/audit/test_test_architecture_inventory.py
@@ -163,7 +163,7 @@ entries:
   - ALIBABA_QWEN_API_KEY
   destructive_scope: read_only
   docs:
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   automated_checks: []
   when_to_run: Explicit provider fallback validation for ADR-049/Qwen dispatch behavior.
   proves: Qwen API key presence, endpoint reachability, chat completions response,
@@ -186,7 +186,7 @@ entries:
   - provider_specific_env
   destructive_scope: read_only
   docs:
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   automated_checks: []
   when_to_run: Explicit live validation of multi-provider fallback behavior.
   proves: Configured provider chain can answer through live credentials.
@@ -207,8 +207,8 @@ entries:
   requires_credentials: []
   destructive_scope: docker_temp_artifacts
   docs:
-  - docs/manual-tests/headless-docker-service-runtime.md
-  - docs/architecture/headless-runtime-proof-strategy.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
+  - docs/04-Concepts/architecture/headless-runtime-proof-strategy.md
   automated_checks:
   - tests/integration/test_headless_service_drill.py
   when_to_run: Explicit Docker/headless service proof for queue, worker, leases, and
@@ -231,8 +231,8 @@ entries:
   requires_credentials: []
   destructive_scope: docker_temp_artifacts
   docs:
-  - docs/manual-tests/engram-cloud-docker-sync.md
-  - docs/architecture/cross-instance-learning-runway.md
+  - docs/09-Quality/manual-tests/engram-cloud-docker-sync.md
+  - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   automated_checks: []
   when_to_run: Explicit Engram Cloud local Docker sync qualification.
   proves: The selected Engram Cloud Docker sync scenario can be driven and documented.
@@ -253,8 +253,8 @@ entries:
   requires_credentials: []
   destructive_scope: temp_project_artifacts
   docs:
-  - docs/reports/cross-instance-consumer-e2e-2026-05-03.md
-  - docs/architecture/cross-instance-learning-runway.md
+  - docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md
+  - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   automated_checks: []
   when_to_run: Explicit cross-instance evidence transfer or consumer E2E proof.
   proves: The selected provenance/export/import path can be exercised in controlled
@@ -264,7 +264,7 @@ entries:
   class: manual-proof
   scope: os-self
   primitive_kind: documentation
-  selector: docs/manual-tests/service-control-plane-proof-drills.md
+  selector: docs/09-Quality/manual-tests/service-control-plane-proof-drills.md
   command: follow the documented manual proof ladder
   default_lane: false
   consumer_projection: maintainer-only
@@ -275,8 +275,8 @@ entries:
   requires_credentials: []
   destructive_scope: temp_artifacts_and_optional_services
   docs:
-  - docs/manual-tests/service-control-plane-proof-drills.md
-  - docs/architecture/service-control-plane-implementation-plan.md
+  - docs/09-Quality/manual-tests/service-control-plane-proof-drills.md
+  - docs/04-Concepts/architecture/service-control-plane-implementation-plan.md
   automated_checks: []
   when_to_run: Before promoting service-control-plane claims beyond structural/design
     status.
@@ -301,8 +301,8 @@ entries:
   - codex account-session
   destructive_scope: docker_temp_artifacts
   docs:
-  - docs/manual-tests/headless-docker-service-runtime.md
-  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
+  - docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md
   automated_checks:
   - tests/unit/test_service_control_plane_local_queue.py
   when_to_run: Explicit account-backed host Codex provider smoke through the Docker/headless
@@ -327,7 +327,7 @@ entries:
   destructive_scope: repo_changes_with_tests
   docs:
   - skills/test-contract-repair/SKILL.md
-  - docs/architecture/behavioral-test-contracts.md
+  - docs/04-Concepts/architecture/behavioral-test-contracts.md
   automated_checks:
   - tests/audit/test_skills_contracts.py
   when_to_run: Tests pass while product claims remain unproven, stale, or too structural.
@@ -351,8 +351,8 @@ entries:
   - claude account-session
   destructive_scope: temp_artifacts
   docs:
-  - docs/manual-tests/headless-docker-service-runtime.md
-  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
+  - docs/06-Daily/reports/proof-drill-opt-in-run-2026-05-05.md
   automated_checks:
   - tests/unit/test_service_control_plane_local_queue.py
   - tests/unit/test_cos_auth_probe.py

@@ -7,9 +7,9 @@
 **Veredicto:** RESUELTO Y PARCIALMENTE IMPLEMENTADO. La decisión no es MLflow-vs-Phoenix; es **MLflow + Phoenix coexisten**, con roles separados, y Langfuse deprecado.
 
 **Decisión documentada:**
-- ADR primario: **ADR-058** (`docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`), fecha 2026-04-24, status **Accepted**.
+- ADR primario: **ADR-058** (`docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`), fecha 2026-04-24, status **Accepted**.
 - ADR-067 NO trata observability — es `ADR-067-frontmatter-defense-in-depth.md` (otro tema). El research mental que sugería ADR-067 era erróneo.
-- Eval base: `docs/architecture/observability-backend-evaluation-2026-04-24.md` con sección §Decision pinneada al final apuntando a ADR-058.
+- Eval base: `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md` con sección §Decision pinneada al final apuntando a ADR-058.
 
 **Roles según ADR-058:**
 | Backend | Rol | Estado | Evidencia |
@@ -30,7 +30,7 @@ Pros:
 Cons / riesgos abiertos:
 - Phase 3 (remover Langfuse de `docker-compose.cognitive-os.yml`) target 2026-06-15 — pendiente.
 - Phase 4 (volume cleanup) target 2026-06-30 — pendiente.
-- README aún publicita "Phoenix sólo mencionado" (lo verifiqué: README L64 menciona Phoenix como una de 4 surfaces, sin profundidad). El claim de `docs/manual-tests/proof-paths.md` no fue auditado aquí.
+- README aún publicita "Phoenix sólo mencionado" (lo verifiqué: README L64 menciona Phoenix como una de 4 surfaces, sin profundidad). El claim de `docs/09-Quality/manual-tests/proof-paths.md` no fue auditado aquí.
 
 **Recomendación:** MANTENER decisión actual. Phoenix + MLflow es la combinación correcta. Acción: cerrar Phase 3/4 antes del 2026-06-30 y agregar test que verifique que el bundle COS no embebe el server ELv2 de Phoenix.
 
@@ -47,7 +47,7 @@ Cons / riesgos abiertos:
 - L192-205: usa `hookSpecificOutput.additionalContext` con `permissionDecision: "allow"` (ADR-023). El propio diseño dice "no quiero bloquear, quiero inyectar contexto al orquestador."
 - L144-158: integra con `clarification-gate` via hook-pipe — si ambigüedad ≥ 30, baja umbral HIGH a 20. Este es el mecanismo **correcto** para escalar selectivamente.
 
-**Razón documentada:** estimación por keywords sobre el prompt es heurística — bloquear por heurística generaría falsos positivos masivos. El docs/safety-mesh.md L23 confirma: "Layer 2: blocks: 0 (WARN only)".
+**Razón documentada:** estimación por keywords sobre el prompt es heurística — bloquear por heurística generaría falsos positivos masivos. El docs/04-Concepts/root/safety-mesh.md L23 confirma: "Layer 2: blocks: 0 (WARN only)".
 
 **Discrepancia con README:** README L34 dice `blast-radius.sh` "warns before a task touches more than a safe scope" — esto es **correcto**, no es overclaim. La discrepancia que el usuario sugería ("warns" vs realmente bloquea) no existe. El claim del README es preciso.
 
@@ -68,14 +68,14 @@ Cons / riesgos abiertos:
 
 **Gap squads archivados:**
 - `packages/_archived/squads/` contiene 4 YAML archivados (infra/platform/mobile/payments) + README explicativo del 2026-04-16 (Sprint 2A).
-- README cita `docs/architecture/functional-audit/scorecard-packages-squads-agents.md` como justificación.
-- **NO existe ADR-tombstone** que registre formalmente la decisión de archivar squads. `grep -ril squad docs/adrs/` solo arroja `ADR-075-stage2-selective-expansion.md` (relacionado, no tombstone).
+- README cita `docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md` como justificación.
+- **NO existe ADR-tombstone** que registre formalmente la decisión de archivar squads. `grep -ril squad docs/02-Decisions/adrs/` solo arroja `ADR-075-stage2-selective-expansion.md` (relacionado, no tombstone).
 - La rule §10 [`license-policy`] y los KPIs no fuerzan tombstone para componentes archivados, pero la convención implícita (ver ADR-229) es que **decisiones revertidas/consolidadas → ADR tombstone**.
 
 **Es debt real.** Archivar 4 squads + neutralizar el loader es una decisión arquitectónica con superficie pública (afectó `.cognitive-os/squads/` symlinks, health reports, KPIs). Merece registro formal.
 
 **Acción propuesta:**
-1. Crear `docs/adrs/ADR-NNN-squad-templates-archival.md` (próximo slot disponible) con frontmatter `status: tombstone-of-feature` o `status: superseded` (NO tombstone-of-slot — ese patrón es para ADRs vacíos). Status correcto sugerido: **`status: superseded` con `supersedes: []` y body que tombstonea la *feature*, no el slot ADR**.
+1. Crear `docs/02-Decisions/adrs/ADR-NNN-squad-templates-archival.md` (próximo slot disponible) con frontmatter `status: tombstone-of-feature` o `status: superseded` (NO tombstone-of-slot — ese patrón es para ADRs vacíos). Status correcto sugerido: **`status: superseded` con `supersedes: []` y body que tombstonea la *feature*, no el slot ADR**.
 2. Alternativa: extender `skills/adr-tombstone/` con un sub-tipo "feature-tombstone" diferente del actual "slot-tombstone".
 3. El README de `packages/_archived/squads/` debe linkear al nuevo ADR.
 
@@ -87,7 +87,7 @@ Cons / riesgos abiertos:
 
 | # | Claim | Status | Evidencia | Acción |
 |---|---|---|---|---|
-| 1 | "14-layer safety mesh" (README L26, docs/safety-mesh.md) | **VERIFIED** | `docs/safety-mesh.md` enumera las 14 capas con hook + exit code. 11 son hooks PreTool/PostTool, 3 son library/conditional. Todos los hooks citados existen: `clarification-gate.sh`, `blast-radius.sh`, `dry-run-preview.sh`, `rate-limiter.sh` (`hooks/rate-limiter.sh`), `scope-proportionality.sh`, `claim-validator.sh`, `assumption-tracker.sh`, `trust-score-validator.sh`, `confidence-gate.sh`, `clarification-interceptor.sh`, `auto-rollback-trigger.sh`. Libraries: `lib/cross_verifier.py`, `reinvention-check.sh`, `lib/memory_scanner.py`. README es honesto al desglosar 11+3. | Mantener. |
+| 1 | "14-layer safety mesh" (README L26, docs/04-Concepts/root/safety-mesh.md) | **VERIFIED** | `docs/04-Concepts/root/safety-mesh.md` enumera las 14 capas con hook + exit code. 11 son hooks PreTool/PostTool, 3 son library/conditional. Todos los hooks citados existen: `clarification-gate.sh`, `blast-radius.sh`, `dry-run-preview.sh`, `rate-limiter.sh` (`hooks/rate-limiter.sh`), `scope-proportionality.sh`, `claim-validator.sh`, `assumption-tracker.sh`, `trust-score-validator.sh`, `confidence-gate.sh`, `clarification-interceptor.sh`, `auto-rollback-trigger.sh`. Libraries: `lib/cross_verifier.py`, `reinvention-check.sh`, `lib/memory_scanner.py`. README es honesto al desglosar 11+3. | Mantener. |
 | 2 | "claim-validator.sh blocks agents that report test results without running tests (Layer 6, blocks in production mode)" | **VERIFIED** | Hook existe en `hooks/claim-validator.sh` y `packages/quality-gates/hooks/claim-validator.sh`. Bloqueo condicional al modo producción está alineado con el patrón advisory-vs-blocking del resto. | Mantener. |
 | 3 | "auto-rollback reverts on retry exhaustion (Layer 11)" | **VERIFIED** | `hooks/auto-rollback-trigger.sh` existe; safety-mesh L11 "exit 2 + revert"; rule §6 [`auto-rollback`] hook-enforced. | Mantener. |
 | 4 | "blast-radius warns before a task touches more than a safe scope" | **VERIFIED** | Ver DEBT-1. Advisory consciente, no overclaim. | Mantener. |
@@ -96,7 +96,7 @@ Cons / riesgos abiertos:
 | 7 | "Phoenix traces, Engram Cloud memory, Obsidian/markdown reader" como 4 surfaces operator-facing (README L62-64, ADR-172) | **PARTIAL** | Phoenix: lib/record_completion.py L38 lo importa; skill `phoenix-trace-ui` existe. Engram: tools `mcp__plugin_engram_engram__*` activos. Obsidian: NO verifiqué binding concreto en este audit — claim no cubierto. ADR-172 referenciado existe (no leí). | Verificar surface Obsidian en otro pase. |
 | 8 | "Cognitive OS maps to a traditional OS: kernel, scheduler, memory, drivers, syscalls, networking, MAPE-K" (README L124-127) | **PARTIAL/ASPIRACIONAL** | Mapeo es metáfora. `cognitive-os.yaml` (65KB) sí es kernel-config. Engram sí es memoria. Hooks sí son scheduler. PERO "MAPE-K-inspired loop" — el README mismo dice "advisory self-healing patterns... not autonomous production mutation". Rule §10 lista [`singularity`] como "MAPE-K(inactive)". El claim arquitectónico es real como diseño; la implementación viva es parcial. README ya autoetiqueta esto correctamente con la nota "(MAPE-K-inspired loop, not autonomous production mutation)". | Mantener — el README ya califica el claim. |
 | 9 | "self-improvement / self-healing... propose-only and human-gated" (README L172-174) | **VERIFIED como caveat honesto** | El README EXPLÍCITAMENTE dice "autonomous production mutation is not claimed". Esto NO es overclaim, es underclaim deliberado. Rule §10 [`singularity`] confirma `(inactive)`. | Mantener. Es ejemplo de claim honesto. |
-| 10 | "REAL/DORMANT/ASPIRATIONAL feature status legend" (README L166-174) | **VERIFIED** | `scripts/aspirational_audit.py` existe (referenciado en RULES-COMPACT). Skill `component-reality-check` listado. Doc `docs/legal/h1-feature-status-audit.md` referenciado (no leí en este pase). Rule §"Change Safety" cita el patrón. | Mantener. Es auto-auditoría sana. |
+| 10 | "REAL/DORMANT/ASPIRATIONAL feature status legend" (README L166-174) | **VERIFIED** | `scripts/aspirational_audit.py` existe (referenciado en RULES-COMPACT). Skill `component-reality-check` listado. Doc `docs/09-Quality/legal/h1-feature-status-audit.md` referenciado (no leí en este pase). Rule §"Change Safety" cita el patrón. | Mantener. Es auto-auditoría sana. |
 | 11 | "Squads y teams son experimental layers, not the adoption path" (README L57-58) | **VERIFIED + reconociendo gap DEBT-2** | `packages/_archived/squads/README.md` confirma "0% runtime integration, no loader, no parser." `squads/organization.yaml` se mantiene como template. README es honesto. | Cerrar con ADR tombstone (DEBT-2). |
 | 12 | "FSL-1.1-MIT" license badge (README L8) | **VERIFIED** | `LICENSE` archivo presente; rule §10 license-policy bloquea AGPL/SSPL/BSL pero permite FSL/MIT. Coherente. | Mantener. |
 | 13 | "11 que disparan como hooks PreTool/PostTool, 3 son library/conditional" (README L26) | **VERIFIED** | safety-mesh L1-L11 tiene Type=PreToolUse/PostToolUse; L12, L14 Type=Library; L13 PostToolUse. **Discrepancia menor:** L13 (`reinvention-check.sh`) es PostToolUse según el doc, no library. Conteo correcto debería ser **12 hooks + 2 libraries**, no 11+3. | Corregir README L26 a "12 fire as PreTool/PostTool hooks, 2 are library calls". |

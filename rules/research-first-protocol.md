@@ -54,7 +54,7 @@ Launch a read-only research agent using `templates/agent-research-only.md` as
 the base prompt. The agent:
 
 1. Explores the codebase and relevant context
-2. Produces a structured report at `docs/reports/<topic>-<YYYY-MM-DD>.md`
+2. Produces a structured report at `docs/06-Daily/reports/<topic>-<YYYY-MM-DD>.md`
 3. Saves key findings to Engram under `research/<topic>`
 4. Does NOT implement, commit code, or modify anything outside the reports dir
 
@@ -73,7 +73,7 @@ The human operator:
 The orchestrator persists the operator's decisions in one of two ways:
 - **Engram observation**: `mem_save` with `topic_key: "research/<topic>"` (update
   the existing observation with `mem_update`) — preferred for tactical decisions
-- **New ADR**: create `docs/adrs/ADR-NNN-<topic>.md` — required when the decision
+- **New ADR**: create `docs/02-Decisions/adrs/ADR-NNN-<topic>.md` — required when the decision
   sets a precedent affecting future work or other teams
 
 ### Phase 2 — Implementation
@@ -94,7 +94,7 @@ ambiguity was resolved in Phase 1.
 All Phase 0 research reports live under:
 
 ```
-docs/reports/<topic>-<YYYY-MM-DD>.md
+docs/06-Daily/reports/<topic>-<YYYY-MM-DD>.md
 ```
 
 - `<topic>`: slug form, lowercase hyphens (e.g., `cos-init-migration`,
@@ -102,7 +102,7 @@ docs/reports/<topic>-<YYYY-MM-DD>.md
 - `<YYYY-MM-DD>`: date the research agent ran (not the implementation date)
 - One report per topic per run. If a topic is re-researched, create a new file
   with the new date — do not overwrite the old one (history matters).
-- Reports MUST go in `docs/reports/` (git-tracked). Do NOT write to
+- Reports MUST go in `docs/06-Daily/reports/` (git-tracked). Do NOT write to
   `.cognitive-os/reports/research/` — that path is gitignored and causes
   duplicate-counting in `/decision-triage`.
 
@@ -125,7 +125,7 @@ mem_update(
 
 ### Architectural precedent → ADR
 Use when the decision will affect future agents, sets a new pattern, or is
-referenced by multiple teams. Follow the ADR template at `docs/adrs/`.
+referenced by multiple teams. Follow the ADR template at `docs/02-Decisions/adrs/`.
 
 ---
 
@@ -152,7 +152,7 @@ complexity tasks.
 - Research agent prompt: `templates/agent-research-only.md`
 - Closed-loop prompt structure: `rules/closed-loop-prompts.md`
 - Scout skill: `skills/scout/SKILL.md`
-- ADR template: `docs/adrs/` directory (follow existing ADR file naming convention)
+- ADR template: `docs/02-Decisions/adrs/` directory (follow existing ADR file naming convention)
 - Engram topic convention: `research/<topic>`
 
 ---

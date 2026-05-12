@@ -24,11 +24,11 @@ authority_modes:
     may_write_defaults: []
 surfaces:
   reports:
-    globs: [docs/reports/**, .cognitive-os/reports/**]
+    globs: [docs/06-Daily/reports/**, .cognitive-os/reports/**]
   metrics:
     globs: [.cognitive-os/metrics/**]
   os_review_artifacts:
-    globs: [.cognitive-os/improvements/proposals/**, docs/proposals/**]
+    globs: [.cognitive-os/improvements/proposals/**, docs/03-PoCs/proposals/**]
   project_generated_artifacts:
     globs: [.cognitive-os/**, .ai/**]
   projection_roots:
@@ -59,7 +59,7 @@ derivation:
     - manifests/primitive-consumer-availability.yaml
     - manifests/primitive-projection-profiles.yaml
     - manifests/shell-ci-projection.yaml
-    - docs/reports/primitive-readiness-ledger-scripts-latest.json
+    - docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json
     - manifests/protected-config-write-policy.yaml
   rules:
     - id: explicit-entry-wins

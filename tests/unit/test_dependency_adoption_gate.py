@@ -27,10 +27,10 @@ def test_dependency_manifest_detection() -> None:
 
 
 def test_adoption_evidence_detection() -> None:
-    assert is_adoption_evidence("docs/reports/repo-scout-leftpad.md")
-    assert is_adoption_evidence("docs/reports/repo-forensics-leftpad.md")
+    assert is_adoption_evidence("docs/06-Daily/reports/repo-scout-leftpad.md")
+    assert is_adoption_evidence("docs/06-Daily/reports/repo-forensics-leftpad.md")
     assert is_adoption_evidence("manifests/imported-pattern-closures.yaml")
-    assert not is_adoption_evidence("docs/reports/random.md")
+    assert not is_adoption_evidence("docs/06-Daily/reports/random.md")
 
 
 def test_blocks_staged_dependency_addition_without_evidence(tmp_path: Path) -> None:
@@ -56,16 +56,16 @@ def test_allows_staged_dependency_addition_with_repo_scout_evidence(tmp_path: Pa
         '[project]\nname = "demo"\ndependencies = [\n  "leftpad>=1.0",\n]\n',
         encoding="utf-8",
     )
-    evidence = repo / "docs/reports/repo-scout-leftpad.md"
+    evidence = repo / "docs/06-Daily/reports/repo-scout-leftpad.md"
     evidence.parent.mkdir(parents=True)
     evidence.write_text("# Repo Scout — leftpad\n\nLicense: MIT\n", encoding="utf-8")
-    _git(repo, "add", "pyproject.toml", "docs/reports/repo-scout-leftpad.md")
+    _git(repo, "add", "pyproject.toml", "docs/06-Daily/reports/repo-scout-leftpad.md")
 
     result = evaluate_staged(repo)
 
     assert result.status == "pass"
     assert result.exit_code == 0
-    assert result.evidence_files == ["docs/reports/repo-scout-leftpad.md"]
+    assert result.evidence_files == ["docs/06-Daily/reports/repo-scout-leftpad.md"]
 
 
 def test_allows_package_json_metadata_only_change(tmp_path: Path) -> None:

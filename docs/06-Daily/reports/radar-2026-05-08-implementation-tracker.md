@@ -2,7 +2,7 @@
 
 **Scope**: items derived from [`external-tools-radar-2026-05-08.md`](external-tools-radar-2026-05-08.md) §2 (Adoption Plan). The radar itself is an immutable snapshot of the 2026-05-08 decision; this tracker records execution progress against it without mutating the snapshot.
 
-Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+Mirrors the pattern of [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
 
 ## Status legend
 
@@ -15,7 +15,7 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 
 | # | Topic | Status | Commit / evidence | Source |
 |---|---|---:|---|---|
-| H1 | ADR-253 tombstone for squads | ✅ | `e7ed3c6b` — [`docs/adrs/ADR-253-tombstone-squads.md`](../adrs/ADR-253-tombstone-squads.md), `Superseded-by: ADR-251` | C §🔍3 |
+| H1 | ADR-253 tombstone for squads | ✅ | `e7ed3c6b` — [`docs/02-Decisions/adrs/ADR-253-tombstone-squads.md`](../adrs/ADR-253-tombstone-squads.md), `Superseded-by: ADR-251` | C §🔍3 |
 | H2 | README hook count: "11+3" → "12+2" | ✅ | `b5062d0f` — [README.md:26](../../README.md) | E auditoría |
 | H3 | Trust Report claim → match hook reality (advisory + log) | ✅ | `b5062d0f` — [README.md:36-38](../../README.md). `trust-score-validator.sh` validates + logs to `.cognitive-os/metrics/trust-scores.jsonl`; does not block task closure | E DEBT-1 |
 | H4 | Bubblewrap policy hardening | ✅ partial | `b5062d0f` — [`packages/agent-lifecycle/lib/sandbox_adapter.py`](../../packages/agent-lifecycle/lib/sandbox_adapter.py). Added `--die-with-parent`, `--unshare-pid/uts/ipc`, `--unshare-cgroup-try`, `--new-session`. **Seccomp BPF profile pending** (>>1-2h budget; tracked as T-H4-seccomp). `--ro-bind /` retained intentionally (no equivalent without breaking process startup). | B §🔍4 |
@@ -25,7 +25,7 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 **Wave 1 progress: 5/6 implemented or documented, 1 implementation pending.** Closed work landed on `main` through `e7ed3c6b`, `b5062d0f`, `b55f2fb8`, and `c0e899c2`.
 
 ### H4 follow-ups (tracked, out of Wave 1 scope)
-- **T-H4-seccomp**: BPF syscall filter profile for bwrap. Threat model drafted in [`docs/security/bwrap-seccomp-threat-model.md`](../security/bwrap-seccomp-threat-model.md); BPF implementation remains opt-in/pending workload smokes.
+- **T-H4-seccomp**: BPF syscall filter profile for bwrap. Threat model drafted in [`docs/09-Quality/security/bwrap-seccomp-threat-model.md`](../security/bwrap-seccomp-threat-model.md); BPF implementation remains opt-in/pending workload smokes.
 
 ### H5 follow-ups (tracked, out of Wave 1 scope)
 - **T-H5-local-metrics**: ✅ implemented local ToolSearch token-delta estimates in `lib/deferred_tool_loading.py`, dispatch metrics at `.cognitive-os/metrics/toolsearch-token-delta.jsonl`, CLI `scripts/cos-deferred-tool-plan --token-delta`, and unit/behavior/integration tests.
@@ -51,10 +51,10 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 | # | Topic | Status | Source / evidence |
 |---|---|---:|---|
 | F1 | `make test-laptop-integration` exhausted local 900s laptop timeout at 56%; classify as sizing issue and run via stable shards. | ✅ implemented | `scripts/cos-integration-shard-plan`, `make test-laptop-integration-plan`, `make test-laptop-integration-shard SHARD_INDEX=N`; ADR-072 lane taxonomy + ADR-100 resource-governed test execution. |
-| F2 | OpenCode primitive adapter smoke requires `node` in PATH; passed during release-confidence bundle via `fnm`. Document as runbook prerequisite. | ✅ documented | `docs/runbooks/public-launch-day.md` Prerequisites; CHANGELOG `[0.28.0]` Release notes. |
+| F2 | OpenCode primitive adapter smoke requires `node` in PATH; passed during release-confidence bundle via `fnm`. Document as runbook prerequisite. | ✅ documented | `docs/05-Methodology/runbooks/public-launch-day.md` Prerequisites; CHANGELOG `[0.28.0]` Release notes. |
 | F3 | Portability tests for 7 new SCOPE: both libs/scripts (lib/{repo_map,dspy_pilot,integration_shard_plan}.py, packages/.../agentapi_msgfmt.py, scripts/cos-{repo-map,dspy-pilot,integration-shard-plan}). | ✅ implemented | `tests/red_team/portability/test_*.py` (7 files, 22 probes total — bilateral + falsification each); gate `hooks/scope-marker-portability-gate.sh` exits 0. |
-| T-H4 BPF compilation | Strict seccomp BPF profile generation/compilation for bwrap. Manifest + opt-in command construction shipped in v0.28.0. | ⏸ parked | Requires workload smokes + threat-model validation per `docs/security/bwrap-seccomp-threat-model.md`; activate after benchmark evidence; not a release blocker. |
-| T-public-launch | T-0 GitHub visibility flip per `docs/runbooks/public-launch-day.md`. | ⏸ operator decision | Manual single-person action; runbook stable; no auto-execution path. |
+| T-H4 BPF compilation | Strict seccomp BPF profile generation/compilation for bwrap. Manifest + opt-in command construction shipped in v0.28.0. | ⏸ parked | Requires workload smokes + threat-model validation per `docs/09-Quality/security/bwrap-seccomp-threat-model.md`; activate after benchmark evidence; not a release blocker. |
+| T-public-launch | T-0 GitHub visibility flip per `docs/05-Methodology/runbooks/public-launch-day.md`. | ⏸ operator decision | Manual single-person action; runbook stable; no auto-execution path. |
 | T-W3-bench | Wave 3 hardening — repo-map benchmarking against pure `lib/context_diet.py`. | 🔲 follow-up | Compare graph-rank token efficiency on real codebases before promoting `lib/repo_map.py` past optional pilot. |
 | T-W3-dspy-real | Wave 3 hardening — DSPy real dependency pilot when installed (sdd-verify integration). | 🔲 follow-up | Today the seam is opt-in; turn on real DSPy structured-skill compile path once a benchmark proves quality delta. |
 | T-W3-parsers | Wave 3 hardening — parser ports over vendored agentapi fixtures (golden test → real adapter parsing for each harness). | 🔲 follow-up | `lib/harness_adapter/testdata/agentapi/` is vendored; per-harness parser conformance still pending. |
@@ -80,7 +80,7 @@ Candidate change name: `memory-layer-evolution`. Bundled because the four items 
 
 ### Slice 0 baseline — current local retrieval
 
-Baseline report: [`docs/reports/memory-retrieval-baseline-current-local-2026-05-08.json`](memory-retrieval-baseline-current-local-2026-05-08.json).
+Baseline report: [`docs/06-Daily/reports/memory-retrieval-baseline-current-local-2026-05-08.json`](memory-retrieval-baseline-current-local-2026-05-08.json).
 
 Result: `status=block`, `passed=0/3`, `block=3`, `temporal_correct=1/3`, `source_supported=2/3`. The current lexical/Jaccard-style baseline fails both temporal freshness and explicit multi-hop support-chain requirements.
 
@@ -105,7 +105,7 @@ M1/M3 behind a non-default runtime flag and passes the same benchmark.
 
 ### Wave 2 comparison decision
 
-Report: [`docs/reports/memory-retrieval-wave2/comparison-2026-05-08.json`](memory-retrieval-wave2/comparison-2026-05-08.json).
+Report: [`docs/06-Daily/reports/memory-retrieval-wave2/comparison-2026-05-08.json`](memory-retrieval-wave2/comparison-2026-05-08.json).
 
 `graph-path-local` is selected as the next port target because it is the
 smallest mode that passes all Slice 0 fixtures. It fixes the same 3 fixtures as
@@ -136,7 +136,7 @@ M1 schema migration/backfill is now implemented by `scripts/cos-engram-wave2-sch
 ### M1 default decision
 
 Decision record:
-[`docs/reports/memory-retrieval-wave2/m1-default-decision-2026-05-08.json`](memory-retrieval-wave2/m1-default-decision-2026-05-08.json).
+[`docs/06-Daily/reports/memory-retrieval-wave2/m1-default-decision-2026-05-08.json`](memory-retrieval-wave2/m1-default-decision-2026-05-08.json).
 
 `temporal-local` justifies the M1 runtime port but **does not justify flipping
 the default**:

@@ -59,7 +59,7 @@
         "scripts/cos-closure-discipline-audit",
         "scripts/cos_closure_discipline_audit.py",
         "scripts/cos-ci-local.sh",
-        "docs/adrs/ADR-143-closure-discipline-gate.md"
+        "docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-closure-discipline-audit",
         "scripts/cos_closure_discipline_audit.py",
         "scripts/cos-ci-local.sh",
-        "docs/adrs/ADR-143-closure-discipline-gate.md"
+        "docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-closure-discipline-audit",
     "scripts/cos_closure_discipline_audit.py",
     "scripts/cos-ci-local.sh",
-    "docs/adrs/ADR-143-closure-discipline-gate.md"
+    "docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-closure-discipline-audit",

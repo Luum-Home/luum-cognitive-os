@@ -64,7 +64,7 @@ The Agent Bus (`lib/agent_bus.py`) provides bidirectional real-time communicatio
 
 Cognitive OS implements a MAPE-K (Monitor, Analyze, Plan, Execute, Knowledge) autonomous control loop. This is the core self-healing and self-improvement mechanism.
 
-The agent-training interpretation of this loop is documented in [`docs/architecture/agent-training-harness.md`](architecture/agent-training-harness.md): the harness trains agent behavior by improving agentic primitives from evidence, not by fine-tuning model weights.
+The agent-training interpretation of this loop is documented in [`docs/04-Concepts/architecture/agent-training-harness.md`](architecture/agent-training-harness.md): the harness trains agent behavior by improving agentic primitives from evidence, not by fine-tuning model weights.
 
 ```
 +--------+     +---------+     +------+     +---------+
@@ -157,7 +157,7 @@ Hooks are bash scripts that intercept Claude Code tool calls. 46 hooks are regis
 
 ### Rules (16 core always-loaded)
 
-Rules are always-on behavioral contracts in Markdown. `self-install.sh` symlinks exactly 16 core rules to `.claude/rules/cos/` at session start (reduced from 94 in v0.3.x, saving ~72K tokens). All other rules load on contextual trigger. See `docs/rules-loading-architecture.md` for details.
+Rules are always-on behavioral contracts in Markdown. `self-install.sh` symlinks exactly 16 core rules to `.claude/rules/cos/` at session start (reduced from 94 in v0.3.x, saving ~72K tokens). All other rules load on contextual trigger. See `docs/04-Concepts/root/rules-loading-architecture.md` for details.
 
 | Core Rule | Purpose |
 |-----------|---------|

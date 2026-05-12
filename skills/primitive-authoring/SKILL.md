@@ -56,7 +56,7 @@ Classify the request first:
 Search existing surfaces before writing files:
 
 ```bash
-rg -n "candidate terms" skills rules hooks scripts docs/architecture docs/adrs manifests -S
+rg -n "candidate terms" skills rules hooks scripts docs/04-Concepts/architecture docs/02-Decisions/adrs manifests -S
 ```
 
 Use `scripts/cos_primitive_harvester.py` when the input is a conversation excerpt.

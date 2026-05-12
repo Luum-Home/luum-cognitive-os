@@ -23,7 +23,7 @@ if str(ROOT) not in sys.path:
 from lib.script_io import write_json  # noqa: E402
 
 REPORT_GLOBS = (
-    "docs/reports/primitive-fitness/*.json",
+    "docs/06-Daily/reports/primitive-fitness/*.json",
     ".cognitive-os/reports/primitive-fitness/*.json",
     ".cognitive-os/metrics/primitive-fitness-reports/*.json",
 )
@@ -191,8 +191,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Aggregate primitive fitness reports by family")
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--input", action="append", default=[], help="Additional primitive fitness report JSON path")
-    parser.add_argument("--json-out", default="docs/reports/primitive-fitness-ledger-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-fitness-ledger-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-fitness-ledger-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-fitness-ledger-latest.md")
     parser.add_argument("--json", action="store_true", help="Print the ledger JSON payload")
     return parser.parse_args()
 

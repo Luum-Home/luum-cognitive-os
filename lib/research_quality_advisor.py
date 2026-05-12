@@ -3,7 +3,7 @@
 
 Scores a markdown report on four dimensions tied to ADR-175 and grounded
 in the 2026-05-05 audit-asymmetry incident (see
-``docs/reports/cos-side-deep-rebuttal-2026-05-05.md`` and the three
+``docs/06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md`` and the three
 opus-deep-audit reports of the same date):
 
 * Symmetric citation (40%) — every comparison row cites ``file:line`` on

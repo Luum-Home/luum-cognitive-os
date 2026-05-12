@@ -59,7 +59,7 @@
         "scripts/cos-session-start-budget",
         "scripts/session_start_budget.py",
         "scripts/_lib/settings-driver-claude-code.sh",
-        "docs/architecture/agentic-kernel-philosophy.md"
+        "docs/04-Concepts/architecture/agentic-kernel-philosophy.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-session-start-budget",
         "scripts/session_start_budget.py",
         "scripts/_lib/settings-driver-claude-code.sh",
-        "docs/architecture/agentic-kernel-philosophy.md"
+        "docs/04-Concepts/architecture/agentic-kernel-philosophy.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-session-start-budget",
     "scripts/session_start_budget.py",
     "scripts/_lib/settings-driver-claude-code.sh",
-    "docs/architecture/agentic-kernel-philosophy.md"
+    "docs/04-Concepts/architecture/agentic-kernel-philosophy.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-session-start-budget",

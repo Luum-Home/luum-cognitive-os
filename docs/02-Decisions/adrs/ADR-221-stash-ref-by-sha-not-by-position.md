@@ -54,7 +54,7 @@ The 2026-05-06 session reproduced this: three identical `auto-pre-agent-*` stash
 - The official `git-stash(1)` page warns: *"If you mistakenly drop or clear stashes, they cannot be recovered through the normal safety mechanisms."* — ref-by-position makes "mistakenly" almost certain under concurrency.
 - HN consensus, 2016 onward: "I've seen more stash accidents than any other kind with git" ([item 12613062](https://news.ycombinator.com/item?id=12613062)).
 
-The deeper question — whether the OS should be using `git stash` at all as a pre-agent state-capture primitive — is the subject of a separate research report (`docs/research/multi-agent-orchestration-prior-art-2026-05-06.md`). The honest answer there is *no, it shouldn't*, and the recommended replacement is worktree-per-write-agent. That replacement is a larger architectural move tracked separately.
+The deeper question — whether the OS should be using `git stash` at all as a pre-agent state-capture primitive — is the subject of a separate research report (`docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md`). The honest answer there is *no, it shouldn't*, and the recommended replacement is worktree-per-write-agent. That replacement is a larger architectural move tracked separately.
 
 **This ADR is the tactical fix for as long as `git stash` remains in the pre-agent path.** If/when that path is removed, this ADR's hard rules still apply to any other place in the OS that records stash identity (ADR-117 reversibility table, ADR-200 retention controller, future `stash_provenance` calls).
 
@@ -168,7 +168,7 @@ The tests must prove:
 6. Update `session-start-stash-reapply.sh` (ADR-116 P4.3 reapply) to look up by SHA.
 7. CI audit tests `tests/audit/test_no_position_stash_refs.py` and `test_no_position_apply_in_os_code.py`. Both grep-based; both fast.
 8. Behavior tests for drift-safe restore and v1-legacy fallback.
-9. Update operator runbook `docs/runbooks/agent-snapshot-recovery.md` with the SHA-first guidance.
+9. Update operator runbook `docs/05-Methodology/runbooks/agent-snapshot-recovery.md` with the SHA-first guidance.
 
 ## Open questions
 

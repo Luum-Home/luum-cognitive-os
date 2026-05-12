@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-09
 **Status:** Implemented as pattern contract + audit; no runtime adoption
-**Sources:** `docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md`, `docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md`, `manifests/self-programming-agent-patterns.yaml`
+**Sources:** `docs/06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md`, `docs/03-PoCs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md`, `manifests/self-programming-agent-patterns.yaml`
 
 ## Why this exists
 
@@ -43,8 +43,8 @@ The contract intentionally requires every OpenSage-inspired pattern to declare:
 | Dynamic agent topology | Compare AI-created vertical/horizontal subagents with COS launch preflight, squads, handoff receipts, and topology evidence. | `manifests/subagent-capabilities.yaml`, `manifests/agent-orchestration-adapters.yaml`, ADR-203, ADR-251, `lib/agent_lifecycle.py` | primitive contract, launch receipts, worktree isolation, intervention ledger |
 | Dynamic tool/skill synthesis | Generated tools are allowed only as governed candidates, not immediately trusted runtime capabilities. | `lib/dynamic_tool_creator.py`, `skills/primitive-authoring/SKILL.md`, ADR-120, ADR-216, `lib/license_guard.py`, `lib/credential_safe_run.py` | primitive-authoring gate, reuse check, license gate, credential gate, sandbox policy |
 | Sandboxed execution | Use OpenSage sandbox vocabulary as comparison data while preserving COS opt-in native sandbox defaults. | ADR-232, `manifests/sandbox-adapters.yaml`, `scripts/cos-sandbox-run`, `lib/sandbox_adapter.py`, ADR-211 | no implicit fallback, network off by default, service-readiness proof, rollback receipts |
-| Graph/hierarchical memory | Compare graph memory with Engram recovery and ADR-256 codebase itinerary. | `docs/architecture/memory-lifecycle.md`, `lib/engram_lifecycle.py`, `lib/memory_retrieval_benchmark.py`, `docs/architecture/memory-layer-evolution-sdd.md` | retention policy, redaction policy, itinerary without contents, memory lifecycle doctor |
-| Real benchmarks | Benchmark primitive use, not architecture claims. | `docs/architecture/runtime-benchmark-mvp.md`, `docs/architecture/primitive-fitness-evaluation-contract.md`, `scripts/runtime_benchmark_report.py`, `scripts/primitive_fitness_ledger.py` | primitive fitness rows, runtime benchmark, behavioral proof, trace join |
+| Graph/hierarchical memory | Compare graph memory with Engram recovery and ADR-256 codebase itinerary. | `docs/04-Concepts/architecture/memory-lifecycle.md`, `lib/engram_lifecycle.py`, `lib/memory_retrieval_benchmark.py`, `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md` | retention policy, redaction policy, itinerary without contents, memory lifecycle doctor |
+| Real benchmarks | Benchmark primitive use, not architecture claims. | `docs/04-Concepts/architecture/runtime-benchmark-mvp.md`, `docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md`, `scripts/runtime_benchmark_report.py`, `scripts/primitive_fitness_ledger.py` | primitive fitness rows, runtime benchmark, behavioral proof, trace join |
 
 ## Relationship to ADR-256
 

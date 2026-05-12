@@ -137,7 +137,7 @@ After Opus re-verification, no medium-priority adoptions remain. Drift handling 
 | MCP server with 8 tools (780 LOC) | CONFIRMED via `wc -l mcp-server/cos_mcp.py = 780`. |
 | 2 per-session drift detectors | CONFIRMED: `hooks/profile-drift-autoapply.sh`, `hooks/docker-drift-detector.sh` both exist. |
 | Engram-cloud scripts present | CONFIRMED: `cos-engram-cloud-enroll`, `cos-engram-cloud-docker-smoke`, export/import scripts. |
-| ADR-133..136 governance frame | CONFIRMED: all four ADRs present in `docs/adrs/`. |
+| ADR-133..136 governance frame | CONFIRMED: all four ADRs present in `docs/02-Decisions/adrs/`. |
 
 ---
 
@@ -158,7 +158,7 @@ After Opus re-verification, no medium-priority adoptions remain. Drift handling 
 - `mcp-server/cos_mcp.py:1–780` — 8 tools.
 - `hooks/profile-drift-autoapply.sh`, `hooks/docker-drift-detector.sh`.
 - `scripts/cos-engram-cloud-enroll`, `scripts/cos-engram-cloud-docker-smoke`, `scripts/cos-export-consumer-evidence`, `scripts/cos-import-consumer-evidence`.
-- `docs/adrs/ADR-133-expansion-without-monsterization.md`, `ADR-134-headless-self-improvement-proposer.md`, `ADR-135-self-evolving-doctrine-proposals.md`, `ADR-136-cross-instance-learning-runway.md`.
+- `docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md`, `ADR-134-headless-self-improvement-proposer.md`, `ADR-135-self-evolving-doctrine-proposals.md`, `ADR-136-cross-instance-learning-runway.md`.
 
 **Verification commands** (all read-only):
 - `wc -l` on 9 COS Python files → 2,961 LOC across observed files; 918 LOC on the 5 self-improvement primitives.

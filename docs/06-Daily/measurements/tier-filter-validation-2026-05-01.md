@@ -27,5 +27,5 @@
 ## Repeatability
 
 ```bash
-Re-run at any time with: python3 scripts/validate_tier_filter.py --approach=replay --n=30 --output=docs/measurements/tier-filter-validation-$(date +%F).json
+Re-run at any time with: python3 scripts/validate_tier_filter.py --approach=replay --n=30 --output=docs/06-Daily/measurements/tier-filter-validation-$(date +%F).json
 ```

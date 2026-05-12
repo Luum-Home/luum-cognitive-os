@@ -31,14 +31,14 @@ The strongest current wedge is:
 
 ## Product-Critical Documents
 
-- `docs/business/durable-product-master-plan.md`
-- `docs/business/master-plan-execution-requirements.md`
-- `docs/business/master-plan-checklist.md`
-- `docs/business/product-messaging.md`
-- `docs/business/feature-reality-audit.md`
-- `docs/architecture/bootstrap-portability.md`
-- `docs/model-evolution-resilience.md`
-- `docs/kernel-contract.md`
+- `docs/08-References/business/durable-product-master-plan.md`
+- `docs/08-References/business/master-plan-execution-requirements.md`
+- `docs/08-References/business/master-plan-checklist.md`
+- `docs/08-References/business/product-messaging.md`
+- `docs/08-References/business/feature-reality-audit.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- `docs/04-Concepts/root/model-evolution-resilience.md`
+- `docs/04-Concepts/root/kernel-contract.md`
 
 ## Current Strategic Direction
 

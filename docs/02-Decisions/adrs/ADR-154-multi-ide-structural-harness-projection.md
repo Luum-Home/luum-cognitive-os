@@ -12,8 +12,8 @@ implementation_files:
   - manifests/harness-projection.yaml
   - tests/behavior/test_consumer_project_projection.py
   - tests/contracts/test_acc_pipeline_contract.py
-  - docs/architecture/multi-ide-harness-implementation-plan.md
-  - docs/manual-tests/multi-ide-structural-projection.md
+  - docs/04-Concepts/architecture/multi-ide-harness-implementation-plan.md
+  - docs/09-Quality/manual-tests/multi-ide-structural-projection.md
 tier: maintainer
 tags: [harness, portability, acc, projection, ide]
 ---

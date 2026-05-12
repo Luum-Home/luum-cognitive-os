@@ -132,7 +132,7 @@ cr-report /tmp/mut.sqlite
 # CI gate requires: >= 40% on changed files
 ```
 
-See `docs/testing/mutation-testing.md` for details.
+See `docs/09-Quality/testing/mutation-testing.md` for details.
 
 ### Structural Test Detector
 
@@ -335,8 +335,8 @@ Skip (dangerously): `git commit --no-verify` — don't do this.
 
 ## References
 
-- `docs/testing/mutation-testing.md` — full mutation testing guide
-- `docs/architecture/LESSONS-LEARNED.md` — wound 3 (false coverage) + prevention
+- `docs/09-Quality/testing/mutation-testing.md` — full mutation testing guide
+- `docs/04-Concepts/architecture/LESSONS-LEARNED.md` — wound 3 (false coverage) + prevention
 - `.cosmic-ray.toml` — mutation testing config
 - `.github/workflows/test-quality.yml` — CI gate
 - `scripts/check_test_quality.py` — AST-based classifier

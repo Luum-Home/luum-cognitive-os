@@ -94,7 +94,7 @@ def _minimal_repo(tmp_path: Path) -> Path:
     (tmp_path / "tests/unit").mkdir(parents=True)
     (tmp_path / "scripts").mkdir()
     (tmp_path / "lib").mkdir()
-    (tmp_path / "docs/adrs").mkdir(parents=True)
+    (tmp_path / "docs/02-Decisions/adrs").mkdir(parents=True)
     (tmp_path / ".claude").mkdir()
     (tmp_path / ".claude/settings.json").write_text('{"hooks":{}}', encoding="utf-8")
     return tmp_path
@@ -185,11 +185,11 @@ def test_hook_wiring_good_and_bad(tmp_path):
 def test_adr_discipline_excludes_superseded(tmp_path):
     repo = _minimal_repo(tmp_path)
     # ADR-001 Accepted, with test proof
-    _write(repo / "docs/adrs/ADR-001.md", "# ADR-001\n\n## Status\nAccepted\n")
+    _write(repo / "docs/02-Decisions/adrs/ADR-001.md", "# ADR-001\n\n## Status\nAccepted\n")
     # ADR-002 Accepted, NO proof
-    _write(repo / "docs/adrs/ADR-002.md", "# ADR-002\n\n## Status\nAccepted\n")
+    _write(repo / "docs/02-Decisions/adrs/ADR-002.md", "# ADR-002\n\n## Status\nAccepted\n")
     # ADR-003 Superseded — should be excluded
-    _write(repo / "docs/adrs/ADR-003.md", "# ADR-003\n\n## Status\nSuperseded\n")
+    _write(repo / "docs/02-Decisions/adrs/ADR-003.md", "# ADR-003\n\n## Status\nSuperseded\n")
     _write(repo / "tests/unit/test_foo.py", "# references ADR-001\ndef test_x(): assert True\n")
     score, ev = DogfoodScorer(repo)._score_adr_discipline()
     # 1/2 relevant ADRs have proof
@@ -250,12 +250,12 @@ def test_doc_freshness_blend(tmp_path):
     # ADR with a real file ref and a fake one
     _write(repo / "lib/foo.py", "pass\n")
     _write(
-        repo / "docs/adrs/ADR-001.md",
+        repo / "docs/02-Decisions/adrs/ADR-001.md",
         "## Status\nAccepted\n\nSee `lib/foo.py` and `lib/bar.py`.\n",
     )
     # ADR with only existing refs
     _write(
-        repo / "docs/adrs/ADR-002.md",
+        repo / "docs/02-Decisions/adrs/ADR-002.md",
         "## Status\nAccepted\n\nSee `lib/foo.py`.\n",
     )
     # A plan, fresh by default (just created)
@@ -281,7 +281,7 @@ def test_primitive_observability_uses_contracts_projection_and_interventions(tmp
         + "\n",
     )
     _write(
-        repo / "docs/reports/primitive-projection-fidelity-latest.json",
+        repo / "docs/06-Daily/reports/primitive-projection-fidelity-latest.json",
         json.dumps({"summary": {"projection_rows": 4, "aligned": 2, "pending_runtime_smoke": 2}}),
     )
     _write(

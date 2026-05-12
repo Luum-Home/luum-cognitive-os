@@ -12,8 +12,8 @@ verdict_pattern_history:
   - 2026-05-11 initial: HOLD / pattern-only
   - 2026-05-11 reconciled: TRIAL-PATTERNS (cluster-B coherence audit; annex E top 3 primitives, clean-room 3-5 PW; iFixAi Phase 12 precedent)
 prior_artifacts:
-  - docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md
-  - docs/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
+  - docs/03-PoCs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md
+  - docs/06-Daily/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
 ---
 
 # HelixDB Deep Comparison — luum-agent-os vs HelixDB
@@ -61,6 +61,6 @@ Under `rules/license-policy.md`, AGPL-3.0 is **BLOCK**. Consequence: this annex 
 ## 4. Top-level verdict (reiterated; not re-litigated)
 
 - **Runtime / dependency**: REJECT. AGPL-3.0 is BLOCK.
-- **Pattern lane**: TRIAL-PATTERNS (promoted from HOLD on 2026-05-11 after cluster-B coherence audit) with high value on a small subset (typed-ADT MCP, reranker fusion, hoisted-embedding/IO-continuation). Clean-room cost is 3-5 PW combined per annex E §E.1-E.3 — consistent with TRIAL-PATTERNS doctrine in `docs/architecture/external-tool-adapter-taxonomy.md` (iFixAi Phase 12 precedent). Most of the storage/engine work duplicates what we already get from SQLite-FTS5 for the scale Engram operates at; the compiled-DSL contract remains conditional-only and is NOT a trial-patterns target.
+- **Pattern lane**: TRIAL-PATTERNS (promoted from HOLD on 2026-05-11 after cluster-B coherence audit) with high value on a small subset (typed-ADT MCP, reranker fusion, hoisted-embedding/IO-continuation). Clean-room cost is 3-5 PW combined per annex E §E.1-E.3 — consistent with TRIAL-PATTERNS doctrine in `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md` (iFixAi Phase 12 precedent). Most of the storage/engine work duplicates what we already get from SQLite-FTS5 for the scale Engram operates at; the compiled-DSL contract remains conditional-only and is NOT a trial-patterns target.
 
 The 1-line clean-room cost/benefit answer is in Annex E §5.

@@ -95,7 +95,7 @@ addendum:
 
 ```bash
 # WS11 baseline capture DISABLED — orphaning bug, see ADR-028 (commit 1b755cf = Bug 1 source).
-# Anti-confirmation-bias goal preserved via global-verify.sh; see docs/adrs/ADR-028a.md §1.
+# Anti-confirmation-bias goal preserved via global-verify.sh; see docs/02-Decisions/adrs/ADR-028a.md §1.
 ```
 
 Do not delete the block. Its presence as a commented-out section with explanation serves as
@@ -144,7 +144,7 @@ The two mechanisms are complementary. Removing either leaves a gap:
 **`hooks/auto-checkpoint.sh` docstring (add before Phase A execution):**
 
 ```bash
-# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md §2.
+# Complements ADR-028 D1.C agent heartbeat; see docs/02-Decisions/adrs/ADR-028a.md §2.
 # This hook persists session-level state (WS13). D1.C writes per-agent liveness
 # files under .cognitive-os/tasks/. Both are required; neither replaces the other.
 ```
@@ -181,7 +181,7 @@ Verification command (run before Phase A exit criteria are declared met):
 
 ```bash
 grep -rn '2 \* 1024 \* 1024\|2097152\|2 MiB\|2MiB' \
-  hooks/ lib/ scripts/ .cognitive-os/ docs/adrs/ \
+  hooks/ lib/ scripts/ .cognitive-os/ docs/02-Decisions/adrs/ \
   --include='*.sh' --include='*.py' --include='*.md' --include='*.json'
 ```
 
@@ -218,7 +218,7 @@ consume it. No conflict, no sequencing dependency. Keep as independent deliverab
 
 ## 5. Census findings (2026-04-18) — scope changes to D1.A
 
-Metrics census (docs/reports/metrics-census.md, 447 files enumerated, 45 logical identities) produced findings that invalidate ADR-028 D1.A baseline and add new scope.
+Metrics census (docs/06-Daily/reports/metrics-census.md, 447 files enumerated, 45 logical identities) produced findings that invalidate ADR-028 D1.A baseline and add new scope.
 
 ### 5.1 F-1: ADR-028 hook-health "~40% unparseable" claim is false
 
@@ -302,7 +302,7 @@ D1.A.3: Update ADR-028 text to remove F-1 claim, reference this addendum
 
 ### 5.8 References to census
 
-- Full census: docs/reports/metrics-census.md
+- Full census: docs/06-Daily/reports/metrics-census.md
 - Engram: adr-028/metrics-census (search for summary + recommendations)
 
 ---
@@ -315,10 +315,10 @@ D1.A.3: Update ADR-028 text to remove F-1 claim, reference this addendum
   anti-confirmation-bias design intent.
 - `self-optimizing-pipeline.md` §WS13 (commit `65e4d0c`) — state-snapshot heartbeat,
   `lib/state_heartbeat.py`, `hooks/state-heartbeat.sh`.
-- `docs/adrs/ADR-027a.md` — sibling addendum covering the slimming reconciliation (hook
+- `docs/02-Decisions/adrs/ADR-027a.md` — sibling addendum covering the slimming reconciliation (hook
   count direction contradiction with `hook-architecture-v2.md`; EXCLUDED_RULES mechanism
   already-committed state).
-- `docs/reports/metrics-census.md` — D1.A metrics census (447 files, 45 logical identities);
+- `docs/06-Daily/reports/metrics-census.md` — D1.A metrics census (447 files, 45 logical identities);
   source of findings F-1 through F-7 documented in §5.
 
 ---
@@ -331,13 +331,13 @@ D1.A.3: Update ADR-028 text to remove F-1 claim, reference this addendum
       Phase D agent prompts are drafted. — RESOLVED 2026-04-21 (appended as question #9 in ADR-028 "Open questions")
 - [x] Add D1.C scope note (WS13 coordination paragraph) to ADR-028 §D1.C before Phase A
       execution. — RESOLVED 2026-04-21 (scope-note blockquote inserted at top of §D1.C)
-- [x] Add `# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md §2` to
+- [x] Add `# Complements ADR-028 D1.C agent heartbeat; see docs/02-Decisions/adrs/ADR-028a.md §2` to
       `hooks/auto-checkpoint.sh` docstring. — RESOLVED 2026-04-21
 - [ ] Update `work-queue.json` entry `smoke-test-e2e`: add `"depends_on": "adr-028-phase-e"`
       and `"rationale": "consume ADR-028 D6 chaos infrastructure, not build parallel harness"`. — DEFERRED 2026-04-21: coordination lock — `.cognitive-os/work-queue.json` is owned by the quick-wins agent in this sprint wave; editing here would create a merge conflict. Re-assign to that agent.
 - [ ] Update `work-queue.json` entry `test-quality-audit`: add `"depends_on": "adr-028-phase-b"`
       and `"rationale": "audit after structural contract test layer exists"`. — DEFERRED 2026-04-21: same coordination lock as the item above.
-- [x] Before Phase A exit, run the §3 verification command and resolve any matches. — RESOLVED 2026-04-21: ran `grep -rn '2 \* 1024 \* 1024\|2097152\|2 MiB\|2MiB' hooks/ lib/ scripts/ .cognitive-os/ docs/adrs/ --include='*.sh' --include='*.py' --include='*.md' --include='*.json'`. All 8 matches are in prose (ADR-027a, ADR-028, ADR-028a, glossary.md) discussing the precedence itself — zero matches in executable rotation logic. The verification gate passes.
+- [x] Before Phase A exit, run the §3 verification command and resolve any matches. — RESOLVED 2026-04-21: ran `grep -rn '2 \* 1024 \* 1024\|2097152\|2 MiB\|2MiB' hooks/ lib/ scripts/ .cognitive-os/ docs/02-Decisions/adrs/ --include='*.sh' --include='*.py' --include='*.md' --include='*.json'`. All 8 matches are in prose (ADR-027a, ADR-028, ADR-028a, glossary.md) discussing the precedence itself — zero matches in executable rotation logic. The verification gate passes.
 - [ ] Execute D1.A.0 before D1.A.1 (MetricEvent schema): diagnose missing-file write path
       (F-4), resolve reader-without-writer files (F-5), add test-e2e cleanup (F-6), align
       archive path (F-7). — PARTIALLY RESOLVED 2026-04-21: F-7 already aligned — `.cognitive-os/metrics/archive/` exists, `.archive` does not. F-6 still requires adding the `find` purge line to a rotation hook that does not yet exist on disk (`hooks/rotate-metrics.sh` is a Phase A artefact, not yet built). F-4 still open: of the 7 "missing-despite-writers" files, 6 remain absent (`error-learning.jsonl`, `repair-outcomes.jsonl`, `remediation-registry.jsonl`, `repair-queue.jsonl`, `repair-dispatch.jsonl`, `session-audit.jsonl`, `singularity-events.jsonl`); `coverage-history.jsonl` was listed under F-5 and now has 14 rows. F-5 still open: `trust-scores.jsonl`, `escalation-events.jsonl`, `stale-docs.jsonl`, `error-skill-correlations.jsonl` remain reader-without-writer. DEFERRED: diagnosing the SESSION_ID propagation root cause + introducing the fallback write path + writing `tests/contracts/test_metric_file_existence.py` is a full Phase A D1.A.0 work-item (likely opus-class) — out of scope for this single-agent pass.
@@ -360,10 +360,10 @@ already aligned on disk).
   (see ADR-028a §1)`.
 - `hooks/auto-checkpoint.sh` — inserted the 3-line "Complements ADR-028 D1.C agent
   heartbeat" docstring block before the `Author: luum` line.
-- `docs/adrs/ADR-028.md` — inserted Open Question #9 (WS11 anti-confirmation-bias
+- `docs/02-Decisions/adrs/ADR-028.md` — inserted Open Question #9 (WS11 anti-confirmation-bias
   replacement) in the "Open questions" section; inserted a WS13 scope-note blockquote at
   the top of §D1.C.
-- `docs/adrs/ADR-028a.md` — this resolution log + action-item status updates.
+- `docs/02-Decisions/adrs/ADR-028a.md` — this resolution log + action-item status updates.
 
 **Gate status at end of session:**
 

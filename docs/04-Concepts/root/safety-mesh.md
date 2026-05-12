@@ -3,7 +3,7 @@
 > The layered defense system that prevents agent errors from propagating through the Cognitive OS pipeline.
 > Author: luum | Updated: 2026-04-08 | Layers: 14
 >
-> See also: [docs/security-stack.md](security-stack.md) for the complete security posture including external tools, MCP security, supply chain defense, and red team capabilities.
+> See also: [docs/04-Concepts/root/security-stack.md](security-stack.md) for the complete security posture including external tools, MCP security, supply chain defense, and red team capabilities.
 
 ## Motivation
 

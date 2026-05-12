@@ -1,1 +1,0 @@
-07-Capabilities/root/cos-package-manager.md

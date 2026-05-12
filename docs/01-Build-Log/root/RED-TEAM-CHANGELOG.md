@@ -51,15 +51,15 @@ Format: `[version] YYYY-MM-DD — summary — wave`.
 - `tests/contracts/test_redteam_portability_coverage.py` (`os-only`) — KD6 enforcement:
   walks SCOPE: both artifacts, asserts paired portability test, ≥4 test cases, ≥1 falsification.
 - `hooks/scope-marker-portability-gate.sh` (`both`) — Pre-commit KD6 gate (warn-only, KD8).
-- `docs/RED-TEAM-COVERAGE.md` — Verb→scenario map, KD6 gate status table.
-- `docs/RED-TEAM-CHANGELOG.md` — This file.
+- `docs/01-Build-Log/root/RED-TEAM-COVERAGE.md` — Verb→scenario map, KD6 gate status table.
+- `docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md` — This file.
 - `.cognitive-os/test-lanes.yaml` — `red_team` lane registered (parallel-safe).
 
 **Portability tests (KD6, all waves)**
 
 All 10 `both`-scoped red-team artifacts paired with portability tests in
 `tests/red_team/portability/`. Each test has ≥4 cases and ≥1 falsification probe.
-See `docs/RED-TEAM-COVERAGE.md` for the full matrix.
+See `docs/01-Build-Log/root/RED-TEAM-COVERAGE.md` for the full matrix.
 
 ### Configuration
 

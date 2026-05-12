@@ -23,7 +23,7 @@
 | `.claude/settings.json` | `scripts/apply-efficiency-profile.sh` | Script regenerates the file |
 | `hooks/*.sh` (new) | `scripts/apply-efficiency-profile.sh` | Must add hook to a profile tier |
 | `packages/*/lib/*.py` | `ls -la lib/` for symlinks | lib/ symlinks point here |
-| `.cognitive-os/workflows/` | `docs/adw-patterns.md` | Defines the YAML schema |
+| `.cognitive-os/workflows/` | `docs/08-References/root/adw-patterns.md` | Defines the YAML schema |
 | `cognitive-os.yaml` | Current value first (`grep` it) | Don't duplicate existing sections |
 | `rules/*.md` | `rules/RULES-COMPACT.md` | May already be covered |
 | `scripts/orchestrator.py` or `lib/dispatch.py` | `rules/llm-dispatch.md` + ADR-049 | Sub-agents dispatched via our orchestrator default to **Qwen primary**, Claude fallback. Preserves Claude Max quota for main chat. Native `Agent()` tool still uses Claude Max. Kill-switches: `COS_DISABLE_LLM_FALLBACK=1`, `COS_FORCE_CLAUDE_PRIMARY=1`. Qwen Pro ToS: interactive-only, NO cron/backend. |
@@ -33,7 +33,7 @@
 - "lib/ and packages/ have duplicate files" → **symlinks**, not duplicates
 - "48 hooks are dead" → **efficiency profile**, not a bug
 - "No tests for lib/X" → check `tests/unit/test_X.py` AND `tests/behavior/`
-- "How do I add OpenCode/Cursor/Aider/Continue support?" → **do NOT fork the hook chain**. Subclass `HarnessAdapter` in `lib/harness_adapter/`, register in `dispatch.py`. See `docs/guides/adding-a-harness-adapter.md` and ADR-033.
+- "How do I add OpenCode/Cursor/Aider/Continue support?" → **do NOT fork the hook chain**. Subclass `HarnessAdapter` in `lib/harness_adapter/`, register in `dispatch.py`. See `docs/05-Methodology/guides/adding-a-harness-adapter.md` and ADR-033.
 
 ## Verification commands
 

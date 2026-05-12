@@ -333,7 +333,7 @@ Depends on: nothing (R3 is pure documentation + bug fix).
 
 ## References
 
-- Parent ADR: `docs/architecture/adrs/026-r2-r3-design-review.md`
+- Parent ADR: `docs/04-Concepts/architecture/adrs/026-r2-r3-design-review.md`
 - Commits: `540998a` (R3 characterization), `d5f6f12` (R2 characterization), `6ed3e63` (R1 characterization), `0db8c14` (ADR-025 context), `80e3262` (parent ADR landing)
 - Evidence files (read-only for this addendum):
   - `lib/safe_engram.py`, `lib/engram_client.py`, `lib/memory.py`

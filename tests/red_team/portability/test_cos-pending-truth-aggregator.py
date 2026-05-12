@@ -2,7 +2,7 @@
 """Portability probes for scripts/cos-pending-truth-aggregator (ADR-273 Slice A).
 
 Bilateral assertion: aggregator runs against a synthetic project structure
-mirroring the production layout (.cognitive-os/plans/, docs/adrs/, sessions,
+mirroring the production layout (.cognitive-os/plans/, docs/02-Decisions/adrs/, sessions,
 tasks) and produces a valid schema-v1 payload with items normalized from
 each of the 5 source kinds.
 

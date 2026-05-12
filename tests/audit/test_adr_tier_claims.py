@@ -42,7 +42,7 @@ def test_team_adr_with_boring_reliability_evidence_passes(tmp_path: Path) -> Non
     adr.write_text(
         "tier: team\n\n# ADR-998\n\n## Evidence\n"
         "- Command: `scripts/cos-boring-reliability --profile team --json`\n"
-        "- Output: `docs/reports/boring-reliability-audit-2026-05-03.md`\n",
+        "- Output: `docs/06-Daily/reports/boring-reliability-audit-2026-05-03.md`\n",
         encoding="utf-8",
     )
     report = cos_tier_claim_audit.build_report(tmp_path, tmp_path)

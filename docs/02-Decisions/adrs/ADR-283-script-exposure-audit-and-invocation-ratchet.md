@@ -59,7 +59,7 @@ scripts/cos-script-exposure-audit --json
 scripts/cos-script-exposure-audit --fail-p0
 ```
 
-The audit reads `docs/reports/primitive-readiness-ledger-scripts-latest.json` by
+The audit reads `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` by
 default and classifies scripts into these priorities:
 
 | Priority | Meaning | Expected action |

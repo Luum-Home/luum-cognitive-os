@@ -2,7 +2,7 @@
 <!-- TIER: 1 -->
 # Test Lane Taxonomy
 
-> Source: ADR-072 (`docs/adrs/ADR-072-test-lane-taxonomy.md`).
+> Source: ADR-072 (`docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md`).
 > Lane registry: `.cognitive-os/test-lanes.yaml` (single source of truth).
 
 ## Rule
@@ -87,11 +87,11 @@ ADR-072 fixes.
 
 ## Cross-references
 
-- **ADR-072** — full decision: `docs/adrs/ADR-072-test-lane-taxonomy.md`.
+- **ADR-072** — full decision: `docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md`.
 - **`.cognitive-os/test-lanes.yaml`** — lane registry.
 - **ADR-068** — adaptive worker count (consumed by cluster/broad modes).
 - **ADR-066** — polyglot language boundaries (YAML read by Go+Python; bash
   receives scalars).
 - **`tests/conftest.py`** — auto-marker injection site.
 - **`pytest.ini`** — marker registry.
-- **`docs/testing/test-runner-roles.md`** — operator-facing role taxonomy.
+- **`docs/09-Quality/testing/test-runner-roles.md`** — operator-facing role taxonomy.

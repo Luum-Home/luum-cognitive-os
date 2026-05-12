@@ -5,7 +5,7 @@ documentation value. They are NOT runtime-loaded; no Python/Go code parses them.
 
 ## Why archived (Sprint 2A, 2026-04-16)
 
-The Capa-3 functional audit (`docs/architecture/functional-audit/scorecard-packages-squads-agents.md`)
+The Capa-3 functional audit (`docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md`)
 found:
 
 - **0% runtime integration** — no loader, no parser, no dispatcher.
@@ -34,5 +34,5 @@ implemented that:
 3. Resolves `skills:` entries against `skills/*/SKILL.md`
 4. Wires `governance.constitutionalGates` into a policy engine
 
-Until then, these files are reference only. See `docs/plug-and-play.md` for the
+Until then, these files are reference only. See `docs/04-Concepts/root/plug-and-play.md` for the
 intended design.

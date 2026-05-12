@@ -55,7 +55,7 @@ MegaMemory is a stdio MCP server that gives coding agents a persistent, project-
 
 ## 5. Classification
 
-**ASSESS** (with **pattern-only** adoption posture per `docs/architecture/external-tool-adapter-taxonomy.md`).
+**ASSESS** (with **pattern-only** adoption posture per `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`).
 
 Rationale: MegaMemory is a credible, well-scoped concept-graph MCP, but it is **functionally redundant with Engram** at the runtime level (both are local SQLite-backed agent memory MCP servers). What it does *better* (in-process embeddings, explorer UI, explicit conflict-resolve tool surface) is extractable as patterns. What it does *worse* relative to Engram (no typed relations beyond `link`, no bi-temporal, no memory_class, no project-overlay model, ~10k node cap, single author) makes runtime adoption a regression.
 
@@ -63,7 +63,7 @@ Rationale: MegaMemory is a credible, well-scoped concept-graph MCP, but it is **
 
 | Candidate primitive | Source in MegaMemory | COS analogue | Verdict | Effort |
 |---|---|---|---|---|
-| **In-process embedding pipeline** (Xenova MiniLM, no API keys) | `understand` + create/update flow | Engram lacks in-process embeddings; relies on FTS5 + optional Cognee. See `lib/engram_http_client.py`, `lib/engram_lifecycle.py`. | MEJOR_EXTERNO — adopt-pattern (algorithm port). Combine with the **LightRAG dual-level** plan from `docs/reports/cross-check-A-memory-2026-05-08.md` §🔍2: in-process embedding fills the same gap as Cognee opt-in. | 3-5 days port (Python equivalent via `sentence-transformers` MiniLM); cost: one ~80MB model on disk. |
+| **In-process embedding pipeline** (Xenova MiniLM, no API keys) | `understand` + create/update flow | Engram lacks in-process embeddings; relies on FTS5 + optional Cognee. See `lib/engram_http_client.py`, `lib/engram_lifecycle.py`. | MEJOR_EXTERNO — adopt-pattern (algorithm port). Combine with the **LightRAG dual-level** plan from `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §🔍2: in-process embedding fills the same gap as Cognee opt-in. | 3-5 days port (Python equivalent via `sentence-transformers` MiniLM); cost: one ~80MB model on disk. |
 | **Explicit `resolve_conflict` MCP tool surface** | 9-tool list | Engram surfaces conflicts via `judgment_required` envelope + `mem_judge` (CLAUDE.md "CONFLICT SURFACING"). Functionally equivalent but ours is per-candidate. | IGUAL — already covered by `mem_judge`. Worth borrowing the *tool name and verb shape* for the public MCP surface for harness portability. | 0.5 day (rename/alias). |
 | **D3-force graph explorer** | `megamemory serve` | No equivalent in COS. Engram has CLI inspectors, no graph UI. | MEJOR_EXTERNO — pattern-only (study UX, do not vendor JS bundle). | Out of scope; deferred to a future "Engram explorer" tracker item. |
 | **Two-way merge engine with concept-ID conflicts** | Merge code path | Engram has typed relations (supersedes/conflicts_with/related/compatible/scoped) which is richer; MegaMemory's binary "concept conflict" is a subset. | MEJOR_NUESTRO. | None. |

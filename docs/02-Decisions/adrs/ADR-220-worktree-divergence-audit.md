@@ -216,7 +216,7 @@ The tests must prove:
 5. Behavior tests (fixture repo with controlled divergence; assert categories fire correctly).
 6. Read-only invariant test (snapshot `git status`/`git stash list`/`.git/index` mtime before/after; assert no drift).
 7. ADR-116 governed-preflight integration: optional `audit_calls: [worktree-audit]` array; BLOCK exits propagate.
-8. Operator runbook in `docs/runbooks/worktree-audit.md` with the three canonical fix recipes (`merge --ff-only`, rebase-with-care, branch-deliberate-divergence-via-allowlist).
+8. Operator runbook in `docs/05-Methodology/runbooks/worktree-audit.md` with the three canonical fix recipes (`merge --ff-only`, rebase-with-care, branch-deliberate-divergence-via-allowlist).
 
 ## Open questions
 

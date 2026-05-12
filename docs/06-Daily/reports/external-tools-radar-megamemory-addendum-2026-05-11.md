@@ -5,13 +5,13 @@ generated_at: 2026-05-11
 status: assess-pattern-only
 related_adrs: [ADR-065, ADR-247, ADR-254]
 source_artifacts:
-  - docs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md
+  - docs/03-PoCs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md
 related_docs:
-  - docs/reports/cross-check-A-memory-2026-05-08.md
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
-  - docs/architecture/memory-layer-evolution-sdd.md
-  - docs/patterns/ecosystem-tools.md
+  - docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
+  - docs/04-Concepts/architecture/memory-layer-evolution-sdd.md
+  - docs/04-Concepts/patterns/ecosystem-tools.md
 ---
 
 > **License attribution.** Code excerpts and structural descriptions quoted from `0xK3vin/MegaMemory` v1.6.2 (MIT License, Copyright (c) 2026 0xk3vin — see https://github.com/0xK3vin/MegaMemory/blob/main/LICENSE). MIT permits direct vendoring with copyright preservation. See [`megamemory-annex-f-compliance-cleanroom-2026-05-11.md`](../research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol and port-vs-vendor decisions.
@@ -36,7 +36,7 @@ Verdicts use the Phase 3 axis (MEJOR\_NUESTRO / IGUAL / MEJOR\_EXTERNO / NO\_COM
 | Embeddings | In-process MiniLM, no keys | FTS5 baseline + optional Cognee HTTP (`lib/cognee_client.py`); no in-process embedder | **MEJOR_EXTERNO** (narrow: just the in-process pipeline) |
 | Relation typing | Single `link` verb | Typed relations: supersedes / conflicts\_with / related / compatible / scoped (`lib/engram_graph_walker.py`) | **MEJOR_NUESTRO** |
 | Conflict surfacing | `list_conflicts` + `resolve_conflict` MCP tools | `judgment_required` envelope + per-candidate `mem_judge` (CLAUDE.md "CONFLICT SURFACING") | **IGUAL** (we cover it; their public verb shape is a nicer portability cue) |
-| Bi-temporal | None | Planned via graphiti adoption (`docs/reports/cross-check-A-memory-2026-05-08.md` §graphiti); `memory_relations` already has `created_at` / `superseded_at` | **MEJOR_NUESTRO** (current and planned) |
+| Bi-temporal | None | Planned via graphiti adoption (`docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §graphiti); `memory_relations` already has `created_at` / `superseded_at` | **MEJOR_NUESTRO** (current and planned) |
 | Memory class taxonomy | Concepts only | MIRIX-style `memory_class` overlay planned (`cross-check-A` §🔍12); current type strings cover bugfix/decision/architecture/discovery/pattern/config/preference | **MEJOR_NUESTRO** |
 | Graph walk | Cosine + lookup | BFS with typed relations + planned PPR (HippoRAG port, `cross-check-A` §HippoRAG) | **MEJOR_NUESTRO** |
 | Explorer UI | D3-force web view | None | **MEJOR_EXTERNO** (pattern only — not a current COS requirement) |
@@ -48,7 +48,7 @@ Verdicts use the Phase 3 axis (MEJOR\_NUESTRO / IGUAL / MEJOR\_EXTERNO / NO\_COM
 
 ### vs the memory bundle (Graphiti / LightRAG / HippoRAG / MIRIX)
 
-Reference: `docs/architecture/memory-layer-evolution-sdd.md`, `docs/reports/cross-check-A-memory-2026-05-08.md`.
+Reference: `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`, `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md`.
 
 | Bundle component | Provides | MegaMemory overlap | Verdict |
 |---|---|---|---|
@@ -72,7 +72,7 @@ Optionally borrow the public MCP tool *names* (`list_conflicts`, `resolve_confli
 
 ## Recommendation
 
-**ASSESS / pattern-only.** Track in `docs/patterns/ecosystem-tools.md` under EVALUATE. Fold the in-process-embedding pattern into the existing memory-bundle work; do not open a separate adapter lab.
+**ASSESS / pattern-only.** Track in `docs/04-Concepts/patterns/ecosystem-tools.md` under EVALUATE. Fold the in-process-embedding pattern into the existing memory-bundle work; do not open a separate adapter lab.
 
 ### Acceptance criteria (if pattern is ever ported)
 
@@ -103,4 +103,4 @@ Optionally borrow the public MCP tool *names* (`list_conflicts`, `resolve_confli
 
 ## Follow-up trigger
 
-Open a port spike only when the memory-bundle SDD (`docs/architecture/memory-layer-evolution-sdd.md`) reaches the LightRAG dual-level slice and we need an in-process embedder choice. At that point, fold the MegaMemory pattern into that slice's design doc — do not create a parallel MegaMemory adapter lab.
+Open a port spike only when the memory-bundle SDD (`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`) reaches the LightRAG dual-level slice and we need an in-process embedder choice. At that point, fold the MegaMemory pattern into that slice's design doc — do not create a parallel MegaMemory adapter lab.

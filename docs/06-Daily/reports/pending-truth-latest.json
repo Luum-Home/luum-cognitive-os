@@ -534,7 +534,7 @@
           "result": "no-paths-mentioned"
         }
       ],
-      "next_action": "`docs/archive/` receives items (history preserved, no deletion).",
+      "next_action": "`docs/99-Archive/archive/` receives items (history preserved, no deletion).",
       "owner_adr": null,
       "effort_estimate": "unknown"
     },
@@ -1143,11 +1143,11 @@
       "evidence": [
         {
           "kind": "file_exists",
-          "path": "docs/hook-security-profiles.md",
+          "path": "docs/09-Quality/root/hook-security-profiles.md",
           "result": "present"
         }
       ],
-      "next_action": "Hook counts documented in `docs/hook-security-profiles.md` match actual counts (within tolerance)",
+      "next_action": "Hook counts documented in `docs/09-Quality/root/hook-security-profiles.md` match actual counts (within tolerance)",
       "owner_adr": null,
       "effort_estimate": "unknown"
     },
@@ -1160,11 +1160,11 @@
       "evidence": [
         {
           "kind": "file_exists",
-          "path": "docs/hook-security-profiles.md",
+          "path": "docs/09-Quality/root/hook-security-profiles.md",
           "result": "present"
         }
       ],
-      "next_action": "`docs/hook-security-profiles.md` comparison matrix is up to date",
+      "next_action": "`docs/09-Quality/root/hook-security-profiles.md` comparison matrix is up to date",
       "owner_adr": null,
       "effort_estimate": "unknown"
     },
@@ -4379,7 +4379,7 @@
     {
       "id": "adr-slice:ADR-266",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-266-protected-config-write-guard-bash-coverage.md",
+      "source": "docs/02-Decisions/adrs/ADR-266-protected-config-write-guard-bash-coverage.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4396,7 +4396,7 @@
     {
       "id": "adr-slice:ADR-174",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-174c-validator-blocking-promotion.md",
+      "source": "docs/02-Decisions/adrs/ADR-174c-validator-blocking-promotion.md",
       "status": "verified-done",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4413,7 +4413,7 @@
     {
       "id": "adr-slice:ADR-126",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md",
+      "source": "docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4430,7 +4430,7 @@
     {
       "id": "adr-slice:ADR-069",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-069-research-first-protocol.md",
+      "source": "docs/02-Decisions/adrs/ADR-069-research-first-protocol.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4447,7 +4447,7 @@
     {
       "id": "adr-slice:ADR-002",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md",
+      "source": "docs/02-Decisions/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4464,7 +4464,7 @@
     {
       "id": "adr-slice:ADR-117",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-117-stash-mutation-reversibility.md",
+      "source": "docs/02-Decisions/adrs/ADR-117-stash-mutation-reversibility.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4481,7 +4481,7 @@
     {
       "id": "adr-slice:ADR-271",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md",
+      "source": "docs/02-Decisions/adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4498,7 +4498,7 @@
     {
       "id": "adr-slice:ADR-265",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-265-mandatory-minimum-inspection-caps.md",
+      "source": "docs/02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4515,7 +4515,7 @@
     {
       "id": "adr-slice:ADR-070",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-070-convention-enforcement-mechanism.md",
+      "source": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4532,7 +4532,7 @@
     {
       "id": "adr-slice:ADR-047",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-047-session-lifecycle-management.md",
+      "source": "docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4549,7 +4549,7 @@
     {
       "id": "adr-slice:ADR-059",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-059-so-existential-validation.md",
+      "source": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4566,7 +4566,7 @@
     {
       "id": "adr-slice:ADR-124",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-124-cos-distribution-boundaries.md",
+      "source": "docs/02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4583,7 +4583,7 @@
     {
       "id": "adr-slice:ADR-067",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md",
+      "source": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4600,7 +4600,7 @@
     {
       "id": "adr-slice:ADR-001",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md",
+      "source": "docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4617,7 +4617,7 @@
     {
       "id": "adr-slice:ADR-038",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-038-preamble-v2-industry-aligned.md",
+      "source": "docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4634,7 +4634,7 @@
     {
       "id": "adr-slice:ADR-128",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-128-data-layer-integrity-fixes.md",
+      "source": "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4651,7 +4651,7 @@
     {
       "id": "adr-slice:ADR-065",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-065-radar-update-curation-pipeline.md",
+      "source": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4668,7 +4668,7 @@
     {
       "id": "adr-slice:ADR-066",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-066-polyglot-language-boundaries.md",
+      "source": "docs/02-Decisions/adrs/ADR-066-polyglot-language-boundaries.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4685,7 +4685,7 @@
     {
       "id": "adr-slice:ADR-062",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-062-multi-provider-agent-loop.md",
+      "source": "docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4702,7 +4702,7 @@
     {
       "id": "adr-slice:ADR-039",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-039-reinvention-phase-b-beta.md",
+      "source": "docs/02-Decisions/adrs/ADR-039-reinvention-phase-b-beta.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4719,7 +4719,7 @@
     {
       "id": "adr-slice:ADR-125",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-125-governance-tools-value-boundary.md",
+      "source": "docs/02-Decisions/adrs/ADR-125-governance-tools-value-boundary.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4736,7 +4736,7 @@
     {
       "id": "adr-slice:ADR-034",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-034-harness-agnostic-live-streaming.md",
+      "source": "docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4753,7 +4753,7 @@
     {
       "id": "adr-slice:ADR-036",
       "type": "adr-slice",
-      "source": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "source": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md",
       "status": "verified-pending",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4770,7 +4770,7 @@
     {
       "id": "follow-up:radar-2026-05-08:t-w3-bench",
       "type": "follow-up",
-      "source": "docs/reports/radar-2026-05-08-implementation-tracker.md",
+      "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "ambiguous",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4786,7 +4786,7 @@
     {
       "id": "follow-up:radar-2026-05-08:t-w3-dspy-real",
       "type": "follow-up",
-      "source": "docs/reports/radar-2026-05-08-implementation-tracker.md",
+      "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "ambiguous",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [
@@ -4802,7 +4802,7 @@
     {
       "id": "follow-up:radar-2026-05-08:t-w3-parsers",
       "type": "follow-up",
-      "source": "docs/reports/radar-2026-05-08-implementation-tracker.md",
+      "source": "docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md",
       "status": "ambiguous",
       "last_verified": "2026-05-12T17:07:03Z",
       "evidence": [

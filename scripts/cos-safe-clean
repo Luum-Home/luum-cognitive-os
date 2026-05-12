@@ -3,7 +3,7 @@
 """Dry-run-first cleanup primitive for untracked work.
 
 Examples:
-  scripts/cos-safe-clean --path docs/research/repo-scout --dry-run
+  scripts/cos-safe-clean --path docs/03-PoCs/research/repo-scout --dry-run
   scripts/cos-safe-clean --path tmp/cache --execute \
     --classification generated-cache --reason "rebuildable cache" --approved
 """

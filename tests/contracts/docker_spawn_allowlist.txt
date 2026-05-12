@@ -5,7 +5,7 @@
 # Listed hooks are permitted to spawn docker containers during SessionStart.
 # Lines beginning with `#` and blank lines are ignored.
 #
-# The catalog doctrine (docs/architecture/infrastructure-service-catalog.md)
+# The catalog doctrine (docs/04-Concepts/architecture/infrastructure-service-catalog.md)
 # says SessionStart hooks MUST NOT spawn containers by default. Empty
 # allowlist is the expected steady state.
 #

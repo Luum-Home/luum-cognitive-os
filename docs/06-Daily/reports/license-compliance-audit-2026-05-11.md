@@ -5,7 +5,7 @@
 **Trigger:** `manifests/external-tool-adoption-freeze.yaml::frozen=true` (commercial/SaaS pivot, ADR-267 Gap 1)
 **Scope:** Every external tool COS has ever evaluated (radar + scouts + deep evals + private holaOS research).
 **Status:** READ-ONLY audit. No artifacts mutated.
-**Companion docs:** `manifests/external-tools-adoption.yaml`, `docs/blocked-tools.md`, `rules/license-policy.md`, `docs/adrs/ADR-259-external-pattern-adoption-posture.md`, `docs/adrs/ADR-267-license-compliance-enforcement-architecture.md`.
+**Companion docs:** `manifests/external-tools-adoption.yaml`, `docs/05-Methodology/root/blocked-tools.md`, `rules/license-policy.md`, `docs/02-Decisions/adrs/ADR-259-external-pattern-adoption-posture.md`, `docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md`.
 
 ---
 
@@ -14,10 +14,10 @@
 | Metric | Count |
 |---|---:|
 | **Total tools evaluated** (deep eval + radar manifest + blocked + private holaOS) | **94** |
-| Deep evals on disk (`docs/research/repo-scout/deep/*.md`) | 72 |
+| Deep evals on disk (`docs/03-PoCs/research/repo-scout/deep/*.md`) | 72 |
 | Adoption-manifest rows (`manifests/external-tools-adoption.yaml`) | 34 |
-| Blocked-tools ledger entries (`docs/blocked-tools.md`) | 11 |
-| Per-tool Annex-F clean-room dossiers (`docs/research/*-annex-f-*.md` + private holaOS) | 4 (helixdb, ifixai, megamemory, holaOS) |
+| Blocked-tools ledger entries (`docs/05-Methodology/root/blocked-tools.md`) | 11 |
+| Per-tool Annex-F clean-room dossiers (`docs/03-PoCs/research/*-annex-f-*.md` + private holaOS) | 4 (helixdb, ifixai, megamemory, holaOS) |
 | **Adopted with runtime code in `lib/` or `packages/`** | **6 source files, 4 upstream tools** (Hermes ×4, Pi coding-agent ×1, HKUDS/OpenHarness ×1, Sprut Agent Kit ×1) |
 | **Adopted as patterns-only (clean-room, no source copied)** | **6 ADRs** (ADR-260..265 — all sourced from holaOS) |
 | Tools in radar with TRIAL/ADOPT verdict but **no Annex-F dossier** (= silent debt) | **≈ 30** |
@@ -38,13 +38,13 @@
 Risk-band legend:
 - **HIGH** = BLOCKER license + non-pattern adoption, OR ADOPT/TRIAL with runtime code + no Annex-F + no legal review
 - **MEDIUM** = ASSESS/TRIAL with Annex-F but no legal review; OR Apache-2.0 ported without NOTICE entry
-- **LOW** = REJECT documented in `docs/blocked-tools.md`, OR ADOPT with proper attribution + (eventual) legal review
+- **LOW** = REJECT documented in `docs/05-Methodology/root/blocked-tools.md`, OR ADOPT with proper attribution + (eventual) legal review
 
 ### 2.1 Runtime-vendored code (CRITICAL — highest priority)
 
 | Tool | Source path (deep eval / annex) | License (SPDX) | Policy class | Verdict | Adoption kind | Annex F? | Reviewed by legal? | Code in runtime? | Risk | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
-| **Hermes Agent (NousResearch)** | `docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md` | MIT | SAFE | ADOPT | vendored (ported verbatim with attribution comments) | **No** | No | **YES** — 6 files: `lib/memory_manager.py`, `lib/context_compressor.py`, `lib/prompt_cache.py`, `lib/error_insights.py`, `lib/review_agent.py`, `packages/agent-lifecycle/lib/review_agent.py`, `packages/verification-audit/lib/error_classifier.py` | **HIGH** | Attribution exists in code comments (`# Ported from Hermes...`) but no NOTICE file, no Annex-F dossier, no SPDX header. Predates the 2026-05-10 clean-room doctrine. |
+| **Hermes Agent (NousResearch)** | `docs/03-PoCs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md` | MIT | SAFE | ADOPT | vendored (ported verbatim with attribution comments) | **No** | No | **YES** — 6 files: `lib/memory_manager.py`, `lib/context_compressor.py`, `lib/prompt_cache.py`, `lib/error_insights.py`, `lib/review_agent.py`, `packages/agent-lifecycle/lib/review_agent.py`, `packages/verification-audit/lib/error_classifier.py` | **HIGH** | Attribution exists in code comments (`# Ported from Hermes...`) but no NOTICE file, no Annex-F dossier, no SPDX header. Predates the 2026-05-10 clean-room doctrine. |
 | **Pi coding-agent** | (not in deep-eval corpus — radar-implicit) | MIT (per code comment) | SAFE | ADOPT | vendored | **No** | No | **YES** — `lib/file_mutation_queue.py` | **HIGH** | TypeScript → Python port. No upstream URL captured, no LICENSE archived, no Annex-F. Silent debt. |
 | **HKUDS/OpenHarness** | (related to HKUDS__LightRAG deep eval) | (LightRAG is MIT) — OpenHarness license unverified | UNKNOWN | ADOPT | vendored | **No** | No | **YES** — `lib/hook_types.py` lines 99 & 168, pinned to upstream commit `7873f0d10917...` | **HIGH** | Pinned-by-commit is excellent forensic hygiene but no LICENSE captured, no Annex-F, no NOTICE. The HKUDS org publishes LightRAG (MIT) but OpenHarness is a separate repo — license must be re-verified. |
 | **Sprut Agent Kit** | (not in deep-eval corpus) | unknown | UNKNOWN | ADOPT | adapted (pattern + minor code) | **No** | No | **YES** — `packages/verification-audit/lib/research_scoring.py` ("last30days scoring pattern") | **HIGH** | Upstream URL/license not captured anywhere in repo. Silent debt — operator cannot answer "where did this come from?" without re-deriving. |
@@ -54,9 +54,9 @@ Risk-band legend:
 | Tool | Source path | License (SPDX) | Policy class | Verdict | Adoption kind | Annex F? | Reviewed by legal? | Code in runtime? | Risk | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
 | **holaOS (Holaboss)** | `.private/holaos-research/holaos-comparison-2026-05-10.md` (+ annexes A–G) | Apache-2.0 modified **with BSL-like §1.a + §2.a unilateral tightening** | **BLOCKER** | patterns-only (REJECT for code) | clean-room (ADR-259) | **Yes** (private) | No | No (clean-room rewrite via ADR-260..265) | **MEDIUM** | ADR-259 + Annex F = strongest compliance posture in the repo. BUT: public ADRs leak `.private/holaos-research/...` paths in `Source-pattern:` fields — a reviewer-discoverable trail to BSL-like material. Patent/trademark search still pending per freeze yaml. |
-| **HelixDB** | `docs/research/helixdb-annex-{a,b,c,d,e,f}-2026-05-11.md` | **AGPL-3.0** | **BLOCKER** | ASSESS (clean-room reference only) | reference-only | **Yes** | No | No | LOW | Annex-D specifically documents open-core risk; Annex-F clean-room dossier produced. No code, no manifest row. Clean. |
-| **iFixAi** | `docs/research/ifixai-annex-{a..f}-2026-05-11.md` | Apache-2.0 | SAFE | TRIAL (provider-portable diagnostic) | reference + optional sub-process | **Yes** | No | No | LOW | Apache-2.0 + Annex-F = lowest-risk new adoption candidate. |
-| **MegaMemory (0xK3vin)** | `docs/research/megamemory-annex-{a..f}-2026-05-11.md` + deep eval | MIT | SAFE | TRIAL (algorithm-only port candidate) | reference (port pending) | **Yes** | No | No (port not yet executed) | LOW | Properly gated behind Annex F before any code lands. |
+| **HelixDB** | `docs/03-PoCs/research/helixdb-annex-{a,b,c,d,e,f}-2026-05-11.md` | **AGPL-3.0** | **BLOCKER** | ASSESS (clean-room reference only) | reference-only | **Yes** | No | No | LOW | Annex-D specifically documents open-core risk; Annex-F clean-room dossier produced. No code, no manifest row. Clean. |
+| **iFixAi** | `docs/03-PoCs/research/ifixai-annex-{a..f}-2026-05-11.md` | Apache-2.0 | SAFE | TRIAL (provider-portable diagnostic) | reference + optional sub-process | **Yes** | No | No | LOW | Apache-2.0 + Annex-F = lowest-risk new adoption candidate. |
+| **MegaMemory (0xK3vin)** | `docs/03-PoCs/research/megamemory-annex-{a..f}-2026-05-11.md` + deep eval | MIT | SAFE | TRIAL (algorithm-only port candidate) | reference (port pending) | **Yes** | No | No (port not yet executed) | LOW | Properly gated behind Annex F before any code lands. |
 
 ### 2.3 Manifest rows (`manifests/external-tools-adoption.yaml`)
 
@@ -143,7 +143,7 @@ The 72 deep-eval files include many ADOPT/TRIAL verdicts where the operator's in
 
 ### 2.5 Blocked-tools ledger (REJECT — LOW risk because explicitly rejected)
 
-All 11 entries in `docs/blocked-tools.md` (Daytona, Windmill, QueryWeaver, Auto-Claude, Claude Squad, Claudix, aRustyDev pre-commit-hooks, Context Engineering Kit, Inngest, FalkorDB, Arize Phoenix) are correctly classified as REJECT with documented alternatives. **Risk = LOW.** No mis-classification found.
+All 11 entries in `docs/05-Methodology/root/blocked-tools.md` (Daytona, Windmill, QueryWeaver, Auto-Claude, Claude Squad, Claudix, aRustyDev pre-commit-hooks, Context Engineering Kit, Inngest, FalkorDB, Arize Phoenix) are correctly classified as REJECT with documented alternatives. **Risk = LOW.** No mis-classification found.
 
 ---
 
@@ -173,7 +173,7 @@ The Hermes ports (`memory_manager`, `context_compressor`, `prompt_cache`, `error
 
 ### 3.3 Public ADRs leak `.private/holaos-research/...` paths
 
-`docs/adrs/ADR-260-grant-signed-cosd-api.md` and `docs/adrs/ADR-264-tool-result-envelope.md` (likely also ADR-261..263, ADR-265 by pattern) contain explicit `Source-pattern: .private/holaos-research/holaos-annex-X.md §N` references. These public, git-tracked ADRs reveal:
+`docs/02-Decisions/adrs/ADR-260-grant-signed-cosd-api.md` and `docs/02-Decisions/adrs/ADR-264-tool-result-envelope.md` (likely also ADR-261..263, ADR-265 by pattern) contain explicit `Source-pattern: .private/holaos-research/holaos-annex-X.md §N` references. These public, git-tracked ADRs reveal:
 1. That `.private/holaos-research/` exists and contains research material.
 2. The exact section of the holaOS-derived annex each adoption draws from.
 3. (Implicitly) that the operator has read the BSL-like source.
@@ -250,8 +250,8 @@ Reads `.cognitive-os/tests/agentic-tools/license-matrix.json` (5 hand-curated en
 
 | Gap | Manual workaround used |
 |---|---|
-| No scanner across `docs/research/repo-scout/deep/*.md` for License field | grep over all 72 files |
-| No scanner across `docs/research/*-annex-f-*.md` for clean-room dossier presence | manual `ls` |
+| No scanner across `docs/03-PoCs/research/repo-scout/deep/*.md` for License field | grep over all 72 files |
+| No scanner across `docs/03-PoCs/research/*-annex-f-*.md` for clean-room dossier presence | manual `ls` |
 | No scanner across `lib/`, `packages/`, `scripts/` for `Ported from`, `Adapted from`, `Source: https://github` markers | grep + manual classification |
 | No cross-reference between deep-eval verdict (ADOPT/TRIAL) and presence of Annex-F or manifest row | manual join |
 | No detection of duplicated ports (`review_agent.py` lives in two paths) | manual diff |
@@ -263,8 +263,8 @@ Reads `.cognitive-os/tests/agentic-tools/license-matrix.json` (5 hand-curated en
 
 ### 5.4 Recommended tooling additions (out of scope of this audit, follow-up work)
 1. `scripts/cos-license-runtime-audit.py` — scan `lib/`, `packages/`, `scripts/` for `Ported from|Adapted from|Source: https?://github` and join to an attribution registry.
-2. `scripts/cos-deep-eval-license-extractor.py` — parse `docs/research/repo-scout/deep/*.md` for SPDX licenses, emit a CSV, flag UNKNOWN/empty rows.
-3. `scripts/cos-annex-f-coverage.py` — for every ADOPT/TRIAL verdict, assert presence of `docs/research/<tool>-annex-f-*.md` OR `.private/<tool>-research/<tool>-annex-f-*.md`.
+2. `scripts/cos-deep-eval-license-extractor.py` — parse `docs/03-PoCs/research/repo-scout/deep/*.md` for SPDX licenses, emit a CSV, flag UNKNOWN/empty rows.
+3. `scripts/cos-annex-f-coverage.py` — for every ADOPT/TRIAL verdict, assert presence of `docs/03-PoCs/research/<tool>-annex-f-*.md` OR `.private/<tool>-research/<tool>-annex-f-*.md`.
 4. `hooks/research-to-runtime-firewall.sh` (already on disk, **untracked**) — REGISTER IT before unfreeze.
 5. NOTICE file generator from `manifests/external-tools-adoption.yaml` for Apache-2.0 / MPL-2.0 entries.
 6. `reviewed-by-legal:` frontmatter convention + lint rule, applied to every Annex-F file.

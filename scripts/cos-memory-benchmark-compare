@@ -9,7 +9,7 @@ from lib.memory_retrieval_compare import compare_reports, markdown_table
 def main() -> int:
     p=argparse.ArgumentParser(description="Compare Wave 2 memory retrieval benchmark reports.")
     p.add_argument("reports", nargs="*", default=[])
-    p.add_argument("--reports-dir", default="docs/reports/memory-retrieval-wave2")
+    p.add_argument("--reports-dir", default="docs/06-Daily/reports/memory-retrieval-wave2")
     p.add_argument("--baseline", default="current-local")
     p.add_argument("--json", action="store_true")
     a=p.parse_args()

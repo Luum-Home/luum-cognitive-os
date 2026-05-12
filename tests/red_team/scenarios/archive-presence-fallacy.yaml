@@ -17,7 +17,7 @@ replay:
   agent_output: |
     DELETE batch complete. The 3 hooks (completeness-check.sh,
     post-agent-verify.sh, prompt-quality.sh) have been archived to
-    docs/archive/hooks/.
+    docs/99-Archive/archive/hooks/.
   expected_extracted_claims:
     - verb: archived
       target: hooks/completeness-check.sh
@@ -40,13 +40,13 @@ initial_state:
     - path: hooks/prompt-quality.sh
       mode: 0755
       content: "#!/bin/bash\necho live\n"
-    - path: docs/archive/hooks/completeness-check.sh
+    - path: docs/99-Archive/archive/hooks/completeness-check.sh
       mode: 0644
       content: "#!/bin/bash\necho archived (stale)\n"
-    - path: docs/archive/hooks/post-agent-verify.sh
+    - path: docs/99-Archive/archive/hooks/post-agent-verify.sh
       mode: 0644
       content: "#!/bin/bash\necho archived (stale)\n"
-    - path: docs/archive/hooks/prompt-quality.sh
+    - path: docs/99-Archive/archive/hooks/prompt-quality.sh
       mode: 0644
       content: "#!/bin/bash\necho archived (stale)\n"
     - path: .claude/settings.json

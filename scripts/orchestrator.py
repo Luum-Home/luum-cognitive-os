@@ -13,7 +13,7 @@ publishes heartbeats on the agent_bus and is monitored by
   - degrades to FallbackBus files when Valkey is not reachable
 
 Usage:
-    python3 scripts/orchestrator.py --task "Write a one-line summary of docs/adrs/ADR-028.md"
+    python3 scripts/orchestrator.py --task "Write a one-line summary of docs/02-Decisions/adrs/ADR-028.md"
     echo "Write a greeting." | python3 scripts/orchestrator.py
     python3 scripts/orchestrator.py --task "..." --model sonnet --timeout 120
     python3 scripts/orchestrator.py --list-live   # show agents currently running

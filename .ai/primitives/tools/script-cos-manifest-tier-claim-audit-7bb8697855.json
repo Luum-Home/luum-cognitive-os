@@ -59,7 +59,7 @@
         "scripts/cos-manifest-tier-claim-audit",
         "scripts/cos_manifest_tier_claim_audit.py",
         "manifests/primitive-lifecycle.yaml",
-        "docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md"
+        "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-manifest-tier-claim-audit",
         "scripts/cos_manifest_tier_claim_audit.py",
         "manifests/primitive-lifecycle.yaml",
-        "docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md"
+        "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-manifest-tier-claim-audit",
     "scripts/cos_manifest_tier_claim_audit.py",
     "manifests/primitive-lifecycle.yaml",
-    "docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md"
+    "docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-manifest-tier-claim-audit",

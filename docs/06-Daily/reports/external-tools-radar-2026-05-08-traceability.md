@@ -1,7 +1,7 @@
 ---
 report_type: external-tools-radar-traceability
 date: 2026-05-08
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 status: documentation-before-implementation
 ---
 
@@ -19,7 +19,7 @@ strong research corpus but not yet a fully auditable provenance ledger.
 |---|---|---|---|
 | Missing commit provenance | Most radar/cross-check files do not record introduced/verified commits. | Readers cannot tell whether a claim reflects current code or a stale snapshot. | Add `introduced_by_commit`, `last_verified_commit`, and `implementation_commits` in future editions. |
 | Snapshot vs tracker drift | Radar rows H1-H5 can become stale after tracker commits. | Agents respawn closed work. | Keep radar immutable, but add errata/tracker pointers. |
-| Adoption kinds mixed | Dependency, pattern-port, schema-port, and testdata-vendor are described in prose only. | Teams may import heavy frameworks when only an algorithm was intended. | Use `docs/architecture/external-tool-adapter-taxonomy.md`. |
+| Adoption kinds mixed | Dependency, pattern-port, schema-port, and testdata-vendor are described in prose only. | Teams may import heavy frameworks when only an algorithm was intended. | Use `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`. |
 | ADR-247 scope unclear | Manifest currently has narrow external tools, while radar expects broad adoption governance. | "Adopted" tools escape the adapter contract. | Decide whether a new global adoption manifest extends ADR-247 or remains separate. |
 | Consumer proof not uniform | Some tools are active, some opt-in, some blueprint. | Public docs can overclaim. | Require consumer proof class: runtime, cli, hook, test, docs, manual. |
 

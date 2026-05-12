@@ -163,10 +163,10 @@ No non-trivial architectural decision is forced by this audit. The levers above 
 
 ## 8. Cross-References
 
-- `docs/measurements/stage2-expansion-baseline.md` — Stage-2 PreToolUse[Agent] expansion measurements (separate from SessionStart)
-- `docs/adrs/ADR-074-tier-0-learning-loop-closure.md` — two-stage loading architecture
-- `docs/adrs/ADR-075-stage2-selective-expansion.md` — tier filter for Stage-2
-- `docs/adrs/ADR-079-corerules-applies-to-self-hosting.md` — IS_SELF_HOSTING override removal
+- `docs/06-Daily/measurements/stage2-expansion-baseline.md` — Stage-2 PreToolUse[Agent] expansion measurements (separate from SessionStart)
+- `docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md` — two-stage loading architecture
+- `docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md` — tier filter for Stage-2
+- `docs/02-Decisions/adrs/ADR-079-corerules-applies-to-self-hosting.md` — IS_SELF_HOSTING override removal
 - `hooks/self-install.sh` lines 253–270 — IS_SELF_HOSTING detection + EFFICIENCY_PROFILE logic
 - `hooks/session-init.sh` lines 106–115 — CATALOG-COMPACT pointer (not inline)
 - `.claude/skills/CATALOG-COMPACT.md` — symlink that delivers catalog via claudeMd

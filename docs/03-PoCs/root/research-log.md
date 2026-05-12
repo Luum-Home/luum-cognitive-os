@@ -320,7 +320,7 @@ not consumed downstream). Three Tier-0 gaps were closed in this session:
   `feedback_consumer.summarise_for_skill_improvement()` before analysis
 - `skills/self-improve/SKILL.md` — Integration Points table updated to reference
   `feedback_consumer`
-- `docs/adrs/ADR-074-tier-0-learning-loop-closure.md` — decision record
+- `docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md` — decision record
 
 **Tests added:**
 - `tests/unit/test_feedback_consumer.py` — 22 unit tests covering all public
@@ -361,15 +361,15 @@ full 85% reduction must explicitly set `expansion.tier_filter: [0]` in
 - `hooks/inject-phase-context.sh` — reads `expansion.tier_filter` from YAML
 - `cognitive-os.yaml` — `expansion.tier_filter: [0, 1]` feature flag
 - `tests/unit/test_ref_key_loader.py` — 10 new tier-filtering tests (23 total, all pass)
-- `docs/adrs/ADR-075-stage2-selective-expansion.md` — decision record
+- `docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md` — decision record
 
 ## 2026-04-30: Tier 2 Hermes alignment (ADRs + skill frontmatter)
 
-- **ADR-076** (`docs/adrs/ADR-076-skill-frontmatter-alignment.md`): Accepted.
+- **ADR-076** (`docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md`): Accepted.
   Aligns all COS SKILL.md files with the Hermes spec (tools/skills_tool.py lines 28-46,
   MIT). Three optional fields added: `version: "1.0.0"`, `platforms: ["claude-code"]`,
   `prerequisites: []`. Executed by `scripts/align_skill_frontmatter.py` — **142 skills updated**.
-- **ADR-077** (`docs/adrs/ADR-077-peer-card-local-model.md`): Accepted.
+- **ADR-077** (`docs/02-Decisions/adrs/ADR-077-peer-card-local-model.md`): Accepted.
   Local peer-card model as a Honcho replacement using Engram as backing store. Schema:
   name, role, preferences, communication_patterns, domain_expertise, recent_topics.
   Phase 1 decision: **no-embeddings v1 / FTS5-only** through Engram `mem_search`.
@@ -415,7 +415,7 @@ callable tool — this ADR ports that primitive.
 - `scripts/apply-efficiency-profile.sh` (hook registered)
 - `tests/unit/test_memory_manager.py` (new, 30 tests)
 - `tests/unit/test_engram_memory_provider.py` (new, 23 tests)
-- `docs/adrs/ADR-078-mid-task-memory-tool.md` (new)
+- `docs/02-Decisions/adrs/ADR-078-mid-task-memory-tool.md` (new)
 
 ## 2026-04-30: CORE_RULES applies to self-hosting (ADR-079)
 
@@ -437,11 +437,11 @@ opt-in env var for developers who need full symlink set. Fixed
 `test_self_hosting_always_full` → `test_self_hosting_detects_but_no_longer_forces_full`.
 
 **Files changed**: `hooks/self-install.sh`, `tests/unit/test_efficiency_stress.py`,
-`docs/adrs/ADR-079-corerules-applies-to-self-hosting.md` (new)
+`docs/02-Decisions/adrs/ADR-079-corerules-applies-to-self-hosting.md` (new)
 
 ## 2026-04-30: SessionStart deep audit (self-host vs client)
 
-Full measurement doc: [`docs/measurements/sessionstart-baseline.md`](measurements/sessionstart-baseline.md)
+Full measurement doc: [`docs/06-Daily/measurements/sessionstart-baseline.md`](measurements/sessionstart-baseline.md)
 
 Component-by-component audit of what gets loaded at SessionStart for this self-hosted repo
 versus a fresh client install. Both modes use `efficiency.profile: default` after ADR-079.
@@ -475,7 +475,7 @@ User reported silent 2-7 minute hangs between turns with zero harness feedback. 
 - `scripts/apply-efficiency-profile.sh` — modified `hook_entry`/`hook_entry_async`/`hook_group` to route all 82 hook commands through the wrapper with the harness event name threaded through as the first wrapper arg.
 - `.claude/settings.json` — regenerated; every command is now `bash "$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh" <EventName> "$CLAUDE_PROJECT_DIR/hooks/<hook>.sh"`.
 - `scripts/hook_timing_report.py` — aggregation tool with p50/p95/p99 per hook, top-N slowest invocations, failure counts, `--live` tail mode, `--event`/`--since` filters, `--json` output.
-- `docs/measurements/hook-timing-runbook.md` — operator runbook with diagnosis workflow.
+- `docs/06-Daily/measurements/hook-timing-runbook.md` — operator runbook with diagnosis workflow.
 
 ### First measurements (immediately after landing)
 

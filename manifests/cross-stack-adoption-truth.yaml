@@ -16,12 +16,12 @@ sources:
     - examples/*/package.json
   submodule_manifest: .gitmodules
   notice: NOTICE
-  component_sources: docs/component-sources.md
+  component_sources: docs/04-Concepts/root/component-sources.md
   external_inventory_globs:
-    - docs/reports/external-tools-inventory-*.md
+    - docs/06-Daily/reports/external-tools-inventory-*.md
   marketing_doc_globs:
     - README.md
-    - docs/business/*.md
+    - docs/08-References/business/*.md
 
 allowlists:
   transitive_only:

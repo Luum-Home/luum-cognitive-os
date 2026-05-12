@@ -1,1 +1,0 @@
-04-Concepts/root/organizational-model.md

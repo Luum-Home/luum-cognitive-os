@@ -19,24 +19,24 @@ The product statement is:
 
 The idea was already present but distributed:
 
-- `docs/adrs/ADR-091-headless-clustered-runtime-direction.md` — canonical local
+- `docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md` — canonical local
   harness runtime vs headless runtime taxonomy.
-- `docs/architecture/cos-service-runtime-boundary.md` — separates IDE/harness
+- `docs/04-Concepts/architecture/cos-service-runtime-boundary.md` — separates IDE/harness
   embedded execution from the future `cosd` service boundary.
-- `docs/architecture/service-control-plane-research-2026-05-04.md` — asks how
+- `docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md` — asks how
   COS grows from IDE/harness worker surface into a service outside an IDE.
-- `docs/architecture/service-control-plane-implementation-plan.md` — phases
+- `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` — phases
   `cosd`, queue, leases, workers, provider adapters, artifacts, propose-only
   output.
-- `docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md` — prevents
+- `docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md` — prevents
   binding runtime to one IDE, provider, or account model.
-- `docs/adrs/ADR-140-cross-os-containerized-deployment.md` — container worker
+- `docs/02-Decisions/adrs/ADR-140-cross-os-containerized-deployment.md` — container worker
   base.
-- `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` —
+- `docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` —
   remote ingress vs provider/executor adapters and no credential scraping.
-- `docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md`
+- `docs/02-Decisions/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md`
   — task lifecycle, interruptions, questions, worktrees, branches, PRs.
-- `docs/manual-tests/headless-docker-service-runtime.md` — first explicit Docker
+- `docs/09-Quality/manual-tests/headless-docker-service-runtime.md` — first explicit Docker
   service proof that coexists with IDE workflows.
 
 ## Profiles

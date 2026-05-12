@@ -43,9 +43,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-LEDGER_PATH = "docs/reports/pending-truth-latest.json"
+LEDGER_PATH = "docs/06-Daily/reports/pending-truth-latest.json"
 TRAIL_PATH = ".cognitive-os/audit/closure-trail.jsonl"
-BASELINE_PATH = "docs/reports/closure-trust-baseline.json"
+BASELINE_PATH = "docs/06-Daily/reports/closure-trust-baseline.json"
 SCHEMA_VERSION = "closure-trust-signal/v1"
 
 

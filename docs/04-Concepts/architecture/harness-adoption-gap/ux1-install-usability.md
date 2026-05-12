@@ -220,9 +220,9 @@ bash install.sh --from /path/to/repo --standard --force
 
 ## Cross-references
 
-- `docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md`
+- `docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md`
   — prerequisite fix that made `.claude/skills/` a real install target.
-- `docs/architecture/harness-adoption-gap/scripts-audit.md` — full audit of
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md` — full audit of
   the install chain; this change addresses the public `install.sh` UX gap
   that the audit flagged as MEDIUM but which fresh-install simulation
   subsequently promoted to effectively a blocker (0-file installs on the

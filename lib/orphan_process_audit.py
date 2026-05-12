@@ -20,7 +20,7 @@ from typing import Iterable, Sequence
 
 SCHEMA_VERSION = "orphan-process-audit/v1"
 DEFAULT_OLDER_THAN_SECONDS = 60 * 60
-SAFE_SCAN_TOKENS = (".cognitive-os", ".codex", "docs/architecture", "docs/archived", "docs/archive")
+SAFE_SCAN_TOKENS = (".cognitive-os", ".codex", "docs/04-Concepts/architecture", "docs/99-Archive/archived", "docs/99-Archive/archive")
 SAFE_EXECUTABLE_PATTERNS = (
     "ugrep",
     "grep",

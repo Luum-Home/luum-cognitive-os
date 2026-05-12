@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # cos-cleanup.sh — Tiered automatic cleanup for stale repo artifacts.
 #
-# See docs/runbooks/cos-cleanup.md for operator guidance.
+# See docs/05-Methodology/runbooks/cos-cleanup.md for operator guidance.
 #
 # Tier 1 (low risk, auto): stale .git/index.lock, old validation capsules,
 #                          expired ADR-116 task-claim locks, stale .current-session-* files.

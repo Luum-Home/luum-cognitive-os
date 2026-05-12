@@ -117,4 +117,4 @@ The wrapper can also write to `.cognitive-os/runtime/hook-stream.fifo` when `COS
 - JSONL log: `.cognitive-os/metrics/hook-timing.jsonl`
 - FIFO stream: `.cognitive-os/runtime/hook-stream.fifo`
 - Wrapper: `scripts/hook-timing-wrapper.sh`
-- ADR: `docs/adrs/ADR-086-hook-execution-observability.md`
+- ADR: `docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md`

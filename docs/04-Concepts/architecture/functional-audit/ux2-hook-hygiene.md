@@ -145,7 +145,7 @@ D5: python3 -c "import json; json.load(open('.claude/settings.json'))"  ✓
 - `hooks/auto-refine.sh` (142 lines)
 - `hooks/dod-gate.sh` (157 lines)
 - `hooks/session-sanity.sh` (78 lines)
-- `docs/architecture/functional-audit/ux2-hook-hygiene.md` (this file)
+- `docs/04-Concepts/architecture/functional-audit/ux2-hook-hygiene.md` (this file)
 
 ## Files Modified
 - `hooks/rate-limiter.sh` (error output made actionable; machine-parseable

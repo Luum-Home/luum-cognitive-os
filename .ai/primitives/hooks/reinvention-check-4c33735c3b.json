@@ -62,7 +62,7 @@
         "rules/**/*.md",
         "hooks/**/*.sh",
         "scripts/**",
-        "docs/adrs/ADR-*.md"
+        "docs/02-Decisions/adrs/ADR-*.md"
       ],
       "tool_intent": "write_or_edit",
       "tools": [
@@ -166,7 +166,7 @@
         "rules/**/*.md",
         "hooks/**/*.sh",
         "scripts/**",
-        "docs/adrs/ADR-*.md"
+        "docs/02-Decisions/adrs/ADR-*.md"
       ],
       "tool_intent": "write_or_edit",
       "tools": [

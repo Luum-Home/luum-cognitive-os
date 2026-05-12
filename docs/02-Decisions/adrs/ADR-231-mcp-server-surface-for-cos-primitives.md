@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted — Slices A–C implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-211 (service readiness), ADR-216 (tool discovery pre-use gate), ADR-226 (event-sourced session bus), ADR-233 (cross-session teams), ADR-236 (deferred tool loading)  
-**Source**: [`docs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md)
+**Source**: [`docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md)
 
 ---
 

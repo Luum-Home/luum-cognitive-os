@@ -30,9 +30,9 @@ even though the action was only writing documentation.
 The fix keeps the gate active for executable or runtime-sensitive surfaces, but
 exempts `Write` actions whose target path is intentionally documentary:
 
-- `docs/research/`
-- `docs/reports/`
-- `docs/adrs/`
+- `docs/03-PoCs/research/`
+- `docs/06-Daily/reports/`
+- `docs/02-Decisions/adrs/`
 
 The exemption is path- and tool-specific. It does not weaken the gate for `Bash`,
 for hooks, for libraries, or for scripts.
@@ -72,8 +72,8 @@ Committed baseline:
 
 Primary files:
 
-- `docs/adrs/ADR-190-harness-action-receipts.md`
-- `docs/architecture/harness-action-receipts.md`
+- `docs/02-Decisions/adrs/ADR-190-harness-action-receipts.md`
+- `docs/04-Concepts/architecture/harness-action-receipts.md`
 - `lib/harness_action_receipts.py`
 - `scripts/cos-action-receipt`
 - `tests/unit/test_harness_action_receipts.py`
@@ -157,7 +157,7 @@ a396d52c docs: document dashboard fnm validation
 
 Primary file:
 
-- `docs/dashboard-architecture.md`
+- `docs/04-Concepts/root/dashboard-architecture.md`
 
 ## Current Repository State at Close
 
@@ -173,11 +173,11 @@ Pending local paths observed outside this closure-report commit:
 - `cmd/cos/go.mod`
 - `dashboard/app/page.tsx`
 - `dashboard/lib/cos-api.ts`
-- `docs/business/master-plan-checklist.md`
-- `docs/reports/primitive-harness-coverage-latest.json`
-- `docs/reports/primitive-harness-coverage-latest.md`
-- `docs/reports/primitive-harness-partials-latest.json`
-- `docs/reports/primitive-harness-partials-latest.md`
+- `docs/08-References/business/master-plan-checklist.md`
+- `docs/06-Daily/reports/primitive-harness-coverage-latest.json`
+- `docs/06-Daily/reports/primitive-harness-coverage-latest.md`
+- `docs/06-Daily/reports/primitive-harness-partials-latest.json`
+- `docs/06-Daily/reports/primitive-harness-partials-latest.md`
 - `hooks/inject-phase-context.sh`
 - `manifests/primitive-harness-gap-policy.yaml`
 - `scripts/cos`
@@ -193,9 +193,9 @@ Pending local paths observed outside this closure-report commit:
 - `.github/workflows/cos-binary-release.yml`
 - `.goreleaser.yaml`
 - `cmd/cos/internal/tui/`
-- `docs/adrs/ADR-191-cos-binary-release-pipeline.md`
-- `docs/adrs/ADR-192-surface-5-adopt-bubbletea.md`
-- `docs/adrs/ADR-193-cosd-local-network-api.md`
+- `docs/02-Decisions/adrs/ADR-191-cos-binary-release-pipeline.md`
+- `docs/02-Decisions/adrs/ADR-192-surface-5-adopt-bubbletea.md`
+- `docs/02-Decisions/adrs/ADR-193-cosd-local-network-api.md`
 - `infra/cosd/`
 - `scripts/cos-headless-pipeline`
 - `scripts/cos-root`

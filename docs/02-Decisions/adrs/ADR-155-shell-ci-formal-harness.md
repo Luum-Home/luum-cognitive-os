@@ -15,7 +15,7 @@ implementation_files:
   - tests/unit/test_project_shell_ci.py
   - tests/behavior/test_consumer_project_projection.py
   - tests/contracts/test_acc_pipeline_contract.py
-  - docs/manual-tests/shell-ci-formal-harness.md
+  - docs/09-Quality/manual-tests/shell-ci-formal-harness.md
 tier: maintainer
 tags: [harness, shell-ci, projection, acc, ci]
 ---

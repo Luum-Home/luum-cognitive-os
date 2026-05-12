@@ -1,1 +1,0 @@
-05-Methodology/root/hooks.md

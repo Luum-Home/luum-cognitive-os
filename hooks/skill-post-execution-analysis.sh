@@ -6,7 +6,7 @@
 # and (when candidate for evolution) emits a PROPOSE-ONLY artifact.
 #
 # DISCIPLINE GATE: this hook has NO write path to live SKILL.md files.
-# All proposal output goes to docs/reports/skill-analysis-proposals/
+# All proposal output goes to docs/06-Daily/reports/skill-analysis-proposals/
 # in compliance with ADR-133 (expansion-without-monsterization) and
 # ADR-134 (propose-only doctrine).
 #
@@ -26,7 +26,7 @@ SOURCE_ROOT="${COS_SOURCE_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
 HOOK_NAME="skill-post-execution-analysis"
 ERROR_LOG="${REPO_ROOT}/.cognitive-os/metrics/error-learning.jsonl"
 DB_PATH="${REPO_ROOT}/.cognitive-os/skill_store.db"
-PROPOSALS_DIR="${REPO_ROOT}/docs/reports/skill-analysis-proposals"
+PROPOSALS_DIR="${REPO_ROOT}/docs/06-Daily/reports/skill-analysis-proposals"
 
 # --- Read payload (from _HOOK_PAYLOAD env var, or stdin) ---
 if [ -n "${_HOOK_PAYLOAD:-}" ]; then

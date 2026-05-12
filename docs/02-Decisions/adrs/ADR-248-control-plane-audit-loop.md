@@ -228,7 +228,7 @@ scripts/cos-control-plane-audit --lane hook-fast --json
 
 The initial hook-fast Agent-only wiring has been expanded into the full ADR-248 loop:
 
-- `hooks/control-plane-audit.sh` filters hook payloads and runs `scripts/cos-control-plane-audit --lane hook-fast --json` before Agent launches, `git commit`, `git push`, destructive git commands, and public report/document writes under `docs/reports/`, `docs/history/`, and `docs/business/`.
+- `hooks/control-plane-audit.sh` filters hook payloads and runs `scripts/cos-control-plane-audit --lane hook-fast --json` before Agent launches, `git commit`, `git push`, destructive git commands, and public report/document writes under `docs/06-Daily/reports/`, `docs/01-Build-Log/history/`, and `docs/08-References/business/`.
 - `hooks/control-plane-audit-hourly.sh` runs the `hourly` lane on Stop/session-end with a 3600-second cooldown.
 - `lib/release_freeze.py` now includes the `control_plane_pre_public` check, which executes `scripts/cos-control-plane-audit --lane pre-public --json --strict` inside the release freeze transaction.
 - `.claude/settings.json`, `templates/security-profiles/*.json`, and `scripts/apply-efficiency-profile.sh` all project the hooks so they do not become producer-without-consumer artifacts.
@@ -329,4 +329,4 @@ shows `block`, the file wins.
 
 ## Incident closure status
 
-The incident-by-incident closure table is maintained in `docs/reports/primitive-coherence-drift-postmortem-2026-05-08.md` under “Incident closure status — 2026-05-08”.
+The incident-by-incident closure table is maintained in `docs/06-Daily/reports/primitive-coherence-drift-postmortem-2026-05-08.md` under “Incident closure status — 2026-05-08”.

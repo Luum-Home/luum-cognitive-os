@@ -24,7 +24,7 @@
 | `hooks/token-budget-monitor.sh` | commit 92cf485 (renamed from rate-limit-protection) | YES (3,320 B) | `bash -n` OK | YES — registered in `settings.json` PreToolUse Bash | YES — `test_rate_limit_protection.py` via `lib/token_budget_monitor.py` | **SHIPPED** |
 | `hooks/_lib/killswitch_check.sh` | ADR-028 Phase E; commit bc7f70b | YES (3,171 B) | `bash -n` OK | **NO** — grep of `hooks/*.sh` for `source.*_lib/killswitch_check` returns 0 real hook files sourcing it | YES — `test_killswitch.py` 5 tests exercise flag logic directly | **ASPIRATIONAL** (guard library never sourced in production hooks) |
 | `rules/so-slo.md` | ADR-028 Phase E; commit bc7f70b | YES (4,791 B, 61 lines) | n/a | **NO** — not in `settings.json` includedFiles, not in `rules/RULES-COMPACT.md`, not auto-loaded | NO | **ASPIRATIONAL** (reference doc, no runtime wiring) |
-| `docs/runbooks/so-incident-runbook.md` | ADR-028 Phase E; commit bc7f70b | YES (7,228 B, 157 lines) | n/a | PARTIAL — human-operated runbook by design | NO | **PARTIAL** (by design) |
+| `docs/05-Methodology/runbooks/so-incident-runbook.md` | ADR-028 Phase E; commit bc7f70b | YES (7,228 B, 157 lines) | n/a | PARTIAL — human-operated runbook by design | NO | **PARTIAL** (by design) |
 | `tests/contracts/test_agent_bus_metrics.py` | commit d176c07 | YES | pytest collects | YES | 12 tests | **SHIPPED** |
 | `tests/contracts/test_fd_invariant.py` | commit e6a080a | YES | pytest collects | YES | 4 tests | **SHIPPED** |
 | `tests/contracts/test_ram_ceiling.py` | commit e6a080a | YES | pytest collects | YES | 4 tests | **SHIPPED** |

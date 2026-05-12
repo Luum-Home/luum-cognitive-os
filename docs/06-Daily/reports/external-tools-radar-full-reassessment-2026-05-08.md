@@ -1,17 +1,17 @@
 ---
 report_type: external-tools-radar-full-reassessment
 scope: all-third-party-tools-found-in-git-docs-manifests-deps
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 generated_at: 2026-05-08
 status: documentation-before-implementation
 source_artifacts:
-  - docs/reports/external-tools-master-inventory-2026-05-08.md
-  - docs/reports/external-tools-master-inventory-2026-05-08.json
-  - docs/reports/external-tools-reassessment-scope-2026-05-08.md
-  - docs/reports/external-tools-reassessment-scope-2026-05-08.json
+  - docs/06-Daily/reports/external-tools-master-inventory-2026-05-08.md
+  - docs/06-Daily/reports/external-tools-master-inventory-2026-05-08.json
+  - docs/06-Daily/reports/external-tools-reassessment-scope-2026-05-08.md
+  - docs/06-Daily/reports/external-tools-reassessment-scope-2026-05-08.json
 related_docs:
-  - docs/architecture/external-tool-adoption-doctrine.md
-  - docs/architecture/external-tool-adapter-taxonomy.md
+  - docs/04-Concepts/architecture/external-tool-adoption-doctrine.md
+  - docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md
 ---
 
 # External Tools Radar — Full Reassessment 2026-05-08
@@ -19,7 +19,7 @@ related_docs:
 ## Executive summary
 
 This reassessment restarts from the current review index
-`docs/reports/external-tools-radar-INDEX.md` and expands the scope from the
+`docs/06-Daily/reports/external-tools-radar-INDEX.md` and expands the scope from the
 curated 2026-05-08 radar to the broadest repository-derived tool corpus from
 this review wave. "Current review index" means authoritative for this
 2026-05-08 analysis pass, not a permanent or exhaustive claim that no external
@@ -50,16 +50,16 @@ The sweep found three categories:
 
 Generated from:
 
-- `docs/research/repo-scout/**/*`;
-- `docs/reports/**/*external-tools*` and cross-check reports;
+- `docs/03-PoCs/research/repo-scout/**/*`;
+- `docs/06-Daily/reports/**/*external-tools*` and cross-check reports;
 - ADRs, architecture docs, and manifests containing GitHub/tool references;
 - `requirements.txt`, `requirements/dependency-lanes/*.txt`, `pyproject.toml`,
   package requirements, `go.mod`, and package install commands.
 
 Outputs:
 
-- `docs/reports/external-tools-master-inventory-2026-05-08.json`
-- `docs/reports/external-tools-master-inventory-2026-05-08.md`
+- `docs/06-Daily/reports/external-tools-master-inventory-2026-05-08.json`
+- `docs/06-Daily/reports/external-tools-master-inventory-2026-05-08.md`
 
 Counts:
 
@@ -80,8 +80,8 @@ Generated a high/medium-confidence reassessment scope by keeping:
 
 Outputs:
 
-- `docs/reports/external-tools-reassessment-scope-2026-05-08.json`
-- `docs/reports/external-tools-reassessment-scope-2026-05-08.md`
+- `docs/06-Daily/reports/external-tools-reassessment-scope-2026-05-08.json`
+- `docs/06-Daily/reports/external-tools-reassessment-scope-2026-05-08.md`
 
 Deduplicated scope:
 

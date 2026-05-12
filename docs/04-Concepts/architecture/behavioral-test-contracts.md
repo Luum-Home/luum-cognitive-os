@@ -84,7 +84,7 @@ running on every developer machine.
 - `tests/contracts/test_canonical_projection_behavior.py`
 - `tests/integration/test_project_settings_generation.py`
 - `tests/integration/test_auto_update_safety.py`
-- `docs/reports/test-suite-repair-ledger-2026-04-24.md`
+- `docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md`
 
 ## Operational Agentic Primitive
 

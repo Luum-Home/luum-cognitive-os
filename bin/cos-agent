@@ -24,7 +24,7 @@
 #   echo "Summarise CLAUDE.md" | cos-agent spawn --prompt -
 #   cos-agent spawn --prompt "Read pyproject.toml" --model=haiku --json
 #
-# Reference: docs/adrs/ADR-064-harness-agnostic-cognitive-os.md Surface 4
+# Reference: docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md Surface 4
 
 set -euo pipefail
 

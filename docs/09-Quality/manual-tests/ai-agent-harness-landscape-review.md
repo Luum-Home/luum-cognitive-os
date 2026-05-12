@@ -40,7 +40,7 @@ Verify that the broad AI coding IDE/CLI/hosted-agent landscape stays useful with
 4. Confirm stale compatibility labels are absent:
 
    ```bash
-   ! grep -nE '\bFULL COMPATIBILITY\b|\bHIGH COMPATIBILITY\b|COS Coverage|70-90%|100%' docs/ide-compatibility.md
+   ! grep -nE '\bFULL COMPATIBILITY\b|\bHIGH COMPATIBILITY\b|COS Coverage|70-90%|100%' docs/04-Concepts/root/ide-compatibility.md
    ```
 
 5. Run the ACC ratchet:

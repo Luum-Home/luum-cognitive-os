@@ -28,7 +28,7 @@ you propose anything new.
 
 ### 2. Plans <-> ADRs cross-reference
 
-List `.cognitive-os/plans/features/` and cross-reference against `docs/adrs/`.
+List `.cognitive-os/plans/features/` and cross-reference against `docs/02-Decisions/adrs/`.
 Any time you are about to draft a new ADR or new plan, check whether:
 - an existing plan already covers this scope (extend it, don't duplicate)
 - an existing ADR already decided this question (extend it with an addendum

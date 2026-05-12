@@ -1,7 +1,7 @@
 ---
 title: "MegaMemory Annex E — Extractable Primitives (ranked)"
 date: 2026-05-11
-parent: docs/research/megamemory-comparison-2026-05-11.md
+parent: docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
 source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 license_constraint: "MIT — vendoring legally allowed; per-primitive decision recorded below."
 ---
@@ -14,7 +14,7 @@ MIT license permits direct vendoring. For each primitive below the table records
 
 - **Integration cost** into Engram / COS.
 - **Complexity** (algorithmic + code).
-- **Alignment** with the planned memory bundle (`docs/architecture/memory-layer-evolution-sdd.md`).
+- **Alignment** with the planned memory bundle (`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`).
 - **Vendor vs port** decision and rationale.
 
 Ranking is by `extraction value / port cost` ratio.

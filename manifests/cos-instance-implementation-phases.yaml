@@ -34,9 +34,9 @@ phases:
       - manifests/cos-instance-profiles.yaml
       - scripts/cos-instance-init
       - scripts/cos_instance_init.py
-      - docs/adrs/ADR-163-cos-instance-installer.md
-      - docs/architecture/cos-instance-installer.md
-      - docs/manual-tests/cos-instance-installer.md
+      - docs/02-Decisions/adrs/ADR-163-cos-instance-installer.md
+      - docs/04-Concepts/architecture/cos-instance-installer.md
+      - docs/09-Quality/manual-tests/cos-instance-installer.md
       - tests/contracts/test_cos_instance_profiles.py
     acceptance:
       - python3 -m pytest tests/contracts/test_cos_instance_profiles.py -q
@@ -54,7 +54,7 @@ phases:
       - scripts/cos-instance-doctor
       - scripts/cos-instance-smoke
       - tests/contracts/test_cos_instance_command_surface.py
-      - docs/manual-tests/cos-instance-command-surface.md
+      - docs/09-Quality/manual-tests/cos-instance-command-surface.md
     acceptance:
       - scripts/cos-instance-doctor --profile local --json
       - scripts/cos-instance-smoke --profile docker-headless --no-provider --json
@@ -67,9 +67,9 @@ phases:
     profiles: [host-cli-bridge]
     objective: Define how Docker/cosd may request host Codex/Claude CLI execution without copying credential stores.
     deliverables:
-      - docs/adrs/ADR-164-host-cli-bridge-security-boundary.md
-      - docs/architecture/host-cli-bridge-security-boundary.md
-      - docs/manual-tests/host-cli-bridge-security-boundary.md
+      - docs/02-Decisions/adrs/ADR-164-host-cli-bridge-security-boundary.md
+      - docs/04-Concepts/architecture/host-cli-bridge-security-boundary.md
+      - docs/09-Quality/manual-tests/host-cli-bridge-security-boundary.md
       - manifests/host-cli-bridge-contract.yaml
       - tests/contracts/test_host_cli_bridge_contract.py
     acceptance:
@@ -85,7 +85,7 @@ phases:
       - scripts/cos-host-cli-bridge
       - scripts/cos-host-cli-bridge-client
       - tests/integration/test_host_cli_bridge_non_provider.py
-      - docs/manual-tests/host-cli-bridge-non-provider-smoke.md
+      - docs/09-Quality/manual-tests/host-cli-bridge-non-provider-smoke.md
     acceptance:
       - COS_RUN_HOST_CLI_BRIDGE_SMOKE=1 python3 -m pytest tests/integration/test_host_cli_bridge_non_provider.py -q
       - scripts/cos-host-cli-bridge-client --command codex-login-status --json
@@ -97,7 +97,7 @@ phases:
     profiles: [host-cli-bridge]
     objective: Execute account-backed provider task through official CLI only after human approval/cost gate.
     deliverables:
-      - docs/manual-tests/host-provider-smoke.md
+      - docs/09-Quality/manual-tests/host-provider-smoke.md
       - tests/integration/test_host_provider_smoke_opt_in.py
       - redaction evidence bundle
     acceptance:
@@ -112,7 +112,7 @@ phases:
     deliverables:
       - scripts/cos-remote-ingress-lab
       - tests/contracts/test_remote_ingress_task_mapping.py
-      - docs/manual-tests/remote-ingress-lab.md
+      - docs/09-Quality/manual-tests/remote-ingress-lab.md
     acceptance:
       - python3 -m pytest tests/contracts/test_remote_ingress_task_mapping.py -q
       - mocked inbound update creates queued task and replay is ignored
@@ -127,7 +127,7 @@ phases:
       - scripts/cos-worktree-allocate
       - scripts/cos-pr-propose
       - tests/integration/test_task_worktree_pr_flow.py
-      - docs/manual-tests/task-worktree-pr-flow-runtime.md
+      - docs/09-Quality/manual-tests/task-worktree-pr-flow-runtime.md
     acceptance:
       - COS_RUN_WORKTREE_PR_SMOKE=1 python3 -m pytest tests/integration/test_task_worktree_pr_flow.py -q
     rollback: Preserve worktree and patch bundle; never delete unmerged work.
@@ -138,7 +138,7 @@ phases:
     profiles: [vm]
     objective: Provision a single-node service instance on a VM/VPS/EC2 style host.
     deliverables:
-      - docs/manual-tests/vm-instance-provisioning.md
+      - docs/09-Quality/manual-tests/vm-instance-provisioning.md
       - scripts/cos-instance-init support for --profile vm --write
       - service manager template
     acceptance:
@@ -152,7 +152,7 @@ phases:
     profiles: [k8s]
     objective: Provision queue-backed worker pods with readiness/liveness and external credential boundaries.
     deliverables:
-      - docs/manual-tests/k8s-instance-provisioning.md
+      - docs/09-Quality/manual-tests/k8s-instance-provisioning.md
       - k8s manifests or Helm prototype
       - tests/contracts/test_k8s_instance_manifest.py
     acceptance:

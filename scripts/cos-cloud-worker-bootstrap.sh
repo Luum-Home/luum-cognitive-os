@@ -22,7 +22,7 @@ Environment:
   LLM_PRIMARY_API_KEY        Optional BYOK primary provider key.
   LLM_FALLBACK_API_KEY       Optional BYOK fallback provider key.
 
-Operator runbook: docs/runbooks/run-cos-in-docker.md
+Operator runbook: docs/05-Methodology/runbooks/run-cos-in-docker.md
 
 This wrapper is intentionally thin: ADR-140 keeps the container worker surface
 as Docker Compose configuration instead of shell-profile bootstrap magic.
@@ -46,7 +46,7 @@ case "${1:-}" in
     ;;
   up-full)
     # Full stack including engram-cloud profile (ADR-141 replication surface).
-    # See docs/runbooks/run-cos-in-docker.md for the operator walkthrough.
+    # See docs/05-Methodology/runbooks/run-cos-in-docker.md for the operator walkthrough.
     COS_WORKSPACE="${COS_WORKSPACE:-$ROOT}" \
       docker compose -f "$COMPOSE_FILE" --profile engram-cloud up --build -d
     ;;

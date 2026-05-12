@@ -41,7 +41,7 @@ The operator should:
 3. Apply the patch:
    ```bash
    cd "$CLAUDE_PROJECT_DIR"
-   git apply docs/runbooks/adr-274-validator-extension-staging/adr-section-validator.patch
+   git apply docs/05-Methodology/runbooks/adr-274-validator-extension-staging/adr-section-validator.patch
    ```
 4. Run the portability test:
    ```bash
@@ -49,13 +49,13 @@ The operator should:
    ```
 5. Spot-check on a known-bad ADR (ADR-272 or similar in the backfill list):
    ```bash
-   printf '{"tool_input":{"file_path":"docs/adrs/ADR-272-...md"}}' \
+   printf '{"tool_input":{"file_path":"docs/02-Decisions/adrs/ADR-272-...md"}}' \
      | bash hooks/adr-section-validator.sh
    ```
    Expect: a WARNING line on stderr mentioning "Operational Guide".
 6. Spot-check on ADR-273 (compliant):
    ```bash
-   printf '{"tool_input":{"file_path":"docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md"}}' \
+   printf '{"tool_input":{"file_path":"docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md"}}' \
      | bash hooks/adr-section-validator.sh
    ```
    Expect: silent exit 0 (no warning).
@@ -64,7 +64,7 @@ The operator should:
 
 Per ADR-117 + protected-config-write-guard, agents cannot directly modify
 `hooks/*.sh` files. This is the same staging discipline used by ADR-273
-Slice C hooks (`docs/runbooks/adr-273-slice-c-staging/`). The audit script
+Slice C hooks (`docs/05-Methodology/runbooks/adr-273-slice-c-staging/`). The audit script
 (`scripts/cos-operational-guide-audit.py`) is already shipped and operational;
 the gate extension is the second half of the ADR-274 contract enforcement.
 
@@ -72,5 +72,5 @@ the gate extension is the second half of the ADR-274 contract enforcement.
 
 Revert the patch:
 ```bash
-git apply -R docs/runbooks/adr-274-validator-extension-staging/adr-section-validator.patch
+git apply -R docs/05-Methodology/runbooks/adr-274-validator-extension-staging/adr-section-validator.patch
 ```

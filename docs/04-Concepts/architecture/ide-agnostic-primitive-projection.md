@@ -228,8 +228,8 @@ ACCEPTANCE CRITERIA:
 
 The root proposal is ADR-256 and its implementation plan:
 
-- `docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
-- `docs/architecture/primitive-contract-registry-implementation-plan.md`
+- `docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
+- `docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md`
 
 They started as plan-first documents. ADR-257 now implements the minimal
 `manifests/primitive-contracts.yaml` slice; the runtime ledgers and trace join

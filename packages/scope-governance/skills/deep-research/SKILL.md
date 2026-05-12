@@ -233,7 +233,7 @@ Save the research report to Engram:
 ```
 mem_save(
   title: "Research: {topic} ({depth})",
-  topic_key: "docs/research/{topic-slug}",
+  topic_key: "docs/03-PoCs/research/{topic-slug}",
   type: "discovery",
   scope: "project",
   content: "{full research report}"
@@ -251,7 +251,7 @@ status: success|partial|failed
 executive_summary: "{2-3 sentence summary}"
 artifacts:
   - type: research-report
-    location: "Engram: docs/research/{topic-slug}"
+    location: "Engram: docs/03-PoCs/research/{topic-slug}"
 next_recommended:
   - "Review findings and validate against project context"
   - "If adopting a technology: run /recommend-library for license check"

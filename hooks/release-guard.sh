@@ -5,7 +5,7 @@
 # Detects manual release patterns (echo > VERSION, git tag v*, manual version
 # bumps) and blocks them, directing the user to `cos release` instead.
 #
-# Why: `cos release` automatically updates VERSION, CHANGELOG.md, docs/INDEX.md,
+# Why: `cos release` automatically updates VERSION, CHANGELOG.md, docs/00-MOCs/entrypoints/INDEX.md,
 # creates the git tag, and triggers auto-update of registered projects. Manual
 # releases skip these steps, causing test failures and version inconsistencies.
 #
@@ -31,7 +31,7 @@ if echo "$first_line" | grep -qE '(echo|printf|cat|tee)\s+.*>\s*VERSION($|\s)'; 
   echo "BLOCKED: Manual VERSION file modification detected." >&2
   echo "" >&2
   echo "  Use \`cos release --patch|--minor|--major\` instead." >&2
-  echo "  It updates VERSION + CHANGELOG.md + docs/INDEX.md + git tag + auto-update." >&2
+  echo "  It updates VERSION + CHANGELOG.md + docs/00-MOCs/entrypoints/INDEX.md + git tag + auto-update." >&2
   exit 2
 fi
 

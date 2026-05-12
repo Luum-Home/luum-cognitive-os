@@ -283,8 +283,8 @@ Current enforcement lives in:
 - `tests/unit/test_smart_infra.py`: unit contract for service mapping and non-Docker skip behavior.
 - `tests/integration/test_service_health.py`: Docker reference-stack contract, complete Compose-service classification, Valkey-only backend guard, and opt-in local health probes.
 - `tests/contracts/test_service_sunset_policy.py`: enforces that every reference/optional service declares a future-dated `review_by` in `cognitive-os.yaml`.
-- `docs/architecture/observability-backend-evaluation-2026-04-24.md`: observability-specific backend decision (pinned outcome — 2026-04-24 §Decision).
-- `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`: Langfuse → Phoenix migration ADR and phased plan.
+- `docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md`: observability-specific backend decision (pinned outcome — 2026-04-24 §Decision).
+- `docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`: Langfuse → Phoenix migration ADR and phased plan.
 
 Future service additions must update this catalog and include a test proving whether the service is core, optional, reference-only, or disabled.
 

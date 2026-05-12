@@ -60,7 +60,7 @@ uv run python3 scripts/project_scaffold.py \
 ## Behaviour contract
 
 - **Idempotent**: re-running leaves existing files alone unless `--overwrite`.
-- **34 files total**: 1 top-level `docs/README.md` + 33 starter files.
+- **34 files total**: 1 top-level `docs/00-MOCs/entrypoints/README.md` + 33 starter files.
 - **Every category has a README.md** listing its files + purpose.
 - **No network, no LLM** — pure filesystem scaffolding.
 - **Cross-refs embedded**: each category's README mentions the SO skill that
@@ -76,7 +76,7 @@ uv run python3 scripts/project_scaffold.py \
 
 - `lib/project_scaffolder.py` — implementation
 - `scripts/project_scaffold.py` — CLI
-- `docs/adrs/ADR-054-project-docs-convention.md` — convention standard
+- `docs/02-Decisions/adrs/ADR-054-project-docs-convention.md` — convention standard
 - `tests/unit/test_project_scaffolder.py` — 19 behavior tests
 
 ## Verification

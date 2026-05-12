@@ -14,8 +14,8 @@ implementation_files:
   - manifests/pending-truth.yaml
   - scripts/cos-pending-truth-aggregator
   - scripts/cos-pending-truth-verify
-  - docs/reports/pending-truth-latest.json
-  - docs/reports/pending-truth-latest.md
+  - docs/06-Daily/reports/pending-truth-latest.json
+  - docs/06-Daily/reports/pending-truth-latest.md
   - tests/red_team/portability/test_cos-pending-truth-aggregator.py
 tier: maintainer
 tags: [control-plane, backlog, plans, verification, drift-prevention, source-of-truth, postmortem-2026-05-12]
@@ -30,7 +30,7 @@ Accepted — Slices A + B implemented; Slice C designed and staged (deployment r
 Implementation status by slice (2026-05-12):
 - **Slice A** ✅ schema (manifests/pending-truth.yaml) + aggregator (scripts/cos-pending-truth-aggregator) + 6/6 portability tests pass
 - **Slice B** ✅ verifier (scripts/cos-pending-truth-verify) + 5/5 portability tests pass. First run on 279 items: 7 verified-done, 267 verified-pending, 2 obsolete, 3 ambiguous. Deterministic baseline (Opus LLM verification still useful for semantic depth)
-- **Slice C** 🟡 designed + staged at docs/runbooks/adr-273-slice-c-staging/. Three hook scripts written + smoke-tested. Activation pending operator deployment (protected-config-write-guard blocks agent-side hooks/ writes)
+- **Slice C** 🟡 designed + staged at docs/05-Methodology/runbooks/adr-273-slice-c-staging/. Three hook scripts written + smoke-tested. Activation pending operator deployment (protected-config-write-guard blocks agent-side hooks/ writes)
 
 <!-- SCOPE: OS -->
 
@@ -99,14 +99,14 @@ items:
 ### 2. Aggregator (`scripts/cos-pending-truth-aggregator`)
 
 Read-only walk of all surfaces, emit normalized items to
-`manifests/pending-truth.yaml` + `docs/reports/pending-truth-latest.{json,md}`.
+`manifests/pending-truth.yaml` + `docs/06-Daily/reports/pending-truth-latest.{json,md}`.
 
 Sources scanned in v1:
 - `.cognitive-os/plans/{features,architecture,roadmaps}/*.md` — every `- [ ]`
   checkbox becomes a `plan-checkbox` item
-- `docs/adrs/ADR-*.md` — every ADR with `status: proposed|draft|in-progress`
+- `docs/02-Decisions/adrs/ADR-*.md` — every ADR with `status: proposed|draft|in-progress`
   becomes an `adr-slice` item
-- `docs/reports/radar-2026-05-08-implementation-tracker.md` — every 🔲 or 🟡
+- `docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md` — every 🔲 or 🟡
   row becomes a `follow-up` item
 - `.cognitive-os/sessions/*/user-requests.jsonl` — every `status: pending`
   becomes a `user-request` item
@@ -135,7 +135,7 @@ manually on 2026-05-12.
   query target for "what is pending".
 - Every new actionable item proposed by a plan, ADR, or report MUST appear
   in `manifests/pending-truth.yaml` within one aggregation cycle.
-- The aggregator output (`docs/reports/pending-truth-latest.md`) is the
+- The aggregator output (`docs/06-Daily/reports/pending-truth-latest.md`) is the
   ONE doc to read for pending-work questions in future sessions.
 
 ## Slice A scope (this ADR's commit)
@@ -145,7 +145,7 @@ Implements only:
 - `manifests/pending-truth.yaml` skeleton with 5 sample items demonstrating
   each `type` value.
 - `scripts/cos-pending-truth-aggregator` — read-only walk of the 5 sources
-  above, emits `docs/reports/pending-truth-latest.{json,md}`.
+  above, emits `docs/06-Daily/reports/pending-truth-latest.{json,md}`.
 - Portability test at `tests/red_team/portability/test_cos-pending-truth-aggregator.py`.
 
 Slices B (verifier) and C (hooks) are tracked as follow-ups; this ADR
@@ -175,7 +175,7 @@ These are CONTEXT. The ledger is OPERATIONAL.
 
 | Question | Before (any of 9 surfaces) | After (the ledger) |
 |---|---|---|
-| "How many pending items exist in COS?" | 9 different answers (283 / 17 / 0 / 67 …) — none verified | **1 answer** from `docs/reports/pending-truth-latest.md` |
+| "How many pending items exist in COS?" | 9 different answers (283 / 17 / 0 / 67 …) — none verified | **1 answer** from `docs/06-Daily/reports/pending-truth-latest.md` |
 | "Why is X pending?" | grep across 9 places | ledger item has `source: <path>:<line>` — go there |
 | "Is X actually still pending, or already shipped?" | dispatch 3 Opus agents (~$5, 45min) | Slice B `cos-pending-truth-verify` will check evidence; today: read `status: unverified` and run verifier |
 | "When did someone last check?" | unknown | `last_verified` timestamp per item |
@@ -187,13 +187,13 @@ These are CONTEXT. The ledger is OPERATIONAL.
    ```bash
    scripts/cos-pending-truth-aggregator --write
    ```
-   This refreshes `docs/reports/pending-truth-latest.{json,md}` from the
+   This refreshes `docs/06-Daily/reports/pending-truth-latest.{json,md}` from the
    current state of all 9 input surfaces. Read the .md.
 
 2. **When picking next work**, search the ledger for items with specific
    `type` or low `last_verified` age:
    ```bash
-   python3 -c "import json; d=json.load(open('docs/reports/pending-truth-latest.json'));
+   python3 -c "import json; d=json.load(open('docs/06-Daily/reports/pending-truth-latest.json'));
    [print(i['id'], i['next_action'][:80]) for i in d['items'] if i['type'] == 'follow-up']"
    ```
 
@@ -205,7 +205,7 @@ These are CONTEXT. The ledger is OPERATIONAL.
 4. **Periodically (weekly)** until Slice B lands: re-dispatch the bilateral
    Opus verification we did 2026-05-12 to catch unmarked-done items.
    Pattern recorded in
-   `docs/reports/checkbox-verification-batch-{A,B,C}-2026-05-12.md`.
+   `docs/06-Daily/reports/checkbox-verification-batch-{A,B,C}-2026-05-12.md`.
 
 ### Why the surfaces are INPUTS, not REPLACEMENT TARGETS
 
@@ -243,12 +243,12 @@ not paperwork.
 
 If you are a future operator or agent and you encounter this ADR cold:
 
-1. Read `docs/reports/pending-truth-latest.md` for the current operational
+1. Read `docs/06-Daily/reports/pending-truth-latest.md` for the current operational
    state. The operational-guide preamble in that file is auto-rendered.
 2. Read this ADR-273 §Decision for the schema and contract.
-3. Read `docs/reports/historical-pending-analysis-2026-05-12.md` for the
+3. Read `docs/06-Daily/reports/historical-pending-analysis-2026-05-12.md` for the
    bilateral verification methodology that motivated this ADR.
-4. Read `docs/reports/checkbox-verification-batch-{A,B,C}-2026-05-12.md`
+4. Read `docs/06-Daily/reports/checkbox-verification-batch-{A,B,C}-2026-05-12.md`
    for the empirical evidence that 25% of OPEN checkboxes are mismarked.
 
 The ledger is meaningful only because the bilateral verification (Opus
@@ -258,7 +258,7 @@ new drift from accumulating.
 
 ## Consequences
 
-- **One file to consult**: `docs/reports/pending-truth-latest.md` answers
+- **One file to consult**: `docs/06-Daily/reports/pending-truth-latest.md` answers
   "what is pending" without re-running 3 Opus agents.
 - **Drift becomes visible**: after Slice B lands, items whose evidence
   fails verification get re-classified; plans/ADRs that disagree become
@@ -313,11 +313,11 @@ python3 -c "import yaml; d=yaml.safe_load(open('manifests/pending-truth.yaml'));
   atomically closes items from this ledger with bilateral proof; the
   closure-trail audit then proves "this verified-done was not a manual
   edit". Operational mental model + 4-layer architecture documented in
-  `docs/architecture/pending-truth-architecture.md`.
+  `docs/04-Concepts/architecture/pending-truth-architecture.md`.
 - **Companion: ADR lifecycle primitives** (built in parallel during the
   2026-05-12 work). `scripts/cos-adr-partial-ledger` is the ADR-decision
   analogue of this aggregator; `scripts/cos-adr-close` is the ADR-decision
-  analogue of `cos-pending-truth-close`. `docs/adrs/STATUS-TAXONOMY.md`
+  analogue of `cos-pending-truth-close`. `docs/02-Decisions/adrs/STATUS-TAXONOMY.md`
   canonizes the status vocabulary both sides consume.
 - ADR-082 — Plan location convention (input to aggregator)
 - ADR-127 — Active primitive index (analogous "derived truth" pattern)
@@ -332,4 +332,4 @@ python3 -c "import yaml; d=yaml.safe_load(open('manifests/pending-truth.yaml'));
   guardrail)
 - Postmortem 2026-05-12 bilateral verification: 165 OPEN checkboxes →
   42 mismarked-done (25%), 11 obsolete (7%) — documented in
-  `docs/reports/historical-pending-analysis-2026-05-12.md` §5.
+  `docs/06-Daily/reports/historical-pending-analysis-2026-05-12.md` §5.

@@ -87,7 +87,7 @@ This mapping is defined in `rules/model-routing.md` and implemented by `lib/mode
 
 ## How It Maps to the Safety Mesh
 
-The safety mesh (see `docs/safety-mesh.md`) uses different model tiers for different verification layers:
+The safety mesh (see `docs/04-Concepts/root/safety-mesh.md`) uses different model tiers for different verification layers:
 
 | Safety Layer | Model Used | Why |
 |---|---|---|
@@ -248,7 +248,7 @@ Higher-capability models (like Claude Opus at level 3-4) need fewer guardrails. 
 | Phase 3 (Q4 2026) | A/B testing for skills across models, security scanning with model-appropriate analysis |
 | Phase 5 (2027+) | Fully autonomous model selection, self-optimizing routing based on historical accuracy |
 
-See `docs/roadmap.md` Phase 1 for the detailed implementation plan.
+See `docs/01-Build-Log/root/roadmap.md` Phase 1 for the detailed implementation plan.
 
 ---
 
@@ -269,7 +269,7 @@ See `docs/roadmap.md` Phase 1 for the detailed implementation plan.
 
 ## Architecture Alignment
 
-The multi-model factory respects the 5-layer architecture (see `docs/architecture-principles.md`):
+The multi-model factory respects the 5-layer architecture (see `docs/04-Concepts/architecture-principles.md`):
 
 - **Layer 1 (Rules)**: `rules/model-routing.md` defines WHAT model to use for each task type. Model-agnostic.
 - **Layer 2 (Skills)**: Skills are written for any LLM. They do not reference specific models.

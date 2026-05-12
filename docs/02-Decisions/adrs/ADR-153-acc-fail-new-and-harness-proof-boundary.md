@@ -10,8 +10,8 @@ superseded_by: null
 implementation_files:
   - scripts/acc_pipeline.py
   - tests/unit/test_acc_pipeline.py
-  - docs/architecture/agent-capability-coverage-pipeline.md
-  - docs/manual-tests/acc-fail-new-gate.md
+  - docs/04-Concepts/architecture/agent-capability-coverage-pipeline.md
+  - docs/09-Quality/manual-tests/acc-fail-new-gate.md
 tier: maintainer
 tags: [acc, fail-new, harness, projection, consumer-availability]
 ---
@@ -33,7 +33,7 @@ ADR-152 allowed ACC to report full coverage for the declared scope by using expl
 
 Add a strict `--fail-new` mode to `scripts/acc_pipeline.py`.
 
-When enabled, ACC compares the current report to an existing baseline, defaulting to `docs/acc/latest.json`, before writing the new report. It blocks if the current run introduces:
+When enabled, ACC compares the current report to an existing baseline, defaulting to `docs/07-Capabilities/acc/latest.json`, before writing the new report. It blocks if the current run introduces:
 
 - new `missing`, `partial`, `stale`, `overexposed`, or `unverified` capability debt;
 - new findings with those statuses;
@@ -53,7 +53,7 @@ The harness boundary remains unchanged: only harnesses with `status: implemented
 
 ### Negative
 
-- `--fail-new` requires a baseline file. First-time users must generate `docs/acc/latest.json` before ratcheting.
+- `--fail-new` requires a baseline file. First-time users must generate `docs/07-Capabilities/acc/latest.json` before ratcheting.
 - A new intentionally local script/rule/skill may fail the strict gate until it receives an exact consumer-availability row or the operator consciously uses `--allow-new-local-defaults`.
 
 ## Operational Guide
@@ -64,7 +64,7 @@ Before this ADR: ACC could reach full coverage for declared scope, but a new scr
 
 After this ADR:
 
-- **`--fail-new` mode** compares the current ACC run against a baseline (`docs/acc/latest.json` by default) and blocks if new debt or new broad-default-aligned rows appear:
+- **`--fail-new` mode** compares the current ACC run against a baseline (`docs/07-Capabilities/acc/latest.json` by default) and blocks if new debt or new broad-default-aligned rows appear:
   ```bash
   python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
   ```
@@ -79,7 +79,7 @@ After this ADR:
 - "What does the `new_debt` section contain?" — Rows where the current run has a worse status than the baseline, plus any new broad-default-aligned rows.
 
 **Does not answer:**
-- "Is the baseline itself correct?" — The baseline is `docs/acc/latest.json`; if it was generated while debt existed, it will tolerate that historical debt. Use `--baseline <file>` to choose a known-clean baseline.
+- "Is the baseline itself correct?" — The baseline is `docs/07-Capabilities/acc/latest.json`; if it was generated while debt existed, it will tolerate that historical debt. Use `--baseline <file>` to choose a known-clean baseline.
 - "What happens the first time `--fail-new` is run?" — It requires a baseline. Generate one with `python3 scripts/acc_pipeline.py --project-dir . --refresh` first, then start gating on it.
 
 ### Daily operational pattern
@@ -110,4 +110,4 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
 
 - `scripts/acc_pipeline.py` implements `--fail-new`, `--baseline`, `--allow-new-local-defaults`, `new_debt`, and strict broad-default detection.
 - `tests/unit/test_acc_pipeline.py` covers new partial debt, broad local-default debt, and gate mutation.
-- `docs/manual-tests/acc-fail-new-gate.md` defines manual proof steps for baseline pass, missing-baseline block, and planned-harness non-promotion.
+- `docs/09-Quality/manual-tests/acc-fail-new-gate.md` defines manual proof steps for baseline pass, missing-baseline block, and planned-harness non-promotion.

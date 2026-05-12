@@ -818,7 +818,7 @@ def _write_post_execute_report(
     payload = {
         "schema_version": SCHEMA_VERSION,
         "executed_at": ts,
-        "policy_reference": "docs/adrs/ADR-218-history-sanitization-toolchain.md",
+        "policy_reference": "docs/02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md",
         "boundary_tag_recommended": "v0.27.1-pre-history-rewrite",
         "backup_mirror": str(backup_path),
         "tombstone_branch": tombstone_branch,
@@ -852,7 +852,7 @@ def _write_post_execute_report(
             "messages and author/committer metadata require explicit scoped "
             "operator opt-in. The backup mirror is the rollback path. "
             "Operator must (1) verify counts above, (2) re-tag versions onto post-rewrite "
-            "equivalent SHAs, (3) copy this report to docs/reports/, (4) write disclosure doc, "
+            "equivalent SHAs, (3) copy this report to docs/06-Daily/reports/, (4) write disclosure doc, "
             "(5) force-push origin/main only after 1-4."
         ),
     }

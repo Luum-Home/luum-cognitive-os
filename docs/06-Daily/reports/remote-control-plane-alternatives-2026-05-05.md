@@ -16,8 +16,8 @@ Machine-readable inventory: `manifests/remote-control-plane-alternatives.yaml`.
 ## Existing COS posture
 
 The repository already has the right boundary in
-`docs/architecture/service-control-plane-research-2026-05-04.md` and
-`docs/architecture/service-control-plane-implementation-plan.md`:
+`docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md` and
+`docs/04-Concepts/architecture/service-control-plane-implementation-plan.md`:
 
 - future `cosd` owns task admission, queueing, leases, worker execution, and
   evidence;
@@ -212,7 +212,7 @@ Acceptance criteria:
 
 ## Manual test checklist
 
-Durable checklist: `docs/manual-tests/remote-control-plane-boundary.md`.
+Durable checklist: `docs/09-Quality/manual-tests/remote-control-plane-boundary.md`.
 
 1. Review this report against `manifests/remote-control-plane-alternatives.yaml`.
 2. Confirm no credential value appears in either artifact.

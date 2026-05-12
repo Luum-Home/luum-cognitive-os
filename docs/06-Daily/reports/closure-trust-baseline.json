@@ -10,7 +10,7 @@
         "result": "accepted"
       },
       "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
-      "source": "docs/adrs/ADR-174c-validator-blocking-promotion.md",
+      "source": "docs/02-Decisions/adrs/ADR-174c-validator-blocking-promotion.md",
       "status": "verified-done"
     },
     {
@@ -58,7 +58,7 @@
       "last_verified": "2026-05-12T17:07:03Z",
       "proof": {
         "kind": "file_exists",
-        "path": "docs/hook-security-profiles.md",
+        "path": "docs/09-Quality/root/hook-security-profiles.md",
         "result": "present"
       },
       "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
@@ -71,7 +71,7 @@
       "last_verified": "2026-05-12T17:07:03Z",
       "proof": {
         "kind": "file_exists",
-        "path": "docs/hook-security-profiles.md",
+        "path": "docs/09-Quality/root/hook-security-profiles.md",
         "result": "present"
       },
       "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",

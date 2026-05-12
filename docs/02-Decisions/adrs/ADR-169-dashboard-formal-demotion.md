@@ -92,7 +92,7 @@ After this ADR:
 - "Can the demotion be reversed?" — Yes: `dashboard/` is preserved on disk (not deleted) and the falsifiable claim section defines exactly what would trigger a revisit.
 
 **Does not answer:**
-- "What the dashboard was building toward" — see ADR-132 and ADR-133 for the architectural context, and `docs/runbooks/run-cos-in-docker.md` for the external-evaluator path that replaced it.
+- "What the dashboard was building toward" — see ADR-132 and ADR-133 for the architectural context, and `docs/05-Methodology/runbooks/run-cos-in-docker.md` for the external-evaluator path that replaced it.
 
 ### Daily operational pattern
 
@@ -123,7 +123,7 @@ If conditions 1–3 hold for one calendar year, the demotion is judged correct a
 - [`dashboard/ARCHIVED.md`](../../dashboard/ARCHIVED.md) — the in-tree demotion notice.
 - [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — the maintainer-cache transferability frame this ADR addresses.
 - [ADR-133](ADR-133-expansion-without-monsterization.md) — lab-first promotion contract; the wiring-not-resurrection path satisfies its requirements.
-- [`docs/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md) — the external-evaluator path that does not depend on the dashboard.
+- [`docs/05-Methodology/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md) — the external-evaluator path that does not depend on the dashboard.
 
 ## Verification
 

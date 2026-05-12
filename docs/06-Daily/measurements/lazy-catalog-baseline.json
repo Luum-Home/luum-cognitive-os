@@ -1,5 +1,5 @@
 {
-  "_comment": "Baseline captured 2026-04-30 before lazy-load landed. Synthetic data used (no telemetry history pre-implementation). Update after 72h of production data with: python3 scripts/check_lazy_catalog_health.py --json > docs/measurements/lazy-catalog-baseline.json",
+  "_comment": "Baseline captured 2026-04-30 before lazy-load landed. Synthetic data used (no telemetry history pre-implementation). Update after 72h of production data with: python3 scripts/check_lazy_catalog_health.py --json > docs/06-Daily/measurements/lazy-catalog-baseline.json",
   "captured_at": "2026-04-30T00:00:00Z",
   "capture_method": "synthetic_pre_implementation",
   "missed_skills_rate_per_session": 0.05,

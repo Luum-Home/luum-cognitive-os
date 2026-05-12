@@ -95,7 +95,7 @@ once Phase 1 lands.
 Spawned automatically with research-only constraints:
 
 - No commits
-- No file modifications outside `docs/reports/` (git-tracked; NOT `.cognitive-os/reports/research/` which is gitignored)
+- No file modifications outside `docs/06-Daily/reports/` (git-tracked; NOT `.cognitive-os/reports/research/` which is gitignored)
 - No invocation of side-effecting scripts
 - Output is a single Markdown file under that directory
 
@@ -145,7 +145,7 @@ re-running Phase 1". This is rare but the escape hatch must exist.
 
 ## Decision — Where reports live
 
-- Path: `docs/reports/<topic>-<YYYY-MM-DD>.md` (git-tracked, NOT gitignored)
+- Path: `docs/06-Daily/reports/<topic>-<YYYY-MM-DD>.md` (git-tracked, NOT gitignored)
 - Engram topic key: `research/<topic>` (one report per topic; updates upsert)
 - Cross-link: the spawning ADR (or task) MUST add the report path under its
   "Related" section so future readers can trace the decision trail
@@ -192,7 +192,7 @@ above is the discriminator — if all four dimensions are "Low", skip research.
 1. **Phase 1 — codify (this ADR).** Land the protocol so the next session can
    reference it.
 2. **Phase 2 — pilot with H/I/J.** Each spawns a research agent today. Reports
-   land in `docs/reports/` (git-tracked; see §5 fix 2026-04-27).
+   land in `docs/06-Daily/reports/` (git-tracked; see §5 fix 2026-04-27).
 3. **Phase 3 — operator triage.** Per-report decisions captured (Engram
    observation OR follow-up ADR per item).
 4. **Phase 4 — implementation.** Only starts after Phase 3. Standard
@@ -266,9 +266,9 @@ above is the discriminator — if all four dimensions are "Low", skip research.
 
 Acceptance criteria for this ADR landing:
 
-- [x] `docs/adrs/ADR-069-research-first-protocol.md` exists at the documented
+- [x] `docs/02-Decisions/adrs/ADR-069-research-first-protocol.md` exists at the documented
   path
-- [ ] Each of H, I, J produces a `docs/reports/<topic>-<date>.md` report
+- [ ] Each of H, I, J produces a `docs/06-Daily/reports/<topic>-<date>.md` report
   in this same session (NOT `.cognitive-os/reports/research/` — that path is gitignored)
 - [ ] Reports contain the §0-skeleton structure: Inventory + Decision points +
   Open questions + Recommended path
@@ -279,9 +279,9 @@ Acceptance criteria for this ADR landing:
 Verification commands:
 
 ```bash
-test -f docs/adrs/ADR-069-research-first-protocol.md
-ls docs/reports/*.md | wc -l                       # >=3 after H/I/J land
-grep -l "ADR-069" docs/adrs/*.md                   # future ADRs cite this one
+test -f docs/02-Decisions/adrs/ADR-069-research-first-protocol.md
+ls docs/06-Daily/reports/*.md | wc -l                       # >=3 after H/I/J land
+grep -l "ADR-069" docs/02-Decisions/adrs/*.md                   # future ADRs cite this one
 python3 scripts/decision_triage.py --critical-only 2>&1 | grep "Total unanswered"
 ```
 

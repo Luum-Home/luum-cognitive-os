@@ -413,7 +413,7 @@ Postgres, run:
 scripts/cos-engram-cloud-docker-smoke --json
 ```
 
-See `docs/manual-tests/engram-cloud-docker-sync.md` for the expanded manual
+See `docs/09-Quality/manual-tests/engram-cloud-docker-sync.md` for the expanded manual
 drill and cleanup steps.
 
 `tests/contracts/test_optional_docker_lanes.py` enforces this policy so any new

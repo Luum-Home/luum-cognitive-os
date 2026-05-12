@@ -39,8 +39,8 @@ CONTRACTS: list[dict[str, Any]] = [
         "grep": "cos-pending-truth-close",
         "required_in": [
             "docs/00-MOCs/operations.md",
-            "docs/architecture/pending-truth-architecture.md",
-            "docs/adrs/ADR-275-closure-and-projection-primitives.md",
+            "docs/04-Concepts/architecture/pending-truth-architecture.md",
+            "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
             "scripts/cos-adr-close",
         ],
     },
@@ -49,8 +49,8 @@ CONTRACTS: list[dict[str, Any]] = [
         "grep": "cos-adr-close",
         "required_in": [
             "docs/00-MOCs/operations.md",
-            "docs/architecture/pending-truth-architecture.md",
-            "docs/adrs/ADR-275-closure-and-projection-primitives.md",
+            "docs/04-Concepts/architecture/pending-truth-architecture.md",
+            "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
             "scripts/cos-pending-truth-close",
         ],
     },
@@ -59,8 +59,8 @@ CONTRACTS: list[dict[str, Any]] = [
         "grep": "cos-session-start-projector",
         "required_in": [
             "docs/00-MOCs/operations.md",
-            "docs/architecture/pending-truth-architecture.md",
-            "docs/adrs/ADR-275-closure-and-projection-primitives.md",
+            "docs/04-Concepts/architecture/pending-truth-architecture.md",
+            "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
         ],
     },
     {
@@ -68,7 +68,7 @@ CONTRACTS: list[dict[str, Any]] = [
         "grep": "cos-closure-trust-signal",
         "required_in": [
             "docs/00-MOCs/quality.md",
-            "docs/architecture/pending-truth-architecture.md",
+            "docs/04-Concepts/architecture/pending-truth-architecture.md",
             "manifests/control-plane-audits.yaml",
         ],
     },
@@ -77,8 +77,8 @@ CONTRACTS: list[dict[str, Any]] = [
         "grep": "STATUS-TAXONOMY",
         "required_in": [
             "docs/00-MOCs/operations.md",
-            "docs/architecture/pending-truth-architecture.md",
-            "docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
+            "docs/04-Concepts/architecture/pending-truth-architecture.md",
+            "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
         ],
     },
     {
@@ -86,17 +86,17 @@ CONTRACTS: list[dict[str, Any]] = [
         "grep": "cos-pending-truth-aggregator",
         "required_in": [
             "docs/00-MOCs/operations.md",
-            "docs/architecture/pending-truth-architecture.md",
-            "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
+            "docs/04-Concepts/architecture/pending-truth-architecture.md",
+            "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
         ],
     },
     {
         "primitive": "pending-truth-architecture",
         "grep": "pending-truth-architecture.md",
         "required_in": [
-            "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-            "docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-            "docs/adrs/ADR-275-closure-and-projection-primitives.md",
+            "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
+            "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
+            "docs/02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md",
             "docs/00-MOCs/operations.md",
         ],
     },
@@ -124,7 +124,7 @@ CONTRACTS: list[dict[str, Any]] = [
         "primitive": "cos-subprocess-timeout-audit",
         "grep": "cos-subprocess-timeout-audit",
         "required_in": [
-            "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+            "docs/02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md",
             "manifests/control-plane-audits.yaml",
             "manifests/documentation-truth-claims.yaml",
         ],

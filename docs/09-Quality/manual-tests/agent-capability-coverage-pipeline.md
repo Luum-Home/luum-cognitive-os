@@ -14,7 +14,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
 
    ```bash
    python3 scripts/acc_pipeline.py --project-dir . --brief
-   head -80 docs/acc/latest-compact.md
+   head -80 docs/07-Capabilities/acc/latest-compact.md
    ```
 
 3. Inspect JSON invariants:
@@ -22,7 +22,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
    ```bash
    python3 - <<'PY'
    import json
-   data = json.load(open('docs/acc/latest.json'))
+   data = json.load(open('docs/07-Capabilities/acc/latest.json'))
    print(data['summary'])
    assert data['schema_version'] == 'acc.report.v1'
    assert data['capabilities']
@@ -35,7 +35,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
 4. Inspect the Markdown summary:
 
    ```bash
-   head -80 docs/acc/latest.md
+   head -80 docs/07-Capabilities/acc/latest.md
    ```
 
 5. Confirm adapter reports are not silently dropped:
@@ -43,7 +43,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
    ```bash
    python3 - <<'PY'
    import json
-   data = json.load(open('docs/acc/latest.json'))
+   data = json.load(open('docs/07-Capabilities/acc/latest.json'))
    for name, status in data['adapters'].items():
        print(name, status['status'])
        assert status['status'] in {'ok', 'unverified', 'failed'}
@@ -58,7 +58,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
 
 ## Expected Result
 
-- `docs/acc/latest-compact.md`, `docs/acc/latest.json`, and `docs/acc/latest.md` exist.
+- `docs/07-Capabilities/acc/latest-compact.md`, `docs/07-Capabilities/acc/latest.json`, and `docs/07-Capabilities/acc/latest.md` exist.
 - The report includes capabilities, findings, adapter status, consumer accessibility, scores, and persistence status.
 - Local history is appended under `.cognitive-os/metrics/acc-pipeline-history.jsonl`.
 - Engram status is honest: unavailable unless a real bridge/tool exists.
@@ -70,7 +70,7 @@ After refresh, confirm the projection adapter ran:
 ```bash
 python3 - <<'PY'
 import json
-data = json.load(open('docs/acc/latest.json'))
+data = json.load(open('docs/07-Capabilities/acc/latest.json'))
 projection = data['adapters']['consumer_projection']
 print(projection)
 assert projection['status'] == 'ok'
@@ -106,7 +106,7 @@ required = {
     'deepseek-provider', 'shell-ci',
 }
 assert required <= ids
-acc = json.load(open('docs/acc/latest.json'))
+acc = json.load(open('docs/07-Capabilities/acc/latest.json'))
 assert acc['harness_projection']['claude']['status'] == 'implemented'
 assert acc['harness_projection']['codex']['status'] == 'implemented'
 assert acc['harness_projection']['cursor']['status'] == 'planned'

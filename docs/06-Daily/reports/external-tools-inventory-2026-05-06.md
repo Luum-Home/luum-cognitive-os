@@ -12,7 +12,7 @@ purpose: |
 methodology:
   - rg -oI 'https://github\.com/[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+' docs/
   - dedup, normalize (strip trailing punctuation, .git, slashes)
-  - cross-reference with deep-audit markers in docs/reports/*opus*deep-audit*
+  - cross-reference with deep-audit markers in docs/06-Daily/reports/*opus*deep-audit*
   - cross-reference with surface-5-tui-ui-candidates-2026-05-05.md
   - upstream/own-ecosystem URLs filtered out (own org, anthropics host, gentleman-programming upstream, garagon already-integrated, placeholder examples)
 limitations:
@@ -324,19 +324,19 @@ rg -oI 'https://github\.com/[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+' docs/ \
 
 Classification rules (applied in order):
 
-1. **Deep audited**: URL slug appears in a `docs/reports/*-opus-deep-audit-*.md` filename
+1. **Deep audited**: URL slug appears in a `docs/06-Daily/reports/*-opus-deep-audit-*.md` filename
 2. **Upstream / own**: URL is in own org (Luum-Home, luum-ai, luum-home, luum), is the harness host (anthropics/claude-code), is upstream of an integration already absorbed (Gentleman-Programming/engram, gentleman-programming/homebrew-tap, garagon/*), or is a placeholder example (org/repo, user/cognitive-os-plugin-healthcare)
-3. **Surface-5 TUI ad-hoc**: URL appears in `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md` — these were investigated via ad-hoc WebSearch on 2026-05-05 for Surface-5 (TUI candidates), NOT via `/repo-scout --batch`. Depth = surface only (README + repo metadata, no source-level audit).
+3. **Surface-5 TUI ad-hoc**: URL appears in `docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md` — these were investigated via ad-hoc WebSearch on 2026-05-05 for Surface-5 (TUI candidates), NOT via `/repo-scout --batch`. Depth = surface only (README + repo metadata, no source-level audit).
 4. **Pending**: everything else.
 
 Bucket (4) is the primary backlog for a formal `/repo-scout --batch` invocation.
 
 ## Cross-references
 
-- `docs/reports/cli-anything-opus-deep-audit-2026-05-05.md`
-- `docs/reports/openharness-opus-deep-audit-2026-05-05.md`
-- `docs/reports/openspace-opus-deep-audit-2026-05-05.md`
-- `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md`
+- `docs/06-Daily/reports/cli-anything-opus-deep-audit-2026-05-05.md`
+- `docs/06-Daily/reports/openharness-opus-deep-audit-2026-05-05.md`
+- `docs/06-Daily/reports/openspace-opus-deep-audit-2026-05-05.md`
+- `docs/06-Daily/reports/surface-5-tui-ui-candidates-2026-05-05.md`
 - `skills/repo-scout/SKILL.md` — canonical primitive that should have been used for buckets (3) and (4)
 
 ## Open questions for the operator

@@ -152,8 +152,8 @@ def _snapshot(root: Path) -> tuple[int, str]:
         "- refresh-all: regenerate both reports in order",
         "",
         "Reports:",
-        "- docs/reports/primitive-harness-coverage-latest.json",
-        "- docs/reports/primitive-harness-partials-latest.json",
+        "- docs/06-Daily/reports/primitive-harness-coverage-latest.json",
+        "- docs/06-Daily/reports/primitive-harness-partials-latest.json",
         "",
         f"Receipts: {RECEIPT_PATH}",
     ])

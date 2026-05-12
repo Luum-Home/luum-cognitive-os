@@ -111,9 +111,9 @@ fi
 # legitimate "we detect/prevent broken X" claims (which is the VALUE PROP).
 # Tighten to phrases where the SUBJECT is the speaker/product.
 SELF_DEPRECATE=$(grep -rinE "\b(it'?s a mess|this is a mess|this is a hack|it'?s a hack|it'?s terrible|it'?s gross|it'?s ugly|don'?t ask why|i hate this|this sucks|honestly broken)\b" \
-                 README.md docs/business/ docs/competitive-landscape.md \
-                 docs/value-proposition.md docs/quickstart.md docs/getting-started.md \
-                 docs/faq.md 2>/dev/null \
+                 README.md docs/08-References/business/ docs/08-References/root/competitive-landscape.md \
+                 docs/value-proposition.md docs/00-MOCs/entrypoints/quickstart.md docs/00-MOCs/entrypoints/getting-started.md \
+                 docs/00-MOCs/entrypoints/faq.md 2>/dev/null \
                  || true)
 SELF_DEP_COUNT=$(count_lines "$SELF_DEPRECATE")
 if [ "$SELF_DEP_COUNT" -gt 0 ]; then
@@ -125,7 +125,7 @@ fi
 # 4. Operator personal info residue (HEAD only — history is ADR-218 territory)
 # ────────────────────────────────────────────────────────────────────────────
 PII_HEAD=$(git grep -ilE "matias\.nahuel|soporte\.esolutions" 2>/dev/null \
-           | grep -vE "^docs/adrs/ADR-(218|214)" \
+           | grep -vE "^docs/02-Decisions/adrs/ADR-(218|214)" \
            | grep -vE "session-self-bite-pattern" \
            || true)
 PII_COUNT=$(count_lines "$PII_HEAD")
@@ -138,8 +138,8 @@ fi
 # 5. TBD / Coming Soon / Placeholder in user-facing docs
 # ────────────────────────────────────────────────────────────────────────────
 TBD=$(grep -rinE "\bTBD\b|\[Coming Soon\]|\[TBD\]|\[Placeholder\]|coming soon|< *to do *>" \
-      README.md docs/quickstart.md docs/getting-started.md docs/faq.md \
-      docs/business/ 2>/dev/null || true)
+      README.md docs/00-MOCs/entrypoints/quickstart.md docs/00-MOCs/entrypoints/getting-started.md docs/00-MOCs/entrypoints/faq.md \
+      docs/08-References/business/ 2>/dev/null || true)
 TBD_COUNT=$(count_lines "$TBD")
 if [ "$TBD_COUNT" -gt 0 ]; then
   SAMPLE=$(echo "$TBD" | head -2 | tr '\n' ';' | sed 's/;$//')
@@ -193,7 +193,7 @@ fi
 # 9. Promises without backing ("will support", "coming soon")
 # ────────────────────────────────────────────────────────────────────────────
 PROMISES=$(grep -rinE "\b(will support|coming soon|to be added|future support|planned support)\b" \
-           docs/business/ docs/competitive-landscape.md \
+           docs/08-References/business/ docs/08-References/root/competitive-landscape.md \
            docs/value-proposition.md README.md 2>/dev/null || true)
 PROMISES_COUNT=$(count_lines "$PROMISES")
 if [ "$PROMISES_COUNT" -gt 0 ]; then
@@ -233,10 +233,10 @@ fi
 # 12. Optional: vale weasel-word scan if installed
 # ────────────────────────────────────────────────────────────────────────────
 if command -v vale >/dev/null 2>&1; then
-  VALE_COUNT=$(vale --output line README.md docs/business/ 2>/dev/null \
+  VALE_COUNT=$(vale --output line README.md docs/08-References/business/ 2>/dev/null \
                | wc -l | tr -d ' ' || echo 0)
   if [ "$VALE_COUNT" -gt 0 ]; then
-    emit "INFO" "vale-style-warnings" "$VALE_COUNT" "run 'vale README.md docs/business/' for details"
+    emit "INFO" "vale-style-warnings" "$VALE_COUNT" "run 'vale README.md docs/08-References/business/' for details"
   fi
 fi
 

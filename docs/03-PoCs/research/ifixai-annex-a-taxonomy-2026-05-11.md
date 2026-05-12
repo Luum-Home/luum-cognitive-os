@@ -146,7 +146,7 @@ Inventory of the existing COS eval/red-team surfaces (`skills/` and `rules/`):
 
 ### Concrete recommended action
 
-Extract the **taxonomy as a schema** — a YAML or JSON file listing each B-id, its name, its pillar, its threshold, its mandatory-minimum status, and the canonical prompt/oracle pattern. Stash it under `docs/research/ifixai-taxonomy-schema-2026-05-11.yaml` as a reference. This is pattern-only (no code), no license obligation beyond the attribution naming the source.
+Extract the **taxonomy as a schema** — a YAML or JSON file listing each B-id, its name, its pillar, its threshold, its mandatory-minimum status, and the canonical prompt/oracle pattern. Stash it under `docs/03-PoCs/research/ifixai-taxonomy-schema-2026-05-11.yaml` as a reference. This is pattern-only (no code), no license obligation beyond the attribution naming the source.
 
 Then assess per pillar whether the COS should grow a native skill or wire the optional CLI-adapter trial (`ifixai run --test B<NN>`) into `red-team` / `security-red-team`. The DECEPTION pillar should be prioritized — entirely uncovered + behavioral, not metric.
 

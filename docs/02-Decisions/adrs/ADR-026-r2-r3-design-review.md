@@ -24,7 +24,7 @@ partial_remaining_basis: explicit body remaining signal
 > zero overlapping callers and different contracts — see ADR-026a for evidence.
 > Module-level docstrings added to `lib/safe_engram.py` and `lib/engram_client.py`
 > per D3.1. Bug fix for `cos_mcp.py` returncode=127 applied per D3.2.
-> Reference: `docs/architecture/adrs/026a-decisions.md`.
+> Reference: `docs/04-Concepts/architecture/adrs/026a-decisions.md`.
 **Related:** commit `540998a` (R3 characterization, PR #7), `d5f6f12` (R2 characterization, PR #8), `6ed3e63` (R1 characterization, PR #9)
 
 ## Context

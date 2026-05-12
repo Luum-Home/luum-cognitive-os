@@ -12,7 +12,7 @@ improvement proposals with measurable impact.
 
 ## Phase 0 — Bound the claim
 
-- [x] Document the gap in `docs/reports/self-improvement-maintainer-agent-gap-2026-05-06.md`.
+- [x] Document the gap in `docs/06-Daily/reports/self-improvement-maintainer-agent-gap-2026-05-06.md`.
 - [x] Propose ADR-201 for the maintainer agent and telemetry promotion loop.
 - [ ] Update product messaging to avoid claiming continuous self-improvement
       until the maintainer loop is implemented and smoke-tested.

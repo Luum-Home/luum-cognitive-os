@@ -54,5 +54,5 @@ def test_cli_json_reports_created_path(tmp_path: Path, capsys: pytest.CaptureFix
 
     assert code == 0
     payload = json.loads(capsys.readouterr().out)
-    assert payload["path"] == "docs/adrs/ADR-001-cli-adr.md"
+    assert payload["path"] == "docs/02-Decisions/adrs/ADR-001-cli-adr.md"
     assert payload["wrote"] is True

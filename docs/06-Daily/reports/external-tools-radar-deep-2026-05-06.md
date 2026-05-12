@@ -1,6 +1,6 @@
 # External Tools Radar — Phase 2 Deep Audits — 2026-05-06
 
-> Phase 2 of the radar. Source-level deep audit of the 22 top-tier candidates that the shallow Phase 1 ([`docs/reports/external-tools-radar-2026-05-06.md`](external-tools-radar-2026-05-06.md)) flagged as pass-to-deep. Per-repo artifacts under [`docs/research/repo-scout/deep/`](../research/repo-scout/deep/). Engram persistence under topic-key prefix `tech-radar/`.
+> Phase 2 of the radar. Source-level deep audit of the 22 top-tier candidates that the shallow Phase 1 ([`docs/06-Daily/reports/external-tools-radar-2026-05-06.md`](external-tools-radar-2026-05-06.md)) flagged as pass-to-deep. Per-repo artifacts under [`docs/03-PoCs/research/repo-scout/deep/`](../research/repo-scout/deep/). Engram persistence under topic-key prefix `tech-radar/`.
 >
 > **Method**: `gh api` for tree + metadata + tags + issues + CI runs + (where needed) raw LICENSE file. WebFetch / DeepWiki not used in this run because the parent radar already covered Phase-0 DeepWiki for these repos and `gh api` reads gave us the source-level depth Step 7 of `repo-scout/SKILL.md` requires.
 >
@@ -91,7 +91,7 @@ These are NOT auto-actions; they are decision-tickets for the operator.
 
 ## Per-Repo Artifacts
 
-All 22 per-repo deep audits live under [`docs/research/repo-scout/deep/`](../research/repo-scout/deep/) with the schema specified by `skills/repo-scout/SKILL.md` Step 10a (frontmatter, classification, scoring, adoption signals, integration plan, risks, alternatives, raw metrics appendix, cross-reference vs shallow). Engram observations:
+All 22 per-repo deep audits live under [`docs/03-PoCs/research/repo-scout/deep/`](../research/repo-scout/deep/) with the schema specified by `skills/repo-scout/SKILL.md` Step 10a (frontmatter, classification, scoring, adoption signals, integration plan, risks, alternatives, raw metrics appendix, cross-reference vs shallow). Engram observations:
 
 | Repo | Engram ID |
 |------|-----------|

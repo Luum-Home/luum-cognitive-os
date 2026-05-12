@@ -4,27 +4,27 @@ date: 2026-05-12
 purpose: Project-life accumulation of work items vs verified-against-code closure
 sources:
   - .cognitive-os/plans/ (44 active + 5 archived)
-  - docs/adrs/ (280 ADRs)
+  - docs/02-Decisions/adrs/ (280 ADRs)
   - .cognitive-os/tasks/active-tasks.json + archives
   - .cognitive-os/sessions/*/user-requests.jsonl (34 sessions)
   - git log v0.27.1..HEAD + project history
 related_reports:
-  - docs/reports/master-pending-2026-05-11.md (cross-surface index)
-  - docs/reports/plans-discovery-triage-2026-05-11.md (31-plan Opus triage)
-  - docs/reports/p2-plan-reconciliation-2026-05-10.md (10-plan P2 Opus refinement)
-  - docs/reports/p3-plan-triage-2026-05-10.md (5-plan P3 Opus refinement)
+  - docs/06-Daily/reports/master-pending-2026-05-11.md (cross-surface index)
+  - docs/06-Daily/reports/plans-discovery-triage-2026-05-11.md (31-plan Opus triage)
+  - docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md (10-plan P2 Opus refinement)
+  - docs/06-Daily/reports/p3-plan-triage-2026-05-10.md (5-plan P3 Opus refinement)
 ---
 
 # Historical Pending Analysis — 2026-05-12
 
-Project lifetime: **2026-03-27** (origin commit per `docs/business/cos-vs-vanilla-dx-review.md` + sibling competitive docs) → **2026-05-12** (today). 7 weeks of accumulation.
+Project lifetime: **2026-03-27** (origin commit per `docs/08-References/business/cos-vs-vanilla-dx-review.md` + sibling competitive docs) → **2026-05-12** (today). 7 weeks of accumulation.
 
 ## §1. Raw historical totals
 
 | Surface | Total writeado ever | Currently closed | Currently open | Closure rate |
 |---|---:|---:|---:|---:|
 | Plan checkboxes (`[x]` + `[ ]` in `.cognitive-os/plans/`) | 524 | 241 | **283** | 45% |
-| ADRs (`docs/adrs/ADR-NNN-*.md`) | 280 | ~268 (accepted + tombstone + superseded) | ~12 in-implementation | ~96% |
+| ADRs (`docs/02-Decisions/adrs/ADR-NNN-*.md`) | 280 | ~268 (accepted + tombstone + superseded) | ~12 in-implementation | ~96% |
 | Active-tasks (current + archives) | 113 | 109 (cancelled-stale / done / watermark) | 4 | 96% |
 | User-requests across 34 session dirs | 14 | 13 (done / obsolete per Opus retriage) | 1 STILL-VALID | 93% |
 | **Grand total work items writeados** | **~931** | **~858** | **~300** | **~92% overall** |
@@ -33,7 +33,7 @@ Project lifetime: **2026-03-27** (origin commit per `docs/business/cos-vs-vanill
 
 ## §2. Plan-checkbox composition (the 283 OPEN)
 
-Per `docs/reports/plans-discovery-triage-2026-05-11.md` + `docs/reports/p2-plan-reconciliation-2026-05-10.md`:
+Per `docs/06-Daily/reports/plans-discovery-triage-2026-05-11.md` + `docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md`:
 
 | Plan classification | Count of plans | Estimated OPEN checkboxes within |
 |---|---:|---:|

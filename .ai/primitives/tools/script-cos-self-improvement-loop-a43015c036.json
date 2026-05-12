@@ -59,7 +59,7 @@
         "scripts/cos-self-improvement-loop",
         "scripts/cos_self_improvement_loop.py",
         "lib/self_improvement_loop.py",
-        "docs/adrs/ADR-134-headless-self-improvement-proposer.md"
+        "docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-self-improvement-loop",
         "scripts/cos_self_improvement_loop.py",
         "lib/self_improvement_loop.py",
-        "docs/adrs/ADR-134-headless-self-improvement-proposer.md"
+        "docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-self-improvement-loop",
     "scripts/cos_self_improvement_loop.py",
     "lib/self_improvement_loop.py",
-    "docs/adrs/ADR-134-headless-self-improvement-proposer.md"
+    "docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-self-improvement-loop",

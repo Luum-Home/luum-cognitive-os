@@ -11,7 +11,7 @@ implementation_files:
   - scripts/cos-closure-discipline-audit
   - scripts/cos_closure_discipline_audit.py
   - tests/unit/test_closure_discipline_audit.py
-  - docs/manual-tests/closure-discipline.md
+  - docs/09-Quality/manual-tests/closure-discipline.md
 tier: maintainer
 tags: [validation, closure, governance, testing, local-ci]
 ---
@@ -221,7 +221,7 @@ python3 scripts/primitive_lifecycle.py --json
 bash scripts/cos-ci-local.sh quick
 ```
 
-Manual proof path: [`docs/manual-tests/closure-discipline.md`](../manual-tests/closure-discipline.md).
+Manual proof path: [`docs/09-Quality/manual-tests/closure-discipline.md`](../manual-tests/closure-discipline.md).
 
 ## Border Cases
 
@@ -245,5 +245,5 @@ Manual proof path: [`docs/manual-tests/closure-discipline.md`](../manual-tests/c
 - ADR-130: Suspend All GitHub Actions Workflows
 - ADR-131: Local-CI Migration
 - ADR-133: Expansion Without Monsterization
-- [`docs/architecture/validation-nervous-system.md`](../architecture/validation-nervous-system.md)
-- [`docs/definition-of-done.md`](../definition-of-done.md)
+- [`docs/04-Concepts/architecture/validation-nervous-system.md`](../architecture/validation-nervous-system.md)
+- [`docs/05-Methodology/root/definition-of-done.md`](../definition-of-done.md)

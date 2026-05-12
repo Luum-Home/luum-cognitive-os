@@ -25,9 +25,9 @@ tags:
 - postmortem-2026-05-08
 - postmortem-2026-05-11
 related_postmortems:
-- docs/reports/silent-agent-branch-switch-postmortem-2026-05-08.md
-- docs/reports/git-history-debug-script-audit-2026-05-09.md
-- docs/reports/history-sanitization-20260508T061208Z.json
+- docs/06-Daily/reports/silent-agent-branch-switch-postmortem-2026-05-08.md
+- docs/06-Daily/reports/git-history-debug-script-audit-2026-05-09.md
+- docs/06-Daily/reports/history-sanitization-20260508T061208Z.json
 related_adrs:
 - ADR-218 (history sanitization toolchain)
 - ADR-242 (filter-repo wrapper preserves remote)
@@ -142,7 +142,7 @@ visible WARNING:
 ⚠️  UNDOCUMENTED HISTORY REWRITE DETECTED
   Bundle: .cognitive-os/recovery/pre-history-sanitization-20260511T173204Z.bundle
   No matching entry in manifests/history-rewrite-ledger.yaml
-  No matching ADR in docs/adrs/ referencing this bundle
+  No matching ADR in docs/02-Decisions/adrs/ referencing this bundle
   Action required: run `scripts/cos-history-rewrite-audit --register <bundle> --adr ADR-NNN --reason "..."`
 ```
 
@@ -183,7 +183,7 @@ Modify `lib/history_sanitization.py` and `scripts/cos-filter-repo-wrap.sh`:
   ERROR: history rewrites require ADR documentation per ADR-269.
   Re-run with --adr-ref ADR-NNN where ADR-NNN is an Accepted ADR
   documenting the rewrite rationale. If no such ADR exists, create
-  one first using docs/adrs/templates/history-rewrite.template.md.
+  one first using docs/02-Decisions/adrs/templates/history-rewrite.template.md.
   ```
 - `scripts/cos-filter-repo-wrap.sh` similarly requires `--adr-ref` argument.
 - Both tools, on successful execution, write a ledger entry automatically
@@ -246,13 +246,13 @@ available for emergencies but creates a paper trail.
 
 - New friction for legitimate quick sanitizations — operator must author an ADR
   before running `--execute`. Mitigation: provide a template ADR for
-  history rewrites (`docs/adrs/templates/history-rewrite.template.md`).
+  history rewrites (`docs/02-Decisions/adrs/templates/history-rewrite.template.md`).
 - The startup banner becomes noise if orphans persist; operators may dismiss it
   habitually. Mitigation: make the warning louder and include orphan count in
   the daily metrics dashboard.
 - Adding filter-repo to DESTRUCTIVE_PATTERN may surprise external operators
   who run filter-repo for normal repo maintenance. Mitigation: documentation
-  in `rules/license-policy.md` and `docs/runbooks/` explaining the wrapper.
+  in `rules/license-policy.md` and `docs/05-Methodology/runbooks/` explaining the wrapper.
 
 ### Risks not mitigated
 
@@ -279,7 +279,7 @@ available for emergencies but creates a paper trail.
 7. Modify `hooks/destructive-git-blocker.sh` DESTRUCTIVE_PATTERN to include
    `filter-repo` (with bypass to wrapper) — separate ADR follow-up if too
    invasive.
-8. Create `docs/adrs/templates/history-rewrite.template.md` for future
+8. Create `docs/02-Decisions/adrs/templates/history-rewrite.template.md` for future
    operators.
 9. Tests in `tests/contracts/`, `tests/integration/`, `tests/red_team/portability/`.
 
@@ -315,7 +315,7 @@ The four primitives work together: the pre-gate (Primitive 4) requires the ADR a
 
 **Before a history rewrite:**
 
-1. Author or confirm an Accepted ADR documenting why the rewrite is needed. A template exists at `docs/adrs/templates/history-rewrite.template.md`.
+1. Author or confirm an Accepted ADR documenting why the rewrite is needed. A template exists at `docs/02-Decisions/adrs/templates/history-rewrite.template.md`.
 2. Run the governed wrapper:
    ```bash
    scripts/cos-history-sanitization --execute --adr-ref ADR-NNN [other flags]

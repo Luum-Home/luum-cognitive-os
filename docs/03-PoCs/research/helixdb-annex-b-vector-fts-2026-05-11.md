@@ -130,7 +130,7 @@ The repo includes a real reranker layer at `helix-db/src/helix_engine/reranker/`
 
 | Concern | HelixDB | luum-agent-os (Engram) |
 |---|---|---|
-| Vector index | Filter-aware HNSW over `f64` | Not present in shipped Engram. SDD work on memory-layer evolution exists (`docs/architecture/memory-layer-evolution-sdd.md`). |
+| Vector index | Filter-aware HNSW over `f64` | Not present in shipped Engram. SDD work on memory-layer evolution exists (`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`). |
 | Full-text | Custom BM25 over LMDB | **SQLite FTS5** (built into `lib/engram_client.py`) — gets us BM25 + tokenizer + porter stemmer + Unicode for free, with zero index-maintenance code. |
 | Hybrid fusion | RRF + MMR rerankers | Not present. The planned **LightRAG dual-level slice** would need a fusion layer if it ships. |
 | Diversity (MMR) | Built-in | Not present. |
@@ -157,7 +157,7 @@ ef = 768 default, .clamp(10, 512)
 ```
 The default of 768 is silently downgraded to 512 by the clamp; the value 768 never reaches the rest of the system. Either the default or the clamp upper bound is wrong.
 
-**Upstream observation only.** HelixDB is REJECT runtime per AGPL-3.0; Engram retains SQLite — no COS HNSW implementation is planned. If the AGPL disposition ever reverses, file this inconsistency upstream with HelixDB. See annex E §E.4.5 sidebar and `docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` Finding 10 for the cluster-D ruling that scopes this observation.
+**Upstream observation only.** HelixDB is REJECT runtime per AGPL-3.0; Engram retains SQLite — no COS HNSW implementation is planned. If the AGPL disposition ever reverses, file this inconsistency upstream with HelixDB. See annex E §E.4.5 sidebar and `docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` Finding 10 for the cluster-D ruling that scopes this observation.
 
 ## B.6 Clean-room constraint
 

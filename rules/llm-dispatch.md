@@ -25,7 +25,7 @@ chat** by routing sub-agents through cheaper providers by default.
 
 For the primary-chat rate-limit scenario, the operational workaround is
 **dual-IDE** (Cline/Cursor/Qwen Code configured with a Qwen key). See
-`docs/runbooks/llm-dispatch.md`.
+`docs/05-Methodology/runbooks/llm-dispatch.md`.
 
 ## When to use which dispatch path
 
@@ -185,7 +185,7 @@ today — add when needed.
 - `scripts/orchestrator.py` — CLI entry point
 - `scripts/smoke-qwen-fallback.sh` — live verification
 - `hooks/rate-limit-detector.sh` — PostToolUse pattern detector
-- `docs/runbooks/llm-dispatch.md` — user-facing how-to
+- `docs/05-Methodology/runbooks/llm-dispatch.md` — user-facing how-to
 
 ## Contextual Trigger
 

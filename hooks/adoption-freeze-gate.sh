@@ -115,5 +115,5 @@ echo "Resolve via ONE of:" >&2
 echo "  1. Unfreeze: edit the freeze yaml (set frozen: false) with" >&2
 echo "     COS_ALLOW_FREEZE_TOGGLE=1 git commit ... (yaml alone)" >&2
 echo "  2. Bypass logged: COS_ALLOW_ADOPTION_FREEZE_BYPASS=1 git commit ..." >&2
-echo "Reference: docs/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
+echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
 exit 1

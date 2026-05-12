@@ -15,7 +15,7 @@ finished shape so the next operator does not have to re-derive it.
 
 ## The four invariants
 
-1. **OBTAIN** — 5 source surfaces normalized into 1 ledger (`docs/reports/
+1. **OBTAIN** — 5 source surfaces normalized into 1 ledger (`docs/06-Daily/reports/
    pending-truth-latest.json`).
 2. **PROJECT** — ledger + audit findings surfaced at session-start across
    all 3 harnesses, with a single ranked "what to attack first" list.
@@ -36,13 +36,13 @@ operators to edit 5 sources manually for each "done".
 ```
 5 SOURCE SURFACES
   ├─ plans/*.md checkboxes            ─┐
-  ├─ docs/adrs/ADR-*.md (status)       ├─→  scripts/cos-pending-truth-aggregator
+  ├─ docs/02-Decisions/adrs/ADR-*.md (status)       ├─→  scripts/cos-pending-truth-aggregator
   ├─ follow-ups (ADR frontmatter)      │    (ADR-273 Slice A)
   ├─ user-requests/queue.jsonl         │
   └─ .cognitive-os/tasks/active-tasks  ─┘
                                               │
                                               ▼
-                                   docs/reports/pending-truth-latest.json
+                                   docs/06-Daily/reports/pending-truth-latest.json
                                    (~279 items, schema: pending-truth/v1)
 
   scripts/cos-pending-truth-verify    (ADR-273 Slice B)
@@ -57,7 +57,7 @@ operators to edit 5 sources manually for each "done".
   scripts/cos-operational-guide-audit.py    (ADR-274)
     specialized audit for the §Operational Guide contract on
     maintainer-tier capability ADRs
-    output: docs/reports/operational-guide-audit-latest.{json,md}
+    output: docs/06-Daily/reports/operational-guide-audit-latest.{json,md}
 
   scripts/cos-control-plane-audit    (ADR-248)
     orchestrator: runs audits per lane (hook-fast | hourly | pre-public)
@@ -69,7 +69,7 @@ operators to edit 5 sources manually for each "done".
 
   scripts/cos-adr-partial-ledger + scripts/cos-adr-partial-audit
     ADR lifecycle bridge: turns Active/partial|blocked|deferred ADRs into
-    docs/reports/adr-partial-backlog-latest.{json,md}, then emits
+    docs/06-Daily/reports/adr-partial-backlog-latest.{json,md}, then emits
     control-plane findings for missing remaining-work metadata, stale
     partials without follow-up ADRs, and possible close candidates.
 ```
@@ -86,7 +86,7 @@ never marks anything `verified-done` without a positive evidence check.
 scripts/cos-session-start-projector    (ADR-275)
   reads all of Layer 1 plus:
     - git state (branch, ahead/behind, dirty)
-    - staged operator-deploy dirs (docs/runbooks/*-staging/)
+    - staged operator-deploy dirs (docs/05-Methodology/runbooks/*-staging/)
   emits, bounded to top-N (default 5, configurable
   COS_PROJECTOR_LIMIT):
     - pending_truth: by_status counts, top_actionable items
@@ -119,7 +119,7 @@ parallel sessions see the same projection.
 
 ## Layer 3 — CLOSE (write side)
 
-**Canonical status vocabulary**: [`docs/adrs/STATUS-TAXONOMY.md`](../adrs/STATUS-TAXONOMY.md)
+**Canonical status vocabulary**: [`docs/02-Decisions/adrs/STATUS-TAXONOMY.md`](../adrs/STATUS-TAXONOMY.md)
 defines the decision-status and implementation-status values that all
 closure primitives consume (`accepted | implemented | partial |
 partial-blocked | blocked | deferred | superseded | tombstone |
@@ -167,7 +167,7 @@ Parallel ADR lifecycle closure:
 scripts/cos-adr-close
   unit: ADR decision record rather than task/checkbox
   updates: implementation_status, classification_basis, evidence fields
-  refreshes: docs/adrs/INDEX.md + ADR partial backlog ledger
+  refreshes: docs/02-Decisions/adrs/INDEX.md + ADR partial backlog ledger
   projection: cos-session-start-projector emits [adr-partial-close]
               actions from adr-partial-backlog-latest.json
 ```
@@ -238,10 +238,10 @@ the ledger.
 
 | Artifact | Path | Format |
 |---|---|---|
-| Aggregated ledger | `docs/reports/pending-truth-latest.json` | pending-truth/v1 |
-| Aggregated ledger (human) | `docs/reports/pending-truth-latest.md` | markdown |
-| §Operational Guide audit | `docs/reports/operational-guide-audit-latest.{json,md}` | operational-guide-audit/v1 |
-| ADR partial backlog | `docs/reports/adr-partial-backlog-latest.{json,md}` | adr-partial-backlog/v1 |
+| Aggregated ledger | `docs/06-Daily/reports/pending-truth-latest.json` | pending-truth/v1 |
+| Aggregated ledger (human) | `docs/06-Daily/reports/pending-truth-latest.md` | markdown |
+| §Operational Guide audit | `docs/06-Daily/reports/operational-guide-audit-latest.{json,md}` | operational-guide-audit/v1 |
+| ADR partial backlog | `docs/06-Daily/reports/adr-partial-backlog-latest.{json,md}` | adr-partial-backlog/v1 |
 | Control-plane findings | `.cognitive-os/tasks/control-plane-remediation.jsonl` | append-only JSONL |
 | Closure audit trail | `.cognitive-os/audit/closure-trail.jsonl` | closure-trail/v1 |
 | Projection cache | `.cognitive-os/runtime/session-start-projection.cache.json` | session-start-projection/v1 |

@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: MOSTLY DONE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 0 (evidence baseline + readiness report): DONE (all 4 acceptance items checked).
 - Phase 1 (friction budget + demotion gate): DONE (all 3 acceptance items checked); reinforced by primitive-lifecycle --recommendations consuming ROI/friction.

@@ -8,7 +8,7 @@ Review every ADR from 137 onward and classify whether it is implemented, partial
 
 - ADRs reviewed: ADR-137 through ADR-144.
 - Git window reviewed: commits since `2026-05-01 00:00`.
-- Local evidence checked: ADR files, `docs/architecture/dx-cloud-flow-bootstrap-plan.md`, manifests, scripts, hooks, projection drivers, and targeted tests.
+- Local evidence checked: ADR files, `docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md`, manifests, scripts, hooks, projection drivers, and targeted tests.
 - External evidence checked only where the ADR depends on an unstable upstream surface: Engram Cloud.
 
 ## Summary
@@ -46,8 +46,8 @@ The commit history therefore supports a split interpretation: ADR-137 through AD
 
 **Implemented evidence:**
 
-- `docs/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md` exists and is accepted.
-- `docs/architecture/dx-cloud-flow-bootstrap-plan.md` references the trajectory and names ADR-139 through ADR-142 as prerequisites before promoting flow #1 beyond lab.
+- `docs/02-Decisions/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md` exists and is accepted.
+- `docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md` references the trajectory and names ADR-139 through ADR-142 as prerequisites before promoting flow #1 beyond lab.
 - ADR-136 runway primitives already exist from prior commits and provide adjacent transport concepts.
 
 **New lab-registration evidence:**
@@ -61,7 +61,7 @@ The commit history therefore supports a split interpretation: ADR-137 through AD
 - No cloud worker has executed the flow end-to-end in Framing A.
 - ADR-064 implementation status still needs to be reconciled against the first cloud-worker flow's concrete needs.
 
-**Needs deeper local research:** yes. Before editing this ADR, review ADR-064 implementation surfaces, `docs/architecture/bootstrap-portability.md`, and the actual first cloud flow design once it exists.
+**Needs deeper local research:** yes. Before editing this ADR, review ADR-064 implementation surfaces, `docs/04-Concepts/architecture/bootstrap-portability.md`, and the actual first cloud flow design once it exists.
 
 **Needs internet research:** no, unless the first flow depends on external sandbox/provider APIs.
 
@@ -121,7 +121,7 @@ The commit history therefore supports a split interpretation: ADR-137 through AD
 - `docker/cos-worker/docker-compose.yml` is missing.
 - No container worker bootstrap proof exists.
 - No Docker-based test proves a hook can run and append to `.cognitive-os/runtime/agent-audit-trail.jsonl`.
-- `docs/architecture/bootstrap-portability.md` is not yet updated to mark the Compose stack as satisfying worker-surface portability.
+- `docs/04-Concepts/architecture/bootstrap-portability.md` is not yet updated to mark the Compose stack as satisfying worker-surface portability.
 
 **Needs deeper local research:** yes. Reconcile with existing Docker files, package install paths, harness drivers, and minimal worker runtime requirements before adding a new stack.
 
@@ -172,7 +172,7 @@ The commit history therefore supports a split interpretation: ADR-137 through AD
 
 - No cloud worker flow emits rows with `tenant_id` and `audit_class`.
 - `scripts/cos-audit-archive` is missing.
-- `docs/architecture/gdpr-erasure-procedure.md` is missing.
+- `docs/04-Concepts/architecture/gdpr-erasure-procedure.md` is missing.
 - ADR-138 schema enforcement for `audit_class` exists in `scripts/cos-flow-register.sh`, but runtime audit-row production is still missing.
 - Air-gapped local-only proof is blocked by the absence of a first flow.
 
@@ -189,7 +189,7 @@ The commit history therefore supports a split interpretation: ADR-137 through AD
 - `scripts/cos-closure-discipline-audit` and `scripts/cos_closure_discipline_audit.py` exist.
 - `scripts/cos-ci-local.sh quick` contains closure-discipline wiring.
 - `manifests/primitive-lifecycle.yaml` registers the primitive.
-- `docs/manual-tests/closure-discipline.md` exists.
+- `docs/09-Quality/manual-tests/closure-discipline.md` exists.
 - Targeted validation passed: `python3 -m pytest tests/unit/test_closure_discipline_audit.py tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q` → `14 passed in 1.80s`.
 
 **Remaining watch item:**
@@ -207,7 +207,7 @@ The commit history therefore supports a split interpretation: ADR-137 through AD
 - `.claude/settings.json`, `.codex/hooks.json`, and `cognitive-os.yaml` were updated in the implementation commit.
 - `tests/audit/test_hook_enforced_exclusions.py` exists.
 - `tests/behavior/test_skill_router_bash_gate.py` exists.
-- `docs/manual-tests/hook-enforced-rule-projection.md` exists.
+- `docs/09-Quality/manual-tests/hook-enforced-rule-projection.md` exists.
 - Targeted validation passed in the same `14 passed` run above.
 
 **Remaining watch item:**

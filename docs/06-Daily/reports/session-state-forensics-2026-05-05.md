@@ -94,7 +94,7 @@ areas and applied a hard-delete/tombstone strategy to Paperclip-related material
 Risk factors:
 
 - removed or rewrote broader settings and configuration surfaces;
-- deleted `docs/adrs/ADR-043-paperclip-local-daemon.md`;
+- deleted `docs/02-Decisions/adrs/ADR-043-paperclip-local-daemon.md`;
 - modified many existing ADRs and reports;
 - mixed Paperclip disposition policy with unrelated repository-wide cleanup.
 
@@ -127,9 +127,9 @@ session numbering expectations.
 The active branch currently contains these tombstones:
 
 ```text
-docs/adrs/ADR-171-tombstone.md
-docs/adrs/ADR-173-tombstone.md
-docs/adrs/ADR-179-tombstone.md
+docs/02-Decisions/adrs/ADR-171-tombstone.md
+docs/02-Decisions/adrs/ADR-173-tombstone.md
+docs/02-Decisions/adrs/ADR-179-tombstone.md
 ```
 
 Their frontmatter declares the numbers as tombstones:
@@ -238,13 +238,13 @@ The repair is not done until all of the following are true:
 
 1. `git log --oneline` shows the active branch keeping the routing commit while
    removing or neutralizing the two conflict-candidate commits.
-2. `docs/adrs/ADR-171*`, `docs/adrs/ADR-173*`, and `docs/adrs/ADR-179*` no
+2. `docs/02-Decisions/adrs/ADR-171*`, `docs/02-Decisions/adrs/ADR-173*`, and `docs/02-Decisions/adrs/ADR-179*` no
    longer collide with active session decisions.
 3. The Paperclip disposition policy is represented consistently in ADRs, docs,
    hooks, packages, and tests.
 4. New skill routing contracts continue to pass.
 5. ADR numbering integrity tests prevent future tombstone/decision collisions.
-6. `docs/README.md` links to this forensic report.
+6. `docs/00-MOCs/entrypoints/README.md` links to this forensic report.
 
 ## Current Forensic Conclusion
 

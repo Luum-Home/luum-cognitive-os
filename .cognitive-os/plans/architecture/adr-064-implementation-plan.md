@@ -1,6 +1,6 @@
 # ADR-064 Implementation Plan
 
-> Status: Drafted 2026-04-28. Source ADR: [`docs/adrs/ADR-064-harness-agnostic-cognitive-os.md`](../../adrs/ADR-064-harness-agnostic-cognitive-os.md). Reference adapter pattern: `lib/harness_adapter/`. Reference cross-harness hook: `hooks/session-summary-reminder.sh`.
+> Status: Drafted 2026-04-28. Source ADR: [`docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md`](../../adrs/ADR-064-harness-agnostic-cognitive-os.md). Reference adapter pattern: `lib/harness_adapter/`. Reference cross-harness hook: `hooks/session-summary-reminder.sh`.
 >
 > Authored by Plan agent (research-only). Persisted by orchestrator. P0 sequence below is what flips ADR-064 → Accepted.
 
@@ -124,8 +124,8 @@ ADR-064 declares **four surfaces**. Surface 1 is shipped via ADR-033. Surfaces 2
 **Task 2.5 — `cos doctor harness` drift verifier** (0.5 session)
 - Acceptance criteria:
   1. New subcommand `bin/cos doctor harness` runs each driver in `--check` mode, reports drift per harness, exits non-zero if any drift.
-  2. Documentation in `docs/architecture/cross-harness-authoring.md` updated to include the doctor invocation.
-- Files touched: `bin/cos`, `docs/architecture/cross-harness-authoring.md`. Depends on 2.2/2.3/2.4.
+  2. Documentation in `docs/04-Concepts/architecture/cross-harness-authoring.md` updated to include the doctor invocation.
+- Files touched: `bin/cos`, `docs/04-Concepts/architecture/cross-harness-authoring.md`. Depends on 2.2/2.3/2.4.
 
 **Task 2.6 (optional, P2) — `scripts/_lib/settings-driver-cursor.sh`** — TBD pending operator commitment.
 

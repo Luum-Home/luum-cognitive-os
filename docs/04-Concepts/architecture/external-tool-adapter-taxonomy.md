@@ -2,7 +2,7 @@
 title: External Tool Adapter Taxonomy
 date: 2026-05-08
 status: proposed-contract
-source_index: docs/reports/external-tools-radar-INDEX.md
+source_index: docs/06-Daily/reports/external-tools-radar-INDEX.md
 related_adrs: [ADR-065, ADR-212, ADR-247, ADR-250, ADR-251, ADR-252]
 ---
 
@@ -45,8 +45,8 @@ Every radar item that graduates beyond prose must have:
 ```yaml
 tool: graphiti
 adoption_kind: schema-port
-source_report: docs/reports/external-tools-radar-2026-05-08.md
-source_detail: docs/reports/cross-check-A-memory-2026-05-08.md
+source_report: docs/06-Daily/reports/external-tools-radar-2026-05-08.md
+source_detail: docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md
 license_spdx: Apache-2.0
 owner: memory-layer-evolution
 status: proposed

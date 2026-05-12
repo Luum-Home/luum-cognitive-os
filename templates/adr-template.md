@@ -42,5 +42,5 @@ incident, or operator directive that motivated it>
 
 ## Related
 
-- `docs/adrs/ADR-NNN-<related>.md` — <relationship>
+- `docs/02-Decisions/adrs/ADR-NNN-<related>.md` — <relationship>
 - `rules/<related-rule>.md` — <if a rule implements or references this decision>

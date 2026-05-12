@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:30 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (highest-priority Phase-2 target — direct peer to COS skills)
 deep_verdict: ADOPT (with caveats — see Risks)
 deepwiki_url: https://deepwiki.com/obra/superpowers
@@ -71,7 +71,7 @@ Cross-harness agentic-engineering plugin (Claude Code, Codex CLI/App, Gemini, Op
 - Our own `skills/` tree is more battle-tested in production-OS settings; superpowers is more end-user dev-loop oriented.
 
 ### Cross-Reference vs Shallow Radar
-Shallow verdict (`docs/reports/external-tools-radar-2026-05-06.md`): "highest learn-rate target; shell-first means low porting cost." **Deep evidence agrees.** The ADOPT classification is upheld, but with two caveats the shallow scout did not surface: (1) CI red across the last 10 runs, (2) the 179k★ count is an outlier we should not weight. Both lower confidence in code-level adoption (use as pattern reference, not vendored shell), but do not change the radar ring.
+Shallow verdict (`docs/06-Daily/reports/external-tools-radar-2026-05-06.md`): "highest learn-rate target; shell-first means low porting cost." **Deep evidence agrees.** The ADOPT classification is upheld, but with two caveats the shallow scout did not surface: (1) CI red across the last 10 runs, (2) the 179k★ count is an outlier we should not weight. Both lower confidence in code-level adoption (use as pattern reference, not vendored shell), but do not change the radar ring.
 
 ### Raw Metrics Appendix
 <details>

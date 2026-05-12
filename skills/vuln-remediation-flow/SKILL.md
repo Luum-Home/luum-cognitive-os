@@ -58,7 +58,7 @@ flow can move beyond `advisory`.
 
 ## Output
 
-The flow produces a proposal bundle under `docs/proposals/` or
+The flow produces a proposal bundle under `docs/03-PoCs/proposals/` or
 `.cognitive-os/proposals/`. The proposal must include:
 
 1. the source vulnerability identifier;

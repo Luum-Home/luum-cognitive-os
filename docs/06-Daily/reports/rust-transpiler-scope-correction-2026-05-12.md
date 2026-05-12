@@ -22,8 +22,8 @@ A second capability-mode probe now evaluates minimal fixtures that intentionally
 
 Report:
 
-- `docs/reports/rust-transpiler-capability-eval-2026-05-12.md`
-- `docs/reports/rust-transpiler-capability-eval-2026-05-12.json`
+- `docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.md`
+- `docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.json`
 
 ## Capability Result
 

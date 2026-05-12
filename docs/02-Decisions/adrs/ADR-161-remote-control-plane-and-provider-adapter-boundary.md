@@ -9,10 +9,10 @@ supersedes: []
 superseded_by: null
 implementation_files:
   - manifests/remote-control-plane-alternatives.yaml
-  - docs/reports/remote-control-plane-alternatives-2026-05-05.md
-  - docs/architecture/service-control-plane-implementation-plan.md
+  - docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md
+  - docs/04-Concepts/architecture/service-control-plane-implementation-plan.md
   - tests/contracts/test_remote_control_plane_alternatives.py
-  - docs/manual-tests/remote-control-plane-boundary.md
+  - docs/09-Quality/manual-tests/remote-control-plane-boundary.md
 tier: maintainer
 tags: [remote-control-plane, provider-adapters, opencode, openclaw, agent-zero, telegram, credentials]
 ---
@@ -67,7 +67,7 @@ files. Every provider/executor adapter needs an `auth_probe` returning one of
 
 The inventory lives in `manifests/remote-control-plane-alternatives.yaml`; the
 human-readable research report lives in
-`docs/reports/remote-control-plane-alternatives-2026-05-05.md`.
+`docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md`.
 
 ## Consequences
 
@@ -99,8 +99,8 @@ human-readable research report lives in
 Before this ADR, there was no governed boundary between "the SO receives remote operator intent" and "the SO calls an AI provider." After this ADR:
 
 - `manifests/remote-control-plane-alternatives.yaml` is the machine-readable inventory of remote ingress options and provider/executor adapters, with proof level, license posture, and ingress/provider flags per entry.
-- `docs/reports/remote-control-plane-alternatives-2026-05-05.md` provides the human-readable architecture synthesis and phased plan.
-- `docs/architecture/service-control-plane-implementation-plan.md` links the new remote ingress/provider boundary and requires all execution to stay behind `cosd`.
+- `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md` provides the human-readable architecture synthesis and phased plan.
+- `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` links the new remote ingress/provider boundary and requires all execution to stay behind `cosd`.
 - Every future provider/executor adapter must expose an `auth_probe` returning `ready`, `auth_required`, `unsupported`, or `unsafe` — no silent credential reads.
 
 No credential scraping is allowed. COS must not read `~/.claude`, `~/.codex/auth.json`, vendor keychains, or equivalent hidden auth files.
@@ -119,8 +119,8 @@ No credential scraping is allowed. COS must not read `~/.claude`, `~/.codex/auth
 ### Reading guide for cold readers
 
 1. Read `manifests/remote-control-plane-alternatives.yaml` to see the inventoried alternatives and their posture.
-2. Read `docs/reports/remote-control-plane-alternatives-2026-05-05.md` for the architecture synthesis.
-3. Read `docs/architecture/service-control-plane-implementation-plan.md` for how the remote ingress/provider boundary fits the broader `cosd` plan.
+2. Read `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md` for the architecture synthesis.
+3. Read `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` for how the remote ingress/provider boundary fits the broader `cosd` plan.
 4. Run `python3 -m pytest tests/contracts/test_remote_control_plane_alternatives.py -q` to verify required manifest fields and core project coverage.
 5. The key invariant: remote ingress adapters never own model credentials; provider adapters always declare an `auth_probe`.
 
@@ -145,9 +145,9 @@ python3 -m pytest tests/audit/test_adr_contracts.py tests/audit/test_adr_locatio
 
 - `manifests/remote-control-plane-alternatives.yaml` records the verified
   alternatives and their proof/license/ingress/provider posture.
-- `docs/reports/remote-control-plane-alternatives-2026-05-05.md` records the
+- `docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md` records the
   architecture synthesis, phased plan, and manual checklist.
-- `docs/architecture/service-control-plane-implementation-plan.md` links the new
+- `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` links the new
   remote ingress/provider boundary and keeps execution behind `cosd`.
 - `tests/contracts/test_remote_control_plane_alternatives.py` verifies required
   manifest fields and core project coverage.

@@ -84,7 +84,7 @@ adr_gate: ADR-173/187 SURFACE-5
 - Primary language: Go
 - Purpose: Scriptable terminal-recorder producing GIFs/MP4/WebM from .tape files.
 - Verdict: PASS-TO-DEEP
-- Rationale: High-leverage for COS docs/release artifacts (demo recordings of `cos` flows). Low integration risk (offline tool).
+- Rationale: High-leverage for COS docs/01-Build-Log/release artifacts (demo recordings of `cos` flows). Low integration risk (offline tool).
 
 ### 8. charmbracelet/soft-serve
 - URL: https://github.com/charmbracelet/soft-serve

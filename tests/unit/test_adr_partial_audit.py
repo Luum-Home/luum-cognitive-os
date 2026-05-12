@@ -18,7 +18,7 @@ def test_adr_partial_audit_emits_control_plane_findings(tmp_path: Path) -> None:
         "summary": {"total": 1, "by_implementation_status": {"partial": 1}, "missing_partial_remaining": 1},
         "items": [{
             "adr": "ADR-234",
-            "path": "docs/adrs/ADR-234-approval-policies-as-code.md",
+            "path": "docs/02-Decisions/adrs/ADR-234-approval-policies-as-code.md",
             "implementation_status": "partial",
             "date": "2026-01-01",
             "classification_basis": "implemented contract slice",

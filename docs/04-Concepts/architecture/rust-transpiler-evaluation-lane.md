@@ -46,8 +46,8 @@ No generated Rust may replace Python source unless a Python↔Rust golden parity
 ```bash
 PATH="/path/to/py2many/bin:/path/to/tnk/bin:$PATH" \
   scripts/cos-rust-transpiler-eval \
-  --json-out docs/reports/rust-transpiler-eval-2026-05-12.json \
-  --md-out docs/reports/rust-transpiler-eval-2026-05-12.md
+  --json-out docs/06-Daily/reports/rust-transpiler-eval-2026-05-12.json \
+  --md-out docs/06-Daily/reports/rust-transpiler-eval-2026-05-12.md
 ```
 
 The command does not install tools. Tool installation remains an explicit operator action so dependency adoption is not hidden inside the lane.
@@ -56,8 +56,8 @@ The command does not install tools. Tool installation remains an explicit operat
 
 Report:
 
-- `docs/reports/rust-transpiler-eval-2026-05-12.md`
-- `docs/reports/rust-transpiler-eval-2026-05-12.json`
+- `docs/06-Daily/reports/rust-transpiler-eval-2026-05-12.md`
+- `docs/06-Daily/reports/rust-transpiler-eval-2026-05-12.json`
 
 Outcome:
 
@@ -79,14 +79,14 @@ A fair second pass uses capability fixtures:
 Run capability mode with:
 
 ```bash
-PATH="/path/to/py2many/bin:/path/to/tnk/bin:$PATH"   scripts/cos-rust-transpiler-eval --mode capability   --json-out docs/reports/rust-transpiler-capability-eval-2026-05-12.json   --md-out docs/reports/rust-transpiler-capability-eval-2026-05-12.md
+PATH="/path/to/py2many/bin:/path/to/tnk/bin:$PATH"   scripts/cos-rust-transpiler-eval --mode capability   --json-out docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.json   --md-out docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.md
 ```
 
 Capability report:
 
-- `docs/reports/rust-transpiler-capability-eval-2026-05-12.md`
-- `docs/reports/rust-transpiler-capability-eval-2026-05-12.json`
-- `docs/reports/rust-transpiler-scope-correction-2026-05-12.md`
+- `docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.md`
+- `docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.json`
+- `docs/06-Daily/reports/rust-transpiler-scope-correction-2026-05-12.md`
 
 Current capability finding: `tnk` passes a narrow pure int/list fixture with Rust compile and stdout parity; neither tool handles the broader parsing/dict fixtures well enough for official adoption yet.
 

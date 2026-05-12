@@ -24,7 +24,7 @@
 #
 # Logs every decision to .cognitive-os/metrics/agent-redirect.jsonl.
 #
-# Reference: docs/adrs/ADR-056-adaptive-agent-dispatch.md (Level 2).
+# Reference: docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md (Level 2).
 
 set -uo pipefail
 

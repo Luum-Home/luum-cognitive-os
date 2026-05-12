@@ -391,7 +391,7 @@ Additional tests needed (in `tests/behavior/test_rules_consolidation_plan.py`):
 **Goal**: Document how models should use RULES-COMPACT as a gateway.
 
 1. Add a "How to Load On-Demand Rules" section to RULES-COMPACT.md header
-2. Update `docs/rules-loading-architecture.md` with the new standard profile behavior
+2. Update `docs/04-Concepts/root/rules-loading-architecture.md` with the new standard profile behavior
 3. Update `cognitive-os.yaml` contextual_triggers to cover all 59 on-demand rules (most already defined)
 4. Commit
 

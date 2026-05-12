@@ -22,7 +22,7 @@ This protects two goals at the same time:
 
 - `skills/adr-tombstone/`, `scripts/adr_tombstone.py`, and related tests are an
   agentic primitive.
-- `docs/adrs/ADR-NNN-tombstone.md` files are ADR records generated or repaired by
+- `docs/02-Decisions/adrs/ADR-NNN-tombstone.md` files are ADR records generated or repaired by
   that primitive.
 
 Do not treat ADR records themselves as agentic primitives.

@@ -90,31 +90,31 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/external-tool-adapter-taxonomy.md"
+          "path": "docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/external-tool-adoption-doctrine.md"
+          "path": "docs/04-Concepts/architecture/external-tool-adoption-doctrine.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/repo-map-context-selector.md"
+          "path": "docs/04-Concepts/architecture/repo-map-context-selector.md"
         },
         {
           "family": "doc",
-          "path": "docs/competitive-landscape.md"
+          "path": "docs/08-References/root/competitive-landscape.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
         },
         {
           "family": "script",
@@ -182,7 +182,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-237-test-execution-efficiency-protocol.md"
+          "path": "docs/02-Decisions/adrs/ADR-237-test-execution-efficiency-protocol.md"
         },
         {
           "family": "test",
@@ -216,15 +216,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-108-concurrent-agent-safety-layer.md"
+          "path": "docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/concurrent-agent-safety-master.md"
+          "path": "docs/04-Concepts/architecture/concurrent-agent-safety-master.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/validation-nervous-system.md"
+          "path": "docs/04-Concepts/architecture/validation-nervous-system.md"
         },
         {
           "family": "script",
@@ -297,7 +297,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
+          "path": "docs/04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.md"
         },
         {
           "family": "script",
@@ -338,23 +338,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/how-to-extend.md"
+          "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "rule",
@@ -413,27 +413,27 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/how-to-extend.md"
+          "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/tool-discovery-dynamic-registration.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/tool-discovery-dynamic-registration.md"
         }
       ],
       "distribution": null,
@@ -464,23 +464,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/how-to-extend.md"
+          "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "rule",
@@ -540,51 +540,51 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+          "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+          "path": "docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+          "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+          "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md"
+          "path": "docs/02-Decisions/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/how-to-extend.md"
+          "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "rule",
@@ -671,15 +671,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-184-manager-of-managers-daemon.md"
+          "path": "docs/02-Decisions/adrs/ADR-184-manager-of-managers-daemon.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cross-session-coordination-ledger.md"
+          "path": "docs/04-Concepts/architecture/cross-session-coordination-ledger.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/profile-aware-skill-routing.md"
+          "path": "docs/04-Concepts/architecture/profile-aware-skill-routing.md"
         },
         {
           "family": "script",
@@ -770,15 +770,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest-compact.md"
+          "path": "docs/07-Capabilities/acc/latest-compact.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-185-cross-agent-audit-findings.md"
+          "path": "docs/02-Decisions/adrs/ADR-185-cross-agent-audit-findings.md"
         },
         {
           "family": "hook",
@@ -874,43 +874,43 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+          "path": "docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-093-simplify-profiles.md"
+          "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-install-scripts.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-install-scripts.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
         },
         {
           "family": "doc",
-          "path": "docs/release/v1.0-release-criteria.md"
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
         },
         {
           "family": "script",
@@ -962,15 +962,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/f1-cleanup.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "rule",
@@ -1017,39 +1017,39 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
+          "path": "docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-074-tier-0-learning-loop-closure.md"
+          "path": "docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+          "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+          "path": "docs/02-Decisions/adrs/ADR-096-review-agent-pattern.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/observability-backend-evaluation-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "skill",
@@ -1096,15 +1096,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -1149,47 +1149,47 @@
         },
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+          "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-180-lifecycle-promotion-activation.md"
+          "path": "docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
+          "path": "docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/LESSONS-LEARNED.md"
+          "path": "docs/04-Concepts/architecture/LESSONS-LEARNED.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/POST-MORTEM-2026-04.md"
+          "path": "docs/04-Concepts/architecture/POST-MORTEM-2026-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/provenance.md"
+          "path": "docs/04-Concepts/architecture/provenance.md"
         },
         {
           "family": "doc",
-          "path": "docs/legal/pre-public-readiness-checklist.md"
+          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
           "family": "hook",
@@ -1249,15 +1249,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-121-foundation-hardening-program.md"
+          "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-123-operational-stability-friction-reduction.md"
+          "path": "docs/02-Decisions/adrs/ADR-123-operational-stability-friction-reduction.md"
         },
         {
           "family": "test",
@@ -1300,23 +1300,23 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+          "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -1374,11 +1374,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/measurements/sessionstart-baseline.md"
+          "path": "docs/06-Daily/measurements/sessionstart-baseline.md"
         },
         {
           "family": "hook",
@@ -1436,15 +1436,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-081-codex-harness-adapter.md"
+          "path": "docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "hook",
@@ -1483,15 +1483,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
         },
         {
           "family": "test",
@@ -1535,39 +1535,39 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-081-codex-harness-adapter.md"
+          "path": "docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-217-cross-stack-adoption-truth-audit.md"
+          "path": "docs/02-Decisions/adrs/ADR-217-cross-stack-adoption-truth-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-sources.md"
+          "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/INDEX.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
         },
         {
           "family": "hook",
@@ -1659,75 +1659,75 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-019-scope-tagging.md"
+          "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md"
+          "path": "docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+          "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+          "path": "docs/02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cos-dispatch/migration.md"
+          "path": "docs/04-Concepts/architecture/cos-dispatch/migration.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cos-vs-project-overlap-analysis.md"
+          "path": "docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/project-consumption-patterns.md"
+          "path": "docs/04-Concepts/architecture/project-consumption-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/bmad-v6-patterns.md"
+          "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/features.md"
+          "path": "docs/08-References/business/features.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/open-source-design.md"
+          "path": "docs/08-References/business/open-source-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/cos-package-manager.md"
+          "path": "docs/07-Capabilities/root/cos-package-manager.md"
         },
         {
           "family": "doc",
-          "path": "docs/global-vs-project-config.md"
+          "path": "docs/04-Concepts/root/global-vs-project-config.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "hook",
@@ -1840,123 +1840,123 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+          "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+          "path": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/FROZEN-BACKLOG.md"
+          "path": "docs/04-Concepts/architecture/FROZEN-BACKLOG.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/sprint-2a-orphan-fate.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/executive-summary.md"
+          "path": "docs/08-References/business/executive-summary.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/features.md"
+          "path": "docs/08-References/business/features.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/value-proposition.md"
+          "path": "docs/08-References/business/value-proposition.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-sources.md"
+          "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
           "family": "doc",
-          "path": "docs/design-philosophy.md"
+          "path": "docs/04-Concepts/root/design-philosophy.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "doc",
-          "path": "docs/getting-started.md"
+          "path": "docs/00-MOCs/entrypoints/getting-started.md"
         },
         {
           "family": "doc",
-          "path": "docs/measurements/sessionstart-baseline.md"
+          "path": "docs/06-Daily/measurements/sessionstart-baseline.md"
         },
         {
           "family": "doc",
-          "path": "docs/migration-from/from-vanilla-claude-code.md"
+          "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
         },
         {
           "family": "doc",
-          "path": "docs/os-vs-project-separation.md"
+          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
         },
         {
           "family": "doc",
-          "path": "docs/overview.md"
+          "path": "docs/00-MOCs/entrypoints/overview.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/os-vs-project.md"
+          "path": "docs/04-Concepts/patterns/os-vs-project.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/megamemory-annex-d-explorer-installer-2026-05-11.md"
+          "path": "docs/03-PoCs/research/megamemory-annex-d-explorer-installer-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/megamemory-annex-e-primitives-2026-05-11.md"
+          "path": "docs/03-PoCs/research/megamemory-annex-e-primitives-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
+          "path": "docs/03-PoCs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/roadmap.md"
+          "path": "docs/01-Build-Log/root/roadmap.md"
         },
         {
           "family": "doc",
-          "path": "docs/singularity.md"
+          "path": "docs/04-Concepts/root/singularity.md"
         },
         {
           "family": "rule",
@@ -2036,63 +2036,63 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/f1-cleanup.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/docs-hook-rule-candidates.md"
+          "path": "docs/99-Archive/archive/plans/docs-hook-rule-candidates.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/docs-rescan-results.md"
+          "path": "docs/99-Archive/archive/plans/docs-rescan-results.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/execution-backends.md"
+          "path": "docs/04-Concepts/root/execution-backends.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "doc",
-          "path": "docs/health-monitoring.md"
+          "path": "docs/04-Concepts/root/health-monitoring.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/ux-principles.md"
+          "path": "docs/04-Concepts/root/ux-principles.md"
         },
         {
           "family": "rule",
@@ -2147,55 +2147,55 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/02-Decisions/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/04-Concepts/architecture/proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/docs-rescan-results.md"
+          "path": "docs/99-Archive/archive/plans/docs-rescan-results.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "doc",
-          "path": "docs/getting-started.md"
+          "path": "docs/00-MOCs/entrypoints/getting-started.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/cognitive-os-changes.md"
+          "path": "docs/04-Concepts/patterns/cognitive-os-changes.md"
         },
         {
           "family": "doc",
-          "path": "docs/safety-mesh.md"
+          "path": "docs/04-Concepts/root/safety-mesh.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-improvement-loop.md"
+          "path": "docs/04-Concepts/root/self-improvement-loop.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing-cognitive-os-suite.md"
+          "path": "docs/09-Quality/root/testing-cognitive-os-suite.md"
         },
         {
           "family": "rule",
@@ -2264,19 +2264,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "rule",
@@ -2318,19 +2318,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-019-scope-tagging.md"
+          "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/component-classification.md"
+          "path": "docs/04-Concepts/patterns/component-classification.md"
         }
       ],
       "distribution": null,
@@ -2369,27 +2369,27 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+          "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/agent-capability-coverage.md"
+          "path": "docs/07-Capabilities/root/agent-capability-coverage.md"
         },
         {
           "family": "doc",
-          "path": "docs/legal/pre-public-readiness-checklist.md"
+          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/component-reality-check.md"
+          "path": "docs/04-Concepts/patterns/component-reality-check.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
+          "path": "docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
         },
         {
           "family": "rule",
@@ -2453,31 +2453,31 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-02.md"
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
+          "path": "docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-116-multi-session-coordination-primitives.md"
+          "path": "docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+          "path": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
         },
         {
           "family": "doc",
-          "path": "docs/quality/test-coverage-report.md"
+          "path": "docs/09-Quality/quality/test-coverage-report.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
         },
         {
           "family": "test",
@@ -2550,107 +2550,107 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-026a-decisions.md"
+          "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-093-simplify-profiles.md"
+          "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-168-cross-device-dependency-installation.md"
+          "path": "docs/02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+          "path": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+          "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/bootstrap-portability.md"
+          "path": "docs/04-Concepts/architecture/bootstrap-portability.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/surface-5-and-secure-cosd-roadmap.md"
+          "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md"
         },
         {
           "family": "doc",
-          "path": "docs/legal/pre-public-readiness-checklist.md"
+          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/first-run-onboarding.md"
+          "path": "docs/09-Quality/manual-tests/first-run-onboarding.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/five-minute-demo.md"
+          "path": "docs/09-Quality/manual-tests/five-minute-demo.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/kimi-code-cli-structural-projection.md"
+          "path": "docs/09-Quality/manual-tests/kimi-code-cli-structural-projection.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/multi-ide-structural-projection.md"
+          "path": "docs/09-Quality/manual-tests/multi-ide-structural-projection.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/primitive-harness-coverage.md"
+          "path": "docs/09-Quality/manual-tests/primitive-harness-coverage.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/proof-paths.md"
+          "path": "docs/09-Quality/manual-tests/proof-paths.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/qwen-code-structural-projection.md"
+          "path": "docs/09-Quality/manual-tests/qwen-code-structural-projection.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/shell-ci-formal-harness.md"
+          "path": "docs/09-Quality/manual-tests/shell-ci-formal-harness.md"
         },
         {
           "family": "doc",
-          "path": "docs/migration-from/from-hermes.md"
+          "path": "docs/08-References/migration-from/from-hermes.md"
         },
         {
           "family": "doc",
-          "path": "docs/migration-from/from-vanilla-claude-code.md"
+          "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
         },
         {
           "family": "doc",
-          "path": "docs/onboarding/recording-recipe.md"
+          "path": "docs/05-Methodology/onboarding/recording-recipe.md"
         },
         {
           "family": "doc",
-          "path": "docs/onboarding/walkthrough.md"
+          "path": "docs/05-Methodology/onboarding/walkthrough.md"
         },
         {
           "family": "doc",
-          "path": "docs/release/roadmap-v1.0-full-e2e.md"
+          "path": "docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md"
         },
         {
           "family": "doc",
-          "path": "docs/release/v1.0-release-criteria.md"
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
         },
         {
           "family": "doc",
-          "path": "docs/usage/cos-status.md"
+          "path": "docs/05-Methodology/usage/cos-status.md"
         },
         {
           "family": "hook",
@@ -2772,15 +2772,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-228-retry-contract-and-cost-budget.md"
+          "path": "docs/02-Decisions/adrs/ADR-228-retry-contract-and-cost-budget.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/cost-predictor.md"
+          "path": "docs/04-Concepts/patterns/cost-predictor.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/cost-aware-routing.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md"
         },
         {
           "family": "rule",
@@ -2831,23 +2831,23 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-01.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+          "path": "docs/02-Decisions/adrs/ADR-069-research-first-protocol.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+          "path": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
+          "path": "docs/04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.md"
         },
         {
           "family": "rule",
@@ -2917,15 +2917,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+          "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
         },
         {
           "family": "rule",
@@ -2991,27 +2991,27 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-144-hook-enforced-rule-projection-contract.md"
+          "path": "docs/02-Decisions/adrs/ADR-144-hook-enforced-rule-projection-contract.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-145-dependency-lane-split.md"
+          "path": "docs/02-Decisions/adrs/ADR-145-dependency-lane-split.md"
         },
         {
           "family": "doc",
-          "path": "docs/tooling-update-protocol.md"
+          "path": "docs/05-Methodology/root/tooling-update-protocol.md"
         },
         {
           "family": "hook",
@@ -3068,19 +3068,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "hook",
@@ -3114,23 +3114,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/open-source-design.md"
+          "path": "docs/08-References/business/open-source-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/roadmap.md"
+          "path": "docs/08-References/business/roadmap.md"
         },
         {
           "family": "skill",
@@ -3194,7 +3194,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "rule",
@@ -3245,7 +3245,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         }
       ],
       "distribution": null,
@@ -3282,39 +3282,39 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-059-so-existential-validation.md"
+          "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md"
+          "path": "docs/02-Decisions/adrs/ADR-061-focus-narrative-and-external-evidence.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+          "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-180-lifecycle-promotion-activation.md"
+          "path": "docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-265-mandatory-minimum-inspection-caps.md"
+          "path": "docs/02-Decisions/adrs/ADR-265-mandatory-minimum-inspection-caps.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/dogfood-score.md"
+          "path": "docs/04-Concepts/patterns/dogfood-score.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
         },
         {
           "family": "rule",
@@ -3443,11 +3443,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+          "path": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "test",
@@ -3509,127 +3509,127 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+          "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-124-cos-distribution-boundaries.md"
+          "path": "docs/02-Decisions/adrs/ADR-124-cos-distribution-boundaries.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-206-aspirational-claim-decommission-gate.md"
+          "path": "docs/02-Decisions/adrs/ADR-206-aspirational-claim-decommission-gate.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-263-tool-replay-budget-ledger.md"
+          "path": "docs/02-Decisions/adrs/ADR-263-tool-replay-budget-ledger.md"
         },
         {
           "family": "doc",
-          "path": "docs/agent-teams-testing.md"
+          "path": "docs/07-Capabilities/root/agent-teams-testing.md"
         },
         {
           "family": "doc",
-          "path": "docs/agent-teams.md"
+          "path": "docs/07-Capabilities/root/agent-teams.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+          "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/runtime-hardcoding-discipline.md"
+          "path": "docs/04-Concepts/architecture/runtime-hardcoding-discipline.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md"
+          "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/durable-product-master-plan.md"
+          "path": "docs/08-References/business/durable-product-master-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-execution-requirements.md"
+          "path": "docs/08-References/business/master-plan-execution-requirements.md"
         },
         {
           "family": "doc",
-          "path": "docs/competitive-landscape.md"
+          "path": "docs/08-References/root/competitive-landscape.md"
         },
         {
           "family": "doc",
-          "path": "docs/kernel-contract.md"
+          "path": "docs/04-Concepts/root/kernel-contract.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/codex-host-tooling-verification.md"
+          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/five-minute-demo.md"
+          "path": "docs/09-Quality/manual-tests/five-minute-demo.md"
         },
         {
           "family": "doc",
-          "path": "docs/model-evolution-resilience.md"
+          "path": "docs/04-Concepts/root/model-evolution-resilience.md"
         },
         {
           "family": "doc",
-          "path": "docs/onboarding-wizard-design.md"
+          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/overview.md"
+          "path": "docs/00-MOCs/entrypoints/overview.md"
         },
         {
           "family": "doc",
-          "path": "docs/product-zones.md"
+          "path": "docs/04-Concepts/root/product-zones.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/INDEX.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/cross-session-agent-teams.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/cross-session-agent-teams.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/replay-timeline-architectures.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/coleam00__Archon-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/coleam00__Archon-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/stanfordnlp__dspy-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/stanfordnlp__dspy-2026-05-06.md"
         },
         {
           "family": "hook",
@@ -3733,19 +3733,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -3792,23 +3792,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/portability-plan.md"
+          "path": "docs/08-References/business/portability-plan.md"
         },
         {
           "family": "skill",
@@ -3876,47 +3876,47 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-01.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-086-hook-execution-observability.md"
+          "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+          "path": "docs/02-Decisions/adrs/ADR-088-provenance-trailer-ppid-chain.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-104-startup-circuit-breaker.md"
+          "path": "docs/02-Decisions/adrs/ADR-104-startup-circuit-breaker.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+          "path": "docs/02-Decisions/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+          "path": "docs/02-Decisions/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
+          "path": "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/incidents/2026-05-01-session-multi-spawn-hang.md"
+          "path": "docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/claude-code-startup-hang-regression.md"
+          "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md"
         },
         {
           "family": "doc",
-          "path": "docs/measurements/hook-timing-runbook.md"
+          "path": "docs/06-Daily/measurements/hook-timing-runbook.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "script",
@@ -4042,11 +4042,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
         }
       ],
       "distribution": null,
@@ -4082,11 +4082,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+          "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md"
         },
         {
           "family": "hook",
@@ -4150,19 +4150,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
+          "path": "docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
+          "path": "docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-062-multi-provider-agent-loop.md"
+          "path": "docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md"
         },
         {
           "family": "doc",
-          "path": "docs/runbooks/llm-dispatch.md"
+          "path": "docs/05-Methodology/runbooks/llm-dispatch.md"
         },
         {
           "family": "rule",
@@ -4215,23 +4215,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-078-mid-task-memory-tool.md"
+          "path": "docs/02-Decisions/adrs/ADR-078-mid-task-memory-tool.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+          "path": "docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/security-red-team.md"
+          "path": "docs/09-Quality/security/security-red-team.md"
         },
         {
           "family": "script",
@@ -4275,7 +4275,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
         },
         {
           "family": "rule",
@@ -4314,31 +4314,31 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
+          "path": "docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/opensage-self-programming-patterns.md"
+          "path": "docs/04-Concepts/architecture/opensage-self-programming-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-contract-registry-implementation-plan.md"
+          "path": "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/python-stdin-heredoc-trap.md"
+          "path": "docs/04-Concepts/architecture/python-stdin-heredoc-trap.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "script",
@@ -4384,31 +4384,31 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-077-peer-card-local-model.md"
+          "path": "docs/02-Decisions/adrs/ADR-077-peer-card-local-model.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+          "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/adr-collision-reconciliation.md"
+          "path": "docs/04-Concepts/architecture/adr-collision-reconciliation.md"
         },
         {
           "family": "doc",
-          "path": "docs/incidents/2026-05-02-false-done-compounding.md"
+          "path": "docs/06-Daily/incidents/2026-05-02-false-done-compounding.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
           "family": "hook",
@@ -4446,23 +4446,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
+          "path": "docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/infrastructure-service-catalog.md"
+          "path": "docs/04-Concepts/architecture/infrastructure-service-catalog.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/observability-backend-evaluation-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
           "family": "test",
@@ -4513,47 +4513,47 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-130-suspend-claude-api-workflows.md"
+          "path": "docs/02-Decisions/adrs/ADR-130-suspend-claude-api-workflows.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-131-local-ci-migration.md"
+          "path": "docs/02-Decisions/adrs/ADR-131-local-ci-migration.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md"
+          "path": "docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-172-multi-surface-ui-architecture.md"
+          "path": "docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/direct-anthropic-api-policy.md"
+          "path": "docs/04-Concepts/architecture/direct-anthropic-api-policy.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/automation.md"
+          "path": "docs/05-Methodology/root/automation.md"
         },
         {
           "family": "doc",
-          "path": "docs/configurable-quality-gates.md"
+          "path": "docs/05-Methodology/root/configurable-quality-gates.md"
         },
         {
           "family": "doc",
-          "path": "docs/overview.md"
+          "path": "docs/00-MOCs/entrypoints/overview.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
         },
         {
           "family": "script",
@@ -4649,19 +4649,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md"
+          "path": "docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/opensage-self-programming-patterns.md"
+          "path": "docs/04-Concepts/architecture/opensage-self-programming-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-contract-registry-implementation-plan.md"
+          "path": "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "script",
@@ -4718,27 +4718,27 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
+          "path": "docs/02-Decisions/adrs/ADR-189-harness-implementation-coverage.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/surface-5-and-secure-cosd-roadmap.md"
+          "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/primitive-harness-coverage.md"
+          "path": "docs/09-Quality/manual-tests/primitive-harness-coverage.md"
         },
         {
           "family": "script",
@@ -4848,23 +4848,23 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/claim-signature-audit.md"
+          "path": "docs/04-Concepts/architecture/claim-signature-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+          "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "script",
@@ -4916,11 +4916,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/INDEX.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "script",
@@ -4972,15 +4972,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+          "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/INDEX.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "script",
@@ -5041,27 +5041,27 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-280-product-question-to-evidence-primitive.md"
+          "path": "docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md"
+          "path": "docs/02-Decisions/adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/product-answer-playbook.md"
+          "path": "docs/08-References/business/product-answer-playbook.md"
         },
         {
           "family": "script",
@@ -5119,11 +5119,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "hook",
@@ -5217,55 +5217,55 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/02-Decisions/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
+          "path": "docs/02-Decisions/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/headless-runtime-proof-strategy.md"
+          "path": "docs/04-Concepts/architecture/headless-runtime-proof-strategy.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/04-Concepts/architecture/proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+          "path": "docs/04-Concepts/architecture/service-control-plane-implementation-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/headless-docker-service-runtime.md"
+          "path": "docs/09-Quality/manual-tests/headless-docker-service-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/headless-runtime-proof-drills.md"
+          "path": "docs/09-Quality/manual-tests/headless-runtime-proof-drills.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/proof-drill-registry.md"
+          "path": "docs/09-Quality/manual-tests/proof-drill-registry.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+          "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/INDEX.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "script",
@@ -5357,15 +5357,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -5435,51 +5435,51 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
+          "path": "docs/02-Decisions/adrs/ADR-084-headless-clustered-runtime-shape.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+          "path": "docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-091-headless-clustered-runtime-direction.md"
+          "path": "docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cos-service-runtime-boundary.md"
+          "path": "docs/04-Concepts/architecture/cos-service-runtime-boundary.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-rules.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+          "path": "docs/04-Concepts/architecture/service-control-plane-implementation-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+          "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md"
+          "path": "docs/03-PoCs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/rules-consolidation-plan.md"
+          "path": "docs/05-Methodology/root/rules-consolidation-plan.md"
         },
         {
           "family": "hook",
@@ -5569,35 +5569,35 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+          "path": "docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+          "path": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
         },
         {
           "family": "script",
@@ -5664,155 +5664,155 @@
         },
         {
           "family": "doc",
-          "path": "docs/AGENTS.md"
+          "path": "docs/00-MOCs/entrypoints/AGENTS.md"
         },
         {
           "family": "doc",
-          "path": "docs/INDEX.md"
+          "path": "docs/00-MOCs/entrypoints/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/RED-TEAM-CHANGELOG.md"
+          "path": "docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-02.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest-compact.md"
+          "path": "docs/07-Capabilities/acc/latest-compact.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/agentic-mastery-license-weight-dx-matrix.md"
+          "path": "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/f1-cleanup.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/red-team-harness-design.md"
+          "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/red-team-harness-proposal.md"
+          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/tooling-stack-rationalization.md"
+          "path": "docs/04-Concepts/architecture/tooling-stack-rationalization.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-sources.md"
+          "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/ecosystem-tools.md"
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
-          "path": "docs/quality/test-coverage-report.md"
+          "path": "docs/09-Quality/quality/test-coverage-report.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-b-cross-judge-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-b-cross-judge-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-c-manifest-fixtures-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-c-manifest-fixtures-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-comparison-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/security-stack.md"
+          "path": "docs/04-Concepts/root/security-stack.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+          "path": "docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/lethal-trifecta-gate.md"
+          "path": "docs/09-Quality/security/lethal-trifecta-gate.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/security-red-team.md"
+          "path": "docs/09-Quality/security/security-red-team.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing-cognitive-os.md"
+          "path": "docs/09-Quality/root/testing-cognitive-os.md"
         },
         {
           "family": "doc",
-          "path": "docs/tool-stack.md"
+          "path": "docs/04-Concepts/root/tool-stack.md"
         },
         {
           "family": "hook",
@@ -5924,59 +5924,59 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/RED-TEAM-CHANGELOG.md"
+          "path": "docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md"
         },
         {
           "family": "doc",
-          "path": "docs/RED-TEAM-COVERAGE.md"
+          "path": "docs/01-Build-Log/root/RED-TEAM-COVERAGE.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/red-team-harness-design.md"
+          "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/red-team-harness-proposal.md"
+          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-comparison-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-security-supply-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+          "path": "docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/security-red-team.md"
+          "path": "docs/09-Quality/security/security-red-team.md"
         },
         {
           "family": "script",
@@ -6030,31 +6030,31 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-019-scope-tagging.md"
+          "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-180-lifecycle-promotion-activation.md"
+          "path": "docs/02-Decisions/adrs/ADR-180-lifecycle-promotion-activation.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/FROZEN-BACKLOG.md"
+          "path": "docs/04-Concepts/architecture/FROZEN-BACKLOG.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "rule",
@@ -6102,11 +6102,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+          "path": "docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "hook",
@@ -6158,59 +6158,59 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+          "path": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-208-imported-pattern-closure-contract.md"
+          "path": "docs/02-Decisions/adrs/ADR-208-imported-pattern-closure-contract.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
+          "path": "docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md"
+          "path": "docs/02-Decisions/adrs/ADR-216-tool-discovery-pre-use-gate.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/cross-stack-license-audit-cli.md"
+          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-building-protocol.md"
+          "path": "docs/04-Concepts/root/self-building-protocol.md"
         },
         {
           "family": "rule",
@@ -6285,59 +6285,59 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+          "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+          "path": "docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
+          "path": "docs/02-Decisions/adrs/ADR-100-resource-governed-test-execution.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/cleanup-verification.md"
+          "path": "docs/99-Archive/archive/cleanup-verification.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/complexity-audit.md"
+          "path": "docs/06-Daily/root/complexity-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/release/v1.0-release-criteria.md"
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing-cognitive-os-suite.md"
+          "path": "docs/09-Quality/root/testing-cognitive-os-suite.md"
         },
         {
           "family": "hook",
@@ -6410,51 +6410,51 @@
         },
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-063-agent-tool-replication-strategy.md"
+          "path": "docs/02-Decisions/adrs/ADR-063-agent-tool-replication-strategy.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-memory-vector-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-building-protocol.md"
+          "path": "docs/04-Concepts/root/self-building-protocol.md"
         },
         {
           "family": "test",
@@ -6554,11 +6554,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
+          "path": "docs/02-Decisions/adrs/ADR-055-docs-convention-enforcement.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "rule",
@@ -6613,63 +6613,63 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-019-scope-tagging.md"
+          "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
+          "path": "docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/02-Decisions/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
+          "path": "docs/02-Decisions/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/04-Concepts/architecture/proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/proof-drill-registry.md"
+          "path": "docs/09-Quality/manual-tests/proof-drill-registry.md"
         },
         {
           "family": "doc",
-          "path": "docs/onboarding-wizard-design.md"
+          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns-adopted.md"
+          "path": "docs/08-References/root/patterns-adopted.md"
         },
         {
           "family": "doc",
-          "path": "docs/piter-framework.md"
+          "path": "docs/08-References/root/piter-framework.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestration-gaps/cost-aware-routing.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "rule",
@@ -6738,19 +6738,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/usage/skill-authoring.md"
+          "path": "docs/05-Methodology/usage/skill-authoring.md"
         },
         {
           "family": "skill",
@@ -6833,403 +6833,403 @@
         },
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-037-self-knowledge-base.md"
+          "path": "docs/02-Decisions/adrs/ADR-037-self-knowledge-base.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+          "path": "docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
+          "path": "docs/02-Decisions/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-208-imported-pattern-closure-contract.md"
+          "path": "docs/02-Decisions/adrs/ADR-208-imported-pattern-closure-contract.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
+          "path": "docs/02-Decisions/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md"
+          "path": "docs/02-Decisions/adrs/ADR-216-tool-discovery-pre-use-gate.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-217-cross-stack-adoption-truth-audit.md"
+          "path": "docs/02-Decisions/adrs/ADR-217-cross-stack-adoption-truth-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md"
+          "path": "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+          "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-rules.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/opensage-self-programming-patterns.md"
+          "path": "docs/04-Concepts/architecture/opensage-self-programming-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/untracked-work-preservation.md"
+          "path": "docs/04-Concepts/architecture/untracked-work-preservation.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/ecosystem-comparison.md"
+          "path": "docs/04-Concepts/root/ecosystem-comparison.md"
         },
         {
           "family": "doc",
-          "path": "docs/manual-tests/cross-stack-license-audit-cli.md"
+          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
         },
         {
           "family": "doc",
-          "path": "docs/onboarding-wizard-design.md"
+          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/ecosystem-tools.md"
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/INDEX.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/helixdb-comparison-2026-05-11.md"
+          "path": "docs/03-PoCs/research/helixdb-comparison-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-comparison-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/megamemory-comparison-2026-05-11.md"
+          "path": "docs/03-PoCs/research/megamemory-comparison-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-browser-automation-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-browser-automation-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-memory-obsidian-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-memory-obsidian-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-security-supply-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-security-supply-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ClementTsang__bottom-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ClementTsang__bottom-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ComposioHQ__agent-orchestrator-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ComposioHQ__agent-orchestrator-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/OpenHands__OpenHands-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/OpenHands__OpenHands-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/Textualize__textual-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/Textualize__textual-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/agentscope-ai__agentscope-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/agentscope-ai__agentscope-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/allinurl__goaccess-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/allinurl__goaccess-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/antonmedv__fx-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/antonmedv__fx-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/aristocratos__btop-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/aristocratos__btop-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__bubbles-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__bubbles-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__bubbletea-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__bubbletea-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__glamour-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__glamour-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__gum-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__gum-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__huh-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__huh-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__lipgloss-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__lipgloss-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__soft-serve-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__soft-serve-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/charmbracelet__vhs-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/charmbracelet__vhs-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/continuedev__continue-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/continuedev__continue-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/crossterm-rs__crossterm-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/crossterm-rs__crossterm-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/derailed__k9s-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/derailed__k9s-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/dlvhdr__gh-dash-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/dlvhdr__gh-dash-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/e2b-dev__infra-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/e2b-dev__infra-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/gitui-org__gitui-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/gitui-org__gitui-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/hatoo__oha-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/hatoo__oha-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/jarun__nnn-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/jarun__nnn-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/jesseduffield__lazydocker-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/jesseduffield__lazydocker-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/jesseduffield__lazygit-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/jesseduffield__lazygit-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/openclaw__openclaw-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/openclaw__openclaw-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ratatui__ratatui-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ratatui__ratatui-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/sachaos__viddy-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/sachaos__viddy-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/sxyazi__yazi-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/sxyazi__yazi-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/testcontainers__testcontainers-python-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/testcontainers__testcontainers-python-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/tstack__lnav-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/tstack__lnav-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/wagoodman__dive-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/wagoodman__dive-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/wtfutil__wtf-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/wtfutil__wtf-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/yorukot__superfile-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/yorukot__superfile-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/zellij-org__zellij-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/zellij-org__zellij-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/roadmap.md"
+          "path": "docs/01-Build-Log/root/roadmap.md"
         },
         {
           "family": "doc",
-          "path": "docs/rules-consolidation-plan.md"
+          "path": "docs/05-Methodology/root/rules-consolidation-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing.md"
+          "path": "docs/09-Quality/root/testing.md"
         },
         {
           "family": "doc",
-          "path": "docs/tool-stack.md"
+          "path": "docs/04-Concepts/root/tool-stack.md"
         },
         {
           "family": "hook",
@@ -7376,35 +7376,35 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-128-data-layer-integrity-fixes.md"
+          "path": "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/bmad-v6-patterns.md"
+          "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "doc",
-          "path": "docs/getting-started.md"
+          "path": "docs/00-MOCs/entrypoints/getting-started.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "rule",
@@ -7453,55 +7453,55 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-019-scope-tagging.md"
+          "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+          "path": "docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+          "path": "docs/02-Decisions/adrs/ADR-069-research-first-protocol.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-262-evolve-loop-spike.md"
+          "path": "docs/02-Decisions/adrs/ADR-262-evolve-loop-spike.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cos-vs-project-overlap-analysis.md"
+          "path": "docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md"
         },
         {
           "family": "doc",
-          "path": "docs/automation.md"
+          "path": "docs/05-Methodology/root/automation.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/open-source-design.md"
+          "path": "docs/08-References/business/open-source-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/organizational-model.md"
+          "path": "docs/04-Concepts/root/organizational-model.md"
         },
         {
           "family": "doc",
-          "path": "docs/roadmap.md"
+          "path": "docs/01-Build-Log/root/roadmap.md"
         },
         {
           "family": "doc",
-          "path": "docs/self-usage-audit.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/skills.md"
+          "path": "docs/05-Methodology/root/skills.md"
         },
         {
           "family": "hook",
@@ -7606,27 +7606,27 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-030.md"
+          "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+          "path": "docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "rule",
@@ -7686,51 +7686,51 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest-compact.md"
+          "path": "docs/07-Capabilities/acc/latest-compact.md"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-b-cross-judge-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-b-cross-judge-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+          "path": "docs/03-PoCs/research/ifixai-comparison-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+          "path": "docs/09-Quality/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/security-red-team.md"
+          "path": "docs/09-Quality/security/security-red-team.md"
         },
         {
           "family": "script",
@@ -7790,71 +7790,71 @@
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-027.md"
+          "path": "docs/02-Decisions/adrs/ADR-027.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-030.md"
+          "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+          "path": "docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md"
+          "path": "docs/02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
+          "path": "docs/04-Concepts/architecture/cross-tool-task-recovery-research-2026-05.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-install-scripts.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-install-scripts.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/guides/queue-classes-routing.md"
+          "path": "docs/05-Methodology/guides/queue-classes-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/release/v1.0-release-criteria.md"
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
         },
         {
           "family": "hook",
@@ -7952,35 +7952,35 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-030.md"
+          "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "test",
@@ -8112,23 +8112,23 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-030.md"
+          "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "hook",
@@ -8215,39 +8215,39 @@
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+          "path": "docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/adoption-tiers.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-030.md"
+          "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/INDEX.md"
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/status-report-april-11.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "hook",
@@ -8352,111 +8352,111 @@
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+          "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
+          "path": "docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+          "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+          "path": "docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+          "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cos-vs-project-overlap-analysis.md"
+          "path": "docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+          "path": "docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/features.md"
+          "path": "docs/08-References/business/features.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/open-source-design.md"
+          "path": "docs/08-References/business/open-source-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-sources.md"
+          "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
           "family": "doc",
-          "path": "docs/ecosystem-comparison.md"
+          "path": "docs/04-Concepts/root/ecosystem-comparison.md"
         },
         {
           "family": "doc",
-          "path": "docs/faq.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "doc",
-          "path": "docs/hooks.md"
+          "path": "docs/05-Methodology/root/hooks.md"
         },
         {
           "family": "doc",
-          "path": "docs/migration-from/from-hermes.md"
+          "path": "docs/08-References/migration-from/from-hermes.md"
         },
         {
           "family": "doc",
-          "path": "docs/overview.md"
+          "path": "docs/00-MOCs/entrypoints/overview.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/roadmap.md"
+          "path": "docs/01-Build-Log/root/roadmap.md"
         },
         {
           "family": "doc",
-          "path": "docs/rules.md"
+          "path": "docs/05-Methodology/root/rules.md"
         },
         {
           "family": "doc",
-          "path": "docs/singularity.md"
+          "path": "docs/04-Concepts/root/singularity.md"
         },
         {
           "family": "doc",
-          "path": "docs/skills.md"
+          "path": "docs/05-Methodology/root/skills.md"
         },
         {
           "family": "rule",
@@ -8531,11 +8531,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+          "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/direct-anthropic-api-policy.md"
+          "path": "docs/04-Concepts/architecture/direct-anthropic-api-policy.md"
         },
         {
           "family": "hook",
@@ -8586,7 +8586,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+          "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
         }
       ],
       "distribution": null,
@@ -8624,19 +8624,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -8706,19 +8706,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/behavioral-test-contracts.md"
+          "path": "docs/04-Concepts/architecture/behavioral-test-contracts.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/proof-drill-and-smoke-opt-in-primitives.md"
+          "path": "docs/04-Concepts/architecture/proof-drill-and-smoke-opt-in-primitives.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing.md"
+          "path": "docs/09-Quality/root/testing.md"
         },
         {
           "family": "script",
@@ -8763,27 +8763,27 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture.md"
+          "path": "docs/04-Concepts/architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/bmad-v6-patterns.md"
+          "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-audit.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "rule",
@@ -8838,19 +8838,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/legal/pre-public-readiness-checklist.md"
+          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "skill",
@@ -8905,27 +8905,27 @@
         },
         {
           "family": "doc",
-          "path": "docs/README.md"
+          "path": "docs/00-MOCs/entrypoints/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-138-flow-contract-schema.md"
+          "path": "docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+          "path": "docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
+          "path": "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/vuln-remediation-flow.md"
+          "path": "docs/04-Concepts/architecture/vuln-remediation-flow.md"
         },
         {
           "family": "test",
@@ -8967,35 +8967,35 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/component-sources.md"
+          "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
           "family": "doc",
-          "path": "docs/patterns/ecosystem-tools.md"
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
-          "path": "docs/security-stack.md"
+          "path": "docs/04-Concepts/root/security-stack.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+          "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
           "family": "doc",
-          "path": "docs/security/security-red-team.md"
+          "path": "docs/09-Quality/security/security-red-team.md"
         },
         {
           "family": "rule",
@@ -9067,11 +9067,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/concurrency-safety-core-consumer-contract.md"
+          "path": "docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/surface-5-and-secure-cosd-roadmap.md"
+          "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md"
         },
         {
           "family": "script",

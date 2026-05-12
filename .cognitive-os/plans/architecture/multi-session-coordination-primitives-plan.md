@@ -2,7 +2,7 @@
 
 ## Metadata
 
-- **ADR**: `docs/adrs/ADR-116-multi-session-coordination-primitives.md`
+- **ADR**: `docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md`
 - **Scope**: OS core with consumer-project projection
 - **IDEs / harnesses**: Claude Code, Codex, Kiro, human terminal, future IDEs through script contracts
 - **Phase**: reconstruction

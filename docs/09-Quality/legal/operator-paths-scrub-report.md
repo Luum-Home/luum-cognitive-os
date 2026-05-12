@@ -3,7 +3,7 @@
 **Date:** 2026-05-07
 **Task:** L2 — Worktree / temp-path leakage check (pre-public-readiness-checklist.md)
 **Scope:** Committed files in repo HEAD, excluding `.git/`, `node_modules/`, `.cognitive-os/`,
-`tests/`, `docs/history/`, `docs/reports/`, `docs/legal/pre-public-readiness-checklist.md`.
+`tests/`, `docs/01-Build-Log/history/`, `docs/06-Daily/reports/`, `docs/09-Quality/legal/pre-public-readiness-checklist.md`.
 
 ---
 
@@ -24,7 +24,7 @@ Initial broad grep (pattern prefix only) returned 3 candidate files:
 
 | File | Reason for match |
 |------|-----------------|
-| `docs/legal/pre-public-readiness-checklist.md` | Describes the L2 task itself (explicitly excluded) |
+| `docs/09-Quality/legal/pre-public-readiness-checklist.md` | Describes the L2 task itself (explicitly excluded) |
 | `scripts/cos-registry.sh` | Code logic: `case "$project_path" in /tmp/*\|/private/tmp/*\|/var/folders/*\|/private/var/folders/*)` |
 | `scripts/cos_init.py` | Code logic: `prefixes = ["/tmp/", "/private/tmp/", "/var/folders/", "/private/var/folders/"]` |
 

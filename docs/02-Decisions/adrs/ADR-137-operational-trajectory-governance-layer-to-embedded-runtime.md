@@ -59,7 +59,7 @@ The trajectory implies the following priority changes. These are **not scheduled
 | Surface | Why |
 |---|---|
 | ADR-064 implementation completion | Embedded runtime must run on every harness a flow targets, not just Claude Code. Codex coverage is currently partial; cloud-worker harnesses (CI runners, ephemeral containers) have no adapter. |
-| `docs/architecture/bootstrap-portability.md` enforced as gate | Cloud-worker boot is the test of portability. A `cos-init` that assumes `~/.claude/` fails the first time a worker runs in a vanilla container. |
+| `docs/04-Concepts/architecture/bootstrap-portability.md` enforced as gate | Cloud-worker boot is the test of portability. A `cos-init` that assumes `~/.claude/` fails the first time a worker runs in a vanilla container. |
 | Cross-machine Engram daemon discovery | Embedded runtime needs Engram addressable beyond `127.0.0.1:7437`. Today this is a maintainer-machine assumption. |
 | Cloud-worker session lifecycle | SessionStart / SessionEnd / Stop hooks must behave correctly when the "session" is an ephemeral container, not a developer terminal. The session-start runtime diet (v0.23) is the right scaffold. |
 | `cos-cloud-worker-bootstrap.sh` | The single entry point a cloud instance runs to become COS-native. Does not exist yet. The first flow ships it; reuse-or-die governs whether it becomes a skill. |
@@ -87,7 +87,7 @@ The trajectory implies the following priority changes. These are **not scheduled
 This ADR is satisfied when the following are observable:
 
 1. The next flow shipped under [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) carries an explicit **framing-exercise statement** in its skill metadata: how much of Framing A it exercises (e.g., "boots cos-init in sandbox: yes; uses native Engram client: no; dispatches through configured providers: yes"). Flows without this statement cannot be promoted out of `lab`.
-2. ADR-064 implementation status is reflected in [`docs/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md) and the gaps blocking the first cloud-worker flow are named there as backlog with owners.
+2. ADR-064 implementation status is reflected in [`docs/04-Concepts/architecture/bootstrap-portability.md`](../architecture/bootstrap-portability.md) and the gaps blocking the first cloud-worker flow are named there as backlog with owners.
 3. `manifests/federation-triggers.yaml` (introduced in ADR-136 as runway observability) gains a `framing_a_flows_active` counter or equivalent. The counter increments when a flow runs end-to-end in Framing A. Zero counter after three flows is signal that the trajectory is being talked about, not lived.
 4. No flow primitive promoted to `core` or `team` tier before at least one flow has shipped end-to-end in Framing A. This is the structural protection against the trajectory becoming aspirational.
 

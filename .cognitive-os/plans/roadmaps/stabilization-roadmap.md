@@ -140,4 +140,4 @@ is a nice-to-have, not a blocker). The OS can now be trusted to build itself.
 
 24 commits, 349 files changed, +11,173 / -14,926 lines. Project shrunk while adding capabilities.
 
-See `docs/adrs/` for all decisions made.
+See `docs/02-Decisions/adrs/` for all decisions made.

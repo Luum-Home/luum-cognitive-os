@@ -1,1 +1,0 @@
-09-Quality/root/testing-cognitive-os.md

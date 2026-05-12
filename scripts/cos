@@ -404,7 +404,7 @@ Usage:
   cos skill-performance ledger [--json] Project ADR-207 skill lifecycle proposals from clean reward signals
   cos promote-from-telemetry [--json]    Convert consumable telemetry into bounded proposals
   cos maintainer once --dry-run [--json] Run proposer-only maintainer loop once
-  cos adr resolve N [--expect-title T]   Resolve ADR number against canonical docs/adrs state
+  cos adr resolve N [--expect-title T]   Resolve ADR number against canonical docs/02-Decisions/adrs state
   cos work ownership PATH [PATH...]      Join WIP/stash/worktree/claim/process signals for selected paths
   cos worktree audit [--json|--strict]    Audit linked worktree divergence against main/upstream
   cos state retention [--json|--strict]   Audit declared mutable state retention

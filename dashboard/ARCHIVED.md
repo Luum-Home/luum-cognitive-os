@@ -1,7 +1,7 @@
 # Dashboard — Archived
 
 > **Status:** archived as of 2026-05-05.
-> **Authoritative decision:** [ADR-169 — Dashboard Formal Demotion](../docs/adrs/ADR-169-dashboard-formal-demotion.md).
+> **Authoritative decision:** [ADR-169 — Dashboard Formal Demotion](../docs/02-Decisions/adrs/ADR-169-dashboard-formal-demotion.md).
 
 ## What this directory was
 

@@ -3,7 +3,7 @@ evaluated_at: 2026-05-09 19:40 UTC
 engram_id: pending
 deepwiki_url: null
 batch: targeted-user-request
-parent_radar: docs/reports/external-tools-radar-INDEX.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-INDEX.md
 introduced_by_commit: 21769813
 last_verified_commit: 21769813
 source_url: https://github.com/VRSEN/OpenSwarm
@@ -111,11 +111,11 @@ wholesale.
 
 ### Cross-References
 
-- Parent index: `docs/reports/external-tools-radar-INDEX.md`
-- Targeted addendum: `docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`
-- Adoption doctrine: `docs/architecture/external-tool-adoption-doctrine.md`
-- Adapter taxonomy: `docs/architecture/external-tool-adapter-taxonomy.md`
-- Agent orchestration cluster: `docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md`
+- Parent index: `docs/06-Daily/reports/external-tools-radar-INDEX.md`
+- Targeted addendum: `docs/06-Daily/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`
+- Adoption doctrine: `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`
+- Adapter taxonomy: `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`
+- Agent orchestration cluster: `docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md`
 
 ### Raw Metrics
 

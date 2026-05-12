@@ -22,7 +22,7 @@ The complexity audit mapped this to `rules/context-management.md`, but that rule
 - Compact rules -> `rules/context-optimization.md`
 - Pre-compaction flush -> `rules/fault-tolerance.md`
 
-**Fix applied**: Updated `docs/leverage-points.md` line 78 to remove stale reference to deleted `context-engineering.md`.
+**Fix applied**: Updated `docs/04-Concepts/root/leverage-points.md` line 78 to remove stale reference to deleted `context-engineering.md`.
 
 **Risk**: Low. The 12 techniques were a descriptive catalog, not operational instructions. The individual techniques are captured in their respective rules.
 
@@ -56,7 +56,7 @@ The rule (42 lines) covers activation/deactivation, behavior changes table, rati
 
 ### 1.10 auto-refinement.md (doc, 156 lines) -> rules/closed-loop-prompts.md
 **Status: OK**
-The closed-loop-prompts rule (270 lines) is comprehensive. It covers: the PITER loop integration, prompt structure with success criteria/verification/fallback, refinement loop protocol, escalation criteria, auto-refine protocol with mandatory prompt additions, HALT-and-WAIT protocol (BMAD v6 Pattern 7), and integration with error learning and skill adaptation. Additionally, `docs/piter-framework.md` (124 lines) documents the PITER framework separately. The `skills/auto-refine/SKILL.md` (151 lines) provides the full auto-refine procedure. Total coverage far exceeds the deleted doc.
+The closed-loop-prompts rule (270 lines) is comprehensive. It covers: the PITER loop integration, prompt structure with success criteria/verification/fallback, refinement loop protocol, escalation criteria, auto-refine protocol with mandatory prompt additions, HALT-and-WAIT protocol (BMAD v6 Pattern 7), and integration with error learning and skill adaptation. Additionally, `docs/08-References/root/piter-framework.md` (124 lines) documents the PITER framework separately. The `skills/auto-refine/SKILL.md` (151 lines) provides the full auto-refine procedure. Total coverage far exceeds the deleted doc.
 
 ### 1.11 model-compatibility.md (doc, 53 lines) -> rules/model-compatibility.md
 **Status: OK**
@@ -111,7 +111,7 @@ Searched `settings.local.json` for references to these 3 hooks. **Zero matches f
 | 3 deleted hooks | Confirmed dead | Fixed 2 stale references in rules |
 
 ### Stale References Fixed
-1. `docs/leverage-points.md` line 78: Removed reference to deleted `context-engineering.md`
+1. `docs/04-Concepts/root/leverage-points.md` line 78: Removed reference to deleted `context-engineering.md`
 2. `rules/context-optimization.md` line 64: Clarified `context-budget.sh` is not registered
 3. `rules/context-management.md` lines 57+: Clarified `context-watchdog.sh` is not registered, thresholds are behavioral guidelines
 

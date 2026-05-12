@@ -19,7 +19,7 @@ trap 'rm -rf "$TMPBASE"' EXIT
 setup_repo() {
   local name="$1"
   REPO="$TMPBASE/$name"
-  mkdir -p "$REPO/hooks" "$REPO/docs/research" "$REPO/.cognitive-os/logs"
+  mkdir -p "$REPO/hooks" "$REPO/docs/03-PoCs/research" "$REPO/.cognitive-os/logs"
   cp "$HOOK" "$REPO/hooks/attribution-completeness-validator.sh"
   chmod +x "$REPO/hooks/attribution-completeness-validator.sh"
   ( cd "$REPO" && git init -q && git config user.email t@t && git config user.name T )
@@ -34,7 +34,7 @@ assert_exit "TC1: non-commit exits 0" 0 "$actual"
 
 # TC2: annex with full header + per-block attribution -> exit 0
 setup_repo r2
-cat > "$REPO/docs/research/foo-annex-f-bar.md" <<'MDEOF'
+cat > "$REPO/docs/03-PoCs/research/foo-annex-f-bar.md" <<'MDEOF'
 # Annex F
 
 - Source-Pattern: foo-pattern
@@ -48,25 +48,25 @@ cat > "$REPO/docs/research/foo-annex-f-bar.md" <<'MDEOF'
 def hello(): pass
 ```
 MDEOF
-( cd "$REPO" && git add docs/research/foo-annex-f-bar.md )
+( cd "$REPO" && git add docs/03-PoCs/research/foo-annex-f-bar.md )
 actual=$( cd "$REPO" && bash hooks/attribution-completeness-validator.sh <<<"$PAYLOAD_COMMIT" 2>/dev/null; echo $? )
 exit_code=$(echo "$actual" | tail -1)
 assert_exit "TC2: complete annex exits 0" 0 "$exit_code"
 
 # TC3: annex missing header fields -> exit 1
 setup_repo r3
-cat > "$REPO/docs/research/foo-annex-f-bar.md" <<'MDEOF'
+cat > "$REPO/docs/03-PoCs/research/foo-annex-f-bar.md" <<'MDEOF'
 # Annex F
 just some text
 MDEOF
-( cd "$REPO" && git add docs/research/foo-annex-f-bar.md )
+( cd "$REPO" && git add docs/03-PoCs/research/foo-annex-f-bar.md )
 actual=$( cd "$REPO" && bash hooks/attribution-completeness-validator.sh <<<"$PAYLOAD_COMMIT" 2>&1; echo $? )
 exit_code=$(echo "$actual" | tail -1)
 assert_exit "TC3: missing header exits 1" 1 "$exit_code"
 
 # TC4: annex with header but code block without attribution -> exit 1
 setup_repo r4
-cat > "$REPO/docs/research/foo-annex-f-bar.md" <<'MDEOF'
+cat > "$REPO/docs/03-PoCs/research/foo-annex-f-bar.md" <<'MDEOF'
 # Annex F
 
 - Source-Pattern: x
@@ -79,17 +79,17 @@ Some prose.
 def hello(): pass
 ```
 MDEOF
-( cd "$REPO" && git add docs/research/foo-annex-f-bar.md )
+( cd "$REPO" && git add docs/03-PoCs/research/foo-annex-f-bar.md )
 actual=$( cd "$REPO" && bash hooks/attribution-completeness-validator.sh <<<"$PAYLOAD_COMMIT" 2>&1; echo $? )
 exit_code=$(echo "$actual" | tail -1)
 assert_exit "TC4: code-block without attribution exits 1" 1 "$exit_code"
 
 # TC5: bypass -> exit 0
 setup_repo r5
-cat > "$REPO/docs/research/foo-annex-f-bar.md" <<'MDEOF'
+cat > "$REPO/docs/03-PoCs/research/foo-annex-f-bar.md" <<'MDEOF'
 # bad annex
 MDEOF
-( cd "$REPO" && git add docs/research/foo-annex-f-bar.md )
+( cd "$REPO" && git add docs/03-PoCs/research/foo-annex-f-bar.md )
 actual=$( cd "$REPO" && COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 bash hooks/attribution-completeness-validator.sh <<<"$PAYLOAD_COMMIT" 2>/dev/null; echo $? )
 exit_code=$(echo "$actual" | tail -1)
 assert_exit "TC5: bypass exits 0" 0 "$exit_code"

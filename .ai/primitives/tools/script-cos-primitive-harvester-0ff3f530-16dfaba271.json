@@ -57,7 +57,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos_primitive_harvester.py",
-        "docs/architecture/primitive-harvester.md"
+        "docs/04-Concepts/architecture/primitive-harvester.md"
       ],
       "runtime_projection": false
     }
@@ -65,7 +65,7 @@
   "evidence": {
     "behavior_evidence": "primitive-harvester-proposed-improvement; behavior-test",
     "evidence_commands": [
-      "python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json --json",
+      "python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/06-Daily/reports/primitive-harvester-promotion-evidence-2026-05-04.json --json",
       "python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q"
     ],
     "metrics_file": "none"
@@ -94,7 +94,7 @@
     "contract_id": "script-cos-primitive-harvester-0ff3f530",
     "evidence": {
       "evidence_commands": [
-        "python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json --json",
+        "python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/06-Daily/reports/primitive-harvester-promotion-evidence-2026-05-04.json --json",
         "python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q"
       ],
       "interventions": [
@@ -153,7 +153,7 @@
       "kind": "documented_or_on_demand",
       "projection_targets": [
         "scripts/cos_primitive_harvester.py",
-        "docs/architecture/primitive-harvester.md"
+        "docs/04-Concepts/architecture/primitive-harvester.md"
       ],
       "runtime_projection": false
     }
@@ -161,7 +161,7 @@
   "portable_id": "script-cos-primitive-harvester-0ff3f530",
   "projection_targets": [
     "scripts/cos_primitive_harvester.py",
-    "docs/architecture/primitive-harvester.md"
+    "docs/04-Concepts/architecture/primitive-harvester.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos_primitive_harvester",

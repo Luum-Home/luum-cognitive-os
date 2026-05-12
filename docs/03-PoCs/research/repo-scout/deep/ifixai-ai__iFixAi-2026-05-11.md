@@ -3,7 +3,7 @@ evaluated_at: 2026-05-11 UTC
 engram_id: pending
 deepwiki_url: null
 batch: targeted-user-request
-parent_radar: docs/reports/external-tools-radar-INDEX.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-INDEX.md
 introduced_by_commit: 2e56c4f
 last_verified_commit: 2e56c4f
 source_url: https://github.com/ifixai-ai/iFixAi
@@ -103,8 +103,8 @@ The five-pillar taxonomy (fabrication, manipulation, deception, unpredictability
 
 | Adoption kind | Effort | Risk | Notes |
 |---|---|---|---|
-| pattern-only (taxonomy + manifest + cross-judge contract) | **S** (~0.5 day) | low | Add reference doc in `docs/patterns/` or `docs/architecture/`; cite mappings; no runtime change |
-| CLI-adapter (invoke `ifixai run` from a COS `red-team` lane) | **M** (~1–2 days) | medium | Pin version, sandbox cwd to a temp dir, require explicit provider keys via env, capture manifest under `docs/reports/`; mark scores as drift-signal |
+| pattern-only (taxonomy + manifest + cross-judge contract) | **S** (~0.5 day) | low | Add reference doc in `docs/04-Concepts/patterns/` or `docs/04-Concepts/architecture/`; cite mappings; no runtime change |
+| CLI-adapter (invoke `ifixai run` from a COS `red-team` lane) | **M** (~1–2 days) | medium | Pin version, sandbox cwd to a temp dir, require explicit provider keys via env, capture manifest under `docs/06-Daily/reports/`; mark scores as drift-signal |
 | Schema port (vendor JSON schemas from `ifixai/schemas/` for COS scorecards) | **M** (~1 day) | low | License-clean (Apache-2.0); attribute upstream |
 | Default dependency / library import | **L** | **HIGH — DO NOT** | v1.0.0 is 1 week old; thresholds disclaimed as uncalibrated; would bind COS to an immature scoring policy |
 

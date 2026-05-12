@@ -233,8 +233,8 @@ def audit(repo: Path, manifest_path: Path, *, check_generated: bool = False) -> 
     report, findings = generated_payload(repo, manifest_path)
     manifest = load_yaml(manifest_path)
     outputs = ((manifest.get("policy") or {}).get("generated_outputs") or {})
-    matrix_rel = str(outputs.get("matrix_md", "docs/capabilities/MATRIX.md"))
-    latest_rel = str(outputs.get("latest_json", "docs/reports/capability-coverage-latest.json"))
+    matrix_rel = str(outputs.get("matrix_md", "docs/07-Capabilities/capabilities/MATRIX.md"))
+    latest_rel = str(outputs.get("latest_json", "docs/06-Daily/reports/capability-coverage-latest.json"))
     report["outputs"] = {"matrix_md": matrix_rel, "latest_json": latest_rel}
 
     def apply_findings(current: list[Finding]) -> None:

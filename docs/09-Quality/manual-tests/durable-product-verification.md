@@ -19,7 +19,7 @@ but contains real, inspectable, testable components for:
 Open:
 
 - `manifests/kernel-contract.yaml`
-- `docs/kernel-contract.md`
+- `docs/04-Concepts/root/kernel-contract.md`
 
 Verify:
 

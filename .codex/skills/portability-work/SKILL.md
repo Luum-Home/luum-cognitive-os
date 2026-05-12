@@ -64,5 +64,5 @@ python3 -m pytest tests/behavior/test_self_install.py tests/integration/test_pro
 
 Any meaningful portability conclusion should update:
 
-- `docs/architecture/bootstrap-portability.md`
-- and, if product-significant, `docs/business/master-plan-checklist.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- and, if product-significant, `docs/08-References/business/master-plan-checklist.md`

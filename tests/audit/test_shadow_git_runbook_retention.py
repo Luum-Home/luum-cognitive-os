@@ -17,7 +17,7 @@ def test_shadow_git_manifest_links_runbook_and_retention(project_root: Path) -> 
 
 @pytest.mark.audit
 def test_shadow_git_runbook_documents_combined_restore(project_root: Path) -> None:
-    text = (project_root / "docs/runbooks/shadow-git-rollback.md").read_text()
+    text = (project_root / "docs/05-Methodology/runbooks/shadow-git-rollback.md").read_text()
     assert "files_and_conversation" in text
     assert "--target-seq" in text
     assert "--prune" in text

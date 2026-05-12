@@ -112,4 +112,4 @@ Verdict breakdown:
 
 ## Per-repo artifacts
 
-All 43 per-repo files in `docs/research/repo-scout/monitor-followup/<owner>__<repo>-2026-05-06.md`.
+All 43 per-repo files in `docs/03-PoCs/research/repo-scout/monitor-followup/<owner>__<repo>-2026-05-06.md`.

@@ -39,8 +39,8 @@ Do not infer Claude/Codex/CLI/UI parity from `SCOPE: both` alone, and do not tre
 2. Read the summary from:
 
    ```text
-   docs/reports/primitive-harness-coverage-latest.json
-   docs/reports/primitive-harness-coverage-latest.md
+   docs/06-Daily/reports/primitive-harness-coverage-latest.json
+   docs/06-Daily/reports/primitive-harness-coverage-latest.md
    ```
 
 3. For a specific primitive, inspect:

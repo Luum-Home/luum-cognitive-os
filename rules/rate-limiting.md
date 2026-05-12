@@ -89,8 +89,8 @@ security:
 - **Library**: `lib/rate_limiter.py` — token bucket, warnings, priority lane, diversity penalty, queue API
 - **State**: `.cognitive-os/rate-limit-state.json` — counters, buckets, signatures, cost
 - **Queue**: `.cognitive-os/rate-limit-queue.jsonl` — queued retries
-- **Architecture**: `docs/architecture/rate-limiter-flow-control.md`
-- **Decision**: `docs/adrs/ADR-101-intent-aware-rate-limiter.md`
+- **Architecture**: `docs/04-Concepts/architecture/rate-limiter-flow-control.md`
+- **Decision**: `docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md`
 
 ## Manual Override
 

@@ -96,8 +96,8 @@ A weekly scheduled workflow now runs the family-level primitive gap snapshot:
 - workflow: `.github/workflows/primitive-gap-audit.yml`
 - script: `scripts/primitive_gap_snapshot.py`
 - JSON artifact: `primitive-gap-snapshot.json`
-- latest Markdown report: `docs/reports/primitive-gap-latest.md`
-- trend metric: `docs/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs
+- latest Markdown report: `docs/06-Daily/reports/primitive-gap-latest.md`
+- trend metric: `docs/06-Daily/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs
 
 The workflow intentionally does not fail on high risk yet. The current baseline is high-risk, so failing the scheduled job would create noise instead of useful escalation. Once the family-level baseline is cleaned up, enable `--fail-high-risk` or a narrower regression threshold for blocker/high deltas.
 
@@ -128,9 +128,9 @@ Added protection:
 
 - script: `scripts/docs_duplicate_audit.py`
 - tests: `tests/unit/test_docs_duplicate_audit.py`
-- baseline: `docs/reports/docs-duplicate-baseline.json`
-- latest JSON: `docs/reports/docs-duplicate-latest.json`
-- latest Markdown: `docs/reports/docs-duplicate-latest.md`
+- baseline: `docs/06-Daily/reports/docs-duplicate-baseline.json`
+- latest JSON: `docs/06-Daily/reports/docs-duplicate-latest.json`
+- latest Markdown: `docs/06-Daily/reports/docs-duplicate-latest.md`
 - CI behavior: weekly workflow fails on new near-duplicate Markdown pairs versus baseline.
 
 Current scan: 364 docs scanned, 0 duplicate pairs at threshold 0.72.
@@ -178,7 +178,7 @@ Remaining gap:
 - Expired ADR reservations can be listed and cleaned up with
   `scripts/adr_reserve.py --list --json` and
   `scripts/adr_reserve.py --cleanup-expired --json`.
-- `lib/adr_detector.py` now writes generated drafts under canonical `docs/adrs/`
+- `lib/adr_detector.py` now writes generated drafts under canonical `docs/02-Decisions/adrs/`
   and reserves the ADR number before writing.
 
 ## Row-Level Primitive Audit
@@ -187,8 +187,8 @@ Family-level counts were useful but too coarse. The row-level audit now emits a
 concrete keep/harden/demote/delete queue for hooks, skills, rules, and metrics.
 
 - script: `scripts/primitive_row_audit.py`
-- latest JSON: `docs/reports/primitive-row-audit-latest.json`
-- latest Markdown: `docs/reports/primitive-row-audit-latest.md`
+- latest JSON: `docs/06-Daily/reports/primitive-row-audit-latest.json`
+- latest Markdown: `docs/06-Daily/reports/primitive-row-audit-latest.md`
 - tests: `tests/unit/test_primitive_row_audit.py`
 - current rows: 639
 
@@ -204,11 +204,11 @@ The audit maps:
 Product claims are now audited separately from primitive files.
 
 - claim audit script: `scripts/claim_proof_audit.py`
-- latest claim JSON: `docs/reports/claim-proof-latest.json`
-- latest claim Markdown: `docs/reports/claim-proof-latest.md`
+- latest claim JSON: `docs/06-Daily/reports/claim-proof-latest.json`
+- latest claim Markdown: `docs/06-Daily/reports/claim-proof-latest.md`
 - reduction backlog script: `scripts/reduction_backlog.py`
-- latest backlog JSON: `docs/reports/reduction-backlog-latest.json`
-- latest backlog Markdown: `docs/reports/reduction-backlog-latest.md`
+- latest backlog JSON: `docs/06-Daily/reports/reduction-backlog-latest.json`
+- latest backlog Markdown: `docs/06-Daily/reports/reduction-backlog-latest.md`
 - tests: `tests/unit/test_claim_proof_and_reduction.py`
 
 Current outputs:
@@ -244,8 +244,8 @@ explicitly demoted before the audit can pass.
 The first family-specific reducer now exists for hooks:
 
 - reducer: `scripts/primitive_surface_reduce.py --family hooks`
-- latest JSON: `docs/reports/primitive-surface-reduction-latest.json`
-- latest Markdown: `docs/reports/primitive-surface-reduction-latest.md`
+- latest JSON: `docs/06-Daily/reports/primitive-surface-reduction-latest.json`
+- latest Markdown: `docs/06-Daily/reports/primitive-surface-reduction-latest.md`
 - tests: `tests/unit/test_primitive_surface_reduce.py`
 
 Modes:
@@ -275,8 +275,8 @@ Static consumer coverage is now tracked for Python scripts and can be run for
 hooks, skills, and rules:
 
 - mapper: `scripts/primitive_usage_map.py`
-- latest JSON: `docs/reports/primitive-usage-map-latest.json`
-- latest Markdown: `docs/reports/primitive-usage-map-latest.md`
+- latest JSON: `docs/06-Daily/reports/primitive-usage-map-latest.json`
+- latest Markdown: `docs/06-Daily/reports/primitive-usage-map-latest.md`
 - tests: `tests/unit/test_primitive_usage_map.py`
 - skills: `/primitive-usage-map`, `/primitive-surface-reduction`
 
@@ -299,7 +299,7 @@ hook surface reduction plan.
 
 Evidence-bound alternatives comparison now lives at:
 
-- `docs/reports/alternatives-comparison-2026-04.md`
+- `docs/06-Daily/reports/alternatives-comparison-2026-04.md`
 
 It explicitly marks where COS wins, where it loses, and where it should stop
 presenting aspirational behavior as current product behavior.

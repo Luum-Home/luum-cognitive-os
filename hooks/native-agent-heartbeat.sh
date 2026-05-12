@@ -10,7 +10,7 @@
 # Why a shell wrapper? Hook registration (scripts/apply-efficiency-profile.sh)
 # expects a script path. Keeping this file preserves the registration contract.
 #
-# Migration: see docs/adrs/ADR-033-harness-agnostic-event-capture.md.
+# Migration: see docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md.
 
 set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"

@@ -11,7 +11,7 @@ python3 scripts/primitive_duplication_audit.py --project-root . --json
 python3 - <<'PY'
 import json
 from pathlib import Path
-report = json.loads(Path('docs/reports/primitive-duplication-latest.json').read_text())
+report = json.loads(Path('docs/06-Daily/reports/primitive-duplication-latest.json').read_text())
 print(report['summary'])
 assert report['schema_version'] == 'primitive-duplication-audit.v1'
 assert 'findings' in report['summary']
@@ -21,8 +21,8 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh --brief | python3 -m j
 
 ## Expected result
 
-- The JSON report exists at `docs/reports/primitive-duplication-latest.json`.
-- The Markdown report exists at `docs/reports/primitive-duplication-latest.md`.
+- The JSON report exists at `docs/06-Daily/reports/primitive-duplication-latest.json`.
+- The Markdown report exists at `docs/06-Daily/reports/primitive-duplication-latest.md`.
 - Findings include `recommendation`, `common_home`, and `consumer_relevance` fields.
 - ACC refresh includes the `primitive_duplication` adapter.
 

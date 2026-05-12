@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: TOMBSTONE — 2026-05-11 (Opus refinement of 2026-05-10 Sonnet pass)
-Reconciled-by: P3 plan triage Opus re-triage (see docs/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
+Reconciled-by: P3 plan triage Opus re-triage (see docs/06-Daily/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
 Decision: TOMBSTONE — confirmed. No change from Sonnet pass; rationale unchanged.
 Opus agreement: All 8 workstreams (TO-1..TO-8) verified superseded by accepted ADRs + shipped runtime; CHANGELOG [Unreleased] confirms ToolSearch token-delta metrics ("Added local ToolSearch token-delta metrics, dispatch metric emission, and `cos-deferred-tool-plan --token-delta` to replace the prior measured-vs-claimed gap") and the H5 doctrinal re-qualification ("Qualified token-reduction claims as upstream figures unless local ToolSearch metrics exist"). Plan stays in archive/ as historical record only. Already covered by an existing tombstone/SUPERSEDED chain — no separate ADR-tombstone slot needed.
 Sonnet 2026-05-10 decision: TOMBSTONE. Opus agreement: TOMBSTONE confirmed unchanged.

@@ -19,12 +19,12 @@ The `doc-sync-detector.sh` hook automatically detects when source file edits (*.
 |-------------|---------------|
 | `*/infrastructure/controllers/*` | migration-audit.md, feature-parity-report.md |
 | `*/domain/entities/*` | migration-audit.md |
-| `*/config/*` | docs/setup/ |
+| `*/config/*` | docs/05-Methodology/setup/ |
 | `*/application/use*cases/*` | migration-audit.md, feature-parity-report.md |
 | `*.module.ts`, `routes.go` | migration-audit.md |
-| `hooks/*` | .cognitive-os/docs/hooks.md, overview.md |
-| `.cognitive-os/rules/*` | .cognitive-os/docs/rules.md, overview.md |
-| `docker-compose*.yml` | docs/setup/docker-architecture.md |
+| `hooks/*` | .cognitive-os/docs/05-Methodology/root/hooks.md, overview.md |
+| `.cognitive-os/rules/*` | .cognitive-os/docs/05-Methodology/root/rules.md, overview.md |
+| `docker-compose*.yml` | docs/05-Methodology/setup/docker-architecture.md |
 
 ## Integration
 

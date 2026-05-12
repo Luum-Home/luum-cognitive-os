@@ -19,8 +19,8 @@ behind a feature flag or are documented as next-cycle work.
   closed end-to-end. Tracked as future work, not as a shipped capability
 
 Source of truth: `rules/RULES-COMPACT.md`, weekly aspirational audit at
-`docs/reports/aspirational-audit-*.md`, full reconciliation at
-`docs/legal/h1-feature-status-audit.md`.
+`docs/06-Daily/reports/aspirational-audit-*.md`, full reconciliation at
+`docs/09-Quality/legal/h1-feature-status-audit.md`.
 
 ## Feature Overview
 

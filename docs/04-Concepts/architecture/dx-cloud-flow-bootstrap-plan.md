@@ -41,7 +41,7 @@ The repository contains the primitives this direction requires. They were built 
 | No "spawn cloud worker bootstrapped with COS context" primitive | Skills `e2b-integration` and `gpu-sandbox` exist but are not wired into a deployable flow. There is no `cos-cloud-worker-bootstrap.sh`. | One thin script per first flow. Promote to skill only after second flow reuses it. |
 | `llm-dispatch.jsonl` is empty | Per the 2026-05-02 DX assessment, the multi-provider dispatch code is real but production data is zero. Cloud agents without per-task cost are an unaccountable bill. | Wire **one** flow's dispatch to actually log. Use that data to validate the cost predictor. |
 | Cross-harness adapters partial | Claude Code is canonical, Codex has gaps (per ADR-064 implementation status), CI runners / ephemeral VMs / containers have no adapter. | Pick the harness that matches the first flow's deploy target. Build only that adapter. |
-| No human-review UX | Reviewers read JSONL and `docs/proposals/*.md` by hand. There is no surface for "N propose-only evidence bundles, sign or reject." | First flow uses GitHub PR + `cos-engram-import-propose` output as the review surface. New UX is deferred until the JSONL-on-PR pattern measurably fails. |
+| No human-review UX | Reviewers read JSONL and `docs/03-PoCs/proposals/*.md` by hand. There is no surface for "N propose-only evidence bundles, sign or reject." | First flow uses GitHub PR + `cos-engram-import-propose` output as the review surface. New UX is deferred until the JSONL-on-PR pattern measurably fails. |
 | No flow contract schema | Each flow needs a falsifiable success condition, a sandboxed write path, blocked-actions list, and required-evidence shape. The proposers (ADR-134/135) defined this contract for themselves; it is not yet generalised. | First flow ships its own contract; the second flow promotes the shared shape into a manifest. |
 
 ## The tradeoff that matters
@@ -76,8 +76,8 @@ What the first flow ships, and what it explicitly does not ship:
 | `manifests/flow-contract-schema.yaml` | New manifest with the first flow's contract; promoted to shared shape only after second flow reuses it |
 | `llm-dispatch.jsonl` instrumentation | Wired for the first flow only; populates real data for the cost predictor |
 | `manifests/federation-triggers.yaml` | First counter (`external_consumer_reports_30d` or `concurrent_remote_writers`) becomes non-zero |
-| `docs/architecture/vuln-remediation-flow.md` | Flow documentation with explicit `falsifiable_when` block |
-| `docs/proposals/vuln-remediation-flow-results-<date>.md` | First propose-only evidence bundle, reviewed and signed (or rejected) by maintainer |
+| `docs/04-Concepts/architecture/vuln-remediation-flow.md` | Flow documentation with explicit `falsifiable_when` block |
+| `docs/03-PoCs/proposals/vuln-remediation-flow-results-<date>.md` | First propose-only evidence bundle, reviewed and signed (or rejected) by maintainer |
 | New default-visible primitives | **Zero**. The `active_primitive_index` thresholds (`VISIBLE_WARN=12`, `VISIBLE_FAIL=25`) must not be crossed. |
 | New rules added to `rules/RULES-COMPACT.md` | **Zero**. Flow-specific rules live in the skill's SKILL.md, not in the shared rule index. |
 | Shape B activation | **No**. The runway primitives are exercised, not promoted. |
@@ -110,10 +110,10 @@ Priority shifts that follow from the trajectory:
 
 | Surface | Why it moves up | Where it lives today |
 |---|---|---|
-| ADR-064 (harness-agnostic COS) implementation completion | Runtime that travels needs portable hooks, portable session lifecycle, portable Engram client across harnesses. Codex coverage is partial. | `docs/adrs/ADR-064-harness-agnostic-cognitive-os.md`, `docs/architecture/bootstrap-portability.md` |
-| `bootstrap-portability.md` enforced as gate, not aspiration | Cloud worker boot path is the test of portability. Aspirational portability dies the first time `cos-init` assumes `~/.claude/`. | `docs/architecture/bootstrap-portability.md` |
+| ADR-064 (harness-agnostic COS) implementation completion | Runtime that travels needs portable hooks, portable session lifecycle, portable Engram client across harnesses. Codex coverage is partial. | `docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md`, `docs/04-Concepts/architecture/bootstrap-portability.md` |
+| `bootstrap-portability.md` enforced as gate, not aspiration | Cloud worker boot path is the test of portability. Aspirational portability dies the first time `cos-init` assumes `~/.claude/`. | `docs/04-Concepts/architecture/bootstrap-portability.md` |
 | Cross-machine `engram` daemon discovery | Runtime-side memory that survives cloud worker tear-down requires Engram to be addressable from outside the maintainer's machine, not just `127.0.0.1:7437`. | `mcp-server/cos_mcp.py`, `lib/engram_client.py` |
-| Cloud-worker-specific session lifecycle | SessionStart / SessionEnd / Stop hooks need to behave correctly when the "session" is an ephemeral container, not a developer terminal. The session-start runtime diet (v0.23) is the right scaffold. | `docs/architecture/session-start-runtime-diet.md`, `hooks/session-start*.sh` |
+| Cloud-worker-specific session lifecycle | SessionStart / SessionEnd / Stop hooks need to behave correctly when the "session" is an ephemeral container, not a developer terminal. The session-start runtime diet (v0.23) is the right scaffold. | `docs/04-Concepts/architecture/session-start-runtime-diet.md`, `hooks/session-start*.sh` |
 | `cos-cloud-worker-bootstrap.sh` | The single entry point a cloud instance runs to become a COS-native runtime: install harness, fetch context, register with central instance, start session. Does not exist yet. | new — first flow ships it |
 
 What does **not** move up (deliberately):

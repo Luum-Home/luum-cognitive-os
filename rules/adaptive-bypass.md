@@ -44,7 +44,7 @@ If connected to a ticketing system processing tasks across multiple projects, ea
 
 The paper "Evaluating AGENTS.md" (arxiv.org/abs/2602.11988) found that context files REDUCE task success rates and increase costs by 20%+. This validates the adaptive bypass: for trivial tasks, governance context hurts more than it helps. The bypass isn't just about saving tokens -- it's about IMPROVING task success by reducing cognitive noise.
 
-See `docs/research/minimal-context-principle.md` for full analysis.
+See `docs/03-PoCs/research/minimal-context-principle.md` for full analysis.
 
 ## Self-Check (mandatory before every task)
 

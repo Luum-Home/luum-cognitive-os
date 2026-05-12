@@ -23,7 +23,7 @@ Accepted
 **Status**: Accepted  
 **Date**: 2026-05-06  
 **Related**: ADR-117, ADR-199, ADR-200  
-**Source**: `docs/reports/stash-hidden-wip-postmortem-2026-05-06.md`
+**Source**: `docs/06-Daily/reports/stash-hidden-wip-postmortem-2026-05-06.md`
 
 ---
 

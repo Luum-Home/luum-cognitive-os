@@ -18,20 +18,20 @@ Engram and the Obsidian export are primarily the **Knowledge** and human-audit l
 
 | Document | What it says | Current reading |
 |---|---|---|
-| `docs/self-improvement-loop.md` | Defines the end-to-end loop: error capture, auto-refine, session learning, KPI monitoring, `/self-improve`, and governed updates to rules/skills/templates. | Architectural and partially implemented; some referenced atomic skills are not in the root `skills/` tree but the package skill exists. |
-| `docs/self-repair-guide.md` | User-facing description of consequence engine, error learning, retry/circuit-breaker behavior, `/optimize-skill`, and `/self-improve`. | Useful operator guide, but some automatic hook-registration claims need to be read against current profiles/settings. |
-| `docs/architecture.md` and `docs/overview.md` | Describe MAPE-K as the self-healing/self-improvement core and map monitor/analyze/plan/execute/knowledge to primitives. | Conceptual source of truth for the control-loop model. |
-| `docs/adrs/ADR-083-governed-self-improvement-loop.md` | Decides self-improvement must be detect → propose → draft → verify → approve → promote; no silent mutation of live rules/root skills. | Important safety boundary; later ADRs absorb parts of it. |
-| `docs/adrs/ADR-090-auto-skill-repair.md` | Detect skill degradation, emit repair queue, require gated action; no direct auto-regeneration. | Matches implementation in `lib/skill_failure_repair.py` and `hooks/skill-failure-monitor.sh`. |
-| `docs/adrs/ADR-095-skill-synthesis-success-patterns.md` | Synthesizes skill drafts from recurring successful tool sequences. | Matches `lib/skill_synthesizer.py`; promotion remains operator-gated. |
-| `docs/adrs/ADR-134-headless-self-improvement-proposer.md` | Converts audits into bounded self-improvement proposals; explicitly propose-only. | Matches `scripts/cos-self-improvement-loop` / `lib/self_improvement_loop.py`. |
-| `docs/adrs/ADR-135-self-evolving-doctrine-proposals.md` | Lets COS propose doctrine amendments under `docs/proposals/` without editing live rules. | Matches `scripts/cos-doctrine-proposer` / `lib/doctrine_proposer.py`. |
-| `docs/adrs/ADR-146-primitive-readiness-ledger.md` | Defines script primitive readiness ledger and role taxonomy. | Implemented; this is the machine-readable primitive-improvement substrate. |
-| `docs/adrs/ADR-147-agent-capability-coverage-pipeline.md` | Defines ACC as cross-adapter mapping from real capabilities to agentic primitives. | Implemented as `scripts/acc_pipeline.py`; useful for primitive gap detection. |
-| `docs/architecture/primitive-readiness-continuity-plan.md` | Living plan for evolving docs, scripts, hooks, rules, skills, memory, and harness adapters into governed primitives. | Best current continuity map for primitive evolution. |
-| `docs/architecture/headless-self-improvement-proposer.md` | Explains propose-only self-improvement and the discipline gate. | Current boundary: self-improvement proposes, does not auto-merge. |
-| `docs/self-usage-audit.md` | Older audit finding many loops were passive or incompletely registered. | Still useful as caution: design intent must be verified against active profiles, not docs alone. |
-| `docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md` | Places Obsidian as human-readable graph/audit layer over Engram, not memory authority. | Supports self-improvement by making memory/relations reviewable, but not by directly editing runtime. |
+| `docs/04-Concepts/root/self-improvement-loop.md` | Defines the end-to-end loop: error capture, auto-refine, session learning, KPI monitoring, `/self-improve`, and governed updates to rules/skills/templates. | Architectural and partially implemented; some referenced atomic skills are not in the root `skills/` tree but the package skill exists. |
+| `docs/05-Methodology/root/self-repair-guide.md` | User-facing description of consequence engine, error learning, retry/circuit-breaker behavior, `/optimize-skill`, and `/self-improve`. | Useful operator guide, but some automatic hook-registration claims need to be read against current profiles/settings. |
+| `docs/04-Concepts/architecture.md` and `docs/00-MOCs/entrypoints/overview.md` | Describe MAPE-K as the self-healing/self-improvement core and map monitor/analyze/plan/execute/knowledge to primitives. | Conceptual source of truth for the control-loop model. |
+| `docs/02-Decisions/adrs/ADR-083-governed-self-improvement-loop.md` | Decides self-improvement must be detect → propose → draft → verify → approve → promote; no silent mutation of live rules/root skills. | Important safety boundary; later ADRs absorb parts of it. |
+| `docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md` | Detect skill degradation, emit repair queue, require gated action; no direct auto-regeneration. | Matches implementation in `lib/skill_failure_repair.py` and `hooks/skill-failure-monitor.sh`. |
+| `docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md` | Synthesizes skill drafts from recurring successful tool sequences. | Matches `lib/skill_synthesizer.py`; promotion remains operator-gated. |
+| `docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md` | Converts audits into bounded self-improvement proposals; explicitly propose-only. | Matches `scripts/cos-self-improvement-loop` / `lib/self_improvement_loop.py`. |
+| `docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md` | Lets COS propose doctrine amendments under `docs/03-PoCs/proposals/` without editing live rules. | Matches `scripts/cos-doctrine-proposer` / `lib/doctrine_proposer.py`. |
+| `docs/02-Decisions/adrs/ADR-146-primitive-readiness-ledger.md` | Defines script primitive readiness ledger and role taxonomy. | Implemented; this is the machine-readable primitive-improvement substrate. |
+| `docs/02-Decisions/adrs/ADR-147-agent-capability-coverage-pipeline.md` | Defines ACC as cross-adapter mapping from real capabilities to agentic primitives. | Implemented as `scripts/acc_pipeline.py`; useful for primitive gap detection. |
+| `docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md` | Living plan for evolving docs, scripts, hooks, rules, skills, memory, and harness adapters into governed primitives. | Best current continuity map for primitive evolution. |
+| `docs/04-Concepts/architecture/headless-self-improvement-proposer.md` | Explains propose-only self-improvement and the discipline gate. | Current boundary: self-improvement proposes, does not auto-merge. |
+| `docs/06-Daily/root/self-usage-audit.md` | Older audit finding many loops were passive or incompletely registered. | Still useful as caution: design intent must be verified against active profiles, not docs alone. |
+| `docs/03-PoCs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md` | Places Obsidian as human-readable graph/audit layer over Engram, not memory authority. | Supports self-improvement by making memory/relations reviewable, but not by directly editing runtime. |
 
 ## Implementations found
 
@@ -217,7 +217,7 @@ scripts/cos-import-consumer-improvement-proposals \
 ```
 
 and write only under `.cognitive-os/improvements/proposals/` or
-`docs/proposals/` until reviewed.
+`docs/03-PoCs/proposals/` until reviewed.
 
 ## Implementation reality matrix
 
@@ -238,7 +238,7 @@ and write only under `.cognitive-os/improvements/proposals/` or
 ## Gaps and cautions
 
 1. **Activation/profile drift matters**: docs describe loops, but current behavior depends on hook registration in active harness settings and profile projection.
-2. **Some docs are older than current implementation**: `docs/self-usage-audit.md` records a weaker state and should be treated as historical caution, not the latest status.
+2. **Some docs are older than current implementation**: `docs/06-Daily/root/self-usage-audit.md` records a weaker state and should be treated as historical caution, not the latest status.
 3. **Self-improvement is governed, not free-running**: ADR-083/134/135 deliberately reject silent live-rule edits, auto-merge, and auto-promotion to core/team.
 4. **Skill repair is signal-first**: the repair queue exists to prevent runaway regeneration.
 5. **Primitive improvement is broader than skills**: current ledgers cover scripts, hooks, skills, and rules, but promotion still needs lifecycle metadata and proof.
@@ -251,7 +251,7 @@ and write only under `.cognitive-os/improvements/proposals/` or
    - latest error-learning, skill-feedback, consequence, and repair-queue counts;
    - latest ACC/primitive readiness status;
    - whether `COS_OBSIDIAN_VAULT` export is active.
-2. Add a manual test under `docs/manual-tests/` proving the self-improvement loop end-to-end without mutating live rules:
+2. Add a manual test under `docs/09-Quality/manual-tests/` proving the self-improvement loop end-to-end without mutating live rules:
    - inject sample error/skill metrics into temp metrics dir;
    - run skill failure monitor or Python module;
    - run `scripts/cos-self-improvement-loop --profile core --json`;

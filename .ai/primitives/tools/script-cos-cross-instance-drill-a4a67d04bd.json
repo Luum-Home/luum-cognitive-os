@@ -59,7 +59,7 @@
         "scripts/cos-cross-instance-drill",
         "scripts/cos_cross_instance_drill.py",
         "lib/cross_instance_learning.py",
-        "docs/architecture/cross-instance-learning-runway.md"
+        "docs/04-Concepts/architecture/cross-instance-learning-runway.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-cross-instance-drill",
         "scripts/cos_cross_instance_drill.py",
         "lib/cross_instance_learning.py",
-        "docs/architecture/cross-instance-learning-runway.md"
+        "docs/04-Concepts/architecture/cross-instance-learning-runway.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-cross-instance-drill",
     "scripts/cos_cross_instance_drill.py",
     "lib/cross_instance_learning.py",
-    "docs/architecture/cross-instance-learning-runway.md"
+    "docs/04-Concepts/architecture/cross-instance-learning-runway.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-cross-instance-drill",

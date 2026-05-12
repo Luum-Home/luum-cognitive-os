@@ -8,7 +8,7 @@ The goal is to separate code that is worth evaluating for a Rust core from code 
 
 ## Acceptance Criteria
 
-1. Every tracked `*.py`, `*.go`, and `*.sh` file is classified once in `docs/reports/rust-migration-script-inventory-2026-05-12.csv`.
+1. Every tracked `*.py`, `*.go`, and `*.sh` file is classified once in `docs/06-Daily/reports/rust-migration-script-inventory-2026-05-12.csv`.
 2. Categories are limited to: `core_runtime`, `CLI`, `diagnostics`, `test_helpers`, `generators`, `legacy`.
 3. No row is left unclassified.
 4. The inventory identifies which classes are Rust-first candidates and which should stay outside the first migration wave.
@@ -25,7 +25,7 @@ This excludes untracked local caches, virtualenvs, vendored reference corpora, a
 
 Machine-readable inventory:
 
-- `docs/reports/rust-migration-script-inventory-2026-05-12.csv`
+- `docs/06-Daily/reports/rust-migration-script-inventory-2026-05-12.csv`
 
 ## Summary Counts
 

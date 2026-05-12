@@ -25,7 +25,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-089-multi-session-git-coordination.md"
+          "path": "docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md"
         },
         {
           "family": "hook",
@@ -56,11 +56,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+          "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         }
       ],
       "family": "scripts",
@@ -80,15 +80,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-031.md"
+          "path": "docs/02-Decisions/adrs/ADR-031.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-059-so-existential-validation.md"
+          "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md"
+          "path": "docs/02-Decisions/adrs/ADR-061-focus-narrative-and-external-evidence.md"
         },
         {
           "family": "hook",
@@ -146,7 +146,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+          "path": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md"
         }
       ],
       "family": "scripts",
@@ -162,7 +162,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/path-portability-and-privacy.md"
+          "path": "docs/04-Concepts/architecture/path-portability-and-privacy.md"
         },
         {
           "family": "test",
@@ -243,7 +243,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/tooling-update-protocol.md"
+          "path": "docs/05-Methodology/root/tooling-update-protocol.md"
         },
         {
           "family": "skill",
@@ -269,27 +269,27 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-073-test-architecture-role-registry.md"
+          "path": "docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/LESSONS-LEARNED.md"
+          "path": "docs/04-Concepts/architecture/LESSONS-LEARNED.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/POST-MORTEM-2026-04.md"
+          "path": "docs/04-Concepts/architecture/POST-MORTEM-2026-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing/README.md"
+          "path": "docs/09-Quality/testing/README.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing/mutation-testing.md"
+          "path": "docs/09-Quality/testing/mutation-testing.md"
         },
         {
           "family": "rule",
@@ -338,11 +338,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "test",
@@ -372,7 +372,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+          "path": "docs/02-Decisions/adrs/ADR-088-provenance-trailer-ppid-chain.md"
         },
         {
           "family": "hook",
@@ -400,11 +400,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md"
+          "path": "docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-047-session-lifecycle-management.md"
+          "path": "docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md"
         },
         {
           "family": "rule",
@@ -434,7 +434,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-037-self-knowledge-base.md"
+          "path": "docs/02-Decisions/adrs/ADR-037-self-knowledge-base.md"
         },
         {
           "family": "hook",
@@ -475,7 +475,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-041.md"
+          "path": "docs/02-Decisions/adrs/ADR-041.md"
         },
         {
           "family": "rule",
@@ -501,7 +501,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-041.md"
+          "path": "docs/02-Decisions/adrs/ADR-041.md"
         },
         {
           "family": "rule",
@@ -531,11 +531,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-034-harness-agnostic-live-streaming.md"
+          "path": "docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md"
         },
         {
           "family": "doc",
-          "path": "docs/guides/adding-a-harness-adapter.md"
+          "path": "docs/05-Methodology/guides/adding-a-harness-adapter.md"
         },
         {
           "family": "hook",
@@ -626,7 +626,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/memory-lifecycle.md"
+          "path": "docs/04-Concepts/architecture/memory-lifecycle.md"
         },
         {
           "family": "test",
@@ -671,19 +671,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-073-test-architecture-role-registry.md"
+          "path": "docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/validation-nervous-system.md"
+          "path": "docs/04-Concepts/architecture/validation-nervous-system.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing.md"
+          "path": "docs/09-Quality/root/testing.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing/test-runner-roles.md"
+          "path": "docs/09-Quality/testing/test-runner-roles.md"
         },
         {
           "family": "hook",
@@ -720,19 +720,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
+          "path": "docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-073-test-architecture-role-registry.md"
+          "path": "docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing/test-runner-roles.md"
+          "path": "docs/09-Quality/testing/test-runner-roles.md"
         },
         {
           "family": "rule",
@@ -757,11 +757,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-034-harness-agnostic-live-streaming.md"
+          "path": "docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md"
+          "path": "docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md"
         },
         {
           "family": "rule",
@@ -830,15 +830,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-01.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+          "path": "docs/02-Decisions/adrs/ADR-069-research-first-protocol.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+          "path": "docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md"
         },
         {
           "family": "skill",
@@ -882,15 +882,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-27.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-068-adaptive-test-runner-capacity.md"
+          "path": "docs/02-Decisions/adrs/ADR-068-adaptive-test-runner-capacity.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
+          "path": "docs/02-Decisions/adrs/ADR-100-resource-governed-test-execution.md"
         },
         {
           "family": "test",
@@ -912,7 +912,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "rule",
@@ -941,7 +941,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "test",
@@ -975,7 +975,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/documentation-execution-audit.md"
+          "path": "docs/04-Concepts/architecture/documentation-execution-audit.md"
         },
         {
           "family": "skill",
@@ -1034,19 +1034,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-059-so-existential-validation.md"
+          "path": "docs/02-Decisions/adrs/ADR-059-so-existential-validation.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md"
+          "path": "docs/02-Decisions/adrs/ADR-061-focus-narrative-and-external-evidence.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "rule",
@@ -1106,19 +1106,19 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/HOW-TO-USE-COS.md"
+          "path": "docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+          "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+          "path": "docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "hook",
@@ -1158,15 +1158,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/bootstrap-portability.md"
+          "path": "docs/04-Concepts/architecture/bootstrap-portability.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/harness-driver-parity.md"
+          "path": "docs/04-Concepts/architecture/harness-driver-parity.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "test",
@@ -1186,15 +1186,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-086-hook-execution-observability.md"
+          "path": "docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md"
         },
         {
           "family": "doc",
-          "path": "docs/measurements/hook-timing-runbook.md"
+          "path": "docs/06-Daily/measurements/hook-timing-runbook.md"
         },
         {
           "family": "doc",
-          "path": "docs/research-log.md"
+          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "skill",
@@ -1245,11 +1245,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
+          "path": "docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
         },
         {
           "family": "doc",
-          "path": "docs/runbooks/llm-dispatch.md"
+          "path": "docs/05-Methodology/runbooks/llm-dispatch.md"
         },
         {
           "family": "rule",
@@ -1277,7 +1277,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/measurements/stage2-expansion-baseline.md"
+          "path": "docs/06-Daily/measurements/stage2-expansion-baseline.md"
         },
         {
           "family": "test",
@@ -1324,47 +1324,47 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
+          "path": "docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+          "path": "docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+          "path": "docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+          "path": "docs/02-Decisions/adrs/ADR-052-provider-benchmark-harness.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
+          "path": "docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-062-multi-provider-agent-loop.md"
+          "path": "docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md"
+          "path": "docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md"
+          "path": "docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
           "family": "doc",
-          "path": "docs/research/claude-code-router-evaluation-2026-04-21.md"
+          "path": "docs/03-PoCs/research/claude-code-router-evaluation-2026-04-21.md"
         },
         {
           "family": "doc",
-          "path": "docs/runbooks/llm-dispatch.md"
+          "path": "docs/05-Methodology/runbooks/llm-dispatch.md"
         },
         {
           "family": "hook",
@@ -1413,7 +1413,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+          "path": "docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md"
         },
         {
           "family": "rule",
@@ -1438,7 +1438,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-spike-plan-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-spike-plan-2026-04.md"
         },
         {
           "family": "test",
@@ -1464,7 +1464,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "script",
@@ -1501,7 +1501,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "test",
@@ -1531,7 +1531,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "skill",
@@ -1565,11 +1565,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "skill",
@@ -1608,7 +1608,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+          "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
         },
         {
           "family": "hook",
@@ -1641,11 +1641,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-066-polyglot-language-boundaries.md"
+          "path": "docs/02-Decisions/adrs/ADR-066-polyglot-language-boundaries.md"
         },
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "skill",
@@ -1670,11 +1670,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+          "path": "docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md"
         },
         {
           "family": "doc",
-          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "test",
@@ -1702,7 +1702,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "test",
@@ -1722,11 +1722,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-089-multi-session-git-coordination.md"
+          "path": "docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
+          "path": "docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md"
         },
         {
           "family": "test",
@@ -1773,7 +1773,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
+          "path": "docs/02-Decisions/adrs/ADR-055-docs-convention-enforcement.md"
         },
         {
           "family": "rule",
@@ -1818,7 +1818,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
+          "path": "docs/02-Decisions/adrs/ADR-055-docs-convention-enforcement.md"
         },
         {
           "family": "rule",
@@ -1848,7 +1848,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-047-session-lifecycle-management.md"
+          "path": "docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md"
         },
         {
           "family": "hook",
@@ -1919,11 +1919,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/business/master-plan-checklist.md"
+          "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/testing.md"
+          "path": "docs/09-Quality/root/testing.md"
         },
         {
           "family": "rule",
@@ -1981,15 +1981,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+          "path": "docs/02-Decisions/adrs/ADR-088-provenance-trailer-ppid-chain.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md"
+          "path": "docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md"
         },
         {
           "family": "doc",
-          "path": "docs/measurements/hook-timing-runbook.md"
+          "path": "docs/06-Daily/measurements/hook-timing-runbook.md"
         },
         {
           "family": "hook",

@@ -39,9 +39,9 @@ def _run_hook(root: Path, command: str, extra_env: dict[str, str] | None = None)
 
 
 def test_extracts_recursive_rm_git_clean_and_find_delete() -> None:
-    assert extract_delete_operations("rm -rf docs/research/foo") == [("rm-recursive", ["docs/research/foo"])]
-    assert extract_delete_operations("git clean -fd docs/research/foo") == [("git-clean", ["docs/research/foo"])]
-    assert extract_delete_operations("find docs/research/foo -type f -delete") == [("find-delete", ["docs/research/foo"])]
+    assert extract_delete_operations("rm -rf docs/03-PoCs/research/foo") == [("rm-recursive", ["docs/03-PoCs/research/foo"])]
+    assert extract_delete_operations("git clean -fd docs/03-PoCs/research/foo") == [("git-clean", ["docs/03-PoCs/research/foo"])]
+    assert extract_delete_operations("find docs/03-PoCs/research/foo -type f -delete") == [("find-delete", ["docs/03-PoCs/research/foo"])]
 
 
 def test_blocks_untracked_research_delete_without_intent(tmp_path: Path) -> None:
@@ -50,7 +50,7 @@ def test_blocks_untracked_research_delete_without_intent(tmp_path: Path) -> None
     target.parent.mkdir(parents=True)
     target.write_text("active agent work\n")
 
-    intent = evaluate_command(root, "rm -rf docs/research/repo-scout")
+    intent = evaluate_command(root, "rm -rf docs/03-PoCs/research/repo-scout")
 
     assert not intent.allowed
     assert intent.targets[0].untracked is True
@@ -83,7 +83,7 @@ def test_hook_blocks_find_delete_on_untracked_reports(tmp_path: Path) -> None:
     target.parent.mkdir(parents=True)
     target.write_text("uncommitted report\n")
 
-    result = _run_hook(root, "find docs/reports -type f -delete")
+    result = _run_hook(root, "find docs/06-Daily/reports -type f -delete")
 
     assert result.returncode == 2
     assert "UNTRACKED-WORK-PRESERVATION-GUARD" in result.stderr
@@ -115,7 +115,7 @@ def test_safe_clean_dry_run_reports_without_deleting(tmp_path: Path) -> None:
     target.write_text("preserve\n")
 
     result = subprocess.run(
-        [str(SAFE_CLEAN), "--project-dir", str(root), "--path", "docs/research/repo-scout", "--dry-run"],
+        [str(SAFE_CLEAN), "--project-dir", str(root), "--path", "docs/03-PoCs/research/repo-scout", "--dry-run"],
         text=True,
         capture_output=True,
         check=False,

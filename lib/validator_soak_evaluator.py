@@ -8,7 +8,7 @@ Promotion happens ONLY as a human-reviewable proposal artifact.
 No runtime behavior is changed automatically.
 
 Soak report is written to:
-    docs/reports/promotion-proposals/<date>/validator-advisory-to-blocking.md
+    docs/06-Daily/reports/promotion-proposals/<date>/validator-advisory-to-blocking.md
 
 Evaluation log is appended to:
     .cognitive-os/metrics/validator-promotion-evaluations.jsonl

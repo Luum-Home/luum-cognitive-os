@@ -13,7 +13,7 @@ Single-day sprint that closed ADR-028 (6 pillars), ADR-027 Phase 1+2, ADR-029, r
 | Hooks sourcing killswitch | 124 of 129 non-critical |
 | SCOPE-tagged components | 506 |
 | ADRs published | 5 (ADR-027a, ADR-028a/b/c, ADR-029) |
-| Reports under `docs/reports/` | 10 new |
+| Reports under `docs/06-Daily/reports/` | 10 new |
 | Release tag | v0.12.0 |
 | Package bumps | 18 (cos-package.yaml) |
 | Debt: BLOCKING → | 3 → 0 |
@@ -102,8 +102,8 @@ Plus auxiliary commits for settings regeneration and config sync.
 - `lib/ref_key_loader.py`, `lib/agent_bus_metrics.py` (earlier, cemented here)
 - `hooks/destructive-rm-blocker.sh`, `hooks/_lib/killswitch_check.sh`
 - `scripts/orchestrator.py`, `scripts/so-emergency-stop.sh`
-- `docs/adrs/ADR-028c.md`, `docs/adrs/ADR-029.md`
-- 10 reports under `docs/reports/`
+- `docs/02-Decisions/adrs/ADR-028c.md`, `docs/02-Decisions/adrs/ADR-029.md`
+- 10 reports under `docs/06-Daily/reports/`
 - 8 new test files under `tests/contracts/` + `tests/chaos/` + `tests/unit/`
 
 ### Hardened this session

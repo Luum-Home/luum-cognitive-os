@@ -96,7 +96,7 @@ reads `.claude/projects/` for session reconstruction.
 
 - `lib/harness_adapter/` (ADR-033): canonical event schema + CC + Aider adapters.
 - `lib/openai_compatible_agent_loop.py` (ADR-062): no harness dependency.
-- `docs/architecture/cross-harness-authoring.md`: the 5-item self-check already
+- `docs/04-Concepts/architecture/cross-harness-authoring.md`: the 5-item self-check already
   forbids new hardcoded `.claude/` paths in SO code.
 - Rules / skills / hooks as plain files on disk — portable by construction,
   what's not portable is how they're *loaded* and *invoked*.
@@ -250,7 +250,7 @@ harness).
 
 - Full audit of `scripts/`, `hooks/`, `lib/`: each file labeled
   `harness-specific` / `portable` / `needs-abstraction`.
-- Output: `docs/architecture/harness-coupling-inventory.md`.
+- Output: `docs/04-Concepts/architecture/harness-coupling-inventory.md`.
 - Extend the cross-harness authoring self-check to quote the inventory.
 
 ### Phase 2 — `cos-runner` CLI (~4–5 sessions mixed)
@@ -340,7 +340,7 @@ $15–$30 in agent costs before human review.
   the harness-side counterpart).
 - ADR-063 — Agent() replication scope (bounds what `cos-agent` does).
 - ADR-032 — Orchestrator prompt composition (feeds `cos-skill`).
-- `docs/architecture/cross-harness-authoring.md` — author-side self-check
+- `docs/04-Concepts/architecture/cross-harness-authoring.md` — author-side self-check
   that already anticipated this ADR.
 - `lib/harness_adapter/` — existing portable event capture implementation.
 

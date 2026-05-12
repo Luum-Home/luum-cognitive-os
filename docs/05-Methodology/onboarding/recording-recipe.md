@@ -17,7 +17,7 @@ From a fresh clone of the repo:
 ```bash
 git clone git@github.com:Luum-Home/luum-cognitive-os.git
 cd luum-cognitive-os
-asciinema rec docs/onboarding/walkthrough.cast \
+asciinema rec docs/05-Methodology/onboarding/walkthrough.cast \
   --title "Cognitive OS — fresh clone walkthrough" \
   --command "bash scripts/cos-record-onboarding.sh"
 ```
@@ -35,16 +35,16 @@ Two options:
 1. **Local-only**: keep `walkthrough.cast` in the repo (it's plaintext, ~30KB).
    The README can embed via:
    ```html
-   <a href="docs/onboarding/walkthrough.cast">View walkthrough (.cast)</a>
+   <a href="docs/05-Methodology/onboarding/walkthrough.cast">View walkthrough (.cast)</a>
    ```
 
-2. **asciinema.org**: `asciinema upload docs/onboarding/walkthrough.cast`,
+2. **asciinema.org**: `asciinema upload docs/05-Methodology/onboarding/walkthrough.cast`,
    then link the resulting URL from `README.md`.
 
 For a static GIF (works on any markdown viewer):
 
 ```bash
-agg docs/onboarding/walkthrough.cast docs/onboarding/walkthrough.gif \
+agg docs/05-Methodology/onboarding/walkthrough.cast docs/05-Methodology/onboarding/walkthrough.gif \
   --speed 1.5 --font-size 16
 ```
 

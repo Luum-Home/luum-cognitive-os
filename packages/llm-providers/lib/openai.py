@@ -11,7 +11,7 @@ prevent advance even on rate limits.
 Configuration:
     OPENAI_API_KEY  — from platform.openai.com
 
-Reference: docs/adrs/ADR-062-multi-provider-agent-loop.md
+Reference: docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md
 """
 
 from __future__ import annotations

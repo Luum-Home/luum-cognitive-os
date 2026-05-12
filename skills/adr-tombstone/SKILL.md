@@ -30,13 +30,13 @@ text should no longer live in active first-party documentation.
 ## Boundary
 
 - Primitive: `skills/adr-tombstone/`, `scripts/adr_tombstone.py`, `scripts/cos-adr-tombstone`, and their tests.
-- ADR record: `docs/adrs/ADR-NNN-tombstone.md`, generated or repaired by the primitive.
+- ADR record: `docs/02-Decisions/adrs/ADR-NNN-tombstone.md`, generated or repaired by the primitive.
 - Do not confuse the existence of a tombstone ADR with the primitive that manages tombstones.
 
 ## Rules
 
 - Never reuse an ADR number for a different decision.
-- Prefer a neutral file name: `docs/adrs/ADR-NNN-tombstone.md`.
+- Prefer a neutral file name: `docs/02-Decisions/adrs/ADR-NNN-tombstone.md`.
 - The first heading must match the filename number.
 - The tombstone must include the same required ADR sections as normal ADRs.
 - Do not include removed integration names or other purged terms in tombstone text.

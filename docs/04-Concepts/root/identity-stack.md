@@ -41,7 +41,7 @@ Agent identity is not a single concern — it spans six distinct layers, each so
 | Delegation | Agent Passport | MIT | Monotonic attenuation (permissions can only narrow, never expand), Delegation Capability Tokens (DCTs), MCP middleware integration |
 | Infra Identity | SPIFFE/SPIRE | Apache 2.0 | X.509 SVIDs for workload identity, CNCF graduated project, zero-trust networking |
 
-All tools have SaaS-safe licenses (Apache 2.0 or MIT), compliant with `docs/research/license-analysis.md`.
+All tools have SaaS-safe licenses (Apache 2.0 or MIT), compliant with `docs/03-PoCs/research/license-analysis.md`.
 
 ## Architecture Diagram
 

@@ -128,9 +128,9 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build prioritized primitive harness partials report")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--coverage-json", default="docs/reports/primitive-harness-coverage-latest.json")
-    parser.add_argument("--json-out", default="docs/reports/primitive-harness-partials-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-harness-partials-latest.md")
+    parser.add_argument("--coverage-json", default="docs/06-Daily/reports/primitive-harness-coverage-latest.json")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-harness-partials-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-harness-partials-latest.md")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--print-json", action="store_true")
     args = parser.parse_args()

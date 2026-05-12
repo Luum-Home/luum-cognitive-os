@@ -6,10 +6,10 @@ scope: research-only
 findings_analyzed: [2, 3, 4]
 status: proposed-fixes (not yet applied; awaiting operator approval)
 related_artifacts:
-  - docs/reports/external-tools-radar-INDEX.md
-  - docs/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
-  - docs/research/helixdb-comparison-2026-05-11.md
-  - docs/research/helixdb-annex-e-primitives-2026-05-11.md
+  - docs/06-Daily/reports/external-tools-radar-INDEX.md
+  - docs/06-Daily/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
+  - docs/03-PoCs/research/helixdb-comparison-2026-05-11.md
+  - docs/03-PoCs/research/helixdb-annex-e-primitives-2026-05-11.md
   - rules/engram-organization.md
 engram_topic_key: self-critique/cluster-b-coherence
 ---
@@ -27,14 +27,14 @@ not executed — the orchestrator will run after operator approval.
 
 ### Evidence
 
-`docs/reports/external-tools-radar-INDEX.md` contains, in this order (verbatim
+`docs/06-Daily/reports/external-tools-radar-INDEX.md` contains, in this order (verbatim
 headings):
 
 - L298 — `## Phase 9 — HelixDB deep annex set (2026-05-11)`
 - L313 — `## Phase 11 — MegaMemory deep annex set (2026-05-11)`
 - L328 — `## Phase 12 — iFixAi deep annex set (2026-05-11)`
 
-No `## Phase 10` heading exists. Confirmed by `grep -n "^## Phase " docs/reports/external-tools-radar-INDEX.md`.
+No `## Phase 10` heading exists. Confirmed by `grep -n "^## Phase " docs/06-Daily/reports/external-tools-radar-INDEX.md`.
 The three sections are sibling parallel-agent outputs dated the same day; the
 ordering reflects no semantic dependency, so the gap is purely a numbering accident
 (MegaMemory took 11 when 10 was expected per the queue order HelixDB→iFixAi→MegaMemory).
@@ -59,7 +59,7 @@ returns only the INDEX itself). Renumbering is safe.
 Edit blocks:
 
 ```
-File: docs/reports/external-tools-radar-INDEX.md
+File: docs/06-Daily/reports/external-tools-radar-INDEX.md
 
 Edit 1:
   old_string: "## Phase 11 — MegaMemory deep annex set (2026-05-11)"
@@ -88,7 +88,7 @@ of fidelity (the parallel-run provenance is preserved in git history).
 
 ### Evidence — verbatim verdicts
 
-Addendum (`docs/reports/external-tools-radar-helixdb-addendum-2026-05-11.md`):
+Addendum (`docs/06-Daily/reports/external-tools-radar-helixdb-addendum-2026-05-11.md`):
 
 - Frontmatter L5: `status: reject-runtime / hold-pattern-only`
 - L24 (Decision): "**REJECT for runtime/dependency adoption** and **HOLD /
@@ -97,14 +97,14 @@ Addendum (`docs/reports/external-tools-radar-helixdb-addendum-2026-05-11.md`):
   primitive-extraction candidates in the deep eval [...] are worth referencing
   when Engram's graph-memory phase needs design inputs."
 
-Parent comparison (`docs/research/helixdb-comparison-2026-05-11.md`):
+Parent comparison (`docs/03-PoCs/research/helixdb-comparison-2026-05-11.md`):
 
 - Frontmatter L9-10: `verdict_runtime: REJECT`, `verdict_pattern: HOLD / pattern-only`
 - L60-61: "Runtime / dependency: REJECT. AGPL-3.0 is BLOCK." / "Pattern lane:
   HOLD with high value on a small subset (compiled-DSL contract, typed traversal
   MCP, reranker fusion taxonomy)."
 
-Annex E (`docs/research/helixdb-annex-e-primitives-2026-05-11.md`):
+Annex E (`docs/03-PoCs/research/helixdb-annex-e-primitives-2026-05-11.md`):
 
 - L26: "The top three are the only ones I would advocate adopting under the
   current COS roadmap."
@@ -121,7 +121,7 @@ on per-primitive ADRs that re-derive design from first principles".
 PARTIALLY VALID. The finding overstates the contradiction. There is no
 verdict-level contradiction — both documents agree on "REJECT runtime / HOLD
 pattern-only". What exists is a **posture-language gap** between two adoption
-classifications defined in `docs/architecture/external-tool-adapter-taxonomy.md`:
+classifications defined in `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`:
 
 - HOLD = passive watch, no clean-room investment now.
 - TRIAL-PATTERNS = active clean-room extraction with per-primitive ADRs.
@@ -148,7 +148,7 @@ the pattern-lane label, to match the actual posture across the corpus.
 Edit blocks:
 
 ```
-File: docs/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
+File: docs/06-Daily/reports/external-tools-radar-helixdb-addendum-2026-05-11.md
 
 Edit 1 (frontmatter):
   old_string: "status: reject-runtime / hold-pattern-only"
@@ -162,7 +162,7 @@ Edit 3 (Recommendation 2, L62):
   old_string: "**Keep on the radar as HOLD / pattern-only.**"
   new_string: "**Keep on the radar as TRIAL-PATTERNS / pattern-only.**"
 
-File: docs/reports/external-tools-radar-INDEX.md
+File: docs/06-Daily/reports/external-tools-radar-INDEX.md
 
 Edit 4 (Phase 7 outcome, L285):
   old_string: "HelixDB is **REJECT for runtime/dependency adoption** (AGPL-3.0 + open-core Lite/Enterprise split → license-blocked per `rules/license-policy.md`) and **HOLD / pattern-only** for clean-room schema and DSL study."

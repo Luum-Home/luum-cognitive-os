@@ -180,7 +180,7 @@ _adr_reservation_guard() {
     local tool_name="$2"
 
     [ -n "$target" ] || return 0
-    echo "$target" | grep -qE '/docs/adrs/ADR-[0-9]{3}.*\.md$' || return 0
+    echo "$target" | grep -qE '/docs/02-Decisions/adrs/ADR-[0-9]{3}.*\.md$' || return 0
     [ ! -e "$target" ] || return 0
 
     local reserved="missing"

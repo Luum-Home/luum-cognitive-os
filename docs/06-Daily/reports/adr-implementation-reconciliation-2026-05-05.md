@@ -10,7 +10,7 @@ Sources used:
 
 - `scripts/adr_implementation_ledger.py`
 - `scripts/audit_adrs.py`
-- ADR files under `docs/adrs/`
+- ADR files under `docs/02-Decisions/adrs/`
 - `manifests/adr-closure-metadata.yaml`
 - implementation files declared in ADR frontmatter
 - targeted contract/unit/audit tests listed below
@@ -39,7 +39,7 @@ Attention count: **0**. `ADR-164-host-cli-bridge-security-boundary` was inspecte
 
 | ADR | Implemented scope | Key evidence | Caveat |
 |---|---|---|---|
-| ADR-052 | No-cost offline provider benchmark harness. | `docs/benchmarks/provider-quality-smoke.yaml`, `scripts/benchmark-providers`, `scripts/benchmark_providers.py`, `tests/unit/test_provider_benchmark_and_optimizer.py` | Real provider adapters and LLM-as-judge remain explicit future opt-in work. |
+| ADR-052 | No-cost offline provider benchmark harness. | `docs/08-References/benchmarks/provider-quality-smoke.yaml`, `scripts/benchmark-providers`, `scripts/benchmark_providers.py`, `tests/unit/test_provider_benchmark_and_optimizer.py` | Real provider adapters and LLM-as-judge remain explicit future opt-in work. |
 | ADR-053 | Human-reviewed dispatch auto-optimizer proposal generation. | `lib/dispatch_optimizer.py`, `scripts/auto-tune-routing`, `scripts/auto_tune_routing.py`, `tests/unit/test_provider_benchmark_and_optimizer.py` | Proposals are not auto-applied; dispatch integration remains a future reviewed step. |
 
 ## Reconciled by Existing Evidence

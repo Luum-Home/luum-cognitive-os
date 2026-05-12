@@ -1,7 +1,7 @@
 """Functional audit — pytest contracts for hooks/.
 
 Implements the Capa 3 scorecard contract:
-  docs/architecture/functional-audit/scorecard-hooks.md
+  docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md
 
 These tests are read-only and classify each hook without fixing anything. A
 failure here is a finding for the audit report, not a CI blocker by default.
@@ -239,7 +239,7 @@ def test_known_code_dead_hooks_stay_missing() -> None:
     resurrected = [hook_name for hook_name in sorted(EXPECTED_CODE_DEAD) if (HOOKS_DIR / hook_name).exists()]
     assert not resurrected, (
         "Previously code-dead hook(s) now exist on disk. Re-run the Capa 3 audit "
-        "and update docs/architecture/functional-audit/scorecard-hooks.md + "
+        "and update docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md + "
         f"EXPECTED_CODE_DEAD: {resurrected}"
     )
 
@@ -294,7 +294,7 @@ def test_code_dead_hooks_are_documented() -> None:
     missing = [name for name in EXPECTED_CODE_DEAD if name not in text]
     assert not missing, (
         f"EXPECTED_CODE_DEAD contains hooks not documented in the scorecard: {missing}. "
-        f"Update docs/architecture/functional-audit/scorecard-hooks.md."
+        f"Update docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md."
     )
 
 

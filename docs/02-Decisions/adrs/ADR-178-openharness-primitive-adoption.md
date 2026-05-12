@@ -24,7 +24,7 @@ partial_remaining_basis: explicit body remaining signal
   - ADR-171 (removed-integration lesson — verify upstream source before adopting)
   - ADR-049 (multi-provider agent loop, LLM dispatch)
   - ADR-062 (provider cascade: qwen → openrouter → gemini → ollama → claude)
-  - `docs/reports/openharness-opus-deep-audit-2026-05-05.md` (Opus symmetric audit)
+  - `docs/06-Daily/reports/openharness-opus-deep-audit-2026-05-05.md` (Opus symmetric audit)
 
 ---
 

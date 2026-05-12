@@ -12,7 +12,7 @@ DECISION (implementation_status, classification_basis, evidence fields)
 use the companion primitive `scripts/cos-adr-close` — same atomic +
 audited shape but for the decision-record domain. The
 `cos-session-start-projector` consumes both into a single ranked
-action list. See `docs/architecture/pending-truth-architecture.md`.
+action list. See `docs/04-Concepts/architecture/pending-truth-architecture.md`.
 
 Usage:
   python3 scripts/cos-pending-truth-close --id <ledger-id> --proof <ref>
@@ -37,7 +37,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-LEDGER_PATH = "docs/reports/pending-truth-latest.json"
+LEDGER_PATH = "docs/06-Daily/reports/pending-truth-latest.json"
 AUDIT_TRAIL_PATH = ".cognitive-os/audit/closure-trail.jsonl"
 AGGREGATOR = "scripts/cos-pending-truth-aggregator"
 
@@ -113,9 +113,9 @@ def verify_proof(root: Path, proof: str, kind: str) -> tuple[bool, str]:
         m = ADR_REF_RE.match(proof)
         assert m
         num = int(m.group(1))
-        adr_dir = root / "docs/adrs"
+        adr_dir = root / "docs/02-Decisions/adrs"
         if not adr_dir.is_dir():
-            return False, "docs/adrs/ not present"
+            return False, "docs/02-Decisions/adrs/ not present"
         # Find any ADR-<num>-*.md file
         matches = list(adr_dir.glob(f"ADR-{num:03d}-*.md")) + list(adr_dir.glob(f"ADR-{num}-*.md"))
         if not matches:
@@ -198,7 +198,7 @@ def apply_closure(
         return True, "plan checkbox closed", edit_record
 
     if item_type == "adr-slice":
-        # source format: docs/adrs/ADR-NNN-*.md
+        # source format: docs/02-Decisions/adrs/ADR-NNN-*.md
         rel = source
         target = root / rel
         if not target.exists():

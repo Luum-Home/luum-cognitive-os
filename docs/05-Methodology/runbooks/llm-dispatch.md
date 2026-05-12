@@ -349,7 +349,7 @@ print(f'\${total:.4f}')
 ## Related
 
 - `rules/llm-dispatch.md` — normative rule
-- `docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md` — decision record
+- `docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md` — decision record
 - `.cognitive-os/plans/roadmaps/adr-049-050-051-mega-plan.md` — checkpoint roadmap
 - `skills/llm-status/SKILL.md` — skill user invokes
 - `lib/dispatch.py` — dispatch implementation

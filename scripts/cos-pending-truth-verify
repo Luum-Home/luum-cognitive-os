@@ -2,7 +2,7 @@
 # SCOPE: both
 """ADR-273 Slice B — Bilateral verifier for pending-truth ledger items.
 
-Reads docs/reports/pending-truth-latest.json (produced by Slice A
+Reads docs/06-Daily/reports/pending-truth-latest.json (produced by Slice A
 aggregator), runs deterministic evidence checks per item type, and
 reclassifies status: unverified -> verified-done|verified-pending|
 ambiguous|obsolete.
@@ -44,7 +44,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_VERSION = "pending-truth/v1"
-LEDGER_PATH = "docs/reports/pending-truth-latest.json"
+LEDGER_PATH = "docs/06-Daily/reports/pending-truth-latest.json"
 CHANGELOG_PATH = "CHANGELOG.md"
 
 # Path-like patterns to extract from next_action text
@@ -85,7 +85,7 @@ def _check_path_exists(root: Path, rel: str) -> bool:
 
 def _check_adr_accepted(root: Path, adr_num: str) -> str:
     """Return ADR status: accepted|tombstone|superseded|proposed|missing|unknown."""
-    matches = list(root.glob(f"docs/adrs/ADR-{adr_num}*.md"))
+    matches = list(root.glob(f"docs/02-Decisions/adrs/ADR-{adr_num}*.md"))
     if not matches:
         return "missing"
     try:
@@ -361,7 +361,7 @@ def main(argv: list[str] | None = None) -> int:
         md_path = root / "docs" / "reports" / "pending-truth-latest.md"
         md_path.write_text(render_md(payload, drift), encoding="utf-8")
         print(f"wrote {LEDGER_PATH}", file=sys.stderr)
-        print(f"wrote docs/reports/pending-truth-latest.md", file=sys.stderr)
+        print(f"wrote docs/06-Daily/reports/pending-truth-latest.md", file=sys.stderr)
 
     if args.json:
         print(json.dumps({

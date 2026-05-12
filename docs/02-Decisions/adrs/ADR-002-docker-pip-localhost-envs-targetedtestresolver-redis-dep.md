@@ -131,7 +131,7 @@ Potential areas of impact based on detected signals:
 - **Dependency Change**: Dependency files changed
 - **Config Schema Change**: Configuration schema files changed
 - **Hook Change**: Hook or settings configuration changed
-- **File Structure Change**: New directories: docs/reports, tests/unit
+- **File Structure Change**: New directories: docs/06-Daily/reports, tests/unit
 
 ## Detection Signals
 
@@ -140,7 +140,7 @@ Potential areas of impact based on detected signals:
 | Dependency files changed | 0.40 | pyproject.toml |
 | Configuration schema files changed | 0.35 | cognitive-os.yaml |
 | Hook or settings configuration changed | 0.30 | .claude/settings.json |
-| New directories: docs/reports, tests/unit | 0.20 | docs/reports, tests/unit |
+| New directories: docs/06-Daily/reports, tests/unit | 0.20 | docs/06-Daily/reports, tests/unit |
 **Total weight:** 1.25 (threshold: 0.7)
 
 ## Source

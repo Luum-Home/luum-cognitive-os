@@ -10,9 +10,9 @@ supersedes: []
 superseded_by: null
 implementation_files:
   - manifests/task-lifecycle-schema.yaml
-  - docs/manual-tests/task-lifecycle-worktree-pr-flow.md
+  - docs/09-Quality/manual-tests/task-lifecycle-worktree-pr-flow.md
   - tests/contracts/test_task_lifecycle_schema.py
-  - docs/architecture/service-control-plane-implementation-plan.md
+  - docs/04-Concepts/architecture/service-control-plane-implementation-plan.md
 tier: maintainer
 tags: [task-lifecycle, interruptions, questions, worktrees, branches, pull-requests, cosd]
 partial_remaining: implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up
@@ -117,8 +117,8 @@ Full queue/worker/PR runtime enforcement remains follow-up service-control-plane
 
 1. Read `manifests/task-lifecycle-schema.yaml` for the complete state-machine vocabulary.
 2. Run `python3 -m pytest tests/contracts/test_task_lifecycle_schema.py -q` to verify required states, transitions, fields, and blocked publication actions.
-3. Read `docs/manual-tests/task-lifecycle-worktree-pr-flow.md` for the manual proof checklist.
-4. Read `docs/architecture/service-control-plane-implementation-plan.md` for how this contract fits the broader `cosd` plan.
+3. Read `docs/09-Quality/manual-tests/task-lifecycle-worktree-pr-flow.md` for the manual proof checklist.
+4. Read `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` for how this contract fits the broader `cosd` plan.
 5. Worktree naming (`codex/{task_id}-{slug}`) and the append-only event communication format are the two most commonly referenced invariants when debugging parallel-agent coordination.
 
 ## Alternatives rejected
@@ -146,6 +146,6 @@ python3 -m pytest tests/audit/test_adr_contracts.py tests/audit/test_adr_locatio
 - `tests/contracts/test_task_lifecycle_schema.py` verifies required states,
   transitions, fields, event types, worktree naming, and blocked publication
   actions.
-- `docs/manual-tests/task-lifecycle-worktree-pr-flow.md` records the manual proof
+- `docs/09-Quality/manual-tests/task-lifecycle-worktree-pr-flow.md` records the manual proof
   checklist for this protocol.
   implement this contract incrementally without changing the vocabulary.

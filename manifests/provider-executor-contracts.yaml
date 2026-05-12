@@ -1,8 +1,8 @@
 schema_version: provider-executor-contracts.v1
 owner_docs:
-  - docs/architecture/service-control-plane-research-2026-05-04.md
-  - docs/architecture/service-control-plane-implementation-plan.md
-  - docs/manual-tests/service-control-plane-proof-drills.md
+  - docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md
+  - docs/04-Concepts/architecture/service-control-plane-implementation-plan.md
+  - docs/09-Quality/manual-tests/service-control-plane-proof-drills.md
 purpose: >-
   Registry for provider executor adapters that a future COS service control
   plane may dispatch. The registry separates account-backed CLI execution,

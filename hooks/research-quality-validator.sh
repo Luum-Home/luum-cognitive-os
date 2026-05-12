@@ -3,7 +3,7 @@
 # CONCERNS: research-quality, audit-symmetry, evidence
 #
 # PostToolUse hook on Edit|Write — when a markdown file is written under
-# docs/reports/, score it on the four ADR-175 research-quality dimensions
+# docs/06-Daily/reports/, score it on the four ADR-175 research-quality dimensions
 # and log the result to .cognitive-os/metrics/research-quality.jsonl.
 #
 # Non-blocking. Latency budget < 300ms (we cap python with `timeout 1`).
@@ -33,9 +33,9 @@ esac
 FILE_PATH="$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""' 2>/dev/null)"
 [[ -z "$FILE_PATH" ]] && exit 0
 
-# Only score docs/reports/*.md
+# Only score docs/06-Daily/reports/*.md
 case "$FILE_PATH" in
-  *docs/reports/*.md) : ;;
+  *docs/06-Daily/reports/*.md) : ;;
   *) exit 0 ;;
 esac
 

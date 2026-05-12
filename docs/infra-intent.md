@@ -1,1 +1,0 @@
-04-Concepts/root/infra-intent.md

@@ -85,7 +85,7 @@ These files use the GitHub secret for Claude Code actions:
 - `.github/workflows/claude-interactive.yml`
 - `.github/workflows/claude-issue-triage.yml`
 - `.github/workflows/claude-pr-review.yml`
-- `docs/automation.md`
+- `docs/05-Methodology/root/automation.md`
 - `workflows/README.md`
 
 Reason: GitHub Actions cannot rely on a developer's local logged-in Claude Code
@@ -98,7 +98,7 @@ These files document or implement the `advisor-mcp` Anthropic provider:
 - `packages/advisor-mcp/advisor_server.py`
 - `packages/advisor-mcp/README.md`
 - `packages/advisor-mcp/cos-package.yaml`
-- `docs/architecture/advisor-mcp-architecture-review.md`
+- `docs/04-Concepts/architecture/advisor-mcp-architecture-review.md`
 
 Reason: `advisor-mcp` is an optional external-advisor MCP transport. It defaults
 to safe `provider=auto`, does not pass `ANTHROPIC_API_KEY` in the default MCP
@@ -133,7 +133,7 @@ cost-bearing provider requirement:
 - `tests/unit/test_*`
 - `tests/audit/test_anthropic_api_key_references.py`
 - `tests/arena/arena-config.yaml`
-- `docs/benchmarks/so-vs-vanilla-tasks.yaml`
+- `docs/08-References/benchmarks/so-vs-vanilla-tasks.yaml`
 
 Reason: tests must be able to prove that the key does **not** activate direct
 API flows by itself. Arena/benchmark configs are explicitly cost-bearing and

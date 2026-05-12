@@ -14,9 +14,9 @@ def test_docs_execution_audit_excludes_current_archive_not_legacy_archived(tmp_p
         "README.md",
         "AGENTS.md",
         "docs/active.md",
-        "docs/archive/old.md",
-        "docs/reports/report.md",
-        "docs/archived/legacy.md",
+        "docs/99-Archive/archive/old.md",
+        "docs/06-Daily/reports/report.md",
+        "docs/99-Archive/archived/legacy.md",
     ):
         path = tmp_path / rel
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -27,16 +27,16 @@ def test_docs_execution_audit_excludes_current_archive_not_legacy_archived(tmp_p
     assert "README.md" in candidates
     assert "AGENTS.md" in candidates
     assert "docs/active.md" in candidates
-    assert "docs/archive/old.md" not in candidates
-    assert "docs/reports/report.md" not in candidates
-    assert "docs/archived/legacy.md" in candidates
+    assert "docs/99-Archive/archive/old.md" not in candidates
+    assert "docs/06-Daily/reports/report.md" not in candidates
+    assert "docs/99-Archive/archived/legacy.md" in candidates
 
 
 def test_routing_docs_no_longer_reference_legacy_archived_path() -> None:
-    routing_text = (REPO_ROOT / "docs" / "AGENTS.md").read_text(encoding="utf-8")
+    routing_text = (REPO_ROOT / "docs" / "00-MOCs" / "entrypoints" / "AGENTS.md").read_text(encoding="utf-8")
     audit_text = (REPO_ROOT / "scripts" / "docs_execution_audit.py").read_text(encoding="utf-8")
 
-    assert "docs/archive/" in routing_text
-    assert "docs/archived/" not in routing_text
-    assert '"docs/archive/"' in audit_text
-    assert '"docs/archived/"' not in audit_text
+    assert "docs/99-Archive/archive/" in routing_text
+    assert "docs/99-Archive/archived/" not in routing_text
+    assert '"docs/99-Archive/archive/"' in audit_text
+    assert '"docs/99-Archive/archived/"' not in audit_text

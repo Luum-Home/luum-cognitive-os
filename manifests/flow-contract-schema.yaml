@@ -100,5 +100,5 @@ required_framing_axes:
 protected_write_roots:
   - manifests
   - rules
-  - docs/adrs
+  - docs/02-Decisions/adrs
   - .cognitive-os/runtime

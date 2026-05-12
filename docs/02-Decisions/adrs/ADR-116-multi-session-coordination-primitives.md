@@ -30,7 +30,7 @@ partial_remaining_basis: explicit body remaining signal
 **Status**: Accepted — transactional rollout in progress
 **Date**: 2026-05-02
 **Author**: Maintainer (operator) + Software Architect (analysis)
-**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file edit-locks), ADR-099 (pre-agent snapshot copy-on-untracked), ADR-102 (task-tracker lifecycle), ADR-105 (bilateral claim verification contract), ADR-106 (multi-session safety primitives), ADR-108 (concurrent-agent safety layer), ADR-109 (validation capsule worktree isolation), ADR-110 (preserve-branch governance), ADR-113 (validation capsule liveness), `docs/incidents/2026-05-02-false-done-compounding.md`, `docs/architecture/multi-session-orchestration-audit-2026-05-02.md`
+**Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file edit-locks), ADR-099 (pre-agent snapshot copy-on-untracked), ADR-102 (task-tracker lifecycle), ADR-105 (bilateral claim verification contract), ADR-106 (multi-session safety primitives), ADR-108 (concurrent-agent safety layer), ADR-109 (validation capsule worktree isolation), ADR-110 (preserve-branch governance), ADR-113 (validation capsule liveness), `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`, `docs/04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md`
 
 ## Status
 
@@ -107,8 +107,8 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 - **Layer**: L3 Isolation
 - **Problem (concrete failure mode)**: today's orphaned commits (`173bcae1`, `3f5932d6`) happened because two sessions wrote directly to `main`. A rebase from one session detached the other's commits.
 - **Decision**: `SessionStart` creates or recommends a session branch for multi-session work. Local enforcement is actor-aware: autonomous agents/sub-agents are blocked from committing directly on `main`/`master`, while operator commits on `main` warn by default and can be escalated to block with `COS_OPERATOR_MAIN_POLICY=block`. Emergency bypass is **two-factor by design**: `COS_ALLOW_DIRECT_PUSH=1` (or `COS_ALLOW_DIRECT_MAIN=1` for commits) declares intent, and `COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'` (or `COS_BYPASS_REASON`) provides an auditable justification logged to `.cognitive-os/metrics/direct-main-bypass.jsonl`. Both env vars are required; the first alone fails with a follow-up BLOCK explaining the missing reason. The hook stderr lists both env vars in a single hint to avoid forcing operators to fail twice.
-- **Remote invariant**: local warnings are UX, not the safety boundary. The authoritative guarantee is the vendor-neutral protected landing contract in `docs/architecture/protected-landing-contract.md`: `main`/`master` must be advanced by provider-native protection, server-side Git hooks, or COS merge-queue/pre-push fallback according to remote capabilities.
-- **Artifacts to create/update**: `hooks/direct-main-guard.sh`, hook projections, `scripts/cos-session-branch.sh`, `lib/session_branch.py`, `docs/architecture/direct-main-policy.md`, and `docs/architecture/per-session-branches.md`.
+- **Remote invariant**: local warnings are UX, not the safety boundary. The authoritative guarantee is the vendor-neutral protected landing contract in `docs/04-Concepts/architecture/protected-landing-contract.md`: `main`/`master` must be advanced by provider-native protection, server-side Git hooks, or COS merge-queue/pre-push fallback according to remote capabilities.
+- **Artifacts to create/update**: `hooks/direct-main-guard.sh`, hook projections, `scripts/cos-session-branch.sh`, `lib/session_branch.py`, `docs/04-Concepts/architecture/direct-main-policy.md`, and `docs/04-Concepts/architecture/per-session-branches.md`.
 - **Effort**: L (~2 days, includes settings-driver integration).
 - **Acceptance criteria**: `tests/unit/test_direct_main_guard.py` covers agent block, operator warn, strict operator block, bypass, non-main branches, `master`, auto-detected agent env, and ignored non-commit/non-Bash calls. `tests/integration/test_per_session_branch.py::test_subagent_cannot_commit_to_main` covers the SessionStart branch workflow once P2.1 branch switching is default-on.
 - **Supersedes/related**: composes with ADR-110 (preserve-branch governance), ADR-109 (worktree isolation — see open question below on overlap).
@@ -157,7 +157,7 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 - **Layer**: L3 Isolation
 - **Problem (concrete failure mode)**: ADR-109 worktree isolation exists but is not default-on. The sub-agent claim-gate fix that was wiped today happened in the operator's main worktree precisely because no capsule isolated it.
 - **Decision**: flip `multi_session.validation_capsule.full_mode` default to `true` in `cognitive-os.yaml`. Every sub-agent dispatch runs in a worktree-isolated capsule (ADR-109) with liveness checks (ADR-113). Operator-direct edits remain in the main worktree.
-- **Artifacts to create**: config flip in `cognitive-os.yaml`, migration note in `docs/architecture/validation-capsule-rollout.md`.
+- **Artifacts to create**: config flip in `cognitive-os.yaml`, migration note in `docs/04-Concepts/architecture/validation-capsule-rollout.md`.
 - **Effort**: S (~4h, mostly defaults + doc; primitives already exist).
 - **Acceptance criteria**: `tests/integration/test_capsule_default_on.py::test_subagent_runs_in_capsule` — fresh install dispatches sub-agent in a worktree distinct from `pwd`.
 - **Supersedes/related**: ADR-109, ADR-113 (this ADR is the rollout decision, not new mechanism).
@@ -253,7 +253,7 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 - **Layer**: L6 Shared evidence
 - **Problem (concrete failure mode)**: `active-claims.json` (P1.1) is a per-repo JSON file; cross-machine or cross-worktree sessions don't share it. Engram is already cross-session and persistent.
 - **Decision**: on claim, write `mem_save topic=claims/<task-id>` with claim metadata. On completion, update with completion metadata. Before claiming, `mem_search topic=claims/<task-id>` — if a live claim from another session exists, defer or abort. Engram is the SoT; the JSON file is the local cache.
-- **Artifacts to create**: `lib/engram_claim_store.py`, integration in `scripts/claim_task.py`, doc in `docs/architecture/engram-as-claims-sot.md`.
+- **Artifacts to create**: `lib/engram_claim_store.py`, integration in `scripts/claim_task.py`, doc in `docs/04-Concepts/architecture/engram-as-claims-sot.md`.
 - **Effort**: M (~1 day).
 - **Acceptance criteria**: `tests/integration/test_engram_claims.py::test_cross_worktree_claim_visible` — claim made in worktree A is visible to worktree B via engram.
 - **Supersedes/related**: extends P1.1; depends on engram daemon throughput (see open questions).
@@ -396,7 +396,7 @@ make test-laptop
 
 ## References
 
-- Incident: `docs/incidents/2026-05-02-false-done-compounding.md`
-- Audit: `docs/architecture/multi-session-orchestration-audit-2026-05-02.md`
+- Incident: `docs/06-Daily/incidents/2026-05-02-false-done-compounding.md`
+- Audit: `docs/04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md`
 - ADR-088, ADR-089, ADR-098, ADR-099, ADR-102, ADR-105, ADR-106, ADR-108, ADR-109, ADR-110, ADR-113
 - Today's evidence commits: `173bcae1`, `3f5932d6` (orphaned); `52380c52`, `781e2c79` (duplicate re-apply); `f4e4ddd1` (re-applied claim-gate fix); `b1de3c40` (reaper run that cleaned 56 zombies)

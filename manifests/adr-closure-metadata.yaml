@@ -1,5 +1,5 @@
 schema_version: 1
-source: docs/SESSION-ADR-CLOSURE-2026-05-04.md
+source: docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md
 scope: ADR implementation closure metadata consumed by scripts/adr_implementation_ledger.py
 closure_classes:
   evidence-only: Implementation exists or ADR is historically satisfied; close by evidence/status reconciliation rather than

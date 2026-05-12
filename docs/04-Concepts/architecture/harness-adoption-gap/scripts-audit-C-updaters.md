@@ -142,13 +142,13 @@ SELF_INSTALL_SCRIPT="${PROJECT_ROOT}/hooks/self-install.sh"
 
 ### Caveat (non-blocking, advisory only)
 
-`docs/getting-started.md:202-207` describes `cos-update.sh` as an *"Infrastructure update
+`docs/00-MOCs/entrypoints/getting-started.md:202-207` describes `cos-update.sh` as an *"Infrastructure update
 (Docker services)"* immediately after describing *"Manual update of a single project"*
 (`install.sh --force`). A reader could reasonably assume `cos-update.sh` is a generic
 per-project updater. It is not — it only works inside the OS source repo.
 
 This is a documentation clarity issue, not an updater defect. Out of Cluster C scope to
-fix (touches `docs/getting-started.md`, not `scripts/cos-update.sh`).
+fix (touches `docs/00-MOCs/entrypoints/getting-started.md`, not `scripts/cos-update.sh`).
 
 ---
 
@@ -380,7 +380,7 @@ alongside line 186 in a follow-up change.
 
 ### [S2 CONCERN] `cos-update.sh` documentation conflates infra update with project update
 
-**Location**: `docs/getting-started.md:195-210`; conceptual defect, script itself is
+**Location**: `docs/00-MOCs/entrypoints/getting-started.md:195-210`; conceptual defect, script itself is
 correct.
 **What**: Docs describe `cos-update.sh` as the update mechanism after describing
 `install.sh --force` as the "manual update of a single project." A user reading
@@ -441,16 +441,16 @@ Per the task prompt:
    (`self-install.sh` and `cos-init.sh`).
 
 4. **Report exists at specified path.** This document, at
-   `docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md`.
+   `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-C-updaters.md`.
 
 ---
 
 ## Cross-references
 
-- `docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` — the
+- `docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` — the
   decision record for the skills-path fix
-- `docs/architecture/harness-adoption-gap/diagnosis.md` — root-cause analysis
-- `docs/architecture/harness-adoption-gap/scripts-audit.md` — prior (general) scripts
+- `docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md` — root-cause analysis
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md` — prior (general) scripts
   audit; this Cluster C report complements it with updater-specific depth
 - `hooks/self-install.sh` — reference implementation of the fix (SYNC_DIRS entry
   `"skills|claude|tree|"` at line 38)

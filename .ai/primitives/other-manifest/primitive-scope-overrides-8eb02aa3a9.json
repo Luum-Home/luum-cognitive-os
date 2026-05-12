@@ -56,7 +56,7 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/reports/primitive-harness-coverage-latest.json"
+        "docs/06-Daily/reports/primitive-harness-coverage-latest.json"
       ],
       "runtime_projection": false
     }
@@ -150,14 +150,14 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/reports/primitive-harness-coverage-latest.json"
+        "docs/06-Daily/reports/primitive-harness-coverage-latest.json"
       ],
       "runtime_projection": false
     }
   },
   "portable_id": "primitive-scope-overrides",
   "projection_targets": [
-    "docs/reports/primitive-harness-coverage-latest.json"
+    "docs/06-Daily/reports/primitive-harness-coverage-latest.json"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "manifests/primitive-scope-overrides.yaml",

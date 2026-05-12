@@ -447,7 +447,7 @@ What exists today, battle-tested on a real-world platform:
 - [x] SDD workflow — spec-driven development for large changes
 
 **Status**: single-repo development path with explicit proof required before
-production claims; see `docs/reports/claim-proof-latest.md`.
+production claims; see `docs/06-Daily/reports/claim-proof-latest.md`.
 
 ### Phase 2: Multi-Repo (next)
 

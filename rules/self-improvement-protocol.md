@@ -181,7 +181,7 @@ Library: `lib/staged_verification.py`
 
 Assistant `## Key Learnings` sections are not self-improvement by themselves. They become SO evidence only when captured through `scripts/cos-key-learnings-capture`, which writes deduplicated rows to `metrics/key-learnings.jsonl`. The governed self-improvement CLI reads actionable rows and emits draftable `key_learning_candidate` signals. Promotion still requires the normal draft/review path; no rule, skill, hook, script, or manifest is changed directly from chat text.
 
-Reference: `docs/architecture/key-learnings-capture-self-improvement.md`.
+Reference: `docs/04-Concepts/architecture/key-learnings-capture-self-improvement.md`.
 
 ## Comparative Promotion Evaluation
 
@@ -214,4 +214,4 @@ python3 scripts/cos_governed_self_improvement.py \
   --fitness-report primitive-fitness.json
 ```
 
-Reference: `docs/architecture/primitive-fitness-evaluation-contract.md`.
+Reference: `docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md`.

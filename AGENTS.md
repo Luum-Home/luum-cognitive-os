@@ -30,7 +30,7 @@ The OS follows a 3-layer architecture: universal OS agentic primitives in `hooks
 
 Hooks wire into the Claude Code hook system. The hook chain is: SessionStart initializes state → PreToolUse gates run before every tool call → PostToolUse validates results → Stop records session metrics.
 
-Memory lifecycle quick map: `docs/architecture/memory-lifecycle.md`. Use it to
+Memory lifecycle quick map: `docs/04-Concepts/architecture/memory-lifecycle.md`. Use it to
 understand which hooks save context, which hooks recover prior state, and which
 doctor proves Codex/Claude session portability.
 
@@ -67,7 +67,7 @@ Within agentic-layer documentation, **always prefer "agentic primitive"** (or th
 
 This decision is recorded as `decision/terminology/agentic-primitives` in Engram. A future audit test (`tests/audit/test_vocabulary_agentic_primitives.py`) will flag the phrase "OS component" in `rules/`, `skills/`, `hooks/`, and `docs/` files as a vocabulary drift violation. Until that test exists, authors are expected to self-enforce.
 
-Cross-reference: ADR-072 (`docs/adrs/ADR-072-test-lane-taxonomy.md`) uses "primitive" for lane-taxonomy entities — consistent with this decision.
+Cross-reference: ADR-072 (`docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md`) uses "primitive" for lane-taxonomy entities — consistent with this decision.
 
 ---
 

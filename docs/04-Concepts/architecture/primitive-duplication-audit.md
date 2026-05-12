@@ -37,8 +37,8 @@ Generic clone detectors can say “these files are similar.” Cognitive OS also
 
 The script writes:
 
-- `docs/reports/primitive-duplication-latest.json`
-- `docs/reports/primitive-duplication-latest.md`
+- `docs/06-Daily/reports/primitive-duplication-latest.json`
+- `docs/06-Daily/reports/primitive-duplication-latest.md`
 
 Each JSON finding includes:
 

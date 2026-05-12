@@ -18,8 +18,8 @@ Evidence:
 - fresh-install tests: `tests/integration/test_installer.py`
 - first-run budget tests: `tests/integration/test_first_run_onboarding.py`
 - install manifest tests: `tests/integration/test_install_manifest_integration.py`
-- manual proof: `docs/manual-tests/first-run-onboarding.md`
-- manual demo: `docs/manual-tests/five-minute-demo.md`
+- manual proof: `docs/09-Quality/manual-tests/first-run-onboarding.md`
+- manual demo: `docs/09-Quality/manual-tests/five-minute-demo.md`
 
 Verification:
 
@@ -64,8 +64,8 @@ Evidence:
 - harness-aware settings projection: `scripts/generate-project-settings.sh`
 - executable portability demo: `scripts/demo-portability-proof.sh`
 - settings-driver helpers: `scripts/_lib/settings-driver.sh`
-- bootstrap portability analysis: `docs/architecture/bootstrap-portability.md`
-- cross-harness authoring guide: `docs/architecture/cross-harness-authoring.md`
+- bootstrap portability analysis: `docs/04-Concepts/architecture/bootstrap-portability.md`
+- cross-harness authoring guide: `docs/04-Concepts/architecture/cross-harness-authoring.md`
 
 Verification:
 
@@ -89,7 +89,7 @@ Evidence:
 - dispatch integration: `lib/dispatch.py`
 - gateway selection: `lib/gateway_selector.py`
 - skill routing: `lib/skill_routing.py`
-- runtime enforcement doc: `docs/architecture/capability-centric-runtime-enforcement.md`
+- runtime enforcement doc: `docs/04-Concepts/architecture/capability-centric-runtime-enforcement.md`
 
 Verification:
 
@@ -107,11 +107,11 @@ Promise: first-contact docs stay focused, while advanced systems remain availabl
 
 Evidence:
 
-- product messaging: `docs/business/product-messaging.md`
-- durable master plan: `docs/business/durable-product-master-plan.md`
-- product taxonomy: `docs/product-zones.md`
+- product messaging: `docs/08-References/business/product-messaging.md`
+- durable master plan: `docs/08-References/business/durable-product-master-plan.md`
+- product taxonomy: `docs/04-Concepts/root/product-zones.md`
 - machine-readable taxonomy: `manifests/product-zones.yaml`
-- master checklist: `docs/business/master-plan-checklist.md`
+- master checklist: `docs/08-References/business/master-plan-checklist.md`
 
 Verification:
 
@@ -122,5 +122,5 @@ python3 -m pytest tests/contracts/test_product_zones.py -q
 Manual review:
 
 - `README.md` should lead with governance, verification, and portability.
-- `docs/README.md` should label squads, dashboards, and control-plane material as optional or future architecture.
+- `docs/00-MOCs/entrypoints/README.md` should label squads, dashboards, and control-plane material as optional or future architecture.
 - New product claims should be added to this file before they are promoted in the README.

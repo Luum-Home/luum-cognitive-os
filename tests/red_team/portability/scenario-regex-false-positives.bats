@@ -83,7 +83,7 @@ print('OK')
   run python3 -c "
 import yaml
 content = open('$SCENARIOS_DIR/regex-false-positives.yaml').read()
-assert 'docs/archive/hooks' not in content, 'Hardcoded SO archive path found'
+assert 'docs/99-Archive/archive/hooks' not in content, 'Hardcoded SO archive path found'
 assert 'hooks/self-install' not in content, 'Hardcoded SO install path found'
 print('OK')
 "
@@ -125,7 +125,7 @@ print('OK')
 import yaml
 s = yaml.safe_load(open('$SCENARIOS_DIR/regex-false-positives.yaml'))
 paths = [f['path'] for f in s['initial_state']['files']]
-so_paths = [p for p in paths if p.startswith('hooks/') or p.startswith('docs/archive/')]
+so_paths = [p for p in paths if p.startswith('hooks/') or p.startswith('docs/99-Archive/archive/')]
 assert not so_paths, f'SO-specific paths in initial_state: {so_paths}'
 print('OK')
 "

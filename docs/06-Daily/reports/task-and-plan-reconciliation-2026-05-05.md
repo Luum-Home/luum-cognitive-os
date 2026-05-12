@@ -18,7 +18,7 @@
 
 ## Methodology
 
-Sources read: `.cognitive-os/tasks/active-tasks.json` (189 tasks), `.cognitive-os/runtime/task-claims.json` (13 claims), `.cognitive-os/plans/features/*.md` (17 plans), `.cognitive-os/plans/roadmaps/*.md`. Git evidence via `git log --since=14 days --oneline` (55 commits) plus targeted `--grep` queries. Open/merged PRs via `gh pr list`. ADR status via directory scan of `docs/adrs/`. COS primitives run: `cos-boring-reliability --profile core --json` (full output), `cos-silent-failure-audit --json`, `cos-tier-claim-audit --json`, `aspirational_audit.py --json`, `dogfood_score.py`, `cos-runtime-hook-reality` (no-json mode). Engram `mem_context` for recent session history. Cross-validation: task description substring matched against `git log --grep` and then manually verified against commit message conventions (feat/fix + ADR/phase label).
+Sources read: `.cognitive-os/tasks/active-tasks.json` (189 tasks), `.cognitive-os/runtime/task-claims.json` (13 claims), `.cognitive-os/plans/features/*.md` (17 plans), `.cognitive-os/plans/roadmaps/*.md`. Git evidence via `git log --since=14 days --oneline` (55 commits) plus targeted `--grep` queries. Open/merged PRs via `gh pr list`. ADR status via directory scan of `docs/02-Decisions/adrs/`. COS primitives run: `cos-boring-reliability --profile core --json` (full output), `cos-silent-failure-audit --json`, `cos-tier-claim-audit --json`, `aspirational_audit.py --json`, `dogfood_score.py`, `cos-runtime-hook-reality` (no-json mode). Engram `mem_context` for recent session history. Cross-validation: task description substring matched against `git log --grep` and then manually verified against commit message conventions (feat/fix + ADR/phase label).
 
 ---
 
@@ -62,14 +62,14 @@ The actual remaining work after removing ghost-pending and frozen items.
 | Priority | Item | Source | Why pending |
 |----------|------|--------|-------------|
 | P0 | Prune 13 expired task-claim locks from `task-claims.json` | `.cognitive-os/runtime/task-claims.json` | Claim-gate will block future agents if IDs are reused |
-| P0 | Accept ADR-116 (move from Proposed → Accepted) | `docs/adrs/ADR-116-*.md` | Implementation shipped; ADR still shows Proposed |
+| P0 | Accept ADR-116 (move from Proposed → Accepted) | `docs/02-Decisions/adrs/ADR-116-*.md` | Implementation shipped; ADR still shows Proposed |
 | P1 | ACC dashboard CLI + statusline (`task-desc-40a358be772f176d`) | `active-tasks.json` blocked_by_claim | Claim expired 71h ago; check if feature shipped (no feat commit found for "ACC dashboard CLI") |
 | P1 | Classify 2 unclassified silent-failure patterns | `hooks/_lib/agent-context.sh`, `hooks/_lib/artifact-status.sh` | `cos-silent-failure-audit` returns fail; 7 unclassified occurrences |
 | P1 | Phoenix migration Phase 1 (install `arize-phoenix`, author skill) | `phoenix-migration-plan.md` §Phase 1 | Operator-gated, target 2026-05-30; no blocking dependency |
 | P2 | 60 `default_visible_reducer` demotion recommendations | `cos-boring-reliability` warn | 60 core-tier primitives recommended for lab; excess surface area |
 | P2 | 6 `projected_but_undocumented` hooks | `cos-runtime-hook-reality` | Hooks fire but have no manifest entry; documentation drift |
 | P2 | 2 `dormant` hooks (no projection, no doc) | `cos-runtime-hook-reality` | Dead code risk |
-| P3 | ADR-135 `status: proposed` — self-evolving doctrine | `docs/adrs/ADR-135-*.md` | No date found; age unknown; needs acceptance or rejection decision |
+| P3 | ADR-135 `status: proposed` — self-evolving doctrine | `docs/02-Decisions/adrs/ADR-135-*.md` | No date found; age unknown; needs acceptance or rejection decision |
 | P3 | Phoenix Phases 2-4 | `phoenix-migration-plan.md` | Dependent on Phase 1; target 2026-06-30 |
 | P3 | Shape-B transferability debt (hooks `_lib/cache.sh`, `execute-repair.sh`, `killswitch_check.sh`) | `cos-silent-failure-audit` info | Deferred to Shape B; no blocking urgency today |
 

@@ -28,11 +28,11 @@
 
 Documents that establish this doctrine:
 
-- `docs/adrs/ADR-138-flow-contract-schema.md` — ladder formal contract.
-- `docs/adrs/ADR-126-*.md`, `ADR-127-*.md`, `ADR-128-*.md` — origin of lifecycle metadata for hooks.
-- `docs/adrs/ADR-133-*.md` — auto-skill-generation governance (sandbox-only auto-apply).
-- `docs/adrs/ADR-134-*.md` — closed-loop self-improvement (propose-only at promotion).
-- `docs/adrs/ADR-135-*.md` — self-evolving doctrine proposer (propose-only).
+- `docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md` — ladder formal contract.
+- `docs/02-Decisions/adrs/ADR-126-*.md`, `ADR-127-*.md`, `ADR-128-*.md` — origin of lifecycle metadata for hooks.
+- `docs/02-Decisions/adrs/ADR-133-*.md` — auto-skill-generation governance (sandbox-only auto-apply).
+- `docs/02-Decisions/adrs/ADR-134-*.md` — closed-loop self-improvement (propose-only at promotion).
+- `docs/02-Decisions/adrs/ADR-135-*.md` — self-evolving doctrine proposer (propose-only).
 - `manifests/primitive-lifecycle.yaml` — 154 primitives classified.
 - `manifests/agentic-primitive-registry.lock.yaml` — sha256-locked registry, lifecycle metadata per primitive.
 
@@ -125,7 +125,7 @@ Without this data, the existing dormant `cos-doctrine-proposer` cannot generate 
 
 1. **Promotion proposer** (`scripts/cos-promotion-proposer`):
    - Query SkillStore weekly (cron / SessionStart hook).
-   - For each sandbox skill with `record_count ≥ 50 AND success_rate ≥ 0.85 AND judge_avg ≥ 0.8`, emit a propose-only artifact at `docs/reports/promotion-proposals/<date>/<skill>.md`.
+   - For each sandbox skill with `record_count ≥ 50 AND success_rate ≥ 0.85 AND judge_avg ≥ 0.8`, emit a propose-only artifact at `docs/06-Daily/reports/promotion-proposals/<date>/<skill>.md`.
    - Operator approves → manifest update + ADR fragment.
 
 2. **Doctrine-proposer reactivation** (`scripts/cos-doctrine-proposer`):
@@ -152,9 +152,9 @@ Without this data, the existing dormant `cos-doctrine-proposer` cannot generate 
 
 ## Cross-references
 
-- `docs/adrs/ADR-138-flow-contract-schema.md` — ladder doctrine.
-- `docs/adrs/ADR-133-*.md`, `ADR-134-*.md`, `ADR-135-*.md` — propose-only contract.
-- `docs/reports/openspace-opus-deep-audit-2026-05-05.md` — the audit that surfaced the SkillStore opportunity.
+- `docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md` — ladder doctrine.
+- `docs/02-Decisions/adrs/ADR-133-*.md`, `ADR-134-*.md`, `ADR-135-*.md` — propose-only contract.
+- `docs/06-Daily/reports/openspace-opus-deep-audit-2026-05-05.md` — the audit that surfaced the SkillStore opportunity.
 - `manifests/primitive-lifecycle.yaml` — current classification.
 - `dogfood_score` — the metric that signals this gap is real.
 - Engram topic_key `lifecycle-promotion-gap/2026-05-05` — saved counterpart for cross-session retrieval.

@@ -360,7 +360,7 @@ required.
 
 ## Cross-References
 
-- `docs/reports/postmortem-cross-session-collision-2026-05-05.md` —
+- `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md` —
   origin incident.
 - ADR-163 — cos-instance-installer (precursor; ADR-184 extends).
 - ADR-182 — branch ownership lock (independent; works with or without
@@ -369,7 +369,7 @@ required.
   arbitration).
 - ADR-185 — directed audit findings queue (cosd consumes blocking findings
   before granting critical writes).
-- `docs/architecture/cross-session-coordination-ledger.md` — local degraded
+- `docs/04-Concepts/architecture/cross-session-coordination-ledger.md` — local degraded
   coordination path before cosd is available.
 - ADR-136 — cross-instance learning runway (cosd is the per-machine
   unit that ADR-136 federation interconnects).

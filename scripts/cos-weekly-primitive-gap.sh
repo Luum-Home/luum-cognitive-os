@@ -3,7 +3,7 @@
 # cos-weekly-primitive-gap.sh — local replacement for primitive-gap-audit.yml.
 #
 # Per ADR-131. Runs the full primitive-gap audit suite and writes outputs to
-# docs/reports/, mirroring the workflow's behaviour but without committing or
+# docs/06-Daily/reports/, mirroring the workflow's behaviour but without committing or
 # pushing. Operator can review and commit manually if desired.
 
 set -uo pipefail
@@ -13,7 +13,7 @@ cd "$REPO_ROOT"
 
 echo "[cos-weekly-primitive-gap] $(date -u +%Y-%m-%dT%H:%M:%SZ) — start"
 
-REPORTS=docs/reports
+REPORTS=docs/06-Daily/reports
 mkdir -p "$REPORTS"
 
 run_step() {

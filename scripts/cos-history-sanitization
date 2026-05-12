@@ -78,7 +78,7 @@ def main() -> int:
             "ERROR: history rewrites require ADR documentation per ADR-269.\n"
             "  Re-run with --adr-ref ADR-NNN where ADR-NNN is an Accepted ADR\n"
             "  documenting the rewrite rationale. If no such ADR exists, create\n"
-            "  one first using docs/adrs/templates/history-rewrite.template.md."
+            "  one first using docs/02-Decisions/adrs/templates/history-rewrite.template.md."
         )
         print(msg, file=sys.stderr)
         return 2

@@ -90,7 +90,7 @@ def test_emit_test_produces_valid_python_and_cites_adr() -> None:
         value=5.0,
         source="adr",
         line=42,
-        file="docs/adrs/ADR-047-x.md",
+        file="docs/02-Decisions/adrs/ADR-047-x.md",
         raw="",
     )
     text = _mod.emit_test(py_c, adr_c, adr_c.file)
@@ -104,7 +104,7 @@ def test_emit_test_produces_valid_python_and_cites_adr() -> None:
 
 
 def test_adr_id_preserves_leading_zeros() -> None:
-    assert _mod.adr_id("docs/adrs/ADR-047-foo.md") == "047"
+    assert _mod.adr_id("docs/02-Decisions/adrs/ADR-047-foo.md") == "047"
     assert _mod.adr_id("ADR-001-init.md") == "001"
 
 

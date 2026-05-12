@@ -150,7 +150,7 @@ Save findings to persistent memory:
 ```
 mem_save(
   title: "Repo Forensics: {repo-name}",
-  topic_key: "docs/research/repo-forensics/{repo-name}",
+  topic_key: "docs/03-PoCs/research/repo-forensics/{repo-name}",
   type: "discovery",
   scope: "project",
   project: "luum-cognitive-os",
@@ -175,7 +175,7 @@ status: success
 executive_summary: "{repo-name}: {language} project with {N} deps, {patterns}"
 artifacts:
   - type: forensic-report
-    location: "Engram: docs/research/repo-forensics/{repo-name}"
+    location: "Engram: docs/03-PoCs/research/repo-forensics/{repo-name}"
 next_recommended:
   - "Review dependency licenses with /repo-scout if adoption is planned"
   - "Compare architecture patterns with current project"

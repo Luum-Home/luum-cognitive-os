@@ -12,8 +12,8 @@ implementation_files:
   - scripts/cos-boring-reliability
   - scripts/cos-doctrine-proposer
   - scripts/cos-self-improvement-loop
-  - docs/architecture/boring-reliability-control-plane.md
-  - docs/architecture/cognitive-prosthesis.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/cognitive-prosthesis.md
   - pyproject.toml
 tier: maintainer
 tags: [ui, cli, phoenix, engram-cloud, obsidian, multi-surface, governance]
@@ -105,8 +105,8 @@ state, Phoenix for traces, or markdown reports for long-form decisions.
 
 ### Surface 4 - Obsidian / markdown reader (opt-in, long-form artefacts)
 
-**Artefact kind**: ADRs (docs/adrs/), doctrine documents (docs/architecture/,
-docs/runbooks/), audit reports and case studies (docs/reports/).
+**Artefact kind**: ADRs (docs/02-Decisions/adrs/), doctrine documents (docs/04-Concepts/architecture/,
+docs/05-Methodology/runbooks/), audit reports and case studies (docs/06-Daily/reports/).
 **Activation**: clone the repo, point any markdown editor at the directory.
 Obsidian is recommended because of its native graph view, backlinks, and
 embedded diagram support; any markdown viewer works (VS Code, GitHub web,
@@ -117,7 +117,7 @@ trail. Backlinks across ADRs are useful navigation. Obsidian's daily-notes and
 graph view also fit the "doctrine evolves over time" pattern naturally.
 **Boundary**: this surface is read-only in operational terms. ADRs are
 created via the standard /sdd-* workflow or hand-edited under git; reports
-are emitted by the operator CLIs into docs/reports/. Obsidian is the reader,
+are emitted by the operator CLIs into docs/06-Daily/reports/. Obsidian is the reader,
 not the editor of source-of-truth.
 
 ### Cross-surface contract
@@ -146,7 +146,7 @@ not the editor of source-of-truth.
 3. ADR-169 is unaffected - the dashboard demotion holds.
 4. CHANGELOG [Unreleased] references ADR-171 and ADR-172 together as the
    v0.26.1 / v0.27.0 UI-doctrine pair.
-5. docs/INDEX.md (or equivalent) lists the four surfaces with their
+5. docs/00-MOCs/entrypoints/INDEX.md (or equivalent) lists the four surfaces with their
    activation commands, so a new operator can find them in one place.
 6. No new in-tree web-dashboard code lands until a future ADR explicitly
    revokes ADR-172.
@@ -184,7 +184,7 @@ not the editor of source-of-truth.
   the CLI surface (already maintained), Phoenix (upstream-maintained), Engram
   Cloud (separate maintenance lane per ADR-136/139), and markdown files (no
   rendering code).
-- The doctrine compounds: every audit emits markdown to docs/reports/,
+- The doctrine compounds: every audit emits markdown to docs/06-Daily/reports/,
   every Engram observation is queryable, every LLM call is traced, every
   operator action has a CLI entry point. None of those depend on each other
   to function.
@@ -195,7 +195,7 @@ not the editor of source-of-truth.
 **Negative / trade-offs.**
 
 - **Cognitive load.** A new operator has to learn that there are four surfaces,
-  not one. Mitigation: docs/INDEX.md and docs/runbooks/run-cos-in-docker.md
+  not one. Mitigation: docs/00-MOCs/entrypoints/INDEX.md and docs/05-Methodology/runbooks/run-cos-in-docker.md
   document the activation sequence; Surface 1 alone is sufficient for getting
   started.
 - **Discoverability.** Phoenix on port 6006 and Engram Cloud's URL are not visible
@@ -228,19 +228,19 @@ After this ADR, each artefact kind has a declared surface:
 **Answers:**
 - "Where do I look for live operator state?" — Surface 1 CLI scripts in `scripts/` (e.g., `cos-boring-reliability --json`).
 - "Where do I look for LLM trace flame graphs and cost data?" — Phoenix on port 6006.
-- "Where do I look for decisions and ADRs?" — Surface 4: `docs/adrs/`, `docs/architecture/`, `docs/reports/` in any markdown reader.
+- "Where do I look for decisions and ADRs?" — Surface 4: `docs/02-Decisions/adrs/`, `docs/04-Concepts/architecture/`, `docs/06-Daily/reports/` in any markdown reader.
 - "Can I add a new in-tree web dashboard?" — Not under this ADR. A new ADR with a real driver, real schema, and real consumer is required.
 
 **Does not answer:**
 - "How to set up Engram Cloud" — see ADR-139 (BYOK pattern) and ADR-136 (federation runway).
-- "Which CLI command shows a specific governance state" — see `docs/runbooks/` and the individual script `--help` flags.
+- "Which CLI command shows a specific governance state" — see `docs/05-Methodology/runbooks/` and the individual script `--help` flags.
 
 ### Daily operational pattern
 
 1. **Live state check**: `scripts/cos-boring-reliability --json | jq` — what is the current operator state?
 2. **Trace review**: open Phoenix at `http://localhost:6006` after an LLM-heavy session.
 3. **Memory query**: `mem_context` (in-session) or Engram Cloud (cross-session, when activated).
-4. **ADR lookup**: open `docs/adrs/` in Obsidian or any markdown viewer; use backlinks and graph view for ADR chains.
+4. **ADR lookup**: open `docs/02-Decisions/adrs/` in Obsidian or any markdown viewer; use backlinks and graph view for ADR chains.
 
 When an external evaluator asks "where is the dashboard?": answer with the artefact-kind question first, then point to the correct surface from the table above.
 
@@ -313,9 +313,9 @@ is judged correct and stabilises as the COS UI doctrine.
 - [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md) - superseded by this
   ADR; its CLI-as-primary clause survives, generalised into Surface 1.
   this ADR is the companion that explains what covers the UI role instead.
-- docs/architecture/boring-reliability-control-plane.md - the operating doctrine
+- docs/04-Concepts/architecture/boring-reliability-control-plane.md - the operating doctrine
   the CLI surface enacts.
-- docs/architecture/cognitive-prosthesis.md - "Subtraction plus maturity-driven"
+- docs/04-Concepts/architecture/cognitive-prosthesis.md - "Subtraction plus maturity-driven"
   - multi-surface respects that by not building any new surface.
 
 ---
@@ -376,11 +376,11 @@ and matches the ADR-172 contract that "no surface is required".
 
 Substrate is `docs/`:
 
-- `docs/adrs/` — currently 172 ADRs at acceptance (this one is the most recent)
-- `docs/architecture/` — boring-reliability-control-plane.md,
+- `docs/02-Decisions/adrs/` — currently 172 ADRs at acceptance (this one is the most recent)
+- `docs/04-Concepts/architecture/` — boring-reliability-control-plane.md,
   cognitive-prosthesis.md, federation-runway.md, etc.
-- `docs/runbooks/` — run-cos-in-docker.md and operator runbooks
-- `docs/reports/` — dated audit reports, baseline snapshots, case studies
+- `docs/05-Methodology/runbooks/` — run-cos-in-docker.md and operator runbooks
+- `docs/06-Daily/reports/` — dated audit reports, baseline snapshots, case studies
 
 All git-tracked, all readable in any markdown viewer. Obsidian is a
 recommended reader because of native graph-view + backlinks, but is not

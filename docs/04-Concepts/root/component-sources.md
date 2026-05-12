@@ -62,7 +62,7 @@ hardcoding a small subset; today this includes `hermes-agent`, `pi-mono`, and
 
 | Source | URL | License | Components | Status |
 |--------|-----|---------|------------|--------|
-| Agent Zero | [agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) | Custom (see repo) | AI agent framework: plugin system, plugin marketplace (GitHub index repo), self-updater, plugin scanner, agent teams, Telegram integration | EVALUATE -- patterns analyzed, see `docs/ecosystem-comparison.md` |
+| Agent Zero | [agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) | Custom (see repo) | AI agent framework: plugin system, plugin marketplace (GitHub index repo), self-updater, plugin scanner, agent teams, Telegram integration | EVALUATE -- patterns analyzed, see `docs/04-Concepts/root/ecosystem-comparison.md` |
 
 ### Agent Zero Analysis
 
@@ -448,7 +448,7 @@ Do NOT integrate as dependency. CC-BY-NC-4.0 blocks commercial use. Very new (5 
 
 | Source | Reference | How Used |
 |--------|-----------|----------|
-| awesome-claude-code | Referenced in `docs/package-manager-design.md` | Surveyed 114+ tools to inform cos package manager design |
+| awesome-claude-code | Referenced in `docs/04-Concepts/root/package-manager-design.md` | Surveyed 114+ tools to inform cos package manager design |
 | Antigravity Awesome Skills | [sickn33/antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) | Evaluated as potential skill source (see evaluation below) |
 
 ---

@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-09  
 **Status:** Plan-first; do not implement broad runtime changes until ADR-256 is accepted  
-**ADR:** `docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
+**ADR:** `docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
 
 ## Purpose
 
@@ -36,7 +36,7 @@ OpenSage ADK is now a formal pressure test for this plan, not a runtime dependen
 - `scripts/primitive_harness_coverage.py`
 - `scripts/cos-consumer-fleet-audit` / `lib/consumer_fleet_audit.py`
 - `scripts/cos-service-readiness-gate` / `lib/service_mode_readiness.py`
-- `docs/architecture/cos-service-runtime-boundary.md`
+- `docs/04-Concepts/architecture/cos-service-runtime-boundary.md`
 - `lib/trace_joiner.py`
 - `skills/primitive-authoring/SKILL.md`
 
@@ -59,9 +59,9 @@ implemented and smoke-tested.
 Keep the plan-first documentation consistent before runtime changes:
 
 - ADR-256.
-- `docs/architecture/ide-agnostic-primitive-projection.md`.
+- `docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md`.
 - `/primitive-authoring`.
-- `docs/architecture/opensage-self-programming-patterns.md`.
+- `docs/04-Concepts/architecture/opensage-self-programming-patterns.md`.
 - `manifests/self-programming-agent-patterns.yaml`.
 
 Test:
@@ -112,7 +112,7 @@ python3 -m pytest tests/contracts/test_codebase_itinerary.py -q
 
 ## Phase 4 — Projection and impact report
 
-Generate `docs/reports/primitive-projection-fidelity-latest.{json,md}` by joining:
+Generate `docs/06-Daily/reports/primitive-projection-fidelity-latest.{json,md}` by joining:
 
 - primitive contracts;
 - harness projection/capability manifests;

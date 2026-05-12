@@ -21,10 +21,10 @@ Use when a conversation produces any of the following:
 
 ## Placement Rules
 
-- `docs/business/` — product strategy, wedge, risk, messaging, feature audits
-- `docs/architecture/` — technical boundaries, portability, driver layers, runtime decisions
-- `docs/adrs/` — durable architectural decisions with alternatives and consequences
-- `docs/manual-tests/` — explicit human verification flows
+- `docs/08-References/business/` — product strategy, wedge, risk, messaging, feature audits
+- `docs/04-Concepts/architecture/` — technical boundaries, portability, driver layers, runtime decisions
+- `docs/02-Decisions/adrs/` — durable architectural decisions with alternatives and consequences
+- `docs/09-Quality/manual-tests/` — explicit human verification flows
 - tests/contracts — when the document should become enforceable
 
 ## Operating Rule
@@ -51,5 +51,5 @@ Never claim that memory was persisted to an MCP tool unless that tool is surface
 
 When a new artifact is created, link it from:
 
-- `docs/README.md`
-- and, if it advances execution, `docs/business/master-plan-checklist.md`
+- `docs/00-MOCs/entrypoints/README.md`
+- and, if it advances execution, `docs/08-References/business/master-plan-checklist.md`

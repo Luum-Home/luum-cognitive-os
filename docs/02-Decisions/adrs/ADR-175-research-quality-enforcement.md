@@ -20,10 +20,10 @@ related_adrs:
   - ADR-133
   - ADR-134
 related_reports:
-  - docs/reports/cos-side-deep-rebuttal-2026-05-05.md
-  - docs/reports/openharness-opus-deep-audit-2026-05-05.md
-  - docs/reports/openspace-opus-deep-audit-2026-05-05.md
-  - docs/reports/cli-anything-opus-deep-audit-2026-05-05.md
+  - docs/06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md
+  - docs/06-Daily/reports/openharness-opus-deep-audit-2026-05-05.md
+  - docs/06-Daily/reports/openspace-opus-deep-audit-2026-05-05.md
+  - docs/06-Daily/reports/cli-anything-opus-deep-audit-2026-05-05.md
 tier: maintainer
 tags: [research, audit, quality, evidence, adr]
 ---
@@ -58,7 +58,7 @@ citation, confidence levels, numerical specificity, and falsifiability.
 
 Add a **lightweight, non-blocking research-quality scorer** that:
 
-1. Runs as a PostToolUse Edit/Write hook on `**/docs/reports/*.md`.
+1. Runs as a PostToolUse Edit/Write hook on `**/docs/06-Daily/reports/*.md`.
 2. Scores every report on four weighted dimensions:
    - Symmetric citation (40%) — every comparison row cites file:line on both sides.
    - Confidence levels (25%) — every claim block carries HIGH/MEDIUM/LOW.
@@ -110,7 +110,7 @@ After this ADR:
 
 | Surface | Before | After |
 |---|---|---|
-| Research report writes | No quality signal | `hooks/research-quality-validator.sh` runs PostToolUse on `**/docs/reports/*.md`; emits stderr WARNING when score < 70 |
+| Research report writes | No quality signal | `hooks/research-quality-validator.sh` runs PostToolUse on `**/docs/06-Daily/reports/*.md`; emits stderr WARNING when score < 70 |
 | Quality metrics | None | `.cognitive-os/metrics/research-quality.jsonl` receives one entry per scored report |
 | Risky task routing | Manual; relied on orchestrator recall | `dispatch_model_advisor.py` logs opus recommendations for tasks scoring ≥ 5 on the ADR-069 4-dimension risk score |
 | Consequence streak | Trust-score only | Streak advisory fires through `consequence-evaluator.sh` when last 5 reports average < 70 |
@@ -128,7 +128,7 @@ After this ADR:
 
 ### Daily operational pattern
 
-1. Write a report to `docs/reports/` — the hook fires automatically via PostToolUse.
+1. Write a report to `docs/06-Daily/reports/` — the hook fires automatically via PostToolUse.
 2. If score < 70: read the WARNING to identify which dimension failed; add `file:line` citations, confidence labels, or a `## Uncertainties` section as appropriate.
 3. Periodically check `.cognitive-os/metrics/research-quality.jsonl` for streak trends.
 4. For high-risk tasks, check `.cognitive-os/metrics/model-recommendations.jsonl` for Opus routing recommendations before dispatching.
@@ -137,7 +137,7 @@ Killswitches: `SO_KILLSWITCH=1` or `DISABLE_HOOK_RESEARCH_QUALITY_VALIDATOR=1` b
 
 ### Reading guide for cold readers
 
-1. The root cause of this ADR is documented in `docs/reports/cos-side-deep-rebuttal-2026-05-05.md` — read it to understand what asymmetric-depth looks like concretely.
+1. The root cause of this ADR is documented in `docs/06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md` — read it to understand what asymmetric-depth looks like concretely.
 2. The four scoring dimensions and weights are in `lib/research_quality_advisor.py`; threshold 70 is env-overridable (`RESEARCH_QUALITY_THRESHOLD`).
 3. The ADR-069 4-dimension risk score (used by `dispatch_model_advisor.py`) is the same framework referenced in `rules/RULES-COMPACT.md §12 Research & Decision Protocols`.
 4. The hook latency is hard-capped at 1s (`timeout 1`); if it becomes a bottleneck, the implementation guarantees < 300ms target.

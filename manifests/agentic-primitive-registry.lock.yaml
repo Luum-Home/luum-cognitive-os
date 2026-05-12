@@ -1779,7 +1779,7 @@ primitives:
   distribution: core
   runtime_projection: false
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   sha256: 987771d1855722c6cec90b12d5d88ed217fab2d69b33a63c41a66f94bb4dbbde
 - id: manifests/primitive-harness-gap-policy.yaml
   kind: manifest
@@ -1789,7 +1789,7 @@ primitives:
   distribution: core
   runtime_projection: false
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   sha256: 2bcc8ce23f6881109856d305bc8aa2ccb6cef567956b2ae06af4cc9d9790ba0d
 - id: manifests/primitive-scope-classification.yaml
   kind: manifest
@@ -1811,7 +1811,7 @@ primitives:
   distribution: core
   runtime_projection: false
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   sha256: 7cb53b1970c490200fa01e7da41c0b6e49e7f671dcaaf4d30a88f3d3f7d6299d
 - id: packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt
   kind: library
@@ -1917,7 +1917,7 @@ primitives:
   projection_targets:
   - scripts/cos-active-primitive-index
   - scripts/active_primitive_index.py
-  - docs/adrs/ADR-127-active-primitive-index.md
+  - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
   sha256: 37bf943b58d07bde68d634280f0bcd887951307a6efac25b4a42bddf03212235
 - id: scripts/cos-adapters
   kind: script
@@ -1939,7 +1939,7 @@ primitives:
   projection_targets:
   - scripts/cos-adoption-profile
   - scripts/cos_adoption_profile.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: f409919e7f1cab8468f56bad6bd11ff523a3ad8b2e1f86bad3c5298a9a2eb8ba
 - id: scripts/cos-adr-tombstone
   kind: script
@@ -1960,7 +1960,7 @@ primitives:
   distribution: maintainer
   runtime_projection: false
   projection_targets:
-  - docs/architecture/agent-message-bus.md
+  - docs/04-Concepts/architecture/agent-message-bus.md
   - scripts/cos-agent-message
   sha256: 587335abec09d04d155ca0a9cde97324445f4fcb098477b1438b1ad74a5b72b6
 - id: scripts/cos-architecture-readiness
@@ -1973,8 +1973,8 @@ primitives:
   projection_targets:
   - scripts/cos-architecture-readiness
   - scripts/cos_architecture_readiness.py
-  - docs/adrs/ADR-127-active-primitive-index.md
-  - docs/adrs/ADR-128-data-layer-integrity-fixes.md
+  - docs/02-Decisions/adrs/ADR-127-active-primitive-index.md
+  - docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md
   sha256: 9d6f6183f54c672de29f6b70cc03ac2f7b359e9bd6da3f0261283e6013fcd811
 - id: scripts/cos-auth-probe
   kind: script
@@ -2008,7 +2008,7 @@ primitives:
   projection_targets:
   - scripts/cos-boring-reliability
   - scripts/cos_boring_reliability.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: d8742cc82f90d416a40b0cf9014554db77ae9305040cb6500ba6b20077504442
 - id: scripts/cos-ci-local.sh
   kind: script
@@ -2020,7 +2020,7 @@ primitives:
   projection_targets:
   - scripts/cos-ci-local.sh
   - git-hooks/pre-push
-  - docs/adrs/ADR-131-local-ci-migration.md
+  - docs/02-Decisions/adrs/ADR-131-local-ci-migration.md
   sha256: 22ba5c90b38652f1307919ec2b93d664b4787bc96b36067dfac7b3cfd13c3d63
 - id: scripts/cos-closure-discipline-audit
   kind: script
@@ -2033,7 +2033,7 @@ primitives:
   - scripts/cos-closure-discipline-audit
   - scripts/cos_closure_discipline_audit.py
   - scripts/cos-ci-local.sh
-  - docs/adrs/ADR-143-closure-discipline-gate.md
+  - docs/02-Decisions/adrs/ADR-143-closure-discipline-gate.md
   sha256: c1125b42e7b48f9db04f1850a7a76113a89fe876a64b6c4af6a7020b9df677fd
 - id: scripts/cos-config-audit.sh
   kind: script
@@ -2057,7 +2057,7 @@ primitives:
   - scripts/cos-consumer-fleet-audit
   - scripts/cos_consumer_fleet_audit.py
   - lib/consumer_fleet_audit.py
-  - docs/architecture/consumer-fleet-audit.md
+  - docs/04-Concepts/architecture/consumer-fleet-audit.md
   sha256: 551f650101eb3297ed5abcc768e055da1fe6d293d26ce13a3657efe4bce335d6
 - id: scripts/cos-coordination-status.sh
   kind: script
@@ -2103,7 +2103,7 @@ primitives:
   - scripts/cos-cross-instance-drill
   - scripts/cos_cross_instance_drill.py
   - lib/cross_instance_learning.py
-  - docs/architecture/cross-instance-learning-runway.md
+  - docs/04-Concepts/architecture/cross-instance-learning-runway.md
   sha256: 94788d3287568e9b0613c855f69190aeb6fbaf5d11a081d3d78bd4e5ea4f360c
 - id: scripts/cos-demotion-loop-audit
   kind: script
@@ -2115,7 +2115,7 @@ primitives:
   projection_targets:
   - scripts/cos-demotion-loop-audit
   - scripts/cos_demotion_loop_audit.py
-  - docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
+  - docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
   sha256: 5bffcbcbdceeb1e9118edd46873e2f6dd79a20555dfd93c5f5d96431a8a5a518
 - id: scripts/cos-dispatch-smoke
   kind: script
@@ -2127,7 +2127,7 @@ primitives:
   projection_targets:
   - scripts/cos-dispatch-smoke
   - scripts/cos_dispatch_smoke.py
-  - docs/runbooks/llm-dispatch.md
+  - docs/05-Methodology/runbooks/llm-dispatch.md
   sha256: 7071328ee7e735e160199622d03907121bf61d4d1cae9212b7b5086c768b60d7
 - id: scripts/cos-doctor-harness.sh
   kind: script
@@ -2160,7 +2160,7 @@ primitives:
   runtime_projection: false
   projection_targets:
   - scripts/cos-doctor-preserve.sh
-  - docs/architecture/preserve-branch-lifecycle.md
+  - docs/04-Concepts/architecture/preserve-branch-lifecycle.md
   sha256: 3562cf85616a0f071c5dbdc5a2591e277f50156867efb9071e321199125ac770
 - id: scripts/cos-doctor-tools.sh
   kind: script
@@ -2184,7 +2184,7 @@ primitives:
   - scripts/cos-doctrine-proposer
   - scripts/cos_doctrine_proposer.py
   - lib/doctrine_proposer.py
-  - docs/adrs/ADR-135-self-evolving-doctrine-proposals.md
+  - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   sha256: 46b1e85597b72500cee5a0038271fa27620d21572fa4bf49d3f16213e183c195
 - id: scripts/cos-engram-bundle
   kind: script
@@ -2249,7 +2249,7 @@ primitives:
   - scripts/cos_flow_register.py
   - manifests/flow-contract-schema.yaml
   - skills/vuln-remediation-flow/flow_contract.yaml
-  - docs/adrs/ADR-138-flow-contract-schema.md
+  - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
   sha256: fd5dc5ca1b6ab86241f02120e86c415c8371b169471d171a53761e2bc607dabd
 - id: scripts/cos-headless-service-drill
   kind: script
@@ -2261,7 +2261,7 @@ primitives:
   projection_targets:
   - scripts/cos-headless-service-drill
   - docker/cos-worker/docker-compose.yml
-  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/09-Quality/manual-tests/headless-docker-service-runtime.md
   sha256: 522d17938feeee8781b038b864bae964d6779608a186bd963d2a8010d66186d8
 - id: scripts/cos-import-consumer-evidence
   kind: script
@@ -2321,7 +2321,7 @@ primitives:
   - scripts/cos-manifest-tier-claim-audit
   - scripts/cos_manifest_tier_claim_audit.py
   - manifests/primitive-lifecycle.yaml
-  - docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
+  - docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
   sha256: 99512886d0c11c3310fa0b0d85aad1798102bceacb977ac364357bc1689294c8
 - id: scripts/cos-merge-queue-worker.sh
   kind: script
@@ -2373,7 +2373,7 @@ primitives:
   projection_targets:
   - scripts/cos-preamble-budget
   - scripts/cos_preamble_budget.py
-  - docs/architecture/core-adoption-preamble.md
+  - docs/04-Concepts/architecture/core-adoption-preamble.md
   sha256: 9ba9986e05561893f245ae871b01405fe1d440aa9ab774b61d4429733436dc77
 - id: scripts/cos-queue-drain
   kind: script
@@ -2430,7 +2430,7 @@ primitives:
   projection_targets:
   - scripts/cos-runtime-hook-reality
   - scripts/runtime_hook_reality.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: 38efb5998bb61b07da0f540fe137a54827692cda5b0eb1be093cb8c973a913a5
 - id: scripts/cos-self-improvement-discipline-gate
   kind: script
@@ -2443,7 +2443,7 @@ primitives:
   - scripts/cos-self-improvement-discipline-gate
   - scripts/self_improvement_discipline_gate.py
   - scripts/cos-ci-local.sh
-  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+  - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   sha256: d184b4806b5f89c8adda86bf13fa594483cddc691f93e51f0728645b5965e929
 - id: scripts/cos-self-improvement-loop
   kind: script
@@ -2456,7 +2456,7 @@ primitives:
   - scripts/cos-self-improvement-loop
   - scripts/cos_self_improvement_loop.py
   - lib/self_improvement_loop.py
-  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+  - docs/02-Decisions/adrs/ADR-134-headless-self-improvement-proposer.md
   sha256: 1f7f40d236ab6b8ef5c87ae57fce04bb086b21a53f5a0566a7f87187d95048a7
 - id: scripts/cos-service-readiness-gate
   kind: script
@@ -2476,7 +2476,7 @@ primitives:
   distribution: maintainer
   runtime_projection: false
   projection_targets:
-  - docs/architecture/cross-session-coordination-ledger.md
+  - docs/04-Concepts/architecture/cross-session-coordination-ledger.md
   - scripts/cos-session-coordination
   sha256: 93bfbb707bf5bf83146bf3c96ed7e112c6ba6fc99047ba3c50603084227a95fd
 - id: scripts/cos-session-start-budget
@@ -2490,7 +2490,7 @@ primitives:
   - scripts/cos-session-start-budget
   - scripts/session_start_budget.py
   - scripts/_lib/settings-driver-claude-code.sh
-  - docs/architecture/agentic-kernel-philosophy.md
+  - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
   sha256: 1c8b65c0b0f1fad9e4eeb68e282867fefb051216bf5ee33065e7ef556f63bd19
 - id: scripts/cos-silent-failure-audit
   kind: script
@@ -2556,7 +2556,7 @@ primitives:
   projection_targets:
   - scripts/cos-tier-claim-audit
   - scripts/cos_tier_claim_audit.py
-  - docs/adrs/ADR-133-expansion-without-monsterization.md
+  - docs/02-Decisions/adrs/ADR-133-expansion-without-monsterization.md
   sha256: 03e708eb58b66c5722c00cd3c6a398b43eb0b252b750053a54ae09fb6e269121
 - id: scripts/cos-usage-report.sh
   kind: script
@@ -2609,7 +2609,7 @@ primitives:
   projection_targets:
   - scripts/cos-wip-safety-score
   - scripts/cos_wip_safety_score.py
-  - docs/architecture/boring-reliability-control-plane.md
+  - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: 9cb6e7768a9c8a6ed823639fccc8c96f81b14fc27e30f85fbe56fb9a0624f8f5
 - id: scripts/cos-worker-run-once
   kind: script
@@ -2714,7 +2714,7 @@ primitives:
   runtime_projection: false
   projection_targets:
   - scripts/cos_primitive_harvester.py
-  - docs/architecture/primitive-harvester.md
+  - docs/04-Concepts/architecture/primitive-harvester.md
   sha256: b125a5263017d98653589db8fc0153668bb3f7164479b3f479a187f588c9b51a
 - id: scripts/cos_primitive_harvester.py
   kind: script
@@ -3053,8 +3053,8 @@ primitives:
   distribution: core
   runtime_projection: false
   projection_targets:
-  - docs/reports/primitive-harness-coverage-latest.json
-  - docs/reports/primitive-harness-coverage-latest.md
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.json
+  - docs/06-Daily/reports/primitive-harness-coverage-latest.md
   sha256: 8ac74eab74c5bc58e8f0cbac359ea052330cff3265bcf6e369844acc08ab47e7
 - id: scripts/primitive_surface_reduce.py
   kind: script
@@ -3189,7 +3189,7 @@ primitives:
   - scripts/security-red-team
   - scripts/security_red_team.py
   - manifests/security-red-team.yaml
-  - docs/security/security-red-team.md
+  - docs/09-Quality/security/security-red-team.md
   sha256: 47a565c91256821b4b98e17dffd4a7f45b0d5619781511a3b102e9a2c280013c
 - id: scripts/security_audit_writer.py
   kind: script

@@ -89,5 +89,5 @@ The taxonomy is backed by:
 
 - [manifests/product-zones.yaml](../manifests/product-zones.yaml)
 - [tests/contracts/test_product_zones.py](../tests/contracts/test_product_zones.py)
-- [docs/business/feature-reality-audit.md](business/feature-reality-audit.md)
-- [docs/business/master-plan-checklist.md](business/master-plan-checklist.md)
+- [docs/08-References/business/feature-reality-audit.md](business/feature-reality-audit.md)
+- [docs/08-References/business/master-plan-checklist.md](business/master-plan-checklist.md)

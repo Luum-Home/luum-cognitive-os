@@ -39,7 +39,7 @@ def test_meter_blocks_large_user_context_without_override(tmp_path: Path) -> Non
 
 
 def test_accounted_context_hook_logs_before_emitting(tmp_path: Path) -> None:
-    append_event("file-write-intent", {"branch": "session/a", "path": "docs/adrs/ADR-1.md"}, project_dir=tmp_path, session_id="peer")
+    append_event("file-write-intent", {"branch": "session/a", "path": "docs/02-Decisions/adrs/ADR-1.md"}, project_dir=tmp_path, session_id="peer")
     env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "me"}
     res = subprocess.run(["bash", str(PEER)], text=True, capture_output=True, env=env, timeout=10)
     assert res.returncode == 0

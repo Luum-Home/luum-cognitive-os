@@ -1,10 +1,10 @@
 # SDD Plan — memory-layer-evolution
 
-**Status**: explore/propose started — implementation blocked until Slice 0 benchmark fixtures land  
-**Date**: 2026-05-08  
-**Source design**: [`docs/architecture/memory-layer-evolution-sdd.md`](../../../docs/architecture/memory-layer-evolution-sdd.md)  
-**Radar tracker**: [`docs/reports/radar-2026-05-08-implementation-tracker.md`](../../../docs/reports/radar-2026-05-08-implementation-tracker.md)  
-**Doctrine**: [`docs/architecture/external-tool-adoption-doctrine.md`](../../../docs/architecture/external-tool-adoption-doctrine.md)  
+**Status**: explore/propose started — implementation blocked until Slice 0 benchmark fixtures land
+**Date**: 2026-05-08
+**Source design**: [`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`](../../../docs/04-Concepts/architecture/memory-layer-evolution-sdd.md)
+**Radar tracker**: [`docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md`](../../../docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md)
+**Doctrine**: [`docs/04-Concepts/architecture/external-tool-adoption-doctrine.md`](../../../docs/04-Concepts/architecture/external-tool-adoption-doctrine.md)
 **Related radar rows**: M1, M2, M3, M4
 
 ---
@@ -74,7 +74,7 @@ Current local baseline command:
 
 ```bash
 scripts/cos-memory-benchmark --strategy current-local --json \
-  > docs/reports/memory-retrieval-baseline-current-local-2026-05-08.json
+  > docs/06-Daily/reports/memory-retrieval-baseline-current-local-2026-05-08.json
 ```
 
 Result summary:
@@ -213,7 +213,7 @@ non-default strategy flag.
 
 ## Wave 2 comparison decision
 
-Comparison report: `docs/reports/memory-retrieval-wave2/comparison-2026-05-08.json`.
+Comparison report: `docs/06-Daily/reports/memory-retrieval-wave2/comparison-2026-05-08.json`.
 
 Winner: `graph-path-local`. It ties `dual-level-local` and `memory-class-local`
 on score, but it is the smallest passing mode: M1 temporal validity plus M3

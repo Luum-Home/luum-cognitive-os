@@ -84,8 +84,8 @@ fi
 # pre-public-readiness audit). These files name consumer tokens deliberately
 # and are not subject to scrubbing.
 TIER5_RETAINED=(
-  "docs/business/case-study.md"
-  "docs/business/open-source-design.md"
+  "docs/08-References/business/case-study.md"
+  "docs/08-References/business/open-source-design.md"
 )
 
 is_tier5_retained() {

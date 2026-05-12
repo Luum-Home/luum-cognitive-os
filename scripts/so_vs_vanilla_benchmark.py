@@ -2,7 +2,7 @@
 # SCOPE: os-only
 """so-vs-vanilla benchmark harness.
 
-Runs each task in `docs/benchmarks/so-vs-vanilla-tasks.yaml` TWICE:
+Runs each task in `docs/08-References/benchmarks/so-vs-vanilla-tasks.yaml` TWICE:
   - vanilla  : COS_DISABLE_ALL_GOVERNANCE=1 (all hooks no-op, no preamble)
   - so       : full Cognitive OS governance (hooks + rules active)
 
@@ -401,7 +401,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--output",
         default=None,
-        help="override output markdown path (default: timestamped file under docs/benchmarks/)",
+        help="override output markdown path (default: timestamped file under docs/08-References/benchmarks/)",
     )
     args = ap.parse_args(argv)
 

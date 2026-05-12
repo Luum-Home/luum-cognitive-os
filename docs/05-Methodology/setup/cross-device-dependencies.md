@@ -29,9 +29,9 @@ This document backs ADR-168.
 | `scripts/setup.sh` | Imperative development setup using brew/apt/curl/uv/go/pip/npm. | Hardcoded commands; not a manifest-driven cross-device installer. |
 | `scripts/cos-bootstrap.sh` | Starts optional Docker services and performs self-install sync. | Docker part is portable; host prerequisites are assumed. |
 | `scripts/install-*.sh` | One-off installers for specific tools. | Useful helpers, but drift without manifest ownership. |
-| `docs/setup/dependencies.md` | Human dependency guide. | Claims single source of truth but still mixes install commands in prose. |
-| `docs/setup/obsidian-local.md` | macOS/Homebrew Obsidian install guide. | Explicitly not cross-platform yet. |
-| `docs/manual-tests/codex-host-tooling-verification.md` | Host-tooling proof path for Codex. | Verifies local host, not cross-device installation. |
+| `docs/05-Methodology/setup/dependencies.md` | Human dependency guide. | Claims single source of truth but still mixes install commands in prose. |
+| `docs/05-Methodology/setup/obsidian-local.md` | macOS/Homebrew Obsidian install guide. | Explicitly not cross-platform yet. |
+| `docs/09-Quality/manual-tests/codex-host-tooling-verification.md` | Host-tooling proof path for Codex. | Verifies local host, not cross-device installation. |
 
 ---
 

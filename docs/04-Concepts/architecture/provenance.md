@@ -16,7 +16,7 @@ provenance; it does not turn AI tools into commit authors.
 
 ## 1. Methodology
 
-The Cognitive OS (Luum Agent OS) iterated on a research-first protocol during the ADR-218 → ADR-236 batch (April–May 2026). That protocol explicitly studied prior-art tools (Claude Code, OpenCode, Aider, Cursor, Devin, Codex, Cline, Hermes, GitButler, Replit Agent, OpenHands, Continue.dev, jujutsu, LangGraph, Temporal, LiteLLM, fastmcp, Bubblewrap, Codex `linux-sandbox`) and adopted **patterns** from them under a self-imposed constraint (constraint **C1** in `docs/research/orchestration-coverage-gap-analysis-2026-05-06.md`):
+The Cognitive OS (Luum Agent OS) iterated on a research-first protocol during the ADR-218 → ADR-236 batch (April–May 2026). That protocol explicitly studied prior-art tools (Claude Code, OpenCode, Aider, Cursor, Devin, Codex, Cline, Hermes, GitButler, Replit Agent, OpenHands, Continue.dev, jujutsu, LangGraph, Temporal, LiteLLM, fastmcp, Bubblewrap, Codex `linux-sandbox`) and adopted **patterns** from them under a self-imposed constraint (constraint **C1** in `docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md`):
 
 > *Permissive licenses only. Pattern adoption preferred over code adoption. Where code is adopted, source license must be MIT / BSD / Apache-2.0 / ISC / MPL-2.0 / 0BSD / Unlicense / Zlib. Blocklisted: AGPL, SSPL, BSL, CC-BY-NC, "Commons Clause" derivatives, Elastic License v2, custom non-free.*
 

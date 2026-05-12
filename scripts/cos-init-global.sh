@@ -46,7 +46,7 @@ GLOBAL_RULES_DIR="$HOME/.claude/rules/cos"
 # The 14 core rules that are universal across all projects.
 # These define COS behavioral protocol and apply regardless of project.
 # Must match the CORE_RULES array in hooks/self-install.sh exactly.
-# See docs/global-vs-project-config.md and docs/rules-loading-architecture.md.
+# See docs/04-Concepts/root/global-vs-project-config.md and docs/04-Concepts/root/rules-loading-architecture.md.
 CORE_RULES=(
   "RULES-COMPACT.md"
   "adaptive-bypass.md"

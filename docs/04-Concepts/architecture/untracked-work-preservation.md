@@ -5,8 +5,8 @@
 Cognitive OS treats untracked files as potentially active human or agent work.
 This is especially strict for durable collaboration surfaces:
 
-- `docs/research/**`
-- `docs/reports/**`
+- `docs/03-PoCs/research/**`
+- `docs/06-Daily/reports/**`
 - `plans/**`
 - `.cognitive-os/plans/**`
 
@@ -38,7 +38,7 @@ This makes delete intent explicit and auditable. The hook writes blocks to
 Use `scripts/cos-safe-clean` instead of direct shell deletion:
 
 ```bash
-scripts/cos-safe-clean --path docs/research/repo-scout --dry-run
+scripts/cos-safe-clean --path docs/03-PoCs/research/repo-scout --dry-run
 ```
 
 The dry-run prints a JSON plan showing whether the target exists, whether Git

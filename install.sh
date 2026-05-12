@@ -6,7 +6,7 @@
 #   --full   — every skill, hook, and rule (~142000 tokens/session)
 #
 # Legacy flags (--lean, --standard) are silently remapped to `default` with a
-# stderr migration notice. See docs/adrs/ADR-093-simplify-profiles.md.
+# stderr migration notice. See docs/02-Decisions/adrs/ADR-093-simplify-profiles.md.
 set -euo pipefail
 
 REPO_URL="https://github.com/luum-home/luum-cognitive-os.git"
@@ -114,7 +114,7 @@ normalize_profile() {
       ;;
     lean|standard|minimal)
       echo "Note: ADR-093 collapsed '$raw' into 'default'. Using 'default'." >&2
-      echo "      Drop the flag next time: see docs/adrs/ADR-093-simplify-profiles.md" >&2
+      echo "      Drop the flag next time: see docs/02-Decisions/adrs/ADR-093-simplify-profiles.md" >&2
       PROFILE="default"
       ;;
     *)

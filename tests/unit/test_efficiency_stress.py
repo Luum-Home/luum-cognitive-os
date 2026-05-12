@@ -182,7 +182,7 @@ class TestTokenBudgets:
             if ref not in existing_stems and ref not in pattern_stems
         ]
         assert not orphans, (
-            f"RULES-COMPACT.md references keys with no rules/ or docs/patterns/ file: {orphans}"
+            f"RULES-COMPACT.md references keys with no rules/ or docs/04-Concepts/patterns/ file: {orphans}"
         )
 
     def test_claude_md_token_budget(self):

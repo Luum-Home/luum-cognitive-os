@@ -132,7 +132,7 @@ To verify no project-specific content has leaked into Cognitive OS:
 ```bash
 grep -rl "auth-provider\|payment-gateway\|identity-provider" \
   .cognitive-os/ --include="*.md" --include="*.sh" --include="*.yaml" \
-  | grep -v "docs/business/"
+  | grep -v "docs/08-References/business/"
 ```
 
 This should return zero results (except `cognitive-os.yaml` which has configurable fields with comments).

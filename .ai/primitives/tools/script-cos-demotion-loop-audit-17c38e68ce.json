@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-demotion-loop-audit",
         "scripts/cos_demotion_loop_audit.py",
-        "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
+        "docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
       ],
       "runtime_projection": false
     }
@@ -155,7 +155,7 @@
       "projection_targets": [
         "scripts/cos-demotion-loop-audit",
         "scripts/cos_demotion_loop_audit.py",
-        "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
+        "docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
       ],
       "runtime_projection": false
     }
@@ -164,7 +164,7 @@
   "projection_targets": [
     "scripts/cos-demotion-loop-audit",
     "scripts/cos_demotion_loop_audit.py",
-    "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
+    "docs/02-Decisions/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-demotion-loop-audit",

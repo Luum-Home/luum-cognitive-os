@@ -74,9 +74,9 @@ schema_version: external-tool-adoption-freeze/v1
 status: active
 frozen: $frozen
 gated_path_globs:
-  - 'docs/research/*-annex-*-*.md'
-  - 'docs/research/*-comparison-*.md'
-  - 'docs/reports/external-tools-radar-*.md'
+  - 'docs/03-PoCs/research/*-annex-*-*.md'
+  - 'docs/03-PoCs/research/*-comparison-*.md'
+  - 'docs/06-Daily/reports/external-tools-radar-*.md'
   - 'manifests/external-tools-adoption.yaml'
 YAML
 }
@@ -162,11 +162,11 @@ fi
 setup_fake_repo "$TMPDIR_TEST" "repo_frozen_blocked"
 write_freeze_manifest "$FAKE_REPO" "true"
 
-# Stage a file matching 'docs/research/*-annex-*-*.md'
-mkdir -p "$FAKE_REPO/docs/research"
-echo "annex content" > "$FAKE_REPO/docs/research/test-annex-z-memory.md"
+# Stage a file matching 'docs/03-PoCs/research/*-annex-*-*.md'
+mkdir -p "$FAKE_REPO/docs/03-PoCs/research"
+echo "annex content" > "$FAKE_REPO/docs/03-PoCs/research/test-annex-z-memory.md"
 cd "$FAKE_REPO"
-git add "docs/research/test-annex-z-memory.md"
+git add "docs/03-PoCs/research/test-annex-z-memory.md"
 cd "$ROOT_DIR"
 
 actual=$(
@@ -233,10 +233,10 @@ fi
 setup_fake_repo "$TMPDIR_TEST" "repo_generic_bypass"
 write_freeze_manifest "$FAKE_REPO" "true"
 
-mkdir -p "$FAKE_REPO/docs/research"
-echo "annex content" > "$FAKE_REPO/docs/research/holaos-annex-q-test.md"
+mkdir -p "$FAKE_REPO/docs/03-PoCs/research"
+echo "annex content" > "$FAKE_REPO/docs/03-PoCs/research/holaos-annex-q-test.md"
 cd "$FAKE_REPO"
-git add "docs/research/holaos-annex-q-test.md"
+git add "docs/03-PoCs/research/holaos-annex-q-test.md"
 cd "$ROOT_DIR"
 
 actual=$(
@@ -285,14 +285,14 @@ fi
 setup_fake_repo "$TMPDIR_TEST" "repo_no_diff"
 write_freeze_manifest "$FAKE_REPO" "true"
 
-mkdir -p "$FAKE_REPO/docs/research"
-echo "content" > "$FAKE_REPO/docs/research/holaos-annex-z-memory.md"
+mkdir -p "$FAKE_REPO/docs/03-PoCs/research"
+echo "content" > "$FAKE_REPO/docs/03-PoCs/research/holaos-annex-z-memory.md"
 cd "$FAKE_REPO"
 # Commit the file so it's tracked
-git add "docs/research/holaos-annex-z-memory.md"
+git add "docs/03-PoCs/research/holaos-annex-z-memory.md"
 git commit -q -m "initial"
 # Re-stage without changes — diff --cached will be empty
-git add "docs/research/holaos-annex-z-memory.md"
+git add "docs/03-PoCs/research/holaos-annex-z-memory.md"
 cd "$ROOT_DIR"
 
 actual=$(

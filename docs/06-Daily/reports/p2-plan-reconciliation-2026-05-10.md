@@ -70,7 +70,7 @@ This section lists every place Opus refined Sonnet's reconciliation with rationa
 **Agreement**: Sonnet said COMPLETE; Opus confirms. **Sharpened evidence**: the 14 still-unchecked checkboxes (lines 492-505 profile-JSON cross-references; lines 658-665 final acceptance sweep) are documentation-sync hygiene (hook-count test counters, comparison-matrix updates). The plan body's explicit "Last updated: 2026-05-01 / Status: ALL PHASES (1-5) COMPLETE" header is authoritative. Verified at `hooks/_lib/common.sh` lines 181-194 (`check_disabled_env`), `rules/hook-security-profiles.md` line 51+ ("Per-Session Hook Suppression"), and the three test files in `tests/audit/`.
 
 ### Plans 1, 3, 4, 8, 10 (status agreement, evidence sharpened)
-Opus AGREES with Sonnet's status verdicts. Each plan's RECONCILIATION STATUS block has an OPUS REFINEMENT addendum that pins concrete file paths (`cmd/cos-test/internal/cli/focused.go`, `.cognitive-os/improvements/proposals/self-improvement-proposals-20260503T045251Z.json`, `docs/architecture/cos-run-task-contract.md`, etc.) and confirms post-v0.28.0 reinforcement (or absence thereof — Plan 3 explicitly: no new closures since the cut).
+Opus AGREES with Sonnet's status verdicts. Each plan's RECONCILIATION STATUS block has an OPUS REFINEMENT addendum that pins concrete file paths (`cmd/cos-test/internal/cli/focused.go`, `.cognitive-os/improvements/proposals/self-improvement-proposals-20260503T045251Z.json`, `docs/04-Concepts/architecture/cos-run-task-contract.md`, etc.) and confirms post-v0.28.0 reinforcement (or absence thereof — Plan 3 explicitly: no new closures since the cut).
 
 ## Cross-cutting observations (Opus-refined)
 

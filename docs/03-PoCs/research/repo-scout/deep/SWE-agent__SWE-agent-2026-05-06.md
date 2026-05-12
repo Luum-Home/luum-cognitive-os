@@ -1,7 +1,7 @@
 ---
 evaluated_at: 2026-05-06 06:55 UTC
 evaluation_level: 2
-parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+parent_radar: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 shallow_verdict: pass-to-deep (ACI design — bash tool surface, file viewer, edit semantics — reference)
 deep_verdict: ADOPT — academic-grade ACI reference; tool/* directory is the gold artifact
 deepwiki_url: https://deepwiki.com/SWE-agent/SWE-agent

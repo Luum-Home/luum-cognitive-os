@@ -132,5 +132,5 @@ COS_PREFLIGHT_STRICT=1 python3 scripts/cos_work_inventory.py --all --strict --js
 bash -n hooks/agent-prelaunch.sh
 
 # Criterion 6: this ADR exists and references ADR-116
-grep -q "ADR-116" docs/adrs/ADR-122-preflight-gate-refinements.md
+grep -q "ADR-116" docs/02-Decisions/adrs/ADR-122-preflight-gate-refinements.md
 ```

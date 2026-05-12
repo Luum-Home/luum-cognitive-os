@@ -13,7 +13,7 @@ of truth for audit coverage of install/update/uninstall behaviour.
 
 ## Scope of scripts under audit
 
-From the global sonnet audit (`docs/architecture/harness-adoption-gap/scripts-audit.md`)
+From the global sonnet audit (`docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md`)
 and the four cluster reports (A–D):
 
 | # | Script | Role | Delegates to |

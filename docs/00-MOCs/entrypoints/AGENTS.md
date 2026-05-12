@@ -21,16 +21,16 @@ Use the routing table below for task types where the entrypoint is obvious.
 
 | Task type         | Read first                        | Then (if needed)                        |
 |-------------------|-----------------------------------|-----------------------------------------|
-| Bug fix           | `docs/adrs/` (relevant ADR)       | `docs/reports/` (incident/forensics)    |
-| New feature       | `docs/architecture-principles.md` | `docs/adrs/`, `docs/skills/`            |
-| ADR write         | `docs/adrs/ADR-NNN-slug.md` (latest example) | `docs/architecture.md`         |
-| Performance work  | `docs/performance.md`             | `docs/reports/` (benchmarks), `docs/benchmarks/` |
-| Security review   | `docs/security-stack.md`          | `docs/compliance/`, `docs/security/`   |
-| Release           | `docs/release/`                   | `docs/versioning-strategy.md`           |
-| Testing / QA      | `docs/testing.md`                 | `docs/quality/`, `docs/manual-tests/`  |
-| Skill authoring   | `docs/skills/`                    | `rules/RULES-COMPACT.md` §11           |
-| Hook authoring    | `docs/hooks.md`                   | `rules/RULES-COMPACT.md` §10           |
-| Research / report | `docs/reports/` (newest relevant) | `templates/agent-research-only.md`     |
+| Bug fix           | `docs/02-Decisions/adrs/` (relevant ADR)       | `docs/06-Daily/reports/` (incident/forensics)    |
+| New feature       | `docs/04-Concepts/architecture-principles.md` | `docs/02-Decisions/adrs/`, `docs/07-Capabilities/skills/`            |
+| ADR write         | `docs/02-Decisions/adrs/ADR-NNN-slug.md` (latest example) | `docs/04-Concepts/architecture.md`         |
+| Performance work  | `docs/04-Concepts/root/performance.md`             | `docs/06-Daily/reports/` (benchmarks), `docs/08-References/benchmarks/` |
+| Security review   | `docs/04-Concepts/root/security-stack.md`          | `docs/compliance/`, `docs/09-Quality/security/`   |
+| Release           | `docs/01-Build-Log/release/`                   | `docs/01-Build-Log/root/versioning-strategy.md`           |
+| Testing / QA      | `docs/09-Quality/root/testing.md`                 | `docs/09-Quality/quality/`, `docs/09-Quality/manual-tests/`  |
+| Skill authoring   | `docs/07-Capabilities/skills/`                    | `rules/RULES-COMPACT.md` §11           |
+| Hook authoring    | `docs/05-Methodology/root/hooks.md`                   | `rules/RULES-COMPACT.md` §10           |
+| Research / report | `docs/06-Daily/reports/` (newest relevant) | `templates/agent-research-only.md`     |
 
 ---
 
@@ -39,7 +39,7 @@ Use the routing table below for task types where the entrypoint is obvious.
 | Term            | Definition                                                                 |
 |-----------------|----------------------------------------------------------------------------|
 | **COS**         | Cognitive Operating System — this repo; the AI-agent orchestration layer   |
-| **ADR**         | Architecture Decision Record; lives at `docs/adrs/ADR-NNN-slug.md`        |
+| **ADR**         | Architecture Decision Record; lives at `docs/02-Decisions/adrs/ADR-NNN-slug.md`        |
 | **primitive**   | Atomic capability unit (a single skill step or tool wrapper)               |
 | **harness**     | The IDE/CLI shell hosting the agent (Claude Code, Cursor, Aider, etc.)     |
 | **SDD**         | Spec-Driven Development; the repo's change workflow (explore→propose→apply→verify→archive) |
@@ -48,7 +48,7 @@ Use the routing table below for task types where the entrypoint is obvious.
 | **hook**        | Shell script triggered by harness events (pre-commit, post-task, etc.)     |
 | **phase**       | Project maturity mode: reconstruction / production (affects governance)    |
 | **DAG**         | Directed Acyclic Graph; SDD dependency graph between phases                |
-| **DoD**         | Definition of Done; 5-level quality checklist (`docs/definition-of-done.md`) |
+| **DoD**         | Definition of Done; 5-level quality checklist (`docs/05-Methodology/root/definition-of-done.md`) |
 | **blast radius**| Estimated scope of a change (files touched, services affected)             |
 | **tombstone**   | An ADR marked superseded/withdrawn; file kept for history                  |
 | **lane**        | Test isolation group; registry at `.cognitive-os/test-lanes.yaml`          |
@@ -59,26 +59,26 @@ Use the routing table below for task types where the entrypoint is obvious.
 ## Report Naming Convention
 
 ```
-docs/reports/<topic>-YYYY-MM-DD.md
+docs/06-Daily/reports/<topic>-YYYY-MM-DD.md
 ```
 
-Examples: `docs/reports/aspirational-audit-2026-05-08.md`, `docs/reports/ai-agent-harness-landscape-2026-05-04.md`
+Examples: `docs/06-Daily/reports/aspirational-audit-2026-05-08.md`, `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md`
 
 - Topic slug: lowercase, hyphens, descriptive (no version numbers in slug).
 - One report per topic per date; append `-v2` only if same-day revision is required.
-- Archive old reports to `docs/reports/archive/` when superseded.
+- Archive old reports to `docs/06-Daily/reports/archive/` when superseded.
 
 ---
 
 ## ADR Conventions
 
-**Canonical path:** `docs/adrs/ADR-NNN-slug.md`  
-Format: three-digit zero-padded number + lowercase-hyphenated slug.  
-Example: `docs/adrs/ADR-014-sdd-fast-path.md`
+**Canonical path:** `docs/02-Decisions/adrs/ADR-NNN-slug.md`
+Format: three-digit zero-padded number + lowercase-hyphenated slug.
+Example: `docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md`
 
-**Canonical location:** `docs/adrs/` is the only ADR directory. The legacy `docs/architecture/adrs/` namespace (ADR-087) was removed on 2026-05-12.
+**Canonical location:** `docs/02-Decisions/adrs/` is the only ADR directory. The legacy `docs/04-Concepts/architecture/adrs/` namespace (ADR-087) was removed on 2026-05-12.
 
-When writing a new ADR: copy the structure from the most recent `docs/adrs/ADR-NNN-*.md` file. Increment NNN sequentially.
+When writing a new ADR: copy the structure from the most recent `docs/02-Decisions/adrs/ADR-NNN-*.md` file. Increment NNN sequentially.
 
 ---
 
@@ -86,10 +86,10 @@ When writing a new ADR: copy the structure from the most recent `docs/adrs/ADR-N
 
 Skip these unless the task explicitly targets them:
 
-- `docs/archive/` — stale, superseded content
-- `docs/reports/archive/` — old reports, kept for audit only
+- `docs/99-Archive/archive/` — stale, superseded content
+- `docs/06-Daily/reports/archive/` — old reports, kept for audit only
 - `docs/SESSION-HANDOFF-*.md` — human hand-off notes, not agent context
-- `docs/history/` — historical changelog, rarely relevant
+- `docs/01-Build-Log/history/` — historical changelog, rarely relevant
 - Large generated reports (`adr-200-plus-closure-inventory-*.md`, etc.) unless the task is ADR inventory work
-- `docs/assets/` — images/diagrams only
+- `docs/08-References/assets/` — images/diagrams only
 - `docs/RED-TEAM-*.md` — red-team logs, relevant only for security review tasks

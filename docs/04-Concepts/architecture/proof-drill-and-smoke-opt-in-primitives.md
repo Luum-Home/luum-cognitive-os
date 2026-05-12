@@ -26,7 +26,7 @@ opt-in: explicit, evidence-producing, and bounded.
 | `scripts/cos-headless-service-drill` | Docker/headless proof | os-self | Opt-in Docker proof with an integration contract. |
 | `scripts/cos-engram-cloud-docker-smoke` | Engram Cloud Docker smoke | os-self | Opt-in Docker/local service proof. |
 | `scripts/cos-cross-instance-drill` | Cross-instance proof | both | Can qualify transfer paths, but only with explicit temp artifacts. |
-| `docs/manual-tests/service-control-plane-proof-drills.md` | Manual proof ladder | os-self | Keeps control-plane claims bounded until implementation matures. |
+| `docs/09-Quality/manual-tests/service-control-plane-proof-drills.md` | Manual proof ladder | os-self | Keeps control-plane claims bounded until implementation matures. |
 
 ## Taxonomy
 
@@ -91,9 +91,9 @@ The repo already contains automated tests that support this doctrine:
   text selectors such as `provider`, `docker`, `headless`, and `codex`.
 - `scripts/cos-instance-init --doctor --smoke --json` exposes registered proof
   drills for the selected instance profile without executing opt-in drills.
-- `scripts/proof-drill-evidence-record` updates `docs/reports/proof-drill-evidence-latest.json`
+- `scripts/proof-drill-evidence-record` updates `docs/06-Daily/reports/proof-drill-evidence-latest.json`
   after a proof run.
-- `scripts/acc_pipeline.py` consumes `docs/reports/proof-drill-evidence-latest.json`
+- `scripts/acc_pipeline.py` consumes `docs/06-Daily/reports/proof-drill-evidence-latest.json`
   through the `proof_drill_evidence` adapter and maps successful proof rows to
   ACC `proof_drill:*` capabilities.
 - `manifests/proof-drill-claim-map.yaml` maps durable runtime claims to stable

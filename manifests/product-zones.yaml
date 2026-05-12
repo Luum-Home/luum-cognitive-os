@@ -92,7 +92,7 @@ path_classification:
   - path: scripts/set-security-profile.sh
     zone: compatibility
     reason: "Claude security-profile projection driver."
-  - path: docs/architecture/driver-specific-script-surfaces.md
+  - path: docs/04-Concepts/architecture/driver-specific-script-surfaces.md
     zone: compatibility
     reason: "Driver-specific script classification and portability boundary."
 
@@ -204,5 +204,5 @@ verification:
   contract_tests:
     - tests/contracts/test_product_zones.py
   primary_docs:
-    - docs/product-zones.md
-    - docs/business/master-plan-checklist.md
+    - docs/04-Concepts/root/product-zones.md
+    - docs/08-References/business/master-plan-checklist.md

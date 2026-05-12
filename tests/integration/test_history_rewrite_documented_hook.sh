@@ -16,7 +16,7 @@ fail() { echo "[FAIL] $1 — $2"; FAIL=$((FAIL+1)); }
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
 
-mkdir -p "$WORK_DIR/manifests" "$WORK_DIR/.cognitive-os/recovery" "$WORK_DIR/docs/adrs"
+mkdir -p "$WORK_DIR/manifests" "$WORK_DIR/.cognitive-os/recovery" "$WORK_DIR/docs/02-Decisions/adrs"
 mkdir -p "$WORK_DIR/lib" "$WORK_DIR/.cognitive-os/logs"
 
 # Symlink lib so the hook can import

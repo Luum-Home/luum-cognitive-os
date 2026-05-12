@@ -8,7 +8,7 @@
 #   TC3  staged file with unique AST -> exits 0
 #   TC4  staged file with symbol-rename of cached file -> BLOCK (exit 1)
 #   TC5  same match, baseline entry -> exits 0
-#   TC6  allowlist excludes docs/research/ -> exits 0
+#   TC6  allowlist excludes docs/03-PoCs/research/ -> exits 0
 #   TC7  bypass via COS_ALLOW_AST_SIMILARITY=1 -> exits 0 (logged)
 #   TC8  bypass via COS_ALLOW_CLEAN_ROOM_BYPASS=1 -> exits 0 (logged)
 #   TC9  performance: < 2s on 50 staged files
@@ -151,15 +151,15 @@ else
   PASS=$((PASS+1))
 fi
 
-# ── TC6: allowlist excludes docs/research/ -> exits 0 ────────────────────────
+# ── TC6: allowlist excludes docs/03-PoCs/research/ -> exits 0 ────────────────────────
 setup_repo r6
 printf '%s' "$CACHE_BODY" > "$REPO/.cognitive-os/external-source-cache/upstream_mod.py"
-mkdir -p "$REPO/docs/research"
-printf '%s' "$RENAMED_BODY" > "$REPO/docs/research/renamed_module.py"
-( cd "$REPO" && git add docs/research/renamed_module.py )
-# docs/research/ is in the DEFAULT_ALLOWLIST in the Python detector
+mkdir -p "$REPO/docs/03-PoCs/research"
+printf '%s' "$RENAMED_BODY" > "$REPO/docs/03-PoCs/research/renamed_module.py"
+( cd "$REPO" && git add docs/03-PoCs/research/renamed_module.py )
+# docs/03-PoCs/research/ is in the DEFAULT_ALLOWLIST in the Python detector
 actual=$(cd "$REPO" && bash hooks/clean-room-ast-similarity-gate.sh <<<"$PAYLOAD_COMMIT" 2>/dev/null; echo $?)
-assert_exit "TC6: allowlist excludes docs/research/ (exit 0)" 0 "$actual"
+assert_exit "TC6: allowlist excludes docs/03-PoCs/research/ (exit 0)" 0 "$actual"
 
 # ── TC7: bypass via COS_ALLOW_AST_SIMILARITY=1 -> exits 0 (logged) ───────────
 setup_repo r7

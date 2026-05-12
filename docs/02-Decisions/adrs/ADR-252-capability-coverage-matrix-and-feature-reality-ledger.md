@@ -13,8 +13,8 @@ extends: [ADR-031, ADR-147, ADR-217, ADR-248, ADR-249, ADR-250, ADR-251]
 implementation_files:
   - manifests/capability-coverage.yaml
   - scripts/cos-capability-matrix
-  - docs/capabilities/MATRIX.md
-  - docs/reports/capability-coverage-latest.json
+  - docs/07-Capabilities/capabilities/MATRIX.md
+  - docs/06-Daily/reports/capability-coverage-latest.json
   - tests/unit/test_capability_matrix.py
 tier: maintainer
 tags: [capability-coverage, feature-reality, claims, matrix, audit, control-plane]
@@ -72,8 +72,8 @@ New artifacts:
 ```text
 manifests/capability-coverage.yaml
 scripts/cos-capability-matrix
-docs/capabilities/MATRIX.md
-docs/reports/capability-coverage-latest.json
+docs/07-Capabilities/capabilities/MATRIX.md
+docs/06-Daily/reports/capability-coverage-latest.json
 tests/unit/test_capability_matrix.py
 ```
 
@@ -129,8 +129,8 @@ accepted ADRs in that range cannot silently disappear from the matrix.
 `cos-capability-matrix --write` regenerates:
 
 ```text
-docs/capabilities/MATRIX.md
-docs/reports/capability-coverage-latest.json
+docs/07-Capabilities/capabilities/MATRIX.md
+docs/06-Daily/reports/capability-coverage-latest.json
 ```
 
 The write mode is explicit and not used by hook-fast. The control-plane lane
@@ -171,9 +171,9 @@ After this ADR:
 - The reality level (`REAL`, `PARTIAL`, `ROADMAP`, `LAB`, `DORMANT`,
   `DEPRECATED`, `RESOLVED`) replaces verbal claims. A `REAL` capability must
   have evidence for all four pillars.
-- `docs/capabilities/MATRIX.md` is the generated human-readable view. Use it
+- `docs/07-Capabilities/capabilities/MATRIX.md` is the generated human-readable view. Use it
   for cold-reading current state without scanning dozens of ADRs.
-- `docs/reports/capability-coverage-latest.json` is the machine-readable report
+- `docs/06-Daily/reports/capability-coverage-latest.json` is the machine-readable report
   consumed by the control-plane audit.
 - **Hard rule:** If a capability is not in the matrix, it cannot be treated as a
   public COS capability claim.

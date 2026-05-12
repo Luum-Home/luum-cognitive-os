@@ -17,8 +17,8 @@ policy:
     receipt_or_audit: true
   non_real_requires_known_gaps: true
   generated_outputs:
-    matrix_md: docs/capabilities/MATRIX.md
-    latest_json: docs/reports/capability-coverage-latest.json
+    matrix_md: docs/07-Capabilities/capabilities/MATRIX.md
+    latest_json: docs/06-Daily/reports/capability-coverage-latest.json
 
 capabilities:
   - id: handoff-envelope-cycle-dedup
@@ -131,8 +131,8 @@ capabilities:
     reality_level: RESOLVED
     public_claim: false
     primitive_types: [tracking]
-    implementation: [docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md]
-    consumers: [docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md]
+    implementation: [docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md]
+    consumers: [docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md]
     tests: [tests/audit/test_adr_contracts.py]
     receipts: [resolved-adr]
     control_plane_audits: []
@@ -170,7 +170,7 @@ capabilities:
     reality_level: PARTIAL
     public_claim: false
     primitive_types: [hook-lib, governance]
-    implementation: [hooks/_lib/bypass-resolver.sh, docs/security/bypass-cheatsheet.md, hooks/destructive-git-blocker.sh, hooks/branch-ownership-lock.sh, hooks/orchestrator-claim-gate.sh]
+    implementation: [hooks/_lib/bypass-resolver.sh, docs/09-Quality/security/bypass-cheatsheet.md, hooks/destructive-git-blocker.sh, hooks/branch-ownership-lock.sh, hooks/orchestrator-claim-gate.sh]
     consumers: [hooks/destructive-git-blocker.sh, hooks/branch-ownership-lock.sh, hooks/orchestrator-claim-gate.sh]
     tests: [tests/behavior/test_bypass_resolver.py]
     receipts: [bypass-decision]
@@ -222,7 +222,7 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [test-fixture, runbook]
-    implementation: [tests/chaos/conftest.py, tests/chaos/test_global_verify_regression_catches.py, docs/runbooks/chaos-test-isolation.md]
+    implementation: [tests/chaos/conftest.py, tests/chaos/test_global_verify_regression_catches.py, docs/05-Methodology/runbooks/chaos-test-isolation.md]
     consumers: [tests/chaos/conftest.py]
     tests: [tests/chaos/test_global_verify_regression_catches.py]
     receipts: [chaos-readonly-workspace]
@@ -248,7 +248,7 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [manifest, audit]
-    implementation: [manifests/postmortem-regression-audit.yaml, scripts/cos-postmortem-regression-audit, docs/runbooks/postmortem-regression-audit.md]
+    implementation: [manifests/postmortem-regression-audit.yaml, scripts/cos-postmortem-regression-audit, docs/05-Methodology/runbooks/postmortem-regression-audit.md]
     consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
     tests: [tests/unit/test_postmortem_regression_audit.py]
     receipts: [.cognitive-os/reports/control-plane/latest.json]
@@ -313,9 +313,9 @@ capabilities:
     reality_level: REAL
     public_claim: false
     primitive_types: [manifest, audit, generated-report]
-    implementation: [manifests/capability-coverage.yaml, scripts/cos-capability-matrix, docs/capabilities/MATRIX.md, docs/reports/capability-coverage-latest.json]
+    implementation: [manifests/capability-coverage.yaml, scripts/cos-capability-matrix, docs/07-Capabilities/capabilities/MATRIX.md, docs/06-Daily/reports/capability-coverage-latest.json]
     consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
     tests: [tests/unit/test_capability_matrix.py]
-    receipts: [docs/reports/capability-coverage-latest.json]
+    receipts: [docs/06-Daily/reports/capability-coverage-latest.json]
     control_plane_audits: [capability-coverage]
     known_gaps: []

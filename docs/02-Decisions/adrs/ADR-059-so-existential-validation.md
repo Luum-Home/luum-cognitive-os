@@ -66,12 +66,12 @@ ratio <0.25, we either accept the SO as "mid-weight" OR split it further.
   14-day deadline.
 - Every **ASPIRATIONAL** item → either implement the missing dep (with PR)
   OR remove the reference (with PR). No "leave as aspirational" allowed.
-- Day 14 cutoff: unresolved items auto-archived via `git mv → docs/archive/`.
+- Day 14 cutoff: unresolved items auto-archived via `git mv → docs/99-Archive/archive/`.
 
 **Exit criteria**:
 - `dormant_aspirational_ratio < 0.25` (measured by aspirational-audit.py).
 - Zero ASPIRATIONAL items in the audit (resolved or removed).
-- `docs/archive/` receives the pruned items (not deletion — history preserved).
+- `docs/99-Archive/archive/` receives the pruned items (not deletion — history preserved).
 
 **Risk**: legitimate low-frequency hooks might get wrongly archived. Mitigation:
 the 180-day window + test-coverage check already filter legit sleepers.
@@ -191,7 +191,7 @@ Primary metrics (queryable any time):
 
 ## Rollback
 
-- Phase 1: each archived item is restorable via `git mv docs/archive/... original/path`.
+- Phase 1: each archived item is restorable via `git mv docs/99-Archive/archive/... original/path`.
 - Phase 2: install-timing script is additive — no rollback needed.
 - Phase 3: `hooks/core/` and `hooks/extensions/` can re-merge into flat `hooks/`
   via `mv hooks/core/* hooks/ && mv hooks/extensions/* hooks/`. Same for skills.

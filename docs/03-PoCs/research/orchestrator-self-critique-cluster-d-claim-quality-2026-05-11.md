@@ -3,7 +3,7 @@ title: "Orchestrator self-critique — Cluster D (claim quality)"
 date: 2026-05-11
 scope: research-only
 findings_analyzed: [7, 9, 10]
-parent: docs/research/INDEX.md
+parent: docs/03-PoCs/research/INDEX.md
 ---
 
 # Orchestrator self-critique — Cluster D: claim quality
@@ -24,7 +24,7 @@ Orchestrator told user that the Phase 6 portable-primitives addendum's
 
 ### Evidence (verbatim from source)
 
-Source: `docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md`.
+Source: `docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md`.
 
 The addendum's **Decision** section (L16-28) names five families and assigns
 each a radar **posture**, not a score:
@@ -78,7 +78,7 @@ porting."
 
 ### Evidence (verbatim from source)
 
-Source: `docs/research/ifixai-annex-a-taxonomy-2026-05-11.md`.
+Source: `docs/03-PoCs/research/ifixai-annex-a-taxonomy-2026-05-11.md`.
 
 L78-80:
 
@@ -169,7 +169,7 @@ forwarded to user.
 
 ### Evidence (verbatim from source)
 
-Source: `docs/research/helixdb-annex-b-vector-fts-2026-05-11.md`, L27-29:
+Source: `docs/03-PoCs/research/helixdb-annex-b-vector-fts-2026-05-11.md`, L27-29:
 
 > - `m = 16`, clamped to `[5, 48]`.
 > - `ef_construct = 128`, clamped to `[40, 512]`.
@@ -208,7 +208,7 @@ framing creates phantom roadmap weight.
 `helixdb-annex-b-vector-fts-2026-05-11.md` §B.5). Do **not** carry into:
 
 - COS roadmap.
-- `docs/research/holaos-comparison-2026-05-10.md` or HelixDB primitives Annex E.
+- `docs/03-PoCs/research/holaos-comparison-2026-05-10.md` or HelixDB primitives Annex E.
 - Any ADR.
 - Any "primitives worth porting" list.
 

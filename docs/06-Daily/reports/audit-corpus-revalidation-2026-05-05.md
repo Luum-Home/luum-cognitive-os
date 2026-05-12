@@ -19,7 +19,7 @@
 
 ## Methodology
 
-**Files included**: all `docs/reports/*.md` not containing `2026-05-05` in the filename, not matching `*-tombstone.md` or `ARCHIVED.md`, and not under `docs/reports/auto-generated/` (no such subdirectory exists).
+**Files included**: all `docs/06-Daily/reports/*.md` not containing `2026-05-05` in the filename, not matching `*-tombstone.md` or `ARCHIVED.md`, and not under `docs/06-Daily/reports/auto-generated/` (no such subdirectory exists).
 
 **Scoring tool**: `lib.research_quality_advisor.ResearchQualityAdvisor` (ADR-175). Four dimensions weighted as: `symmetric_citation` 40%, `confidence_levels` 25%, `numerical_specificity` 20%, `falsifiable_claim` 15%.
 
@@ -115,10 +115,10 @@ These four are exemplars. Common pattern: all have both a falsifiable/uncertaint
 
 1. **Immediate**: Re-audit `ai-agent-harness-landscape-2026-05-04.md` and `alternatives-comparison-2026-04.md` with Opus — both are adoption-decision drivers with active relevance and score ≤65. The asymmetric-depth bug documented tonight applies directly.
 2. **Near-term**: Add a `TRUST_REPORT` / `## Uncertainties` section to the three aspirational audit templates (the batch generator writes them; one template change fixes all future runs). These are the highest-volume roadmap-driver reports.
-3. **Process**: Enforce the ADR-175 70-point threshold in the pre-commit hook for any file matching `docs/reports/*.md` — `lib/research_quality_advisor.py` already supports this; it needs to be wired into `.claude/settings.json`.
+3. **Process**: Enforce the ADR-175 70-point threshold in the pre-commit hook for any file matching `docs/06-Daily/reports/*.md` — `lib/research_quality_advisor.py` already supports this; it needs to be wired into `.claude/settings.json`.
 4. **Template update**: Add a `## Confidence markers` section to `templates/agent-research-only.md` so future reports start with the required epistemic scaffolding.
 5. **Deprecation candidates**: 7 reports scored 0–20 and have LOW decision-criticality (`claim-proof-latest.md`, `docs-duplicate-latest.md`, `primitive-gap-regressions.md`, `primitive-surface-reduction-latest.md`, `reduction-backlog-latest.md`, `next-session-plan-dormant-to-real.md`, `lifecycle-demotion-task-completed-2026-05-03.md`). Consider tombstoning or archiving.
-6. **Exemplar documentation**: Extract authoring patterns from the four HIGH-band reports and add them as a "Research report authoring guide" to `docs/architecture/` (one page, linked from the report template).
+6. **Exemplar documentation**: Extract authoring patterns from the four HIGH-band reports and add them as a "Research report authoring guide" to `docs/04-Concepts/architecture/` (one page, linked from the report template).
 7. **Aspirational audit series**: The 3 weekly aspirational audit runs score 55 purely because of missing confidence markers — not because the DORMANT/REAL/ASPIRATIONAL classification is wrong. A targeted sonnet re-run adding `HIGH/MEDIUM/LOW` overlays to the verdict column would bring these to ~80 with minimal cost.
 8. **Python major series** (`python-major-bumps`, `python-major-deps-review`, `python-major-followup`, `python-major-lane-resolution`): four related reports, all 40–65. Re-audit as a batch with a single sonnet agent referencing all four for coherence.
 
@@ -130,90 +130,90 @@ These four are exemplars. Common pattern: all have both a falsifiable/uncertaint
 <summary>All 79 files scored (grouped by score band)</summary>
 
 **HIGH (≥80)**
-- `docs/reports/audit-contract-serial-reversal-investigation-2026-05-01.md` — 85.0
-- `docs/reports/sub-agent-context-trim-2026-04-20.md` — 85.0
-- `docs/reports/docs-execution-latest.md` — 80.0
-- `docs/reports/prune-triage-2026-05-01.md` — 80.0
+- `docs/06-Daily/reports/audit-contract-serial-reversal-investigation-2026-05-01.md` — 85.0
+- `docs/06-Daily/reports/sub-agent-context-trim-2026-04-20.md` — 85.0
+- `docs/06-Daily/reports/docs-execution-latest.md` — 80.0
+- `docs/06-Daily/reports/prune-triage-2026-05-01.md` — 80.0
 
 **MEDIUM (70–79)**
-- `docs/reports/adr-137-plus-implementation-review-2026-05-04.md` — 75.0
-- `docs/reports/pending-plans-audit-2026-04-30.md` — 71.1
-- `docs/reports/demotion-loop-audit-bite-verification-2026-05-03.md` — 70.0
+- `docs/06-Daily/reports/adr-137-plus-implementation-review-2026-05-04.md` — 75.0
+- `docs/06-Daily/reports/pending-plans-audit-2026-04-30.md` — 71.1
+- `docs/06-Daily/reports/demotion-loop-audit-bite-verification-2026-05-03.md` — 70.0
 
 **LOW (50–69)**
-- `docs/reports/adr-067-phase-2-2026-04-24.md` — 65.0
-- `docs/reports/ai-agent-harness-landscape-2026-05-04.md` — 65.0
-- `docs/reports/cos-init-migration-2026-04-24.md` — 65.0
-- `docs/reports/primitive-gap-latest.md` — 65.0
-- `docs/reports/primitive-gap-matrix-2026-04.md` — 65.0
-- `docs/reports/primitive-readiness-ledger-hooks-latest.md` — 65.0
-- `docs/reports/primitive-readiness-ledger-rules-latest.md` — 65.0
-- `docs/reports/primitive-readiness-ledger-scripts-latest.md` — 65.0
-- `docs/reports/primitive-readiness-ledger-skills-latest.md` — 65.0
-- `docs/reports/primitive-readiness-review-2026-05-04.md` — 65.0
-- `docs/reports/python-major-bumps-2026-04-24.md` — 65.0
-- `docs/reports/session-close-2026-04-20.md` — 65.0
-- `docs/reports/bug2-reset-cascade-forensics-2026-04-20.md` — 60.8
-- `docs/reports/python-major-lane-resolution-2026-05-04.md` — 60.0
-- `docs/reports/second-demotion-candidate-resolution-2026-05-03.md` — 60.0
-- `docs/reports/d01-git-reset-forensics-2026-04-20.md` — 59.2
-- `docs/reports/implement-tier1-2026-05-02.md` — 59.2
-- `docs/reports/debt-register-2026-04-20.md` — 57.0
-- `docs/reports/aspirational-audit-2026-04-20.md` — 54.9
-- `docs/reports/aspirational-audit-2026-05-02.md` — 55.0
-- `docs/reports/aspirational-audit-2026-05-03.md` — 55.0
-- `docs/reports/claim-boundary-resolution-2026-05-04.md` — 55.0
-- `docs/reports/dormant-b1-batch-2026-05-02.md` — 55.0
-- `docs/reports/preserve-branch-governance-2026-05-02.md` — 55.0
-- `docs/reports/redteam-consumer-rehearsal-2026-05-02.md` — 55.0
-- `docs/reports/skill-side-dormant-2026-05-02.md` — 55.0
-- `docs/reports/alternatives-comparison-2026-04.md` — 52.5
-- `docs/reports/dx-assessment-2026-05-02.md` — 52.5
-- `docs/reports/orchestrator-dogfood-smoke-test-2026-04-20.md` — 54.3
-- `docs/reports/hook-registration-classification-2026-05-04.md` — 50.0
-- `docs/reports/next-session-handoff-2026-04-20.md` — 50.0
+- `docs/06-Daily/reports/adr-067-phase-2-2026-04-24.md` — 65.0
+- `docs/06-Daily/reports/ai-agent-harness-landscape-2026-05-04.md` — 65.0
+- `docs/06-Daily/reports/cos-init-migration-2026-04-24.md` — 65.0
+- `docs/06-Daily/reports/primitive-gap-latest.md` — 65.0
+- `docs/06-Daily/reports/primitive-gap-matrix-2026-04.md` — 65.0
+- `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.md` — 65.0
+- `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.md` — 65.0
+- `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.md` — 65.0
+- `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.md` — 65.0
+- `docs/06-Daily/reports/primitive-readiness-review-2026-05-04.md` — 65.0
+- `docs/06-Daily/reports/python-major-bumps-2026-04-24.md` — 65.0
+- `docs/06-Daily/reports/session-close-2026-04-20.md` — 65.0
+- `docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md` — 60.8
+- `docs/06-Daily/reports/python-major-lane-resolution-2026-05-04.md` — 60.0
+- `docs/06-Daily/reports/second-demotion-candidate-resolution-2026-05-03.md` — 60.0
+- `docs/06-Daily/reports/d01-git-reset-forensics-2026-04-20.md` — 59.2
+- `docs/06-Daily/reports/implement-tier1-2026-05-02.md` — 59.2
+- `docs/06-Daily/reports/debt-register-2026-04-20.md` — 57.0
+- `docs/06-Daily/reports/aspirational-audit-2026-04-20.md` — 54.9
+- `docs/06-Daily/reports/aspirational-audit-2026-05-02.md` — 55.0
+- `docs/06-Daily/reports/aspirational-audit-2026-05-03.md` — 55.0
+- `docs/06-Daily/reports/claim-boundary-resolution-2026-05-04.md` — 55.0
+- `docs/06-Daily/reports/dormant-b1-batch-2026-05-02.md` — 55.0
+- `docs/06-Daily/reports/preserve-branch-governance-2026-05-02.md` — 55.0
+- `docs/06-Daily/reports/redteam-consumer-rehearsal-2026-05-02.md` — 55.0
+- `docs/06-Daily/reports/skill-side-dormant-2026-05-02.md` — 55.0
+- `docs/06-Daily/reports/alternatives-comparison-2026-04.md` — 52.5
+- `docs/06-Daily/reports/dx-assessment-2026-05-02.md` — 52.5
+- `docs/06-Daily/reports/orchestrator-dogfood-smoke-test-2026-04-20.md` — 54.3
+- `docs/06-Daily/reports/hook-registration-classification-2026-05-04.md` — 50.0
+- `docs/06-Daily/reports/next-session-handoff-2026-04-20.md` — 50.0
 
 **CRITICAL (<50)**
-- `docs/reports/d1b-clients-todo.md` — 49.2
-- `docs/reports/python-major-deps-review-2026-05-04.md` — 49.2
-- `docs/reports/pre-existing-test-failures-2026-04-21.md` — 48.3
-- `docs/reports/swarm-stress-2026-05-02.md` — 45.0
-- `docs/reports/boring-reliability-audit-2026-05-03.md` — 45.0
-- `docs/reports/cross-instance-consumer-e2e-2026-05-03.md` — 45.0
-- `docs/reports/global-verify-validation-2026-04-20.md` — 45.0
-- `docs/reports/stash-resolution-2026-05-01.md` — 45.0
-- `docs/reports/hook-audit-2026-04.md` — 44.2
-- `docs/reports/primitive-duplication-triage-latest.md` — 44.2
-- `docs/reports/primitive-row-audit-latest.md` — 44.2
-- `docs/reports/reconciliation-audit-2026-04-20.md` — 44.2
-- `docs/reports/test-quality-audit-2026-04-20.md` — 44.2
-- `docs/reports/docker-image-review-2026-05-04.md` — 40.0
-- `docs/reports/full-suite-validation-2026-04-23.md` — 40.0
-- `docs/reports/install-timing-baseline-2026-05-01.md` — 40.0
-- `docs/reports/metrics-census.md` — 40.0
-- `docs/reports/plugin-caveman-review-2026-04-20.md` — 40.0
-- `docs/reports/primitive-coverage-backend-benchmark-2026-05-01.md` — 40.0
-- `docs/reports/primitive-coverage-latest.md` — 40.0
-- `docs/reports/primitive-duplication-latest.md` — 40.0
-- `docs/reports/primitive-fitness-ledger-latest.md` — 40.0
-- `docs/reports/primitive-usage-map-latest.md` — 40.0
-- `docs/reports/punch-list-hooks.md` — 40.0
-- `docs/reports/punch-list-lib.md` — 40.0
-- `docs/reports/punch-list-skills.md` — 40.0
-- `docs/reports/python-major-followup-2026-05-04.md` — 40.0
-- `docs/reports/test-suite-repair-ledger-2026-04-24.md` — 33.1
-- `docs/reports/artifact-verification-2026-04-20.md` — 34.1
-- `docs/reports/agentic-mastery-validation-2026-05-02.md` — 20.0
-- `docs/reports/lifecycle-demotion-task-completed-2026-05-03.md` — 20.0
-- `docs/reports/next-session-plan-dormant-to-real.md` — 20.0
-- `docs/reports/primitive-gap-regressions.md` — 20.0
-- `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md` — 20.0
-- `docs/reports/primitive-surface-reduction-latest.md` — 20.0
-- `docs/reports/reduction-backlog-latest.md` — 20.0
-- `docs/reports/validation-worktree-mutation-postmortem-2026-05-02.md` — 5.0
-- `docs/reports/punch-list-rules.md` — 15.0
-- `docs/reports/claim-proof-latest.md` — 0.0
-- `docs/reports/docs-duplicate-latest.md` — 0.0
-- `docs/reports/merge-readiness-master-plan-2026-04-23.md` — 0.0
+- `docs/06-Daily/reports/d1b-clients-todo.md` — 49.2
+- `docs/06-Daily/reports/python-major-deps-review-2026-05-04.md` — 49.2
+- `docs/06-Daily/reports/pre-existing-test-failures-2026-04-21.md` — 48.3
+- `docs/06-Daily/reports/swarm-stress-2026-05-02.md` — 45.0
+- `docs/06-Daily/reports/boring-reliability-audit-2026-05-03.md` — 45.0
+- `docs/06-Daily/reports/cross-instance-consumer-e2e-2026-05-03.md` — 45.0
+- `docs/06-Daily/reports/global-verify-validation-2026-04-20.md` — 45.0
+- `docs/06-Daily/reports/stash-resolution-2026-05-01.md` — 45.0
+- `docs/06-Daily/reports/hook-audit-2026-04.md` — 44.2
+- `docs/06-Daily/reports/primitive-duplication-triage-latest.md` — 44.2
+- `docs/06-Daily/reports/primitive-row-audit-latest.md` — 44.2
+- `docs/06-Daily/reports/reconciliation-audit-2026-04-20.md` — 44.2
+- `docs/06-Daily/reports/test-quality-audit-2026-04-20.md` — 44.2
+- `docs/06-Daily/reports/docker-image-review-2026-05-04.md` — 40.0
+- `docs/06-Daily/reports/full-suite-validation-2026-04-23.md` — 40.0
+- `docs/06-Daily/reports/install-timing-baseline-2026-05-01.md` — 40.0
+- `docs/06-Daily/reports/metrics-census.md` — 40.0
+- `docs/06-Daily/reports/plugin-caveman-review-2026-04-20.md` — 40.0
+- `docs/06-Daily/reports/primitive-coverage-backend-benchmark-2026-05-01.md` — 40.0
+- `docs/06-Daily/reports/primitive-coverage-latest.md` — 40.0
+- `docs/06-Daily/reports/primitive-duplication-latest.md` — 40.0
+- `docs/06-Daily/reports/primitive-fitness-ledger-latest.md` — 40.0
+- `docs/06-Daily/reports/primitive-usage-map-latest.md` — 40.0
+- `docs/06-Daily/reports/punch-list-hooks.md` — 40.0
+- `docs/06-Daily/reports/punch-list-lib.md` — 40.0
+- `docs/06-Daily/reports/punch-list-skills.md` — 40.0
+- `docs/06-Daily/reports/python-major-followup-2026-05-04.md` — 40.0
+- `docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md` — 33.1
+- `docs/06-Daily/reports/artifact-verification-2026-04-20.md` — 34.1
+- `docs/06-Daily/reports/agentic-mastery-validation-2026-05-02.md` — 20.0
+- `docs/06-Daily/reports/lifecycle-demotion-task-completed-2026-05-03.md` — 20.0
+- `docs/06-Daily/reports/next-session-plan-dormant-to-real.md` — 20.0
+- `docs/06-Daily/reports/primitive-gap-regressions.md` — 20.0
+- `docs/06-Daily/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md` — 20.0
+- `docs/06-Daily/reports/primitive-surface-reduction-latest.md` — 20.0
+- `docs/06-Daily/reports/reduction-backlog-latest.md` — 20.0
+- `docs/06-Daily/reports/validation-worktree-mutation-postmortem-2026-05-02.md` — 5.0
+- `docs/06-Daily/reports/punch-list-rules.md` — 15.0
+- `docs/06-Daily/reports/claim-proof-latest.md` — 0.0
+- `docs/06-Daily/reports/docs-duplicate-latest.md` — 0.0
+- `docs/06-Daily/reports/merge-readiness-master-plan-2026-04-23.md` — 0.0
 
 </details>

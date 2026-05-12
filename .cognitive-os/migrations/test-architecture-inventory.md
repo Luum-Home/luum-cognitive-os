@@ -56,7 +56,7 @@
 | Reporting | DoD metrics | .cognitive-os/metrics/dod-gate.jsonl | Append-only DoD gate events. | Canonical metric | dod-gate | Keep. |
 | Reporting | Coverage metrics | .cognitive-os/metrics/coverage-history.jsonl | Append-only coverage history. | Canonical metric | coverage scripts/hooks | Keep. |
 | Reporting | Test quality metrics | .cognitive-os/metrics/test-quality-audit.jsonl | Append-only test quality audit history. | Canonical metric | test quality audit | Keep. |
-| Reporting | Test repair ledger | docs/reports/test-suite-repair-ledger-2026-04-24.md | Human-readable historical repair ledger. | Lifecycle report | maintainers | Keep as historical evidence. |
+| Reporting | Test repair ledger | docs/06-Daily/reports/test-suite-repair-ledger-2026-04-24.md | Human-readable historical repair ledger. | Lifecycle report | maintainers | Keep as historical evidence. |
 | Governance | Auto verify hook | hooks/auto-verify.sh | Automatically verifies changed files after relevant edits. | Canonical governance | hook chain | Keep; consume canonical selection/reporting. |
 | Governance | Global verify hook | hooks/global-verify.sh | Captures and compares verification baselines around global operations. | Canonical governance | hook chain | Keep; needs deterministic changed-file override for tests. |
 | Governance | Post-agent verify hook | hooks/post-agent-verify.sh | Validates delegated agent results. | Canonical governance | hook chain | Keep; consume persisted evidence. |
@@ -74,9 +74,9 @@
 | Lifecycle | Verify baseline runtime | .cognitive-os/runtime/verify-baseline/ | Stores baseline verification state. | Canonical state | global-verify | Keep. |
 | Lifecycle | Session test baselines | .cognitive-os/sessions/*/test-baseline.txt | Per-session baseline snapshots. | Canonical state | session lifecycle | Keep pruned/ignored. |
 | Lifecycle | Coverage tiers | .cognitive-os/coverage-tiers.json | Defines coverage maturity tiers. | Canonical state | coverage governance | Keep. |
-| Lifecycle | Repair ledger report | docs/reports/pre-existing-test-failures-2026-04-21.md | Historical baseline of known failures. | Historical report | maintainers | Keep updated only with evidence. |
-| Lifecycle | Full suite validation report | docs/reports/full-suite-validation-2026-04-23.md | Historical full-suite result record. | Historical report | maintainers | Keep. |
-| Lifecycle | Test quality audit report | docs/reports/test-quality-audit-2026-04-20.md | Historical quality audit record. | Historical report | maintainers | Keep. |
+| Lifecycle | Repair ledger report | docs/06-Daily/reports/pre-existing-test-failures-2026-04-21.md | Historical baseline of known failures. | Historical report | maintainers | Keep updated only with evidence. |
+| Lifecycle | Full suite validation report | docs/06-Daily/reports/full-suite-validation-2026-04-23.md | Historical full-suite result record. | Historical report | maintainers | Keep. |
+| Lifecycle | Test quality audit report | docs/06-Daily/reports/test-quality-audit-2026-04-20.md | Historical quality audit record. | Historical report | maintainers | Keep. |
 | Lifecycle | Test runner ergonomics proposal | .cognitive-os/plans/features/test-runner-ergonomics-proposal.md | Historical plan for focused/cluster/broad. | Historical plan | maintainers | Keep as context; current ADR supersedes. |
 | Lifecycle | Test runner ergonomics design | .cognitive-os/plans/features/test-runner-ergonomics-design.md | Historical design for runner ladder. | Historical plan | maintainers | Keep as context; current ADR supersedes. |
 

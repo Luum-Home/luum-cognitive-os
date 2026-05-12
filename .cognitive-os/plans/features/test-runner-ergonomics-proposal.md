@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: COMPLETE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (re-run after lost session, see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (re-run after lost session, see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Evidence (post-v0.28.0):
 - ADR-072 (Test Lane Taxonomy) ratified the lane registry at .cognitive-os/test-lanes.yaml; auto-marker injection is live in tests/conftest.py and audited by tests/audit/test_marker_coverage.py.
 - cos-test focused/cluster/broad shipped under cmd/cos-test/internal/cli/ and is the canonical entry point; Makefile targets emit deprecation warnings via existing wrappers.
@@ -10,7 +10,7 @@ Evidence (post-v0.28.0):
 Recommendation: move file to .cognitive-os/plans/archive/ in a future tidy commit (do NOT physically move now per reconciliation scope).
 
 OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
-Verified `cmd/cos-test/internal/cli/focused.go` ships `cos-test focused` (diff-driven + explicit paths), peers cluster/broad present, `scripts/cos-integration-shard-plan` confirmed, `.cognitive-os/test-lanes.yaml` confirmed, `tests/audit/test_marker_coverage.py` confirmed. F1 row in docs/reports/radar-2026-05-08-implementation-tracker.md shows shipped status. Opus AGREES with Sonnet: COMPLETE. Recommendation stands: ARCHIVE in next tidy commit.
+Verified `cmd/cos-test/internal/cli/focused.go` ships `cos-test focused` (diff-driven + explicit paths), peers cluster/broad present, `scripts/cos-integration-shard-plan` confirmed, `.cognitive-os/test-lanes.yaml` confirmed, `tests/audit/test_marker_coverage.py` confirmed. F1 row in docs/06-Daily/reports/radar-2026-05-08-implementation-tracker.md shows shipped status. Opus AGREES with Sonnet: COMPLETE. Recommendation stands: ARCHIVE in next tidy commit.
 -->
 
 # Proposal: Test Runner Ergonomics
@@ -104,7 +104,7 @@ Promote `cmd/cos-test` to canonical entry point and layer a thin focused/cluster
 | R2 | Auto-marker injection breaks user `-m` filters (e.g. `-m "not integration"` excludes wrong tests) | Medium | Medium | Auto-marker is **additive** (existing markers preserved). Document mapping in ADR-069. Add audit test that asserts every test has at least one path-derived marker. |
 | R3 | TestProjectGitignore parallel runs conflict on `git init` (shared `~/.gitconfig` on macOS) | Medium | Medium | Use `xdist_group("git-installer")` to serialize within the parallel run. Each test still runs in its own `tmp_path`. |
 | R4 | `--strict-markers` failures if `audit` registered only in conftest (not pytest.ini) | Medium | Low | Add `audit` (and other path-derived markers) to `pytest.ini` markers list. Remove duplicate conftest registrations. |
-| R5 | Two test runners (`cmd/cos`, `cmd/cos-test`) → user confusion | Low | Medium | Operator decision settled: `cos-test` is canonical. Do NOT add `test` to `cmd/cos`. Document in ADR-069 and update `docs/testing.md`. |
+| R5 | Two test runners (`cmd/cos`, `cmd/cos-test`) → user confusion | Low | Medium | Operator decision settled: `cos-test` is canonical. Do NOT add `test` to `cmd/cos`. Document in ADR-069 and update `docs/09-Quality/root/testing.md`. |
 | R6 | `test_local_connected_systems_validation_docs.py:112` and `test_session_start_tooling_contract.py:88` will fail when canonical command flips | High | Low | **Land prerequisite #2 BEFORE renaming docs.** Prefer accepting BOTH old and new command during deprecation window. |
 | R7 | Moving `TestRealFilesIntegration` breaks any CI reference to the specific file path | Low | Low | grep CI configs and docs for `test_decision_triage.py::TestRealFilesIntegration` before move. Update references atomically in same commit. |
 
@@ -139,7 +139,7 @@ Land in this order — each batch is independently revertable. Kill-switch colum
 | 6 | **Flip serial guard** | `scripts/pytest-with-summary.sh:95` | Set `COS_FORCE_SERIAL_LANES="audit,contracts"` env |
 | 7 | **Extend `cmd/cos-test`** with focused/cluster/broad | `cmd/cos-test/internal/cli/*.go` | New subcommands; old flags still work |
 | 8 | **Redirect Makefile + skill** | `Makefile`, `skills/run-tests/SKILL.md` (or equivalent) | Old targets still functional with deprecation warning |
-| 9 | **Update doc contract to canonical command** | `tests/contracts/test_local_connected_systems_validation_docs.py:112` (final flip), `docs/testing.md`, `docs/manual-tests/*.md` | `git revert <sha>` |
+| 9 | **Update doc contract to canonical command** | `tests/contracts/test_local_connected_systems_validation_docs.py:112` (final flip), `docs/09-Quality/root/testing.md`, `docs/09-Quality/manual-tests/*.md` | `git revert <sha>` |
 
 Batches 1–2 MUST land before batch 6. Batches 3–4 are independent. Batches 7–9 can land sequentially after batch 6.
 

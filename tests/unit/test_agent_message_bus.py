@@ -23,7 +23,7 @@ def test_send_message_appears_in_target_inbox(tmp_path: Path) -> None:
         to_session="operator",
         message_type="audit_finding",
         severity="block",
-        target="docs/adrs/ADR-171-tombstone.md",
+        target="docs/02-Decisions/adrs/ADR-171-tombstone.md",
         body="ADR-171 collides with active ownership.",
     )
 

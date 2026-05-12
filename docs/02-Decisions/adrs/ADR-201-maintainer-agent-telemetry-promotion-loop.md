@@ -19,7 +19,7 @@ classification_basis: explicit accepted/implemented status
 **Status**: Accepted — Slice A propose-only loop implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-031, ADR-083, ADR-090, ADR-095, ADR-134, ADR-135, ADR-146, ADR-147, ADR-164, ADR-199, ADR-200  
-**Report**: `docs/reports/self-improvement-maintainer-agent-gap-2026-05-06.md`
+**Report**: `docs/06-Daily/reports/self-improvement-maintainer-agent-gap-2026-05-06.md`
 
 ---
 

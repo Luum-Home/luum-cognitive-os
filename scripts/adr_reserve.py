@@ -96,7 +96,7 @@ def reserve(
     adrs_dir: Path | None = None,
     reservations_path: Path | None = None,
 ) -> Reservation:
-    adrs_dir = adrs_dir or project_dir / "docs" / "adrs"
+    adrs_dir = adrs_dir or project_dir / "docs" / "02-Decisions" / "adrs"
     reservations_path = reservations_path or project_dir / ".cognitive-os" / "locks" / "adr-reservations.json"
     reservations_path.parent.mkdir(parents=True, exist_ok=True)
     adrs_dir.mkdir(parents=True, exist_ok=True)
@@ -118,7 +118,7 @@ def reserve(
         slug = slugify(title)
         adr_id = f"ADR-{number:03d}"
         expires_at = datetime.fromtimestamp(now.timestamp() + ttl_seconds, tz=timezone.utc).isoformat()
-        rel_path = f"docs/adrs/{adr_id}-{slug}.md"
+        rel_path = f"docs/02-Decisions/adrs/{adr_id}-{slug}.md"
         record = {
             "number": number,
             "adr_id": adr_id,

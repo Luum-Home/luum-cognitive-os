@@ -35,7 +35,7 @@ def test_testcontainer_lanes_are_explicitly_opt_in() -> None:
 
 
 def test_optional_docker_lane_flags_are_documented() -> None:
-    """Every COS_RUN_* gate in integration tests should appear in docs/testing.md."""
+    """Every COS_RUN_* gate in integration tests should appear in docs/09-Quality/root/testing.md."""
     docs = (PROJECT_ROOT / "docs" / "testing.md").read_text(errors="replace")
     missing: list[str] = []
 
@@ -47,6 +47,6 @@ def test_optional_docker_lane_flags_are_documented() -> None:
                 missing.append(f"{path.relative_to(PROJECT_ROOT)}: {flag}")
 
     assert not missing, (
-        "Optional Docker lane flags must be documented in docs/testing.md:\n"
+        "Optional Docker lane flags must be documented in docs/09-Quality/root/testing.md:\n"
         + "\n".join(f"- {entry}" for entry in missing)
     )

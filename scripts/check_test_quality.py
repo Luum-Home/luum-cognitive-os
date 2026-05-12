@@ -331,7 +331,7 @@ def main() -> int:
         print("exercise the code's logic. They survive 100% of mutations.")
         print()
         print("Fix: add assertions that test return values, side effects, or error handling.")
-        print("See docs/testing/mutation-testing.md for guidance.")
+        print("See docs/09-Quality/testing/mutation-testing.md for guidance.")
         return 1
 
     return 0

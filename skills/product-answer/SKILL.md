@@ -62,16 +62,16 @@ For questions about external tools or competitors, avoid spending tokens on web
 research before checking local evidence. Inspect these compact/local surfaces in
 order:
 
-1. `docs/reports/external-tools-radar-INDEX.md` — chronological entry point for
+1. `docs/06-Daily/reports/external-tools-radar-INDEX.md` — chronological entry point for
    analyzed tools and radar editions.
 2. `manifests/external-tools-adoption.yaml` and
    `manifests/feature-tool-due-diligence.yaml` — machine-readable adoption and
    BUILD-vs-tool decisions.
-3. `docs/vs-alternatives.md`, `docs/component-sources.md`, and
-   `docs/business/competitive-reassessment-openclaw-hermes-2026-04.md` — local
+3. `docs/08-References/root/vs-alternatives.md`, `docs/04-Concepts/root/component-sources.md`, and
+   `docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md` — local
    positioning for Hermes, Agent Zero, OpenClaw, and adjacent alternatives.
-4. Relevant repo-scout or deep-research reports under `docs/research/` and
-   `docs/reports/external-tools-*`.
+4. Relevant repo-scout or deep-research reports under `docs/03-PoCs/research/` and
+   `docs/06-Daily/reports/external-tools-*`.
 5. Only then browse, and only for volatile facts: current stars, current feature
    claims, licensing changes, pricing, acquisitions, or publication-grade named
    comparisons.

@@ -231,7 +231,7 @@ def _():
 
 @check("F2. checklist guardrail still in repo (preserved)")
 def _():
-    p = ROOT / "docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md"
+    p = ROOT / "docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md"
     assert p.exists(), "implementation checklist missing"
     src = p.read_text()
     assert "ADR-226 Slice B must land first" in src, "guardrail text missing"

@@ -1,7 +1,7 @@
 # DORMANT Batch B1 — On-Demand Marker Sweep
 **Date**: 2026-05-02
 **Phase**: reconstruction
-**Plan source**: `docs/reports/pending-attack-plan-2026-05-02.md` §1
+**Plan source**: `docs/06-Daily/reports/pending-attack-plan-2026-05-02.md` §1
 
 ---
 

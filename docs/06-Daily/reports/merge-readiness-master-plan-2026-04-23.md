@@ -18,7 +18,7 @@ Observed comparison after fetching remotes on 2026-04-23:
 
 The executable master plan checklist is complete:
 
-- `docs/business/master-plan-checklist.md` has no unchecked items.
+- `docs/08-References/business/master-plan-checklist.md` has no unchecked items.
 - `.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md` has no unchecked deliverables.
 
 Completed product guarantees now have artifacts and tests:
@@ -50,7 +50,7 @@ The following validation passed locally on this branch:
 - Product-facing documentation link integrity:
   - `README.md`
   - `CONTRIBUTING.md`
-  - `docs/README.md`
+  - `docs/00-MOCs/entrypoints/README.md`
 - YAML configuration parsing:
   - all `*.yaml` and `*.yml`
 - Docker Compose config:

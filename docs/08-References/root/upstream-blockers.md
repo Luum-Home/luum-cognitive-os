@@ -12,7 +12,7 @@ Last reviewed: 2026-05-04.
 - **Trigger**: `cryptography` package drops the deprecated symbol (announced for 49.0.0). Track at https://github.com/pyca/cryptography/releases — currently at 47.x as of 2026-04-27.
 - **Action**: replace each `default_backend()` call with explicit backend reference (or remove if no longer needed by the new API). Run hermes-agent test suite after.
 - **Estimate**: ~30 min (3 files, mechanical replacement).
-- **First flagged**: 2026-04-25 in `docs/SESSION-HANDOFF-2026-04-25.md`.
+- **First flagged**: 2026-04-25 in `docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md`.
 
 ### `rich` 14 → 15
 
@@ -38,7 +38,7 @@ Last reviewed: 2026-05-04.
 ### Python all-extras major resolver blockers
 
 - **Trigger**: upstream packages relax constraints blocking the 2026-05-04 major review: `arize-phoenix>=15`, `importlib-metadata>=9`, `lxml>=6`, `marshmallow>=4`, `packaging>=26`, `pandas>=3`, `protobuf>=7`, `snowballstemmer>=3`.
-- **Action**: re-run `uv lock` with temporary direct constraints and update `docs/reports/python-major-deps-review-2026-05-04.md` before any blanket `--apply --major`.
+- **Action**: re-run `uv lock` with temporary direct constraints and update `docs/06-Daily/reports/python-major-deps-review-2026-05-04.md` before any blanket `--apply --major`.
 - **Estimate**: ~45 min resolver proof + targeted tests.
 - **First flagged**: 2026-05-04.
 
@@ -54,7 +54,7 @@ Last reviewed: 2026-05-04.
 - Cross-reference with `docs/SESSION-HANDOFF-*.md` files when first flagging.
 
 
-Detailed resolver evidence: `docs/reports/python-major-followup-2026-05-04.md`.
+Detailed resolver evidence: `docs/06-Daily/reports/python-major-followup-2026-05-04.md`.
 
 
 ## ADR-145 lane split note

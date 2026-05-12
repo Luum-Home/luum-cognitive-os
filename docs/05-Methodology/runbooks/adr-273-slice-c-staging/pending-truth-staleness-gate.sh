@@ -13,7 +13,7 @@ source "$(dirname "$0")/_lib/common.sh" 2>/dev/null || true
 type check_disabled_env >/dev/null 2>&1 && check_disabled_env "pending-truth-staleness-gate"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
-LEDGER="$PROJECT_DIR/docs/reports/pending-truth-latest.json"
+LEDGER="$PROJECT_DIR/docs/06-Daily/reports/pending-truth-latest.json"
 
 INPUT=$(cat 2>/dev/null || true)
 [ -z "$INPUT" ] && exit 0

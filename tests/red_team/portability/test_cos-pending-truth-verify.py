@@ -82,7 +82,7 @@ def test_bilateral_verifier_reclassifies_items(tmp_path: Path) -> None:
          "last_verified": None, "evidence": [],
          "next_action": "this is obsolete and tombstoned", "owner_adr": None},
         {"id": "adr-100", "type": "adr-slice",
-         "source": "docs/adrs/ADR-100-demo.md", "status": "unverified",
+         "source": "docs/02-Decisions/adrs/ADR-100-demo.md", "status": "unverified",
          "last_verified": None, "evidence": [],
          "next_action": "resolve ADR-100", "owner_adr": "ADR-100"},
     ])

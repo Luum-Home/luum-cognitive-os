@@ -179,7 +179,7 @@ func (v *RateLimiterValidator) Validate(_ context.Context, hookCtx *hook.Context
 			FixHint:     fix,
 			Reference: validator.Reference{
 				Code: "COS-RATE-001",
-				URL:  "docs/architecture/cos-dispatch/rate-limiter.md",
+				URL:  "docs/04-Concepts/architecture/cos-dispatch/rate-limiter.md",
 			},
 			Details: map[string]string{
 				"action":  action,

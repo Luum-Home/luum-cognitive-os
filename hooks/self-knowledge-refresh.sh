@@ -3,7 +3,7 @@
 # self-knowledge-refresh.sh — SessionStart hook for ADR-037 self-knowledge base.
 #
 # Compares .cognitive-os/self-knowledge/.mtime against newest mtime in
-# lib/, hooks/, scripts/, docs/adrs/, packages/*/lib/. If stale (or missing),
+# lib/, hooks/, scripts/, docs/02-Decisions/adrs/, packages/*/lib/. If stale (or missing),
 # rebuilds the index in the background so session startup is never blocked.
 #
 # Always exits 0. Logs to .cognitive-os/metrics/self-knowledge-refresh.jsonl.
@@ -62,7 +62,7 @@ from pathlib import Path
 
 project_dir = sys.argv[1]
 index_mtime = int(sys.argv[2])
-dirs = ["lib", "hooks", "scripts", "docs/adrs", "packages"]
+dirs = ["lib", "hooks", "scripts", "docs/02-Decisions/adrs", "packages"]
 exts = {".py", ".sh", ".md"}
 newest = 0
 

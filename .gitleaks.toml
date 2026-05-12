@@ -7,7 +7,7 @@ useDefault = true
 description = "Reviewed prelaunch audit reports quote fixture-like historical samples"
 condition = "AND"
 paths = [
-  '''^docs/reports/prelaunch-history-audit-[0-9T]+Z\.(json|md)$''',
+  '''^docs/06-Daily/reports/prelaunch-history-audit-[0-9T]+Z\.(json|md)$''',
 ]
 regexes = [
   '''sk-qwenSECRET1234567890''',
@@ -56,7 +56,7 @@ regexes = [
 description = "Reviewed documentation examples use non-routable placeholder webhook IDs"
 condition = "AND"
 paths = [
-  '''^docs/getting-started\.md$''',
+  '''^docs/05-Methodology/getting-started\.md$''',
 ]
 regexes = [
   '''https://hooks\.slack\.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX''',
@@ -66,7 +66,7 @@ regexes = [
 description = "Reviewed repo-scout prose false positive for gh api wording"
 condition = "AND"
 paths = [
-  '''^docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06\.md$''',
+  '''^docs/03-PoCs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06\.md$''',
 ]
 regexes = [
   '''gh api recursive tree''',

@@ -20,7 +20,7 @@ Purpose: prove that scope classification and surface implementation coverage are
    ```bash
    python3 - <<'PY'
    import json
-   data = json.load(open('docs/reports/primitive-harness-coverage-latest.json'))
+   data = json.load(open('docs/06-Daily/reports/primitive-harness-coverage-latest.json'))
    print(data['summary'])
    assert data['schema_version'] == 'primitive-harness-coverage.v1'
    assert 'surfaces' in data
@@ -46,7 +46,7 @@ Purpose: prove that scope classification and surface implementation coverage are
    ```bash
    python3 - <<'PY'
    import json
-   rows = {row['primitive']: row for row in json.load(open('docs/reports/primitive-harness-coverage-latest.json'))['items']}
+   rows = {row['primitive']: row for row in json.load(open('docs/06-Daily/reports/primitive-harness-coverage-latest.json'))['items']}
    for name in [
        'hooks/session-init.sh',
        'hooks/pre-compaction-flush.sh',

@@ -42,10 +42,10 @@ for f in \
   scripts/approval_ledger.py \
   scripts/cross_session_reconciler.py \
   lib/concurrency_safety.py \
-  docs/adrs/ADR-108-concurrent-agent-safety-layer.md \
-  docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md \
-  docs/architecture/concurrent-agent-scenario-test-matrix.md \
-  docs/architecture/concurrency-safety-core-consumer-contract.md \
+  docs/02-Decisions/adrs/ADR-108-concurrent-agent-safety-layer.md \
+  docs/02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md \
+  docs/04-Concepts/architecture/concurrent-agent-scenario-test-matrix.md \
+  docs/04-Concepts/architecture/concurrency-safety-core-consumer-contract.md \
   .cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md; do
   if [ -f "$PROJECT_DIR/$f" ]; then pass "exists: $f"; else fail "missing: $f"; fi
 done

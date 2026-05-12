@@ -50,7 +50,7 @@ def test_categories_constant_has_10_entries():
 
 
 def test_expected_file_count_is_45():
-    # 10 categories × (1 README + N starter files) + 1 top-level docs/README.md + 1 adrs/README.md = 45
+    # 10 categories × (1 README + N starter files) + 1 top-level docs/00-MOCs/entrypoints/README.md + 1 adrs/README.md = 45
     # (Extended in v1.1: added personas/roles/user-journeys/C4/glossary/rbac/prd/use-cases + adrs/ dir)
     assert expected_file_count() == 45
 

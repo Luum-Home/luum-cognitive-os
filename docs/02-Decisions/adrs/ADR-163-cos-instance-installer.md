@@ -12,8 +12,8 @@ implementation_files:
   - manifests/cos-instance-profiles.yaml
   - scripts/cos-instance-init
   - scripts/cos_instance_init.py
-  - docs/architecture/cos-instance-installer.md
-  - docs/manual-tests/cos-instance-installer.md
+  - docs/04-Concepts/architecture/cos-instance-installer.md
+  - docs/09-Quality/manual-tests/cos-instance-installer.md
   - tests/contracts/test_cos_instance_profiles.py
 tier: maintainer
 tags: [instance-installer, headless-runtime, docker, cosd, service-control-plane, portability]
@@ -51,8 +51,8 @@ Add a dedicated COS instance installer contract and first implementation slice:
   levels;
 - `scripts/cos-instance-init` is the operator-facing command;
 - `scripts/cos_instance_init.py` implements dry-run and safe write behavior;
-- `docs/architecture/cos-instance-installer.md` explains the boundary;
-- `docs/manual-tests/cos-instance-installer.md` records the manual proof path;
+- `docs/04-Concepts/architecture/cos-instance-installer.md` explains the boundary;
+- `docs/09-Quality/manual-tests/cos-instance-installer.md` records the manual proof path;
 - `tests/contracts/test_cos_instance_profiles.py` verifies the manifest and
   installer behavior.
 

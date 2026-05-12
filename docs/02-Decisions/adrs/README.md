@@ -4,10 +4,10 @@
 
 All ADRs (ADR-001 through ADR-094+) now live in this directory, consolidated by
 ADR-087 (ADR Namespace Consolidation, executed 2026-04-30). The legacy split between
-`docs/architecture/adrs/` (ADR-006 through ADR-026) and `docs/adrs/` (ADR-027+) has
+`docs/04-Concepts/architecture/adrs/` (ADR-006 through ADR-026) and `docs/02-Decisions/adrs/` (ADR-027+) has
 been eliminated. Redirect stubs at the old paths remain for one release cycle.
 
-For a chronological index, see `docs/adrs/INDEX.md` (auto-generated on SessionStart).
+For a chronological index, see `docs/02-Decisions/adrs/INDEX.md` (auto-generated on SessionStart).
 
 ## Naming convention
 
@@ -20,12 +20,12 @@ For a chronological index, see `docs/adrs/INDEX.md` (auto-generated on SessionSt
 
 ## CD- prefix policy (cos-dispatch subsystem)
 
-ADRs in `docs/architecture/cos-dispatch/adrs/` use the `CD-NNN` prefix (e.g.
+ADRs in `docs/04-Concepts/architecture/cos-dispatch/adrs/` use the `CD-NNN` prefix (e.g.
 `CD-001-reuse-klaudiush-predicates.md`). These are subsystem-internal decisions for the
 cos-dispatch Go module — **not project-level ADRs**. They must not be cited by bare
 `ADR-NNN` references. The `CD-` prefix makes the namespace boundary machine-readable.
 
-See `docs/architecture/cos-dispatch/adrs/README.md` for their index.
+See `docs/04-Concepts/architecture/cos-dispatch/adrs/README.md` for their index.
 
 ## Renumbered-from / Renumbered-to fields
 
@@ -47,7 +47,7 @@ already claimed 088, 089, and 090 before this migration executed. Actual slots u
 
 | Original location | Planned slot (ADR-087) | Actual slot |
 |---|---|---|
-| `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` | ADR-088 | **ADR-091** |
+| `docs/04-Concepts/architecture/adrs/027-headless-clustered-runtime-direction.md` | ADR-088 | **ADR-091** |
 | `harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | ADR-089 | **ADR-092** |
 | `harness-adoption-gap/ADR-002-simplify-profiles.md` | ADR-090 | **ADR-093** |
 | `harness-adoption-gap/ADR-003-agent-git-safety.md` | ADR-091 | **ADR-094** |

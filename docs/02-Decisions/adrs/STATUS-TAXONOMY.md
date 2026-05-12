@@ -13,7 +13,7 @@ one `status` string:
    accepted, exploratory, closed, replaced, deprecated, or a reserved tombstone.
 2. **Implementation status** — whether the accepted work is implemented,
    partial, blocked, deferred, or not applicable.
-3. **Index bucket** — where the ADR appears in `docs/adrs/INDEX.md` for human
+3. **Index bucket** — where the ADR appears in `docs/02-Decisions/adrs/INDEX.md` for human
    and agent navigation.
 
 When these concepts are mixed, ADRs acquire labels such as `Phase`, `Resolved`,
@@ -62,7 +62,7 @@ scope, while the future operational promotion receives its own `proposed` ADR.
 
 ## Index Mapping
 
-`docs/adrs/INDEX.md` groups first by decision status. The Active bucket is subdivided by `implementation_status` so accepted decisions remain semantically active while navigation stays bounded.
+`docs/02-Decisions/adrs/INDEX.md` groups first by decision status. The Active bucket is subdivided by `implementation_status` so accepted decisions remain semantically active while navigation stays bounded.
 
 | Decision status | Bucket |
 |---|---|

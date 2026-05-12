@@ -8,7 +8,7 @@
 # r5-stash-residue closure), the previous warn-only behavior in user context
 # was insufficient — stash-residue and other destructive ops in interactive
 # orchestration caused the incident class documented in
-# docs/reports/bug2-reset-cascade-forensics-2026-04-20.md §5.
+# docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md §5.
 #
 # Blocked by default (exit 2):
 #   - git stash pop | stash drop | stash apply
@@ -603,7 +603,7 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
   echo "  d) Auto-stash:    COS_AUTO_STASH_BEFORE_RESET=1 $COMMAND" >&2
   echo "     (stashes WIP automatically before the op; restore with git stash pop)" >&2
   echo "" >&2
-  echo "Reference: ADR-116 §P3.2, docs/reports/bug2-reset-cascade-forensics-2026-04-20.md" >&2
+  echo "Reference: ADR-116 §P3.2, docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md" >&2
   echo "" >&2
 
   if _git_blocker_is_agent_context; then
@@ -683,7 +683,7 @@ if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
 fi
 echo "  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)" >&2
 echo "" >&2
-echo "Reference: docs/adrs/ADR-055b-destructive-git-block.md" >&2
+echo "Reference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md" >&2
 echo "" >&2
 
 ENTRY=$(printf '{"timestamp":"%s","event":"blocked","context":"user","agent_id":"","op":"%s","command":"%s"}' \

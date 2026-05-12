@@ -25,7 +25,7 @@ from typing import Any
 
 
 REPO_IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules", ".git"}
-REPO_IGNORE_PREFIXES = ("docs/reports/", "dashboard/.next/", ".claude/plugins/")
+REPO_IGNORE_PREFIXES = ("docs/06-Daily/reports/", "dashboard/.next/", ".claude/plugins/")
 FAMILIES = {"hooks", "skills", "rules", "templates"}
 ROLES = {
     "hooks": {"runtime-safety", "observability", "memory-lifecycle", "driver-specific", "lab", "archive"},
@@ -341,8 +341,8 @@ def main() -> int:
     args = parse_args()
     root = Path(args.project_dir).resolve()
     rows = build_ledger(root, args.target_family)
-    json_out = Path(args.json_out) if args.json_out else Path(f"docs/reports/primitive-readiness-ledger-{args.target_family}-latest.json")
-    md_out = Path(args.md_out) if args.md_out else Path(f"docs/reports/primitive-readiness-ledger-{args.target_family}-latest.md")
+    json_out = Path(args.json_out) if args.json_out else Path(f"docs/06-Daily/reports/primitive-readiness-ledger-{args.target_family}-latest.json")
+    md_out = Path(args.md_out) if args.md_out else Path(f"docs/06-Daily/reports/primitive-readiness-ledger-{args.target_family}-latest.md")
     write_json(rows, root / json_out)
     write_markdown(rows, root / md_out)
     summary = summarize(rows)

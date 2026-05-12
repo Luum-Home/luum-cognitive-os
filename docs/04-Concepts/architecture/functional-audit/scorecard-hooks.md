@@ -291,7 +291,7 @@ No action taken in this pass (read-only scope).
 
 - **Option A**: Delete the skill `skills/auto-refine/SKILL.md` (and its docs/rule refs) if
   the PITER auto-refine loop is not a priority.
-- **Option B**: Implement `hooks/auto-refine.sh` per `docs/piter-framework.md:80` spec
+- **Option B**: Implement `hooks/auto-refine.sh` per `docs/08-References/root/piter-framework.md:80` spec
   (PostToolUse on Agent, retry tracking, max-3 loop, phase-aware).
 - **Option C**: Rename the existing `auto-repair-dispatcher.sh` to `auto-refine.sh` if
   the two names were intended to converge (needs owner input).
@@ -350,7 +350,7 @@ architecturally meaningful (closes the PITER Evaluate→Refine edge).
 
 - `rules/project-gotchas.md` — "48/93 hooks intentionally not wired" (stale count; intent
   confirmed)
-- `docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` — cluster
+- `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` — cluster
   D parent report
 - `scripts/apply-efficiency-profile.sh` — profile tier source of truth
 - `.claude/settings.json` — current wiring (full profile)

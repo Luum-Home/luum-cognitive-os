@@ -21,16 +21,16 @@ Use when work starts in an unfamiliar area of the repository and fast orientatio
 - `internal/provider/` — provider adapters and normalization
 - `cmd/cos/` — Go package manager, installer, wizard
 - `scripts/` — bootstrap, projection, migration, validation
-- `docs/business/` — product, wedge, messaging, master plan
-- `docs/architecture/` — portability, boundaries, audits, ADR-adjacent implementation docs
+- `docs/08-References/business/` — product, wedge, messaging, master plan
+- `docs/04-Concepts/architecture/` — portability, boundaries, audits, ADR-adjacent implementation docs
 
 ## Stable Decision Anchors
 
-- `docs/business/durable-product-master-plan.md`
-- `docs/business/feature-reality-audit.md`
-- `docs/architecture/bootstrap-portability.md`
-- `docs/model-evolution-resilience.md`
-- `docs/kernel-contract.md`
+- `docs/08-References/business/durable-product-master-plan.md`
+- `docs/08-References/business/feature-reality-audit.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- `docs/04-Concepts/root/model-evolution-resilience.md`
+- `docs/04-Concepts/root/kernel-contract.md`
 
 ## Working Rule
 

@@ -120,7 +120,7 @@ This does not ban repeated commands. It makes loop-like repetition drain burst c
 | Runtime library | `lib/rate_limiter.py` |
 | Hook integration | `hooks/rate-limiter.sh`, `hooks/rate-limit-drain.sh` |
 | Operator docs | `rules/rate-limiting.md` |
-| Architecture explainer | `docs/architecture/rate-limiter-flow-control.md` |
+| Architecture explainer | `docs/04-Concepts/architecture/rate-limiter-flow-control.md` |
 | Tests | `tests/unit/test_rate_limiter.py`, `tests/unit/test_rate_limiter_behavior.py`, `tests/unit/test_rate_limit_queue.py`, `tests/unit/test_rate_limiter_edge_matrix.py` |
 
 ## Verification

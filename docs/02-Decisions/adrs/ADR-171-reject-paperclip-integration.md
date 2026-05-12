@@ -12,7 +12,7 @@ implementation_files:
   - .codex/hooks.json
   - cognitive-os.yaml
   - docker-compose.cognitive-os.yml
-  - docs/adrs/ADR-043-tombstone.md
+  - docs/02-Decisions/adrs/ADR-043-tombstone.md
   - hooks/_lib/registration-allowlist.txt
   - scripts/_lib/settings-driver-claude-code.sh
   - scripts/apply-efficiency-profile.sh
@@ -107,7 +107,7 @@ A clean result (no matches) is the steady-state. If any match appears, it is a r
 ### Reading guide for cold readers
 
 1. The core lesson is the **aspirational-not-real failure pattern**: the integration passed stubbed tests without proving an end-to-end contract against the real upstream daemon. This pattern is now a reusable rule — third-party integration primitives need live upstream proof before promotion.
-2. ADR-043 (the predecessor) is represented by `docs/adrs/ADR-043-tombstone.md`; read it for the original local-daemon premise.
+2. ADR-043 (the predecessor) is represented by `docs/02-Decisions/adrs/ADR-043-tombstone.md`; read it for the original local-daemon premise.
 3. ADR-172 (multi-surface UI architecture) documents what UI surfaces replace the dashboard/Paperclip role.
 4. The verification command above is the authoritative check that the purge holds.
 
@@ -133,5 +133,5 @@ python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numb
 - ADR-169 — dashboard demotion; a related UI-surface cleanup.
 - ADR-170 — operator CLI as primary UI surface.
 - ADR-172 — multi-surface UI architecture.
-- `docs/reports/postmortem-cross-session-collision-2026-05-05.md` — explains how ADR-171 was temporarily replaced by a tombstone.
-- `docs/reports/file-by-file-review-2026-05-05.md` — file-level disposition matrix.
+- `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md` — explains how ADR-171 was temporarily replaced by a tombstone.
+- `docs/06-Daily/reports/file-by-file-review-2026-05-05.md` — file-level disposition matrix.

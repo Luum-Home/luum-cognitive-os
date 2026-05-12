@@ -61,7 +61,7 @@ def test_high_stakes_verbs_contains_adr105_verbs():
 
 # ── Case 3: extract_high_stakes_claims ────────────────────────────────────────
 def test_extract_detects_archived_verb():
-    text = "The 3 hooks have been archived to docs/archive/hooks/."
+    text = "The 3 hooks have been archived to docs/99-Archive/archive/hooks/."
     claims = extract_high_stakes_claims(text)
     verbs = {c.verb for c in claims}
     assert "archived" in verbs, "Expected 'archived' verb in: %s" % verbs
@@ -155,7 +155,7 @@ def test_verify_claim_archived_source_present(tmp_path):
 
 # ── Case 6: verify_all convenience function ───────────────────────────────────
 def test_verify_all_returns_list(tmp_path):
-    agent_output = "The hooks have been archived to docs/archive/hooks/."
+    agent_output = "The hooks have been archived to docs/99-Archive/archive/hooks/."
     results = verify_all(agent_output, str(tmp_path))
     assert isinstance(results, list)
     for r in results:

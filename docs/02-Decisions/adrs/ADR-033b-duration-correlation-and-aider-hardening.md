@@ -196,7 +196,7 @@ pytest tests/unit/test_harness_adapter_*.py \
 grep -n 'duration_ms' packages/agent-lifecycle/lib/harness_adapter/claude_code.py
 
 # AC 6: ADR doc
-ls docs/adrs/ADR-033b-duration-correlation-and-aider-hardening.md
+ls docs/02-Decisions/adrs/ADR-033b-duration-correlation-and-aider-hardening.md
 ```
 
 ---

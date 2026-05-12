@@ -79,8 +79,8 @@ If the operator says "json": output the raw projector JSON verbatim.
 ## Edge cases
 
 - **Projector missing**: fall back to a brief from
-  `docs/reports/pending-truth-latest.md` +
-  `docs/reports/operational-guide-audit-latest.md`.
+  `docs/06-Daily/reports/pending-truth-latest.md` +
+  `docs/06-Daily/reports/operational-guide-audit-latest.md`.
 - **Empty queues**: "all clear — system at rest."
 - **Stale cache**: if mtime > 1h, re-run with `COS_PROJECTOR_NOCACHE=1`.
 
@@ -93,4 +93,4 @@ If the operator says "json": output the raw projector JSON verbatim.
 - ADR-248 — control-plane audit loop
 - Sibling: `session-pending-close` (write side)
 - Sibling: `session-wrapup` (end-of-session)
-- Architecture: `docs/architecture/pending-truth-architecture.md`
+- Architecture: `docs/04-Concepts/architecture/pending-truth-architecture.md`

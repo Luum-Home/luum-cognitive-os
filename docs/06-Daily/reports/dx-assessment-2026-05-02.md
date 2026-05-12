@@ -117,11 +117,11 @@ all `go test ./...`) since 2026-04-25. A new developer running `test-all.sh`
 sees failures from day zero.
 
 **Doc inconsistency** (live as of this snapshot):
-- `docs/faq.md` — "72 skills"
+- `docs/00-MOCs/entrypoints/faq.md` — "72 skills"
 - `skills/CATALOG.md` — 145 entries
-- `docs/onboarding-wizard-design.md` — "94 skills"
+- `docs/04-Concepts/root/onboarding-wizard-design.md` — "94 skills"
 - README — 4-step quick start
-- `docs/getting-started.md` — 8–10 prerequisite steps
+- `docs/00-MOCs/entrypoints/getting-started.md` — 8–10 prerequisite steps
 - `pyproject.toml` — version 0.12.0
 - `CHANGELOG.md` — v0.22.0 (2026-04-30)
 
@@ -208,7 +208,7 @@ been completed end-to-end.
   in the repo. **Zero complete SDD cycles** evidenced.
 
 **Origin**: homegrown, inspired by BMAD v6 patterns 1/5/7/8/11
-(see `docs/complexity-audit.md`). Not a fork.
+(see `docs/06-Daily/root/complexity-audit.md`). Not a fork.
 
 ---
 

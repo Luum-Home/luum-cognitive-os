@@ -40,9 +40,9 @@ hook registry**. To activate, the operator must perform the steps below.
 
 # 2) Move to hooks/ with explicit authorization
 export COS_ALLOW_PROTECTED_CONFIG_WRITE=1
-cp docs/runbooks/adr-273-slice-c-staging/pending-truth-drift-detector.sh hooks/
-cp docs/runbooks/adr-273-slice-c-staging/pending-truth-verify-weekly.sh hooks/
-cp docs/runbooks/adr-273-slice-c-staging/pending-truth-staleness-gate.sh hooks/
+cp docs/05-Methodology/runbooks/adr-273-slice-c-staging/pending-truth-drift-detector.sh hooks/
+cp docs/05-Methodology/runbooks/adr-273-slice-c-staging/pending-truth-verify-weekly.sh hooks/
+cp docs/05-Methodology/runbooks/adr-273-slice-c-staging/pending-truth-staleness-gate.sh hooks/
 chmod +x hooks/pending-truth-*.sh
 
 # 3) Register in cognitive-os.yaml > harness.hooks (operator edit):

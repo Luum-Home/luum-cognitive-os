@@ -514,10 +514,10 @@ ACCEPTANCE CRITERIA:
 
 ## Cross-Reference
 
-- UI platforms evaluation: `docs/ui-platforms-evaluation.md`
-- Competitive analysis: `docs/competitive-analysis.md`
+- UI platforms evaluation: `docs/04-Concepts/root/ui-platforms-evaluation.md`
+- Competitive analysis: `docs/08-References/root/competitive-analysis.md`
 - COS MCP server (backend API): `mcp-server/cos_mcp.py`
-- Agent monitoring needs: `docs/agent-teams.md`
+- Agent monitoring needs: `docs/07-Capabilities/root/agent-teams.md`
 - Agent Bus protocol: `packages/agent-coordination/rules/agent-communication.md`
 - Infrastructure services: `rules/infra-health.md`
 - Hook security profiles: `rules/hook-security-profiles.md`

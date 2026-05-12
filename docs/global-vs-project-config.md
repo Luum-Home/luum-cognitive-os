@@ -1,1 +1,0 @@
-04-Concepts/root/global-vs-project-config.md

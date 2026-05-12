@@ -58,7 +58,7 @@
       "projection_targets": [
         "scripts/cos-runtime-hook-reality",
         "scripts/runtime_hook_reality.py",
-        "docs/architecture/boring-reliability-control-plane.md"
+        "docs/04-Concepts/architecture/boring-reliability-control-plane.md"
       ],
       "runtime_projection": false
     }
@@ -156,7 +156,7 @@
       "projection_targets": [
         "scripts/cos-runtime-hook-reality",
         "scripts/runtime_hook_reality.py",
-        "docs/architecture/boring-reliability-control-plane.md"
+        "docs/04-Concepts/architecture/boring-reliability-control-plane.md"
       ],
       "runtime_projection": false
     }
@@ -165,7 +165,7 @@
   "projection_targets": [
     "scripts/cos-runtime-hook-reality",
     "scripts/runtime_hook_reality.py",
-    "docs/architecture/boring-reliability-control-plane.md"
+    "docs/04-Concepts/architecture/boring-reliability-control-plane.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-runtime-hook-reality",

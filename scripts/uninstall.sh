@@ -119,7 +119,7 @@ fi
 # Populated by hooks/self-install.sh as symlinks into skills/.  Not tracked in git
 # (see .gitignore: `.claude/skills/`).  Removal is safe: only symlinks are deleted;
 # the source tree at skills/ is untouched.  See
-# docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md.
+# docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md.
 if [ -d ".claude/skills" ]; then
   skill_link_count=$(find .claude/skills -maxdepth 1 -type l 2>/dev/null | wc -l | tr -d ' ')
   rm -rf .claude/skills

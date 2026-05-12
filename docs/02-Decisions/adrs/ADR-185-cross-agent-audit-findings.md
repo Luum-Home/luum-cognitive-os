@@ -39,7 +39,7 @@ reach the implementer agent that needs to act on them.
 ## Context
 
 The 2026-05-05 cross-session collision incident
-(`docs/reports/postmortem-cross-session-collision-2026-05-05.md`)
+(`docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md`)
 exposed structural concurrency gaps. ADRs 182–184 address the gaps at
 the lock / awareness / authority layers. A residual gap remains:
 
@@ -51,7 +51,7 @@ Today the answer is informal:
 - Auditor calls `mem_save` (Engram). Implementer **must** call
   `mem_search` to find it. **Polling-based; if no one searches, no one
   sees.**
-- Auditor writes a `docs/reports/<date>.md` file. Implementer must
+- Auditor writes a `docs/06-Daily/reports/<date>.md` file. Implementer must
   open and read it. **Async, requires intentional reading.**
 - Auditor logs to `.cognitive-os/metrics/<x>.jsonl`. No standard
   consumer. **Audit trail only.**
@@ -353,7 +353,7 @@ quality.
 
 ## Cross-References
 
-- `docs/reports/postmortem-cross-session-collision-2026-05-05.md` —
+- `docs/06-Daily/reports/postmortem-cross-session-collision-2026-05-05.md` —
   origin incident.
 - ADR-182 — branch ownership lock (companion: ADR-182 prevents two
   writers; ADR-185 routes findings between sequential writers).
@@ -369,7 +369,7 @@ quality.
   decides).
 - ADR-136 — cross-instance learning runway (future: findings
   federate via Engram Cloud).
-- `docs/architecture/agent-message-bus.md` — implemented v1 contract.
+- `docs/04-Concepts/architecture/agent-message-bus.md` — implemented v1 contract.
 - `manifests/session-coordination-contract.yaml` — machine-readable contract.
 - Engram `mem_*` tools — optional durable archive when surfaced by the active
   harness.

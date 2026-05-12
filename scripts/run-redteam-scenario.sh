@@ -35,7 +35,7 @@ set -uo pipefail
 # ── Defaults ──────────────────────────────────────────────────────────────────
 SCENARIO_ARG=""
 SCENARIOS_DIR="tests/red_team/scenarios"
-OUT_DIR="docs/reports/redteam"
+OUT_DIR="docs/06-Daily/reports/redteam"
 MODE=""
 MINI_REPO_KEEP=false
 JSON_ONLY=false
@@ -230,7 +230,7 @@ try:
                 source_dirs.add(os.path.join(tmpdir, top))
 
     source_dir_val = sorted(source_dirs)[0] if source_dirs else os.path.join(tmpdir, "hooks")
-    archive_dir_val = sorted(archive_dirs)[0] if archive_dirs else os.path.join(tmpdir, "docs/archive/hooks")
+    archive_dir_val = sorted(archive_dirs)[0] if archive_dirs else os.path.join(tmpdir, "docs/99-Archive/archive/hooks")
 
     def substitute_vars(text):
         """Substitute ${SOURCE_DIR} and ${ARCHIVE_DIR} template vars."""

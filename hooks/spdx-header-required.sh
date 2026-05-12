@@ -88,5 +88,5 @@ echo "  Shell:     # SPDX-License-Identifier: Apache-2.0" >&2
 echo "  JS/TS:     // SPDX-License-Identifier: Apache-2.0" >&2
 echo "" >&2
 echo "Bypass (logged): COS_ALLOW_MISSING_SPDX=1 git commit ..." >&2
-echo "Reference: docs/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
+echo "Reference: docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md" >&2
 exit 1

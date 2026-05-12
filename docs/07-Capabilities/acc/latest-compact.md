@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Compact
 
-> Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
+> Context diet entrypoint. Read this before opening `docs/07-Capabilities/acc/latest.json`.
 
 Generated: 2026-05-12T19:44:46Z
 Gate: pass (reconstruction)

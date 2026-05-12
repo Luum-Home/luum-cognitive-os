@@ -28,7 +28,7 @@ untested.
 |---|---|---|---|
 | `strong` | Executes behavior, contract, audit, or smoke proof tied to the decision. | `python3 -m pytest tests/unit/test_x.py -q`, `scripts/foo-audit --fail-on-block`, `bash -n hooks/foo.sh` | Yes |
 | `medium` | Proves declared implementation surfaces exist or compile, but not behavior alone. | `test -e lib/foo.py`, `python3 -m py_compile lib/foo.py` | Only with at least one strong command, or for non-runtime decisions |
-| `weak` | Searches for ADR mentions or lists files without asserting the decision. | `grep -rn 'ADR-262' ...`, `find . -name '*foo*'`, `ls docs/adrs/ADR-262*` | No |
+| `weak` | Searches for ADR mentions or lists files without asserting the decision. | `grep -rn 'ADR-262' ...`, `find . -name '*foo*'`, `ls docs/02-Decisions/adrs/ADR-262*` | No |
 | `invalid` | Empty, placeholder, non-deterministic, or references missing paths. | `true`, `echo TODO`, `false # replace later` in accepted ADR | No |
 
 ## Contract

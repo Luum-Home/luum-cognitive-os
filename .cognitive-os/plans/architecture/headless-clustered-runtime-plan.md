@@ -4,12 +4,12 @@ related-adr: ADR-084
 
 <!--
 RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 0 (current local harness): ACTIVE as designed.
-- Phase 1 (headless single-node): MOSTLY DONE — `cos run-task` contract documented (docs/architecture/cos-run-task-contract.md cited); 5 of 8 tracking items checked; unattended safe-mode/kill-switch + protected-publication + VM-restart idempotency proofs not yet shipped (some implicitly covered by ADR-246 release-transaction freeze for publication paths).
+- Phase 1 (headless single-node): MOSTLY DONE — `cos run-task` contract documented (docs/04-Concepts/architecture/cos-run-task-contract.md cited); 5 of 8 tracking items checked; unattended safe-mode/kill-switch + protected-publication + VM-restart idempotency proofs not yet shipped (some implicitly covered by ADR-246 release-transaction freeze for publication paths).
 - Phase 2 (queue-backed worker): PARTIAL — research documented (cloud-worker-runtime-tooling-research-2026-05.md); worker-lease tests pending; queue worker referenced as default push path in foundation-hardening-program.md Phase 2.
-- Phase 3 (container): DOCUMENTED — Docker worker bootstrap shipped in v0.26.0 (`scripts/cos-cloud-worker-bootstrap.sh` + `docs/runbooks/run-cos-in-docker.md`); container contract document item still unchecked.
+- Phase 3 (container): DOCUMENTED — Docker worker bootstrap shipped in v0.26.0 (`scripts/cos-cloud-worker-bootstrap.sh` + `docs/05-Methodology/runbooks/run-cos-in-docker.md`); container contract document item still unchecked.
 - Phase 4 (Kubernetes): NOT STARTED. Per External Tool Adoption Doctrine, distributed workflow engines and multi-machine orchestration are explicitly DEFER/REJECT. This phase remains aspirational until a Shape-B trigger fires per ADR-132.
 - Phase 5 (autonomous repair): NOT STARTED — guarded by non-negotiable constraint "Do not claim autonomous repair without testable proof path".
 Recommendation: keep ACTIVE for Phases 1-2 follow-through; treat Phases 4-5 as DEFER per doctrine. Do NOT archive.
@@ -17,8 +17,8 @@ Recommendation: keep ACTIVE for Phases 1-2 follow-through; treat Phases 4-5 as D
 OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
 Opus AGREES with Sonnet's PARTIAL framing. Concrete cross-check against unchecked items at lines 195-205:
 - Phase 1 acceptance lines 195-197 (unattended safe-mode/kill-switch, protected-publication, VM-restart idempotency proofs): ADR-246 release transaction freeze + ADR-241 cos-bypass allowlist + branch-ownership-lock cover the publication path implicitly; explicit kill-switch and VM-restart idempotency single-contract proofs not yet shipped. Stay open.
-- Phase 2 acceptance lines 198-200 (queue/worker contract + lease tests): docs/runbooks/run-cos-in-docker.md exists but queue/worker contract document + lease tests pending.
-- Phase 3 acceptance lines 201-202: docs/runbooks/run-cos-in-docker.md serves as partial container contract; no-host-path proof still open.
+- Phase 2 acceptance lines 198-200 (queue/worker contract + lease tests): docs/05-Methodology/runbooks/run-cos-in-docker.md exists but queue/worker contract document + lease tests pending.
+- Phase 3 acceptance lines 201-202: docs/05-Methodology/runbooks/run-cos-in-docker.md serves as partial container contract; no-host-path proof still open.
 - Phases 4-5 (Kubernetes + autonomous repair): explicit DEFER per External Tool Adoption Doctrine (ADR-132) — no Shape-B trigger has fired.
 Opus confirms: PARTIAL. Recommendation stands.
 -->
@@ -59,7 +59,7 @@ Exit criteria:
 - local Codex and Claude Code installs pass host doctor checks;
 - self-install/update does not re-center the runtime on `.claude/`;
 - temporary test/canary installs do not pollute the production registry.
-- local connected-system validation proves dependency readiness, MCP wiring, optional service boundaries, and persistent test summaries through [Local Connected Systems Validation](../../../docs/manual-tests/local-connected-systems-validation.md).
+- local connected-system validation proves dependency readiness, MCP wiring, optional service boundaries, and persistent test summaries through [Local Connected Systems Validation](../../../docs/09-Quality/manual-tests/local-connected-systems-validation.md).
 
 ## Phase 1 — Headless Single-Node Runtime
 
@@ -213,6 +213,6 @@ Proof paths:
 - [ ] Phase 5 repair/product-factory workflow proof implemented.
 
 - [Runtime Comparison Benchmark Plan](runtime-comparison-benchmark-plan.md) — compares COS against vanilla Claude/Codex and prior-art tools across workstation, VM, container, pod, and cluster surfaces.
-- [Local Connected Systems Validation](../../../docs/manual-tests/local-connected-systems-validation.md) — proves local dependency and service readiness before extending the runtime to VM/container/cluster surfaces.
-- [`cos run-task` Contract](../../../docs/architecture/cos-run-task-contract.md) — defines the Phase 1 payload, provider/agent command, artifact, exit-code, and security contract.
-- [Cloud Worker Runtime Tooling Research — 2026-05](../../../docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md) — evaluates queue/workflow options for later phases.
+- [Local Connected Systems Validation](../../../docs/09-Quality/manual-tests/local-connected-systems-validation.md) — proves local dependency and service readiness before extending the runtime to VM/container/cluster surfaces.
+- [`cos run-task` Contract](../../../docs/04-Concepts/architecture/cos-run-task-contract.md) — defines the Phase 1 payload, provider/agent command, artifact, exit-code, and security contract.
+- [Cloud Worker Runtime Tooling Research — 2026-05](../../../docs/04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md) — evaluates queue/workflow options for later phases.

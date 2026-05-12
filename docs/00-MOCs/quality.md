@@ -4,9 +4,9 @@ Tests, audits, gates, security, compliance — everything that enforces correctn
 
 ## Start here
 
-1. [`docs/quality/`](../quality/) — quality framework overview
-2. [`docs/agent-quality.md`](../agent-quality.md) — agent output quality rules
-3. [`docs/testing/`](../testing/) — testing strategy and lanes
+1. [`docs/09-Quality/quality/`](../quality/) — quality framework overview
+2. [`docs/07-Capabilities/root/agent-quality.md`](../agent-quality.md) — agent output quality rules
+3. [`docs/09-Quality/testing/`](../testing/) — testing strategy and lanes
 
 ## Test lanes (ADR-072)
 
@@ -32,10 +32,10 @@ Many rules are enforced as PreToolUse / PostToolUse hooks rather than agent inst
 
 ## Trust & evidence
 
-- [`docs/agent-quality.md`](../agent-quality.md) — TRUST_REPORT requirements
+- [`docs/07-Capabilities/root/agent-quality.md`](../agent-quality.md) — TRUST_REPORT requirements
 - [ADR-105 Bilateral Claim Verification Contract](../adrs/ADR-105-claim-verification-contract.md)
 - [ADR-244 Trust report claim validator must enforce](../adrs/ADR-244-trust-report-claim-validator-must-enforce.md)
-- [`docs/anti-hallucination.md`](../anti-hallucination.md)
+- [`docs/04-Concepts/root/anti-hallucination.md`](../anti-hallucination.md)
 
 ### Closure trust signal (ADR-275 Phase 3)
 
@@ -50,26 +50,26 @@ was it a manual edit?" — feeds the trust score per ADR-244.
 - Audit trail: `.cognitive-os/audit/closure-trail.jsonl`
 - Closure primitives (ADR-275): `scripts/cos-pending-truth-close` (tasks)
   and `scripts/cos-adr-close` (decisions). See
-  [`docs/architecture/pending-truth-architecture.md`](../architecture/pending-truth-architecture.md)
+  [`docs/04-Concepts/architecture/pending-truth-architecture.md`](../architecture/pending-truth-architecture.md)
   for the full 4-layer architecture.
 
 ## Security
 
-- [`docs/security/`](../security/) — security policies
+- [`docs/09-Quality/security/`](../security/) — security policies
 - [ADR-013 Security stack](../adrs/ADR-013-security-stack.md)
-- [`docs/RED-TEAM-COVERAGE.md`](../RED-TEAM-COVERAGE.md) + [`docs/RED-TEAM-CHANGELOG.md`](../RED-TEAM-CHANGELOG.md)
+- [`docs/01-Build-Log/root/RED-TEAM-COVERAGE.md`](../RED-TEAM-COVERAGE.md) + [`docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md`](../RED-TEAM-CHANGELOG.md)
 - See `aguara-integration` rule (189 security rules)
 
 ## Compliance & Legal
 
-- [`docs/legal/`](../legal/) — license policy, AGPL/SSPL/BSL blocks, license-faq
+- [`docs/09-Quality/legal/`](../legal/) — license policy, AGPL/SSPL/BSL blocks, license-faq
 - [ADR-006 AGPL license compliance](../adrs/ADR-006-agpl-license-compliance.md)
 - [ADR-142 Compliance audit air-gapped surface](../adrs/ADR-142-compliance-audit-air-gapped-surface.md)
 - [ADR-270 Legal compliance workflow automation](../adrs/ADR-270-legal-compliance-workflow-automation.md)
 
 ## Code-review
 
-- [`docs/quality/`](../quality/) + the `code-review` skill
+- [`docs/09-Quality/quality/`](../quality/) + the `code-review` skill
 - `/ultrareview` — multi-agent cloud review (user-triggered, billed)
 - `/pr-review` — single-pass review skill
 

@@ -14,7 +14,7 @@ license: MIT
 
 ## Stage 0 — Prior-work and corpus check
 
-Langflow had not been evaluated as a tech-radar target in the durable radar corpus before this pass. The only prior repository hit was a broad security research mention listing Langflow among agent platforms; there was no `docs/research/repo-scout/deep/*langflow*` artifact, no `external-tools-radar-*langflow*` addendum, no catalog entry in `docs/patterns/ecosystem-tools.md`, and Engram search returned no previous `tech-radar/langflow` decision.
+Langflow had not been evaluated as a tech-radar target in the durable radar corpus before this pass. The only prior repository hit was a broad security research mention listing Langflow among agent platforms; there was no `docs/03-PoCs/research/repo-scout/deep/*langflow*` artifact, no `external-tools-radar-*langflow*` addendum, no catalog entry in `docs/04-Concepts/patterns/ecosystem-tools.md`, and Engram search returned no previous `tech-radar/langflow` decision.
 
 This report therefore adds Langflow as a new targeted Phase-4 radar item rather than refreshing an existing verdict.
 

@@ -90,7 +90,7 @@ permanent posture.
 
 ## See Also
 
-- `docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md`
+- `docs/02-Decisions/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md`
 - `hooks/orchestrator-skill-invocation-gate.sh`
 - `hooks/skill-router-prompt-suggest.sh` (advisory layer)
 - `lib/skill_router.py` — `last_suggestion(session_id)`

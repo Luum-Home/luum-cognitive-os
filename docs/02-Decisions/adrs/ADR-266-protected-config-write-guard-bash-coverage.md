@@ -120,5 +120,5 @@ bash -n hooks/protected-config-write-guard.sh
 
 - `hooks/protected-config-write-guard.sh` — the hook being extended
 - `hooks/destructive-git-blocker.sh` — similar guard pattern for destructive git operations
-- `docs/research/orchestrator-self-critique-cluster-b-coherence-2026-05-11.md` — the cluster-B agent that demonstrated the bypass
+- `docs/03-PoCs/research/orchestrator-self-critique-cluster-b-coherence-2026-05-11.md` — the cluster-B agent that demonstrated the bypass
 - ADR-015 — Rules-to-Hooks Migration (original authority for hook-enforced rules)

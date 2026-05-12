@@ -48,7 +48,7 @@ def _make_entry(
         title=title,
         status=status,
         file_path=Path(f"/fake/ADR-{adr_num:03d}.md"),
-        repo_relative=f"docs/adrs/ADR-{adr_num:03d}.md",
+        repo_relative=f"docs/02-Decisions/adrs/ADR-{adr_num:03d}.md",
         keywords=keywords,
         tag_keywords=tag_set,
         title_keywords=title_set,

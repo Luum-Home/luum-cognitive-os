@@ -78,4 +78,4 @@ disposable consumer tempdir and proves:
   written into the consumer project.
 
 The tracked latest proof lives at
-`docs/reports/portable-ai-consumer-package-smoke-latest.json` and `.md`.
+`docs/06-Daily/reports/portable-ai-consumer-package-smoke-latest.json` and `.md`.

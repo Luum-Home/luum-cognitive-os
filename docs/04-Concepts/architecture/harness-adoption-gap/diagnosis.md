@@ -40,8 +40,8 @@ The root cause is a **path mismatch**: the Claude Code harness exposes skills fr
 - `~/.claude/skills/` has 16 real files installed March 21 — the day the OS was first set up. No entry installed since then.
 - `.cognitive-os/skills/` has 150 symlinks pointing to `skills/` subdirs — correct targets but wrong location for the harness.
 - `.claude/skills/` does NOT exist anywhere in the project directory tree. The harness-expected path was never created.
-- `pi-mono` docs (`.claude/plugins/pi-mono/packages/coding-agent/docs/skills.md`) confirm harness reads from `~/.claude/skills` as a primary path.
-- `docs/os-vs-project-separation.md` describes the correct path as `{project}/.claude/skills/` for project-level skills, yet this directory was never created.
+- `pi-mono` docs (`.claude/plugins/pi-mono/packages/coding-agent/docs/05-Methodology/root/skills.md`) confirm harness reads from `~/.claude/skills` as a primary path.
+- `docs/04-Concepts/root/os-vs-project-separation.md` describes the correct path as `{project}/.claude/skills/` for project-level skills, yet this directory was never created.
 
 **Reproduction:**
 ```bash
@@ -58,7 +58,7 @@ ls .claude/skills/ 2>/dev/null || echo "MISSING"  # should print MISSING
 ### H2 — The harness also reads `{project}/.claude/skills/` but that directory was never created
 
 **Evidence:**
-- `docs/os-vs-project-separation.md` explicitly names `{project}/.claude/skills/` as a valid skill location for project-level skills (Layer 2).
+- `docs/04-Concepts/root/os-vs-project-separation.md` explicitly names `{project}/.claude/skills/` as a valid skill location for project-level skills (Layer 2).
 - The directory `luum-agent-os/.claude/skills/` does not exist — verified by `ls .claude/` showing only `launch.json`, `plugins`, `rules`, `settings.json*`, `worktrees`.
 - If the harness reads BOTH `~/.claude/skills/` AND `{project}/.claude/skills/`, then creating the project-level dir and populating it would expose all 126 skills with zero changes to `self-install.sh`.
 

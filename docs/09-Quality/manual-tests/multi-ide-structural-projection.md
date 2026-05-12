@@ -53,7 +53,7 @@ For detailed proof without loading the full JSON into agent context:
 python3 - <<'PY'
 import json
 from pathlib import Path
-payload = json.loads(Path('docs/acc/latest.json').read_text())
+payload = json.loads(Path('docs/07-Capabilities/acc/latest.json').read_text())
 print(payload['adapters']['consumer_projection']['summary']['by_harness_profile'])
 print({k: v['status'] for k, v in payload['harness_projection'].items()})
 PY
@@ -65,7 +65,7 @@ Expected: default/full counts exist for `claude`, `codex`, `cursor`, `opencode`,
 
 If an operator has the IDE/account installed, manually open the temp project and verify the generated instruction/config file is visible to the IDE. Do not make this a required CI step.
 
-Expected: manual notes are stored under `docs/reports/` if performed. Absence of account-backed proof must not downgrade structural projection proof.
+Expected: manual notes are stored under `docs/06-Daily/reports/` if performed. Absence of account-backed proof must not downgrade structural projection proof.
 
 ## Acceptance criteria
 

@@ -7,7 +7,7 @@ measuring the delta in unexpanded_keys (rule expansion misses).
 
 Usage:
     python3 scripts/validate_tier_filter.py --approach=replay --n=30 \
-        --output=docs/measurements/tier-filter-validation-2026-05-01.json
+        --output=docs/06-Daily/measurements/tier-filter-validation-2026-05-01.json
 
 CLI flags:
     --approach   replay (default) | synthetic
@@ -414,7 +414,7 @@ def build_report(
         "repeatability": (
             "Re-run at any time with: "
             "python3 scripts/validate_tier_filter.py --approach=replay --n=30 "
-            "--output=docs/measurements/tier-filter-validation-$(date +%F).json"
+            "--output=docs/06-Daily/measurements/tier-filter-validation-$(date +%F).json"
         ),
     }
 

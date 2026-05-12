@@ -14,7 +14,7 @@ implementation can sit behind the package boundary.
 
 ## Source links
 
-- Radar: `docs/reports/external-tools-radar-full-reassessment-2026-05-08.md`
+- Radar: `docs/06-Daily/reports/external-tools-radar-full-reassessment-2026-05-08.md`
 - Package surface: `packages/mcp-server/`
 
 ## License and provenance

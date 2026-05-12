@@ -31,8 +31,8 @@ DEFAULT_DB = Path.home() / ".engram" / "engram.db"
 PATTERNS = [
     # SDD artifacts: sdd/<change>/<phase> → openspec/changes/<change>/<phase>.md
     ("sdd/", "openspec/changes/", ".md"),
-    # ADR observations: adr/NNN → docs/adrs/ADR-NNN-*.md
-    ("adr/", "docs/adrs/", ""),
+    # ADR observations: adr/NNN → docs/02-Decisions/adrs/ADR-NNN-*.md
+    ("adr/", "docs/02-Decisions/adrs/", ""),
 ]
 
 
@@ -50,7 +50,7 @@ def expected_paths(topic_key: str, repo_root: Path) -> list[Path]:
                 change, phase = parts
                 candidates.append(repo_root / root / change / f"{phase}{suffix}")
         elif prefix == "adr/":
-            # adr/228 → docs/adrs/ADR-228-*.md (glob match)
+            # adr/228 → docs/02-Decisions/adrs/ADR-228-*.md (glob match)
             num = rest.split("/", 1)[0]
             try:
                 int(num)

@@ -1,9 +1,9 @@
 # ADR Status Triage — Non-Standard "Other" Section
 
-**Date**: 2026-05-12  
-**Scope**: 38 ADRs from the "Other" group in `docs/adrs/INDEX.md`  
+**Date**: 2026-05-12
+**Scope**: 38 ADRs from the "Other" group in `docs/02-Decisions/adrs/INDEX.md`
 **Method**: Python script reads first ~45 lines of each ADR file, extracts status field,
-applies deterministic classification rules, flags ambiguous cases.  
+applies deterministic classification rules, flags ambiguous cases.
 **Constraint**: Read-only — no ADR files were modified.
 
 ---
@@ -67,16 +67,16 @@ for f in ADR-052 ADR-053 ADR-105 ADR-119 ADR-123 ADR-139 ADR-141 ADR-142 \
           ADR-151 ADR-152 ADR-154 ADR-156 ADR-157 ADR-160 ADR-161 ADR-162 \
           ADR-164 ADR-165 ADR-166 ADR-167 ADR-168; do
   # find the actual filename (prefix match), then sed
-  find docs/adrs -name "ADR-${f#ADR-}*.md" | xargs -I{} sed -i '' 's/^status: implemented/status: Active/' {}
+  find docs/02-Decisions/adrs -name "ADR-${f#ADR-}*.md" | xargs -I{} sed -i '' 's/^status: implemented/status: Active/' {}
 done
 
 # Files with "Addendum" → "Active"
 for f in ADR-027a ADR-028a ADR-028b; do
-  find docs/adrs -name "ADR-${f#ADR-}*.md" | xargs -I{} sed -i '' 's/^status: Addendum.*/status: Active/' {}
+  find docs/02-Decisions/adrs -name "ADR-${f#ADR-}*.md" | xargs -I{} sed -i '' 's/^status: Addendum.*/status: Active/' {}
 done
 
 # ADR-044: Phase → Active
-sed -i '' 's/\*\*Status\*\*: Phase .*/\*\*Status\*\*: Active/' docs/adrs/ADR-044-context-payload-slimming.md
+sed -i '' 's/\*\*Status\*\*: Phase .*/\*\*Status\*\*: Active/' docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md
 
 # ADR-174b: composite YAML → normalize
 # See "Ambiguous" section — operator judgment needed before touching
@@ -111,12 +111,12 @@ bug-tracking record — all bugs fixed, record closed.
 **Bulk `sed` command (Deprecated group)**:
 ```bash
 for num in 003 004 005 043 046 085 214 229 253; do
-  find docs/adrs -name "ADR-${num}*.md" | xargs -I{} sed -i '' 's/^status: tombstone/status: Deprecated/' {}
+  find docs/02-Decisions/adrs -name "ADR-${num}*.md" | xargs -I{} sed -i '' 's/^status: tombstone/status: Deprecated/' {}
 done
 # ADR-224
-sed -i '' 's/status: tombstone/status: Deprecated/' docs/adrs/ADR-224-shadow-state-snapshots-off-repo.md
+sed -i '' 's/status: tombstone/status: Deprecated/' docs/02-Decisions/adrs/ADR-224-shadow-state-snapshots-off-repo.md
 # ADR-238
-sed -i '' 's/^## Status/## Status (normalized)/' docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md
+sed -i '' 's/^## Status/## Status (normalized)/' docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md
 # then manually set status: Deprecated in frontmatter or heading
 ```
 
@@ -131,7 +131,7 @@ sed -i '' 's/^## Status/## Status (normalized)/' docs/adrs/ADR-238-tier-1-4-foll
 **Edit**:
 ```bash
 sed -i '' 's/^status: exploration/status: Proposed/' \
-  docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
+  docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
 ```
 
 ---
@@ -152,41 +152,41 @@ These 5 entries need a human call before bulk editing.
 ### 1. ADR-044 — Context Payload Slimming (raw: `Phase`)
 **Ambiguity**: The status string "Phase 2 RESOLVED … Phase 2 slash commands BLOCKED" is
 actually an implementation progress note, not a lifecycle status. Phase 1 completed, Phase 2
-blocked indefinitely.  
-**Recommended**: `Active` (the decision is still the authoritative policy; blocked phase ≠ deprecated decision).  
-**Alternative**: If Phase 2 is never going to ship, the operator may want `Deprecated`.  
+blocked indefinitely.
+**Recommended**: `Active` (the decision is still the authoritative policy; blocked phase ≠ deprecated decision).
+**Alternative**: If Phase 2 is never going to ship, the operator may want `Deprecated`.
 **Action needed**: Confirm whether the blocked Phase 2 is permanently abandoned.
 
 ### 2. ADR-132 — Solo-Swarm vs Multi-Maintainer Fork (raw: `Exploration`)
 **Ambiguity**: File says "exploration — does not commit to an architectural change." This is
-essentially a Proposed investigation that has no decision yet.  
-**Recommended**: `Proposed` (closest standard; it's an open question, not an accepted decision).  
+essentially a Proposed investigation that has no decision yet.
+**Recommended**: `Proposed` (closest standard; it's an open question, not an accepted decision).
 **Alternative**: Keep as custom "Exploration" if the team wants to distinguish "exploring
-a question" from "proposed a solution" — see §Extended Canonical Set.  
+a question" from "proposed a solution" — see §Extended Canonical Set.
 **Action needed**: Decide if `Proposed` vs a custom `Exploration` status is preferred.
 
 ### 3. ADR-174b — Routing-Pattern Prevention Followup (raw: empty / composite YAML)
 **Ambiguity**: YAML `status` is a sub-object with `part_a: accepted` and `part_b: proposed`.
-This is a composite status not representable as a single canonical value.  
-**Recommended**: `Active` (Part A accepted and implemented; Part B in-flight under the same ADR).  
-**Alternative**: Split into two separate ADRs if Part A/B have divergent lifecycles.  
+This is a composite status not representable as a single canonical value.
+**Recommended**: `Active` (Part A accepted and implemented; Part B in-flight under the same ADR).
+**Alternative**: Split into two separate ADRs if Part A/B have divergent lifecycles.
 **Action needed**: Decide whether to merge to `Active` or split.
 
 ### 4. ADR-238 — Tier 1-4 Follow-Up Bug Tracking (raw: `Resolved`)
 **Ambiguity**: "Resolved" is not in the canonical set, but it clearly means the record is
 closed — all 5 bugs fixed. Could map to `Active` (it's a record of work done) or `Deprecated`
-(it's a closed tracking ticket with no ongoing relevance).  
-**Recommended**: `Deprecated` (no actionable content remains; it is a closed postmortem artifact).  
+(it's a closed tracking ticket with no ongoing relevance).
+**Recommended**: `Deprecated` (no actionable content remains; it is a closed postmortem artifact).
 **Alternative**: `Active` if the team wants all "decision records" to stay Active regardless
-of completion.  
+of completion.
 **Action needed**: Policy call — do closed tracking ADRs become Deprecated or stay Active?
 
 ### 5. ADR-253 — Tombstone (consolidated into ADR-251)
 **Ambiguity**: The consolidation target ADR-251 is Active. Technically this is "superseded
-by" ADR-251, not deprecated.  
-**Recommended**: `Deprecated` (current project convention for consolidated tombstones is Deprecated).  
+by" ADR-251, not deprecated.
+**Recommended**: `Deprecated` (current project convention for consolidated tombstones is Deprecated).
 **Alternative**: `Superseded` with a `superseded_by: 251` annotation — more precise but breaks
-uniformity with the other tombstone entries.  
+uniformity with the other tombstone entries.
 **Action needed**: Decide whether consolidated tombstones are `Deprecated` or `Superseded`.
 
 ---
@@ -238,14 +238,14 @@ are clean mappings. If the team later wants the distinction, revisit via a dedic
 8. **ADR-253 Tombstone (ambiguous consolidated)**: already covered in step 1, but operator
    may want `Superseded` instead
 
-After edits: re-run `docs/adrs/INDEX.md` generator (if one exists) to refresh the index.
+After edits: re-run `docs/02-Decisions/adrs/INDEX.md` generator (if one exists) to refresh the index.
 If no generator, manually move rows from "Other" to appropriate sections.
 
 ---
 
 ## Files Referenced
 
-- Source index: `docs/adrs/INDEX.md`
-- ADR files: `docs/adrs/ADR-{NNN}*.md`
-- This report: `docs/reports/adr-status-triage-2026-05-12.md`
+- Source index: `docs/02-Decisions/adrs/INDEX.md`
+- ADR files: `docs/02-Decisions/adrs/ADR-{NNN}*.md`
+- This report: `docs/06-Daily/reports/adr-status-triage-2026-05-12.md`
 - Triage script (temp): `/tmp/adr_triage.py`

@@ -62,9 +62,9 @@ def test_developer_confidence_doc_points_to_real_proof_paths() -> None:
     paths = [
         "scripts/cos-doctor-memory-lifecycle.sh",
         "scripts/cos-doctor-tools.sh",
-        "docs/manual-tests/first-run-onboarding.md",
-        "docs/manual-tests/proof-paths.md",
-        "docs/business/master-plan-checklist.md",
+        "docs/09-Quality/manual-tests/first-run-onboarding.md",
+        "docs/09-Quality/manual-tests/proof-paths.md",
+        "docs/08-References/business/master-plan-checklist.md",
     ]
 
     for path in paths:

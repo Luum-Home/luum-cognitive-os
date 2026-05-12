@@ -49,7 +49,7 @@ Rationale:
 - [ ] Implement one bounded slice at a time.
 - [ ] Add unit tests for every new parser/classifier/gate.
 - [ ] Add at least one behavior/smoke test before calling a full ADR closed.
-- [ ] Update `docs/business/master-plan-checklist.md` after each closed slice.
+- [ ] Update `docs/08-References/business/master-plan-checklist.md` after each closed slice.
 - [ ] Run targeted tests first, then expand only when the changed surface justifies it.
 - [ ] Keep untracked unrelated local files out of commits unless explicitly approved.
 - [ ] Persist session summary in Engram before ending the session.

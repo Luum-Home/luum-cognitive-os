@@ -8,7 +8,7 @@
 # .cast file looks like a paced human session, not a unattended script.
 #
 # Usage:
-#   asciinema rec docs/onboarding/walkthrough.cast \
+#   asciinema rec docs/05-Methodology/onboarding/walkthrough.cast \
 #     --command "bash scripts/cos-record-onboarding.sh"
 #
 # Or interactively:
@@ -52,7 +52,7 @@ _say "Step 5 — dry-run a destructive op (gets blocked)"
 _run "git push --force 2>&1 | head -5 || true"
 
 _say "Step 6 — view the readiness checklist"
-_run "head -20 docs/legal/pre-public-readiness-checklist.md"
+_run "head -20 docs/09-Quality/legal/pre-public-readiness-checklist.md"
 
 _say "Step 7 — show CONTRIBUTING for AI policy"
 _run "head -15 CONTRIBUTING.md"
@@ -60,4 +60,4 @@ _run "head -15 CONTRIBUTING.md"
 _say "Step 8 — license + FAQ link"
 _run "head -2 LICENSE; echo '---'; grep 'license-faq' README.md | head -1"
 
-_say "Walkthrough complete. See docs/onboarding/walkthrough.md for the prose version."
+_say "Walkthrough complete. See docs/05-Methodology/onboarding/walkthrough.md for the prose version."

@@ -4,12 +4,12 @@ status: active
 scope:
   include:
     - README.md
-    - docs/business/executive-summary.md
-    - docs/business/kubernetes-for-agents.md
-    - docs/business/value-proposition.md
-    - docs/business/features.md
+    - docs/08-References/business/executive-summary.md
+    - docs/08-References/business/kubernetes-for-agents.md
+    - docs/08-References/business/value-proposition.md
+    - docs/08-References/business/features.md
   exclude:
-    - docs/business/competitive-reassessment-openclaw-hermes-2026-04.md
+    - docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md
 policy:
   high_risk_patterns:
     - autonomous self-improvement

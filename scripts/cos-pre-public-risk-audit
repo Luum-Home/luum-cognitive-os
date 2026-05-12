@@ -216,10 +216,10 @@ def audit(repo: Path) -> dict[str, Any]:
     docs_history = repo / "docs" / "history"
     docs_reports = repo / "docs" / "reports"
     required_evidence = {
-        "docs/history/README.md": docs_history / "README.md",
-        "docs/history/manifest-snapshot-*.yaml": list(docs_history.glob("manifest-snapshot-*.yaml")),
-        "docs/history/pre-sanitization-sha-inventory-*.txt": list(docs_history.glob("pre-sanitization-sha-inventory-*.txt")),
-        "docs/reports/history-sanitization-*.json": list(docs_reports.glob("history-sanitization-*.json")),
+        "docs/01-Build-Log/history/README.md": docs_history / "README.md",
+        "docs/01-Build-Log/history/manifest-snapshot-*.yaml": list(docs_history.glob("manifest-snapshot-*.yaml")),
+        "docs/01-Build-Log/history/pre-sanitization-sha-inventory-*.txt": list(docs_history.glob("pre-sanitization-sha-inventory-*.txt")),
+        "docs/06-Daily/reports/history-sanitization-*.json": list(docs_reports.glob("history-sanitization-*.json")),
     }
     evidence_state: dict[str, bool] = {}
     for label, path_or_list in required_evidence.items():
@@ -250,7 +250,7 @@ def audit(repo: Path) -> dict[str, Any]:
             "license-switch-faq-missing",
             "No public license FAQ found for Apache-to-FSL positioning; this is a reputational risk, not a code leak.",
             1,
-            "docs/legal/license-faq.md",
+            "docs/09-Quality/legal/license-faq.md",
         )
 
     block_count = sum(1 for f in findings if f.severity == "block")

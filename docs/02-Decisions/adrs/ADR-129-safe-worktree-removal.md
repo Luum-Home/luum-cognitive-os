@@ -61,7 +61,7 @@ All four share three problems:
   nowhere to go to find out which callsite removed it or why git's safety
   check was bypassed.
 
-The DX assessment (`docs/reports/dx-assessment-2026-05-02.md`) classified
+The DX assessment (`docs/06-Daily/reports/dx-assessment-2026-05-02.md`) classified
 ADR-128 items as "data integrity (recoverable)". This concern is in a
 different category: **destruction of in-progress work, not recoverable**.
 Hence a separate, narrower ADR.
@@ -171,7 +171,7 @@ in the audit trail.
 
 ## Cross-references
 
-- Source: `docs/reports/dx-assessment-2026-05-02.md` (raised in
+- Source: `docs/06-Daily/reports/dx-assessment-2026-05-02.md` (raised in
   follow-up conversation, 2026-05-02).
 - Related: ADR-128 (data-layer integrity), ADR-117 (stash mutation
   reversibility — same family of "no silent destructive ops").

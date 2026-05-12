@@ -50,7 +50,7 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference(".github/workflows/claude-interactive.yml.disabled", "ci_explicit", "Claude Code action secret"),
     AllowedReference(".github/workflows/claude-issue-triage.yml.disabled", "ci_explicit", "Claude Code action secret"),
     AllowedReference(".github/workflows/claude-pr-review.yml.disabled", "ci_explicit", "Claude Code action secret"),
-    AllowedReference("docs/automation.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
+    AllowedReference("docs/05-Methodology/root/automation.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
     AllowedReference("workflows/README.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
 
     # Direct API implementation/policy surfaces; all must remain config-gated.
@@ -65,16 +65,16 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     # Advisor MCP is an optional external-advisor provider and is separately contract-tested.
     AllowedReference("packages/advisor-mcp/README.md", "external_advisor_docs", "policy-gated provider docs"),
     AllowedReference("packages/advisor-mcp/cos-package.yaml", "external_advisor_metadata", "provider metadata"),
-    AllowedReference("docs/architecture/advisor-mcp-architecture-review.md", "external_advisor_policy_docs", "architecture review"),
+    AllowedReference("docs/04-Concepts/architecture/advisor-mcp-architecture-review.md", "external_advisor_policy_docs", "architecture review"),
 
     # Optional service docs with explicit non-default override.
     AllowedReference("infra/cognee/README.md", "optional_service_override_docs", "Anthropic override example only"),
 
     # Direct policy docs. Historical docs intentionally avoid the exact string.
-    AllowedReference("docs/architecture/direct-anthropic-api-policy.md", "policy_docs", "canonical policy"),
-    AllowedReference("docs/adrs/ADR-131-local-ci-migration.md", "policy_docs", "local CI migration names CI-only secret removal"),
-    AllowedReference("docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md", "policy_docs", "account-agnostic credential policy names legacy env var as banned/default-unsafe"),
-    AllowedReference("docs/manual-tests/service-control-plane-proof-drills.md", "service_control_plane_security_docs", "manual drill verifies credential redaction"),
+    AllowedReference("docs/04-Concepts/architecture/direct-anthropic-api-policy.md", "policy_docs", "canonical policy"),
+    AllowedReference("docs/02-Decisions/adrs/ADR-131-local-ci-migration.md", "policy_docs", "local CI migration names CI-only secret removal"),
+    AllowedReference("docs/02-Decisions/adrs/ADR-139-account-agnostic-multi-provider-runtime.md", "policy_docs", "account-agnostic credential policy names legacy env var as banned/default-unsafe"),
+    AllowedReference("docs/09-Quality/manual-tests/service-control-plane-proof-drills.md", "service_control_plane_security_docs", "manual drill verifies credential redaction"),
     AllowedReference("scripts/cos_auth_probe.py", "auth_probe_policy", "provider-specific auth readiness probe checks env presence only"),
     AllowedReference("tests/audit/test_adr_139_141_142_cloud_surfaces.py", "audit_test", "guards blocked credential defaults"),
     AllowedReference("tests/unit/test_service_control_plane_local_queue.py", "test_fixture", "secret redaction fixture"),
@@ -83,7 +83,7 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference("manifests/provider-profiles.yaml", "provider_profile_metadata", "provider profile declares env slot name, not a credential value"),
 
     # Explicit examples / benchmark / arena / tests.
-    AllowedReference("docs/benchmarks/so-vs-vanilla-tasks.yaml", "fake_benchmark_secret", "fake key example"),
+    AllowedReference("docs/08-References/benchmarks/so-vs-vanilla-tasks.yaml", "fake_benchmark_secret", "fake key example"),
     AllowedReference("env.example", "commented_opt_in_example", "commented claude_sdk opt-in only"),
     AllowedReference("tests/arena/arena-config.yaml", "cost_bearing_test_config", "explicit arena providers"),
     AllowedReference("tests/unit/test_advisor_integration.py", "test_fixture", "test-only env setup"),
@@ -97,11 +97,11 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
 
     # Extension docs that explicitly say no direct key required.
     AllowedReference("packages/cos-advisory-llm/README.md", "native_prompt_hook_docs", "states no direct key required"),
-    AllowedReference("docs/research/orchestration-gaps/background-agent-patterns.md", "auth_rotation_research", "research report discusses detached-agent credential rotation risk"),
+    AllowedReference("docs/03-PoCs/research/orchestration-gaps/background-agent-patterns.md", "auth_rotation_research", "research report discusses detached-agent credential rotation risk"),
 
     # Research/cross-provider evaluation reports that reference env var in analysis context
-    AllowedReference("docs/research/ifixai-annex-b-cross-judge-2026-05-11.md", "provider_eval_research", "cross-judge evaluation report mentions env var in provider auth analysis"),
-    AllowedReference("docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md", "provider_eval_research", "provider IMEI-split evaluation report mentions env var in auth context"),
+    AllowedReference("docs/03-PoCs/research/ifixai-annex-b-cross-judge-2026-05-11.md", "provider_eval_research", "cross-judge evaluation report mentions env var in provider auth analysis"),
+    AllowedReference("docs/03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md", "provider_eval_research", "provider IMEI-split evaluation report mentions env var in auth context"),
 )
 
 _ALLOWED_BY_PATH = {entry.path: entry for entry in ALLOWED_REFERENCES}

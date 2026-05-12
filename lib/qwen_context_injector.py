@@ -18,7 +18,7 @@ Three levels:
 The loader is resilient: missing template files degrade to an empty string
 rather than raising, so Qwen dispatches never fail because a template was moved.
 
-Reference: docs/adrs/ADR-051-qwen-agent-loop.md (Phase 3).
+Reference: docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md (Phase 3).
 """
 
 from __future__ import annotations

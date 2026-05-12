@@ -30,7 +30,7 @@ shared one root cause:
    `.cognitive-os/reports/research/` as the canonical storage for research
    reports. The path was documented but never enforced — and `.cognitive-os/`
    is gitignored. Research agents wrote there, then duplicated to
-   `docs/reports/` to make the artifact visible in PRs. Result:
+   `docs/06-Daily/reports/` to make the artifact visible in PRs. Result:
    `/decision-triage` cross-referenced both copies and inflated the criticals
    count from 8 to 33.
 
@@ -292,10 +292,10 @@ hard rule + Pattern C automation.
 The ADR is verified by the following commands:
 
 ```bash
-test -f docs/adrs/ADR-070-convention-enforcement-mechanism.md
-wc -l docs/adrs/ADR-070-convention-enforcement-mechanism.md
-grep -c "^## " docs/adrs/ADR-070-convention-enforcement-mechanism.md
-grep -c "^|" docs/adrs/ADR-070-convention-enforcement-mechanism.md
+test -f docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md
+wc -l docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md
+grep -c "^## " docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md
+grep -c "^|" docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md
 ```
 
 Acceptance:

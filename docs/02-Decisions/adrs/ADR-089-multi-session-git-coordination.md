@@ -115,7 +115,7 @@ Two sessions were active simultaneously:
 Four distinct failure modes were produced:
 
 **1. Commit scope inflation.**
-Session A ran `git mv docs/adrs/ADR-076a-*.md docs/adrs/ADR-076a-redirect-stub.md`
+Session A ran `git mv docs/02-Decisions/adrs/ADR-076a-*.md docs/02-Decisions/adrs/ADR-076a-redirect-stub.md`
 to rename a single file, then staged the rename. Between `git mv` and
 `git commit -m "..."`, Session B ran `git add` on its own files. Both sessions'
 work was staged in the shared index. Session A's commit `a4ab471` (intended as a
@@ -211,7 +211,7 @@ are not running concurrent sessions.
   "session": "1777570193-92907-51ec9a30",
   "pid": 12345,
   "acquired_at": "2026-04-30T17:30:00Z",
-  "operation": "git commit --only -- docs/adrs/ADR-089-multi-session-git-coordination.md"
+  "operation": "git commit --only -- docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md"
 }
 ```
 
@@ -246,7 +246,7 @@ does not permanently block the working session.
 
 ### Layer 3 — Session-aware ADR slot reservation (medium value, low risk)
 
-**Problem**: ADR numbers are assigned by inspecting `ls docs/adrs/`, incrementing
+**Problem**: ADR numbers are assigned by inspecting `ls docs/02-Decisions/adrs/`, incrementing
 the maximum found, and writing a file. Under concurrent sessions this is a
 read-modify-write race with no atomicity guarantee. Two sessions can observe the
 same maximum, both increment to the same next slot, and both write different ADRs
@@ -256,7 +256,7 @@ to the same number.
 
 1. A new script `scripts/reserve_adr_slot.py` is the single entry point for ADR
    number assignment.
-2. The script acquires the git-index lock (Layer 2) before reading `docs/adrs/`.
+2. The script acquires the git-index lock (Layer 2) before reading `docs/02-Decisions/adrs/`.
 3. It computes `next_slot = max(existing numbers) + 1`.
 4. It creates a reservation placeholder at
    `.cognitive-os/runtime/reserved-adrs/ADR-NNN-<session-id>` (a directory, so
@@ -271,7 +271,7 @@ are runtime state, not version-controlled artifacts.
 
 **Convention update**: Any agent or operator drafting an ADR MUST call
 `scripts/reserve_adr_slot.py` to obtain the slot number. Manually choosing a
-slot by looking at `ls docs/adrs/` is prohibited in concurrent-session
+slot by looking at `ls docs/02-Decisions/adrs/` is prohibited in concurrent-session
 environments.
 
 ---
@@ -431,7 +431,7 @@ Trade-offs against the cooperative lock approach:
 | Integration with Claude Code | Transparent; harness cwd is unchanged | Requires harness to accept a per-session cwd or worktree path |
 | Merge complexity | No merge required; all sessions commit to the same branch | Session branches must be merged; merge conflicts are possible if sessions touch the same files |
 | Stale worktree cleanup | Not applicable | New housekeeping requirement: worktrees must be removed after sessions end |
-| ADR slot collisions | Requires Layer 3 (reservation) | Collisions still possible if both sessions write to the same `docs/adrs/` path; worktrees share the committed tree, only the index differs |
+| ADR slot collisions | Requires Layer 3 (reservation) | Collisions still possible if both sessions write to the same `docs/02-Decisions/adrs/` path; worktrees share the committed tree, only the index differs |
 
 Worktrees are the stronger isolation mechanism and the right long-term direction
 if concurrent sessions become frequent and complex. The cooperative lock is the

@@ -96,10 +96,10 @@ families:
 2. The same CLI can emit Markdown and SARIF.
 3. Reports include at least skills, hooks, rules, scripts, docs, and workflows.
 4. The scanner consumes existing COS outputs when present:
-   - `docs/reports/primitive-row-audit-latest.json`
-   - `docs/reports/claim-proof-latest.json`
-   - `docs/reports/reduction-backlog-latest.json`
-   - `docs/reports/primitive-usage-map-latest.json`
+   - `docs/06-Daily/reports/primitive-row-audit-latest.json`
+   - `docs/06-Daily/reports/claim-proof-latest.json`
+   - `docs/06-Daily/reports/reduction-backlog-latest.json`
+   - `docs/06-Daily/reports/primitive-usage-map-latest.json`
 5. Tests prove behavior with a synthetic repo, not only file existence.
 6. The weekly primitive gap workflow can run the spike in report-only mode.
 

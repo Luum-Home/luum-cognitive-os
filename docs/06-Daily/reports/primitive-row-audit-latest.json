@@ -5927,7 +5927,7 @@
       "family": "metrics",
       "name": "primitive-gap-history.jsonl",
       "next_action": "keep; assign retention if missing",
-      "path": "docs/reports/primitive-gap-history.jsonl",
+      "path": "docs/06-Daily/reports/primitive-gap-history.jsonl",
       "severity": "low",
       "status": "proven"
     }

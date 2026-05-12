@@ -19,7 +19,7 @@ func TestLoadSnapshotReadsOperatorArtifacts(t *testing.T) {
 	writeFile(t, root, ".cognitive-os/cosd/intents/one.json", "{}\n")
 	writeFile(t, root, ".cognitive-os/cosd/intents/two.json", "{}\n")
 	writeFile(t, root, ".cognitive-os/cosd/results/one.json", "{}\n")
-	writeFile(t, root, "docs/reports/primitive-harness-coverage-latest.json", `{
+	writeFile(t, root, "docs/06-Daily/reports/primitive-harness-coverage-latest.json", `{
   "summary": {
     "total_primitives": 12,
     "gaps": 3,

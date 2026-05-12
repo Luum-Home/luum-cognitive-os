@@ -12,7 +12,7 @@ Usage:
     mgr = AgentPermissionManager()
     grant = mgr.grant("agent-123", "fix docs", paths=["docs/*.md"],
                        tools=["Read", "Edit"], level=PermissionLevel.WRITE)
-    allowed = mgr.check("agent-123", "write", "docs/README.md")
+    allowed = mgr.check("agent-123", "write", "docs/00-MOCs/entrypoints/README.md")
     mgr.revoke("agent-123")
 
 Python 3.9+ compatible. Author: luum.

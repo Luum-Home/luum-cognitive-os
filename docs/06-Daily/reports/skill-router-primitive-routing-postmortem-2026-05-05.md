@@ -57,7 +57,7 @@ The repo has multiple profile vocabularies:
 
 | Vocabulary | Location | Meaning |
 |---|---|---|
-| `lean / standard / strict` | `docs/adoption-tiers.md` | User-facing adoption tiers by project/team risk. |
+| `lean / standard / strict` | `docs/08-References/root/adoption-tiers.md` | User-facing adoption tiers by project/team risk. |
 | `default / full` | `cognitive-os.yaml` and `manifests/primitive-projection-profiles.yaml` | Consumer-project projection modes after ADR-093 simplified install profiles. |
 | `core / team / maintainer / lab` | `scripts/cos_adoption_profile.py` | Lifecycle-manifest distribution tiers for active primitive surfaces. |
 
@@ -93,7 +93,7 @@ The advisory hook `hooks/skill-md-routing-validator.sh` warns on SKILL.md writes
 
 ### ADR alignment
 
-Updated `docs/adrs/ADR-174-auto-derived-primitive-routing.md` so its numbers, tests, and acceptance criteria match the actual local implementation:
+Updated `docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md` so its numbers, tests, and acceptance criteria match the actual local implementation:
 
 - 185 unique skills on disk;
 - 82 routeable primary skills;
@@ -167,7 +167,7 @@ For each backlog skill:
 
 ## Acceptance Criteria for This Post-Mortem
 
-- `docs/reports/skill-router-primitive-routing-postmortem-2026-05-05.md` exists and is linked from `docs/README.md`.
+- `docs/06-Daily/reports/skill-router-primitive-routing-postmortem-2026-05-05.md` exists and is linked from `docs/00-MOCs/entrypoints/README.md`.
 - `manifests/skill-routing-coverage.yaml` records the baseline and explicit exceptions outside pytest.
 - `tests/contracts/test_skill_router_coverage.py` passes.
 - `tests/contracts/test_skill_router_invariant.py` passes.

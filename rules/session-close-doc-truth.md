@@ -20,7 +20,7 @@ terminate in ONE of two outcomes before the session closes:**
    a claim in `manifests/documentation-truth-claims.yaml` so the same
    class of contradiction cannot silently return.
 2. **Explicit debt entry** — add the contradiction to the pending/remaining
-   ledger (`docs/reports/pending-truth-latest.json` via a `follow-up` or
+   ledger (`docs/06-Daily/reports/pending-truth-latest.json` via a `follow-up` or
    `audit-finding` item) with `next_action` describing the fix path.
 
 **A discovered contradiction cannot remain as a human comment, slack
@@ -56,7 +56,7 @@ Doc is stale.       Real debt.
                      │
 1. Fix the prose.    ▼
 2. ADD a claim to    Add a `follow-up` or `audit-finding`
-   manifests/         item to docs/reports/pending-truth-
+   manifests/         item to docs/06-Daily/reports/pending-truth-
    documentation-     latest.json with concrete next_action.
    truth-claims.yaml
    - required_phrases

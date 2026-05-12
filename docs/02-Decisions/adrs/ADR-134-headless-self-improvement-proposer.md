@@ -129,7 +129,7 @@ The output must show `mode: propose_only`, `human_approval_required: true`, and
 ## Cross-references
 
 - `.cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md`
-- `docs/architecture/headless-self-improvement-proposer.md`
+- `docs/04-Concepts/architecture/headless-self-improvement-proposer.md`
 - `lib/self_improvement_loop.py`
 - `scripts/cos_self_improvement_loop.py`
 - `scripts/cos-self-improvement-loop`

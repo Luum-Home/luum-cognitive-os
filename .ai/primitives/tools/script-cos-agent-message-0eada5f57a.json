@@ -56,7 +56,7 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/architecture/agent-message-bus.md",
+        "docs/04-Concepts/architecture/agent-message-bus.md",
         "scripts/cos-agent-message"
       ],
       "runtime_projection": false
@@ -152,7 +152,7 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/architecture/agent-message-bus.md",
+        "docs/04-Concepts/architecture/agent-message-bus.md",
         "scripts/cos-agent-message"
       ],
       "runtime_projection": false
@@ -160,7 +160,7 @@
   },
   "portable_id": "script-cos-agent-message",
   "projection_targets": [
-    "docs/architecture/agent-message-bus.md",
+    "docs/04-Concepts/architecture/agent-message-bus.md",
     "scripts/cos-agent-message"
   ],
   "schema_version": "portable-ai-primitive.v1",

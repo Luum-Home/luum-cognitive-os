@@ -134,8 +134,8 @@ footprint so downstream work inherits the same model.
 
 ## References
 
-- `docs/architecture/bootstrap-portability.md`
-- `docs/architecture/cross-runtime-portability.md`
-- `docs/architecture/cross-tool-landscape.md`
-- `docs/architecture/adrs/008-multi-tool-support.md`
-- `docs/architecture/adrs/021-vendor-agnostic-with-adapters.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- `docs/04-Concepts/architecture/cross-runtime-portability.md`
+- `docs/04-Concepts/architecture/cross-tool-landscape.md`
+- `docs/04-Concepts/architecture/adrs/008-multi-tool-support.md`
+- `docs/04-Concepts/architecture/adrs/021-vendor-agnostic-with-adapters.md`

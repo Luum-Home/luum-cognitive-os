@@ -45,7 +45,7 @@ The plan header (lines 1-19) already contains a Sonnet+Opus reconciliation that 
 | 159 | Failures are safe: block, repair, preserve evidence (Phase 4) | ADR-245 readonly chaos guard + ADR-246 freeze + ADR-117 stash reversibility | VERIFIED-PENDING | Scenario suite not consolidated into a single proof. |
 | 176 | Lean/Core install path has low-friction proof (Phase 5) | Header explicitly says no single-command proof shipped | VERIFIED-PENDING | |
 | 177 | Strict/Maintainer path proves concurrency safety (Phase 5) | Same; no consolidated proof | VERIFIED-PENDING | |
-| 178 | Product claims match implementation evidence (Phase 5) | `docs/runbooks/public-launch-day.md`, `verify-public-release`, TRANSPARENCY.md — all present | VERIFIED-PENDING | Header notes this is the one Phase 5 item closable; could be promoted to DONE but acceptance text is broad enough to remain open until 169/170 land. |
+| 178 | Product claims match implementation evidence (Phase 5) | `docs/05-Methodology/runbooks/public-launch-day.md`, `verify-public-release`, TRANSPARENCY.md — all present | VERIFIED-PENDING | Header notes this is the one Phase 5 item closable; could be promoted to DONE but acceptance text is broad enough to remain open until 169/170 land. |
 
 Recommendation: leave open; do not auto-tick.
 
@@ -58,7 +58,7 @@ Plan header (lines 1-23) provides Sonnet (5/17 closed) and Opus (12-13/17 closed
 | Line | Acceptance text (Phase) | Code evidence | Class | Note |
 |-----:|---|---|---|---|
 | 83 | Queue worker is default push path for agents (Phase 2) | `hooks/branch-ownership-lock.sh` + protected-publication + ADR-246 `lib/release_freeze.py` enforce serialized landing | VERIFIED-DONE | Per Opus refinement; consistent with code. |
-| 84 | Direct-main bypass requires explicit env and records metrics (Phase 2) | `docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md` + `hooks/direct-main-guard.sh` (uses cos-bypass) | VERIFIED-DONE | |
+| 84 | Direct-main bypass requires explicit env and records metrics (Phase 2) | `docs/02-Decisions/adrs/ADR-241-consolidated-cos-bypass-allowlist.md` + `hooks/direct-main-guard.sh` (uses cos-bypass) | VERIFIED-DONE | |
 | 85 | Tests cover head drift, worker lock contention, auto-rebase, rollback (Phase 2) | ADR-245 chaos guard + ADR-246 freeze chaos; `tests/integration/test_stash_lock.py` etc. | AMBIGUOUS | Coverage exists but no single mapping shows all four named scenarios. Leave open. |
 | 113 | File/domain claim ledger covers registry, projections, ADRs, hooks, tests (Phase 3) | Two ledgers still coexist (`lib/task_claim_ledger.py` and `scripts/cos_task_claims.py` — see plan #6 §Phase 2 body); coverage incomplete | VERIFIED-PENDING | Header explicitly lists this as residual. |
 | 114 | Stash provenance blocks ambiguous reapply/cleanup (Phase 3) | ADR-117 stash-mutation reversibility (named stashes, apply-by-name, `stash-ops.jsonl`); however `lib/stash_ops.py` listed as "In flight" in ADR-117 body | AMBIGUOUS | Pattern + hook landed; canonical library still in flight. |
@@ -129,9 +129,9 @@ Plan header (lines 5-23) provides Sonnet+Opus reconciliation.
 | 203 | Phase 1 unattended safe-mode / kill-switch proof | `scripts/so-emergency-stop.sh` exists; no consolidated proof artifact | VERIFIED-PENDING | |
 | 204 | Phase 1 protected-publication proof | `hooks/direct-main-guard.sh` + `hooks/branch-ownership-lock.sh` + ADR-246 freeze | VERIFIED-PENDING | Substrate exists but a single named "protected-publication proof" run is not present. Header notes implicit coverage by ADR-246 but no proof artifact. |
 | 205 | Phase 1 VM-restart idempotency proof | No artifact found | VERIFIED-PENDING | |
-| 206 | Phase 2 queue/worker contract documented | `docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md` exists (research); a "contract" doc does not | VERIFIED-PENDING | Research ≠ contract per plan distinction (line 207 is checked for research; 206 separately tracks contract). |
+| 206 | Phase 2 queue/worker contract documented | `docs/04-Concepts/architecture/cloud-worker-runtime-tooling-research-2026-05.md` exists (research); a "contract" doc does not | VERIFIED-PENDING | Research ≠ contract per plan distinction (line 207 is checked for research; 206 separately tracks contract). |
 | 208 | Phase 2 worker lease tests implemented | No `test_worker_lease*` found | VERIFIED-PENDING | |
-| 209 | Phase 3 container contract documented | `docs/runbooks/run-cos-in-docker.md` exists | AMBIGUOUS / could be DONE | Header calls it "partial container contract"; could be ticked if a runbook is accepted as a contract. Conservative: keep open. |
+| 209 | Phase 3 container contract documented | `docs/05-Methodology/runbooks/run-cos-in-docker.md` exists | AMBIGUOUS / could be DONE | Header calls it "partial container contract"; could be ticked if a runbook is accepted as a contract. Conservative: keep open. |
 | 210 | Phase 3 no-host-path proof | `scripts/cos-cloud-worker-bootstrap.sh` exists; no proof test enforcing no host paths | VERIFIED-PENDING | |
 | 211 | Phase 4 Kubernetes manifests drafted | Phase 4 explicitly DEFER/REJECT per ADR-132 External Tool Adoption Doctrine (plan header line 13) | OBSOLETE | Acceptance item should be retired or moved to a doctrine-deferred annex. |
 | 212 | Phase 4 local cluster smoke test | Same — DEFER per doctrine | OBSOLETE | |
@@ -155,7 +155,7 @@ Recommendation: split Phases 4-5 acceptance into a "Doctrine-deferred" annex (pe
 
 4. **Five plans have zero open checkboxes.** `adr-118-121-123-slices.md`, `concurrent-agent-safety-testbed-plan.md`, `cos-instance-installer-implementation-plan.md`, `integrity-and-de-theater-sprint.md`, `multi-ide-swarm-testbed-plan.md` — all classified PARTIAL by body content but with no unmarked-done items. Their PARTIAL classification reflects in-flight scope, not paperwork lag.
 
-5. **Stash-ops library asymmetry.** `docs/adrs/ADR-117-stash-mutation-reversibility.md` cites `lib/stash_ops.py` as in-flight, but no such file exists; the hook-level pattern is shipped through `hooks/post-agent-snapshot-restore.sh` etc. and tests cover it. This is the single largest disagreement between "ADR claims" and "code on disk" found in this batch.
+5. **Stash-ops library asymmetry.** `docs/02-Decisions/adrs/ADR-117-stash-mutation-reversibility.md` cites `lib/stash_ops.py` as in-flight, but no such file exists; the hook-level pattern is shipped through `hooks/post-agent-snapshot-restore.sh` etc. and tests cover it. This is the single largest disagreement between "ADR claims" and "code on disk" found in this batch.
 
 ## Recommendations
 

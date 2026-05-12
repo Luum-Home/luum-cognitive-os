@@ -135,7 +135,7 @@ or running the installer.
 
 | Hook | Matcher | Purpose |
 |---|---|---|
-| `hooks/lethal-trifecta-gate.sh` | `*` | Blocks the dangerous combination of sensitive data + external communication (see `docs/security/lethal-trifecta-gate.md`) |
+| `hooks/lethal-trifecta-gate.sh` | `*` | Blocks the dangerous combination of sensitive data + external communication (see `docs/09-Quality/security/lethal-trifecta-gate.md`) |
 | `hooks/rate-limiter.sh` | `Bash\|Agent\|Edit\|Write` | Token-bucket rate control |
 | `hooks/destructive-git-blocker.sh` | `Bash` | Blocks dangerous git operations (force-reset, force-push to main) |
 | `hooks/symlink-mutation-guard.sh` | `Bash` | Guards against accidental symlink mutations |
@@ -666,15 +666,15 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 
 ## Related documents
 
-- `docs/adrs/ADR-105-claim-verification-contract.md` — bilateral claim gate
-- `docs/adrs/ADR-116-multi-session-coordination-primitives.md` — all 12 coordination primitives
-- `docs/adrs/ADR-119-session-filesystem-reaper.md` — archive-first session cleanup
-- `docs/adrs/ADR-121-foundation-hardening-program.md` — 6 invariants
-- `docs/adrs/ADR-122-preflight-gate-refinements.md` — false-positive reduction + kill-switch
-- `docs/adrs/ADR-123-operational-stability-friction-reduction.md` — guard maturity, adaptive profiles
-- `docs/hook-security-profiles.md` — profile design rationale
-- `docs/getting-started.md` — first-time install guide
-- `docs/architecture/cross-harness-authoring.md` — multi-harness model
+- `docs/02-Decisions/adrs/ADR-105-claim-verification-contract.md` — bilateral claim gate
+- `docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md` — all 12 coordination primitives
+- `docs/02-Decisions/adrs/ADR-119-session-filesystem-reaper.md` — archive-first session cleanup
+- `docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md` — 6 invariants
+- `docs/02-Decisions/adrs/ADR-122-preflight-gate-refinements.md` — false-positive reduction + kill-switch
+- `docs/02-Decisions/adrs/ADR-123-operational-stability-friction-reduction.md` — guard maturity, adaptive profiles
+- `docs/09-Quality/root/hook-security-profiles.md` — profile design rationale
+- `docs/00-MOCs/entrypoints/getting-started.md` — first-time install guide
+- `docs/04-Concepts/architecture/cross-harness-authoring.md` — multi-harness model
 
 ---
 

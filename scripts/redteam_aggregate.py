@@ -48,13 +48,13 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--output-json",
-        default="docs/reports/redteam-baseline.json",
-        help="Output JSON path (default: docs/reports/redteam-baseline.json)",
+        default="docs/06-Daily/reports/redteam-baseline.json",
+        help="Output JSON path (default: docs/06-Daily/reports/redteam-baseline.json)",
     )
     p.add_argument(
         "--output-md",
-        default="docs/reports/redteam-baseline.md",
-        help="Output Markdown path (default: docs/reports/redteam-baseline.md)",
+        default="docs/06-Daily/reports/redteam-baseline.md",
+        help="Output Markdown path (default: docs/06-Daily/reports/redteam-baseline.md)",
     )
     p.add_argument(
         "--baseline-compare",

@@ -34,6 +34,6 @@ def test_hook_fast_skips_unrelated_bash(tmp_path: Path) -> None:
 
 
 def test_hook_fast_runs_before_report_publish_write(tmp_path: Path) -> None:
-    proc = run_hook({"tool_name": "Write", "tool_input": {"file_path": "docs/reports/example.md"}}, tmp_path)
+    proc = run_hook({"tool_name": "Write", "tool_input": {"file_path": "docs/06-Daily/reports/example.md"}}, tmp_path)
 
     assert proc.returncode == 0

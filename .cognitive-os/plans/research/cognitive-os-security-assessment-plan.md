@@ -7,7 +7,7 @@ agents, using both defender and malicious-operator perspectives.
 
 The first executable primitive for this plan is `/security-red-team`, implemented
 by `scripts/security-red-team` and documented in
-`docs/security/security-red-team.md`. It produces the local deterministic
+`docs/09-Quality/security/security-red-team.md`. It produces the local deterministic
 inventory/threat/probe/score/backlog report that seeds the deeper phases below.
 
 ## Phase 1 — Local attack-surface inventory
@@ -23,7 +23,7 @@ Inventory all agentic primitives and runtime tools:
 - provider dispatch code in `lib/`;
 - bootstrap/startup paths, dotenv loaders, and env flags.
 
-Deliverable: `docs/security/cognitive-os-attack-surface-inventory.md`.
+Deliverable: `docs/09-Quality/security/cognitive-os-attack-surface-inventory.md`.
 
 ## Phase 2 — Red-team scenarios
 
@@ -48,7 +48,7 @@ Attack classes to test:
 10. Denial of service: huge outputs, recursive hooks, runaway agents, expensive
     provider loops, and container/service startup storms.
 
-Deliverable: `docs/security/cognitive-os-red-team-scenarios.md` plus pytest
+Deliverable: `docs/09-Quality/security/cognitive-os-red-team-scenarios.md` plus pytest
 fixtures where scenarios are automatable.
 
 ## Phase 3 — Control mapping
@@ -65,7 +65,7 @@ Map every risk to existing controls:
 - test opt-in flags;
 - direct-main/destructive-git/concurrent-write bypasses.
 
-Deliverable: `docs/security/cognitive-os-control-matrix.md`.
+Deliverable: `docs/09-Quality/security/cognitive-os-control-matrix.md`.
 
 ## Phase 4 — Automated adversarial test suite
 
@@ -99,7 +99,7 @@ source types:
   MCP risks, package-manager supply chain, and AI coding-agent sandbox escapes;
 - posts/issues discussing `.env` leakage, shell tools, and agentic IDE hardening.
 
-Deliverable: `docs/security/cognitive-os-agent-security-research-2026-05.md`
+Deliverable: `docs/09-Quality/security/cognitive-os-agent-security-research-2026-05.md`
 with citations and an actionable backlog.
 
 ## Phase 6 — Reliability and trust scoring

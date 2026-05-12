@@ -15,7 +15,7 @@ source "$(dirname "$0")/_lib/common.sh" 2>/dev/null || true
 type check_disabled_env >/dev/null 2>&1 && check_disabled_env "pending-truth-verify-weekly"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
-LEDGER="$PROJECT_DIR/docs/reports/pending-truth-latest.json"
+LEDGER="$PROJECT_DIR/docs/06-Daily/reports/pending-truth-latest.json"
 VERIFIER="$PROJECT_DIR/scripts/cos-pending-truth-verify"
 
 [ -f "$LEDGER" ] || exit 0

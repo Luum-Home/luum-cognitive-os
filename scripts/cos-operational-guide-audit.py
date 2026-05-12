@@ -2,7 +2,7 @@
 # SCOPE: both
 """ADR-274 — Audit ADRs for §Operational Guide section presence.
 
-Scans docs/adrs/ADR-*.md, identifies ADRs subject to the §Operational Guide
+Scans docs/02-Decisions/adrs/ADR-*.md, identifies ADRs subject to the §Operational Guide
 contract (maintainer-tier accepted capability ADRs), and reports
 compliance + prioritized backfill list.
 
@@ -24,9 +24,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-ADR_GLOB = "docs/adrs/ADR-*.md"
-REPORT_JSON = "docs/reports/operational-guide-audit-latest.json"
-REPORT_MD = "docs/reports/operational-guide-audit-latest.md"
+ADR_GLOB = "docs/02-Decisions/adrs/ADR-*.md"
+REPORT_JSON = "docs/06-Daily/reports/operational-guide-audit-latest.json"
+REPORT_MD = "docs/06-Daily/reports/operational-guide-audit-latest.md"
 
 # Section header detection (allow Operational Guide variants)
 OPERATIONAL_GUIDE_RE = re.compile(r"^##\s*Operational\s+Guide\b", re.IGNORECASE | re.MULTILINE)
@@ -208,7 +208,7 @@ def render_md(payload: dict[str, Any]) -> str:
         f"# Operational Guide Audit — {payload['generated_at']}",
         "",
         f"> Per ADR-274. Schema: `{payload['schema_version']}`.",
-        "> Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence",
+        "> Audits all `docs/02-Decisions/adrs/ADR-*.md` for §Operational Guide section presence",
         "> on maintainer-tier accepted capability ADRs.",
         "",
         "## How to read this doc (operational guide for this audit)",

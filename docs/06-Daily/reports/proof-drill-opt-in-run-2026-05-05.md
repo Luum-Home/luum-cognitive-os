@@ -124,7 +124,7 @@ scripts/cos-queue-drain --project-dir /tmp/cos-claude-provider.6NbDJQ --json
 # result=COS_CLAUDE_PROVIDER_SMOKE_OK, total_cost_usd=0.1497275
 ```
 
-Evidence was recorded in `docs/reports/proof-drill-evidence-latest.json` under
+Evidence was recorded in `docs/06-Daily/reports/proof-drill-evidence-latest.json` under
 `claude-provider-host-smoke`; ACC now maps this evidence to the durable claim
 `proof_claim:host-claude-provider-adapter` through
 `manifests/proof-drill-claim-map.yaml`.
@@ -154,7 +154,7 @@ Artifact captured for that run:
 ```
 
 The generated machine-readable row lives in
-`docs/reports/proof-drill-evidence-latest.json` and is consumed by ACC together
+`docs/06-Daily/reports/proof-drill-evidence-latest.json` and is consumed by ACC together
 with `manifests/proof-drill-claim-map.yaml`.
 
 ## What this proves

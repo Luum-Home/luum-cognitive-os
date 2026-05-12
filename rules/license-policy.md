@@ -44,7 +44,7 @@ Antes de integrar CUALQUIER herramienta open-source, verificar su licencia.
 2. **Dependencias transitivas tambien cuentan**: si A (MIT) depende de B (AGPL), B contamina
 3. **Dual licensing**: si una herramienta ofrece Community (AGPL) + Commercial, evaluar costo de licencia comercial
 4. **Ante la duda**: NO integrar. Buscar alternativa con licencia permisiva.
-5. **Documentar**: toda decision de licencia en `docs/research/license-analysis.md`
+5. **Documentar**: toda decision de licencia en `docs/03-PoCs/research/license-analysis.md`
 
 ## Excepciones
 

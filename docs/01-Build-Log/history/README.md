@@ -1,4 +1,4 @@
-# `docs/history/` — Pre-Sanitization Transparency Trail
+# `docs/01-Build-Log/history/` — Pre-Sanitization Transparency Trail
 
 This directory captures the auditable evidence that surrounds the one-time
 git history sanitization scheduled for 2026-05-07 per

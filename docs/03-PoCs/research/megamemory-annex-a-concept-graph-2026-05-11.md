@@ -1,7 +1,7 @@
 ---
 title: "MegaMemory Annex A — Concept Graph & Relation Model"
 date: 2026-05-11
-parent: docs/research/megamemory-comparison-2026-05-11.md
+parent: docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
 source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 ---
 
@@ -169,7 +169,7 @@ Plus `judgment_status` lifecycle (`pending` / `approved` / `rejected`), which Me
 
 ### Engram concept-kind analogue
 
-Engram uses free-form `type` strings (`bugfix`, `decision`, `architecture`, `discovery`, `pattern`, `config`, `preference`) plus a planned MIRIX-style `memory_class` overlay (semantic / episodic / procedural / working, per `docs/reports/cross-check-A-memory-2026-05-08.md` §🔍12).
+Engram uses free-form `type` strings (`bugfix`, `decision`, `architecture`, `discovery`, `pattern`, `config`, `preference`) plus a planned MIRIX-style `memory_class` overlay (semantic / episodic / procedural / working, per `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §🔍12).
 
 ---
 

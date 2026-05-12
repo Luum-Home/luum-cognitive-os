@@ -6,7 +6,7 @@ classification: HOLD
 license: Apache-2.0
 source_artifacts:
   - .cognitive-os/reports/repo-scout/TaskingAI_TaskingAI.md
-  - docs/reports/external-tools-radar-taskingai-addendum-2026-05-09.md
+  - docs/06-Daily/reports/external-tools-radar-taskingai-addendum-2026-05-09.md
 ---
 
 # TaskingAI/TaskingAI Deep Analysis — 2026-05-09

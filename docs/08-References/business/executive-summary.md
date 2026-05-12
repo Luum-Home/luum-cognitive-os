@@ -40,8 +40,8 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 > Status legend: **REAL** = production-ready and hook-enforced. **DORMANT** = code
 > exists but feature-flagged off / opt-in. **ASPIRATIONAL** = scaffolded, loop
 > not yet closed. Full reconciliation in
-> [`docs/legal/h1-feature-status-audit.md`](../legal/h1-feature-status-audit.md)
-> and [`docs/business/features.md`](features.md).
+> [`docs/09-Quality/legal/h1-feature-status-audit.md`](../legal/h1-feature-status-audit.md)
+> and [`docs/08-References/business/features.md`](features.md).
 
 | # | Feature | Status | What It Does |
 |---|---------|--------|--------------|

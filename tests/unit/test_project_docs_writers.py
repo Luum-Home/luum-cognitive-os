@@ -325,7 +325,7 @@ def test_adr_reservation_guard_allows_active_reserved_adr(tmp_path):
                         "session_id": "s1",
                         "owner": "test",
                         "expires_at": "2999-01-01T00:00:00+00:00",
-                        "path": "docs/adrs/ADR-001-reserved.md",
+                        "path": "docs/02-Decisions/adrs/ADR-001-reserved.md",
                     }
                 ]
             }

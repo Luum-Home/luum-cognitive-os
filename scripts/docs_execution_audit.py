@@ -30,7 +30,7 @@ GENERATED_STATE_PREFIXES = (
     ".cognitive-os/coordination/",
 )
 GENERATED_STATE_FILES = {".cognitive-os/work-queue.json"}
-DOC_SOURCE_EXCLUDED_PREFIXES = ("docs/reports/", "docs/archive/")
+DOC_SOURCE_EXCLUDED_PREFIXES = ("docs/06-Daily/reports/", "docs/99-Archive/archive/")
 
 STOPWORDS = {"this", "that", "with", "from", "into", "docs", "documentation", "cognitive", "agent", "agents", "should", "could", "would", "will", "have", "has", "the", "and", "for", "status", "report", "latest"}
 
@@ -222,8 +222,8 @@ def write_markdown(rows: list[DocsExecutionRow], path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Audit documentation execution state against repo evidence")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--json-out", default="docs/reports/docs-execution-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/docs-execution-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/docs-execution-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/docs-execution-latest.md")
     parser.add_argument("--fail-claimed-done-no-proof", action="store_true")
     parser.add_argument("--fail-hard-gaps", action="store_true", help="Exit non-zero for stale, contradicted, or claimed-done-without-proof rows.")
     args = parser.parse_args()

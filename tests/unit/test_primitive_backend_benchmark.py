@@ -104,14 +104,14 @@ def test_main_writes_json_and_markdown_reports(tmp_path: Path) -> None:
             "--project-dir",
             str(project),
             "--json-out",
-            "docs/reports/bench.json",
+            "docs/06-Daily/reports/bench.json",
             "--markdown-out",
-            "docs/reports/bench.md",
+            "docs/06-Daily/reports/bench.md",
         ]
     )
 
     assert exit_code == 0
-    data = json.loads((project / "docs/reports/bench.json").read_text(encoding="utf-8"))
+    data = json.loads((project / "docs/06-Daily/reports/bench.json").read_text(encoding="utf-8"))
     assert {candidate["name"] for candidate in data["candidates"]} == {
         "qartez",
         "jcodemunch",
@@ -119,6 +119,6 @@ def test_main_writes_json_and_markdown_reports(tmp_path: Path) -> None:
         "codegraphcontext",
     }
     assert data["token_baseline"]["repo_text_bytes"] > 0
-    markdown = (project / "docs/reports/bench.md").read_text(encoding="utf-8")
+    markdown = (project / "docs/06-Daily/reports/bench.md").read_text(encoding="utf-8")
     assert "Primitive Coverage Backend Benchmark" in markdown
     assert "CodeGraphContext" in markdown or "codegraphcontext" in markdown

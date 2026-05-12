@@ -30,7 +30,7 @@ FAMILIES = {"hooks", "skills", "rules", "scripts", "templates"}
 HOOK_EVENTS = {"SessionStart", "UserPromptSubmit", "SubagentStart", "PreCompact", "PreToolUse", "PostToolUse", "Stop", "TeammateIdle", "TaskCreated", "TaskCompleted"}
 SCRIPT_SUFFIXES = {"", ".py", ".sh", ".js", ".mjs", ".txt"}
 IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules", ".git"}
-IGNORE_PREFIXES = ("docs/reports/", ".claude/plugins/", "dashboard/.next/")
+IGNORE_PREFIXES = ("docs/06-Daily/reports/", ".claude/plugins/", "dashboard/.next/")
 DEFAULT_HARNESSES = ("claude", "codex", "shell-ci")
 DEFAULT_SURFACES = ("claude", "codex", "shell-ci", "cos-cli", "acc-report", "dashboard", "tui")
 STRUCTURAL_HARNESSES = {"cursor", "vscode-copilot", "opencode", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"}
@@ -50,7 +50,7 @@ CLI_COMMANDS = {
 }
 REPORT_SURFACES = {
     "acc-report": {
-        "evidence": ["scripts/acc_pipeline.py", "docs/acc/latest.json", "docs/reports/primitive-harness-coverage-latest.json"],
+        "evidence": ["scripts/acc_pipeline.py", "docs/07-Capabilities/acc/latest.json", "docs/06-Daily/reports/primitive-harness-coverage-latest.json"],
     },
 }
 UI_SURFACES = {
@@ -579,8 +579,8 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build primitive harness/IDE implementation coverage report")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--json-out", default="docs/reports/primitive-harness-coverage-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-harness-coverage-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-harness-coverage-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-harness-coverage-latest.md")
     parser.add_argument("--print-json", action="store_true")
     parser.add_argument("--fail-gaps", action="store_true", help="Exit non-zero if any gap is detected")
     args = parser.parse_args()

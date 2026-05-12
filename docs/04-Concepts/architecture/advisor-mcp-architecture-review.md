@@ -52,7 +52,7 @@ standard connection between AI applications and external systems.
 Sources:
 
 - [Claude Code MCP documentation](https://code.claude.com/docs/en/mcp)
-- [Model Context Protocol overview](https://modelcontextprotocol.io/docs/getting-started/intro)
+- [Model Context Protocol overview](https://modelcontextprotocol.io/docs/05-Methodology/getting-started/intro)
 - [MCP tools specification](https://modelcontextprotocol.io/specification/draft/server/tools)
 
 Implication for this repo:

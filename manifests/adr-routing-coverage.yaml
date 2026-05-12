@@ -8,7 +8,7 @@ purpose: >
 
 baseline:
   captured_on: '2026-05-05'
-  adrs_dir: docs/adrs
+  adrs_dir: docs/02-Decisions/adrs
   total_non_tombstone: 180
   with_tags: 43
   coverage_percent: 23.9

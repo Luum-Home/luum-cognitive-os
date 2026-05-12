@@ -10,11 +10,11 @@
 //     they can be addressed before they degrade developer trust.
 //
 // Phase 4 implements three of the six pattern types defined in
-// docs/architecture/cos-dispatch/interfaces.md (RepeatedFailure,
+// docs/04-Concepts/architecture/cos-dispatch/interfaces.md (RepeatedFailure,
 // PerfRegression, ErrorCluster). The remaining three (FalsePositive,
 // MissingCoverage, SequenceCorrelation) are reserved for Phase 5.
 //
-// Schema: docs/architecture/cos-dispatch/schema.sql
+// Schema: docs/04-Concepts/architecture/cos-dispatch/schema.sql
 package pattern
 
 import "time"

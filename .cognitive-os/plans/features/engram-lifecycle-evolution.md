@@ -2,8 +2,8 @@
 
 **Status**: Phases 1, 2, 3 SHIPPED 2026-04-27. Phase 4 manual Obsidian export implemented 2026-05-05; no automatic Stop hook is registered. See "Honest Limitations" in the ADR before assuming behaviour.
 **Date**: 2026-04-27 (created), 2026-04-27 (Phases 1–3 implemented)
-**ADR**: [`docs/adrs/ADR-071-engram-lifecycle-evolution.md`](../../docs/adrs/ADR-071-engram-lifecycle-evolution.md)
-**Research**: [`docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md`](../../docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md)
+**ADR**: [`docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md`](../../docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md)
+**Research**: [`docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md`](../../docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md)
 
 ---
 
@@ -104,7 +104,7 @@ def adjusted_score(base_score: float, confidence: float, retention: float, alpha
 - [x] No stub implementations (no `pass`, no `raise NotImplementedError`)
 - [x] `lib/engram_lifecycle.py` uses snake\_case filename (per `rules/python-naming.md`)
 - [x] `hooks/engram-reinforce-on-access.sh` uses kebab-case filename (per `rules/bash-naming.md`)
-- [x] ADR-071 Verification commands pass (see `docs/adrs/ADR-071-engram-lifecycle-evolution.md`)
+- [x] ADR-071 Verification commands pass (see `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md`)
 - [x] **reinforce() works in production** (caveat from Phase 1 commit d48dcb8 corrected — HTTP API at port 7437 discovered and wired in, 2026-04-27)
 
 ### Phase 1 Correction — 2026-04-27
@@ -209,7 +209,7 @@ A read-only export layer that renders engram observations as Obsidian Markdown w
 | `lib/engram_obsidian_exporter.py` | Lifecycle-aware exporter from Engram observations + typed relations to Obsidian Markdown |
 | `scripts/export-engram-to-obsidian.sh` | Manual wrapper; dry-run by default; `--vault` required; `--write` required for mutation |
 | `tests/unit/test_engram_obsidian_exporter.py` | Unit coverage for dry-run, write, lifecycle frontmatter, relation wikilinks, rejected-relation skip, since filter, and manifest idempotence |
-| `docs/manual-tests/engram-obsidian-export.md` | Human proof path before enabling any automation |
+| `docs/09-Quality/manual-tests/engram-obsidian-export.md` | Human proof path before enabling any automation |
 
 ### Definition of Done — Phase 4 manual slice
 

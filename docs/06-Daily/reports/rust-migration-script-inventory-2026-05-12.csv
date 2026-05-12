@@ -129,12 +129,12 @@ cmd/cos/internal/wizard/wizard.go,go,CLI,305,Go command package for user/operato
 cmd/cos/internal/wizard/wizard_test.go,go,CLI,355,Go command package for user/operator CLI; Rust candidate if CLI becomes single portable binary
 cmd/cos/main.go,go,CLI,15,Go command package for user/operator CLI; Rust candidate if CLI becomes single portable binary
 docker/cos-worker/entrypoint.sh,bash,legacy,64,environment/ops wrapper; keep shell unless promoted
-docs/archive/hooks/completeness-check.sh,bash,legacy,16,documentation-embedded helper; not runtime candidate
-docs/archive/hooks/post-agent-verify.sh,bash,legacy,171,documentation-embedded helper; not runtime candidate
-docs/archive/hooks/prompt-quality.sh,bash,legacy,18,documentation-embedded helper; not runtime candidate
-docs/runbooks/adr-273-slice-c-staging/pending-truth-drift-detector.sh,bash,legacy,80,documentation-embedded helper; not runtime candidate
-docs/runbooks/adr-273-slice-c-staging/pending-truth-staleness-gate.sh,bash,legacy,57,documentation-embedded helper; not runtime candidate
-docs/runbooks/adr-273-slice-c-staging/pending-truth-verify-weekly.sh,bash,legacy,73,documentation-embedded helper; not runtime candidate
+docs/99-Archive/archive/hooks/completeness-check.sh,bash,legacy,16,documentation-embedded helper; not runtime candidate
+docs/99-Archive/archive/hooks/post-agent-verify.sh,bash,legacy,171,documentation-embedded helper; not runtime candidate
+docs/99-Archive/archive/hooks/prompt-quality.sh,bash,legacy,18,documentation-embedded helper; not runtime candidate
+docs/05-Methodology/runbooks/adr-273-slice-c-staging/pending-truth-drift-detector.sh,bash,legacy,80,documentation-embedded helper; not runtime candidate
+docs/05-Methodology/runbooks/adr-273-slice-c-staging/pending-truth-staleness-gate.sh,bash,legacy,57,documentation-embedded helper; not runtime candidate
+docs/05-Methodology/runbooks/adr-273-slice-c-staging/pending-truth-verify-weekly.sh,bash,legacy,73,documentation-embedded helper; not runtime candidate
 hooks/_lib/agent-context.sh,bash,core_runtime,15,"Claude/Codex lifecycle hook boundary; keep shell contract, port reusable logic below it"
 hooks/_lib/artifact-status.sh,bash,core_runtime,32,"Claude/Codex lifecycle hook boundary; keep shell contract, port reusable logic below it"
 hooks/_lib/bypass-resolver.sh,bash,core_runtime,88,"Claude/Codex lifecycle hook boundary; keep shell contract, port reusable logic below it"

@@ -115,7 +115,7 @@ Target: 100% pass, all adapters.
 - [ ] Malformed-input test present
 - [ ] ADR-033 referenced in the commit message
 
-Questions? Start from ADR-033 (`docs/adrs/ADR-033-harness-agnostic-event-capture.md`) and the Claude Code reference implementation (`claude_code.py`).
+Questions? Start from ADR-033 (`docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md`) and the Claude Code reference implementation (`claude_code.py`).
 
 ## Live streaming (ADR-034)
 

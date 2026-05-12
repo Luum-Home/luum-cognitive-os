@@ -1,14 +1,14 @@
 ---
 report_type: external-tools-radar
 date: 2026-05-08
-prior_edition: docs/reports/external-tools-radar-2026-05-06.md
+prior_edition: docs/06-Daily/reports/external-tools-radar-2026-05-06.md
 new_axis: bidirectional-implementation-cross-check
 source_audits:
-  - docs/reports/cross-check-A-memory-2026-05-08.md
-  - docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md
-  - docs/reports/cross-check-C-orchestration-2026-05-08.md
-  - docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md
-  - docs/reports/cross-check-E-observability-debt-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-B-sandbox-mcp-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-C-orchestration-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-D-codegen-skills-tui-2026-05-08.md
+  - docs/06-Daily/reports/cross-check-E-observability-debt-2026-05-08.md
 related_adrs: [ADR-065, ADR-058, ADR-187, ADR-192, ADR-227, ADR-231, ADR-232, ADR-236, ADR-251, ADR-253]
 budget_used_tool_calls: ~80
 ---

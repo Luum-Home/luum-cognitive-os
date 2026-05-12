@@ -204,7 +204,7 @@ When adding a new security tool to the Cognitive OS:
 6. **Document in ecosystem-tools.md**: Add entry to `packages/ecosystem-tools/rules/ecosystem-tools.md`
 7. **Write behavior tests**: Add test cases to `tests/behavior/test_security_documentation.py`
 8. **Update summary counts**: Update the counts in the Security Posture Summary table at the top of this document
-9. **Update safety-mesh.md**: If the tool is a hook in the pre/post pipeline, add it to `docs/safety-mesh.md`
+9. **Update safety-mesh.md**: If the tool is a hook in the pre/post pipeline, add it to `docs/04-Concepts/root/safety-mesh.md`
 10. **Run pentest verification**: Execute `/pentest-self` to verify no regressions
 
 ## Installation Guide for Optional Tools
@@ -256,7 +256,7 @@ go install github.com/garagon/mcp-aguara@latest
 
 | Document | What It Covers |
 |----------|---------------|
-| `docs/safety-mesh.md` | Detailed hook behavior for the 12-layer pre/post pipeline mesh |
+| `docs/04-Concepts/root/safety-mesh.md` | Detailed hook behavior for the 12-layer pre/post pipeline mesh |
 | `.cognitive-os/plans/research/security-tools-landscape.md` | Full evaluation of 50+ security tools |
 | `packages/ecosystem-tools/rules/ecosystem-tools.md` | Integration patterns for external tools |
 | `packages/aguara-security/rules/aguara-integration.md` | Aguara scanner configuration and behavior |

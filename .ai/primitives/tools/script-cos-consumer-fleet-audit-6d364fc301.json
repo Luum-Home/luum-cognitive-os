@@ -59,7 +59,7 @@
         "scripts/cos-consumer-fleet-audit",
         "scripts/cos_consumer_fleet_audit.py",
         "lib/consumer_fleet_audit.py",
-        "docs/architecture/consumer-fleet-audit.md"
+        "docs/04-Concepts/architecture/consumer-fleet-audit.md"
       ],
       "runtime_projection": false
     }
@@ -157,7 +157,7 @@
         "scripts/cos-consumer-fleet-audit",
         "scripts/cos_consumer_fleet_audit.py",
         "lib/consumer_fleet_audit.py",
-        "docs/architecture/consumer-fleet-audit.md"
+        "docs/04-Concepts/architecture/consumer-fleet-audit.md"
       ],
       "runtime_projection": false
     }
@@ -167,7 +167,7 @@
     "scripts/cos-consumer-fleet-audit",
     "scripts/cos_consumer_fleet_audit.py",
     "lib/consumer_fleet_audit.py",
-    "docs/architecture/consumer-fleet-audit.md"
+    "docs/04-Concepts/architecture/consumer-fleet-audit.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-consumer-fleet-audit",

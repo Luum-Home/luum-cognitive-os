@@ -8,9 +8,9 @@ must not run in normal unit/audit/contract lanes.
 Purpose: prove the repo declares the service boundary before implementing it.
 
 ```bash
-test -f docs/architecture/service-control-plane-research-2026-05-04.md
-test -f docs/architecture/service-control-plane-implementation-plan.md
-test -f docs/manual-tests/service-control-plane-proof-drills.md
+test -f docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md
+test -f docs/04-Concepts/architecture/service-control-plane-implementation-plan.md
+test -f docs/09-Quality/manual-tests/service-control-plane-proof-drills.md
 ```
 
 Expected result: all files exist and describe current-vs-future claims without

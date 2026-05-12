@@ -26,8 +26,8 @@ Run:
 
 ```bash
 python3 scripts/docs_execution_audit.py \
-  --json-out docs/reports/docs-execution-latest.json \
-  --md-out docs/reports/docs-execution-latest.md
+  --json-out docs/06-Daily/reports/docs-execution-latest.json \
+  --md-out docs/06-Daily/reports/docs-execution-latest.md
 ```
 
 Use this when asking what remains across all documentation, what is stale, or what is marked done without enough proof.

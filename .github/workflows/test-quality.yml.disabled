@@ -87,6 +87,6 @@ jobs:
             echo ""
             echo "Mutation testing failed. Tests for changed files do not kill enough mutants."
             echo "This means the tests are likely structural (checking file existence) rather than behavioral."
-            echo "See docs/testing/mutation-testing.md for guidance."
+            echo "See docs/09-Quality/testing/mutation-testing.md for guidance."
             exit 1
           fi

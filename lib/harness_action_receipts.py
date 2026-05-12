@@ -502,7 +502,7 @@ def build_parser() -> argparse.ArgumentParser:
     report = sub.add_parser("report", help="Write a Markdown receipt summary report")
     report.add_argument("--project-dir")
     report.add_argument("--metrics-path")
-    report.add_argument("--output", default="docs/reports/vcs-action-receipts-latest.md")
+    report.add_argument("--output", default="docs/06-Daily/reports/vcs-action-receipts-latest.md")
     report.add_argument("--json", action="store_true")
     return parser
 

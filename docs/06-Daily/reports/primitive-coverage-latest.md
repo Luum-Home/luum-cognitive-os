@@ -29,397 +29,397 @@ Actionable gaps: 0
 | `config:manifests/reduction-demotions.json` | 55 | dormant |  | missing_wired, missing_documented, runtime_not_seen |
 | `doc:AGENTS.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `doc:README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/HOW-TO-USE-COS.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/INDEX.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/SESSION-HANDOFF-2026-04-17.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/SESSION-HANDOFF-2026-04-25.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/SESSION-HANDOFF-2026-04-27.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/SESSION-HANDOFF-2026-05-01.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-006-agpl-license-compliance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-007-cognitive-os-rebrand.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-008-multi-tool-support.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-009-package-architecture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-010-hook-architecture-v2.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-012-prompt-driven-governance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-013-security-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-014-sdd-fast-path.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-015-rules-to-hooks-migration.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-016-context-diet.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-017-stabilization-freeze.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-018-docker-to-pip-migration.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-019-scope-tagging.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-020-contamination-fix.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-022-prompt-type-hooks-adoption.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-023-updated-input-pattern.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-024-task-panel-bridge.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-025-install-update-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-026-r2-r3-design-review.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-026a-decisions.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-027.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-027a.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-028.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-028a.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-028b.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-028c.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-029.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-029b-reinvention-phase-b-semantic.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-030.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-031.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-032-orchestrator-trap-preview.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-033-harness-agnostic-event-capture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-033b-duration-correlation-and-aider-hardening.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-034-harness-agnostic-live-streaming.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-035-worktree-cwd-enforcement.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-036-sprint-orchestration-primitives.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-037-self-knowledge-base.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-038-preamble-v2-industry-aligned.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-039-reinvention-phase-b-beta.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-040-query-tailored-context-injection.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-041.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-042-valkey-local-daemon.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-044-context-payload-slimming.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-045-postgres-local-daemon.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-047-session-lifecycle-management.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-048-docker-container-image-freshness.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-050-per-skill-routing-policy.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-051-qwen-agent-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-052-provider-benchmark-harness.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-053-dispatch-auto-optimizer.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-054-project-docs-convention.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-055-docs-convention-enforcement.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-055b-destructive-git-block.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-056-adaptive-agent-dispatch.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-059-so-existential-validation.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-060-local-only-optional-services.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-061-focus-narrative-and-external-evidence.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-062-multi-provider-agent-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-063-agent-tool-replication-strategy.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-064-harness-agnostic-cognitive-os.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-065-radar-update-curation-pipeline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-066-polyglot-language-boundaries.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-067-frontmatter-defense-in-depth.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-068-adaptive-test-runner-capacity.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-069-research-first-protocol.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-070-convention-enforcement-mechanism.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-071-engram-lifecycle-evolution.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-072-test-lane-taxonomy.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-073-test-architecture-role-registry.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-074-tier-0-learning-loop-closure.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-075-stage2-selective-expansion.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-076-skill-frontmatter-alignment.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-077-peer-card-local-model.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-078-mid-task-memory-tool.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-079-corerules-applies-to-self-hosting.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-080-hermes-cross-harness-adoption.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-081-codex-harness-adapter.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-082-plan-location-convention.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-083-governed-self-improvement-loop.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-084-headless-clustered-runtime-shape.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-086-hook-execution-observability.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/adrs/ADR-087-adr-namespace-consolidation.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-088-provenance-trailer-ppid-chain.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-089-multi-session-git-coordination.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-090-auto-skill-repair.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-091-headless-clustered-runtime-direction.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-092-harness-skills-sync-path.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-093-simplify-profiles.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-094-agent-git-safety.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adrs/ADR-095-skill-synthesis-success-patterns.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-096-review-agent-pattern.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-097-documentation-execution-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-097-task-tracker-lifecycle.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-098-multi-agent-file-coordination.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-100-resource-governed-test-execution.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/adrs/ADR-101-intent-aware-rate-limiter.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/adw-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/agent-efficiency-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/agent-quality.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/agent-teams-testing.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/agent-teams.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/anti-hallucination.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture-principles.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/FROZEN-BACKLOG.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/LESSONS-LEARNED.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/POST-MORTEM-2026-04.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/adrs/006-agpl-license-compliance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/007-cognitive-os-rebrand.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/008-multi-tool-support.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/009-package-architecture.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/010-hook-architecture-v2.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/011-dual-gateway-bifrost-litellm.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/012-prompt-driven-governance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/013-security-stack.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/014-sdd-fast-path.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/015-rules-to-hooks-migration.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/016-context-diet.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/017-stabilization-freeze.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/018-docker-to-pip-migration.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/019-scope-tagging.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/020-contamination-fix.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/021-vendor-agnostic-with-adapters.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/022-prompt-type-hooks-adoption.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/023-updated-input-pattern.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/024-task-panel-bridge.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/025-install-update-loop.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/026-r2-r3-design-review.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/026a-decisions.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/027-headless-clustered-runtime-direction.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/adrs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/behavioral-test-contracts.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/bootstrap-portability.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/capability-centric-runtime-enforcement.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/core-vs-extensions-audit-2026-04-20.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adr-detection.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-001-reuse-klaudiush-predicates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-002-transformer-separate-interface.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-003-sqlite-over-jsonl.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-004-generated-artifacts-disabled.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-005-typed-provider-adapters.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-006-override-result-type.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-007-eager-failure-sequences.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-008-review-subcommand.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-009-go-only-auto-generation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-010-real-behavior-tests.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/CD-011-phase-5-sub-phase-ordering.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/adrs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/config.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/interfaces.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/migration.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cos-dispatch/phase-5.0-notes.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/cos-dispatch/phase-5.3-notes.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/cos-dispatch/phase-5.4-notes.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/cos-dispatch/test-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cos-vs-project-overlap-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cross-harness-authoring.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/cross-platform-ci.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/cross-runtime-portability.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/cross-tool-landscape.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/documentation-execution-audit.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/driver-specific-script-surfaces.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/f1-cleanup.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/functional-audit/scorecard-hooks.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/scorecard-install-scripts.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/scorecard-packages-squads-agents.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/functional-audit/scorecard-rules.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/scorecard-skills.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/sprint-2a-orphan-fate.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/sprint-5-observability.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/functional-audit/startup-baseline-2026-04-20.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/functional-audit/ux2-hook-hygiene.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/functional-audit/ux6-idempotent-update.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/diagnosis.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/scripts-audit.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/architecture/harness-adoption-gap/ux1-install-usability.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
-| `doc:docs/architecture/harness-driver-parity.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/harness-transparency-status.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/infrastructure-service-catalog.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/memory-lifecycle.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/observability-backend-evaluation-2026-04-24.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/parser-coverage-audit-2026-04-24.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/path-portability-and-privacy.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/plans-reconciliation-2026-04-21.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/architecture/primitive-coverage-spike-plan-2026-04.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/primitive-coverage-tooling-research-2026-04.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/project-consumption-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/rate-limiter-flow-control.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/reality-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/runtime-hardcoding-discipline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/skills-rules-canonicalization-risk-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/skills-rules-portability-gap.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/tac-course-reference.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/tooling-stack-rationalization.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/validation-nervous-system.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/architecture/why-skills-and-rules-became-claude-centered.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archive/plans/dead-weight-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archive/plans/docs-hook-rule-candidates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archive/plans/docs-rescan-results.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archive/plans/intelligent-context-compaction.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archive/plans/self-optimizing-pipeline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archive/plans/status-report-april-11.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archived/benchmark-results.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/archived/cleanup-verification.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/auto-library.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/auto-repair-system.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/automation-doc-sync.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/automation.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/benchmarking.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/blocked-tools.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/bmad-v6-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/case-study.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/competitive-reassessment-openclaw-hermes-2026-04.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/conversation-reality-audit-2026-04-30.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/developer-confidence.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/durable-product-master-plan.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/execution-discipline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/executive-summary.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/feature-reality-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/features.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/kubernetes-for-agents.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/master-plan-checklist.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/master-plan-execution-requirements.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/open-source-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/openclaw-implementation-roadmap.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/openclaw-remaining-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/portability-plan.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/business/product-messaging.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/roadmap.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/business/value-proposition.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/capability-snapshot.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/competitive-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/competitive-arena.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/competitive-landscape.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/complexity-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/component-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/component-sources.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/configurable-quality-gates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/cos-package-manager.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/dashboard-architecture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/definition-of-done.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/design-philosophy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/distributed-architecture.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/dogfooding.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/ecosystem-comparison.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/engram-namespaces.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/execution-backends.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/faq.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/fault-tolerance.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/gateway-architecture.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/getting-started-quick.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/getting-started.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/global-vs-project-config.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/gpu-sandbox.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/guides/adding-a-harness-adapter.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/guides/queue-classes-routing.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
-| `doc:docs/health-monitoring.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/hook-security-profiles.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/hooks.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/how-to-extend.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/ide-compatibility.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/identity-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/implementation-phases.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/incidents/2026-05-01-session-multi-spawn-hang.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/infra-intent.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/integrations/cursor-cloud-agents.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/kernel-contract.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/launch-strategy.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/leverage-points.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/manual-tests/codex-host-tooling-verification.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/manual-tests/durable-product-verification.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/manual-tests/first-run-onboarding.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/manual-tests/five-minute-demo.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/manual-tests/local-connected-systems-validation.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/manual-tests/lote-2-mcp-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/manual-tests/proof-paths.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/measurements/cos-adr-namespace-audit-2026-04-30.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/measurements/cos-duplication-audit-2026-04-30.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/measurements/hook-timing-runbook.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/measurements/sessionstart-baseline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/measurements/snapshot-chaos-runbook.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/measurements/stage2-expansion-baseline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/migration-from/from-hermes.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/migration-from/from-vanilla-claude-code.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/model-evolution-resilience.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/multi-model-factory.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/onboarding-wizard-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/open-source-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/openclaw-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/organizational-model.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/os-vs-project-separation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/overview.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/package-manager-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/patterns-adopted.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/patterns/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/patterns/cognitive-os-changes.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/patterns/component-classification.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/patterns/cross-harness-authoring.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/patterns/dogfooding.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/patterns/ecosystem-tools.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/patterns/library-selection.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/patterns/os-vs-project.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/patterns/plan-first.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/performance.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/persistence-map.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/phase-system.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/piter-framework.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/plan-system.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/plug-and-play.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/product-principles.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/product-zones.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/prompt-driven-governance.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/prompt-templates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/quickstart.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/recommended-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/release/roadmap-v1.0-full-e2e.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/release/v1.0-release-criteria.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/research-log.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/research/archon-evaluation.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/research/claude-code-router-evaluation-2026-04-21.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
-| `doc:docs/research/engram-mcp-sharing-feasibility-2026-04-20.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/research/minimal-context-principle.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/research/wisc-framework-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/roadmap.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/rules-consolidation-plan.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/rules-loading-architecture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/rules.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/runbooks/llm-dispatch.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/runbooks/so-incident-runbook.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/safety-mesh.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/sandbox-sampling.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/secret-detection.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/security-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/self-building-protocol.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/self-improvement-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/self-repair-guide.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/self-usage-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/session-concurrency.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/setup/dependencies.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/singularity.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/skills.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/state-snapshots.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/stress-test-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/testing-cognitive-os-suite.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/testing-cognitive-os.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/testing.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/testing/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/testing/mutation-testing.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/testing/suite-signal-triage-2026-04-29.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/testing/test-runner-roles.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/tool-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/tooling-update-protocol.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `doc:docs/trust-model.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/trust-score.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/ui-platforms-evaluation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/upstream-blockers.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/usage/cos-status.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `doc:docs/usage/skill-authoring.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/ux-principles.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/versioning-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/vs-alternatives.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/zero-touch-engineering.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/HOW-TO-USE-COS.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/INDEX.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/01-Build-Log/SESSION-HANDOFF-2026-04-17.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/01-Build-Log/SESSION-HANDOFF-2026-04-27.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/01-Build-Log/SESSION-HANDOFF-2026-05-01.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-006-agpl-license-compliance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-007-cognitive-os-rebrand.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-008-multi-tool-support.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-009-package-architecture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-010-hook-architecture-v2.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-011-dual-gateway-bifrost-litellm.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-012-prompt-driven-governance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-013-security-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-014-sdd-fast-path.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-016-context-diet.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-018-docker-to-pip-migration.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-019-scope-tagging.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-020-contamination-fix.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-022-prompt-type-hooks-adoption.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-023-updated-input-pattern.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-024-task-panel-bridge.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-025-install-update-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-026-r2-r3-design-review.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-026a-decisions.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-027.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-027a.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-028.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-028a.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-028b.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-028c.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-029.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-030.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-031.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-033b-duration-correlation-and-aider-hardening.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-035-worktree-cwd-enforcement.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-036-sprint-orchestration-primitives.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-037-self-knowledge-base.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-039-reinvention-phase-b-beta.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-040-query-tailored-context-injection.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-041.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-042-valkey-local-daemon.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-045-postgres-local-daemon.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-047-session-lifecycle-management.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-048-docker-container-image-freshness.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-052-provider-benchmark-harness.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-053-dispatch-auto-optimizer.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-054-project-docs-convention.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-055-docs-convention-enforcement.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-059-so-existential-validation.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-060-local-only-optional-services.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-061-focus-narrative-and-external-evidence.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-062-multi-provider-agent-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-063-agent-tool-replication-strategy.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-066-polyglot-language-boundaries.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-068-adaptive-test-runner-capacity.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-069-research-first-protocol.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-070-convention-enforcement-mechanism.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-072-test-lane-taxonomy.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-073-test-architecture-role-registry.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-075-stage2-selective-expansion.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-077-peer-card-local-model.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-078-mid-task-memory-tool.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-079-corerules-applies-to-self-hosting.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-082-plan-location-convention.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-083-governed-self-improvement-loop.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-084-headless-clustered-runtime-shape.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-086-hook-execution-observability.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-088-provenance-trailer-ppid-chain.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-089-multi-session-git-coordination.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-090-auto-skill-repair.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-093-simplify-profiles.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-094-agent-git-safety.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-096-review-agent-pattern.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-097-documentation-execution-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-100-resource-governed-test-execution.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/02-Decisions/adrs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/root/adw-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/07-Capabilities/root/agent-efficiency-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/07-Capabilities/root/agent-quality.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/07-Capabilities/root/agent-teams-testing.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/07-Capabilities/root/agent-teams.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/anti-hallucination.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture-principles.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/FROZEN-BACKLOG.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/LESSONS-LEARNED.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/POST-MORTEM-2026-04.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/006-agpl-license-compliance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/007-cognitive-os-rebrand.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/008-multi-tool-support.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/009-package-architecture.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/010-hook-architecture-v2.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/011-dual-gateway-bifrost-litellm.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/012-prompt-driven-governance.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/013-security-stack.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/014-sdd-fast-path.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/015-rules-to-hooks-migration.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/016-context-diet.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/017-stabilization-freeze.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/018-docker-to-pip-migration.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/019-scope-tagging.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/020-contamination-fix.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/021-vendor-agnostic-with-adapters.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/022-prompt-type-hooks-adoption.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/023-updated-input-pattern.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/024-task-panel-bridge.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/025-install-update-loop.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/026-r2-r3-design-review.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/026a-decisions.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/027-headless-clustered-runtime-direction.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/adrs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/behavioral-test-contracts.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/bootstrap-portability.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/capability-centric-runtime-enforcement.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adr-detection.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-001-reuse-klaudiush-predicates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-002-transformer-separate-interface.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-003-sqlite-over-jsonl.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-004-generated-artifacts-disabled.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-005-typed-provider-adapters.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-006-override-result-type.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-007-eager-failure-sequences.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-008-review-subcommand.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-009-go-only-auto-generation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-010-real-behavior-tests.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/CD-011-phase-5-sub-phase-ordering.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/adrs/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/config.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/interfaces.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/migration.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/phase-5.0-notes.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/phase-5.3-notes.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/phase-5.4-notes.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/cos-dispatch/test-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cos-vs-project-overlap-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cross-harness-authoring.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cross-platform-ci.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/cross-runtime-portability.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/cross-tool-landscape.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/documentation-execution-audit.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/driver-specific-script-surfaces.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/f1-cleanup.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/scorecard-install-scripts.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/functional-audit/scorecard-rules.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/scorecard-skills.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/sprint-2a-orphan-fate.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/sprint-5-observability.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/functional-audit/startup-baseline-2026-04-20.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/functional-audit/ux2-hook-hygiene.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/functional-audit/ux6-idempotent-update.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/diagnosis.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-C-updaters.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-adoption-gap/ux1-install-usability.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/architecture/harness-driver-parity.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/harness-transparency-status.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/infrastructure-service-catalog.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/memory-lifecycle.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/path-portability-and-privacy.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/primitive-coverage-spike-plan-2026-04.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/primitive-coverage-tooling-research-2026-04.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/project-consumption-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/rate-limiter-flow-control.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/reality-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/runtime-hardcoding-discipline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/skills-rules-canonicalization-risk-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/skills-rules-portability-gap.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/tac-course-reference.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/tooling-stack-rationalization.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/validation-nervous-system.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/architecture/why-skills-and-rules-became-claude-centered.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archive/plans/dead-weight-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archive/plans/docs-hook-rule-candidates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archive/plans/docs-rescan-results.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archive/plans/intelligent-context-compaction.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archive/plans/self-optimizing-pipeline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archive/plans/status-report-april-11.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archived/benchmark-results.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/99-Archive/archived/cleanup-verification.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/auto-library.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/auto-repair-system.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/automation-doc-sync.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/05-Methodology/root/automation.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/root/benchmarking.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/blocked-tools.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/root/bmad-v6-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/case-study.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/conversation-reality-audit-2026-04-30.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/developer-confidence.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/durable-product-master-plan.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/execution-discipline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/executive-summary.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/feature-reality-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/features.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/kubernetes-for-agents.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/master-plan-checklist.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/master-plan-execution-requirements.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/open-source-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/openclaw-implementation-roadmap.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/openclaw-remaining-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/portability-plan.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/business/product-messaging.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/roadmap.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/business/value-proposition.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/07-Capabilities/root/capability-snapshot.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/08-References/root/competitive-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/root/competitive-arena.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/08-References/root/competitive-landscape.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/06-Daily/root/complexity-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/root/component-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/component-sources.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/configurable-quality-gates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/07-Capabilities/root/cos-package-manager.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/dashboard-architecture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/definition-of-done.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/design-philosophy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/distributed-architecture.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/dogfooding.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/ecosystem-comparison.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/engram-namespaces.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/execution-backends.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/faq.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/fault-tolerance.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/gateway-architecture.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/getting-started-quick.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/getting-started.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/global-vs-project-config.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/gpu-sandbox.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/05-Methodology/guides/adding-a-harness-adapter.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/guides/queue-classes-routing.md` | 25 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen, no_static_consumers |
+| `doc:docs/04-Concepts/root/health-monitoring.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/09-Quality/root/hook-security-profiles.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/root/hooks.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/root/how-to-extend.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/ide-compatibility.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/identity-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/01-Build-Log/root/implementation-phases.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/incidents/2026-05-01-session-multi-spawn-hang.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/infra-intent.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/integrations/cursor-cloud-agents.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/kernel-contract.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/01-Build-Log/root/launch-strategy.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/leverage-points.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/manual-tests/codex-host-tooling-verification.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/manual-tests/durable-product-verification.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/09-Quality/manual-tests/first-run-onboarding.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/09-Quality/manual-tests/five-minute-demo.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/manual-tests/local-connected-systems-validation.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/09-Quality/manual-tests/lote-2-mcp-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/manual-tests/proof-paths.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/06-Daily/measurements/cos-adr-namespace-audit-2026-04-30.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/measurements/cos-duplication-audit-2026-04-30.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/measurements/hook-timing-runbook.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/measurements/sessionstart-baseline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/measurements/snapshot-chaos-runbook.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/06-Daily/measurements/stage2-expansion-baseline.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/migration-from/from-hermes.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/migration-from/from-vanilla-claude-code.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/model-evolution-resilience.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/multi-model-factory.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/onboarding-wizard-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/root/open-source-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/root/openclaw-patterns.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/organizational-model.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/os-vs-project-separation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/overview.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/package-manager-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/root/patterns-adopted.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/cognitive-os-changes.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/component-classification.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/cross-harness-authoring.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/dogfooding.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/ecosystem-tools.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/library-selection.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/os-vs-project.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/patterns/plan-first.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/performance.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/persistence-map.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/phase-system.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/root/piter-framework.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/plan-system.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/plug-and-play.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/product-principles.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/product-zones.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/root/prompt-driven-governance.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/prompt-templates.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/00-MOCs/entrypoints/quickstart.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/08-References/root/recommended-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/01-Build-Log/release/v1.0-release-criteria.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/03-PoCs/root/research-log.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/03-PoCs/research/archon-evaluation.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/03-PoCs/research/claude-code-router-evaluation-2026-04-21.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
+| `doc:docs/03-PoCs/research/engram-mcp-sharing-feasibility-2026-04-20.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/03-PoCs/research/minimal-context-principle.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/03-PoCs/research/wisc-framework-analysis.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/01-Build-Log/root/roadmap.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/root/rules-consolidation-plan.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/rules-loading-architecture.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/rules.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/runbooks/llm-dispatch.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/runbooks/so-incident-runbook.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/safety-mesh.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/sandbox-sampling.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/09-Quality/root/secret-detection.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/security-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/self-building-protocol.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/self-improvement-loop.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/self-repair-guide.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/06-Daily/root/self-usage-audit.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/session-concurrency.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/setup/dependencies.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/singularity.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/root/skills.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/state-snapshots.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/root/stress-test-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/root/testing-cognitive-os-suite.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/root/testing-cognitive-os.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/root/testing.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/09-Quality/testing/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/09-Quality/testing/mutation-testing.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/testing/suite-signal-triage-2026-04-29.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/09-Quality/testing/test-runner-roles.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/tool-stack.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/root/tooling-update-protocol.md` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
+| `doc:docs/04-Concepts/root/trust-model.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/trust-score.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/04-Concepts/root/ui-platforms-evaluation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/root/upstream-blockers.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/05-Methodology/usage/cos-status.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `doc:docs/05-Methodology/usage/skill-authoring.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/ux-principles.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/01-Build-Log/root/versioning-strategy.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/08-References/root/vs-alternatives.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
+| `doc:docs/04-Concepts/root/zero-touch-engineering.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
 | `hook:hooks/_lib/cache.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/_lib/circuit-breaker.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/_lib/common.sh` | 65 | partial |  | missing_wired, runtime_not_seen |

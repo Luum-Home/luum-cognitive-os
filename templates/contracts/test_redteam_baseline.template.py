@@ -15,7 +15,7 @@ parameterize:
   - Number of expected scenarios (default: 6)
   - ADR-105 verbs that must appear (default: 5 core verbs)
   - Scenarios directory (default: tests/red_team/scenarios/)
-  - Output directory for reports (default: docs/reports/redteam/)
+  - Output directory for reports (default: docs/06-Daily/reports/redteam/)
 
 CONTRACT
 --------

@@ -117,7 +117,7 @@ Changes:
 
 ---
 
-### C5 — `docs/runbooks/llm-dispatch.md`
+### C5 — `docs/05-Methodology/runbooks/llm-dispatch.md`
 
 **Scope**: User-facing operational guide.
 
@@ -130,7 +130,7 @@ Changes:
 
 **Commit**: `docs(runbook): llm-dispatch operational guide`
 
-**Files**: `docs/runbooks/llm-dispatch.md`
+**Files**: `docs/05-Methodology/runbooks/llm-dispatch.md`
 
 ---
 
@@ -143,10 +143,10 @@ Changes:
   - New `--providers` flag documented
   - "Future Extensibility" section explicit about C6 ADRs
 - Create stubs:
-  - `docs/adrs/ADR-050-per-skill-routing.md` — policy engine consuming skill `routing:` frontmatter
-  - `docs/adrs/ADR-051-qwen-agent-loop.md` — tool-use parity (Phase 1 MVP delivered by parallel agent)
-  - `docs/adrs/ADR-052-provider-benchmark-harness.md` — ensemble, A/B, quality comparison
-  - `docs/adrs/ADR-053-dispatch-auto-optimizer.md` — consumes metrics JSONL to re-tune routing
+  - `docs/02-Decisions/adrs/ADR-050-per-skill-routing.md` — policy engine consuming skill `routing:` frontmatter
+  - `docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md` — tool-use parity (Phase 1 MVP delivered by parallel agent)
+  - `docs/02-Decisions/adrs/ADR-052-provider-benchmark-harness.md` — ensemble, A/B, quality comparison
+  - `docs/02-Decisions/adrs/ADR-053-dispatch-auto-optimizer.md` — consumes metrics JSONL to re-tune routing
 
 **Commit**: `docs(adrs): update ADR-049 + ADR-050/051/052/053 future-work stubs`
 
@@ -159,7 +159,7 @@ Changes:
 Delivered by opus agent `a12fd30538d960ddc` launched 2026-04-21 18:xx:
 - `lib/qwen_agent_loop.py` — agent loop with tool calling
 - `tests/unit/test_qwen_agent_loop.py` — 9 tests, mocked
-- `docs/adrs/ADR-051-qwen-agent-loop.md` — full ADR (not stub)
+- `docs/02-Decisions/adrs/ADR-051-qwen-agent-loop.md` — full ADR (not stub)
 
 **Commit** (when agent returns): `feat(adr-051): Qwen agent loop MVP (tool-use phase 1)`
 

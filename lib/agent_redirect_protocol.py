@@ -20,7 +20,7 @@ of the protocol. `<prompt>` is POSIX-shell-quoted via shlex.quote() to
 preserve newlines and special characters (backticks, $, !, etc).
 
 See also:
-  - docs/adrs/ADR-056-adaptive-agent-dispatch.md (Agent A owns)
+  - docs/02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md (Agent A owns)
   - hooks/agent-quota-redirect.sh (consumer of build_redirect_message)
   - scripts/orchestrator.py (target of SUGGESTED_COMMAND)
 """

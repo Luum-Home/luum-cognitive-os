@@ -30,7 +30,7 @@ def test_blocks_provider_coauthor_trailer_even_without_email() -> None:
 def test_allows_verified_github_noreply_identity() -> None:
     text = "Author: MatiasNAmendola <2144218+MatiasNAmendola@users.noreply.github.com>\n"
 
-    assert scan_text(text, path="docs/legal/pre-public-readiness-checklist.md", policy=_policy()) == []
+    assert scan_text(text, path="docs/09-Quality/legal/pre-public-readiness-checklist.md", policy=_policy()) == []
 
 
 def test_allows_test_fixtures_by_path() -> None:

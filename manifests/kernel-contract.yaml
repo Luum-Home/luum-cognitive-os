@@ -62,4 +62,4 @@ verification:
     - tests/unit/test_execution_profile.py
     - tests/unit/test_compatibility_layer.py
     - tests/unit/test_outcome_metrics.py
-  manual_guide: docs/manual-tests/durable-product-verification.md
+  manual_guide: docs/09-Quality/manual-tests/durable-product-verification.md

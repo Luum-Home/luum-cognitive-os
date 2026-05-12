@@ -12,7 +12,7 @@
     "source": "unified_exec_startup",
     "stdout": "",
     "stderr": "",
-    "aggregated_output": " M docs/adrs/ADR-081-codex-harness-adapter.md\n"
+    "aggregated_output": " M docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md\n"
   },
   "capture": {
     "source": "sanitized ~/.codex/sessions live Codex Desktop session row",

@@ -24,7 +24,7 @@ claim_kinds:
     example: "ADR-171"
   path:
     blocks_duplicate_subject: true
-    example: "docs/adrs/ADR-171-reject-integration.md"
+    example: "docs/02-Decisions/adrs/ADR-171-reject-integration.md"
   policy:
     blocks_duplicate_subject: true
     example: "integration-disposition"

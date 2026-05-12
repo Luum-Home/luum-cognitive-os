@@ -84,8 +84,8 @@ STALE_MODEL_NAMING_PATTERNS = [
 ]
 PRODUCT_FACING_DOCS = [
     "README.md",
-    "docs/README.md",
-    "docs/business",
+    "docs/00-MOCs/entrypoints/README.md",
+    "docs/08-References/business",
     ".cognitive-os/plans/architecture",
 ]
 REQUIRED_MATURITY_LABELS = {

@@ -64,7 +64,7 @@ fi
 
 # --- Check for ADR-only changes (avoid recursive detection) ---
 CHANGED_FILES=$(git -C "$PROJECT_DIR" diff-tree --no-commit-id -r --name-only "$COMMIT_HASH" 2>/dev/null)
-NON_ADR_FILES=$(echo "$CHANGED_FILES" | grep -v '^docs/adrs/' || true)
+NON_ADR_FILES=$(echo "$CHANGED_FILES" | grep -v '^docs/02-Decisions/adrs/' || true)
 if [ -z "$NON_ADR_FILES" ]; then
     exit 0
 fi

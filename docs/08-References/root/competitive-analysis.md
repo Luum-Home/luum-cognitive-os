@@ -81,7 +81,7 @@ Not being replaced by another framework -- but that users don't perceive governa
 
 ## Cross-Reference
 
-- For detailed feature-by-feature comparison: see `docs/ecosystem-comparison.md`
-- For security stack details: see `docs/security-stack.md`
-- For external tool integrations: see `docs/component-sources.md`
+- For detailed feature-by-feature comparison: see `docs/04-Concepts/root/ecosystem-comparison.md`
+- For security stack details: see `docs/04-Concepts/root/security-stack.md`
+- For external tool integrations: see `docs/04-Concepts/root/component-sources.md`
 - For the full governance system: see `rules/RULES-COMPACT.md`

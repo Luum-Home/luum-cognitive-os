@@ -63,7 +63,7 @@ These planned entries do not inherit Claude/Codex proof. They remain unverified 
 ### Negative
 
 - ACC refresh is slower because it runs four projection installs: Claude default/full and Codex default/full.
-- Full-profile projection increases `docs/acc/latest.json` size.
+- Full-profile projection increases `docs/07-Capabilities/acc/latest.json` size.
 - Planned harness entries require ongoing research as external tools evolve.
 
 ## Operational Guide
@@ -101,7 +101,7 @@ If ACC reports a skill or rule as `unverified` but you believe it is projectable
 2. If the class is `full` but only `claude/default` proof exists, the primitive is correctly partial until `claude/full` projection runs and counts it.
 3. Rerun `python3 scripts/acc_pipeline.py --project-dir . --refresh` after correcting the manifest entry to confirm the count changes.
 
-The `docs/acc/latest.json` file is the authoritative ACC state; any agent verbal claim about coverage should be verified against that file.
+The `docs/07-Capabilities/acc/latest.json` file is the authoritative ACC state; any agent verbal claim about coverage should be verified against that file.
 
 ## Alternatives rejected
 

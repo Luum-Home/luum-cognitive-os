@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 1 (Aggressive Prune): MOSTLY DONE — DELETE batch archived, DEFER markers added; DORMANT test/promote loop ongoing as background work; ratio<0.25 exit not yet certified.
 - Phase 2 (Install Timing): MOSTLY DONE — scripts/install-timing-test.sh + Makefile target + 5 baseline runs (mean=38.8s, p95=43s) + tests/contracts/test_install_timing.py shipped pre-0.28; verdict commit on README PnP claim not yet recorded as a separate commit but baseline meets <300s threshold so claim retention is supported by data.
@@ -35,7 +35,7 @@ Target end-date: 2026-05-08. Exit metric: `dormant_aspirational_ratio < 0.25` AN
 - [x] Generate punch list per bucket: — Done 2026-05-01: 4 markdown files created from aspirational-audit-2026-05-01.md (today's audit: 667 total, 69 ASPIRATIONAL, ratio=0.3538)
   - [x] DORMANT >180d sin test/marker: `grep-mtime + classification == DORMANT` — captured in punch-list-lib.md (1 item: lib/jupyter_client.py) and punch-list-hooks.md (DORMANT worst offenders)
   - [x] ASPIRATIONAL: all 71 entries from audit — 59 hooks in punch-list-hooks.md, 10 skills in punch-list-skills.md, 0 lib, 0 rules
-- [x] Issue `.cognitive-os/reports/prune-triage-2026-04-24.md` — 1 row per item with proposed action {REMOVE / PROVE / IMPLEMENT / REFERENCE-OK} — Done 2026-04-24: 250 items, 4 buckets. Superseded by `docs/reports/prune-triage-2026-05-01.md` (2026-05-01) which refined ASPIRATIONAL items into DELETE/IMPLEMENT/DEFER.
+- [x] Issue `.cognitive-os/reports/prune-triage-2026-04-24.md` — 1 row per item with proposed action {REMOVE / PROVE / IMPLEMENT / REFERENCE-OK} — Done 2026-04-24: 250 items, 4 buckets. Superseded by `docs/06-Daily/reports/prune-triage-2026-05-01.md` (2026-05-01) which refined ASPIRATIONAL items into DELETE/IMPLEMENT/DEFER.
 
 ### Days 1-7 — "Remove or prove" window
 
@@ -54,7 +54,7 @@ Target end-date: 2026-05-08. Exit metric: `dormant_aspirational_ratio < 0.25` AN
 
 - [ ] `dormant_aspirational_ratio < 0.25` (hard).
 - [ ] ASPIRATIONAL count == 0 (hard — either resolved or removed).
-- [ ] `docs/archive/` receives items (history preserved, no deletion).
+- [ ] `docs/99-Archive/archive/` receives items (history preserved, no deletion).
 - [ ] dogfood-score `skill_coverage` or `hook_wiring` improves ≥10 points (soft).
 
 ## Phase 2 — Install Timing Measurement (week 2)
@@ -71,7 +71,7 @@ Target end-date: 2026-05-15. Exit metric: honest number on file.
 ### Days 9-10 — Baseline runs
 
 - [x] Run `make install-test` 5× on fresh tmpdirs. Record mean + p95. — Done 2026-05-01: 5 runs via file:// clone; mean=38.8s, p95=43s, all PASS (budget=300s); bug in count_errors() fixed (grep -c || echo 0 double-print)
-- [x] Document errors + manual steps (if any) in `.cognitive-os/reports/install-timing-baseline-2026-05-XX.md`. — Done 2026-05-01: docs/reports/install-timing-baseline-2026-05-01.md written
+- [x] Document errors + manual steps (if any) in `.cognitive-os/reports/install-timing-baseline-2026-05-XX.md`. — Done 2026-05-01: docs/06-Daily/reports/install-timing-baseline-2026-05-01.md written
 
 ### Day 11 — Verdict
 
@@ -89,7 +89,7 @@ Target end-date: 2026-05-15. Exit metric: honest number on file.
 
 Target end-date: 2026-05-15. Exit metric: default install <3 min, extensions opt-in works.
 
-> **Design note (2026-05-02):** Classification criteria and extension pack taxonomy are fully documented in `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (126 CORE primitives of 581 total = 22% core / 78% extensions) and the migration plan at `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md`. Phase 3 implements that design. Refer to those docs for the authoritative 1:1 mapping. Do NOT re-derive classification from scratch — use existing audit.
+> **Design note (2026-05-02):** Classification criteria and extension pack taxonomy are fully documented in `docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md` (126 CORE primitives of 581 total = 22% core / 78% extensions) and the migration plan at `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md`. Phase 3 implements that design. Refer to those docs for the authoritative 1:1 mapping. Do NOT re-derive classification from scratch — use existing audit.
 
 ### Classification Criteria (established 2026-04-20, reaffirmed 2026-05-02)
 

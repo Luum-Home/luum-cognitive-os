@@ -12,7 +12,7 @@ extends: [ADR-238]
 implementation_files:
   - tests/chaos/conftest.py
   - tests/chaos/test_global_verify_regression_catches.py
-  - docs/runbooks/chaos-test-isolation.md
+  - docs/05-Methodology/runbooks/chaos-test-isolation.md
 tier: maintainer
 tags: [testing, safety, chaos, postmortem-2026-05-08]
 ---
@@ -81,7 +81,7 @@ Implementation strategy, ordered by portability:
    protected directories provides the same property without requiring
    `mount`. Documented as the macOS path in the runbook.
 
-The runbook at `docs/runbooks/chaos-test-isolation.md` describes both
+The runbook at `docs/05-Methodology/runbooks/chaos-test-isolation.md` describes both
 modes, when to use each, and the diagnostic surface when a chaos test
 trips the protection.
 
@@ -148,11 +148,11 @@ The operator does not need to invoke anything. Protection is automatic for the
 3. To verify the fixture is installed:
    ```bash
    python3 -m pytest tests/chaos/test_global_verify_regression_catches.py -q
-   test -f docs/runbooks/chaos-test-isolation.md
+   test -f docs/05-Methodology/runbooks/chaos-test-isolation.md
    ```
 4. For CI runs where `bwrap` is available and you want immediate-failure
    semantics, run under the `chaos-strict` lane. See
-   `docs/runbooks/chaos-test-isolation.md` for the exact invocation.
+   `docs/05-Methodology/runbooks/chaos-test-isolation.md` for the exact invocation.
 
 ### Reading guide for cold readers
 
@@ -163,7 +163,7 @@ If you encounter this ADR without session context:
    with a 2-line stub during a test run on 2026-05-08. The mutation was not
    reverted and broke unrelated tests.
 2. The fix is in `tests/chaos/conftest.py` — look for `chaos_readonly_workspace`.
-3. The runbook at `docs/runbooks/chaos-test-isolation.md` describes both
+3. The runbook at `docs/05-Methodology/runbooks/chaos-test-isolation.md` describes both
    execution modes and diagnostic steps when the protection trips.
 4. The protection scope is intentionally limited to `lib/`, `scripts/`, and
    `hooks/` — not the entire working tree — to keep the snapshot cost small.
@@ -222,7 +222,7 @@ If you encounter this ADR without session context:
    tree is reverted before the next test.
 3. `tests/chaos/test_global_verify_regression_catches.py` no longer
    relies on the env-var workaround from ADR-238 follow-up.
-4. `docs/runbooks/chaos-test-isolation.md` documents the portable mode
+4. `docs/05-Methodology/runbooks/chaos-test-isolation.md` documents the portable mode
    and the Linux/macOS opt-in modes.
 5. A deliberately-broken chaos test that writes to `lib/` is rejected
    in CI with a non-zero exit and a diagnostic message naming the
@@ -233,5 +233,5 @@ If you encounter this ADR without session context:
 ```bash
 python3 -m pytest tests/chaos/ -q
 python3 -m pytest tests/chaos/test_global_verify_regression_catches.py -q
-test -f docs/runbooks/chaos-test-isolation.md
+test -f docs/05-Methodology/runbooks/chaos-test-isolation.md
 ```

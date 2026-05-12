@@ -24,7 +24,7 @@ def test_trigger_hook_logs_plan_required_schema() -> None:
     assert "No git revert" in hook
 
 def test_adr_107_documents_boundary() -> None:
-    text = (REPO/"docs/adrs/ADR-107-human-approved-rollback.md").read_text()
+    text = (REPO/"docs/02-Decisions/adrs/ADR-107-human-approved-rollback.md").read_text()
     assert "supersedes the previous phase-aware behavior" in text
     assert "MUST NOT execute" in text
     assert "Every project phase requires human approval" in text

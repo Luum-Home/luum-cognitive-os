@@ -56,7 +56,7 @@ cat >&2 <<'EOF'
 
 === UNTRACKED-WORK-PRESERVATION-GUARD: BLOCKED ===
 This delete command targets untracked or protected work. In a multi-agent repo,
-untracked files under docs/research, docs/reports, and plans are treated as
+untracked files under docs/03-PoCs/research, docs/06-Daily/reports, and plans are treated as
 human/agent-owned artifacts until proven otherwise.
 
 Use the safer primitive first:

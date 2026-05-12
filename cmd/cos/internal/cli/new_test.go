@@ -229,7 +229,7 @@ func TestGettingStartedDocExists(t *testing.T) {
 	repoRoot := findRepoRoot(t)
 	doc := filepath.Join(repoRoot, "docs", "getting-started-quick.md")
 	if _, err := os.Stat(doc); os.IsNotExist(err) {
-		t.Fatal("docs/getting-started-quick.md does not exist")
+		t.Fatal("docs/00-MOCs/entrypoints/getting-started-quick.md does not exist")
 	}
 
 	content, err := os.ReadFile(doc)

@@ -347,7 +347,7 @@ lanes:
 
 ### 6.2 `tests/contracts/test_local_connected_systems_validation_docs.py:112` regex extension
 
-**Problem**: asserts the recommended command in `docs/manual-tests/local-connected-systems-validation.md` is exactly `pytest-with-summary.sh`. When canonical command flips to `cos-test cluster`, this contract test fails.
+**Problem**: asserts the recommended command in `docs/09-Quality/manual-tests/local-connected-systems-validation.md` is exactly `pytest-with-summary.sh`. When canonical command flips to `cos-test cluster`, this contract test fails.
 
 **Fix design** (deprecation window):
 - Change assertion from a strict equality to a regex `OR` match:

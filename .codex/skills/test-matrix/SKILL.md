@@ -99,9 +99,9 @@ Interpretation:
 Verify links and claims manually against:
 
 - `README.md`
-- `docs/README.md`
-- `docs/business/`
-- `docs/architecture/`
+- `docs/00-MOCs/entrypoints/README.md`
+- `docs/08-References/business/`
+- `docs/04-Concepts/architecture/`
 
 ## Rule
 

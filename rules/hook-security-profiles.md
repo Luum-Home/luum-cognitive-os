@@ -106,7 +106,7 @@ The function is implemented in `hooks/_lib/common.sh` as `check_disabled_env`.
 
 ## Full Documentation
 
-See `docs/hook-security-profiles.md` for the complete hook-by-hook breakdown with justifications.
+See `docs/09-Quality/root/hook-security-profiles.md` for the complete hook-by-hook breakdown with justifications.
 
 ## Contextual Trigger
 

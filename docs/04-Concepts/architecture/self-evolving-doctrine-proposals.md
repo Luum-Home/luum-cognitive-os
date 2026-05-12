@@ -24,7 +24,7 @@ scripts/cos-doctrine-proposer --profile core --write
 The output path is:
 
 ```text
-docs/proposals/doctrine-amendment-<timestamp>.md
+docs/03-PoCs/proposals/doctrine-amendment-<timestamp>.md
 ```
 
 ## Safety contract

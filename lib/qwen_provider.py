@@ -19,7 +19,7 @@ This dispatcher is intended for sub-agents spawned DURING a Claude Code
 session in response to user prompts. Do NOT call from cron, unattended
 pipelines, or application backends.
 
-Reference: docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
+Reference: docs/02-Decisions/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md
 """
 
 from __future__ import annotations

@@ -59,7 +59,7 @@
         "scripts/security-red-team",
         "scripts/security_red_team.py",
         "manifests/security-red-team.yaml",
-        "docs/security/security-red-team.md"
+        "docs/09-Quality/security/security-red-team.md"
       ],
       "runtime_projection": false
     }
@@ -160,7 +160,7 @@
         "scripts/security-red-team",
         "scripts/security_red_team.py",
         "manifests/security-red-team.yaml",
-        "docs/security/security-red-team.md"
+        "docs/09-Quality/security/security-red-team.md"
       ],
       "runtime_projection": false
     }
@@ -170,7 +170,7 @@
     "scripts/security-red-team",
     "scripts/security_red_team.py",
     "manifests/security-red-team.yaml",
-    "docs/security/security-red-team.md"
+    "docs/09-Quality/security/security-red-team.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/security-red-team",

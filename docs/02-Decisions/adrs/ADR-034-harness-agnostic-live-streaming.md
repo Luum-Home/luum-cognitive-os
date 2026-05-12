@@ -226,7 +226,7 @@ W3 proven).
 
 ## 7. Acceptance criteria (test-anchored)
 
-1. `docs/adrs/ADR-034-harness-agnostic-live-streaming.md` exists and
+1. `docs/02-Decisions/adrs/ADR-034-harness-agnostic-live-streaming.md` exists and
    contains sections 1-7 (this file).
 2. `scripts/cos_executor.py --daemon` starts, writes PID file,
    replies `ALIVE` to `cos-executor.py --status`.
@@ -239,7 +239,7 @@ W3 proven).
 5. With daemon running + `ORCHESTRATOR_MODE=executor` exported, the
    SessionStart banner reads
    `Agent comms: CONNECTED (Valkey ✅, Executor ✅)`.
-6. `docs/guides/adding-a-harness-adapter.md` gains a "Live streaming"
+6. `docs/05-Methodology/guides/adding-a-harness-adapter.md` gains a "Live streaming"
    section explaining how to implement `stream_events()`.
 
 ## 8. References

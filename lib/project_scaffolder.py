@@ -46,7 +46,7 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         "02-arquitectura",
         "Architecture",
         [
-            ("README.md", "# 02 — Arquitectura\n\nSystem design, components, C4 diagrams, integration points. Cross-reference `docs/adrs/` for decisions.\n\n- [ ] architecture-overview.md\n- [ ] components.md\n- [ ] c4-context.md (Level 1)\n- [ ] c4-container.md (Level 2)\n- [ ] c4-component.md (Level 3)\n"),
+            ("README.md", "# 02 — Arquitectura\n\nSystem design, components, C4 diagrams, integration points. Cross-reference `docs/02-Decisions/adrs/` for decisions.\n\n- [ ] architecture-overview.md\n- [ ] components.md\n- [ ] c4-context.md (Level 1)\n- [ ] c4-container.md (Level 2)\n- [ ] c4-component.md (Level 3)\n"),
             ("architecture-overview.md", "# Architecture Overview\n\n## High-level diagram\n<!-- TODO: ascii or mermaid -->\n\n## Tech stack\n<!-- TODO -->\n\n## Data flow\n<!-- TODO -->\n"),
             ("components.md", "# Components\n\n| Name | Responsibility | Depends on |\n|---|---|---|\n<!-- TODO -->\n"),
             ("c4-context.md", "# C4 — Level 1: System Context\n\nShows the system in its environment: users + external systems it depends on.\n\n```\n<!-- TODO: mermaid/plantuml. Example:\nUser --> System\nSystem --> ExternalAPI\n-->\n```\n\n## Actors\n<!-- TODO -->\n\n## External systems\n<!-- TODO -->\n"),
@@ -108,7 +108,7 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         "08-estandares",
         "Standards",
         [
-            ("README.md", "# 08 — Estándares\n\nCoding, documentation, review standards adopted by the project. Anchored to `rules/` and `docs/adrs/` for the why.\n\n- [ ] coding-standards.md\n- [ ] documentation-standards.md\n- [ ] review-standards.md\n"),
+            ("README.md", "# 08 — Estándares\n\nCoding, documentation, review standards adopted by the project. Anchored to `rules/` and `docs/02-Decisions/adrs/` for the why.\n\n- [ ] coding-standards.md\n- [ ] documentation-standards.md\n- [ ] review-standards.md\n"),
             ("coding-standards.md", "# Coding Standards\n\n## Language conventions\n<!-- TODO -->\n\n## Formatting / Lint\n<!-- TODO: point to tool configs -->\n\n## Naming\n<!-- TODO -->\n"),
             ("documentation-standards.md", "# Documentation Standards\n\n## Required sections per document type\n<!-- TODO -->\n\n## Review cadence\n<!-- TODO -->\n"),
             ("review-standards.md", "# Review Standards\n\n## PR checklist\n<!-- TODO -->\n\n## Approvals required\n<!-- TODO -->\n"),
@@ -174,7 +174,7 @@ class ProjectScaffolder:
         created: List[Path] = []
         skipped: List[Path] = []
 
-        # Top-level docs/README.md — index of the 10 categories
+        # Top-level docs/00-MOCs/entrypoints/README.md — index of the 10 categories
         self._write_or_skip(
             self.docs_dir / "README.md",
             self._top_readme(),
@@ -188,7 +188,7 @@ class ProjectScaffolder:
             for fname, body in files:
                 self._write_or_skip(cat_dir / fname, body, created, skipped)
 
-        # docs/adrs/ — parallel to the 10 categories (same convention as the
+        # docs/02-Decisions/adrs/ — parallel to the 10 categories (same convention as the
         # SO itself). Architecture Decision Records live here.
         adrs_dir = self.docs_dir / "adrs"
         adrs_dir.mkdir(exist_ok=True)
@@ -252,7 +252,7 @@ class ProjectScaffolder:
 
     def _adrs_readme(self) -> str:
         return (
-            f"# {self.project_name} — docs/adrs/\n\n"
+            f"# {self.project_name} — docs/02-Decisions/adrs/\n\n"
             "Architecture Decision Records (ADRs). Lives parallel to the 10 "
             "categories because decisions often cross-cut them.\n\n"
             "## Naming\n"

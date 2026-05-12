@@ -3,7 +3,7 @@
 
 Asserts:
   1. ``bin/cos-skill run redteam-harness`` produces
-     docs/reports/redteam-baseline.json and docs/reports/redteam-baseline.md
+     docs/06-Daily/reports/redteam-baseline.json and docs/06-Daily/reports/redteam-baseline.md
   2. All 6 scenarios appear in the JSON output with a graded status
   3. Verb coverage map has at least 1 scenario per ADR-105 verb
      (archived, wired, tested, verified, completed)

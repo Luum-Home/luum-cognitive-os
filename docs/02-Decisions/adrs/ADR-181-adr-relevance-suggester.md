@@ -29,7 +29,7 @@ Accepted — 2026-05-05
 
 ## Context
 
-The Cognitive OS has 180+ ADRs in `docs/adrs/`. When the orchestrator begins a
+The Cognitive OS has 180+ ADRs in `docs/02-Decisions/adrs/`. When the orchestrator begins a
 task, it must mentally infer which ADRs are relevant context. The current
 mechanism is hand-referencing via `RULES-COMPACT.md` `[ref-key]` syntax and
 ADR cross-references in code comments. This is error-prone and relies entirely
@@ -52,7 +52,7 @@ Implement a lightweight ADR relevance suggester with three components:
 
 ### 1. `lib/adr_router.py` — `AdrRouter` class
 
-- Indexes all `docs/adrs/ADR-*.md` files (excluding tombstones, superseded,
+- Indexes all `docs/02-Decisions/adrs/ADR-*.md` files (excluding tombstones, superseded,
   deprecated) on first use (lazy, cached in memory).
 - Sources keywords from three tiers per ADR:
   1. **Frontmatter `tags:`** (weight ×3 in scoring) — curated, high-precision.
@@ -104,7 +104,7 @@ Implement a lightweight ADR relevance suggester with three components:
 
 ### What changes for the operator
 
-Before this ADR, selecting relevant ADRs required manual `[ref-key]` lookup in `RULES-COMPACT.md` or recalling ADR cross-references from code comments — both error-prone and dependent on operator recall. With 180+ ADRs in `docs/adrs/`, the recall surface had grown beyond what any single session could cover reliably.
+Before this ADR, selecting relevant ADRs required manual `[ref-key]` lookup in `RULES-COMPACT.md` or recalling ADR cross-references from code comments — both error-prone and dependent on operator recall. With 180+ ADRs in `docs/02-Decisions/adrs/`, the recall surface had grown beyond what any single session could cover reliably.
 
 After this ADR:
 

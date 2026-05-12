@@ -24,7 +24,7 @@ from urllib import error, parse, request
 # TSDR public search endpoint (Open Data API). Different deployments expose
 # different shapes; we treat any 4xx/5xx as a degraded result rather than fatal.
 TSDR_BASE = "https://tsdrapi.uspto.gov/ts/cd/casestatus"
-DEFAULT_REPORTS_DIR = Path("docs/reports")
+DEFAULT_REPORTS_DIR = Path("docs/06-Daily/reports")
 
 
 def _normalize_mark(mark: str) -> str:

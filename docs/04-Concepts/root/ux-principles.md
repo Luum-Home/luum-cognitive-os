@@ -39,7 +39,7 @@ Rules for communication:
 
 ### How This Maps to the Safety Mesh
 
-The 12-layer safety mesh (see `docs/safety-mesh.md`) operates at three visibility levels:
+The 12-layer safety mesh (see `docs/04-Concepts/root/safety-mesh.md`) operates at three visibility levels:
 
 | Visibility | Layers | User Experience |
 |------------|--------|-----------------|
@@ -262,7 +262,7 @@ The system is transparent ON DEMAND. Never opaque, never overwhelming.
 
 ## How This Maps to Our Architecture
 
-The 5-layer architecture (see `docs/architecture-principles.md`) maps directly to user visibility:
+The 5-layer architecture (see `docs/04-Concepts/architecture-principles.md`) maps directly to user visibility:
 
 | Layer | User Visibility | Example |
 |---|---|---|

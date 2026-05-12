@@ -65,7 +65,7 @@ modifications. The real fix for external-project installs lives in `scripts/cos-
 ## Changes in this commit
 
 - Files modified: none (both scripts clean for the ADR-001 bug class).
-- File created: `docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md`
+- File created: `docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md`
   (this report).
 
 ## What I'm confident about

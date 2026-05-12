@@ -207,7 +207,7 @@ This addendum formalises the precedence rule:
 
 ## Resolution Log — 2026-04-21
 
-All four pending action items from the "Action items (for orchestrator before ADR-027 execution)" list have been executed against `docs/adrs/ADR-027.md`. Resolution details:
+All four pending action items from the "Action items (for orchestrator before ADR-027 execution)" list have been executed against `docs/02-Decisions/adrs/ADR-027.md`. Resolution details:
 
 | # | Item | Target in ADR-027 | Action taken |
 |---|------|-------------------|--------------|

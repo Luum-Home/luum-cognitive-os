@@ -43,8 +43,8 @@ flowchart TD
 |---|---|
 | `scripts/cos-headless-service-drill` | Opt-in script that runs the Docker worker proof, auth probes, queue submit, worker execution, and drain summary. |
 | `tests/integration/test_headless_service_drill.py` | Optional Docker integration wrapper gated by `COS_RUN_HEADLESS_SERVICE_DOCKER=1`. |
-| `docs/manual-tests/headless-docker-service-runtime.md` | Manual test with commands, evidence, interpretation, and cleanup. |
-| `docs/testing.md` | Documents the new optional Docker lane flag. |
+| `docs/09-Quality/manual-tests/headless-docker-service-runtime.md` | Manual test with commands, evidence, interpretation, and cleanup. |
+| `docs/09-Quality/root/testing.md` | Documents the new optional Docker lane flag. |
 
 ## Validation evidence captured
 
@@ -184,6 +184,6 @@ was not attempted because the `claude` CLI is not installed on PATH.
 - `scripts/cos-worker-run-once`
 - `scripts/cos-queue-drain`
 - `scripts/cos-auth-probe`
-- `docs/manual-tests/headless-docker-service-runtime.md`
+- `docs/09-Quality/manual-tests/headless-docker-service-runtime.md`
 - `tests/integration/test_headless_service_drill.py`
-- `docs/testing.md`
+- `docs/09-Quality/root/testing.md`

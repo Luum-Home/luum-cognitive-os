@@ -1,6 +1,6 @@
 """Contract: SessionStart hooks MUST NOT spawn Docker containers.
 
-Catalog doctrine (docs/architecture/infrastructure-service-catalog.md) says
+Catalog doctrine (docs/04-Concepts/architecture/infrastructure-service-catalog.md) says
 `hooks/self-install.sh` and every hook registered under the `SessionStart`
 matcher in `.claude/settings.json` must not implicitly start containers.
 Reference stacks are opt-in. Any hook that calls `docker compose up`,

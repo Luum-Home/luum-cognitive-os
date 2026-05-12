@@ -33,7 +33,7 @@ Sync flow:
 | Component | Location | What it contains |
 |---|---|---|
 | All docs | `docs/` | Estado, plans, research, cognitive-os, mobile, evaluations, etc. |
-| Indexes | `docs/INDEX.md`, `docs/*/INDEX.md` | Master indexes for all documentation |
+| Indexes | `docs/00-MOCs/entrypoints/INDEX.md`, `docs/*/INDEX.md` | Master indexes for all documentation |
 
 ### Infrastructure
 

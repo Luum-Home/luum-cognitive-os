@@ -16,7 +16,7 @@ DOC = PROJECT_ROOT / "docs" / "architecture" / "memory-lifecycle.md"
 
 
 def test_memory_lifecycle_doc_is_linked_from_easy_entrypoints() -> None:
-    rel = "docs/architecture/memory-lifecycle.md"
+    rel = "docs/04-Concepts/architecture/memory-lifecycle.md"
     docs_rel = "architecture/memory-lifecycle.md"
 
     assert docs_rel in (PROJECT_ROOT / "docs" / "README.md").read_text()

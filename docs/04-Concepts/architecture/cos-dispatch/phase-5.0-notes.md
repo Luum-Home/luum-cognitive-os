@@ -4,7 +4,7 @@
 
 ### 1. `override` result type added to schema
 
-- `docs/architecture/cos-dispatch/schema.sql`: Added a `CHECK` constraint to `executions.result` that lists all valid values: `pass`, `fail`, `warn`, `transform`, `override`.
+- `docs/04-Concepts/architecture/cos-dispatch/schema.sql`: Added a `CHECK` constraint to `executions.result` that lists all valid values: `pass`, `fail`, `warn`, `transform`, `override`.
 - `internal/pattern/tracker.go` (`schemaSQL`): Mirrored the same CHECK constraint in the embedded Go schema string.
 - `internal/pattern/types.go`: Added `ResultOverride = "override"` constant alongside the existing four result constants.
 

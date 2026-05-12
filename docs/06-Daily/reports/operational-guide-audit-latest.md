@@ -1,7 +1,7 @@
 # Operational Guide Audit — 2026-05-12T17:12:06Z
 
 > Per ADR-274. Schema: `operational-guide-audit/v1`.
-> Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence
+> Audits all `docs/02-Decisions/adrs/ADR-*.md` for §Operational Guide section presence
 > on maintainer-tier accepted capability ADRs.
 
 ## How to read this doc (operational guide for this audit)

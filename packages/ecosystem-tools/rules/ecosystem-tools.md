@@ -188,7 +188,7 @@ npx ccusage@latest daily --since 2026-04-01
 | License | MIT |
 | Status | **EVALUATE** — Adopt patterns (conditional DAG, loops, output piping) via clean-room, not the runtime |
 
-**Evaluation Notes**: Archon excels at workflow execution mechanics (14/27 features) while COS excels at governance (11/27). Language barrier (TypeScript/Bun vs Python) and architectural mismatch (standalone server vs CLI overlay) make direct adoption impractical. Clean-room implementation of conditional execution, loop primitives, and output piping into our `lib/task_dag.py` is the recommended path. Full evaluation at `docs/research/archon-evaluation.md`. Re-evaluate if Archon adds governance features.
+**Evaluation Notes**: Archon excels at workflow execution mechanics (14/27 features) while COS excels at governance (11/27). Language barrier (TypeScript/Bun vs Python) and architectural mismatch (standalone server vs CLI overlay) make direct adoption impractical. Clean-room implementation of conditional execution, loop primitives, and output piping into our `lib/task_dag.py` is the recommended path. Full evaluation at `docs/03-PoCs/research/archon-evaluation.md`. Re-evaluate if Archon adds governance features.
 
 
 ### OpenSwarm — Deliverable Specialist Swarm (EVALUATE)
@@ -205,7 +205,7 @@ npx ccusage@latest daily --since 2026-04-01
 | License | MIT |
 | Status | **EVALUATE** — Monitor and harvest patterns; do not adopt the runtime |
 
-**Evaluation Notes**: OpenSwarm is valuable as a productized example of an orchestrator plus deliverable specialists with explicit `SendMessage` vs `Handoff` routing and concrete output-path discipline. Direct runtime adoption is not recommended: it is a young, broad Agency Swarm application with heavy Python/Node/media dependencies, bootstrap side effects, all-to-all handoffs, and external-action tools that would need COS credential, permission, audit, and rollback wrappers. Deep evaluation: `docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`.
+**Evaluation Notes**: OpenSwarm is valuable as a productized example of an orchestrator plus deliverable specialists with explicit `SendMessage` vs `Handoff` routing and concrete output-path discipline. Direct runtime adoption is not recommended: it is a young, broad Agency Swarm application with heavy Python/Node/media dependencies, bootstrap side effects, all-to-all handoffs, and external-action tools that would need COS credential, permission, audit, and rollback wrappers. Deep evaluation: `docs/03-PoCs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md`; addendum: `docs/06-Daily/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`.
 
 ### Agno Suite — Production Agent Platform and Company-Brain Templates (EVALUATE)
 
@@ -221,7 +221,7 @@ npx ccusage@latest daily --since 2026-04-01
 | License | Apache-2.0 |
 | Status | **EVALUATE** — Assess patterns and a bounded adapter lab; do not adopt the runtime by default |
 
-**Evaluation Notes**: Agno is different from the Claw naming cluster: it is a production-agent platform with SDK/runtime/control-plane concepts, while Dash and Scout are first-party templates for self-learning data agents and company-brain context providers. Useful extraction targets are runtime packaging vocabulary, human approval UX, Dash's durable SQL/data learnings, and Scout's provider registry. Direct adoption is not recommended until telemetry, hosted-control-plane, credential, rollback, and ADR-049/ADR-064 governance boundaries are proven. Deep evaluation: `docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`.
+**Evaluation Notes**: Agno is different from the Claw naming cluster: it is a production-agent platform with SDK/runtime/control-plane concepts, while Dash and Scout are first-party templates for self-learning data agents and company-brain context providers. Useful extraction targets are runtime packaging vocabulary, human approval UX, Dash's durable SQL/data learnings, and Scout's provider registry. Direct adoption is not recommended until telemetry, hosted-control-plane, credential, rollback, and ADR-049/ADR-064 governance boundaries are proven. Deep evaluation: `docs/03-PoCs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`; addendum: `docs/06-Daily/reports/external-tools-radar-agno-addendum-2026-05-09.md`.
 
 ### EvoSkill — Automated Skill Discovery for Coding Agents (EVALUATE)
 
@@ -237,7 +237,7 @@ npx ccusage@latest daily --since 2026-04-01
 | License | Apache-2.0 |
 | Status | **EVALUATE** — Trial patterns and a disposable adapter lab; do not adopt the runtime by default |
 
-**Evaluation Notes**: EvoSkill is the strongest current external reference for COS's skill-optimization direction: it turns failed trajectories into reusable skill folders, validates against held-out data, and tracks frontier-improving agent programs. Direct runtime adoption is gated because it mutates git branches/tags, writes `.claude/skills`, can forward provider credentials into Docker or remote runs, and depends on project-owned benchmark quality. Extract the stage contract, evidence schema, projection fixture, and validation discipline first. Deep evaluation: `docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`.
+**Evaluation Notes**: EvoSkill is the strongest current external reference for COS's skill-optimization direction: it turns failed trajectories into reusable skill folders, validates against held-out data, and tracks frontier-improving agent programs. Direct runtime adoption is gated because it mutates git branches/tags, writes `.claude/skills`, can forward provider credentials into Docker or remote runs, and depends on project-owned benchmark quality. Extract the stage contract, evidence schema, projection fixture, and validation discipline first. Deep evaluation: `docs/03-PoCs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md`; addendum: `docs/06-Daily/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`.
 
 ### Langflow — Visual AI Workflow Builder and MCP-Facing Runtime (EVALUATE)
 
@@ -253,7 +253,7 @@ npx ccusage@latest daily --since 2026-04-01
 | License | MIT |
 | Status | **EVALUATE** — Extract patterns and optionally run a local-only adapter lab; do not adopt the runtime by default |
 
-**Evaluation Notes**: Langflow is a mature Python/TypeScript visual workflow app with FastAPI backend, React flow editor, `lfx` executor, Python SDK, and MCP-facing workflow/tool surfaces. It is valuable for visual graph UX, flow-to-MCP packaging, bundle registries, and security fixtures, but direct runtime adoption would import a large app surface with dynamic code execution, broad credential/env configuration, storage, telemetry, and hosted-control-plane concerns. Keep COS hooks/rules/skills/Engram/SDD/provider routing authoritative. Deep evaluation: `docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-langflow-addendum-2026-05-09.md`.
+**Evaluation Notes**: Langflow is a mature Python/TypeScript visual workflow app with FastAPI backend, React flow editor, `lfx` executor, Python SDK, and MCP-facing workflow/tool surfaces. It is valuable for visual graph UX, flow-to-MCP packaging, bundle registries, and security fixtures, but direct runtime adoption would import a large app surface with dynamic code execution, broad credential/env configuration, storage, telemetry, and hosted-control-plane concerns. Keep COS hooks/rules/skills/Engram/SDD/provider routing authoritative. Deep evaluation: `docs/03-PoCs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`; addendum: `docs/06-Daily/reports/external-tools-radar-langflow-addendum-2026-05-09.md`.
 
 ### Agentic Radar (SPLX AI) — Agent Workflow Analyzer (WATCH)
 
@@ -305,7 +305,7 @@ last_release: none
 | Purpose | Self-programming agent development kit with dynamic subagents, dynamic tool/skill synthesis, sandboxed asynchronous execution, hierarchical graph memory, and SWE/security benchmark harnesses |
 | Radar posture | **ASSESS / trial-patterns** |
 | Runtime adoption | No default dependency; evaluate patterns and adapter-lab spike only |
-| Deep dive | `docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md` |
+| Deep dive | `docs/06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md` |
 
 **Adoption notes**: Study dynamic agent lifecycle, tool-specific sandbox dependency declarations, async long-running tool execution, graph memory topology, benchmark harnesses, and Claude Code hook-bridge limitations. Keep COS hooks/rules/skills/Engram/tool-discovery governance first-party.
 
@@ -333,7 +333,7 @@ last_release: 2024-06-03
 | Purpose | AI-native application BaaS with provider routing, RAG/data flows, tools/plugins, REST API, Python SDK, and React console |
 | Radar posture | **HOLD / pattern-only** |
 | Runtime adoption | No default dependency; do not integrate until upstream activity and CI recover |
-| Deep dive | `docs/reports/external-tools-radar-taskingai-addendum-2026-05-09.md` |
+| Deep dive | `docs/06-Daily/reports/external-tools-radar-taskingai-addendum-2026-05-09.md` |
 
 **Adoption notes**: Study provider YAML catalogs, tool bundle metadata/execution boundaries, and multi-service deployment topology as design references only. Keep COS provider routing and tool governance first-party behind existing adapter boundaries.
 
@@ -508,5 +508,5 @@ This rule is loaded when: ecosystem tools, external tools, ccusage, token usage,
 - OpenCode permissions/plugins — native adapter design target before claiming OpenCode enforcement.
 - Open Agent Passport / pre-action authorization — future signed authorization receipt pattern for the intervention ledger.
 
-**Evaluation Notes**: These entries are spec/pattern references, not runtime dependencies. ADR-258 keeps `.ai` generated and non-canonical until conformance and consumer proof are stable. ADR-256 keeps primitive ledgers content-free and does not claim pre-action authorization compatibility yet. Full addendum: `docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md`.
+**Evaluation Notes**: These entries are spec/pattern references, not runtime dependencies. ADR-258 keeps `.ai` generated and non-canonical until conformance and consumer proof are stable. ADR-256 keeps primitive ledgers content-free and does not claim pre-action authorization compatibility yet. Full addendum: `docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md`.
 

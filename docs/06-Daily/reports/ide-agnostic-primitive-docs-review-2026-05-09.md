@@ -23,14 +23,14 @@ OpenSage pattern extraction, and observable primitive self-use.
 
 | Artifact | Role | Status |
 |---|---|---|
-| `docs/architecture/ide-agnostic-primitive-projection.md` | Explains canonical primitive → portable contract → adapter → runtime evidence | Updated with `.ai/` overlay lesson and first runtime slice |
-| `docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md` | Root architecture decision for primitive contracts, intervention ledger, itinerary, and trace join | Updated to include codebase itinerary in the root chain and phase 0/6 wording |
-| `docs/architecture/primitive-contract-registry-implementation-plan.md` | Plan-first implementation sequence for ADR-256 | Updated with phase 0 contract freeze and phase 6 consumer UX |
+| `docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md` | Explains canonical primitive → portable contract → adapter → runtime evidence | Updated with `.ai/` overlay lesson and first runtime slice |
+| `docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md` | Root architecture decision for primitive contracts, intervention ledger, itinerary, and trace join | Updated to include codebase itinerary in the root chain and phase 0/6 wording |
+| `docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md` | Plan-first implementation sequence for ADR-256 | Updated with phase 0 contract freeze and phase 6 consumer UX |
 | `skills/primitive-authoring/SKILL.md` | Authoring gate for new/modified/promoted primitives | Consistent; no content change required |
-| `docs/architecture/opensage-self-programming-patterns.md` | OpenSage-inspired pattern extraction contract | New artifact from the OpenSage analysis |
+| `docs/04-Concepts/architecture/opensage-self-programming-patterns.md` | OpenSage-inspired pattern extraction contract | New artifact from the OpenSage analysis |
 | `manifests/self-programming-agent-patterns.yaml` | Machine-readable OpenSage pattern contract | New audited manifest |
-| `docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md` | Radar decision for OpenSage ADK | Updated to require the pattern audit before adapter-lab work |
-| `docs/README.md` | Documentation index | Deduplicated ADR-256 / IDE projection links and added this review |
+| `docs/06-Daily/reports/external-tools-radar-opensage-addendum-2026-05-09.md` | Radar decision for OpenSage ADK | Updated to require the pattern audit before adapter-lab work |
+| `docs/00-MOCs/entrypoints/README.md` | Documentation index | Deduplicated ADR-256 / IDE projection links and added this review |
 | `skills/CATALOG.md` | Skill catalog | Removed duplicate `primitive-authoring` entry |
 
 ## Canonical synthesis
@@ -107,7 +107,7 @@ scripts/cos-self-programming-pattern-audit --json
 
 ## Drift corrected in this review
 
-1. `docs/README.md` had duplicate ADR-256 and IDE-agnostic projection entries.
+1. `docs/00-MOCs/entrypoints/README.md` had duplicate ADR-256 and IDE-agnostic projection entries.
 2. `skills/CATALOG.md` had duplicate `primitive-authoring` entries.
 3. ADR-256's root chain mentioned runtime intervention evidence and trace join,
    but omitted codebase itinerary in the initial context chain.
@@ -120,23 +120,23 @@ scripts/cos-self-programming-pattern-audit --json
 
 This follow-up pass re-read the documentation set after the correction above:
 
-- `docs/architecture/ide-agnostic-primitive-projection.md`
-- `docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
-- `docs/architecture/primitive-contract-registry-implementation-plan.md`
+- `docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md`
+- `docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
+- `docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md`
 - `skills/primitive-authoring/SKILL.md`
-- `docs/README.md`
-- `docs/business/master-plan-checklist.md`
+- `docs/00-MOCs/entrypoints/README.md`
+- `docs/08-References/business/master-plan-checklist.md`
 - `skills/CATALOG.md`
 - `skills/CATALOG-COMPACT.md`
 - `manifests/harness-projection.yaml`
 - `manifests/harness-driver-capabilities.yaml`
 - `manifests/primitive-projection-profiles.yaml`
-- `docs/reports/cos-self-observability-deep-review-2026-05-05.md`
+- `docs/06-Daily/reports/cos-self-observability-deep-review-2026-05-05.md`
 
 Result:
 
 1. No broken local Markdown links were found in the primary documentation set.
-2. `docs/README.md` links the ADR, architecture synthesis, implementation plan,
+2. `docs/00-MOCs/entrypoints/README.md` links the ADR, architecture synthesis, implementation plan,
    and this review exactly once each in the key-documents section.
 3. `skills/CATALOG.md` and `skills/CATALOG-COMPACT.md` each contain one
    `primitive-authoring` catalog entry.

@@ -35,7 +35,7 @@ canonical behavior
 ```
 
 The deep review in
-`docs/reports/primitive-contract-cross-ide-premise-investigation-2026-05-09.md`
+`docs/06-Daily/reports/primitive-contract-cross-ide-premise-investigation-2026-05-09.md`
 confirmed that this was contemplated across multiple ADRs:
 
 - ADR-057 says to author behavior once and project through harness drivers.

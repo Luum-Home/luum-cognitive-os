@@ -7,9 +7,9 @@ source_artifacts:
   - .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.md
   - .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.analysis.json
   - .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.raw.json
-  - docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md
+  - docs/03-PoCs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md
 related_docs:
-  - docs/patterns/ecosystem-tools.md
+  - docs/04-Concepts/patterns/ecosystem-tools.md
   - manifests/external-tools-adoption.yaml
 ---
 
@@ -32,13 +32,13 @@ OpenSage is worth deep analysis because it is explicitly built around agentic pr
 | Architecture scan | Google ADK-based framework with dynamic agents, ensembles, sandbox backends, Neo4j memory, plugins, toolboxes, CLI/web UI, benchmark harnesses, and RL scripts. |
 | Test/build smoke | Python `compileall` passed for `src/opensage` and `tests`; full tests deferred because they require Docker/Neo4j/provider/sandbox dependencies. |
 | Security scan | Advisory concerns: privileged Docker CI, remote/k8s sandbox backends, provider-key integration tests, graph-memory retention, dynamic tool/skill creation. |
-| Radar merge | Added canonical ASSESS entry to `docs/patterns/ecosystem-tools.md`; manifest marks it pattern-only and disallowed as default dependency. |
+| Radar merge | Added canonical ASSESS entry to `docs/04-Concepts/patterns/ecosystem-tools.md`; manifest marks it pattern-only and disallowed as default dependency. |
 
 ## What COS should learn from it
 
 1. **Dynamic agent topology** — OpenSage's session-scoped dynamic agent manager and ensemble manager are useful comparison points for COS subagent lifecycle and handoff audit trails.
 2. **Tool synthesis under sandboxing** — tool-specific containers, dependency metadata, and async execution are valuable patterns, but COS must keep license/credential/tool-discovery gates first-party.
-3. **Hierarchical graph memory** — execution graph, memory agent, and unsummarized-output recovery patterns should be compared with Engram and `docs/architecture/memory-lifecycle.md`.
+3. **Hierarchical graph memory** — execution graph, memory agent, and unsummarized-output recovery patterns should be compared with Engram and `docs/04-Concepts/architecture/memory-lifecycle.md`.
 4. **Security/SWE benchmarks** — CyberGym, SWE-Bench Pro, SeCodePLT, DevOps-Gym, CodeQL, Joern, fuzzing, coverage, GDB/PDB, and retrieval toolkits can inform COS primitive benchmarks.
 5. **Hook compatibility boundaries** — the Claude Code hook loader is a useful fixture because it documents ADK callback events that cannot fully simulate Claude Code/Codex governance hooks.
 

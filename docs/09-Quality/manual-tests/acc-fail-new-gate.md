@@ -7,7 +7,7 @@ Prove that ACC can ratchet from the current baseline without letting broad local
 ## Preconditions
 
 - Run from the repository root.
-- `docs/acc/latest.json` exists as the current baseline.
+- `docs/07-Capabilities/acc/latest.json` exists as the current baseline.
 - Do not open the full JSON in agent context; use `--brief` or targeted queries.
 
 ## Test 1 — Current baseline passes fail-new

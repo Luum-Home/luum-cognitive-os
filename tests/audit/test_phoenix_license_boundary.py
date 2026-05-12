@@ -24,8 +24,8 @@ def test_phoenix_server_stays_out_of_core_lock_and_pyproject() -> None:
 
 def test_key_phoenix_docs_state_elv2_boundary() -> None:
     key_docs = [
-        "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md",
-        "docs/architecture/infrastructure-service-catalog.md",
+        "docs/02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md",
+        "docs/04-Concepts/architecture/infrastructure-service-catalog.md",
         "cognitive-os.yaml",
         "NOTICE",
         "skills/phoenix-trace-ui/SKILL.md",
@@ -39,10 +39,10 @@ def test_key_phoenix_docs_state_elv2_boundary() -> None:
 def test_active_phoenix_docs_do_not_reference_removed_pyproject_extra_install() -> None:
     active_docs = [
         "CHANGELOG.md",
-        "docs/INDEX.md",
-        "docs/getting-started.md",
-        "docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md",
-        "docs/adrs/ADR-172-multi-surface-ui-architecture.md",
+        "docs/00-MOCs/entrypoints/INDEX.md",
+        "docs/00-MOCs/entrypoints/getting-started.md",
+        "docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md",
+        "docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md",
         "skills/phoenix-trace-ui/SKILL.md",
     ]
 

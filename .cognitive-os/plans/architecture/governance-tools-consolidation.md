@@ -1,6 +1,6 @@
 <!--
 RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 1 (governance inventory metadata): DONE — ADR-247 manifest-driven postmortem regression audits + ADR-248 control-plane audit loop close governance class metadata gaps; control-plane-audit registry drift fix (commit a7e979aca + b55f2fb8) enforces parity.
 - Phase 2 (single-source claim ledger): PARTIAL — duplicate ledgers acknowledged in plan body still coexist; manifest-driven audit (ADR-247) routes around but does not consolidate. Carry forward.

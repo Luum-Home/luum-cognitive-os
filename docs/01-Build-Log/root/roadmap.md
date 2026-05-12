@@ -435,7 +435,7 @@ Long-term directions beyond the phased roadmap. These are research-stage ideas t
 
 ### Agent-to-Agent protocol (A2A)
 
-Cognitive OS instances communicating across organizations using the OpenA2A standard. Agents discover each other via `/.well-known/agent.json`, negotiate capabilities, and delegate tasks across organizational boundaries. A shared skill marketplace allows teams to publish and consume skills across Cognitive OS installations. Federated Engram enables cross-organization knowledge sharing with access controls. Builds on the identity stack already designed in `docs/identity-stack.md`.
+Cognitive OS instances communicating across organizations using the OpenA2A standard. Agents discover each other via `/.well-known/agent.json`, negotiate capabilities, and delegate tasks across organizational boundaries. A shared skill marketplace allows teams to publish and consume skills across Cognitive OS installations. Federated Engram enables cross-organization knowledge sharing with access controls. Builds on the identity stack already designed in `docs/04-Concepts/root/identity-stack.md`.
 
 - **Status**: Exploring
 - **Dependencies**: RBAC (Phase 3), Plugin marketplace (Phase 4)

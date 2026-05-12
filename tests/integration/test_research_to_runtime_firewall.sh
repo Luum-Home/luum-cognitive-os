@@ -122,17 +122,17 @@ actual=$(
 assert_exit "TC3: no staged files exits 0" 0 "$actual"
 
 # ── Test 4: Research path containing cache ref → exit 0 (scan-exempt) ─────────
-# docs/research/ is not in RUNTIME_DIRS_RE (^(lib|packages|scripts)/),
+# docs/03-PoCs/research/ is not in RUNTIME_DIRS_RE (^(lib|packages|scripts)/),
 # so the hook should ignore it even if it references the cache path.
 setup_fake_repo "$TMPDIR_TEST" "repo_research_exempt"
-stage_file "$FAKE_REPO" "docs/research/foo.md" "See $CACHE_REF/helix-db/ for study notes."
+stage_file "$FAKE_REPO" "docs/03-PoCs/research/foo.md" "See $CACHE_REF/helix-db/ for study notes."
 
 actual=$(
   cd "$FAKE_REPO"
   bash "$FAKE_HOOK" <<< "$PAYLOAD_COMMIT" 2>/dev/null
   echo $?
 )
-assert_exit "TC4: docs/research/ file with cache ref is scan-exempt, exits 0" 0 "$actual"
+assert_exit "TC4: docs/03-PoCs/research/ file with cache ref is scan-exempt, exits 0" 0 "$actual"
 
 # ── Test 5: lib/foo.py referencing cache path → exit 1 ────────────────────────
 setup_fake_repo "$TMPDIR_TEST" "repo_lib_blocked"

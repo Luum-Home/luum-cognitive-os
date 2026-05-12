@@ -30,7 +30,7 @@ Design invariants:
     on stderr so a malformed frontmatter cannot break dispatch.
 
 See:
-  - `docs/adrs/ADR-050-per-skill-routing-policy.md`
+  - `docs/02-Decisions/adrs/ADR-050-per-skill-routing-policy.md`
   - `lib/dispatch.py::dispatch(skill_requirements=...)`
   - `tests/unit/test_skill_routing.py`
 """

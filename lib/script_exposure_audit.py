@@ -9,7 +9,7 @@ from typing import Any
 import yaml
 
 SCHEMA_VERSION = "script-exposure-audit/v1"
-DEFAULT_LEDGER = Path("docs/reports/primitive-readiness-ledger-scripts-latest.json")
+DEFAULT_LEDGER = Path("docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json")
 DEFAULT_DISPOSITIONS = Path("manifests/script-exposure-dispositions.yaml")
 ALLOWED_NO_SKILL_ROLES = {"lab", "migration-only", "driver-specific"}
 COMMAND_ROUTER_CONSUMER_PATHS = {"scripts/cos"}

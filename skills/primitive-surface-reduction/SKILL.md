@@ -47,7 +47,7 @@ python3 scripts/primitive_surface_reduce.py --family hooks --apply-safe
 ## Guardrails
 
 1. Run from the Cognitive OS source repo root.
-2. Prefer `--plan` first and inspect `docs/reports/primitive-surface-reduction-latest.md`.
+2. Prefer `--plan` first and inspect `docs/06-Daily/reports/primitive-surface-reduction-latest.md`.
 3. Use `--apply-safe` only when the generated action is marked safe.
 4. Never delete implementation files manually; the reducer archives safe items under `archive/primitive-surface/`.
 5. After applying, run the focused tests:

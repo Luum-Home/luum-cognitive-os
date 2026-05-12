@@ -1,6 +1,6 @@
 # Punch List — hooks bucket
 
-> Generated 2026-05-01 from `.cognitive-os/reports/prune-baseline.json` and `docs/reports/aspirational-audit-2026-05-01.md`.
+> Generated 2026-05-01 from `.cognitive-os/reports/prune-baseline.json` and `docs/06-Daily/reports/aspirational-audit-2026-05-01.md`.
 > Baseline: total=667, ASPIRATIONAL=69, dormant_aspirational_ratio=0.3538.
 > Scope: all ASPIRATIONAL hooks detected in the audit run.
 
@@ -19,7 +19,7 @@
 | `hooks/auto-verify.sh` | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but registration not yet verified | WIRE: verify registration; add to settings.json if missing |
 | `hooks/background-agent-reminder.sh` | registered=False, excluded=True, category=FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired | WIRE: register in PostToolUse Agent, or PRUNE |
 | `hooks/code-review-on-commit.sh` | registered=False, excluded=True, category=FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events | WIRE: register in PreToolUse Bash (git commit pattern), or PRUNE |
-| `hooks/completeness-check.sh` | registered=False, excluded=True, category=FUTURE: regex variant superseded by completeness-check-llm.sh | PRUNE: superseded; archive to docs/archive/hooks/ |
+| `hooks/completeness-check.sh` | registered=False, excluded=True, category=FUTURE: regex variant superseded by completeness-check-llm.sh | PRUNE: superseded; archive to docs/99-Archive/archive/hooks/ |
 | `hooks/concurrent-write-guard.sh` | registered=False, excluded=True, category=FUTURE: prevents concurrent file writes; planned for PreToolUse Edit\|Write — not yet wired | WIRE: register in PreToolUse Edit\|Write, or PRUNE |
 | `hooks/context-diet.sh` | registered=False, excluded=True, category=FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired | WIRE: register in PostToolUse Agent, or PRUNE |
 | `hooks/contextual-rule-loader.sh` | registered=False, excluded=True, category=FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired | WIRE: register in SubagentStart, or PRUNE |
@@ -45,12 +45,12 @@
 | `hooks/package-sync.sh` | registered=False, excluded=True, category=CONDITIONAL: triggered by CI or developer, not by Claude hooks | DOCUMENT: add @on-demand/@manual-trigger marker |
 | `hooks/parry-scan.sh` | registered=False, excluded=True, category=CONDITIONAL: Parry security integration | DOCUMENT: add @on-demand marker with Parry guard |
 | `hooks/pattern-check.sh` | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired | WIRE: register in PreToolUse Edit\|Write, or PRUNE |
-| `hooks/post-agent-verify.sh` | registered=False, excluded=True, category=FUTURE: superseded by completion-gate.sh | PRUNE: superseded; archive to docs/archive/hooks/ |
+| `hooks/post-agent-verify.sh` | registered=False, excluded=True, category=FUTURE: superseded by completion-gate.sh | PRUNE: superseded; archive to docs/99-Archive/archive/hooks/ |
 | `hooks/pre-agent-snapshot.sh` | registered=False, excluded=True, category=FUTURE: snapshot before agent launch; planned for PreToolUse Agent — not yet wired | WIRE: register in PreToolUse Agent, or PRUNE |
 | `hooks/pre-cleanup-snapshot.sh` | registered=False, excluded=True, category=FUTURE: snapshot before cleanup operations; invoked manually or by admin scripts | DOCUMENT: add @on-demand/@manual-trigger marker |
 | `hooks/private-mode-gate.sh` | registered=False, excluded=True, category=FUTURE: gates operations in private mode; planned for PreToolUse — not yet wired | WIRE: register in PreToolUse, or PRUNE |
 | `hooks/private-mode-metrics-gate.sh` | registered=False, excluded=True, category=FUTURE: gates metrics emission in private mode; planned for PostToolUse — not yet wired | WIRE: register in PostToolUse, or PRUNE |
-| `hooks/prompt-quality.sh` | registered=False, excluded=True, category=FUTURE: regex variant superseded by prompt-quality-llm.sh | PRUNE: superseded; archive to docs/archive/hooks/ |
+| `hooks/prompt-quality.sh` | registered=False, excluded=True, category=FUTURE: regex variant superseded by prompt-quality-llm.sh | PRUNE: superseded; archive to docs/99-Archive/archive/hooks/ |
 | `hooks/recap-sync.sh` | registered=False, excluded=True, category=FUTURE: syncs session recap; planned for Stop event — not yet wired | WIRE: register in Stop event, or PRUNE |
 | `hooks/release-guard.sh` | registered=False, excluded=True, category=FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired | WIRE: register in PreToolUse Bash, or PRUNE |
 | `hooks/scope-creep-detector.sh` | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned but not wired | WIRE: register in PostToolUse Agent, or PRUNE |

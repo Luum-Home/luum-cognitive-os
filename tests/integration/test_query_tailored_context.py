@@ -30,7 +30,7 @@ from lib.context_injector import build_context, _task_hash, _cache_path  # noqa:
 @pytest.fixture()
 def isolated_root(tmp_path: Path) -> Path:
     """Create a minimal project structure for context_injector tests."""
-    # docs/adrs with a rate-limiter ADR.
+    # docs/02-Decisions/adrs with a rate-limiter ADR.
     adrs = tmp_path / "docs" / "adrs"
     adrs.mkdir(parents=True)
 

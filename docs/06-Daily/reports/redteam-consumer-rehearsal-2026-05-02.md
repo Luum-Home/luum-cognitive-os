@@ -83,8 +83,8 @@ Codex driver (`cognitive-os.yaml > harness.hooks`) and hook quality manifest (`m
 | `templates/contracts/test_redteam_baseline.template.py` | EXISTS (both, 6 tests) |
 | `tests/contracts/test_redteam_portability_coverage.py` | EXISTS (os-only, 44 tests+1 skip) |
 | `hooks/scope-marker-portability-gate.sh` | EXISTS (both, KD8 warn-only) |
-| `docs/RED-TEAM-COVERAGE.md` | EXISTS (ADR-105 verb coverage table) |
-| `docs/RED-TEAM-CHANGELOG.md` | EXISTS (v1.0.0 entry W0-W6) |
+| `docs/01-Build-Log/root/RED-TEAM-COVERAGE.md` | EXISTS (ADR-105 verb coverage table) |
+| `docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md` | EXISTS (v1.0.0 entry W0-W6) |
 | `.cognitive-os/test-lanes.yaml` red_team lane | REGISTERED (parallel: true) |
 | `pytest.ini` red_team marker | REGISTERED |
 | `settings-driver-claude-code.sh` scope-marker-portability-gate | WIRED (pre_bash) |

@@ -171,7 +171,7 @@ function classifyTextTool(toolName, args) {
     if (text.includes("do everything") || text.includes("unbounded task")) return row("dispatch-gate", "block", "dispatch_scope_too_broad", "agent-dispatch")
   }
   if (["write", "edit", "multiedit"].includes(toolName)) {
-    if (text.includes("docs/adrs/") && !text.includes("## status")) return row("adr-section-validator", "warn", "adr_section_missing", "adr-structure")
+    if (text.includes("docs/02-Decisions/adrs/") && !text.includes("## status")) return row("adr-section-validator", "warn", "adr_section_missing", "adr-structure")
     if (text.includes("private customer") || text.includes("confidential customer")) return row("confidentiality-enforcer", "block", "confidentiality_boundary", "confidential-content")
     if (text.includes("unsafe content policy fixture")) return row("content-policy", "block", "content_policy_violation", "content-policy")
     if (/api[_-]?key|secret|token/.test(text)) return row("secret-detector", "block", "secret_write_attempt", "secret-like-content")

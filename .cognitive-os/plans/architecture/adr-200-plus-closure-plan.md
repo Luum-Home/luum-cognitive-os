@@ -4,7 +4,7 @@ related-adrs: ADR-200, ADR-201, ADR-202, ADR-203, ADR-204, ADR-205, ADR-206, ADR
 
 <!--
 RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 0 (inventory): DONE.
 - Phase 1 (ADR-202 private-content): DONE — all 7 items checked, projection guard tests pass.
@@ -42,9 +42,9 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 ## Phase 0 — Inventory and tracking
 
-- [x] Create `docs/reports/adr-200-plus-closure-inventory-2026-05-06.md`.
+- [x] Create `docs/06-Daily/reports/adr-200-plus-closure-inventory-2026-05-06.md`.
 - [x] Create this closure plan.
-- [x] Keep `docs/business/master-plan-checklist.md` aligned after every slice in this session.
+- [x] Keep `docs/08-References/business/master-plan-checklist.md` aligned after every slice in this session.
 
 ## Phase 1 — Private-content safety substrate (ADR-202)
 

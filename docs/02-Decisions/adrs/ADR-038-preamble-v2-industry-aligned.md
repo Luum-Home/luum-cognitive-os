@@ -14,7 +14,7 @@ classification_basis: explicit prose status migration for previously prose-only 
 
 # ADR-038 — Preamble v2: Industry-Aligned Contract
 
-> Originally drafted in `.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md`; canonical location is `docs/adrs/`.
+> Originally drafted in `.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md`; canonical location is `docs/02-Decisions/adrs/`.
 
 ## Status
 
@@ -109,5 +109,5 @@ pytest tests/integration/test_preamble_v2_wave1.py -v # all pass (no regression)
 ### Files changed
 - `templates/agent-preamble.md` — INPUT SCHEMA block + CONTEXT BUDGET block
 - `cognitive-os.yaml` — `context_budget:` section (before `sessions:`)
-- `docs/adrs/ADR-038-preamble-v2-industry-aligned.md` — this section
+- `docs/02-Decisions/adrs/ADR-038-preamble-v2-industry-aligned.md` — this section
 - `tests/integration/test_preamble_v2_wave2.py` — new test file (4 tests)

@@ -73,8 +73,8 @@ part of the current operational model and context-budget design.
 
 This affects:
 
-- `docs/rules-loading-architecture.md`
-- `docs/architecture.md`
+- `docs/04-Concepts/root/rules-loading-architecture.md`
+- `docs/04-Concepts/architecture.md`
 - `tests/behavior/test_claude_md_diet.py`
 - `tests/unit/test_efficiency_stress.py`
 
@@ -251,8 +251,8 @@ The safe move is:
 
 ## References
 
-- `docs/architecture/skills-rules-portability-gap.md`
-- `docs/architecture/bootstrap-portability.md`
-- `docs/architecture/cross-harness-authoring.md`
+- `docs/04-Concepts/architecture/skills-rules-portability-gap.md`
+- `docs/04-Concepts/architecture/bootstrap-portability.md`
+- `docs/04-Concepts/architecture/cross-harness-authoring.md`
 - `cmd/cos/internal/installer/export.go`
 - `scripts/cos-init.sh`

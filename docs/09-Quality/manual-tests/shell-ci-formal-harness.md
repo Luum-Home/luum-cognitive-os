@@ -41,7 +41,7 @@ Targeted proof query:
 python3 - <<'PY'
 import json
 from pathlib import Path
-payload = json.loads(Path('docs/acc/latest.json').read_text())
+payload = json.loads(Path('docs/07-Capabilities/acc/latest.json').read_text())
 counts = payload['adapters']['consumer_projection']['summary']['by_harness_profile']
 print('shell-ci/default=', counts['shell-ci/default'])
 print('shell-ci/full=', counts['shell-ci/full'])

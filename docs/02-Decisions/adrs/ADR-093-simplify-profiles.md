@@ -17,7 +17,7 @@ partial_remaining_basis: explicit body remaining signal
 
 # ADR-093: Simplify Install Profiles — Collapse 3-Tier System to `default` + `--full`
 
-<!-- Renumbered-from: ADR-002 (docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md) -->
+<!-- Renumbered-from: ADR-002 (docs/04-Concepts/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md) -->
 <!-- Renumbered-to: ADR-093 (ADR-087 migration, 2026-04-30) -->
 
 ## Status

@@ -168,15 +168,15 @@ Phase 4 (template dedup, 11 integrations):
 **Current state**: Priority 1 done (how-to-extend.md -> 4 skills). 9 SKILL-CANDIDATE conversions remaining. 8 SKILL-EXISTS trims remaining. 2 OBSOLETE removals remaining.
 
 **Remaining conversions** (priority order):
-1. `docs/getting-started.md` -> `/cos-setup`
-2. `docs/getting-started-quick.md` -> `/cos-install`
-3. `docs/quickstart.md` -> `/cos-quickstart`
-4. `docs/hook-security-profiles.md` -> `/switch-security-profile`
-5. `docs/plug-and-play.md` -> `/cos-docker-setup`
-6. `docs/benchmarking.md` -> `/run-benchmark`
-7. `docs/configurable-quality-gates.md` -> `/configure-quality-gates`
-8. `docs/dogfooding.md` -> `/dogfood-check`
-9. `docs/agent-teams-testing.md` -> `/test-agent-teams`
+1. `docs/00-MOCs/entrypoints/getting-started.md` -> `/cos-setup`
+2. `docs/00-MOCs/entrypoints/getting-started-quick.md` -> `/cos-install`
+3. `docs/00-MOCs/entrypoints/quickstart.md` -> `/cos-quickstart`
+4. `docs/09-Quality/root/hook-security-profiles.md` -> `/switch-security-profile`
+5. `docs/04-Concepts/root/plug-and-play.md` -> `/cos-docker-setup`
+6. `docs/08-References/root/benchmarking.md` -> `/run-benchmark`
+7. `docs/05-Methodology/root/configurable-quality-gates.md` -> `/configure-quality-gates`
+8. `docs/04-Concepts/root/dogfooding.md` -> `/dogfood-check`
+9. `docs/07-Capabilities/root/agent-teams-testing.md` -> `/test-agent-teams`
 
 **SKILL-EXISTS trims** (8 docs -> pointer stubs):
 - auto-library.md, automation-doc-sync.md, capability-snapshot.md, competitive-arena.md, definition-of-done.md, gpu-sandbox.md, health-monitoring.md, plan-system.md

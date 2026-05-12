@@ -18,7 +18,7 @@ pytestmark = pytest.mark.unit
 
 def test_relationship_refs_parse_frontmatter_and_prose() -> None:
     refs = _relationship_refs(
-        Path("docs/adrs/ADR-999-example.md"),
+        Path("docs/02-Decisions/adrs/ADR-999-example.md"),
         {"extends": ["ADR-172"], "supersedes": ["ADR-170"], "replaces": []},
         "This also replaces ADR-043 and extends ADR-173.",
     )

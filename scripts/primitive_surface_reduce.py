@@ -215,8 +215,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--family", choices=("hooks",), default="hooks")
     parser.add_argument("--plan", action="store_true", help="Generate a plan only. This is the default.")
     parser.add_argument("--apply-safe", action="store_true", help="Apply only mechanically safe reductions.")
-    parser.add_argument("--json-out", default="docs/reports/primitive-surface-reduction-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-surface-reduction-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-surface-reduction-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-surface-reduction-latest.md")
     return parser.parse_args()
 
 

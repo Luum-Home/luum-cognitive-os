@@ -80,7 +80,7 @@ Net test delta vs. v0.11.0: **+10 passing (5820 total)**, 42 pre-existing failur
    - https://github.com/Luum-Home/luum-cognitive-os/releases/new?tag=v0.11.1
    Tag annotation messages are already written; paste as-is.
 2. **Delete 6 orphaned `claude/*` remote branches** — 403 from CLI, use the GitHub UI.
-3. **Lote 2 smoke test** — instructions in `docs/manual-tests/lote-2-mcp-loop.md`:
+3. **Lote 2 smoke test** — instructions in `docs/09-Quality/manual-tests/lote-2-mcp-loop.md`:
    - Fresh clone + `bash install.sh --install-deps` → `claude mcp list` shows the manifest MCPs
    - Modify `manifests/dependencies.yaml`, run `bash scripts/cos-update.sh`, verify diff applied
    - Simulate missing `claude` CLI → WARN + exit 0 (non-fatal)

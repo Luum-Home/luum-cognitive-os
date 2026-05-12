@@ -24,7 +24,7 @@ def test_reserve_skips_existing_and_active_reserved_numbers(tmp_path: Path) -> N
     second = adr_reserve.reserve(project_dir=tmp_path, title="Second new", session_id="s2", owner="test", ttl_seconds=3600)
 
     assert first.number == 2
-    assert first.path == "docs/adrs/ADR-002-first-new.md"
+    assert first.path == "docs/02-Decisions/adrs/ADR-002-first-new.md"
     assert second.number == 3
     data = json.loads((tmp_path / ".cognitive-os" / "locks" / "adr-reservations.json").read_text())
     assert [item["number"] for item in data["reservations"]] == [2, 3]
@@ -48,7 +48,7 @@ def test_expired_reservation_does_not_block_monotonic_next_number(tmp_path: Path
                         "session_id": "old",
                         "owner": "test",
                         "expires_at": "2000-01-01T00:00:00+00:00",
-                        "path": "docs/adrs/ADR-001-expired.md",
+                        "path": "docs/02-Decisions/adrs/ADR-001-expired.md",
                     }
                 ]
             }
@@ -126,7 +126,7 @@ def test_cli_outputs_json(tmp_path: Path) -> None:
     assert result.returncode == 0
     payload = json.loads(result.stdout)
     assert payload["adr_id"] == "ADR-001"
-    assert payload["path"] == "docs/adrs/ADR-001-hook-execution-observability.md"
+    assert payload["path"] == "docs/02-Decisions/adrs/ADR-001-hook-execution-observability.md"
     assert payload["session_id"] == "cli-session"
 
 
@@ -146,7 +146,7 @@ def test_list_and_cleanup_expired_reservations(tmp_path: Path) -> None:
                         "session_id": "old",
                         "owner": "test",
                         "expires_at": "2000-01-01T00:00:00+00:00",
-                        "path": "docs/adrs/ADR-001-expired.md",
+                        "path": "docs/02-Decisions/adrs/ADR-001-expired.md",
                     },
                     {
                         "number": 2,
@@ -156,7 +156,7 @@ def test_list_and_cleanup_expired_reservations(tmp_path: Path) -> None:
                         "session_id": "new",
                         "owner": "test",
                         "expires_at": "2999-01-01T00:00:00+00:00",
-                        "path": "docs/adrs/ADR-002-active.md",
+                        "path": "docs/02-Decisions/adrs/ADR-002-active.md",
                     },
                 ]
             }

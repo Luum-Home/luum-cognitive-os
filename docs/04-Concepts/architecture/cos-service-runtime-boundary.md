@@ -113,7 +113,7 @@ Implemented files:
 - `scripts/cos-engram-cloud-enroll`
 - `scripts/engram-sync.sh`
 - `scripts/cos-engram-cloud-docker-smoke`
-- `docs/manual-tests/engram-cloud-docker-sync.md`
+- `docs/09-Quality/manual-tests/engram-cloud-docker-sync.md`
 
 This is a real service:
 
@@ -220,12 +220,12 @@ Allowed future wording after S7:
 - ADR-137 defines the trajectory from governance layer to embedded runtime.
 - ADR-140 implements the Docker Compose worker surface.
 - ADR-141 implements Engram Cloud replication.
-- `docs/architecture/headless-runtime-proof-strategy.md` defines how to prove
+- `docs/04-Concepts/architecture/headless-runtime-proof-strategy.md` defines how to prove
   the future service stages without polluting normal test lanes.
-- `docs/architecture/service-control-plane-research-2026-05-04.md` compares
+- `docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md` compares
   service-shaped agent runtimes and defines the credential-mode boundary for
   account-backed provider executors.
-- `docs/architecture/service-control-plane-implementation-plan.md` stages the
+- `docs/04-Concepts/architecture/service-control-plane-implementation-plan.md` stages the
   future `cosd` queue, leases, workers, provider adapters, artifact store, and
   propose-only output.
 

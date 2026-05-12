@@ -60,7 +60,7 @@ def repo_files(root: Path, patterns: Iterable[str]) -> list[Path]:
         "__pycache__",
         ".pytest_cache",
     }
-    ignored_prefixes = ("docs/reports/",)
+    ignored_prefixes = ("docs/06-Daily/reports/",)
     ignored_subtrees = (".claude/plugins/",)
     for pattern in patterns:
         for path in root.glob(pattern):
@@ -241,8 +241,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Map primitive-to-primitive/static repo usage")
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--target-family", choices=("scripts", "hooks", "skills", "rules"), default="scripts")
-    parser.add_argument("--json-out", default="docs/reports/primitive-usage-map-latest.json")
-    parser.add_argument("--md-out", default="docs/reports/primitive-usage-map-latest.md")
+    parser.add_argument("--json-out", default="docs/06-Daily/reports/primitive-usage-map-latest.json")
+    parser.add_argument("--md-out", default="docs/06-Daily/reports/primitive-usage-map-latest.md")
     parser.add_argument("--fail-orphans", action="store_true", help="Exit non-zero if any target has no consumer at all")
     return parser.parse_args()
 

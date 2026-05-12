@@ -165,7 +165,7 @@ ln -sf "$(brew --prefix)/bin/engram" ~/.local/bin/engram
 ln -sf "$(brew --prefix)/bin/engram" ~/go/bin/engram
 ```
 
-See `docs/tooling-update-protocol.md` for the full diagnosis + remediation pattern.
+See `docs/05-Methodology/root/tooling-update-protocol.md` for the full diagnosis + remediation pattern.
 
 ## MCP Server Lifecycle
 

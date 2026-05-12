@@ -27,4 +27,4 @@ retention:
   command: scripts/cos-rollback --prune --max-age-seconds 604800 --json
   default_max_age_seconds: 604800
   archive_first: false
-runbook: docs/runbooks/shadow-git-rollback.md
+runbook: docs/05-Methodology/runbooks/shadow-git-rollback.md

@@ -9,4 +9,4 @@
 | Add a skill | `/add-skill` | Guides you through creating a new skill |
 | Add an MCP server | `/add-mcp` | Guides you through integrating a new MCP server |
 
-For architectural context, see `docs/architecture.md`.
+For architectural context, see `docs/04-Concepts/architecture.md`.

@@ -168,13 +168,13 @@ When COS detects a global install exists, `cos init` skips installing universal 
 2. `cos init` (project) detects global install, installs only project-specific rules
 3. Both scopes accumulate in the context window automatically
 
-See `docs/global-vs-project-config.md` for the full analysis of Claude Code's merge behavior across all configuration types.
+See `docs/04-Concepts/root/global-vs-project-config.md` for the full analysis of Claude Code's merge behavior across all configuration types.
 
 ## References
 
 - `rules/RULES-COMPACT.md` — Compressed index of all rules
 - `rules/context-optimization.md` — Progressive loading protocol
 - `rules/capability-levels.md` — Auto-disable by model capability
-- `docs/safety-mesh.md` — The 12-layer defense system
-- `docs/global-vs-project-config.md` — Global vs project config analysis
+- `docs/04-Concepts/root/safety-mesh.md` — The 12-layer defense system
+- `docs/04-Concepts/root/global-vs-project-config.md` — Global vs project config analysis
 - `tests/behavior/test_rules_consolidation.py` — 42-test safety net
