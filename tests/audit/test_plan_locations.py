@@ -89,6 +89,17 @@ ALLOWLIST_RELATIVE: list[str] = [
     "rules/",
     # Patterns documentation — describes patterns, not plans
     "docs/patterns/",
+    # Reports and research artifacts produced by agents; not active plan inventory
+    "docs/reports/plans-discovery-triage-2026-05-11.md",
+    "docs/reports/p2-plan-reconciliation-2026-05-10.md",
+    "docs/reports/p3-plan-triage-2026-05-10.md",
+    "docs/reports/sprint-3-physical-rename-plan-2026-05-12.md",
+    # Archived reports directory; historical artifacts, not active plans
+    "docs/reports/archive/",
+    # Private research workspace (gitignored)
+    ".private/",
+    # Third-party test plan from external-source-cache; not an OS plan
+    ".cognitive-os/external-source-cache/",
 ]
 
 

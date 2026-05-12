@@ -20,6 +20,13 @@ HYphenated_SCRIPT_ALLOWLIST = {
     "primitive-coherence-audit.py",
     "skill-router-benchmark.py",
     "skill-router-retrieval-audit.py",
+    # Historical CLI entrypoints with operator-facing names; manifests, ADR receipts,
+    # and runbooks refer to these exact paths — rename would require coordinated doc update.
+    "cos-subprocess-timeout-audit.py",
+    "cos-doc-cross-reference-audit.py",
+    "cos-operational-guide-audit.py",
+    "cos-closure-trust-signal.py",
+    "cos-generate-notices.py",
 }
 
 

@@ -135,6 +135,11 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
     # SessionStart maintenance hook: rotates/scans JSONL metrics and is governed
     # by the disk-growth SLO rather than the hot-path hook latency ceiling.
     "metrics-rotation",
+    # Local workstation safety/skill-routing guards can scan git state or the
+    # full skill catalog; keep them in the SLO catalogue instead of the hot-path
+    # 1500 ms p95 contract until their caches are tightened.
+    "untracked-work-preservation-guard",
+    "skill-router-bash-gate",
 })
 
 

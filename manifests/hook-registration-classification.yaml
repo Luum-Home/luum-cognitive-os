@@ -394,3 +394,19 @@ entries:
     exits 0 always.
   next_action: Maintain. Future driver refactor may inline Python
     entries (ADR-008 cross-harness portability work).
+- path: hooks/clean-room-ast-similarity-gate.sh
+  status: manual_trigger
+  rationale: ADR-271 Hook #8 - AST-normalized similarity gate (Tier 2 clone detection). Manual trigger pending ADR-271 acceptance and soak period (Phase 3). Listed in hooks/_lib/registration-allowlist.txt until promoted.
+  next_action: Promote to an active security profile once soak validates false-positive rate.
+- path: hooks/auto-refine.sh
+  status: future
+  rationale: Per rules/ROADMAP.md (section 2.3) - built in UX2 sprint but registration status not yet verified; needs PostToolUse matcher definition before active projection.
+  next_action: Define trigger matcher and register once the refinement pipeline is proven.
+- path: hooks/auto-verify.sh
+  status: future
+  rationale: Per rules/ROADMAP.md (section 2.1) - built in UX2 sprint but registration status not yet verified; needs PostToolUse matcher definition before active projection.
+  next_action: Define trigger matcher and register once the verification pipeline is proven.
+- path: hooks/dod-gate.sh
+  status: future
+  rationale: Per rules/ROADMAP.md (section 2.2) - built in UX2 sprint; registration status unverified; needs PreToolUse or PostToolUse matcher definition.
+  next_action: Define trigger matcher and register once DoD-gate is production-ready.

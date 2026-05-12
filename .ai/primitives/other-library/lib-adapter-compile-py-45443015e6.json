@@ -40,8 +40,7 @@
         "lifecycle_derived_contract"
       ]
     },
-    "contract_id": null,
-    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "contract_id": "script-cos-adapter-compile",
     "evidence": {
       "behavior_evidence": "Fidelity-preserving adapter compiler API used by scripts/cos-adapter-compile and scripts/cos-adapters compile.",
       "evidence_commands": [
@@ -67,7 +66,7 @@
       "respect_declared_scope",
       "preserve_evidence_commands"
     ],
-    "source": "primitive-lifecycle-derived",
+    "source": "primitive-contract-registry",
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
