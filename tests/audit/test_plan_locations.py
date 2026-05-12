@@ -44,35 +44,62 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/rules-consolidation-plan.md",             # evaluate after migration (ADR-082 note)
     "docs/roadmap.md",                              # top-level human-readable entry point
     "docs/architecture/plans-reconciliation-2026-04-21.md",  # audit artifact → docs/reports/
+    "docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md",  # vaulted location during docs taxonomy migration
     "docs/release/roadmap-v1.0-full-e2e.md",        # release artifact outside plan scope
     "docs/reports/merge-readiness-master-plan-2026-04-23.md",  # report artifact
+    "docs/06-Daily/reports/merge-readiness-master-plan-2026-04-23.md",  # vaulted report artifact
     "docs/reports/next-session-plan-dormant-to-real.md",        # session artifact
+    "docs/06-Daily/reports/next-session-plan-dormant-to-real.md",  # vaulted session artifact
     "docs/architecture/primitive-coverage-spike-plan-2026-04.md",  # historical architecture spike report
+    "docs/04-Concepts/architecture/primitive-coverage-spike-plan-2026-04.md",  # vaulted architecture artifact
     "docs/architecture/startup-circuit-breaker-plan.md",  # ADR-101 design companion
+    "docs/04-Concepts/architecture/startup-circuit-breaker-plan.md",  # vaulted architecture artifact
     "docs/architecture/boring-reliability-control-plane.md",  # control-plane architecture, not an active plan
+    "docs/04-Concepts/architecture/boring-reliability-control-plane.md",  # vaulted architecture artifact
     "docs/architecture/dx-cloud-flow-bootstrap-plan.md",  # architecture bootstrap plan linked from docs index
+    "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md",  # vaulted architecture artifact
     "docs/architecture/harness-implementation-roadmap.md",  # architecture roadmap for harness rollout
+    "docs/04-Concepts/architecture/harness-implementation-roadmap.md",  # vaulted architecture artifact
     "docs/architecture/surface-5-and-secure-cosd-roadmap.md",  # architecture roadmap companion for Surface 5 and secure cosd ADRs
+    "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md",  # vaulted architecture artifact
     "docs/architecture/multi-ide-harness-implementation-plan.md",  # architecture plan linked from harness ADR batch
+    "docs/04-Concepts/architecture/multi-ide-harness-implementation-plan.md",  # vaulted architecture artifact
     "docs/architecture/primitive-duplication-audit-implementation-plan.md",  # ADR-149 implementation companion
+    "docs/04-Concepts/architecture/primitive-duplication-audit-implementation-plan.md",  # vaulted architecture artifact
     "docs/architecture/primitive-readiness-continuity-plan.md",  # primitive readiness architecture companion
+    "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md",  # vaulted architecture artifact
     "docs/architecture/service-control-plane-implementation-plan.md",  # service-control-plane architecture companion
+    "docs/04-Concepts/architecture/service-control-plane-implementation-plan.md",  # vaulted architecture artifact
     "docs/architecture/service-control-plane-research-2026-05-04.md",  # research artifact, not active plan
+    "docs/04-Concepts/architecture/service-control-plane-research-2026-05-04.md",  # vaulted architecture artifact
     "docs/architecture/external-tool-intelligence-plane.md",  # architecture companion, not active plan inventory
+    "docs/04-Concepts/architecture/external-tool-intelligence-plane.md",  # vaulted architecture artifact
     "docs/architecture/primitive-contract-registry-implementation-plan.md",  # ADR-256 architecture companion
+    "docs/04-Concepts/architecture/primitive-contract-registry-implementation-plan.md",  # vaulted architecture artifact
     "docs/adrs/ADR-248-control-plane-audit-loop.md",  # ADR title contains control-plane, not active plan inventory
+    "docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md",  # vaulted ADR artifact
     "docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # ADR title contains plane, not active plan inventory
+    "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # vaulted ADR artifact
     "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # ADR title includes control-plane, not active plan
+    "docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # vaulted ADR artifact
     "docs/manual-tests/remote-control-plane-boundary.md",  # manual-test artifact
+    "docs/09-Quality/manual-tests/remote-control-plane-boundary.md",  # vaulted manual-test artifact
     "docs/manual-tests/service-control-plane-proof-drills.md",  # manual-test artifact
+    "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md",  # vaulted manual-test artifact
     "docs/reports/remote-control-plane-alternatives-2026-05-05.md",  # report artifact
+    "docs/06-Daily/reports/remote-control-plane-alternatives-2026-05-05.md",  # vaulted report artifact
     "docs/architecture/expansion-hardening-plan.md",  # expansion-hardening architecture plan linked from ADR work
+    "docs/04-Concepts/architecture/expansion-hardening-plan.md",  # vaulted architecture artifact
     "docs/architecture/plans/",  # runtime contract plan docs are linked from product entrypoints
+    "docs/04-Concepts/architecture/plans/",  # vaulted runtime contract plan docs
     "docs/reports/pending-plans-audit-2026-04-30.md",  # audit report, not active plan
+    "docs/06-Daily/reports/pending-plans-audit-2026-04-30.md",  # vaulted audit report
     "docs/reports/task-and-plan-reconciliation-2026-05-05.md",  # reconciliation report, not active plan
+    "docs/06-Daily/reports/task-and-plan-reconciliation-2026-05-05.md",  # vaulted reconciliation report
     # docs/archive/plans/ contains files other than token-optimization-masterplan.md
     # that were NOT listed in ADR-082's migration table.  They remain in place.
     "docs/archive/plans/",   # directory prefix — any file under here is exempt
+    "docs/99-Archive/archive/plans/",   # vaulted archive plan artifacts
     # Skill example files that reference docs/plans/ as illustrative paths
     ".claude/plugins/",      # plugin skill templates use example paths
     # ADR file that defines the convention (self-referential, historic)
@@ -81,6 +108,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     ".cognitive-os/strategy/",  # private strategy/research workspace; not canonical active OS plans
     # Measurement / audit artifacts that document the old state
     "docs/measurements/",
+    "docs/06-Daily/measurements/",
     # Business-scoped files (ADR-082 §"Files that stay in place")
     "docs/business/",
     # Third-party reference / benchmark material — not project plans
@@ -89,13 +117,19 @@ ALLOWLIST_RELATIVE: list[str] = [
     "rules/",
     # Patterns documentation — describes patterns, not plans
     "docs/patterns/",
+    "docs/04-Concepts/patterns/",
     # Reports and research artifacts produced by agents; not active plan inventory
     "docs/reports/plans-discovery-triage-2026-05-11.md",
+    "docs/06-Daily/reports/plans-discovery-triage-2026-05-11.md",
     "docs/reports/p2-plan-reconciliation-2026-05-10.md",
+    "docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md",
     "docs/reports/p3-plan-triage-2026-05-10.md",
+    "docs/06-Daily/reports/p3-plan-triage-2026-05-10.md",
     "docs/reports/sprint-3-physical-rename-plan-2026-05-12.md",
+    "docs/06-Daily/reports/sprint-3-physical-rename-plan-2026-05-12.md",
     # Archived reports directory; historical artifacts, not active plans
     "docs/reports/archive/",
+    "docs/06-Daily/reports/archive/",
     # Private research workspace (gitignored)
     ".private/",
     # Third-party test plan from external-source-cache; not an OS plan
