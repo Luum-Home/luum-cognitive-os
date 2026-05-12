@@ -124,6 +124,46 @@ COS_ROOT="${COS_ROOT:-$(git rev-parse --show-toplevel)}"
 warnings=0
 
 # Gate 3a. New hook files MUST be registered in apply-efficiency-profile.sh
+# AND a security profile, OR carry a conditional_opt_in entry in
+# manifests/hook-registration-classification.yaml (ADR-275 §gate-symmetry).
+#
+# Rationale (ADR-275): two valid states for a hook on disk:
+#   1. ACTIVE — wired in apply-efficiency-profile.sh + projected to security
+#      profiles + .claude/settings.json. Fires on every session.
+#   2. CONDITIONAL_OPT_IN — present in hooks/ but explicitly classified as
+#      operator-promoted. Listed in hook-registration-classification.yaml.
+#      Does NOT fire by default. Operator wires via apply-efficiency-profile.sh
+#      maintainer when ready.
+#
+# Before this change the gate required (1) only; sub-agents staging
+# conditional_opt_in hooks were forced to add cosmetic metadata to the
+# security-profile JSONs (the "_conditional_opt_in hack" — ADR-275 §10).
+# Now the gate honors classification status from the canonical manifest.
+_hook_classification_status() {
+  # Args: $1 = hook basename (e.g. pending-truth-drift-detector.sh)
+  # Output: status string ("active" if found, else "absent")
+  local hookname="$1"
+  local manifest="$COS_ROOT/manifests/hook-registration-classification.yaml"
+  [ -f "$manifest" ] || { echo "absent"; return; }
+  python3 - "$manifest" "$hookname" <<'PYEOF' 2>/dev/null || echo "absent"
+import sys
+try:
+    import yaml
+except ImportError:
+    print("absent"); sys.exit(0)
+manifest_path, hook_target = sys.argv[1], sys.argv[2]
+try:
+    d = yaml.safe_load(open(manifest_path))
+except Exception:
+    print("absent"); sys.exit(0)
+for entry in (d or {}).get("entries", []) or []:
+    path = (entry.get("path") or "").rsplit("/", 1)[-1]
+    if path == hook_target:
+        print(entry.get("status") or "absent"); sys.exit(0)
+print("absent")
+PYEOF
+}
+
 staged_hooks=$(git diff --cached --name-only --diff-filter=A -- 'hooks/*.sh' || true)
 if [ -n "$staged_hooks" ]; then
   while IFS= read -r hook; do
@@ -132,10 +172,19 @@ if [ -n "$staged_hooks" ]; then
     # Skip _lib/ internal helpers (not meant to be registered)
     case "$hookname" in _*) continue ;; esac
     case "$hook" in hooks/_lib/*) continue ;; esac
+    # ADR-275 §gate-symmetry: honor conditional_opt_in classification.
+    classification=$(_hook_classification_status "$hookname")
+    case "$classification" in
+      conditional_opt_in|future|demoted|deprecated)
+        echo "Pre-commit: hook $hookname classified as '$classification' in hook-registration-classification.yaml — skipping projection gate (ADR-275)"
+        continue
+        ;;
+    esac
     if ! grep -q "$hookname" "$COS_ROOT/scripts/apply-efficiency-profile.sh" 2>/dev/null; then
       echo "BLOCKED: New hook $hookname is NOT registered in apply-efficiency-profile.sh — it will never fire"
-      echo "  Add it to the appropriate profile (lean/standard/full) in scripts/apply-efficiency-profile.sh"
-      echo "  Also add it to templates/security-profiles/*.json (minimal/standard/paranoid)"
+      echo "  Either:"
+      echo "    1. Register in scripts/apply-efficiency-profile.sh + templates/security-profiles/*.json (becomes ACTIVE)"
+      echo "    2. Add an entry to manifests/hook-registration-classification.yaml with status: conditional_opt_in (or future/demoted)"
       exit 1
     fi
     profile_sources=()
@@ -148,6 +197,7 @@ if [ -n "$staged_hooks" ]; then
     if ! grep -q "$hookname" "${profile_sources[@]}" 2>/dev/null; then
       echo "BLOCKED: New hook $hookname is NOT registered in security profile JSON"
       echo "  Add it to templates/security-profiles/*.json (minimal/standard/paranoid)"
+      echo "  OR classify as conditional_opt_in in manifests/hook-registration-classification.yaml"
       exit 1
     fi
   done <<< "$staged_hooks"
