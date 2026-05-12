@@ -90,7 +90,11 @@ and resolves the audit finding as `OK-documented-route` without pretending that
 the script has a skill consumer. A row with `resolution: internal_backend`
 records that a maintainer tool is an implementation backend owned by a wrapper
 or orchestration workflow, resolving it as `OK-internal-backend` instead of
-creating a low-value skill for an implementation detail.
+creating a low-value skill for an implementation detail. A row with
+`resolution: operator_workflow` accounts for top-level maintainer/operator
+workflows that should remain explicit workflows rather than narrow skills. Rows
+with `resolution: documented_maintainer_tool` or `resolution: test_fixture`
+account for active doc/test-backed tools without archiving references blindly.
 
 P2 is also refined so the audit does not force every maintainer helper into a
 new skill:
@@ -100,7 +104,10 @@ new skill:
 | `OK-classified-maintainer` | Maintainer tool has lifecycle metadata or an override rationale. | No skill required by default. |
 | `P2-runtime-route-undocumented` | Hook/router exposure but no explicit internal classification. | Document route, add lifecycle/override, or promote to a skill. |
 | `OK-internal-backend` | Maintainer tool has a manual `internal_backend` disposition. | No skill required; keep the wrapper/workflow as the invocation surface. |
-| `P2-script-orchestrated` | Script consumers but no hook/router/skill and no explicit classification. | Classify as internal backend or promote a grouped skill. |
+| `OK-operator-workflow` | Maintainer tool has a manual `operator_workflow` disposition. | No skill required by default; keep it as an explicit operator workflow. |
+| `OK-documented-maintainer` | Maintainer tool has active docs/manifests/tests evidence but no direct skill route. | No skill required until product value justifies promotion. |
+| `OK-test-fixture` | Maintainer tool is a test fixture or smoke target. | No skill required by default. |
+| `P2-script-orchestrated` | Script consumers but no hook/router/skill and no explicit classification. | Classify as internal backend/operator workflow or promote a grouped skill. |
 | `P2-evidence-only` | Docs/tests evidence but no runtime route or explicit classification. | Classify internal, archive stale docs, or promote. |
 | `P2-doc-only` / `P2-test-only` / `P2-config-only` | Single-family evidence only. | Treat as likely internal/test/stale unless product value justifies promotion. |
 
