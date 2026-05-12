@@ -1,0 +1,98 @@
+{
+  "audited_closures": [
+    {
+      "id": "adr-slice:ADR-174",
+      "item_type": "adr-slice",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "adr": "ADR-174",
+        "kind": "adr_status",
+        "result": "accepted"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": "docs/adrs/ADR-174c-validator-blocking-promotion.md",
+      "status": "verified-done"
+    },
+    {
+      "id": "plan:agent-escalation-capabilities:lib-model-router-py-upgrade-chain-is-strict-invers",
+      "item_type": "plan-checkbox",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "kind": "file_exists",
+        "path": "lib/model_router.py",
+        "result": "present"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L412",
+      "status": "verified-done"
+    },
+    {
+      "id": "plan:agent-escalation-capabilities:rules-agent-escalation-md-updated-with-capability-",
+      "item_type": "plan-checkbox",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "kind": "file_exists",
+        "path": "rules/agent-escalation.md",
+        "result": "present"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L442",
+      "status": "verified-done"
+    },
+    {
+      "id": "plan:agent-escalation-capabilities:templates-agent-preamble-md-documents-all-new-sign",
+      "item_type": "plan-checkbox",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "kind": "file_exists",
+        "path": "templates/agent-preamble.md",
+        "result": "present"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": ".cognitive-os/plans/features/agent-escalation-capabilities.md:L441",
+      "status": "verified-done"
+    },
+    {
+      "id": "plan:hook-architecture-v2:docs-hook-security-profiles-md-comparison-matrix-i",
+      "item_type": "plan-checkbox",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "kind": "file_exists",
+        "path": "docs/hook-security-profiles.md",
+        "result": "present"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L668",
+      "status": "verified-done"
+    },
+    {
+      "id": "plan:hook-architecture-v2:hook-counts-documented-in-docs-hook-security-profi",
+      "item_type": "plan-checkbox",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "kind": "file_exists",
+        "path": "docs/hook-security-profiles.md",
+        "result": "present"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": ".cognitive-os/plans/features/hook-architecture-v2.md:L667",
+      "status": "verified-done"
+    },
+    {
+      "id": "plan:so-existential-validation-2026-04-24:update-skills-catalog-compact-md-generator-to-list",
+      "item_type": "plan-checkbox",
+      "last_verified": "2026-05-12T17:07:03Z",
+      "proof": {
+        "kind": "file_exists",
+        "path": "skills/CATALOG-COMPACT.md",
+        "result": "present"
+      },
+      "reason": "retroactive baseline for verified-done item closed manually before ADR-275 closure-trail enforcement",
+      "source": ".cognitive-os/plans/features/so-existential-validation-2026-04-24.md:L125",
+      "status": "verified-done"
+    }
+  ],
+  "contract_ref": "ADR-275 closure-trail trust signal",
+  "generated_at": "2026-05-12T17:05:32Z",
+  "schema_version": "closure-trust-baseline/v1"
+}

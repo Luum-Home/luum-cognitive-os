@@ -1,12 +1,12 @@
 {
   "schema_version": "operational-guide-audit/v1",
-  "generated_at": "2026-05-12T17:06:36Z",
+  "generated_at": "2026-05-12T17:12:06Z",
   "contract_ref": "ADR-274",
   "summary": {
-    "total_adrs": 286,
+    "total_adrs": 287,
     "by_verdict": {
       "not-applicable": 221,
-      "compliant": 64,
+      "compliant": 65,
       "exempt": 1
     },
     "by_priority": {}
@@ -4584,6 +4584,22 @@
       "implementation_files_count": 11,
       "has_operational_guide": true,
       "subsection_count": 4,
+      "exemption_reason": null,
+      "subject_to_contract": true,
+      "verdict": "compliant",
+      "priority": null
+    },
+    {
+      "adr": "ADR-277-documentation-truth-control",
+      "adr_num": 277,
+      "path": "docs/adrs/ADR-277-documentation-truth-control.md",
+      "tier": "maintainer",
+      "status": "accepted",
+      "date": "2026-05-12",
+      "age_days": 0,
+      "implementation_files_count": 9,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
       "verdict": "compliant",

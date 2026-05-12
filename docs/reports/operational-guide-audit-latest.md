@@ -1,4 +1,4 @@
-# Operational Guide Audit — 2026-05-12T17:06:36Z
+# Operational Guide Audit — 2026-05-12T17:12:06Z
 
 > Per ADR-274. Schema: `operational-guide-audit/v1`.
 > Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence
@@ -23,13 +23,13 @@ Priority for backfill (only applies to `missing`/`partial`):
 Per ADR-274: rules without enforcement are honored ~50% historically;
 this audit + `adr-section-validator.sh` extension close the loop.
 
-**Total ADRs scanned**: 286
+**Total ADRs scanned**: 287
 
 ## By verdict
 
 | Verdict | Count |
 |---|---:|
-| compliant | 64 |
+| compliant | 65 |
 | exempt | 1 |
 | not-applicable | 221 |
 
