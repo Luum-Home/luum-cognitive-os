@@ -118,7 +118,7 @@ Tradeoffs:
   entries are added.
 - Exhaustive argument-space proof remains out of scope for this first ratchet.
 
-## Validation
+## Verification
 
 ```bash
 python3 scripts/primitive_authority_audit.py --project-dir . --json --fail-on-block

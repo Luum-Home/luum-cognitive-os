@@ -298,3 +298,11 @@ in this ADR.
 *This ADR references a private clean-room research dossier whose specific
 file paths and section headings are intentionally redacted from this public
 record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd3b).*
+
+## Verification
+
+```bash
+# Verify ADR-259 implementation files exist
+grep -rn 'ADR-259' docs/ scripts/ tests/ | head -20
+```
+

@@ -211,6 +211,11 @@ Each hook ships with golden-file tests proving:
 
 `scripts/cos-adoption-debt-audit` ships with a fixture-driven test: 3 annex-F files with mixed `reviewed-by-legal` values → audit reports correct counts.
 
+```bash
+# Verify ADR-267 implementation files exist
+grep -rn 'ADR-267' docs/ scripts/ tests/ | head -20
+```
+
 ## Related
 
 - `rules/license-policy.md` — the policy table this enforcement validates against

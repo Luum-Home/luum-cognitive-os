@@ -98,3 +98,11 @@ Reversal preserves the ADR paper trail because ADRs 259-264 were never touched.
 - `~/.engram/engram.db.backup-2026-05-11` — pre-sanitization Engram database
 - Filter-repo runs: two passes documented in the audit report (pass 1: commit-message rewrites; pass 2: file renames + header rewrites)
 - Engram SQL queries used: documented in the audit report appendix
+
+## Verification
+
+```bash
+# Verify ADR-268 implementation files exist
+grep -rn 'ADR-268' docs/ scripts/ tests/ | head -20
+```
+

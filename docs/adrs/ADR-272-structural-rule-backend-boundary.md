@@ -77,3 +77,11 @@ Negative:
 - COS still maintains harness projection code for now.
 - A future backend adapter needs explicit mapping, licensing review, and parity
   tests before use.
+
+## Verification
+
+```bash
+# Verify ADR-272 implementation files exist
+grep -rn 'ADR-272' docs/ scripts/ tests/ | head -20
+```
+

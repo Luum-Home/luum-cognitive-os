@@ -94,7 +94,7 @@ Wire the output into ACC as adapter `documentation_truth` so stale or contradict
 
 The system is claim-driven, not free-prose-driven: only claims declared in the manifest are enforced. Adding new volatile families is the operator's job when drift is observed.
 
-## Validation
+## Verification
 
 The implementation is validated by:
 
@@ -103,3 +103,16 @@ The implementation is validated by:
 - `tests/unit/test_acc_documentation_truth_adapter.py`
 - `python3 scripts/documentation_truth_audit.py --project-dir . --json --fail-on-block`
 - ACC loading adapter `documentation_truth`
+
+```bash
+# Verify ADR-277 implementation files exist
+ls -la manifests/documentation-truth-claims.yaml
+ls -la scripts/documentation_truth_audit.py
+ls -la scripts/cos-documentation-truth-audit
+ls -la docs/architecture/documentation-truth-control.md
+ls -la docs/reports/documentation-truth-latest.json
+ls -la docs/reports/documentation-truth-latest.md
+ls -la tests/contracts/test_documentation_truth_audit.py
+ls -la tests/unit/test_documentation_truth_audit.py
+```
+

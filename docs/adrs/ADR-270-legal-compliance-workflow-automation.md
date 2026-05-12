@@ -209,3 +209,11 @@ legal pipeline completes.
 - `rules/license-policy.md` — BLOCKER/SAFE classification used by hook #8
 - USPTO PatentsView API: https://search.patentsview.org/api/v1/patent/
 - USPTO TSDR Data API: https://developer.uspto.gov/api-catalog/tsdr-data-api
+
+## Verification
+
+```bash
+# Verify ADR-270 implementation files exist
+grep -rn 'ADR-270' docs/ scripts/ tests/ | head -20
+```
+
