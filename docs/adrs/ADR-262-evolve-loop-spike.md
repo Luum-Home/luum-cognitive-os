@@ -282,7 +282,7 @@ Spike window: 3-4 days, time-boxed.
 **Day 1 — Queue foundation**
 - `lib/evolve_task_queue.py`: `EvolveProposal` dataclass, SQLite schema, all five public
   operations, unit tests (`tests/unit/test_evolve_task_queue.py`)
-- `scripts/cos-evolve-tick.py`: `list` and `approve`/`reject` commands only (no `run` yet)
+- `scripts/cos_evolve_tick.py`: `list` and `approve`/`reject` commands only (no `run` yet)
 
 **Day 2 — LLM extraction**
 - `lib/evolve_skill_review.py`: session log reader, `lib.dispatch` call, JSON response parser,
@@ -292,7 +292,7 @@ Spike window: 3-4 days, time-boxed.
 - Unit tests with mocked dispatch responses (`tests/unit/test_evolve_skill_review.py`)
 
 **Day 3 — Hook integration and CLI**
-- `scripts/cos-evolve-tick.py`: `run` command wired to `evolve_skill_review`
+- `scripts/cos_evolve_tick.py`: `run` command wired to `evolve_skill_review`
 - `hooks/auto-skill-generator.sh`: turn-counter gate, background invocation of `run`, kill
   switch check
 - Integration test: `tests/integration/test_evolve_tick_integration.py` — end-to-end from
@@ -343,7 +343,7 @@ Checklist (Annex F §5):
 - [x] Implementation language (Python + bash) differs from reference (TypeScript)
 - [x] Schema column names independently derived: `proposal_id`, `kind`, `title`, `rationale`,
       `draft`, `confidence`, `fingerprint`, `status`, `reject_reason` (none copied from holaOS)
-- [x] Directory structure independently chosen: `lib/evolve_*.py`, `scripts/cos-evolve-tick.py`
+- [x] Directory structure independently chosen: `lib/evolve_*.py`, `scripts/cos_evolve_tick.py`
       (not mirroring `runtime/api-server/src/evolve*.ts`)
 - [x] Audit trail: engram observation to be created at `topic_key: compliance/holaos-adoption/evolve-loop`
       after first verified commit

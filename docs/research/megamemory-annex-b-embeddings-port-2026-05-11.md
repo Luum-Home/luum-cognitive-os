@@ -135,7 +135,7 @@ The embedding model is exercised on every write path that touches a semantic fie
 - `lib/engram_lifecycle.py` (~~/lib/engram_lifecycle.py:299-361~~) implements `search()` with **FTS5-only** ranking plus a `graph_walk=True` BFS step that joins via `memory_relations`.
 - No `embedding` column exists on `observations` today. No in-process embedder is wired in.
 - The optional Cognee HTTP integration (`lib/cognee_client.py`) is the only path to vector recall, and it is an external dependency with its own runtime.
-- The LightRAG dual-level slice is **planned but not implemented** (`docs/architecture/memory-layer-evolution-sdd.md:84`, `docs/reports/cross-check-A-memory-2026-05-08.md` §LightRAG).
+- The LightRAG dual-level slice is **planned but not implemented** (`docs/architecture/memory-layer-evolution-sdd.md`, `docs/reports/cross-check-A-memory-2026-05-08.md` §LightRAG).
 
 The MegaMemory primitive plugs into precisely the gap LightRAG needs filled: a no-key, no-network, low-footprint sentence embedder that lives in the same process as the memory store.
 
