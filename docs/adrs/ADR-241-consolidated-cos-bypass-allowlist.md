@@ -20,6 +20,8 @@ implementation_files:
   - tests/behavior/test_bypass_resolver.py
 tier: maintainer
 tags: [governance, hooks, dx, postmortem-2026-05-08]
+partial_remaining: Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion
+partial_remaining_basis: specific classification_basis
 ---
 # ADR-241: Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist
 

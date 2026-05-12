@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Add pytest tests asserting old JSONL rows still parse + migrate cleanly.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-028c — Addendum: MetricEvent schema versioning + migration strategy

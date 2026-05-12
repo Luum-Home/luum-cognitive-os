@@ -2,14 +2,14 @@
 adr: 257
 title: Primitive Contract Registry Phase 1
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-05-09'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted/implemented text with explicit partial/deferred scope
+classification_basis: Phase 1 registry scope is implemented; ADR-256 closes runtime evidence phases separately.
 ---
 
 # ADR-257 — Primitive Contract Registry Phase 1
@@ -108,7 +108,7 @@ until a real runtime adapter/smoke exists.
 - ADR-256 now has a concrete Phase 1 source of truth.
 - The first five primitives have portable contracts instead of only lifecycle and
   hook metadata.
-- Future projection/fidelity reporting can consume a deterministic registry.
+- Projection/fidelity reporting now consumes a deterministic registry through `scripts/primitive_projection_fidelity.py`.
 - Structural-only IDEs cannot accidentally inherit enforcement claims from
   Claude/Codex/OpenCode.
 - OpenCode's plugin-capable runtime surface is represented without overclaiming
@@ -120,11 +120,8 @@ until a real runtime adapter/smoke exists.
   This is accepted for Phase 1 because the contract adds fields lifecycle rows do
   not carry: required capabilities, portable triggers, reason codes, and
   per-harness fidelity.
-- The registry is not yet consumed by `scripts/cos_init.py`; projection remains
-  profile/driver-driven until a later ADR-256 phase.
-- Runtime ledgers are still future work: this ADR does not implement
-  `primitive-interventions.jsonl`, `codebase-itinerary.jsonl`, or trace joiner
-  integration.
+- The registry is still not the direct input to every `scripts/cos_init.py` projection path; installer projection remains profile/driver-driven while ADR-256 reporting consumes registry-backed contracts.
+- Runtime ledgers were deferred out of ADR-257's Phase 1 scope and are now closed by ADR-256 follow-on implementation: `primitive-interventions.jsonl`, `codebase-itinerary.jsonl`, projection fidelity reports, and `lib/trace_joiner.py`.
 
 ## Alternatives rejected
 

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 162 pending /repo-scout).
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-217 — Cross-Stack Adoption Truth Audit Toolchain

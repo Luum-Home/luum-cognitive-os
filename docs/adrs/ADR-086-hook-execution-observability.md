@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin — this is deferred.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-086: Hook Execution Observability

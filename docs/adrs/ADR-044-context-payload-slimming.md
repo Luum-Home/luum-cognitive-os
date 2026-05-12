@@ -13,6 +13,9 @@ implementation_files:
   - skills/CATALOG-COMPACT.md
 tier: maintainer
 tags: [context, startup, lazy-loading, slash-commands, skills]
+partial_remaining: Deferred tools list (tool names only, schemas loaded via ToolSearch) 6.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-044: Context Payload Slimming — Non-Rule Startup Payloads

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: Rollback remains cheap.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-058 — Observability Migration: Langfuse → Arize Phoenix

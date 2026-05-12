@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Deferred from this slice:'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-081 — Codex Harness Adapter

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules.
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-015: Rules-to-Hooks Migration -- From Context to Enforcement

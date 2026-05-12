@@ -17,6 +17,8 @@ implementation_files:
   - tests/behavior/test_release_freeze.py
 tier: maintainer
 tags: [release, history-rewrite, force-push, freeze, multi-agent-safety, postmortem-2026-05-08]
+partial_remaining: Slice A read-only/lock-file freeze exists; future slices explicitly remain open
+partial_remaining_basis: specific classification_basis
 ---
 
 <!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->

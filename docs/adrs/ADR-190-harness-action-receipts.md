@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: '`hooks/direct-main-guard.sh` emits `vcs.push.blocked` and `vcs.bypass`;'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-190: Harness Action Receipts and VCS Event Telemetry

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: '`.cognitive-os/` directory remains the canonical state (works in any tool) 2.'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-021: Vendor-Agnostic State with Provider Adapters

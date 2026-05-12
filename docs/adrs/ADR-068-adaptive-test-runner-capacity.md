@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: Test outcomes remain deterministic regardless of detected capacity.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-068: Adaptive Test Runner Capacity Detection

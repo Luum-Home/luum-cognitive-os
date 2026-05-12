@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: The approval gate prevents silent runtime drift while still surfacing
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-083 — Governed Self-Improvement Loop

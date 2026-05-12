@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit pending/deferred/planned scope
+partial_remaining: (similar to how `repair-status` warns about pending repairs).
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-090: Auto-skill repair via failure-threshold signals

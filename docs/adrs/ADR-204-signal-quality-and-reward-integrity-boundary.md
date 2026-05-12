@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.
+partial_remaining_basis: generic audit fallback
 ---
 
 # ADR-204 — Signal Quality and Reward Integrity Boundary

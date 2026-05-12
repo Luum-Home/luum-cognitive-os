@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: remains accessible via `--profile legacy` for CI environments without a
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-042: Valkey Local Daemon — Extract from Docker (D34 Partial)

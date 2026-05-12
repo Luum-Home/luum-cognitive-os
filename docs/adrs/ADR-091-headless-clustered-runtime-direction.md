@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: 'Status**: Accepted as direction, not yet implemented as a production cluster'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-091: Headless and Clustered Runtime Direction

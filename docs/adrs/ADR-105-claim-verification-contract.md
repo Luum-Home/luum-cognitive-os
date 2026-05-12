@@ -18,6 +18,9 @@ implementation_files:
   - lib/orchestrator_verify.py
 tier: strict
 tags: [verification, claims, orchestrator, bilateral]
+partial_remaining: Add domain-specific verifiers when new claim verbs need richer bilateral predicates beyond the current generic verification hooks/scripts.
+partial_remaining_basis: manual correction from ADR Status section
+remaining_in_scope: true
 ---
 
 # ADR-105 — Bilateral Claim Verification Contract

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Resource-governance follow-up remains: continue reducing selector duplication by exposing focused test-plan APIs and requiring future gates to prefer persisted reports before direct scanner/executor fallback.'
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-073: Test Architecture Role Registry

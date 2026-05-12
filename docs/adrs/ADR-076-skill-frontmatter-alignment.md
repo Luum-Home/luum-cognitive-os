@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: is unrecognized, so this is safe but not restrictive in Hermes. A follow-up
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-076: SKILL.md Frontmatter Alignment with Hermes Spec

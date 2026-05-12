@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit pending/deferred/planned scope
+partial_remaining: No item is "documented as future work"; all land in this ADR's scope.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-061 — Focus Narrative and External Evidence

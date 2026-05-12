@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Tier-1 learning-loop follow-ups remain out of scope: deploy promotion paths and extend user-prompt capture with feedback_type wiring.'
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-074: Tier-0 Learning-Loop Closure

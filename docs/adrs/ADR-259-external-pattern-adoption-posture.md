@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: documentation text) is categorically blocked. A formal clean-room process
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-259 — holaOS Adoption Posture: Patterns-Only Library with Clean-Room Rewrite

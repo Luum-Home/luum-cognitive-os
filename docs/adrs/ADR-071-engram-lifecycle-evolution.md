@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Phases 2–4 are scoped and planned but not implemented until Phase 1 is verified.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-071 — Engram Lifecycle Evolution via Wrapper Layer

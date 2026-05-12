@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: perspective, because the tool was not blocked and produced no alert.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-094: Agent Git Operations Safety — Layered Prevention of Destructive Git Ops

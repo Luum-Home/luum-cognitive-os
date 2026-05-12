@@ -16,6 +16,8 @@ implementation_files:
   - tests/unit/test_primitive_behavior_audit.py
 tier: maintainer
 tags: [testing, primitive-coherence, behavioral-proof, anti-overfit, control-plane]
+partial_remaining: Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope
+partial_remaining_basis: specific classification_basis
 ---
 
 <!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->

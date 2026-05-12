@@ -16,6 +16,8 @@ implementation_files:
   - lib/validation_lanes.py
 tier: strict
 tags: [hardening, foundation, validation, invariants]
+partial_remaining: program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-121: Foundation Hardening Program

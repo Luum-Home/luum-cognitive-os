@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: explicit prose status migration for previously prose-only ADR
+partial_remaining: Deferred. Design only.**
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-056 — Adaptive Agent() dispatch: 3-tier auto-switch Claude → Qwen

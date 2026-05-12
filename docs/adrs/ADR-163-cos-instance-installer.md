@@ -17,6 +17,8 @@ implementation_files:
   - tests/contracts/test_cos_instance_profiles.py
 tier: maintainer
 tags: [instance-installer, headless-runtime, docker, cosd, service-control-plane, portability]
+partial_remaining: first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-163: Cognitive OS Instance Installer

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: Phase 5 canonical migration remains deferred; .ai stays a generated non-canonical overlay until a future ADR explicitly promotes it.
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-258 — Portable `.ai` Overlay for Agentic Primitives

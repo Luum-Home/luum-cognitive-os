@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit pending/deferred/planned scope
+partial_remaining: ADR-195 accepted a read-only Bubble Tea Surface 5 MVP and deferred mutation
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-197: Surface 5 Operable Actions

@@ -13,6 +13,9 @@ implementation_files:
   - docs/adrs/ADR-172-multi-surface-ui-architecture.md
 tier: maintainer
 tags: [ui, surface-5, research-gate, governance, multi-surface]
+partial_remaining: follow-up ADR exists.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 # ADR-173: Surface 5 Research Gate — No Custom TUI/UI Adoption Without Source-Level Proof
 

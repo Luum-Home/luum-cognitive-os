@@ -19,6 +19,8 @@ implementation_files:
   - tests/unit/test_rule_md_routing_validator_hook.py
 tier: maintainer
 tags: [rules, routing, agentic-primitives, hooks, user-prompt-submit, governance]
+partial_remaining: initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-179: Auto-Derived Rule Routing for Agent-Instruction Rules

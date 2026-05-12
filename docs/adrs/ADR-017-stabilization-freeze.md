@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.
+partial_remaining_basis: generic audit fallback
 ---
 
 # ADR-017: Stabilization Freeze -- No New Features Until Wiring Complete

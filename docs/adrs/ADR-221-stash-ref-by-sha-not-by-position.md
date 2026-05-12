@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Remaining follow-up: update `stash_provenance` / SessionStart reapply to persist and consume `stash_sha`; add grep-based audit tests forbidding position refs in apply/drop/show code paths.'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-221 — Stash References by SHA, Not by Position

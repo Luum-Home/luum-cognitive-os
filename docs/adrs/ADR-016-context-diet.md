@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Dynamic per-task rule selection remains partial; contextual rule loading exists, but selection overhead still needs to stay below the cost of compact always-active context.
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-016: Context Diet -- Token Optimization Strategy

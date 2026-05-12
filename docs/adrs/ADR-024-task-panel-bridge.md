@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Deferred**: valuable but orthogonal; doesn''t solve in-session visibility'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-024: Task Panel Bridge — Correlate COS Tasks with Claude Code tool_use_id

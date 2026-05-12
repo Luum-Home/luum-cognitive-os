@@ -18,6 +18,8 @@ implementation_files:
   - tests/unit/test_capability_matrix.py
 tier: maintainer
 tags: [capability-coverage, feature-reality, claims, matrix, audit, control-plane]
+partial_remaining: Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete
+partial_remaining_basis: specific classification_basis
 ---
 
 <!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->

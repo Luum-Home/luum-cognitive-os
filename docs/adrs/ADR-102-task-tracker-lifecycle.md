@@ -11,6 +11,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Queue draining unblocked:** stale records no longer cause permanent saturation.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-102 — Task tracker lifecycle: pending → in_progress → terminal, with PID capture and zombie reaper

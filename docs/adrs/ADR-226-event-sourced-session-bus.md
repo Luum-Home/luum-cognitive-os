@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: 'Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections.'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-226 — Event-Sourced Session Bus

@@ -18,6 +18,9 @@ implementation_files:
   - scripts/cos_work_inventory.py
 tier: strict
 tags: [coordination, multi-session, concurrency, primitives]
+partial_remaining: Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2).
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-116 — Multi-Session Coordination Primitives

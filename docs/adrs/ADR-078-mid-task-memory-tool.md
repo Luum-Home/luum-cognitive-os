@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Automated per-turn invocation (the full Hermes pattern) is a follow-up item and
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-078: Mid-Task Memory Tool (Port from Hermes)

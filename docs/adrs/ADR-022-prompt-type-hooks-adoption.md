@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: The legacy Bash hook still runs in parallel as the 4.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-022: Prompt-Type Hooks Adoption (Haiku-Evaluated Advisories)

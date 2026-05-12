@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: 'Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented'
+partial_remaining: Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-236 — Deferred Tool Loading + ToolSearch Adoption

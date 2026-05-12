@@ -16,6 +16,9 @@ implementation_files:
   - scripts/manifest-check.sh
 tier: maintainer
 tags: [dependencies, installation, portability, cross-device, manifests]
+partial_remaining: '`scripts/setup.sh` delegation remain incremental follow-up work.'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-168: Cross-Device Dependency Installation Contract

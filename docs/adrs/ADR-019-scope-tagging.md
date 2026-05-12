@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full agentic primitive audit was complete.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-019: Scope Tagging -- Agentic Primitive Audience Classification

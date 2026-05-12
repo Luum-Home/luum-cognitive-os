@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: '`{blocked, override, bypassed}` and context fields (`reason`, `context`,'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-055b — Destructive Git Op Block (User Context Elevation)

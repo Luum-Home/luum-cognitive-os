@@ -15,6 +15,8 @@ implementation_files:
   - docs/architecture/service-control-plane-implementation-plan.md
 tier: maintainer
 tags: [task-lifecycle, interruptions, questions, worktrees, branches, pull-requests, cosd]
+partial_remaining: implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-162: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol

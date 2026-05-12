@@ -16,6 +16,8 @@ implementation_files:
   - tests/unit/test_control_plane_audit.py
 tier: maintainer
 tags: [control-plane, audits, hooks, scheduler, primitive-coherence, adr-239-plus]
+partial_remaining: hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open
+partial_remaining_basis: specific classification_basis
 ---
 
 <!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->

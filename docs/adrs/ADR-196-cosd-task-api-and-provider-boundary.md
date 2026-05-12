@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit pending/deferred/planned scope
+partial_remaining: or drains one queued task, while provider calls remain blocked unless an operator
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-196: cosd Task API and Provider Boundary

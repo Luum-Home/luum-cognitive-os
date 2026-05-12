@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: 'Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented'
+partial_remaining: Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-225 — Branch-Per-Task Mode

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-025: Install/Update Loop — Closing the Advisory-Only Gap

@@ -10,6 +10,10 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit pending/deferred/planned scope
+partial_remaining: License enforcement for additional blocked tools is tracked by ADR-267; this ADR remains partial only for the broader compliance-enforcement follow-up beyond the original Redis/MinIO/AutoCodeRover replacements.
+remaining_in_scope: true
+partial_remaining_basis: manual follow-up mapping after audit
+follow_up_adr: ADR-267
 ---
 
 # ADR-006: AGPL License Compliance -- Replace Redis and MinIO

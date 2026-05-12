@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: Phoenix/OpenTelemetry may visualize traces, but local trace JSON remains the
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-205 — Cross-Stream Trace Joiner and Flight Recorder

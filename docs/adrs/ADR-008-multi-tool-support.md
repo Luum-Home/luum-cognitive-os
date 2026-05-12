@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: 'architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation'
+partial_remaining: architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-008: Multi-Tool Support -- Not Claude Code-Only

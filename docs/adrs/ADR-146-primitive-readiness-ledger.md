@@ -152,4 +152,4 @@ This keeps the ledger honest for VS Code/Copilot, Cursor, Windsurf, Google Antig
 - `docs/reports/primitive-readiness-ledger-skills-latest.json`
 - `docs/reports/primitive-readiness-ledger-rules-latest.json`
 
-Consumer-project projection proof is separated from ledger classification in `docs/architecture/consumer-project-primitive-accessibility.md`. Current automated projection proof signs only Claude Code and OpenAI Codex default installs through `tests/behavior/test_consumer_project_projection.py`; other IDEs remain unsigned until they get explicit projection drivers and temp-project proof.
+Consumer-project projection proof is separated from ledger classification in `docs/architecture/consumer-project-primitive-accessibility.md`. Current automated projection proof signs native lifecycle/settings installs for Claude Code and OpenAI Codex, and structural project-local projection for the implemented harnesses covered by `tests/behavior/test_consumer_project_projection.py`. Structural projection is not runtime enforcement; planned harnesses remain unsigned until they get explicit projection drivers and temp-project proof.

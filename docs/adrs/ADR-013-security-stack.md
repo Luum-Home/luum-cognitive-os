@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.
+partial_remaining_basis: generic audit fallback
 ---
 
 # ADR-013: Security Stack -- 8 Layers, 32 Tools

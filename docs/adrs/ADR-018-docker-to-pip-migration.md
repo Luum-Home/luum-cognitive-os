@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Phase 3 local/optional service treatment remains the open scope: services that cannot be replaced by pip libraries must stay explicitly governed as local services.'
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-018: Docker-to-pip Migration -- Service Infrastructure Change

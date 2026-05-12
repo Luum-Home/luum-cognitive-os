@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 — see ADR-171), and ADR-045.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-048 — Docker Container Image Freshness

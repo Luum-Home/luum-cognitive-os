@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: Session filesystem cleanup is archive-first and content-aware; pending requests/tasks keep the session directory.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety

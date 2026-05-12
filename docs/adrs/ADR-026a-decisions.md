@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted/implemented text with explicit partial/deferred scope
+partial_remaining: 'Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist.'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-026a: R2 and R3 Design Review — Proposed Decisions (Addendum)

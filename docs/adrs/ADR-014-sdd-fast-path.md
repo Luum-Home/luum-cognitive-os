@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
+partial_remaining: Runtime model-capability auto-calibration remains partial; the pipeline uses configurable thresholds rather than automatically calibrated fast/full-path selection.
+remaining_in_scope: true
+partial_remaining_basis: manual correction after heuristic review
 ---
 
 # ADR-014: SDD Fast Path -- Skip Phases for Capable Models

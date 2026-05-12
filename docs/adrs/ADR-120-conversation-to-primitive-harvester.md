@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: 'primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation'
+partial_remaining: primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-120: Conversation-to-Primitive Harvester

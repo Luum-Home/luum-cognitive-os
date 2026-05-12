@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit pending/deferred/planned scope
+partial_remaining: Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run.
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-118 — Multi-IDE Swarm Safety Testbed

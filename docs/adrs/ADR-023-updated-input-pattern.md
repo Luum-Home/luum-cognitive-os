@@ -10,6 +10,8 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: 'updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present'
+partial_remaining: updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present
+partial_remaining_basis: specific classification_basis
 ---
 
 # ADR-023: Mutate, Don't Block — `updatedInput` for PreToolUse Hooks

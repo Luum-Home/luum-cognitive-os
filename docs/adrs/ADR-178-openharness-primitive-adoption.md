@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: 'OpenHarness adoption is pattern/primitive adoption work; later projections exist but full adoption is not closed here'
+partial_remaining: 'AgentHookDefinition**: intentionally deferred (not in scope for ADR-178);'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-178 — OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile)

@@ -10,6 +10,9 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: implementation evidence plus partial/deferred/future signal
+partial_remaining: 'Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision.'
+remaining_in_scope: true
+partial_remaining_basis: explicit body remaining signal
 ---
 
 # ADR-026: R2 and R3 Consolidation — Design Review
