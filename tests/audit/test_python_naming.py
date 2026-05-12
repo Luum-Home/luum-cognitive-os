@@ -28,6 +28,8 @@ HYphenated_SCRIPT_ALLOWLIST = {
     "cos-closure-trust-signal.py",
     "cos-generate-notices.py",
     "cos-orphan-process-audit.py",
+    # ADR-282 implementation audit CLI; manifests and runbooks reference this exact path.
+    "cos-adr-implementation-audit.py",
 }
 
 

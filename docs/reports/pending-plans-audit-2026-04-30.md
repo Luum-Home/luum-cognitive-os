@@ -102,6 +102,7 @@ Based on ROI (impact / effort), small-to-large:
 
 ---
 
+<!-- decision-deferred: awaiting operator triage — questions are open and require operator input before decisions can be recorded -->
 ## Open Questions for Operator
 
 1. **so-existential-validation deadline** — plan targets `dormant_aspirational_ratio < 0.25` by 2026-05-08. That is 8 days from today. Should this sprint be started immediately, or is the deadline soft?
