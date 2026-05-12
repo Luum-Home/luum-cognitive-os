@@ -65,8 +65,7 @@ Until this ADR moves from **Proposed → Accepted**, the mandatory-minimum cap m
 ## Verification
 
 ```bash
-# Verify ADR-265 implementation files exist
-grep -rn 'ADR-265' docs/ scripts/ tests/ | head -20
+python3 -m pytest tests/audit/test_adr_contracts.py -q -k ADR-265
 ```
 
 ## Open questions

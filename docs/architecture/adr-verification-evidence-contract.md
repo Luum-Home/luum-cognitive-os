@@ -40,10 +40,16 @@ For ADR-067 and later:
 3. If `implementation_status` is `implemented` or `partial`, verification MUST
    include at least one strong command or an explicit `verification.level` waiver
    explaining why behavior cannot be executed locally.
-4. If `implementation_files` is non-empty, verification SHOULD include presence
-   or compile checks for those files, but presence alone is not enough for a
-   runtime behavior claim.
-5. If the ADR is `proposed`, `exploration`, or `not-applicable`, verification may
+4. If `implementation_files` is non-empty, every declared path MUST resolve
+   on disk. This is unconditional: `status: accepted` with
+   `implementation_status: implemented` is still a disk-verifiable claim. Globs
+   are allowed only when they match at least one repository path. Presence alone
+   is not enough for a runtime behavior claim.
+5. A §Operational Guide backfill MUST NOT treat the ADR's own §Decision prose
+   as implementation evidence. Operational guidance may explain how to operate
+   verified files, tests, hooks, or scripts; it cannot promote or justify
+   `implementation_status: implemented` by restating the decision.
+6. If the ADR is `proposed`, `exploration`, or `not-applicable`, verification may
    prove decision-state/document integrity instead of runtime behavior, but it
    must say so explicitly.
 
@@ -112,3 +118,6 @@ python3 -m pytest tests/audit/test_adr_contracts.py -q -k 'ADR_262 or verificati
 4. Backfill existing weak ADRs with stronger commands where evidence exists.
 5. Wire the audit into ACC or the documentation-truth lane after the backfill
    stabilizes.
+6. Keep `scripts/audit_adrs.py` as the minimum hard gate for declared
+   `implementation_files` existence; specialized audits may add allowlists or
+   richer behavior checks, but must not weaken the disk-existence contract.

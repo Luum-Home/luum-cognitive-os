@@ -278,8 +278,10 @@ available for emergencies but creates a paper trail.
 ## Verification
 
 ```bash
-# Verify ADR-269 implementation files exist
-grep -rn 'ADR-269' docs/ scripts/ tests/ | head -20
+bash -n hooks/history-rewrite-documented.sh scripts/cos-history-rewrite-audit
+python3 -m py_compile lib/history_sanitization.py lib/history_rewrite_ledger.py
+bash tests/integration/test_history_rewrite_documented_hook.sh
+python3 -m pytest tests/contracts/test_history_rewrite_ledger_append_only.py -q
 ```
 
 ## Operational Guide

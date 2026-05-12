@@ -445,7 +445,7 @@ record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd
 ## Verification
 
 ```bash
-# Verify ADR-263 implementation files exist
-grep -rn 'ADR-263' docs/ scripts/ tests/ | head -20
+python3 -m py_compile lib/tool_replay_ledger.py lib/tool_budget_catalog.py
+python3 -m pytest tests/unit/test_tool_replay_ledger.py -q
 ```
 

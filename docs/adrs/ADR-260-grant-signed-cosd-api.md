@@ -466,7 +466,7 @@ record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd
 ## Verification
 
 ```bash
-# Verify ADR-260 implementation files exist
-grep -rn 'ADR-260' docs/ scripts/ tests/ | head -20
+python3 -m py_compile lib/cosd_grant.py lib/cosd_grant_store.py
+python3 -m pytest tests/unit/test_cosd_grant.py tests/red_team/portability/test_cosd-secure-api.py -q
 ```
 

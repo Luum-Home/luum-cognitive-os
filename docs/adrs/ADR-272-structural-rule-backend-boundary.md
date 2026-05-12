@@ -92,7 +92,6 @@ Negative:
 ## Verification
 
 ```bash
-# Verify ADR-272 implementation files exist
-grep -rn 'ADR-272' docs/ scripts/ tests/ | head -20
+python3 -m pytest tests/contracts/test_structural_rule_backend_boundary.py -q
 ```
 

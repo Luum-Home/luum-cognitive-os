@@ -413,7 +413,7 @@ record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd
 ## Verification
 
 ```bash
-# Verify ADR-264 implementation files exist
-grep -rn 'ADR-264' docs/ scripts/ tests/ | head -20
+python3 -m py_compile lib/tool_result_envelope.py lib/agent_runner.py lib/dispatch_helper.py
+python3 -m pytest tests/unit/test_tool_result_envelope.py tests/red_team/portability/test_tool_result_envelope.py tests/red_team/portability/test_dispatch_helper.py tests/red_team/portability/test_agent_runner.py -q
 ```
 

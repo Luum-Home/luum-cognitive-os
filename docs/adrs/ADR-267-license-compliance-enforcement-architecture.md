@@ -219,8 +219,10 @@ Each hook ships with golden-file tests proving:
 `scripts/cos-adoption-debt-audit` ships with a fixture-driven test: 3 annex-F files with mixed `reviewed-by-legal` values → audit reports correct counts.
 
 ```bash
-# Verify ADR-267 implementation files exist
-grep -rn 'ADR-267' docs/ scripts/ tests/ | head -20
+for hook in hooks/dependency-license-classifier.sh hooks/external-cache-content-leak.sh hooks/adoption-freeze-gate.sh hooks/spdx-header-required.sh hooks/attribution-completeness-validator.sh hooks/research-to-runtime-firewall.sh; do
+  bash -n "$hook"
+done
+python3 -m py_compile scripts/cos_verbatim_copy_detector.py scripts/cos_lib_symlink_invariant_audit.py
 ```
 
 ## Related

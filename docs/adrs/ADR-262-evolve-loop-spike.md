@@ -416,7 +416,6 @@ record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd
 ## Verification
 
 ```bash
-# Verify ADR-262 implementation files exist
-grep -rn 'ADR-262' docs/ scripts/ tests/ | head -20
+python3 -m pytest tests/audit/test_adr_contracts.py -q -k ADR-262
 ```
 

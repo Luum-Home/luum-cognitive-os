@@ -471,7 +471,7 @@ record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd
 ## Verification
 
 ```bash
-# Verify ADR-261 implementation files exist
-grep -rn 'ADR-261' docs/ scripts/ tests/ | head -20
+python3 -m py_compile lib/memory_governance.py lib/memory_retriever.py lib/engram_lifecycle.py
+python3 -m pytest tests/unit/test_memory_governance.py tests/red_team/portability/test_engram_lifecycle.py -q
 ```
 

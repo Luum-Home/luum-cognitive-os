@@ -109,7 +109,7 @@ Reversal preserves the ADR paper trail because ADRs 259-264 were never touched.
 ## Verification
 
 ```bash
-# Verify ADR-268 implementation files exist
-grep -rn 'ADR-268' docs/ scripts/ tests/ | head -20
+python3 -m py_compile lib/history_sanitization.py lib/history_rewrite_ledger.py
+python3 -m pytest tests/contracts/test_history_rewrite_ledger_append_only.py tests/unit/test_history_sanitization.py tests/behavior/test_history_sanitization_cli.py -q
 ```
 
