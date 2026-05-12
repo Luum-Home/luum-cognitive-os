@@ -3,7 +3,8 @@
 adr: 245
 title: Chaos Tests Run with Read-Only Production Source
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'chaos read-only workspace fixture and regression tests satisfy the ADR source-protection scope'
 date: 2026-05-08
 supersedes: []
 superseded_by: null

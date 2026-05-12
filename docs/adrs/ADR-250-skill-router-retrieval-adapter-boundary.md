@@ -3,7 +3,8 @@
 adr: 250
 title: Skill Router Retrieval Adapter Boundary
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'boundary manifest, audit, benchmark fixtures, and tests implement the retrieval adapter boundary scope'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

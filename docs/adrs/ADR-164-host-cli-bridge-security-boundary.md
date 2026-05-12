@@ -3,7 +3,8 @@
 adr: 164
 title: Host CLI Bridge Security Boundary
 status: implemented
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'ADR scope is the design-only security contract; future host bridge execution is a separate implementation scope'
 date: 2026-05-05
 supersedes: []
 superseded_by: null

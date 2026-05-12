@@ -3,7 +3,8 @@
 adr: 247
 title: Manifest-Driven Postmortem Regression Audits and External Tool Adapters
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'manifest-driven audit, runner, runbook, and verification commands implement the policy correction scope'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

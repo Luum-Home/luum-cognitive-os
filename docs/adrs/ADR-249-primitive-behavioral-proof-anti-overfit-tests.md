@@ -4,6 +4,7 @@ adr: 249
 title: Primitive Behavioral Proof and Anti-Overfit Testing
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

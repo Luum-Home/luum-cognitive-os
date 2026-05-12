@@ -3,7 +3,8 @@
 adr: 172
 title: Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian
 status: accepted
-implementation_status: partial
+implementation_status: not-applicable
+classification_basis: 'architecture/doctrine ADR assigns existing surfaces; implementation evidence is a snapshot rather than a direct work item'
 date: 2026-05-05
 supersedes: [ADR-170]
 superseded_by: null

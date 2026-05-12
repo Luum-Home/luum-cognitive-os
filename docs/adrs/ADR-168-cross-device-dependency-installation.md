@@ -4,6 +4,7 @@ adr: 168
 title: Cross-Device Dependency Installation Contract
 status: implemented
 implementation_status: partial
+classification_basis: 'manifest-driven dry-run installer exists; setup delegation and richer automation remain follow-up'
 date: 2026-05-05
 supersedes: []
 superseded_by: null

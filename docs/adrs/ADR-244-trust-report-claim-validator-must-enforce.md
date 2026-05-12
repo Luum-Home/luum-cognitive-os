@@ -3,7 +3,8 @@
 adr: 244
 title: Trust Report Claim-Validator Must Enforce, Not Advise
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'claim enforcer, blocking hook behavior, rule update, and behavior tests satisfy the ADR enforcement scope'
 date: 2026-05-08
 supersedes: []
 superseded_by: null

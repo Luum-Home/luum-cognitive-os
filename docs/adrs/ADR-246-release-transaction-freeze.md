@@ -4,6 +4,7 @@ adr: 246
 title: Release Transaction Freeze for Destructive and Public-State Operations
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A read-only/lock-file freeze exists; future slices explicitly remain open'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

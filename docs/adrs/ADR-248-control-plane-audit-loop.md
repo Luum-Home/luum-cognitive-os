@@ -4,6 +4,7 @@ adr: 248
 title: Control-Plane Audit Loop for ADR-239+ Primitive Drift
 status: accepted
 implementation_status: partial
+classification_basis: 'hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

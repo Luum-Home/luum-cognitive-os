@@ -4,6 +4,7 @@ adr: 179
 title: Auto-Derived Rule Routing for Agent-Instruction Rules
 status: accepted
 implementation_status: partial
+classification_basis: 'initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete'
 date: 2026-05-05
 supersedes: []
 superseded_by: null

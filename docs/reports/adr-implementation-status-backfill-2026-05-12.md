@@ -19,12 +19,12 @@ This report records the completed implementation-status backfill after the ADR s
 
 | Bucket | Count |
 |---|---:|
-| Active / Implemented | 89 |
-| Active / Partial | 123 |
+| Active / Implemented | 97 |
+| Active / Partial | 114 |
 | Active / Partial / Blocked | 1 |
 | Active / Deferred | 1 |
 | Active / Planned | 1 |
-| Active / Not Applicable | 28 |
+| Active / Not Applicable | 29 |
 | Active / Unclassified | 0 |
 
 ## Decision Rules Used
@@ -130,7 +130,7 @@ This report records the completed implementation-status backfill after the ADR s
 | [102](../adrs/ADR-102-task-tracker-lifecycle.md) | `accepted` | `partial` | implementation evidence plus partial/deferred/future signal | Accepted. |
 | [103](../adrs/ADR-103-audit-contract-lane-recovery.md) | `accepted` | `not-applicable` | accepted decision/policy record with no explicit implementation surface | Accepted. |
 | [104](../adrs/ADR-104-startup-circuit-breaker.md) | `accepted` | `implemented` | implementation/shipped/delivered evidence | **Author**: Maintainer |
-| [105](../adrs/ADR-105-claim-verification-contract.md) | `implemented` | `partial` |  | **Author**: Maintainer |
+| [105](../adrs/ADR-105-claim-verification-contract.md) | `implemented` | `partial` | ADR status explicitly says Partially Implemented; verification hooks/scripts exist but the contract is not marked closed | **Author**: Maintainer |
 | [106](../adrs/ADR-106-multi-session-safety-primitives.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Author**: Maintainer |
 | [107](../adrs/ADR-107-human-approved-rollback.md) | `accepted` | `partial` | accepted record with explicit partial/phase scope | **Author**: Maintainer |
 | [108](../adrs/ADR-108-concurrent-agent-safety-layer.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Author**: Maintainer + Cognitive OS |
@@ -141,11 +141,11 @@ This report records the completed implementation-status backfill after the ADR s
 | [113](../adrs/ADR-113-validation-capsule-liveness.md) | `accepted` | `implemented` | implementation/shipped/delivered evidence | Accepted — 2026-05-02. |
 | [114](../adrs/ADR-114-hook-quality-system.md) | `accepted` | `not-applicable` | accepted decision/policy record with no explicit implementation surface | Accepted — 2026-05-02. |
 | [115](../adrs/ADR-115-safe-worktree-sweeper.md) | `accepted` | `implemented` | implementation/shipped/delivered evidence | Accepted — 2026-05-02. Scope: OS core. Related: ADR-109, ADR-111, ADR-113. |
-| [116](../adrs/ADR-116-multi-session-coordination-primitives.md) | `accepted` | `partial` |  | **Author**: Maintainer (operator) + Software Architect (analysis) |
+| [116](../adrs/ADR-116-multi-session-coordination-primitives.md) | `accepted` | `partial` | multi-session primitive set spans multiple phases; implemented files exist but several coordination surfaces remain rollout scope | **Author**: Maintainer (operator) + Software Architect (analysis) |
 | [118](../adrs/ADR-118-multi-ide-swarm-testbed.md) | `accepted` | `partial` | accepted record with explicit pending/deferred/planned scope | Accepted (2026-05-02). This is the automated acceptance-test umbrella for ADR-116 and its transactional coordination rollout. |
 | [119](../adrs/ADR-119-session-filesystem-reaper.md) | `implemented` | `implemented` |  | Accepted — 2026-05-02. Related: ADR-102, ADR-106, ADR-111, ADR-116, ADR-117. |
 | [120](../adrs/ADR-120-conversation-to-primitive-harvester.md) | `accepted` | `not-applicable` | accepted decision/policy record with no explicit implementation surface | Accepted — 2026-05-02 |
-| [121](../adrs/ADR-121-foundation-hardening-program.md) | `accepted` | `partial` |  | Accepted — 2026-05-02 |
+| [121](../adrs/ADR-121-foundation-hardening-program.md) | `accepted` | `partial` | program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open | Accepted — 2026-05-02 |
 | [122](../adrs/ADR-122-preflight-gate-refinements.md) | `accepted` | `not-applicable` | accepted decision/policy record with no explicit implementation surface | **Author**: Maintainer (operator) |
 | [123](../adrs/ADR-123-operational-stability-friction-reduction.md) | `implemented` | `implemented` |  | Implemented — 2026-05-08 status sync |
 | [127](../adrs/ADR-127-active-primitive-index.md) | `accepted` | `partial` | implementation evidence plus partial/deferred/future signal | Accepted for Phase 1 DX. |
@@ -181,16 +181,16 @@ This report records the completed implementation-status backfill after the ADR s
 | [159](../adrs/ADR-159-agents-md-native-structural-harness-batch.md) | `accepted` | `implemented` |  | **Accepted** — 2026-05-05 |
 | [160](../adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md) | `implemented` | `implemented` |  | **Implemented for structural projection and Kiro design scope** — 2026-05-05. The seven rules/MCP harness projections and Kiro adapter design artifacts exist an |
 | [161](../adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md) | `implemented` | `implemented` |  | **Implemented for boundary/inventory scope** — 2026-05-05. The remote ingress versus provider/executor adapter boundary, alternatives manifest, report, manual t |
-| [162](../adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | `implemented` | `partial` |  | **Implemented for contract scope** — 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enfor |
-| [163](../adrs/ADR-163-cos-instance-installer.md) | `accepted` | `partial` |  | **Accepted** — 2026-05-05 |
-| [164](../adrs/ADR-164-host-cli-bridge-security-boundary.md) | `implemented` | `partial` |  | **Implemented for the design-only security contract scope** — 2026-05-05. |
+| [162](../adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | `implemented` | `partial` | implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up | **Implemented for contract scope** — 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enfor |
+| [163](../adrs/ADR-163-cos-instance-installer.md) | `accepted` | `partial` | first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked | **Accepted** — 2026-05-05 |
+| [164](../adrs/ADR-164-host-cli-bridge-security-boundary.md) | `implemented` | `implemented` | ADR scope is the design-only security contract; future host bridge execution is a separate implementation scope | **Implemented for the design-only security contract scope** — 2026-05-05. |
 | [165](../adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md) | `implemented` | `implemented` |  | **Implemented for the proof-drill registry and smoke opt-in primitive scope** — 2026-05-05. The ADR closes the governed registry, agent procedure, manual proof  |
 | [166](../adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md) | `implemented` | `implemented` |  | **Implemented for the first enforcement slice** — 2026-05-05. |
 | [167](../adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md) | `implemented` | `implemented` |  | **Implemented for the proof-drill selector, evidence recorder, ACC adapter, instance-profile projection, and runtime-flag registry scope** — 2026-05-05. Live pr |
-| [168](../adrs/ADR-168-cross-device-dependency-installation.md) | `implemented` | `partial` |  | **Implemented for the manifest-driven dry-run installer and credential-safe |
+| [168](../adrs/ADR-168-cross-device-dependency-installation.md) | `implemented` | `partial` | manifest-driven dry-run installer exists; setup delegation and richer automation remain follow-up | **Implemented for the manifest-driven dry-run installer and credential-safe |
 | [169](../adrs/ADR-169-dashboard-formal-demotion.md) | `accepted` | `implemented` |  | Accepted. |
 | [171](../adrs/ADR-171-reject-paperclip-integration.md) | `accepted` | `implemented` |  | Accepted. Supersedes ADR-043. |
-| [172](../adrs/ADR-172-multi-surface-ui-architecture.md) | `accepted` | `partial` |  | Accepted. Supersedes ADR-170. |
+| [172](../adrs/ADR-172-multi-surface-ui-architecture.md) | `accepted` | `not-applicable` | architecture/doctrine ADR assigns existing surfaces; implementation evidence is a snapshot rather than a direct work item | Accepted. Supersedes [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md). |
 | [173](../adrs/ADR-173-surface-5-research-gate.md) | `accepted` | `deferred` |  | **Accepted** — 2026-05-06. |
 | [174](../adrs/ADR-174-auto-derived-primitive-routing.md) | `accepted` | `implemented` |  | As of 2026-05-05, `lib/skill_router.py` contains a hand-maintained |
 | [174b](../adrs/ADR-174b-prevention-followup.md) | `accepted` | `implemented` |  | Accepted. This ADR owns Part A (auto-generation includes `routing_patterns:`) and the implemented propose-only soak evaluator. The actual advisory-to-blocking p |
@@ -198,7 +198,7 @@ This report records the completed implementation-status backfill after the ADR s
 | [176](../adrs/ADR-176-skillstore-and-analysis-trigger.md) | `accepted` | `implemented` |  | Accepted. |
 | [177](../adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md) | `accepted` | `implemented` |  | Accepted. |
 | [178](../adrs/ADR-178-openharness-primitive-adoption.md) | `accepted` | `not-applicable` | accepted decision/policy record with no explicit implementation surface | **Deciders**: Maintainer |
-| [179](../adrs/ADR-179-rules-auto-derive-routing.md) | `accepted` | `partial` |  | **Accepted** — 2026-05-05 |
+| [179](../adrs/ADR-179-rules-auto-derive-routing.md) | `accepted` | `partial` | initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete | **Accepted** — 2026-05-05 |
 | [180](../adrs/ADR-180-lifecycle-promotion-activation.md) | `accepted` | `implemented` |  | Accepted. |
 | [181](../adrs/ADR-181-adr-relevance-suggester.md) | `accepted` | `implemented` |  | Accepted — 2026-05-05 |
 | [182](../adrs/ADR-182-branch-ownership-lock.md) | `accepted` | `implemented` |  | **Accepted.** Implemented as the ADR-182 branch-lock hook, library, CLI wrappers, and contract tests. Filed in response to the cross-session collision incident |
@@ -242,30 +242,30 @@ This report records the completed implementation-status backfill after the ADR s
 | [223](../adrs/ADR-223-agent-lifecycle-reconstruction.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: `docs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/research/orchestration-gaps/background-agent-patterns.md`, and the operator |
 | [225](../adrs/ADR-225-branch-per-task-mode.md) | `accepted` | `partial` | explicit not implemented yet signal | Worktree-per-write-agent isolates filesystem mutations, but branch identity still needs a stable operator-visible contract. Without a branch-per-task policy, de |
 | [226](../adrs/ADR-226-event-sourced-session-bus.md) | `accepted` | `partial` | accepted/implemented text with explicit partial/deferred scope | **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a |
-| [227](../adrs/ADR-227-shadow-git-checkpoint-substrate.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: `docs/research/orchestration-gaps/replay-timeline-architectures.md`. Cline, Herme |
+| [227](../adrs/ADR-227-shadow-git-checkpoint-substrate.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: [`docs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Herme |
 | [228](../adrs/ADR-228-retry-contract-and-cost-budget.md) | `accepted` | `implemented` | explicit accepted/implemented status | Accepted — Slices A–F implemented (2026-05-07) |
-| [230](../adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: `docs/research/orchestration-gaps/agent-to-agent-handoff.md`. Production failure rate of |
-| [231](../adrs/ADR-231-mcp-server-surface-for-cos-primitives.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: `docs/research/orchestration-gaps/mcp-as-orchestration-bus.md` |
+| [230](../adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: [`docs/research/orchestration-gaps/agent-to-agent-handoff.md`](../research/orchestration-gaps/agent-to-agent-handoff.md). Production failure rate of |
+| [231](../adrs/ADR-231-mcp-server-surface-for-cos-primitives.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: [`docs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md) |
 | [232](../adrs/ADR-232-sandbox-adapter-tiers.md) | `accepted` | `implemented` | explicit accepted/implemented status | COS needs filesystem/process permission boundaries that are enforced below the prompt layer. Prior-art research recommends OS-native sandbox tiers first: Bubble |
-| [233](../adrs/ADR-233-cross-session-agent-team-file-ipc.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: `docs/research/orchestration-gaps/cross-session-agent-teams.md` |
+| [233](../adrs/ADR-233-cross-session-agent-team-file-ipc.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: [`docs/research/orchestration-gaps/cross-session-agent-teams.md`](../research/orchestration-gaps/cross-session-agent-teams.md) |
 | [234](../adrs/ADR-234-approval-policies-as-code.md) | `accepted` | `partial` | explicit not implemented yet signal | COS has many shell hooks with embedded allow/deny logic. Research recommended a COS-native YAML policy evaluator before adopting heavy engines such as OPA, Ceda |
-| [235](../adrs/ADR-235-detached-agent-daemon.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: `docs/research/orchestration-gaps/background-agent-patterns.md` |
+| [235](../adrs/ADR-235-detached-agent-daemon.md) | `accepted` | `implemented` | explicit accepted/implemented status | **Source**: [`docs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md) |
 | [236](../adrs/ADR-236-deferred-tool-loading-and-toolsearch.md) | `accepted` | `partial` | explicit not implemented yet signal | The orchestration research recommended adopting the ToolSearch/deferred-loading pattern instead of loading every tool schema into every session. This is not a s |
 | [237](../adrs/ADR-237-test-execution-efficiency-protocol.md) | `accepted` | `implemented` | explicit accepted/implemented status | Cognitive OS test lanes are intentionally broad: unit, behavior, integration, chaos, benchmark, audit, smoke, cross-harness, and release gates. Running `make te |
 | [239](../adrs/ADR-239-isolated-worktree-default-for-write-agents.md) | `accepted` | `implemented` |  | Accepted. This ADR records the corrective decision after the 2026-05-08 |
 | [240](../adrs/ADR-240-primitive-coherence-audit-and-ownership-manifest.md) | `accepted` | `implemented` | explicit accepted/implemented status | status: accepted |
-| [241](../adrs/ADR-241-consolidated-cos-bypass-allowlist.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. Shared resolver, cheatsheet, target hook integration, and behavior tests are active; broad ecosystem bypass consolidation remain |
-| [242](../adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sani |
-| [243](../adrs/ADR-243-post-rewrite-push-collision-exception.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching po |
-| [244](../adrs/ADR-244-trust-report-claim-validator-must-enforce.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` bloc |
-| [245](../adrs/ADR-245-chaos-tests-readonly-production-source.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, |
-| [246](../adrs/ADR-246-release-transaction-freeze.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitiv |
-| [247](../adrs/ADR-247-manifest-driven-postmortem-regression-audits.md) | `accepted` | `partial` |  | Accepted. This ADR documents the policy correction made after ADR-242 through |
-| [248](../adrs/ADR-248-control-plane-audit-loop.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. |
-| [249](../adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. |
-| [250](../adrs/ADR-250-skill-router-retrieval-adapter-boundary.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. |
-| [251](../adrs/ADR-251-agent-orchestration-adapter-boundary.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. |
-| [252](../adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | `accepted` | `partial` |  | Accepted — Slice A implemented. |
+| [241](../adrs/ADR-241-consolidated-cos-bypass-allowlist.md) | `accepted` | `partial` | Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion | Accepted — Slice A implemented. Shared resolver, cheatsheet, target hook integration, and behavior tests are active; broad ecosystem bypass consolidation remain |
+| [242](../adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md) | `accepted` | `implemented` | wrapper, library delegation, recovery artifacts, idempotency guard, and behavior tests satisfy the ADR acceptance criteria | Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sani |
+| [243](../adrs/ADR-243-post-rewrite-push-collision-exception.md) | `accepted` | `implemented` | history rewrite receipt and push-collision exception are implemented; future expires_at is an enhancement not core closure | Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching po |
+| [244](../adrs/ADR-244-trust-report-claim-validator-must-enforce.md) | `accepted` | `implemented` | claim enforcer, blocking hook behavior, rule update, and behavior tests satisfy the ADR enforcement scope | Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` bloc |
+| [245](../adrs/ADR-245-chaos-tests-readonly-production-source.md) | `accepted` | `implemented` | chaos read-only workspace fixture and regression tests satisfy the ADR source-protection scope | Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, |
+| [246](../adrs/ADR-246-release-transaction-freeze.md) | `accepted` | `partial` | Slice A read-only/lock-file freeze exists; future slices explicitly remain open | Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitiv |
+| [247](../adrs/ADR-247-manifest-driven-postmortem-regression-audits.md) | `accepted` | `implemented` | manifest-driven audit, runner, runbook, and verification commands implement the policy correction scope | Accepted. This ADR documents the policy correction made after ADR-242 through |
+| [248](../adrs/ADR-248-control-plane-audit-loop.md) | `accepted` | `partial` | hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open | Accepted — Slice A implemented. |
+| [249](../adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | `accepted` | `partial` | Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope | Accepted — Slice A implemented. |
+| [250](../adrs/ADR-250-skill-router-retrieval-adapter-boundary.md) | `accepted` | `implemented` | boundary manifest, audit, benchmark fixtures, and tests implement the retrieval adapter boundary scope | Accepted — Slice A implemented. |
+| [251](../adrs/ADR-251-agent-orchestration-adapter-boundary.md) | `accepted` | `implemented` | boundary manifest, audit, benchmark fixtures, and tests implement the orchestration adapter boundary scope | Accepted — Slice A implemented. |
+| [252](../adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | `accepted` | `partial` | Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete | Accepted — Slice A implemented. |
 | [254](../adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) | `accepted` | `partial` | accepted record with explicit partial/phase scope | status: accepted |
 | [255](../adrs/ADR-255-feature-to-external-tool-due-diligence.md) | `accepted` | `implemented` | explicit accepted/implemented status | Accepted — Slice A implemented |
 | [256](../adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) | `accepted` | `implemented` | explicit accepted/implemented status | Accepted — implemented through Phases 1–6; all primitive-lifecycle rows are registry-backed; OpenCode signed smoke covers the first 20 runtime primitives |
@@ -281,8 +281,12 @@ This report records the completed implementation-status backfill after the ADR s
 | [269](../adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md) | `accepted` | `implemented` |  | Accepted (2026-05-11). Implementation lands in companion commit set. |
 | [270](../adrs/ADR-270-legal-compliance-workflow-automation.md) | `accepted` | `implemented` |  | Accepted (2026-05-11). Implementation lands in companion commit. |
 | [272](../adrs/ADR-272-structural-rule-backend-boundary.md) | `accepted` | `not-applicable` | accepted decision/policy record with no explicit implementation surface | Status: Accepted |
-| [273](../adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md) | `accepted` | `partial` |  | Accepted — Slices A + B implemented; Slice C designed and staged (deployment requires operator authorization via `COS_ALLOW_PROTECTED_CONFIG_WRITE=1` per `hooks |
-| [274](../adrs/ADR-274-operational-guide-required-for-capability-adrs.md) | `accepted` | `partial` | already-frontmatter tracked ADR with explicit implemented slice | Accepted — Slice A implemented (audit + Phase 1 enforcement). |
+| [273](../adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md) | `accepted` | `partial` | Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization | Accepted — Slices A + B implemented; Slice C designed and staged (deployment requires operator authorization via `COS_ALLOW_PROTECTED_CONFIG_WRITE=1` per `hooks |
+| [274](../adrs/ADR-274-operational-guide-required-for-capability-adrs.md) | `accepted` | `partial` | Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope | Accepted — Slice A implemented (audit + Phase 1 enforcement). |
+
+## 2026-05-12 Partial Basis Audit
+
+Reviewed the 23 tracked `Active / Partial` ADRs that had no `classification_basis`. Nine were reclassified out of `partial` where the ADR's own scope/evidence supported closure: eight to `implemented` and one architecture/doctrine ADR to `not-applicable`. The remaining fourteen now carry explicit basis text instead of a blank classification.
 
 ## Remaining Work
 

@@ -3,7 +3,8 @@
 adr: 243
 title: Post-Rewrite Push-Collision Check Exception
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'history rewrite receipt and push-collision exception are implemented; future expires_at is an enhancement not core closure'
 date: 2026-05-08
 supersedes: []
 superseded_by: null

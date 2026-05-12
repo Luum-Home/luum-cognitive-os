@@ -4,6 +4,7 @@ adr: 241
 title: Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion'
 date: 2026-05-08
 supersedes: []
 superseded_by: null

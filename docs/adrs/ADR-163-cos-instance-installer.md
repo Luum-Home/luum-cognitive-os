@@ -4,6 +4,7 @@ adr: 163
 title: Cognitive OS Instance Installer
 status: accepted
 implementation_status: partial
+classification_basis: 'first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked'
 date: 2026-05-05
 supersedes: []
 superseded_by: null

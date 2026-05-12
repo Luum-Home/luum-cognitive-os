@@ -4,6 +4,7 @@ adr: 162
 title: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol
 status: implemented
 implementation_status: partial
+classification_basis: 'implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up'
 date: 2026-05-05
 supersedes: []
 superseded_by: null

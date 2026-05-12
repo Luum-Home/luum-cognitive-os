@@ -3,6 +3,7 @@ adr: 274
 title: Operational Guide Required for Maintainer-Tier Capability ADRs
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope'
 date: 2026-05-12
 supersedes: []
 superseded_by: null
