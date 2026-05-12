@@ -1,3 +1,17 @@
+---
+adr: 42
+title: Valkey Local Daemon — Extract from Docker (D34 Partial)
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-042: Valkey Local Daemon — Extract from Docker (D34 Partial)
 
 **Date**: 2026-04-20

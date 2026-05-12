@@ -1,3 +1,17 @@
+---
+adr: 228
+title: Retry Contract + Cost Session Budget (consolidated)
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-228 — Retry Contract + Cost Session Budget (consolidated)
 
 ## Status

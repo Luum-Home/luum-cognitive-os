@@ -1,3 +1,18 @@
+---
+adr: 272
+title: Structural Rule Backend Boundary
+status: accepted
+implementation_status: not-applicable
+date: '2026-05-12'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-272: Structural Rule Backend Boundary
 
 Status: Accepted

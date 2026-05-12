@@ -1,3 +1,17 @@
+---
+adr: 15
+title: Rules-to-Hooks Migration -- From Context to Enforcement
+status: accepted
+implementation_status: partial
+date: '2026-04-10'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-015: Rules-to-Hooks Migration -- From Context to Enforcement
 
 **Date:** 2026-04-10

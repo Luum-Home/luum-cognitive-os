@@ -1,3 +1,17 @@
+---
+adr: 49
+title: LLM Gateway Selection + Overflow Provider Strategy
+status: accepted
+implementation_status: implemented
+date: '2026-04-21'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-049 — LLM Gateway Selection + Overflow Provider Strategy
 
 ## Status

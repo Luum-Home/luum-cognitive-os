@@ -1,3 +1,17 @@
+---
+adr: 227
+title: Shadow-Git Checkpoint Substrate
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-227 — Shadow-Git Checkpoint Substrate
 
 ## Status

@@ -1,3 +1,17 @@
+---
+adr: 201
+title: Maintainer Agent and Telemetry Promotion Loop
+status: accepted
+implementation_status: implemented
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-201 — Maintainer Agent and Telemetry Promotion Loop
 
 <!-- SCOPE: OS -->

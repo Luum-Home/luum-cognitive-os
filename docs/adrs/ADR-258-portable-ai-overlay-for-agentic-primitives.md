@@ -1,3 +1,17 @@
+---
+adr: 258
+title: Portable `.ai` Overlay for Agentic Primitives
+status: accepted
+implementation_status: partial
+date: '2026-05-09'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-258 — Portable `.ai` Overlay for Agentic Primitives
 
 ## Status

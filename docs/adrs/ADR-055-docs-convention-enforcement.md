@@ -1,3 +1,17 @@
+---
+adr: 55
+title: Docs Convention Enforcement + Skill Writers
+status: accepted
+implementation_status: partial
+date: '2026-04-21'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-055 — Docs Convention Enforcement + Skill Writers
 
 ## Status

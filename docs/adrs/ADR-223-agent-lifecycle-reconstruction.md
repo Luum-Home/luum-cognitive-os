@@ -1,3 +1,17 @@
+---
+adr: 223
+title: 'Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent'
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-223 — Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent
 
 ## Status

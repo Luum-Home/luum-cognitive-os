@@ -1,3 +1,17 @@
+---
+adr: 207
+title: Skill Ecosystem Performance and Lifecycle Closure
+status: tombstone
+implementation_status: not-applicable
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-207 — Skill Ecosystem Performance and Lifecycle Closure
 
 ## Status

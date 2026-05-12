@@ -1,3 +1,17 @@
+---
+adr: 6
+title: AGPL License Compliance -- Replace Redis and MinIO
+status: accepted
+implementation_status: partial
+date: '2026-03-23'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-006: AGPL License Compliance -- Replace Redis and MinIO
 
 **Date:** 2026-03-23

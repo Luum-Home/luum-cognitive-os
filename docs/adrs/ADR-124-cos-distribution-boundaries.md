@@ -1,3 +1,17 @@
+---
+adr: 124
+title: COS Distribution Boundaries — Core, Team, Maintainer, Lab
+status: proposed
+implementation_status: planned
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-124: COS Distribution Boundaries — Core, Team, Maintainer, Lab
 
 ## Status

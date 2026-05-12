@@ -1,3 +1,17 @@
+---
+adr: 27a
+title: 'Addendum: Reconciliation with main baseline'
+status: accepted
+implementation_status: implemented
+date: '2026-04-18'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-027a — Addendum: Reconciliation with main baseline
 
 **Status**: Addendum to ADR-027

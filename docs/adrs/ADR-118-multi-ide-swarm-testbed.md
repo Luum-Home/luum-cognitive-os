@@ -1,3 +1,17 @@
+---
+adr: 118
+title: Multi-IDE Swarm Safety Testbed
+status: accepted
+implementation_status: partial
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-118 — Multi-IDE Swarm Safety Testbed
 
 <!-- SCOPE: OS -->

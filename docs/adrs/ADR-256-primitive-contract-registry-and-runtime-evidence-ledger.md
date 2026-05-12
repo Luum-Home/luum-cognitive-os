@@ -1,3 +1,17 @@
+---
+adr: 256
+title: Primitive Contract Registry and Runtime Evidence Ledger
+status: accepted
+implementation_status: implemented
+date: '2026-05-09'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-256 — Primitive Contract Registry and Runtime Evidence Ledger
 
 ## Status

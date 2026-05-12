@@ -1,3 +1,17 @@
+---
+adr: 211
+title: Service-Mode Readiness Gate
+status: accepted
+implementation_status: partial
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-211 — Service-Mode Readiness Gate
 
 ## Status

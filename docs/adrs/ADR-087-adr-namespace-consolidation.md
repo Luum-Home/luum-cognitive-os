@@ -1,3 +1,17 @@
+---
+adr: 87
+title: ADR Namespace Consolidation
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-087 — ADR Namespace Consolidation
 
 <!-- SCOPE: OS -->

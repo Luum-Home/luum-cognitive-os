@@ -1,3 +1,17 @@
+---
+adr: 22
+title: Prompt-Type Hooks Adoption (Haiku-Evaluated Advisories)
+status: accepted
+implementation_status: partial
+date: '2026-04-15'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-022: Prompt-Type Hooks Adoption (Haiku-Evaluated Advisories)
 
 **Date:** 2026-04-15

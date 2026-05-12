@@ -1,3 +1,17 @@
+---
+adr: 202
+title: Private Content Cross-Harness Portability Boundary
+status: accepted
+implementation_status: implemented
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-202 — Private Content Cross-Harness Portability Boundary
 
 <!-- SCOPE: OS -->

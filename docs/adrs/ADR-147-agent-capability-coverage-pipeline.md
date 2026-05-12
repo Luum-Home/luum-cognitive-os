@@ -1,3 +1,17 @@
+---
+adr: 147
+title: Agent Capability Coverage Pipeline
+status: accepted
+implementation_status: partial
+date: '2026-05-04'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-147: Agent Capability Coverage Pipeline
 
 ## Status

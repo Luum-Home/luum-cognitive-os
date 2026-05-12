@@ -1,3 +1,18 @@
+---
+adr: 23
+title: Mutate, Don't Block — `updatedInput` for PreToolUse Hooks
+status: accepted
+implementation_status: not-applicable
+date: '2026-04-15'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-023: Mutate, Don't Block — `updatedInput` for PreToolUse Hooks
 
 **Date:** 2026-04-15

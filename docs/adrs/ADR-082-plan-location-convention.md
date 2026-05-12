@@ -1,3 +1,17 @@
+---
+adr: 82
+title: Plan Location Convention
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-082 — Plan Location Convention
 
 <!-- SCOPE: OS -->

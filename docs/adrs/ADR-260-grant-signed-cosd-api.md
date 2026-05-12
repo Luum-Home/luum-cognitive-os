@@ -1,3 +1,18 @@
+---
+adr: 260
+title: 'Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding'
+status: accepted
+implementation_status: not-applicable
+date: '2026-05-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-260 — Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding
 
 ## Status

@@ -1,3 +1,17 @@
+---
+adr: 34
+title: Harness-Agnostic Live Agent Streaming
+status: proposed
+implementation_status: planned
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-034 — Harness-Agnostic Live Agent Streaming
 
 - **Status**: Proposed

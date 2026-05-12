@@ -1,3 +1,17 @@
+---
+adr: 231
+title: MCP Server Surface for COS Primitives
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-231 — MCP Server Surface for COS Primitives
 
 ## Status

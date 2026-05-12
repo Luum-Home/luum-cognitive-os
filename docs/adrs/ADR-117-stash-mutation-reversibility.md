@@ -1,3 +1,17 @@
+---
+adr: 117
+title: Stash Mutation Must Be Reversible-by-Design
+status: proposed
+implementation_status: planned
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-117 — Stash Mutation Must Be Reversible-by-Design
 
 **Status:** Proposed

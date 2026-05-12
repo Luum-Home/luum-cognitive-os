@@ -1,3 +1,18 @@
+---
+adr: 200
+title: State Retention Controller
+status: accepted
+implementation_status: not-applicable
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-200: State Retention Controller
 
 ## Status
