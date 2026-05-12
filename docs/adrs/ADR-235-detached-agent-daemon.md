@@ -1,3 +1,17 @@
+---
+adr: 235
+title: Detached Agent Daemon
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-235 — Detached Agent Daemon
 
 ## Status

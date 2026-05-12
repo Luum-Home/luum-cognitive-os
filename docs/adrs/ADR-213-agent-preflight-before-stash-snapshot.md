@@ -1,3 +1,17 @@
+---
+adr: 213
+title: Agent Preflight Before Stash Snapshot
+status: accepted
+implementation_status: implemented
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-213 — Agent Preflight Before Stash Snapshot
 
 ## Status

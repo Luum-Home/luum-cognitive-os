@@ -1,3 +1,17 @@
+---
+adr: 12
+title: Prompt-Driven Governance -- Declarative Hook Logic
+status: accepted
+implementation_status: implemented
+date: '2026-03-29'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-012: Prompt-Driven Governance -- Declarative Hook Logic
 
 **Date:** 2026-03-29

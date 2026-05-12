@@ -1,3 +1,17 @@
+---
+adr: 38
+title: 'Preamble v2: Industry-Aligned Contract'
+status: proposed
+implementation_status: planned
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-038 — Preamble v2: Industry-Aligned Contract
 
 > Originally drafted in `.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md`; canonical location is `docs/adrs/`.

@@ -1,3 +1,17 @@
+---
+adr: 205
+title: Cross-Stream Trace Joiner and Flight Recorder
+status: accepted
+implementation_status: partial
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-205 — Cross-Stream Trace Joiner and Flight Recorder
 
 ## Status

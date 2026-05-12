@@ -1,3 +1,17 @@
+---
+adr: 74
+title: Tier-0 Learning-Loop Closure
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-074: Tier-0 Learning-Loop Closure
 
 **Status:** Accepted  

@@ -1,3 +1,17 @@
+---
+adr: 109
+title: Validation Capsule Worktree Isolation
+status: accepted
+implementation_status: implemented
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-109: Validation Capsule Worktree Isolation
 
 ## Status

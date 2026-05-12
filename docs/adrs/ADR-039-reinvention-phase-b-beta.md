@@ -1,3 +1,17 @@
+---
+adr: 39
+title: Reinvention Phase B-β (semantic embeddings)
+status: proposed
+implementation_status: planned
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-039 — Reinvention Phase B-β (semantic embeddings)
 
 > Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/adrs/`.

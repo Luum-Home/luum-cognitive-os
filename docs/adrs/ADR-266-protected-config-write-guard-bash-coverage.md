@@ -1,3 +1,17 @@
+---
+adr: 266
+title: Extend protected-config-write-guard to intercept Bash file-write commands
+status: proposed
+implementation_status: planned
+date: '2026-05-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-266: Extend protected-config-write-guard to intercept Bash file-write commands
 
 **Status**: Proposed (2026-05-11)

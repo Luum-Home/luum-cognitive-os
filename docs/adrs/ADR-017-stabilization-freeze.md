@@ -1,3 +1,17 @@
+---
+adr: 17
+title: Stabilization Freeze -- No New Features Until Wiring Complete
+status: accepted
+implementation_status: partial
+date: '2026-04-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-017: Stabilization Freeze -- No New Features Until Wiring Complete
 
 **Date:** 2026-04-11

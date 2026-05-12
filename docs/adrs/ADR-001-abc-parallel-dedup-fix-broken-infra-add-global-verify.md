@@ -1,3 +1,17 @@
+---
+adr: 1
+title: A+B+C parallel — dedup, fix broken infra, add global-verify
+status: proposed
+implementation_status: planned
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-001: A+B+C parallel — dedup, fix broken infra, add global-verify
 
 ## Status

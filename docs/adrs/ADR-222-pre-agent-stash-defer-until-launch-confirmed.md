@@ -1,3 +1,17 @@
+---
+adr: 222
+title: Pre-Agent Stash Deferred Until Agent Launch Confirmed
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-222 — Pre-Agent Stash Deferred Until Agent Launch Confirmed
 
 ## Status

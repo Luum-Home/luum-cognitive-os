@@ -1,3 +1,18 @@
+---
+adr: 103
+title: Audit and contract lane recovery before parallel flip
+status: accepted
+implementation_status: not-applicable
+date: '2026-05-12'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-103: Audit and contract lane recovery before parallel flip
 
 ## Status

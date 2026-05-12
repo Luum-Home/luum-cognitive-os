@@ -1,3 +1,17 @@
+---
+adr: 69
+title: Research-First Protocol for High-Risk Changes
+status: proposed
+implementation_status: planned
+date: '2026-04-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit proposed status without accepted status
+---
+
 # ADR-069: Research-First Protocol for High-Risk Changes
 
 ## Status

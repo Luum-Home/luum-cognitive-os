@@ -1,3 +1,17 @@
+---
+adr: 21
+title: Vendor-Agnostic State with Provider Adapters
+status: accepted
+implementation_status: partial
+date: '2026-04-16'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-021: Vendor-Agnostic State with Provider Adapters
 
 **Date:** 2026-04-16

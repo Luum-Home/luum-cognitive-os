@@ -1,3 +1,17 @@
+---
+adr: 56
+title: 'Adaptive Agent() dispatch: 3-tier auto-switch Claude → Qwen'
+status: accepted
+implementation_status: partial
+date: '2026-04-21'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-056 — Adaptive Agent() dispatch: 3-tier auto-switch Claude → Qwen
 
 - **Status**: L1 IMPLEMENTED (advisory-only). L2/L3 DEFERRED.

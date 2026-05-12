@@ -1,3 +1,17 @@
+---
+adr: 93
+title: Simplify Install Profiles — Collapse 3-Tier System to `default` + `--full`
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-093: Simplify Install Profiles — Collapse 3-Tier System to `default` + `--full`
 
 <!-- Renumbered-from: ADR-002 (docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md) -->

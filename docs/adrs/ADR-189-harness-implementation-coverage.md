@@ -1,3 +1,17 @@
+---
+adr: 189
+title: Surface Implementation Coverage for Agentic Primitives
+status: accepted
+implementation_status: implemented
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-189: Surface Implementation Coverage for Agentic Primitives
 
 ## Status

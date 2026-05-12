@@ -1,3 +1,17 @@
+---
+adr: 71
+title: Engram Lifecycle Evolution via Wrapper Layer
+status: accepted
+implementation_status: partial
+date: '2026-04-27'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-071 — Engram Lifecycle Evolution via Wrapper Layer
 
 ## Status

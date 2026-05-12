@@ -1,3 +1,17 @@
+---
+adr: 40
+title: Query-Tailored Context Injection
+status: accepted
+implementation_status: implemented
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-040 — Query-Tailored Context Injection
 
 **Status**: Accepted  

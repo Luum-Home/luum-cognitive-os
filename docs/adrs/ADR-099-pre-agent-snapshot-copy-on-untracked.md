@@ -1,3 +1,18 @@
+---
+adr: 99
+title: 'Pre-agent snapshot: copy-on-untracked instead of stash-sweep'
+status: accepted
+implementation_status: not-applicable
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-099 — Pre-agent snapshot: copy-on-untracked instead of stash-sweep
 
 <!-- SCOPE: OS -->

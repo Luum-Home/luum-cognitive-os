@@ -1,3 +1,17 @@
+---
+adr: 219
+title: Work Ownership Liveness Preflight
+status: accepted
+implementation_status: implemented
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-219: Work Ownership Liveness Preflight
 
 ## Status

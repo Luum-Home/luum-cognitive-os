@@ -1,3 +1,17 @@
+---
+adr: 61
+title: Focus Narrative and External Evidence
+status: accepted
+implementation_status: partial
+date: '2026-04-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-061 — Focus Narrative and External Evidence
 
 ## Status

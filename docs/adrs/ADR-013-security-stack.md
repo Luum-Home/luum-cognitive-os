@@ -1,3 +1,17 @@
+---
+adr: 13
+title: Security Stack -- 8 Layers, 32 Tools
+status: accepted
+implementation_status: partial
+date: '2026-03-29'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-013: Security Stack -- 8 Layers, 32 Tools
 
 **Date:** 2026-03-29

@@ -1,3 +1,18 @@
+---
+adr: 7
+title: Rebrand from Agent OS to Cognitive OS
+status: accepted
+implementation_status: not-applicable
+date: '2026-03-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-007: Rebrand from Agent OS to Cognitive OS
 
 **Date:** 2026-03-24

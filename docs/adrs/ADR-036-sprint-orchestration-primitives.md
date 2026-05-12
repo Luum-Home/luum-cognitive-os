@@ -1,3 +1,17 @@
+---
+adr: 36
+title: Sprint orchestration primitives
+status: proposed
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-036: Sprint orchestration primitives
 
 ## Status

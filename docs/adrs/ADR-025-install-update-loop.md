@@ -1,3 +1,17 @@
+---
+adr: 25
+title: Install/Update Loop — Closing the Advisory-Only Gap
+status: accepted
+implementation_status: partial
+date: '2026-04-17'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-025: Install/Update Loop — Closing the Advisory-Only Gap
 
 **Date:** 2026-04-17

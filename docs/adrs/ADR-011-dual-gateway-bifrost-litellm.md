@@ -1,3 +1,17 @@
+---
+adr: 11
+title: Dual Gateway -- Bifrost Primary, LiteLLM Fallback
+status: superseded
+implementation_status: not-applicable
+date: '2026-03-28'
+supersedes: []
+superseded_by: ADR-018
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status says Superseded by ADR-018
+---
+
 # ADR-011: Dual Gateway -- Bifrost Primary, LiteLLM Fallback
 
 **Date:** 2026-03-28

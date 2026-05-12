@@ -1,3 +1,17 @@
+---
+adr: 224
+title: Tombstone (consolidated into ADR-227)
+status: tombstone
+implementation_status: not-applicable
+date: '2026-05-08'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-224 — Tombstone (consolidated into ADR-227)
 
 status: tombstone

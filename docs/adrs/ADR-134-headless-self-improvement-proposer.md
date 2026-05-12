@@ -1,3 +1,17 @@
+---
+adr: 134
+title: Headless Self-Improvement Proposer
+status: accepted
+implementation_status: implemented
+date: '2026-05-03'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-134 — Headless Self-Improvement Proposer
 
 <!-- SCOPE: OS -->

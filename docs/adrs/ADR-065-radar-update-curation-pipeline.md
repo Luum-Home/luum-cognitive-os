@@ -1,3 +1,17 @@
+---
+adr: 65
+title: Tech Radar Curation Pipeline (`/radar-update`)
+status: proposed
+implementation_status: planned
+date: '2026-04-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit proposed status without accepted status
+---
+
 <!-- SCOPE: os-only -->
 <!-- audience: os-dev -->
 

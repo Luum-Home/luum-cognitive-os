@@ -1,3 +1,17 @@
+---
+adr: 51
+title: Qwen Agent Loop (Tool-Use Parity with Claude Code Agent)
+status: accepted
+implementation_status: implemented
+date: '2026-04-21'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit all-delivered/full-closed status
+---
+
 # ADR-051 — Qwen Agent Loop (Tool-Use Parity with Claude Code Agent)
 
 - **Status**: Accepted (2026-04-21) — Phases 1, 2, 3, 4 all DELIVERED this session. Commits: MVP phase 1, 1e6542c (phase 2), 534814e (phase 3), 925dff5 (phase 4)

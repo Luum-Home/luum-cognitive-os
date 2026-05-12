@@ -1,3 +1,17 @@
+---
+adr: 58
+title: 'Observability Migration: Langfuse → Arize Phoenix'
+status: accepted
+implementation_status: partial
+date: '2026-04-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-058 — Observability Migration: Langfuse → Arize Phoenix
 
 - **Status**: Accepted

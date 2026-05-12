@@ -1,3 +1,17 @@
+---
+adr: 146
+title: Primitive Readiness Ledger
+status: accepted
+implementation_status: implemented
+date: '2026-05-04'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-146: Primitive Readiness Ledger
 
 ## Status

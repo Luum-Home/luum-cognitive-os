@@ -1,3 +1,17 @@
+---
+adr: 108
+title: Concurrent Agent Safety Layer
+status: accepted
+implementation_status: implemented
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-108 — Concurrent Agent Safety Layer
 
 <!-- SCOPE: OS -->

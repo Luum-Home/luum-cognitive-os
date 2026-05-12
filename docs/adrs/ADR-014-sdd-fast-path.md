@@ -1,3 +1,17 @@
+---
+adr: 14
+title: SDD Fast Path -- Skip Phases for Capable Models
+status: accepted
+implementation_status: partial
+date: '2026-03-31'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-014: SDD Fast Path -- Skip Phases for Capable Models
 
 **Date:** 2026-03-31

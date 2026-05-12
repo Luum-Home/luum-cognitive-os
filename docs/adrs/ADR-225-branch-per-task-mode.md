@@ -1,3 +1,17 @@
+---
+adr: 225
+title: Branch-Per-Task Mode
+status: accepted
+implementation_status: partial
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit not implemented yet signal
+---
+
 # ADR-225 — Branch-Per-Task Mode
 
 ## Status

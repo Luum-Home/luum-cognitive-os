@@ -1,3 +1,17 @@
+---
+adr: 135
+title: Self-Evolving Doctrine Proposals
+status: accepted
+implementation_status: partial
+date: '2026-05-03'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-135 — Self-Evolving Doctrine Proposals
 
 <!-- SCOPE: OS -->

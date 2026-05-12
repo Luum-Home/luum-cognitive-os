@@ -1,3 +1,17 @@
+---
+adr: 72
+title: Test Lane Taxonomy & Escalation Ladder
+status: accepted
+implementation_status: partial
+date: '2026-04-29'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-072: Test Lane Taxonomy & Escalation Ladder
 
 ## Status

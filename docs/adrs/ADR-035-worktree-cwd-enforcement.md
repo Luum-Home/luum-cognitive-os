@@ -1,3 +1,17 @@
+---
+adr: 35
+title: 'Worktree CWD Enforcement: 3-Layer Defense'
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-035 — Worktree CWD Enforcement: 3-Layer Defense
 
 **Status**: Accepted  

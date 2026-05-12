@@ -1,3 +1,17 @@
+---
+adr: 48
+title: Docker Container Image Freshness
+status: accepted
+implementation_status: partial
+date: '2026-04-21'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-048 — Docker Container Image Freshness
 
 ## Status

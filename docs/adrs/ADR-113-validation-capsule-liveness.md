@@ -1,3 +1,17 @@
+---
+adr: 113
+title: Validation Capsule Liveness Primitives
+status: accepted
+implementation_status: implemented
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 <!-- SCOPE: os-only -->
 # ADR-113: Validation Capsule Liveness Primitives
 

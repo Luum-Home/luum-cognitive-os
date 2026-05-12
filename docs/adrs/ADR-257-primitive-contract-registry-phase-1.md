@@ -1,3 +1,17 @@
+---
+adr: 257
+title: Primitive Contract Registry Phase 1
+status: accepted
+implementation_status: partial
+date: '2026-05-09'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-257 — Primitive Contract Registry Phase 1
 
 ## Status

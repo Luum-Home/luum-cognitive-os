@@ -1,3 +1,17 @@
+---
+adr: 111
+title: Core/Consumer Boundary for Concurrent-Agent Safety
+status: accepted
+implementation_status: partial
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety
 
 ## Status

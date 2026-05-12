@@ -1,3 +1,18 @@
+---
+adr: 10
+title: Hook Architecture v2 -- 10 Event Types, 3 Security Profiles
+status: accepted
+implementation_status: not-applicable
+date: '2026-03-28'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-010: Hook Architecture v2 -- 10 Event Types, 3 Security Profiles
 
 **Date:** 2026-03-28 to 2026-04-13

@@ -1,3 +1,17 @@
+---
+adr: 209
+title: Maintainer Reconciler Experiment Contract
+status: accepted
+implementation_status: partial
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-209 — Maintainer Reconciler Experiment Contract
 
 ## Status

@@ -1,3 +1,17 @@
+---
+adr: 145
+title: Split heavy optional dependencies into explicit dependency lanes
+status: accepted
+implementation_status: implemented
+date: '2026-05-04'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-145 — Split heavy optional dependencies into explicit dependency lanes
 
 Date: 2026-05-04

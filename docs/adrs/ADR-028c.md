@@ -1,3 +1,17 @@
+---
+adr: 28c
+title: 'Addendum: MetricEvent schema versioning + migration strategy'
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-028c — Addendum: MetricEvent schema versioning + migration strategy
 
 **Status**: Accepted (closes ADR-028 open question #4)

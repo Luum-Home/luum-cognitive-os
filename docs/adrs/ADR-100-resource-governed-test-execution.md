@@ -1,3 +1,17 @@
+---
+adr: 100
+title: Resource-Governed Test Execution
+status: accepted
+implementation_status: implemented
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-100 — Resource-Governed Test Execution
 
 <!-- SCOPE: OS -->

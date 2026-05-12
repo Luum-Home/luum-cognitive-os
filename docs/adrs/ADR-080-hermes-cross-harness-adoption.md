@@ -1,3 +1,17 @@
+---
+adr: 80
+title: Hermes Cross-Harness Adoption (Umbrella)
+status: accepted
+implementation_status: implemented
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-080: Hermes Cross-Harness Adoption (Umbrella)
 
 <!-- SCOPE: OS -->

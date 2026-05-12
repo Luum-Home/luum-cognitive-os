@@ -1,3 +1,17 @@
+---
+adr: 115
+title: Safe Worktree Sweeper
+status: accepted
+implementation_status: implemented
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-115: Safe Worktree Sweeper
 
 ## Status

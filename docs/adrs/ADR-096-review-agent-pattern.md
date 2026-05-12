@@ -1,3 +1,17 @@
+---
+adr: 96
+title: Review-agent pattern (Hermes-style audit loop)
+status: accepted
+implementation_status: partial
+date: '2026-05-01'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-096: Review-agent pattern (Hermes-style audit loop)
 
 **Status**: Accepted

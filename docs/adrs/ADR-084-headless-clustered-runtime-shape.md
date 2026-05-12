@@ -1,3 +1,17 @@
+---
+adr: 84
+title: Headless and Clustered Runtime Shape
+status: superseded
+implementation_status: not-applicable
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-084 — Headless and Clustered Runtime Shape
 
 <!-- SCOPE: OS -->

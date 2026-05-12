@@ -1,3 +1,17 @@
+---
+adr: 240
+title: Primitive Coherence Audit and Ownership Manifest
+status: accepted
+implementation_status: implemented
+date: '2026-05-08'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-240: Primitive Coherence Audit and Ownership Manifest
 
 status: accepted

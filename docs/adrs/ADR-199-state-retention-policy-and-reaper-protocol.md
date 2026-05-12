@@ -1,3 +1,17 @@
+---
+adr: 199
+title: State Retention Policy and Reaper Protocol
+status: accepted
+implementation_status: implemented
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-199: State Retention Policy and Reaper Protocol
 
 ## Status

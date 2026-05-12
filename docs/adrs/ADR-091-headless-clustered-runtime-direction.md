@@ -1,3 +1,17 @@
+---
+adr: 91
+title: Headless and Clustered Runtime Direction
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-091: Headless and Clustered Runtime Direction
 
 <!-- Renumbered-from: ADR-027 (docs/architecture/adrs/027-headless-clustered-runtime-direction.md) -->

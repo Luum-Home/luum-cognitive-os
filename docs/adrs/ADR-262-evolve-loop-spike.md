@@ -1,3 +1,17 @@
+---
+adr: 262
+title: 'Evolve Loop Spike: Task Proposal Queue + LLM-driven Skill Candidates'
+status: exploration
+implementation_status: not-applicable
+date: '2026-05-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit spike / not accepted status
+---
+
 # ADR-262 — Evolve Loop Spike: Task Proposal Queue + LLM-driven Skill Candidates
 
 ## Status

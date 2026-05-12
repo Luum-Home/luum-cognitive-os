@@ -1,3 +1,17 @@
+---
+adr: 63
+title: Agent() Tool Replication Strategy
+status: accepted
+implementation_status: partial
+date: '2026-04-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-063 — Agent() Tool Replication Strategy
 
 ## Status

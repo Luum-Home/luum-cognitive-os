@@ -1,3 +1,17 @@
+---
+adr: 32
+title: Orchestrator-side trap awareness before Agent launch
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-032 — Orchestrator-side trap awareness before Agent launch
 
 **Status**: Accepted
