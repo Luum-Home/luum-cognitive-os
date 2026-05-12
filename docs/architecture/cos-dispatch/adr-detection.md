@@ -543,7 +543,7 @@ If engram is unavailable (not configured or unreachable), the generator falls ba
 
 [adr]
 enabled = true
-output_dir = "docs/architecture/adrs"
+output_dir = "docs/adrs"
 threshold = 0.70                    # minimum total weight to trigger
 engram_enrich = true                # cross-reference engram for context
 max_per_session = 5                 # rate limit per session

@@ -33,7 +33,7 @@ The OS has 5 self-awareness mechanisms. When you work with it, **let them do the
      - Gate 3a: new hooks must be registered in both profile scripts
      - Gate 3e: imports must resolve
      - Gate 3f: new tests must be behavioral (not structural-only)
-   - `adr-detector.sh` runs async on `git commit`. It analyzes the diff and, if the change is architectural (dependency, config, hooks, license, large deletion, integration, structure, breaking), generates an ADR draft in `docs/architecture/adrs/`.
+   - `adr-detector.sh` runs async on `git commit`. It analyzes the diff and, if the change is architectural (dependency, config, hooks, license, large deletion, integration, structure, breaking), generates an ADR draft in `docs/adrs/`.
 
 4. **End:** `engram-auto-sync.sh` runs on Stop event. It exports project-scoped observations to `.engram/exports/` and commits them. Next time you clone on another device, `engram-auto-import.sh` reconstructs local engram.
 
@@ -71,7 +71,7 @@ Before merging any significant change, check `docs/architecture/LESSONS-LEARNED.
 
 ### When you need to change architecture
 
-1. The change triggers `adr-detector.sh` — a draft ADR appears in `docs/architecture/adrs/`
+1. The change triggers `adr-detector.sh` — a draft ADR appears in `docs/adrs/`
 2. Review the draft, flesh it out, change status from Draft to Accepted
 3. Link related ADRs (supersedes, related to)
 4. Include in the commit message: "Includes ADR-NNN"
