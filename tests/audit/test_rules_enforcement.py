@@ -122,6 +122,7 @@ def _is_runtime_generated_ref(ref: str) -> bool:
         ".cognitive-os/dynamic-tools/",
         ".cognitive-os/rate-limit-",
         ".cognitive-os/tasks/",
+        ".cognitive-os/logs/",
         ".atl/",
     )
     if ref.startswith(generated_prefixes):
@@ -144,6 +145,7 @@ DOCUMENTED_REMOVED_OR_FUTURE_REFS: set[str] = {
     "hooks/_lib/hook-runtime-probe.sh",  # SO-SLO future probe reference
     "lib/agent_heartbeat.py",  # SO-SLO future telemetry reference
     "scripts/so-slo-report.sh",  # SO-SLO future reporting reference
+    "scripts/lint_recommendation_grounding.py",  # ADR-future: linter for recommendation-grounding rule
 }
 
 
