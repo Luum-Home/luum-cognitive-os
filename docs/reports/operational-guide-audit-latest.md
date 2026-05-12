@@ -1,4 +1,4 @@
-# Operational Guide Audit — 2026-05-12T14:20:00Z
+# Operational Guide Audit — 2026-05-12T14:26:50Z
 
 > Per ADR-274. Schema: `operational-guide-audit/v1`.
 > Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence

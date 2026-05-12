@@ -1,6 +1,6 @@
 {
   "schema_version": "operational-guide-audit/v1",
-  "generated_at": "2026-05-12T14:20:00Z",
+  "generated_at": "2026-05-12T14:26:50Z",
   "contract_ref": "ADR-274",
   "summary": {
     "total_adrs": 284,
@@ -14,6 +14,908 @@
       "P0": 60
     }
   },
+  "findings": [
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-044-context-payload-slimming: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-044-context-payload-slimming",
+        "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 22
+      },
+      "stable_id": "adr-274/ADR-044-context-payload-slimming",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-130-suspend-claude-api-workflows: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-130-suspend-claude-api-workflows",
+        "path": "docs/adrs/ADR-130-suspend-claude-api-workflows.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 9
+      },
+      "stable_id": "adr-274/ADR-130-suspend-claude-api-workflows",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-131-local-ci-migration: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-131-local-ci-migration",
+        "path": "docs/adrs/ADR-131-local-ci-migration.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 9
+      },
+      "stable_id": "adr-274/ADR-131-local-ci-migration",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-138-flow-contract-schema: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-138-flow-contract-schema",
+        "path": "docs/adrs/ADR-138-flow-contract-schema.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 9
+      },
+      "stable_id": "adr-274/ADR-138-flow-contract-schema",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-139-account-agnostic-multi-provider-runtime: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-139-account-agnostic-multi-provider-runtime",
+        "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-139-account-agnostic-multi-provider-runtime",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-141-engram-cloud-cross-instance-replication: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-141-engram-cloud-cross-instance-replication",
+        "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-141-engram-cloud-cross-instance-replication",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-142-compliance-audit-air-gapped-surface: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-142-compliance-audit-air-gapped-surface",
+        "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-142-compliance-audit-air-gapped-surface",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-143-closure-discipline-gate: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-143-closure-discipline-gate",
+        "path": "docs/adrs/ADR-143-closure-discipline-gate.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-143-closure-discipline-gate",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-144-hook-enforced-rule-projection-contract: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-144-hook-enforced-rule-projection-contract",
+        "path": "docs/adrs/ADR-144-hook-enforced-rule-projection-contract.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-144-hook-enforced-rule-projection-contract",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-148-adr-authoring-primitive: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-148-adr-authoring-primitive",
+        "path": "docs/adrs/ADR-148-adr-authoring-primitive.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-148-adr-authoring-primitive",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-149-primitive-duplication-audit: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-149-primitive-duplication-audit",
+        "path": "docs/adrs/ADR-149-primitive-duplication-audit.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-149-primitive-duplication-audit",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-150-acc-projection-profiles-and-harness-registry: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-150-acc-projection-profiles-and-harness-registry",
+        "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-150-acc-projection-profiles-and-harness-registry",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-151-consumer-availability-classification: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-151-consumer-availability-classification",
+        "path": "docs/adrs/ADR-151-consumer-availability-classification.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-151-consumer-availability-classification",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-152-shell-ci-projection-and-local-surface-defaults: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-152-shell-ci-projection-and-local-surface-defaults",
+        "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-152-shell-ci-projection-and-local-surface-defaults",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-153-acc-fail-new-and-harness-proof-boundary: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-153-acc-fail-new-and-harness-proof-boundary",
+        "path": "docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-153-acc-fail-new-and-harness-proof-boundary",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-154-multi-ide-structural-harness-projection: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-154-multi-ide-structural-harness-projection",
+        "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-154-multi-ide-structural-harness-projection",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-155-shell-ci-formal-harness: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-155-shell-ci-formal-harness",
+        "path": "docs/adrs/ADR-155-shell-ci-formal-harness.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-155-shell-ci-formal-harness",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-156-qwen-code-structural-harness-projection: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-156-qwen-code-structural-harness-projection",
+        "path": "docs/adrs/ADR-156-qwen-code-structural-harness-projection.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-156-qwen-code-structural-harness-projection",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-157-kimi-code-cli-structural-harness-projection: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-157-kimi-code-cli-structural-harness-projection",
+        "path": "docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-157-kimi-code-cli-structural-harness-projection",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-158-ai-agent-harness-landscape-and-proof-backlog: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-158-ai-agent-harness-landscape-and-proof-backlog",
+        "path": "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 8
+      },
+      "stable_id": "adr-274/ADR-158-ai-agent-harness-landscape-and-proof-backlog",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-159-agents-md-native-structural-harness-batch: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-159-agents-md-native-structural-harness-batch",
+        "path": "docs/adrs/ADR-159-agents-md-native-structural-harness-batch.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-159-agents-md-native-structural-harness-batch",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design",
+        "path": "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-161-remote-control-plane-and-provider-adapter-boundary: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-161-remote-control-plane-and-provider-adapter-boundary",
+        "path": "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-161-remote-control-plane-and-provider-adapter-boundary",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol",
+        "path": "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-163-cos-instance-installer: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-163-cos-instance-installer",
+        "path": "docs/adrs/ADR-163-cos-instance-installer.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-163-cos-instance-installer",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-164-host-cli-bridge-security-boundary: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-164-host-cli-bridge-security-boundary",
+        "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-164-host-cli-bridge-security-boundary",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-165-proof-drill-and-smoke-opt-in-primitives: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-165-proof-drill-and-smoke-opt-in-primitives",
+        "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-165-proof-drill-and-smoke-opt-in-primitives",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-166-expected-skip-registry-and-opt-in-test-lanes: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-166-expected-skip-registry-and-opt-in-test-lanes",
+        "path": "docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-166-expected-skip-registry-and-opt-in-test-lanes",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-167-proof-drill-selector-and-acc-evidence-adapter: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-167-proof-drill-selector-and-acc-evidence-adapter",
+        "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-167-proof-drill-selector-and-acc-evidence-adapter",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-168-cross-device-dependency-installation: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-168-cross-device-dependency-installation",
+        "path": "docs/adrs/ADR-168-cross-device-dependency-installation.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "implemented",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-168-cross-device-dependency-installation",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-169-dashboard-formal-demotion: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-169-dashboard-formal-demotion",
+        "path": "docs/adrs/ADR-169-dashboard-formal-demotion.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-169-dashboard-formal-demotion",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-171-reject-paperclip-integration: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-171-reject-paperclip-integration",
+        "path": "docs/adrs/ADR-171-reject-paperclip-integration.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-171-reject-paperclip-integration",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-172-multi-surface-ui-architecture: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-172-multi-surface-ui-architecture",
+        "path": "docs/adrs/ADR-172-multi-surface-ui-architecture.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-172-multi-surface-ui-architecture",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-173-surface-5-research-gate: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-173-surface-5-research-gate",
+        "path": "docs/adrs/ADR-173-surface-5-research-gate.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 6
+      },
+      "stable_id": "adr-274/ADR-173-surface-5-research-gate",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-175-research-quality-enforcement: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-175-research-quality-enforcement",
+        "path": "docs/adrs/ADR-175-research-quality-enforcement.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-175-research-quality-enforcement",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-176-skillstore-and-analysis-trigger: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-176-skillstore-and-analysis-trigger",
+        "path": "docs/adrs/ADR-176-skillstore-and-analysis-trigger.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-176-skillstore-and-analysis-trigger",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-177-activate-skill-lifecycle-promotion-ladder: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-177-activate-skill-lifecycle-promotion-ladder",
+        "path": "docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 6
+      },
+      "stable_id": "adr-274/ADR-177-activate-skill-lifecycle-promotion-ladder",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-179-rules-auto-derive-routing: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-179-rules-auto-derive-routing",
+        "path": "docs/adrs/ADR-179-rules-auto-derive-routing.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-179-rules-auto-derive-routing",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-180-lifecycle-promotion-activation: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-180-lifecycle-promotion-activation",
+        "path": "docs/adrs/ADR-180-lifecycle-promotion-activation.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-180-lifecycle-promotion-activation",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-181-adr-relevance-suggester: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-181-adr-relevance-suggester",
+        "path": "docs/adrs/ADR-181-adr-relevance-suggester.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-181-adr-relevance-suggester",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-182-branch-ownership-lock: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-182-branch-ownership-lock",
+        "path": "docs/adrs/ADR-182-branch-ownership-lock.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-182-branch-ownership-lock",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-183-cross-session-event-log: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-183-cross-session-event-log",
+        "path": "docs/adrs/ADR-183-cross-session-event-log.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-183-cross-session-event-log",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-184-manager-of-managers-daemon: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-184-manager-of-managers-daemon",
+        "path": "docs/adrs/ADR-184-manager-of-managers-daemon.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-184-manager-of-managers-daemon",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-185-cross-agent-audit-findings: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-185-cross-agent-audit-findings",
+        "path": "docs/adrs/ADR-185-cross-agent-audit-findings.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-185-cross-agent-audit-findings",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-186-context-budget-enforcement: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-186-context-budget-enforcement",
+        "path": "docs/adrs/ADR-186-context-budget-enforcement.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 7
+      },
+      "stable_id": "adr-274/ADR-186-context-budget-enforcement",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-188-mandatory-skill-invocation-at-high-confidence: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-188-mandatory-skill-invocation-at-high-confidence",
+        "path": "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 6
+      },
+      "stable_id": "adr-274/ADR-188-mandatory-skill-invocation-at-high-confidence",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-239-isolated-worktree-default-for-write-agents: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-239-isolated-worktree-default-for-write-agents",
+        "path": "docs/adrs/ADR-239-isolated-worktree-default-for-write-agents.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-239-isolated-worktree-default-for-write-agents",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-241-consolidated-cos-bypass-allowlist: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-241-consolidated-cos-bypass-allowlist",
+        "path": "docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-241-consolidated-cos-bypass-allowlist",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-242-git-filter-repo-wrapper-preserves-remote: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-242-git-filter-repo-wrapper-preserves-remote",
+        "path": "docs/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-242-git-filter-repo-wrapper-preserves-remote",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-243-post-rewrite-push-collision-exception: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-243-post-rewrite-push-collision-exception",
+        "path": "docs/adrs/ADR-243-post-rewrite-push-collision-exception.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-243-post-rewrite-push-collision-exception",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-244-trust-report-claim-validator-must-enforce: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-244-trust-report-claim-validator-must-enforce",
+        "path": "docs/adrs/ADR-244-trust-report-claim-validator-must-enforce.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-244-trust-report-claim-validator-must-enforce",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-245-chaos-tests-readonly-production-source: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-245-chaos-tests-readonly-production-source",
+        "path": "docs/adrs/ADR-245-chaos-tests-readonly-production-source.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-245-chaos-tests-readonly-production-source",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-246-release-transaction-freeze: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-246-release-transaction-freeze",
+        "path": "docs/adrs/ADR-246-release-transaction-freeze.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-246-release-transaction-freeze",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-247-manifest-driven-postmortem-regression-audits: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-247-manifest-driven-postmortem-regression-audits",
+        "path": "docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-247-manifest-driven-postmortem-regression-audits",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-248-control-plane-audit-loop: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-248-control-plane-audit-loop",
+        "path": "docs/adrs/ADR-248-control-plane-audit-loop.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-248-control-plane-audit-loop",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-249-primitive-behavioral-proof-anti-overfit-tests: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-249-primitive-behavioral-proof-anti-overfit-tests",
+        "path": "docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-249-primitive-behavioral-proof-anti-overfit-tests",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-250-skill-router-retrieval-adapter-boundary: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-250-skill-router-retrieval-adapter-boundary",
+        "path": "docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-250-skill-router-retrieval-adapter-boundary",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-251-agent-orchestration-adapter-boundary: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-251-agent-orchestration-adapter-boundary",
+        "path": "docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-251-agent-orchestration-adapter-boundary",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-252-capability-coverage-matrix-and-feature-reality-ledger: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-252-capability-coverage-matrix-and-feature-reality-ledger",
+        "path": "docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 4
+      },
+      "stable_id": "adr-274/ADR-252-capability-coverage-matrix-and-feature-reality-ledger",
+      "adr": "ADR-274"
+    },
+    {
+      "severity": "warn",
+      "code": "operational-guide-missing",
+      "message": "ADR-269-mandatory-adr-reference-for-history-rewrites: §Operational Guide missing (0/3 sub-sections)",
+      "details": {
+        "adr": "ADR-269-mandatory-adr-reference-for-history-rewrites",
+        "path": "docs/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md",
+        "priority": "P0",
+        "tier": "maintainer",
+        "status": "accepted",
+        "age_days": 1
+      },
+      "stable_id": "adr-274/ADR-269-mandatory-adr-reference-for-history-rewrites",
+      "adr": "ADR-274"
+    }
+  ],
   "results": [
     {
       "adr": "ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify",

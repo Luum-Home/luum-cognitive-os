@@ -167,6 +167,28 @@ def audit(root: Path) -> dict[str, Any]:
         if r["priority"]:
             by_priority[r["priority"]] = by_priority.get(r["priority"], 0) + 1
 
+    # Emit findings[] in the control-plane-audit runner shape (ADR-248).
+    # Each missing/partial item becomes a "warn" finding; consumers can
+    # promote to block via --strict.
+    findings: list[dict[str, Any]] = []
+    for r in results:
+        if r["verdict"] in {"missing", "partial"}:
+            findings.append({
+                "severity": "warn",
+                "code": "operational-guide-" + r["verdict"],
+                "message": f"{r['adr']}: §Operational Guide {r['verdict']} ({r['subsection_count']}/3 sub-sections)",
+                "details": {
+                    "adr": r["adr"],
+                    "path": r["path"],
+                    "priority": r["priority"],
+                    "tier": r["tier"],
+                    "status": r["status"],
+                    "age_days": r["age_days"],
+                },
+                "stable_id": f"adr-274/{r['adr']}",
+                "adr": "ADR-274",
+            })
+
     return {
         "schema_version": "operational-guide-audit/v1",
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -176,6 +198,7 @@ def audit(root: Path) -> dict[str, Any]:
             "by_verdict": by_verdict,
             "by_priority": by_priority,
         },
+        "findings": findings,
         "results": results,
     }
 
@@ -272,11 +295,10 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {REPORT_MD}", file=sys.stderr)
 
     if args.json or not args.write:
-        print(json.dumps({
-            "schema_version": payload["schema_version"],
-            "generated_at": payload["generated_at"],
-            "summary": payload["summary"],
-        }, indent=2))
+        # Full payload to stdout so the control-plane-audit runner (ADR-248)
+        # can read findings[]. Includes schema_version, summary, findings,
+        # and per-ADR results.
+        print(json.dumps(payload, indent=2, ensure_ascii=False))
 
     if args.strict:
         p0_p1 = payload["summary"]["by_priority"].get("P0", 0) + payload["summary"]["by_priority"].get("P1", 0)
