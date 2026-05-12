@@ -32,6 +32,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-279: Orphan Repo-Scan Process Audit](adrs/ADR-279-orphan-repo-scan-process-audit.md) — accepted dry-run-first primitive for detecting and optionally killing stale PPID=1 Claude/zsh/grep-style repo scans with metrics and behavior tests.
 - [ADR-276: Primitive Authority and Write-Effects Audit](adrs/ADR-276-primitive-authority-write-effects.md) — accepted contract for `manifests/primitive-authority.yaml`, `scripts/primitive_authority_audit.py`, dynamic filesystem-delta smokes, and ACC `authority_write_effects`.
 - [ADR-277: Documentation Truth Control](adrs/ADR-277-documentation-truth-control.md) — accepted contract for `manifests/documentation-truth-claims.yaml`, `scripts/documentation_truth_audit.py`, generated truth blocks, and ACC `documentation_truth`.
 - [ADR-256: Primitive Contract Registry and Runtime Evidence Ledger](adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) — implemented root contract connecting primitive definitions, projection fidelity, consumer/service impact, intervention evidence, codebase itinerary, and run traces.
@@ -41,6 +42,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR Status Taxonomy](adrs/STATUS-TAXONOMY.md) — canonical separation of decision status, implementation status, and index bucket for ADR metadata/tooling.
 - [ADR Implementation Status Backfill — 2026-05-12](reports/adr-implementation-status-backfill-2026-05-12.md) — first conservative frontmatter backfill and remaining Active/Unclassified scope.
 - [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains canonical primitives, portable contracts, harness/runtime projection, fidelity, consumer-fleet impact, service/headless impact, and the `.ai/` product-overlay lesson.
+- [Agent Training Harness](architecture/agent-training-harness.md) — canonical contract for operational agent training via telemetry, memory, evals, and governed primitive updates; explicitly not provider-weight fine-tuning.
 - [Portable `.ai` Consumer Package Spec](architecture/portable-ai-consumer-package-spec.md) — README-first Markdown package shape generated from the maintainer overlay for consumer projects.
 - [OpenCode Native Primitive Adapter Design](architecture/opencode-native-primitive-adapter-design.md) — native permissions/plugins design and smoke criteria before OpenCode runtime enforcement claims.
 - [Primitive Contract Registry Implementation Plan](architecture/primitive-contract-registry-implementation-plan.md) — phased plan for ADR-256 before runtime implementation.

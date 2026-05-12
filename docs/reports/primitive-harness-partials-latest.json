@@ -659,36 +659,6 @@
       "next_action": "Add a consumer projection driver or demote from projectable scope.",
       "primitive": "scripts/license-audit-trivy.sh",
       "scope": "project"
-    },
-    {
-      "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-      "family": "rules",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "unclassified",
-      "gap_severity": "medium",
-      "next_action": "Triage policy, severity, and owner.",
-      "primitive": "rules/memory-governance.md",
-      "scope": null
-    },
-    {
-      "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-      "family": "rules",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "unclassified",
-      "gap_severity": "medium",
-      "next_action": "Triage policy, severity, and owner.",
-      "primitive": "rules/recommendation-grounding.md",
-      "scope": null
-    },
-    {
-      "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-      "family": "skills",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "unclassified",
-      "gap_severity": "medium",
-      "next_action": "Triage policy, severity, and owner.",
-      "primitive": "skills/deep-tool-research/SKILL.md",
-      "scope": null
     }
   ],
   "schema_version": "primitive-harness-partials.v1",
@@ -696,14 +666,13 @@
   "summary": {
     "by_policy": {
       "codex-adapter-needed": 59,
-      "projectable-needs-driver": 7,
-      "unclassified": 3
+      "projectable-needs-driver": 7
     },
     "by_severity": {
-      "medium": 69
+      "medium": 66
     },
-    "partial_count": 69,
-    "total_gaps": 869,
-    "unclassified_gaps": 3
+    "partial_count": 66,
+    "total_gaps": 870,
+    "unclassified_gaps": 0
   }
 }

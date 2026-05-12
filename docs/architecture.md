@@ -64,6 +64,8 @@ The Agent Bus (`lib/agent_bus.py`) provides bidirectional real-time communicatio
 
 Cognitive OS implements a MAPE-K (Monitor, Analyze, Plan, Execute, Knowledge) autonomous control loop. This is the core self-healing and self-improvement mechanism.
 
+The agent-training interpretation of this loop is documented in [`docs/architecture/agent-training-harness.md`](architecture/agent-training-harness.md): the harness trains agent behavior by improving agentic primitives from evidence, not by fine-tuning model weights.
+
 ```
 +--------+     +---------+     +------+     +---------+
 |MONITOR |---->| ANALYZE |---->| PLAN |---->| EXECUTE |

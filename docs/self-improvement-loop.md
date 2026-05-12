@@ -2,6 +2,8 @@
 
 > How Cognitive OS learns from its own failures and automatically gets better.
 
+> Scope note: this is operational learning through harness evidence and governed primitive updates. See [`docs/architecture/agent-training-harness.md`](architecture/agent-training-harness.md) for the canonical training contract and non-goals.
+
 ## The Problem
 
 AI agents tend to do the minimum required, leading to:

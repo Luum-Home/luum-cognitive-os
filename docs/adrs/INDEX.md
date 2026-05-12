@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 287 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 288 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -133,7 +133,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [276](ADR-276-primitive-authority-write-effects.md) | Primitive Authority and Write-Effects Audit | accepted | implemented | 2026-05-12 | Accepted and implemented for the first ratchet. |
 | [277](ADR-277-documentation-truth-control.md) | Documentation Truth Control | accepted | implemented | 2026-05-12 | Accepted and implemented. |
 
-### Active / Partial (117)
+### Active / Partial (118)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -254,6 +254,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [273](ADR-273-pending-truth-ledger-and-bilateral-verification.md) | Pending Truth Ledger and Bilateral Verification Loop | accepted | partial | 2026-05-12 | Accepted — Slices A + B implemented; Slice C designed and staged (deployment requires operator authorization via `COS_ALLOW_PROTECTED_CONFIG_WRITE=1` per `hooks |
 | [274](ADR-274-operational-guide-required-for-capability-adrs.md) | Operational Guide Required for Maintainer-Tier Capability ADRs | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (audit + Phase 1 enforcement). |
 | [275](ADR-275-closure-and-projection-primitives.md) | Closure & Projection Primitives (Pending-Truth Read/Write Symmetry) | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (projector + close primitive + tests). Hook |
+| [278](ADR-278-subprocess-run-timeout-discipline.md) | subprocess.run Timeout Discipline | accepted | partial | 2026-05-12 | Accepted — audit + allowlist + test-default shipped 2026-05-12. Per-call |
 
 ### Active / Partial / Blocked (1)
 
@@ -309,7 +310,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [128](ADR-128-data-layer-integrity-fixes.md) | Data Layer Integrity Fixes | proposed | planned | 2026-05-03 | Proposed — 2026-05-03 |
 | [174c](ADR-174c-validator-blocking-promotion.md) | Validator Advisory-to-Blocking Promotion After Soak | proposed | deferred | 2026-05-12 | Proposed. This ADR is intentionally not accepted until soak data proves the |
 | [265](ADR-265-mandatory-minimum-inspection-caps.md) | Mandatory-minimum inspection caps for COS eval surfaces | proposed | planned | 2026-05-11 | Proposed (2026-05-11) |
-| [266](ADR-266-protected-config-write-guard-bash-coverage.md) | Extend protected-config-write-guard to intercept Bash file-write commands | proposed | planned | 2026-05-11 | `hooks/protected-config-write-guard.sh` blocks writes to agent control-plane paths (hooks, rules, skills, manifests, etc.) by intercepting `PreToolUse` events.  |
+| [266](ADR-266-protected-config-write-guard-bash-coverage.md) | Extend protected-config-write-guard to intercept Bash file-write commands | proposed | planned | 2026-05-11 | Proposed (2026-05-11). |
 | [271](ADR-271-clean-room-detection-tier-2-ast-similarity.md) | Clean-Room Detection Tier 2: AST-Normalized Similarity | proposed | planned | 2026-05-11 | Proposed (2026-05-11) |
 
 ## Exploration
