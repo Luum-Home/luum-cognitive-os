@@ -4816,7 +4816,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 5,
         "script": 2,
         "test": 3
@@ -4837,6 +4837,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -4888,7 +4892,7 @@
         "script_consumers:2",
         "test_consumers:3",
         "doc_consumers:5",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4898,7 +4902,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",

@@ -2,11 +2,11 @@
 
 Scope declares intent; surface coverage proves effective implementation per IDE, CLI, UI, CI, service, or report surface.
 
-Total primitives: 1047
-Gaps: 870
+Total primitives: 1048
+Gaps: 871
 Unclassified gaps: 0
-Gaps by status: {'aligned': 804, 'partial': 66}
-Projected/wired by surface: {'claude': 349, 'codex': 272, 'cursor': 195, 'vscode-copilot': 195, 'agents-md': 0, 'opencode': 195, 'qwen-code': 195, 'kimi-code': 195, 'shell-ci': 15, 'gemini-cli': 195, 'warp': 195, 'amp-code': 195, 'jetbrains-junie': 195, 'qoder': 195, 'factory-droid': 195, 'cline': 195, 'continue-dev': 195, 'kilo-code': 195, 'zed-ai': 195, 'augment-code': 195, 'goose': 195, 'aider': 195, 'cos-cli': 5, 'acc-report': 1047, 'dashboard': 1047, 'tui': 1047}
+Gaps by status: {'aligned': 805, 'partial': 66}
+Projected/wired by surface: {'claude': 349, 'codex': 272, 'cursor': 195, 'vscode-copilot': 195, 'agents-md': 0, 'opencode': 195, 'qwen-code': 195, 'kimi-code': 195, 'shell-ci': 15, 'gemini-cli': 195, 'warp': 195, 'amp-code': 195, 'jetbrains-junie': 195, 'qoder': 195, 'factory-droid': 195, 'cline': 195, 'continue-dev': 195, 'kilo-code': 195, 'zed-ai': 195, 'augment-code': 195, 'goose': 195, 'aider': 195, 'cos-cli': 5, 'acc-report': 1048, 'dashboard': 1048, 'tui': 1048}
 Surfaces by kind: {'ide-harness': 21, 'shell-ci': 1, 'cli': 1, 'report': 1, 'ui': 2}
 Wired hooks by harness: {'claude': 167, 'codex': 90, 'cursor': 0, 'vscode-copilot': 0, 'agents-md': 0, 'opencode': 0, 'qwen-code': 0, 'kimi-code': 0, 'shell-ci': 0, 'gemini-cli': 0, 'warp': 0, 'amp-code': 0, 'jetbrains-junie': 0, 'qoder': 0, 'factory-droid': 0, 'cline': 0, 'continue-dev': 0, 'kilo-code': 0, 'zed-ai': 0, 'augment-code': 0, 'goose': 0, 'aider': 0, 'cos-cli': 0, 'acc-report': 0, 'dashboard': 0, 'tui': 0}
 
@@ -604,6 +604,7 @@ Wired hooks by harness: {'claude': 167, 'codex': 90, 'cursor': 0, 'vscode-copilo
 | `scripts/cos-primitive-projection-fidelity` | scripts | both | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
 | `scripts/cos-primitive-service-headless-smoke` | scripts | both | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
 | `scripts/cos-private-content-audit` | scripts | os-only | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
+| `scripts/cos-product-answer` | scripts | os-only | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
 | `scripts/cos-profile-explain` | scripts | os-only | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
 | `scripts/cos-project-registry-prune.sh` | scripts | os-only | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |
 | `scripts/cos-promote-from-telemetry` | scripts | os-only | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | on-demand-command-only | installed | installed | installed | installed | wired:<br>observable<br>json<br>exit | wired:<br>observable | wired:<br>observable |

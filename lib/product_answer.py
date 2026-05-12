@@ -1,7 +1,10 @@
-"""ADR-280 product question-to-evidence primitive."""
+"""ADR-280/281 product question-to-evidence primitive and answer-card cache."""
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -10,7 +13,11 @@ import yaml
 QUESTION_BANK_SCHEMA = "product-question-bank/v1"
 CLAIM_EVIDENCE_SCHEMA = "product-claim-evidence/v1"
 REPORT_SCHEMA = "product-answer-report/v1"
+CARD_SCHEMA = "product-answer-card/v1"
+INDEX_SCHEMA = "product-answer-routing-index/v1"
+LEDGER_SCHEMA = "product-answer-freshness-ledger/v1"
 DEFAULT_STATUS_ORDER = ["real", "partial-real", "partial", "aspirational", "blocked"]
+DEFAULT_CACHE_DIR = Path(".cognitive-os") / "product-answers"
 
 
 @dataclass(frozen=True)
@@ -140,6 +147,13 @@ def _claim_summary(claim_id: str, claim: dict[str, Any], project_dir: Path) -> d
     }
 
 
+def _relative_to_project(project_dir: Path, path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(project_dir.resolve()))
+    except ValueError:
+        return str(path)
+
+
 def build_answer(
     project_dir: Path,
     question_text: str | None = None,
@@ -218,7 +232,7 @@ def build_answer(
         "trust_report": {
             "score": trust_score,
             "status": trust_status,
-            "evidence_count": len(set(approved_sources + [rel for claim in claim_rows for rel in claim["evidence"]])) ,
+            "evidence_count": len(set(approved_sources + [rel for claim in claim_rows for rel in claim["evidence"]])),
             "uncertainty_count": len(selected.get("gaps", []) or []) + len(finding_messages),
         },
         "approved_sources": approved_sources,
@@ -227,6 +241,7 @@ def build_answer(
         "gaps": [str(item) for item in selected.get("gaps", []) or []],
         "findings": finding_messages,
         "strict": strict,
+        "cache": {"mode": "live", "freshness": "not_checked"},
         "manifests": {
             "question_bank": str(bank_path),
             "claim_evidence": str(evidence_path),
@@ -267,8 +282,268 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines.extend(["", "## Findings"])
         lines.extend(f"- {finding}" for finding in report["findings"])
     trust = report["trust_report"]
+    cache = report.get("cache") or {}
+    if cache.get("mode") == "card":
+        lines.extend([
+            "",
+            "## Cache",
+            "",
+            f"Using fresh product answer card: `{cache.get('card_path')}`",
+            f"Source freshness: {cache.get('freshness')}",
+        ])
     lines.extend([
         "",
         f"TRUST_REPORT: SCORE={trust['score']} STATUS={trust['status']} EVIDENCE={trust['evidence_count']} UNCERTAINTIES={trust['uncertainty_count']}",
     ])
     return "\n".join(lines) + "\n"
+
+
+def cache_dir(project_dir: Path, override: Path | None = None) -> Path:
+    """Return the ADR-281 product answer cache directory."""
+    return override if override is not None else project_dir / DEFAULT_CACHE_DIR
+
+
+def card_paths(project_dir: Path, question_id: str, cache_dir_override: Path | None = None) -> dict[str, Path]:
+    """Return all ADR-281 paths for a question id."""
+    directory = cache_dir(project_dir, cache_dir_override)
+    return {
+        "dir": directory,
+        "markdown": directory / f"{question_id}.md",
+        "json": directory / f"{question_id}.json",
+        "index": directory / "index.yaml",
+        "ledger": directory / "freshness-ledger.jsonl",
+    }
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def answer_source_paths(project_dir: Path, report: dict[str, Any]) -> list[str]:
+    """Return canonical source paths that make a card stale when changed."""
+    rels: set[str] = set(report.get("approved_sources", []) or [])
+    for claim in report.get("claims", []) or []:
+        rels.update(str(item) for item in claim.get("evidence", []) or [])
+    manifests = report.get("manifests", {}) or {}
+    for manifest_path in manifests.values():
+        rels.add(_relative_to_project(project_dir, Path(str(manifest_path))))
+    return sorted(rels)
+
+
+def compute_source_hashes(project_dir: Path, source_paths: list[str]) -> dict[str, str]:
+    """Compute sha256 hashes for source paths relative to ``project_dir``."""
+    hashes: dict[str, str] = {}
+    for rel in sorted(set(source_paths)):
+        path = project_dir / rel
+        hashes[rel] = _sha256_file(path) if path.exists() and path.is_file() else "MISSING"
+    return hashes
+
+
+def card_metadata(project_dir: Path, report: dict[str, Any]) -> dict[str, Any]:
+    """Build frontmatter metadata for an ADR-281 answer card."""
+    source_paths = answer_source_paths(project_dir, report)
+    trust = report.get("trust_report", {}) or {}
+    return {
+        "schema_version": CARD_SCHEMA,
+        "adr": "ADR-281",
+        "question_id": report["question_id"],
+        "last_generated": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "status": "fresh",
+        "answer_status": report["status"],
+        "claim_status": report["claim_status"],
+        "confidence": report["confidence"],
+        "trust_score": trust.get("score", 0),
+        "source_hashes": compute_source_hashes(project_dir, source_paths),
+    }
+
+
+def _frontmatter_markdown(metadata: dict[str, Any], body: str) -> str:
+    return "---\n" + yaml.safe_dump(metadata, sort_keys=True, allow_unicode=True) + "---\n" + body
+
+
+def _split_frontmatter(markdown: str) -> tuple[dict[str, Any], str]:
+    if not markdown.startswith("---\n"):
+        return {}, markdown
+    _, rest = markdown.split("---\n", 1)
+    raw, body = rest.split("---\n", 1)
+    payload = yaml.safe_load(raw) or {}
+    if not isinstance(payload, dict):
+        return {}, body
+    return payload, body
+
+
+def card_freshness(project_dir: Path, question_id: str, cache_dir_override: Path | None = None) -> dict[str, Any]:
+    """Check whether a materialized answer card is fresh."""
+    paths = card_paths(project_dir, question_id, cache_dir_override)
+    if not paths["markdown"].exists() or not paths["json"].exists():
+        return {
+            "schema_version": LEDGER_SCHEMA,
+            "question_id": question_id,
+            "freshness": "missing",
+            "card_path": str(paths["markdown"]),
+            "changed_sources": [],
+            "missing_sources": [],
+        }
+    metadata, _body = _split_frontmatter(paths["markdown"].read_text(encoding="utf-8"))
+    stored_hashes = metadata.get("source_hashes", {}) if isinstance(metadata, dict) else {}
+    if not isinstance(stored_hashes, dict):
+        stored_hashes = {}
+    current_hashes = compute_source_hashes(project_dir, [str(item) for item in stored_hashes])
+    changed = sorted(rel for rel, old_hash in stored_hashes.items() if current_hashes.get(rel) != old_hash)
+    missing = sorted(rel for rel, new_hash in current_hashes.items() if new_hash == "MISSING")
+    freshness = "fresh" if not changed and not missing else "stale"
+    return {
+        "schema_version": LEDGER_SCHEMA,
+        "question_id": question_id,
+        "freshness": freshness,
+        "card_path": str(paths["markdown"]),
+        "json_path": str(paths["json"]),
+        "changed_sources": changed,
+        "missing_sources": missing,
+        "stored_source_count": len(stored_hashes),
+        "checked_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+    }
+
+
+def _write_ledger_row(paths: dict[str, Path], row: dict[str, Any]) -> None:
+    paths["ledger"].parent.mkdir(parents=True, exist_ok=True)
+    with paths["ledger"].open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(row, sort_keys=True) + "\n")
+
+
+def write_answer_card(
+    project_dir: Path,
+    report: dict[str, Any],
+    cache_dir_override: Path | None = None,
+) -> dict[str, Any]:
+    """Materialize a product answer report as Markdown, JSON, and freshness ledger row."""
+    paths = card_paths(project_dir, report["question_id"], cache_dir_override)
+    paths["dir"].mkdir(parents=True, exist_ok=True)
+    metadata = card_metadata(project_dir, report)
+    body = render_markdown({**report, "cache": {"mode": "materialized", "freshness": "fresh"}})
+    paths["markdown"].write_text(_frontmatter_markdown(metadata, body), encoding="utf-8")
+    report_with_cache = {
+        **report,
+        "adr": "ADR-281",
+        "cache": {
+            "mode": "materialized",
+            "freshness": "fresh",
+            "card_path": str(paths["markdown"]),
+            "json_path": str(paths["json"]),
+            "source_hashes": metadata["source_hashes"],
+        },
+    }
+    paths["json"].write_text(json.dumps(report_with_cache, indent=2, sort_keys=True), encoding="utf-8")
+    ledger_row = {
+        "schema_version": LEDGER_SCHEMA,
+        "event": "refresh",
+        "question_id": report["question_id"],
+        "freshness": "fresh",
+        "card_path": str(paths["markdown"]),
+        "json_path": str(paths["json"]),
+        "source_count": len(metadata["source_hashes"]),
+        "generated_at": metadata["last_generated"],
+    }
+    _write_ledger_row(paths, ledger_row)
+    return report_with_cache
+
+
+def refresh_routing_index(
+    project_dir: Path,
+    question_bank_path: Path | None = None,
+    cache_dir_override: Path | None = None,
+) -> dict[str, Any]:
+    """Write a compact ADR-281 routing index for product answer cards."""
+    root = project_dir.resolve()
+    bank_path = question_bank_path or root / "manifests" / "product-question-bank.yaml"
+    bank = load_question_bank(bank_path)
+    directory = cache_dir(root, cache_dir_override)
+    directory.mkdir(parents=True, exist_ok=True)
+    entries: dict[str, Any] = {}
+    for question_id, row in sorted(bank["questions"].items()):
+        paths = card_paths(root, question_id, cache_dir_override)
+        freshness = card_freshness(root, question_id, cache_dir_override)
+        entries[question_id] = {
+            "card": _relative_to_project(root, paths["markdown"]),
+            "json": _relative_to_project(root, paths["json"]),
+            "aliases": [str(item) for item in row.get("aliases", []) or []],
+            "keywords": [str(item) for item in row.get("keywords", []) or []],
+            "max_answer_tokens": int(row.get("max_answer_tokens", 700) or 700),
+            "freshness": freshness["freshness"],
+        }
+    index = {
+        "schema_version": INDEX_SCHEMA,
+        "adr": "ADR-281",
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "entries": entries,
+    }
+    (directory / "index.yaml").write_text(yaml.safe_dump(index, sort_keys=True, allow_unicode=True), encoding="utf-8")
+    return index
+
+
+def refresh_answer_cards(
+    project_dir: Path,
+    question_id: str | None = None,
+    question_bank_path: Path | None = None,
+    claim_evidence_path: Path | None = None,
+    cache_dir_override: Path | None = None,
+    strict: bool = False,
+) -> dict[str, Any]:
+    """Regenerate one or all ADR-281 answer cards."""
+    root = project_dir.resolve()
+    bank_path = question_bank_path or root / "manifests" / "product-question-bank.yaml"
+    bank = load_question_bank(bank_path)
+    question_ids = [question_id] if question_id else sorted(bank["questions"])
+    reports = []
+    for qid in question_ids:
+        report = build_answer(
+            root,
+            question_id=qid,
+            question_bank_path=question_bank_path,
+            claim_evidence_path=claim_evidence_path,
+            strict=strict,
+        )
+        reports.append(write_answer_card(root, report, cache_dir_override))
+    index = refresh_routing_index(root, bank_path, cache_dir_override)
+    return {
+        "schema_version": "product-answer-refresh-report/v1",
+        "adr": "ADR-281",
+        "status": "pass" if all(report["status"] != "fail" for report in reports) else "fail",
+        "refreshed_count": len(reports),
+        "questions": [report["question_id"] for report in reports],
+        "cards": [report["cache"]["card_path"] for report in reports],
+        "index": _relative_to_project(root, cache_dir(root, cache_dir_override) / "index.yaml"),
+        "index_entry_count": len(index["entries"]),
+    }
+
+
+def load_cached_answer(
+    project_dir: Path,
+    question_text: str | None = None,
+    question_id: str | None = None,
+    question_bank_path: Path | None = None,
+    cache_dir_override: Path | None = None,
+) -> dict[str, Any] | None:
+    """Return a fresh cached answer report when available, otherwise None."""
+    root = project_dir.resolve()
+    bank_path = question_bank_path or root / "manifests" / "product-question-bank.yaml"
+    bank = load_question_bank(bank_path)
+    selected_id, _selected = select_question(bank, question_text, question_id)
+    freshness = card_freshness(root, selected_id, cache_dir_override)
+    if freshness["freshness"] != "fresh":
+        return None
+    paths = card_paths(root, selected_id, cache_dir_override)
+    report = json.loads(paths["json"].read_text(encoding="utf-8"))
+    report["question"] = question_text or question_id or selected_id
+    report["cache"] = {
+        **(report.get("cache") or {}),
+        "mode": "card",
+        "freshness": "fresh",
+        "card_path": str(paths["markdown"]),
+        "json_path": str(paths["json"]),
+    }
+    return report

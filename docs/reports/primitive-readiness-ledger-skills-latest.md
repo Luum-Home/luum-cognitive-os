@@ -67,7 +67,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:2, repo-skill-not-
 | `skills/preserved-wip-cleanup/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 4 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-authoring/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-harness-coverage/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-consumer-candidate | candidate | 21 | prove consumer project projection per supported harness before promotion |
-| `skills/primitive-harvester/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/primitive-harvester/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-surface-reduction/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-usage-map/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/project-scaffold/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
