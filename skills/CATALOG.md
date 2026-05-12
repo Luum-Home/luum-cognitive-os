@@ -281,6 +281,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **primitive-surface-reduction** — Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.
 - **primitive-usage-map** — Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.
 - **private-mode** — Toggle private conversation mode. When active, nothing is saved to Engram, metrics, error logs, or git. Use for personal conversations, sensitive topics, or casual chat. Activate with /private, dea...
+- **product-answer** — Use when the user asks a Cognitive OS product/commercial question such as differentiator, moat, wedge, ICP, pricing, competitors, pitch, positioning, or what claims are safe. Always prefer cached ADR-282 product answer cards before broad docs.
 - **project-scaffold** — Scaffold the 10-category docs/ tree adopted by Cognitive OS projects. Creates 01-contexto through 10-resumenes with starter files and TODO markers. Idempotent. See ADR-054.
 - **promptfoo-integration** — Configure Promptfoo for prompt regression testing and red teaming of skills in CI/CD pipelines.
 - **proof-drill** — Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.

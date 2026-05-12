@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 164
+Total skills: 165
 
 ## os (18)
 
@@ -28,7 +28,7 @@ Total skills: 164
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 | vuln-remediation-flow | Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract for sandboxed… |
 
-## os-dev (36)
+## os-dev (37)
 
 | Skill | Description |
 |-------|-------------|
@@ -55,6 +55,7 @@ Total skills: 164
 | primitive-classifier | Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. |
 | primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |
 | primitive-usage-map | Static primitive consumer map for scripts, hooks, skills, and rules. |
+| product-answer | Answer COS product/commercial questions from cached evidence cards, not broad repo research. |
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in… |
 | queue-drain | Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use… |
 | radar-update | Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md while preserving human-authored prose. Dry-run by default, --apply writes. |
