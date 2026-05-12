@@ -128,3 +128,20 @@ def test_strict_passes_on_high(tmp_path: Path) -> None:
     ])
     cp = _run(tmp_path, "--strict")
     assert cp.returncode == 0
+
+
+def test_tracked_baseline_counts_as_audited(tmp_path: Path) -> None:
+    """Tracked baseline records pre-ADR-275 manual closures without committing runtime trail."""
+    _seed_ledger(tmp_path, [{"id": "d1", "status": "verified-done"}])
+    reports = tmp_path / "docs" / "reports"
+    reports.mkdir(parents=True, exist_ok=True)
+    (reports / "closure-trust-baseline.json").write_text(json.dumps({
+        "schema_version": "closure-trust-baseline/v1",
+        "audited_closures": [{"id": "d1", "reason": "retroactive"}],
+    }))
+    cp = _run(tmp_path)
+    assert cp.returncode == 0
+    out = json.loads(cp.stdout)
+    assert out["audited_closures"] == 1
+    assert out["unaudited_closures"] == 0
+    assert out["trust_signal"] == "HIGH"

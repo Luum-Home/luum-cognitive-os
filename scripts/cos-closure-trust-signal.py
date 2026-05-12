@@ -45,6 +45,7 @@ from typing import Any
 
 LEDGER_PATH = "docs/reports/pending-truth-latest.json"
 TRAIL_PATH = ".cognitive-os/audit/closure-trail.jsonl"
+BASELINE_PATH = "docs/reports/closure-trust-baseline.json"
 SCHEMA_VERSION = "closure-trust-signal/v1"
 
 
@@ -57,13 +58,17 @@ def _resolve_project_dir(arg: str | None) -> Path:
     return Path.cwd().resolve()
 
 
-def _load_audited_ids(trail_path: Path) -> set[str]:
-    """Return the set of ledger ids that appear in the closure trail."""
-    if not trail_path.exists():
-        return set()
+def _load_audited_ids(trail_path: Path, baseline_path: Path | None = None) -> set[str]:
+    """Return ledger ids that appear in runtime trail or tracked baseline.
+
+    The runtime closure trail is intentionally gitignored. The optional baseline
+    lets maintainers record retroactive, already-verified closures from before
+    ADR-275 enforcement without committing local runtime state.
+    """
     audited: set[str] = set()
     try:
-        for line in trail_path.read_text(encoding="utf-8").splitlines():
+        trail_lines = trail_path.read_text(encoding="utf-8").splitlines() if trail_path.exists() else []
+        for line in trail_lines:
             line = line.strip()
             if not line:
                 continue
@@ -78,6 +83,16 @@ def _load_audited_ids(trail_path: Path) -> set[str]:
                 audited.add(entry_id)
     except OSError:
         pass
+    if baseline_path and baseline_path.exists():
+        try:
+            baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+            for item in baseline.get("audited_closures", []) or []:
+                if isinstance(item, dict) and item.get("id"):
+                    audited.add(str(item["id"]))
+                elif isinstance(item, str):
+                    audited.add(item)
+        except (OSError, json.JSONDecodeError):
+            pass
     return audited
 
 
@@ -100,7 +115,7 @@ def compute(root: Path) -> dict[str, Any]:
             "error": f"ledger parse error: {exc}",
         }
 
-    audited = _load_audited_ids(root / TRAIL_PATH)
+    audited = _load_audited_ids(root / TRAIL_PATH, root / BASELINE_PATH)
     items = ledger.get("items", []) or []
     done = [it for it in items if it.get("status") == "verified-done"]
 
@@ -144,6 +159,7 @@ def compute(root: Path) -> dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "baseline_path": BASELINE_PATH,
         "total_verified_done": total_done,
         "audited_closures": len(audited_done),
         "unaudited_closures": len(unaudited),
