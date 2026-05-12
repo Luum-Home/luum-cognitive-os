@@ -78,10 +78,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 7,
-        "test": 1
+        "script": 1,
+        "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/pending-truth.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/README.md"
@@ -111,14 +117,32 @@
           "path": "docs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-repo-map"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-repo-map.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_repo_map.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_repo_map.py"
+        },
+        {
           "family": "test",
           "path": "tests/unit/test_reward_signal_quality.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
-        "doc_consumers:7"
+        "script_consumers:1",
+        "test_consumers:4",
+        "doc_consumers:7",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -128,7 +152,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -983,7 +1007,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 9,
-        "skill": 1
+        "skill": 2
       },
       "consumers": [
         {
@@ -1025,11 +1049,15 @@
         {
           "family": "skill",
           "path": "skills/apply-improvements/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/deep-tool-research/SKILL.md"
         }
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:1",
+        "skill_consumers:2",
         "doc_consumers:9"
       ],
       "family": "skills",
@@ -1040,7 +1068,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -1049,7 +1077,7 @@
       "consumer_families": {
         "config": 1,
         "doc": 3,
-        "skill": 1
+        "skill": 2
       },
       "consumers": [
         {
@@ -1071,11 +1099,15 @@
         {
           "family": "skill",
           "path": "skills/analyze-improvements/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/deep-tool-research/SKILL.md"
         }
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:1",
+        "skill_consumers:2",
         "doc_consumers:3",
         "config_consumers:1"
       ],
@@ -1087,7 +1119,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -1243,7 +1275,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "skill": 4,
         "test": 2
       },
@@ -1251,6 +1283,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -1301,7 +1337,7 @@
       "evidence": [
         "skill_consumers:4",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -1312,7 +1348,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -1580,7 +1616,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 18,
+        "doc": 19,
         "hook": 1,
         "rule": 3,
         "skill": 1,
@@ -1606,6 +1642,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/quality.md"
         },
         {
           "family": "doc",
@@ -1746,7 +1786,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "test_consumers:10",
-        "doc_consumers:18",
+        "doc_consumers:19",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -1757,7 +1797,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "high",
@@ -1765,7 +1805,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 2,
-        "doc": 29,
+        "doc": 32,
         "rule": 2,
         "script": 3,
         "skill": 1,
@@ -1882,6 +1922,18 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/megamemory-annex-d-explorer-installer-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/megamemory-annex-e-primitives-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
         },
         {
@@ -1939,7 +1991,7 @@
         "rule_consumers:2",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:29",
+        "doc_consumers:32",
         "config_consumers:2"
       ],
       "family": "skills",
@@ -1950,7 +2002,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 40
+      "total_consumers": 43
     },
     {
       "confidence": "medium",
@@ -2292,7 +2344,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "test": 2
       },
@@ -2300,6 +2352,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -2342,7 +2398,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -2353,7 +2409,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -2440,10 +2496,10 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 8,
-        "doc": 26,
+        "doc": 27,
         "hook": 1,
         "script": 9,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -2501,6 +2557,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
         },
         {
           "family": "doc",
@@ -2644,6 +2704,10 @@
         },
         {
           "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_acc_pipeline.py"
         },
         {
@@ -2663,8 +2727,8 @@
       "evidence": [
         "hook_consumers:1",
         "script_consumers:9",
-        "test_consumers:9",
-        "doc_consumers:26",
+        "test_consumers:10",
+        "doc_consumers:27",
         "config_consumers:8"
       ],
       "family": "skills",
@@ -2675,7 +2739,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 53
+      "total_consumers": 55
     },
     {
       "confidence": "high",
@@ -2683,7 +2747,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "rule": 1,
         "test": 2
       },
@@ -2691,6 +2755,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -2721,7 +2789,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -2732,7 +2800,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -2826,6 +2894,43 @@
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
       "total_consumers": 15
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/recommendation-grounding.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/deep-tool-research/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 3
     },
     {
       "confidence": "medium",
@@ -3144,10 +3249,10 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 9,
         "rule": 2,
         "script": 2,
-        "skill": 1,
+        "skill": 2,
         "test": 2
       },
       "consumers": [
@@ -3173,7 +3278,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-265-mandatory-minimum-inspection-caps.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/patterns/dogfood-score.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
         },
         {
           "family": "rule",
@@ -3196,6 +3317,10 @@
           "path": "skills/component-reality-check/SKILL.md"
         },
         {
+          "family": "skill",
+          "path": "skills/deep-tool-research/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_orchestrator_skill_routing.py"
         },
@@ -3206,11 +3331,11 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:1",
+        "skill_consumers:2",
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:9",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3221,7 +3346,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -3288,7 +3413,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "test": 2
       },
       "consumers": [
@@ -3299,6 +3424,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "test",
@@ -3312,7 +3441,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3323,7 +3452,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -3331,10 +3460,10 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 4,
-        "doc": 31,
+        "doc": 32,
         "hook": 1,
         "rule": 1,
-        "skill": 3,
+        "skill": 4,
         "test": 5
       },
       "consumers": [
@@ -3373,6 +3502,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-206-aspirational-claim-decommission-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-263-tool-replay-budget-ledger.md"
         },
         {
           "family": "doc",
@@ -3492,6 +3625,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/synthesize-skill/SKILL.md"
         },
         {
@@ -3521,11 +3658,11 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:3",
+        "skill_consumers:4",
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:5",
-        "doc_consumers:31",
+        "doc_consumers:32",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -3536,7 +3673,25 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 45
+      "total_consumers": 47
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 0
     },
     {
       "confidence": "medium",
@@ -3544,13 +3699,17 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "skill": 4
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -3588,7 +3747,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3599,7 +3758,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -4198,7 +4357,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 6,
+        "doc": 7,
         "hook": 1,
         "test": 1
       },
@@ -4210,6 +4369,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -4240,7 +4403,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6"
+        "doc_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4250,7 +4413,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -4314,7 +4477,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 12,
+        "doc": 13,
         "script": 1,
         "skill": 1,
         "test": 2
@@ -4323,6 +4486,10 @@
         {
           "family": "doc",
           "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/quality.md"
         },
         {
           "family": "doc",
@@ -4390,7 +4557,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:12"
+        "doc_consumers:13"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4400,7 +4567,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -4452,7 +4619,8 @@
       "consumer_families": {
         "config": 1,
         "doc": 4,
-        "test": 1
+        "script": 1,
+        "test": 2
       },
       "consumers": [
         {
@@ -4476,13 +4644,22 @@
           "path": "docs/business/master-plan-checklist.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_primitive_authoring_gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2",
         "doc_consumers:4",
         "config_consumers:1"
       ],
@@ -4494,7 +4671,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -4620,7 +4797,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 4,
+        "doc": 5,
         "script": 2,
         "test": 3
       },
@@ -4648,6 +4825,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -4686,7 +4867,7 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -4697,7 +4878,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -4884,7 +5065,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 10,
-        "doc": 12,
+        "doc": 13,
         "script": 7,
         "test": 6
       },
@@ -4944,6 +5125,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -5034,7 +5219,7 @@
       "evidence": [
         "script_consumers:7",
         "test_consumers:6",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:10"
       ],
       "family": "skills",
@@ -5045,7 +5230,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "medium",
@@ -5053,13 +5238,17 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -5089,7 +5278,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -5100,7 +5289,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -5108,7 +5297,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 6,
-        "doc": 11,
+        "doc": 12,
         "hook": 3,
         "rule": 3,
         "script": 3,
@@ -5177,6 +5366,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
         },
         {
@@ -5242,7 +5435,7 @@
         "rule_consumers:3",
         "script_consumers:3",
         "test_consumers:4",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -5253,7 +5446,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "high",
@@ -5261,7 +5454,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 6,
+        "doc": 8,
         "script": 1
       },
       "consumers": [
@@ -5287,6 +5480,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
         },
         {
@@ -5301,7 +5502,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -5312,7 +5513,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -5320,7 +5521,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 7,
-        "doc": 28,
+        "doc": 38,
         "hook": 1,
         "rule": 2,
         "script": 6,
@@ -5355,6 +5556,14 @@
         {
           "family": "config",
           "path": "manifests/security-red-team.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/INDEX.md"
         },
         {
           "family": "doc",
@@ -5426,6 +5635,34 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-b-cross-judge-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-c-manifest-fixtures-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
         },
         {
@@ -5435,6 +5672,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
@@ -5552,7 +5793,7 @@
         "rule_consumers:2",
         "script_consumers:6",
         "test_consumers:7",
-        "doc_consumers:28",
+        "doc_consumers:38",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -5563,14 +5804,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 54
+      "total_consumers": 64
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 9,
+        "doc": 14,
         "script": 1,
         "skill": 1,
         "test": 2
@@ -5594,11 +5835,31 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
         },
         {
           "family": "doc",
           "path": "docs/research/repo-scout/cluster-security-supply-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
@@ -5634,7 +5895,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:9"
+        "doc_consumers:14"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5644,7 +5905,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -5770,7 +6031,7 @@
         "config": 4,
         "doc": 14,
         "rule": 1,
-        "skill": 1,
+        "skill": 2,
         "test": 7
       },
       "consumers": [
@@ -5852,6 +6113,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/deep-tool-research/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/reverse-engineer/SKILL.md"
         },
         {
@@ -5885,7 +6150,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:1",
+        "skill_consumers:2",
         "rule_consumers:1",
         "test_consumers:7",
         "doc_consumers:14",
@@ -5899,7 +6164,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -5910,7 +6175,7 @@
         "hook": 1,
         "rule": 3,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -5943,11 +6208,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/archive/cleanup-verification.md"
         },
         {
           "family": "doc",
-          "path": "docs/archived/cleanup-verification.md"
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
@@ -6000,6 +6265,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_resource_governor.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
         }
       ],
       "distribution": null,
@@ -6007,7 +6276,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:14"
       ],
       "family": "skills",
@@ -6018,7 +6287,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
@@ -6026,7 +6295,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 11,
+        "doc": 12,
         "test": 1
       },
       "consumers": [
@@ -6049,6 +6318,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
         },
         {
           "family": "doc",
@@ -6086,7 +6359,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -6097,7 +6370,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -6420,15 +6693,19 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 4,
-        "doc": 92,
+        "config": 5,
+        "doc": 101,
         "hook": 1,
-        "rule": 8,
+        "rule": 9,
         "script": 2,
-        "skill": 5,
+        "skill": 6,
         "test": 10
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/external-tool-adoption-freeze.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/external-tools-adoption.yaml"
@@ -6499,6 +6776,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture.md"
         },
         {
@@ -6555,6 +6840,22 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/helixdb-comparison-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/megamemory-comparison-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
         },
         {
@@ -6599,6 +6900,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/ClementTsang__bottom-2026-05-06.md"
         },
         {
@@ -6608,6 +6913,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md"
         },
         {
           "family": "doc",
@@ -6712,6 +7021,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/hatoo__oha-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
         },
         {
           "family": "doc",
@@ -6827,6 +7140,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/engram-organization.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/model-routing.md"
         },
         {
@@ -6856,6 +7173,10 @@
         {
           "family": "script",
           "path": "scripts/radar_merge.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/deep-tool-research/SKILL.md"
         },
         {
           "family": "skill",
@@ -6920,13 +7241,13 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:5",
+        "skill_consumers:6",
         "hook_consumers:1",
-        "rule_consumers:8",
+        "rule_consumers:9",
         "script_consumers:2",
         "test_consumers:10",
-        "doc_consumers:92",
-        "config_consumers:4"
+        "doc_consumers:101",
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6936,7 +7257,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 122
+      "total_consumers": 134
     },
     {
       "confidence": "medium",
@@ -7014,13 +7335,17 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 12,
+        "doc": 14,
         "hook": 3,
         "rule": 5,
         "skill": 2,
         "test": 8
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/workflow.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-019-scope-tagging.md"
@@ -7032,6 +7357,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-069-research-first-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-262-evolve-loop-spike.md"
         },
         {
           "family": "doc",
@@ -7148,7 +7477,7 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "test_consumers:8",
-        "doc_consumers:12"
+        "doc_consumers:14"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7158,7 +7487,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
@@ -7225,7 +7554,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 6,
+        "doc": 12,
         "script": 1,
         "test": 3
       },
@@ -7264,6 +7593,30 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-b-cross-judge-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-annex-e-primitives-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/ifixai-comparison-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
@@ -7295,7 +7648,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:6",
+        "doc_consumers:12",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -7306,21 +7659,26 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 21
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
-        "doc": 15,
+        "config": 2,
+        "doc": 17,
         "hook": 1,
+        "rule": 1,
         "script": 2,
         "skill": 2,
         "test": 10
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/pending-truth.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-contracts.yaml"
@@ -7340,6 +7698,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -7388,6 +7754,10 @@
         {
           "family": "hook",
           "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/recommendation-grounding.md"
         },
         {
           "family": "script",
@@ -7450,10 +7820,11 @@
       "evidence": [
         "skill_consumers:2",
         "hook_consumers:1",
+        "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:10",
-        "doc_consumers:15",
-        "config_consumers:1"
+        "doc_consumers:17",
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7463,14 +7834,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 35
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 7,
+        "doc": 8,
         "test": 1
       },
       "consumers": [
@@ -7481,6 +7852,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -7510,7 +7885,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:7"
+        "doc_consumers:8"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7520,14 +7895,14 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4,
+        "doc": 5,
         "hook": 1,
         "test": 1
       },
@@ -7539,6 +7914,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -7561,7 +7940,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7571,7 +7950,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -7579,7 +7958,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 10,
-        "doc": 8,
+        "doc": 9,
         "hook": 3,
         "script": 5,
         "test": 5
@@ -7640,6 +8019,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -7715,7 +8098,7 @@
         "hook_consumers:3",
         "script_consumers:5",
         "test_consumers:5",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:10"
       ],
       "family": "skills",
@@ -7726,20 +8109,24 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 27,
+        "doc": 28,
         "rule": 5,
         "script": 1,
         "skill": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/onboarding.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-044-context-payload-slimming.md"
@@ -7895,7 +8282,7 @@
         "rule_consumers:5",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:27"
+        "doc_consumers:28"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7905,7 +8292,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -7999,7 +8386,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "skill": 5,
         "test": 2
       },
@@ -8007,6 +8394,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -8057,7 +8448,7 @@
       "evidence": [
         "skill_consumers:5",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -8068,7 +8459,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -8210,13 +8601,17 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "skill": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -8250,7 +8645,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -8261,7 +8656,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
@@ -8498,23 +8893,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 59,
-      "medium": 38
+      "high": 60,
+      "medium": 39
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 2,
-      "repo-skill-not-projectable": 90,
+      "repo-skill-not-projectable": 92,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 59,
-      "lab": 7,
+      "compatibility-wrapper": 60,
+      "lab": 8,
       "project-extension": 16,
       "so-maintainer": 15
     },
-    "total": 97,
-    "without_consumers": 1,
-    "without_lifecycle": 95
+    "total": 99,
+    "without_consumers": 2,
+    "without_lifecycle": 97
   },
   "target_family": "skills"
 }
