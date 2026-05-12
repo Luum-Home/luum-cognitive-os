@@ -114,6 +114,33 @@ unexplained skip reasons.
 3. Review old skips and migrate reproducible product debt to `xfail(strict=True)`.
 4. Delete tests whose product claim no longer exists.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, `make test-laptop` could silently accumulate new skip classes — Docker env gates and accidental/lazy skips looked identical in raw output. After this ADR:
+
+- `manifests/test-skip-registry.yaml` is the machine-readable registry of allowed skip categories (`external-dependency`, `opt-in-lane`, `runtime-sample-precondition`, `optional-runtime-state`, `policy-exemption`).
+- `scripts/test_skip_registry.py` parses the JUnit XML output, classifies each skipped test against the registry, writes `skip-summary.json` and `skip-summary.md`, and returns non-zero when an unclassified skip appears under enforcement.
+- `scripts/pytest-with-summary.sh` now runs the registry after pytest, adds category counts to `summary.txt`, and changes the run exit code to failure if pytest passed but unclassified skips exist.
+- A new `skip` is only valid for conditional applicability. Reproducible known debt must be modeled as `xfail(strict=True)` or as a normal failing test.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is this skip legitimate or accidental?" — check `manifests/test-skip-registry.yaml`; if the skip reason matches an entry, it is classified; if not, the wrapper fails and the category must be declared.
+- "How many skips are Docker/provider/network vs. product debt?" — read `skip-summary.md` in the test report directory; counts appear by category.
+- "Why did `make test-laptop` exit non-zero even though pytest passed?" — an unclassified skip was introduced; check `skip-summary.json` for the unknown reason pattern.
+
+**Does not answer:**
+- Whether an individual test's skip reason is correct — reason-pattern matching is the first slice; exact node-ID matching is a follow-up.
+- Whether it is safe to promote a skip to `xfail(strict=True)` — that is an engineering judgment; the registry documents the path but does not automate the migration.
+
+### When sources disagree
+
+- **Registry says skip is classified but test author disagrees**: the category in `manifests/test-skip-registry.yaml` is authoritative. Update the entry's `reason` or `category` to match the actual intent, then re-run.
+- **`make test-laptop` passes locally but fails in CI on skip classification**: the reason string in the pytest output must match a pattern in the registry. Run `scripts/pytest-with-summary.sh` locally with the same lane flag to reproduce; compare `skip-summary.json` entries against `manifests/test-skip-registry.yaml` patterns.
+
 ## Alternatives rejected
 
 - Eliminate every skipped test immediately — rejected because many skips are correct applicability gates for Docker, network, credentials, HOME mutation, runtime sample windows, and proof drills.

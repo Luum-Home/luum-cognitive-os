@@ -4,7 +4,7 @@ adr: 172
 title: Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian
 status: accepted
 implementation_status: not-applicable
-classification_basis: 'architecture/doctrine ADR assigns existing surfaces; implementation evidence is a snapshot rather than a direct work item'
+classification_basis: 'governance-only: architecture/doctrine ADR assigns existing surfaces; implementation evidence is a snapshot rather than a direct work item'
 date: 2026-05-05
 supersedes: [ADR-170]
 superseded_by: null
@@ -207,6 +207,54 @@ not the editor of source-of-truth.
   They will not always be perfectly synchronised in time. Mitigation: each
   surface has its own freshness contract; no surface claims to be the
   single source of truth for cross-surface joins.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the UI question had conflicting answers: ADR-169 demoted the dashboard, ADR-170 declared the CLI as primary, but neither addressed traces or cross-session memory. Operators were implicitly expected to use the CLI for everything, including use cases the CLI was the wrong shape for.
+
+After this ADR, each artefact kind has a declared surface:
+
+| Artefact kind | Surface | Activation |
+|---|---|---|
+| Live operator state (hook reality, profile drift, boring-reliability) | Surface 1 — Operator CLI | Built in; no install needed |
+| LLM traces, latency, cost, eval scores | Surface 2 — Phoenix | `bash scripts/dependency-lane.sh install observability && uv run phoenix serve` (port 6006) |
+| Memory across sessions (Engram observations, decisions) | Surface 3 — Engram Cloud | BYOK setup per ADR-139; local MCP tools work without cloud |
+| Long-form decisions, ADRs, audit reports | Surface 4 — Obsidian / markdown reader | Clone repo, point any markdown reader at `docs/` |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Where do I look for live operator state?" — Surface 1 CLI scripts in `scripts/` (e.g., `cos-boring-reliability --json`).
+- "Where do I look for LLM trace flame graphs and cost data?" — Phoenix on port 6006.
+- "Where do I look for decisions and ADRs?" — Surface 4: `docs/adrs/`, `docs/architecture/`, `docs/reports/` in any markdown reader.
+- "Can I add a new in-tree web dashboard?" — Not under this ADR. A new ADR with a real driver, real schema, and real consumer is required.
+
+**Does not answer:**
+- "How to set up Engram Cloud" — see ADR-139 (BYOK pattern) and ADR-136 (federation runway).
+- "Which CLI command shows a specific governance state" — see `docs/runbooks/` and the individual script `--help` flags.
+
+### Daily operational pattern
+
+1. **Live state check**: `scripts/cos-boring-reliability --json | jq` — what is the current operator state?
+2. **Trace review**: open Phoenix at `http://localhost:6006` after an LLM-heavy session.
+3. **Memory query**: `mem_context` (in-session) or Engram Cloud (cross-session, when activated).
+4. **ADR lookup**: open `docs/adrs/` in Obsidian or any markdown viewer; use backlinks and graph view for ADR chains.
+
+When an external evaluator asks "where is the dashboard?": answer with the artefact-kind question first, then point to the correct surface from the table above.
+
+### When sources disagree
+
+If the CLI shows a state inconsistent with a trace or a memory entry, each surface has its own freshness contract — they are not synchronized in real time. The CLI shows instantaneous state; Phoenix shows traces from the most recent run; Engram Cloud shows persisted observations that may lag by a session. No surface is the single source of truth for cross-surface joins.
+
+### Reading guide for cold readers
+
+1. Read §Decision, surfaces 1–4, for the artefact-kind contract of each surface.
+2. Read §Cross-surface contract for the three constraints: no surface is required, no surface is canonical for everything, no surface duplicates another.
+3. Read ADR-169 (dashboard demotion) and ADR-171 (Paperclip rejection) for the UI simplification history that motivates this ADR.
+4. Check §Falsifiable Claim — four conditions define when the multi-surface architecture would need to be revisited.
+5. The implementation evidence section records which scripts, packages, and activation commands existed at acceptance — use it as a baseline when assessing surface drift.
 
 ## Alternatives rejected
 

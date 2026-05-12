@@ -91,6 +91,37 @@ proof permit them.
 - Planned profiles may look real unless their `planned`/write-blocked status is
   enforced by tests.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, `scripts/cos_init.py` handled both consumer-project projection and any ad-hoc SO instance setup, with no governed distinction between the two. After this ADR:
+
+- `scripts/cos-instance-init` is the dedicated operator-facing command for provisioning a COS operational instance (separate from consumer-project projection via `cos_init.py`).
+- `manifests/cos-instance-profiles.yaml` is the source of truth for instance profiles, proof levels, and write-blocked status.
+- Two profiles are implemented: `local` (maintainer-host IDE/CLI/shell instance) and `docker-headless` (Docker worker instance).
+- Three future profiles (`host-cli-bridge`, `vm`, `k8s`) are declared but write-blocked until proof exists — the contract tests enforce this.
+- Instance metadata is written into `.cognitive-os/instances/<profile>/`.
+- The installer never copies or reads provider credential stores.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "How do I set up a local COS instance?" — `scripts/cos-instance-init --profile local --write --json`.
+- "How do I set up a Docker/headless worker instance?" — `scripts/cos-instance-init --profile docker-headless --write --json`; the Docker smoke is accessible via `scripts/cos-headless-service-drill`.
+- "Are planned profiles safe to run?" — `--dry-run` shows what would be written but blocks writes for planned/write-blocked profiles.
+
+**Does not answer:**
+- Whether provider calls are available in an instance — provider calls remain disabled unless an explicit auth probe, cost/approval gate, and runtime proof permit them. The installer prepares metadata and commands only.
+- Whether `host-cli-bridge`, `vm`, or `k8s` instances are ready to use — those profiles are write-blocked pending proof.
+
+### Daily operational pattern
+
+1. New maintainer or CI environment: `scripts/cos-instance-init --profile local --dry-run --json` to preview.
+2. If preview looks correct: `scripts/cos-instance-init --profile local --write --json`.
+3. For Docker/headless work: use `--profile docker-headless`; validate with `scripts/cos-headless-service-drill`.
+4. Check `manifests/cos-instance-profiles.yaml` before adding a new profile — any new profile needs proof level documentation and tests before gaining write access.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

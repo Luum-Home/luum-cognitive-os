@@ -70,6 +70,35 @@ Create a governed proof-drill/smoke-opt-in primitive layer:
 - Operators still need to opt in for live provider, Docker, VM, or Kubernetes
   proof paths.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, verification surfaces were scattered: `skills/cognitive-os-test/SKILL.md`, `skills/run-tests/SKILL.md`, `scripts/smoke-qwen-fallback.sh`, and various `docs/architecture/` proof ladders coexisted without a machine-readable registry. Agents could confuse SO self-build checks with consumer-project checks, or accidentally add expensive provider smokes to default lanes. After this ADR:
+
+- `manifests/proof-drill-registry.yaml` is the single machine-readable registry of standard test lanes, smoke opt-ins, proof drills, and manual proofs. Each entry declares `scope: os-self | consumer-project | both`.
+- `skills/proof-drill/SKILL.md` teaches agents how to select the correct validation lane without polluting default `make test-laptop` or CI lanes.
+- Proof drills and smoke opt-ins are explicit opt-ins — they must not be added to default laptop, CI, or consumer-project test lanes.
+- Provider-backed checks treat missing credentials as skipped evidence, not as proof of runtime failure.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which proof drills exist and what scope do they cover?" — read `manifests/proof-drill-registry.yaml`; entries list scope, opt-in condition, and proof path.
+- "Should I run SO self-build checks when testing a consumer project?" — no; the `scope` field separates them.
+- "Is a live provider/Docker/VM/Kubernetes smoke required for this claim?" — check whether the claim's entry is `opt-in: true` in the registry; if so, skipped credentials are not a failure.
+
+**Does not answer:**
+- Whether a specific proof drill passes in a live environment — drills are opt-in; no default lane exercises them automatically.
+- Whether all manual proofs have been executed recently — manual entries in the registry are documentation of the procedure, not automated status.
+
+### Daily operational pattern
+
+1. When verifying an SO capability: consult `manifests/proof-drill-registry.yaml` to identify the correct drill (not the generic `make test-laptop`).
+2. Use `skills/proof-drill/SKILL.md` to select the lane: SO self-build (`os-self`), consumer project (`consumer-project`), or both.
+3. Opt-in drills (Docker, provider, VM) are run explicitly when the environment supports them; treat a missing credential as `skipped evidence`, not failure.
+4. Every proof report must record what it proves and what it does not prove — this is the registry contract.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

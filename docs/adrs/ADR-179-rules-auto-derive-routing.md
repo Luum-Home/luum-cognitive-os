@@ -91,6 +91,46 @@ The initial landing is a PoC migration for five high-value rules:
   used to cap aggregate context budget before adding many more routers.
 - Low-confidence or poorly written patterns can create noisy suggestions.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the orchestrator had to manually recall which rules were relevant for a given prompt, loading the full rules corpus or relying on `[ref-key]` references in `RULES-COMPACT.md`. Hook-enforced rules and agent-instruction rules were not distinguished, leading to duplicate noise when hook-backed rules were loaded as prompt context.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Rule selection | Manual recall or full corpus load | `hooks/rule-router-prompt-suggest.sh` fires on `UserPromptSubmit`; emits `additionalContext` for high-confidence matches only |
+| Rule enforcement classification | Implicit | YAML frontmatter `enforcement: hook \| agent-instruction \| hybrid` declared per rule |
+| Hook-enforced rules | May appear as prompt context (duplicate) | Excluded from suggestions; their backing hooks already fire automatically |
+| Rule migration backlog | Not tracked | `manifests/rule-routing-coverage.yaml` records the baseline and acts as a ratchet |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which rules are relevant for this prompt?" — The hook emits context for high-confidence matches only; suggestions are logged to `.cognitive-os/metrics/rule-suggestion.jsonl`.
+- "Is this rule hook-enforced or agent-instruction?" — Check the `enforcement:` field in the rule's YAML frontmatter.
+- "How many rules still need routing frontmatter?" — Read `manifests/rule-routing-coverage.yaml` for the current backlog and ratchet state.
+
+**Does not answer:**
+- "Is the routing correct?" — The initial PoC migrates 5 rules; coverage is partial. Low-confidence or poorly written `routing_patterns:` can produce noisy suggestions — check the metrics log for calibration.
+- "Are all hook-enforced rules correctly classified?" — `hooks/rule-md-routing-validator.sh` warns on rule edits when a hook rule has a stale hook reference, but does not scan the full corpus.
+
+### Daily operational pattern
+
+1. Normal operation: the hook fires automatically on prompt submission — no manual action needed.
+2. When writing a new rule: add YAML frontmatter with `enforcement:` and `routing_patterns:` (for `agent-instruction` and `hybrid` rules). The validator hook warns if these are missing.
+3. To migrate an existing rule: add frontmatter; remove its slug from `manifests/rule-routing-coverage.yaml` allowlist to advance the ratchet.
+4. To disable suggestions: `DISABLE_HOOK_RULE_ROUTER_PROMPT_SUGGEST=1` (if applicable) or check the hook killswitch.
+
+### Reading guide for cold readers
+
+1. Read `manifests/rule-routing-coverage.yaml` for the current migration state — it shows which rules have been migrated and what the backlog is.
+2. The five initially migrated rules (`acceptance-criteria`, `trust-score`, `adversarial-review`, `definition-of-done`, `phase-aware-agents`) in `rules/` are the best examples of correctly structured routing frontmatter.
+3. `lib/rule_router.py` is the authoritative routing implementation; `tests/contracts/test_rule_router_invariant.py` defines the invariants.
+4. This ADR is deliberately partial (PoC, not full corpus). The ratchet in `manifests/rule-routing-coverage.yaml` is the tool for tracking progress toward full coverage.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

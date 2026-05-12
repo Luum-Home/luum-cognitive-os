@@ -1,4 +1,4 @@
-# Operational Guide Audit — 2026-05-12T14:41:37Z
+# Operational Guide Audit — 2026-05-12T14:51:00Z
 
 > Per ADR-274. Schema: `operational-guide-audit/v1`.
 > Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence
@@ -29,41 +29,21 @@ this audit + `adr-section-validator.sh` extension close the loop.
 
 | Verdict | Count |
 |---|---:|
-| compliant | 17 |
+| compliant | 36 |
 | exempt | 1 |
-| missing | 45 |
-| not-applicable | 222 |
+| missing | 25 |
+| not-applicable | 223 |
 
 ## By priority (backfill queue)
 
 | Priority | Count |
 |---|---:|
-| P0 | 45 |
+| P0 | 25 |
 
 ## Backfill list (P0 + P1)
 
 | Priority | ADR | Verdict | Age (days) | Path |
 |---|---|---|---:|---|
-| P0 | `ADR-177-activate-skill-lifecycle-promotion-ladder` | missing | 6 | `docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md` |
-| P0 | `ADR-188-mandatory-skill-invocation-at-high-confidence` | missing | 6 | `docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md` |
-| P0 | `ADR-159-agents-md-native-structural-harness-batch` | missing | 7 | `docs/adrs/ADR-159-agents-md-native-structural-harness-batch.md` |
-| P0 | `ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design` | missing | 7 | `docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md` |
-| P0 | `ADR-161-remote-control-plane-and-provider-adapter-boundary` | missing | 7 | `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` |
-| P0 | `ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol` | missing | 7 | `docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md` |
-| P0 | `ADR-163-cos-instance-installer` | missing | 7 | `docs/adrs/ADR-163-cos-instance-installer.md` |
-| P0 | `ADR-164-host-cli-bridge-security-boundary` | missing | 7 | `docs/adrs/ADR-164-host-cli-bridge-security-boundary.md` |
-| P0 | `ADR-165-proof-drill-and-smoke-opt-in-primitives` | missing | 7 | `docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md` |
-| P0 | `ADR-166-expected-skip-registry-and-opt-in-test-lanes` | missing | 7 | `docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md` |
-| P0 | `ADR-167-proof-drill-selector-and-acc-evidence-adapter` | missing | 7 | `docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md` |
-| P0 | `ADR-168-cross-device-dependency-installation` | missing | 7 | `docs/adrs/ADR-168-cross-device-dependency-installation.md` |
-| P0 | `ADR-169-dashboard-formal-demotion` | missing | 7 | `docs/adrs/ADR-169-dashboard-formal-demotion.md` |
-| P0 | `ADR-171-reject-paperclip-integration` | missing | 7 | `docs/adrs/ADR-171-reject-paperclip-integration.md` |
-| P0 | `ADR-172-multi-surface-ui-architecture` | missing | 7 | `docs/adrs/ADR-172-multi-surface-ui-architecture.md` |
-| P0 | `ADR-175-research-quality-enforcement` | missing | 7 | `docs/adrs/ADR-175-research-quality-enforcement.md` |
-| P0 | `ADR-176-skillstore-and-analysis-trigger` | missing | 7 | `docs/adrs/ADR-176-skillstore-and-analysis-trigger.md` |
-| P0 | `ADR-179-rules-auto-derive-routing` | missing | 7 | `docs/adrs/ADR-179-rules-auto-derive-routing.md` |
-| P0 | `ADR-180-lifecycle-promotion-activation` | missing | 7 | `docs/adrs/ADR-180-lifecycle-promotion-activation.md` |
-| P0 | `ADR-181-adr-relevance-suggester` | missing | 7 | `docs/adrs/ADR-181-adr-relevance-suggester.md` |
 | P0 | `ADR-182-branch-ownership-lock` | missing | 7 | `docs/adrs/ADR-182-branch-ownership-lock.md` |
 | P0 | `ADR-183-cross-session-event-log` | missing | 7 | `docs/adrs/ADR-183-cross-session-event-log.md` |
 | P0 | `ADR-184-manager-of-managers-daemon` | missing | 7 | `docs/adrs/ADR-184-manager-of-managers-daemon.md` |

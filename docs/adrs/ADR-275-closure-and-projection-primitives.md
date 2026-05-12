@@ -3,6 +3,7 @@ adr: 275
 title: Closure & Projection Primitives (Pending-Truth Read/Write Symmetry)
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review'
 date: 2026-05-12
 supersedes: []
 superseded_by: null

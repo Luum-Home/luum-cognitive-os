@@ -185,6 +185,47 @@ test lanes plus a propose-only SHA invariant guard.
 python3 -m pytest tests/audit/test_adr_contracts.py -q
 ```
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the skill lifecycle promotion ladder (declared in ADR-177) was doctrinal but not operational: sandbox skills never promoted because no scheduled job evaluated them, and skills with zero invocations never demoted. The doctrine-proposer had no metrics trail.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Sandbox skill promotion | Never happened automatically | `scripts/cos-promotion-proposer` evaluates against SkillStore thresholds and writes dated proposals |
+| Skill demotion | Never happened automatically | `scripts/cos-demotion-proposer` evaluates zero-invocation skills against 90-day window and writes dated proposals |
+| Doctrine-proposer trail | No evidence log | Emits to `.cognitive-os/metrics/doctrine-proposals.jsonl` on every run |
+| Weekly activation | None | `hooks/promotion-proposer-weekly.sh` (SessionStart, throttled to once per 7 days) |
+| Manifest safety | No invariant | `tests/contracts/test_promotion_propose_only.py` fails immediately if either proposer modifies `primitive-lifecycle.yaml` or `agentic-primitive-registry.lock.yaml` |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Should sandbox skill X be promoted?" — Run `scripts/cos-promotion-proposer --skill X --dry-run`; output shows whether thresholds are met (50 records, 0.85 success rate, 0.8 judge avg).
+- "Which skills are candidates for demotion?" — Run `scripts/cos-demotion-proposer --dry-run`; output lists advisory/blocking skills with zero records in the last 90 days.
+- "Did the promoter ever modify a live manifest?" — Check `tests/contracts/test_promotion_propose_only.py`; if it passes, the answer is no.
+
+**Does not answer:**
+- "Should I accept this proposal?" — Proposals in `docs/reports/promotion-proposals/` and `docs/reports/demotion-proposals/` require operator review and manual application.
+- "Are the thresholds well-calibrated?" — The initial thresholds (50 records, 0.85 success, 0.8 judge avg, 90-day demotion window) are conventional; the first 90 days of operation will calibrate them via the metrics log.
+
+### Daily operational pattern
+
+1. **Automated**: the weekly hook fires automatically during SessionStart (at most once per 7 days). No operator action needed for normal operation.
+2. **On-demand check**: `scripts/cos-promotion-proposer --dry-run` or `scripts/cos-demotion-proposer --dry-run` to see current candidate state.
+3. **When a proposal appears** in `docs/reports/promotion-proposals/<date>/` or `docs/reports/demotion-proposals/<date>/`: review the evidence, then manually apply the promotion/demotion to `manifests/primitive-lifecycle.yaml` if appropriate.
+4. **Disable**: set `DISABLE_PROMOTION_PROPOSER=1` to short-circuit the promoter.
+
+### Reading guide for cold readers
+
+1. ADR-177 is the doctrinal precondition — read it first for the lifecycle ladder definition and `lifecycle_state` meanings in `manifests/primitive-lifecycle.yaml`.
+2. ADR-176 (SkillStore) is the data substrate — the proposers query `lib.skill_store.SkillStore` directly.
+3. The propose-only invariant test at `tests/contracts/test_promotion_propose_only.py` is the safety guarantee: if it passes, no live manifest was modified.
+4. The `docs/reports/lifecycle-promotion-gap-2026-05-05.md` gap analysis documents the three operational symptoms that motivated this ADR — useful context for understanding why the weekly hook and metrics trail were needed.
+
 ## Alternatives rejected
 
 - **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.

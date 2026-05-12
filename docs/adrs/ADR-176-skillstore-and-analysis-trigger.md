@@ -161,6 +161,48 @@ OpenSpace schema source:
 - Migration script must handle malformed JSONL entries gracefully.
 - Hook adds ~20ms startup overhead per Agent tool completion.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, skill execution data was stored in `.cognitive-os/metrics/skill-archive.jsonl` as flat records with no cross-record querying, no lineage graph, and no content-addressable versioning. Post-execution analysis of skill quality required manually reading JSONL or periodic audits.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Skill execution storage | Flat JSONL, O(n) grep | SQLite at `.cognitive-os/skill_store.db` with indexed queries and JOIN support |
+| Post-execution analysis | Periodic manual audit | `hooks/skill-post-execution-analysis.sh` fires on every `PostToolUse Agent` completion |
+| Skill evolution proposals | None | Propose-only artifacts at `docs/reports/skill-analysis-proposals/<date>/<skill>.md` when heuristic fires |
+| Live skill rewrites | No guard | Structurally impossible from the hook — no write path exists to `packages/*/SKILL.md` |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which skills have the highest error rates?" — `SkillStore.query_lineage()` and the `execution_analyses` table; standard SQL queries on `.cognitive-os/skill_store.db`.
+- "Is there a proposal to improve skill X today?" — Check `docs/reports/skill-analysis-proposals/<today>/`.
+- "Was a skill rewrite proposed or auto-applied?" — Only proposals exist; the discipline gate makes auto-apply structurally impossible. Check `tests/integration/test_skill_post_execution_hook.py::test_discipline_gate_blocks_live_write`.
+
+**Does not answer:**
+- "Should I accept a skill improvement proposal?" — The operator reads proposals in `docs/reports/skill-analysis-proposals/` and applies them manually; this ADR does not automate acceptance.
+- "What the OpenSpace evolver or analyzer logic does" — Those were explicitly rejected. The schema was adopted, not the behavior.
+
+### Daily operational pattern
+
+1. Skill execution data flows automatically via the hook — no operator action needed during normal operation.
+2. When a proposal appears in `docs/reports/skill-analysis-proposals/`: read it, evaluate the suggested changes, apply manually to the relevant `SKILL.md` if appropriate.
+3. To migrate historical data: `python3 scripts/migrate_skill_archive_to_store.py --dry-run` then `--apply`.
+4. To disable the hook temporarily: set `DISABLE_HOOK_SKILL_POST_EXECUTION_ANALYSIS=1`.
+
+The hook is async (`"async": true`) — it never blocks the main session.
+
+### Reading guide for cold readers
+
+1. The schema origin is `openspace/skill_engine/store.py` at commit `d1e367d0ed4722d67f1f3b95d816ba4a959288d2`, lines 80–166. The COS port is `lib/skill_store.py`. The key adaption: `analyzed_by` maps to model-name instead of user-id.
+2. The **propose-only discipline gate** is the critical constraint: the hook can write to `docs/reports/skill-analysis-proposals/` but has zero write access to `packages/*/SKILL.md` or `.claude/skills/`. This is enforced by absence of the write path, not by a runtime check.
+3. `.cognitive-os/skill_store.db` must be in `.gitignore` — it is a binary runtime artifact.
+4. `tests/contracts/test_promotion_propose_only.py` (from ADR-180) provides the invariant test that the proposer never modifies live manifests.
+
 ## Alternatives rejected
 
 | Alternative | Reason rejected |

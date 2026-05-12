@@ -100,6 +100,48 @@ Implement a lightweight ADR relevance suggester with three components:
   successor may both score well on the same prompt). Operator should read all
   suggested ADRs before concluding one supersedes the other.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, selecting relevant ADRs required manual `[ref-key]` lookup in `RULES-COMPACT.md` or recalling ADR cross-references from code comments — both error-prone and dependent on operator recall. With 180+ ADRs in `docs/adrs/`, the recall surface had grown beyond what any single session could cover reliably.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| ADR selection | Manual `[ref-key]` or recall | `hooks/adr-relevance-suggest.sh` fires on `UserPromptSubmit`; emits `additionalContext` for matches at ≥ 0.85 confidence |
+| ADR suggestion log | None | `.cognitive-os/metrics/adr-suggestion.jsonl` receives one entry per prompt (even when no matches fire) |
+| Tag coverage baseline | No tracking | `manifests/adr-routing-coverage.yaml` records 43/180 ADRs with `tags:` (23.9%); target ≥ 75% |
+| False-positive rate | N/A | Higher confidence threshold (0.85 vs 0.80 for skills/rules) to minimize disruptive noise |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which ADRs are most relevant for this prompt?" — The hook emits up to 3 matches at ≥ 0.85 confidence with their confidence scores.
+- "Why isn't the suggester firing for an ADR I expect?" — Check whether the ADR has `tags:` in its frontmatter. ADRs without tags rely on title/context keywords (lower weight); add tags to improve recall.
+- "Is the 0.85 threshold too strict?" — Check `.cognitive-os/metrics/adr-suggestion.jsonl` for how often matches nearly reached but missed the threshold; lower to 0.80 after evidence if recall is insufficient.
+
+**Does not answer:**
+- "Is a suggested ADR still active?" — The router excludes tombstones and superseded ADRs at index time, but always read the `status:` frontmatter field before acting on a suggestion.
+- "Which ADR supersedes another?" — The router may suggest both an ADR and its successor if both score well; the operator must read both to determine which governs.
+
+### Daily operational pattern
+
+1. Normal operation: the hook fires automatically — no action needed.
+2. When writing a new ADR: add `tags:` to the frontmatter. This is the highest-leverage improvement to suggestion quality (weight ×3 in scoring).
+3. To calibrate: `python3 -c "from lib.adr_router import AdrRouter; print(AdrRouter().coverage_stats())"` shows current tag coverage.
+4. To disable: set `DISABLE_HOOK_ADR_RELEVANCE_SUGGEST=1`.
+
+The hook is async — it adds zero latency to the user prompt round-trip.
+
+### Reading guide for cold readers
+
+1. Read ADR-174 (skill auto-routing) and ADR-179 (rule routing) first — this ADR applies the same declare-in-artifact routing pattern to ADRs. `AdrRouter` is the third instance of the same pattern.
+2. The confidence threshold is deliberately stricter than skills/rules (0.85 vs 0.80) because false-positive ADR suggestions are more disruptive than false-negative ones — see §Accepted trade-offs.
+3. `lib/adr_router.py` is the authoritative implementation; `manifests/adr-routing-coverage.yaml` is the migration tracker.
+4. The 23.9% tag coverage baseline means the suggester degrades gracefully for most ADRs (using title/context keywords). Tag backfill is advisory, not enforced — the ratchet approach from ADR-179 applies here too.
+
 ## Alternatives rejected
 
 - **Full-text search** — too many false positives and too slow (<250ms budget).
