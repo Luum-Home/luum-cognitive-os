@@ -14,6 +14,15 @@ action list at session start across the 3 harnesses.
 
 Canonical status vocabulary: `docs/adrs/STATUS-TAXONOMY.md`.
 Architectural map: `docs/architecture/pending-truth-architecture.md`.
+
+Documentation-truth discipline (ADR-277 + `rules/session-close-doc-truth.md`):
+when this script flips an ADR from `partial` to `implemented` (or any
+similar lifecycle transition), the docs that previously described the
+unfinished state may now contain stale phrases. The closer MUST then run
+`scripts/documentation_truth_audit.py --fail-on-block` and either
+(a) add/extend a claim in `manifests/documentation-truth-claims.yaml`,
+or (b) record explicit debt in the pending-truth ledger. Discovered
+contradictions cannot remain as commit-message comments alone.
 """
 from __future__ import annotations
 

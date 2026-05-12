@@ -87,6 +87,24 @@ For each id in the batch:
 3. Aggregator re-runs once at the end (use `--skip-refresh` on all but
    the last call to save time).
 
+### D'. Documentation-truth check after closures (ADR-277 + ADR-275)
+
+If any closure caused prose changes (e.g., flipping ADR
+`implementation_status` from partial to implemented), the docs that
+described the partial state may now be stale. Run:
+
+```bash
+python3 scripts/documentation_truth_audit.py --project-dir . --fail-on-block
+```
+
+If a new contradiction surfaces:
+- Implementation now shipped → add a claim entry to
+  `manifests/documentation-truth-claims.yaml` per
+  `rules/session-close-doc-truth.md`.
+- Real debt → add a ledger follow-up.
+
+Never leave a discovered contradiction as a verbal note.
+
 ### D. After all closures: trust signal delta
 
 Show the trust signal change:

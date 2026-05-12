@@ -91,9 +91,36 @@ read-side and capture closure deltas:
    include their ids in the summary §Accomplished as "closed:
    <id> proof: <ref>".
 
+6. **Documentation-truth discipline (ADR-277 + `rules/session-close-doc-truth.md`)**:
+   ```bash
+   python3 scripts/documentation_truth_audit.py --project-dir . \
+       --update-generated --fail-on-block
+   ```
+   If audit reports **a NEW contradiction discovered this session**
+   (compare against `docs/reports/documentation-truth-latest.json` prior
+   to this run):
+
+   - Classify the contradiction per `rules/session-close-doc-truth.md`:
+     * Implementation already shipped (stale doc) →
+       ADD a claim entry to `manifests/documentation-truth-claims.yaml`
+       with required_phrases / forbidden_phrases / source_reports +
+       fix the prose, both in the same commit.
+     * Real debt (implementation missing) →
+       ADD a `follow-up` or `audit-finding` ledger item; surface in
+       §Follow-ups.
+   - **A discovered contradiction CANNOT remain as a comment, slack
+     message, or bullet alone.** It must materialize in code or ledger
+     before the session closes.
+   - Re-run the audit; verify pass.
+
+7. ACC adapter check: read summary from
+   `docs/reports/documentation-truth-latest.json`. If the
+   `documentation_truth` adapter shows new ACC capability degradation,
+   surface in §Follow-ups.
+
 This step is what makes the session-wrapup output **bilateral** (matches
-the projector's session-start view) per the ADR-275 read/write symmetry
-contract.
+the projector's session-start view) per ADR-275 AND **immutable to drift**
+per ADR-277.
 
 ### Step 3: Compose Session Summary
 
