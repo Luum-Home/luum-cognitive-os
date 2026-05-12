@@ -236,7 +236,7 @@ in this ADR.
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
 | Alternative | Rationale for rejection |
 |---|---|

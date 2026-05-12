@@ -368,7 +368,7 @@ vocabulary; `FreshnessResult.note=None` when `state=="stable"` to reduce noise.
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
 | Alternative | Decision | Rationale |
 |-------------|----------|-----------|

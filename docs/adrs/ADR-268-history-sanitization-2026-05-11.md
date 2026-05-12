@@ -99,6 +99,13 @@ Reversal preserves the ADR paper trail because ADRs 259-264 were never touched.
 - Filter-repo runs: two passes documented in the audit report (pass 1: commit-message rewrites; pass 2: file renames + header rewrites)
 - Engram SQL queries used: documented in the audit report appendix
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 ```bash

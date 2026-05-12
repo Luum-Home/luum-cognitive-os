@@ -311,7 +311,7 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
 | Alternativa | Decisión | Razón |
 |-------------|----------|-------|

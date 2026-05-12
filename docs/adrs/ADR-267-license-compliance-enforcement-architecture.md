@@ -198,6 +198,13 @@ These tighten the surface; less urgent but close the same family of risks.
 
 Drafted in a follow-up session with operator + legal input. Defines `reviewed-by-legal: yes|no|pending` frontmatter contract for Annex F files and the per-tool ADR-Accepted requirement.
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 Each hook ships with golden-file tests proving:

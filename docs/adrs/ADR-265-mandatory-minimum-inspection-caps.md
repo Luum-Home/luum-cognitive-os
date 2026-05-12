@@ -55,6 +55,13 @@ Until this ADR moves from **Proposed → Accepted**, the mandatory-minimum cap m
 - When this ADR is later promoted, the calibration-disclosure convention (`rules/scorecard-calibration-disclosure.md`) becomes a hard precondition: any cap value adopted MUST declare its calibration status.
 
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 ```bash

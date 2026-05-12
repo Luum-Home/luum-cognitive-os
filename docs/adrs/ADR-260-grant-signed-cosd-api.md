@@ -359,7 +359,7 @@ a clear migration path without an emergency cutover.
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
 | Alternative | Decision | Rationale |
 |-------------|----------|-----------|

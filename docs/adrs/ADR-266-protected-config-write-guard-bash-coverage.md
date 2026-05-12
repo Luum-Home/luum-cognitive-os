@@ -78,6 +78,13 @@ Extend `protected-config-write-guard.sh` to also match the `Bash` tool. When the
 
 ---
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification (test plan)
 
 1. **Must block**: `bash -c 'echo x > rules/engram-organization.md'` — shell redirect to protected path.

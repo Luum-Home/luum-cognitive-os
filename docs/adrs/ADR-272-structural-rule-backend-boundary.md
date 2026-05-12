@@ -78,6 +78,13 @@ Negative:
 - A future backend adapter needs explicit mapping, licensing review, and parity
   tests before use.
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 ```bash

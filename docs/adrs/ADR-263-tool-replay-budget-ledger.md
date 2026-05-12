@@ -372,7 +372,7 @@ El campo `chars_saved` (result_chars - pointer_chars cuando REFERENCE_ONLY, resu
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
 | Alternativa | Decisión | Rationale |
 |---|---|---|

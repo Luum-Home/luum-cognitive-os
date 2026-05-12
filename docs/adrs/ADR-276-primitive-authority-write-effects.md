@@ -118,6 +118,13 @@ Tradeoffs:
   entries are added.
 - Exhaustive argument-space proof remains out of scope for this first ratchet.
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 ```bash

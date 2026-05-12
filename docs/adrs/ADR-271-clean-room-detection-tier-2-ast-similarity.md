@@ -148,6 +148,13 @@ merger).
 - Capture false-positive rate.
 - Decide promotion to active gate.
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 - Symbol-rename test case: copy `lib/file_mutation_queue.py`, rename every

@@ -94,6 +94,13 @@ Wire the output into ACC as adapter `documentation_truth` so stale or contradict
 
 The system is claim-driven, not free-prose-driven: only claims declared in the manifest are enforced. Adding new volatile families is the operator's job when drift is observed.
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Defer the decision indefinitely | Leaves the gap surfaced in this ADR's §Context unaddressed and risks accumulating cost without bounds. |
+| Implement only a subset of §Decision | Already attempted in prior iterations; left behind unverified claims that this ADR exists to close. |
+
 ## Verification
 
 The implementation is validated by:

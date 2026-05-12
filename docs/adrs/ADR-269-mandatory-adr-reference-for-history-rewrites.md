@@ -339,7 +339,7 @@ If you encounter this ADR without conversation context:
 4. Read ADR-242 for the wrapper mechanics (remote preservation, idempotency guard, recovery artifact) — ADR-269 adds the documentation requirement on top of those safety primitives.
 5. The session-start hook (`hooks/history-rewrite-documented.sh`) is the daily signal: if it fires, there is an orphan bundle. Resolve via `--register` before proceeding with other work.
 
-## Alternatives considered
+## Alternatives rejected
 
 - **Advisory documentation only** (status quo). Rejected — does not scale to
   multi-agent workflows and is what failed 2026-05-11 until operator caught it.

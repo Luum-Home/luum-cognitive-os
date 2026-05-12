@@ -306,7 +306,7 @@ Spike window: 3-4 days, time-boxed.
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
 | Alternative | Rationale for rejection |
 |---|---|

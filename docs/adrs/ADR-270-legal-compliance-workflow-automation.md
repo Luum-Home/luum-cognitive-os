@@ -185,7 +185,7 @@ legal pipeline completes.
 - `cos-legal-approve` mutates Annex F frontmatter directly; mistakes are
   reversible only by ledger amendment commit + manual frontmatter edit.
 
-## Alternatives Considered
+## Alternatives rejected
 
 1. **Spreadsheet tracking** — rejected: not tamper-evident, no integration
    with adoption-freeze manifest, and the operator already maintains too
