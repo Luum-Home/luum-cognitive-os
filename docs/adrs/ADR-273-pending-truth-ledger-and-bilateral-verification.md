@@ -1,5 +1,6 @@
 ---
 
+
 adr: 273
 title: Pending Truth Ledger and Bilateral Verification Loop
 status: accepted
@@ -141,6 +142,111 @@ Implements only:
 
 Slices B (verifier) and C (hooks) are tracked as follow-ups; this ADR
 declares the schema is stable so they can build on it.
+
+## Operational Guide (how to think about and use this ledger)
+
+This section is the practical guide future-you (or any reader without
+conversation context) needs to actually USE the ledger.
+
+### What changes for the operator
+
+**The 9 source surfaces NEVER change.** Plans, ADRs, tracker, master-pending,
+session-backlog, active-tasks, user-requests, aspirational-audit,
+acc_pipeline — all keep their narrative/architectural roles:
+
+- **Plans** explain the WHY of work (sprint context, dependencies, design)
+- **ADRs** are architectural memory (why we decided X this way)
+- **Tracker** orders by wave/sprint
+- **Master-pending** is snapshot semantic (point-in-time photograph)
+- **Aspirational-audit** is metric-driven (dormant ratio, etc.)
+- **Etc.**
+
+These are CONTEXT. The ledger is OPERATIONAL.
+
+### What the ledger answers (and the surfaces don't)
+
+| Question | Before (any of 9 surfaces) | After (the ledger) |
+|---|---|---|
+| "How many pending items exist in COS?" | 9 different answers (283 / 17 / 0 / 67 …) — none verified | **1 answer** from `docs/reports/pending-truth-latest.md` |
+| "Why is X pending?" | grep across 9 places | ledger item has `source: <path>:<line>` — go there |
+| "Is X actually still pending, or already shipped?" | dispatch 3 Opus agents (~$5, 45min) | Slice B `cos-pending-truth-verify` will check evidence; today: read `status: unverified` and run verifier |
+| "When did someone last check?" | unknown | `last_verified` timestamp per item |
+| "Did someone ship code that closed plan item Y?" | manual audit | Slice C hook will detect on PostToolUse Edit |
+
+### Daily operational pattern (after ADR-273 Slice A)
+
+1. **At session start**, before assuming you know what's pending:
+   ```bash
+   scripts/cos-pending-truth-aggregator --write
+   ```
+   This refreshes `docs/reports/pending-truth-latest.{json,md}` from the
+   current state of all 9 input surfaces. Read the .md.
+
+2. **When picking next work**, search the ledger for items with specific
+   `type` or low `last_verified` age:
+   ```bash
+   python3 -c "import json; d=json.load(open('docs/reports/pending-truth-latest.json'));
+   [print(i['id'], i['next_action'][:80]) for i in d['items'] if i['type'] == 'follow-up']"
+   ```
+
+3. **When you ship code that closes a plan item**, until Slice C lands you
+   must STILL manually update the plan checkbox `[x]` AND ideally add
+   `(verified: commit-SHA file-path)`. The ledger will pick that up on
+   next aggregation.
+
+4. **Periodically (weekly)** until Slice B lands: re-dispatch the bilateral
+   Opus verification we did 2026-05-12 to catch unmarked-done items.
+   Pattern recorded in
+   `docs/reports/checkbox-verification-batch-{A,B,C}-2026-05-12.md`.
+
+### Why the surfaces are INPUTS, not REPLACEMENT TARGETS
+
+Each surface has narrative content that the ledger does not preserve:
+
+- A plan has a "Why" section explaining the context — the ledger only
+  carries one-line `next_action`.
+- An ADR has alternatives-rejected and consequences — the ledger only
+  records `owner_adr` reference.
+- The tracker has multi-wave timeline — the ledger has flat items.
+
+**If you removed the surfaces and kept only the ledger, you would lose:**
+sprint planning context (plans), decision rationale (ADRs), wave/sprint
+ordering (tracker), episodic session context (session backlog).
+
+**The ledger derives operational state; the surfaces preserve operational
+narrative.** Both are required. The ledger is `SELECT * FROM all_pending_things`;
+the surfaces are the underlying schema with relationships.
+
+### Anti-confusion: when surfaces disagree
+
+If a plan says `- [ ] item X` but the ledger marks it `verified-done`, the
+ledger wins for the question "is X done?" The plan checkbox is stale and
+should be updated (Slice C will automate this; until then, manual).
+
+If a plan says `- [x] item Y` but the ledger lists it as `verified-pending`,
+the plan is overclaiming. The plan checkbox should be reverted to `- [ ]`
+until evidence exists.
+
+**The bilateral-verification rule (per ADR-244 trust-score precedent)**:
+when surface and code disagree, **code wins**. The ledger reflects code,
+not paperwork.
+
+### Reading guide for future readers without conversation context
+
+If you are a future operator or agent and you encounter this ADR cold:
+
+1. Read `docs/reports/pending-truth-latest.md` for the current operational
+   state. The operational-guide preamble in that file is auto-rendered.
+2. Read this ADR-273 §Decision for the schema and contract.
+3. Read `docs/reports/historical-pending-analysis-2026-05-12.md` for the
+   bilateral verification methodology that motivated this ADR.
+4. Read `docs/reports/checkbox-verification-batch-{A,B,C}-2026-05-12.md`
+   for the empirical evidence that 25% of OPEN checkboxes are mismarked.
+
+The ledger is meaningful only because the bilateral verification (Opus
+agents 2026-05-12) proved that raw checkbox counts are not trustworthy.
+Slice B will encode this verification as a script; Slice C will prevent
+new drift from accumulating.
 
 ## Consequences
 
