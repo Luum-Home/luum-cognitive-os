@@ -2,10 +2,10 @@
 
 This report lists classified-but-unresolved primitive surface coverage debt. It intentionally excludes aligned gaps.
 
-Partial count: 69
-Total gaps in source report: 869
-Unclassified gaps: 3
-By policy: {'codex-adapter-needed': 59, 'projectable-needs-driver': 7, 'unclassified': 3}
+Partial count: 66
+Total gaps in source report: 870
+Unclassified gaps: 0
+By policy: {'codex-adapter-needed': 59, 'projectable-needs-driver': 7}
 
 ## Priority order
 
@@ -83,6 +83,3 @@ By policy: {'codex-adapter-needed': 59, 'projectable-needs-driver': 7, 'unclassi
 | 64 | `scripts/install-trivy.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
 | 65 | `scripts/license-audit-syft-grype.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
 | 66 | `scripts/license-audit-trivy.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 67 | `rules/memory-governance.md` | rules |  | unclassified | medium | acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai | projected/wired but no direct behavior proof reference detected | Triage policy, severity, and owner. |
-| 68 | `rules/recommendation-grounding.md` | rules |  | unclassified | medium | acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai | projected/wired but no direct behavior proof reference detected | Triage policy, severity, and owner. |
-| 69 | `skills/deep-tool-research/SKILL.md` | skills |  | unclassified | medium | acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai | projected/wired but no direct behavior proof reference detected | Triage policy, severity, and owner. |

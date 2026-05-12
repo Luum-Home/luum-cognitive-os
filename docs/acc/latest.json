@@ -8,18 +8,18 @@
       "summary": {
         "block_count": 0,
         "by_mode": {
-          "observe-only": 229,
-          "os-maintainer-write": 264,
+          "observe-only": 233,
+          "os-maintainer-write": 265,
           "profile-projection-write": 35,
           "propose-only": 3
         },
         "by_status": {
-          "pass": 522,
+          "pass": 527,
           "warn": 9
         },
         "dynamic_blocks": 0,
         "dynamic_smokes": 4,
-        "total_scripts": 531
+        "total_scripts": 536
       }
     },
     "codebase_itinerary": {
@@ -29,12 +29,12 @@
       "status": "ok",
       "summary": {
         "categories": {
-          "read": 686
+          "read": 744
         },
-        "rows": 686,
-        "sessions": 685,
+        "rows": 744,
+        "sessions": 742,
         "tools": {
-          "Read": 686
+          "Read": 744
         }
       }
     },
@@ -44,11 +44,11 @@
       "source": "manifests/primitive-consumer-availability.yaml",
       "status": "ok",
       "summary": {
-        "items": 90,
+        "items": 91,
         "patterns": 6,
         "statuses": {
           "lifecycle-declared-maintainer": 3,
-          "maintainer-only": 59,
+          "maintainer-only": 60,
           "pattern:so-local-only": 6,
           "shell-ci-candidate": 15,
           "so-local-only": 13
@@ -122,16 +122,38 @@
             "planned": 1
           },
           "README.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 2
+          },
+          "docs/00-MOCs/architecture.md": {
+            "proposed": 2
+          },
+          "docs/00-MOCs/decisions.md": {
+            "done_with_proof": 1
+          },
+          "docs/00-MOCs/operations.md": {
+            "done_with_proof": 1,
+            "planned": 11
+          },
+          "docs/00-MOCs/quality.md": {
+            "done_weak_proof": 3,
+            "planned": 3
+          },
+          "docs/00-MOCs/workflow.md": {
+            "proposed": 1
           },
           "docs/HOW-TO-USE-COS.md": {
             "done_weak_proof": 2,
             "planned": 1
           },
+          "docs/INDEX.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
           "docs/README.md": {
-            "done_weak_proof": 16,
-            "planned": 19,
-            "proposed": 7
+            "done_weak_proof": 22,
+            "done_with_proof": 3,
+            "planned": 25,
+            "proposed": 21
           },
           "docs/RED-TEAM-CHANGELOG.md": {
             "done_weak_proof": 5
@@ -190,11 +212,12 @@
             "proposed": 1
           },
           "docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 2,
+            "planned": 1
           },
           "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md": {
             "done_weak_proof": 9,
-            "planned": 4
+            "planned": 5
           },
           "docs/adrs/ADR-003-tombstone.md": {
             "planned": 1
@@ -206,149 +229,160 @@
             "planned": 1
           },
           "docs/adrs/ADR-006-agpl-license-compliance.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 3
           },
           "docs/adrs/ADR-007-cognitive-os-rebrand.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 2
           },
           "docs/adrs/ADR-008-multi-tool-support.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 4,
             "proposed": 1
           },
           "docs/adrs/ADR-009-package-architecture.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 4
           },
           "docs/adrs/ADR-010-hook-architecture-v2.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 4,
             "proposed": 1
           },
           "docs/adrs/ADR-012-prompt-driven-governance.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 5,
             "proposed": 1
           },
           "docs/adrs/ADR-013-security-stack.md": {
-            "done_weak_proof": 2,
-            "planned": 1
+            "done_weak_proof": 3,
+            "planned": 3
           },
           "docs/adrs/ADR-014-sdd-fast-path.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 3,
             "proposed": 3
           },
           "docs/adrs/ADR-015-rules-to-hooks-migration.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 2,
+            "planned": 1
           },
           "docs/adrs/ADR-016-context-diet.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3,
+            "planned": 1
           },
           "docs/adrs/ADR-017-stabilization-freeze.md": {
-            "done_weak_proof": 4
+            "done_weak_proof": 6,
+            "planned": 1
           },
           "docs/adrs/ADR-018-docker-to-pip-migration.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3,
+            "planned": 1
           },
           "docs/adrs/ADR-019-scope-tagging.md": {
-            "done_weak_proof": 4,
-            "done_with_proof": 1
+            "done_weak_proof": 6,
+            "done_with_proof": 1,
+            "planned": 2
           },
           "docs/adrs/ADR-020-contamination-fix.md": {
-            "done_weak_proof": 1,
-            "planned": 1,
+            "done_weak_proof": 3,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-021-vendor-agnostic-with-adapters.md": {
-            "done_weak_proof": 2,
-            "planned": 1
+            "done_weak_proof": 3,
+            "planned": 3
           },
           "docs/adrs/ADR-022-prompt-type-hooks-adoption.md": {
-            "done_weak_proof": 5,
-            "planned": 1
+            "done_weak_proof": 7,
+            "planned": 2
           },
           "docs/adrs/ADR-023-updated-input-pattern.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
             "planned": 1
           },
           "docs/adrs/ADR-024-task-panel-bridge.md": {
-            "done_weak_proof": 3,
-            "planned": 1,
+            "done_weak_proof": 4,
+            "planned": 3,
             "proposed": 1
           },
           "docs/adrs/ADR-025-install-update-loop.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3,
+            "planned": 2
           },
           "docs/adrs/ADR-026-r2-r3-design-review.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 5,
             "done_with_proof": 1,
-            "planned": 8,
+            "planned": 10,
             "proposed": 13
           },
           "docs/adrs/ADR-026a-decisions.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 4,
             "done_with_proof": 1,
-            "planned": 4,
+            "planned": 5,
             "proposed": 7
           },
           "docs/adrs/ADR-027.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 7,
             "done_with_proof": 2,
             "planned": 3
           },
           "docs/adrs/ADR-027a.md": {
-            "done_weak_proof": 6,
+            "done_weak_proof": 8,
             "done_with_proof": 3,
             "planned": 3
           },
           "docs/adrs/ADR-028.md": {
-            "done_weak_proof": 8,
+            "done_weak_proof": 11,
             "planned": 10
           },
           "docs/adrs/ADR-028a.md": {
-            "done_weak_proof": 12,
+            "done_weak_proof": 14,
             "done_with_proof": 3,
             "planned": 9
           },
           "docs/adrs/ADR-028b.md": {
+            "done_weak_proof": 2,
             "planned": 6
           },
           "docs/adrs/ADR-028c.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3,
+            "planned": 2
           },
           "docs/adrs/ADR-029.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 5,
             "done_with_proof": 1,
-            "planned": 1
+            "planned": 4
           },
           "docs/adrs/ADR-029b-reinvention-phase-b-semantic.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 4,
             "done_with_proof": 1,
-            "planned": 4,
+            "planned": 6,
             "proposed": 1
           },
           "docs/adrs/ADR-030.md": {
-            "done_weak_proof": 3,
-            "planned": 7
+            "done_weak_proof": 8,
+            "done_with_proof": 5
           },
           "docs/adrs/ADR-031.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 3,
+            "planned": 1
           },
           "docs/adrs/ADR-032-orchestrator-trap-preview.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 4,
+            "planned": 1
           },
           "docs/adrs/ADR-033-harness-agnostic-event-capture.md": {
+            "done_weak_proof": 3,
+            "planned": 4,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-033b-duration-correlation-and-aider-hardening.md": {
+            "done_weak_proof": 8,
+            "planned": 2
+          },
+          "docs/adrs/ADR-034-harness-agnostic-live-streaming.md": {
             "done_weak_proof": 1,
             "planned": 2,
             "proposed": 1
           },
-          "docs/adrs/ADR-033b-duration-correlation-and-aider-hardening.md": {
-            "done_weak_proof": 6
-          },
-          "docs/adrs/ADR-034-harness-agnostic-live-streaming.md": {
-            "done_weak_proof": 1,
-            "planned": 1,
-            "proposed": 1
-          },
           "docs/adrs/ADR-035-worktree-cwd-enforcement.md": {
-            "done_weak_proof": 3,
-            "planned": 1,
+            "done_weak_proof": 5,
+            "planned": 3,
             "proposed": 2
           },
           "docs/adrs/ADR-036-sprint-orchestration-primitives.md": {
@@ -357,209 +391,223 @@
             "planned": 1
           },
           "docs/adrs/ADR-037-self-knowledge-base.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 3
           },
           "docs/adrs/ADR-038-preamble-v2-industry-aligned.md": {
             "done_weak_proof": 2,
-            "planned": 1
+            "planned": 2
           },
           "docs/adrs/ADR-039-reinvention-phase-b-beta.md": {
             "done_weak_proof": 3,
-            "planned": 1
-          },
-          "docs/adrs/ADR-040-query-tailored-context-injection.md": {
-            "done_weak_proof": 1
-          },
-          "docs/adrs/ADR-041.md": {
-            "done_weak_proof": 3,
             "planned": 2
           },
+          "docs/adrs/ADR-040-query-tailored-context-injection.md": {
+            "done_weak_proof": 4
+          },
+          "docs/adrs/ADR-041.md": {
+            "done_weak_proof": 5,
+            "planned": 4
+          },
           "docs/adrs/ADR-042-valkey-local-daemon.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 3,
+            "planned": 1
           },
           "docs/adrs/ADR-043-tombstone.md": {
             "planned": 1
           },
           "docs/adrs/ADR-044-context-payload-slimming.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 4,
+            "done_with_proof": 1,
+            "planned": 3,
             "proposed": 1
           },
           "docs/adrs/ADR-045-postgres-local-daemon.md": {
-            "done_weak_proof": 2,
-            "planned": 2
+            "done_weak_proof": 3,
+            "planned": 4
           },
           "docs/adrs/ADR-046-tombstone.md": {
             "planned": 1
           },
           "docs/adrs/ADR-047-session-lifecycle-management.md": {
             "done_weak_proof": 5,
-            "planned": 4,
+            "planned": 5,
             "proposed": 2
           },
           "docs/adrs/ADR-048-docker-container-image-freshness.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 6,
             "done_with_proof": 1,
-            "planned": 1,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md": {
-            "done_weak_proof": 6,
+            "done_weak_proof": 9,
             "done_with_proof": 2,
             "planned": 2
           },
           "docs/adrs/ADR-050-per-skill-routing-policy.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-051-qwen-agent-loop.md": {
-            "done_weak_proof": 8,
+            "done_weak_proof": 11,
             "planned": 1,
             "proposed": 1
           },
           "docs/adrs/ADR-052-provider-benchmark-harness.md": {
-            "done_weak_proof": 11,
+            "done_weak_proof": 12,
             "done_with_proof": 1,
             "planned": 1
           },
           "docs/adrs/ADR-053-dispatch-auto-optimizer.md": {
-            "done_weak_proof": 7,
+            "done_weak_proof": 8,
             "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-054-project-docs-convention.md": {
-            "done_with_proof": 1,
-            "planned": 2,
-            "proposed": 1
-          },
-          "docs/adrs/ADR-055-docs-convention-enforcement.md": {
             "done_weak_proof": 1,
             "done_with_proof": 1,
-            "planned": 2,
-            "proposed": 2
-          },
-          "docs/adrs/ADR-055b-destructive-git-block.md": {
-            "done_weak_proof": 4
-          },
-          "docs/adrs/ADR-056-adaptive-agent-dispatch.md": {
-            "done_weak_proof": 6,
             "planned": 4,
             "proposed": 1
           },
-          "docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md": {
-            "done_weak_proof": 1
-          },
-          "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md": {
-            "done_weak_proof": 1,
-            "planned": 1
-          },
-          "docs/adrs/ADR-059-so-existential-validation.md": {
-            "done_weak_proof": 2,
-            "planned": 4
-          },
-          "docs/adrs/ADR-060-local-only-optional-services.md": {
-            "done_weak_proof": 1,
-            "planned": 3
-          },
-          "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md": {
-            "done_weak_proof": 2,
-            "planned": 1
-          },
-          "docs/adrs/ADR-062-multi-provider-agent-loop.md": {
-            "done_weak_proof": 1
-          },
-          "docs/adrs/ADR-063-agent-tool-replication-strategy.md": {
+          "docs/adrs/ADR-055-docs-convention-enforcement.md": {
             "done_weak_proof": 2,
             "done_with_proof": 1,
-            "planned": 1,
-            "proposed": 1
+            "planned": 4,
+            "proposed": 2
           },
-          "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md": {
+          "docs/adrs/ADR-055b-destructive-git-block.md": {
             "done_weak_proof": 5,
-            "done_with_proof": 2,
-            "planned": 1,
-            "proposed": 1
-          },
-          "docs/adrs/ADR-065-radar-update-curation-pipeline.md": {
-            "done_weak_proof": 2,
-            "planned": 1
-          },
-          "docs/adrs/ADR-066-polyglot-language-boundaries.md": {
-            "done_with_proof": 2,
-            "planned": 5
-          },
-          "docs/adrs/ADR-067-frontmatter-defense-in-depth.md": {
-            "done_weak_proof": 4,
-            "planned": 1,
-            "proposed": 2
-          },
-          "docs/adrs/ADR-068-adaptive-test-runner-capacity.md": {
-            "done_weak_proof": 2,
-            "planned": 2,
-            "proposed": 1
-          },
-          "docs/adrs/ADR-069-research-first-protocol.md": {
-            "done_weak_proof": 4,
-            "done_with_proof": 2,
-            "planned": 8
-          },
-          "docs/adrs/ADR-070-convention-enforcement-mechanism.md": {
-            "done_weak_proof": 8,
             "planned": 2
           },
-          "docs/adrs/ADR-071-engram-lifecycle-evolution.md": {
-            "done_weak_proof": 3,
-            "done_with_proof": 4,
-            "planned": 1,
-            "proposed": 3
-          },
-          "docs/adrs/ADR-072-test-lane-taxonomy.md": {
-            "done_weak_proof": 3,
-            "planned": 2,
-            "proposed": 2
-          },
-          "docs/adrs/ADR-073-test-architecture-role-registry.md": {
-            "done_weak_proof": 1,
-            "planned": 1
-          },
-          "docs/adrs/ADR-074-tier-0-learning-loop-closure.md": {
-            "done_weak_proof": 3,
-            "done_with_proof": 2
-          },
-          "docs/adrs/ADR-075-stage2-selective-expansion.md": {
-            "done_weak_proof": 3
-          },
-          "docs/adrs/ADR-076-skill-frontmatter-alignment.md": {
-            "done_weak_proof": 3,
-            "planned": 2
-          },
-          "docs/adrs/ADR-077-peer-card-local-model.md": {
-            "done_weak_proof": 6
-          },
-          "docs/adrs/ADR-078-mid-task-memory-tool.md": {
-            "done_weak_proof": 4
-          },
-          "docs/adrs/ADR-079-corerules-applies-to-self-hosting.md": {
-            "done_weak_proof": 2
-          },
-          "docs/adrs/ADR-080-hermes-cross-harness-adoption.md": {
-            "done_weak_proof": 10,
-            "done_with_proof": 1,
-            "planned": 4
-          },
-          "docs/adrs/ADR-081-codex-harness-adapter.md": {
-            "done_weak_proof": 10,
-            "done_with_proof": 1,
+          "docs/adrs/ADR-056-adaptive-agent-dispatch.md": {
+            "done_weak_proof": 7,
             "planned": 5,
             "proposed": 1
           },
-          "docs/adrs/ADR-082-plan-location-convention.md": {
+          "docs/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md": {
+            "done_weak_proof": 3,
+            "planned": 1
+          },
+          "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
+          "docs/adrs/ADR-059-so-existential-validation.md": {
+            "done_weak_proof": 3,
+            "planned": 5
+          },
+          "docs/adrs/ADR-060-local-only-optional-services.md": {
+            "done_weak_proof": 3,
+            "planned": 4
+          },
+          "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md": {
             "done_weak_proof": 4,
+            "planned": 3
+          },
+          "docs/adrs/ADR-062-multi-provider-agent-loop.md": {
+            "done_weak_proof": 2,
+            "planned": 1
+          },
+          "docs/adrs/ADR-063-agent-tool-replication-strategy.md": {
+            "done_weak_proof": 3,
             "done_with_proof": 1,
+            "planned": 3,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md": {
+            "done_weak_proof": 7,
+            "done_with_proof": 2,
+            "planned": 3,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-065-radar-update-curation-pipeline.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
+          "docs/adrs/ADR-066-polyglot-language-boundaries.md": {
+            "done_with_proof": 2,
+            "planned": 6
+          },
+          "docs/adrs/ADR-067-frontmatter-defense-in-depth.md": {
+            "done_weak_proof": 4,
+            "planned": 2,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-068-adaptive-test-runner-capacity.md": {
+            "done_weak_proof": 4,
+            "planned": 3,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-069-research-first-protocol.md": {
+            "done_weak_proof": 5,
+            "done_with_proof": 2,
+            "planned": 9
+          },
+          "docs/adrs/ADR-070-convention-enforcement-mechanism.md": {
+            "done_weak_proof": 9,
+            "planned": 3
+          },
+          "docs/adrs/ADR-071-engram-lifecycle-evolution.md": {
+            "done_weak_proof": 5,
+            "done_with_proof": 4,
+            "planned": 3,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-072-test-lane-taxonomy.md": {
+            "done_weak_proof": 4,
+            "planned": 4,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-073-test-architecture-role-registry.md": {
+            "done_weak_proof": 2,
+            "planned": 2
+          },
+          "docs/adrs/ADR-074-tier-0-learning-loop-closure.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 2,
+            "planned": 1
+          },
+          "docs/adrs/ADR-075-stage2-selective-expansion.md": {
+            "done_weak_proof": 4,
+            "planned": 2
+          },
+          "docs/adrs/ADR-076-skill-frontmatter-alignment.md": {
+            "done_weak_proof": 5,
+            "planned": 3
+          },
+          "docs/adrs/ADR-077-peer-card-local-model.md": {
+            "done_weak_proof": 7,
+            "planned": 2
+          },
+          "docs/adrs/ADR-078-mid-task-memory-tool.md": {
+            "done_weak_proof": 5,
+            "planned": 2
+          },
+          "docs/adrs/ADR-079-corerules-applies-to-self-hosting.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
+          "docs/adrs/ADR-080-hermes-cross-harness-adoption.md": {
+            "done_weak_proof": 15,
+            "done_with_proof": 1,
+            "planned": 3
+          },
+          "docs/adrs/ADR-081-codex-harness-adapter.md": {
+            "done_weak_proof": 11,
+            "done_with_proof": 1,
+            "planned": 7,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-082-plan-location-convention.md": {
+            "done_weak_proof": 5,
+            "done_with_proof": 1,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-083-governed-self-improvement-loop.md": {
-            "done_weak_proof": 1,
-            "planned": 3
+            "done_weak_proof": 5,
+            "planned": 4
           },
           "docs/adrs/ADR-084-headless-clustered-runtime-shape.md": {
             "done_weak_proof": 3,
@@ -570,195 +618,202 @@
             "planned": 1
           },
           "docs/adrs/ADR-086-hook-execution-observability.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 5,
+            "planned": 1
           },
           "docs/adrs/ADR-087-adr-namespace-consolidation.md": {
-            "done_weak_proof": 17,
+            "done_weak_proof": 19,
             "done_with_proof": 1,
-            "planned": 10,
+            "planned": 11,
             "proposed": 1
           },
           "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 3,
             "proposed": 1
           },
           "docs/adrs/ADR-089-multi-session-git-coordination.md": {
-            "done_weak_proof": 6,
-            "planned": 1,
+            "done_weak_proof": 8,
+            "planned": 3,
             "proposed": 1
           },
           "docs/adrs/ADR-090-auto-skill-repair.md": {
-            "done_weak_proof": 3,
-            "planned": 4,
+            "done_weak_proof": 5,
+            "planned": 6,
             "proposed": 2
           },
           "docs/adrs/ADR-091-headless-clustered-runtime-direction.md": {
-            "done_weak_proof": 6,
-            "planned": 6,
+            "done_weak_proof": 9,
+            "planned": 7,
             "proposed": 1
           },
           "docs/adrs/ADR-092-harness-skills-sync-path.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 4,
             "done_with_proof": 2,
             "planned": 4
           },
           "docs/adrs/ADR-093-simplify-profiles.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 2,
+            "planned": 2
           },
           "docs/adrs/ADR-094-agent-git-safety.md": {
-            "done_weak_proof": 3,
-            "planned": 1
+            "done_weak_proof": 5,
+            "planned": 2
           },
           "docs/adrs/ADR-095-skill-synthesis-success-patterns.md": {
-            "done_weak_proof": 8,
-            "planned": 3
+            "done_weak_proof": 10,
+            "planned": 4
           },
           "docs/adrs/ADR-096-review-agent-pattern.md": {
-            "done_weak_proof": 9,
+            "done_weak_proof": 10,
             "done_with_proof": 2,
-            "planned": 3,
+            "planned": 5,
             "proposed": 1
           },
           "docs/adrs/ADR-097-documentation-execution-audit.md": {
-            "done_weak_proof": 2,
-            "planned": 1,
+            "done_weak_proof": 3,
+            "planned": 3,
             "proposed": 1
           },
           "docs/adrs/ADR-098-multi-agent-file-coordination.md": {
-            "done_weak_proof": 3,
-            "planned": 1
+            "done_weak_proof": 6,
+            "planned": 2
           },
           "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 4,
             "proposed": 2
           },
           "docs/adrs/ADR-100-resource-governed-test-execution.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 6
           },
           "docs/adrs/ADR-101-intent-aware-rate-limiter.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 4,
+            "planned": 1
           },
           "docs/adrs/ADR-102-task-tracker-lifecycle.md": {
-            "done_weak_proof": 2,
-            "planned": 7
+            "done_weak_proof": 3,
+            "planned": 10
           },
           "docs/adrs/ADR-103-audit-contract-lane-recovery.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 2,
             "planned": 1,
             "proposed": 1
           },
           "docs/adrs/ADR-104-startup-circuit-breaker.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 4,
             "planned": 1
           },
           "docs/adrs/ADR-105-claim-verification-contract.md": {
-            "done_weak_proof": 10,
+            "done_weak_proof": 11,
             "done_with_proof": 1
           },
           "docs/adrs/ADR-106-multi-session-safety-primitives.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 8,
             "done_with_proof": 1,
             "planned": 1
           },
           "docs/adrs/ADR-107-human-approved-rollback.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 4,
+            "planned": 1
           },
           "docs/adrs/ADR-108-concurrent-agent-safety-layer.md": {
-            "done_weak_proof": 6,
+            "done_weak_proof": 10,
             "planned": 2
           },
           "docs/adrs/ADR-109-validation-capsule-worktree-isolation.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 4,
             "done_with_proof": 1
           },
           "docs/adrs/ADR-110-preserve-branch-governance.md": {
-            "done_weak_proof": 1,
-            "planned": 1
+            "done_weak_proof": 5,
+            "planned": 2
           },
           "docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md": {
-            "done_weak_proof": 1,
-            "planned": 1
+            "done_weak_proof": 3,
+            "planned": 3
           },
           "docs/adrs/ADR-112-codex-governed-tool-layer.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 3,
             "planned": 3
           },
           "docs/adrs/ADR-113-validation-capsule-liveness.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 6,
             "done_with_proof": 2,
             "planned": 9,
             "proposed": 1
           },
           "docs/adrs/ADR-114-hook-quality-system.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 5,
             "planned": 2
           },
           "docs/adrs/ADR-115-safe-worktree-sweeper.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 4
           },
           "docs/adrs/ADR-116-multi-session-coordination-primitives.md": {
-            "done_weak_proof": 6,
-            "planned": 6,
+            "done_weak_proof": 8,
+            "planned": 7,
             "proposed": 4
           },
           "docs/adrs/ADR-117-stash-mutation-reversibility.md": {
             "done_weak_proof": 1,
-            "planned": 1,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-118-multi-ide-swarm-testbed.md": {
-            "done_weak_proof": 5,
-            "planned": 3
+            "done_weak_proof": 7,
+            "planned": 4
           },
           "docs/adrs/ADR-119-session-filesystem-reaper.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
             "planned": 5
           },
           "docs/adrs/ADR-120-conversation-to-primitive-harvester.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 5,
             "planned": 1,
             "proposed": 1
           },
           "docs/adrs/ADR-121-foundation-hardening-program.md": {
             "done_weak_proof": 3,
-            "planned": 1,
+            "planned": 3,
             "proposed": 1
           },
           "docs/adrs/ADR-122-preflight-gate-refinements.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 4
           },
           "docs/adrs/ADR-123-operational-stability-friction-reduction.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 4,
             "planned": 1,
             "proposed": 3
           },
           "docs/adrs/ADR-124-cos-distribution-boundaries.md": {
-            "planned": 1
+            "planned": 2
           },
           "docs/adrs/ADR-125-governance-tools-value-boundary.md": {
             "done_weak_proof": 3,
-            "planned": 1,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md": {
             "done_weak_proof": 4,
             "done_with_proof": 1,
-            "planned": 4,
+            "planned": 5,
             "proposed": 2
           },
           "docs/adrs/ADR-127-active-primitive-index.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
+            "planned": 3
+          },
+          "docs/adrs/ADR-128-data-layer-integrity-fixes.md": {
             "planned": 1
           },
           "docs/adrs/ADR-129-safe-worktree-removal.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3
           },
           "docs/adrs/ADR-130-suspend-claude-api-workflows.md": {
-            "done_weak_proof": 3,
-            "planned": 9
+            "done_weak_proof": 4,
+            "planned": 11
           },
           "docs/adrs/ADR-131-local-ci-migration.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 5,
             "planned": 2
           },
           "docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md": {
@@ -766,167 +821,180 @@
             "planned": 10
           },
           "docs/adrs/ADR-133-expansion-without-monsterization.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 5,
             "done_with_proof": 1
           },
           "docs/adrs/ADR-134-headless-self-improvement-proposer.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 6,
             "proposed": 2
           },
           "docs/adrs/ADR-135-self-evolving-doctrine-proposals.md": {
-            "done_weak_proof": 2,
-            "planned": 2,
+            "done_weak_proof": 4,
+            "planned": 3,
             "proposed": 5
           },
           "docs/adrs/ADR-136-cross-instance-learning-runway.md": {
-            "done_weak_proof": 2,
-            "planned": 2
+            "done_weak_proof": 3,
+            "planned": 4
           },
           "docs/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md": {
             "done_weak_proof": 4,
-            "planned": 3
+            "planned": 4
           },
           "docs/adrs/ADR-138-flow-contract-schema.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 4,
             "planned": 3,
             "proposed": 2
           },
           "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md": {
-            "done_weak_proof": 6,
+            "done_weak_proof": 7,
             "done_with_proof": 4
           },
           "docs/adrs/ADR-140-cross-os-containerized-deployment.md": {
-            "done_weak_proof": 5,
+            "done_weak_proof": 6,
             "done_with_proof": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md": {
-            "done_weak_proof": 5,
+            "done_weak_proof": 6,
             "done_with_proof": 3
           },
           "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md": {
-            "done_weak_proof": 5,
+            "done_weak_proof": 7,
             "done_with_proof": 2
           },
           "docs/adrs/ADR-143-closure-discipline-gate.md": {
-            "done_weak_proof": 4,
-            "done_with_proof": 1
+            "done_weak_proof": 7,
+            "done_with_proof": 1,
+            "planned": 1
           },
           "docs/adrs/ADR-144-hook-enforced-rule-projection-contract.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 7
           },
           "docs/adrs/ADR-145-dependency-lane-split.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 7,
             "done_with_proof": 1,
             "proposed": 1
           },
           "docs/adrs/ADR-146-primitive-readiness-ledger.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 4,
             "done_with_proof": 2,
             "planned": 4,
             "proposed": 2
           },
           "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 3,
             "done_with_proof": 5,
-            "planned": 2
+            "planned": 4
           },
           "docs/adrs/ADR-148-adr-authoring-primitive.md": {
-            "done_weak_proof": 4,
-            "done_with_proof": 2
+            "done_weak_proof": 5,
+            "done_with_proof": 3,
+            "planned": 1,
+            "proposed": 2
           },
           "docs/adrs/ADR-149-primitive-duplication-audit.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
             "done_with_proof": 2,
-            "proposed": 1
+            "proposed": 3
           },
           "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md": {
-            "done_weak_proof": 2,
-            "done_with_proof": 1,
-            "planned": 4,
+            "done_weak_proof": 4,
+            "done_with_proof": 2,
+            "planned": 5,
             "proposed": 1
           },
           "docs/adrs/ADR-151-consumer-availability-classification.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
             "done_with_proof": 1,
-            "planned": 4,
-            "proposed": 1
+            "planned": 6,
+            "proposed": 3
           },
           "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md": {
-            "done_weak_proof": 1,
-            "planned": 3
+            "done_weak_proof": 2,
+            "planned": 4
           },
           "docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 3,
+            "done_with_proof": 1,
             "planned": 2
           },
           "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md": {
-            "done_weak_proof": 4,
-            "done_with_proof": 1,
-            "planned": 1
+            "done_weak_proof": 5,
+            "done_with_proof": 2,
+            "planned": 3
           },
           "docs/adrs/ADR-155-shell-ci-formal-harness.md": {
-            "done_weak_proof": 5,
-            "done_with_proof": 2
+            "done_weak_proof": 6,
+            "done_with_proof": 3
           },
           "docs/adrs/ADR-156-qwen-code-structural-harness-projection.md": {
-            "done_weak_proof": 3,
-            "done_with_proof": 2
+            "done_weak_proof": 5,
+            "done_with_proof": 3,
+            "planned": 1
           },
           "docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md": {
-            "done_weak_proof": 3,
-            "done_with_proof": 1,
-            "proposed": 1
-          },
-          "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md": {
-            "done_weak_proof": 3,
-            "planned": 4,
-            "proposed": 1
-          },
-          "docs/adrs/ADR-159-agents-md-native-structural-harness-batch.md": {
             "done_weak_proof": 4,
-            "done_with_proof": 2,
-            "planned": 2
-          },
-          "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md": {
-            "done_weak_proof": 3,
             "done_with_proof": 1,
             "planned": 1,
             "proposed": 2
           },
+          "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md": {
+            "done_weak_proof": 5,
+            "planned": 8,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-159-agents-md-native-structural-harness-batch.md": {
+            "done_weak_proof": 5,
+            "done_with_proof": 6,
+            "planned": 2
+          },
+          "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md": {
+            "done_weak_proof": 5,
+            "done_with_proof": 2,
+            "planned": 2,
+            "proposed": 4
+          },
           "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md": {
-            "done_weak_proof": 1
+            "done_weak_proof": 3,
+            "planned": 1,
+            "proposed": 1
           },
           "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md": {
-            "done_weak_proof": 2,
-            "planned": 1
+            "done_weak_proof": 5,
+            "planned": 1,
+            "proposed": 1
           },
           "docs/adrs/ADR-163-cos-instance-installer.md": {
-            "done_weak_proof": 4,
-            "planned": 5
+            "done_weak_proof": 5,
+            "planned": 10
           },
           "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md": {
-            "done_weak_proof": 3,
-            "planned": 3
+            "done_weak_proof": 5,
+            "done_with_proof": 1,
+            "planned": 4,
+            "proposed": 1
           },
           "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md": {
-            "done_weak_proof": 2,
-            "planned": 1
+            "done_weak_proof": 4,
+            "planned": 1,
+            "proposed": 1
           },
           "docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3
           },
           "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md": {
-            "done_weak_proof": 1,
-            "planned": 1
+            "done_weak_proof": 2,
+            "planned": 2,
+            "proposed": 2
           },
           "docs/adrs/ADR-168-cross-device-dependency-installation.md": {
             "done_weak_proof": 4,
-            "planned": 2,
-            "proposed": 1
+            "planned": 4,
+            "proposed": 2
           },
           "docs/adrs/ADR-169-dashboard-formal-demotion.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 6,
             "proposed": 2
           },
           "docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md": {
@@ -935,7 +1003,7 @@
             "proposed": 1
           },
           "docs/adrs/ADR-171-reject-paperclip-integration.md": {
-            "done_weak_proof": 3,
+            "done_weak_proof": 5,
             "planned": 2
           },
           "docs/adrs/ADR-172-multi-surface-ui-architecture.md": {
@@ -943,87 +1011,491 @@
             "planned": 3
           },
           "docs/adrs/ADR-173-surface-5-research-gate.md": {
-            "done_weak_proof": 5,
-            "planned": 3
+            "done_weak_proof": 8,
+            "planned": 4,
+            "proposed": 2
           },
           "docs/adrs/ADR-174-auto-derived-primitive-routing.md": {
-            "done_weak_proof": 5,
+            "done_weak_proof": 6,
             "done_with_proof": 1,
             "planned": 5
           },
           "docs/adrs/ADR-174b-prevention-followup.md": {
-            "done_weak_proof": 5,
+            "done_weak_proof": 6,
             "done_with_proof": 2,
-            "planned": 3,
+            "planned": 4
+          },
+          "docs/adrs/ADR-174c-validator-blocking-promotion.md": {
+            "done_weak_proof": 5,
+            "planned": 2,
             "proposed": 1
           },
           "docs/adrs/ADR-175-research-quality-enforcement.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3,
+            "proposed": 2
           },
           "docs/adrs/ADR-176-skillstore-and-analysis-trigger.md": {
-            "done_weak_proof": 2
+            "done_weak_proof": 3,
+            "proposed": 3
           },
           "docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md": {
-            "done_weak_proof": 3,
-            "proposed": 1
+            "done_weak_proof": 4,
+            "proposed": 6
           },
           "docs/adrs/ADR-178-openharness-primitive-adoption.md": {
-            "done_weak_proof": 8,
-            "planned": 1
+            "done_weak_proof": 10,
+            "planned": 2
           },
           "docs/adrs/ADR-179-rules-auto-derive-routing.md": {
             "done_weak_proof": 4,
-            "planned": 3,
+            "done_with_proof": 1,
+            "planned": 5,
             "proposed": 1
           },
           "docs/adrs/ADR-180-lifecycle-promotion-activation.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 5,
             "planned": 2,
-            "proposed": 2
+            "proposed": 4
           },
           "docs/adrs/ADR-181-adr-relevance-suggester.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 6,
             "planned": 2
           },
           "docs/adrs/ADR-182-branch-ownership-lock.md": {
-            "done_weak_proof": 3,
-            "proposed": 1
-          },
-          "docs/adrs/ADR-183-cross-session-event-log.md": {
-            "done_weak_proof": 3,
-            "done_with_proof": 1,
-            "planned": 2
-          },
-          "docs/adrs/ADR-184-manager-of-managers-daemon.md": {
-            "done_weak_proof": 3,
-            "planned": 5
-          },
-          "docs/adrs/ADR-185-cross-agent-audit-findings.md": {
-            "done_weak_proof": 5,
-            "done_with_proof": 1,
-            "planned": 10
-          },
-          "docs/adrs/ADR-186-context-budget-enforcement.md": {
-            "done_weak_proof": 7,
-            "done_with_proof": 1,
-            "planned": 1
-          },
-          "docs/adrs/ADR-187-surface-5-adoption-proof-contract.md": {
-            "done_weak_proof": 1,
-            "planned": 5,
-            "proposed": 3
-          },
-          "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md": {
             "done_weak_proof": 4,
             "planned": 1,
             "proposed": 1
           },
+          "docs/adrs/ADR-183-cross-session-event-log.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 1,
+            "planned": 2
+          },
+          "docs/adrs/ADR-184-manager-of-managers-daemon.md": {
+            "done_weak_proof": 4,
+            "planned": 6
+          },
+          "docs/adrs/ADR-185-cross-agent-audit-findings.md": {
+            "done_weak_proof": 9,
+            "done_with_proof": 1,
+            "planned": 10
+          },
+          "docs/adrs/ADR-186-context-budget-enforcement.md": {
+            "done_weak_proof": 9,
+            "done_with_proof": 1,
+            "planned": 2
+          },
+          "docs/adrs/ADR-187-surface-5-adoption-proof-contract.md": {
+            "done_weak_proof": 2,
+            "planned": 5,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md": {
+            "done_weak_proof": 5,
+            "planned": 1,
+            "proposed": 1
+          },
           "docs/adrs/ADR-189-harness-implementation-coverage.md": {
+            "done_weak_proof": 6,
+            "planned": 1
+          },
+          "docs/adrs/ADR-190-harness-action-receipts.md": {
+            "done_weak_proof": 8,
+            "done_with_proof": 2,
+            "planned": 4,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-191-cos-binary-release-pipeline.md": {
             "done_weak_proof": 3,
             "planned": 1
           },
+          "docs/adrs/ADR-192-surface-5-adopt-bubbletea.md": {
+            "done_weak_proof": 3,
+            "planned": 1
+          },
+          "docs/adrs/ADR-193-cosd-local-network-api.md": {
+            "done_weak_proof": 3,
+            "planned": 3
+          },
+          "docs/adrs/ADR-194-cosd-secure-remote-api.md": {
+            "done_weak_proof": 5,
+            "planned": 4
+          },
+          "docs/adrs/ADR-195-surface-5-operable-tui-contract.md": {
+            "done_weak_proof": 4,
+            "planned": 4
+          },
+          "docs/adrs/ADR-196-cosd-task-api-and-provider-boundary.md": {
+            "done_weak_proof": 4,
+            "planned": 2
+          },
+          "docs/adrs/ADR-197-surface-5-operable-actions.md": {
+            "done_weak_proof": 5,
+            "planned": 1
+          },
+          "docs/adrs/ADR-198-release-external-readiness-gate.md": {
+            "done_weak_proof": 4
+          },
+          "docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md": {
+            "done_weak_proof": 5,
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-200-state-retention-controller.md": {
+            "done_weak_proof": 3,
+            "planned": 1
+          },
+          "docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md": {
+            "done_weak_proof": 4,
+            "planned": 4,
+            "proposed": 7
+          },
+          "docs/adrs/ADR-202-private-content-cross-harness-portability-boundary.md": {
+            "done_weak_proof": 6,
+            "planned": 1
+          },
+          "docs/adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md": {
+            "done_weak_proof": 5,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md": {
+            "done_weak_proof": 4,
+            "planned": 1
+          },
+          "docs/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md": {
+            "done_weak_proof": 4,
+            "planned": 1
+          },
+          "docs/adrs/ADR-206-aspirational-claim-decommission-gate.md": {
+            "done_weak_proof": 3,
+            "planned": 4
+          },
+          "docs/adrs/ADR-207-skill-ecosystem-performance-and-lifecycle-closure.md": {
+            "done_weak_proof": 2,
+            "proposed": 4
+          },
+          "docs/adrs/ADR-208-imported-pattern-closure-contract.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
+          "docs/adrs/ADR-209-maintainer-reconciler-experiment-contract.md": {
+            "done_weak_proof": 4,
+            "planned": 2,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-210-fleet-aggregated-confidence-boundary.md": {
+            "done_weak_proof": 6
+          },
+          "docs/adrs/ADR-211-service-mode-readiness-gate.md": {
+            "done_weak_proof": 4,
+            "planned": 1
+          },
+          "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md": {
+            "done_weak_proof": 4,
+            "planned": 1
+          },
+          "docs/adrs/ADR-213-agent-preflight-before-stash-snapshot.md": {
+            "done_weak_proof": 6
+          },
+          "docs/adrs/ADR-214-tombstone.md": {
+            "planned": 2
+          },
+          "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md": {
+            "done_weak_proof": 5,
+            "planned": 3,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md": {
+            "done_weak_proof": 4
+          },
+          "docs/adrs/ADR-217-cross-stack-adoption-truth-audit.md": {
+            "done_weak_proof": 5,
+            "planned": 11,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-218-history-sanitization-toolchain.md": {
+            "done_weak_proof": 3,
+            "planned": 5,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-219-work-ownership-liveness-preflight.md": {
+            "done_weak_proof": 8
+          },
+          "docs/adrs/ADR-220-worktree-divergence-audit.md": {
+            "done_weak_proof": 3,
+            "planned": 4,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md": {
+            "done_weak_proof": 6,
+            "done_with_proof": 1,
+            "planned": 4,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md": {
+            "done_weak_proof": 8,
+            "planned": 2,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-223-agent-lifecycle-reconstruction.md": {
+            "done_weak_proof": 7,
+            "planned": 2
+          },
+          "docs/adrs/ADR-224-shadow-state-snapshots-off-repo.md": {
+            "done_weak_proof": 1,
+            "planned": 2
+          },
+          "docs/adrs/ADR-225-branch-per-task-mode.md": {
+            "done_weak_proof": 9,
+            "planned": 2
+          },
+          "docs/adrs/ADR-226-event-sourced-session-bus.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 4,
+            "planned": 2,
+            "proposed": 5
+          },
+          "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md": {
+            "done_weak_proof": 6,
+            "done_with_proof": 1,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-228-retry-contract-and-cost-budget.md": {
+            "done_weak_proof": 6,
+            "done_with_proof": 3,
+            "planned": 1,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-229-tombstone.md": {
+            "done_weak_proof": 1,
+            "planned": 2
+          },
+          "docs/adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md": {
+            "done_weak_proof": 6,
+            "planned": 1,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-231-mcp-server-surface-for-cos-primitives.md": {
+            "done_weak_proof": 9,
+            "planned": 1
+          },
+          "docs/adrs/ADR-232-sandbox-adapter-tiers.md": {
+            "done_weak_proof": 10,
+            "planned": 2
+          },
+          "docs/adrs/ADR-233-cross-session-agent-team-file-ipc.md": {
+            "done_weak_proof": 12,
+            "planned": 2
+          },
+          "docs/adrs/ADR-234-approval-policies-as-code.md": {
+            "done_weak_proof": 9,
+            "done_with_proof": 2,
+            "planned": 1
+          },
+          "docs/adrs/ADR-235-detached-agent-daemon.md": {
+            "done_weak_proof": 13,
+            "done_with_proof": 1,
+            "planned": 2,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md": {
+            "done_weak_proof": 12,
+            "planned": 1
+          },
+          "docs/adrs/ADR-237-test-execution-efficiency-protocol.md": {
+            "done_weak_proof": 6,
+            "planned": 1
+          },
+          "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md": {
+            "done_weak_proof": 7,
+            "planned": 1
+          },
+          "docs/adrs/ADR-239-isolated-worktree-default-for-write-agents.md": {
+            "done_weak_proof": 5,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-240-primitive-coherence-audit-and-ownership-manifest.md": {
+            "done_weak_proof": 5,
+            "planned": 4
+          },
+          "docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
+          "docs/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 1,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-243-post-rewrite-push-collision-exception.md": {
+            "done_weak_proof": 3,
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-244-trust-report-claim-validator-must-enforce.md": {
+            "done_weak_proof": 13,
+            "planned": 1
+          },
+          "docs/adrs/ADR-245-chaos-tests-readonly-production-source.md": {
+            "done_weak_proof": 4,
+            "planned": 1
+          },
+          "docs/adrs/ADR-246-release-transaction-freeze.md": {
+            "done_weak_proof": 3,
+            "planned": 3
+          },
+          "docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md": {
+            "done_weak_proof": 3
+          },
+          "docs/adrs/ADR-248-control-plane-audit-loop.md": {
+            "done_weak_proof": 9,
+            "planned": 4
+          },
+          "docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md": {
+            "done_weak_proof": 10,
+            "planned": 3
+          },
+          "docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md": {
+            "done_weak_proof": 3,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md": {
+            "done_weak_proof": 5,
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md": {
+            "done_weak_proof": 15,
+            "planned": 1
+          },
+          "docs/adrs/ADR-253-tombstone-squads.md": {
+            "done_weak_proof": 1,
+            "planned": 4
+          },
+          "docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md": {
+            "done_weak_proof": 6,
+            "planned": 2
+          },
+          "docs/adrs/ADR-255-feature-to-external-tool-due-diligence.md": {
+            "done_weak_proof": 4,
+            "planned": 1
+          },
+          "docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md": {
+            "done_weak_proof": 6,
+            "done_with_proof": 5,
+            "planned": 1
+          },
+          "docs/adrs/ADR-257-primitive-contract-registry-phase-1.md": {
+            "done_weak_proof": 5,
+            "done_with_proof": 1,
+            "planned": 2
+          },
+          "docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md": {
+            "done_weak_proof": 6,
+            "done_with_proof": 1,
+            "planned": 4
+          },
+          "docs/adrs/ADR-259-external-pattern-adoption-posture.md": {
+            "done_weak_proof": 5,
+            "planned": 5
+          },
+          "docs/adrs/ADR-260-grant-signed-cosd-api.md": {
+            "done_weak_proof": 7,
+            "done_with_proof": 1,
+            "planned": 2
+          },
+          "docs/adrs/ADR-261-memory-governance-v2.md": {
+            "done_weak_proof": 7,
+            "planned": 2
+          },
+          "docs/adrs/ADR-262-evolve-loop-spike.md": {
+            "done_weak_proof": 17,
+            "done_with_proof": 3,
+            "planned": 12,
+            "proposed": 8
+          },
+          "docs/adrs/ADR-263-tool-replay-budget-ledger.md": {
+            "done_weak_proof": 3
+          },
+          "docs/adrs/ADR-264-tool-result-envelope.md": {
+            "done_weak_proof": 3
+          },
+          "docs/adrs/ADR-265-mandatory-minimum-inspection-caps.md": {
+            "planned": 2
+          },
+          "docs/adrs/ADR-266-protected-config-write-guard-bash-coverage.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md": {
+            "done_weak_proof": 7,
+            "planned": 6,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-268-history-sanitization-2026-05-11.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
+          "docs/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md": {
+            "done_weak_proof": 8,
+            "done_with_proof": 2,
+            "planned": 3,
+            "proposed": 2
+          },
+          "docs/adrs/ADR-270-legal-compliance-workflow-automation.md": {
+            "done_weak_proof": 3,
+            "planned": 5
+          },
+          "docs/adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md": {
+            "done_weak_proof": 3,
+            "done_with_proof": 1,
+            "planned": 2,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-272-structural-rule-backend-boundary.md": {
+            "done_weak_proof": 3,
+            "planned": 4
+          },
+          "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md": {
+            "done_weak_proof": 14,
+            "done_with_proof": 1,
+            "planned": 48,
+            "proposed": 3
+          },
+          "docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md": {
+            "done_weak_proof": 8,
+            "planned": 7,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-275-closure-and-projection-primitives.md": {
+            "done_weak_proof": 17,
+            "planned": 22,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-276-primitive-authority-write-effects.md": {
+            "done_weak_proof": 5,
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/adrs/ADR-277-documentation-truth-control.md": {
+            "done_weak_proof": 4
+          },
+          "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md": {
+            "done_weak_proof": 3,
+            "done_with_proof": 1,
+            "planned": 4
+          },
           "docs/adrs/README.md": {
             "planned": 1
+          },
+          "docs/adrs/STATUS-TAXONOMY.md": {
+            "done_weak_proof": 9,
+            "done_with_proof": 1,
+            "planned": 2,
+            "proposed": 2
+          },
+          "docs/adrs/templates/history-rewrite.template.md": {
+            "done_weak_proof": 3
           },
           "docs/adw-patterns.md": {
             "done_weak_proof": 1
@@ -1075,10 +1547,6 @@
             "done_weak_proof": 9,
             "planned": 1
           },
-          "docs/architecture/adrs/README.md": {
-            "done_weak_proof": 1,
-            "planned": 2
-          },
           "docs/architecture/advisor-mcp-architecture-review.md": {
             "done_weak_proof": 2,
             "done_with_proof": 2,
@@ -1104,7 +1572,7 @@
           },
           "docs/architecture/bootstrap-portability.md": {
             "done_with_proof": 1,
-            "planned": 4
+            "planned": 5
           },
           "docs/architecture/capability-centric-runtime-enforcement.md": {
             "done_weak_proof": 1,
@@ -1126,9 +1594,14 @@
             "planned": 1
           },
           "docs/architecture/consumer-project-primitive-accessibility.md": {
+            "done_weak_proof": 1,
             "proposed": 1
           },
           "docs/architecture/context-budget-observability.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/architecture/context-rot-token-budget-controls.md": {
             "done_weak_proof": 1,
             "planned": 1
           },
@@ -1210,6 +1683,9 @@
             "done_weak_proof": 5,
             "planned": 7
           },
+          "docs/architecture/cosd-remote-operations-boundary.md": {
+            "proposed": 1
+          },
           "docs/architecture/cross-harness-authoring.md": {
             "proposed": 1
           },
@@ -1254,6 +1730,17 @@
           "docs/architecture/expected-skip-registry-and-opt-in-test-lanes.md": {
             "proposed": 1
           },
+          "docs/architecture/external-tool-adapter-taxonomy.md": {
+            "done_weak_proof": 2
+          },
+          "docs/architecture/external-tool-adoption-doctrine.md": {
+            "done_weak_proof": 2,
+            "planned": 1,
+            "proposed": 2
+          },
+          "docs/architecture/external-tool-intelligence-plane.md": {
+            "planned": 1
+          },
           "docs/architecture/functional-audit/scorecard-hooks.md": {
             "done_weak_proof": 9,
             "planned": 2,
@@ -1297,6 +1784,10 @@
             "done_weak_proof": 6,
             "done_with_proof": 1,
             "planned": 2
+          },
+          "docs/architecture/harness-action-receipts.md": {
+            "done_weak_proof": 6,
+            "planned": 5
           },
           "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md": {
             "done_weak_proof": 1
@@ -1365,12 +1856,19 @@
           "docs/architecture/host-cli-bridge-security-boundary.md": {
             "planned": 1
           },
+          "docs/architecture/ide-agnostic-primitive-projection.md": {
+            "done_weak_proof": 1,
+            "planned": 3
+          },
           "docs/architecture/infrastructure-service-catalog.md": {
             "done_weak_proof": 3,
             "planned": 5
           },
           "docs/architecture/kiro-lifecycle-adapter-design.md": {
             "planned": 2
+          },
+          "docs/architecture/memory-layer-evolution-sdd.md": {
+            "done_weak_proof": 4
           },
           "docs/architecture/memory-lifecycle.md": {
             "planned": 4
@@ -1381,9 +1879,16 @@
             "planned": 8
           },
           "docs/architecture/observability-backend-evaluation-2026-04-24.md": {
-            "done_weak_proof": 4,
+            "done_weak_proof": 3,
             "planned": 1,
             "proposed": 3
+          },
+          "docs/architecture/opencode-native-primitive-adapter-design.md": {
+            "planned": 1
+          },
+          "docs/architecture/opensage-self-programming-patterns.md": {
+            "done_weak_proof": 3,
+            "planned": 1
           },
           "docs/architecture/parser-coverage-audit-2026-04-24.md": {
             "done_weak_proof": 1,
@@ -1392,12 +1897,26 @@
           "docs/architecture/path-portability-and-privacy.md": {
             "proposed": 1
           },
+          "docs/architecture/pending-truth-architecture.md": {
+            "done_weak_proof": 8,
+            "planned": 3
+          },
           "docs/architecture/plans-reconciliation-2026-04-21.md": {
             "done_weak_proof": 3,
             "planned": 2
           },
+          "docs/architecture/portable-ai-consumer-package-spec.md": {
+            "done_weak_proof": 1
+          },
           "docs/architecture/preserve-branch-lifecycle.md": {
             "planned": 1
+          },
+          "docs/architecture/primitive-authority-write-effects.md": {
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/architecture/primitive-contract-registry-implementation-plan.md": {
+            "done_weak_proof": 3
           },
           "docs/architecture/primitive-coverage-backend-benchmark-2026-05.md": {
             "planned": 1,
@@ -1434,6 +1953,10 @@
           },
           "docs/architecture/proof-drill-and-smoke-opt-in-primitives.md": {
             "planned": 1
+          },
+          "docs/architecture/provenance.md": {
+            "planned": 2,
+            "proposed": 3
           },
           "docs/architecture/python-stdin-heredoc-trap.md": {
             "done_weak_proof": 1,
@@ -1482,6 +2005,13 @@
           "docs/architecture/skills-rules-portability-gap.md": {
             "planned": 2
           },
+          "docs/architecture/standalone-ship-readiness-2026-05-06.md": {
+            "done_weak_proof": 1
+          },
+          "docs/architecture/surface-5-and-secure-cosd-roadmap.md": {
+            "done_weak_proof": 7,
+            "planned": 3
+          },
           "docs/architecture/token-efficient-agent-messaging.md": {
             "planned": 1
           },
@@ -1517,6 +2047,9 @@
             "done_with_proof": 1,
             "planned": 2
           },
+          "docs/business/case-study.md": {
+            "done_weak_proof": 1
+          },
           "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md": {
             "planned": 2
           },
@@ -1533,33 +2066,42 @@
           "docs/business/developer-confidence.md": {
             "planned": 1
           },
+          "docs/business/durable-product-master-plan.md": {
+            "planned": 1
+          },
           "docs/business/execution-discipline.md": {
             "planned": 3,
             "proposed": 1
+          },
+          "docs/business/executive-summary.md": {
+            "done_weak_proof": 1
           },
           "docs/business/feature-reality-audit.md": {
             "planned": 2,
             "proposed": 4
           },
           "docs/business/features.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 6,
+            "planned": 1
           },
           "docs/business/kubernetes-for-agents.md": {
             "done_weak_proof": 11,
-            "planned": 27
+            "planned": 27,
+            "proposed": 1
           },
           "docs/business/master-plan-checklist.md": {
-            "done_weak_proof": 69,
-            "done_with_proof": 75,
-            "planned": 10
+            "done_weak_proof": 106,
+            "done_with_proof": 131,
+            "planned": 24
           },
           "docs/business/master-plan-execution-requirements.md": {
-            "planned": 1,
+            "done_with_proof": 3,
+            "planned": 3,
             "proposed": 3
           },
           "docs/business/open-source-design.md": {
-            "done_weak_proof": 2,
-            "planned": 1
+            "done_weak_proof": 3,
+            "planned": 6
           },
           "docs/business/openclaw-implementation-roadmap.md": {
             "planned": 121
@@ -1629,6 +2171,9 @@
           "docs/guides/adding-a-harness-adapter.md": {
             "planned": 7
           },
+          "docs/history/README.md": {
+            "planned": 1
+          },
           "docs/hooks.md": {
             "done_weak_proof": 1
           },
@@ -1658,6 +2203,36 @@
           },
           "docs/launch-strategy.md": {
             "planned": 19
+          },
+          "docs/legal/h1-feature-status-audit.md": {
+            "done_weak_proof": 12,
+            "done_with_proof": 3,
+            "planned": 2
+          },
+          "docs/legal/h3-unknown-license-resolution.md": {
+            "done_weak_proof": 5,
+            "planned": 2
+          },
+          "docs/legal/license-faq.md": {
+            "done_weak_proof": 1,
+            "planned": 3
+          },
+          "docs/legal/m3-adr-sweep-report.md": {
+            "done_weak_proof": 7,
+            "planned": 5,
+            "proposed": 1
+          },
+          "docs/legal/operator-data-scan.md": {
+            "planned": 1
+          },
+          "docs/legal/operator-paths-scrub-report.md": {
+            "done_weak_proof": 1
+          },
+          "docs/legal/pre-public-readiness-checklist.md": {
+            "done_weak_proof": 65,
+            "done_with_proof": 7,
+            "planned": 9,
+            "proposed": 1
           },
           "docs/leverage-points.md": {
             "done_weak_proof": 14,
@@ -1794,6 +2369,10 @@
             "done_weak_proof": 1,
             "planned": 1
           },
+          "docs/onboarding/walkthrough.md": {
+            "done_weak_proof": 1,
+            "planned": 2
+          },
           "docs/overview.md": {
             "done_weak_proof": 1,
             "proposed": 1
@@ -1814,6 +2393,10 @@
           },
           "docs/patterns/dogfooding.md": {
             "done_weak_proof": 1
+          },
+          "docs/patterns/ecosystem-tools.md": {
+            "planned": 1,
+            "proposed": 1
           },
           "docs/patterns/library-selection.md": {
             "done_weak_proof": 1
@@ -1843,6 +2426,11 @@
           "docs/proposals/doctrine-amendment-20260503T050039Z.md": {
             "proposed": 6
           },
+          "docs/quality/test-coverage-report.md": {
+            "done_weak_proof": 1,
+            "planned": 1,
+            "proposed": 3
+          },
           "docs/quickstart.md": {
             "done_weak_proof": 1
           },
@@ -1851,7 +2439,7 @@
             "planned": 1
           },
           "docs/release/v1.0-release-criteria.md": {
-            "done_weak_proof": 1,
+            "done_weak_proof": 2,
             "done_with_proof": 3,
             "planned": 10
           },
@@ -1860,6 +2448,12 @@
             "done_with_proof": 8,
             "planned": 3,
             "proposed": 4
+          },
+          "docs/research/INDEX.md": {
+            "done_weak_proof": 1,
+            "done_with_proof": 1,
+            "planned": 3,
+            "proposed": 1
           },
           "docs/research/archon-evaluation.md": {
             "done_weak_proof": 1,
@@ -1870,16 +2464,161 @@
             "planned": 1,
             "proposed": 2
           },
+          "docs/research/helixdb-annex-a-storage-querycompiler-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/research/helixdb-annex-b-vector-fts-2026-05-11.md": {
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md": {
+            "planned": 2
+          },
+          "docs/research/helixdb-annex-d-license-opencore-risk-2026-05-11.md": {
+            "done_weak_proof": 2
+          },
+          "docs/research/helixdb-annex-e-primitives-2026-05-11.md": {
+            "done_weak_proof": 1
+          },
+          "docs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "done_weak_proof": 1
+          },
+          "docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "done_weak_proof": 2,
+            "done_with_proof": 1,
+            "planned": 1
+          },
+          "docs/research/ifixai-annex-a-taxonomy-2026-05-11.md": {
+            "proposed": 1
+          },
+          "docs/research/ifixai-annex-b-cross-judge-2026-05-11.md": {
+            "proposed": 1
+          },
+          "docs/research/ifixai-annex-c-manifest-fixtures-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/research/ifixai-annex-e-primitives-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "done_weak_proof": 2,
+            "done_with_proof": 1,
+            "planned": 1,
+            "proposed": 2
+          },
+          "docs/research/ifixai-comparison-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 2
+          },
           "docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md": {
             "done_weak_proof": 1
           },
+          "docs/research/megamemory-annex-a-concept-graph-2026-05-11.md": {
+            "planned": 2
+          },
+          "docs/research/megamemory-annex-b-embeddings-port-2026-05-11.md": {
+            "done_weak_proof": 3,
+            "done_with_proof": 1
+          },
+          "docs/research/megamemory-annex-c-mcp-merge-2026-05-11.md": {
+            "done_weak_proof": 2,
+            "planned": 2
+          },
+          "docs/research/megamemory-annex-d-explorer-installer-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/research/megamemory-annex-e-primitives-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 2
+          },
+          "docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "planned": 1,
+            "proposed": 1
+          },
+          "docs/research/megamemory-comparison-2026-05-11.md": {
+            "planned": 1
+          },
           "docs/research/minimal-context-principle.md": {
             "done_weak_proof": 1
+          },
+          "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md": {
+            "done_weak_proof": 7,
+            "planned": 2,
+            "proposed": 1
           },
           "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md": {
             "done_weak_proof": 5,
             "done_with_proof": 1,
             "proposed": 1
+          },
+          "docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/research/orchestration-coverage-gap-analysis-2026-05-06.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md": {
+            "done_weak_proof": 2
+          },
+          "docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md": {
+            "done_weak_proof": 5,
+            "planned": 3,
+            "proposed": 26
+          },
+          "docs/research/orchestration-gaps/agent-to-agent-handoff.md": {
+            "done_weak_proof": 5
+          },
+          "docs/research/orchestration-gaps/cost-aware-routing.md": {
+            "planned": 6
+          },
+          "docs/research/orchestration-gaps/cross-session-agent-teams.md": {
+            "done_weak_proof": 2
+          },
+          "docs/research/orchestration-gaps/event-driven-orchestrator-state.md": {
+            "done_weak_proof": 1
+          },
+          "docs/research/orchestration-gaps/failure-recovery-retry-semantics.md": {
+            "done_weak_proof": 2,
+            "proposed": 1
+          },
+          "docs/research/orchestration-gaps/mcp-as-orchestration-bus.md": {
+            "done_weak_proof": 3,
+            "planned": 12,
+            "proposed": 1
+          },
+          "docs/research/orchestration-gaps/replay-timeline-architectures.md": {
+            "done_weak_proof": 1
+          },
+          "docs/research/orchestration-gaps/tool-discovery-dynamic-registration.md": {
+            "done_weak_proof": 2,
+            "planned": 1,
+            "proposed": 3
+          },
+          "docs/research/orchestrator-self-critique-cluster-a-verification-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "proposed": 1
+          },
+          "docs/research/orchestrator-self-critique-cluster-b-coherence-2026-05-11.md": {
+            "planned": 5,
+            "proposed": 1
+          },
+          "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md": {
+            "planned": 8,
+            "proposed": 3
+          },
+          "docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md": {
+            "done_weak_proof": 1,
+            "planned": 3
+          },
+          "docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "done_weak_proof": 2,
+            "planned": 1
           },
           "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md": {
             "proposed": 3
@@ -1941,6 +2680,9 @@
           "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md": {
             "proposed": 1
           },
+          "docs/research/repo-scout/deep/0xK3vin__MegaMemory-2026-05-11.md": {
+            "planned": 1
+          },
           "docs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md": {
             "planned": 3
           },
@@ -1961,6 +2703,10 @@
           "docs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md": {
             "planned": 1,
             "proposed": 1
+          },
+          "docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md": {
+            "done_weak_proof": 3,
+            "proposed": 2
           },
           "docs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md": {
             "planned": 1
@@ -1984,9 +2730,16 @@
           "docs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md": {
             "planned": 1
           },
+          "docs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md": {
+            "planned": 2,
+            "proposed": 3
+          },
           "docs/research/repo-scout/deep/Textualize__textual-2026-05-06.md": {
             "planned": 1,
             "proposed": 1
+          },
+          "docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md": {
+            "planned": 1
           },
           "docs/research/repo-scout/deep/affaan-m__everything-claude-code-2026-05-06.md": {
             "planned": 1
@@ -1995,6 +2748,10 @@
             "planned": 1
           },
           "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md": {
+            "planned": 1
+          },
+          "docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md": {
+            "done_weak_proof": 1,
             "planned": 1
           },
           "docs/research/repo-scout/deep/allinurl__goaccess-2026-05-06.md": {
@@ -2069,6 +2826,9 @@
           "docs/research/repo-scout/deep/hatoo__oha-2026-05-06.md": {
             "planned": 1
           },
+          "docs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md": {
+            "planned": 1
+          },
           "docs/research/repo-scout/deep/jarun__nnn-2026-05-06.md": {
             "planned": 1
           },
@@ -2078,6 +2838,9 @@
           "docs/research/repo-scout/deep/jesseduffield__lazygit-2026-05-06.md": {
             "planned": 1,
             "proposed": 1
+          },
+          "docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md": {
+            "planned": 3
           },
           "docs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md": {
             "planned": 1
@@ -2091,6 +2854,9 @@
           "docs/research/repo-scout/deep/openclaw__openclaw-2026-05-06.md": {
             "planned": 1
           },
+          "docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md": {
+            "planned": 1
+          },
           "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md": {
             "planned": 1
           },
@@ -2102,6 +2868,10 @@
             "planned": 1
           },
           "docs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md": {
+            "planned": 1
+          },
+          "docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md": {
+            "done_weak_proof": 1,
             "planned": 1
           },
           "docs/research/repo-scout/deep/simonw__llm-2026-05-06.md": {
@@ -2153,6 +2923,11 @@
           "docs/research/repo-scout/monitor-followup/topoteretes__cognee-2026-05-06.md": {
             "done_weak_proof": 1
           },
+          "docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md": {
+            "done_weak_proof": 2,
+            "planned": 1,
+            "proposed": 1
+          },
           "docs/roadmap.md": {
             "done_weak_proof": 1,
             "planned": 10,
@@ -2164,8 +2939,52 @@
           "docs/rules.md": {
             "done_weak_proof": 2
           },
+          "docs/runbooks/adr-273-slice-c-staging/README.md": {
+            "done_weak_proof": 2,
+            "planned": 6
+          },
+          "docs/runbooks/adr-274-validator-extension-staging/README.md": {
+            "done_weak_proof": 2,
+            "done_with_proof": 1,
+            "planned": 1
+          },
+          "docs/runbooks/adr-275-session-start-hook-staging/README.md": {
+            "planned": 1
+          },
+          "docs/runbooks/adr-275-session-start-hook-staging/codex-hooks-entry.md": {
+            "planned": 1
+          },
+          "docs/runbooks/adr-275-session-start-hook-staging/cos-runner-hooks-entry.md": {
+            "planned": 1
+          },
+          "docs/runbooks/chaos-test-isolation.md": {
+            "done_weak_proof": 1,
+            "planned": 1
+          },
+          "docs/runbooks/cos-cleanup.md": {
+            "proposed": 1
+          },
+          "docs/runbooks/cos-history-sanitization.md": {
+            "done_weak_proof": 2,
+            "planned": 1
+          },
+          "docs/runbooks/legal-review-workflow.md": {
+            "done_weak_proof": 1,
+            "planned": 3
+          },
           "docs/runbooks/llm-dispatch.md": {
             "proposed": 1
+          },
+          "docs/runbooks/postmortem-regression-audit.md": {
+            "done_weak_proof": 1
+          },
+          "docs/runbooks/public-launch-day.md": {
+            "done_weak_proof": 1,
+            "done_with_proof": 1,
+            "planned": 23
+          },
+          "docs/runbooks/shadow-git-rollback.md": {
+            "planned": 1
           },
           "docs/runbooks/so-incident-runbook.md": {
             "done_weak_proof": 2,
@@ -2186,6 +3005,10 @@
           "docs/security-stack.md": {
             "planned": 2
           },
+          "docs/security/bwrap-seccomp-threat-model.md": {
+            "done_weak_proof": 2,
+            "planned": 1
+          },
           "docs/security/cognitive-os-agent-security-research-2026-05-05.md": {
             "done_weak_proof": 1,
             "planned": 1
@@ -2197,9 +3020,20 @@
           "docs/security/lethal-trifecta-gate.md": {
             "done_weak_proof": 1
           },
+          "docs/security/release-signing.md": {
+            "done_weak_proof": 9,
+            "planned": 4
+          },
           "docs/security/security-red-team.md": {
             "done_weak_proof": 1,
             "planned": 2
+          },
+          "docs/security/supply-chain.md": {
+            "done_weak_proof": 4,
+            "planned": 3
+          },
+          "docs/security/verify-public-release.md": {
+            "done_weak_proof": 1
           },
           "docs/self-building-protocol.md": {
             "done_weak_proof": 2
@@ -2272,12 +3106,12 @@
             "planned": 1
           }
         },
-        "items": 3089,
+        "items": 5135,
         "statuses": {
-          "done_weak_proof": 1258,
-          "done_with_proof": 237,
-          "planned": 1213,
-          "proposed": 381
+          "done_weak_proof": 2350,
+          "done_with_proof": 368,
+          "planned": 1852,
+          "proposed": 565
         }
       }
     },
@@ -2300,12 +3134,15 @@
           },
           "session_pending_protocol": {
             "pass": 75
+          },
+          "subprocess_timeout_discipline": {
+            "pass": 10
           }
         },
         "by_status": {
-          "pass": 116
+          "pass": 126
         },
-        "rows": 116
+        "rows": 126
       }
     },
     "harness_coverage": {
@@ -2317,13 +3154,12 @@
         "by_family": {
           "hooks": 266,
           "rules": 120,
-          "scripts": 536,
+          "scripts": 537,
           "skills": 101,
           "templates": 22
         },
         "by_scope": {
-          "None": 3,
-          "both": 574,
+          "both": 578,
           "os-only": 404,
           "project": 64
         },
@@ -2335,17 +3171,16 @@
           "codex-adapter": 1,
           "codex-adapter-needed": 59,
           "hook-helper-library": 29,
-          "on-demand-command-only": 454,
+          "on-demand-command-only": 455,
           "optional-background-orchestration": 1,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "os-internal-observability-surface": 38,
           "projectable-needs-driver": 7,
           "shell-command-only": 12,
-          "structural-only-ok": 228,
-          "unclassified": 3
+          "structural-only-ok": 231
         },
-        "gaps": 868,
+        "gaps": 869,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -2354,22 +3189,21 @@
           "codex-adapter": 1,
           "codex-adapter-needed": 59,
           "hook-helper-library": 29,
-          "on-demand-command-only": 454,
+          "on-demand-command-only": 455,
           "optional-background-orchestration": 1,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
           "os-internal-observability-surface": 38,
           "projectable-needs-driver": 7,
           "shell-command-only": 12,
-          "structural-only-ok": 228,
-          "unclassified": 3
+          "structural-only-ok": 231
         },
         "gaps_by_status": {
-          "aligned": 799,
-          "partial": 69
+          "aligned": 803,
+          "partial": 66
         },
         "harness_projected_or_wired": {
-          "acc-report": 1045,
+          "acc-report": 1046,
           "agents-md": 0,
           "aider": 195,
           "amp-code": 195,
@@ -2380,7 +3214,7 @@
           "continue-dev": 195,
           "cos-cli": 5,
           "cursor": 195,
-          "dashboard": 1045,
+          "dashboard": 1046,
           "factory-droid": 195,
           "gemini-cli": 195,
           "goose": 195,
@@ -2391,7 +3225,7 @@
           "qoder": 195,
           "qwen-code": 195,
           "shell-ci": 15,
-          "tui": 1045,
+          "tui": 1046,
           "vscode-copilot": 195,
           "warp": 195,
           "zed-ai": 195
@@ -2425,7 +3259,7 @@
           "zed-ai": 0
         },
         "surface_projected_or_wired": {
-          "acc-report": 1045,
+          "acc-report": 1046,
           "agents-md": 0,
           "aider": 195,
           "amp-code": 195,
@@ -2436,7 +3270,7 @@
           "continue-dev": 195,
           "cos-cli": 5,
           "cursor": 195,
-          "dashboard": 1045,
+          "dashboard": 1046,
           "factory-droid": 195,
           "gemini-cli": 195,
           "goose": 195,
@@ -2447,7 +3281,7 @@
           "qoder": 195,
           "qwen-code": 195,
           "shell-ci": 15,
-          "tui": 1045,
+          "tui": 1046,
           "vscode-copilot": 195,
           "warp": 195,
           "zed-ai": 195
@@ -2459,8 +3293,8 @@
           "shell-ci": 1,
           "ui": 2
         },
-        "total_primitives": 1045,
-        "unclassified_gaps": 3
+        "total_primitives": 1046,
+        "unclassified_gaps": 0
       }
     },
     "harness_projection": {
@@ -2495,10 +3329,10 @@
       "summary": {
         "actions": {
           "advise": 4,
-          "allow": 112,
+          "allow": 125,
           "block": 58,
-          "suggest": 262,
-          "warn": 86
+          "suggest": 346,
+          "warn": 92
         },
         "primitive_count": 7
       }
@@ -2612,17 +3446,17 @@
       "source": "docs/reports/primitive-readiness-ledger-scripts-latest.json",
       "status": "ok",
       "summary": {
-        "agentic_primitives_without_lifecycle": 11,
+        "agentic_primitives_without_lifecycle": 0,
         "confidence": {
-          "high": 180,
+          "high": 181,
           "low": 23,
           "medium": 333
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
-          "lifecycle-declared-consumer-candidate": 63,
-          "lifecycle-declared-maintainer": 57,
-          "skill-referenced-not-projectable": 12,
+          "lifecycle-declared-consumer-candidate": 73,
+          "lifecycle-declared-maintainer": 58,
+          "skill-referenced-not-projectable": 2,
           "so-local-only": 385
         },
         "low_confidence_rows": 23,
@@ -2630,10 +3464,10 @@
           "agentic-primitive": 143,
           "driver-specific": 14,
           "lab": 29,
-          "maintainer-tool": 334,
+          "maintainer-tool": 335,
           "migration-only": 16
         },
-        "total_scripts": 536,
+        "total_scripts": 537,
         "without_consumers": 16
       }
     },
@@ -4880,13 +5714,13 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:67",
-        "test_consumers:467",
+        "test_consumers:469",
         "hook_consumers:105",
         "workflow_consumers:1",
-        "doc_consumers:667",
+        "doc_consumers:672",
         "rule_consumers:46",
-        "config_consumers:71",
-        "script_consumers:309",
+        "config_consumers:72",
+        "script_consumers:310",
         "role_source:lifecycle",
         "lifecycle_state:candidate"
       ],
@@ -5173,22 +6007,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/documentation_truth_audit.py",
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:5",
         "rule_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:4",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
-        "availability_override:so-local-only",
-        "availability_match:pattern",
-        "availability_pattern:scripts/**"
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only"
       ],
       "id": "script:scripts/cos-adr-close",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -5201,9 +6035,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -5254,21 +6090,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:1",
         "doc_consumers:4",
+        "config_consumers:1",
         "script_consumers:1",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:so-local-only",
-        "availability_match:pattern",
-        "availability_pattern:scripts/**",
-        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+        "availability_match:pattern"
       ],
       "id": "script:scripts/cos-adr-partial-ledger",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -5281,9 +6118,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -6108,12 +6947,14 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:1",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:scripts/**",
@@ -6121,7 +6962,7 @@
       ],
       "id": "script:scripts/cos-closure-trust-signal.py",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -6134,9 +6975,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -7036,11 +7879,13 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "test_consumers:1",
-        "config_consumers:2",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
+        "test_consumers:2",
+        "config_consumers:3",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:scripts/**",
@@ -7048,7 +7893,7 @@
       ],
       "id": "script:scripts/cos-doc-cross-reference-audit.py",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -7061,9 +7906,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -8266,7 +9113,7 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -9730,12 +10577,14 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:1",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:scripts/**",
@@ -9743,7 +10592,7 @@
       ],
       "id": "script:scripts/cos-operational-guide-audit.py",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -9756,9 +10605,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -9807,22 +10658,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:2",
         "doc_consumers:4",
         "rule_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:3",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
-        "availability_override:so-local-only",
-        "availability_match:pattern",
-        "availability_pattern:scripts/**"
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only"
       ],
       "id": "script:scripts/cos-pending-truth-aggregator",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -9835,9 +10686,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -9849,21 +10702,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:4",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:so-local-only",
         "availability_match:pattern",
-        "availability_pattern:scripts/**",
-        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+        "availability_pattern:scripts/**"
       ],
       "id": "script:scripts/cos-pending-truth-close",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -9876,9 +10730,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -9890,22 +10746,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
         "hook_consumers:3",
         "doc_consumers:5",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:2",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
         "availability_override:so-local-only",
-        "availability_match:pattern",
-        "availability_pattern:scripts/**",
-        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+        "availability_match:pattern"
       ],
       "id": "script:scripts/cos-pending-truth-verify",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -9918,9 +10774,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -11992,22 +12850,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-merge-queue.sh",
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:1",
         "doc_consumers:8",
-        "config_consumers:6",
+        "config_consumers:7",
         "script_consumers:5",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
-        "availability_override:so-local-only",
-        "availability_match:pattern",
-        "availability_pattern:scripts/**"
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only"
       ],
       "id": "script:scripts/cos-session-start-projector",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -12020,9 +12878,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -12274,6 +13134,44 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-status.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "maintainer-only",
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:4",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:maintainer-only",
+        "availability_match:exact",
+        "availability_rationale:ADR-278 maintainer/control-plane audit over this repository's subprocess timeout discipline; consumer projects should no"
+      ],
+      "id": "script:scripts/cos-subprocess-timeout-audit.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "maintainer-only",
+          "id": "scripts/cos-subprocess-timeout-audit.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-subprocess-timeout-audit.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-subprocess-timeout-audit.py"
       },
       "weight": 3
     },
@@ -14644,6 +15542,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -15235,7 +16134,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:3",
         "script_consumers:1",
         "role_source:lifecycle",
@@ -17152,22 +18051,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/primitive_authority_audit.py",
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:4",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:3",
-        "role_source:usage:skill",
-        "consumer_accessibility:skill-referenced-not-projectable",
-        "availability_override:so-local-only",
-        "availability_match:pattern",
-        "availability_pattern:scripts/**"
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:so-local-only"
       ],
       "id": "script:scripts/documentation_truth_audit.py",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -17180,9 +18079,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "team",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -19758,21 +20659,22 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos_init.py",
         "test_consumers:1",
         "doc_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1",
-        "role_source:wrapper",
-        "consumer_accessibility:so-local-only",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-maintainer",
         "availability_override:so-local-only",
         "availability_match:pattern",
-        "availability_pattern:scripts/**",
-        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+        "availability_pattern:scripts/**"
       ],
       "id": "script:scripts/portable_ai_overlay.py",
       "kind": "script",
-      "lifecycle_status": "aspirational",
+      "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
@@ -19785,9 +20687,11 @@
       ],
       "risk": "medium",
       "signature": {
-        "distribution": null,
+        "distribution": "maintainer",
         "role": "agentic-primitive",
-        "supported_harnesses": []
+        "supported_harnesses": [
+          "shell"
+        ]
       },
       "source": {
         "family": "scripts",
@@ -22518,7 +23422,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "wrapper_for:scripts/orchestrator_claim_gate.py",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:6",
         "config_consumers:3",
         "role_source:usage:repo",
@@ -24304,7 +25208,7 @@
         "skill_consumers:9",
         "hook_consumers:38",
         "rule_consumers:6",
-        "script_consumers:44",
+        "script_consumers:45",
         "test_consumers:67",
         "doc_consumers:131",
         "config_consumers:15",
@@ -24670,7 +25574,7 @@
         "rule_consumers:2",
         "script_consumers:47",
         "test_consumers:94",
-        "doc_consumers:134",
+        "doc_consumers:136",
         "config_consumers:10",
         "role_source:default",
         "consumer_accessibility:so-local-only",
@@ -26555,7 +27459,7 @@
         "rule_consumers:5",
         "script_consumers:5",
         "test_consumers:15",
-        "doc_consumers:42",
+        "doc_consumers:43",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -26731,7 +27635,7 @@
         "rule_consumers:9",
         "script_consumers:8",
         "test_consumers:16",
-        "doc_consumers:36",
+        "doc_consumers:37",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -27893,7 +28797,7 @@
         "hook_consumers:1",
         "script_consumers:6",
         "test_consumers:6",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -39088,7 +39992,7 @@
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:1",
         "config_consumers:2",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -39130,7 +40034,7 @@
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:1",
         "config_consumers:2",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -43892,6 +44796,7 @@
         "skill_consumers:2",
         "rule_consumers:1",
         "script_consumers:1",
+        "doc_consumers:2",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -43899,8 +44804,7 @@
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
         "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
-        "projected_profiles:full",
-        "projection_class:shared"
+        "projected_profiles:full"
       ],
       "id": "rule:rules/session-close-doc-truth.md",
       "kind": "rule",
@@ -44830,7 +45734,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "role_source:default",
         "consumer_accessibility:so-local-only"
       ],
@@ -44864,7 +45768,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
       ],
@@ -44899,7 +45803,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "role_source:default",
         "consumer_accessibility:so-local-only"
       ],
@@ -56927,17 +57831,18 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+        "scope:both",
         "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:unclassified"
+        "gap_policy:structural-only-ok"
       ],
       "id": "harness_coverage:rules/memory-governance.md",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "rules/memory-governance.md",
@@ -56946,11 +57851,11 @@
           "source": "rules/memory-governance.md"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-        "gap_policy": "unclassified",
-        "scope": null
+        "gap_policy": "structural-only-ok",
+        "scope": "both"
       },
       "source": {
         "family": "rules",
@@ -57672,17 +58577,18 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+        "scope:both",
         "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:unclassified"
+        "gap_policy:structural-only-ok"
       ],
       "id": "harness_coverage:rules/recommendation-grounding.md",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "rules/recommendation-grounding.md",
@@ -57691,11 +58597,11 @@
           "source": "rules/recommendation-grounding.md"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-        "gap_policy": "unclassified",
-        "scope": null
+        "gap_policy": "structural-only-ok",
+        "scope": "both"
       },
       "source": {
         "family": "rules",
@@ -66963,6 +67869,40 @@
         "family": "scripts",
         "path": "docs/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos-status.sh"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:both",
+        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-subprocess-timeout-audit.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-subprocess-timeout-audit.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-subprocess-timeout-audit.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "both"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-subprocess-timeout-audit.py"
       },
       "weight": 1
     },
@@ -77937,17 +78877,18 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+        "scope:both",
         "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:unclassified"
+        "gap_policy:structural-only-ok"
       ],
       "id": "harness_coverage:skills/deep-tool-research/SKILL.md",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "skills/deep-tool-research/SKILL.md",
@@ -77956,11 +78897,11 @@
           "source": "skills/deep-tool-research/SKILL.md"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-        "gap_policy": "unclassified",
-        "scope": null
+        "gap_policy": "structural-only-ok",
+        "scope": "both"
       },
       "source": {
         "family": "skills",
@@ -92090,7 +93031,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:os-maintainer-write",
         "authority_source:derived:os-only-default",
@@ -92152,7 +93093,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:os-maintainer-write",
         "authority_source:derived:os-only-default",
@@ -92803,7 +93744,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -93516,7 +94457,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -93791,6 +94732,37 @@
       "source": {
         "path": "docs/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos-document-ingest"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "authority_mode:os-maintainer-write",
+        "authority_source:derived:os-only-default",
+        "scope:os-only"
+      ],
+      "id": "authority_write_effects:scripts/cos-documentation-truth-audit",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-documentation-truth-audit",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "os-maintainer-write",
+        "scope": "os-only",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-documentation-truth-audit"
       },
       "weight": 3
     },
@@ -95595,7 +96567,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -95657,7 +96629,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -95688,7 +96660,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -95719,7 +96691,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -95869,6 +96841,37 @@
       "source": {
         "path": "docs/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos-portable-ai-consumer-impact"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/cos-portable-ai-consumer-package-smoke",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-portable-ai-consumer-package-smoke",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-portable-ai-consumer-package-smoke"
       },
       "weight": 3
     },
@@ -97331,7 +98334,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "evidence": [
         "authority_mode:observe-only",
         "authority_source:derived:shared-default",
@@ -97543,6 +98546,37 @@
       "source": {
         "path": "docs/reports/primitive-authority-latest.json",
         "primitive": "scripts/cos-status.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/cos-subprocess-timeout-audit.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-subprocess-timeout-audit.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/reports/primitive-authority-latest.json",
+        "primitive": "scripts/cos-subprocess-timeout-audit.py"
       },
       "weight": 3
     },
@@ -101301,6 +102335,37 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "skill-referenced-not-projectable",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/documentation_truth_audit.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/documentation_truth_audit.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/reports/primitive-authority-latest.json",
+        "primitive": "scripts/documentation_truth_audit.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "evidence": [
         "authority_mode:os-maintainer-write",
@@ -103219,6 +104284,37 @@
       "source": {
         "path": "docs/reports/primitive-authority-latest.json",
         "primitive": "scripts/portable_ai_consumer_impact.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "authority_mode:observe-only",
+        "authority_source:derived:shared-default",
+        "scope:both"
+      ],
+      "id": "authority_write_effects:scripts/portable_ai_consumer_package.py",
+      "kind": "authority_write_effects",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/portable_ai_consumer_package.py",
+          "kind": "authority_contract",
+          "role": "write-effects-boundary"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "mode": "observe-only",
+        "scope": "both",
+        "status": "pass"
+      },
+      "source": {
+        "path": "docs/reports/primitive-authority-latest.json",
+        "primitive": "scripts/portable_ai_consumer_package.py"
       },
       "weight": 3
     },
@@ -106873,10 +107969,40 @@
       "weight": 2
     },
     {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "checks:10",
+        "blocks:0"
+      ],
+      "id": "documentation_truth:subprocess_timeout_discipline",
+      "kind": "documentation_truth",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "subprocess_timeout_discipline",
+          "kind": "documentation_truth_claim",
+          "role": "stale-prose-boundary"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "blocks": 0,
+        "checks": 10,
+        "status": "aligned"
+      },
+      "source": {
+        "claim": "subprocess_timeout_discipline",
+        "path": "docs/reports/documentation-truth-latest.json"
+      },
+      "weight": 2
+    },
+    {
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:118"
+        "intervention_rows:131"
       ],
       "id": "primitive_intervention:destructive-git-blocker",
       "kind": "primitive_intervention",
@@ -106891,7 +108017,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 118
+        "rows": 131
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -106930,7 +108056,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:36"
+        "intervention_rows:40"
       ],
       "id": "primitive_intervention:direct-main-guard",
       "kind": "primitive_intervention",
@@ -106945,7 +108071,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 36
+        "rows": 40
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -107011,7 +108137,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:31"
+        "intervention_rows:33"
       ],
       "id": "primitive_intervention:reinvention-check",
       "kind": "primitive_intervention",
@@ -107026,7 +108152,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 31
+        "rows": 33
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -107038,7 +108164,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:274"
+        "intervention_rows:358"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -107053,7 +108179,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 274
+        "rows": 358
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -107065,7 +108191,7 @@
       "confidence": 0.78,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "itinerary_rows:686"
+        "itinerary_rows:744"
       ],
       "id": "codebase_itinerary:Read",
       "kind": "codebase_itinerary",
@@ -107081,9 +108207,9 @@
       "risk": "low",
       "signature": {
         "categories": {
-          "read": 686
+          "read": 744
         },
-        "rows": 686
+        "rows": 744
       },
       "source": {
         "path": ".cognitive-os/metrics/codebase-itinerary.jsonl",
@@ -121692,30 +122818,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:rules/memory-governance.md",
-      "evidence": [
-        "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:unclassified"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:rules/recommendation-grounding.md",
-      "evidence": [
-        "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:unclassified"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:scripts/credibility-audit.sh",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
@@ -121807,18 +122909,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:skills/deep-tool-research/SKILL.md",
-      "evidence": [
-        "harness_coverage:acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:unclassified"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "projection_fidelity:auto-verify",
       "evidence": [
         "projection_statuses:aligned,gap"
@@ -121850,21 +122940,19 @@
     }
   ],
   "gate": {
-    "blocks": [
-      "new_debt:14"
-    ],
+    "blocks": [],
     "phase": "reconstruction",
-    "status": "block",
+    "status": "pass",
     "thresholds": {
       "critical_missing_allowed": 0,
       "minimum_acc": 0.5,
       "minimum_effective_acc": 0.4
     },
     "warnings": [
-      "coverage_debt:74"
+      "coverage_debt:71"
     ]
   },
-  "generated_at": "2026-05-12T17:37:47Z",
+  "generated_at": "2026-05-12T18:44:49Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
@@ -122445,108 +123533,9 @@
     "unverified"
   ],
   "new_debt": {
-    "count": 14,
-    "items": [
-      {
-        "baseline_status": "absent",
-        "id": "script:scripts/cos-documentation-truth-audit",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "script:scripts/cos-portable-ai-consumer-package-smoke",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "script:scripts/documentation_truth_audit.py",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "script:scripts/portable_ai_consumer_package.py",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "rule:rules/session-close-doc-truth.md",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "template:templates/counsel-outreach/clean-room-permission.md",
-        "kind": "capability",
-        "reason": "new mapping debt",
-        "status": "unverified"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "template:templates/counsel-outreach/license-clarification.md",
-        "kind": "capability",
-        "reason": "new mapping debt",
-        "status": "unverified"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "template:templates/counsel-outreach/review-request.md",
-        "kind": "capability",
-        "reason": "new mapping debt",
-        "status": "unverified"
-      },
-      {
-        "baseline_status": "aligned",
-        "id": "projection_fidelity:auto-verify",
-        "kind": "capability",
-        "reason": "new mapping debt",
-        "status": "partial"
-      },
-      {
-        "baseline_status": "aligned",
-        "id": "projection_fidelity:auto-refine",
-        "kind": "capability",
-        "reason": "new mapping debt",
-        "status": "partial"
-      },
-      {
-        "baseline_status": "aligned",
-        "id": "projection_fidelity:dod-gate",
-        "kind": "capability",
-        "reason": "new mapping debt",
-        "status": "partial"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "projection_fidelity:auto-verify",
-        "kind": "finding",
-        "reason": "Primitive projection fidelity has harness gaps",
-        "status": "partial"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "projection_fidelity:auto-refine",
-        "kind": "finding",
-        "reason": "Primitive projection fidelity has harness gaps",
-        "status": "partial"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "projection_fidelity:dod-gate",
-        "kind": "finding",
-        "reason": "Primitive projection fidelity has harness gaps",
-        "status": "partial"
-      }
-    ],
-    "status": "block",
+    "count": 0,
+    "items": [],
+    "status": "pass",
     "strict_local_defaults": true
   },
   "persistence": {
@@ -122709,22 +123698,22 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.9833,
-    "acc_effective": 0.9899,
-    "aligned_weight": 6077,
+    "acc": 0.9839,
+    "acc_effective": 0.9902,
+    "aligned_weight": 6101,
     "mapping_weight_by_status": {
-      "aligned": 6077,
+      "aligned": 6101,
       "missing": 0,
       "overexposed": 0,
-      "partial": 81,
+      "partial": 78,
       "stale": 0,
       "unverified": 22
     },
     "missing_weight": 0,
     "overexposed_weight": 0,
-    "partial_weight": 81,
+    "partial_weight": 78,
     "stale_weight": 0,
-    "total_weight": 6180,
+    "total_weight": 6201,
     "unverified_weight": 22
   },
   "weights": {

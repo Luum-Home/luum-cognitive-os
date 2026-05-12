@@ -64,6 +64,8 @@ The difference: a traditional OS manages hardware. Cognitive OS manages **cognit
 
 ## Self-Improvement Loop
 
+See [`docs/architecture/agent-training-harness.md`](architecture/agent-training-harness.md) for the canonical definition of "training agents" in COS: operational learning over skills, rules, templates, routing, evals, and memory, not provider-weight fine-tuning.
+
 The AI ecosystem implements a closed-loop self-improvement cycle backed by `lib/learning_pipeline.py`, which integrates 5 previously isolated subsystems (error learning, skill feedback, memory scanning, user model, and reinvention guard) into a single connected pipeline. Each agent execution feeds data back into the system, which uses it to improve future executions.
 
 ```

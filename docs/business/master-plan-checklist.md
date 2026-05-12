@@ -350,3 +350,5 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 - [x] Public docs/business/features — Feature Overview 13→19 + new sections §6/§7/§8 (replay, cost+retry, handoff).
 - [x] Public docs/business/roadmap — Current State counts refreshed; "What works end-to-end" expanded with 5 new shippables.
 - [x] Public docs/business/executive-summary — Problem section expanded with replay-Devin-framing and $47K-incident framing.
+
+- [x] **ADR-279** Orphan Repo-Scan Process Audit — `scripts/cos-orphan-process-audit.py` + `lib/orphan_process_audit.py` detect stale PPID=1 Claude/zsh/grep-style repo scans, stay dry-run by default, require explicit `--kill`, and carry behavior tests.

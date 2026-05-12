@@ -2124,16 +2124,38 @@
       "remaining": "Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review",
       "remaining_in_scope": null,
       "title": "Closure & Projection Primitives (Pending-Truth Read/Write Symmetry)"
+    },
+    {
+      "adr": "ADR-278",
+      "classification_basis": "Audit + allowlist + test-default shipped; per-call backfill (984 of 1824 calls) tracked as Phase 2.",
+      "date": "2026-05-12",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "scripts/cos-subprocess-timeout-audit.py",
+        "manifests/subprocess-timeout-allowlist.yaml",
+        "tests/conftest.py",
+        "tests/red_team/portability/test_cos-subprocess-timeout-audit.py"
+      ],
+      "implementation_status": "partial",
+      "number": "278",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "remaining": "Audit + allowlist + test-default shipped; per-call backfill (984 of 1824 calls) tracked as Phase 2.",
+      "remaining_in_scope": null,
+      "title": "subprocess.run Timeout Discipline"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 117,
+      "partial": 118,
       "partial-blocked": 1
     },
-    "missing_partial_remaining": 0,
-    "total": 119
+    "missing_partial_remaining": 1,
+    "total": 120
   }
 }
