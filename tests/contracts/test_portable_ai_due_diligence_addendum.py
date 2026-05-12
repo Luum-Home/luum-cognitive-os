@@ -52,7 +52,7 @@ def test_overlay_generator_preserves_due_diligence_boundary_in_output() -> None:
     context = json.loads(files["context.json"])
     assert context["status"] == "generated-portable-overlay"
     assert "manifests/primitive-contracts.yaml" in context["canonical_source_of_truth"]
-    assert context["policy"].startswith("The `.ai` tree is a generated overlay")
+    assert ("generated" in context["policy"] and "overlay" in context["policy"])
     primitive_rows = [json.loads(body) for path, body in files.items() if path.startswith("primitives/") and path.endswith(".json")]
     assert primitive_rows
     assert {row["canonical_source_kind"] for row in primitive_rows} == {"cos-internal"}

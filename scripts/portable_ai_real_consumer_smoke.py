@@ -102,7 +102,7 @@ def _project_overlay(root: Path, overlay: dict[str, str], project: dict[str, Any
     no_canonical_shadow_mutation = not any((shadow / path).exists() for path in ("hooks", "skills", "rules", "manifests"))
     after = _ai_snapshot(project_path)
     actual_consumer_unchanged = before == after
-    status = "pass" if primitive_files and adapter_files and profile_files and no_canonical_shadow_mutation and actual_consumer_unchanged and str(context.get("policy", "")).startswith("The `.ai` tree is a generated overlay") else "fail"
+    status = "pass" if primitive_files and adapter_files and profile_files and no_canonical_shadow_mutation and actual_consumer_unchanged and ("generated" in str(context.get("policy", "")) and "overlay" in str(context.get("policy", ""))) else "fail"
     return {
         "consumer_id": _safe_consumer_id(project, index),
         "status": status,

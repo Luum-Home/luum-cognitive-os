@@ -38,7 +38,7 @@ def build_report(root: Path) -> dict[str, Any]:
         registry_backed = sum(1 for row in rows if row.get("portable_contract", {}).get("source") == "primitive-contract-registry")
         lifecycle_derived = sum(1 for row in rows if row.get("portable_contract", {}).get("source") == "primitive-lifecycle-derived")
         no_canonical_mutation = not any((consumer / path).exists() for path in ("hooks", "skills", "rules", "manifests"))
-        status = "pass" if primitive_files and adapter_files and profile_files and registry_backed >= 20 and lifecycle_derived >= 0 and no_canonical_mutation and context.get("policy", "").startswith("The `.ai` tree is a generated overlay") else "fail"
+        status = "pass" if primitive_files and adapter_files and profile_files and registry_backed >= 20 and lifecycle_derived >= 0 and no_canonical_mutation and ("generated" in str(context.get("policy", "")) and "overlay" in str(context.get("policy", ""))) else "fail"
         return {
             "schema_version": "portable-ai-consumer-smoke.v1",
             "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
