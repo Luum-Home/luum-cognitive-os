@@ -1,132 +1,321 @@
-# Cognitive OS Documentation Index — v0.26.0
+# Cognitive OS — Documentation Index
 
-> Everything about the AI-assisted development setup: hooks, rules, skills, automation, self-improvement, and how to extend it.
-> Updated: 2026-04-09
+> **How to use this index** — This file is the single navigation entry-point for the entire `docs/` tree (1 200+ files, 32 subdirectories). Read it top-to-bottom once to orient yourself, then jump directly to the section you need. Sections are ordered by access frequency for an LLM agent: ADRs → Runbooks → Session handoffs → Architecture → Reference. Each subdirectory entry links to the directory; each root-level file entry links directly. No file is auto-generated — every description was written from the source.
 
-> **Disclaimer**: Cognitive OS is not affiliated with, endorsed by, or sponsored by Anthropic, OpenAI, Google, Amazon, Microsoft, or any other company whose products are referenced in this documentation. All product names, trademarks, and registered trademarks are the property of their respective owners. References to third-party products are for informational and interoperability purposes only.
+---
 
-## Start Here
+## 1. ADRs
 
-| Doc | Description |
-|-----|-------------|
+**[adrs/](adrs/)** — All project Architecture Decision Records (ADR-001 through ADR-270+), the single canonical root for every accepted, superseded, or proposed decision.
+
+### ADR Highlights (most-referenced)
+
+| ADR | Status | Summary |
+|-----|--------|---------|
+| [ADR-012](adrs/ADR-012-prompt-driven-governance.md) | Accepted | Move governance hooks from imperative bash to declarative prompt templates |
+| [ADR-028](adrs/ADR-028-slo-catalogue.md) | Accepted | SLO catalogue, error budget, and cadence |
+| [ADR-049](adrs/ADR-049-llm-dispatch.md) | Accepted | LLM dispatch: Qwen primary + Claude fallback to preserve Max quota |
+| [ADR-066](adrs/ADR-066-polyglot-quality-gates.md) | Accepted | Polyglot drift CI — Python/Go/Bash quality gates |
+| [ADR-072](adrs/ADR-072-test-lane-taxonomy.md) | Accepted | Test lane taxonomy: focused/cluster/broad with parallel-safety |
+| [ADR-105](adrs/ADR-105-red-team-harness.md) | Accepted | Red-team harness design and W6 gate |
+| [ADR-139](adrs/ADR-139-engram-cloud.md) | Accepted | Engram Cloud BYOK setup for cross-instance federation |
+| [ADR-140](adrs/ADR-140-worker-container.md) | Accepted | Worker container surface — Docker operator runbook |
+| [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md) | Accepted | Multi-surface UI: CLI + Phoenix + Engram Cloud + Obsidian |
+| [ADR-218](adrs/ADR-218-history-sanitization-toolchain.md) | Accepted | One-time git history sanitization toolchain |
+| [ADR-228](adrs/ADR-228-retry-taxonomy.md) | Accepted | Retry taxonomy and attempt limits |
+| [ADR-245](adrs/ADR-245-chaos-test-isolation.md) | Accepted | Chaos test isolation — simulator separation policy |
+| [ADR-270](adrs/ADR-270-legal-compliance-workflow.md) | Accepted | Legal compliance workflow automation (8 primitives) |
+| [ADR-271](adrs/ADR-271-clean-room-ast-similarity.md) | Accepted | Tier-2 AST similarity detector + 5-tier limits matrix |
+
+---
+
+## 2. Runbooks
+
+**[runbooks/](runbooks/)** — Operator step-by-step guides for production operations, chaos isolation, LLM dispatch, history sanitization, and legal review.
+
+| File | Description |
+|------|-------------|
+| [runbooks/chaos-test-isolation.md](runbooks/chaos-test-isolation.md) | How to isolate chaos tests that simulate crashes and corrupted state |
+| [runbooks/cos-cleanup.md](runbooks/cos-cleanup.md) | Cleanup procedure for stale Cognitive OS artifacts |
+| [runbooks/cos-history-sanitization.md](runbooks/cos-history-sanitization.md) | ADR-218 history sanitization — step-by-step operator guide |
+| [runbooks/legal-review-workflow.md](runbooks/legal-review-workflow.md) | Operator guide for the ADR-270 legal compliance pipeline |
+| [runbooks/llm-dispatch.md](runbooks/llm-dispatch.md) | Operating the ADR-049 LLM dispatch layer (Qwen + Claude routing) |
+| [runbooks/run-cos-in-docker.md](runbooks/run-cos-in-docker.md) | Docker Quick Start, BYOK env, full stack with engram-cloud, audit trail |
+
+---
+
+## 3. Session Handoffs & Closure Docs
+
+These files record inter-session continuity state — read the most recent one to resume context.
+
+| File | Description |
+|------|-------------|
+| [SESSION-HANDOFF-2026-05-05-headless-service-runtime.md](SESSION-HANDOFF-2026-05-05-headless-service-runtime.md) | Headless service runtime session handoff (latest topic-specific) |
+| [SESSION-HANDOFF-2026-05-04.md](SESSION-HANDOFF-2026-05-04.md) | Session handoff — 2026-05-04 |
+| [SESSION-HANDOFF-2026-05-02.md](SESSION-HANDOFF-2026-05-02.md) | Session handoff — 2026-05-02 |
+| [SESSION-HANDOFF-2026-05-01.md](SESSION-HANDOFF-2026-05-01.md) | Session handoff — 2026-05-01 |
+| [SESSION-HANDOFF-2026-04-27.md](SESSION-HANDOFF-2026-04-27.md) | Session handoff — 2026-04-27 |
+| [SESSION-HANDOFF-2026-04-25.md](SESSION-HANDOFF-2026-04-25.md) | Session handoff — 2026-04-25 |
+| [SESSION-HANDOFF-2026-04-17.md](SESSION-HANDOFF-2026-04-17.md) | Session handoff — 2026-04-17 |
+| [SESSION-ADR-CLOSURE-2026-05-04.md](SESSION-ADR-CLOSURE-2026-05-04.md) | ADR implementation closure session — closing historical ledger up to ADR-138 |
+
+---
+
+## 4. Getting Started & Onboarding
+
+**[getting-started/](getting-started/)** — Step-by-step onboarding paths, including a 30-minute core profile walkthrough.
+
+**[onboarding/](onboarding/)** — Recording recipe, walkthrough transcript, and video guide for first-run experience.
+
+| File | Description |
+|------|-------------|
 | [getting-started.md](getting-started.md) | Prerequisites, installation, first run, first SDD pipeline, running tests, notifications |
+| [getting-started-quick.md](getting-started-quick.md) | Condensed getting-started for returning users |
+| [quickstart.md](quickstart.md) | 5-minute quickstart: install and first command |
+| [HOW-TO-USE-COS.md](HOW-TO-USE-COS.md) | Living guide to building with and within the OS (updated 2026-04-16) |
 | [faq.md](faq.md) | Answers to common questions about architecture, skills, testing, automation, memory, and installation |
+| [adoption-tiers.md](adoption-tiers.md) | Tiered adoption guide — who should enable what, and in what order |
+| [how-to-extend.md](how-to-extend.md) | Step-by-step guides for adding hooks, rules, skills, actions, MCP servers |
+| [global-vs-project-config.md](global-vs-project-config.md) | Exhaustive reference on how Claude Code merges global and project-level configuration |
+
+---
+
+## 5. Architecture & Design
+
+**[architecture/](architecture/)** — Frozen backlog, post-mortems, lessons learned, ADR closure policy, and collision reconciliation docs.
+
+| File | Description |
+|------|-------------|
 | [architecture.md](architecture.md) | System diagram, MAPE-K loop, pipeline flow, component inventory, technology stack, data flow |
 | [architecture-principles.md](architecture-principles.md) | 5-layer dependency model, layer characteristics, anti-patterns, ADRs, replaceability principle |
-| [ux-principles.md](ux-principles.md) | 7 UX principles: invisible safety, progressive disclosure, AI-as-driver, cost transparency |
-| [product-principles.md](product-principles.md) | 10 product principles: perceived value, fail fast, MVP mindset, outcomes over features, adoption friction |
-| [launch-strategy.md](launch-strategy.md) | 4-phase launch strategy: immediate, first users, iterate, grow — with success metrics |
-| [multi-model-factory.md](multi-model-factory.md) | Multi-Model AI Software Factory: 3-layer architecture (Strategic/Execution/Worker), dynamic routing, cost optimization |
-| [ide-compatibility.md](ide-compatibility.md) | Multi-IDE support matrix: 30 tools across 5 compatibility levels (FULL/HIGH/RULES-ONLY/MINIMAL/NONE) |
-
-## Operational Documents
-
-| Doc | Description |
-|-----|-------------|
 | [overview.md](overview.md) | Architecture diagram, component inventory, self-improvement loop, data flow |
 | [organizational-model.md](organizational-model.md) | Company analogy mapping every Cognitive OS component to an organizational role |
-| [hooks.md](hooks.md) | Hooks in hooks/ + legacy in .claude/hooks/ |
-| [rules.md](rules.md) | Rules in .cognitive-os/rules/ + legacy in .claude/rules/ |
-| [skills.md](skills.md) | Skill system: project vs global, auto-detection, auto-improvement, creation |
-| [automation.md](automation.md) | Session lifecycle, CI/CD (GitHub Actions), scheduled tasks, Agent Teams |
-| [automation-doc-sync.md](automation-doc-sync.md) | Doc Sync (stale doc detection) + Coverage Watcher (auto-coverage on edit) |
-| [how-to-extend.md](how-to-extend.md) | Step-by-step guides for adding hooks, rules, skills, actions, MCP servers |
-| [persistence-map.md](persistence-map.md) | What's in git vs what's not: Engram sync, onboarding, recovery procedures |
+| [design-philosophy.md](design-philosophy.md) | Cognitive OS as a living organism — foundational design philosophy |
+| [kernel-contract.md](kernel-contract.md) | Minimal durable core contract — what must never break |
 | [os-vs-project-separation.md](os-vs-project-separation.md) | 3-layer architecture: universal Cognitive OS vs project-specific content |
+| [multi-model-factory.md](multi-model-factory.md) | 3-layer AI Software Factory (Strategic/Execution/Worker), dynamic routing, cost optimization |
+| [distributed-architecture.md](distributed-architecture.md) | Design for distributed Cognitive OS across projects and nodes |
+| [gateway-architecture.md](gateway-architecture.md) | AI Gateway event routing design |
+| [dashboard-architecture.md](dashboard-architecture.md) | COS web dashboard architecture decision |
+| [execution-backends.md](execution-backends.md) | 6-backend execution model |
+| [identity-stack.md](identity-stack.md) | 6-layer identity stack |
+| [engram-namespaces.md](engram-namespaces.md) | 3-namespace memory isolation in Engram |
+| [phase-system.md](phase-system.md) | Phase-aware agent system: 4 lifecycle phases |
+| [persistence-map.md](persistence-map.md) | What lives in git vs what lives in Engram — recovery procedures |
 | [session-concurrency.md](session-concurrency.md) | Multi-session support: isolation, advisory file locking, metrics merging |
-| [singularity.md](singularity.md) | Codebase Singularity: autonomous MAPE-K control loop for codebase health |
-| [auto-repair-system.md](auto-repair-system.md) | Auto-repair MAPE-K loop: detect, classify, and fix errors autonomously |
-| [runbooks/run-cos-in-docker.md](runbooks/run-cos-in-docker.md) | Operator runbook for the ADR-140 worker container surface: Docker Quick Start, BYOK env, full stack with engram-cloud, audit trail, troubleshooting |
+| [fault-tolerance.md](fault-tolerance.md) | 4-tier fault tolerance and resilience guide |
+| [model-evolution-resilience.md](model-evolution-resilience.md) | How Cognitive OS ages well as models and APIs change |
+| [implementation-phases.md](implementation-phases.md) | 4 phases: dev-time (DONE) to full Cognitive OS |
 
-### Core Patterns
+---
 
-| Doc | Description |
-|-----|-------------|
+## 6. Core Patterns & Workflows
+
+**[patterns/](patterns/)** — Declarative reference patterns (not hook-enforced) that inform agent behavior and prompt design.
+
+| File | Description |
+|------|-------------|
 | [piter-framework.md](piter-framework.md) | PITER loop (Plan/Implement/Test/Evaluate/Refine) for autonomous agent execution |
 | [leverage-points.md](leverage-points.md) | 12 leverage points for agentic engineering, mapped to Cognitive OS |
 | [zero-touch-engineering.md](zero-touch-engineering.md) | ZTE: 3 phases from semi-autonomous to self-shipping |
 | [adw-patterns.md](adw-patterns.md) | AI Developer Workflows: deterministic pipelines + non-deterministic agents |
-| [openclaw-patterns.md](openclaw-patterns.md) | Resilience patterns adopted (9 patterns) |
-
-### Architecture & Design
-
-| Doc | Description |
-|-----|-------------|
-| [README.md](README.md) | Vision: 18 components, self-improvement loop, YAML specs |
-| [tool-stack.md](tool-stack.md) | Research: 40+ tools in 10 components |
-| [recommended-stack.md](recommended-stack.md) | Recommended best-of-breed stack with justification |
-| [blocked-tools.md](blocked-tools.md) | Tools blocked by license (AGPL/SSPL/ELv2) |
-| [implementation-phases.md](implementation-phases.md) | 4 phases: dev-time (DONE) to full Cognitive OS |
-| [identity-stack.md](identity-stack.md) | 6-layer identity stack |
-| [execution-backends.md](execution-backends.md) | 6-backend execution model |
-| [phase-system.md](phase-system.md) | Phase-aware agent system: 4 lifecycle phases |
-| [engram-namespaces.md](engram-namespaces.md) | Engram namespaces: 3-namespace memory isolation |
-| [configurable-quality-gates.md](configurable-quality-gates.md) | Configurable quality gates: cognitive-os.yaml |
-| [agent-quality.md](agent-quality.md) | Agent quality system: 4 fixes to prevent minimum-effort agent output |
-| [plug-and-play.md](plug-and-play.md) | Plug-and-play: add Cognitive OS to any project with 1 file |
-| [stress-test-strategy.md](stress-test-strategy.md) | Stress test: using Cognitive OS to decompose 170-endpoint monolith |
-| [health-monitoring.md](health-monitoring.md) | Health monitoring system |
-| [plan-system.md](plan-system.md) | Plan archive system |
-| [prompt-templates.md](prompt-templates.md) | Centralized prompt template library |
-| [infra-intent.md](infra-intent.md) | Infrastructure intent detection |
-| [capability-snapshot.md](capability-snapshot.md) | Capability snapshot: save/diff/restore Cognitive OS capabilities before refactors |
-| [trust-score.md](trust-score.md) | Trust score system: evidence-based agent confidence reporting |
-| [definition-of-done.md](definition-of-done.md) | Definition of Done: 5 complexity levels with progressive completion criteria |
-| [sandbox-sampling.md](sandbox-sampling.md) | Sandbox sampling: classify-sample-verify-scale workflow for large changes |
-| [dogfooding.md](dogfooding.md) | Dogfooding: using luum-agent-os to build luum-agent-os |
-| [performance.md](performance.md) | Performance monitoring: latency, throughput, overhead, efficiency, bottleneck detection |
-
-### Improvements & Analysis
-
-| Doc | Description |
-|-----|-------------|
-| [bmad-v6-patterns.md](bmad-v6-patterns.md) | 12 patterns from BMAD v6 analysis adopted |
-| [complexity-audit.md](complexity-audit.md) | Complexity audit: Cognitive OS vs BMAD v6 |
-| [benchmarking.md](benchmarking.md) | Cognitive OS benchmark system |
-| [competitive-landscape.md](competitive-landscape.md) | Competitive landscape analysis |
-| [state-snapshots.md](state-snapshots.md) | Devbox state snapshots: deterministic toolchain + `/checkpoint` skill |
-| [secret-detection.md](secret-detection.md) | EnvGuard secret detection: hook, rules, `/secret-audit` skill |
-| [auto-library.md](auto-library.md) | Auto-library recommender: npm/PyPI/Go registry search |
-| [gpu-sandbox.md](gpu-sandbox.md) | Jupyter MCP GPU sandbox: compute runtime for ML/data/finance |
-| [self-improvement-loop.md](self-improvement-loop.md) | Complete self-improvement loop: KPIs, pattern detection, auto-improvement of rules/skills |
-| [competitive-arena.md](competitive-arena.md) | Competitive arena: benchmark suite comparing Cognitive OS against 10+ AI coding tools |
-| [archived/benchmark-results.md](archived/benchmark-results.md) | *(archived)* Arena benchmark results from 2026-03-23: preliminary comparison + subsystem timings |
-| [archived/cleanup-verification.md](archived/cleanup-verification.md) | *(archived)* Cleanup verification report from 2026-03-22: post-refactor capability check |
-
-### Research & Patterns
-
-| Doc | Description |
-|-----|-------------|
-| [research-log.md](research-log.md) | Evaluation record for 12 tools/frameworks with scores, rings, licenses, and verdicts |
+| [openclaw-patterns.md](openclaw-patterns.md) | 9 resilience patterns adopted from OpenClaw |
+| [bmad-v6-patterns.md](bmad-v6-patterns.md) | 12 patterns from BMAD v6 analysis adopted into Cognitive OS |
 | [patterns-adopted.md](patterns-adopted.md) | 24 patterns adopted from 6 external sources with integration details |
-| [safety-mesh.md](safety-mesh.md) | 12-layer defense system preventing agent errors from propagating through pipelines |
-| [anti-hallucination.md](anti-hallucination.md) | 10-layer anti-hallucination defense: ground truth, cross-verification, claim validation |
+| [prompt-driven-governance.md](prompt-driven-governance.md) | Governance hooks moved from imperative bash to declarative prompt templates (ADR-012) |
+| [agent-teams.md](agent-teams.md) | How Cognitive OS leverages Claude Code's Agent Teams feature |
+| [self-building-protocol.md](self-building-protocol.md) | COS builds itself — protocol for self-referential development |
 
-### Testing
+---
 
-| Doc | Description |
-|-----|-------------|
-| [testing-cognitive-os.md](testing-cognitive-os.md) | Testing the Cognitive OS itself |
+## 7. Operational Reference
+
+**[skills/](skills/)** — Skill system documentation and migration guides.
+
+**[usage/](usage/)** — Usage guides for `cos status`, skill authoring, and day-to-day operator commands.
+
+**[setup/](setup/)** — Dependency installation, cross-device setup, and Obsidian local configuration.
+
+| File | Description |
+|------|-------------|
+| [hooks.md](hooks.md) | Hook system: 94 scripts, 46 registered, lifecycle and security profiles |
+| [rules.md](rules.md) | Rules system: 16 always-loaded core rules, 150+ total |
+| [skills.md](skills.md) | Skill system: project vs global, auto-detection, auto-improvement, creation |
+| [automation.md](automation.md) | Session lifecycle, CI/CD (GitHub Actions), scheduled tasks, Agent Teams |
+| [automation-doc-sync.md](automation-doc-sync.md) | Doc Sync (stale doc detection) + Coverage Watcher (auto-coverage on edit) |
+| [runtime-env-flags.md](runtime-env-flags.md) | Human-readable index of all public Cognitive OS runtime environment flags |
+| [hook-security-profiles.md](hook-security-profiles.md) | Minimal/standard/paranoid security profiles and their hook sets |
+| [rules-loading-architecture.md](rules-loading-architecture.md) | How rules accumulate and why consolidation matters |
+| [rules-consolidation-plan.md](rules-consolidation-plan.md) | P0 consolidation plan — highest-impact performance change for rules loading |
+| [prompt-templates.md](prompt-templates.md) | Centralized prompt template library for agent prompts |
+| [tooling-update-protocol.md](tooling-update-protocol.md) | Safe protocol for updating MCP servers and hook-integrated tools |
+| [cos-package-manager.md](cos-package-manager.md) | `cos` package manager design for agentic primitives |
+| [package-manager-design.md](package-manager-design.md) | Why brew-style, not npm-style, package management |
+| [ide-compatibility.md](ide-compatibility.md) | Multi-IDE support matrix: 30 tools across 5 compatibility levels |
+
+---
+
+## 8. Self-Improvement & Autonomy
+
+| File | Description |
+|------|-------------|
+| [self-improvement-loop.md](self-improvement-loop.md) | Complete self-improvement loop: KPIs, pattern detection, auto-improvement of rules/skills |
+| [singularity.md](singularity.md) | Codebase Singularity: autonomous MAPE-K control loop for codebase health |
+| [auto-repair-system.md](auto-repair-system.md) | Auto-repair MAPE-K loop: detect, classify, and fix errors autonomously |
+| [self-repair-guide.md](self-repair-guide.md) | What you'll see in the terminal when self-repair feedback loops are active |
+| [self-usage-audit.md](self-usage-audit.md) | COS self-usage audit — how well the OS uses its own tools (2026-03-29) |
+| [dogfooding.md](dogfooding.md) | Dogfooding policy: using luum-agent-os to build luum-agent-os |
+| [agent-efficiency-strategy.md](agent-efficiency-strategy.md) | Strategy for reducing agent token waste and improving task throughput |
+| [agent-capability-coverage.md](agent-capability-coverage.md) | Agent capability coverage tracking and gap analysis |
+
+---
+
+## 9. Quality, Testing & Verification
+
+**[testing/](testing/)** — Comprehensive testing guide, lane registry, and runner documentation.
+
+**[quality/](quality/)** — Test coverage reports and quality dashboards.
+
+**[manual-tests/](manual-tests/)** — Manual QA playbooks for scenarios not covered by automated tests.
+
+| File | Description |
+|------|-------------|
+| [testing.md](testing.md) | Test suite: 1714 tests across 60 files, pytest + Go TUI dashboard |
+| [testing-cognitive-os.md](testing-cognitive-os.md) | Testing the Cognitive OS itself — meta-test approach |
 | [testing-cognitive-os-suite.md](testing-cognitive-os-suite.md) | 3-layer test suite for Cognitive OS |
-| [testing.md](testing.md) | Test suite documentation: 1714 tests across 60 files, pytest + Go TUI dashboard |
+| [agent-teams-testing.md](agent-teams-testing.md) | Test strategy for Agent Teams multi-agent workflows |
+| [definition-of-done.md](definition-of-done.md) | 5 DoD complexity levels with progressive completion criteria |
+| [configurable-quality-gates.md](configurable-quality-gates.md) | Configurable quality gates via cognitive-os.yaml |
+| [agent-quality.md](agent-quality.md) | 4 fixes to prevent minimum-effort agent output |
+| [trust-score.md](trust-score.md) | Evidence-based agent confidence reporting: 4-dimension trust score |
+| [trust-model.md](trust-model.md) | What the system does, what it asks permission for, and what it never does |
+| [sandbox-sampling.md](sandbox-sampling.md) | Classify-sample-verify-scale workflow for large changes |
+| [benchmarking.md](benchmarking.md) | Cognitive OS benchmark system |
+| [competitive-arena.md](competitive-arena.md) | Arena benchmark suite comparing COS against 10+ AI coding tools |
+| [RED-TEAM-COVERAGE.md](RED-TEAM-COVERAGE.md) | Verb-to-scenario mapping required by red-team design W6 gate |
+| [RED-TEAM-CHANGELOG.md](RED-TEAM-CHANGELOG.md) | Red-team harness changelog — all notable changes |
 
-### Rules Reference
+---
 
-| Rule | Location | Description |
-|------|----------|-------------|
-| closed-loop-prompts | [rules/closed-loop-prompts.md](../rules/closed-loop-prompts.md) | Self-correcting agents: success criteria + verification + fallback |
-| auto-skill-generation | [rules/auto-skill-generation.md](../rules/auto-skill-generation.md) | Agent Experts (Act/Learn/Reuse) cycle |
-| agent-quality | [rules/agent-quality.md](../rules/agent-quality.md) | Meta-rule: prevent minimum-effort agent output |
-| acceptance-criteria | [rules/acceptance-criteria.md](../rules/acceptance-criteria.md) | Mandatory measurable criteria in every agent prompt |
-| self-improvement-protocol | [rules/self-improvement-protocol.md](../rules/self-improvement-protocol.md) | Governance for self-improvement: auto-apply vs human approval, rollback, safety guards |
-| agent-security | [rules/agent-security.md](../rules/agent-security.md) | Least privilege: scoped, time-limited agent permissions with audit trail |
-| pentesting-readiness | [rules/pentesting-readiness.md](../rules/pentesting-readiness.md) | Security testing surface and critical test cases |
-| token-economy | [rules/token-economy.md](../rules/token-economy.md) | 5 token principles: transparency, worthiness, decomposition, memory-first, optimize by default |
-| decomposition | [rules/decomposition.md](../rules/decomposition.md) | Cost-aware task decomposition: break >$1 tasks, cheapest model per sub-task |
+## 10. Security
 
-### Business & Vision (moved to docs/business/)
+**[security/](security/)** — Threat models, attack surface inventory, red-team reports, and bypass cheat sheets.
 
-SaaS vision, commercial features, pitch, case study, and framework design docs have been moved to `/docs/business/` since they serve no operational purpose for the agent. See `docs/business/` (11 docs).
+| File | Description |
+|------|-------------|
+| [safety-mesh.md](safety-mesh.md) | 12-layer defense system preventing agent errors from propagating |
+| [anti-hallucination.md](anti-hallucination.md) | 10-layer anti-hallucination defense: ground truth, cross-verification, claim validation |
+| [secret-detection.md](secret-detection.md) | EnvGuard secret detection: hook, rules, `/secret-audit` skill |
+| [security-stack.md](security-stack.md) | Layered security stack overview |
+
+---
+
+## 11. Reports & Research
+
+**[reports/](reports/)** — Operator research reports, ADR reconciliation audits, and dated analysis artifacts.
+
+**[research/](research/)** — Browsable index of all research artifacts (~538 docs across 6 directories).
+
+**[measurements/](measurements/)** — Hook timing runbooks, namespace audits, duplication audits, and catalog design docs.
+
+**[benchmarks/](benchmarks/)** — YAML benchmark definitions for parity smoke tests and provider quality.
+
+| File | Description |
+|------|-------------|
+| [research-log.md](research-log.md) | Evaluation record for 12 tools/frameworks with scores, rings, licenses, and verdicts |
+| [competitive-landscape.md](competitive-landscape.md) | Competitive landscape analysis |
+| [competitive-analysis.md](competitive-analysis.md) | Honest, data-driven COS positioning vs alternatives |
+| [ecosystem-comparison.md](ecosystem-comparison.md) | Comparative analysis of AI agent OSes and frameworks |
+| [vs-alternatives.md](vs-alternatives.md) | Why add COS if you already use X? |
+| [complexity-audit.md](complexity-audit.md) | Complexity audit: Cognitive OS vs BMAD v6 |
+| [component-audit.md](component-audit.md) | Core vs package classification — source of truth for restructure |
+| [component-sources.md](component-sources.md) | Origin tracking for each component |
+| [upstream-blockers.md](upstream-blockers.md) | Work blocked on third-party releases — trigger conditions and actions |
+
+---
+
+## 12. Capabilities & ACC
+
+**[capabilities/](capabilities/)** — Auto-generated capability coverage matrix (`MATRIX.md`); do not edit by hand.
+
+**[acc/](acc/)** — Agent Capability Coverage compact context diet entrypoint (`latest-compact.md`, `latest.json`).
+
+| File | Description |
+|------|-------------|
+| [health-monitoring.md](health-monitoring.md) | Health monitoring system — metrics and alerting |
+| [performance.md](performance.md) | Performance monitoring: latency, throughput, overhead, bottleneck detection |
+| [gpu-sandbox.md](gpu-sandbox.md) | Jupyter MCP GPU sandbox: compute runtime for ML/data/finance |
+| [state-snapshots.md](state-snapshots.md) | Devbox state snapshots: deterministic toolchain + `/checkpoint` skill |
+| [capability-snapshot.md](capability-snapshot.md) | Save/diff/restore Cognitive OS capabilities before refactors |
+| [auto-library.md](auto-library.md) | Auto-library recommender: npm/PyPI/Go registry search |
+
+---
+
+## 13. Compliance & Legal
+
+**[legal/](legal/)** — License FAQ, operator data scan, ADR sweep, feature status audit, and unknown-license resolution.
+
+**[compliance/](compliance/)** — Compliance policy documents.
+
+---
+
+## 14. Business & Vision
+
+**[business/](business/)** — SaaS vision, commercial features, pitch, case study, competitive reassessment, and conversation reality audits (11+ docs).
+
+**[case-studies/](case-studies/)** — Real (anonymized) case studies of Cognitive OS in production.
+
+| File | Description |
+|------|-------------|
+| [launch-strategy.md](launch-strategy.md) | 4-phase launch strategy: immediate, first users, iterate, grow — with success metrics |
+| [product-principles.md](product-principles.md) | 10 product principles: perceived value, fail fast, MVP mindset, outcomes over features |
+| [product-zones.md](product-zones.md) | Operating taxonomy: what is real today vs aspirational |
+| [ux-principles.md](ux-principles.md) | 7 UX principles: invisible safety, progressive disclosure, AI-as-driver, cost transparency |
+| [open-source-strategy.md](open-source-strategy.md) | ADR-OSS-001: open-sourcing Cognitive OS — rationale and plan |
+| [roadmap.md](roadmap.md) | Future features organized by phase (updated 2026-03-26) |
+
+---
+
+## 15. Release & Versioning
+
+**[release/](release/)** — v1.0 release criteria, full E2E roadmap, and release artifacts.
+
+**[history/](history/)** — Pre-sanitization transparency trail (ADR-218 audit evidence).
+
+| File | Description |
+|------|-------------|
+| [versioning-strategy.md](versioning-strategy.md) | Semantic versioning policy and release cadence |
+
+---
+
+## 16. Integrations & Migration
+
+**[integrations/](integrations/)** — Design docs for integrating Cognitive OS with Cursor Cloud Agents and other harnesses.
+
+**[migration-from/](migration-from/)** — Guides for migrating from Hermes-agent and vanilla Claude Code.
+
+**[guides/](guides/)** — Contributor guides: adding harness adapters, queue class routing.
+
+**[proposals/](proposals/)** — Open doctrine amendment proposals.
+
+---
+
+## 17. Archive
+
+**[archive/](archive/)** — Historical artifacts superseded by newer approaches; kept for reference.
+
+| File | Description |
+|------|-------------|
+| [archive/benchmark-results.md](archive/benchmark-results.md) | *(archived)* Arena benchmark results from 2026-03-23 — use `/arena` for fresh data |
+| [archive/cleanup-verification.md](archive/cleanup-verification.md) | *(archived)* Cleanup verification report from 2026-03-22 |
+
+---
+
+## 18. Incidents
+
+**[incidents/](incidents/)** — Post-incident reports: session-startup hang (2026-05-01), false-done compounding (2026-05-02).
+
+---
 
 ## Quick Reference
 
@@ -135,40 +324,18 @@ SaaS vision, commercial features, pitch, case study, and framework design docs h
 | Hooks | 94 scripts; 46 registered | `hooks/` |
 | Rules | 16 core always-loaded; 150+ total | `rules/` |
 | Skills | 72 | `skills/` |
-| Squads | 5 | `squads/` |
-| Agents | 3 | `agents/` |
 | Lib Modules | 79 | `lib/` |
-| MCP Servers | 2 | Engram (memory), Context7 (docs) |
-| Metrics Files | 20+ | `metrics/` |
-| Docs | 113 | `docs/` |
-| Tests | 4732 | `tests/` |
-
-## UI Architecture
-
-The operator-facing surfaces are documented in a four-surface architecture. Each artefact kind has a dedicated surface; no single UI covers everything.
-
-| Surface | Artefact kind | Activation |
-|---------|--------------|------------|
-| Surface 1 — Operator CLI (always-on) | Live operator state, governance, audit | Built in — `bash scripts/cos-boring-reliability` |
-| Surface 2 — Phoenix (opt-in) | LLM traces, latency, cost, eval scores | `bash scripts/dependency-lane.sh install observability && uv run phoenix serve` |
-| Surface 3 — Engram Cloud (opt-in) | Persistent memory, decisions, cross-instance federation | BYOK setup per ADR-139; local Engram tools work without it |
-| Surface 4 — Obsidian / markdown reader (opt-in) | ADRs, doctrine docs, audit reports | Clone repo, open `docs/` in any markdown viewer |
-
-Full doctrine: [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md).
-
-### ADR highlights
-
-| ADR | Status | Summary |
-|-----|--------|---------|
-| [ADR-170](adrs/ADR-170-operator-cli-as-primary-ui-surface.md) | Superseded by ADR-172 | Operator-CLI as primary UI surface; CLI-as-primary clause survives as Surface 1 |
-| [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md) | Accepted | Multi-surface UI architecture — CLI + Phoenix + Engram Cloud + Obsidian |
+| ADRs | 270+ | `docs/adrs/` |
+| Docs | 1 200+ | `docs/` |
+| Tests | 4 732 | `tests/` |
 
 ## Entry Points
 
-- **New user?** Start with [getting-started.md](getting-started.md) then [faq.md](faq.md)
-- **Want the big picture?** Read [architecture.md](architecture.md) or [overview.md](overview.md)
-- **Want to add something?** Go to [how-to-extend.md](how-to-extend.md)
-- **Debugging a hook/rule?** See [hooks.md](hooks.md) or [rules.md](rules.md)
-- **Understanding skills?** Read [skills.md](skills.md)
-- **Understanding the self-improvement loop?** See [self-improvement-loop.md](self-improvement-loop.md)
-- **Testing Cognitive OS?** See [testing-cognitive-os-suite.md](testing-cognitive-os-suite.md)
+- **New user?** → [getting-started.md](getting-started.md) then [faq.md](faq.md)
+- **Resume a session?** → Latest `SESSION-HANDOFF-*.md` above
+- **Find an ADR?** → [adrs/](adrs/) or the ADR highlights table in §1
+- **Run an operation?** → [runbooks/](runbooks/)
+- **Add something?** → [how-to-extend.md](how-to-extend.md)
+- **Debug a hook/rule?** → [hooks.md](hooks.md) or [rules.md](rules.md)
+- **Understand self-improvement?** → [self-improvement-loop.md](self-improvement-loop.md)
+- **Security question?** → [security/](security/) or [safety-mesh.md](safety-mesh.md)
