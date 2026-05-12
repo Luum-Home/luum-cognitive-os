@@ -65,7 +65,7 @@ BREAKING_CHANGE_PATTERNS = re.compile(
     r"|(swagger\.json$)"
 )
 
-ADR_PATH_PATTERN = re.compile(r"^docs/(?:architecture/)?adrs/")
+ADR_PATH_PATTERN = re.compile(r"^docs/adrs/")
 
 
 # ---------------------------------------------------------------------------
