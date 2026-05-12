@@ -1,0 +1,141 @@
+schema_version: documentation-truth-claims.v1
+owner_adr: ADR-277
+purpose: >-
+  Declare documentation claims whose truth is derived from generated reports or
+  manifests, so stale or contradictory prose cannot silently persist after the
+  underlying implementation changes.
+status_policy:
+  pass: all required docs, phrases, source reports, and generated blocks match current facts
+  warn: advisory-only claim has weak evidence but no contradiction
+  block: required claim is missing, contradicted, or backed by a missing/stale source report
+source_reports:
+  consumer_projection:
+    path: docs/reports/primitive-projection-fidelity-latest.json
+    required: true
+  primitive_authority:
+    path: docs/reports/primitive-authority-latest.json
+    required: true
+  acc:
+    path: docs/acc/latest.json
+    required: false
+claims:
+  consumer_projection_harnesses:
+    severity: high
+    description: Consumer projection docs must describe current implemented native and structural harnesses, not the old Claude/Codex-only boundary.
+    facts:
+      harnesses_from: manifests/harness-projection.yaml
+      projection_report: docs/reports/primitive-projection-fidelity-latest.json
+    source_reports:
+      - docs/reports/primitive-projection-fidelity-latest.json
+      - docs/reports/primitive-readiness-ledger-scripts-latest.json
+    required_docs:
+      - docs/architecture/consumer-project-primitive-accessibility.md
+      - docs/adrs/ADR-146-primitive-readiness-ledger.md
+    required_phrases:
+      - Structural projection is not runtime enforcement
+      - implemented native and structural harnesses
+    forbidden_phrases:
+      - proof signs only Claude Code and OpenAI Codex default installs
+      - automated for Claude/Codex default installs
+      - current Claude/Codex proof boundary
+      - solo Claude/Codex
+      - only Claude/Codex
+    generated_block:
+      doc: docs/architecture/consumer-project-primitive-accessibility.md
+      marker: consumer_projection_harnesses
+      required: true
+  primitive_authority_write_effects:
+    severity: high
+    description: Authority docs must describe the implemented ADR-276 authority/write-effects audit and latest report, not a pending gap.
+    facts:
+      authority_report: docs/reports/primitive-authority-latest.json
+      manifest: manifests/primitive-authority.yaml
+    source_reports:
+      - docs/reports/primitive-authority-latest.json
+    required_docs:
+      - docs/architecture/primitive-authority-write-effects.md
+      - docs/adrs/ADR-276-primitive-authority-write-effects.md
+    required_phrases:
+      - manifests/primitive-authority.yaml
+      - scripts/primitive_authority_audit.py
+      - authority_write_effects
+      - dynamic write-effects audit
+    forbidden_phrases:
+      - Known remaining gap
+      - falta una capa explícita de authority/write-effects audit
+      - no está documentado todavía
+      - not implemented yet
+    generated_block:
+      doc: docs/architecture/primitive-authority-write-effects.md
+      marker: primitive_authority_write_effects
+      required: true
+  documentation_truth_control:
+    severity: medium
+    description: Documentation truth control itself must remain discoverable and wired into ACC.
+    facts:
+      manifest: manifests/documentation-truth-claims.yaml
+      report: docs/reports/documentation-truth-latest.json
+    source_reports:
+      - docs/reports/documentation-truth-latest.json
+    required_docs:
+      - docs/architecture/documentation-truth-control.md
+      - docs/adrs/ADR-277-documentation-truth-control.md
+      - docs/README.md
+    required_phrases:
+      - documentation_truth
+      - documentation-truth-claims.yaml
+      - documentation_truth_audit.py
+    forbidden_phrases: []
+    generated_block:
+      doc: docs/architecture/documentation-truth-control.md
+      marker: documentation_truth_control
+      required: true
+  session_pending_protocol:
+    severity: high
+    description: >-
+      Session-pending protocol primitives (ADR-273/274/275) — aggregator,
+      verifier, audit, projector, close primitives, drift hooks, trust signal
+      — must remain discoverable in the operations MOC, the architecture
+      doc, and the ADR §Related sections. Stale phrases describing the
+      read/write asymmetry as unresolved must not persist.
+    facts:
+      pending_truth_report: docs/reports/pending-truth-latest.json
+      operational_guide_report: docs/reports/operational-guide-audit-latest.json
+      closure_trust_report: docs/reports/closure-trust-baseline.json
+      doc_xref_audit: scripts/cos-doc-cross-reference-audit.py
+      architecture_map: docs/architecture/pending-truth-architecture.md
+    source_reports:
+      - docs/reports/pending-truth-latest.json
+      - docs/reports/operational-guide-audit-latest.json
+    required_docs:
+      - docs/00-MOCs/operations.md
+      - docs/architecture/pending-truth-architecture.md
+      - docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md
+      - docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md
+      - docs/adrs/ADR-275-closure-and-projection-primitives.md
+      - skills/CATALOG.md
+      - skills/CATALOG-COMPACT.md
+    required_phrases:
+      - cos-pending-truth-aggregator
+      - cos-pending-truth-close
+      - cos-adr-close
+      - cos-session-start-projector
+      - cos-closure-trust-signal
+      - session-pending-brief
+      - session-pending-close
+      - STATUS-TAXONOMY
+      - pending-truth-architecture.md
+      - closure-trail.jsonl
+    forbidden_phrases:
+      - read/write asymmetry remains unresolved
+      - no atomic close primitive exists
+      - manual closures are the only path
+      - session-start surfaces only Engram and plans
+      - projector is not yet wired into the harnesses
+      - cos-pending-truth-close does not exist
+      - cos-adr-close is a future follow-up
+      - closure-trail is not implemented
+    generated_block:
+      doc: docs/architecture/pending-truth-architecture.md
+      marker: session_pending_protocol
+      required: false
