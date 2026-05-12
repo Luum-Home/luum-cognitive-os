@@ -38,3 +38,15 @@ def test_product_answer_skill_forces_cached_adr_282_path_before_broad_docs() -> 
     assert "Do **not** read broad docs" in text
     assert "Source freshness: fresh" in text
     assert "ADR-280/ADR-282" in text
+
+
+def test_product_answer_skill_checks_local_tool_radar_before_internet() -> None:
+    text = SKILL.read_text(encoding="utf-8")
+
+    assert "Tool and competitor grounding order" in text
+    assert "docs/reports/external-tools-radar-INDEX.md" in text
+    assert "manifests/external-tools-adoption.yaml" in text
+    assert "manifests/feature-tool-due-diligence.yaml" in text
+    assert "docs/vs-alternatives.md" in text
+    assert "Only then browse" in text
+    assert "first move\n  is the local radar, not internet search" in text

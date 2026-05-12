@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+import lib.product_answer as product_answer_module
 from lib.product_answer import (
     ProductAnswerError,
     build_answer,
@@ -89,6 +90,12 @@ def test_select_question_matches_spanish_alias(tmp_path: Path) -> None:
     assert report["claim_status"] == "partial"
     assert report["trust_report"]["evidence_count"] == 1
     assert "universal parity" in report["unsafe_claims_to_avoid"]
+
+
+def test_product_answer_module_docstring_tracks_adr_280_282() -> None:
+    assert product_answer_module.__doc__ is not None
+    assert "ADR-280/282" in product_answer_module.__doc__
+    assert "ADR-280/281" not in product_answer_module.__doc__
 
 
 def test_select_question_by_explicit_id(tmp_path: Path) -> None:

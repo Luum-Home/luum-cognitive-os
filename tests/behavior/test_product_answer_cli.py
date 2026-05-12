@@ -111,3 +111,27 @@ def test_product_answer_cli_no_cache_forces_live_generation_after_refresh(tmp_pa
     report = json.loads(result.stdout)
     assert report["cache"]["mode"] == "live"
     assert report["question_id"] == "differentiator"
+
+
+def test_product_answer_cli_competitors_uses_local_radar_before_browsing() -> None:
+    result = subprocess.run(
+        [str(CLI), "--question-id", "competitors", "--no-cache", "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["question_id"] == "competitors"
+    assert "local Tech Radar" in report["answer_long"]
+    assert "Use internet research only for volatile" in report["answer_long"]
+    assert "docs/reports/external-tools-radar-INDEX.md" in report["approved_sources"]
+    assert "docs/vs-alternatives.md" in report["approved_sources"]
+    assert "docs/component-sources.md" in report["approved_sources"]
+    assert any(
+        "Do not browse by default" in boundary
+        for claim in report["claims"]
+        for boundary in claim["boundaries"]
+    )
