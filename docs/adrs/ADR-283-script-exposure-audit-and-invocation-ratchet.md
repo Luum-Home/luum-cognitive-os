@@ -69,6 +69,20 @@ default and classifies scripts into these priorities:
 | P2 | `maintainer-tool` with no skill consumer but with docs/tests/scripts consumers | Classify as internal or promote to a skill when it is meant for agents. |
 | P3 | `lab`, `migration-only`, or `driver-specific` without skill consumer | Allowed exception if the lifecycle role is correct. |
 
+P0 is further refined into exposure classes so manual triage does not confuse
+“missing skill” with “unreachable”:
+
+| Exposure class | Meaning | Expected action |
+|---|---|---|
+| `P0-unrouted` | No skill consumer and no observed hook/router/script/doc/test/config consumers. | Wire skill/hook/router or demote/archive. |
+| `P0-route-undocumented` | No skill consumer, but a hook or command-router path is visible. | Document the equivalent route or add a skill. |
+| `P0-promotion-candidate` | Docs/tests/config/scripts mention it, but no direct agent-facing route is visible. | Promote through skill/router or demote out of `agentic-primitive`. |
+
+Command-router exposure is deliberately conservative: only central dispatcher
+paths such as `scripts/cos` and future `cmd/*` entries count as router
+consumers. A sibling `scripts/cos-*` consumer is just a script consumer unless it
+is the dispatcher itself.
+
 The output is intentionally small and machine-readable:
 
 ```json
