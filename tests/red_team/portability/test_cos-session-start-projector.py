@@ -167,3 +167,56 @@ def test_limit_caps_top_actionable(tmp_path: Path) -> None:
     cp = _run(tmp_path, "--json", "--limit", "3")
     payload = json.loads(cp.stdout)
     assert len(payload["sections"]["pending_truth"]["top_actionable"]) == 3
+
+
+def _seed_adr_partial_backlog(project_dir: Path, items: list[dict]) -> None:
+    reports = project_dir / "docs" / "reports"
+    reports.mkdir(parents=True, exist_ok=True)
+    by_impl: dict[str, int] = {}
+    for item in items:
+        status = item["implementation_status"]
+        by_impl[status] = by_impl.get(status, 0) + 1
+    payload = {
+        "schema_version": "adr-partial-backlog/v1",
+        "generated_at": "<generated>",
+        "summary": {
+            "total": len(items),
+            "by_implementation_status": by_impl,
+            "missing_partial_remaining": sum(1 for item in items if not item.get("partial_remaining")),
+        },
+        "items": items,
+    }
+    (reports / "adr-partial-backlog-latest.json").write_text(json.dumps(payload))
+
+
+def test_adr_partial_backlog_is_first_class_projector_source(tmp_path: Path) -> None:
+    """ADR lifecycle debt is projected next to pending-truth, not hidden in docs."""
+    _seed_adr_partial_backlog(tmp_path, [
+        {
+            "adr": "ADR-234",
+            "path": "docs/adrs/ADR-234-approval-policies-as-code.md",
+            "implementation_status": "partial",
+            "classification_basis": "advisory implementation exists; blocking promotion remains pending",
+            "remaining": "blocking promotion remains pending",
+            "partial_remaining": "blocking promotion after soak",
+            "implementation_files": [],
+        },
+        {
+            "adr": "ADR-236",
+            "path": "docs/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md",
+            "implementation_status": "partial",
+            "classification_basis": "Slices A-D implemented; transport remains explicitly not implemented",
+            "remaining": "transport remains explicitly not implemented",
+            "partial_remaining": "real MCP list_changed transport emission",
+            "implementation_files": [],
+        },
+    ])
+
+    cp = _run(tmp_path, "--json", "--limit", "5")
+    assert cp.returncode == 0, cp.stderr
+    payload = json.loads(cp.stdout)
+    adr_partials = payload["sections"]["adr_partials"]
+    assert adr_partials["total"] == 2
+    assert adr_partials["by_implementation_status"] == {"partial": 2}
+    assert adr_partials["top_actionable"][0]["adr"] == "ADR-234"
+    assert any(action["kind"] == "adr-partial-close" for action in payload["suggested_next_actions"])

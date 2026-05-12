@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""Audit ADR partial lifecycle debt for control-plane consumption.
+
+This is the bridge between the ADR lifecycle lane and ADR-248 control-plane:
+it reads the generated ADR partial backlog JSON and emits findings that can be
+queued/projected like every other audit result.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+SCHEMA_VERSION = "adr-partial-audit/v1"
+LEDGER_JSON = Path("docs/reports/adr-partial-backlog-latest.json")
+STALE_DAYS_DEFAULT = 45
+
+FUTURE_TOKENS = ("future", "defer", "pending", "blocked", "not implemented", "not yet", "remains", "remaining", "follow-up", "follow up", "partial")
+
+
+def git_root(start: Path) -> Path:
+    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False)
+    if proc.returncode == 0 and proc.stdout.strip():
+        return Path(proc.stdout.strip()).resolve()
+    return start.resolve()
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def parse_date(value: Any) -> date | None:
+    if not value:
+        return None
+    raw = str(value).strip().strip("'").strip('"')[:10]
+    try:
+        return date.fromisoformat(raw)
+    except ValueError:
+        return None
+
+
+def file_exists(root: Path, value: Any) -> bool:
+    if not value:
+        return False
+    raw = str(value).strip()
+    if not raw or re.match(r"^[A-Z]+-\d+", raw):
+        return False
+    return (root / raw).exists()
+
+
+def classify_findings(root: Path, items: list[dict[str, Any]], stale_days: int) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    today = date.today()
+    for item in items:
+        adr = item.get("adr")
+        path = item.get("path")
+        status = item.get("implementation_status")
+        basis = str(item.get("classification_basis") or item.get("remaining") or "")
+        remaining_text = str(item.get("partial_remaining") or item.get("remaining") or "")
+        basis_lower = (basis + " " + remaining_text).lower()
+        partial_remaining = str(item.get("partial_remaining") or "").strip()
+        implementation_files = item.get("implementation_files") or []
+
+        if status in {"partial", "partial-blocked", "blocked", "deferred"} and not partial_remaining:
+            findings.append({
+                "severity": "warn",
+                "code": "adr-partial-missing-remaining",
+                "adr": adr,
+                "path": path,
+                "message": f"{adr} is {status} but has no partial_remaining/remaining_work/missing_scope field.",
+                "suggested_command": f"scripts/cos-adr-close {adr} --partial --basis '<why still partial>' --remaining '<in-scope remaining work>'",
+            })
+
+        d = parse_date(item.get("date"))
+        if d and (today - d).days > stale_days and not item.get("follow_up_adr"):
+            findings.append({
+                "severity": "warn",
+                "code": "adr-partial-stale-without-followup",
+                "adr": adr,
+                "path": path,
+                "message": f"{adr} has been {status} for {(today - d).days} days without follow_up_adr metadata.",
+                "suggested_command": f"scripts/cos-adr-close {adr} --partial --basis '<current state>' --follow-up-adr ADR-<NNN>",
+            })
+
+        files_exist = bool(implementation_files) and all(file_exists(root, f) for f in implementation_files)
+        if files_exist and not any(token in basis_lower for token in FUTURE_TOKENS):
+            findings.append({
+                "severity": "warn",
+                "code": "adr-partial-close-candidate",
+                "adr": adr,
+                "path": path,
+                "message": f"{adr} has implementation_files present and no obvious future/deferred marker in classification_basis; review for closure.",
+                "suggested_command": f"scripts/cos-adr-close {adr} --implemented --basis '<all in-scope work closed>' --evidence <path-or-test>",
+            })
+    return findings
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", type=Path, default=Path.cwd())
+    parser.add_argument("--json", action="store_true", help="Emit JSON report")
+    parser.add_argument("--stale-days", type=int, default=STALE_DAYS_DEFAULT)
+    args = parser.parse_args(argv)
+
+    root = git_root(args.project_dir)
+    ledger = load_json(root / LEDGER_JSON)
+    items = ledger.get("items", []) if isinstance(ledger.get("items"), list) else []
+    findings = classify_findings(root, items, args.stale_days)
+    payload = {
+        "schema_version": SCHEMA_VERSION,
+        "ledger_path": str(LEDGER_JSON),
+        "summary": {
+            "items": len(items),
+            "findings": len(findings),
+            "missing_remaining": sum(1 for f in findings if f.get("code") == "adr-partial-missing-remaining"),
+            "stale_without_followup": sum(1 for f in findings if f.get("code") == "adr-partial-stale-without-followup"),
+            "close_candidates": sum(1 for f in findings if f.get("code") == "adr-partial-close-candidate"),
+        },
+        "findings": findings,
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"ADR partial audit: {len(findings)} finding(s) across {len(items)} partial ADRs")
+        for finding in findings[:20]:
+            print(f"- {finding['code']} {finding.get('adr')}: {finding['message']}")
+        if len(findings) > 20:
+            print(f"... {len(findings) - 20} more")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "reports" / "adr-partial-backlog-latest.md"
+OUT_JSON = ROOT / "docs" / "reports" / "adr-partial-backlog-latest.json"
+SCHEMA_VERSION = "adr-partial-backlog/v1"
 
 sys.path.insert(0, str(ROOT))
 from scripts.generate_adr_index import adr_paths, row_for, md_escape  # noqa: E402
@@ -33,14 +36,52 @@ def _remaining(fm: dict[str, Any]) -> str:
     return str(fm.get("classification_basis") or "").strip()
 
 
-def render() -> str:
-    rows = []
+def collect_rows() -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
     for path in sorted(adr_paths()):
         row = row_for(path)
         if row.bucket != "Active" or row.implementation_status not in {"partial", "partial-blocked", "blocked", "deferred"}:
             continue
         fm = _frontmatter(path)
-        rows.append((row, fm))
+        rows.append({
+            "adr": f"ADR-{row.number}",
+            "number": row.number,
+            "title": row.title,
+            "path": row.path.relative_to(ROOT).as_posix(),
+            "decision_status": row.status,
+            "implementation_status": row.implementation_status,
+            "date": row.date,
+            "classification_basis": str(fm.get("classification_basis") or "").strip(),
+            "remaining": _remaining(fm),
+            "remaining_in_scope": fm.get("remaining_in_scope"),
+            "follow_up_adr": fm.get("follow_up_adr") or fm.get("follow_up") or "",
+            "owner": fm.get("owner") or "",
+            "partial_remaining": fm.get("partial_remaining") or fm.get("remaining_work") or fm.get("missing_scope") or "",
+            "partial_remaining_basis": fm.get("partial_remaining_basis") or "",
+            "implementation_files": fm.get("implementation_files") or [],
+        })
+    return rows
+
+
+def payload() -> dict[str, Any]:
+    rows = collect_rows()
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at": "<generated>",
+        "summary": {
+            "total": len(rows),
+            "by_implementation_status": {
+                status: sum(1 for row in rows if row["implementation_status"] == status)
+                for status in sorted({row["implementation_status"] for row in rows})
+            },
+            "missing_partial_remaining": sum(1 for row in rows if not str(row.get("partial_remaining") or "").strip()),
+        },
+        "items": rows,
+    }
+
+
+def render() -> str:
+    rows = collect_rows()
 
     lines = [
         "# ADR Partial Backlog Ledger",
@@ -52,21 +93,19 @@ def render() -> str:
         "| ADR | Implementation | What remains / basis | In scope? | Follow-up ADR | Owner |",
         "|---|---|---|---|---|---|",
     ]
-    for row, fm in rows:
-        follow = fm.get("follow_up_adr") or fm.get("follow_up") or ""
-        owner = fm.get("owner") or ""
-        in_scope = fm.get("remaining_in_scope")
+    for row in rows:
+        in_scope = row.get("remaining_in_scope")
         in_scope_text = "unknown" if in_scope is None else str(in_scope).lower()
         lines.append(
             "| "
             + " | ".join(
                 [
-                    f"[{row.number}](../adrs/{row.path.name})",
-                    md_escape(row.implementation_status),
-                    md_escape(_remaining(fm)),
+                    f"[{row['number']}](../adrs/{Path(row['path']).name})",
+                    md_escape(str(row["implementation_status"])),
+                    md_escape(str(row["remaining"])),
                     md_escape(in_scope_text),
-                    md_escape(str(follow)),
-                    md_escape(str(owner)),
+                    md_escape(str(row.get("follow_up_adr") or "")),
+                    md_escape(str(row.get("owner") or "")),
                 ]
             )
             + " |"
@@ -76,19 +115,33 @@ def render() -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="Fail if ledger is stale")
+    parser.add_argument("--check", action="store_true", help="Fail if ledger artifacts are stale")
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable backlog JSON to stdout")
     args = parser.parse_args(argv)
     rendered = render()
+    data = payload()
+    rendered_json = json.dumps(data, indent=2, sort_keys=True) + "\n"
+    if args.json:
+        print(rendered_json, end="")
+        return 0
     if args.check:
         current = OUT.read_text(encoding="utf-8") if OUT.exists() else ""
+        current_json = OUT_JSON.read_text(encoding="utf-8") if OUT_JSON.exists() else ""
+        stale = []
         if current != rendered:
-            print(f"{OUT.relative_to(ROOT)} is stale; run scripts/cos-adr-partial-ledger")
+            stale.append(str(OUT.relative_to(ROOT)))
+        if current_json != rendered_json:
+            stale.append(str(OUT_JSON.relative_to(ROOT)))
+        if stale:
+            print(f"{', '.join(stale)} is stale; run scripts/cos-adr-partial-ledger")
             return 1
-        print(f"{OUT.relative_to(ROOT)} is current")
+        print(f"{OUT.relative_to(ROOT)} and {OUT_JSON.relative_to(ROOT)} are current")
         return 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(rendered, encoding="utf-8")
+    OUT_JSON.write_text(rendered_json, encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)}")
+    print(f"wrote {OUT_JSON.relative_to(ROOT)}")
     return 0
 
 

@@ -9,6 +9,7 @@ SessionStart hook.
 Sources scanned (each optional; missing files = empty section):
   docs/reports/pending-truth-latest.json          (ADR-273)
   docs/reports/operational-guide-audit-latest.json (ADR-274)
+  docs/reports/adr-partial-backlog-latest.json   (ADR lifecycle lane)
   .cognitive-os/tasks/control-plane-remediation.jsonl (ADR-248)
   docs/runbooks/*-staging/                         (operator-deploy queues)
   git status + ahead/behind                        (branch state)
@@ -146,6 +147,49 @@ def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
     }
 
 
+
+def collect_adr_partials(root: Path, limit: int) -> dict[str, Any]:
+    payload = _load_json(root / "docs/reports/adr-partial-backlog-latest.json")
+    if not payload:
+        return {"total": 0, "by_implementation_status": {}, "missing_partial_remaining": 0, "top_actionable": []}
+    items = payload.get("items", []) or []
+    summary = payload.get("summary", {}) or {}
+
+    def priority(item: dict[str, Any]) -> tuple[int, str, str]:
+        # First surface ADRs that are explicitly closeable or underspecified.
+        remaining = str(item.get("partial_remaining") or "").strip()
+        basis = str(item.get("classification_basis") or item.get("remaining") or "").lower()
+        has_files = bool(item.get("implementation_files"))
+        close_hint = has_files and not any(token in basis for token in ("future", "defer", "pending", "blocked", "not implemented"))
+        if close_hint:
+            rank = 0
+        elif not remaining:
+            rank = 1
+        elif item.get("remaining_in_scope") is True:
+            rank = 2
+        else:
+            rank = 3
+        return (rank, str(item.get("date") or "9999-99-99"), str(item.get("adr") or ""))
+
+    actionable = sorted(items, key=priority)
+    top = [
+        {
+            "adr": item.get("adr"),
+            "path": item.get("path"),
+            "implementation_status": item.get("implementation_status"),
+            "remaining": (item.get("remaining") or "")[:160],
+            "missing_partial_remaining": not bool(str(item.get("partial_remaining") or "").strip()),
+            "suggested_command": f"scripts/cos-adr-close {item.get('adr')} --implemented --basis '<closure basis>' --evidence <path-or-test>",
+        }
+        for item in actionable[:limit]
+    ]
+    return {
+        "total": int(summary.get("total", len(items))),
+        "by_implementation_status": summary.get("by_implementation_status", {}) or {},
+        "missing_partial_remaining": int(summary.get("missing_partial_remaining", 0)),
+        "top_actionable": top,
+    }
+
 def collect_control_plane(root: Path) -> dict[str, Any]:
     entries = _load_jsonl(root / ".cognitive-os/tasks/control-plane-remediation.jsonl")
     # Each entry typically has {adr, severity, code, message, status}
@@ -202,6 +246,7 @@ def suggest_next_actions(
     og: dict[str, Any],
     cp: dict[str, Any],
     staged: dict[str, Any],
+    adr_partials: dict[str, Any],
     git_state: dict[str, Any],
     limit: int,
 ) -> list[dict[str, Any]]:
@@ -232,6 +277,16 @@ def suggest_next_actions(
             "target": item["id"],
             "reason": f"{item['type']} from {item['source']}; verify with cos-pending-truth-close --dry-run",
         })
+    for item in adr_partials["top_actionable"][:2]:
+        reason = "ADR lifecycle debt; close or refine with cos-adr-close"
+        if item.get("missing_partial_remaining"):
+            reason = "partial ADR lacks explicit partial_remaining; add remaining scope or close with cos-adr-close"
+        actions.append({
+            "kind": "adr-partial-close",
+            "target": item["adr"],
+            "reason": reason,
+            "command": item.get("suggested_command"),
+        })
     return actions[:limit]
 
 
@@ -240,8 +295,9 @@ def build_projection(root: Path, limit: int) -> dict[str, Any]:
     og = collect_operational_guide(root, limit)
     cp = collect_control_plane(root)
     staged = collect_staged_deployments(root)
+    adr_partials = collect_adr_partials(root, limit)
     git_state = collect_git_state(root)
-    actions = suggest_next_actions(pending, og, cp, staged, git_state, limit)
+    actions = suggest_next_actions(pending, og, cp, staged, adr_partials, git_state, limit)
     return {
         "schema_version": SCHEMA_VERSION,
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -250,6 +306,7 @@ def build_projection(root: Path, limit: int) -> dict[str, Any]:
             "pending_truth": pending,
             "operational_guide": og,
             "control_plane": cp,
+            "adr_partials": adr_partials,
             "staged_deployments": staged,
             "git_state": git_state,
         },
@@ -276,6 +333,9 @@ def render_human(payload: dict[str, Any]) -> str:
     # Control plane
     cp = s["control_plane"]
     lines.append(f"control-plane open findings: {cp['open_findings']}")
+    # ADR partial lifecycle
+    ap = s["adr_partials"]
+    lines.append(f"ADR partial backlog: {ap['total']} items {dict(ap['by_implementation_status'])}; missing partial_remaining={ap['missing_partial_remaining']}")
     # Staged
     st = s["staged_deployments"]
     if st["dirs"]:
