@@ -172,9 +172,6 @@ claim Kubernetes or cluster superiority until Phase 4 passes a real smoke test.
 ## Verification
 
 ```bash
-# Phase 0 exit criteria
-cos doctor
-# Phase 1 (once implemented)
-cos run-task --help
-cos repair --help
+python3 -m pytest tests/audit/test_adr_contracts.py -q -k ADR-084
 ```
+

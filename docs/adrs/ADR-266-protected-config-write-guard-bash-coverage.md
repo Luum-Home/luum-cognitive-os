@@ -99,8 +99,7 @@ Extend `protected-config-write-guard.sh` to also match the `Bash` tool. When the
 ---
 
 ```bash
-# Verify ADR-266 implementation files exist
-grep -rn 'ADR-266' docs/ scripts/ tests/ | head -20
+bash -n hooks/protected-config-write-guard.sh
 ```
 
 ## Open questions

@@ -119,6 +119,17 @@ def _has_fenced_code_block(body: str) -> bool:
     return len(fences) >= 2
 
 
+def _adr_verification_audit_module():
+    import importlib.util
+    module_path = REPO_ROOT / "scripts" / "adr_verification_audit.py"
+    spec = importlib.util.spec_from_file_location("adr_verification_audit", module_path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules.setdefault("adr_verification_audit", module)
+    spec.loader.exec_module(module)
+    return module
+
+
 # ─── Parameterization ────────────────────────────────────────────────────────
 
 ALL_ADRS = _all_adr_files()
@@ -278,6 +289,21 @@ def test_adr_067_onwards_verification_has_code_block(adr_path: Path) -> None:
         f"proves the decision is in effect."
     )
 
+
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("adr_path", ENFORCED_ADRS, ids=ENFORCED_ADR_IDS)
+def test_adr_067_onwards_verification_evidence_is_not_grep_only(adr_path: Path) -> None:
+    """ADR-067+ verification must not pass with grep-only documentation theater."""
+    audit = _adr_verification_audit_module()
+    row = audit.audit_adr_file(adr_path, root=REPO_ROOT)
+
+    assert row.status == "pass", (
+        f"{adr_path.name}: weak ADR verification evidence: {row.message}. "
+        "Use pytest, smoke, audit --fail, py_compile, bash -n, or explicit "
+        "implementation_files checks plus behavior evidence instead of generic grep."
+    )
 
 @pytest.mark.audit
 def test_adr_numbering_monotonic_warn() -> None:

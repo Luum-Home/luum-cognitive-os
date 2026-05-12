@@ -54,6 +54,7 @@ def render_frontmatter(
     tier: str,
     tags: Sequence[str],
     implementation_files: Sequence[str],
+    verification_command: str,
 ) -> str:
     tag_text = ", ".join(normalize_tag(tag) for tag in tags if normalize_tag(tag))
     impl_lines = "\n".join(f"  - {path}" for path in implementation_files)
@@ -68,6 +69,11 @@ def render_frontmatter(
         "supersedes: []\n"
         "superseded_by: null\n"
         f"implementation_files:\n{impl_lines}\n"
+        "verification:\n"
+        "  level: strong\n"
+        "  commands:\n"
+        f"    - {verification_command}\n"
+        "  proves: [behavior_contract]\n"
         f"tier: {tier}\n"
         f"tags: [{tag_text}]\n"
         "---\n"
@@ -121,6 +127,10 @@ def validate_rendered_contract(text: str) -> list[str]:
     missing = [section for section in REQUIRED_SECTIONS if f"## {section}" not in text]
     if "```" not in text:
         missing.append("Verification fenced code block")
+    if "grep -rn 'ADR-" in text or 'grep -rn "ADR-' in text:
+        missing.append("non-theatrical verification command")
+    if "verification:" not in text or "proves:" not in text:
+        missing.append("verification frontmatter")
     if "| Alternative | Why rejected |" not in text:
         missing.append("Alternatives rejected table")
     return missing
@@ -161,6 +171,7 @@ def create_adr(
         tier=tier,
         tags=tags,
         implementation_files=implementation_files,
+        verification_command=verification_command,
     ) + render_body(
         adr_id=reservation.adr_id,
         title=title,

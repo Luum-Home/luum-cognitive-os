@@ -302,7 +302,9 @@ record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd
 ## Verification
 
 ```bash
-# Verify ADR-259 implementation files exist
-grep -rn 'ADR-259' docs/ scripts/ tests/ | head -20
+for hook in hooks/external-pattern-cleanroom-gate.sh hooks/adoption-freeze-gate.sh hooks/research-to-runtime-firewall.sh hooks/external-cache-content-leak.sh hooks/spdx-header-required.sh hooks/attribution-completeness-validator.sh hooks/dependency-license-classifier.sh; do
+  bash -n "$hook"
+done
+python3 -m pytest tests/audit/test_license_publication_metadata.py tests/unit/test_agentic_tool_license_matrix.py -q
 ```
 

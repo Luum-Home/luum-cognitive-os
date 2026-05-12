@@ -213,7 +213,7 @@ legal pipeline completes.
 ## Verification
 
 ```bash
-# Verify ADR-270 implementation files exist
-grep -rn 'ADR-270' docs/ scripts/ tests/ | head -20
+python3 -m py_compile scripts/cos-counsel-packet scripts/cos-counsel-outreach-draft scripts/cos-legal-approve scripts/cos-adoption-unfreeze
+python3 -m pytest tests/unit/test_cos_legal_approve.py tests/contracts/test_legal_review_ledger_append_only.py -q
 ```
 

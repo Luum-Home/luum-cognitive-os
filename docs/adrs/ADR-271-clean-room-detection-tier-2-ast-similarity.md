@@ -166,8 +166,8 @@ merger).
 - Allowlist exclude: add `docs/research/` to allowlist → annex F quotes ignored.
 
 ```bash
-# Verify ADR-271 implementation files exist
-grep -rn 'ADR-271' docs/ scripts/ tests/ | head -20
+bash -n hooks/clean-room-ast-similarity-gate.sh
+bash tests/integration/test_clean_room_ast_similarity.sh
 ```
 
 ## Open questions
