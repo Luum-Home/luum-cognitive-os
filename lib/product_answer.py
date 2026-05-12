@@ -1,4 +1,4 @@
-"""ADR-280/281 product question-to-evidence primitive and answer-card cache."""
+"""ADR-280/282 product question-to-evidence primitive and answer-card cache."""
 from __future__ import annotations
 
 import hashlib
