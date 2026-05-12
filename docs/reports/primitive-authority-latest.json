@@ -8,7 +8,7 @@
     },
     {
       "changed_paths": [
-        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260512T170600Z.json"
+        ".cognitive-os/improvements/proposals/consumer-improvement-proposals-demo-20260512T174800Z.json"
       ],
       "id": "consumer-improvement-import",
       "returncode": 0,
@@ -130,7 +130,7 @@
       "unexpected_paths": []
     }
   ],
-  "generated_at": "2026-05-12T17:06:00+00:00",
+  "generated_at": "2026-05-12T17:48:00+00:00",
   "items": [
     {
       "authority_mode": "os-maintainer-write",
@@ -974,11 +974,11 @@
     {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-adr-close",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "os-only",
       "status": "pass",
       "writes": []
@@ -998,11 +998,11 @@
     {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-adr-partial-ledger",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "os-only",
       "status": "pass",
       "writes": []
@@ -1250,11 +1250,11 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-closure-trust-signal.py",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -1526,11 +1526,11 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-doc-cross-reference-audit.py",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -1652,6 +1652,18 @@
       "path": "scripts/cos-document-ingest",
       "role": "maintainer-tool",
       "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "os-maintainer-write",
+      "authority_source": "derived:os-only-default",
+      "consumer_accessibility": "so-local-only",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-documentation-truth-audit",
+      "role": "maintainer-tool",
+      "scope": "os-only",
       "status": "pass",
       "writes": []
     },
@@ -2364,11 +2376,11 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-operational-guide-audit.py",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -2388,11 +2400,11 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-pending-truth-aggregator",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -2400,11 +2412,11 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-pending-truth-close",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -2412,11 +2424,11 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-pending-truth-verify",
-      "role": "maintainer-tool",
+      "role": "agentic-primitive",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -2464,6 +2476,18 @@
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-portable-ai-consumer-impact",
+      "role": "maintainer-tool",
+      "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "so-local-only",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-portable-ai-consumer-package-smoke",
       "role": "maintainer-tool",
       "scope": "both",
       "status": "pass",
@@ -3036,7 +3060,7 @@
     {
       "authority_mode": "observe-only",
       "authority_source": "derived:shared-default",
-      "consumer_accessibility": "so-local-only",
+      "consumer_accessibility": "skill-referenced-not-projectable",
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/cos-session-start-projector",
@@ -3113,6 +3137,18 @@
       "findings": [],
       "path": "scripts/cos-status.sh",
       "role": "agentic-primitive",
+      "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "so-local-only",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/cos-subprocess-timeout-audit.py",
+      "role": "maintainer-tool",
       "scope": "both",
       "status": "pass",
       "writes": []
@@ -4625,6 +4661,18 @@
       "writes": []
     },
     {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "skill-referenced-not-projectable",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/documentation_truth_audit.py",
+      "role": "agentic-primitive",
+      "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
       "authority_mode": "os-maintainer-write",
       "authority_source": "derived:os-only-default",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
@@ -5380,6 +5428,18 @@
       "detected_write_surfaces": [],
       "findings": [],
       "path": "scripts/portable_ai_consumer_impact.py",
+      "role": "maintainer-tool",
+      "scope": "both",
+      "status": "pass",
+      "writes": []
+    },
+    {
+      "authority_mode": "observe-only",
+      "authority_source": "derived:shared-default",
+      "consumer_accessibility": "so-local-only",
+      "detected_write_surfaces": [],
+      "findings": [],
+      "path": "scripts/portable_ai_consumer_package.py",
       "role": "maintainer-tool",
       "scope": "both",
       "status": "pass",
@@ -6771,17 +6831,17 @@
   "summary": {
     "block_count": 0,
     "by_mode": {
-      "observe-only": 229,
-      "os-maintainer-write": 264,
+      "observe-only": 233,
+      "os-maintainer-write": 265,
       "profile-projection-write": 35,
       "propose-only": 3
     },
     "by_status": {
-      "pass": 522,
+      "pass": 527,
       "warn": 9
     },
     "dynamic_blocks": 0,
     "dynamic_smokes": 4,
-    "total_scripts": 531
+    "total_scripts": 536
   }
 }

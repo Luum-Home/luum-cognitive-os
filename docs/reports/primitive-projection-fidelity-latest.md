@@ -1,16 +1,16 @@
 # Primitive Projection Fidelity — Latest
 
-Generated: 2026-05-10T18:34:54+00:00
+Generated: 2026-05-12T17:50:05+00:00
 Schema: `primitive-projection-fidelity.v1`
 
 This report compares declared primitive contract fidelity with observed harness coverage. Declared contracts are not runtime proof.
 
 ## Summary
 
-- contracts: 307
-- projection_rows: 1842
-- aligned: 1842
-- gaps: 0
+- contracts: 308
+- projection_rows: 1848
+- aligned: 1845
+- gaps: 3
 - pending_runtime_smoke: 0
 - unknown: 0
 
@@ -141,7 +141,7 @@ This report compares declared primitive contract fidelity with observed harness 
 - source: `hooks/auto-verify.sh`
 - consumer fleet impact: `none`
 - service mode impact: `harness-embedded-only`
-  - claude: `native-lifecycle-enforced` → `aligned`
+  - claude: `native-lifecycle-enforced` → `gap` — declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
   - opencode: `governed-wrapper-enforced` → `aligned`
@@ -383,7 +383,7 @@ This report compares declared primitive contract fidelity with observed harness 
 - source: `hooks/auto-refine.sh`
 - consumer fleet impact: `unknown`
 - service mode impact: `harness-embedded-only`
-  - claude: `native-lifecycle-enforced` → `aligned`
+  - claude: `native-lifecycle-enforced` → `gap` — declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
   - opencode: `structural-advisory` → `aligned`
@@ -625,7 +625,7 @@ This report compares declared primitive contract fidelity with observed harness 
 - source: `hooks/dod-gate.sh`
 - consumer fleet impact: `unknown`
 - service mode impact: `harness-embedded-only`
-  - claude: `native-lifecycle-enforced` → `aligned`
+  - claude: `native-lifecycle-enforced` → `gap` — declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage
   - codex: `structural-advisory` → `aligned`
   - cursor: `structural-advisory` → `aligned`
   - opencode: `structural-advisory` → `aligned`
@@ -3330,6 +3330,17 @@ This report compares declared primitive contract fidelity with observed harness 
 ### `script-cos-service-readiness-gate`
 - source: `scripts/cos-service-readiness-gate`
 - consumer fleet impact: `none`
+- service mode impact: `unsupported`
+  - claude: `documented-only` → `aligned`
+  - codex: `structural-advisory` → `aligned`
+  - cursor: `structural-advisory` → `aligned`
+  - opencode: `structural-advisory` → `aligned`
+  - shell-ci: `documented-only` → `aligned`
+  - vscode-copilot: `structural-advisory` → `aligned`
+
+### `script-cos-adapter-compile`
+- source: `scripts/cos-adapter-compile`
+- consumer fleet impact: `install-update-risk`
 - service mode impact: `unsupported`
   - claude: `documented-only` → `aligned`
   - codex: `structural-advisory` → `aligned`

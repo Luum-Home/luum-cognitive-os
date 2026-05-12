@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-10T18:34:54+00:00",
+  "generated_at": "2026-05-12T17:50:05+00:00",
   "items": [
     {
       "consumer_fleet_impact": "install-update-risk",
@@ -1317,20 +1317,18 @@
         {
           "declared_fidelity": "native-lifecycle-enforced",
           "declared_surface": "lifecycle hook",
-          "finding": null,
+          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
           "harness": "claude",
           "observed": {
             "behavior_proven": false,
-            "evidence": [
-              "settings-wiring"
-            ],
+            "evidence": [],
             "installed": true,
             "observable": false,
             "operable": false,
-            "projected": true,
-            "wired": true
+            "projected": false,
+            "wired": false
           },
-          "status": "aligned"
+          "status": "gap"
         },
         {
           "declared_fidelity": "structural-advisory",
@@ -3807,20 +3805,18 @@
         {
           "declared_fidelity": "native-lifecycle-enforced",
           "declared_surface": "Claude lifecycle projection declared by primitive-lifecycle",
-          "finding": null,
+          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
           "harness": "claude",
           "observed": {
             "behavior_proven": false,
-            "evidence": [
-              "settings-wiring"
-            ],
+            "evidence": [],
             "installed": true,
             "observable": false,
             "operable": false,
-            "projected": true,
-            "wired": true
+            "projected": false,
+            "wired": false
           },
-          "status": "aligned"
+          "status": "gap"
         },
         {
           "declared_fidelity": "structural-advisory",
@@ -6382,20 +6378,18 @@
         {
           "declared_fidelity": "native-lifecycle-enforced",
           "declared_surface": "Claude lifecycle projection declared by primitive-lifecycle",
-          "finding": null,
+          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
           "harness": "claude",
           "observed": {
             "behavior_proven": false,
-            "evidence": [
-              "settings-wiring"
-            ],
+            "evidence": [],
             "installed": true,
             "observable": false,
             "operable": false,
-            "projected": true,
-            "wired": true
+            "projected": false,
+            "wired": false
           },
-          "status": "aligned"
+          "status": "gap"
         },
         {
           "declared_fidelity": "structural-advisory",
@@ -34526,11 +34520,118 @@
       "source": "scripts/cos-service-readiness-gate"
     },
     {
+      "consumer_fleet_impact": "install-update-risk",
+      "contract_id": "script-cos-adapter-compile",
+      "coverage_present": true,
+      "family": "script",
+      "intent": "Compile COS primitive contracts and harness projection profiles into native consumer-project IDE files through governed projection drivers while preserving declared fidelity.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "contract/documentation only",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated Cursor rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed",
+          "finding": null,
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "evidence commands documented; no generic CI enforcement claimed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated Copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "unsupported",
+      "source": "scripts/cos-adapter-compile"
+    },
+    {
       "consumer_fleet_impact": "none",
       "contract_id": "script-cos-adapters",
       "coverage_present": true,
       "family": "script",
-      "intent": "Consumer UX for listing, installing, and verifying portable .ai adapter surfaces.",
+      "intent": "Consumer UX for listing and verifying declarative portable .ai adapter manifests; native IDE file emission remains delegated to harness projection drivers or a future fidelity-preserving adapter compiler.",
       "projection_fidelity": [
         {
           "declared_fidelity": "documented-only",
@@ -34744,7 +34845,7 @@
       "contract_id": "script-cos-portable-ai-overlay",
       "coverage_present": true,
       "family": "script",
-      "intent": "Wrapper that generates the portable .ai consumer overlay from COS canonical primitive contracts.",
+      "intent": "Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.",
       "projection_fidelity": [
         {
           "declared_fidelity": "documented-only",
@@ -35064,11 +35165,11 @@
   "purpose": "Join primitive contracts to observed harness coverage without treating declared contracts as runtime proof.",
   "schema_version": "primitive-projection-fidelity.v1",
   "summary": {
-    "aligned": 1842,
-    "contracts": 307,
-    "gaps": 0,
+    "aligned": 1845,
+    "contracts": 308,
+    "gaps": 3,
     "pending_runtime_smoke": 0,
-    "projection_rows": 1842,
+    "projection_rows": 1848,
     "unknown": 0
   }
 }

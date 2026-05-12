@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T17:29:07+00:00",
+  "generated_at": "2026-05-12T17:48:01+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
     {
@@ -1393,6 +1393,126 @@
       "next_action": "add or regenerate current-truth prose",
       "severity": "high",
       "status": "pass"
+    },
+    {
+      "check": "source_report_exists",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": "manifests/subprocess-timeout-allowlist.yaml",
+      "evidence": [
+        "manifests/subprocess-timeout-allowlist.yaml"
+      ],
+      "message": "Required source report exists",
+      "next_action": "keep report generated",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_doc_exists",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "evidence": [
+        "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md"
+      ],
+      "message": "Required documentation surface exists",
+      "next_action": "keep doc linked",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "evidence": [
+        "untimed subprocess calls are harmless"
+      ],
+      "message": "Forbidden stale phrase absent: untimed subprocess calls are harmless",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "evidence": [
+        "pytest-timeout always kills hung subprocesses"
+      ],
+      "message": "Forbidden stale phrase absent: pytest-timeout always kills hung subprocesses",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "forbidden_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+      "evidence": [
+        "the timeout keyword is optional in production"
+      ],
+      "message": "Forbidden stale phrase absent: the timeout keyword is optional in production",
+      "next_action": "remove stale or contradictory prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "cos-subprocess-timeout-audit.py"
+      ],
+      "message": "Required phrase present: cos-subprocess-timeout-audit.py",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "subprocess-timeout-allowlist.yaml"
+      ],
+      "message": "Required phrase present: subprocess-timeout-allowlist.yaml",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT"
+      ],
+      "message": "Required phrase present: COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "subprocess.run"
+      ],
+      "message": "Required phrase present: subprocess.run",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
+    },
+    {
+      "check": "required_phrase",
+      "claim_id": "subprocess_timeout_discipline",
+      "doc": null,
+      "evidence": [
+        "timeout="
+      ],
+      "message": "Required phrase present: timeout=",
+      "next_action": "add or regenerate current-truth prose",
+      "severity": "medium",
+      "status": "pass"
     }
   ],
   "schema_version": "documentation-truth-audit.v1",
@@ -1411,11 +1531,14 @@
       },
       "session_pending_protocol": {
         "pass": 75
+      },
+      "subprocess_timeout_discipline": {
+        "pass": 10
       }
     },
     "by_status": {
-      "pass": 116
+      "pass": 126
     },
-    "rows": 116
+    "rows": 126
   }
 }

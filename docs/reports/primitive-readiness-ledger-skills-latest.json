@@ -2900,10 +2900,14 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "rule": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
@@ -2920,7 +2924,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2930,7 +2934,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -7898,6 +7902,104 @@
       "total_consumers": 9
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/documentation-truth-claims.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-doc-cross-reference-audit.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-pending-close/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/session-pending-brief/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 1,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/documentation-truth-claims.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-doc-cross-reference-audit.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-pending-brief/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/session-pending-close/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
@@ -7958,9 +8060,11 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 10,
-        "doc": 9,
+        "doc": 10,
         "hook": 3,
+        "rule": 2,
         "script": 5,
+        "skill": 1,
         "test": 5
       },
       "consumers": [
@@ -8003,6 +8107,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/operations.md"
         },
         {
           "family": "doc",
@@ -8053,6 +8161,14 @@
           "path": "hooks/session-wrapup-trigger.sh"
         },
         {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/session-close-doc-truth.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -8071,6 +8187,10 @@
         {
           "family": "script",
           "path": "scripts/set-security-profile.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-pending-brief/SKILL.md"
         },
         {
           "family": "test",
@@ -8095,10 +8215,12 @@
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "hook_consumers:3",
+        "rule_consumers:2",
         "script_consumers:5",
         "test_consumers:5",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:10"
       ],
       "family": "skills",
@@ -8109,7 +8231,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 32
+      "total_consumers": 36
     },
     {
       "confidence": "medium",
@@ -8893,23 +9015,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 60,
+      "high": 62,
       "medium": 39
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 2,
-      "repo-skill-not-projectable": 92,
+      "repo-skill-not-projectable": 94,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 60,
+      "compatibility-wrapper": 62,
       "lab": 8,
       "project-extension": 16,
       "so-maintainer": 15
     },
-    "total": 99,
+    "total": 101,
     "without_consumers": 2,
-    "without_lifecycle": 97
+    "without_lifecycle": 99
   },
   "target_family": "skills"
 }

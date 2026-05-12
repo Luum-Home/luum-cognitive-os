@@ -336,8 +336,8 @@
         "doc": 131,
         "hook": 38,
         "rule": 6,
-        "script": 44,
-        "skill": 8,
+        "script": 45,
+        "skill": 9,
         "test": 67
       },
       "consumers": [
@@ -1155,6 +1155,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-subprocess-timeout-audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-update.sh"
         },
         {
@@ -1308,6 +1312,10 @@
         {
           "family": "skill",
           "path": "skills/scaffold-project/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-pending-brief/SKILL.md"
         },
         {
           "family": "test",
@@ -1580,10 +1588,10 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:8",
+        "skill_consumers:9",
         "hook_consumers:38",
         "rule_consumers:6",
-        "script_consumers:44",
+        "script_consumers:45",
         "test_consumers:67",
         "doc_consumers:131",
         "config_consumers:15"
@@ -1596,7 +1604,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 309
+      "total_consumers": 311
     },
     {
       "confidence": "medium",
@@ -3726,12 +3734,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 133,
+        "doc": 136,
         "hook": 23,
         "rule": 2,
-        "script": 45,
+        "script": 47,
         "skill": 6,
-        "test": 93
+        "test": 94
       },
       "consumers": [
         {
@@ -3781,6 +3789,14 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4077,6 +4093,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/path-portability-and-privacy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/portable-ai-consumer-package-spec.md"
         },
         {
           "family": "doc",
@@ -4452,6 +4472,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-portable-ai-consumer-package-smoke"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-portable-ai-consumer-smoke"
         },
         {
@@ -4517,6 +4541,10 @@
         {
           "family": "script",
           "path": "scripts/portable_ai_consumer_impact.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/portable_ai_consumer_package.py"
         },
         {
           "family": "script",
@@ -4681,6 +4709,10 @@
         {
           "family": "test",
           "path": "tests/contracts/test_portable_ai_completion.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_portable_ai_consumer_package.py"
         },
         {
           "family": "test",
@@ -4988,9 +5020,9 @@
         "skill_consumers:6",
         "hook_consumers:23",
         "rule_consumers:2",
-        "script_consumers:45",
-        "test_consumers:93",
-        "doc_consumers:133",
+        "script_consumers:47",
+        "test_consumers:94",
+        "doc_consumers:136",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -5001,7 +5033,7 @@
       "role": "runtime-safety",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 312
+      "total_consumers": 318
     },
     {
       "confidence": "medium",
@@ -5009,7 +5041,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 8,
+        "doc": 9,
         "hook": 8,
         "script": 7,
         "skill": 1,
@@ -5027,6 +5059,10 @@
         {
           "family": "config",
           "path": "manifests/self-programming-agent-patterns.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -5163,7 +5199,7 @@
         "hook_consumers:8",
         "script_consumers:7",
         "test_consumers:8",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -5174,7 +5210,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "medium",
@@ -5294,7 +5330,7 @@
         "hook": 4,
         "rule": 4,
         "script": 3,
-        "skill": 2,
+        "skill": 3,
         "test": 13
       },
       "consumers": [
@@ -5592,6 +5628,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/session-pending-brief/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/vuln-remediation-flow/SKILL.md"
         },
         {
@@ -5649,7 +5689,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:2",
+        "skill_consumers:3",
         "hook_consumers:4",
         "rule_consumers:4",
         "script_consumers:3",
@@ -5665,7 +5705,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 87
+      "total_consumers": 88
     },
     {
       "confidence": "medium",
@@ -9835,7 +9875,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 3,
         "rule": 1,
         "script": 3,
         "test": 3
@@ -9844,6 +9884,14 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9883,7 +9931,7 @@
         "rule_consumers:1",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "family": "hooks",
@@ -9894,7 +9942,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -10802,7 +10850,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 42,
+        "doc": 43,
         "hook": 3,
         "rule": 5,
         "script": 5,
@@ -10845,6 +10893,10 @@
         {
           "family": "doc",
           "path": "docs/00-MOCs/workflow.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11139,7 +11191,7 @@
         "rule_consumers:5",
         "script_consumers:5",
         "test_consumers:15",
-        "doc_consumers:42",
+        "doc_consumers:43",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -11152,7 +11204,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 80
+      "total_consumers": 81
     },
     {
       "confidence": "high",
@@ -11764,7 +11816,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 36,
+        "doc": 37,
         "hook": 1,
         "rule": 9,
         "script": 8,
@@ -11803,6 +11855,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12105,7 +12161,7 @@
         "rule_consumers:9",
         "script_consumers:8",
         "test_consumers:16",
-        "doc_consumers:36",
+        "doc_consumers:37",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -12118,7 +12174,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 81
+      "total_consumers": 82
     },
     {
       "confidence": "medium",
@@ -16527,7 +16583,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 16,
+        "doc": 14,
         "rule": 1,
         "script": 6,
         "test": 6
@@ -16576,14 +16632,6 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16700,7 +16748,7 @@
         "rule_consumers:1",
         "script_consumers:6",
         "test_consumers:6",
-        "doc_consumers:16",
+        "doc_consumers:14",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -16713,7 +16761,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 40
+      "total_consumers": 38
     },
     {
       "confidence": "medium",
@@ -16887,10 +16935,10 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 11,
-        "doc": 13,
+        "doc": 14,
         "hook": 1,
         "script": 6,
-        "test": 7
+        "test": 6
       },
       "consumers": [
         {
@@ -16979,6 +17027,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/INDEX.md"
         },
         {
@@ -17023,10 +17075,6 @@
         },
         {
           "family": "test",
-          "path": "tests/red_team/portability/test_cos-doc-cross-reference-audit.py"
-        },
-        {
-          "family": "test",
           "path": "tests/unit/test_adr_partial_audit.py"
         },
         {
@@ -17051,8 +17099,8 @@
         "lifecycle",
         "hook_consumers:1",
         "script_consumers:6",
-        "test_consumers:7",
-        "doc_consumers:13",
+        "test_consumers:6",
+        "doc_consumers:14",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -17307,10 +17355,11 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 8,
         "script": 6,
-        "test": 2
+        "skill": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -17324,6 +17373,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/documentation-truth-claims.yaml"
         },
         {
           "family": "config",
@@ -17390,8 +17443,8 @@
           "path": "scripts/cos-session-start-projector"
         },
         {
-          "family": "test",
-          "path": "tests/red_team/portability/test_cos-doc-cross-reference-audit.py"
+          "family": "skill",
+          "path": "skills/session-pending-brief/SKILL.md"
         },
         {
           "family": "test",
@@ -17400,10 +17453,11 @@
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "script_consumers:6",
-        "test_consumers:2",
+        "test_consumers:1",
         "doc_consumers:8",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -17413,7 +17467,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -26567,7 +26621,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 3,
+        "doc": 4,
         "script": 2,
         "test": 1
       },
@@ -26594,6 +26648,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/pending-truth-architecture.md"
         },
         {
@@ -26617,7 +26675,7 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:4"
       ],
       "family": "hooks",
@@ -26628,7 +26686,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -33930,7 +33988,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 2,
+        "doc": 3,
         "test": 2
       },
       "consumers": [
@@ -33941,6 +33999,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -33962,7 +34024,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -33973,7 +34035,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",

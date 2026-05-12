@@ -2854,7 +2854,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 1,
+        "doc": 3,
         "hook": 1,
         "rule": 1,
         "script": 3,
@@ -2868,6 +2868,14 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2912,7 +2920,7 @@
         "rule_consumers:1",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "config_consumers:2"
       ],
       "family": "rules",
@@ -2923,7 +2931,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -8586,7 +8594,7 @@
         "hook": 7,
         "rule": 2,
         "script": 59,
-        "skill": 7,
+        "skill": 8,
         "test": 51
       },
       "consumers": [
@@ -9284,6 +9292,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/session-pending-close/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/so-vs-vanilla/SKILL.md"
         },
         {
@@ -9497,7 +9509,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:7",
+        "skill_consumers:8",
         "hook_consumers:7",
         "rule_consumers:2",
         "script_consumers:59",
@@ -9513,7 +9525,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 226
+      "total_consumers": 227
     },
     {
       "confidence": "medium",
@@ -11905,10 +11917,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-261-memory-governance-v2.md"
@@ -11925,7 +11941,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -11935,7 +11951,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -15117,11 +15133,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "rule": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
@@ -15139,7 +15159,7 @@
       "evidence": [
         "skill_consumers:1",
         "rule_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -15149,7 +15169,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -16692,6 +16712,59 @@
       "role_source": "heuristic:text",
       "supported_harnesses": [],
       "total_consumers": 17
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1,
+        "script": 1,
+        "skill": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-adr-close"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-pending-close/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-wrapup/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "rules",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "rules/session-close-doc-truth.md",
+      "role": "hook-enforced",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -19179,21 +19252,21 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "medium": 119
+      "medium": 120
     },
     "consumer_accessibility": {
-      "so-local-only": 119
+      "so-local-only": 120
     },
     "roles": {
       "context-only": 6,
       "doctrine": 4,
       "driver-specific": 52,
-      "hook-enforced": 46,
+      "hook-enforced": 47,
       "lab": 11
     },
-    "total": 119,
+    "total": 120,
     "without_consumers": 0,
-    "without_lifecycle": 119
+    "without_lifecycle": 120
   },
   "target_family": "rules"
 }
