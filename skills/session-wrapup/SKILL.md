@@ -58,6 +58,43 @@ This produces:
 
 Capture the output: total item count, top priority item description, quick-win count.
 
+### Step 2b: Refresh pending-truth ledger + close audited items
+
+ADR-275 integration. Before composing the session summary, refresh the
+read-side and capture closure deltas:
+
+1. Refresh aggregator + verifier (no mutations to source surfaces):
+   ```bash
+   python3 scripts/cos-pending-truth-aggregator --write
+   python3 scripts/cos-pending-truth-verify
+   ```
+2. Refresh the operational-guide audit + adr-partial backlog:
+   ```bash
+   python3 scripts/cos-operational-guide-audit.py --write
+   python3 scripts/cos-adr-partial-ledger --check 2>/dev/null || true
+   ```
+3. Compute the closure trust signal AFTER any closures made this session:
+   ```bash
+   python3 scripts/cos-closure-trust-signal.py | tail -1
+   ```
+   Capture the `trust_signal` band (HIGH | MEDIUM | LOW | ZERO). If it
+   moved from one band to another since last session, surface that delta
+   in §Accomplished.
+4. Run the doc-cross-reference audit to catch "built but not surfaced":
+   ```bash
+   python3 scripts/cos-doc-cross-reference-audit.py
+   ```
+   If `missing_count > 0` AND any of those primitives were touched this
+   session, add a §Follow-up "doc cross-references missing — primitive X
+   not in surface Y".
+5. If any TASK items were closed this session via the close primitive,
+   include their ids in the summary §Accomplished as "closed:
+   <id> proof: <ref>".
+
+This step is what makes the session-wrapup output **bilateral** (matches
+the projector's session-start view) per the ADR-275 read/write symmetry
+contract.
+
 ### Step 3: Compose Session Summary
 
 Synthesize what happened this session into a structured summary. Fill in each section honestly — if a section has nothing to report, write "None" rather than omitting it.

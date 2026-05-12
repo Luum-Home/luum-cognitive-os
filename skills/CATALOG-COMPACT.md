@@ -105,6 +105,8 @@ Total skills: 164
 | self-improve | META skill — orchestrates analyze-improvements → (human reviews) →… |
 | session-backlog | Inventory all pending work across plans, engram, tasks, todos, audits, and git. |
 | session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write… |
+| session-pending-brief | Bridge prompt → cos-session-start-projector → ranked attack list. |
+| session-pending-close | Atomic close of pending-truth task and/or ADR-decision items with audit trail. |
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |

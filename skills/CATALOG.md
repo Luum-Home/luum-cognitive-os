@@ -68,6 +68,8 @@
 | session-backlog | Inventory all pending work across plans, engram, tasks, audits, and git — produces prioritized backlog for future sessions | `/session-backlog` | both |
 | decision-triage | Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions. | `/decision-triage` | both |
 | session-wrapup | End-of-session routine: backlog inventory + engram save + session summary | `/session-wrapup` | both |
+| session-pending-brief | Bridge prompt → cos-session-start-projector → ranked attack list. |
+| session-pending-close | Atomic close of pending-truth task and/or ADR-decision items with audit trail. |
 | doc-sync | Detect and update stale documentation after code changes | `/doc-sync` | project |
 | doc-review-personas | Multi-persona adversarial doc review: N lenses in parallel, severity-tiered consolidation | `/doc-review-personas` | both |
 | private-mode | Toggle private conversation (no persistence, no metrics) | `/private` | project |
