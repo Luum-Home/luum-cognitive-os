@@ -41,11 +41,15 @@ CANONICAL_SUBDIRS = {"features", "research", "architecture", "roadmaps", "archiv
 ALLOWLIST_RELATIVE: list[str] = [
     # ADR-082 "stay in place" entries
     "docs/plan-system.md",                          # meta-doc about the plan system
+    "docs/04-Concepts/root/plan-system.md",         # vaulted meta-doc about the plan system
     "docs/rules-consolidation-plan.md",             # evaluate after migration (ADR-082 note)
+    "docs/05-Methodology/root/rules-consolidation-plan.md",  # vaulted methodology artifact
     "docs/roadmap.md",                              # top-level human-readable entry point
+    "docs/01-Build-Log/root/roadmap.md",            # vaulted human-readable entry point
     "docs/architecture/plans-reconciliation-2026-04-21.md",  # audit artifact → docs/reports/
     "docs/04-Concepts/architecture/plans-reconciliation-2026-04-21.md",  # vaulted location during docs taxonomy migration
     "docs/release/roadmap-v1.0-full-e2e.md",        # release artifact outside plan scope
+    "docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md",  # vaulted release artifact outside plan scope
     "docs/reports/merge-readiness-master-plan-2026-04-23.md",  # report artifact
     "docs/06-Daily/reports/merge-readiness-master-plan-2026-04-23.md",  # vaulted report artifact
     "docs/reports/next-session-plan-dormant-to-real.md",        # session artifact
@@ -113,6 +117,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/06-Daily/measurements/",
     # Business-scoped files (ADR-082 §"Files that stay in place")
     "docs/business/",
+    "docs/08-References/business/",
     # Third-party reference / benchmark material — not project plans
     "reference/",
     # Rules documents — these are rules, not plans (plan-first.md is a rule)
