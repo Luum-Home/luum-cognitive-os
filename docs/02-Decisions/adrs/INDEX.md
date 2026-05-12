@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 292 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 294 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (124)
+### Active / Implemented (126)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -101,10 +101,10 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [216](ADR-216-tool-discovery-pre-use-gate.md) | Tool Discovery Pre-Use Gate | accepted | implemented | 2026-05-06 | **Source**: repeated dogfood evidence of ad-hoc external tool selection over existing COS primitives |
 | [219](ADR-219-work-ownership-liveness-preflight.md) | Work Ownership Liveness Preflight | accepted | implemented | 2026-05-06 | During the license-switch work, WIP was preserved to a temporary branch |
 | [222](ADR-222-pre-agent-stash-defer-until-launch-confirmed.md) | Pre-Agent Stash Deferred Until Agent Launch Confirmed | accepted | implemented | 2026-05-07 | **Supersedes (in part)**: the PreToolUse-Agent ordering currently relied on by `pre-agent-snapshot.sh`. |
-| [223](ADR-223-agent-lifecycle-reconstruction.md) | Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent | accepted | implemented | 2026-05-07 | **Source**: `docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/03-PoCs/research/orchestration-gaps/background-agent-patterns.md`, and the operator |
-| [227](ADR-227-shadow-git-checkpoint-substrate.md) | Shadow-Git Checkpoint Substrate | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Herme |
+| [223](ADR-223-agent-lifecycle-reconstruction.md) | Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent | accepted | implemented | 2026-05-07 | **Source**: `docs/03-PoCs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/03-PoCs/research/orchestration-gaps/background-agent-patterns.md`,  |
+| [227](ADR-227-shadow-git-checkpoint-substrate.md) | Shadow-Git Checkpoint Substrate | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Clin |
 | [228](ADR-228-retry-contract-and-cost-budget.md) | Retry Contract + Cost Session Budget (consolidated) | accepted | implemented | 2026-05-07 | Accepted — Slices A–F implemented (2026-05-07) |
-| [230](ADR-230-handoff-envelope-and-cycle-deduplication.md) | Agent Handoff Envelope + Call-Chain Deduplication | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md`](../research/orchestration-gaps/agent-to-agent-handoff.md). Production failure rate of |
+| [230](ADR-230-handoff-envelope-and-cycle-deduplication.md) | Agent Handoff Envelope + Call-Chain Deduplication | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/agent-to-agent-handoff.md`](../research/orchestration-gaps/agent-to-agent-handoff.md). Production failure |
 | [231](ADR-231-mcp-server-surface-for-cos-primitives.md) | MCP Server Surface for COS Primitives | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md) |
 | [232](ADR-232-sandbox-adapter-tiers.md) | Sandbox Adapter Tiers | accepted | implemented | 2026-05-07 | COS needs filesystem/process permission boundaries that are enforced below the prompt layer. Prior-art research recommends OS-native sandbox tiers first: Bubble |
 | [233](ADR-233-cross-session-agent-team-file-ipc.md) | Cross-Session Agent-Team File IPC | accepted | implemented | 2026-05-07 | **Source**: [`docs/03-PoCs/research/orchestration-gaps/cross-session-agent-teams.md`](../research/orchestration-gaps/cross-session-agent-teams.md) |
@@ -136,6 +136,8 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [280](ADR-280-product-question-to-evidence-primitive.md) | Product Question-to-Evidence Primitive | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
 | [281](ADR-281-adr-implementation-reality-audit.md) | ADR Implementation Reality Audit | accepted | implemented | 2026-05-12 | Accepted — Phase 1 shipped 2026-05-12 (audit + allowlist + tests + control-plane wiring). |
 | [282](ADR-282-product-answer-card-cache-and-freshness-ledger.md) | Product Answer Card Cache and Freshness Ledger | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
+| [283](ADR-283-script-exposure-audit-and-invocation-ratchet.md) | Script Exposure Audit and Invocation Ratchet | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
+| [284](ADR-284-doc-path-reference-audit.md) | Documentation Path Reference Audit | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
 
 ### Active / Partial (118)
 

@@ -36,7 +36,7 @@ AUTHORITATIVE_STORAGE_PATTERNS = [
 
 # Directories to scan for documentation that might reference storage paths
 SCAN_DIRS = [
-    REPO / "docs" / "adrs",   # ADRs are the most authoritative — must not cite gitignored storage
+    REPO / "docs" / "02-Decisions" / "adrs",   # ADRs are the most authoritative — must not cite gitignored storage
     REPO / "rules",
     REPO / "templates",
 ]
@@ -136,7 +136,7 @@ def test_gitignored_paths_do_not_have_committed_md_files() -> None:
 
     assert not violations, (
         f"Found {len(violations)} .md file(s) committed under .cognitive-os/reports|decisions/. "
-        f"These MUST live at docs/06-Daily/reports/ or docs/decisions/ instead — .cognitive-os/ is "
+        f"These MUST live at docs/06-Daily/reports/ or docs/02-Decisions/ instead — .cognitive-os/ is "
         f"gitignored and causes duplicate-counting in /decision-triage. "
         f"Move these files and update any references. "
         f"Violations: {violations}"
@@ -150,7 +150,7 @@ def test_docs_reports_dir_exists_and_is_tracked() -> None:
     This is the positive flip of the above: after ADR-069 §5 fix, reports MUST be
     in this directory. If it's empty, something is wrong with the migration.
     """
-    reports_dir = REPO / "docs" / "reports"
+    reports_dir = REPO / "docs" / "06-Daily" / "reports"
     assert reports_dir.is_dir(), (
         f"docs/06-Daily/reports/ does not exist. After ADR-069 §5 fix, this directory MUST "
         f"exist and contain research reports. Create it and move reports from "

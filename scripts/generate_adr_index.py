@@ -16,7 +16,7 @@ from typing import Any
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-ADRS_DIR = ROOT / "docs" / "adrs"
+ADRS_DIR = ROOT / "docs" / "02-Decisions" / "adrs"
 INDEX = ADRS_DIR / "INDEX.md"
 TAXONOMY = "STATUS-TAXONOMY.md"
 
