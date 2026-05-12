@@ -218,7 +218,7 @@ def test_renumbered_adrs_have_front_matter_comment() -> None:
     """ADRs migrated with a number change must carry a Renumbered-from comment.
 
     This test verifies the four files renumbered during the ADR-087 migration:
-      - ADR-091 (was 027 in docs/architecture/adrs/)
+      - ADR-091 (was 027 in the old docs/architecture/adrs/ namespace, removed 2026-05-12)
       - ADR-092 (was ADR-001 in harness-adoption-gap/)
       - ADR-093 (was ADR-002 in harness-adoption-gap/)
       - ADR-094 (was ADR-003 in harness-adoption-gap/)
