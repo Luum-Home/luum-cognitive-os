@@ -60,6 +60,48 @@ This primitive does not decide architecture. It enforces draft shape and coordin
 - The helper can only guarantee shape; it cannot guarantee that the decision is wise.
 - Existing hand-written ADR workflows remain possible, so tests and hooks are still required.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: creating a new ADR required manually copying an existing ADR or writing from memory, then discovering any structural violations only when `tests/audit/test_adr_contracts.py` or `hooks/adr-section-validator.sh` fired — often after the file was already committed.
+
+After this ADR:
+
+- A single command creates a correctly structured draft with YAML frontmatter, all required sections, an alternatives table, and a fenced verification command:
+  ```bash
+  scripts/cos-new-adr --title "My Decision" --status accepted
+  ```
+- ADR number reservation is automatic (via `scripts/adr_reserve.py`); concurrent sessions cannot claim the same number.
+- The generated draft includes `implementation_files:` in the frontmatter, making implementation evidence falsifiable from the start.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "What ADR number should I use?" — `cos-new-adr` reserves it atomically.
+- "Did I include all required sections?" — The generated draft is pre-structured with every section the ledger and tests audit.
+- "Is my new ADR syntactically compliant?" — Running the verification block from the generated draft confirms it before any review.
+
+**Does not answer:**
+- "Is the architectural decision correct?" — The primitive enforces shape, not wisdom. Decision quality remains the operator's responsibility.
+- "Should I write a new ADR or amend an existing one?" — That judgment is out of scope; the primitive only handles authoring once the decision is made.
+
+### Daily operational pattern
+
+1. Decide that an architectural decision warrants documentation.
+2. Run `scripts/cos-new-adr --title "..." --status proposed|accepted|implemented` to get a reserved, pre-structured draft.
+3. Fill in `## Context`, `## Decision`, and `## Consequences` with the actual decision content.
+4. Run the verification block from the generated `## Verification` section before committing.
+5. The `hooks/adr-section-validator.sh` and CI tests then act as a backstop — not the first line of defense.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without context:
+1. Read `scripts/cos-new-adr` (shell entrypoint) then `scripts/cos_new_adr.py` (Python implementation) to see what the primitive generates.
+2. Read `tests/unit/test_cos_new_adr.py` to understand what structural guarantees are tested.
+3. Read ADR-067 for the section contract that this primitive enforces at authoring time.
+4. The primitive does not replace the `hooks/adr-section-validator.sh` or `tests/audit/test_adr_contracts.py` — those remain the enforcement backstop for hand-written ADRs and future drift.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

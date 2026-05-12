@@ -215,6 +215,91 @@ for a project whose primary target runtime is macOS Claude Code.
   Acceptable because the maintainer already responds manually to
   these.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, CI ran on GitHub-hosted runners. After ADR-130 suspended all
+eleven workflows, there was no automated quality gate between a local edit and
+a push to `main`.
+
+After this ADR, three layers replace the GitHub Actions surface:
+
+| Layer | Trigger | What it runs | Latency |
+|---|---|---|---|
+| Layer 1 — pre-push hook | `git push` | `scripts/cos-ci-local.sh` (pytest, gofmt, go vet, config audit, primitive gap) | 10–30 s |
+| Layer 2 — launchd schedules | Mon 09:00 / 12:00 / 12:30 local time | weekly config audit, public metrics, primitive gap | async, logged |
+| Layer 3 — CLI on demand | `scripts/cos-pr-review.sh <PR>` | diff analysis + PR comment | manual |
+
+The pre-push hook is the primary gate. Every push to any remote aborts if the
+local CI script exits non-zero. `git push --no-verify` is the explicit operator
+escape for emergencies — use it consciously.
+
+### Daily operational pattern
+
+**Normal push flow:**
+
+```bash
+git push origin <branch>
+# pre-push hook fires automatically
+# scripts/cos-ci-local.sh runs (~10–30 s)
+# passes → push proceeds; fails → push aborts with exit reason
+```
+
+**To review a PR before merging:**
+
+```bash
+scripts/cos-pr-review.sh <PR-number>
+# captures diff, runs local analysis, posts comment to PR
+```
+
+**If the Mac was asleep during a scheduled launchd job:**
+launchd reschedules on wake; the job runs late but runs. Check
+`~/Library/Logs/cos/<name>.out.log` for the most recent output.
+
+**If a check needs a Linux environment:**
+
+```bash
+docker run --rm -v "$(pwd)":/repo -w /repo ubuntu:latest bash scripts/cos-ci-local.sh
+```
+
+**Installing the hook and launchd jobs after a fresh clone:**
+
+```bash
+bash scripts/install-git-hooks.sh     # wires pre-push hook
+bash scripts/install-launchd-jobs.sh  # creates ~/Library/LaunchAgents/ plists
+```
+
+### When sources disagree
+
+If the pre-push hook passes locally but a reviewer reports a defect that would
+have been caught by CI:
+
+1. Check whether `scripts/cos-ci-local.sh` covers the relevant check. If it
+   does not, add it. The local script is the authoritative gate.
+2. For cross-platform divergence (Linux vs macOS), run the Docker path and
+   compare. If the Docker path catches the issue, add a Docker block to
+   `cos-ci-local.sh` for that check class.
+
+If `cos-ci-local.sh` and a `.disabled` GitHub Actions workflow disagree on
+results: the local script wins. The `.disabled` files are preserved as
+documentation, not as authoritative definitions of what CI should do.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without context:
+
+1. ADR-130 explains why the GitHub Actions workflows were suspended (billing).
+   This ADR is the replacement architecture.
+2. The three implementation scripts are in `scripts/`:
+   `cos-ci-local.sh` (Layer 1), `cos-pr-review.sh` (Layer 3), and
+   `install-launchd-jobs.sh` (Layer 2 installer).
+3. The SPOF caveat in §Consequences is intentional: this architecture is correct
+   for a single-maintainer project. If a second maintainer joins, revisit toward
+   a self-hosted runner.
+4. `git push --no-verify` bypasses Layer 1. Use it only when the hook itself is
+   broken, not to avoid a failing check.
+
 ## Alternatives Rejected
 
 - **Self-hosted runner only.** Solves billing but inherits all of

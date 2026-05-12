@@ -1,396 +1,17 @@
 {
   "schema_version": "operational-guide-audit/v1",
-  "generated_at": "2026-05-12T14:51:00Z",
+  "generated_at": "2026-05-12T14:59:19Z",
   "contract_ref": "ADR-274",
   "summary": {
     "total_adrs": 285,
     "by_verdict": {
-      "not-applicable": 223,
-      "missing": 25,
-      "compliant": 36,
+      "not-applicable": 222,
+      "compliant": 62,
       "exempt": 1
     },
-    "by_priority": {
-      "P0": 25
-    }
+    "by_priority": {}
   },
-  "findings": [
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-044-context-payload-slimming: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-044-context-payload-slimming",
-        "path": "docs/adrs/ADR-044-context-payload-slimming.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 22
-      },
-      "stable_id": "adr-274/ADR-044-context-payload-slimming",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-130-suspend-claude-api-workflows: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-130-suspend-claude-api-workflows",
-        "path": "docs/adrs/ADR-130-suspend-claude-api-workflows.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 9
-      },
-      "stable_id": "adr-274/ADR-130-suspend-claude-api-workflows",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-131-local-ci-migration: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-131-local-ci-migration",
-        "path": "docs/adrs/ADR-131-local-ci-migration.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 9
-      },
-      "stable_id": "adr-274/ADR-131-local-ci-migration",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-138-flow-contract-schema: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-138-flow-contract-schema",
-        "path": "docs/adrs/ADR-138-flow-contract-schema.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 9
-      },
-      "stable_id": "adr-274/ADR-138-flow-contract-schema",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-139-account-agnostic-multi-provider-runtime: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-139-account-agnostic-multi-provider-runtime",
-        "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-139-account-agnostic-multi-provider-runtime",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-141-engram-cloud-cross-instance-replication: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-141-engram-cloud-cross-instance-replication",
-        "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-141-engram-cloud-cross-instance-replication",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-142-compliance-audit-air-gapped-surface: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-142-compliance-audit-air-gapped-surface",
-        "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-142-compliance-audit-air-gapped-surface",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-143-closure-discipline-gate: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-143-closure-discipline-gate",
-        "path": "docs/adrs/ADR-143-closure-discipline-gate.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-143-closure-discipline-gate",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-144-hook-enforced-rule-projection-contract: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-144-hook-enforced-rule-projection-contract",
-        "path": "docs/adrs/ADR-144-hook-enforced-rule-projection-contract.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-144-hook-enforced-rule-projection-contract",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-148-adr-authoring-primitive: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-148-adr-authoring-primitive",
-        "path": "docs/adrs/ADR-148-adr-authoring-primitive.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-148-adr-authoring-primitive",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-149-primitive-duplication-audit: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-149-primitive-duplication-audit",
-        "path": "docs/adrs/ADR-149-primitive-duplication-audit.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-149-primitive-duplication-audit",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-150-acc-projection-profiles-and-harness-registry: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-150-acc-projection-profiles-and-harness-registry",
-        "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-150-acc-projection-profiles-and-harness-registry",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-151-consumer-availability-classification: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-151-consumer-availability-classification",
-        "path": "docs/adrs/ADR-151-consumer-availability-classification.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-151-consumer-availability-classification",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-152-shell-ci-projection-and-local-surface-defaults: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-152-shell-ci-projection-and-local-surface-defaults",
-        "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-152-shell-ci-projection-and-local-surface-defaults",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-153-acc-fail-new-and-harness-proof-boundary: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-153-acc-fail-new-and-harness-proof-boundary",
-        "path": "docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-153-acc-fail-new-and-harness-proof-boundary",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-154-multi-ide-structural-harness-projection: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-154-multi-ide-structural-harness-projection",
-        "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-154-multi-ide-structural-harness-projection",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-155-shell-ci-formal-harness: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-155-shell-ci-formal-harness",
-        "path": "docs/adrs/ADR-155-shell-ci-formal-harness.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-155-shell-ci-formal-harness",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-156-qwen-code-structural-harness-projection: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-156-qwen-code-structural-harness-projection",
-        "path": "docs/adrs/ADR-156-qwen-code-structural-harness-projection.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-156-qwen-code-structural-harness-projection",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-157-kimi-code-cli-structural-harness-projection: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-157-kimi-code-cli-structural-harness-projection",
-        "path": "docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "implemented",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-157-kimi-code-cli-structural-harness-projection",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-158-ai-agent-harness-landscape-and-proof-backlog: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-158-ai-agent-harness-landscape-and-proof-backlog",
-        "path": "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 8
-      },
-      "stable_id": "adr-274/ADR-158-ai-agent-harness-landscape-and-proof-backlog",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-182-branch-ownership-lock: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-182-branch-ownership-lock",
-        "path": "docs/adrs/ADR-182-branch-ownership-lock.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 7
-      },
-      "stable_id": "adr-274/ADR-182-branch-ownership-lock",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-183-cross-session-event-log: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-183-cross-session-event-log",
-        "path": "docs/adrs/ADR-183-cross-session-event-log.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 7
-      },
-      "stable_id": "adr-274/ADR-183-cross-session-event-log",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-184-manager-of-managers-daemon: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-184-manager-of-managers-daemon",
-        "path": "docs/adrs/ADR-184-manager-of-managers-daemon.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 7
-      },
-      "stable_id": "adr-274/ADR-184-manager-of-managers-daemon",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-185-cross-agent-audit-findings: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-185-cross-agent-audit-findings",
-        "path": "docs/adrs/ADR-185-cross-agent-audit-findings.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 7
-      },
-      "stable_id": "adr-274/ADR-185-cross-agent-audit-findings",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-186-context-budget-enforcement: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-186-context-budget-enforcement",
-        "path": "docs/adrs/ADR-186-context-budget-enforcement.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 7
-      },
-      "stable_id": "adr-274/ADR-186-context-budget-enforcement",
-      "adr": "ADR-274"
-    }
-  ],
+  "findings": [],
   "results": [
     {
       "adr": "ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify",
@@ -1201,12 +822,12 @@
       "date": "2026-04-20",
       "age_days": 22,
       "implementation_files_count": 2,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-045-postgres-local-daemon",
@@ -2593,12 +2214,12 @@
       "date": "2026-05-03",
       "age_days": 9,
       "implementation_files_count": 11,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-131-local-ci-migration",
@@ -2609,12 +2230,12 @@
       "date": "2026-05-03",
       "age_days": 9,
       "implementation_files_count": 8,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-132-solo-swarm-vs-multi-maintainer-fork",
@@ -2721,12 +2342,12 @@
       "date": "2026-05-03",
       "age_days": 9,
       "implementation_files_count": 1,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-139-account-agnostic-multi-provider-runtime",
@@ -2737,12 +2358,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 6,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-140-cross-os-containerized-deployment",
@@ -2769,12 +2390,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 1,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-142-compliance-audit-air-gapped-surface",
@@ -2785,12 +2406,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-143-closure-discipline-gate",
@@ -2801,12 +2422,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 4,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-144-hook-enforced-rule-projection-contract",
@@ -2817,12 +2438,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 9,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-145-dependency-lane-split",
@@ -2881,12 +2502,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 3,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-149-primitive-duplication-audit",
@@ -2897,12 +2518,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-150-acc-projection-profiles-and-harness-registry",
@@ -2913,12 +2534,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-151-consumer-availability-classification",
@@ -2929,12 +2550,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 4,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-152-shell-ci-projection-and-local-surface-defaults",
@@ -2945,12 +2566,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-153-acc-fail-new-and-harness-proof-boundary",
@@ -2961,12 +2582,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 4,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-154-multi-ide-structural-harness-projection",
@@ -2977,12 +2598,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 6,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-155-shell-ci-formal-harness",
@@ -2993,12 +2614,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 8,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-156-qwen-code-structural-harness-projection",
@@ -3009,12 +2630,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 6,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-157-kimi-code-cli-structural-harness-projection",
@@ -3025,12 +2646,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 6,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-158-ai-agent-harness-landscape-and-proof-backlog",
@@ -3041,12 +2662,12 @@
       "date": "2026-05-04",
       "age_days": 8,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-159-agents-md-native-structural-harness-batch",
@@ -3264,12 +2885,12 @@
       "status": "accepted",
       "date": "2026-05-05",
       "age_days": 7,
-      "implementation_files_count": 0,
+      "implementation_files_count": 6,
       "has_operational_guide": true,
       "subsection_count": 5,
       "exemption_reason": null,
-      "subject_to_contract": false,
-      "verdict": "not-applicable",
+      "subject_to_contract": true,
+      "verdict": "compliant",
       "priority": null
     },
     {
@@ -3457,12 +3078,12 @@
       "date": "2026-05-05",
       "age_days": 7,
       "implementation_files_count": 6,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-183-cross-session-event-log",
@@ -3473,12 +3094,12 @@
       "date": "2026-05-05",
       "age_days": 7,
       "implementation_files_count": 10,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-184-manager-of-managers-daemon",
@@ -3489,12 +3110,12 @@
       "date": "2026-05-05",
       "age_days": 7,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-185-cross-agent-audit-findings",
@@ -3505,12 +3126,12 @@
       "date": "2026-05-05",
       "age_days": 7,
       "implementation_files_count": 12,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-186-context-budget-enforcement",
@@ -3521,12 +3142,12 @@
       "date": "2026-05-05",
       "age_days": 7,
       "implementation_files_count": 6,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-187-surface-5-adoption-proof-contract",

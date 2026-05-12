@@ -89,6 +89,94 @@ The gate is not a substitute for `make test-laptop`. For pre-commit WIP validati
 prevents agents from leaving obvious validation-system drift for the broad lane
 to discover after the batch is declared done.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the validation nervous system (workflow tests, hook
+count assertions, primitive lifecycle checks) could silently drift from
+repository reality. An agent batch could pass all targeted new-surface
+tests, declare completion, and leave stale validators for `make
+test-laptop` to expose later — after the agent had already formed a
+closure claim.
+
+After this ADR, `scripts/cos-closure-discipline-audit` runs as part of
+`scripts/cos-ci-local.sh quick`. It catches the specific drift classes
+that escaped targeted validation:
+
+1. Tests referencing active `.github/workflows/*.yml` when only
+   `.yml.disabled` exists (ADR-130 suspended workflows).
+2. Hardcoded runtime hook counts (e.g., magic integer `115`) instead
+   of report-derived parity checks.
+3. Validation capsule worktree cleanup that assumes COS-only helpers
+   absent in minimal consumer repos.
+4. Primitive lifecycle metadata inconsistencies (blocking/high-risk
+   primitives declared as `meta-governance` instead of
+   `runtime-safety`).
+5. Quick CI not running the closure audit itself (the self-wiring
+   check).
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Does the validation nervous system still match repository reality?"
+  Run:
+  ```bash
+  scripts/cos-closure-discipline-audit --fail-on-findings --json
+  ```
+  A zero-findings result means the five drift classes are clear.
+- "Did my change invalidate any validator assumptions?" — Run the
+  closure audit as part of `scripts/cos-ci-local.sh quick` before
+  forming a completion claim.
+- "Is it safe to proceed after a fast agent batch?" — The audit
+  gives a fast (< 60 s) answer without running the full `make
+  test-laptop` suite.
+
+**Does not answer:**
+- Whether the new features introduced by the batch are correct.
+  The closure audit validates the *validation system*, not the
+  features themselves. Feature correctness is `make test-laptop`'s
+  job.
+- Whether all possible validator drift classes are covered. The audit
+  is intentionally narrow; new drift classes discovered in future
+  incidents must be added as new audit checks.
+
+### Daily operational pattern
+
+1. After a fast agent batch, before declaring done:
+   ```bash
+   bash scripts/cos-ci-local.sh quick
+   ```
+   This runs the closure discipline audit plus other quick gates.
+2. If the audit emits findings, fix the stale validator (not the
+   product code, unless the validator found a real bug).
+3. Legitimate exceptions must be encoded in the audit with an
+   ADR-backed reason — not bypassed by deleting tests.
+4. Pre-commit WIP validation: `make test-laptop-direct` (validates
+   uncommitted edits). Post-commit/release safety: `make test-laptop`
+   (isolated worktree, tests HEAD).
+
+### When sources disagree
+
+If the closure audit reports a suspended-workflow reference but the
+operator has recently restored the workflow:
+
+1. An active `.yml` file that previously existed only as `.yml.disabled`
+   is now legal to reference directly. The audit allows this once an
+   active `.yml` is present.
+2. If the audit still flags it after restoration, the audit's regex may
+   need updating to recognize the restored file. Check the audit source
+   (`scripts/cos_closure_discipline_audit.py`) for the workflow detection
+   pattern.
+
+If primitive lifecycle findings appear but the operator believes the
+`governance_class` is correct:
+
+1. Run `python3 scripts/primitive_lifecycle.py --json` directly and
+   inspect the finding.
+2. If the classification is intentional, encode an ADR-backed exception
+   in the primitive's metadata rather than suppressing the audit.
+
 ## Alternatives rejected
 
 1. **Rely only on `make test-laptop`.** Rejected because broad validation is too late in the loop: it finds stale validators after the agent has already formed a completion claim.

@@ -56,6 +56,39 @@ The harness boundary remains unchanged: only harnesses with `status: implemented
 - `--fail-new` requires a baseline file. First-time users must generate `docs/acc/latest.json` before ratcheting.
 - A new intentionally local script/rule/skill may fail the strict gate until it receives an exact consumer-availability row or the operator consciously uses `--allow-new-local-defaults`.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: ACC could reach full coverage for declared scope, but a new script silently inheriting a broad local default (e.g., `scripts/**` → SO-local) would pass ACC without any explicit lifecycle decision. Planned harnesses had no enforced boundary separating "roadmap" from "proven support."
+
+After this ADR:
+
+- **`--fail-new` mode** compares the current ACC run against a baseline (`docs/acc/latest.json` by default) and blocks if new debt or new broad-default-aligned rows appear:
+  ```bash
+  python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
+  ```
+- To allow a new script that is intentionally SO-local without blocking: add it to `manifests/primitive-consumer-availability.yaml` with an explicit status before running `--fail-new`, or pass `--allow-new-local-defaults` for a one-time exemption (logged).
+- The `new_debt` field in the report is machine-readable and lists exactly which new rows introduced debt.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Did my change introduce new ACC debt?" — Run `--fail-new`; exit code 0 means no new debt, non-zero lists what introduced it.
+- "Is a planned harness treated as partial support in the report?" — No. Only harnesses with `status: implemented` in `manifests/harness-projection.yaml` are executed. Planned entries are roadmap-only.
+- "What does the `new_debt` section contain?" — Rows where the current run has a worse status than the baseline, plus any new broad-default-aligned rows.
+
+**Does not answer:**
+- "Is the baseline itself correct?" — The baseline is `docs/acc/latest.json`; if it was generated while debt existed, it will tolerate that historical debt. Use `--baseline <file>` to choose a known-clean baseline.
+- "What happens the first time `--fail-new` is run?" — It requires a baseline. Generate one with `python3 scripts/acc_pipeline.py --project-dir . --refresh` first, then start gating on it.
+
+### Daily operational pattern
+
+1. After adding any new script, rule, skill, or hook: explicitly classify it in `manifests/primitive-consumer-availability.yaml` before committing.
+2. Run `python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new` as part of the pre-commit checklist.
+3. If the gate fires, read the `new_debt` section in the output — it names the specific rows that crossed the threshold.
+4. Fix by either: adding an explicit availability entry for the new primitive, or confirming it should be partial (and updating the baseline intentionally).
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |
