@@ -9,6 +9,8 @@ implementation_files:
   - scripts/benchmark-providers
   - scripts/benchmark_providers.py
   - tests/unit/test_provider_benchmark_and_optimizer.py
+tier: maintainer
+tags: [benchmark, providers, offline-harness]
 ---
 
 # ADR-052 — Provider Benchmark Harness

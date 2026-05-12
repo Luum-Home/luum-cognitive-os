@@ -3,6 +3,7 @@
 adr: 169
 status: accepted
 implementation_status: implemented
+title: 'Dashboard Formal Demotion'
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -12,6 +13,8 @@ implementation_files:
   - cognitive-os.yaml
   - scripts/_lib/settings-driver-claude-code.sh
 tier: maintainer
+title: Dashboard Formal Demotion
+tags: [ui, dashboard, demotion]
 ---
 # ADR-169 — Dashboard Formal Demotion
 
