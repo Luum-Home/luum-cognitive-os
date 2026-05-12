@@ -5025,6 +5025,87 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 2,
+        "doc": 6,
+        "script": 2,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/product-claim-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-280-product-question-to-evidence-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/product-answer-playbook.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-product-answer"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-product-answer-refresh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_product_answer_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_product_answer.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_product_answer_skill.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:6",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/product-answer/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 13
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
         "config": 1,
         "doc": 2,
         "hook": 1,
@@ -9035,23 +9116,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 62,
+      "high": 63,
       "medium": 39
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 2,
-      "repo-skill-not-projectable": 94,
+      "repo-skill-not-projectable": 95,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 62,
+      "compatibility-wrapper": 63,
       "lab": 8,
       "project-extension": 16,
       "so-maintainer": 15
     },
-    "total": 101,
+    "total": 102,
     "without_consumers": 2,
-    "without_lifecycle": 99
+    "without_lifecycle": 100
   },
   "target_family": "skills"
 }

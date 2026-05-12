@@ -333,12 +333,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 18,
-        "doc": 132,
+        "doc": 136,
         "hook": 38,
         "rule": 6,
-        "script": 45,
-        "skill": 9,
-        "test": 68
+        "script": 47,
+        "skill": 10,
+        "test": 71
       },
       "consumers": [
         {
@@ -416,6 +416,10 @@
         {
           "family": "doc",
           "path": "agents/test-coverage-enforcer.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
         },
         {
           "family": "doc",
@@ -615,6 +619,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -732,6 +744,10 @@
         {
           "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/product-answer-playbook.md"
         },
         {
           "family": "doc",
@@ -1163,6 +1179,14 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-product-answer"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-product-answer-refresh"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-safe-clean"
         },
         {
@@ -1319,6 +1343,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/product-answer/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/radar-update/SKILL.md"
         },
         {
@@ -1384,6 +1412,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_pre_commit_gates.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_product_answer_cli.py"
         },
         {
           "family": "test",
@@ -1559,6 +1591,14 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_product_answer.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_product_answer_skill.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_cache.py"
         },
         {
@@ -1608,12 +1648,12 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:9",
+        "skill_consumers:10",
         "hook_consumers:38",
         "rule_consumers:6",
-        "script_consumers:45",
-        "test_consumers:68",
-        "doc_consumers:132",
+        "script_consumers:47",
+        "test_consumers:71",
+        "doc_consumers:136",
         "config_consumers:18"
       ],
       "family": "hooks",
@@ -1624,7 +1664,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 316
+      "total_consumers": 326
     },
     {
       "confidence": "medium",
@@ -22849,7 +22889,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 10,
+        "doc": 11,
         "script": 2,
         "test": 2
       },
@@ -22924,6 +22964,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/harness-action-receipts.md"
         },
         {
@@ -22956,7 +23000,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -22969,7 +23013,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "high",

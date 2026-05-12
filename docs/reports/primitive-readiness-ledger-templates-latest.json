@@ -421,19 +421,11 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 2,
         "script": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-270-legal-compliance-workflow-automation.md"
@@ -455,7 +447,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:2"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -465,25 +457,17 @@
       "role": "prompt-composition",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 2,
         "script": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-270-legal-compliance-workflow-automation.md"
@@ -500,7 +484,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:2"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -510,26 +494,18 @@
       "role": "prompt-composition",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 3
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 2,
         "script": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-270-legal-compliance-workflow-automation.md"
@@ -551,7 +527,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:2"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -561,7 +537,7 @@
       "role": "prompt-composition",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 4
     },
     {
       "confidence": "medium",

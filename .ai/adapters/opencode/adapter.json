@@ -6,7 +6,7 @@
   "harness": "opencode",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 308,
+  "projected_primitive_count": 340,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -356,7 +356,7 @@
       "fidelity": "structural-advisory",
       "portable_id": "direct-main-guard",
       "primitive_file": "primitives/hooks/direct-main-guard-176178770d.json",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
     },
     {
       "claims_runtime_enforcement": true,
@@ -487,8 +487,106 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "hook-adoption-freeze-gate",
+      "primitive_file": "primitives/hooks/hook-adoption-freeze-gate-e0fb307854.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-attribution-completeness-validator",
+      "primitive_file": "primitives/hooks/hook-attribution-completeness-validator-a4890e2099.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-cos-session-start-projector",
+      "primitive_file": "primitives/hooks/hook-cos-session-start-projector-7a1bfcb9a1.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-dependency-license-classifier",
+      "primitive_file": "primitives/hooks/hook-dependency-license-classifier-c285917da9.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-external-cache-content-leak",
+      "primitive_file": "primitives/hooks/hook-external-cache-content-leak-da51ed3a49.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-external-pattern-cleanroom-gate",
+      "primitive_file": "primitives/hooks/hook-external-pattern-cleanroom-gate-4834538ca9.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "hook-header-validator",
       "primitive_file": "primitives/hooks/hook-header-validator-d5e21e6b37.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-history-rewrite-documented",
+      "primitive_file": "primitives/hooks/hook-history-rewrite-documented-2b4126752a.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-legal-review-required-on-runtime-import",
+      "primitive_file": "primitives/hooks/hook-legal-review-required-on-runtime-import-edab0edbbf.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-lib-symlink-divergence-detector",
+      "primitive_file": "primitives/hooks/hook-lib-symlink-divergence-detector-76fb75d156.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-pending-truth-drift-detector",
+      "primitive_file": "primitives/hooks/hook-pending-truth-drift-detector-6bee28cafd.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-pending-truth-staleness-gate",
+      "primitive_file": "primitives/hooks/hook-pending-truth-staleness-gate-b691c1a4a6.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-pending-truth-verify-weekly",
+      "primitive_file": "primitives/hooks/hook-pending-truth-verify-weekly-ba9622e824.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-research-to-runtime-firewall",
+      "primitive_file": "primitives/hooks/hook-research-to-runtime-firewall-034fb1fe3b.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-spdx-header-required",
+      "primitive_file": "primitives/hooks/hook-spdx-header-required-6044a391b9.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
@@ -1145,6 +1243,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "library-adapter-compile-py",
+      "primitive_file": "primitives/other-library/library-adapter-compile-py-5535f0374b.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "primitive-behavior-evidence",
       "primitive_file": "primitives/other-manifest/primitive-behavior-evidence-ab43853630.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
@@ -1173,6 +1278,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "rule-self-improvement-protocol",
+      "primitive_file": "primitives/rules/rule-self-improvement-protocol-dfcc3f0e51.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "agent-control-skill",
       "primitive_file": "primitives/skills/agent-control-skill-c237b68918.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
@@ -1182,6 +1294,20 @@
       "fidelity": "structural-advisory",
       "portable_id": "primitive-harness-coverage-skill",
       "primitive_file": "primitives/skills/primitive-harness-coverage-skill-51af57d8bd.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-agent-kpis",
+      "primitive_file": "primitives/skills/skill-agent-kpis-ad5821f7b6.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-self-improve",
+      "primitive_file": "primitives/skills/skill-self-improve-8c955b1c36.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
@@ -1252,6 +1378,20 @@
       "fidelity": "structural-advisory",
       "portable_id": "script-cos-adoption-profile",
       "primitive_file": "primitives/tools/script-cos-adoption-profile-f19e371aaf.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-adr-close",
+      "primitive_file": "primitives/tools/script-cos-adr-close-a3a84bb450.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-adr-partial-ledger",
+      "primitive_file": "primitives/tools/script-cos-adr-partial-ledger-ab15cdcf89.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
@@ -1341,6 +1481,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "script-cos-closure-trust-signal",
+      "primitive_file": "primitives/tools/script-cos-closure-trust-signal-70fcbcbf8a.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "script-cos-config-audit",
       "primitive_file": "primitives/tools/script-cos-config-audit-775b8ba3ff.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
@@ -1392,6 +1539,13 @@
       "fidelity": "structural-advisory",
       "portable_id": "script-cos-dispatch-smoke",
       "primitive_file": "primitives/tools/script-cos-dispatch-smoke-a0751cdac6.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-doc-cross-reference-audit",
+      "primitive_file": "primitives/tools/script-cos-doc-cross-reference-audit-1d0a5705f8.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
@@ -1544,6 +1698,34 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "script-cos-operational-guide-audit",
+      "primitive_file": "primitives/tools/script-cos-operational-guide-audit-5e02397831.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-pending-truth-aggregator",
+      "primitive_file": "primitives/tools/script-cos-pending-truth-aggregator-9cd44ed826.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-pending-truth-close",
+      "primitive_file": "primitives/tools/script-cos-pending-truth-close-ea4d5898b9.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-pending-truth-verify",
+      "primitive_file": "primitives/tools/script-cos-pending-truth-verify-63f24f6504.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "script-cos-portable-ai-overlay",
       "primitive_file": "primitives/tools/script-cos-portable-ai-overlay-70f7e973bd.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
@@ -1567,6 +1749,27 @@
       "fidelity": "structural-advisory",
       "portable_id": "script-cos-primitive-harvester-0ff3f530",
       "primitive_file": "primitives/tools/script-cos-primitive-harvester-0ff3f530-16dfaba271.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-product-answer",
+      "primitive_file": "primitives/tools/script-cos-product-answer-85baf9e688.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-product-answer-refresh",
+      "primitive_file": "primitives/tools/script-cos-product-answer-refresh-6426b8d757.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-public-claim-gate",
+      "primitive_file": "primitives/tools/script-cos-public-claim-gate-64f753b435.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
@@ -1658,6 +1861,13 @@
       "fidelity": "structural-advisory",
       "portable_id": "script-cos-session-start-budget",
       "primitive_file": "primitives/tools/script-cos-session-start-budget-d5795becd1.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-session-start-projector",
+      "primitive_file": "primitives/tools/script-cos-session-start-projector-c7b24fb72f.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
@@ -1845,6 +2055,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "script-documentation-truth-audit",
+      "primitive_file": "primitives/tools/script-documentation-truth-audit-a12762b45a.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "script-dogfood-score",
       "primitive_file": "primitives/tools/script-dogfood-score-7d93b319ce.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
@@ -1945,6 +2162,13 @@
       "fidelity": "structural-advisory",
       "portable_id": "script-orchestrator",
       "primitive_file": "primitives/tools/script-orchestrator-d1deb1c4ad.json",
+      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-portable-ai-overlay",
+      "primitive_file": "primitives/tools/script-portable-ai-overlay-21a837381e.json",
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {

@@ -1817,6 +1817,12 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "contract_id": "library-adapter-compile-py",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "contract_id": "script-cos-adapter-compile",
       "fidelity": "structural-advisory",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
@@ -1850,12 +1856,198 @@
       "contract_id": "script-promote-lifecycle-primitives-to-contracts",
       "fidelity": "structural-advisory",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-adoption-freeze-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-attribution-completeness-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-cos-session-start-projector",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-dependency-license-classifier",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-external-cache-content-leak",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-external-pattern-cleanroom-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-history-rewrite-documented",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-legal-review-required-on-runtime-import",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-lib-symlink-divergence-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-pending-truth-drift-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-pending-truth-staleness-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-pending-truth-verify-weekly",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-research-to-runtime-firewall",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-spdx-header-required",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-documentation-truth-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-trust-signal",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-start-projector",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-pending-truth-verify",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-close",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-pending-truth-aggregator",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-pending-truth-close",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-partial-ledger",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-operational-guide-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doc-cross-reference-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-portable-ai-overlay",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-self-improve",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-agent-kpis",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-self-improvement-protocol",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-product-answer",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-product-answer-refresh",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-public-claim-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
     }
   ],
   "display_name": "OpenAI Codex",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "codex",
-  "lifecycle_primitives_supporting_harness": 24,
+  "lifecycle_primitives_supporting_harness": 27,
   "limitations": [
     "Runtime parity depends on Codex-supported hook/settings semantics.",
     "Proof currently covers default profile, not full profile."

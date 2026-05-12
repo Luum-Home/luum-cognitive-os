@@ -4327,8 +4327,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 13,
-        "doc": 64,
+        "config": 14,
+        "doc": 65,
         "hook": 5,
         "rule": 9,
         "script": 9,
@@ -4379,6 +4379,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -4455,6 +4459,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-280-product-question-to-evidence-primitive.md"
         },
         {
           "family": "doc",
@@ -4844,8 +4852,8 @@
         "rule_consumers:9",
         "script_consumers:9",
         "test_consumers:24",
-        "doc_consumers:64",
-        "config_consumers:13"
+        "doc_consumers:65",
+        "config_consumers:14"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -4855,7 +4863,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 125
+      "total_consumers": 127
     },
     {
       "confidence": "medium",
@@ -12508,7 +12516,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 12,
         "doc": 105,
         "hook": 12,
         "rule": 3,
@@ -12548,6 +12556,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-claim-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -13178,7 +13194,7 @@
         "script_consumers:8",
         "test_consumers:20",
         "doc_consumers:105",
-        "config_consumers:10"
+        "config_consumers:12"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -13188,7 +13204,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 163
+      "total_consumers": 165
     },
     {
       "confidence": "medium",

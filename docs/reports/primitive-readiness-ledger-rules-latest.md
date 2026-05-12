@@ -30,7 +30,7 @@ Consumer accessibility: lifecycle-declared-maintainer:1, so-local-only:119
 | `rules/auto-rollback.md` | driver-specific | heuristic:text | medium | so-local-only |  | 78 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/auto-skill-generation.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/bash-naming.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/blast-radius.md` | lab | heuristic:path | medium | so-local-only |  | 125 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/blast-radius.md` | lab | heuristic:path | medium | so-local-only |  | 127 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/broken-window-policy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/capability-levels.md` | driver-specific | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/capability-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
@@ -75,7 +75,7 @@ Consumer accessibility: lifecycle-declared-maintainer:1, so-local-only:119
 | `rules/model-directive.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/model-routing.md` | driver-specific | heuristic:text | medium | so-local-only |  | 62 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/non-blocking-retry.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 163 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 165 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/orchestrator-mode.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 26 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/orchestrator-prompt-compose.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/parry-integration.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
