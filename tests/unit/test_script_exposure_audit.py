@@ -88,6 +88,41 @@ def test_documented_route_disposition_resolves_p0() -> None:
     assert finding["disposition"]["resolution"] == "documented_route"
 
 
+def test_documented_route_disposition_resolves_maintainer_runtime_route() -> None:
+    row = _row("scripts/hooked-maintainer", "maintainer-tool", total=1, families={"hook": 1})
+
+    finding = classify_script(
+        row,
+        {
+            "path": "scripts/hooked-maintainer",
+            "resolution": "documented_route",
+            "route": "hooks/hooked-maintainer.sh",
+            "rationale": "Synthetic maintainer route documentation.",
+        },
+    )
+
+    assert finding["priority"] == "OK"
+    assert finding["exposure_class"] == "OK-documented-route"
+
+
+def test_internal_backend_disposition_resolves_p2_script_orchestrated() -> None:
+    row = _row("scripts/internal_backend.py", "maintainer-tool", total=1, families={"script": 1})
+
+    finding = classify_script(
+        row,
+        {
+            "path": "scripts/internal_backend.py",
+            "resolution": "internal_backend",
+            "owner": "script-orchestrated backend",
+            "rationale": "Synthetic backend classification.",
+        },
+    )
+
+    assert finding["priority"] == "OK"
+    assert finding["finding"] == "maintainer-tool-internal-backend"
+    assert finding["exposure_class"] == "OK-internal-backend"
+
+
 def test_explicit_maintainer_classification_resolves_p2() -> None:
     row = _row("scripts/internal", "maintainer-tool", total=2, families={"doc": 1, "test": 1})
     row["role_source"] = "override"

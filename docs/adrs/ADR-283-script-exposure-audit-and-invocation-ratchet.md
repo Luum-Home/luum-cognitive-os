@@ -83,11 +83,14 @@ paths such as `scripts/cos` and future `cmd/*` entries count as router
 consumers. A sibling `scripts/cos-*` consumer is just a script consumer unless it
 is the dispatcher itself.
 
-Manual route dispositions live in
+Manual route and backend dispositions live in
 `manifests/script-exposure-dispositions.yaml`. A row with
 `resolution: documented_route` records the equivalent hook/router/operator path
 and resolves the audit finding as `OK-documented-route` without pretending that
-the script has a skill consumer.
+the script has a skill consumer. A row with `resolution: internal_backend`
+records that a maintainer tool is an implementation backend owned by a wrapper
+or orchestration workflow, resolving it as `OK-internal-backend` instead of
+creating a low-value skill for an implementation detail.
 
 P2 is also refined so the audit does not force every maintainer helper into a
 new skill:
@@ -96,6 +99,7 @@ new skill:
 |---|---|---|
 | `OK-classified-maintainer` | Maintainer tool has lifecycle metadata or an override rationale. | No skill required by default. |
 | `P2-runtime-route-undocumented` | Hook/router exposure but no explicit internal classification. | Document route, add lifecycle/override, or promote to a skill. |
+| `OK-internal-backend` | Maintainer tool has a manual `internal_backend` disposition. | No skill required; keep the wrapper/workflow as the invocation surface. |
 | `P2-script-orchestrated` | Script consumers but no hook/router/skill and no explicit classification. | Classify as internal backend or promote a grouped skill. |
 | `P2-evidence-only` | Docs/tests evidence but no runtime route or explicit classification. | Classify internal, archive stale docs, or promote. |
 | `P2-doc-only` / `P2-test-only` / `P2-config-only` | Single-family evidence only. | Treat as likely internal/test/stale unless product value justifies promotion. |

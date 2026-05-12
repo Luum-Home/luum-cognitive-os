@@ -121,13 +121,20 @@ def classify_script(row: dict[str, Any], disposition: dict[str, Any] | None = No
     disposition = disposition or {}
     disposition_resolution = str(disposition.get("resolution") or "")
 
-    if role == "agentic-primitive" and skill_consumers == 0 and disposition_resolution == "documented_route":
+    if role in {"agentic-primitive", "maintainer-tool"} and skill_consumers == 0 and disposition_resolution == "documented_route":
         priority = "OK"
-        finding = "agentic-route-documented"
+        finding = "documented-route"
         exposure_class = "OK-documented-route"
         recommendation = "no-action"
         route = str(disposition.get("route") or "documented route")
         rationale = f"Manual ADR-283 disposition records an equivalent route: {route}."
+    elif role == "maintainer-tool" and skill_consumers == 0 and disposition_resolution == "internal_backend":
+        priority = "OK"
+        finding = "maintainer-tool-internal-backend"
+        exposure_class = "OK-internal-backend"
+        recommendation = "no-action"
+        owner = str(disposition.get("owner") or "script orchestration")
+        rationale = f"Manual ADR-283 disposition classifies this as an internal backend owned by {owner}."
     elif role == "agentic-primitive" and skill_consumers == 0:
         priority = "P0"
         finding = "agentic-primitive-without-skill-consumer"

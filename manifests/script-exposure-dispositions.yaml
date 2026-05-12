@@ -1,45 +1,993 @@
 schema_version: 1
 purpose: Explicit manual ADR-283 dispositions for script exposure findings after manual review on 2026-05-12.
 resolution_values:
-  - documented_route
+- documented_route
+- internal_backend
 routes:
-  - path: scripts/_lib/session-id.sh
-    resolution: documented_route
-    route: sourced by hooks/edit-lock-drain-parked.sh, hooks/edit-lock-process-negotiations.sh, and scripts/edit-coop.sh
-    rationale: Internal session identity helper; no direct skill invocation needed.
-  - path: scripts/cos-agent-message
-    resolution: documented_route
-    route: hook-driven agent message bridge; lifecycle is pending-sunset
-    rationale: Keep explicit until sunset/demotion removes active hook route.
-  - path: scripts/cos-architecture-readiness
-    resolution: documented_route
-    route: scripts/cos architecture readiness
-    rationale: Central command dispatcher is the agent-facing route.
-  - path: scripts/cos-doctor-harness.sh
-    resolution: documented_route
-    route: scripts/cos doctor harness and bin/cognitive-os.sh doctor harness
-    rationale: Harness doctor is already exposed through central dispatcher and package fallback.
-  - path: scripts/cos-doctor-tools.sh
-    resolution: documented_route
-    route: hook/install-profile managed doctor path
-    rationale: OS-only diagnostic route; direct skill invocation is not required.
-  - path: scripts/cos-merge-queue-worker.sh
-    resolution: documented_route
-    route: hook/worker managed merge queue path
-    rationale: Worker primitive should be documented as a runtime route, not a human skill command.
-  - path: scripts/cos-session-coordination
-    resolution: documented_route
-    route: hook/session coordination path
-    rationale: Coordination primitive is consumed by session hooks and runtime coordination flows.
-  - path: scripts/cos-validation-break.sh
-    resolution: documented_route
-    route: scripts/cos validation break
-    rationale: Central command dispatcher is the operator route.
-  - path: scripts/cos-validation-status.sh
-    resolution: documented_route
-    route: scripts/cos validation status
-    rationale: Central command dispatcher is the operator route.
-  - path: scripts/set-security-profile.sh
-    resolution: documented_route
-    route: install/profile and hook-managed security profile path
-    rationale: Profile mutation route is protected install/profile surface, not a default skill call.
+- path: scripts/_lib/session-id.sh
+  resolution: documented_route
+  route: sourced by hooks/edit-lock-drain-parked.sh, hooks/edit-lock-process-negotiations.sh, and scripts/edit-coop.sh
+  rationale: Internal session identity helper; no direct skill invocation needed.
+- path: scripts/cos-agent-message
+  resolution: documented_route
+  route: hook-driven agent message bridge; lifecycle is pending-sunset
+  rationale: Keep explicit until sunset/demotion removes active hook route.
+- path: scripts/cos-architecture-readiness
+  resolution: documented_route
+  route: scripts/cos architecture readiness
+  rationale: Central command dispatcher is the agent-facing route.
+- path: scripts/cos-doctor-harness.sh
+  resolution: documented_route
+  route: scripts/cos doctor harness and bin/cognitive-os.sh doctor harness
+  rationale: Harness doctor is already exposed through central dispatcher and package fallback.
+- path: scripts/cos-doctor-tools.sh
+  resolution: documented_route
+  route: hook/install-profile managed doctor path
+  rationale: OS-only diagnostic route; direct skill invocation is not required.
+- path: scripts/cos-merge-queue-worker.sh
+  resolution: documented_route
+  route: hook/worker managed merge queue path
+  rationale: Worker primitive should be documented as a runtime route, not a human skill command.
+- path: scripts/cos-session-coordination
+  resolution: documented_route
+  route: hook/session coordination path
+  rationale: Coordination primitive is consumed by session hooks and runtime coordination flows.
+- path: scripts/cos-validation-break.sh
+  resolution: documented_route
+  route: scripts/cos validation break
+  rationale: Central command dispatcher is the operator route.
+- path: scripts/cos-validation-status.sh
+  resolution: documented_route
+  route: scripts/cos validation status
+  rationale: Central command dispatcher is the operator route.
+- path: scripts/set-security-profile.sh
+  resolution: documented_route
+  route: install/profile and hook-managed security profile path
+  rationale: Profile mutation route is protected install/profile surface, not a default skill call.
+- path: scripts/adr_implementation_ledger.py
+  resolution: documented_route
+  route: hooks/session-startup-protocol.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/agent_work_ledger.py
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, hooks/completion-gate.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh, packages/quality-gates/hooks/completion-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/ai-provider-identity-guard
+  resolution: documented_route
+  route: hooks/ai-provider-identity-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/approval_ledger.py
+  resolution: documented_route
+  route: hooks/claim-validator.sh, packages/quality-gates/hooks/claim-validator.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/audit_adrs.py
+  resolution: documented_route
+  route: hooks/pre-commit-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/claim_enforcer.py
+  resolution: documented_route
+  route: hooks/claim-validator.sh, packages/quality-gates/hooks/claim-validator.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/claim_task.py
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, hooks/completion-gate.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh, packages/quality-gates/hooks/completion-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/commit_provenance.py
+  resolution: documented_route
+  route: hooks/session-init.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-action-receipt
+  resolution: documented_route
+  route: hooks/direct-main-guard.sh, hooks/git-commit-scope-guard.sh, hooks/git-context-capture.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-adr-resolve
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-agent-daemon
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-agent-worktree-prepare
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh, scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-branch-task-check
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-control-plane-audit
+  resolution: documented_route
+  route: hooks/control-plane-audit.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-counsel-packet
+  resolution: documented_route
+  route: hooks/legal-review-required-on-runtime-import.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-coverage
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-cross-stack-adoption-truth
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-cross-stack-license-audit
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-cross-stack-secret-audit
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-dependency-adoption-gate
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-document-ingest
+  resolution: documented_route
+  route: hooks/document-ingest-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-git-sync.sh
+  resolution: documented_route
+  route: hooks/destructive-git-blocker.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-governance-roi
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-history-rewrite-audit
+  resolution: documented_route
+  route: hooks/history-rewrite-documented.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-history-sanitization
+  resolution: documented_route
+  route: hooks/control-plane-audit.sh, scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-imported-pattern-closure-audit
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-legal-approve
+  resolution: documented_route
+  route: hooks/legal-review-required-on-runtime-import.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-maintainer-agent
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-mcp-registration-plan
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-merge-queue.sh
+  resolution: documented_route
+  route: hooks/direct-main-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-performance-ledger
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-policy-eval
+  resolution: documented_route
+  route: hooks/destructive-rm-blocker.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-promote-from-telemetry
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-promotion-proposer
+  resolution: documented_route
+  route: hooks/promotion-proposer-weekly.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-release-freeze
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-reward-signal-audit
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-rollback
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-root
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-run-trace
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-safe-clean
+  resolution: documented_route
+  route: hooks/untracked-work-preservation-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-session-branch.sh
+  resolution: documented_route
+  route: hooks/destructive-git-blocker.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-skill-performance-ledger
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-team
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-tool-discovery-preuse
+  resolution: documented_route
+  route: hooks/skill-router-bash-gate.sh, scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-tui
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-valkey-local.sh
+  resolution: documented_route
+  route: hooks/valkey-ensure.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos-worktree-audit
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh, scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_agent_message.py
+  resolution: documented_route
+  route: hooks/agent-message-inbox-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_branch_lock.py
+  resolution: documented_route
+  route: hooks/branch-ownership-release.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_build_self_knowledge.py
+  resolution: documented_route
+  route: hooks/self-knowledge-refresh.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_clean_room_ast_similarity.py
+  resolution: documented_route
+  route: hooks/clean-room-ast-similarity-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_daemon.py
+  resolution: documented_route
+  route: hooks/cosd-intent-submit.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_executor.py
+  resolution: documented_route
+  route: hooks/cos-executor-daemon-launcher.sh, hooks/cos-executor-heartbeat.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_lib_symlink_invariant_audit.py
+  resolution: documented_route
+  route: hooks/lib-symlink-divergence-detector.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_promotion_proposer.py
+  resolution: documented_route
+  route: hooks/promotion-proposer-weekly.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_session_coordination.py
+  resolution: documented_route
+  route: hooks/cross-session-coordination-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_sprint.py
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_task_claims.py
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_test_artifact_status.py
+  resolution: documented_route
+  route: hooks/_lib/artifact-status.sh, hooks/pre-commit-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/cos_verbatim_copy_detector.py
+  resolution: documented_route
+  route: hooks/external-cache-content-leak.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/dangerous_env_flag_detector.py
+  resolution: documented_route
+  route: hooks/dangerous-env-flag-detector.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/derived_artifact_gate.py
+  resolution: documented_route
+  route: hooks/pre-commit-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/engram-sync.sh
+  resolution: documented_route
+  route: hooks/engram-auto-sync.sh, packages/engram-sync/hooks/engram-auto-sync.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/export-engram-to-obsidian.sh
+  resolution: documented_route
+  route: hooks/engram-obsidian-export-on-stop.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/generate_adr_index.py
+  resolution: documented_route
+  route: hooks/pre-commit-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/hook_quality_audit.py
+  resolution: documented_route
+  route: hooks/pre-commit-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/network_egress_guard.py
+  resolution: documented_route
+  route: hooks/network-egress-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/orchestrator_claim_gate.py
+  resolution: documented_route
+  route: hooks/orchestrator-claim-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/orphan_commit_scan.py
+  resolution: documented_route
+  route: hooks/post-git-orphan-notifier.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/precommit_content_hash.py
+  resolution: documented_route
+  route: hooks/pre-commit-content-hash-dedupe.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/private_content_audit.py
+  resolution: documented_route
+  route: scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/push_collision_detect.py
+  resolution: documented_route
+  route: hooks/_lib/push-collision-check.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/resource_lease.py
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, hooks/completion-gate.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh, packages/quality-gates/hooks/completion-gate.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/review_pending_sweeper.py
+  resolution: documented_route
+  route: hooks/review-spawner.sh, packages/agent-lifecycle/hooks/review-spawner.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/semantic-lookup.mjs
+  resolution: documented_route
+  route: hooks/_lib/semantic-search.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/so-reaper.sh
+  resolution: documented_route
+  route: hooks/reaper-daemon-launcher.sh, hooks/reaper-heartbeat.sh, hooks/session-end-reap.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/so_session_watchdog.py
+  resolution: documented_route
+  route: hooks/cognitive-os-health.sh, hooks/session-watchdog-launcher.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/state_retention_audit.py
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, hooks/state-retention-audit.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh, scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/subagent_launch_preflight.py
+  resolution: documented_route
+  route: hooks/subagent-capability-preflight.sh, scripts/cos
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/topology-discover.sh
+  resolution: documented_route
+  route: hooks/symlink-mutation-guard.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+- path: scripts/write_context_marker.py
+  resolution: documented_route
+  route: hooks/agent-prelaunch.sh, hooks/session-init.sh, packages/agent-lifecycle/hooks/agent-prelaunch.sh
+  rationale: 'ADR-283 P2 runtime-route review: maintainer tool is reached through hook/router consumers; no skill consumer
+    required by default.'
+scripts:
+- path: scripts/active_primitive_index.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-active-primitive-index
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/agentic_tool_license_matrix.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/agentic-tool-license-matrix.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/auto_tune_routing.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/auto-tune-routing
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/check_hook_registration.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/primitive-coherence-audit.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/check_test_quality.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-ci-local.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/claim_proof_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-weekly-primitive-gap.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_adoption_profile.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-adoption-profile
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_branch_lease.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-branch-lease
+  - scripts/cos-governed-agent.sh
+  - scripts/cos_architecture_readiness.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_claim_signature_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-claim-signature-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_classify_coverage.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/aspirational_audit.py
+  - scripts/weekly-aspirational-audit.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_consumer_fleet_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-consumer-fleet-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_consumer_improvement_proposals.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-export-consumer-improvement-proposals
+  - scripts/cos-import-consumer-improvement-proposals
+  - scripts/primitive_authority_audit.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_context_budget_report.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-context-budget-report
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_coordination_status.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-coordination-status.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_coverage.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos-coverage
+  - scripts/primitive_harness_coverage.py
+  - scripts/statusline-coverage.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_credential_safe_run.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-credential-safe-run
+  - scripts/security_red_team.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_cross_instance_drill.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-cross-instance-drill
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_cross_instance_learning.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-engram-bundle
+  - scripts/cos-engram-import-propose
+  - scripts/cos-export-consumer-evidence
+  - scripts/cos-federation-trigger-audit
+  - scripts/cos-import-consumer-evidence
+  - scripts/cos-registry-lock
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_default_visible_reducer.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-default-visible-reducer
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_demotion_loop_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-demotion-loop-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_demotion_proposer.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-demotion-proposer
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_deps_install.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-deps-install.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_dispatch_smoke.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-dispatch-smoke
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_doctrine_proposer.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-doctrine-proposer
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_engram_command_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-engram-command-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_false_positive_ledger.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-false-positive-ledger
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_flow_register.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-flow-register.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_friction_report.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-friction-report
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_governance_roi.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-governance-roi
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_governed_runner.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos_codex_guard.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_headless_publication.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-headless-pipeline
+  - scripts/cos-headless-publication
+  - scripts/cos_architecture_readiness.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_headless_safe_mode.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-headless-safe-mode
+  - scripts/cos_architecture_readiness.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_key_learnings_capture.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-key-learnings-capture
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_manifest_tier_claim_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-manifest-tier-claim-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_operational_status.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-operational-status
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_preamble_budget.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-preamble-budget
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_primitive_fitness.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-primitive-fitness
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_profile_explain.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-profile-explain
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_repair.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-repair
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_run_task.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-run-task
+  - scripts/cos_architecture_readiness.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_self_improvement_loop.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-self-improvement-loop
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_tier_claim_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-tier-claim-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_validate.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-validate
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_wip_safety_score.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-wip-safety-score
+  - scripts/cos_recovery_drill.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cos_worktree_sweeper.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-worktree-sweeper.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/cross_session_reconciler.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-doctor-concurrency.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/detect_runner_capacity.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/adr100_live_headroom_check.py
+  - scripts/pytest-with-summary.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/docs_duplicate_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-weekly-primitive-gap.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/harness_parity_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/derived_artifact_gate.py
+  - scripts/harness-parity-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/lab_first_promotion_gate.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-lab-first-gate
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/mcp_tofu_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/security_red_team.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/metrics_tamper_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/security_red_team.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/portable_ai_consumer_impact.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-portable-ai-consumer-impact
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_authority_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos-primitive-authority-audit
+  - scripts/documentation_truth_audit.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_coverage.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos-weekly-primitive-gap.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_duplication_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_family_readiness_ledger.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_fitness_ledger.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos-primitive-fitness-ledger
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_gap_snapshot.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos-weekly-primitive-gap.sh
+  - scripts/primitive_surface_reduce.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_lifecycle.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos_closure_discipline_audit.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_projection_fidelity.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos-primitive-projection-fidelity
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_readiness_ledger.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/primitive_row_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-weekly-primitive-gap.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/project_shell_ci.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/acc_pipeline.py
+  - scripts/cos_init.py
+  - scripts/primitive_authority_audit.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/proof_drill_evidence_record.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/proof-drill-evidence-record
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/proof_drill_select.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/proof-drill-select
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/provider_spoof_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/security_red_team.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/reduction_backlog.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-weekly-primitive-gap.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/render_adoption_tiers.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos_architecture_readiness.py
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/self_improvement_discipline_gate.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-self-improvement-discipline-gate
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/self_programming_pattern_audit.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-self-programming-pattern-audit
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/update_readme_badges.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-weekly-public-metrics.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'
+- path: scripts/verify_plan_claims.py
+  resolution: internal_backend
+  owner: script-orchestrated backend
+  consumers:
+  - scripts/cos-doctor-concurrency.sh
+  rationale: 'ADR-283 P2 script-orchestrated review: Python module is consumed by wrappers/orchestrators and is not intended
+    as a direct skill surface by default.'

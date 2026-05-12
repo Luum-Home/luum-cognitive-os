@@ -30,6 +30,14 @@ def _write_ledger(path: Path) -> None:
                         "consumer_families": {"test": 1},
                         "consumers": [{"family": "test", "path": "tests/test_internal.py"}],
                     },
+                    {
+                        "path": "scripts/internal-backend.py",
+                        "role": "maintainer-tool",
+                        "skill_consumers": 0,
+                        "total_consumers": 1,
+                        "consumer_families": {"script": 1},
+                        "consumers": [{"family": "script", "path": "scripts/internal-wrapper"}],
+                    },
                 ],
             }
         ),
@@ -54,7 +62,7 @@ def test_cli_outputs_json_report(tmp_path: Path) -> None:
     assert report["schema_version"] == "script-exposure-audit/v1"
     assert report["summary"]["by_priority"]["P0"] == 1
     assert report["summary"]["by_exposure_class"]["P0-unrouted"] == 1
-    assert report["summary"]["by_priority"]["P2"] == 1
+    assert report["summary"]["by_priority"]["P2"] == 2
 
 
 def test_cli_fail_p0_exits_two(tmp_path: Path) -> None:
@@ -86,6 +94,11 @@ def test_cli_accepts_dispositions_manifest(tmp_path: Path) -> None:
                 "    resolution: documented_route",
                 "    route: synthetic route",
                 "    rationale: synthetic test",
+                "scripts:",
+                "  - path: scripts/internal-backend.py",
+                "    resolution: internal_backend",
+                "    owner: synthetic wrapper",
+                "    rationale: synthetic backend",
             ]
         )
         + "\n",
@@ -112,4 +125,6 @@ def test_cli_accepts_dispositions_manifest(tmp_path: Path) -> None:
     assert result.returncode == 0
     report = json.loads(result.stdout)
     assert report["summary"]["by_priority"]["P0"] == 0
+    assert report["summary"]["by_priority"]["P2"] == 1
     assert report["summary"]["by_exposure_class"]["OK-documented-route"] == 1
+    assert report["summary"]["by_exposure_class"]["OK-internal-backend"] == 1
