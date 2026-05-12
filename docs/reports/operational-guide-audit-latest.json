@@ -1,17 +1,17 @@
 {
   "schema_version": "operational-guide-audit/v1",
-  "generated_at": "2026-05-12T14:31:06Z",
+  "generated_at": "2026-05-12T14:41:37Z",
   "contract_ref": "ADR-274",
   "summary": {
-    "total_adrs": 284,
+    "total_adrs": 285,
     "by_verdict": {
       "not-applicable": 222,
-      "missing": 55,
-      "compliant": 6,
+      "missing": 45,
+      "compliant": 17,
       "exempt": 1
     },
     "by_priority": {
-      "P0": 55
+      "P0": 45
     }
   },
   "findings": [
@@ -513,21 +513,6 @@
     {
       "severity": "warn",
       "code": "operational-guide-missing",
-      "message": "ADR-173-surface-5-research-gate: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-173-surface-5-research-gate",
-        "path": "docs/adrs/ADR-173-surface-5-research-gate.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 6
-      },
-      "stable_id": "adr-274/ADR-173-surface-5-research-gate",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
       "message": "ADR-175-research-quality-enforcement: §Operational Guide missing (0/3 sub-sections)",
       "details": {
         "adr": "ADR-175-research-quality-enforcement",
@@ -703,141 +688,6 @@
         "age_days": 6
       },
       "stable_id": "adr-274/ADR-188-mandatory-skill-invocation-at-high-confidence",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-244-trust-report-claim-validator-must-enforce: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-244-trust-report-claim-validator-must-enforce",
-        "path": "docs/adrs/ADR-244-trust-report-claim-validator-must-enforce.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-244-trust-report-claim-validator-must-enforce",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-245-chaos-tests-readonly-production-source: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-245-chaos-tests-readonly-production-source",
-        "path": "docs/adrs/ADR-245-chaos-tests-readonly-production-source.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-245-chaos-tests-readonly-production-source",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-246-release-transaction-freeze: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-246-release-transaction-freeze",
-        "path": "docs/adrs/ADR-246-release-transaction-freeze.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-246-release-transaction-freeze",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-247-manifest-driven-postmortem-regression-audits: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-247-manifest-driven-postmortem-regression-audits",
-        "path": "docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-247-manifest-driven-postmortem-regression-audits",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-248-control-plane-audit-loop: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-248-control-plane-audit-loop",
-        "path": "docs/adrs/ADR-248-control-plane-audit-loop.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-248-control-plane-audit-loop",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-249-primitive-behavioral-proof-anti-overfit-tests: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-249-primitive-behavioral-proof-anti-overfit-tests",
-        "path": "docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-249-primitive-behavioral-proof-anti-overfit-tests",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-250-skill-router-retrieval-adapter-boundary: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-250-skill-router-retrieval-adapter-boundary",
-        "path": "docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-250-skill-router-retrieval-adapter-boundary",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-251-agent-orchestration-adapter-boundary: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-251-agent-orchestration-adapter-boundary",
-        "path": "docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-251-agent-orchestration-adapter-boundary",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-252-capability-coverage-matrix-and-feature-reality-ledger: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-252-capability-coverage-matrix-and-feature-reality-ledger",
-        "path": "docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-252-capability-coverage-matrix-and-feature-reality-ledger",
       "adr": "ADR-274"
     }
   ],
@@ -3731,12 +3581,12 @@
       "date": "2026-05-06",
       "age_days": 6,
       "implementation_files_count": 2,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-174-auto-derived-primitive-routing",
@@ -4899,12 +4749,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 4,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-245-chaos-tests-readonly-production-source",
@@ -4915,12 +4765,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 3,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 4,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-246-release-transaction-freeze",
@@ -4931,12 +4781,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 4,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-247-manifest-driven-postmortem-regression-audits",
@@ -4947,12 +4797,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 3,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-248-control-plane-audit-loop",
@@ -4963,12 +4813,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 3,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-249-primitive-behavioral-proof-anti-overfit-tests",
@@ -4979,12 +4829,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 3,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-250-skill-router-retrieval-adapter-boundary",
@@ -4995,12 +4845,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-251-agent-orchestration-adapter-boundary",
@@ -5011,12 +4861,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-252-capability-coverage-matrix-and-feature-reality-ledger",
@@ -5027,12 +4877,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-253-tombstone-squads",
@@ -5384,6 +5234,22 @@
       "exemption_reason": "<reason>",
       "subject_to_contract": true,
       "verdict": "exempt",
+      "priority": null
+    },
+    {
+      "adr": "ADR-275-closure-and-projection-primitives",
+      "adr_num": 275,
+      "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md",
+      "tier": "maintainer",
+      "status": "accepted",
+      "date": "2026-05-12",
+      "age_days": 0,
+      "implementation_files_count": 5,
+      "has_operational_guide": true,
+      "subsection_count": 5,
+      "exemption_reason": null,
+      "subject_to_contract": true,
+      "verdict": "compliant",
       "priority": null
     }
   ]

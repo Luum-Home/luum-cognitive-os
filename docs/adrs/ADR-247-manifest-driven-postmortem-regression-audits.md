@@ -140,6 +140,71 @@ external_tools:
 6. Use env vars or gitignored local manifests for private values.
 7. Public reports may include placeholders only.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, postmortem regression checks were hardcoded Python scripts
+that embedded specific file paths, project-internal names, and in some cases
+sensitive values (operator email, local home prefixes). Adding a new bug class
+required a new bespoke script. External tools (Gitleaks, TruffleHog,
+git-filter-repo) were either not used or reimplemented inside COS.
+
+After this ADR:
+
+- New postmortem regression checks are **manifest entries** in
+  `manifests/postmortem-regression-audit.yaml`. The generic check engine
+  (`scripts/cos-postmortem-regression-audit`) reads the manifest and runs the
+  checks — no new Python code required for a new ADR class.
+- Sensitive values (operator email, home path prefixes) are referenced via
+  env var names in the manifest (`COS_HISTORY_SANITIZE_OPERATOR_EMAIL`,
+  `COS_HISTORY_SANITIZE_HOME_PREFIX`). They are never hardcoded in public files.
+- External tools (Gitleaks, TruffleHog, git-filter-repo, pre-commit,
+  Conftest/OPA) are declared as adapter entries with `tool`, `owner`,
+  `license_spdx`, `adapter`, `allowed_callers`, `failure_policy`,
+  `recursion_boundary`, and `output_sanitization` fields. COS orchestrates
+  them; it does not replace them.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "How do I add a check for a new postmortem bug class?" — Add an entry under
+  `checks:` in `manifests/postmortem-regression-audit.yaml` with the ADR
+  reference, type (`forbidden_pattern` or `required_paths`), scope, and
+  pattern. The engine picks it up on next run.
+- "How do I use Gitleaks without hardcoding its path?" — Declare it under
+  `external_tools:` in the manifest with `adapter: cli-json` and
+  `allowed_callers: [scripts/cos-secret-audit]`. The audit runner then
+  validates that only declared callers invoke it.
+- "How do I keep sensitive values out of public manifests?" — Reference them
+  via `sensitive_value_sources: env: [VAR_NAME]`. The check engine reads
+  the actual value at runtime from the environment.
+
+**Does not answer:**
+- Whether a new external tool is licensed for the project — that requires
+  the separate ADR-212/ADR-215 cross-stack license audit (`scripts/cos-cross-stack-license-audit`).
+- Whether an external tool's output is correct. The manifest declares the
+  adapter contract; the tool's correctness is the tool's responsibility.
+
+### Daily operational pattern
+
+1. Run the manifest-driven audit to check all declared regression classes:
+   ```bash
+   scripts/cos-postmortem-regression-audit --json
+   ```
+2. Run the primitive coherence audit (which reads the external tool declarations):
+   ```bash
+   scripts/primitive-coherence-audit.py --json
+   ```
+3. To add a new regression class after an incident:
+   - Open `manifests/postmortem-regression-audit.yaml`.
+   - Add a check entry with the new ADR reference and pattern.
+   - Re-run the audit to verify no false positives.
+4. Full verification suite:
+   ```bash
+   python3 -m pytest tests/unit/test_postmortem_regression_audit.py tests/unit/test_primitive_coherence_audit.py tests/audit/test_adr_contracts.py -q
+   ```
+
 ## Alternatives rejected
 
 - **Hardcode one Python check per ADR** — rejected because it does not scale and

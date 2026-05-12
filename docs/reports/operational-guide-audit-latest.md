@@ -1,4 +1,4 @@
-# Operational Guide Audit — 2026-05-12T14:31:06Z
+# Operational Guide Audit — 2026-05-12T14:41:37Z
 
 > Per ADR-274. Schema: `operational-guide-audit/v1`.
 > Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence
@@ -23,37 +23,27 @@ Priority for backfill (only applies to `missing`/`partial`):
 Per ADR-274: rules without enforcement are honored ~50% historically;
 this audit + `adr-section-validator.sh` extension close the loop.
 
-**Total ADRs scanned**: 284
+**Total ADRs scanned**: 285
 
 ## By verdict
 
 | Verdict | Count |
 |---|---:|
-| compliant | 6 |
+| compliant | 17 |
 | exempt | 1 |
-| missing | 55 |
+| missing | 45 |
 | not-applicable | 222 |
 
 ## By priority (backfill queue)
 
 | Priority | Count |
 |---|---:|
-| P0 | 55 |
+| P0 | 45 |
 
 ## Backfill list (P0 + P1)
 
 | Priority | ADR | Verdict | Age (days) | Path |
 |---|---|---|---:|---|
-| P0 | `ADR-244-trust-report-claim-validator-must-enforce` | missing | 4 | `docs/adrs/ADR-244-trust-report-claim-validator-must-enforce.md` |
-| P0 | `ADR-245-chaos-tests-readonly-production-source` | missing | 4 | `docs/adrs/ADR-245-chaos-tests-readonly-production-source.md` |
-| P0 | `ADR-246-release-transaction-freeze` | missing | 4 | `docs/adrs/ADR-246-release-transaction-freeze.md` |
-| P0 | `ADR-247-manifest-driven-postmortem-regression-audits` | missing | 4 | `docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md` |
-| P0 | `ADR-248-control-plane-audit-loop` | missing | 4 | `docs/adrs/ADR-248-control-plane-audit-loop.md` |
-| P0 | `ADR-249-primitive-behavioral-proof-anti-overfit-tests` | missing | 4 | `docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md` |
-| P0 | `ADR-250-skill-router-retrieval-adapter-boundary` | missing | 4 | `docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md` |
-| P0 | `ADR-251-agent-orchestration-adapter-boundary` | missing | 4 | `docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md` |
-| P0 | `ADR-252-capability-coverage-matrix-and-feature-reality-ledger` | missing | 4 | `docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md` |
-| P0 | `ADR-173-surface-5-research-gate` | missing | 6 | `docs/adrs/ADR-173-surface-5-research-gate.md` |
 | P0 | `ADR-177-activate-skill-lifecycle-promotion-ladder` | missing | 6 | `docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md` |
 | P0 | `ADR-188-mandatory-skill-invocation-at-high-confidence` | missing | 6 | `docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md` |
 | P0 | `ADR-159-agents-md-native-structural-harness-batch` | missing | 7 | `docs/adrs/ADR-159-agents-md-native-structural-harness-batch.md` |
@@ -94,4 +84,8 @@ this audit + `adr-section-validator.sh` extension close the loop.
 | P0 | `ADR-155-shell-ci-formal-harness` | missing | 8 | `docs/adrs/ADR-155-shell-ci-formal-harness.md` |
 | P0 | `ADR-156-qwen-code-structural-harness-projection` | missing | 8 | `docs/adrs/ADR-156-qwen-code-structural-harness-projection.md` |
 | P0 | `ADR-157-kimi-code-cli-structural-harness-projection` | missing | 8 | `docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md` |
-| _and 5 more not shown_ | | | | |
+| P0 | `ADR-158-ai-agent-harness-landscape-and-proof-backlog` | missing | 8 | `docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md` |
+| P0 | `ADR-130-suspend-claude-api-workflows` | missing | 9 | `docs/adrs/ADR-130-suspend-claude-api-workflows.md` |
+| P0 | `ADR-131-local-ci-migration` | missing | 9 | `docs/adrs/ADR-131-local-ci-migration.md` |
+| P0 | `ADR-138-flow-contract-schema` | missing | 9 | `docs/adrs/ADR-138-flow-contract-schema.md` |
+| P0 | `ADR-044-context-payload-slimming` | missing | 22 | `docs/adrs/ADR-044-context-payload-slimming.md` |

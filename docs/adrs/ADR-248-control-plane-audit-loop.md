@@ -261,6 +261,70 @@ registration contract becomes auditable, measurable, queueable, and eligible
 for safe-class remediation if explicitly allowed.”
 
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, running the ADR-239+ detectors required invoking each script
+individually (`scripts/primitive-coherence-audit.py`, `scripts/cos-postmortem-regression-audit`,
+`scripts/cos-pre-public-risk-audit`) and manually correlating results. There was
+no unified report, no lane-based scheduling, and no metrics persistence.
+
+After this ADR:
+
+- A single entry point runs the appropriate set of audits for the context:
+  ```bash
+  scripts/cos-control-plane-audit --lane hook-fast --json   # before commits/agent launch
+  scripts/cos-control-plane-audit --lane hourly --json      # periodic sweep
+  scripts/cos-control-plane-audit --lane pre-public --json --strict  # release gates
+  ```
+- The runner is not a repair engine. It detects and reports; remediation is
+  explicit and committed separately.
+- State, metrics, and remediation queue persist to:
+  - `.cognitive-os/reports/control-plane/latest.json`
+  - `.cognitive-os/tasks/control-plane-remediation.jsonl`
+  - `.cognitive-os/metrics/control-plane-audit.jsonl`
+  - `.cognitive-os/runtime/control-plane-audit/findings-state.json`
+- The `hook-fast` lane runs automatically via `hooks/control-plane-audit.sh`
+  before agent launches, `git commit`, `git push`, and destructive git commands.
+  The `hourly` lane runs via `hooks/control-plane-audit-hourly.sh` on session
+  end with a 3600-second cooldown.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- “Are the ADR-239+ primitives still correctly wired?” — Run the `hook-fast`
+  lane. A `block` result with findings names the specific failing primitive.
+- “What open postmortem regression classes remain?” — Read
+  `.cognitive-os/reports/control-plane/latest.json` → `findings` field.
+- “Can the runner automatically fix findings?” — Only for safe classes
+  (regenerable stale reports, cache garbage, missing generated indexes).
+  The `--apply-safe-fixes` flag executes only commands declared under
+  `remediation.safe_fixes` in `manifests/control-plane-audits.yaml`.
+
+**Does not answer:**
+- Whether a new primitive added outside the declarative registration contract
+  (ADR-240) is safe. The runner only catches generic classes already covered
+  by a declared detector.
+- Whether findings in the `hourly` lane require immediate action. The hourly
+  lane emits metrics and warnings; only `hook-fast` and `pre-public --strict`
+  produce blocking exits.
+
+### When sources disagree
+
+If `hook-fast` shows `block` but the operator knows the primitive is correctly
+implemented, check whether:
+1. The underlying audit (`primitive-coherence-audit.py`,
+   `cos-postmortem-regression-audit`) has stale detector logic for the
+   primitive's new location or interface. Update the manifest entry.
+2. The finding has been reviewed and is a known false positive. Label it in
+   `.cognitive-os/tasks/control-plane-remediation-labels.jsonl` with
+   `false_positive: true` and a reason.
+
+The runner report (`.cognitive-os/reports/control-plane/latest.json`) is
+authoritative. If an agent verbally claims “the audit passes” but the file
+shows `block`, the file wins.
+
 ## Incident closure status
 
 The incident-by-incident closure table is maintained in `docs/reports/primitive-coherence-drift-postmortem-2026-05-08.md` under “Incident closure status — 2026-05-08”.

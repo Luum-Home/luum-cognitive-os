@@ -136,6 +136,69 @@ Negative:
 - Community adapters remain candidates until footprint and benchmark evidence
   justify adoption.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, `lib/skill_router.py` mixed retrieval logic, ranking, and
+COS-specific policy (dangerous-skill rejection, negative context, profile/harness
+scope, bypass rules) in one file, with no formal boundary between them. Community
+retrieval stacks (BM25, vector search, provider-native ToolSearch) could only be
+adopted by importing them directly — which would bloat hook-fast paths.
+
+After this ADR:
+
+- `lib/skill_router.py` may keep the zero-dependency `regex_frontmatter` adapter
+  as the default hot-path implementation. No change to existing behavior.
+- Any new retrieval adapter (BM25, provider ToolSearch, LlamaIndex, etc.) must
+  be declared in `manifests/skill-router-retrieval.yaml` with license, footprint
+  classification, and benchmark fixtures — and must NOT be imported directly by
+  `lib/skill_router.py`.
+- COS policy guards (dangerous-skill rejection, negative context, profile/harness
+  scope, bypass rules, telemetry) remain first-party and are not delegated to any
+  community retriever.
+- Known routing gaps (e.g., "crear una nueva skill" routed to `/sdd-new` instead
+  of `/add-skill`) must be declared as explicit warnings, not hidden.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Can I adopt BM25 or provider ToolSearch for skill routing?" — Yes, but only
+  as a declared adapter behind the boundary. Declare it in the manifest, provide
+  benchmark fixtures, verify license/footprint. The `regex_frontmatter` adapter
+  remains default until evidence justifies switching.
+- "How do I know if the router boundary is respected?" — Run
+  `python3 scripts/skill-router-retrieval-audit.py --json`. It checks that
+  optional community stacks are not imported directly by core router files.
+- "Are known routing gaps acceptable?" — Yes, if declared as warnings in the
+  benchmark. Hidden gaps (green coverage with silent failures) are not.
+
+**Does not answer:**
+- Whether the `regex_frontmatter` adapter produces semantically correct routing
+  for all prompts. Benchmark fixtures (`scripts/skill-router-benchmark.py`) must
+  be extended to cover new routing failure modes.
+- Whether adopting a candidate adapter will improve quality. Telemetry and
+  benchmark comparison are required before a candidate becomes default.
+
+### Daily operational pattern
+
+1. Verify the retrieval boundary and benchmark on any change to `lib/skill_router.py`:
+   ```bash
+   python3 scripts/skill-router-retrieval-audit.py --json
+   python3 scripts/skill-router-benchmark.py --json
+   ```
+2. To propose a new retrieval adapter:
+   - Add an entry to `manifests/skill-router-retrieval.yaml` with
+     `status: candidate` and the required fields.
+   - Add benchmark fixtures that prove the adapter handles historical failure modes.
+   - Keep `lib/skill_router.py` imports unchanged until the adapter graduates
+     from candidate to active.
+3. Full verification:
+   ```bash
+   python3 -m pytest tests/unit/test_skill_router_retrieval_audit.py tests/unit/test_skill_router_benchmark.py -q
+   scripts/cos-control-plane-audit --lane hook-fast --json
+   ```
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

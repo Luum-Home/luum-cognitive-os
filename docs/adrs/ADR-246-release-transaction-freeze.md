@@ -132,6 +132,65 @@ active transaction marker. Other destructive primitives may then require
 - Merge queue integration: force-push and tag update flows consume the freeze
   receipt rather than requiring broad `--no-verify` bypasses.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the operator had no formal mechanism to pause the system
+before destructive or public-state operations (history sanitization, force-push,
+publication). Agents could keep producing new state while release gates were
+running — creating a moving-target problem where a passing audit could be
+immediately invalidated by the next agent commit.
+
+After this ADR, the operator uses `scripts/cos-release-freeze` to create a
+**release transaction** — a receipt-backed mode that:
+
+1. Checks repo stability before entry (`--prepare`).
+2. Writes an immutable receipt under `.cognitive-os/runtime/release-freeze/<id>.json`
+   when the freeze begins (`--begin`).
+3. Requires other destructive primitives (history sanitization, post-rewrite
+   push exception) to present `COS_RELEASE_TRANSACTION_ID=<id>` before executing.
+4. Ends the freeze and clears the receipt (`--end`).
+
+The standard sequence before any public or destructive operation:
+
+```bash
+scripts/cos-release-freeze --prepare --json
+scripts/cos-release-freeze --begin --reason pre-public-history-sanitize
+export COS_RELEASE_TRANSACTION_ID=<id from receipt>
+# … run sanitize, force-push, publish …
+scripts/cos-release-freeze --end --transaction-id "$COS_RELEASE_TRANSACTION_ID"
+```
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "How do I prove no new commits appeared after the release operation began?"
+  — The freeze receipt captures HEAD at begin-time; audit can compare.
+- "Why did history sanitization refuse to execute?" — A freeze is active and
+  `COS_RELEASE_TRANSACTION_ID` was not set. Run `scripts/cos-release-freeze --status --json` to see the active receipt.
+- "Can I override the freeze for an emergency fix?" — Yes, but the bypass is
+  logged to `agent-audit-trail.jsonl`.
+
+**Does not answer:**
+- Whether agents are actually stopped. Slice A is read-only plus lock-file
+  creation; full agent/daemon pausing requires future slices (see §Future slices).
+- Whether the repo is ready for publication beyond the Slice A checks. A
+  passing freeze does not replace `scripts/cos-pre-public-risk-audit --strict`.
+
+### When sources disagree
+
+If `scripts/cos-release-freeze --status --json` reports no active freeze, but
+`COS_RELEASE_TRANSACTION_ID` is set in the environment, the env var is stale
+from a previous session. Clear it: `unset COS_RELEASE_TRANSACTION_ID`.
+
+If `--prepare` passes but `--begin` fails, inspect the blocking check in the
+JSON output. Common causes: dirty working tree, active agent/task liveness
+detected, or wrong branch.
+
+The receipt under `.cognitive-os/runtime/release-freeze/` is the authoritative
+state source. Environment variables and verbal claims are not.
+
 ## Alternatives rejected
 
 - **Rely on clean working tree only** — rejected because a clean tree does not

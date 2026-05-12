@@ -139,6 +139,66 @@ scripts/cos-control-plane-audit --lane hook-fast --json
 
 Expected: all pass with zero block findings on the current repo.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, a governance primitive was considered "implemented" if:
+- The hook/script file existed.
+- The file was referenced in `settings.json`.
+- An ADR said "Implemented".
+- A test grep-matched a string in the hook file.
+
+None of these prove that the primitive actually blocks an unsafe action in a
+realistic scenario.
+
+After this ADR, a critical primitive is considered behaviorally proven only when
+`manifests/primitive-behavior-contracts.yaml` declares its proof contract and
+the audit (`scripts/primitive-behavior-audit.py`) confirms that the declared
+test files contain:
+
+1. At least one **falsification probe** — input that should fail closed.
+2. **Runtime execution** — the actual primitive or public API is invoked.
+3. A **fail-closed assertion** — exit code, exception, or `status: block`.
+4. **Boundary evidence** where relevant — bypass, positive control, or preservation case.
+
+The operator does not manually inspect every test. The audit runs as part of
+the `hook-fast` control-plane lane and produces structured findings when
+proof contracts are missing or insufficient.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Does the branch-switch blocker actually block?" — If the behavioral proof
+  contract is satisfied per audit output, yes: there is a test that issues a
+  `git switch` / `git checkout <branch>` and asserts non-zero exit.
+- "Which primitives have incomplete proof?" — Run
+  `python3 scripts/primitive-behavior-audit.py --json` and read the findings.
+- "What counts as a valid falsification probe?" — A test that invokes the real
+  primitive (not a mock) and asserts a fail-closed outcome, not a happy-path return.
+
+**Does not answer:**
+- Whether a proof contract covers all possible adversarial inputs. Static proof
+  audit checks for evidence presence, not semantic completeness.
+- Whether primitives outside the Slice A contract set are proven. The contract
+  manifest grows as new critical primitives are registered.
+
+### Daily operational pattern
+
+1. Check behavioral proof quality as part of the control-plane fast lane:
+   ```bash
+   scripts/cos-control-plane-audit --lane hook-fast --json
+   ```
+2. For a focused proof-quality check across all declared contracts:
+   ```bash
+   python3 scripts/primitive-behavior-audit.py --json
+   ```
+3. When adding a new critical governance primitive:
+   - Register it in `manifests/primitive-behavior-contracts.yaml` with the
+     required proof file(s) and minimum evidence fields.
+   - Write at least one test that matches the falsification pattern for that primitive.
+   - Re-run the audit to confirm zero new findings.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |
