@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # ADR-269 Primitive 2 — SessionStart hook warning operators about
 # history-rewrite bundles that are not registered in the ledger.
 #
