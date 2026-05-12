@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI for ADR-280 product question-to-evidence answers."""
+"""CLI for ADR-280/281 product question-to-evidence answers."""
 from __future__ import annotations
 
 import argparse
@@ -11,7 +11,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.product_answer import ProductAnswerError, build_answer, render_markdown  # noqa: E402
+from lib.product_answer import (  # noqa: E402
+    ProductAnswerError,
+    build_answer,
+    load_cached_answer,
+    render_markdown,
+)
 
 
 def main() -> int:
@@ -21,6 +26,8 @@ def main() -> int:
     parser.add_argument("--project-dir", type=Path, default=ROOT)
     parser.add_argument("--question-bank", type=Path)
     parser.add_argument("--claim-evidence", type=Path)
+    parser.add_argument("--cache-dir", type=Path, help="Override ADR-281 answer-card cache directory")
+    parser.add_argument("--no-cache", action="store_true", help="Bypass fresh answer cards and generate from manifests")
     parser.add_argument("--format", choices=["json", "markdown"], default="markdown")
     parser.add_argument("--json", action="store_true", help="Alias for --format json")
     parser.add_argument("--strict", action="store_true", help="Fail when selected claims are blocked, aspirational, or missing evidence")
@@ -29,15 +36,25 @@ def main() -> int:
     output_format = "json" if args.json else args.format
     question_text = " ".join(args.question).strip() or None
     try:
-        report = build_answer(
-            args.project_dir,
-            question_text=question_text,
-            question_id=args.question_id,
-            question_bank_path=args.question_bank,
-            claim_evidence_path=args.claim_evidence,
-            strict=args.strict,
-        )
-    except ProductAnswerError as exc:
+        report = None
+        if not args.no_cache and args.claim_evidence is None:
+            report = load_cached_answer(
+                args.project_dir,
+                question_text=question_text,
+                question_id=args.question_id,
+                question_bank_path=args.question_bank,
+                cache_dir_override=args.cache_dir,
+            )
+        if report is None:
+            report = build_answer(
+                args.project_dir,
+                question_text=question_text,
+                question_id=args.question_id,
+                question_bank_path=args.question_bank,
+                claim_evidence_path=args.claim_evidence,
+                strict=args.strict,
+            )
+    except (ProductAnswerError, ValueError, json.JSONDecodeError) as exc:
         error_report = {
             "schema_version": "product-answer-report/v1",
             "adr": "ADR-280",
