@@ -822,6 +822,7 @@ hooks:
     script: hooks/context-watchdog.sh
   control-plane-audit-agent:
     behavior_tests:
+    - tests/unit/test_adr_partial_audit.py
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
     - tests/unit/test_control_plane_hook_wiring.py
@@ -841,6 +842,7 @@ hooks:
     script: hooks/control-plane-audit.sh
   control-plane-audit-bash:
     behavior_tests:
+    - tests/unit/test_adr_partial_audit.py
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
     - tests/unit/test_control_plane_hook_wiring.py
@@ -860,6 +862,7 @@ hooks:
     script: hooks/control-plane-audit.sh
   control-plane-audit-edit:
     behavior_tests:
+    - tests/unit/test_adr_partial_audit.py
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
     - tests/unit/test_control_plane_hook_wiring.py
