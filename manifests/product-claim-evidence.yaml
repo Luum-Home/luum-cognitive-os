@@ -165,15 +165,17 @@ claims:
   competitor_positioning_factcheck_required:
     status: partial
     maturity: strategy_boundary_with_factcheck_required
-    confidence: 0.64
-    summary: Competitive positioning should lead with behavioral governance and avoid
-      generic tracing claims; named comparisons require fresh fact-checking.
-    approved_wording: COS should position above generic tracing by focusing on evidence-backed
-      behavioral governance, while named competitor claims require current verification.
+    confidence: 0.66
+    summary: Competitive positioning should lead with behavioral governance and avoid generic tracing claims; already-analyzed tools should be answered from the local radar first, while volatile named comparisons require fresh fact-checking before publication.
+    approved_wording: COS should position above generic tracing by focusing on evidence-backed behavioral governance. For previously analyzed tools, start from the local Tech Radar and external-tool manifests; use fresh verification for volatile public claims.
     evidence:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/business/feature-reality-audit.md
     - docs/business/product-messaging.md
+    - docs/reports/external-tools-radar-INDEX.md
+    - docs/vs-alternatives.md
+    - docs/component-sources.md
     boundaries:
     - Do not say competitors cannot do cross-IDE observability without fresh research.
     - Do not use stale named-competitor claims publicly.
+    - Do not browse by default when the tool was already analyzed in the local radar corpus.
