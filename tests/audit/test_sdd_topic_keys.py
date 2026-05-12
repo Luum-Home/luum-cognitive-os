@@ -17,6 +17,8 @@ LEGACY_ALLOWED = {
     "docs/reports/docs-execution-latest.json",
     "docs/adrs/ADR-029.md",
     "docs/adrs/ADR-128-data-layer-integrity-fixes.md",
+    # MOC referencing legacy sdd/{change}/{phase} key format for human navigation
+    "docs/00-MOCs/workflow.md",
 }
 SCAN_ROOTS = ("skills", "docs", "rules")
 LEGACY_PATTERNS = ("sdd/{change-name}/", "sdd/{change}/")

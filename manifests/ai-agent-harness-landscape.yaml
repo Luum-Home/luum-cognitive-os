@@ -528,3 +528,19 @@ candidates:
   official_sources:
   - https://traeide.com/news/6
   next_action: Wait for stable official syntax docs before projection.
+- id: agents-md
+  display_name: AGENTS.md (Universal Markdown)
+  category: universal-markdown
+  status: implemented
+  proof_level: structural
+  availability_boundary: local-project
+  projection_surface:
+  - AGENTS.md
+  - project-instructions
+  - rules-reference
+  - skills-reference
+  official_sources:
+  - https://agents.md/
+  - https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation
+  next_action: Keep the bounded AGENTS.md block concise and prove idempotent replacement
+    through the consumer projection tests.

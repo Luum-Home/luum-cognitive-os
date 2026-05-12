@@ -107,4 +107,4 @@ def test_harness_projection_manifest_declares_named_ides() -> None:
 
     assert required <= ids
     implemented = {item["id"] for item in manifest["harnesses"] if item["status"] == "implemented"}
-    assert implemented == {"claude", "codex", "cursor", "opencode", "vscode-copilot", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci"}
+    assert implemented == {"claude", "codex", "cursor", "agents-md", "opencode", "vscode-copilot", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci"}

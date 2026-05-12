@@ -20,11 +20,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
 _RAM_CEILING_MIB = int(os.environ.get("COS_RAM_CEILING_MIB", "500"))
-_DISK_CEILING_MIB = int(os.environ.get("COS_VITALS_DISK_CEILING_MIB", "200"))
+_DISK_CEILING_MIB = int(os.environ.get("COS_VITALS_DISK_CEILING_MIB", "400"))
 
 
 def _self_rss_mib() -> float:

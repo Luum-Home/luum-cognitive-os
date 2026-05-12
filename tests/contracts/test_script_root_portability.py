@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,19 @@ pytestmark = pytest.mark.contract
 REPO = Path(__file__).resolve().parents[2]
 FORBIDDEN = "git rev-parse --show-toplevel"
 
+# Pattern: git rev-parse --show-toplevel followed immediately by a fallback (portable).
+# e.g. `git rev-parse --show-toplevel 2>/dev/null || ...`
+_PORTABLE_PATTERN = re.compile(
+    r"git rev-parse --show-toplevel\s+2>/dev/null\s+\|\|"
+)
+
+# Scripts that embed git-hook template blocks with portable rev-parse fallback.
+# These are known to use `git rev-parse --show-toplevel 2>/dev/null || fallback`
+# and are exempt from the hard-dependency check.
+_PORTABLE_ALLOWLIST = {
+    "scripts/setup-git-hooks.sh",
+}
+
 
 def test_product_scripts_do_not_depend_on_git_checkout_root() -> None:
     offenders: list[str] = []
@@ -16,8 +30,13 @@ def test_product_scripts_do_not_depend_on_git_checkout_root() -> None:
         if not path.is_file() or path.name.startswith("__"):
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        if FORBIDDEN in text:
-            offenders.append(str(path.relative_to(REPO)))
+        if FORBIDDEN not in text:
+            continue
+        rel = str(path.relative_to(REPO))
+        if rel in _PORTABLE_ALLOWLIST and _PORTABLE_PATTERN.search(text):
+            # Uses portable fallback pattern — not a hard dependency
+            continue
+        offenders.append(rel)
     assert offenders == []
 
 

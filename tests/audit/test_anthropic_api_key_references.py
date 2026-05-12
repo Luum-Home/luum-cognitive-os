@@ -98,6 +98,10 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     # Extension docs that explicitly say no direct key required.
     AllowedReference("packages/cos-advisory-llm/README.md", "native_prompt_hook_docs", "states no direct key required"),
     AllowedReference("docs/research/orchestration-gaps/background-agent-patterns.md", "auth_rotation_research", "research report discusses detached-agent credential rotation risk"),
+
+    # Research/cross-provider evaluation reports that reference env var in analysis context
+    AllowedReference("docs/research/ifixai-annex-b-cross-judge-2026-05-11.md", "provider_eval_research", "cross-judge evaluation report mentions env var in provider auth analysis"),
+    AllowedReference("docs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md", "provider_eval_research", "provider IMEI-split evaluation report mentions env var in auth context"),
 )
 
 _ALLOWED_BY_PATH = {entry.path: entry for entry in ALLOWED_REFERENCES}
