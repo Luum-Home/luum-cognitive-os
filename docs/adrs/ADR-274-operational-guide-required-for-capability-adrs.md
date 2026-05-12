@@ -16,6 +16,8 @@ implementation_files:
   - tests/red_team/portability/test_cos-operational-guide-audit.py
 tier: maintainer
 tags: [adr-contract, documentation, operational-guide, drift-prevention, anti-overclaim, postmortem-2026-05-12]
+partial_remaining: Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope
+partial_remaining_basis: specific classification_basis
 ---
 # ADR-274: Operational Guide Required for Maintainer-Tier Capability ADRs
 
@@ -252,6 +254,19 @@ python3 -m pytest tests/red_team/portability/test_cos-operational-guide-audit.py
 
 ## Related
 
+- **ADR-275** — Closure & projection primitives. ADR-275's
+  `cos-session-start-projector` surfaces this audit's P0/P1 backfill
+  list at session start across 3 harnesses, and
+  `cos-closure-trust-signal` quantifies operator trust based on whether
+  closures used the close primitive. Together they make the §OG contract
+  self-correcting (audit → projector surfaces → operator closes via
+  primitive → trust signal updates).
+- **`docs/adrs/STATUS-TAXONOMY.md`** — canonical decision/implementation
+  status vocabulary that the audit consumes when deciding whether an
+  ADR is `subject_to_contract` (must be `accepted | implemented`,
+  not `tombstone | superseded`).
+- **`docs/architecture/pending-truth-architecture.md`** — 4-layer map
+  of the read/project/close/drift system this ADR is part of.
 - ADR-067 — ADR section contract (existing baseline; this ADR extends)
 - ADR-097 — Documentation execution audit (audit pattern this ADR follows)
 - ADR-105 — Bilateral claim verification (operational guides ARE the

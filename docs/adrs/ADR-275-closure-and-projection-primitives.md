@@ -16,6 +16,8 @@ implementation_files:
   - docs/runbooks/adr-275-session-start-hook-staging/
 tier: maintainer
 tags: [pending-truth, closure, projection, session-start, ide-agnostic, anti-asymmetry]
+partial_remaining: Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review
+partial_remaining_basis: specific classification_basis
 ---
 # ADR-275: Closure & Projection Primitives
 
@@ -322,6 +324,28 @@ ls docs/runbooks/adr-275-session-start-hook-staging/
 
 ## Related
 
+- **Companion: ADR lifecycle close primitive** (built in parallel
+  during the 2026-05-12 work).
+  - `scripts/cos-adr-close` — atomic closure for ADR DECISION records
+    (status, implementation_status, classification_basis, evidence
+    fields). Symmetric to `cos-pending-truth-close` (which closes TASK
+    items). Decisions and tasks have distinct schemas, so two
+    primitives keep each domain clean; the projector consumes both and
+    emits a single ranked action list.
+  - `scripts/cos-adr-partial-ledger` — partial/blocked/deferred ADR
+    backlog ledger; the ADR-decision analogue of
+    `cos-pending-truth-aggregator`. Emits
+    `docs/reports/adr-partial-backlog-latest.{json,md}` which the
+    `cos-session-start-projector` reads as the `adr_partials` section
+    of its summary.
+  - `scripts/cos-adr-partial-audit` — control-plane audit emitting
+    findings into the `adr-partial-lifecycle` audit ID (registered in
+    `manifests/control-plane-audits.yaml` hourly + pre-public lanes).
+  - `docs/adrs/STATUS-TAXONOMY.md` — canonical status vocabulary both
+    primitives consume.
+- **`docs/architecture/pending-truth-architecture.md`** — 4-layer
+  architectural map (Obtain / Project / Close / Prevent Drift) that
+  unifies both halves into one cold-readable diagram.
 - ADR-008 — multi-tool support / cross-harness portability (the hook
   wiring follows this contract)
 - ADR-067 — ADR section contract baseline (this ADR includes its own
