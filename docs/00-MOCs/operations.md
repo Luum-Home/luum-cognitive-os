@@ -80,6 +80,16 @@ for the full system.
 - `hooks/pending-truth-staleness-gate.sh` — PreToolUse Bash advisory
 - `.githooks/pre-commit` Gate 3 — ADR lifecycle + INDEX.md staleness
 
+**Natural-language entrypoints (skills)** — for agents and operators:
+- `session-pending-brief` — "what's open?" / "qué hay pendiente?" →
+  invokes the projector, presents a ranked attack list
+- `session-pending-close` — "cerrá X" / "close Y" → atomic closure via
+  `cos-pending-truth-close` (tasks) or `cos-adr-close` (decisions) with
+  bilateral proof; reports trust-signal delta
+- `session-wrapup` (extended) — end-of-session: refreshes aggregator +
+  audits + closure-trust-signal + doc-cross-reference; bilateral with
+  session start
+
 ## Related MOCs
 
 - [decisions.md](decisions.md) — ADRs that scoped each ops surface

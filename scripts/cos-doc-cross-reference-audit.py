@@ -100,6 +100,26 @@ CONTRACTS: list[dict[str, Any]] = [
             "docs/00-MOCs/operations.md",
         ],
     },
+    {
+        "primitive": "session-pending-brief",
+        "grep": "session-pending-brief",
+        "required_in": [
+            "docs/00-MOCs/operations.md",
+            "skills/CATALOG.md",
+            "skills/CATALOG-COMPACT.md",
+            "skills/session-pending-close/SKILL.md",
+        ],
+    },
+    {
+        "primitive": "session-pending-close",
+        "grep": "session-pending-close",
+        "required_in": [
+            "docs/00-MOCs/operations.md",
+            "skills/CATALOG.md",
+            "skills/CATALOG-COMPACT.md",
+            "skills/session-pending-brief/SKILL.md",
+        ],
+    },
 ]
 
 
