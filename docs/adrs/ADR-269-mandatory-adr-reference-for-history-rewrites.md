@@ -1,5 +1,4 @@
 ---
-
 adr: 269
 title: Mandatory ADR Reference for History Rewrites
 status: accepted
@@ -7,25 +6,36 @@ implementation_status: implemented
 date: 2026-05-11
 supersedes: []
 superseded_by: null
-extends: [ADR-218, ADR-242, ADR-243, ADR-246]
+extends:
+- ADR-218
+- ADR-242
+- ADR-243
+- ADR-246
 implementation_files:
-  - manifests/history-rewrite-ledger.yaml
-  - hooks/history-rewrite-documented.sh
-  - scripts/cos-history-rewrite-audit
-  - lib/history_sanitization.py
-  - lib/history_rewrite_ledger.py
+- manifests/history-rewrite-ledger.yaml
+- hooks/history-rewrite-documented.sh
+- scripts/cos-history-rewrite-audit
+- lib/history_sanitization.py
+- lib/history_rewrite_ledger.py
 tier: maintainer
-tags: [history-rewrite, governance, transparency, postmortem-2026-05-08, postmortem-2026-05-11]
+tags:
+- history-rewrite
+- governance
+- transparency
+- postmortem-2026-05-08
+- postmortem-2026-05-11
 related_postmortems:
-  - docs/reports/silent-agent-branch-switch-postmortem-2026-05-08.md
-  - docs/reports/git-history-debug-script-audit-2026-05-09.md
-  - docs/reports/history-sanitization-20260508T061208Z.json
+- docs/reports/silent-agent-branch-switch-postmortem-2026-05-08.md
+- docs/reports/git-history-debug-script-audit-2026-05-09.md
+- docs/reports/history-sanitization-20260508T061208Z.json
 related_adrs:
-  - ADR-218 (history sanitization toolchain)
-  - ADR-242 (filter-repo wrapper preserves remote)
-  - ADR-243 (post-rewrite push-collision exception)
-  - ADR-246 (release transaction freeze)
-  - ADR-268 (defensive history sanitization 2026-05-11, sibling doc)
+- ADR-218 (history sanitization toolchain)
+- ADR-242 (filter-repo wrapper preserves remote)
+- ADR-243 (post-rewrite push-collision exception)
+- ADR-246 (release transaction freeze)
+- ADR-268 (defensive history sanitization 2026-05-11, sibling doc)
+relationship_chain_exempt: true
+relationship_chain_exemption_reason: ADR-269 intentionally consolidates the history-rewrite safety chain (ADR-218/242/243/246) into an implementation ledger for mandatory ADR references; audit depth is documented rather than scope-creep.
 ---
 
 # ADR-269 — Mandatory ADR Reference for History Rewrites

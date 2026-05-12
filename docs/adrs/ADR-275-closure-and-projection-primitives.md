@@ -3,21 +3,36 @@ adr: 275
 title: Closure & Projection Primitives (Pending-Truth Read/Write Symmetry)
 status: accepted
 implementation_status: partial
-classification_basis: 'Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review'
+classification_basis: Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review
 date: 2026-05-12
 supersedes: []
 superseded_by: null
-extends: [ADR-067, ADR-097, ADR-105, ADR-244, ADR-248, ADR-273, ADR-274]
+extends:
+- ADR-067
+- ADR-097
+- ADR-105
+- ADR-244
+- ADR-248
+- ADR-273
+- ADR-274
 implementation_files:
-  - scripts/cos-session-start-projector
-  - scripts/cos-pending-truth-close
-  - tests/red_team/portability/test_cos-session-start-projector.py
-  - tests/red_team/portability/test_cos-pending-truth-close.py
-  - docs/runbooks/adr-275-session-start-hook-staging/
+- scripts/cos-session-start-projector
+- scripts/cos-pending-truth-close
+- tests/red_team/portability/test_cos-session-start-projector.py
+- tests/red_team/portability/test_cos-pending-truth-close.py
+- docs/runbooks/adr-275-session-start-hook-staging/
 tier: maintainer
-tags: [pending-truth, closure, projection, session-start, ide-agnostic, anti-asymmetry]
+tags:
+- pending-truth
+- closure
+- projection
+- session-start
+- ide-agnostic
+- anti-asymmetry
 partial_remaining: Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review
 partial_remaining_basis: specific classification_basis
+relationship_chain_exempt: true
+relationship_chain_exemption_reason: ADR-275 intentionally bridges pending-truth, operational-guide, control-plane, bilateral verification, and trust-report ADRs as an implementation ledger; this hub is the consolidation artifact requested by ADR_RELATION_CHAIN_LONG.
 ---
 # ADR-275: Closure & Projection Primitives
 

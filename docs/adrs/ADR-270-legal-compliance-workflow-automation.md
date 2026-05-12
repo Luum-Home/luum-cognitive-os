@@ -1,5 +1,4 @@
 ---
-
 adr: 270
 title: Legal Compliance Workflow Automation
 status: accepted
@@ -7,24 +6,39 @@ implementation_status: implemented
 date: 2026-05-11
 supersedes: []
 superseded_by: null
-extends: [ADR-259, ADR-267, ADR-268, ADR-269]
+extends:
+- ADR-259
+- ADR-267
+- ADR-268
+- ADR-269
 implementation_files:
-  - scripts/cos-uspto-patent-search
-  - scripts/cos-uspto-trademark-search
-  - scripts/cos-counsel-packet
-  - scripts/cos-counsel-outreach-draft
-  - scripts/cos-legal-approve
-  - scripts/cos-adoption-unfreeze
-  - manifests/legal-review-ledger.yaml
-  - hooks/legal-review-required-on-runtime-import.sh
-  - templates/counsel-outreach/*.md
+- scripts/cos-uspto-patent-search
+- scripts/cos-uspto-trademark-search
+- scripts/cos-counsel-packet
+- scripts/cos-counsel-outreach-draft
+- scripts/cos-legal-approve
+- scripts/cos-adoption-unfreeze
+- manifests/legal-review-ledger.yaml
+- hooks/legal-review-required-on-runtime-import.sh
+- templates/counsel-outreach/*.md
 tier: governance
-tags: [legal, compliance, ip, uspto, trademark, patent, counsel, adoption, unfreeze]
+tags:
+- legal
+- compliance
+- ip
+- uspto
+- trademark
+- patent
+- counsel
+- adoption
+- unfreeze
 related_adrs:
-  - ADR-259 (external-pattern-adoption-posture umbrella)
-  - ADR-267 (license-compliance enforcement architecture)
-  - ADR-268 (defensive history sanitization 2026-05-11)
-  - ADR-269 (mandatory ADR reference for history rewrites)
+- ADR-259 (external-pattern-adoption-posture umbrella)
+- ADR-267 (license-compliance enforcement architecture)
+- ADR-268 (defensive history sanitization 2026-05-11)
+- ADR-269 (mandatory ADR reference for history rewrites)
+relationship_chain_exempt: true
+relationship_chain_exemption_reason: ADR-270 intentionally consolidates legal/compliance workflow dependencies (ADR-259/267/268/269) as an implementation ledger for counsel-review automation; relationship depth is expected and bounded by this hub.
 ---
 
 # ADR-270 — Legal Compliance Workflow Automation

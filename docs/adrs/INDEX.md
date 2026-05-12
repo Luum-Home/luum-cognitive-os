@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 285 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 286 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (118)
+### Active / Implemented (119)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -130,6 +130,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [268](ADR-268-history-sanitization-2026-05-11.md) | Defensive history sanitization for external-pattern attribution | accepted | implemented | 2026-05-11 | Accepted (2026-05-11) |
 | [269](ADR-269-mandatory-adr-reference-for-history-rewrites.md) | Mandatory ADR Reference for History Rewrites | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit set. |
 | [270](ADR-270-legal-compliance-workflow-automation.md) | Legal Compliance Workflow Automation | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit. |
+| [276](ADR-276-primitive-authority-write-effects.md) | Primitive Authority and Write-Effects Audit | accepted | implemented | 2026-05-12 | Accepted and implemented for the first ratchet. |
 
 ### Active / Partial (117)
 
