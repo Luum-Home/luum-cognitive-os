@@ -1,0 +1,28 @@
+{
+  "schema_version": "uspto-patent-report/v1",
+  "timestamp": "2026-05-11T19:01:03.022029+00:00",
+  "query": {
+    "producer": "Holaboss",
+    "keywords": [
+      "agent runtime",
+      "LLM agent",
+      "agent-computer platform"
+    ],
+    "max_results": 50,
+    "endpoint": "https://search.patentsview.org/api/v1/patent/"
+  },
+  "summary": {
+    "total_returned": 0,
+    "counts_by_relevance": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "LOW": 0
+    },
+    "has_critical": false
+  },
+  "classified": [],
+  "raw_response": {
+    "error": "rate-limited-or-network",
+    "detail": "URLError [Errno 8] nodename nor servname provided, or not known"
+  }
+}

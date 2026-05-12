@@ -1,0 +1,28 @@
+{
+  "schema_version": "uspto-trademark-report/v1",
+  "timestamp": "2026-05-11T19:01:28.922270+00:00",
+  "query": {
+    "marks": [
+      "Holaboss"
+    ],
+    "international_class": "",
+    "endpoint": "https://tsdrapi.uspto.gov/ts/cd/casestatus"
+  },
+  "summary": {
+    "marks_queried": 1,
+    "any_live_match": false
+  },
+  "classified": [
+    {
+      "queried_mark": "Holaboss",
+      "international_class": "(any)",
+      "result_envelope": {
+        "error": "auth-required",
+        "detail": "TSDR endpoint requires USPTO_TSDR_API_KEY env var",
+        "status": 401
+      },
+      "similar_marks": [],
+      "any_live": false
+    }
+  ]
+}
