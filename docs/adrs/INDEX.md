@@ -2,11 +2,12 @@
 
 ## How to Use This Index
 
-This table is the navigable entry point to all 280 Architecture Decision Records (ADRs).
+This table is the status inventory for all 280 Architecture Decision Record files (ADRs).
 Active and Proposed ADRs are listed first for day-to-day reference. Superseded and Deprecated
-records are collapsed below to reduce noise while preserving full history. Each row links to
-the full ADR file under `docs/adrs/ADR-NNN-*.md`. Status is extracted from each file's
-front-matter or heading section.
+records are collapsed below to reduce noise while preserving full history. Rows identify each
+record by number, title, status, date, and one-line summary; use the number with `docs/adrs/`
+or repository search to open the exact file. Status is extracted from each file's front-matter
+or heading section and still needs triage for non-standard values.
 
 ## Active
 
@@ -312,4 +313,3 @@ front-matter or heading section.
 | 229 | — Tombstone (consolidated into ADR-228) | Tombstone | 2026-05-06 | status: tombstone |
 | 238 | — Tier 1-4 Follow-Up Bug Tracking | Resolved | 2026-05-07 | Resolved |
 | 253 | — Tombstone (squads orchestration superseded by ADR-251) | Tombstone | 2026-05-08 | <!-- ADR_RELATION_CHAIN_EXEMPT: tombstone pointer to ADR-251; not a new implementation scope chain. --> |
-

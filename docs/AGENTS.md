@@ -63,7 +63,7 @@ Examples: `docs/reports/aspirational-audit-2026-05-08.md`, `docs/reports/ai-agen
 Format: three-digit zero-padded number + lowercase-hyphenated slug.  
 Example: `docs/adrs/ADR-014-sdd-fast-path.md`
 
-**Known inconsistency:** `docs/architecture/adrs/` contains a duplicate partial set (files without the `ADR-` prefix, e.g. `006-agpl-license-compliance.md`). Treat `docs/adrs/` as authoritative. Do not create new ADRs in `docs/architecture/adrs/`.
+**Deprecated redirect stubs:** `docs/architecture/adrs/` is an ADR-087 migration stub directory. Files there start with `# Moved` and point to canonical ADRs under `docs/adrs/`. Treat `docs/adrs/` as authoritative. Do not create or edit ADRs in `docs/architecture/adrs/`.
 
 When writing a new ADR: copy the structure from the most recent `docs/adrs/ADR-NNN-*.md` file. Increment NNN sequentially.
 
@@ -73,7 +73,7 @@ When writing a new ADR: copy the structure from the most recent `docs/adrs/ADR-N
 
 Skip these unless the task explicitly targets them:
 
-- `docs/archive/` and `docs/archived/` — stale, superseded content
+- `docs/archive/` — stale, superseded content
 - `docs/reports/archive/` — old reports, kept for audit only
 - `docs/SESSION-HANDOFF-*.md` — human hand-off notes, not agent context
 - `docs/history/` — historical changelog, rarely relevant

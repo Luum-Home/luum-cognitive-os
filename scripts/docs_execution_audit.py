@@ -44,7 +44,7 @@ def candidate_docs(root: Path) -> list[Path]:
     paths: list[Path] = []
     for pattern in ("README.md", "AGENTS.md", "docs/**/*.md"):
         paths.extend(p for p in root.glob(pattern) if p.is_file())
-    return sorted(p for p in paths if not p.relative_to(root).as_posix().startswith(("docs/reports/", "docs/archive/", "docs/archived/")))
+    return sorted(p for p in paths if not p.relative_to(root).as_posix().startswith(("docs/reports/", "docs/archive/")))
 
 def evidence_files(root: Path) -> list[Path]:
     patterns = ("scripts/**/*.py", "hooks/**/*.sh", "skills/**/SKILL.md", "rules/**/*.md", "tests/**/*.py", ".github/workflows/*.yml", ".github/workflows/*.yaml", "primitive_coverage/**/*.py", "primitive_coverage/**/*.yaml", "manifests/**/*.json", "lib/**/*.py", ".cognitive-os/plans/**/*.md")

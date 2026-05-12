@@ -1,6 +1,6 @@
 # Cognitive OS — Documentation Index
 
-> **How to use this index** — This file is the single navigation entry-point for the entire `docs/` tree (1 200+ files, 32 subdirectories). Read it top-to-bottom once to orient yourself, then jump directly to the section you need. Sections are ordered by access frequency for an LLM agent: ADRs → Runbooks → Session handoffs → Architecture → Reference. Each subdirectory entry links to the directory; each root-level file entry links directly. No file is auto-generated — every description was written from the source.
+> **How to use this index** — This file is the single navigation entry-point for the `docs/` tree (about 1 200 files, 32 subdirectories). Read it top-to-bottom once to orient yourself, then jump directly to the section you need. Sections are ordered by access frequency for an LLM agent: ADRs → Runbooks → Session handoffs → Architecture → Reference. Each major subdirectory is linked; high-value root-level files are linked directly. No file is auto-generated — every description was written from the source.
 
 ---
 
@@ -13,19 +13,19 @@
 | ADR | Status | Summary |
 |-----|--------|---------|
 | [ADR-012](adrs/ADR-012-prompt-driven-governance.md) | Accepted | Move governance hooks from imperative bash to declarative prompt templates |
-| [ADR-028](adrs/ADR-028-slo-catalogue.md) | Accepted | SLO catalogue, error budget, and cadence |
-| [ADR-049](adrs/ADR-049-llm-dispatch.md) | Accepted | LLM dispatch: Qwen primary + Claude fallback to preserve Max quota |
-| [ADR-066](adrs/ADR-066-polyglot-quality-gates.md) | Accepted | Polyglot drift CI — Python/Go/Bash quality gates |
+| [ADR-028](adrs/ADR-028.md) | Accepted | SLO catalogue, error budget, and cadence |
+| [ADR-049](adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md) | Accepted | LLM dispatch: Qwen primary + Claude fallback to preserve Max quota |
+| [ADR-066](adrs/ADR-066-polyglot-language-boundaries.md) | Accepted | Polyglot drift CI — Python/Go/Bash quality gates |
 | [ADR-072](adrs/ADR-072-test-lane-taxonomy.md) | Accepted | Test lane taxonomy: focused/cluster/broad with parallel-safety |
-| [ADR-105](adrs/ADR-105-red-team-harness.md) | Accepted | Red-team harness design and W6 gate |
-| [ADR-139](adrs/ADR-139-engram-cloud.md) | Accepted | Engram Cloud BYOK setup for cross-instance federation |
-| [ADR-140](adrs/ADR-140-worker-container.md) | Accepted | Worker container surface — Docker operator runbook |
+| [ADR-105](adrs/ADR-105-claim-verification-contract.md) | Accepted | Red-team harness design and W6 gate |
+| [ADR-139](adrs/ADR-139-account-agnostic-multi-provider-runtime.md) | Accepted | Engram Cloud BYOK setup for cross-instance federation |
+| [ADR-140](adrs/ADR-140-cross-os-containerized-deployment.md) | Accepted | Worker container surface — Docker operator runbook |
 | [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md) | Accepted | Multi-surface UI: CLI + Phoenix + Engram Cloud + Obsidian |
 | [ADR-218](adrs/ADR-218-history-sanitization-toolchain.md) | Accepted | One-time git history sanitization toolchain |
-| [ADR-228](adrs/ADR-228-retry-taxonomy.md) | Accepted | Retry taxonomy and attempt limits |
-| [ADR-245](adrs/ADR-245-chaos-test-isolation.md) | Accepted | Chaos test isolation — simulator separation policy |
-| [ADR-270](adrs/ADR-270-legal-compliance-workflow.md) | Accepted | Legal compliance workflow automation (8 primitives) |
-| [ADR-271](adrs/ADR-271-clean-room-ast-similarity.md) | Accepted | Tier-2 AST similarity detector + 5-tier limits matrix |
+| [ADR-228](adrs/ADR-228-retry-contract-and-cost-budget.md) | Accepted | Retry taxonomy and attempt limits |
+| [ADR-245](adrs/ADR-245-chaos-tests-readonly-production-source.md) | Accepted | Chaos test isolation — simulator separation policy |
+| [ADR-270](adrs/ADR-270-legal-compliance-workflow-automation.md) | Accepted | Legal compliance workflow automation (8 primitives) |
+| [ADR-271](adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md) | Accepted | Tier-2 AST similarity detector + 5-tier limits matrix |
 
 ---
 
@@ -238,6 +238,8 @@ These files record inter-session continuity state — read the most recent one t
 
 **[capabilities/](capabilities/)** — Auto-generated capability coverage matrix (`MATRIX.md`); do not edit by hand.
 
+**[assets/](assets/)** — Static images and diagrams referenced by documentation; read only when a page explicitly links to an asset.
+
 **[acc/](acc/)** — Agent Capability Coverage compact context diet entrypoint (`latest-compact.md`, `latest.json`).
 
 | File | Description |
@@ -319,15 +321,15 @@ These files record inter-session continuity state — read the most recent one t
 
 ## Quick Reference
 
-| Component | Count | Location |
-|-----------|-------|----------|
-| Hooks | 94 scripts; 46 registered | `hooks/` |
-| Rules | 16 core always-loaded; 150+ total | `rules/` |
-| Skills | 72 | `skills/` |
-| Lib Modules | 79 | `lib/` |
-| ADRs | 270+ | `docs/adrs/` |
-| Docs | 1 200+ | `docs/` |
-| Tests | 4 732 | `tests/` |
+| Area | Current local count | Location |
+|------|---------------------|----------|
+| Hooks | 191 regular shell files; additional symlinked/package hooks may appear in local projections | `hooks/` |
+| Rules | 119 markdown rules | `rules/` |
+| Skills | 166 top-level `SKILL.md` files | `skills/` |
+| Lib modules | 316 top-level Python files | `lib/` |
+| ADRs | 280 `ADR-*.md` files | `docs/adrs/` |
+| Docs | 1 209 files, including 1 140 markdown files | `docs/` |
+| Tests | 3 086 `test_*` files | `tests/` |
 
 ## Entry Points
 
