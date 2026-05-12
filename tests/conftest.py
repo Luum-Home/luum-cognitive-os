@@ -2,8 +2,8 @@
 
 Also installs a default `subprocess.run` timeout at module load time so test
 suites that invoke external scripts cannot hang the whole suite when the
-subprocess is buggy. Tests that need longer can still pass an explicit
-`timeout=` keyword — that wins.
+subprocess is buggy. Explicit `timeout=` values are honored only up to
+the test-suite safety budget so subprocess cleanup fires before pytest-timeout.
 
 Root-fix per 2026-05-12 session: the contracts/audit suites had ~169 naked
 `subprocess.run(...)` calls without `timeout=`; one hang (test_repository_
@@ -11,7 +11,7 @@ family_ledgers_cover_hooks_skills_and_rules, test_cos_primitive_surface_
 coverage_alias_json_exit_code_contract) blocked the entire suite at ~8%
 completion. Pytest's `--timeout-method=thread` cannot kill an OS subprocess
 spawned without `subprocess.run(timeout=...)`. This wrapper makes the
-default safe; explicit per-call timeouts still override.
+default safe; explicit per-call timeouts are capped by the safety budget.
 """
 
 import os
@@ -20,7 +20,7 @@ import sqlite3
 import subprocess
 import uuid
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import pytest
 import yaml
@@ -29,10 +29,12 @@ import yaml
 # Default subprocess.run timeout (test-only safety net).
 # ----------------------------------------------------------------------------
 # Override via COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT (seconds). Set to 0 to
-# disable the wrapper entirely (legacy behavior).
+# disable the wrapper entirely (legacy behavior). This value is also the max
+# per-call subprocess timeout so cleanup beats pytest-timeout.
 _DEFAULT_TEST_SUBPROCESS_TIMEOUT = float(
     os.environ.get("COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT", "45")
 )
+_PYTEST_TIMEOUT_BUDGET_SECONDS: Optional[float] = None
 
 if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
     import signal
@@ -92,10 +94,24 @@ if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
             else:
                 super().kill()
 
+    def _effective_subprocess_timeout(requested: Any) -> Any:
+        """Return a subprocess timeout that fires before pytest-timeout.
+
+        Explicit call-site timeouts still express intent, but they cannot be
+        allowed to exceed the suite-level watchdog. Otherwise pytest-timeout's
+        thread dump wins first and the OS process tree remains alive.
+        """
+        if requested is None:
+            requested = _DEFAULT_TEST_SUBPROCESS_TIMEOUT
+        if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
+            requested = min(float(requested), _DEFAULT_TEST_SUBPROCESS_TIMEOUT)
+        if _PYTEST_TIMEOUT_BUDGET_SECONDS and _PYTEST_TIMEOUT_BUDGET_SECONDS > 5:
+            requested = min(float(requested), _PYTEST_TIMEOUT_BUDGET_SECONDS - 5)
+        return requested
+
     def _subprocess_run_with_default_timeout(*args, **kwargs):
-        """Inject default timeout; Popen.kill() handles whole-tree cleanup."""
-        if "timeout" not in kwargs:
-            kwargs["timeout"] = _DEFAULT_TEST_SUBPROCESS_TIMEOUT
+        """Inject/cap timeout; Popen.kill() handles whole-tree cleanup."""
+        kwargs["timeout"] = _effective_subprocess_timeout(kwargs.get("timeout"))
         return _ORIG_SUBPROCESS_RUN(*args, **kwargs)
 
     # Patch at import time so test modules that import subprocess later still
@@ -108,6 +124,14 @@ if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
 
 def pytest_configure(config):
     """Register all custom markers used across the test suite."""
+    global _PYTEST_TIMEOUT_BUDGET_SECONDS
+    try:
+        timeout_option = config.getoption("timeout", default=None)
+    except ValueError:
+        timeout_option = None
+    if timeout_option:
+        _PYTEST_TIMEOUT_BUDGET_SECONDS = float(timeout_option)
+
     markers = [
         "unit: Unit tests for individual library functions",
         "audit: Aspirational-component audit tests (gated from default CI)",
