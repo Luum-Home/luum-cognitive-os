@@ -12,9 +12,10 @@ decision_inputs: [ADR-172, ADR-173]
 implementation_files:
   - docs/reports/surface-5-tui-ui-candidates-2026-05-05.md
   - docs/adrs/ADR-173-surface-5-research-gate.md
-  - docs/reports/surface-5-source-proof-<candidate>-<date>.md # future proof artifact
-  - docs/adrs/ADR-XXX-surface-5-adopt-<candidate>.md # future adoption ADR
 tier: maintainer
+future_artifacts:
+  - docs/reports/surface-5-source-proof-<candidate>-<date>.md
+  - docs/adrs/ADR-XXX-surface-5-adopt-<candidate>.md
 tags: [ui, surface-5, adoption-gate, source-proof, governance]
 ---
 # ADR-187: Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI

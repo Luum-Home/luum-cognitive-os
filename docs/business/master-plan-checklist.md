@@ -32,6 +32,7 @@
 - [x] The product promise is documented in [Master Plan Execution Requirements](master-plan-execution-requirements.md).
 - [x] Product positioning is documented in [Product Messaging](product-messaging.md).
 - [x] Product and commercial answers are now evidence-backed through [ADR-280](../adrs/ADR-280-product-question-to-evidence-primitive.md), [Product Answer Playbook](product-answer-playbook.md), `manifests/product-question-bank.yaml`, `manifests/product-claim-evidence.yaml`, and `scripts/cos-product-answer`.
+- [x] Repeated product and commercial answers are token-efficient through [ADR-282](../adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md), local `.cognitive-os/product-answers/` answer cards, source-hash freshness checks, compact routing index, and `scripts/cos-product-answer-refresh`.
 
 ## 2. Protected Core
 

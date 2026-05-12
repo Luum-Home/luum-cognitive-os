@@ -185,7 +185,7 @@ def test_audit_adrs_rejects_new_implemented_with_in_scope_future_work(tmp_path: 
         "---\n"
         "adr: 276\n"
         "title: Future Work\n"
-        "status: accepted\n"
+        "status: proposed\n"
         "implementation_status: implemented\n"
         "classification_basis: 'implemented with tests'\n"
         f"implementation_files:\n  - {proof}\n"
@@ -200,6 +200,78 @@ def test_audit_adrs_rejects_new_implemented_with_in_scope_future_work(tmp_path: 
     assert result["code"] == "INVALID_STATUS_TRANSITION"
     assert "future" in result["message"]
 
+
+
+def test_audit_adrs_verifies_declared_implementation_files_for_accepted_implemented(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    adr = tmp_path / "ADR-188-accepted-implemented-missing-file.md"
+    adr.write_text(
+        "---\n"
+        "adr: 188\n"
+        "title: Accepted Implemented Missing File\n"
+        "status: accepted\n"
+        "implementation_status: implemented\n"
+        "implementation_files:\n  - lib/missing.py\n"
+        "tier: maintainer\n"
+        "tags: []\n"
+        "---\n# ADR-188\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {188})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "STATUS_REALITY_MISMATCH"
+    assert result["implementation_status"] == "implemented"
+    assert result["missing_files"] == ["lib/missing.py"]
+
+
+def test_audit_adrs_verifies_declared_implementation_files_for_partial_too(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    adr = tmp_path / "ADR-241-partial-missing-file.md"
+    adr.write_text(
+        "---\n"
+        "adr: 241\n"
+        "title: Partial Missing File\n"
+        "status: accepted\n"
+        "implementation_status: partial\n"
+        "implementation_files:\n  - hooks/missing.sh\n"
+        "tier: maintainer\n"
+        "tags: []\n"
+        "---\n# ADR-241\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {241})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "STATUS_REALITY_MISMATCH"
+    assert result["implementation_status"] == "partial"
+    assert result["missing_files"] == ["hooks/missing.sh"]
+
+
+def test_operational_guide_alone_is_not_implementation_evidence_for_new_adrs(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    adr = tmp_path / "ADR-276-og-only.md"
+    adr.write_text(
+        "---\n"
+        "adr: 276\n"
+        "title: OG Only\n"
+        "status: proposed\n"
+        "implementation_status: implemented\n"
+        "classification_basis: 'Operational Guide rendered from Decision prose'\n"
+        "implementation_files: []\n"
+        "tier: maintainer\n"
+        "tags: []\n"
+        "---\n# ADR-276\n\n## Decision\n\nDo the thing.\n\n## Operational Guide\n\nUse the thing.\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {276})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "INVALID_STATUS_TRANSITION"
+    assert "implemented ADRs require" in result["message"]
 
 def test_adr_partial_ledger_is_generated() -> None:
     result = subprocess.run(

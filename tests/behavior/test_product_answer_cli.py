@@ -55,3 +55,59 @@ def test_product_answer_cli_unknown_question_fails() -> None:
     report = json.loads(result.stdout)
     assert report["status"] == "fail"
     assert "no product question matched" in report["error"]
+
+
+
+def test_product_answer_refresh_cli_materializes_and_answer_cli_uses_cache(tmp_path: Path) -> None:
+    cache_dir = tmp_path / "cards"
+    refresh = subprocess.run(
+        [str(ROOT / "scripts" / "cos-product-answer-refresh"), "--question-id", "differentiator", "--cache-dir", str(cache_dir), "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    answer = subprocess.run(
+        [str(CLI), "¿Cuál es nuestro diferenciador?", "--cache-dir", str(cache_dir), "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert refresh.returncode == 0
+    refresh_report = json.loads(refresh.stdout)
+    assert refresh_report["adr"] == "ADR-281"
+    assert refresh_report["refreshed_count"] == 1
+    assert (cache_dir / "differentiator.md").exists()
+    assert (cache_dir / "differentiator.json").exists()
+    assert (cache_dir / "index.yaml").exists()
+
+    assert answer.returncode == 0
+    answer_report = json.loads(answer.stdout)
+    assert answer_report["cache"]["mode"] == "card"
+    assert answer_report["cache"]["freshness"] == "fresh"
+    assert answer_report["question_id"] == "differentiator"
+
+
+def test_product_answer_cli_no_cache_forces_live_generation_after_refresh(tmp_path: Path) -> None:
+    cache_dir = tmp_path / "cards"
+    subprocess.run(
+        [str(ROOT / "scripts" / "cos-product-answer-refresh"), "--question-id", "differentiator", "--cache-dir", str(cache_dir)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    result = subprocess.run(
+        [str(CLI), "--question-id", "differentiator", "--cache-dir", str(cache_dir), "--no-cache", "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["cache"]["mode"] == "live"
+    assert report["question_id"] == "differentiator"
