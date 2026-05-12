@@ -61,8 +61,8 @@
   "schema_version": "portable-ai-context.v1",
   "skill_overlay_count": 2,
   "skill_overlay_coverage_policy": "Only lifecycle/contract-promoted skills are emitted as .ai primitive rows; other skills/*/SKILL.md files remain package/source content until promoted through primitive lifecycle and contract manifests.",
-  "skill_overlay_excluded_count": 164,
-  "skill_source_count": 166,
+  "skill_overlay_excluded_count": 166,
+  "skill_source_count": 168,
   "source_manifests": [
     "manifests/primitive-contracts.yaml",
     "manifests/primitive-lifecycle.yaml",
