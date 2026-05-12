@@ -366,11 +366,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 4,
         "rule": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/AGENTS.md"
+        },
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
@@ -400,7 +404,7 @@
       "evidence": [
         "rule_consumers:2",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:4"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -410,6 +414,153 @@
       "role": "prompt-composition",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 4,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-270-legal-compliance-workflow-automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/runbooks/legal-review-workflow.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-counsel-outreach-draft"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_counsel_outreach_draft.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:4"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/counsel-outreach/clean-room-permission.md",
+      "role": "prompt-composition",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 4,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-270-legal-compliance-workflow-automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/runbooks/legal-review-workflow.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-counsel-outreach-draft"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "doc_consumers:4"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/counsel-outreach/license-clarification.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 4,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-270-legal-compliance-workflow-automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/runbooks/legal-review-workflow.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-counsel-outreach-draft"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_counsel_outreach_draft.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:4"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/counsel-outreach/review-request.md",
+      "role": "prompt-composition",
+      "role_source": "default",
+      "supported_harnesses": [],
       "total_consumers": 6
     },
     {
@@ -418,7 +569,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 20,
+        "doc": 21,
         "hook": 1,
         "rule": 1,
         "test": 1
@@ -451,6 +602,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -526,7 +681,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:20",
+        "doc_consumers:21",
         "config_consumers:1"
       ],
       "family": "templates",
@@ -537,7 +692,7 @@
       "role": "prompt-composition",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "medium",
@@ -577,7 +732,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 5,
+        "doc": 6,
         "rule": 1
       },
       "consumers": [
@@ -602,6 +757,10 @@
           "path": "docs/prompt-templates.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/helixdb-annex-d-license-opencore-risk-2026-05-11.md"
+        },
+        {
           "family": "rule",
           "path": "rules/prompt-composition.md"
         }
@@ -609,7 +768,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "doc_consumers:5"
+        "doc_consumers:6"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -619,7 +778,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -1141,20 +1300,20 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "medium": 19
+      "medium": 22
     },
     "consumer_accessibility": {
-      "so-local-only": 19
+      "so-local-only": 22
     },
     "roles": {
       "agent-preamble": 1,
-      "prompt-composition": 8,
+      "prompt-composition": 11,
       "quality-gate": 9,
       "recovery": 1
     },
-    "total": 19,
+    "total": 22,
     "without_consumers": 4,
-    "without_lifecycle": 19
+    "without_lifecycle": 22
   },
   "target_family": "templates"
 }

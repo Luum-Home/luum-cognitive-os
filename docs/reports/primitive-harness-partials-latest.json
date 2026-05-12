@@ -61,9 +61,9 @@
       "scope": "project"
     },
     {
-      "coverage": "acc-report+claude+dashboard+tui",
+      "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
       "gap_policy": "codex-adapter-needed",
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
@@ -239,6 +239,16 @@
       "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
       "primitive": "hooks/parry-scan.sh",
       "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/pending-truth-drift-detector.sh",
+      "scope": "both"
     },
     {
       "coverage": "acc-report+claude+dashboard+tui",
@@ -649,20 +659,51 @@
       "next_action": "Add a consumer projection driver or demote from projectable scope.",
       "primitive": "scripts/license-audit-trivy.sh",
       "scope": "project"
+    },
+    {
+      "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+      "family": "rules",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "unclassified",
+      "gap_severity": "medium",
+      "next_action": "Triage policy, severity, and owner.",
+      "primitive": "rules/memory-governance.md",
+      "scope": null
+    },
+    {
+      "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+      "family": "rules",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "unclassified",
+      "gap_severity": "medium",
+      "next_action": "Triage policy, severity, and owner.",
+      "primitive": "rules/recommendation-grounding.md",
+      "scope": null
+    },
+    {
+      "coverage": "acc-report+aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+dashboard+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+tui+vscode-copilot+warp+zed-ai",
+      "family": "skills",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "unclassified",
+      "gap_severity": "medium",
+      "next_action": "Triage policy, severity, and owner.",
+      "primitive": "skills/deep-tool-research/SKILL.md",
+      "scope": null
     }
   ],
   "schema_version": "primitive-harness-partials.v1",
   "source_schema_version": "primitive-harness-coverage.v1",
   "summary": {
     "by_policy": {
-      "codex-adapter-needed": 58,
-      "projectable-needs-driver": 7
+      "codex-adapter-needed": 59,
+      "projectable-needs-driver": 7,
+      "unclassified": 3
     },
     "by_severity": {
-      "medium": 65
+      "medium": 69
     },
-    "partial_count": 65,
-    "total_gaps": 810,
-    "unclassified_gaps": 0
+    "partial_count": 69,
+    "total_gaps": 869,
+    "unclassified_gaps": 3
   }
 }
