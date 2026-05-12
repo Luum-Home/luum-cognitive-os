@@ -100,6 +100,48 @@ Latency is hard-capped at 1s with `timeout 1` (target < 300ms).
 - Numeric-density heuristic uses a 5-numbers-per-fenced-block ratio that
   may penalise reports with intentionally bullet-style numeric summaries.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, there was no machine enforcement of research-report quality. The 2026-05-05 audits had asymmetric depth (COS side described in prose, external side cited at `file:line`) and numerical errors that only an Opus re-audit caught. The `consequence-system` tracked trust-score streaks but had no dimensions specific to research work.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Research report writes | No quality signal | `hooks/research-quality-validator.sh` runs PostToolUse on `**/docs/reports/*.md`; emits stderr WARNING when score < 70 |
+| Quality metrics | None | `.cognitive-os/metrics/research-quality.jsonl` receives one entry per scored report |
+| Risky task routing | Manual; relied on orchestrator recall | `dispatch_model_advisor.py` logs opus recommendations for tasks scoring ≥ 5 on the ADR-069 4-dimension risk score |
+| Consequence streak | Trust-score only | Streak advisory fires through `consequence-evaluator.sh` when last 5 reports average < 70 |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Does this report cite both sides of a comparison at `file:line`?" — Symmetric citation dimension (40% weight) catches the 2026-05-05 asymmetric-depth pattern.
+- "Are numbers in this report backed by captured commands?" — Numerical specificity dimension (20%) flags unsupported figures.
+- "Should this task be routed to Opus?" — `dispatch_model_advisor.py` scores AC clarity, blast radius, reversibility, and decision count; tasks scoring ≥ 5 receive an `opus` recommendation logged to `.cognitive-os/metrics/model-recommendations.jsonl`.
+
+**Does not answer:**
+- "Is this report semantically correct?" — The scorer is regex-based; it measures syntactic evidence presence, not semantic accuracy.
+- "Should I block this report?" — Never: the hook is advisory-only (stderr WARNING). Hard-blocking research writes was explicitly rejected.
+
+### Daily operational pattern
+
+1. Write a report to `docs/reports/` — the hook fires automatically via PostToolUse.
+2. If score < 70: read the WARNING to identify which dimension failed; add `file:line` citations, confidence labels, or a `## Uncertainties` section as appropriate.
+3. Periodically check `.cognitive-os/metrics/research-quality.jsonl` for streak trends.
+4. For high-risk tasks, check `.cognitive-os/metrics/model-recommendations.jsonl` for Opus routing recommendations before dispatching.
+
+Killswitches: `SO_KILLSWITCH=1` or `DISABLE_HOOK_RESEARCH_QUALITY_VALIDATOR=1` bypass the hook entirely.
+
+### Reading guide for cold readers
+
+1. The root cause of this ADR is documented in `docs/reports/cos-side-deep-rebuttal-2026-05-05.md` — read it to understand what asymmetric-depth looks like concretely.
+2. The four scoring dimensions and weights are in `lib/research_quality_advisor.py`; threshold 70 is env-overridable (`RESEARCH_QUALITY_THRESHOLD`).
+3. The ADR-069 4-dimension risk score (used by `dispatch_model_advisor.py`) is the same framework referenced in `rules/RULES-COMPACT.md §12 Research & Decision Protocols`.
+4. The hook latency is hard-capped at 1s (`timeout 1`); if it becomes a bottleneck, the implementation guarantees < 300ms target.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |
