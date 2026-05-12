@@ -3,7 +3,8 @@
 adr: 244
 title: Trust Report Claim-Validator Must Enforce, Not Advise
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'claim enforcer, blocking hook behavior, rule update, and behavior tests satisfy the ADR enforcement scope'
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -75,6 +76,70 @@ release).
    read-through). The enforcer skips the run but records the manual
    opt-out in the audit trail. Repeated `verification: manual` from the
    same agent identity is a quality-signal flag, not a block.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the claim-validator was advisory: it scored agent trust reports
+and surfaced concerns, but the orchestrator could accept a `completed` status
+regardless of what the score said. A false "tests pass" claim produced a lower
+trust score and nothing else.
+
+After this ADR, the behavior changes at the boundary of high-stakes trigger
+patterns:
+
+- When an agent's `TRUST_REPORT` matches a trigger (e.g., `4/4 tests pass`,
+  `fixes #7`, `all green`), the claim-enforcer (`scripts/claim_enforcer.py`,
+  invoked by `hooks/claim-validator.sh`) re-runs the cited verification command
+  in a fresh context.
+- If that command exits non-zero, the agent's status is **downgraded to
+  `partial`** and the failing output is attached as evidence. The orchestrator
+  sees a `partial` result — not a `completed` one — and decides what to do per
+  ADR-238 escalation rules.
+- No automatic retry occurs. The operator or orchestrator decides next steps.
+
+Agents that declare `verification: manual` bypass the execution check but
+are flagged in the audit trail. Repeated `verification: manual` from the same
+agent identity is a quality-signal flag, not a block.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Can a failing test suite slip through as a `completed` claim?" — No, if the
+  agent cited a verification command that matches a trigger pattern.
+- "How do I know if enforcement ran?" — Check `agent-audit-trail.jsonl` for
+  enforcement decision entries, or inspect the agent's returned status field.
+- "What if the verification command is not shell-runnable?" — Declare
+  `verification: manual` in the trust report. The enforcer skips execution and
+  logs the opt-out.
+
+**Does not answer:**
+- Whether the claim would have been correct if the cited command had been run
+  inside the agent (the enforcer runs in a fresh context specifically to avoid
+  that self-referential failure).
+- Whether claims that do not match a trigger pattern are correct. Non-trigger
+  claims remain advisory under the existing trust-score rules.
+
+### Daily operational pattern
+
+When a sub-agent returns a trust report:
+
+1. The enforcer auto-runs on trigger-pattern matches via the hook — no manual
+   invocation needed.
+2. To verify enforcement is working:
+   ```bash
+   python3 -m pytest tests/behavior/test_claim_enforcer.py -q
+   grep -RIn "verification:" rules/trust-score.md
+   ```
+3. To inspect a specific enforcement decision in the audit trail:
+   ```bash
+   grep "claim-enforcer" .cognitive-os/logs/agent-audit-trail.jsonl | tail -5
+   ```
+4. If an agent is repeatedly marked `partial` on legitimate work, check whether
+   its verification command is flaky or depends on agent-internal state that is
+   not reproducible in a fresh context. The correct fix is to declare
+   `verification: manual` with an explanation, not to suppress the gate.
 
 ## Alternatives rejected
 

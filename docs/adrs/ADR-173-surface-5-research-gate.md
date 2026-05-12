@@ -84,6 +84,55 @@ python3 -m pytest \
   -q
 ```
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the ADR-173 slot was occupied by a tombstone, and there was no
+explicit gate for Surface 5 decisions. An agent or operator could propose or
+adopt a custom TUI/UI substrate and reference ADR-173 as prior art without any
+enforcement.
+
+After this ADR:
+
+- ADR-173 is an explicit **research gate**, not an adoption decision.
+- No custom TUI/UI substrate (terminal UI library, rich interactive display,
+  GUI/Electron shell) may be adopted under this slot without a **follow-up ADR**
+  that contains: source-level proof (code read), license verification, and a
+  falsifiable fit claim against ADR-172's four-surface architecture.
+- The CLI (Surface 1 in ADR-172) remains the authoritative operator state
+  surface until that follow-up ADR exists.
+- Candidate reports (e.g., `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md`)
+  may cite ADR-173 as the gate, but they are not evidence of adoption.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Has COS decided to adopt Bubble Tea / Charm / Textual / any TUI?" — No.
+  This ADR reserves the slot and blocks adoption without source-level proof.
+- "Can I propose a Surface 5 candidate?" — Yes. Write a report citing ADR-173,
+  but it becomes architecture only after a follow-up ADR with source-level
+  evidence passes review.
+- "Why does ADR-173 exist if it makes no adoption decision?" — To prevent the
+  slot from being tombstoned (which would destroy the ADR-172 reference) while
+  also preventing aspirational adoption without evidence.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without session context:
+
+1. Read ADR-172 (`docs/adrs/ADR-172-multi-surface-ui-architecture.md`) to
+   understand the four-surface architecture that Surface 5 would extend.
+2. Read `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md` for the
+   operator's initial candidate survey and the inputs that motivated this gate.
+3. This ADR is a **negative** decision: it explicitly blocks adoption rather
+   than accepting it. The "Accepted" status means the gate policy is accepted —
+   not that any Surface 5 implementation is accepted.
+4. To propose adoption, write a new ADR citing this one as the gate, include
+   source-level analysis of the candidate library, license verification, and a
+   falsifiable fit claim against ADR-172. Then this ADR may reference that
+   follow-up as the resolved path.
+
 ## Alternatives rejected
 
 - **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.

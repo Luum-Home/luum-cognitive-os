@@ -75,6 +75,47 @@ an explicit projection profile. Provider and Docker proof drills are
 - Provider model pins are governed as runtime flags rather than ad hoc shell
   environment.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, selecting the right proof drill required reading long report documents and manually inferring which command was appropriate for the current instance profile. ACC had no way to consume proof-drill evidence programmatically, and the `COS_CODEX_EXEC_MODEL` flag was undocumented outside ad hoc shell invocations.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Proof drill selection | Read prose, guess command | `scripts/proof-drill-select --scope <scope> --class <class>` returns the right command |
+| ACC coverage | No proof-drill evidence rows | `scripts/acc_pipeline.py` loads `docs/reports/proof-drill-evidence-latest.json` as aligned/stale/unverified rows |
+| Instance plans | Listed smoke commands by prose | `cos-instance-init` exposes registered proof drills and default-safe doctor commands per projection profile |
+| Runtime flag `COS_CODEX_EXEC_MODEL` | Undocumented, ad hoc | Registered in `manifests/runtime-env-flags.yaml`; governed as a test opt-in model pin |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which proof drill should I run for this instance profile?" — `scripts/proof-drill-select --profile consumer-default` returns only safe drills for that context.
+- "Does ACC have coverage evidence for this capability?" — Check `docs/reports/proof-drill-evidence-latest.json`; `acc_pipeline.py` loads it automatically.
+- "Is `COS_CODEX_EXEC_MODEL` a known flag?" — Yes; see `manifests/runtime-env-flags.yaml` for purpose and opt-in semantics.
+
+**Does not answer:**
+- Whether a proof drill passed — only `scripts/proof-drill-evidence-record` updates pass/fail status after a live execution.
+- Whether provider or Docker drills are safe for a consumer project — by design those are `maintainer-only` unless a later ADR promotes them.
+
+### Daily operational pattern
+
+1. When adding a new proof drill: declare it in `manifests/proof-drill-registry.yaml` with `consumer_projection` classification.
+2. To find the right drill for the current context: `scripts/proof-drill-select --scope local --class smoke`.
+3. After a proof run: `scripts/proof-drill-evidence-record --id <drill-id> --status pass` to update `docs/reports/proof-drill-evidence-latest.json`.
+4. ACC picks up evidence on next pipeline run — no manual classification needed.
+
+### Reading guide for cold readers
+
+1. Read `manifests/proof-drill-registry.yaml` to understand which drills exist and their projection profiles (`consumer-default`, `consumer-opt-in`, `maintainer-only`).
+2. Run `scripts/proof-drill-select --list` to see the current selectable drill set.
+3. Read `docs/reports/proof-drill-evidence-latest.json` for the latest pass/fail evidence rows.
+4. The consumer projection rule is the critical constraint: provider and Docker drills are `maintainer-only` — do not surface them to consumer project operators unless a future ADR creates a safe adapter.
+5. The test suite at `tests/contracts/test_proof_drill_select.py` is the authoritative contract for the selector interface.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

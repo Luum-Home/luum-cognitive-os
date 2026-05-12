@@ -794,5 +794,13 @@
   },
   "_skillstore_analysis_registered_in_driver": true,
   "_rule_router_prompt_suggest_registered_in_driver": true,
-  "_rule_md_routing_validator_registered_in_driver": true
+  "_rule_md_routing_validator_registered_in_driver": true,
+  "_conditional_opt_in": {
+    "_description": "ADR-273 Slice C hooks \u2014 registered in manifests/hook-registration-classification.yaml as conditional_opt_in. Not wired by default; operator promotes via apply-efficiency-profile.sh maintainer.",
+    "hooks": [
+      "pending-truth-drift-detector.sh",
+      "pending-truth-verify-weekly.sh",
+      "pending-truth-staleness-gate.sh"
+    ]
+  }
 }

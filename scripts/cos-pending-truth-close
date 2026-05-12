@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""ADR-275 — Close a pending-truth item atomically with bilateral proof.
+
+Verifies the proof, applies the canonical closure edit to the original
+source, records the closure in `.cognitive-os/audit/closure-trail.jsonl`,
+and re-runs the aggregator to refresh the ledger.
+
+Usage:
+  python3 scripts/cos-pending-truth-close --id <ledger-id> --proof <ref>
+  python3 scripts/cos-pending-truth-close --id <id> --proof <ref> --dry-run
+  python3 scripts/cos-pending-truth-close --id <id> --proof <ref> --reason "..."
+
+Proof refs:
+  path:line       e.g. lib/foo.py:42
+  adr-ref         e.g. ADR-274  (must be status: accepted|implemented)
+  test-id         e.g. tests/red_team/portability/test_X.py::test_Y
+  commit-sha      e.g. 35752b38
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+LEDGER_PATH = "docs/reports/pending-truth-latest.json"
+AUDIT_TRAIL_PATH = ".cognitive-os/audit/closure-trail.jsonl"
+AGGREGATOR = "scripts/cos-pending-truth-aggregator"
+
+ADR_REF_RE = re.compile(r"^ADR-(\d+)\b", re.IGNORECASE)
+PATH_LINE_RE = re.compile(r"^([^:]+):L?(\d+)$")
+COMMIT_SHA_RE = re.compile(r"^[0-9a-f]{7,40}$", re.IGNORECASE)
+TEST_ID_RE = re.compile(r"^tests?/[\w/.-]+::[\w_-]+$")
+
+
+def _resolve_project_dir(arg: str | None) -> Path:
+    if arg:
+        return Path(arg).resolve()
+    for env_var in ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR"):
+        if env_var in os.environ:
+            return Path(os.environ[env_var]).resolve()
+    return Path.cwd().resolve()
+
+
+def _load_ledger(root: Path) -> dict[str, Any] | None:
+    path = root / LEDGER_PATH
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _find_item(ledger: dict[str, Any], item_id: str) -> dict[str, Any] | None:
+    for it in ledger.get("items", []) or []:
+        if it.get("id") == item_id:
+            return it
+    return None
+
+
+def _classify_proof(proof: str) -> str:
+    if ADR_REF_RE.match(proof):
+        return "adr-ref"
+    if TEST_ID_RE.match(proof):
+        return "test-id"
+    if PATH_LINE_RE.match(proof):
+        return "path:line"
+    if COMMIT_SHA_RE.match(proof):
+        return "commit-sha"
+    if "/" in proof or proof.endswith((".py", ".sh", ".md", ".yaml", ".json", ".go", ".ts", ".js")):
+        return "path"
+    return "unknown"
+
+
+def verify_proof(root: Path, proof: str, kind: str) -> tuple[bool, str]:
+    """Return (is_valid, reason)."""
+    if kind == "path:line":
+        m = PATH_LINE_RE.match(proof)
+        assert m
+        rel = m.group(1)
+        ln = int(m.group(2))
+        target = root / rel
+        if not target.exists():
+            return False, f"file does not exist: {rel}"
+        try:
+            lines = target.read_text(encoding="utf-8").splitlines()
+        except OSError as exc:
+            return False, f"cannot read {rel}: {exc}"
+        if ln < 1 or ln > len(lines):
+            return False, f"line {ln} out of range (file has {len(lines)} lines)"
+        return True, f"line {ln} of {rel} present"
+    if kind == "path":
+        target = root / proof
+        if not target.exists():
+            return False, f"path does not exist: {proof}"
+        return True, f"path {proof} exists"
+    if kind == "adr-ref":
+        m = ADR_REF_RE.match(proof)
+        assert m
+        num = int(m.group(1))
+        adr_dir = root / "docs/adrs"
+        if not adr_dir.is_dir():
+            return False, "docs/adrs/ not present"
+        # Find any ADR-<num>-*.md file
+        matches = list(adr_dir.glob(f"ADR-{num:03d}-*.md")) + list(adr_dir.glob(f"ADR-{num}-*.md"))
+        if not matches:
+            return False, f"no ADR file matches ADR-{num}"
+        adr_path = matches[0]
+        try:
+            content = adr_path.read_text(encoding="utf-8")
+        except OSError as exc:
+            return False, f"cannot read {adr_path}: {exc}"
+        status_m = re.search(r"^status:\s*([\w-]+)", content[:2000], re.IGNORECASE | re.MULTILINE)
+        status = status_m.group(1).lower() if status_m else None
+        if status not in {"accepted", "implemented"}:
+            return False, f"ADR-{num} status is '{status}', not accepted|implemented"
+        return True, f"ADR-{num} status={status}"
+    if kind == "test-id":
+        # Path part must exist; we don't run the test from here (cheap check)
+        path_part = proof.split("::", 1)[0]
+        target = root / path_part
+        if not target.exists():
+            return False, f"test file does not exist: {path_part}"
+        return True, f"test file {path_part} present (run separately to confirm)"
+    if kind == "commit-sha":
+        cp = subprocess.run(
+            ["git", "cat-file", "-e", proof],
+            cwd=root,
+            capture_output=True,
+            timeout=5,
+            check=False,
+        )
+        if cp.returncode != 0:
+            return False, f"commit {proof} not found in repo"
+        return True, f"commit {proof} present"
+    return False, f"unrecognized proof kind: {kind}"
+
+
+def apply_closure(
+    root: Path,
+    item: dict[str, Any],
+    proof: str,
+    reason: str | None,
+    dry_run: bool,
+) -> tuple[bool, str, dict[str, Any]]:
+    """Apply the canonical closure edit. Return (ok, message, edit_record)."""
+    item_type = item.get("type")
+    source = item.get("source", "")
+    edit_record: dict[str, Any] = {"item_type": item_type, "source": source, "edits": []}
+
+    if item_type == "plan-checkbox":
+        # source format: plans/X.md:L42
+        m = PATH_LINE_RE.match(source)
+        if not m:
+            return False, f"cannot parse plan-checkbox source: {source}", edit_record
+        rel = m.group(1)
+        ln = int(m.group(2))
+        target = root / rel
+        if not target.exists():
+            return False, f"plan file not found: {rel}", edit_record
+        lines = target.read_text(encoding="utf-8").splitlines(keepends=True)
+        if ln < 1 or ln > len(lines):
+            return False, f"plan line {ln} out of range", edit_record
+        original = lines[ln - 1]
+        if "- [ ]" not in original and "- [X]" in original.upper():
+            return False, f"line {ln} of {rel} is already checked: {original.strip()}", edit_record
+        if "- [ ]" not in original:
+            return False, f"line {ln} of {rel} is not a checkbox: {original.strip()}", edit_record
+        updated = original.replace("- [ ]", "- [x]", 1).rstrip("\n")
+        # Append verified marker if not already present
+        if "(verified:" not in updated:
+            updated = f"{updated} (verified: {proof})"
+        updated += "\n"
+        edit_record["edits"].append({
+            "file": rel,
+            "line": ln,
+            "before": original.rstrip("\n"),
+            "after": updated.rstrip("\n"),
+        })
+        if not dry_run:
+            lines[ln - 1] = updated
+            target.write_text("".join(lines), encoding="utf-8")
+        return True, "plan checkbox closed", edit_record
+
+    if item_type == "adr-slice":
+        # source format: docs/adrs/ADR-NNN-*.md
+        rel = source
+        target = root / rel
+        if not target.exists():
+            return False, f"ADR file not found: {rel}", edit_record
+        content = target.read_text(encoding="utf-8")
+        new_content = re.sub(
+            r"^(implementation_status:\s*)\S+",
+            lambda m: f"{m.group(1)}implemented",
+            content,
+            count=1,
+            flags=re.MULTILINE,
+        )
+        if new_content == content:
+            # No implementation_status field; insert one after status:
+            new_content = re.sub(
+                r"^(status:\s*\S+\n)",
+                lambda m: m.group(1) + "implementation_status: implemented\n",
+                content,
+                count=1,
+                flags=re.MULTILINE,
+            )
+        if new_content == content:
+            return False, f"could not patch ADR frontmatter in {rel}", edit_record
+        edit_record["edits"].append({
+            "file": rel,
+            "field": "implementation_status",
+            "after": "implemented",
+        })
+        if not dry_run:
+            target.write_text(new_content, encoding="utf-8")
+        return True, "ADR implementation_status flipped to implemented", edit_record
+
+    if item_type == "audit-finding":
+        rel = source if source.startswith(".cognitive-os") or source.startswith("docs/") else source
+        target = root / rel
+        if not target.exists():
+            return False, f"audit-finding source not found: {rel}", edit_record
+        # For .cognitive-os/tasks/active-tasks.json, we only annotate the item;
+        # parsing+rewriting JSON safely is out of scope of the closure script.
+        # Just record the intent in the audit trail and let the next aggregator pick it up.
+        edit_record["edits"].append({
+            "file": rel,
+            "annotation": f"closure-trail entry recorded; manual JSON update may be required",
+        })
+        return True, "audit-finding annotated (closure-trail records intent)", edit_record
+
+    if item_type in {"follow-up", "user-request"}:
+        edit_record["edits"].append({
+            "kind": item_type,
+            "source": source,
+            "annotation": "closure-trail entry recorded; source surface updated on next aggregator run",
+        })
+        return True, f"{item_type} marked closed via audit trail", edit_record
+
+    return False, f"unknown item type: {item_type}", edit_record
+
+
+def append_audit_trail(root: Path, entry: dict[str, Any]) -> None:
+    path = root / AUDIT_TRAIL_PATH
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, sort_keys=True) + "\n")
+    except OSError as exc:
+        print(f"WARN: could not append audit trail: {exc}", file=sys.stderr)
+
+
+def refresh_aggregator(root: Path) -> bool:
+    target = root / AGGREGATOR
+    if not target.exists():
+        return False
+    try:
+        subprocess.run(
+            ["python3", str(target), "--write"],
+            cwd=root,
+            capture_output=True,
+            timeout=30,
+            check=False,
+        )
+        return True
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="ADR-275 pending-truth close primitive")
+    parser.add_argument("--project-dir", default=None)
+    parser.add_argument("--id", required=True, help="Ledger item id (from pending-truth-latest.json)")
+    parser.add_argument("--proof", required=True, help="Proof ref: path:line | ADR-NNN | test-id | commit-sha")
+    parser.add_argument("--reason", default=None, help="Free-text reason, persisted to audit trail")
+    parser.add_argument("--dry-run", action="store_true", help="Show what would change, do not write")
+    parser.add_argument("--skip-refresh", action="store_true", help="Do not re-run aggregator after closure")
+    args = parser.parse_args(argv)
+
+    root = _resolve_project_dir(args.project_dir)
+
+    ledger = _load_ledger(root)
+    if ledger is None:
+        print(f"ERROR: ledger not found at {LEDGER_PATH} (run cos-pending-truth-aggregator first)", file=sys.stderr)
+        return 2
+
+    item = _find_item(ledger, args.id)
+    if item is None:
+        print(f"ERROR: ledger item id not found: {args.id}", file=sys.stderr)
+        return 2
+
+    kind = _classify_proof(args.proof)
+    ok, reason = verify_proof(root, args.proof, kind)
+    if not ok:
+        print(f"ERROR: proof verification failed: {reason}", file=sys.stderr)
+        return 3
+
+    success, msg, edit_record = apply_closure(root, item, args.proof, args.reason, args.dry_run)
+    if not success:
+        print(f"ERROR: closure could not be applied: {msg}", file=sys.stderr)
+        return 4
+
+    entry = {
+        "schema_version": "closure-trail/v1",
+        "closed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "id": args.id,
+        "item_type": item.get("type"),
+        "source": item.get("source"),
+        "proof": args.proof,
+        "proof_kind": kind,
+        "proof_verification": reason,
+        "reason": args.reason,
+        "dry_run": args.dry_run,
+        "edit_record": edit_record,
+        "closer": os.environ.get("COGNITIVE_OS_AGENT_ID")
+                  or os.environ.get("USER")
+                  or "unknown",
+    }
+
+    if args.dry_run:
+        print(json.dumps({"dry_run": True, **entry}, indent=2))
+        return 0
+
+    append_audit_trail(root, entry)
+
+    if not args.skip_refresh:
+        refresh_aggregator(root)
+
+    print(json.dumps({"closed": True, **entry}, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

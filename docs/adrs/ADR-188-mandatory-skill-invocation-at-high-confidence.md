@@ -178,6 +178,45 @@ user prompt.
 - Soft layer (suggestion) remains unchanged. The new hook only adds
   enforcement when bypass-without-annotation accumulates.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, skill-router suggestions were advisory only. The orchestrator could ignore a 0.95-confidence `/repo-scout` match 12 times in a single session with no consequence, and the operator had no way to detect the bypass without asking explicitly. After this ADR:
+
+| Surface | Before ADR-188 | After ADR-188 |
+|---|---|---|
+| High-confidence suggestion | System-reminder advisory, ignorable | Must invoke, escalate to stronger skill, or emit `SKILL_BYPASS:` annotation |
+| Bypass audit | None | `.cognitive-os/metrics/skill-bypass.jsonl` per-bypass entry |
+| Repeated bypass enforcement | None | WARN after first/second; BLOCK after third (single session) |
+| Gate overhead | 0 ms | < 30 ms per Agent/Bash launch |
+
+The `SKILL_BYPASS:` annotation format in the assistant response is:
+`SKILL_BYPASS: <skill-name> (confidence <score>) — <concrete-reason>`
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Did the orchestrator actually use the canonical skill?" — read `.cognitive-os/metrics/skill-bypass.jsonl`; absences mean the skill was invoked; entries document deliberate bypasses.
+- "How many times was a skill bypassed this week?" — query `skill-bypass.jsonl` by `suggested_skill` and timestamp.
+- "Is the gate firing (< 30 ms)?" — check `tests/contracts/test_skill_invocation_gate.py` p99 latency assertion; or run `make test-laptop` which includes this contract.
+
+**Does not answer:**
+- Whether the skill itself produced good output — that is the skill contract's responsibility, not the gate's.
+- Whether an operator-direct skill invocation was appropriate — the gate is for orchestrator drift specifically; operators invoking explicitly are already informed.
+
+### When sources disagree
+
+Two specific cases:
+
+- **Gate warns but operator believes the skill is not applicable**: the threshold is 0.90 — if the router scores that high for an inapplicable prompt, the routing pattern in `skills/<name>/SKILL.md` over-fits. Lower the pattern's confidence there; do not bypass per-prompt.
+- **`skill-bypass.jsonl` shows many bypasses for one skill**: either the skill is broken/misconfigured (pick up the entry as a bug report) or the threshold is wrong for that skill's patterns. Tune the routing pattern first before adjusting the global threshold.
+
+The override path for genuine one-offs:
+```bash
+COS_ALLOW_SKILL_BYPASS=1 COS_SKILL_BYPASS_REASON='<text>' <agent-launch>
+```
+
 ## Alternatives rejected
 
 - **Hard block on first ignored suggestion**: too aggressive; operator

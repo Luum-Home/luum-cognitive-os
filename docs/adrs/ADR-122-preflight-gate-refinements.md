@@ -9,8 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'policy-only: refinement decision for preflight gates; implementation is distributed across later gate ADRs'
 ---
 
 # ADR-122 — Preflight Gate Refinements

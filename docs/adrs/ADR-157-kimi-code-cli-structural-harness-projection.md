@@ -62,6 +62,46 @@ The installer preserves existing `AGENTS.md` content by appending or replacing o
 - `.kimi/mcp.json` is intentionally empty until a profile or operator configures concrete MCP servers.
 - No native COS lifecycle hook parity is claimed.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: Kimi Code was treated primarily as a VS Code extension or provider candidate, with no first-class CLI projection path. The `kimi-code` harness was listed as planned.
+
+After this ADR:
+
+- `cos_init.py --harness kimi-code` is a valid installation command:
+  ```bash
+  python3 scripts/cos_init.py --default --harness kimi-code --project-dir /path/to/consumer
+  ```
+  This writes `AGENTS.md` (with a bounded Cognitive OS Kimi block, preserving existing content), `.kimi/mcp.json` (empty `mcpServers` placeholder), and `.kimi/README.md` (CLI invocation boundary documentation).
+- ACC records `kimi-code/default` and `kimi-code/full` projection counts.
+- `manifests/harness-implementation-phases.yaml` records Kimi alongside Qwen in Phase 3.
+
+The intended CLI invocation documented in `.kimi/README.md`:
+```bash
+kimi --work-dir . --mcp-config-file .kimi/mcp.json
+```
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "How does Kimi Code CLI discover COS context?" — Via `AGENTS.md`, which the Kimi Help Center documents as the project-level context file for the CLI.
+- "Where should MCP server configuration go for Kimi?" — In `.kimi/mcp.json`. The generated file is an empty placeholder; add concrete `mcpServers` entries for the consumer's tools.
+- "Is existing `AGENTS.md` content preserved?" — Yes. The installer appends or replaces only the marked Cognitive OS Kimi block, leaving other content intact.
+
+**Does not answer:**
+- "Is Kimi Code CLI installed and authenticated on the consumer machine?" — Structural projection is account-free; actual CLI use requires Kimi installation and authentication.
+- "Does Kimi Code receive the same lifecycle hook enforcement as Claude Code?" — No. No native COS lifecycle hook parity is claimed for this structural projection.
+- "What Kimi CLI version is required?" — The surfaces used (`--work-dir`, `--mcp-config-file`, `AGENTS.md`) are from official Kimi documentation; verify against the installed CLI version if behavior differs.
+
+### Reading guide for cold readers
+
+1. Run `python3 scripts/cos_init.py --default --harness kimi-code --project-dir /tmp/test-kimi` and inspect `AGENTS.md`, `.kimi/mcp.json`, and `.kimi/README.md`.
+2. Read `manifests/harness-projection.yaml` entry for `kimi-code` — note the `structural-cli-proof` limitation annotation alongside Qwen.
+3. Read `docs/manual-tests/kimi-code-cli-structural-projection.md` for expected file assertions and their rationale.
+4. Compare with ADR-156 (Qwen Code): both are Phase 3 structural harnesses; Kimi targets the CLI surface while Qwen targets project settings + context files.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

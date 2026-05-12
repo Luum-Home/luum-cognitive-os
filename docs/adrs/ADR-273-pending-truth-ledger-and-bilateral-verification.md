@@ -5,6 +5,7 @@ adr: 273
 title: Pending Truth Ledger and Bilateral Verification Loop
 status: accepted
 implementation_status: partial
+classification_basis: 'Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization'
 date: 2026-05-12
 supersedes: []
 superseded_by: null

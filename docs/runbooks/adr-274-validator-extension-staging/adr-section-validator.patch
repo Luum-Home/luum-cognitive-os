@@ -1,0 +1,52 @@
+--- a/hooks/adr-section-validator.sh
++++ b/hooks/adr-section-validator.sh
+@@ -94,6 +94,49 @@ issues = []
+ for section in required:
+     if not re.search(rf"^## {re.escape(section)}\b", text, re.MULTILINE):
+         issues.append(f"missing ## {section} section")
+
++# ADR-274: §Operational Guide required for maintainer-tier accepted capability ADRs
++def _front(field):
++    m = re.search(rf"^{field}:\s*([\w-]+)", text[:2000], re.IGNORECASE | re.MULTILINE)
++    return m.group(1).lower() if m else None
++
++tier = _front("tier")
++status_v = _front("status")
++impl_block = re.search(r"^implementation_files:\s*\n((?:\s+-\s+.+\n)+)", text[:3000], re.MULTILINE)
++impl_count = 0
++if impl_block:
++    impl_count = len([ln for ln in impl_block.group(1).splitlines() if ln.strip().startswith("-")])
++is_tombstone = "tombstone" in Path(file_path).stem.lower() or status_v == "tombstone"
++is_superseded = status_v == "superseded"
++exempt = re.search(r"<!--\s*adr-274-exempt:\s*.+?-->", text, re.IGNORECASE)
++subject = (
++    tier == "maintainer"
++    and status_v in {"accepted", "implemented"}
++    and impl_count > 0
++    and not is_tombstone
++    and not is_superseded
++    and not exempt
++)
++if subject:
++    has_og = re.search(r"^##\s*Operational\s+Guide\b", text, re.IGNORECASE | re.MULTILINE)
++    if not has_og:
++        issues.append("missing ## Operational Guide section (required by ADR-274 for maintainer-tier accepted capability ADRs; add <!-- adr-274-exempt: <reason> --> to suppress)")
++    else:
++        sub_re = re.compile(
++            r"^###\s+("
++            r"What changes for the operator"
++            r"|What (?:this|the .+) answer"
++            r"|Daily operational pattern"
++            r"|When (?:sources|surface) disagree"
++            r"|Reading guide for cold readers"
++            r"|Anti-confusion"
++            r")",
++            re.IGNORECASE | re.MULTILINE,
++        )
++        subs = sub_re.findall(text)
++        if len(subs) < 3:
++            issues.append(f"## Operational Guide has {len(subs)} recognized sub-section(s); need >= 3 of the 5 documented (see ADR-274 §2)")
++
+ # ## Alternatives rejected must have >= 1 table row (non-header, non-separator)
+ alt_m = re.search(r"^## Alternatives rejected\b(.+?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL)
+ if alt_m:

@@ -112,6 +112,36 @@ smoke lanes.
 python3 -m pytest tests/audit/test_adr_contracts.py -q
 ```
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, sandbox skills accumulated in `.cognitive-os/skills/sandbox/` with no mechanism for proposing them as advisory candidates. Operators either manually promoted skills or let them sit as raw inventory. After this ADR:
+
+- `lib/skill_lifecycle_promoter.py` evaluates sandbox skills against the promotion thresholds (50 invocations / 30 days, 5 judged-usefulness events, 80% success rate) and generates markdown proposal docs.
+- `lib/doctrine_proposer.py` includes skill lifecycle evidence in `activate-skill-lifecycle-promotion-ladder` proposals and appends generation events to `.cognitive-os/metrics/lifecycle-promotion-proposals.jsonl`.
+- The evaluator generates **proposals only** — it never moves skill directories, edits `SKILL.md` files, or rewrites routing canon. The operator reviews and approves every transition.
+- Stale advisory skills get an explicit demotion proposal path instead of silently persisting as routing debt.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which sandbox skills have earned an advisory-promotion proposal?" — run `python3 scripts/run_skill_lifecycle_promotion_smoke.py`; proposals with `runtime_effect: none` appear in the output.
+- "Has a promotion proposal been generated for skill X?" — check `.cognitive-os/metrics/lifecycle-promotion-proposals.jsonl` for an entry whose `skill` field matches.
+- "Is a stale advisory skill accumulating as routing debt?" — the evaluator generates demotion proposals for advisory skills with no recent usage evidence over the demotion window.
+
+**Does not answer:**
+- Whether a proposal has been approved — approval is a human action outside the evaluator's scope.
+- Whether sandbox skills without judged-usefulness feedback will promote — they will not until operators record feedback events.
+
+### Daily operational pattern
+
+1. Skills accumulate usage and feedback via the SkillStore (ADR-176).
+2. The evaluator runs periodically (or on-demand via `scripts/run_skill_lifecycle_promotion_smoke.py`) and checks thresholds.
+3. Qualifying sandbox skills produce a proposal doc; a generation event is appended to `.cognitive-os/metrics/lifecycle-promotion-proposals.jsonl`.
+4. Operator reviews the proposal, confirms the sandbox skill remains in place, and approves or rejects the promotion.
+5. If approved, the operator manually edits the relevant `SKILL.md` and routing canon; the evaluator does not perform this step.
+
 ## Alternatives rejected
 
 - **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.

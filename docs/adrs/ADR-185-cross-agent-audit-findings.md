@@ -246,6 +246,76 @@ This keeps ADR-185's store-and-forward directive queue separate from mid-flight 
 - Engram remains the durable cross-session memory; this is the
   *transient queue* layer.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, an auditor agent that found a defect had two informal
+paths: write to Engram (implementer must search) or produce a report
+file (implementer must open and read). Neither path blocked the
+implementer from committing with the finding unresolved.
+
+After this ADR:
+
+- Auditors emit structured findings via `lib/agent_message_bus.send_message`
+  or `scripts/cos-agent-message send`. Findings land in
+  `.cognitive-os/coordination/agent-messages.jsonl`.
+- The `hooks/agent-message-inbox-guard.sh` PreToolUse hook surfaces
+  unacknowledged `severity=block` messages before risky Bash/git
+  boundaries. Under `COS_AGENT_MESSAGE_GUARD_MODE=block`, the hook
+  prevents the operation until the finding is acknowledged.
+- The implementer checks the inbox with:
+  `scripts/cos-agent-message inbox --session-id <operator-session>`
+- Acknowledgement: `scripts/cos-agent-message ack <message-id> --status applied`
+
+The audit trail remains at `.cognitive-os/coordination/agent-messages.jsonl`;
+Engram is an optional archive, not a required dependency.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Are there unresolved audit findings blocking my work?" — Run
+  `scripts/cos-agent-message inbox --session-id <my-session>`. Any
+  `severity=block` entries must be acknowledged before commits land.
+- "What did auditor session X find?" — Filter the JSONL by
+  `from_session` to see all findings from a specific auditor.
+- "Has finding <id> been resolved?" — Findings are stitched by
+  `message_id`; look for a trailing ack entry with the same id.
+
+**Does not answer:**
+- Whether the finding was actually fixed (vs. just acknowledged).
+  An implementer can ack with `status: acknowledged` without resolving;
+  a follow-up auditor run re-emits the finding and escalates severity.
+- Cross-machine finding delivery. The queue is per-machine in v1.
+  Cross-machine delivery goes through Engram Cloud (ADR-141/136).
+
+### Daily operational pattern
+
+1. Auditor agent emits a finding:
+   `scripts/cos-agent-message send --to <operator-session> --severity block --target lib/foo.py --body "..."`
+2. Before the next commit, `agent-message-inbox-guard.sh` fires and
+   surfaces the unresolved finding.
+3. Operator reviews:
+   `scripts/cos-agent-message inbox --session-id <session>`
+4. After fixing: `scripts/cos-agent-message ack <message-id> --status applied`
+5. Commit proceeds.
+6. Finding rotated to archive at 50 MB or 30-day TTL.
+
+### When sources disagree
+
+If the inbox guard blocks a commit but the operator believes the finding
+was already resolved:
+
+1. Check the JSONL for the ack entry:
+   `grep <message-id> .cognitive-os/coordination/agent-messages.jsonl`
+   An ack entry with `kind: ack` and `status: applied` should follow
+   the original message entry.
+2. If no ack entry exists, the finding was not acknowledged through the
+   queue — it may have been resolved only in Engram or verbally.
+   Run the explicit ack command to close the queue entry.
+3. The JSONL is the runtime queue; Engram is the archive. If they
+   disagree, the JSONL state governs what the guard hook sees.
+
 ## Alternatives rejected
 
 - **Use Engram alone with a strict topic_key naming convention**:

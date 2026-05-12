@@ -7,11 +7,14 @@ implementation_status: implemented
 date: 2026-05-05
 authors: [luum-agent-os]
 supersedes: []
+implementation_files: []
 cross_references:
   - ADR-133  # auto-skill-generation — same "declare in artifact, derive at runtime" pattern
   - ADR-064  # canonical hook registry — analogous self-describing artifact pattern
   - hooks/skill-router-prompt-suggest.sh  # UserPromptSubmit hook that surfaces suggestions
   - dogfood-score  # skill_coverage: 24.07/100 — primary evidence for this ADR
+tier: maintainer
+tags: [routing, skills, rules, agentic-primitives]
 ---
 # ADR-174 — Auto-Derived Primitive Routing for Skills
 

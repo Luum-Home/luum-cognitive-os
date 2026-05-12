@@ -2,15 +2,14 @@
 adr: 92
 title: Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-04-30'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'self-install resolves claude skills destinations and syncs skills into harness-specific paths'
 ---
 
 # ADR-092: Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination

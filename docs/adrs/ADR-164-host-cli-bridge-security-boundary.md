@@ -3,7 +3,8 @@
 adr: 164
 title: Host CLI Bridge Security Boundary
 status: implemented
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'ADR scope is the design-only security contract; future host bridge execution is a separate implementation scope'
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -82,6 +83,36 @@ and redaction proofs exist.
   useful until Phase 5.
 - Some host CLI status commands may vary by vendor/version and need adapter
   normalization.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the `host-cli-bridge` profile declared in ADR-163 had no security contract. Without one, any implementation could silently become a general remote shell or credential exfiltration path. After this ADR:
+
+- `manifests/host-cli-bridge-contract.yaml` is the authoritative security contract: transport, auth, command allowlist, blocked credential paths, redaction, audit rows, approval requirements, and promotion gates.
+- `manifests/cos-instance-implementation-phases.yaml` phases provider execution to a later opt-in step; the first bridge smoke is non-provider only (e.g. `codex login status`, `claude --version`).
+- `tests/contracts/test_host_cli_bridge_contract.py` enforces deny-by-default and no-credential-store-copy invariants — these must pass before any bridge implementation can exist.
+- The bridge is design-only until a later phase implements a non-provider smoke. No bridge runtime code ships with this ADR.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "What commands can the bridge expose?" — only those declared in the allowlist in `manifests/host-cli-bridge-contract.yaml`; arbitrary shell commands are blocked.
+- "Can the bridge copy host credentials into Docker?" — no; mounting `~/.codex`, `~/.claude`, or equivalent is explicitly blocked.
+- "When can provider calls (`codex exec`, `claude -p`) go through the bridge?" — only after auth, approval, cost, and redaction proofs exist (Phase 5 per `manifests/cos-instance-implementation-phases.yaml`).
+- "Is the bridge runtime implemented?" — no; this ADR closes the contract/design scope. Implementation is a separate phase.
+
+**Does not answer:**
+- How to wire the bridge into a live Docker container — that is a later implementation phase.
+- Whether all host CLI status commands normalize consistently across vendor versions — adapter normalization is a follow-up.
+
+### Reading guide for cold readers
+
+1. Read `manifests/host-cli-bridge-contract.yaml` for the full security contract (transport, auth, allowlist, blocked paths, audit, approval).
+2. Read `manifests/cos-instance-implementation-phases.yaml` to understand which bridge phase is implemented vs. planned.
+3. Run `python3 -m pytest tests/contracts/test_host_cli_bridge_contract.py -q` to verify deny-by-default and no-credential-copy invariants pass.
+4. The key invariant: provider calls through the bridge are Phase 5 opt-in, not default. Any implementation attempting to add them earlier must update the phases manifest and re-run contract tests.
 
 ## Alternatives rejected
 

@@ -3,7 +3,8 @@
 adr: 243
 title: Post-Rewrite Push-Collision Check Exception
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'history rewrite receipt and push-collision exception are implemented; future expires_at is an enhancement not core closure'
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -78,6 +79,60 @@ push-collision check reads.
 4. **Marker lifecycle.** The marker is cleared on first successful push or
    when its TTL expires, whichever is sooner. A subsequent rewrite
    overwrites it.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: after any history rewrite, `git push --force-with-lease` was blocked by push-collision-check on every rewritten commit (same subject, new SHA). The only workaround was `--no-verify`, which disabled all push-time protections simultaneously.
+
+After this ADR: the rewrite toolchain writes `.cognitive-os/runtime/last-rewrite.json`. The push-collision check reads it and admits subject collisions that are within the rewrite's commit range and match the expected pre/post HEAD pair — without disabling any other push gate.
+
+| Scenario | Before | After |
+|---|---|---|
+| Force-push after `cos-history-sanitization --execute` | blocked by push-collision-check on every commit | allowed when marker matches; other gates remain active |
+| Audit trail | no record that collisions were post-rewrite | collisions logged to `agent-heartbeat.jsonl` with `rules_hash` correlation |
+| Bypass method needed | `--no-verify` (kills all gates) | no bypass needed; marker file handles it automatically |
+| Marker lifetime | n/a | 24 hours or first successful push, whichever is sooner |
+
+### Daily operational pattern
+
+**Normal flow — no operator action required:**
+
+1. Run the history rewrite via `cos-history-sanitization --execute` or `cos-filter-repo-wrap.sh` (see ADR-242).
+2. Both tools write `.cognitive-os/runtime/last-rewrite.json` automatically.
+3. Run `git push --force-with-lease` as normal — collision-check reads the marker and admits the post-rewrite collisions.
+4. After a successful push, the marker is cleared automatically.
+
+**To verify the marker is present before pushing:**
+```bash
+python3 -c "import json; d=json.load(open('.cognitive-os/runtime/last-rewrite.json')); print(d)"
+# Expected fields: pre_head, post_head, rewritten_at, ttl_seconds, rules_hash
+```
+
+**If the marker has expired (> 24 hours since rewrite) and push is still blocked:**
+```bash
+# The TTL has passed; use COS_BYPASS=push_collision (per ADR-241) to admit
+# the push, then investigate why the push was delayed
+COS_BYPASS=push_collision git push --force-with-lease
+```
+
+**To run the acceptance tests:**
+```bash
+python3 -m pytest tests/behavior/test_push_collision_post_rewrite.py -q
+```
+
+### When sources disagree
+
+If the push-collision check blocks despite a valid marker file:
+
+- Verify that the local `HEAD` SHA equals `post_head` in the marker. If they differ, another commit landed after the rewrite and the marker no longer describes the current state.
+- Verify that the upstream `HEAD` equals `pre_head`. If upstream has been updated by another push since the rewrite, the expected pre/post correlation is broken.
+- In either case the correct action is to re-run the rewrite against the updated base, not to bypass the collision check.
+
+If the push succeeds but you expected it to be blocked (i.e., the marker was stale or mismatched):
+
+- Check `agent-heartbeat.jsonl` for the most recent push-collision entry and its `rewrite_hash` field. An admission without a matching hash indicates a logic gap; file a follow-up issue.
 
 ## Alternatives rejected
 

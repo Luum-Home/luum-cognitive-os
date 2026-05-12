@@ -2,15 +2,14 @@
 adr: 198
 title: Release External Readiness Gate
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-06'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'release external readiness script and contract tests implement the read-only preflight gate'
 ---
 
 # ADR-198: Release External Readiness Gate

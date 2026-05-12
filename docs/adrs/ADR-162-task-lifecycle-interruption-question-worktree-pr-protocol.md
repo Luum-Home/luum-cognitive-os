@@ -4,6 +4,7 @@ adr: 162
 title: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol
 status: implemented
 implementation_status: partial
+classification_basis: 'implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up'
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -84,6 +85,39 @@ a task-scoped worktree, branch, lease, and claimed path set.
 - Worktree cleanup must be conservative to avoid deleting recoverable work.
 - Chat integrations need structured command and question handling before they
   are useful for complex build flows.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, there was no machine-readable contract for how tasks move through COS once admitted: how they pause, how agents ask questions, how interrupted work persists state, and how isolated work becomes a branch or PR. After this ADR:
+
+- `manifests/task-lifecycle-schema.yaml` is the authoritative contract for task statuses, question types, interruption reasons, event communication, worktree ownership, and PR flow.
+- Worktrees use `.worktrees/{task_id}` ownership; branches follow `codex/{task_id}-{slug}` naming.
+- Agents ask questions as structured decision objects (not free-form chat): types include `requirement`, `approval`, `credential`, `conflict`, `product_decision`, `clarification`, `review`.
+- Pull requests are the normal propose-only output for remote or headless work; direct publication actions are blocked by the contract.
+- Remote and IDE-driven work now share the same lifecycle vocabulary.
+
+Full queue/worker/PR runtime enforcement remains follow-up service-control-plane work; the contract exists and is tested before the daemon does.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "What are the valid task statuses?" — read `manifests/task-lifecycle-schema.yaml`; statuses span `queued` → `running` → `waiting_for_human` → `interrupted` → `resumable` → `pr_ready` → `approved` → `merged` and terminal states.
+- "How should an agent ask for operator input?" — use a structured question with a declared type and `blocking: true/false`; free-form chat messages are not interruption records.
+- "Can an agent push directly to main?" — no; the contract blocks direct publication actions. PR flow is propose-only.
+
+**Does not answer:**
+- Whether the full queue/worker/PR runtime is implemented — that is follow-up `cosd` work. The contract governs vocabulary; enforcement needs the service-control-plane runtime.
+- Whether a specific interruption reason is recoverable automatically — recovery policy is an operator decision; the schema defines the reason vocabulary, not the recovery action.
+
+### Reading guide for cold readers
+
+1. Read `manifests/task-lifecycle-schema.yaml` for the complete state-machine vocabulary.
+2. Run `python3 -m pytest tests/contracts/test_task_lifecycle_schema.py -q` to verify required states, transitions, fields, and blocked publication actions.
+3. Read `docs/manual-tests/task-lifecycle-worktree-pr-flow.md` for the manual proof checklist.
+4. Read `docs/architecture/service-control-plane-implementation-plan.md` for how this contract fits the broader `cosd` plan.
+5. Worktree naming (`codex/{task_id}-{slug}`) and the append-only event communication format are the two most commonly referenced invariants when debugging parallel-agent coordination.
 
 ## Alternatives rejected
 

@@ -2,15 +2,14 @@
 adr: 264
 title: 'Tool Result Envelope: Compact Envelope Format for Large Tool Outputs'
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-11'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'tool result envelope module, agent/dispatch integration, spillover behavior, and tests implement compact result envelopes'
 ---
 
 # ADR-264 — Tool Result Envelope: Compact Envelope Format for Large Tool Outputs

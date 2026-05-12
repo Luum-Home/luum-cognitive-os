@@ -2,15 +2,14 @@
 adr: 88
 title: Provenance trailer attribution via PPID chain
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-04-30'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'commit provenance marker/trailer implementation and behavior tests exist for the PPID attribution fix'
 ---
 
 # ADR-088 — Provenance trailer attribution via PPID chain

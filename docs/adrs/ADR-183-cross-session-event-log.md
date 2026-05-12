@@ -207,6 +207,88 @@ peer-context hook only reads the live log.
 - This is *advisory*, not enforcing. ADR-182 enforces; ADR-183
   informs.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, each session operated as if sovereign: no session could
+see that a peer was working on related material without manually checking
+`active-sessions.json`. The 2026-05-05 incident showed two sessions
+writing contradictory disposition policies on the same subject with zero
+mutual awareness.
+
+After this ADR:
+
+- Every significant tool call (session-start, branch-acquire, file
+  write intent, agent-spawn, commit, session-end) emits a structured
+  event to `.cognitive-os/sessions/events.jsonl`.
+- At every `UserPromptSubmit`, the orchestrator receives a peer-context
+  summary injected by `hooks/cross-session-peer-context.sh` if any live
+  peer sessions exist.
+- The peer-context summary names the peer's active branch, recent
+  write targets, and inferred topics so the orchestrator can coordinate
+  before issuing conflicting changes.
+- The log is advisory, not enforcing. ADR-182 enforces (blocks
+  conflicting commits); ADR-183 informs (surfaces peer activity in
+  context).
+
+To suppress peer awareness for a session: set
+`DISABLE_HOOK_CROSS_SESSION_PEER_CONTEXT=1`.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is anyone else working on related material right now?" — Peer-context
+  injection shows peer sessions active in the last 30 minutes with their
+  branch, recent writes, and topic keywords.
+- "What happened in other sessions recently?" — Read
+  `.cognitive-os/sessions/events.jsonl` directly; filter by
+  `session_id` to isolate per-session activity.
+- "When did a peer acquire the branch lock?" — Look for
+  `event_type: branch-acquire` in the log.
+
+**Does not answer:**
+- Whether a peer's changes are semantically compatible with the current
+  session's work. The log surfaces activity; compatibility judgment
+  remains with the operator or orchestrator.
+- Cross-machine peer activity. Events are local to the machine.
+  ADR-136 / ADR-141 handle cross-machine memory.
+
+### Daily operational pattern
+
+1. Sessions emit events automatically via registered hooks; no manual
+   action required.
+2. At each `UserPromptSubmit`, the orchestrator sees injected peer
+   context (if peers exist). The orchestrator decides whether to
+   coordinate, back off, or escalate.
+3. To inspect recent cross-session activity manually:
+   ```bash
+   python3 -c "
+   import json, time
+   with open('.cognitive-os/sessions/events.jsonl') as f:
+       for line in f:
+           e = json.loads(line)
+           if time.time() - e['timestamp_epoch'] < 1800:
+               print(e['event_type'], e['session_id'][:12], e.get('payload',{}))
+   "
+   ```
+4. Log rotation happens at 50 MB or weekly; old logs go to
+   `.cognitive-os/sessions/events-archive/<YYYY-MM>.jsonl.gz`.
+
+### When sources disagree
+
+If the peer-context hook claims a peer is active but the operator knows
+that session has ended:
+
+1. Check whether the peer PID is alive:
+   `ps aux | grep <pid>` (PID is in `session-start` events).
+2. If the PID is dead, the peer filter (`alive_only=True`) should have
+   excluded it. If the hook still shows the peer, it may be using a
+   cached read; re-running the next prompt will refresh the filter.
+3. The event log itself is always current (append-only). The peer-context
+   hook reads only the last 200 events; older events are not used for
+   peer detection.
+
 ## Alternatives rejected
 
 - **Engram pub/sub**: heavy, requires the Engram daemon to be running,

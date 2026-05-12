@@ -2,15 +2,14 @@
 adr: 9
 title: Package Architecture -- 375 Agentic Primitives Reclassified
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-03-28'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'package taxonomy exists in repository package/manifests layout; ADR is a historical classification decision rather than open runtime work'
 ---
 
 # ADR-009: Package Architecture -- 375 Agentic Primitives Reclassified

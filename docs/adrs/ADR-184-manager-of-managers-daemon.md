@@ -253,6 +253,81 @@ If the daemon is intentionally not running:
 - Most COS work (skills, hooks, tests, reports) does not require daemon
   arbitration; the daemon is a narrow authority over a small surface.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, ADR number assignment, ADR tombstone authorization, and
+`agentic-primitive-registry.lock.yaml` mutations were peer-to-peer: each
+session guarded its own writes with ADR-182/183, but two sessions could
+still collide when both needed the next ADR number at the same time.
+
+After this ADR, `cosd` is the single writer for these high-stakes
+surfaces. Sessions submit intents and wait for arbitration; the daemon
+assigns or rejects atomically.
+
+For the operator this means:
+
+- Start the daemon once per machine: `bash scripts/cosd start`.
+- Check status at any time: `bash scripts/cosd status` (shows PID,
+  uptime, intent queue depth, last 10 arbitrations).
+- Stop it gracefully: `bash scripts/cosd stop` (intent files remain on
+  disk and are replayed on restart).
+- If the daemon is not running, sessions fall back to ADR-182/183/185
+  peer coordination plus local guards. Direct ADR-number reservation
+  still warns (via stderr) that daemon arbitration is unavailable.
+
+The escape hatch `COSD_BYPASS=1` allows a direct write without daemon
+arbitration; it logs a warning to Engram. Use only when `cosd` is
+unavailable and the operator accepts the collision risk.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Who assigned ADR number X?" — Query the daemon intent log:
+  `bash scripts/cosd status` → last 10 arbitrations, or inspect
+  `.cognitive-os/cosd/results/` for granted intents.
+- "Why was a tombstone request rejected?" — The daemon rejects if an
+  active ADR file or live claim owns the number. The result file at
+  `.cognitive-os/cosd/results/<intent-id>.json` carries `status:
+  rejected` and the owning filename.
+- "Is the daemon running?" — `bash scripts/cosd status` exits 0 if
+  alive; non-zero if not running.
+
+**Does not answer:**
+- Cross-machine coordination. `cosd` is per-machine in v1. ADR-136
+  federation is the future cross-machine path.
+- Whether the ADR *prose* is correct. `cosd` arbitrates identity
+  (number, filename, tombstone authorization); content review is the
+  operator's concern.
+
+### Daily operational pattern
+
+1. `bash scripts/cosd start` at the beginning of a multi-session work
+   day (or add it to a login script).
+2. Sessions that need an ADR number call `hooks/cosd-intent-submit.sh`;
+   the hook submits the intent and polls for the result. No operator
+   action required in the happy path.
+3. If a session gets `status: rejected`, it means another session holds
+   the claim. Read the rejection reason and coordinate with the other
+   session.
+4. At end of day: `bash scripts/cosd stop`. Intent files are retained;
+   restart resumes from the queue.
+
+### When sources disagree
+
+If a session claims "ADR-N was granted to me" but the daemon result file
+shows a different session or a rejection:
+
+1. The daemon result file at `.cognitive-os/cosd/results/<intent-id>.json`
+   is authoritative.
+2. If the result file is absent (daemon crashed mid-arbitration), restart
+   `cosd`; it replays unprocessed intents from `.cognitive-os/cosd/intents/`.
+3. If two sessions both have a granted result for the same ADR number
+   (should not happen but possible if `COSD_BYPASS=1` was used), the
+   session that committed first in git history takes precedence; the other
+   must re-request a number.
+
 ## Alternatives rejected
 
 - **Add cosd responsibilities to git pre-receive hook**: only catches

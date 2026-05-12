@@ -61,6 +61,43 @@ ACC loads this manifest through a `consumer_availability` adapter. Rows marked `
 - Misclassification can hide real consumer debt, so every item requires rationale.
 - Shell/CI projection remains unimplemented for the remaining candidates.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: ACC treated all 49 lifecycle-declared script candidates with the same `lifecycle-declared-consumer-candidate` label, making maintainer-only tools look like unresolved consumer debt.
+
+After this ADR:
+
+- `manifests/primitive-consumer-availability.yaml` is the explicit classification layer. Every entry has an `availability_status` and a human-readable `rationale`.
+- Statuses that **reduce** partial weight: `maintainer-only`, `so-local-only` (these become aligned with explicit rationale).
+- Statuses that **preserve** partial weight: `shell-ci-candidate`, `projectable-needs-driver` (these remain partial until projection proof exists).
+- To see current classifications:
+  ```bash
+  cat manifests/primitive-consumer-availability.yaml
+  python3 scripts/acc_pipeline.py --project-dir . --brief
+  ```
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Why is this script not counted as consumer debt?" — Check `manifests/primitive-consumer-availability.yaml` for its `availability_status` and `rationale`.
+- "Which scripts are genuine future consumer CLI candidates vs. maintainer tools?" — `shell-ci-candidate` entries are real candidates; `maintainer-only` are not.
+- "What happens when a script's role changes?" — Update its entry in the manifest with the new status and rationale, then rerun ACC to confirm the weight change.
+
+**Does not answer:**
+- "When will `shell-ci-candidate` scripts become fully proven?" — That requires shell/CI projection proof (see ADR-152).
+- "Is this classification correct for all future consumer project topologies?" — Classification reflects current COS architecture; review during major structural changes.
+
+### When sources disagree
+
+If ACC reports a script as partial but the operator believes it is a maintainer tool:
+1. Check whether the script has an entry in `manifests/primitive-consumer-availability.yaml`. If absent, ACC uses the discovery label (`lifecycle-declared-consumer-candidate`) by default.
+2. Add or update the manifest entry with `availability_status: maintainer-only` and a clear `rationale`.
+3. Rerun `python3 scripts/acc_pipeline.py --project-dir . --refresh` to confirm the row moves from partial to aligned.
+
+The manifest is the source of truth; discovery labels are a fallback for unclassified primitives only.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |
