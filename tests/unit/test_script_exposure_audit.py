@@ -49,7 +49,9 @@ def test_classify_script_priorities() -> None:
     assert promoted["exposure_class"] == "P0-promotion-candidate"
 
     assert classify_script(_row("scripts/maint", "maintainer-tool"))["priority"] == "P1"
-    assert classify_script(_row("scripts/maint-doc", "maintainer-tool", total=2, families={"doc": 1, "test": 1}))["priority"] == "P2"
+    maint_doc = classify_script(_row("scripts/maint-doc", "maintainer-tool", total=2, families={"doc": 1, "test": 1}))
+    assert maint_doc["priority"] == "P2"
+    assert maint_doc["exposure_class"] == "P2-evidence-only"
     assert classify_script(_row("scripts/lab", "lab"))["priority"] == "P3"
     assert classify_script(_row("scripts/skilled", "agentic-primitive", skill=1, total=1, families={"skill": 1}))["priority"] == "OK"
 
@@ -84,6 +86,17 @@ def test_documented_route_disposition_resolves_p0() -> None:
     assert finding["priority"] == "OK"
     assert finding["exposure_class"] == "OK-documented-route"
     assert finding["disposition"]["resolution"] == "documented_route"
+
+
+def test_explicit_maintainer_classification_resolves_p2() -> None:
+    row = _row("scripts/internal", "maintainer-tool", total=2, families={"doc": 1, "test": 1})
+    row["role_source"] = "override"
+    row["override_rationale"] = "Synthetic internal maintainer tool."
+
+    finding = classify_script(row)
+
+    assert finding["priority"] == "OK"
+    assert finding["exposure_class"] == "OK-classified-maintainer"
 
 
 def test_build_audit_summary_and_markdown(tmp_path: Path) -> None:

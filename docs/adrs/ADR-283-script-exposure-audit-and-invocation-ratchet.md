@@ -89,6 +89,17 @@ Manual route dispositions live in
 and resolves the audit finding as `OK-documented-route` without pretending that
 the script has a skill consumer.
 
+P2 is also refined so the audit does not force every maintainer helper into a
+new skill:
+
+| Exposure class | Meaning | Expected action |
+|---|---|---|
+| `OK-classified-maintainer` | Maintainer tool has lifecycle metadata or an override rationale. | No skill required by default. |
+| `P2-runtime-route-undocumented` | Hook/router exposure but no explicit internal classification. | Document route, add lifecycle/override, or promote to a skill. |
+| `P2-script-orchestrated` | Script consumers but no hook/router/skill and no explicit classification. | Classify as internal backend or promote a grouped skill. |
+| `P2-evidence-only` | Docs/tests evidence but no runtime route or explicit classification. | Classify internal, archive stale docs, or promote. |
+| `P2-doc-only` / `P2-test-only` / `P2-config-only` | Single-family evidence only. | Treat as likely internal/test/stale unless product value justifies promotion. |
+
 The output is intentionally small and machine-readable:
 
 ```json
