@@ -1,17 +1,17 @@
 {
   "schema_version": "operational-guide-audit/v1",
-  "generated_at": "2026-05-12T14:26:50Z",
+  "generated_at": "2026-05-12T14:31:06Z",
   "contract_ref": "ADR-274",
   "summary": {
     "total_adrs": 284,
     "by_verdict": {
       "not-applicable": 222,
-      "missing": 60,
-      "compliant": 1,
+      "missing": 55,
+      "compliant": 6,
       "exempt": 1
     },
     "by_priority": {
-      "P0": 60
+      "P0": 55
     }
   },
   "findings": [
@@ -708,66 +708,6 @@
     {
       "severity": "warn",
       "code": "operational-guide-missing",
-      "message": "ADR-239-isolated-worktree-default-for-write-agents: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-239-isolated-worktree-default-for-write-agents",
-        "path": "docs/adrs/ADR-239-isolated-worktree-default-for-write-agents.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-239-isolated-worktree-default-for-write-agents",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-241-consolidated-cos-bypass-allowlist: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-241-consolidated-cos-bypass-allowlist",
-        "path": "docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-241-consolidated-cos-bypass-allowlist",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-242-git-filter-repo-wrapper-preserves-remote: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-242-git-filter-repo-wrapper-preserves-remote",
-        "path": "docs/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-242-git-filter-repo-wrapper-preserves-remote",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-243-post-rewrite-push-collision-exception: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-243-post-rewrite-push-collision-exception",
-        "path": "docs/adrs/ADR-243-post-rewrite-push-collision-exception.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 4
-      },
-      "stable_id": "adr-274/ADR-243-post-rewrite-push-collision-exception",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
       "message": "ADR-244-trust-report-claim-validator-must-enforce: §Operational Guide missing (0/3 sub-sections)",
       "details": {
         "adr": "ADR-244-trust-report-claim-validator-must-enforce",
@@ -898,21 +838,6 @@
         "age_days": 4
       },
       "stable_id": "adr-274/ADR-252-capability-coverage-matrix-and-feature-reality-ledger",
-      "adr": "ADR-274"
-    },
-    {
-      "severity": "warn",
-      "code": "operational-guide-missing",
-      "message": "ADR-269-mandatory-adr-reference-for-history-rewrites: §Operational Guide missing (0/3 sub-sections)",
-      "details": {
-        "adr": "ADR-269-mandatory-adr-reference-for-history-rewrites",
-        "path": "docs/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md",
-        "priority": "P0",
-        "tier": "maintainer",
-        "status": "accepted",
-        "age_days": 1
-      },
-      "stable_id": "adr-274/ADR-269-mandatory-adr-reference-for-history-rewrites",
       "adr": "ADR-274"
     }
   ],
@@ -4894,12 +4819,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 9,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-240-primitive-coherence-audit-and-ownership-manifest",
@@ -4926,12 +4851,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 8,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-242-git-filter-repo-wrapper-preserves-remote",
@@ -4942,12 +4867,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 3,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-243-post-rewrite-push-collision-exception",
@@ -4958,12 +4883,12 @@
       "date": "2026-05-08",
       "age_days": 4,
       "implementation_files_count": 4,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-244-trust-report-claim-validator-must-enforce",
@@ -5374,12 +5299,12 @@
       "date": "2026-05-11",
       "age_days": 1,
       "implementation_files_count": 5,
-      "has_operational_guide": false,
-      "subsection_count": 0,
+      "has_operational_guide": true,
+      "subsection_count": 3,
       "exemption_reason": null,
       "subject_to_contract": true,
-      "verdict": "missing",
-      "priority": "P0"
+      "verdict": "compliant",
+      "priority": null
     },
     {
       "adr": "ADR-270-legal-compliance-workflow-automation",
