@@ -46,6 +46,8 @@ lanes:
       - agent-orchestration-boundary
       - capability-coverage
       - operational-guide-coverage
+      - closure-trust-signal
+      - adr-partial-lifecycle
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -58,6 +60,8 @@ lanes:
       - agent-orchestration-boundary
       - capability-coverage
       - operational-guide-coverage
+      - closure-trust-signal
+      - adr-partial-lifecycle
 
 audits:
   primitive-coherence:
@@ -109,5 +113,17 @@ audits:
     adr: ADR-274
     command: [python3, scripts/cos-operational-guide-audit.py, --json]
     expected_schema: operational-guide-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  closure-trust-signal:
+    adr: ADR-275
+    command: [python3, scripts/cos-closure-trust-signal.py]
+    expected_schema: closure-trust-signal/v1
+    consumes_sensitive_values: false
+    mutates: false
+  adr-partial-lifecycle:
+    adr: ADR-275
+    command: [python3, scripts/cos-adr-partial-audit, --json]
+    expected_schema: adr-partial-audit/v1
     consumes_sensitive_values: false
     mutates: false

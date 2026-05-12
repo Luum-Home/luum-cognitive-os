@@ -152,6 +152,7 @@ cc_driver_emit() {
       "hooks/mcp-scan.sh"                     "true"  \
       "hooks/dangerous-env-flag-detector.sh" "false" \
       "hooks/history-rewrite-documented.sh"   "false" \
+      "hooks/cos-session-start-projector.sh"  "false" \
     )
   fi
 
@@ -221,6 +222,7 @@ cc_driver_emit() {
     "hooks/attribution-completeness-validator.sh" "false" \
     "hooks/lib-symlink-divergence-detector.sh" "false" \
     "hooks/legal-review-required-on-runtime-import.sh" "false" \
+    "hooks/pending-truth-staleness-gate.sh"    "false" \
   )
 
   local pre_read
@@ -327,6 +329,7 @@ cc_driver_emit() {
     "hooks/edit-lock-drain-parked.sh"       "false" \
     "hooks/research-quality-validator.sh"   "true"  \
     "hooks/rule-md-routing-validator.sh"    "true"  \
+    "hooks/pending-truth-drift-detector.sh" "true"  \
   )
 
   local post_todowrite
@@ -391,6 +394,7 @@ cc_driver_emit() {
     "hooks/engram-crystallize-on-session-end.sh" "true" \
     "hooks/engram-obsidian-export-on-stop.sh" "true" \
     "hooks/control-plane-audit-hourly.sh"    "false" \
+    "hooks/pending-truth-verify-weekly.sh"   "true"  \
   )
 
   local teammate_idle

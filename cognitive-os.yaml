@@ -1952,6 +1952,92 @@ harness:
       event: Stop
       scope: os-only
 
+    # ── License / SPDX gates (ADR-212) ───────────────────────────────────────
+    adoption-freeze-gate:
+      script: hooks/adoption-freeze-gate.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    attribution-completeness-validator:
+      script: hooks/attribution-completeness-validator.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    dependency-license-classifier:
+      script: hooks/dependency-license-classifier.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    external-cache-content-leak:
+      script: hooks/external-cache-content-leak.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    external-pattern-cleanroom-gate:
+      script: hooks/external-pattern-cleanroom-gate.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    legal-review-required-on-runtime-import:
+      script: hooks/legal-review-required-on-runtime-import.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    research-to-runtime-firewall:
+      script: hooks/research-to-runtime-firewall.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    spdx-header-required:
+      script: hooks/spdx-header-required.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    # ── Lib symlink + history-rewrite (ADR-242 + symlink architecture) ───────
+    lib-symlink-divergence-detector:
+      script: hooks/lib-symlink-divergence-detector.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: both
+
+    history-rewrite-documented:
+      script: hooks/history-rewrite-documented.sh
+      event: SessionStart
+      scope: os-only
+
+    # ── ADR-273 Slice C — pending-truth anti-drift hooks ─────────────────────
+    pending-truth-drift-detector:
+      script: hooks/pending-truth-drift-detector.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: both
+
+    pending-truth-verify-weekly:
+      script: hooks/pending-truth-verify-weekly.sh
+      event: Stop
+      async: true
+      scope: both
+
+    pending-truth-staleness-gate:
+      script: hooks/pending-truth-staleness-gate.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: both
+
+    # ── ADR-275 — session-start projector (wrapper invokes Python script) ────
+    cos-session-start-projector:
+      script: hooks/cos-session-start-projector.sh
+      event: SessionStart
+      scope: os-only
+
 # ---------------------------------------------------------------------------
 # Evolve Loop Spike (ADR-262) — opt-in, disabled by default during spike window
 # ---------------------------------------------------------------------------
