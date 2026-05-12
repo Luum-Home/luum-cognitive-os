@@ -10,7 +10,7 @@ CLI = ROOT / "scripts" / "cos-product-answer"
 
 def test_product_answer_cli_answers_differentiator_json() -> None:
     result = subprocess.run(
-        [str(CLI), "¿Cuál es nuestro diferenciador?", "--json"],
+        [str(CLI), "¿Cuál es nuestro diferenciador?", "--no-cache", "--json"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -77,7 +77,7 @@ def test_product_answer_refresh_cli_materializes_and_answer_cli_uses_cache(tmp_p
 
     assert refresh.returncode == 0
     refresh_report = json.loads(refresh.stdout)
-    assert refresh_report["adr"] == "ADR-281"
+    assert refresh_report["adr"] == "ADR-282"
     assert refresh_report["refreshed_count"] == 1
     assert (cache_dir / "differentiator.md").exists()
     assert (cache_dir / "differentiator.json").exists()

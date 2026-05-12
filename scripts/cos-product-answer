@@ -26,7 +26,7 @@ def main() -> int:
     parser.add_argument("--project-dir", type=Path, default=ROOT)
     parser.add_argument("--question-bank", type=Path)
     parser.add_argument("--claim-evidence", type=Path)
-    parser.add_argument("--cache-dir", type=Path, help="Override ADR-281 answer-card cache directory")
+    parser.add_argument("--cache-dir", type=Path, help="Override ADR-282 answer-card cache directory")
     parser.add_argument("--no-cache", action="store_true", help="Bypass fresh answer cards and generate from manifests")
     parser.add_argument("--format", choices=["json", "markdown"], default="markdown")
     parser.add_argument("--json", action="store_true", help="Alias for --format json")

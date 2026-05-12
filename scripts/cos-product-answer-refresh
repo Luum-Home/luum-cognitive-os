@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate ADR-281 product answer cards and routing index."""
+"""Regenerate ADR-282 product answer cards and routing index."""
 from __future__ import annotations
 
 import argparse
@@ -22,7 +22,7 @@ def main() -> int:
     parser.add_argument("--project-dir", type=Path, default=ROOT)
     parser.add_argument("--question-bank", type=Path)
     parser.add_argument("--claim-evidence", type=Path)
-    parser.add_argument("--cache-dir", type=Path, help="Override ADR-281 answer-card cache directory")
+    parser.add_argument("--cache-dir", type=Path, help="Override ADR-282 answer-card cache directory")
     parser.add_argument("--strict", action="store_true")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
@@ -39,7 +39,7 @@ def main() -> int:
     except ProductAnswerError as exc:
         report = {
             "schema_version": "product-answer-refresh-report/v1",
-            "adr": "ADR-281",
+            "adr": "ADR-282",
             "status": "fail",
             "error": str(exc),
         }

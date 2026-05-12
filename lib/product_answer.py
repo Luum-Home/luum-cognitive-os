@@ -299,12 +299,12 @@ def render_markdown(report: dict[str, Any]) -> str:
 
 
 def cache_dir(project_dir: Path, override: Path | None = None) -> Path:
-    """Return the ADR-281 product answer cache directory."""
+    """Return the ADR-282 product answer cache directory."""
     return override if override is not None else project_dir / DEFAULT_CACHE_DIR
 
 
 def card_paths(project_dir: Path, question_id: str, cache_dir_override: Path | None = None) -> dict[str, Path]:
-    """Return all ADR-281 paths for a question id."""
+    """Return all ADR-282 paths for a question id."""
     directory = cache_dir(project_dir, cache_dir_override)
     return {
         "dir": directory,
@@ -344,12 +344,12 @@ def compute_source_hashes(project_dir: Path, source_paths: list[str]) -> dict[st
 
 
 def card_metadata(project_dir: Path, report: dict[str, Any]) -> dict[str, Any]:
-    """Build frontmatter metadata for an ADR-281 answer card."""
+    """Build frontmatter metadata for an ADR-282 answer card."""
     source_paths = answer_source_paths(project_dir, report)
     trust = report.get("trust_report", {}) or {}
     return {
         "schema_version": CARD_SCHEMA,
-        "adr": "ADR-281",
+        "adr": "ADR-282",
         "question_id": report["question_id"],
         "last_generated": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "status": "fresh",
@@ -428,7 +428,7 @@ def write_answer_card(
     paths["markdown"].write_text(_frontmatter_markdown(metadata, body), encoding="utf-8")
     report_with_cache = {
         **report,
-        "adr": "ADR-281",
+        "adr": "ADR-282",
         "cache": {
             "mode": "materialized",
             "freshness": "fresh",
@@ -457,7 +457,7 @@ def refresh_routing_index(
     question_bank_path: Path | None = None,
     cache_dir_override: Path | None = None,
 ) -> dict[str, Any]:
-    """Write a compact ADR-281 routing index for product answer cards."""
+    """Write a compact ADR-282 routing index for product answer cards."""
     root = project_dir.resolve()
     bank_path = question_bank_path or root / "manifests" / "product-question-bank.yaml"
     bank = load_question_bank(bank_path)
@@ -477,7 +477,7 @@ def refresh_routing_index(
         }
     index = {
         "schema_version": INDEX_SCHEMA,
-        "adr": "ADR-281",
+        "adr": "ADR-282",
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "entries": entries,
     }
@@ -493,7 +493,7 @@ def refresh_answer_cards(
     cache_dir_override: Path | None = None,
     strict: bool = False,
 ) -> dict[str, Any]:
-    """Regenerate one or all ADR-281 answer cards."""
+    """Regenerate one or all ADR-282 answer cards."""
     root = project_dir.resolve()
     bank_path = question_bank_path or root / "manifests" / "product-question-bank.yaml"
     bank = load_question_bank(bank_path)
@@ -511,7 +511,7 @@ def refresh_answer_cards(
     index = refresh_routing_index(root, bank_path, cache_dir_override)
     return {
         "schema_version": "product-answer-refresh-report/v1",
-        "adr": "ADR-281",
+        "adr": "ADR-282",
         "status": "pass" if all(report["status"] != "fail" for report in reports) else "fail",
         "refreshed_count": len(reports),
         "questions": [report["question_id"] for report in reports],
