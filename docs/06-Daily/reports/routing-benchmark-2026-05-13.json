@@ -1,6 +1,6 @@
 {
   "schema_version": "routing-benchmark-report/v1",
-  "timestamp": "2026-05-13T21:20:41.666683+00:00",
+  "timestamp": "2026-05-13T21:36:57.889462+00:00",
   "environment": {
     "python_version": "3.14.4",
     "platform": "darwin",
@@ -73,6 +73,71 @@
           "precision_at_1": 0.76,
           "precision_at_5": 0.96,
           "mrr": 0.8484126984126985
+        }
+      ]
+    },
+    {
+      "model_id": "bge-m3",
+      "model_name": "BAAI/bge-m3",
+      "adapter": "onnx-direct-bi-encoder",
+      "license": "MIT",
+      "role": "bi-encoder",
+      "license_ok": true,
+      "loaded": true,
+      "load_error": null,
+      "total_queries": 300,
+      "failures": 0,
+      "precision_at_1": 0.8866666666666667,
+      "precision_at_5": 1.0,
+      "mrr": 0.9377777777777777,
+      "cold_start_ms": 108970.49474999949,
+      "warm_p50_ms": 27.48108300147578,
+      "warm_p95_ms": 39.98054725307156,
+      "warm_p99_ms": 52.3737504206655,
+      "peak_rss_mb": 1397.59375,
+      "model_size_mb": 0.0,
+      "per_language": [
+        {
+          "language": "en",
+          "queries": 50,
+          "precision_at_1": 0.9,
+          "precision_at_5": 1.0,
+          "mrr": 0.9466666666666668
+        },
+        {
+          "language": "es",
+          "queries": 50,
+          "precision_at_1": 0.9,
+          "precision_at_5": 1.0,
+          "mrr": 0.945
+        },
+        {
+          "language": "pt",
+          "queries": 50,
+          "precision_at_1": 0.92,
+          "precision_at_5": 1.0,
+          "mrr": 0.955
+        },
+        {
+          "language": "de",
+          "queries": 50,
+          "precision_at_1": 0.84,
+          "precision_at_5": 1.0,
+          "mrr": 0.9116666666666666
+        },
+        {
+          "language": "fr",
+          "queries": 50,
+          "precision_at_1": 0.82,
+          "precision_at_5": 1.0,
+          "mrr": 0.8983333333333334
+        },
+        {
+          "language": "it",
+          "queries": 50,
+          "precision_at_1": 0.94,
+          "precision_at_5": 1.0,
+          "mrr": 0.97
         }
       ]
     },

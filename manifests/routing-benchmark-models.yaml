@@ -22,13 +22,17 @@ models:
       candidates must be compared. ~220 MB ONNX INT8.
 
   - id: bge-m3
-    adapter: fastembed-bi-encoder
+    adapter: onnx-direct-bi-encoder
     model_name: BAAI/bge-m3
+    onnx_subpath: onnx/model.onnx
+    revision: main
     license: MIT
     role: bi-encoder
     note: |
-      Multilingual (100+ langs), 1024-dim. Larger (~2.3 GB) but strong
-      cross-lingual retrieval per upstream evals. Untested locally.
+      Multilingual (100+ langs), 1024-dim. ~2.3 GB. Not in FastEmbed's
+      curated registry; loaded via the generic ONNX adapter (ADR-301).
+      Tokenizer files co-located in onnx/ subdir; external-data sidecar
+      (model.onnx_data) fetched automatically.
 
   - id: multilingual-e5-large
     adapter: fastembed-bi-encoder
