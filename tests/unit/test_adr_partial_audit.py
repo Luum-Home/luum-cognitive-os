@@ -13,7 +13,7 @@ def write(path: Path, text: str) -> None:
 
 
 def test_adr_partial_audit_emits_control_plane_findings(tmp_path: Path) -> None:
-    write(tmp_path / "docs" / "reports" / "adr-partial-backlog-latest.json", json.dumps({
+    write(tmp_path / "docs" / "06-Daily" / "reports" / "adr-partial-backlog-latest.json", json.dumps({
         "schema_version": "adr-partial-backlog/v1",
         "summary": {"total": 1, "by_implementation_status": {"partial": 1}, "missing_partial_remaining": 1},
         "items": [{

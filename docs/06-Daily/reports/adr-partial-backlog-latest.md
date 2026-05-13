@@ -6,123 +6,123 @@ Total open partial/deferred/blocked ADRs: 120
 
 | ADR | Implementation | What remains / basis | In scope? | Follow-up ADR | Owner |
 |---|---|---|---|---|---|
-| [006](../adrs/ADR-006-agpl-license-compliance.md) | partial | License enforcement for additional blocked tools is tracked by ADR-267; this ADR remains partial only for the broader compliance-enforcement follow-up beyond the original Redis/MinIO/AutoCodeRover replacements. | true | ADR-267 |  |
-| [008](../adrs/ADR-008-multi-tool-support.md) | partial | architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation | unknown |  |  |
-| [013](../adrs/ADR-013-security-stack.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
-| [014](../adrs/ADR-014-sdd-fast-path.md) | partial | Runtime model-capability auto-calibration remains partial; the pipeline uses configurable thresholds rather than automatically calibrated fast/full-path selection. | true |  |  |
-| [015](../adrs/ADR-015-rules-to-hooks-migration.md) | partial | Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules. | true |  |  |
-| [016](../adrs/ADR-016-context-diet.md) | partial | Dynamic per-task rule selection remains partial; contextual rule loading exists, but selection overhead still needs to stay below the cost of compact always-active context. | true |  |  |
-| [017](../adrs/ADR-017-stabilization-freeze.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
-| [018](../adrs/ADR-018-docker-to-pip-migration.md) | partial | Phase 3 local/optional service treatment remains the open scope: services that cannot be replaced by pip libraries must stay explicitly governed as local services. | true |  |  |
-| [019](../adrs/ADR-019-scope-tagging.md) | partial | The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full agentic primitive audit was complete. | true |  |  |
-| [020](../adrs/ADR-020-contamination-fix.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
-| [021](../adrs/ADR-021-vendor-agnostic-with-adapters.md) | partial | `.cognitive-os/` directory remains the canonical state (works in any tool) 2. | true |  |  |
-| [022](../adrs/ADR-022-prompt-type-hooks-adoption.md) | partial | The legacy Bash hook still runs in parallel as the 4. | true |  |  |
-| [023](../adrs/ADR-023-updated-input-pattern.md) | partial | updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present | unknown |  |  |
-| [024](../adrs/ADR-024-task-panel-bridge.md) | partial | Deferred**: valuable but orthogonal; doesn't solve in-session visibility | true |  |  |
-| [025](../adrs/ADR-025-install-update-loop.md) | partial | Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up | true |  |  |
-| [026](../adrs/ADR-026-r2-r3-design-review.md) | partial | Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision. | true |  |  |
-| [026a](../adrs/ADR-026a-decisions.md) | partial | Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist. | true |  |  |
-| [028c](../adrs/ADR-028c.md) | partial | Add pytest tests asserting old JSONL rows still parse + migrate cleanly. | true |  |  |
-| [029](../adrs/ADR-029.md) | partial | gate (Phase B) is future work and requires a similarity threshold mechanism. | true |  |  |
-| [029b](../adrs/ADR-029b-reinvention-phase-b-semantic.md) | partial | What was explicitly deferred**: | true |  |  |
-| [030](../adrs/ADR-030.md) | partial | Post-commit banner remains deferred; invoking /session-wrapup externally would require daemon/API/auth work that this ADR intentionally did not implement. | true |  |  |
-| [031](../adrs/ADR-031.md) | partial | Correctness remains the responsibility of `sdd-verify` and adversarial review. | true |  |  |
-| [032](../adrs/ADR-032-orchestrator-trap-preview.md) | partial | Prepending a warning is safe; rewriting an instruction is not. | true |  |  |
-| [033](../adrs/ADR-033-harness-agnostic-event-capture.md) | partial | The Executor will become a capture source via its own adapter entry (future work). | true |  |  |
-| [033b](../adrs/ADR-033b-duration-correlation-and-aider-hardening.md) | partial | Wave 2** (not implemented in this ADR) will: | true |  |  |
-| [035](../adrs/ADR-035-worktree-cwd-enforcement.md) | partial | Status**: Not yet implemented — planned as a follow-up task | true |  |  |
-| [041](../adrs/ADR-041.md) | partial | Remaining for follow-up passes**: ~38 Tier B agentic primitives, primarily executor | true |  |  |
-| [042](../adrs/ADR-042-valkey-local-daemon.md) | partial | remains accessible via `--profile legacy` for CI environments without a | true |  |  |
-| [044](../adrs/ADR-044-context-payload-slimming.md) | partial-blocked | Deferred tools list (tool names only, schemas loaded via ToolSearch) 6. | true |  |  |
-| [045](../adrs/ADR-045-postgres-local-daemon.md) | partial | It remains accessible for CI environments without a local binary. | true |  |  |
-| [048](../adrs/ADR-048-docker-container-image-freshness.md) | partial | It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 — see ADR-171), and ADR-045. | true |  |  |
-| [050](../adrs/ADR-050-per-skill-routing-policy.md) | partial | Deferred to follow-ups (see "Open questions" below): | true |  |  |
-| [054](../adrs/ADR-054-project-docs-convention.md) | partial | — Deferred; convention over enforcement for v1. | true |  |  |
-| [055](../adrs/ADR-055-docs-convention-enforcement.md) | partial | `sdd-design` extension deferred. | true |  |  |
-| [055b](../adrs/ADR-055b-destructive-git-block.md) | partial | `{blocked, override, bypassed}` and context fields (`reason`, `context`, | true |  |  |
-| [056](../adrs/ADR-056-adaptive-agent-dispatch.md) | partial | Deferred. Design only.** | true |  |  |
-| [057](../adrs/ADR-057-cross-harness-authoring-and-driver-projection.md) | partial | produces agentic primitives that look portable in theory while still depending on one | true |  |  |
-| [058](../adrs/ADR-058-observability-migration-langfuse-to-phoenix.md) | partial | Rollback remains cheap. | true |  |  |
-| [060](../adrs/ADR-060-local-only-optional-services.md) | partial | for enterprise but orthogonal to default. Deferred. | true |  |  |
-| [061](../adrs/ADR-061-focus-narrative-and-external-evidence.md) | partial | No item is "documented as future work"; all land in this ADR's scope. | true |  |  |
-| [063](../adrs/ADR-063-agent-tool-replication-strategy.md) | partial | Research report lands within 1 week (blocked on research agent output). | true |  |  |
-| [064](../adrs/ADR-064-harness-agnostic-cognitive-os.md) | partial | Surfaces 2-4 and the Codex/Cursor adapter files were not yet implemented. | true |  |  |
-| [068](../adrs/ADR-068-adaptive-test-runner-capacity.md) | partial | Test outcomes remain deterministic regardless of detected capacity. | true |  |  |
-| [071](../adrs/ADR-071-engram-lifecycle-evolution.md) | partial | Phases 2–4 are scoped and planned but not implemented until Phase 1 is verified. | true |  |  |
-| [072](../adrs/ADR-072-test-lane-taxonomy.md) | partial | deferred. It has now blocked iteration speed for 5 days. | true |  |  |
-| [073](../adrs/ADR-073-test-architecture-role-registry.md) | partial | Resource-governance follow-up remains: continue reducing selector duplication by exposing focused test-plan APIs and requiring future gates to prefer persisted reports before direct scanner/executor fallback. | true |  |  |
-| [074](../adrs/ADR-074-tier-0-learning-loop-closure.md) | partial | Tier-1 learning-loop follow-ups remain out of scope: deploy promotion paths and extend user-prompt capture with feedback_type wiring. | true |  |  |
-| [075](../adrs/ADR-075-stage2-selective-expansion.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
-| [076](../adrs/ADR-076-skill-frontmatter-alignment.md) | partial | is unrecognized, so this is safe but not restrictive in Hermes. A follow-up | true |  |  |
-| [077](../adrs/ADR-077-peer-card-local-model.md) | partial | Deferred until a concrete retrieval gap is observed. | true |  |  |
-| [078](../adrs/ADR-078-mid-task-memory-tool.md) | partial | Automated per-turn invocation (the full Hermes pattern) is a follow-up item and | true |  |  |
-| [079](../adrs/ADR-079-corerules-applies-to-self-hosting.md) | partial | `IS_SELF_HOSTING` detection is still present. | true |  |  |
-| [081](../adrs/ADR-081-codex-harness-adapter.md) | partial | Deferred from this slice: | true |  |  |
-| [082](../adrs/ADR-082-plan-location-convention.md) | partial | Migration is a follow-up task. | true |  |  |
-| [083](../adrs/ADR-083-governed-self-improvement-loop.md) | partial | The approval gate prevents silent runtime drift while still surfacing | true |  |  |
-| [086](../adrs/ADR-086-hook-execution-observability.md) | partial | The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin — this is deferred. | true |  |  |
-| [087](../adrs/ADR-087-adr-namespace-consolidation.md) | partial | Migration is a single follow-up task. | true |  |  |
-| [089](../adrs/ADR-089-multi-session-git-coordination.md) | partial | Deferred to a follow-up if collisions are observed there. | true |  |  |
-| [090](../adrs/ADR-090-auto-skill-repair.md) | partial | (similar to how `repair-status` warns about pending repairs). | true |  |  |
-| [091](../adrs/ADR-091-headless-clustered-runtime-direction.md) | partial | Status**: Accepted as direction, not yet implemented as a production cluster | true |  |  |
-| [093](../adrs/ADR-093-simplify-profiles.md) | partial | any follow-up install step. | true |  |  |
-| [094](../adrs/ADR-094-agent-git-safety.md) | partial | perspective, because the tool was not blocked and produced no alert. | true |  |  |
-| [095](../adrs/ADR-095-skill-synthesis-success-patterns.md) | partial | semantic deduplication against the 146-skill catalog is deferred. | true |  |  |
-| [096](../adrs/ADR-096-review-agent-pattern.md) | partial | The parent task is never blocked waiting for review. | true |  |  |
-| [097](../adrs/ADR-097-documentation-execution-audit.md) | partial | Agents and maintainers can ask what remains without loading all docs into context. | true |  |  |
-| [098](../adrs/ADR-098-multi-agent-file-coordination.md) | partial | metric (yet to be added) shows >5% blocked-edit rate. | true |  |  |
-| [101](../adrs/ADR-101-intent-aware-rate-limiter.md) | partial | Operator lane can use reserved tokens after normal lane is blocked. | true |  |  |
-| [102](../adrs/ADR-102-task-tracker-lifecycle.md) | partial | Queue draining unblocked:** stale records no longer cause permanent saturation. | true |  |  |
-| [105](../adrs/ADR-105-claim-verification-contract.md) | partial | Add domain-specific verifiers when new claim verbs need richer bilateral predicates beyond the current generic verification hooks/scripts. | true |  |  |
-| [107](../adrs/ADR-107-human-approved-rollback.md) | partial | The destructive git blocker continues proving `git revert` is blocked by default. | true |  |  |
-| [110](../adrs/ADR-110-preserve-branch-governance.md) | partial | Preserved WIP remains recoverable without becoming invisible operational debt. | true |  |  |
-| [111](../adrs/ADR-111-core-consumer-concurrency-safety-boundary.md) | partial | Session filesystem cleanup is archive-first and content-aware; pending requests/tasks keep the session directory. | true |  |  |
-| [116](../adrs/ADR-116-multi-session-coordination-primitives.md) | partial | Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2). | true |  |  |
-| [118](../adrs/ADR-118-multi-ide-swarm-testbed.md) | partial | Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run. | true |  |  |
-| [120](../adrs/ADR-120-conversation-to-primitive-harvester.md) | partial | primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation | unknown |  |  |
-| [121](../adrs/ADR-121-foundation-hardening-program.md) | partial | program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open | unknown |  |  |
-| [127](../adrs/ADR-127-active-primitive-index.md) | partial | `lab` primitives remain indexed but do not count as active or default-visible adoption surface. | true |  |  |
-| [135](../adrs/ADR-135-self-evolving-doctrine-proposals.md) | partial | Generated doctrine still needs human judgment. | true |  |  |
-| [136](../adrs/ADR-136-cross-instance-learning-runway.md) | partial | Reports Shape A `deferred` until Shape-B thresholds fire. | true |  |  |
-| [147](../adrs/ADR-147-agent-capability-coverage-pipeline.md) | partial | Project-specific endpoint/event/job adapters remain future work. | true |  |  |
-| [162](../adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | partial | implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up | unknown |  |  |
-| [163](../adrs/ADR-163-cos-instance-installer.md) | partial | first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked | unknown |  |  |
-| [168](../adrs/ADR-168-cross-device-dependency-installation.md) | partial | `scripts/setup.sh` delegation remain incremental follow-up work. | true |  |  |
-| [173](../adrs/ADR-173-surface-5-research-gate.md) | deferred | follow-up ADR exists. | true |  |  |
-| [178](../adrs/ADR-178-openharness-primitive-adoption.md) | partial | AgentHookDefinition**: intentionally deferred (not in scope for ADR-178); | true |  |  |
-| [179](../adrs/ADR-179-rules-auto-derive-routing.md) | partial | initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete | unknown |  |  |
-| [190](../adrs/ADR-190-harness-action-receipts.md) | partial | `hooks/direct-main-guard.sh` emits `vcs.push.blocked` and `vcs.bypass`; | true |  |  |
-| [191](../adrs/ADR-191-cos-binary-release-pipeline.md) | partial | The in-repo `Formula/cognitive-os.rb` remains a `--HEAD` developer formula so | true |  |  |
-| [193](../adrs/ADR-193-cosd-local-network-api.md) | partial | The API surface remains narrow enough to test without adding FastAPI, gRPC, or | true |  |  |
-| [194](../adrs/ADR-194-cosd-secure-remote-api.md) | partial | 7. TLS is not implemented inside `cosd` v1; remote deployments must use a | true |  |  |
-| [195](../adrs/ADR-195-surface-5-operable-tui-contract.md) | partial | Operable actions are intentionally deferred behind confirmation and receipt | true |  |  |
-| [196](../adrs/ADR-196-cosd-task-api-and-provider-boundary.md) | partial | or drains one queued task, while provider calls remain blocked unless an operator | true |  |  |
-| [197](../adrs/ADR-197-surface-5-operable-actions.md) | partial | ADR-195 accepted a read-only Bubble Tea Surface 5 MVP and deferred mutation | true |  |  |
-| [204](../adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
-| [205](../adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md) | partial | Phoenix/OpenTelemetry may visualize traces, but local trace JSON remains the | true |  |  |
-| [206](../adrs/ADR-206-aspirational-claim-decommission-gate.md) | partial | demoted to future work; | true |  |  |
-| [208](../adrs/ADR-208-imported-pattern-closure-contract.md) | partial | packaging, memory, and review patterns, but deferred the consumer/scheduler/ | true |  |  |
-| [209](../adrs/ADR-209-maintainer-reconciler-experiment-contract.md) | partial | Some proposals remain unexecutable until metrics exist. | true |  |  |
-| [211](../adrs/ADR-211-service-mode-readiness-gate.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
-| [215](../adrs/ADR-215-cross-stack-secret-audit-toolchain.md) | partial | known-bad scanner versions (when populated) are blocked; | true |  |  |
-| [217](../adrs/ADR-217-cross-stack-adoption-truth-audit.md) | partial | 162 pending /repo-scout). | true |  |  |
-| [218](../adrs/ADR-218-history-sanitization-toolchain.md) | partial | var is set. Default public-readiness rewrites remain blob-only to preserve | true |  |  |
-| [220](../adrs/ADR-220-worktree-divergence-audit.md) | partial | Manifest declaration**: deferred. | true |  |  |
-| [221](../adrs/ADR-221-stash-ref-by-sha-not-by-position.md) | partial | Remaining follow-up: update `stash_provenance` / SessionStart reapply to persist and consume `stash_sha`; add grep-based audit tests forbidding position refs in apply/drop/show code paths. | true |  |  |
-| [225](../adrs/ADR-225-branch-per-task-mode.md) | partial | Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented | unknown |  |  |
-| [226](../adrs/ADR-226-event-sourced-session-bus.md) | partial | Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections. | true |  |  |
-| [236](../adrs/ADR-236-deferred-tool-loading-and-toolsearch.md) | partial | Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented | unknown |  |  |
-| [241](../adrs/ADR-241-consolidated-cos-bypass-allowlist.md) | partial | Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion | unknown |  |  |
-| [246](../adrs/ADR-246-release-transaction-freeze.md) | partial | Slice A read-only/lock-file freeze exists; future slices explicitly remain open | unknown |  |  |
-| [248](../adrs/ADR-248-control-plane-audit-loop.md) | partial | hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open | unknown |  |  |
-| [249](../adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | partial | Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope | unknown |  |  |
-| [252](../adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | partial | Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete | unknown |  |  |
-| [254](../adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) | partial | quarantined by a follow-up cleanup plan. | true |  |  |
-| [258](../adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md) | partial | Phase 5 canonical migration remains deferred; .ai stays a generated non-canonical overlay until a future ADR explicitly promotes it. | true |  |  |
-| [259](../adrs/ADR-259-external-pattern-adoption-posture.md) | partial | documentation text) is categorically blocked. A formal clean-room process | true |  |  |
-| [267](../adrs/ADR-267-license-compliance-enforcement-architecture.md) | partial | Decision deferred to implementation. | true |  |  |
-| [273](../adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md) | partial | Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization | unknown |  |  |
-| [274](../adrs/ADR-274-operational-guide-required-for-capability-adrs.md) | partial | Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope | unknown |  |  |
-| [275](../adrs/ADR-275-closure-and-projection-primitives.md) | partial | Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review | unknown |  |  |
-| [278](../adrs/ADR-278-subprocess-run-timeout-discipline.md) | partial | Audit + allowlist + test-default shipped; per-call backfill (984 of 1824 calls) tracked as Phase 2. | unknown |  |  |
+| [006](../../02-Decisions/adrs/ADR-006-agpl-license-compliance.md) | partial | License enforcement for additional blocked tools is tracked by ADR-267; this ADR remains partial only for the broader compliance-enforcement follow-up beyond the original Redis/MinIO/AutoCodeRover replacements. | true | ADR-267 |  |
+| [008](../../02-Decisions/adrs/ADR-008-multi-tool-support.md) | partial | architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation | unknown |  |  |
+| [013](../../02-Decisions/adrs/ADR-013-security-stack.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
+| [014](../../02-Decisions/adrs/ADR-014-sdd-fast-path.md) | partial | Runtime model-capability auto-calibration remains partial; the pipeline uses configurable thresholds rather than automatically calibrated fast/full-path selection. | true |  |  |
+| [015](../../02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md) | partial | Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules. | true |  |  |
+| [016](../../02-Decisions/adrs/ADR-016-context-diet.md) | partial | Dynamic per-task rule selection remains partial; contextual rule loading exists, but selection overhead still needs to stay below the cost of compact always-active context. | true |  |  |
+| [018](../../02-Decisions/adrs/ADR-018-docker-to-pip-migration.md) | partial | Phase 3 local/optional service treatment remains the open scope: services that cannot be replaced by pip libraries must stay explicitly governed as local services. | true |  |  |
+| [019](../../02-Decisions/adrs/ADR-019-scope-tagging.md) | partial | The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full agentic primitive audit was complete. | true |  |  |
+| [020](../../02-Decisions/adrs/ADR-020-contamination-fix.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
+| [021](../../02-Decisions/adrs/ADR-021-vendor-agnostic-with-adapters.md) | partial | `.cognitive-os/` directory remains the canonical state (works in any tool) 2. | true |  |  |
+| [022](../../02-Decisions/adrs/ADR-022-prompt-type-hooks-adoption.md) | partial | The legacy Bash hook still runs in parallel as the 4. | true |  |  |
+| [023](../../02-Decisions/adrs/ADR-023-updated-input-pattern.md) | partial | updatedInput behavior exists in secret-detector, but related advisory/profile surfaces named by the ADR are not fully present | unknown |  |  |
+| [024](../../02-Decisions/adrs/ADR-024-task-panel-bridge.md) | partial | Deferred**: valuable but orthogonal; doesn't solve in-session visibility | true |  |  |
+| [025](../../02-Decisions/adrs/ADR-025-install-update-loop.md) | partial | Three coordinated decisions made on 2026-04-17 across v0.10.0 and follow-up | true |  |  |
+| [026](../../02-Decisions/adrs/ADR-026-r2-r3-design-review.md) | partial | Each refactor was **deliberately deferred**: the PR author added characterization tests that lock in current behavior (including the divergences) and explicitly left reconciliation to a human decision. | true |  |  |
+| [026a](../../02-Decisions/adrs/ADR-026a-decisions.md) | partial | Follow-up R2b (scope-limited deferred from D2.3): absorb 6+ adjacent parsers once characterization tests exist. | true |  |  |
+| [028c](../../02-Decisions/adrs/ADR-028c.md) | partial | Add pytest tests asserting old JSONL rows still parse + migrate cleanly. | true |  |  |
+| [029](../../02-Decisions/adrs/ADR-029.md) | partial | gate (Phase B) is future work and requires a similarity threshold mechanism. | true |  |  |
+| [029b](../../02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md) | partial | What was explicitly deferred**: | true |  |  |
+| [030](../../02-Decisions/adrs/ADR-030.md) | partial | Post-commit banner remains deferred; invoking /session-wrapup externally would require daemon/API/auth work that this ADR intentionally did not implement. | true |  |  |
+| [031](../../02-Decisions/adrs/ADR-031.md) | partial | Correctness remains the responsibility of `sdd-verify` and adversarial review. | true |  |  |
+| [032](../../02-Decisions/adrs/ADR-032-orchestrator-trap-preview.md) | partial | Prepending a warning is safe; rewriting an instruction is not. | true |  |  |
+| [033](../../02-Decisions/adrs/ADR-033-harness-agnostic-event-capture.md) | partial | The Executor will become a capture source via its own adapter entry (future work). | true |  |  |
+| [033b](../../02-Decisions/adrs/ADR-033b-duration-correlation-and-aider-hardening.md) | partial | Wave 2** (not implemented in this ADR) will: | true |  |  |
+| [035](../../02-Decisions/adrs/ADR-035-worktree-cwd-enforcement.md) | partial | Status**: Not yet implemented — planned as a follow-up task | true |  |  |
+| [041](../../02-Decisions/adrs/ADR-041.md) | partial | Remaining for follow-up passes**: ~38 Tier B agentic primitives, primarily executor | true |  |  |
+| [042](../../02-Decisions/adrs/ADR-042-valkey-local-daemon.md) | partial | remains accessible via `--profile legacy` for CI environments without a | true |  |  |
+| [044](../../02-Decisions/adrs/ADR-044-context-payload-slimming.md) | partial-blocked | Deferred tools list (tool names only, schemas loaded via ToolSearch) 6. | true |  |  |
+| [045](../../02-Decisions/adrs/ADR-045-postgres-local-daemon.md) | partial | It remains accessible for CI environments without a local binary. | true |  |  |
+| [048](../../02-Decisions/adrs/ADR-048-docker-container-image-freshness.md) | partial | It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 — see ADR-171), and ADR-045. | true |  |  |
+| [050](../../02-Decisions/adrs/ADR-050-per-skill-routing-policy.md) | partial | Deferred to follow-ups (see "Open questions" below): | true |  |  |
+| [054](../../02-Decisions/adrs/ADR-054-project-docs-convention.md) | partial | — Deferred; convention over enforcement for v1. | true |  |  |
+| [055](../../02-Decisions/adrs/ADR-055-docs-convention-enforcement.md) | partial | `sdd-design` extension deferred. | true |  |  |
+| [055b](../../02-Decisions/adrs/ADR-055b-destructive-git-block.md) | partial | `{blocked, override, bypassed}` and context fields (`reason`, `context`, | true |  |  |
+| [056](../../02-Decisions/adrs/ADR-056-adaptive-agent-dispatch.md) | partial | Deferred. Design only.** | true |  |  |
+| [057](../../02-Decisions/adrs/ADR-057-cross-harness-authoring-and-driver-projection.md) | partial | produces agentic primitives that look portable in theory while still depending on one | true |  |  |
+| [058](../../02-Decisions/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md) | partial | Rollback remains cheap. | true |  |  |
+| [060](../../02-Decisions/adrs/ADR-060-local-only-optional-services.md) | partial | for enterprise but orthogonal to default. Deferred. | true |  |  |
+| [061](../../02-Decisions/adrs/ADR-061-focus-narrative-and-external-evidence.md) | partial | No item is "documented as future work"; all land in this ADR's scope. | true |  |  |
+| [063](../../02-Decisions/adrs/ADR-063-agent-tool-replication-strategy.md) | partial | Research report lands within 1 week (blocked on research agent output). | true |  |  |
+| [064](../../02-Decisions/adrs/ADR-064-harness-agnostic-cognitive-os.md) | partial | Surfaces 2-4 and the Codex/Cursor adapter files were not yet implemented. | true |  |  |
+| [068](../../02-Decisions/adrs/ADR-068-adaptive-test-runner-capacity.md) | partial | Test outcomes remain deterministic regardless of detected capacity. | true |  |  |
+| [071](../../02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md) | partial | Phases 2–4 are scoped and planned but not implemented until Phase 1 is verified. | true |  |  |
+| [072](../../02-Decisions/adrs/ADR-072-test-lane-taxonomy.md) | partial | deferred. It has now blocked iteration speed for 5 days. | true |  |  |
+| [073](../../02-Decisions/adrs/ADR-073-test-architecture-role-registry.md) | partial | Resource-governance follow-up remains: continue reducing selector duplication by exposing focused test-plan APIs and requiring future gates to prefer persisted reports before direct scanner/executor fallback. | true |  |  |
+| [074](../../02-Decisions/adrs/ADR-074-tier-0-learning-loop-closure.md) | partial | Tier-1 learning-loop follow-ups remain out of scope: deploy promotion paths and extend user-prompt capture with feedback_type wiring. | true |  |  |
+| [075](../../02-Decisions/adrs/ADR-075-stage2-selective-expansion.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
+| [076](../../02-Decisions/adrs/ADR-076-skill-frontmatter-alignment.md) | partial | is unrecognized, so this is safe but not restrictive in Hermes. A follow-up | true |  |  |
+| [077](../../02-Decisions/adrs/ADR-077-peer-card-local-model.md) | partial | Deferred until a concrete retrieval gap is observed. | true |  |  |
+| [078](../../02-Decisions/adrs/ADR-078-mid-task-memory-tool.md) | partial | Automated per-turn invocation (the full Hermes pattern) is a follow-up item and | true |  |  |
+| [079](../../02-Decisions/adrs/ADR-079-corerules-applies-to-self-hosting.md) | partial | `IS_SELF_HOSTING` detection is still present. | true |  |  |
+| [081](../../02-Decisions/adrs/ADR-081-codex-harness-adapter.md) | partial | Deferred from this slice: | true |  |  |
+| [082](../../02-Decisions/adrs/ADR-082-plan-location-convention.md) | partial | Migration is a follow-up task. | true |  |  |
+| [083](../../02-Decisions/adrs/ADR-083-governed-self-improvement-loop.md) | partial | The approval gate prevents silent runtime drift while still surfacing | true |  |  |
+| [086](../../02-Decisions/adrs/ADR-086-hook-execution-observability.md) | partial | The user's global settings.json already uses `claude-hud` for the statusline; composing the hook status into claude-hud would require modifying the plugin — this is deferred. | true |  |  |
+| [087](../../02-Decisions/adrs/ADR-087-adr-namespace-consolidation.md) | partial | Migration is a single follow-up task. | true |  |  |
+| [089](../../02-Decisions/adrs/ADR-089-multi-session-git-coordination.md) | partial | Deferred to a follow-up if collisions are observed there. | true |  |  |
+| [090](../../02-Decisions/adrs/ADR-090-auto-skill-repair.md) | partial | (similar to how `repair-status` warns about pending repairs). | true |  |  |
+| [091](../../02-Decisions/adrs/ADR-091-headless-clustered-runtime-direction.md) | partial | Status**: Accepted as direction, not yet implemented as a production cluster | true |  |  |
+| [093](../../02-Decisions/adrs/ADR-093-simplify-profiles.md) | partial | any follow-up install step. | true |  |  |
+| [094](../../02-Decisions/adrs/ADR-094-agent-git-safety.md) | partial | perspective, because the tool was not blocked and produced no alert. | true |  |  |
+| [095](../../02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md) | partial | semantic deduplication against the 146-skill catalog is deferred. | true |  |  |
+| [096](../../02-Decisions/adrs/ADR-096-review-agent-pattern.md) | partial | The parent task is never blocked waiting for review. | true |  |  |
+| [097](../../02-Decisions/adrs/ADR-097-documentation-execution-audit.md) | partial | Agents and maintainers can ask what remains without loading all docs into context. | true |  |  |
+| [098](../../02-Decisions/adrs/ADR-098-multi-agent-file-coordination.md) | partial | metric (yet to be added) shows >5% blocked-edit rate. | true |  |  |
+| [101](../../02-Decisions/adrs/ADR-101-intent-aware-rate-limiter.md) | partial | Operator lane can use reserved tokens after normal lane is blocked. | true |  |  |
+| [102](../../02-Decisions/adrs/ADR-102-task-tracker-lifecycle.md) | partial | Queue draining unblocked:** stale records no longer cause permanent saturation. | true |  |  |
+| [105](../../02-Decisions/adrs/ADR-105-claim-verification-contract.md) | partial | Add domain-specific verifiers when new claim verbs need richer bilateral predicates beyond the current generic verification hooks/scripts. | true |  |  |
+| [107](../../02-Decisions/adrs/ADR-107-human-approved-rollback.md) | partial | The destructive git blocker continues proving `git revert` is blocked by default. | true |  |  |
+| [110](../../02-Decisions/adrs/ADR-110-preserve-branch-governance.md) | partial | Preserved WIP remains recoverable without becoming invisible operational debt. | true |  |  |
+| [111](../../02-Decisions/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md) | partial | Session filesystem cleanup is archive-first and content-aware; pending requests/tasks keep the session directory. | true |  |  |
+| [116](../../02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md) | partial | Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2). | true |  |  |
+| [118](../../02-Decisions/adrs/ADR-118-multi-ide-swarm-testbed.md) | partial | Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run. | true |  |  |
+| [120](../../02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md) | partial | primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation | unknown |  |  |
+| [121](../../02-Decisions/adrs/ADR-121-foundation-hardening-program.md) | partial | program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open | unknown |  |  |
+| [127](../../02-Decisions/adrs/ADR-127-active-primitive-index.md) | partial | `lab` primitives remain indexed but do not count as active or default-visible adoption surface. | true |  |  |
+| [135](../../02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md) | partial | Generated doctrine still needs human judgment. | true |  |  |
+| [136](../../02-Decisions/adrs/ADR-136-cross-instance-learning-runway.md) | partial | Reports Shape A `deferred` until Shape-B thresholds fire. | true |  |  |
+| [147](../../02-Decisions/adrs/ADR-147-agent-capability-coverage-pipeline.md) | partial | Project-specific endpoint/event/job adapters remain future work. | true |  |  |
+| [162](../../02-Decisions/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | partial | implemented for contract scope; full queue/worker/PR runtime enforcement remains follow-up | unknown |  |  |
+| [163](../../02-Decisions/adrs/ADR-163-cos-instance-installer.md) | partial | first implementation slice supports local/docker-headless profiles; future profiles remain planned/write-blocked | unknown |  |  |
+| [168](../../02-Decisions/adrs/ADR-168-cross-device-dependency-installation.md) | partial | `scripts/setup.sh` delegation remain incremental follow-up work. | true |  |  |
+| [173](../../02-Decisions/adrs/ADR-173-surface-5-research-gate.md) | deferred | follow-up ADR exists. | true |  |  |
+| [178](../../02-Decisions/adrs/ADR-178-openharness-primitive-adoption.md) | partial | AgentHookDefinition**: intentionally deferred (not in scope for ADR-178); | true |  |  |
+| [179](../../02-Decisions/adrs/ADR-179-rules-auto-derive-routing.md) | partial | initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete | unknown |  |  |
+| [190](../../02-Decisions/adrs/ADR-190-harness-action-receipts.md) | partial | `hooks/direct-main-guard.sh` emits `vcs.push.blocked` and `vcs.bypass`; | true |  |  |
+| [191](../../02-Decisions/adrs/ADR-191-cos-binary-release-pipeline.md) | partial | The in-repo `Formula/cognitive-os.rb` remains a `--HEAD` developer formula so | true |  |  |
+| [193](../../02-Decisions/adrs/ADR-193-cosd-local-network-api.md) | partial | The API surface remains narrow enough to test without adding FastAPI, gRPC, or | true |  |  |
+| [194](../../02-Decisions/adrs/ADR-194-cosd-secure-remote-api.md) | partial | 7. TLS is not implemented inside `cosd` v1; remote deployments must use a | true |  |  |
+| [195](../../02-Decisions/adrs/ADR-195-surface-5-operable-tui-contract.md) | partial | Operable actions are intentionally deferred behind confirmation and receipt | true |  |  |
+| [196](../../02-Decisions/adrs/ADR-196-cosd-task-api-and-provider-boundary.md) | partial | or drains one queued task, while provider calls remain blocked unless an operator | true |  |  |
+| [197](../../02-Decisions/adrs/ADR-197-surface-5-operable-actions.md) | partial | ADR-195 accepted a read-only Bubble Tea Surface 5 MVP and deferred mutation | true |  |  |
+| [204](../../02-Decisions/adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
+| [205](../../02-Decisions/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md) | partial | Phoenix/OpenTelemetry may visualize traces, but local trace JSON remains the | true |  |  |
+| [206](../../02-Decisions/adrs/ADR-206-aspirational-claim-decommission-gate.md) | partial | demoted to future work; | true |  |  |
+| [208](../../02-Decisions/adrs/ADR-208-imported-pattern-closure-contract.md) | partial | packaging, memory, and review patterns, but deferred the consumer/scheduler/ | true |  |  |
+| [209](../../02-Decisions/adrs/ADR-209-maintainer-reconciler-experiment-contract.md) | partial | Some proposals remain unexecutable until metrics exist. | true |  |  |
+| [211](../../02-Decisions/adrs/ADR-211-service-mode-readiness-gate.md) | partial | Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal. | unknown |  |  |
+| [215](../../02-Decisions/adrs/ADR-215-cross-stack-secret-audit-toolchain.md) | partial | known-bad scanner versions (when populated) are blocked; | true |  |  |
+| [217](../../02-Decisions/adrs/ADR-217-cross-stack-adoption-truth-audit.md) | partial | 162 pending /repo-scout). | true |  |  |
+| [218](../../02-Decisions/adrs/ADR-218-history-sanitization-toolchain.md) | partial | var is set. Default public-readiness rewrites remain blob-only to preserve | true |  |  |
+| [220](../../02-Decisions/adrs/ADR-220-worktree-divergence-audit.md) | partial | Manifest declaration**: deferred. | true |  |  |
+| [221](../../02-Decisions/adrs/ADR-221-stash-ref-by-sha-not-by-position.md) | partial | Remaining follow-up: update `stash_provenance` / SessionStart reapply to persist and consume `stash_sha`; add grep-based audit tests forbidding position refs in apply/drop/show code paths. | true |  |  |
+| [225](../../02-Decisions/adrs/ADR-225-branch-per-task-mode.md) | partial | Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented | unknown |  |  |
+| [226](../../02-Decisions/adrs/ADR-226-event-sourced-session-bus.md) | partial | Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections. | true |  |  |
+| [236](../../02-Decisions/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md) | partial | Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented | unknown |  |  |
+| [241](../../02-Decisions/adrs/ADR-241-consolidated-cos-bypass-allowlist.md) | partial | Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion | unknown |  |  |
+| [246](../../02-Decisions/adrs/ADR-246-release-transaction-freeze.md) | partial | Slice A read-only/lock-file freeze exists; future slices explicitly remain open | unknown |  |  |
+| [248](../../02-Decisions/adrs/ADR-248-control-plane-audit-loop.md) | partial | hook-fast/control-plane loop is wired; broader hourly scheduler and future remediation surfaces remain open | unknown |  |  |
+| [249](../../02-Decisions/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | partial | Slice A critical contracts exist; broader chaos/race hardening remains escalation/future scope | unknown |  |  |
+| [252](../../02-Decisions/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | partial | Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete | unknown |  |  |
+| [254](../../02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) | partial | quarantined by a follow-up cleanup plan. | true |  |  |
+| [258](../../02-Decisions/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md) | partial | Phase 5 canonical migration remains deferred; .ai stays a generated non-canonical overlay until a future ADR explicitly promotes it. | true |  |  |
+| [259](../../02-Decisions/adrs/ADR-259-external-pattern-adoption-posture.md) | partial | documentation text) is categorically blocked. A formal clean-room process | true |  |  |
+| [267](../../02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md) | partial | Decision deferred to implementation. | true |  |  |
+| [273](../../02-Decisions/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md) | partial | Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization | unknown |  |  |
+| [274](../../02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md) | partial | Slice A audit and Phase 1 enforcement exist; P1/P2 backfill and trust-score integration remain future scope | unknown |  |  |
+| [275](../../02-Decisions/adrs/ADR-275-closure-and-projection-primitives.md) | partial | Slice A projector and close primitive are implemented; hook wiring across harnesses remains staged for operator review | unknown |  |  |
+| [278](../../02-Decisions/adrs/ADR-278-subprocess-run-timeout-discipline.md) | partial | Audit + allowlist + test-default shipped; per-call backfill (984 of 1824 calls) tracked as Phase 2. | unknown |  |  |
+| [289](../../02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md) | partial | Layer 1 (raw sources) has no canonical on-disk location and no ingest pipeline from raw to vault; vault->engram retrieve pipeline is also not implemented. Both are tracked as known gaps.  | unknown |  |  |
