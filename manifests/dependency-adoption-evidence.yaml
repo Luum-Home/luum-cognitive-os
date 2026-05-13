@@ -1,0 +1,45 @@
+schema_version: dependency-adoption-evidence/v1
+status: active
+owner: platform-safety
+policy:
+  source: ADR-208 (Dependency Adoption Gate)
+  pairs_with: manifests/feature-tool-due-diligence.yaml
+  evidence_required_for: pyproject.toml additions, requirements.txt additions, packages/*/pyproject.toml additions
+adoptions:
+  - package: browser-use
+    version_constraint: ">=0.12.6,<0.13"
+    consumer: pyproject.toml ([web-automation] extra)
+    owner_adr: ADR-288
+    due_diligence_id: web-automation-adapter
+    license: MIT
+    integration_pattern: adapter (lib/browser_use_adapter.py) + router (lib/web_automation_router.py) + skill (skills/browser-task/)
+    kill_switch: COS_DISABLE_WEB_AUTOMATION=1
+    rationale: Industry-leading LLM-driven web automation (93.7k stars); building Playwright wrapper from scratch would reinvent accessibility-tree + replan-loop primitives.
+    audit_link: docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md
+  - package: fastapi
+    version_constraint: ">=0.110"
+    consumer: packages/agent-service/pyproject.toml
+    owner_adr: ADR-291
+    due_diligence_id: agent-runtime-web-service
+    license: MIT
+    integration_pattern: web service framework for agent runtime HTTP+SSE protocol facade
+    rationale: De-facto Python ASGI framework with automatic OpenAPI; building HTTP+SSE+OpenAPI from stdlib is wasted effort.
+    audit_link: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
+  - package: uvicorn
+    version_constraint: ">=0.27"
+    consumer: packages/agent-service/pyproject.toml
+    owner_adr: ADR-291
+    due_diligence_id: agent-runtime-web-service
+    license: BSD-3-Clause
+    integration_pattern: ASGI server for agent-service FastAPI app
+    rationale: Reference ASGI server for FastAPI; no realistic alternative for production deployment.
+    audit_link: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
+  - package: pydantic
+    version_constraint: ">=2.5"
+    consumer: packages/agent-service/pyproject.toml
+    owner_adr: ADR-291
+    due_diligence_id: agent-runtime-web-service
+    license: MIT
+    integration_pattern: typed request/response schemas for all 26 agent-service endpoints
+    rationale: De-facto Python type-validation library bundled with FastAPI; alternative would mean rewriting all schemas from scratch.
+    audit_link: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
