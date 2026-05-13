@@ -8,7 +8,6 @@ environment variables and input — no actual Claude API calls.
 """
 
 import json
-import os
 import subprocess
 import time
 from pathlib import Path
@@ -326,7 +325,7 @@ class TestBlastRadiusEdgeCases:
         result = run_hook("blast-radius.sh", env=env, stdin=prompt)
         assert result.returncode == 0
         # Two directory references -> MEDIUM or above
-        combined = result.stdout + result.stderr
+        result.stdout + result.stderr
         # Should log something (directory signals detected)
         log = cognitive_os_env["cos_dir"] / "metrics" / "blast-radius.jsonl"
         # Check the metrics were logged

@@ -5,7 +5,6 @@ Unit tests for lib/user_model.py
 import json
 from unittest.mock import MagicMock, patch
 
-import pytest
 from lib.user_model import UserModel, UserPreference
 
 

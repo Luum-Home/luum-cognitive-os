@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for lib/engram_lifecycle.py — ADR-261 integration.
 
 Verifies that the module imports without repo-internal state and that the

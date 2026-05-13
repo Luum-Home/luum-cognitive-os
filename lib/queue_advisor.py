@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Queue Advisor — dynamic dispatch prioritizer for the agent queue.
 
 Reorders the dispatch queue based on runtime state (budget, context usage,
@@ -25,7 +25,6 @@ import json
 import os
 import re
 import subprocess
-import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 

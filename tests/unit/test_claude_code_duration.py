@@ -10,9 +10,8 @@ from __future__ import annotations
 
 import time
 
-import pytest
 
-from lib.harness_adapter.base import AgentEnd, AgentStart
+from lib.harness_adapter.base import AgentEnd
 from lib.harness_adapter.claude_code import ClaudeCodeAdapter
 from lib.harness_adapter.tool_use_correlation import CorrelationStore
 

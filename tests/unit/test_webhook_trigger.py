@@ -6,7 +6,6 @@ and event filtering.
 """
 import hashlib
 import hmac
-import json
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -22,7 +21,6 @@ if _LIB_DIR not in sys.path:
 # The module also uses `from lib.claude_executor import ClaudeExecutor, ExecutionResult`
 # which will fail. We mock that at import time.
 
-import importlib
 import unittest.mock
 
 # Create mock modules for imports that may fail

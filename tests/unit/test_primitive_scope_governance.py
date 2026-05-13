@@ -75,7 +75,7 @@ def test_scope_marker_parser_covers_full_family_scope_matrix(tmp_path: Path) -> 
 def test_script_ledger_reclassifies_when_skill_consumer_drifts(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     (root / "scripts").mkdir(parents=True)
-    (root / "scripts" / "runner.py").write_text("# SCOPE: both\nprint('runner')\n")
+    (root / "scripts" / "runner.py").write_text("# SCOPE: os-only\nprint('runner')\n")
 
     before = {row.path: row for row in script_ledger.build_ledger(root)}["scripts/runner.py"]
     assert before.role == "maintainer-tool"
@@ -95,7 +95,7 @@ def test_family_ledger_reclassifies_when_lifecycle_distribution_drifts(tmp_path:
     root = tmp_path / "repo"
     (root / "hooks").mkdir(parents=True)
     (root / "manifests").mkdir(parents=True)
-    (root / "hooks" / "guard.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho guard\n")
+    (root / "hooks" / "guard.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho guard\n")
 
     def write_lifecycle(distribution: str, state: str) -> None:
         (root / "manifests" / "primitive-lifecycle.yaml").write_text(

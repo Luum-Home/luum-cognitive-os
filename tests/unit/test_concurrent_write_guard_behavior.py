@@ -407,7 +407,7 @@ class TestSameSessionRefreshesLock:
         sessions_dir.mkdir(parents=True)
         session_id = "test-session-ts-refresh"
         target_file = "/tmp/ts-refresh-test.go"
-        file_path_lower = target_file.lower()
+        target_file.lower()
 
         # Create an initial lock with an old timestamp
         try:

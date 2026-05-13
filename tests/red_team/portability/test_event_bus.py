@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 """
 Portability proofs for packages/agent-coordination/lib/event_bus.py (symlinked

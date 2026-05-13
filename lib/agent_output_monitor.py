@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Agent Output Monitor — read agent JSONL output files and extract progress.
 
 Lightweight module for monitoring agents launched via Claude Code's Agent tool.
@@ -20,7 +20,6 @@ import os
 import re
 import time
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Optional
 
 # How many bytes to read from the end of a file for the "tail" approach

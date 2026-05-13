@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-session-start-projector (ADR-275).
 
 Bilateral assertion: projector reads four optional sources (pending-truth,

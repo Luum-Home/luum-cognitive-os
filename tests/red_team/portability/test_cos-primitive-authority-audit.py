@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for scripts/cos-primitive-authority-audit (bash wrapper
 that delegates to scripts/primitive_authority_audit.py).
 

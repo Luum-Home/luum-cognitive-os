@@ -1,7 +1,6 @@
 """Behavior tests for audit-id-enricher.sh PostToolUse hook."""
 
 import json
-from pathlib import Path
 
 import pytest
 

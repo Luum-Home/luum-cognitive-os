@@ -15,9 +15,7 @@ tmp directories for metrics files.
 from __future__ import annotations
 
 import json
-import os
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -205,7 +203,7 @@ class TestLearningPipelineProcessesCompletion:
         trust_score = extract_trust_score(output)
         tokens = estimate_tokens(output)
 
-        action = pipeline.record_agent_completion(
+        pipeline.record_agent_completion(
             task_id="toolu_abc123",
             success=True,
             trust_score=trust_score,

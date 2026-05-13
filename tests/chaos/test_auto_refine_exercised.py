@@ -129,7 +129,7 @@ def test_auto_refine_fail_marker_reconstruction(tmp_path: Path):
         f"stderr: {result.stderr[:300]}"
     )
     # In reconstruction, emits retry context
-    combined = result.stdout + result.stderr
+    result.stdout + result.stderr
     # Hook should detect failure and emit something (ORCHESTRATOR ACTION REQUIRED or similar)
     # Accept any output — what matters is exit 0 and no crash
     _write_chaos_run(tmp_path, "fail_marker_reconstruction", True)

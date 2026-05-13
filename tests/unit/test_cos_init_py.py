@@ -156,9 +156,9 @@ class TestScopeAllows:
         assert cos_init.scope_allows(str(f), install_scope="both") is True
 
     def test_hash_scope_both_allowed_under_project(self, tmp_path: Path) -> None:
-        """# SCOPE: both is allowed when install_scope=project."""
+        """# SCOPE: os-only is allowed when install_scope=project."""
         f = tmp_path / "both_rule.sh"
-        f.write_text("# SCOPE: both\n# content\n")
+        f.write_text("# SCOPE: os-only\n# content\n")
         assert cos_init.scope_allows(str(f), install_scope="project") is True
 
     def test_hash_scope_os_only_blocked_under_both(self, tmp_path: Path) -> None:

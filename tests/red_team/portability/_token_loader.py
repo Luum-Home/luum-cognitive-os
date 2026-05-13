@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Shared token loader for portability tests.
 
 Portability tests check that committed source files contain no

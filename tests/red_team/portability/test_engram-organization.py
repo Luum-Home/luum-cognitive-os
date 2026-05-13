@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for rules/engram-organization.md.
 
 The rule is SCOPE: both — it must be consumer-neutral. After Tier 3 of

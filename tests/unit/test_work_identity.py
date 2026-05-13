@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Unit tests for lib/work_identity.py — ADR-116 P1.2.
 
 Coverage:

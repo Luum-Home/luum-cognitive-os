@@ -193,7 +193,6 @@ def execute_code(
 
     # Get or create a kernel
     kid = kernel_id
-    created_kernel = False
     if kid is None:
         # Try to reuse an existing kernel
         kernels = list_kernels()
@@ -203,7 +202,6 @@ def execute_code(
                 break
         if kid is None:
             kid = create_kernel(kernel)
-            created_kernel = True
             if kid is None:
                 empty_result["error"] = f"Failed to create kernel '{kernel}'"
                 return empty_result

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Behavior tests for lib.risk_register (ADR-054 Phase 2)."""
 
 from __future__ import annotations
@@ -8,7 +8,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
 from lib.risk_register import (
     FOOTER_MARKER,

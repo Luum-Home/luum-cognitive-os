@@ -8,7 +8,7 @@ if crawl4ai is not installed, falls back to urllib + basic HTML stripping.
 License: Apache 2.0 (Crawl4AI by UncleCode)
 """
 
-from typing import Optional, List, Dict
+from typing import List
 from urllib.parse import urlparse
 import asyncio
 import re

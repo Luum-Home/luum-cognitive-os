@@ -19,7 +19,6 @@ Author: luum
 
 import os
 import re
-import subprocess
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 

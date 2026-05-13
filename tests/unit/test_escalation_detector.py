@@ -12,14 +12,10 @@ from pathlib import Path
 import pytest
 
 from lib.escalation_detector import (
-    CONFIDENCE_DROP_RATE,
-    CONFIDENCE_WINDOW,
     DEFAULT_MAX_CALLS_BEFORE_CHECK,
     DEFAULT_MAX_SAME_ERROR,
-    DEFAULT_TOOL_CALL_BUDGET,
     SAME_COMMAND_THRESHOLD,
     SAME_FILE_EDIT_THRESHOLD,
-    TIMEOUT_RISK_THRESHOLD,
     EscalationDetector,
     EscalationSignal,
 )

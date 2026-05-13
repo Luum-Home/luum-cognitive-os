@@ -1,6 +1,5 @@
 """Tests for lib/providers/__init__.py registry (ADR-062)."""
 
-import pytest
 
 
 def test_registry_has_seven_providers():

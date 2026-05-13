@@ -6,7 +6,6 @@ health checking, and chat completion with mocked HTTP responses.
 
 import json
 import os
-from http.server import BaseHTTPRequestHandler
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -16,7 +15,6 @@ from lib.bifrost_client import (
     BIFROST_PROVIDERS,
     MODEL_TO_BIFROST,
     BifrostClient,
-    BifrostError,
     BifrostUnavailable,
     get_bifrost_model_name,
     is_bifrost_available,

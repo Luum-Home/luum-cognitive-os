@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """DEFER: This module depends on external services not yet configured. Not actively used.
 
 STATUS: Designed and documented but never called from production code.
@@ -26,9 +26,8 @@ import shutil
 import stat
 import textwrap
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 

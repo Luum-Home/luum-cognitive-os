@@ -100,7 +100,7 @@ class TestPostCommitHook:
     def test_nudge_file_created_after_commit(self, tmp_path):
         """After a git commit, .cognitive-os/runtime/commit-nudge must exist."""
         repo = _setup_git_repo(tmp_path)
-        sha = _make_commit(repo)
+        _make_commit(repo)
         nudge = repo / ".cognitive-os" / "runtime" / "commit-nudge"
         assert nudge.exists(), "commit-nudge file was not created after commit"
 

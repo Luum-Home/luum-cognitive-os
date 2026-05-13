@@ -7,11 +7,9 @@ import json
 import os
 import subprocess
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
-from tests.unit.conftest import run_bash_script
 
 
 @pytest.fixture

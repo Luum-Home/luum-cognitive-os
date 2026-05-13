@@ -6,8 +6,6 @@ and verifies the detector returns the correct framework.
 """
 
 import json
-import os
-import tempfile
 from pathlib import Path
 
 import pytest

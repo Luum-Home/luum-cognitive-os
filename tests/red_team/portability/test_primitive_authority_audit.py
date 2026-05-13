@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for scripts/primitive_authority_audit.py.
 
 Bilateral: the script emits a deterministic report regardless of project

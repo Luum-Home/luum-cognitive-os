@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-pending-truth-aggregator (ADR-273 Slice A).
 
 Bilateral assertion: aggregator runs against a synthetic project structure

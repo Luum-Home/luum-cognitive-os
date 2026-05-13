@@ -22,7 +22,7 @@ Python 3.9+ compatible.
 
 import logging
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 from lib.execution_profile import ExecutionProfile

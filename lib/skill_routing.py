@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Skill frontmatter routing loader (ADR-050 Per-Skill Routing Policy).
 
 Loads a `routing:` block from the YAML frontmatter of a `SKILL.md` file and
@@ -47,7 +47,7 @@ try:  # PyYAML is already required by other lib/* modules
 except ImportError:  # pragma: no cover — handled at call site
     yaml = None  # type: ignore
 
-from lib.paths import canonical_first_skill_lookup_candidates, skill_lookup_candidates
+from lib.paths import canonical_first_skill_lookup_candidates
 
 
 # Recognised tier labels (validated loosely — unknown tiers warned + accepted)

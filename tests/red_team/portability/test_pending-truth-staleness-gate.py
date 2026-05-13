@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/pending-truth-staleness-gate.sh (ADR-273 Slice C).
 
 Bilateral assertion: PreToolUse Bash hook warns (exit 0 with stderr) when

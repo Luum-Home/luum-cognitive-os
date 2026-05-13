@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for scripts/cos-orphan-process-audit.py (ADR-279).
 
 Bilateral: CLI is a thin wrapper; --help works; unknown flag errors.

@@ -16,7 +16,6 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from enum import Enum
-from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 
@@ -168,7 +167,7 @@ def _scan_rules(project_root: str, graph: SystemGraph) -> None:
 
         name = filename[:-3]  # strip .md
         filepath = os.path.join(rules_dir, filename)
-        content = _read_file(filepath)
+        _read_file(filepath)
 
         graph.components[name] = Component(
             name=name,

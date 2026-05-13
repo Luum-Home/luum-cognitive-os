@@ -11,12 +11,10 @@ Validates that:
 """
 
 import json
-import os
 import re
 import subprocess
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 GENERATOR_SCRIPT = PROJECT_ROOT / "scripts" / "set-security-profile.sh"

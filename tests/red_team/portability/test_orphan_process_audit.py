@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for lib/orphan_process_audit.py + scripts/cos-orphan-process-audit.py (ADR-279).
 
 Bilateral: the audit walks `ps`-style process rows, decides which are

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Domain model scaffolder — DDD template generator (ADR-054 Phase 2).
 
 SCAFFOLDER only — emits templates with prompts and TODO markers.
@@ -15,7 +15,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import List
 
 __all__ = ["DomainModelScaffolder", "ScaffoldResult", "render_template"]
 

@@ -82,7 +82,7 @@ def test_notice_created_for_matching_parked_edit(fake_project):
 def test_notice_contains_expected_fields(fake_project):
     """The .notice file records who released the lock and which parked file was found."""
     safe_key = "tests--sample.py"
-    parked_file = _make_parked_edit(fake_project, parked_session="session-B", safe_key=safe_key)
+    _make_parked_edit(fake_project, parked_session="session-B", safe_key=safe_key)
 
     tool_input = json.dumps({
         "tool_input": {"file_path": "tests/sample.py"},

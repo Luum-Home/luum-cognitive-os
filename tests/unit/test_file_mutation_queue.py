@@ -5,7 +5,6 @@ Unit tests for lib/file_mutation_queue.py
 import pytest
 import threading
 import time
-from pathlib import Path
 from lib.file_mutation_queue import (
     FileMutationQueue,
     with_file_mutation_lock,

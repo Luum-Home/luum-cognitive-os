@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """State Heartbeat — continuous session state persistence.
 
 Runs a set of pluggable collectors every N tool calls (or every N seconds) and
@@ -14,7 +14,6 @@ import json
 import os
 import subprocess
 import tempfile
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional

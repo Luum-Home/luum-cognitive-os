@@ -11,7 +11,7 @@ scope_allows():
   install_scope=all      → always exit 0 (allow)
   no SCOPE header        → exit 0
   # SCOPE: project       → exit 0 (under project/both)
-  # SCOPE: both          → exit 0 (under project/both)
+  # SCOPE: os-only          → exit 0 (under project/both)
   # SCOPE: os-only       → exit 1 (blocked under project/both)
   <!-- SCOPE: project --> → exit 0
   unknown tag            → exit 0
@@ -34,7 +34,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO = Path(__file__).parent.parent.parent
 COS_INIT_PY = REPO / "scripts" / "cos_init.py"
@@ -137,9 +136,9 @@ class TestParityScopeAllows:
         assert sub_rc == 1
 
     def test_parity_both_scope_tag_allowed(self, tmp_path: Path) -> None:
-        """# SCOPE: both → exit 0 under project install_scope."""
+        """# SCOPE: os-only → exit 0 under project install_scope."""
         f = tmp_path / "both.sh"
-        f.write_text("# SCOPE: both\n# content\n")
+        f.write_text("# SCOPE: os-only\n# content\n")
         sub_rc = _py_scope_allows_subprocess(f, "project")
         dir_rc = _py_scope_allows_direct(f, "project")
         assert sub_rc == dir_rc

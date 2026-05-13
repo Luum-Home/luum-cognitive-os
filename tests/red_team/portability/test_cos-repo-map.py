@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-repo-map.
 
 Bilateral assertion: invoking the script via python3 on any harness with

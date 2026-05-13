@@ -19,17 +19,15 @@ Python 3.9+ compatible. No external dependencies beyond stdlib.
 from __future__ import annotations
 
 import json
-import os
 from dataclasses import dataclass, field
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from lib.skill_archive import SkillArchiveManager, SkillSnapshot
+from lib.skill_archive import SkillArchiveManager
 from lib.consequence_engine import (
     ConsequenceEngine,
     ConsequenceAction,
-    Consequence,
     PerformanceRecord,
 )
 from lib.error_classifier import classify_error, ErrorCategory

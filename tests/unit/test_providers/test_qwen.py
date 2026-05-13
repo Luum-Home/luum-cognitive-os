@@ -1,6 +1,5 @@
 """Tests for lib/providers/qwen.py (ADR-062)."""
 
-import os
 from unittest.mock import MagicMock, patch
 
 
@@ -66,7 +65,7 @@ def test_call_with_mocked_client_returns_normalized_response(monkeypatch):
 
 
 def test_model_hint_maps_to_native_model():
-    from lib.providers.qwen import MODEL_MAP, call
+    from lib.providers.qwen import MODEL_MAP
     # model_hint="sonnet" should resolve to MODEL_MAP["sonnet"]
     # We just verify the map itself is correct
     assert MODEL_MAP["sonnet"] == "qwen3-coder-plus"

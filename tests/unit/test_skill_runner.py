@@ -6,10 +6,7 @@ real skills/ directory content so they stay honest as the repo evolves.
 
 from __future__ import annotations
 
-import os
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
 from textwrap import dedent
 

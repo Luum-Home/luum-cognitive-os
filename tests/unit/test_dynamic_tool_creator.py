@@ -1,10 +1,8 @@
 """Unit tests for lib/dynamic_tool_creator.py."""
 
-import json
 import os
 import stat
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest

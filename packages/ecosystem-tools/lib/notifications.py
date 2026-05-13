@@ -13,7 +13,7 @@ import logging
 import os
 import time
 import urllib.request
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 

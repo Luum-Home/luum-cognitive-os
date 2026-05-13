@@ -106,7 +106,7 @@ class TestPerformance:
         _write_active_tasks(tasks_dir, in_progress=2)
 
         start = time.monotonic()
-        result = _run_hook(project_dir)
+        _run_hook(project_dir)
         elapsed = time.monotonic() - start
 
         # 1.0s nominal budget × 2.0 slack = 2.0s effective limit

@@ -14,8 +14,6 @@ from tests.unit._helpers import (
     assert_within_absolute,
     VALKEY_AVAILABLE,
     BASH_AVAILABLE,
-    requires_valkey,
-    requires_bash,
     skip_when_valkey_running,
 )
 

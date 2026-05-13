@@ -8,13 +8,9 @@ Tests check what IS (existing infrastructure) and mark missing features as
 xfail so the suite stays green while WS14 implements the missing pieces.
 """
 
-import ast
-import inspect
 import json
-import os
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for lib/agent_runner.py — ADR-264 envelope integration.
 
 Falsification probe: if the envelope integration is absent, the import of

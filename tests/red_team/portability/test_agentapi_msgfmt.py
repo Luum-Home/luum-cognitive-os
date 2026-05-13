@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for packages/agent-lifecycle/lib/harness_adapter/agentapi_msgfmt.py.
 
 Bilateral assertion: summarize_fixtures() reports a stable v1 payload describing

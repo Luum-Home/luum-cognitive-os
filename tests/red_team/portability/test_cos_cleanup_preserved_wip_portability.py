@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proofs for scripts/cos_cleanup_preserved_wip.py.
 
 Run with:

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/pending-truth-verify-weekly.sh (ADR-273 Slice C).
 
 Bilateral assertion: Stop hook fires the verifier in background (async,

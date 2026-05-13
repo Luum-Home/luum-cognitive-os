@@ -130,7 +130,6 @@ def test_estimate_tokens_minimum(injector):
 
 def test_context_truncation(injector):
     long_content = "x" * 1000
-    fake_results = [{"title": "big obs", "type": "discovery", "content": long_content}]
     with patch.object(injector, "_search_engram", return_value=[
         {"title": "big obs", "type": "discovery", "summary": long_content[:400]}
     ]):

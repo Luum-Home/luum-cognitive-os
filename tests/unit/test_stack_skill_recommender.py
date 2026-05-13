@@ -7,13 +7,11 @@ Author: luum
 """
 
 import json
-import os
 from pathlib import Path
 
 import pytest
 
 from lib.stack_skill_recommender import (
-    SkillRecommendation,
     StackSkillRecommender,
 )
 

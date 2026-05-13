@@ -20,8 +20,6 @@ Priority hooks tested:
 """
 
 import json
-import os
-from pathlib import Path
 
 import pytest
 
@@ -30,7 +28,6 @@ from tests.hooks.conftest import (
     make_agent_response,
     make_bash_input,
     make_bash_response,
-    make_edit_input,
     make_write_input,
 )
 

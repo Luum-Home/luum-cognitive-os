@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Behavior tests for lib.project_scaffolder (ADR-054).
 
 Real behavior — uses pytest's tmp_path (isolated per test, cleaned up).
@@ -62,7 +62,7 @@ def test_expected_file_count_is_45():
 
 def test_scaffold_all_creates_10_category_dirs(tmp_path: Path):
     s = ProjectScaffolder(project_name="Test", project_dir=tmp_path)
-    result = s.scaffold_all()
+    s.scaffold_all()
 
     for dir_name in EXPECTED_DIRS:
         cat_dir = tmp_path / "docs" / dir_name

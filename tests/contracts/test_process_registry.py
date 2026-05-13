@@ -30,7 +30,6 @@ def tmp_project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 
 def _import_registry(tmp_project: Path):
     """Import process_registry fresh after the env var has been set."""
-    import importlib
 
     if "lib.process_registry" in sys.modules:
         del sys.modules["lib.process_registry"]
@@ -107,7 +106,7 @@ class TestCleanupExpired:
     def test_expired_short_lived_returned(self, tmp_project: Path) -> None:
         reg = _import_registry(tmp_project)
         # Register with ttl=1 and backdate registered_at so it's already expired
-        rec = reg.register(77777, owner="hook.sh", ttl_seconds=1, kind="short_lived")
+        reg.register(77777, owner="hook.sh", ttl_seconds=1, kind="short_lived")
         # Manually backdate the live record to force expiry without sleeping
         live = reg._load_live()
         for r in live:
@@ -121,7 +120,7 @@ class TestCleanupExpired:
     def test_detached_daemon_never_reaped(self, tmp_project: Path) -> None:
         """detached_daemon is whitelisted — cleanup_expired must never return it."""
         reg = _import_registry(tmp_project)
-        rec = reg.register(88888, owner="daemon.sh", ttl_seconds=1, kind="detached_daemon")
+        reg.register(88888, owner="daemon.sh", ttl_seconds=1, kind="detached_daemon")
         # Backdate to force expiry
         live = reg._load_live()
         for r in live:
@@ -142,7 +141,6 @@ class TestCleanupExpired:
         reg.register(my_pid, owner="self-test", ttl_seconds=3600, kind="short_lived")
 
         killed_pids: list[int] = []
-        original_kill = os.kill
 
         def mock_kill(pid: int, sig: int) -> None:
             killed_pids.append(pid)

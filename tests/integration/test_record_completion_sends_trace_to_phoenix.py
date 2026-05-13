@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Integration test: record_completion._send_otel_trace must deliver a span to Phoenix.
 
 ADR-058 (2026-04-24) Phase 4 — Integration coverage.

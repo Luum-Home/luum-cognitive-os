@@ -13,7 +13,6 @@ Python 3.9+ compatible.
 import os
 import re
 import json
-import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple

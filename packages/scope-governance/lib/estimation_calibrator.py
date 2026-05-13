@@ -16,11 +16,10 @@ Python 3.9+ compatible. No external dependencies.
 """
 
 import json
-import os
 import statistics
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 
 # Valid complexity levels matching definition-of-done.md

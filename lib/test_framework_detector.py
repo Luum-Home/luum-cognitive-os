@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Test Framework Detector — Auto-detect project test frameworks.
 
 Scans project root for configuration files that indicate which test
@@ -12,8 +12,7 @@ No external dependencies — stdlib only.
 from __future__ import annotations
 
 import json
-import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -269,7 +268,7 @@ class TestFrameworkDetector:
         elif (root / "pnpm-lock.yaml").is_file():
             runner = "pnpm"
 
-        test_script = scripts["test"]
+        scripts["test"]
         return DetectedFramework(
             name=runner,
             command=f"{runner} test",

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos_concurrent_status.py.
 
 These tests execute the CLI against non-SO temporary projects so the read-only

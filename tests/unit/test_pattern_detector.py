@@ -7,7 +7,6 @@ actual detection logic, not just file existence.
 import json
 import os
 import sys
-import tempfile
 import textwrap
 
 import pytest

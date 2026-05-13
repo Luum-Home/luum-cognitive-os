@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from tests.unit._helpers import assert_preamble_contains_concepts, assert_all_concepts_present
+from tests.unit._helpers import assert_preamble_contains_concepts
 
 pytestmark = pytest.mark.unit
 

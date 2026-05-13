@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 """
 Portability proofs for scripts/cos_work_inventory.py — P3.3 work inventory.

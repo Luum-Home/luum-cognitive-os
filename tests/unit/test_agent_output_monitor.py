@@ -6,9 +6,8 @@ import json
 import os
 import time
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-import pytest
 
 from lib.agent_output_monitor import (
     AgentOutputMonitor,
@@ -375,7 +374,6 @@ class TestAgentOutputBridgeSync:
 
         published: list[AgentStatus] = []
 
-        original_publish = bridge.publish_status
 
         def mock_publish(status: AgentStatus) -> None:
             published.append(status)

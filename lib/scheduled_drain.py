@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Scheduled Drain — combined queue drain + health check helper.
 
 Called by the CronCreate-based periodic queue drain task (Phase 4A of the
@@ -13,7 +13,6 @@ Python 3.9+ compatible. No external dependencies. Author: luum.
 
 from __future__ import annotations
 
-import os
 from typing import Any, Dict
 
 from lib.queue_drainer import QueueDrainer

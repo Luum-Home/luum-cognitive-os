@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from lib.reinvention_semantic import SemanticIndex, INDEX_SCHEMA_VERSION
+from lib.reinvention_semantic import SemanticIndex
 
 
 @pytest.fixture

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/pending-truth-drift-detector.sh (ADR-273 Slice C).
 
 Bilateral assertion: PostToolUse Edit/Write hook emits additionalContext

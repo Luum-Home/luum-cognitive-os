@@ -4,8 +4,6 @@ Mutation-safe: each test exercises return values, not just file existence.
 """
 from __future__ import annotations
 
-from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 

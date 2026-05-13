@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/error-pipeline.sh.
 
 The hook is SCOPE: both — it must work for any consumer of this OS, not

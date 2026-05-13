@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# SCOPE: both
+# SCOPE: os-only
 # Portability test for scripts/redteam_aggregate.py (KD6 gate, §2.2).
 #
 # Contract invariants per design §2.2:

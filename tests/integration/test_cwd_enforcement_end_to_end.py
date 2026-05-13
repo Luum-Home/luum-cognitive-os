@@ -13,10 +13,8 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import textwrap
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 INJECT_HOOK = REPO_ROOT / "hooks" / "agent-working-dir-inject.sh"

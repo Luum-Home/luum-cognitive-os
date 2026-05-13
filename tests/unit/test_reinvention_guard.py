@@ -18,7 +18,7 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from lib.reinvention_guard import ExistingImplementation, ReinventionGuard
+from lib.reinvention_guard import ReinventionGuard
 
 
 # ---------------------------------------------------------------------------

@@ -4,11 +4,10 @@ Validates provider detection, Telegram/Slack/webhook formatting,
 graceful no-op when provider is 'none', phase event messages,
 pipeline complete, and batch summary messages.
 """
-import json
 import os
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 

@@ -62,7 +62,6 @@ def test_run_agent_unknown_tool_in_allowed_list():
 def test_run_agent_no_client_returns_error():
     from lib.openai_compatible_agent_loop import run_agent
     from unittest.mock import patch
-    from lib import providers
     # Make sure the provider registry returns None client
     with patch("lib.openai_compatible_agent_loop._resolve_client", return_value=None):
         result = run_agent(task="hi", provider="qwen")

@@ -8,15 +8,14 @@ import json
 import os
 import subprocess
 import time
-import tempfile
 import textwrap
 from pathlib import Path
 
 import pytest
 
 try:
-    from testcontainers.core.container import DockerContainer
-    from testcontainers.core.waiting_utils import wait_for_logs
+    from testcontainers.core.container import DockerContainer  # noqa: F401
+    from testcontainers.core.waiting_utils import wait_for_logs  # noqa: F401
 
     tc_available = True
 except ImportError:

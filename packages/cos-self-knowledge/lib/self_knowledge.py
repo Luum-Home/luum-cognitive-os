@@ -257,7 +257,6 @@ def is_index_stale(project_dir: Path | None = None) -> bool:
         return True
 
     try:
-        import os
         index_mtime = mtime_file.stat().st_mtime
         if project_dir is None:
             project_dir = _find_project_dir()

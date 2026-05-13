@@ -1,7 +1,7 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/concurrent-write-guard-codex-proxy.sh — ADR-111 §Gate-3.
 
-Paired test for hooks/concurrent-write-guard-codex-proxy.sh (# SCOPE: both).
+Paired test for hooks/concurrent-write-guard-codex-proxy.sh (# SCOPE: os-only).
 
 This file is the scope-marker-portability-gate-required companion for the proxy
 script. The full probe suite is in test_concurrent-write-guard.py; this file

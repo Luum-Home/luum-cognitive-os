@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """/doc-review-personas orchestrator — multi-persona adversarial doc review.
 
 Runs N persona lenses in parallel (default haiku-tier models), each receiving
@@ -27,7 +27,6 @@ from __future__ import annotations
 
 import concurrent.futures
 import json
-import os
 import re
 import sys
 from dataclasses import dataclass, field, asdict
@@ -43,8 +42,6 @@ from lib.persona_library import (  # noqa: E402
     Persona,
     build_persona_prompt,
     default_persona_set,
-    get_persona,
-    list_personas,
 )
 
 # ---------------------------------------------------------------------------

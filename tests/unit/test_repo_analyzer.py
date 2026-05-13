@@ -235,7 +235,7 @@ class TestDetectDockerServices:
                   data:
             """),
         })
-        analysis = analyzer.analyze.__wrapped__(analyzer, repo) if hasattr(analyzer.analyze, '__wrapped__') else None
+        analyzer.analyze.__wrapped__(analyzer, repo) if hasattr(analyzer.analyze, '__wrapped__') else None
         # Use private method directly
         services = analyzer._detect_docker_services(repo)
         assert "web" in services

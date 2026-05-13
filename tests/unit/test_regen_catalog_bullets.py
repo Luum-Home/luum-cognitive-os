@@ -11,7 +11,6 @@ import sys
 import importlib
 from pathlib import Path
 
-import pytest
 
 # Ensure repo root is on sys.path so lib/ and scripts/ are importable
 REPO_ROOT = Path(__file__).parent.parent.parent

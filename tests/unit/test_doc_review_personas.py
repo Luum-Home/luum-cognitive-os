@@ -19,7 +19,6 @@ import json
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
 _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:

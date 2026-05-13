@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Unit tests for scripts/orphan_commit_scan.py — ADR-116 P3.1.
 
 Covers:

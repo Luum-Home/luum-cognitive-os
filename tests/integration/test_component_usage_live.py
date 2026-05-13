@@ -6,7 +6,6 @@ that the tracker produces sensible results without crashing.
 Run with: pytest tests/integration/test_component_usage_live.py -v
 """
 
-import os
 import sys
 from pathlib import Path
 

@@ -191,7 +191,7 @@ class TestSyntheticDetection:
             for managing the agentic layer.
             """
         )
-        fake_path = Path("/virtual/fake-doc.md")
+        Path("/virtual/fake-doc.md")
 
         def violations_in_text(text: str) -> list[tuple[int, str, str]]:
             results = []

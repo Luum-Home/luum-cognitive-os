@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/adr-detector.sh.
 
 The hook is a PostToolUse Bash handler that fires on `git commit` commands and

@@ -159,7 +159,6 @@ class TestDedup:
         ev1 = _make_eval("ryoppippi/ccusage", stars=1000, score=80)
         ev2 = _make_eval("ryoppippi/ccusage", stars=1500, score=90)
 
-        doc_text = ECOSYSTEM_WITH_ONE_ENTRY
         # Simulate the main() dedup logic manually (last-wins dict)
         seen: dict[str, RepoEval] = {}
         for ev in [ev1, ev2]:

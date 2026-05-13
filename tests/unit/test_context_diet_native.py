@@ -84,7 +84,6 @@ class TestContextDietNative:
         to return a huge comma-separated list. Easiest path: override
         PYTHONPATH to a sandbox where lib.prompt_builder yields many fake rules.
         """
-        import shutil
         import tempfile
 
         with tempfile.TemporaryDirectory() as tmpdir:

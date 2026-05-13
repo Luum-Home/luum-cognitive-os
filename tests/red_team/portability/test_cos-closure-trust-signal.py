@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-closure-trust-signal.py (ADR-275 §10 P3).
 
 Bilateral: reads ledger + closure-trail, computes signal correctly across bands.

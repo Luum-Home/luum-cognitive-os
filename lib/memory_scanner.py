@@ -10,7 +10,7 @@ Source commit: see .cognitive-os/adoption-registry.yaml
 """
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Tuple
 
 

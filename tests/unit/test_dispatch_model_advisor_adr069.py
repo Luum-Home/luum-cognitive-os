@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Tests for the ADR-069 4-dimension risk score added to
 lib/dispatch_model_advisor.py by ADR-175.
 

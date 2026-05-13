@@ -1,11 +1,11 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proofs for hooks/post-git-orphan-notifier.sh — ADR-116 P3.1.
 
 These tests run the hook against a temporary, non-SO git repository to prove that
 the orphan-detection logic does not depend on any repository-local runtime state
 from the luum-agent-os project itself.
 
-Paired with: hooks/post-git-orphan-notifier.sh  (# SCOPE: both)
+Paired with: hooks/post-git-orphan-notifier.sh  (# SCOPE: os-only)
 
 Portability proof matrix:
     P1 — hook fires on 'git rebase main' command in a foreign repo.

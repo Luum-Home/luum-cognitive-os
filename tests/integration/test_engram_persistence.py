@@ -11,10 +11,7 @@ Covers:
   - TestFTS5Search            : partial match, cross-project isolation
 """
 
-import sqlite3
-import time
 import uuid
-import pytest
 
 
 # ---------------------------------------------------------------------------
@@ -75,7 +72,7 @@ class TestPersistenceRoundtrip:
             "SELECT topic_key FROM observations WHERE project = ? ORDER BY id DESC LIMIT 5",
             (real_engram["project"],),
         )
-        topic_keys = [r[0] for r in rows if r[0]]
+        [r[0] for r in rows if r[0]]
         # At least the saved row should be present
         assert len(rows) > 0, "Expected at least one row after save"
 

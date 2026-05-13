@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proofs for hooks/_lib/push-collision-check.sh — ADR-116 P4.2.
 
 These tests invoke the shell lib against a temporary, non-SO git repository to

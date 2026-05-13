@@ -7,7 +7,6 @@ without starting Docker or any external services.
 """
 import os
 import subprocess
-import tempfile
 from pathlib import Path
 
 

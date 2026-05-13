@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/concurrent-write-guard.sh — ADR-111 consumer projection.
 
 Verifies the concurrent-write-guard Codex projection strategy:

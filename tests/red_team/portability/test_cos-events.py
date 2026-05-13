@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 """
 Portability probes for scripts/cos-events.sh / lib/event_bus.py — P1.3.

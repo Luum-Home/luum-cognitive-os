@@ -13,7 +13,6 @@ import json
 import os
 import subprocess
 import textwrap
-import shutil
 from pathlib import Path
 
 import pytest

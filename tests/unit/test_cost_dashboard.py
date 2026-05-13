@@ -7,14 +7,12 @@ Author: luum
 """
 
 import json
-import os
 from datetime import date, datetime, timezone
 from pathlib import Path
 
 import pytest
 
 from lib.cost_dashboard import (
-    MODEL_PRICES,
     CostDashboard,
     SessionCostReport,
     record_cost_event,

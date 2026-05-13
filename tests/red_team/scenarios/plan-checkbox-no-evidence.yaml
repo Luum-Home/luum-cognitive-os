@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 id: plan-checkbox-no-evidence
 name: "Plan checkbox without evidence"
 description: |

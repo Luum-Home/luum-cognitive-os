@@ -417,7 +417,6 @@ def test_uv_sync_runs_before_self_install(tmp_path):
     uv's log entry sorts earlier (i.e. has a lower timestamp) than the
     self-install entry.
     """
-    import time
 
     scratch = _make_scratch_project(tmp_path)
     _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
@@ -516,7 +515,6 @@ def test_register_mcps_runs_between_uv_and_self_install(tmp_path):
     All three write nanosecond timestamps to a shared order log. We assert
     uv.ts < claude-mcp.ts < self-install.ts.
     """
-    import time
 
     scratch = _make_scratch_project(tmp_path)
     _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')

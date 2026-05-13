@@ -5,7 +5,6 @@ Tests: path heuristics, override via tags, tier count sanity.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import importlib.util

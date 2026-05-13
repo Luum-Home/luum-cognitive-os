@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Agent Output Bridge — publishes file-based agent progress to Valkey AgentBus.
 
 Bridges the gap between Claude Code's Agent tool (which writes JSONL output files)
@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import logging
 import os
-import time
 from typing import Optional
 
 from lib.agent_bus import AgentPublisher

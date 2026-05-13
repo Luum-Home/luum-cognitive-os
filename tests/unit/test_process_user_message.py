@@ -12,7 +12,6 @@ Covers:
 
 from __future__ import annotations
 
-import pytest
 from unittest.mock import patch, MagicMock
 
 from lib.process_user_message import process

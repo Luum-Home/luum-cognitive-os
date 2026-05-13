@@ -17,7 +17,6 @@ import json
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
@@ -278,7 +277,6 @@ class TestLearningPipelineEmitsMetricEvent:
 
     def test_read_back_via_check_triggers_works(self, tmp_path: Path) -> None:
         """check_learning_triggers must normalise MetricEvent rows."""
-        from datetime import datetime, timezone, timedelta
         from lib.learning_pipeline import LearningPipeline
 
         correlations = str(tmp_path / "correlations.jsonl")
@@ -299,7 +297,7 @@ class TestSingularityEmitsMetricEvent:
     def test_append_jsonl_emits_metric_event_row(self, tmp_path: Path) -> None:
         """_append_jsonl must emit MetricEvent-shaped rows."""
         # Import the private function directly
-        import importlib, sys as _sys
+        import sys as _sys
         # singularity uses local imports; ensure lib is on path
         lib_dir = str(Path(__file__).parent.parent.parent / "lib")
         if lib_dir not in _sys.path:

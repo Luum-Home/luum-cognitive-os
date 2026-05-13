@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-subprocess-timeout-audit.py (ADR-278).
 
 Bilateral: builds a synthetic project with timed/untimed/allowlisted calls

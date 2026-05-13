@@ -12,7 +12,6 @@ Python 3.9+ compatible.
 from __future__ import annotations
 
 import json
-import os
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path

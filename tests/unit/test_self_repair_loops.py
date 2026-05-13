@@ -6,12 +6,10 @@ Loop 3: /self-improve auto-trigger via KPI flag files
 """
 
 import json
-import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pytest
 
 # Make project root importable
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -19,8 +17,6 @@ sys.path.insert(0, str(_PROJECT_ROOT))
 
 from lib.consequence_engine import (
     ConsequenceEngine,
-    Consequence,
-    ConsequenceAction,
     PerformanceRecord,
 )
 
