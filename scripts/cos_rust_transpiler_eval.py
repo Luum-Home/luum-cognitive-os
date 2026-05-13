@@ -25,7 +25,7 @@ CAPABILITY_CANDIDATES = [
     "tests/fixtures/rust_transpiler_eval/list_dict_transform.py",
 ]
 DEFAULT_CANDIDATES = SCRIPT_CANDIDATES
-DEFAULT_TOOLS = ["py2many", "tnk"]
+DEFAULT_TOOLS = ["py2many", "tnk", "depyler"]
 
 
 @dataclass(frozen=True)
@@ -220,6 +220,60 @@ def eval_py2many(project_dir: Path, candidate: Path, out_dir: Path, timeout: int
     )
 
 
+def eval_depyler(project_dir: Path, candidate: Path, out_dir: Path, timeout: int) -> RunResult:
+    tool_path = shutil.which("depyler")
+    if not tool_path:
+        return RunResult(
+            "depyler",
+            _candidate_label(project_dir, candidate),
+            None,
+            [],
+            0,
+            "",
+            "depyler not found on PATH",
+            None,
+            "",
+            None,
+            "",
+            "",
+            "not-run",
+            "blocked",
+            "tool-missing",
+        )
+    start = time.monotonic()
+    output_dir = out_dir / "depyler"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    direct_output = output_dir / f"{candidate.stem}.rs"
+    result = _run([tool_path, "transpile", str(candidate), "-o", str(direct_output)], project_dir, timeout)
+    elapsed = int((time.monotonic() - start) * 1000)
+    generated = [str(direct_output.relative_to(out_dir))] if direct_output.exists() else []
+    if not generated and result.returncode == 0 and "fn " in result.stdout:
+        direct_output.write_text(result.stdout, encoding="utf-8")
+        generated = [str(direct_output.relative_to(out_dir))]
+    compile_code, compile_excerpt = _compile_single_rust(direct_output, timeout)
+    python_code, python_stdout = _python_expected(project_dir, candidate, timeout)
+    rust_code, rust_stdout = _run_single_rust(direct_output, timeout) if compile_code == 0 else (None, "")
+    parity = _parity_status(compile_code, python_code, python_stdout, rust_stdout)
+    cost, status = _manual_fix_cost(result.returncode, generated, compile_code, result.stdout, result.stderr)
+    return RunResult(
+        "depyler",
+        _candidate_label(project_dir, candidate),
+        result.returncode,
+        generated,
+        elapsed,
+        _sanitize(_excerpt(result.stdout), project_dir),
+        _sanitize(_excerpt(result.stderr), project_dir),
+        compile_code,
+        _sanitize(compile_excerpt, project_dir),
+        python_code,
+        _sanitize(_excerpt(python_stdout), project_dir),
+        _sanitize(_excerpt(rust_stdout), project_dir),
+        parity if rust_code in (0, None) else "rust-run-failed",
+        cost,
+        status,
+    )
+
+
 def eval_tnk(project_dir: Path, candidate: Path, out_dir: Path, timeout: int) -> RunResult:
     tool_path = shutil.which("tnk")
     if not tool_path:
@@ -339,7 +393,8 @@ def main() -> int:
     candidates = [project_dir / path for path in (args.candidate or default_candidates)]
     tools = args.tool or DEFAULT_TOOLS
     out_dir = args.out_dir if args.out_dir.is_absolute() else project_dir / args.out_dir
-    for tool_dir in (out_dir / "py2many", out_dir / "tnk"):
+    for tool in DEFAULT_TOOLS:
+        tool_dir = out_dir / tool
         if tool_dir.exists():
             shutil.rmtree(tool_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -350,6 +405,8 @@ def main() -> int:
             results.append(eval_py2many(project_dir, candidate, out_dir, args.timeout))
         if "tnk" in tools:
             results.append(eval_tnk(project_dir, candidate, out_dir, args.timeout))
+        if "depyler" in tools:
+            results.append(eval_depyler(project_dir, candidate, out_dir, args.timeout))
 
     payload = {
         "schema_version": "rust-transpiler-eval/v1",
