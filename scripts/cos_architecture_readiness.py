@@ -508,7 +508,7 @@ def check_lab_first_promotion_gate(root: Path) -> Check:
 
 
 def check_adr_tier_claim_audit(root: Path) -> Check:
-    report = cos_tier_claim_audit.build_report(root / "docs" / "adrs", root)
+    report = cos_tier_claim_audit.build_report(root / "docs" / "02-Decisions" / "adrs", root)
     status = "pass" if report["status"] == "pass" else "fail"
     return Check(
         id="adr-tier-claim-audit",

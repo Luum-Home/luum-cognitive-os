@@ -329,7 +329,7 @@ def apply_closure_metadata(record: AdrRecord, metadata: dict[str, dict[str, str]
 
 
 def scan_adrs(project_dir: Path) -> list[AdrRecord]:
-    adrs_dir = project_dir / "docs" / "adrs"
+    adrs_dir = project_dir / "docs" / "02-Decisions" / "adrs"
     if not adrs_dir.exists():
         return []
     closure_metadata = load_closure_metadata(project_dir)

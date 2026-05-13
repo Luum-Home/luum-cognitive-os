@@ -142,7 +142,7 @@ def generated_payload(repo: Path, manifest_path: Path) -> tuple[dict[str, Any], 
             findings.append(Finding("block", "owner-adr-missing", "Capability must declare owner_adr.", capability=cid))
         else:
             owner_adrs.setdefault(owner, []).append(cid)
-            adr_path = repo / "docs" / "adrs"
+            adr_path = repo / "docs" / "02-Decisions" / "adrs"
             if not list(adr_path.glob(f"{owner}-*.md")) and not (adr_path / f"{owner}.md").exists():
                 findings.append(Finding("block", "owner-adr-file-missing", "Capability owner_adr file does not exist.", capability=cid, details={"owner_adr": owner}))
         if cap.get("public_claim") and level not in public_allowed:

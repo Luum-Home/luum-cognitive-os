@@ -39,7 +39,7 @@ REPORTS_DIR = REPO_ROOT / "docs" / "reports"
 # NOTE: .cognitive-os/reports/research/ is gitignored — reports now live in docs/06-Daily/reports/.
 # We keep this constant for legacy fallback but DO NOT scan it in normal operation.
 RESEARCH_REPORTS_DIR = REPO_ROOT / ".cognitive-os" / "reports" / "research"
-ADRS_DIR = REPO_ROOT / "docs" / "adrs"
+ADRS_DIR = REPO_ROOT / "docs" / "02-Decisions" / "adrs"
 
 # Section headers we scan for decisions (case-insensitive)
 REPORT_SECTION_PATTERNS = [
