@@ -41,6 +41,16 @@ forbidden_core_imports:
 - module: semantic_kernel
   rationale: optional agent/orchestration framework; use adapter/lab only
 adapters:
+- id: cos_agent_reflection
+  status: active
+  default: false
+  implementation:
+  - lib/agent_reflection.py
+  license_spdx: project
+  footprint: zero-extra-deps-local
+  hot_path_allowed: false
+  community_pattern: iterative LLM self-critique loop with min/max iterations and structured output verdict (ADR-290 §5)
+  benchmark_required: false
 - id: cos_file_ipc_minimal
   status: active
   default: true

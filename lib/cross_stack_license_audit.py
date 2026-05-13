@@ -9,7 +9,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
+from lib.lazy_imports import LazyImport
+
+# Lazy yaml import (ADR-290 Pattern 1) — only paid when load_policy() actually
+# reads a manifest file; the default-policy fast path skips it entirely.
+_yaml = LazyImport(lambda: __import__("yaml"))
 
 
 SCHEMA_VERSION = "cross-stack-license-audit-report/v1"
@@ -43,7 +47,7 @@ def load_policy(project_dir: Path) -> dict[str, Any]:
                 "require_immutable_workflow_pin": True,
             },
         }
-    return yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
+    return _yaml.get().safe_load(manifest.read_text(encoding="utf-8")) or {}
 
 
 def _run(command: list[str]) -> str | None:
