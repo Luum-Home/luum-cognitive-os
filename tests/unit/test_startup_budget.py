@@ -3,11 +3,16 @@
 Reads the latest entry from .cognitive-os/metrics/startup-benchmark.jsonl and
 asserts that SessionStart hook total and initial payload tokens are within budget.
 
-Budgets are intentionally generous to accommodate the current (pre-optimisation)
-baseline.  The optimisation waves (Agents A/B/C) will tighten these values.
+Budget aligned to declared SLO (2 s) as of 2026-05-13 — previously this was
+intentionally generous at 10 s, which hid a real SLO breach (measured 9.7 s).
+The test will FAIL until the SessionStart hook chain is tightened. That failure
+is the regression signal — the gap should be closed by promoting more hooks to
+async (per ADR-300/ADR-301-style profile tweaks in
+scripts/_lib/settings-driver-claude-code.sh).
 
 Environment overrides:
-  STARTUP_BUDGET_SECONDS  — max total SessionStart wall-clock time (default: 10s)
+  STARTUP_BUDGET_SECONDS  — max total SessionStart wall-clock time (default: 2s,
+                            matches declared SLO; was 10s pre-2026-05-13)
   STARTUP_TOKEN_BUDGET    — max initial context payload tokens (default: 50000)
   STARTUP_BENCHMARK_FILE  — override path to the JSONL file
 
@@ -52,7 +57,10 @@ def _load_latest_record() -> dict | None:
 
 
 def _budget_seconds() -> float:
-    return float(os.environ.get("STARTUP_BUDGET_SECONDS", "10"))
+    # 2.0 = declared SLO. Was 10s pre-2026-05-13 — tightened to surface the
+    # ongoing breach as CI signal. Operators can set STARTUP_BUDGET_SECONDS
+    # locally to a higher value while triaging.
+    return float(os.environ.get("STARTUP_BUDGET_SECONDS", "2"))
 
 
 def _token_budget() -> int:
