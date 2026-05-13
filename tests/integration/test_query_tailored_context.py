@@ -31,7 +31,7 @@ from lib.context_injector import build_context, _task_hash, _cache_path  # noqa:
 def isolated_root(tmp_path: Path) -> Path:
     """Create a minimal project structure for context_injector tests."""
     # docs/02-Decisions/adrs with a rate-limiter ADR.
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
 
     (adrs / "ADR-028-rate-limiter.md").write_text(
@@ -175,7 +175,7 @@ def test_cache_hit_is_fast(isolated_root: Path) -> None:
 def test_graceful_when_index_missing(tmp_path: Path) -> None:
     """When no reinvention-index.json exists, build_context returns '' silently."""
     # Provide ADRs but no code index.
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     # No .cognitive-os/reinvention-index.json created.
     cos = tmp_path / ".cognitive-os"

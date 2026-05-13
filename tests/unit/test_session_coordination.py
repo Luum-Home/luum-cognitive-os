@@ -50,7 +50,7 @@ def test_release_claim_allows_next_session(tmp_path: Path) -> None:
 
 
 def test_adr_tombstone_findings_block_active_adr_file(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-171-reject-integration.md").write_text("# ADR-171: Reject Integration\n", encoding="utf-8")
 

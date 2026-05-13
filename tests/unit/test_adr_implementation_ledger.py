@@ -43,7 +43,7 @@ def test_project_and_session_precedence_prefers_cognitive_then_codex_then_claude
 
 def test_scan_classifies_implemented_partial_and_pending_adrs(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     scripts = project / "scripts"
     adrs.mkdir(parents=True)
     scripts.mkdir(parents=True)
@@ -60,7 +60,7 @@ def test_scan_classifies_implemented_partial_and_pending_adrs(tmp_path: Path) ->
 
 def test_missing_declared_implementation_file_prevents_overestimated_implemented_state(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-overstated.md").write_text(
         """---
@@ -93,7 +93,7 @@ Accepted — implemented.
 
 def test_frontmatter_implemented_status_with_existing_paths_is_implemented(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     scripts = project / "scripts"
     adrs.mkdir(parents=True)
     scripts.mkdir()
@@ -125,7 +125,7 @@ Implemented for declared scope.
 
 def test_accepted_status_wins_over_reserved_note_in_body(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-accepted-reserved-note.md").write_text(
         """# ADR-001 Accepted Reserved Note
@@ -149,7 +149,7 @@ The numbering range remains reserved for taxonomy extensions.
 
 def test_missing_acceptance_criteria_path_keeps_partial_when_other_evidence_exists(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     scripts = project / "scripts"
     adrs.mkdir(parents=True)
     scripts.mkdir()
@@ -178,7 +178,7 @@ Implementation evidence: `scripts/existing.py`
 
 def test_closure_metadata_overrides_stale_heuristic_attention(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     manifests = project / "manifests"
     adrs.mkdir(parents=True)
     manifests.mkdir(parents=True)
@@ -208,7 +208,7 @@ adrs:
 
 def test_closure_class_semantics_define_runtime_work_boundary(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     manifests = project / "manifests"
     adrs.mkdir(parents=True)
     manifests.mkdir(parents=True)
@@ -266,7 +266,7 @@ adrs:
 
 def test_write_outputs_creates_latest_json_jsonl_and_session_markdown(tmp_path: Path) -> None:
     project = tmp_path / "project"
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-pending.md").write_text("# ADR-001 Pending\n\n## Status\nAccepted.\n")
     records = adr_implementation_ledger.scan_adrs(project)
@@ -283,7 +283,7 @@ def test_write_outputs_creates_latest_json_jsonl_and_session_markdown(tmp_path: 
 
 def test_cli_json_reports_written_paths(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     project = tmp_path / "project"
-    (project / "docs" / "adrs").mkdir(parents=True)
+    (project / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
     code = adr_implementation_ledger.main(["--project-dir", str(project), "--session-id", "s1", "--write", "--json", "--now", "2026-05-02T00:00:00Z"])
     assert code == 0
     payload = json.loads(capsys.readouterr().out)

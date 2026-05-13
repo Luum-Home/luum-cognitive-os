@@ -179,7 +179,7 @@ def test_cli_emits_parseable_python(tmp_path: Path) -> None:
 def test_cli_real_adr_047_pair_produces_non_empty_output() -> None:
     """Acceptance criterion: running on the real ADR-047 + session_watchdog_lib.py
     pair produces at least one proposed invariant."""
-    adr = REPO_ROOT / "docs" / "adrs" / "ADR-047-session-lifecycle-management.md"
+    adr = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-047-session-lifecycle-management.md"
     lib = REPO_ROOT / "lib" / "session_watchdog_lib.py"
     if not adr.exists() or not lib.exists():
         pytest.skip("ADR-047 or session_watchdog_lib.py not present")

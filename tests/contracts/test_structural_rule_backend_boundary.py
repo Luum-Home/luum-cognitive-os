@@ -14,7 +14,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from scripts.portable_ai_overlay import build_overlay  # noqa: E402
 
-ADR = REPO_ROOT / "docs" / "adrs" / "ADR-272-structural-rule-backend-boundary.md"
+ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-272-structural-rule-backend-boundary.md"
 CHECKLIST = REPO_ROOT / "docs" / "business" / "master-plan-checklist.md"
 
 

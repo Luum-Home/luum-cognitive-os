@@ -62,7 +62,7 @@ Consequences.
 def test_grep_only_verification_fails_for_implemented_adr(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     write(root / "lib" / "example.py", "print('ok')\n")
-    path = root / "docs" / "adrs" / "ADR-999-test.md"
+    path = root / "docs" / "02-Decisions" / "adrs" / "ADR-999-test.md"
     write(path, adr_text(verification="grep -rn 'ADR-999' docs/ scripts/ tests/ | head -20"))
 
     row = adr_verification_audit.audit_adr_file(path, root=root)
@@ -75,7 +75,7 @@ def test_grep_only_verification_fails_for_implemented_adr(tmp_path: Path) -> Non
 def test_pytest_verification_passes_for_implemented_adr(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     write(root / "lib" / "example.py", "print('ok')\n")
-    path = root / "docs" / "adrs" / "ADR-999-test.md"
+    path = root / "docs" / "02-Decisions" / "adrs" / "ADR-999-test.md"
     write(path, adr_text(verification="python3 -m pytest tests/unit/test_example.py -q"))
 
     row = adr_verification_audit.audit_adr_file(path, root=root)
@@ -86,7 +86,7 @@ def test_pytest_verification_passes_for_implemented_adr(tmp_path: Path) -> None:
 
 def test_missing_implementation_file_fails_even_with_strong_command(tmp_path: Path) -> None:
     root = tmp_path / "repo"
-    path = root / "docs" / "adrs" / "ADR-999-test.md"
+    path = root / "docs" / "02-Decisions" / "adrs" / "ADR-999-test.md"
     write(path, adr_text(verification="python3 -m pytest tests/unit/test_example.py -q"))
 
     row = adr_verification_audit.audit_adr_file(path, root=root)

@@ -43,7 +43,7 @@ def test_scope_classification_governance_has_lifecycle_and_dedicated_adr() -> No
     manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     assert manifest["kind"] == "governance-primitive"
     assert manifest["owner_adr"] == "ADR-019"
-    assert (REPO / "docs" / "adrs" / "ADR-019-scope-tagging.md").is_file()
+    assert (REPO / "docs" / "02-Decisions" / "adrs" / "ADR-019-scope-tagging.md").is_file()
 
     lifecycle = yaml.safe_load((REPO / "manifests" / "primitive-lifecycle.yaml").read_text(encoding="utf-8"))
     rows = {item["id"]: item for item in lifecycle["primitives"]}

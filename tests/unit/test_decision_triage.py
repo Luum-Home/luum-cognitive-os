@@ -443,7 +443,7 @@ class TestSpecMandated:
     def test_read_only_guarantee(self, tmp_path):
         """Running main() against a tmp_path repo must NOT modify any input file."""
         reports_dir = tmp_path / "docs" / "reports"
-        adrs_dir = tmp_path / "docs" / "adrs"
+        adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
         research_dir = tmp_path / ".cognitive-os" / "reports" / "research"
         reports_dir.mkdir(parents=True)
         adrs_dir.mkdir(parents=True)

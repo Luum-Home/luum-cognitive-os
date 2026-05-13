@@ -9,7 +9,7 @@ pytestmark = pytest.mark.contract
 REPO = Path(__file__).resolve().parents[2]
 AUTHORITY_DOC = REPO / "docs" / "architecture" / "primitive-authority-write-effects.md"
 CONSUMER_DOC = REPO / "docs" / "architecture" / "consumer-project-primitive-accessibility.md"
-ADR_146 = REPO / "docs" / "adrs" / "ADR-146-primitive-readiness-ledger.md"
+ADR_146 = REPO / "docs" / "02-Decisions" / "adrs" / "ADR-146-primitive-readiness-ledger.md"
 
 
 def test_primitive_authority_write_effects_doc_names_existing_enforcement_surfaces() -> None:

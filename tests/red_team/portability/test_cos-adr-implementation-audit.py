@@ -38,7 +38,7 @@ def _seed_adr(
     status: str = "implemented",
     files: list[str] | None = None,
 ) -> None:
-    adr_dir = project_dir / "docs" / "adrs"
+    adr_dir = project_dir / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True, exist_ok=True)
     body = ["---", f"adr: {num}", f"title: test {num}", f"implementation_status: {status}"]
     if files is not None:

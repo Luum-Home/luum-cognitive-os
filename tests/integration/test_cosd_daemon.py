@@ -38,7 +38,7 @@ def wait_result(project: Path, intent_id: str) -> dict:
 
 
 def test_cosd_start_arbitrates_competing_adr_numbers_and_stops(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-existing.md").write_text("# ADR-001: Existing\n", encoding="utf-8")
 
@@ -89,7 +89,7 @@ def test_cosd_start_arbitrates_competing_adr_numbers_and_stops(tmp_path: Path) -
 
 
 def test_cosd_rejects_tombstone_for_active_adr(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-171-active-decision.md").write_text("# ADR-171: Active\n", encoding="utf-8")
 
@@ -144,7 +144,7 @@ def test_cosd_intent_submit_hook_uses_daemon_cli(tmp_path: Path) -> None:
 
 
 def test_cosd_local_http_api_submits_and_processes_intent(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     api_file = tmp_path / ".cognitive-os" / "cosd" / "runtime" / "cosd-api.json"
     proc = subprocess.Popen(
@@ -219,7 +219,7 @@ def _unix_http_json(socket_path: Path, request_text: str) -> dict:
 
 
 def test_cosd_unix_socket_api_submits_and_processes_intent(tmp_path: Path) -> None:
-    (tmp_path / "docs" / "adrs").mkdir(parents=True)
+    (tmp_path / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
     socket_path = Path("/tmp") / f"cosd-{tmp_path.name}.sock"
     try:
         socket_path.unlink()
@@ -319,7 +319,7 @@ def test_cosd_remote_bind_requires_allow_remote_and_token(tmp_path: Path) -> Non
 
 
 def test_cosd_token_auth_protects_status_and_write_endpoints(tmp_path: Path) -> None:
-    (tmp_path / "docs" / "adrs").mkdir(parents=True)
+    (tmp_path / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
     token_file = tmp_path / "cosd.token"
     token_file.write_text("secret-token\n", encoding="utf-8")
     api_file = tmp_path / ".cognitive-os" / "cosd" / "runtime" / "cosd-api.json"

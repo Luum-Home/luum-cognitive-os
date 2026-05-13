@@ -58,7 +58,7 @@ def test_default_output_is_slot_number(tmp_path: Path):
 
 
 def test_slot_number_accounts_for_existing_adrs(tmp_path: Path):
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-010-some-decision.md").write_text("# ADR-010\n")
     (adrs / "ADR-015-another.md").write_text("# ADR-015\n")

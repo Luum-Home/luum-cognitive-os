@@ -267,7 +267,7 @@ def is_index_stale(project_dir: Path | None = None) -> bool:
             project_dir / "lib",
             project_dir / "hooks",
             project_dir / "scripts",
-            project_dir / "docs" / "adrs",
+            project_dir / "docs" / "02-Decisions" / "adrs",
         ]
         packages_dir = project_dir / "packages"
         if packages_dir.is_dir():

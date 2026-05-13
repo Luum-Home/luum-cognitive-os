@@ -249,7 +249,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 class TestLoadAdrEntry:
     def test_loads_accepted_adr(self) -> None:
-        adr_path = PROJECT_ROOT / "docs" / "adrs" / "ADR-174-auto-derived-primitive-routing.md"
+        adr_path = PROJECT_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-174-auto-derived-primitive-routing.md"
         if not adr_path.exists():
             pytest.skip("ADR-174 not found on disk")
         entry = _load_adr_entry(adr_path, PROJECT_ROOT)
@@ -259,21 +259,21 @@ class TestLoadAdrEntry:
         assert entry.status in ("accepted", "proposed", "draft")
 
     def test_skips_superseded_adr(self) -> None:
-        adr_path = PROJECT_ROOT / "docs" / "adrs" / "ADR-170-operator-cli-as-primary-ui-surface.md"
+        adr_path = PROJECT_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-170-operator-cli-as-primary-ui-surface.md"
         if not adr_path.exists():
             pytest.skip("ADR-170 not found on disk")
         entry = _load_adr_entry(adr_path, PROJECT_ROOT)
         assert entry is None, "Superseded ADR should return None"
 
     def test_skips_tombstone_by_filename(self) -> None:
-        adr_path = PROJECT_ROOT / "docs" / "adrs" / "ADR-171-tombstone.md"
+        adr_path = PROJECT_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-171-tombstone.md"
         if not adr_path.exists():
             pytest.skip("ADR-171 not found on disk")
         entry = _load_adr_entry(adr_path, PROJECT_ROOT)
         assert entry is None, "Tombstone ADR should return None"
 
     def test_skips_tombstone_by_status(self) -> None:
-        adr_path = PROJECT_ROOT / "docs" / "adrs" / "ADR-179-tombstone.md"
+        adr_path = PROJECT_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-179-tombstone.md"
         if not adr_path.exists():
             pytest.skip("ADR-179 not found on disk")
         entry = _load_adr_entry(adr_path, PROJECT_ROOT)
@@ -385,7 +385,7 @@ class TestSyntheticRejectedSurfaceAdr:
     """
 
     def test_rejected_surface_prompt_matches_adr181(self, tmp_path: Path) -> None:
-        adrs_dir = tmp_path / "docs" / "adrs"
+        adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         # Write a synthetic ADR-181 (with rejection tag to match the test prompt)
@@ -429,7 +429,7 @@ class TestSyntheticRejectedSurfaceAdr:
         assert matches[0].confidence >= 0.85
 
     def test_auto_skill_generation_matches_adr133(self, tmp_path: Path) -> None:
-        adrs_dir = tmp_path / "docs" / "adrs"
+        adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         (adrs_dir / "ADR-133-expansion-without-monsterization.md").write_text(
@@ -466,7 +466,7 @@ class TestSyntheticRejectedSurfaceAdr:
         assert matches[0].confidence >= 0.85
 
     def test_research_protocol_matches_adr069(self, tmp_path: Path) -> None:
-        adrs_dir = tmp_path / "docs" / "adrs"
+        adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         (adrs_dir / "ADR-069-research-first-protocol.md").write_text(

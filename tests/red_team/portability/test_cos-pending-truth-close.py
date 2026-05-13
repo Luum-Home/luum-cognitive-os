@@ -77,7 +77,7 @@ def test_falsification_adr_ref_must_be_accepted(tmp_path: Path) -> None:
         {"id": "x", "type": "plan-checkbox", "source": "plans/p.md:L1",
          "status": "verified-pending", "evidence": [], "next_action": "", "owner_adr": None},
     ])
-    adr_dir = tmp_path / "docs" / "adrs"
+    adr_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True)
     (adr_dir / "ADR-999-pending.md").write_text("---\nadr: 999\nstatus: proposed\n---\n")
     cp = _run(tmp_path, "--id", "x", "--proof", "ADR-999")
@@ -145,7 +145,7 @@ def test_bilateral_already_checked_box_rejected(tmp_path: Path) -> None:
 
 def test_bilateral_adr_status_flip(tmp_path: Path) -> None:
     """adr-slice item -> implementation_status flips to implemented."""
-    adr_dir = tmp_path / "docs" / "adrs"
+    adr_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True)
     adr_file = adr_dir / "ADR-100-x.md"
     adr_file.write_text(

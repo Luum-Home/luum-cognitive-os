@@ -296,8 +296,8 @@ def test_prewrite_guard_strict_blocks_new_markdown_doc(tmp_path):
 def test_adr_reservation_guard_warns_for_unreserved_new_adr(tmp_path):
     proj = tmp_path / "adr-guard"
     _make_category_docs(proj)
-    (proj / "docs" / "adrs").mkdir()
-    target = proj / "docs" / "adrs" / "ADR-001-unreserved.md"
+    (proj / "docs" / "02-Decisions" / "adrs").mkdir()
+    target = proj / "docs" / "02-Decisions" / "adrs" / "ADR-001-unreserved.md"
 
     result = _run_hook([], stdin=_docs_payload(target))
 
@@ -309,10 +309,10 @@ def test_adr_reservation_guard_warns_for_unreserved_new_adr(tmp_path):
 def test_adr_reservation_guard_allows_active_reserved_adr(tmp_path):
     proj = tmp_path / "adr-reserved"
     _make_category_docs(proj)
-    (proj / "docs" / "adrs").mkdir()
+    (proj / "docs" / "02-Decisions" / "adrs").mkdir()
     locks = proj / ".cognitive-os" / "locks"
     locks.mkdir(parents=True)
-    target = proj / "docs" / "adrs" / "ADR-001-reserved.md"
+    target = proj / "docs" / "02-Decisions" / "adrs" / "ADR-001-reserved.md"
     (locks / "adr-reservations.json").write_text(
         json.dumps(
             {
@@ -341,8 +341,8 @@ def test_adr_reservation_guard_allows_active_reserved_adr(tmp_path):
 def test_adr_reservation_guard_strict_blocks_unreserved_new_adr(tmp_path):
     proj = tmp_path / "adr-strict"
     _make_category_docs(proj)
-    (proj / "docs" / "adrs").mkdir()
-    target = proj / "docs" / "adrs" / "ADR-002-unreserved.md"
+    (proj / "docs" / "02-Decisions" / "adrs").mkdir()
+    target = proj / "docs" / "02-Decisions" / "adrs" / "ADR-002-unreserved.md"
 
     result = subprocess.run(
         ["bash", str(REPO_ROOT / "hooks/project-docs-convention.sh")],

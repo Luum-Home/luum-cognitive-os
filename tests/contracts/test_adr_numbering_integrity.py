@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def test_adr_numbers_are_contiguous() -> None:
-    adr_dir = Path(__file__).resolve().parents[2] / "docs" / "adrs"
+    adr_dir = Path(__file__).resolve().parents[2] / "docs" / "02-Decisions" / "adrs"
     numbers: set[int] = set()
     for path in adr_dir.glob("ADR-*.md"):
         match = re.match(r"ADR-(\d+)", path.name)
@@ -20,7 +20,7 @@ def test_adr_numbers_are_contiguous() -> None:
 
 
 def test_tombstone_adrs_use_neutral_contract() -> None:
-    adr_dir = Path(__file__).resolve().parents[2] / "docs" / "adrs"
+    adr_dir = Path(__file__).resolve().parents[2] / "docs" / "02-Decisions" / "adrs"
     tombstones = sorted(adr_dir.glob("ADR-*-tombstone.md"))
     assert tombstones, "Expected explicit ADR tombstones for reserved gaps"
     required_sections = (

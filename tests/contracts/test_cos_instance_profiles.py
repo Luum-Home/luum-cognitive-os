@@ -10,7 +10,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = REPO_ROOT / "manifests" / "cos-instance-profiles.yaml"
 SCRIPT = REPO_ROOT / "scripts" / "cos-instance-init"
-ADR = REPO_ROOT / "docs" / "adrs" / "ADR-163-cos-instance-installer.md"
+ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-163-cos-instance-installer.md"
 ARCH = REPO_ROOT / "docs" / "architecture" / "cos-instance-installer.md"
 MANUAL = REPO_ROOT / "docs" / "manual-tests" / "cos-instance-installer.md"
 

@@ -20,6 +20,7 @@ from lib.skill_router import (
     _load_profile_projected_skills,
     _parse_frontmatter,
     _parse_routing_patterns_block,
+    _parse_routing_intents_block,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -94,8 +95,8 @@ def test_new_skills_require_routing_metadata() -> None:
     """A skill cannot silently join the backlog unless manifest-classified.
 
     Existing debt is explicit in ``unrouted_skill_allowlist``. Any future
-    SKILL.md outside that list must be routeable, declare ``routing_patterns``,
-    or carry an explicit ``routing.class`` rationale.
+    SKILL.md outside that list must be routeable, declare ``routing_patterns``
+    or ``routing_intents``, or carry an explicit ``routing.class`` rationale.
     """
     allowlisted = _unrouted_allowlist()
     routeable = SkillRouter(project_root=PROJECT_ROOT).get_primary_routing_skills()
@@ -110,10 +111,11 @@ def test_new_skills_require_routing_metadata() -> None:
         text = skill_md.read_text(encoding="utf-8", errors="replace")
         frontmatter = _parse_frontmatter(text)
         has_patterns = _parse_routing_patterns_block(skill_md) is not None
+        has_intents = _parse_routing_intents_block(skill_md) is not None
         routing = frontmatter.get("routing")
         has_classification = isinstance(routing, dict) and bool(routing.get("class"))
         is_routeable = skill_name in routeable
-        if not has_patterns and not has_classification and not is_routeable:
+        if not has_patterns and not has_intents and not has_classification and not is_routeable:
             offenders.append(f"{skill_name} ({skill_md.relative_to(PROJECT_ROOT)})")
 
     assert offenders == []
@@ -137,6 +139,24 @@ def test_router_index_excludes_unprojected_skills(profile: str) -> None:
     router = SkillRouter(project_root=PROJECT_ROOT, profile=profile)
     leaked = sorted(router.get_primary_routing_skills() - projected)
     assert leaked == []
+
+
+def test_parse_routing_intents_block(tmp_path: Path) -> None:
+    """Semantic routing metadata is first-class routeability metadata."""
+    _write_skill(tmp_path, "semantic-alpha", pattern="semantic-alpha")
+    skill_md = tmp_path / "skills" / "semantic-alpha" / "SKILL.md"
+    text = skill_md.read_text(encoding="utf-8")
+    text = text.replace(
+        "routing_patterns:\n  - pattern: \"semantic-alpha\"\n    confidence: 0.91",
+        "routing_intents:\n  - intent: semantic_alpha\n    description: User asks for alpha semantic routing.\n    confidence: 0.87",
+    )
+    skill_md.write_text(text, encoding="utf-8")
+
+    intents = _parse_routing_intents_block(skill_md)
+
+    assert intents is not None
+    assert intents[0].intent == "semantic_alpha"
+    assert intents[0].confidence == 0.87
 
 
 def test_service_router_cache_invalidates_on_skill_md_checksum(tmp_path: Path) -> None:

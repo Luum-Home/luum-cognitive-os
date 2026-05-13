@@ -46,7 +46,7 @@ def _write_adr(
     exempt: bool = False,
     is_tombstone: bool = False,
 ) -> Path:
-    adr_dir = project_dir / "docs" / "adrs"
+    adr_dir = project_dir / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True, exist_ok=True)
     name = f"ADR-{num:03d}-{slug}"
     if is_tombstone:

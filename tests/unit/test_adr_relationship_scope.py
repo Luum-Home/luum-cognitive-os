@@ -28,7 +28,7 @@ def test_relationship_refs_parse_frontmatter_and_prose() -> None:
 def test_synthetic_adr_graph_emits_scope_creep_chain_warning(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    docs = tmp_path / "docs" / "adrs"
+    docs = tmp_path / "docs" / "02-Decisions" / "adrs"
     docs.mkdir(parents=True)
     for number, extends in (
         (1, "[ADR-002]"),
