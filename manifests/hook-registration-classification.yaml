@@ -418,3 +418,7 @@ entries:
   status: active
   rationale: ADR-286 — async SessionStart hook that runs stack_skill_recommender and writes .cognitive-os/state/stack-recommendations.json. Complementary to skill_router (intent vs stack). 6/6 unit tests pass.
   next_action: Wire HUD/panel consumer of stack-recommendations.json so suggestions reach the user.
+- path: hooks/telemetry-budget-violator-detect.sh
+  status: conditional_opt_in
+  rationale: ADR-304 control-plane-only hook; invoked via cos-control-plane-audit hourly lane, not registered as a Claude event hook.
+  next_action: Operator runs scripts/cos-telemetry-aggregate or waits for the hourly lane.

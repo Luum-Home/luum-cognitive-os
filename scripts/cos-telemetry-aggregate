@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""CLI wrapper for lib.telemetry_aggregator (ADR-304).
+
+Reads manifests/observability-slo.yaml, evaluates each SLO against its source
+stream, writes a snapshot, and appends breach findings to the control-plane
+remediation queue (the existing consumer per ADR-247/275).
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from lib.telemetry_aggregator import (  # noqa: E402
+    aggregate_streams,
+    append_findings_idempotent,
+    write_snapshot,
+)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Aggregate telemetry streams against observability-slo.yaml."
+    )
+    parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=REPO_ROOT / "manifests/observability-slo.yaml",
+        help="Path to observability-slo.yaml",
+    )
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        default=None,
+        help="Repo root for resolving source_stream paths (default: auto)",
+    )
+    parser.add_argument(
+        "--snapshot",
+        type=Path,
+        default=REPO_ROOT / ".cognitive-os/metrics/telemetry-snapshot.yaml",
+        help="Output snapshot YAML path",
+    )
+    parser.add_argument(
+        "--findings",
+        type=Path,
+        default=REPO_ROOT
+        / ".cognitive-os/tasks/control-plane-remediation.jsonl",
+        help="Output remediation queue (append-only, deduped on stable_id)",
+    )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit 2 if any breach finding is emitted",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress stdout when no breaches",
+    )
+    parser.add_argument(
+        "--lane",
+        choices=["hourly", "pre-public", "on-demand"],
+        default="on-demand",
+        help="Tag for the remediation queue audit lane",
+    )
+    parser.add_argument(
+        "--no-self-tuning",
+        action="store_true",
+        help="Disable Slice 3 self-tuning proposer",
+    )
+    args = parser.parse_args(argv)
+
+    # Resolve repo root: explicit flag > manifest parent's parent (manifests/.. )
+    # > REPO_ROOT. Lets tests run against a synthetic repo.
+    if args.repo_root is not None:
+        repo_root = args.repo_root.resolve()
+    elif args.manifest.resolve().parent.name == "manifests":
+        repo_root = args.manifest.resolve().parent.parent
+    else:
+        repo_root = REPO_ROOT
+
+    report = aggregate_streams(
+        repo_root,
+        args.manifest,
+        enable_self_tuning=not args.no_self_tuning,
+        remediation_queue=args.findings,
+    )
+
+    # tag lane in evaluations metadata
+    for f in report.findings:
+        # Pass lane through window_summary for downstream consumers.
+        f.window_summary.setdefault("lane", args.lane)
+
+    write_snapshot(report, args.snapshot)
+    appended, skipped = append_findings_idempotent(report.findings, args.findings)
+
+    n_breaches = sum(
+        1 for f in report.findings if f.code == "telemetry-slo-breach"
+    )
+    n_proposals = sum(
+        1 for f in report.findings if f.code == "telemetry-self-tuning-proposal"
+    )
+    n_missing = sum(
+        1 for f in report.findings if f.code == "telemetry-stream-missing"
+    )
+
+    if not (args.quiet and n_breaches == 0):
+        print(
+            f"[telemetry-aggregate] evaluations={len(report.evaluations)} "
+            f"breaches={n_breaches} proposals={n_proposals} "
+            f"stream_missing={n_missing} appended={appended} "
+            f"deduped={skipped} snapshot={args.snapshot}"
+        )
+
+    if args.strict and n_breaches > 0:
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

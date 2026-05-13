@@ -331,4 +331,14 @@ if [ -f "$_NUDGE_FILE" ]; then
     fi
 fi
 
+# ─── Telemetry banner (ADR-304 Slice 2) ──────────────────────────────────────
+# Surface up to 3 highest-severity findings from the latest aggregator snapshot.
+# Silent if snapshot missing or older than 2 h. Fail-silent (exit 0 contract).
+_TELEMETRY_SNAPSHOT="$PROJECT_DIR/.cognitive-os/metrics/telemetry-snapshot.yaml"
+if [ -f "$_TELEMETRY_SNAPSHOT" ]; then
+    _PY_BIN="$PROJECT_DIR/.venv/bin/python"
+    [ -x "$_PY_BIN" ] || _PY_BIN="python3"
+    "$_PY_BIN" -m lib.telemetry_banner --snapshot "$_TELEMETRY_SNAPSHOT" 2>&1 1>/dev/null || true
+fi
+
 exit 0

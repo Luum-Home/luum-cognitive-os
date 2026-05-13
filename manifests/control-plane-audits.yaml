@@ -51,6 +51,7 @@ lanes:
       - subprocess-timeout-coverage
       - adr-implementation-coverage
       - adr-partial-lifecycle
+      - telemetry-aggregator
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -149,5 +150,11 @@ audits:
     adr: ADR-275
     command: [python3, scripts/cos-adr-partial-audit, --json]
     expected_schema: adr-partial-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  telemetry-aggregator:
+    adr: ADR-304
+    command: [python3, scripts/cos-telemetry-aggregate, --quiet, --lane, hourly]
+    expected_schema: telemetry-aggregator/v1
     consumes_sensitive_values: false
     mutates: false

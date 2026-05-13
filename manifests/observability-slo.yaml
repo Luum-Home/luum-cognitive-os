@@ -1,0 +1,53 @@
+schema_version: observability-slo/v1
+status: active
+owner: platform-observability
+adr: ADR-304
+rationale: |
+  Single source of truth for telemetry SLO budgets. Consumed by
+  lib/telemetry_aggregator.py via scripts/cos-telemetry-aggregate.
+  Closes the "data lake without consumers" anti-pattern documented in
+  docs/06-Daily/reports/postmortem-observability-data-lake-without-consumers-2026-05-13.md.
+
+slos:
+  - id: session-start-blocking-total
+    source_stream: .cognitive-os/metrics/startup-benchmark.jsonl
+    metric: latest.session_start.total_duration_ms
+    target_lt: 2000
+    severity_on_breach: warn
+    rationale: ADR-028 SessionStart latency target (2 s blocking budget).
+
+  - id: subagent-spawn-p95
+    source_stream: .cognitive-os/metrics/hook-timing.jsonl
+    filter: 'event == "SubagentStart" or hook == "subagent-context-injector"'
+    metric: percentile(duration_ms, 0.95)
+    window: last_100_records
+    target_lt: 5000
+    severity_on_breach: warn
+    rationale: |
+      ADR-303 cold-start budget. Tight enough to fire on real bloat, loose
+      enough not to drown signal in current p95 (~55 s historical).
+
+  - id: subagent-spawn-p99
+    source_stream: .cognitive-os/metrics/hook-timing.jsonl
+    filter: 'event == "SubagentStart" or hook == "subagent-context-injector"'
+    metric: percentile(duration_ms, 0.99)
+    window: last_100_records
+    target_lt: 15000
+    severity_on_breach: warn
+    rationale: ADR-303 tail latency ceiling for sub-agent spawn.
+
+  - id: llm-dispatch-success-ratio
+    source_stream: .cognitive-os/metrics/llm-dispatch.jsonl
+    metric: success_ratio
+    window: last_200_records
+    target_gte: 0.85
+    severity_on_breach: warn
+    rationale: ADR-049 dispatch reliability budget.
+
+  - id: skill-enrichment-success-ratio
+    source_stream: .cognitive-os/metrics/skill-enrichment.jsonl
+    metric: success_ratio
+    window: last_200_records
+    target_gte: 0.80
+    severity_on_breach: warn
+    rationale: Skill enrichment effectiveness — falls under ADR-297 cache regime.
