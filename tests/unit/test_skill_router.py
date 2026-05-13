@@ -489,13 +489,6 @@ class TestSafetyRecoveryNegativeContext:
         matches = router.match(message)
         assert all(m.invoke_command != "/auto-rollback" for m in matches)
 
-    # ADR-296+297 design trade-off: prompts that LITERALLY name a slash-command
-    # alongside ambiguous context (e.g. "Skill router /deep-research para
-    # escritura — falso positivo") are caught by the semantic layer at low
-    # confidence (~0.55, right on the threshold). The ADR-297 LLM tie-breaker
-    # is the disambiguator for that band, NOT this isolated matcher test. The
-    # /deep-research case was removed from this parametrize list when it kept
-    # flapping — see ADR-300 §Follow-ups for the calibration plan.
     @pytest.mark.parametrize(
         ("message", "blocked_command"),
         [
