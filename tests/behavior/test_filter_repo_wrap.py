@@ -51,7 +51,7 @@ def test_wrapper_restores_origin_and_writes_recovery(tmp_path: Path) -> None:
     env["PATH"] = f"{fake_filter_repo_bin(tmp_path)}:{env['PATH']}"
 
     proc = subprocess.run(
-        ["bash", str(WRAP), "--project-dir", str(repo), "--rules", str(rules), "--backup-mirror", str(tmp_path / "backup.git"), "--recovery-json", str(recovery)],
+        ["bash", str(WRAP), "--project-dir", str(repo), "--rules", str(rules), "--backup-mirror", str(tmp_path / "backup.git"), "--recovery-json", str(recovery), "--adr-ref", "ADR-269"],
         text=True,
         capture_output=True,
         env=env,
@@ -76,7 +76,7 @@ def test_wrapper_refuses_same_head_rules_env_rerun_without_force(tmp_path: Path)
     rules.write_text("secret==>redacted\n", encoding="utf-8")
     env = os.environ.copy()
     env["PATH"] = f"{fake_filter_repo_bin(tmp_path)}:{env['PATH']}"
-    cmd = ["bash", str(WRAP), "--project-dir", str(repo), "--rules", str(rules)]
+    cmd = ["bash", str(WRAP), "--project-dir", str(repo), "--rules", str(rules), "--adr-ref", "ADR-269"]
 
     first = subprocess.run(cmd, text=True, capture_output=True, env=env)
     second = subprocess.run(cmd, text=True, capture_output=True, env=env)

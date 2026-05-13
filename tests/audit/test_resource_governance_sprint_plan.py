@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PLAN = ROOT / ".cognitive-os" / "plans" / "architecture" / "test-resource-governance-sprint.md"
-ADR_073 = ROOT / "docs" / "adrs" / "ADR-073-test-architecture-role-registry.md"
+ADR_073 = ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-073-test-architecture-role-registry.md"
 
 
 def _section_lines(markdown: str, heading: str) -> list[str]:

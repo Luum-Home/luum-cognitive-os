@@ -54,7 +54,7 @@ def test_history_sanitization_cli_execute_without_env_blocks(tmp_path: Path) -> 
     repo = _make_repo(tmp_path)
     env = dict(os.environ)
     env.pop("COS_ALLOW_DESTRUCTIVE_GIT", None)
-    proc = subprocess.run([str(CLI), "--project-dir", str(repo), "--execute", "--json"], text=True, capture_output=True, check=False, env=env)
+    proc = subprocess.run([str(CLI), "--project-dir", str(repo), "--execute", "--json", "--adr-ref", "ADR-269"], text=True, capture_output=True, check=False, env=env)
     assert proc.returncode == 2
     report = json.loads(proc.stdout)
     assert report["status"] == "block"

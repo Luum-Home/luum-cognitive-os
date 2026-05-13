@@ -8,12 +8,12 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_adr_004_is_not_used_as_license_decision_reference() -> None:
-    path = ROOT / "docs" / "business" / "open-source-design.md"
+    path = ROOT / "docs" / "08-References" / "business" / "open-source-design.md"
     text = path.read_text(encoding="utf-8")
     assert "### ADR-004: FSL-1.1-MIT License" not in text
     assert "ADR-004 is a tombstone/reserved slot" in text
 
-    tombstone = (ROOT / "docs" / "adrs" / "ADR-004-tombstone.md").read_text(
+    tombstone = (ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-004-tombstone.md").read_text(
         encoding="utf-8"
     )
     assert "not the canonical project-license decision" in tombstone
