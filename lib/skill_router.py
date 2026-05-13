@@ -1665,8 +1665,10 @@ class SkillRouter:
         # replaces or duplicates an existing regex match — it only adds
         # candidates for skills the regex layer missed entirely.
         top_regex_conf = max((m.confidence for m in best_per_skill.values()), default=0.0)
+        semantic_matches: List[Any] = []
         if top_regex_conf < 0.75:
-            for sm in self._semantic_match(text):
+            semantic_matches = self._semantic_match(text)
+            for sm in semantic_matches:
                 if sm.skill_name in best_per_skill:
                     continue
                 best_per_skill[sm.skill_name] = SkillMatch(
@@ -1676,8 +1678,67 @@ class SkillRouter:
                     invoke_command=sm.invoke_command,
                 )
 
+        # --- ADR-297: LLM fallback for ambiguous semantic ties ----------
+        # Only consult when neither regex nor semantic produced a clear
+        # winner (>=0.55) and >=3 candidates are clustered in the
+        # 0.30-0.55 ambiguity band. The LLM is asked to break the tie.
+        top_overall = max((m.confidence for m in best_per_skill.values()), default=0.0)
+        if top_overall < 0.55 and semantic_matches:
+            llm_pick = self._llm_fallback_match(text, semantic_matches)
+            if llm_pick is not None:
+                # LLM-picked match overrides the existing low-confidence
+                # entry for the chosen skill (preserves the original
+                # invoke_command + new mid-band confidence).
+                best_per_skill[llm_pick.skill_name] = llm_pick
+
         result = sorted(best_per_skill.values(), key=lambda m: m.confidence, reverse=True)
         return result
+
+    def _llm_fallback_match(self, text: str, semantic_matches: List[Any]) -> Optional[SkillMatch]:
+        """Consult the LLM dispatch fallback for ambiguous semantic ties.
+
+        Returns ``None`` when LLM routing is disabled, skipped (gate not
+        triggered), rate-limited, or fails. Never raises.
+        """
+        try:
+            from lib.llm_routing_fallback import LLMCandidate, llm_route
+        except Exception:  # noqa: BLE001
+            return None
+
+        # Pull descriptions from the cached semantic-matcher metadata when
+        # available; fall back to the semantic reason string otherwise.
+        metadata: Dict[str, Dict[str, Any]] = {}
+        sm_obj = getattr(self, "_semantic_matcher", None)
+        if sm_obj is not None:
+            raw_meta = getattr(sm_obj, "_skill_metadata", None) or getattr(sm_obj, "metadata", None)
+            if isinstance(raw_meta, dict):
+                metadata = raw_meta
+
+        candidates: List[Any] = []
+        for sm in semantic_matches[:5]:
+            md = metadata.get(sm.skill_name, {}) if isinstance(metadata, dict) else {}
+            desc = (md.get("description") or md.get("summary_line") or sm.reason or "").strip()
+            candidates.append(LLMCandidate(
+                skill_name=sm.skill_name,
+                invoke_command=sm.invoke_command,
+                confidence=float(sm.confidence),
+                description=desc,
+            ))
+        if not candidates:
+            return None
+
+        try:
+            result = llm_route(text, candidates)
+        except Exception:  # noqa: BLE001
+            return None
+        if result is None or not result.skill_name or not result.invoke_command:
+            return None
+        return SkillMatch(
+            skill_name=result.skill_name,
+            confidence=result.confidence,
+            reason=result.reason,
+            invoke_command=result.invoke_command,
+        )
 
     def _semantic_match(self, text: str) -> List[Any]:
         """Return semantic fallback matches (empty list on any failure)."""

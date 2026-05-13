@@ -68,8 +68,8 @@ def test_hook_produces_output(tmp_path: Path) -> None:
     (tmp_path / ".cognitive-os" / "plans" / "roadmaps" / "adr-mega-plan.md").write_text("x")
     (tmp_path / ".cognitive-os" / "plans" / "roadmaps" / "archive-old.md").write_text("x")
     # adrs: 1
-    (tmp_path / "docs" / "adrs").mkdir(parents=True)
-    (tmp_path / "docs" / "adrs" / "ADR-001.md").write_text("x")
+    (tmp_path / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
+    (tmp_path / "docs" / "02-Decisions" / "adrs" / "ADR-001.md").write_text("x")
     (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True)
     (tmp_path / ".cognitive-os" / "metrics" / "adr-implementation-latest.json").write_text(
         '{"summary": {"attention_count": 3, "implementation_counts": {"implemented": 1, "pending": 3}}}'
