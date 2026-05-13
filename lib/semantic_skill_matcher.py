@@ -66,34 +66,48 @@ LOGGER = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 # Apache-2.0; ~220 MB; 50+ languages. Calibrated default — TestSafetyRecoveryNegativeContext
-# is tuned to MiniLM's score distribution (DEFAULT_THRESHOLD=0.50). The ADR-298
-# benchmark on 2026-05-13 found that multilingual-e5-large would lift precision@1
-# by +14 pts on average (PT +18, FR +16), BUT it produces uniformly-higher cosine
-# scores (1024-dim vs 384) — adopting it as default requires a coordinated
-# recalibration of DEFAULT_THRESHOLD (≈0.75 for e5) plus updates to the negative-
-# context tests in tests/unit/test_skill_router.py. That calibration is tracked
-# in ADR-300 as Phase 2.
+# and TestNoMatchCases are tuned to MiniLM's score distribution
+# (DEFAULT_THRESHOLD=0.50, CONF_MIN=0.55, CONF_MAX=0.85).
 #
-# OPERATOR SWAP (Phase-1 escape hatch): override at runtime via env var
-# COS_SEMANTIC_ROUTING_MODEL. Must be a model id supported by fastembed's
-# TextEmbedding registry. The on-disk catalog cache is keyed by
-# `(model_name, skill_corpus_hash)` so a swap automatically writes to a new
-# cache file; no manual invalidation needed. Example for experimenting with
-# the +14-pts e5 candidate without committing the default change:
+# ADR-300 Phase 2 (REJECTED 2026-05-13 after empirical exploration):
+#   multilingual-e5-large gives +14 pts precision@1 on the seed corpus, BUT
+#   no single threshold satisfies the test contract:
+#     threshold 0.50 → negative-context tests fail (negs at 0.73-0.76 mapped)
+#     threshold 0.65 → "hola" / "thanks" still match (0.68 mapped)
+#     threshold 0.87 → filters negs AND legit prompts; held-out precision
+#                       drops from 0.80 to 0.53 (8/17 legit prompts return
+#                       None or wrong skill)
+#   Conclusion: e5-large is NOT a drop-in replacement. Adopting it requires
+#   coordinated changes to (a) ADR-297 LLM tie-breaker trigger band
+#   recalibration for the denser score distribution, (b) ADR-296 test
+#   architecture pivot to full-pipeline checks instead of isolated matcher,
+#   and (c) operator decision on screenshot-bug confidence expectation.
+#   Tracked as a future ADR-302 (architectural revisit), not this slice.
+#
+# OPERATOR SWAP (escape hatch): hot-swap via env var COS_SEMANTIC_ROUTING_MODEL.
+# Cache is keyed by `(model_name, skill_corpus_hash)` so the swap auto-
+# invalidates. Try the benchmark winner with caveats:
 #   COS_SEMANTIC_ROUTING_MODEL=intfloat/multilingual-e5-large
-# Until ADR-300 Phase 2 lands, expect 11 negative-context tests to fail
-# under that override — the matcher catches semantic references the
-# threshold doesn't filter out. The ADR-297 LLM tie-breaker is the
-# designed disambiguator for that case in production.
+# Or try the BGE-M3 alternative (better ES/PT/IT, worse EN/DE/FR, ADR-301):
+#   COS_SEMANTIC_ROUTING_MODEL=BAAI/bge-m3
+# Under any non-default override, some negative-context and no-match unit
+# tests will fail — that's expected; production routing relies on the full
+# ADR-296+297 pipeline, not the matcher in isolation.
 MODEL_OVERRIDE_ENV = "COS_SEMANTIC_ROUTING_MODEL"
 _ADOPTED_DEFAULT_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-_BENCHMARK_WINNER_PENDING_CALIBRATION = "intfloat/multilingual-e5-large"
+_BENCHMARK_WINNER_BLOCKED = "intfloat/multilingual-e5-large"  # see ADR-300 §Phase-2-Rejected
 DEFAULT_MODEL_NAME = os.environ.get(MODEL_OVERRIDE_ENV) or _ADOPTED_DEFAULT_MODEL
 
 # Cosine-similarity gate. Calibrated on the held-out multilingual prompt
 # set in tests/unit/test_semantic_skill_matcher.py: precision >= 0.8 at
-# 0.55 with the e5/MiniLM family. Lower => more recall, more false
+# 0.50 with the MiniLM baseline. Lower => more recall, more false
 # positives. Tunable via env COS_SEMANTIC_THRESHOLD.
+#
+# Empirical note (ADR-300 Phase 2 exploration): if the override env var
+# selects multilingual-e5-large, the score distribution is denser
+# (1024-dim vs 384-dim) — no single threshold value separates true
+# positives from semantic-mention false positives. See module docstring
+# for the rejection rationale.
 DEFAULT_THRESHOLD = 0.50
 
 # Confidence-mapping output band. We cap below the regex 0.75 gate so

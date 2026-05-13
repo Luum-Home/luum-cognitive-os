@@ -73,21 +73,52 @@ for this ADR).
 3. **Keep the current default** (`paraphrase-multilingual-MiniLM-L12-v2`)
    unchanged. See §Rationale below for why.
 
-### Phase 2 (tracked, not yet landed)
+### Phase 2 — REJECTED 2026-05-13 after empirical exploration
 
-Adopt `multilingual-e5-large` as the default. Blocked on:
+**Attempted**: adopt `multilingual-e5-large` as the default with a recalibrated
+`DEFAULT_THRESHOLD`.
 
-- **Threshold recalibration**: e5-large's 1024-dim embeddings produce uniformly
-  higher cosine scores than MiniLM's 384-dim. The current `DEFAULT_THRESHOLD=0.50`
-  no longer separates positive from negative cases — under e5-large, even
-  reference-only prompts (`"Skill router /X mal calibrado"`) score ~0.74,
-  collapsing the 11 `TestSafetyRecoveryNegativeContext` cases.
-- **Test updates**: those negative-context tests assume the matcher in isolation
-  catches the contextual cue. With a stronger model, the ADR-297 LLM tie-breaker
-  is the designed disambiguator — tests need to either pivot to full-pipeline
-  invocation or mark the cases as expected ambiguity for the tie-breaker.
-- **Estimated effort**: 1 sprint slice. Tracked separately; do NOT collapse into
-  this ADR.
+**Finding**: no single threshold value satisfies the current test contract.
+Measured cosine distribution under e5-large on the same prompt corpus:
+
+| Prompt class | Cosine | Mapped confidence |
+|---|---:|---:|
+| Greetings ("hola", "thanks") | 0.80 | 0.68 |
+| Negative-context (skill mentions in critique) | 0.84 – 0.86 | 0.73 – 0.76 |
+| Screenshot-bug Spanish prompt (TRUE positive) | 0.906 | 0.77 |
+| Clean positive prompts | 0.95 – 0.99 | 0.94 – 0.96 |
+
+The screenshot-bug prompt (a legitimate routing case) lives at **the same cosine
+score as the negative-context false positives**. No threshold can split them:
+
+| threshold | negs filtered? | screenshot still routes? | held-out precision |
+|---|---|---|---|
+| 0.50 (MiniLM-calibrated) | NO (matched at 0.73-0.76) | yes (0.77) | OK |
+| 0.65 | partial | yes | OK |
+| 0.87 | YES | yes (barely, 0.63) | **0.53** (dropped 8/17 legit prompts) |
+
+**Conclusion**: e5-large is empirically more accurate (+14 pts on the benchmark
+seed) but its denser score distribution means it cannot be a drop-in replacement
+at the current single-threshold architecture. Adopting it requires coordinated
+changes the project is not ready to make in this slice:
+
+1. **ADR-297 tie-breaker trigger band recalibration**: the current "fire LLM
+   tie-breaker when semantic confidence is 0.30-0.55" gate never fires under
+   e5-large because almost everything is above 0.55. The band needs to shift
+   to e5-large's actual ambiguity zone.
+2. **Test architecture pivot**: the negative-context tests assume the matcher
+   in isolation catches contextual cues. With a stronger model, that's no
+   longer true — tests must exercise the full pipeline (regex + semantic +
+   LLM tie-breaker mock) to assert disambiguation correctness.
+3. **Operator decision on confidence-band semantics**: with denser scores, the
+   `confidence > 0.6` assertion in the ADR-296 acceptance test means something
+   different. The mapped-confidence band itself may need a per-model affine.
+
+**Resolution**: keep the calibrated `paraphrase-multilingual-MiniLM-L12-v2`
+default. The `COS_SEMANTIC_ROUTING_MODEL` env var remains as the operator escape
+hatch for those who want to try e5-large with the documented test-contract
+breakage. Phase 2 work is deferred to a future ADR-302 (architectural revisit)
+when the team has bandwidth for the coordinated change.
 
 ## Rationale
 
