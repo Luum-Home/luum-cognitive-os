@@ -1,4 +1,8 @@
-"""Functional tests for the four endpoints that ship live in Phase 1."""
+"""Functional tests for the three endpoints that ship live in Phase 1.
+
+Originally four — ``/csrf-token`` was removed in the security pass (it emitted
+unverified tokens with no server-side store). See routers/health.py docstring.
+"""
 
 from __future__ import annotations
 
@@ -6,7 +10,6 @@ import pytest
 
 from agent_service.models import (
     AgentOptionsResponse,
-    CsrfTokenResponse,
     HealthResponse,
     VersionResponse,
 )
@@ -33,14 +36,10 @@ async def test_version_returns_typed_payload(client, auth_headers):
 
 
 @pytest.mark.asyncio
-async def test_csrf_token_is_fresh_per_call(client, auth_headers):
-    r1 = await client.get("/api/v1/csrf-token", headers=auth_headers)
-    r2 = await client.get("/api/v1/csrf-token", headers=auth_headers)
-    assert r1.status_code == 200 and r2.status_code == 200
-    t1 = CsrfTokenResponse.model_validate(r1.json())
-    t2 = CsrfTokenResponse.model_validate(r2.json())
-    assert t1.token and t2.token
-    assert t1.token != t2.token
+async def test_csrf_endpoint_removed(client, auth_headers):
+    """The placeholder /csrf-token endpoint was removed; should now 404."""
+    response = await client.get("/api/v1/csrf-token", headers=auth_headers)
+    assert response.status_code == 404
 
 
 @pytest.mark.asyncio

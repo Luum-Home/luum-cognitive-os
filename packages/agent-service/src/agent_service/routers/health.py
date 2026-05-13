@@ -1,13 +1,20 @@
-"""Health, version, CSRF token, and agent options routes.
+"""Health, version, and agent options routes.
 
-These four endpoints are functional in Phase 1. ``/health`` is exempt from
-bearer auth (router has no auth dependency); the other three are mounted on a
+These three endpoints are functional in Phase 1. ``/health`` is exempt from
+bearer auth (router has no auth dependency); the other two are mounted on a
 protected router.
+
+NOTE on CSRF: a ``/csrf-token`` endpoint was removed in the security pass.
+It emitted a fresh ``secrets.token_urlsafe(32)`` per call with no
+server-side store and no double-submit verification — it was a token-shaped
+string, not a CSRF defense. Bearer-token + Origin/SameSite cookie flow is
+the chosen Phase 2 design; landing the real primitive will introduce a new
+endpoint with verified server state. Shipping a fake token is worse than
+shipping no endpoint.
 """
 
 from __future__ import annotations
 
-import secrets
 import time
 
 from fastapi import APIRouter, Depends, Request
@@ -16,7 +23,6 @@ from agent_service.auth import require_bearer
 from agent_service.models import (
     AgentCapability,
     AgentOptionsResponse,
-    CsrfTokenResponse,
     HealthResponse,
     VersionResponse,
 )
@@ -43,11 +49,6 @@ async def health(request: Request) -> HealthResponse:
 async def version(request: Request) -> VersionResponse:
     config = request.app.state.config
     return VersionResponse(version=config.version, build=config.build, commit=None)
-
-
-@protected_router.get("/csrf-token", response_model=CsrfTokenResponse)
-async def csrf_token() -> CsrfTokenResponse:
-    return CsrfTokenResponse(token=secrets.token_urlsafe(32))
 
 
 @protected_router.get("/agent/options", response_model=AgentOptionsResponse)

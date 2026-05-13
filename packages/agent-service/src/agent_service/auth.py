@@ -7,6 +7,8 @@ without this dependency and is therefore the only public endpoint.
 
 from __future__ import annotations
 
+import secrets
+
 from fastapi import Header, HTTPException, Request, status
 
 
@@ -38,7 +40,10 @@ async def require_bearer(
             detail="missing bearer token",
         )
     presented = authorization.removeprefix("Bearer ").strip()
-    if presented != expected:
+    # Constant-time comparison to defeat timing attacks. A naive `!=` leaks
+    # token bytes through response-time correlation; `secrets.compare_digest`
+    # short-circuits only on length difference, which is intentional.
+    if not secrets.compare_digest(presented, expected):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="invalid bearer token",

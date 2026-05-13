@@ -13,7 +13,6 @@ import pytest
 
 from agent_service.models import (
     AgentOptionsResponse,
-    CsrfTokenResponse,
     HealthResponse,
     NotImplementedResponse,
     VersionResponse,
@@ -23,7 +22,6 @@ from agent_service.models import (
 FUNCTIONAL = {
     "/api/v1/health": ("GET", None, HealthResponse, False),
     "/api/v1/version": ("GET", None, VersionResponse, True),
-    "/api/v1/csrf-token": ("GET", None, CsrfTokenResponse, True),
     "/api/v1/agent/options": ("GET", None, AgentOptionsResponse, True),
 }
 
@@ -68,8 +66,9 @@ SSE_STUB_ENDPOINTS = [
 
 def test_total_endpoint_inventory():
     total = len(FUNCTIONAL) + len(STUB_JSON_ENDPOINTS) + len(SSE_STUB_ENDPOINTS)
-    # 4 functional + 20 JSON stubs + 3 SSE stubs = 27 endpoints across all routers.
-    assert total == 27, f"expected 27 endpoints, found {total}"
+    # 3 functional + 20 JSON stubs + 3 SSE stubs = 26 endpoints across all routers.
+    # (csrf-token removed in security pass — see routers/health.py docstring.)
+    assert total == 26, f"expected 26 endpoints, found {total}"
 
 
 @pytest.mark.asyncio
@@ -131,7 +130,6 @@ async def test_openapi_schema_served(client):
     expected_paths = [
         "/api/v1/health",
         "/api/v1/version",
-        "/api/v1/csrf-token",
         "/api/v1/agent/options",
         "/api/v1/runtime-settings",
         "/api/v1/models",
@@ -156,7 +154,7 @@ async def test_openapi_schema_served(client):
         "/api/v1/sessions/workspace/search",
         "/api/v1/sessions/workspace/validate",
     ]
-    assert len(expected_paths) == 26  # distinct path strings (some share path across methods)
+    assert len(expected_paths) == 25  # distinct path strings (some share path across methods)
     for p in expected_paths:
         assert p in paths, f"missing in OpenAPI: {p}"
 
