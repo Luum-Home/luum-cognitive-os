@@ -39,6 +39,7 @@ and `SCOPE: os-only`. Projects use `/run-tests` (scope: both).
 /cognitive-os-test file <path>          # single file, -q
 /cognitive-os-test pyramid              # legacy 3-layer (infra + behavior + quality)
 /cognitive-os-test report               # open latest summary without re-running
+/cognitive-os-test serial-repair        # serial maxfail=1 loop with external 10m timeout
 ```
 
 Common flags pass through (`--verbose`, `-k <expr>`, `-m "not docker"`).
@@ -53,6 +54,7 @@ Common flags pass through (`--verbose`, `-k <expr>`, `-m "not docker"`).
 | `contracts` | `tests/contracts/ -v` | <30s |
 | `unit` | `tests/unit/ -n auto` | ~120s |
 | `file` | the path passed, `-q` | varies |
+| `serial-repair` | `scripts/cos-pytest-serial-repair tests/ --timeout-seconds 600 --maxfail 1` | bounded at 10m; finds next failing contract |
 | `pyramid` | `.cognitive-os/scripts/test-cognitive-os-full.sh` (infra+behavior+optional quality) | varies |
 
 ## Instructions
@@ -111,6 +113,16 @@ bash "$CLAUDE_PROJECT_DIR/scripts/pytest-with-summary.sh" -- \
 bash "$CLAUDE_PROJECT_DIR/.cognitive-os/scripts/test-cognitive-os-full.sh" \
   "${QUALITY_FLAG:-}"
 ```
+
+**Serial repair loop** (bounded maxfail=1; use after targeted smoke tests pass):
+```bash
+"$CLAUDE_PROJECT_DIR/scripts/cos-pytest-serial-repair" tests/ --timeout-seconds 600 --maxfail 1
+```
+
+If this exits `124`, isolate the last shown test/file instead of re-running the
+whole suite. If it exits non-zero with a pytest failure, repair that next
+contract and rerun this preset. Do not run `-n auto` until this serial preset
+passes.
 
 **Report-only** (skip the run):
 ```bash

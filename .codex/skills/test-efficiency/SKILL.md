@@ -21,7 +21,14 @@ scripts/cos-test-efficiency-plan --from-git --commands --include-final-laptop
 3. Collect all failures from that group.
 4. Repair the batch.
 5. Rerun that group or the failed node IDs, not `make test-laptop`.
-6. Only after targeted groups pass, run `make test-laptop` once.
+6. For suite-wide contract repair, use the bounded serial repair lane before any parallel full rerun:
+
+```bash
+scripts/cos-pytest-serial-repair tests/ --timeout-seconds 600 --maxfail 1
+```
+
+If it times out, isolate the last surfaced test/file; do not repeat an unbounded full suite.
+7. Only after targeted groups and the serial repair lane pass, run `make test-laptop` or the parallel full lane once.
 
 ## Failure file flow
 

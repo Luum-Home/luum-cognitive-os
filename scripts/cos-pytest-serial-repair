@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Run the Cognitive OS serial pytest repair loop with an external timeout.
+
+This wrapper exists for the maintainer workflow where we intentionally run
+`pytest tests/ --maxfail=1` to discover the next failing contract, but we do not
+want a hung subprocess or pathological test to consume hours on a laptop.
+
+It avoids GNU `timeout` so it works on macOS default hosts.
+"""
+from __future__ import annotations
+
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+
+
+def _tail(text: str, chars: int) -> str:
+    if len(text) <= chars:
+        return text
+    return text[-chars:]
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Run serial pytest repair loop with an external wall-clock timeout.")
+    parser.add_argument("paths", nargs="*", default=["tests/"], help="pytest paths/nodeids; default: tests/")
+    parser.add_argument("--timeout-seconds", type=int, default=600, help="external wall-clock timeout; default: 600")
+    parser.add_argument("--maxfail", type=int, default=1, help="pytest maxfail; default: 1")
+    parser.add_argument("--tail-chars", type=int, default=12000, help="stdout tail size on failure/timeout")
+    parser.add_argument("--", dest="passthrough", nargs=argparse.REMAINDER, help="extra pytest args")
+    args, unknown = parser.parse_known_args()
+
+    pytest_args = [
+        sys.executable,
+        "-m",
+        "pytest",
+        *args.paths,
+        "-q",
+        "--tb=short",
+        "--disable-warnings",
+        f"--maxfail={args.maxfail}",
+    ]
+    passthrough = list(args.passthrough or [])
+    if passthrough and passthrough[0] == "--":
+        passthrough = passthrough[1:]
+    pytest_args.extend(unknown)
+    pytest_args.extend(passthrough)
+
+    cwd = Path.cwd()
+    print(f"[cos-pytest-serial-repair] cwd={cwd}")
+    print(f"[cos-pytest-serial-repair] timeout={args.timeout_seconds}s")
+    print("[cos-pytest-serial-repair] command=" + " ".join(pytest_args))
+
+    try:
+        proc = subprocess.run(
+            pytest_args,
+            cwd=cwd,
+            text=True,
+            capture_output=True,
+            timeout=args.timeout_seconds,
+        )
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout or ""
+        stderr = exc.stderr or ""
+        if isinstance(stdout, bytes):
+            stdout = stdout.decode(errors="replace")
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode(errors="replace")
+        print("PYTEST_TIMEOUT_EXTERNAL")
+        print(f"timeout_seconds={args.timeout_seconds}")
+        if stdout:
+            print("--- stdout tail ---")
+            print(_tail(stdout, args.tail_chars))
+        if stderr:
+            print("--- stderr tail ---")
+            print(_tail(stderr, max(4000, args.tail_chars // 3)))
+        return 124
+
+    print(f"PYTEST_RC {proc.returncode}")
+    if proc.stdout:
+        print(_tail(proc.stdout, args.tail_chars))
+    if proc.stderr:
+        print(_tail(proc.stderr, max(4000, args.tail_chars // 3)), file=sys.stderr)
+    return proc.returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

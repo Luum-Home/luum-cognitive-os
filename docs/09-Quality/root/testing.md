@@ -216,6 +216,14 @@ artifact exists, the hook should degrade to advisory/skip and ask for an explici
 
 ### Persistent Local Run Artifacts
 
+Use `scripts/cos-pytest-serial-repair` for the SO maintainer serial maxfail=1 repair loop when the goal is to find and fix the next broken contract without risking multi-hour hangs:
+
+```bash
+scripts/cos-pytest-serial-repair tests/ --timeout-seconds 600 --maxfail 1
+```
+
+Exit `124` means the external wall-clock timeout fired; isolate the last surfaced test/file before continuing. Once this serial lane passes, run the broader parallel lane.
+
 Use `scripts/pytest-with-summary.sh` for any repair-oriented partial or full
 test run. It preserves the full output, a short summary, failure snippets,
 JUnit XML, metadata, and the exit code under
