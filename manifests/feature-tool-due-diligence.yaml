@@ -72,3 +72,61 @@ features:
         deepwiki_url: https://deepwiki.com/google/deps.dev
         license: Apache-2.0
         reason_not_build_replacement: Provides package metadata; not COS capability truth.
+  - capability_id: web-automation-adapter
+    feature_label: Web automation adapter for LLM-driven browser tasks
+    owner_adr: ADR-288
+    decision: INTEGRATE
+    rationale: Browser automation for LLM agents is a solved problem with mature OSS; building a Playwright wrapper from scratch would reinvent the accessibility-tree + replan-loop primitives that browser-use already provides. COS retains governance via adapter (kill switch, cost tracking, event bus, dispatch router).
+    maintenance_cost: low
+    benchmark: docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md
+    candidates:
+      - tool_id: browser-use
+        verdict: INTEGRATE
+        source_links: [https://github.com/browser-use/browser-use]
+        deepwiki_url: https://deepwiki.com/browser-use/browser-use
+        license: MIT
+        reason_not_build_replacement: Standard-of-facto for LLM-driven web automation (93.7k stars, mature accessibility-tree + replan-loop primitives). Adopting saves 8-12 weeks vs. rolling a Playwright wrapper.
+      - tool_id: playwright-python
+        verdict: DEFER
+        source_links: [https://github.com/microsoft/playwright-python]
+        deepwiki_url: https://deepwiki.com/microsoft/playwright-python
+        license: Apache-2.0
+        reason_not_build_replacement: Low-level browser driver; would require building all LLM-optimization layers on top.
+      - tool_id: ui-tars-desktop
+        verdict: DEFER
+        source_links: [https://github.com/bytedance/UI-TARS-desktop]
+        deepwiki_url: https://deepwiki.com/bytedance/UI-TARS-desktop
+        license: Apache-2.0
+        reason_not_build_replacement: Desktop GUI agent (Electron+VLM); orthogonal to web automation use case.
+  - capability_id: agent-runtime-web-service
+    feature_label: Agent runtime exposed as HTTP+SSE web service
+    owner_adr: ADR-291
+    decision: BUILD
+    rationale: COS owns the agent runtime semantics, governance, claims, and provenance; the web service layer is a thin protocol facade in front of the runtime. FastAPI/uvicorn/pydantic are de-facto Python primitives for HTTP+SSE+contract validation; using them is implementation detail of the build, not adoption of an external runtime.
+    maintenance_cost: low
+    benchmark: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
+    candidates:
+      - tool_id: fastapi
+        verdict: INTEGRATE
+        source_links: [https://github.com/tiangolo/fastapi]
+        deepwiki_url: https://deepwiki.com/tiangolo/fastapi
+        license: MIT
+        reason_not_build_replacement: De-facto Python ASGI framework with automatic OpenAPI; building HTTP+SSE+OpenAPI from stdlib is wasted effort.
+      - tool_id: uvicorn
+        verdict: INTEGRATE
+        source_links: [https://github.com/encode/uvicorn]
+        deepwiki_url: https://deepwiki.com/encode/uvicorn
+        license: BSD-3-Clause
+        reason_not_build_replacement: Reference ASGI server for FastAPI; no realistic alternative for production.
+      - tool_id: pydantic
+        verdict: INTEGRATE
+        source_links: [https://github.com/pydantic/pydantic]
+        deepwiki_url: https://deepwiki.com/pydantic/pydantic
+        license: MIT
+        reason_not_build_replacement: De-facto Python type-validation library bundled with FastAPI; alternative would mean rewriting all request/response schemas from scratch.
+      - tool_id: grpc
+        verdict: DEFER
+        source_links: [https://github.com/grpc/grpc]
+        deepwiki_url: https://deepwiki.com/grpc/grpc
+        license: Apache-2.0
+        reason_not_build_replacement: Lower web/mobile client adoption; requires proto codegen pipeline; rejected in ADR-291 alternatives.
