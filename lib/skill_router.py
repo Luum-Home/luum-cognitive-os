@@ -1532,7 +1532,8 @@ class SkillRouter:
         self._profile = _canonical_profile(profile)
         self._catalog_path = catalog_path
         self._known_skills = _parse_catalog(catalog_path)
-        self._disk_skills = set(_detect_skill_md_paths(resolved_project_root).keys())
+        self._skill_md_paths = _detect_skill_md_paths(resolved_project_root)
+        self._disk_skills = set(self._skill_md_paths.keys())
         self._routing_table = _build_default_routing_table(resolved_project_root)
         visible_skills = _load_profile_projected_skills(resolved_project_root, self._profile)
         if visible_skills is not None:
@@ -1541,6 +1542,14 @@ class SkillRouter:
             ]
             self._known_skills = self._known_skills & visible_skills if self._known_skills else visible_skills
             self._disk_skills = self._disk_skills & visible_skills
+            self._skill_md_paths = {
+                k: v for k, v in self._skill_md_paths.items() if k in visible_skills
+            }
+        # Semantic fallback (ADR-017 carve-out: additive language-agnostic
+        # correctness fix). Lazily constructed so cold-start cost is paid
+        # only on the first `match()` call that needs it.
+        self._semantic_matcher = None  # type: ignore[assignment]
+        self._semantic_matcher_loaded = False
 
     @property
     def known_skills(self) -> Set[str]:
@@ -1606,8 +1615,46 @@ class SkillRouter:
             if m.skill_name not in best_per_skill or m.confidence > best_per_skill[m.skill_name].confidence:
                 best_per_skill[m.skill_name] = m
 
+        # --- Semantic fallback (language-agnostic) -----------------------
+        # Only consult the semantic matcher when the regex path failed to
+        # produce a confident match (>= 0.75). The semantic path NEVER
+        # replaces or duplicates an existing regex match — it only adds
+        # candidates for skills the regex layer missed entirely.
+        top_regex_conf = max((m.confidence for m in best_per_skill.values()), default=0.0)
+        if top_regex_conf < 0.75:
+            for sm in self._semantic_match(text):
+                if sm.skill_name in best_per_skill:
+                    continue
+                best_per_skill[sm.skill_name] = SkillMatch(
+                    skill_name=sm.skill_name,
+                    confidence=sm.confidence,
+                    reason=sm.reason,
+                    invoke_command=sm.invoke_command,
+                )
+
         result = sorted(best_per_skill.values(), key=lambda m: m.confidence, reverse=True)
         return result
+
+    def _semantic_match(self, text: str) -> List[Any]:
+        """Return semantic fallback matches (empty list on any failure)."""
+        try:
+            if not self._semantic_matcher_loaded:
+                self._semantic_matcher_loaded = True
+                from lib.semantic_skill_matcher import (
+                    SemanticSkillMatcher,
+                    load_skill_metadata,
+                )
+
+                metadata = load_skill_metadata(self._skill_md_paths)
+                if metadata:
+                    self._semantic_matcher = SemanticSkillMatcher.from_routing_table(
+                        self._routing_table, metadata
+                    )
+            if self._semantic_matcher is None:
+                return []
+            return self._semantic_matcher.match(text)
+        except Exception:
+            return []
 
     def best_match(self, user_message: str) -> Optional[SkillMatch]:
         """Return the highest-confidence match, or None if no good match.
