@@ -7,7 +7,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = REPO_ROOT / "manifests" / "remote-control-plane-alternatives.yaml"
 REPORT = REPO_ROOT / "docs" / "reports" / "remote-control-plane-alternatives-2026-05-05.md"
-ADR = REPO_ROOT / "docs" / "adrs" / "ADR-161-remote-control-plane-and-provider-adapter-boundary.md"
+ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-161-remote-control-plane-and-provider-adapter-boundary.md"
 
 REQUIRED_PROJECT_FIELDS = {
     "id",

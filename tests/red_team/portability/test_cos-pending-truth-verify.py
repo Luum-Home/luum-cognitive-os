@@ -60,7 +60,7 @@ def test_bilateral_verifier_reclassifies_items(tmp_path: Path) -> None:
     # Seed project files for tests
     (tmp_path / "lib").mkdir()
     (tmp_path / "lib" / "exists.py").write_text("# present\n")
-    adr_dir = tmp_path / "docs" / "adrs"
+    adr_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True)
     (adr_dir / "ADR-100-demo.md").write_text("---\nadr: 100\nstatus: accepted\n---\n")
 

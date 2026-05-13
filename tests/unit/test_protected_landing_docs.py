@@ -5,7 +5,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DOCS = [
-    PROJECT_ROOT / "docs" / "adrs" / "ADR-116-multi-session-coordination-primitives.md",
+    PROJECT_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-116-multi-session-coordination-primitives.md",
     PROJECT_ROOT / "docs" / "architecture" / "direct-main-policy.md",
     PROJECT_ROOT / "docs" / "architecture" / "protected-landing-contract.md",
     PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "multi-session-coordination-primitives-plan.md",

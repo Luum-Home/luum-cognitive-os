@@ -12,7 +12,7 @@ pytestmark = pytest.mark.contract
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = REPO_ROOT / "manifests" / "multi-ide-swarm-scenarios.yaml"
-ADR = REPO_ROOT / "docs" / "adrs" / "ADR-118-multi-ide-swarm-testbed.md"
+ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-118-multi-ide-swarm-testbed.md"
 
 REQUIRED_ADR_SCENARIOS = {
     "Same task race",

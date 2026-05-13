@@ -9,7 +9,7 @@ from lib.surface5_adoption_contract import REQUIRED_PROOF_SECTIONS, check_surfac
 pytestmark = pytest.mark.contract
 
 REPO = Path(__file__).resolve().parents[2]
-ADR = REPO / "docs" / "adrs" / "ADR-187-surface-5-adoption-proof-contract.md"
+ADR = REPO / "docs" / "02-Decisions" / "adrs" / "ADR-187-surface-5-adoption-proof-contract.md"
 
 
 def test_surface5_adoption_contract_requires_source_level_proof() -> None:

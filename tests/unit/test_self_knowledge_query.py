@@ -80,7 +80,7 @@ def indexed_project(tmp_path: Path) -> Path:
     )
 
     # docs/02-Decisions/adrs
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-028-rate-limiting.md").write_text(
         textwrap.dedent("""\

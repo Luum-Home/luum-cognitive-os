@@ -1,7 +1,8 @@
 """Behavior tests for skill auto-selection system.
 
 Validates that the SkillRouter is importable, has sufficient routing
-coverage, references real skills, and works for both languages.
+coverage, references real skills, and preserves explicit aliases while natural-language
+intent routing moves to semantic metadata.
 """
 
 from pathlib import Path
@@ -145,8 +146,8 @@ class TestSkillsExistOnFilesystem:
 # ---------------------------------------------------------------------------
 
 
-class TestBilingualSupport:
-    """Both English and Spanish patterns must produce matches."""
+class TestRoutingAliasesAndSemanticMetadata:
+    """Explicit aliases work; multilingual natural language moves to routing_intents."""
 
     def test_english_patterns_work(self):
         from lib.skill_router import SkillRouter
@@ -154,7 +155,7 @@ class TestBilingualSupport:
 
         english_messages = [
             ("fix the auth bug", "/plan-bug"),
-            ("run the tests", "/run-tests"),
+            ("run-tests", "/run-tests"),
             ("run a security audit", "/security-audit"),
             ("create a new skill", "/skill-creator"),
         ]
@@ -167,24 +168,37 @@ class TestBilingualSupport:
                 f"got {match.invoke_command}"
             )
 
-    def test_spanish_patterns_work(self):
+    def test_migrated_skills_expose_routing_intents(self):
+        from lib.skill_router import SkillRouter
+
+        router = SkillRouter()
+        migrated = {
+            "product-answer",
+            "primitive-authoring",
+            "run-tests",
+            "repo-forensics",
+            "browser-task",
+            "cognitive-os-init",
+        }
+        entries = {entry.skill_name: entry for entry in router.routing_table}
+
+        missing = [name for name in migrated if name not in entries or not entries[name].intents]
+        assert missing == []
+
+    def test_explicit_aliases_still_work_after_intent_migration(self):
         from lib.skill_router import SkillRouter
         router = SkillRouter()
 
-        spanish_messages = [
-            ("arreglá el bug en el login", "/plan-bug"),
-            ("corré los tests", "/run-tests"),
-            ("revisá la seguridad del proyecto", "/security-audit"),
-            ("necesito agregar un endpoint nuevo", "/sdd-new"),
+        messages = [
+            ("/run-tests", "/run-tests"),
+            ("product-answer", "/product-answer"),
+            ("repo forensics", "/repo-forensics"),
         ]
 
-        for message, expected_command in spanish_messages:
+        for message, expected_command in messages:
             match = router.best_match(message)
-            assert match is not None, f"No match for Spanish: '{message}'"
-            assert match.invoke_command == expected_command, (
-                f"Expected {expected_command} for '{message}', "
-                f"got {match.invoke_command}"
-            )
+            assert match is not None, f"No match for alias: '{message}'"
+            assert match.invoke_command == expected_command
 
 
 # ---------------------------------------------------------------------------
@@ -226,7 +240,7 @@ class TestFormatSuggestionBehavior:
         from lib.skill_router import SkillRouter
         router = SkillRouter()
 
-        matches = router.match("run the tests")
+        matches = router.match("/run-tests")
         suggestion = router.format_suggestion(matches)
 
         assert isinstance(suggestion, str)

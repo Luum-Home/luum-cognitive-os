@@ -46,7 +46,7 @@ def test_bilateral_aggregator_runs_against_synthetic_repo(tmp_path: Path) -> Non
         encoding="utf-8",
     )
     # ADR with status: proposed
-    adr_dir = tmp_path / "docs" / "adrs"
+    adr_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True)
     (adr_dir / "ADR-999-demo.md").write_text(
         "---\nadr: 999\ntitle: Demo\nstatus: proposed\n---\n# ADR-999 Demo\n",
@@ -120,7 +120,7 @@ def test_falsification_done_checkbox_not_ingested(tmp_path: Path) -> None:
 
 def test_falsification_accepted_adr_not_ingested(tmp_path: Path) -> None:
     """Falsification 3: ADR with status: accepted is NOT a pending adr-slice."""
-    adr_dir = tmp_path / "docs" / "adrs"
+    adr_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
     adr_dir.mkdir(parents=True)
     (adr_dir / "ADR-100-accepted.md").write_text(
         "---\nadr: 100\nstatus: accepted\n---\n# Accepted ADR\n",

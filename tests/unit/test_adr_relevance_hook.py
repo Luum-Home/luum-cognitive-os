@@ -113,7 +113,7 @@ class TestSyntheticAdrMatch:
 
     def _make_project_with_adr(self, tmp_path: Path, adr_content: str) -> Path:
         """Create a minimal project layout with one ADR file."""
-        adrs_dir = tmp_path / "docs" / "adrs"
+        adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
         adrs_dir.mkdir(parents=True)
         (adrs_dir / "ADR-181-adr-relevance-suggester.md").write_text(
             adr_content, encoding="utf-8"
@@ -186,7 +186,7 @@ class TestMetricsLog:
             lib_link.symlink_to(PROJECT_ROOT / "lib")
 
         # Create a minimal docs/02-Decisions/adrs dir
-        adrs_dir = tmp_path / "docs" / "adrs"
+        adrs_dir = tmp_path / "docs" / "02-Decisions" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         payload = json.dumps({"prompt": "routing skill suggestion hook"})

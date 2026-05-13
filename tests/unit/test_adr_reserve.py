@@ -16,7 +16,7 @@ spec.loader.exec_module(adr_reserve)
 
 
 def test_reserve_skips_existing_and_active_reserved_numbers(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-existing.md").write_text("# ADR-001\n")
 
@@ -33,7 +33,7 @@ def test_reserve_skips_existing_and_active_reserved_numbers(tmp_path: Path) -> N
 def test_expired_reservation_does_not_block_monotonic_next_number(tmp_path: Path) -> None:
     locks = tmp_path / ".cognitive-os" / "locks"
     locks.mkdir(parents=True)
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-005-existing.md").write_text("# ADR-005\n")
     (locks / "adr-reservations.json").write_text(

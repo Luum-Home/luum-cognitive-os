@@ -10,7 +10,7 @@ pytestmark = pytest.mark.unit
 
 
 def test_adr_number_intents_are_assigned_distinct_numbers(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-existing.md").write_text("# ADR-001: Existing\n", encoding="utf-8")
 
@@ -37,7 +37,7 @@ def test_adr_number_intents_are_assigned_distinct_numbers(tmp_path: Path) -> Non
 
 
 def test_tombstone_intent_rejects_active_adr_number(tmp_path: Path) -> None:
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-007-active-decision.md").write_text("# ADR-007: Active\n", encoding="utf-8")
 

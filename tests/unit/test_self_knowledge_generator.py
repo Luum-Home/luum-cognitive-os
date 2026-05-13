@@ -69,7 +69,7 @@ def fake_project(tmp_path: Path) -> Path:
     )
 
     # docs/02-Decisions/adrs/
-    adrs = tmp_path / "docs" / "adrs"
+    adrs = tmp_path / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     (adrs / "ADR-001-test.md").write_text(
         "# ADR-001 — Test ADR\n\n**Status**: Accepted\n\n## Decision\n\nUse this approach. It works well.\n",

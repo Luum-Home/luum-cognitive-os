@@ -24,7 +24,7 @@ def test_render_tombstone_is_contract_compliant() -> None:
 
 def test_create_tombstone_refuses_to_replace_active_adr_by_default(tmp_path: Path) -> None:
     project = tmp_path
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     old = adrs / "ADR-007-old-system.md"
     old.write_text("# ADR-007: Old System\n\nlegacy-token\n", encoding="utf-8")
@@ -47,7 +47,7 @@ def test_create_tombstone_refuses_to_replace_active_adr_by_default(tmp_path: Pat
 
 def test_create_tombstone_force_replaces_old_file_and_updates_references(tmp_path: Path) -> None:
     project = tmp_path
-    adrs = project / "docs" / "adrs"
+    adrs = project / "docs" / "02-Decisions" / "adrs"
     adrs.mkdir(parents=True)
     old = adrs / "ADR-007-old-system.md"
     old.write_text("# ADR-007: Old System\n\nlegacy-token\n", encoding="utf-8")
@@ -69,14 +69,14 @@ def test_create_tombstone_force_replaces_old_file_and_updates_references(tmp_pat
     assert target.exists()
     assert not old.exists()
     assert result.removed_paths == ["docs/02-Decisions/adrs/ADR-007-old-system.md"]
-    assert result.updated_references == ["docs/00-MOCs/entrypoints/README.md"]
+    assert result.updated_references == ["docs/README.md"]
     assert "ADR-007-tombstone.md" in readme.read_text(encoding="utf-8")
     assert "legacy-token" not in target.read_text(encoding="utf-8")
 
 
 def test_create_tombstone_can_validate_forbidden_tokens(tmp_path: Path) -> None:
     project = tmp_path
-    (project / "docs" / "adrs").mkdir(parents=True)
+    (project / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
     note = project / "docs" / "note.md"
     note.parent.mkdir(exist_ok=True)
     note.write_text("forbidden-surface\n", encoding="utf-8")
@@ -99,7 +99,7 @@ def test_create_tombstone_can_validate_forbidden_tokens(tmp_path: Path) -> None:
 
 def test_cli_json_dry_run(tmp_path: Path) -> None:
     project = tmp_path
-    (project / "docs" / "adrs").mkdir(parents=True)
+    (project / "docs" / "02-Decisions" / "adrs").mkdir(parents=True)
     script = Path(__file__).resolve().parents[2] / "scripts" / "adr_tombstone.py"
 
     result = subprocess.run(

@@ -15,7 +15,7 @@ REPO = Path(__file__).resolve().parents[2]
 
 def test_documentation_truth_contract_surfaces_exist_and_are_linked() -> None:
     manifest_path = REPO / "manifests" / "documentation-truth-claims.yaml"
-    adr = REPO / "docs" / "adrs" / "ADR-277-documentation-truth-control.md"
+    adr = REPO / "docs" / "02-Decisions" / "adrs" / "ADR-277-documentation-truth-control.md"
     doc = REPO / "docs" / "architecture" / "documentation-truth-control.md"
     assert manifest_path.exists()
     assert adr.exists()

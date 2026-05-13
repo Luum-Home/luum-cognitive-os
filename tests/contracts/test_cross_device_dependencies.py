@@ -11,7 +11,7 @@ pytestmark = pytest.mark.contract
 
 REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "cos-deps-install.sh"
-ADR = REPO / "docs" / "adrs" / "ADR-168-cross-device-dependency-installation.md"
+ADR = REPO / "docs" / "02-Decisions" / "adrs" / "ADR-168-cross-device-dependency-installation.md"
 
 
 def run_install(*args: str) -> dict:

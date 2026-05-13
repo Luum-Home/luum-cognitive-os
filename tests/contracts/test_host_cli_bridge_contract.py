@@ -6,7 +6,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONTRACT = REPO_ROOT / "manifests" / "host-cli-bridge-contract.yaml"
-ADR = REPO_ROOT / "docs" / "adrs" / "ADR-164-host-cli-bridge-security-boundary.md"
+ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-164-host-cli-bridge-security-boundary.md"
 ARCH = REPO_ROOT / "docs" / "architecture" / "host-cli-bridge-security-boundary.md"
 MANUAL = REPO_ROOT / "docs" / "manual-tests" / "host-cli-bridge-security-boundary.md"
 
