@@ -645,12 +645,27 @@ if [ ! -d "$PROJECT_DIR/.cognitive-os/pipeline-state" ]; then
 fi
 
 # ── Counts for status ────────────────────────────────────────────────
-rule_count=0;  [ -d "$PROJECT_DIR/.cognitive-os/rules/cos" ] && rule_count=$(find "$PROJECT_DIR/.cognitive-os/rules/cos" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')
-hook_count=0;  [ -d "$PROJECT_DIR/hooks" ]                  && hook_count=$(find "$PROJECT_DIR/hooks" -maxdepth 1 -name '*.sh' | wc -l | tr -d ' ')
-skill_count=0; [ -d "$PROJECT_DIR/.cognitive-os/skills/cos" ] && skill_count=$(find "$PROJECT_DIR/.cognitive-os/skills/cos" -maxdepth 1 -type l | wc -l | tr -d ' ')
-squad_count=0; [ -d "$PROJECT_DIR/.cognitive-os/squads" ]   && squad_count=$(find "$PROJECT_DIR/.cognitive-os/squads" -maxdepth 1 -name '*.yaml' | wc -l | tr -d ' ')
-agent_count=0; [ -d "$PROJECT_DIR/.cognitive-os/agents" ]   && agent_count=$(find "$PROJECT_DIR/.cognitive-os/agents" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')
-doc_count=0;   [ -d "$PROJECT_DIR/.cognitive-os/docs" ]     && doc_count=$(find "$PROJECT_DIR/.cognitive-os/docs" -maxdepth 1 -type l | wc -l | tr -d ' ')
+# Keep SessionStart cheap: shell globs avoid six separate find processes.
+count_entries() {
+  local dir="$1" pattern="$2" kind="${3:-any}" count=0 entry
+  [ -d "$dir" ] || { echo 0; return 0; }
+  for entry in "$dir"/$pattern; do
+    case "$kind" in
+      symlink) [ -L "$entry" ] || continue ;;
+      file) [ -f "$entry" ] || continue ;;
+      any) [ -e "$entry" ] || [ -L "$entry" ] || continue ;;
+    esac
+    count=$((count + 1))
+  done
+  echo "$count"
+}
+
+rule_count=$(count_entries "$PROJECT_DIR/.cognitive-os/rules/cos" "*.md" any)
+hook_count=$(count_entries "$PROJECT_DIR/hooks" "*.sh" file)
+skill_count=$(count_entries "$PROJECT_DIR/.cognitive-os/skills/cos" "*" symlink)
+squad_count=$(count_entries "$PROJECT_DIR/.cognitive-os/squads" "*.yaml" file)
+agent_count=$(count_entries "$PROJECT_DIR/.cognitive-os/agents" "*.md" file)
+doc_count=$(count_entries "$PROJECT_DIR/.cognitive-os/docs" "*" symlink)
 
 # ── Status output ────────────────────────────────────────────────────
 status="${rule_count} rules, ${hook_count} hooks, ${skill_count} skills, ${squad_count} squads, ${agent_count} agents, ${doc_count} docs"

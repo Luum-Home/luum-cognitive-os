@@ -140,6 +140,45 @@ run_claude_code_driver() {
   new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
   echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
+  # Sanity: confirm non-bootcritical SessionStart launchers stay async.
+  # This script is the public regeneration entrypoint, even though the JSON
+  # rendering is delegated to settings-driver-claude-code.sh. Keep the
+  # SessionStart latency contract visible here so `apply-efficiency-profile.sh`
+  # cannot silently reintroduce synchronous daemon/audit launchers.
+  python3 - "$SETTINGS_FILE" <<'PYASYNC'
+import json
+import sys
+from pathlib import Path
+
+settings = json.loads(Path(sys.argv[1]).read_text())
+expected_async = {
+    "reaper-daemon-launcher.sh",
+    "session-watchdog-launcher.sh",
+    "docker-drift-detector.sh",
+    "cos-executor-daemon-launcher.sh",
+    "aspirational-audit-weekly.sh",
+    "promotion-proposer-weekly.sh",
+    "validator-soak-weekly.sh",
+    "session-start-stack-recommend.sh",
+}
+missing = []
+not_async = []
+for group in settings.get("hooks", {}).get("SessionStart", []):
+    for hook in group.get("hooks", []):
+        command = hook.get("command", "")
+        for name in tuple(expected_async):
+            if f"/{name}" in command:
+                expected_async.remove(name)
+                if hook.get("async") is not True:
+                    not_async.append(name)
+missing = sorted(expected_async)
+if missing or not_async:
+    if missing:
+        print(f"Warning: expected async SessionStart hooks missing: {', '.join(missing)}", file=sys.stderr)
+    if not_async:
+        print(f"Warning: SessionStart hooks should be async but are sync: {', '.join(sorted(not_async))}", file=sys.stderr)
+PYASYNC
+
   # Sanity: confirm representative hooks from the committed baseline are wired.
   for hook in self-install.sh session-init.sh cross-session-event-emit.sh infra-health.sh subagent-context-injector.sh \
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh control-plane-audit.sh secret-detector.sh \
@@ -212,7 +251,7 @@ echo "Hook summary for profile '$PROFILE' (Claude projection):"
 if [ "$PROFILE" = "core" ]; then
   echo "  SessionStart: session-init.sh, cross-session-event-emit.sh, validation-lock-cleanup.sh, session-start-stash-reapply.sh"
 else
-  echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards, dangerous-env-flag-detector.sh, skill-drift-detector.sh (ADR-285; maintainer+full), session-start-stack-recommend.sh (ADR-286; async; maintainer+full)"
+  echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs (async), docker-drift-detector.sh (async), executor daemon (async), engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly audits/soak (async), self-knowledge/startup guards, dangerous-env-flag-detector.sh, skill-drift-detector.sh (ADR-285; maintainer+full), session-start-stack-recommend.sh (ADR-286; async; maintainer+full)"
 fi
 echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async), cross-session-peer-context.sh (async), agent-message-inbox-context.sh (async), skill-router-prompt-suggest.sh (async), rule-router-prompt-suggest.sh (async), adr-relevance-suggest.sh (async), context-budget-meter.sh (last-in-chain)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"

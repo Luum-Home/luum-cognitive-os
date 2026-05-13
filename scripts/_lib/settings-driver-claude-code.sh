@@ -132,17 +132,17 @@ cc_driver_emit() {
       "hooks/session-init.sh"                  "false" \
       "hooks/host-tool-doctor.sh"              "true"  \
       "hooks/profile-drift-autoapply.sh"       "false" \
-      "hooks/reaper-daemon-launcher.sh"        "false" \
-      "hooks/session-watchdog-launcher.sh"     "false" \
-      "hooks/docker-drift-detector.sh"         "false" \
-      "hooks/cos-executor-daemon-launcher.sh"  "false" \
+      "hooks/reaper-daemon-launcher.sh"        "true"  \
+      "hooks/session-watchdog-launcher.sh"     "true"  \
+      "hooks/docker-drift-detector.sh"         "true"  \
+      "hooks/cos-executor-daemon-launcher.sh"  "true"  \
       "hooks/engram-daemon-launcher.sh"        "true"  \
       "hooks/crash-recovery.sh"               "false" \
       "hooks/session-resume.sh"               "false" \
       "hooks/session-sanity.sh"               "false" \
       "hooks/validation-lock-cleanup.sh"      "false" \
       "hooks/infra-health.sh"                 "true"  \
-      "hooks/aspirational-audit-weekly.sh"    "false" \
+      "hooks/aspirational-audit-weekly.sh"    "true"  \
       "hooks/promotion-proposer-weekly.sh"    "true"  \
       "hooks/validator-soak-weekly.sh"        "true"  \
       "hooks/self-knowledge-refresh.sh"       "false" \

@@ -38,94 +38,118 @@ cat > "$SESSION_DIR/meta.json" <<EOF
 EOF
 
 # Register session in active-sessions.json with file locking
+_schedule_active_sessions_prune() {
+  local stamp="$SESSIONS_DIR/.prune-last-run"
+  local lockdir="$SESSIONS_DIR/.active-sessions-prune.lockdir"
+  local now_epoch last_prune
+  now_epoch=$(date +%s 2>/dev/null || echo 0)
+  last_prune=0
+  [ -f "$stamp" ] && last_prune=$(cat "$stamp" 2>/dev/null || echo 0)
+  [ $(( now_epoch - last_prune )) -ge 60 ] || return 0
+  mkdir -p "$SESSIONS_DIR" 2>/dev/null || true
+  if ! mkdir "$lockdir" 2>/dev/null; then
+    return 0
+  fi
+  echo "$now_epoch" > "$stamp" 2>/dev/null || true
+  (
+    trap 'rmdir "$lockdir" 2>/dev/null || true' EXIT
+    ACTIVE_FILE="$ACTIVE_FILE" ACTIVE_LOCK="$SESSIONS_DIR/.active-sessions.lock" python3 - <<'PYPRUNE' 2>/dev/null || true
+import fcntl
+import json
+import os
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+path = Path(os.environ["ACTIVE_FILE"])
+lock_path = Path(os.environ["ACTIVE_LOCK"])
+try:
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    with lock_path.open("a+") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise SystemExit(0)
+        try:
+            data = json.loads(path.read_text())
+        except Exception:
+            data = {"sessions": []}
+
+        sessions = data.get("sessions", [])
+        if not isinstance(sessions, list):
+            sessions = []
+
+        now = time.time()
+        grace_seconds = int(os.environ.get("COS_ACTIVE_SESSION_PRUNE_GRACE_SECONDS", "900"))
+
+        def session_age_seconds(session):
+            if not isinstance(session, dict):
+                return 0
+            start_epoch = session.get("start_epoch")
+            if start_epoch is not None:
+                try:
+                    return max(0, now - float(start_epoch))
+                except Exception:
+                    pass
+            start_time = session.get("start_time")
+            if start_time:
+                try:
+                    parsed = datetime.fromisoformat(str(start_time).replace("Z", "+00:00"))
+                    if parsed.tzinfo is None:
+                        parsed = parsed.replace(tzinfo=timezone.utc)
+                    return max(0, now - parsed.timestamp())
+                except Exception:
+                    pass
+            sid = str(session.get("id", ""))
+            try:
+                return max(0, now - float(sid.split("-", 1)[0]))
+            except Exception:
+                return grace_seconds + 1
+
+        def alive(pid):
+            try:
+                pid = int(pid)
+            except Exception:
+                return False
+            if pid <= 0:
+                return False
+            try:
+                os.kill(pid, 0)
+                return True
+            except ProcessLookupError:
+                return False
+            except PermissionError:
+                return True
+            except OSError:
+                return False
+
+        data["sessions"] = [
+            s for s in sessions
+            if isinstance(s, dict) and (alive(s.get("pid")) or session_age_seconds(s) < grace_seconds)
+        ]
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        tmp.write_text(json.dumps(data, indent=2) + "\n")
+        tmp.replace(path)
+except Exception:
+    pass
+PYPRUNE
+  ) &
+}
+
+
 _register_session() {
   local lockfile="$SESSIONS_DIR/.active-sessions.lock"
 
-  # Use flock for atomic read-modify-write
+  # Use flock for atomic read-modify-write. Keep startup responsive under
+  # parallel session fan-out: registration is useful but not worth blocking a
+  # first turn behind stale cleanup or another newborn session.
   (
-    flock -w 5 200 || { echo "WARN: Could not acquire lock for session registration" >&2; return 1; }
+    flock -w "${COS_SESSION_REGISTER_LOCK_TIMEOUT_SECONDS:-1}" 200 || { echo "WARN: Could not acquire lock for session registration quickly; continuing without active-session registration" >&2; return 0; }
 
     # Initialize if missing or invalid
     if [ ! -f "$ACTIVE_FILE" ] || ! jq empty "$ACTIVE_FILE" 2>/dev/null; then
       echo '{"sessions":[]}' > "$ACTIVE_FILE"
     fi
-
-    # Prune stale sessions before counting. Without this, active-sessions.json
-    # accumulates dead PIDs and makes concurrent-session diagnosis misleading.
-    # TTL cache: only prune once per 60 s to avoid a cold Python start on every
-    # SessionStart (the PYPRUNE heredoc was a top contributor to the 3.4s p95).
-    _PRUNE_STAMP="$SESSIONS_DIR/.prune-last-run"
-    _now_epoch=$(date +%s 2>/dev/null || echo 0)
-    _last_prune=0
-    [ -f "$_PRUNE_STAMP" ] && _last_prune=$(cat "$_PRUNE_STAMP" 2>/dev/null || echo 0)
-    if [ $(( _now_epoch - _last_prune )) -ge 60 ]; then
-      echo "$_now_epoch" > "$_PRUNE_STAMP" 2>/dev/null || true
-    ACTIVE_FILE="$ACTIVE_FILE" python3 - <<'PYPRUNE' 2>/dev/null || true
-import json, os, time
-from datetime import datetime, timezone
-from pathlib import Path
-
-path = Path(os.environ["ACTIVE_FILE"])
-try:
-    data = json.loads(path.read_text())
-except Exception:
-    data = {"sessions": []}
-
-sessions = data.get("sessions", [])
-if not isinstance(sessions, list):
-    sessions = []
-
-now = time.time()
-grace_seconds = int(os.environ.get("COS_ACTIVE_SESSION_PRUNE_GRACE_SECONDS", "900"))
-
-def session_age_seconds(session):
-    if not isinstance(session, dict):
-        return 0
-    start_epoch = session.get("start_epoch")
-    if start_epoch is not None:
-        try:
-            return max(0, now - float(start_epoch))
-        except Exception:
-            pass
-    start_time = session.get("start_time")
-    if start_time:
-        try:
-            parsed = datetime.fromisoformat(str(start_time).replace("Z", "+00:00"))
-            if parsed.tzinfo is None:
-                parsed = parsed.replace(tzinfo=timezone.utc)
-            return max(0, now - parsed.timestamp())
-        except Exception:
-            pass
-    sid = str(session.get("id", ""))
-    try:
-        return max(0, now - float(sid.split("-", 1)[0]))
-    except Exception:
-        return grace_seconds + 1
-
-def alive(pid):
-    try:
-        pid = int(pid)
-    except Exception:
-        return False
-    if pid <= 0:
-        return False
-    try:
-        os.kill(pid, 0)
-        return True
-    except ProcessLookupError:
-        return False
-    except PermissionError:
-        return True
-    except OSError:
-        return False
-
-data["sessions"] = [
-    s for s in sessions
-    if isinstance(s, dict) and (alive(s.get("pid")) or session_age_seconds(s) < grace_seconds)
-]
-path.write_text(json.dumps(data, indent=2) + "\n")
-PYPRUNE
-    fi  # end TTL-cache prune guard
 
     # Read max_concurrent from cognitive-os.yaml (default 10)
     MAX_CONCURRENT=10
@@ -155,6 +179,7 @@ PYPRUNE
 }
 
 _register_session
+_schedule_active_sessions_prune
 
 # Export session ID for downstream hooks.
 # Child processes inherit this env var so session-cleanup.sh, error-pipeline.sh,

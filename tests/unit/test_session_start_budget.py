@@ -93,3 +93,19 @@ def test_core_budget_distinguishes_generated_core_from_active_maintainer_setting
     assert report["session_start_hook_count"] == 1
     assert report["active_session_start_hook_count"] == 2
     assert report["active_projection_matches_profile"] is False
+
+
+def test_maintainer_projection_marks_non_bootcritical_launchers_async() -> None:
+    settings = budget.generated_settings("maintainer", Path.cwd())
+    async_by_path = dict(budget.session_start_hooks(settings))
+
+    for hook_path in (
+        "hooks/reaper-daemon-launcher.sh",
+        "hooks/session-watchdog-launcher.sh",
+        "hooks/docker-drift-detector.sh",
+        "hooks/cos-executor-daemon-launcher.sh",
+        "hooks/aspirational-audit-weekly.sh",
+        "hooks/promotion-proposer-weekly.sh",
+        "hooks/validator-soak-weekly.sh",
+    ):
+        assert async_by_path[hook_path] is True
