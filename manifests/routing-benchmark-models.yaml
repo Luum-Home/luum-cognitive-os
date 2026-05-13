@@ -36,9 +36,19 @@ models:
     license: MIT
     role: bi-encoder
     note: |
-      560M params, 1024-dim, 94 languages. Untested locally. Loader may
-      require the `intfloat/` namespace to be allow-listed by fastembed;
-      benchmark may legitimately report load-failure.
+      560M params, 1024-dim, 94 languages. Confirmed in FastEmbed
+      registry (TextEmbedding.list_supported_models). ~2.24 GB on disk.
+
+  - id: multilingual-mpnet-base
+    adapter: fastembed-bi-encoder
+    model_name: sentence-transformers/paraphrase-multilingual-mpnet-base-v2
+    license: Apache-2.0
+    role: bi-encoder
+    note: |
+      Apache 2.0, ~1.0 GB, 768-dim, 50+ langs. Confirmed in FastEmbed
+      registry. Direct upgrade candidate from baseline-minilm (same family,
+      larger). Added 2026-05-13 after first benchmark run revealed
+      baseline PT/FR precision@1 below 0.75.
 
   - id: qwen3-embedding-0.6b
     adapter: fastembed-bi-encoder

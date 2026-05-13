@@ -1,0 +1,210 @@
+{
+  "schema_version": "routing-benchmark-report/v1",
+  "timestamp": "2026-05-13T21:20:41.666683+00:00",
+  "environment": {
+    "python_version": "3.14.4",
+    "platform": "darwin",
+    "fastembed_version": "0.8.0",
+    "numpy_version": "2.4.4"
+  },
+  "corpus_signature": "43683aab1b8d9397",
+  "corpus_skills": 10,
+  "corpus_prompts": 300,
+  "models": [
+    {
+      "model_id": "baseline-minilm",
+      "model_name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "adapter": "fastembed-bi-encoder",
+      "license": "Apache-2.0",
+      "role": "bi-encoder",
+      "license_ok": true,
+      "loaded": true,
+      "load_error": null,
+      "total_queries": 300,
+      "failures": 0,
+      "precision_at_1": 0.7533333333333333,
+      "precision_at_5": 0.9566666666666667,
+      "mrr": 0.8425396825396825,
+      "cold_start_ms": 3941.5407909982605,
+      "warm_p50_ms": 4.515124994213693,
+      "warm_p95_ms": 26.6032958563301,
+      "warm_p99_ms": 73.92683841608229,
+      "peak_rss_mb": 840.078125,
+      "model_size_mb": 0.0,
+      "per_language": [
+        {
+          "language": "en",
+          "queries": 50,
+          "precision_at_1": 0.8,
+          "precision_at_5": 1.0,
+          "mrr": 0.8773333333333335
+        },
+        {
+          "language": "es",
+          "queries": 50,
+          "precision_at_1": 0.78,
+          "precision_at_5": 0.96,
+          "mrr": 0.8625000000000002
+        },
+        {
+          "language": "pt",
+          "queries": 50,
+          "precision_at_1": 0.7,
+          "precision_at_5": 0.96,
+          "mrr": 0.8164126984126986
+        },
+        {
+          "language": "de",
+          "queries": 50,
+          "precision_at_1": 0.76,
+          "precision_at_5": 0.94,
+          "mrr": 0.8438888888888889
+        },
+        {
+          "language": "fr",
+          "queries": 50,
+          "precision_at_1": 0.72,
+          "precision_at_5": 0.92,
+          "mrr": 0.8066904761904762
+        },
+        {
+          "language": "it",
+          "queries": 50,
+          "precision_at_1": 0.76,
+          "precision_at_5": 0.96,
+          "mrr": 0.8484126984126985
+        }
+      ]
+    },
+    {
+      "model_id": "multilingual-e5-large",
+      "model_name": "intfloat/multilingual-e5-large",
+      "adapter": "fastembed-bi-encoder",
+      "license": "MIT",
+      "role": "bi-encoder",
+      "license_ok": true,
+      "loaded": true,
+      "load_error": null,
+      "total_queries": 300,
+      "failures": 0,
+      "precision_at_1": 0.8966666666666666,
+      "precision_at_5": 1.0,
+      "mrr": 0.9410555555555555,
+      "cold_start_ms": 63784.98016600497,
+      "warm_p50_ms": 27.519249997567385,
+      "warm_p95_ms": 47.00336670211983,
+      "warm_p99_ms": 82.28192983413462,
+      "peak_rss_mb": 1654.1875,
+      "model_size_mb": 0.0,
+      "per_language": [
+        {
+          "language": "en",
+          "queries": 50,
+          "precision_at_1": 0.96,
+          "precision_at_5": 1.0,
+          "mrr": 0.98
+        },
+        {
+          "language": "es",
+          "queries": 50,
+          "precision_at_1": 0.88,
+          "precision_at_5": 1.0,
+          "mrr": 0.9366666666666668
+        },
+        {
+          "language": "pt",
+          "queries": 50,
+          "precision_at_1": 0.88,
+          "precision_at_5": 1.0,
+          "mrr": 0.9273333333333332
+        },
+        {
+          "language": "de",
+          "queries": 50,
+          "precision_at_1": 0.9,
+          "precision_at_5": 1.0,
+          "mrr": 0.9466666666666668
+        },
+        {
+          "language": "fr",
+          "queries": 50,
+          "precision_at_1": 0.88,
+          "precision_at_5": 1.0,
+          "mrr": 0.924
+        },
+        {
+          "language": "it",
+          "queries": 50,
+          "precision_at_1": 0.88,
+          "precision_at_5": 1.0,
+          "mrr": 0.9316666666666665
+        }
+      ]
+    },
+    {
+      "model_id": "multilingual-mpnet-base",
+      "model_name": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+      "adapter": "fastembed-bi-encoder",
+      "license": "Apache-2.0",
+      "role": "bi-encoder",
+      "license_ok": true,
+      "loaded": true,
+      "load_error": null,
+      "total_queries": 300,
+      "failures": 0,
+      "precision_at_1": 0.81,
+      "precision_at_5": 0.96,
+      "mrr": 0.8702301587301587,
+      "cold_start_ms": 73603.42258401215,
+      "warm_p50_ms": 8.527333506208379,
+      "warm_p95_ms": 15.384052394801987,
+      "warm_p99_ms": 34.493423094390664,
+      "peak_rss_mb": 1654.1875,
+      "model_size_mb": 0.0,
+      "per_language": [
+        {
+          "language": "en",
+          "queries": 50,
+          "precision_at_1": 0.9,
+          "precision_at_5": 1.0,
+          "mrr": 0.9329999999999999
+        },
+        {
+          "language": "es",
+          "queries": 50,
+          "precision_at_1": 0.8,
+          "precision_at_5": 0.96,
+          "mrr": 0.8626666666666667
+        },
+        {
+          "language": "pt",
+          "queries": 50,
+          "precision_at_1": 0.8,
+          "precision_at_5": 0.94,
+          "mrr": 0.8622460317460318
+        },
+        {
+          "language": "de",
+          "queries": 50,
+          "precision_at_1": 0.82,
+          "precision_at_5": 0.96,
+          "mrr": 0.8688888888888888
+        },
+        {
+          "language": "fr",
+          "queries": 50,
+          "precision_at_1": 0.74,
+          "precision_at_5": 0.96,
+          "mrr": 0.8350238095238095
+        },
+        {
+          "language": "it",
+          "queries": 50,
+          "precision_at_1": 0.8,
+          "precision_at_5": 0.94,
+          "mrr": 0.8595555555555555
+        }
+      ]
+    }
+  ]
+}
