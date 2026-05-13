@@ -135,10 +135,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-028.md"
         },
         {
@@ -171,10 +167,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/root/agent-teams.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/04-Concepts/architecture/FROZEN-BACKLOG.md"
         },
         {
@@ -195,15 +187,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/intelligent-context-compaction.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
+          "path": "docs/04-Concepts/patterns/os-vs-project.md"
         },
         {
           "family": "doc",
@@ -211,15 +195,31 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/root/prompt-templates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/agent-teams.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/root/patterns-adopted.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/patterns/os-vs-project.md"
+          "path": "docs/99-Archive/archive/plans/intelligent-context-compaction.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/prompt-templates.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "hook",
@@ -545,7 +545,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 21,
+        "doc": 22,
         "hook": 1,
         "rule": 1,
         "test": 1
@@ -562,10 +562,6 @@
         {
           "family": "doc",
           "path": "docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
@@ -586,6 +582,18 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -621,23 +629,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/proof-paths.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/04-Concepts/patterns/cross-harness-authoring.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+          "path": "docs/09-Quality/manual-tests/proof-paths.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
+          "path": "docs/reports/adr-partial-backlog-latest.md"
         },
         {
           "family": "hook",
@@ -657,7 +661,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:1"
       ],
       "family": "templates",
@@ -668,7 +672,7 @@
       "role": "prompt-composition",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
@@ -718,11 +722,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
+          "path": "docs/03-PoCs/research/helixdb-annex-d-license-opencore-risk-2026-05-11.md"
         },
         {
           "family": "doc",
@@ -730,11 +730,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/prompt-templates.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/helixdb-annex-d-license-opencore-risk-2026-05-11.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "rule",
@@ -767,11 +771,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
+          "path": "docs/05-Methodology/root/prompt-templates.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/prompt-templates.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "test",
@@ -830,11 +834,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
+          "path": "docs/05-Methodology/root/prompt-templates.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/prompt-templates.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         }
       ],
       "distribution": null,
@@ -1015,11 +1019,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 21,
         "rule": 2,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/script-exposure-dispositions.yaml"
+        },
         {
           "family": "doc",
           "path": "AGENTS.md"
@@ -1031,6 +1040,10 @@
         {
           "family": "doc",
           "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/01-Build-Log/root/versioning-strategy.md"
         },
         {
           "family": "doc",
@@ -1062,6 +1075,30 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/patterns/component-classification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/patterns/os-vs-project.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/prompt-templates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/cos-package-manager.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/99-Archive/archive/plans/docs-hook-rule-candidates.md"
         },
         {
@@ -1075,34 +1112,6 @@
         {
           "family": "doc",
           "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/root/cos-package-manager.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/patterns/component-classification.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/patterns/os-vs-project.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/05-Methodology/root/prompt-templates.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/root/versioning-strategy.md"
         },
         {
           "family": "rule",
@@ -1133,7 +1142,8 @@
       "evidence": [
         "rule_consumers:2",
         "test_consumers:4",
-        "doc_consumers:21"
+        "doc_consumers:21",
+        "config_consumers:1"
       ],
       "family": "templates",
       "lifecycle_id": null,
@@ -1143,7 +1153,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -1156,7 +1166,7 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
+          "path": "docs/04-Concepts/patterns/os-vs-project.md"
         },
         {
           "family": "doc",
@@ -1164,7 +1174,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/patterns/os-vs-project.md"
+          "path": "docs/04-Concepts/root/self-improvement-loop.md"
         },
         {
           "family": "doc",
@@ -1172,7 +1182,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/root/self-improvement-loop.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "rule",
