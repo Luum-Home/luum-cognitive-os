@@ -1,19 +1,40 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
-"""Run the Cognitive OS serial pytest repair loop with an external timeout.
+"""Run the Cognitive OS serial pytest repair loop with bounded progress.
 
 This wrapper exists for the maintainer workflow where we intentionally run
-`pytest tests/ --maxfail=1` to discover the next failing contract, but we do not
-want a hung subprocess or pathological test to consume hours on a laptop.
+serial pytest with ``--maxfail=1`` to discover the next failing contract, but we
+must not let a hung/pathological subprocess consume hours on a laptop.
 
-It avoids GNU `timeout` so it works on macOS default hosts.
+For broad directory inputs (for example ``tests/``), the default ``auto`` mode
+runs one test file at a time, records completed chunks, and stops when the
+invocation budget is exhausted. Re-running the same command resumes from the
+next unfinished file instead of starting from zero. Exact file/node inputs keep
+the old single-suite behavior unless ``--mode files`` is requested.
+
+It avoids GNU ``timeout`` so it works on macOS default hosts.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import subprocess
 import sys
+import time
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Iterable
+
+DEFAULT_STATE_FILE = Path(".cognitive-os/runtime/pytest-serial-repair-state.json")
+
+
+@dataclass(frozen=True)
+class Chunk:
+    """A resumable pytest chunk."""
+
+    id: str
+    args: tuple[str, ...]
 
 
 def _tail(text: str, chars: int) -> str:
@@ -22,15 +43,133 @@ def _tail(text: str, chars: int) -> str:
     return text[-chars:]
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Run serial pytest repair loop with an external wall-clock timeout.")
-    parser.add_argument("paths", nargs="*", default=["tests/"], help="pytest paths/nodeids; default: tests/")
-    parser.add_argument("--timeout-seconds", type=int, default=600, help="external wall-clock timeout; default: 600")
-    parser.add_argument("--maxfail", type=int, default=1, help="pytest maxfail; default: 1")
-    parser.add_argument("--tail-chars", type=int, default=12000, help="stdout tail size on failure/timeout")
-    parser.add_argument("--", dest="passthrough", nargs=argparse.REMAINDER, help="extra pytest args")
-    args, unknown = parser.parse_known_args()
+def _is_test_file(path: Path) -> bool:
+    name = path.name
+    return path.is_file() and name.endswith(".py") and (
+        name.startswith("test_") or name.endswith("_test.py")
+    )
 
+
+def discover_file_chunks(paths: Iterable[str]) -> list[Chunk]:
+    """Return deterministic file/node chunks for pytest path arguments."""
+    chunks: list[Chunk] = []
+    seen: set[str] = set()
+    for raw in paths:
+        if "::" in raw:
+            chunk = Chunk(id=raw, args=(raw,))
+            if chunk.id not in seen:
+                chunks.append(chunk)
+                seen.add(chunk.id)
+            continue
+        path = Path(raw)
+        candidates: list[Path]
+        if path.is_dir():
+            candidates = sorted(
+                candidate
+                for candidate in path.rglob("*.py")
+                if _is_test_file(candidate) and "__pycache__" not in candidate.parts
+            )
+        elif _is_test_file(path):
+            candidates = [path]
+        else:
+            chunk = Chunk(id=raw, args=(raw,))
+            if chunk.id not in seen:
+                chunks.append(chunk)
+                seen.add(chunk.id)
+            continue
+
+        for candidate in candidates:
+            chunk_id = candidate.as_posix()
+            if chunk_id in seen:
+                continue
+            chunks.append(Chunk(id=chunk_id, args=(chunk_id,)))
+            seen.add(chunk_id)
+    return chunks
+
+
+def should_use_file_mode(mode: str, paths: Iterable[str]) -> bool:
+    """Choose file mode for broad paths while preserving exact-node runs."""
+    if mode == "files":
+        return True
+    if mode == "suite":
+        return False
+    return any("::" not in raw and Path(raw).is_dir() for raw in paths)
+
+
+def _state_key(cwd: Path, chunks: list[Chunk], pytest_extra: list[str], maxfail: int) -> str:
+    payload = {
+        "cwd": cwd.as_posix(),
+        "chunks": [chunk.id for chunk in chunks],
+        "pytest_extra": pytest_extra,
+        "maxfail": maxfail,
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(encoded).hexdigest()[:24]
+
+
+def _load_state(path: Path, key: str) -> dict[str, Any]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {"key": key, "completed": []}
+    if data.get("key") != key:
+        return {"key": key, "completed": []}
+    completed = data.get("completed", [])
+    if not isinstance(completed, list):
+        completed = []
+    return {"key": key, "completed": completed}
+
+
+def _save_state(path: Path, state: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    tmp.replace(path)
+
+
+def _run_pytest(pytest_args: list[str], cwd: Path, timeout_seconds: int) -> subprocess.CompletedProcess[str] | subprocess.TimeoutExpired:
+    try:
+        return subprocess.run(
+            pytest_args,
+            cwd=cwd,
+            text=True,
+            capture_output=True,
+            timeout=timeout_seconds,
+        )
+    except subprocess.TimeoutExpired as exc:
+        return exc
+
+
+def _print_timeout(exc: subprocess.TimeoutExpired, timeout_seconds: int, tail_chars: int) -> None:
+    stdout = exc.stdout or ""
+    stderr = exc.stderr or ""
+    if isinstance(stdout, bytes):
+        stdout = stdout.decode(errors="replace")
+    if isinstance(stderr, bytes):
+        stderr = stderr.decode(errors="replace")
+    print("PYTEST_TIMEOUT_EXTERNAL")
+    print(f"timeout_seconds={timeout_seconds}")
+    if stdout:
+        print("--- stdout tail ---")
+        print(_tail(stdout, tail_chars))
+    if stderr:
+        print("--- stderr tail ---")
+        print(_tail(stderr, max(4000, tail_chars // 3)))
+
+
+def _base_pytest_args(maxfail: int) -> list[str]:
+    return [
+        sys.executable,
+        "-m",
+        "pytest",
+        "-q",
+        "--tb=short",
+        "--disable-warnings",
+        f"--maxfail={maxfail}",
+    ]
+
+
+def run_suite_mode(args: argparse.Namespace, pytest_extra: list[str], cwd: Path) -> int:
     pytest_args = [
         sys.executable,
         "-m",
@@ -40,49 +179,119 @@ def main() -> int:
         "--tb=short",
         "--disable-warnings",
         f"--maxfail={args.maxfail}",
+        *pytest_extra,
     ]
+    print("[cos-pytest-serial-repair] mode=suite")
+    print("[cos-pytest-serial-repair] command=" + " ".join(pytest_args))
+    result = _run_pytest(pytest_args, cwd, args.timeout_seconds)
+    if isinstance(result, subprocess.TimeoutExpired):
+        _print_timeout(result, args.timeout_seconds, args.tail_chars)
+        return 124
+    print(f"PYTEST_RC {result.returncode}")
+    if result.stdout:
+        print(_tail(result.stdout, args.tail_chars))
+    if result.stderr:
+        print(_tail(result.stderr, max(4000, args.tail_chars // 3)), file=sys.stderr)
+    return result.returncode
+
+
+def run_file_mode(args: argparse.Namespace, pytest_extra: list[str], cwd: Path) -> int:
+    chunks = discover_file_chunks(args.paths)
+    if not chunks:
+        print("PYTEST_NO_CHUNKS")
+        return 5
+
+    state_path = Path(args.state_file)
+    key = _state_key(cwd, chunks, pytest_extra, args.maxfail)
+    if args.reset_state and state_path.exists():
+        state_path.unlink()
+    state = _load_state(state_path, key)
+    completed: set[str] = set(str(item) for item in state.get("completed", []))
+    pending = [chunk for chunk in chunks if chunk.id not in completed]
+    chunk_timeout = args.chunk_timeout_seconds or args.timeout_seconds
+    budget_deadline = time.monotonic() + args.timeout_seconds
+
+    print("[cos-pytest-serial-repair] mode=files")
+    print(f"[cos-pytest-serial-repair] chunks_total={len(chunks)} completed={len(completed)} pending={len(pending)}")
+    print(f"[cos-pytest-serial-repair] state_file={state_path}")
+    print(f"[cos-pytest-serial-repair] chunk_timeout={chunk_timeout}s budget={args.timeout_seconds}s")
+
+    if not pending:
+        if state_path.exists():
+            state_path.unlink()
+        print("PYTEST_CHUNKED_RC 0")
+        print(f"chunks_passed={len(chunks)}")
+        return 0
+
+    ran = 0
+    for index, chunk in enumerate(pending, start=1):
+        remaining_budget = budget_deadline - time.monotonic()
+        if remaining_budget <= 1:
+            _save_state(state_path, {"key": key, "completed": sorted(completed)})
+            print("PYTEST_BUDGET_EXHAUSTED")
+            print(f"chunks_completed={len(completed)}/{len(chunks)}")
+            print(f"next_chunk={chunk.id}")
+            return 124
+
+        timeout = max(1, min(chunk_timeout, int(remaining_budget)))
+        pytest_args = [*_base_pytest_args(args.maxfail), *chunk.args, *pytest_extra]
+        print(f"[cos-pytest-serial-repair] chunk {index}/{len(pending)} {chunk.id}")
+        result = _run_pytest(pytest_args, cwd, timeout)
+        ran += 1
+
+        if isinstance(result, subprocess.TimeoutExpired):
+            _save_state(state_path, {"key": key, "completed": sorted(completed)})
+            print(f"PYTEST_CHUNK_TIMEOUT {chunk.id}")
+            _print_timeout(result, timeout, args.tail_chars)
+            return 124
+
+        if result.returncode != 0:
+            _save_state(state_path, {"key": key, "completed": sorted(completed)})
+            print(f"PYTEST_CHUNK_RC {result.returncode} {chunk.id}")
+            if result.stdout:
+                print(_tail(result.stdout, args.tail_chars))
+            if result.stderr:
+                print(_tail(result.stderr, max(4000, args.tail_chars // 3)), file=sys.stderr)
+            return result.returncode
+
+        completed.add(chunk.id)
+        _save_state(state_path, {"key": key, "completed": sorted(completed)})
+
+    if state_path.exists():
+        state_path.unlink()
+    print("PYTEST_CHUNKED_RC 0")
+    print(f"chunks_ran={ran}")
+    print(f"chunks_passed={len(chunks)}")
+    return 0
+
+
+def parse_args() -> tuple[argparse.Namespace, list[str]]:
+    parser = argparse.ArgumentParser(description="Run serial pytest repair loop with bounded resumable progress.")
+    parser.add_argument("paths", nargs="*", default=["tests/"], help="pytest paths/nodeids; default: tests/")
+    parser.add_argument("--timeout-seconds", type=int, default=600, help="invocation budget in file mode; suite timeout in suite mode; default: 600")
+    parser.add_argument("--chunk-timeout-seconds", type=int, default=0, help="per-file timeout in file mode; default: --timeout-seconds")
+    parser.add_argument("--maxfail", type=int, default=1, help="pytest maxfail; default: 1")
+    parser.add_argument("--tail-chars", type=int, default=12000, help="stdout tail size on failure/timeout")
+    parser.add_argument("--mode", choices=("auto", "suite", "files"), default="auto", help="auto uses file chunks for directory paths; default: auto")
+    parser.add_argument("--state-file", default=str(DEFAULT_STATE_FILE), help="resume state path for file mode")
+    parser.add_argument("--reset-state", action="store_true", help="discard saved file-mode progress before running")
+    parser.add_argument("--", dest="passthrough", nargs=argparse.REMAINDER, help="extra pytest args")
+    args, unknown = parser.parse_known_args()
     passthrough = list(args.passthrough or [])
     if passthrough and passthrough[0] == "--":
         passthrough = passthrough[1:]
-    pytest_args.extend(unknown)
-    pytest_args.extend(passthrough)
+    return args, [*unknown, *passthrough]
 
+
+def main() -> int:
+    args, pytest_extra = parse_args()
     cwd = Path.cwd()
     print(f"[cos-pytest-serial-repair] cwd={cwd}")
     print(f"[cos-pytest-serial-repair] timeout={args.timeout_seconds}s")
-    print("[cos-pytest-serial-repair] command=" + " ".join(pytest_args))
 
-    try:
-        proc = subprocess.run(
-            pytest_args,
-            cwd=cwd,
-            text=True,
-            capture_output=True,
-            timeout=args.timeout_seconds,
-        )
-    except subprocess.TimeoutExpired as exc:
-        stdout = exc.stdout or ""
-        stderr = exc.stderr or ""
-        if isinstance(stdout, bytes):
-            stdout = stdout.decode(errors="replace")
-        if isinstance(stderr, bytes):
-            stderr = stderr.decode(errors="replace")
-        print("PYTEST_TIMEOUT_EXTERNAL")
-        print(f"timeout_seconds={args.timeout_seconds}")
-        if stdout:
-            print("--- stdout tail ---")
-            print(_tail(stdout, args.tail_chars))
-        if stderr:
-            print("--- stderr tail ---")
-            print(_tail(stderr, max(4000, args.tail_chars // 3)))
-        return 124
-
-    print(f"PYTEST_RC {proc.returncode}")
-    if proc.stdout:
-        print(_tail(proc.stdout, args.tail_chars))
-    if proc.stderr:
-        print(_tail(proc.stderr, max(4000, args.tail_chars // 3)), file=sys.stderr)
-    return proc.returncode
+    if should_use_file_mode(args.mode, args.paths):
+        return run_file_mode(args, pytest_extra, cwd)
+    return run_suite_mode(args, pytest_extra, cwd)
 
 
 if __name__ == "__main__":

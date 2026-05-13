@@ -119,10 +119,7 @@ bash "$CLAUDE_PROJECT_DIR/.cognitive-os/scripts/test-cognitive-os-full.sh" \
 "$CLAUDE_PROJECT_DIR/scripts/cos-pytest-serial-repair" tests/ --timeout-seconds 600 --maxfail 1
 ```
 
-If this exits `124`, isolate the last shown test/file instead of re-running the
-whole suite. If it exits non-zero with a pytest failure, repair that next
-contract and rerun this preset. Do not run `-n auto` until this serial preset
-passes.
+In `auto` mode, broad directory inputs are chunked per test file and completed chunks are saved under `.cognitive-os/runtime/pytest-serial-repair-state.json`. If this exits `124`, inspect `PYTEST_CHUNK_TIMEOUT` or rerun the same command after `PYTEST_BUDGET_EXHAUSTED` to resume instead of starting from zero. If it exits non-zero with a pytest failure, repair that next contract and rerun this preset. Do not run `-n auto` until this serial preset passes.
 
 **Report-only** (skip the run):
 ```bash
