@@ -65,8 +65,30 @@ LOGGER = logging.getLogger(__name__)
 # Configuration
 # ---------------------------------------------------------------------------
 
-# Apache-2.0; ~220MB; 50+ languages.
-DEFAULT_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+# Apache-2.0; ~220 MB; 50+ languages. Calibrated default — TestSafetyRecoveryNegativeContext
+# is tuned to MiniLM's score distribution (DEFAULT_THRESHOLD=0.50). The ADR-298
+# benchmark on 2026-05-13 found that multilingual-e5-large would lift precision@1
+# by +14 pts on average (PT +18, FR +16), BUT it produces uniformly-higher cosine
+# scores (1024-dim vs 384) — adopting it as default requires a coordinated
+# recalibration of DEFAULT_THRESHOLD (≈0.75 for e5) plus updates to the negative-
+# context tests in tests/unit/test_skill_router.py. That calibration is tracked
+# in ADR-300 as Phase 2.
+#
+# OPERATOR SWAP (Phase-1 escape hatch): override at runtime via env var
+# COS_SEMANTIC_ROUTING_MODEL. Must be a model id supported by fastembed's
+# TextEmbedding registry. The on-disk catalog cache is keyed by
+# `(model_name, skill_corpus_hash)` so a swap automatically writes to a new
+# cache file; no manual invalidation needed. Example for experimenting with
+# the +14-pts e5 candidate without committing the default change:
+#   COS_SEMANTIC_ROUTING_MODEL=intfloat/multilingual-e5-large
+# Until ADR-300 Phase 2 lands, expect 11 negative-context tests to fail
+# under that override — the matcher catches semantic references the
+# threshold doesn't filter out. The ADR-297 LLM tie-breaker is the
+# designed disambiguator for that case in production.
+MODEL_OVERRIDE_ENV = "COS_SEMANTIC_ROUTING_MODEL"
+_ADOPTED_DEFAULT_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+_BENCHMARK_WINNER_PENDING_CALIBRATION = "intfloat/multilingual-e5-large"
+DEFAULT_MODEL_NAME = os.environ.get(MODEL_OVERRIDE_ENV) or _ADOPTED_DEFAULT_MODEL
 
 # Cosine-similarity gate. Calibrated on the held-out multilingual prompt
 # set in tests/unit/test_semantic_skill_matcher.py: precision >= 0.8 at
