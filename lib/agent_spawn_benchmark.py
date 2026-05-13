@@ -34,7 +34,7 @@ import re
 import shlex
 import subprocess
 import time
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -45,6 +45,19 @@ DEFAULT_WALL_BUDGET_MS = 3000
 DEFAULT_PAYLOAD_TOKEN_BUDGET = 20000
 PER_HOOK_TIMEOUT_SEC = 5
 
+# ADR-303 Phase 2 (post-mortem action #6 follow-up). The synthetic measurement
+# above pipes a stub JSON into each SubagentStart hook and times it; that
+# short-circuits the real prompt-shape code path, producing a number ~150x
+# lower than production. The telemetry block below aggregates the REAL
+# durations recorded by hooks/hook-timing-wrapper.sh on every actual spawn.
+# Both numbers ship in the same record so the operator can see the gap.
+TELEMETRY_HOOK_TIMING_PATH = ".cognitive-os/metrics/hook-timing.jsonl"
+# Cap raw records scanned to bound memory; SubagentStart events are rare
+# (~1 per spawn) so we need a wide-enough window to capture useful samples.
+TELEMETRY_SCAN_LIMIT_RECORDS = 100_000     # hard cap on lines read
+TELEMETRY_MATCH_KEEP_LAST = 200             # of matching records, keep last N
+TELEMETRY_TARGET_EVENTS = ("SubagentStart",)
+
 # ─── Helpers ────────────────────────────────────────────────────────────────
 
 
@@ -52,6 +65,103 @@ def bytes_to_tokens(n: int) -> int:
     """Rough estimator: 1 token ≈ 4 bytes."""
     return (int(n) + 2) // 4
 
+
+def aggregate_telemetry(project_dir: Path) -> dict[str, Any]:
+    """ADR-303 Phase 2: aggregate real SubagentStart durations from telemetry.
+
+    Reads `.cognitive-os/metrics/hook-timing.jsonl` (the stream
+    `hook-timing-wrapper.sh` writes on every hook run), filters by event in
+    TELEMETRY_TARGET_EVENTS, then windows the last matching production records.
+    That filter-before-window ordering is deliberate: SubagentStart is sparse
+    inside the global hook stream, so tailing before filtering hides real data.
+
+    Returns ``{"status": "no_data", ...}`` when the stream is missing or has
+    zero matching records. Never raises — telemetry is best-effort by design.
+    """
+    import json as _json
+    from collections import deque as _deque
+    from statistics import median as _median
+
+    stream = project_dir / TELEMETRY_HOOK_TIMING_PATH
+    if not stream.exists():
+        return {"status": "no_data", "reason": "stream-missing", "path": str(stream)}
+
+    matched_records = _deque(maxlen=TELEMETRY_MATCH_KEEP_LAST)
+    records_read = 0
+    matched_before_window = 0
+    try:
+        with stream.open("r", encoding="utf-8", errors="ignore") as fh:
+            raw_lines = _deque(fh, maxlen=TELEMETRY_SCAN_LIMIT_RECORDS)
+    except Exception as exc:
+        return {"status": "no_data", "reason": f"read-failed: {exc}"}
+
+    for raw in raw_lines:
+        raw = raw.strip()
+        if not raw:
+            continue
+        records_read += 1
+        try:
+            rec = _json.loads(raw)
+        except _json.JSONDecodeError:
+            continue
+        evt = rec.get("event") or rec.get("hook_event") or rec.get("phase")
+        if evt not in TELEMETRY_TARGET_EVENTS:
+            continue
+        matched_before_window += 1
+        matched_records.append(rec)
+
+    durations: list[int] = []
+    per_hook: dict[str, list[int]] = {}
+    for rec in matched_records:
+        d = rec.get("duration_ms")
+        if not isinstance(d, (int, float)):
+            continue
+        d = int(d)
+        durations.append(d)
+        h = rec.get("hook") or rec.get("hook_name") or "?"
+        per_hook.setdefault(h, []).append(d)
+
+    if not durations:
+        return {
+            "status": "no_data",
+            "reason": "no-matching-events-in-scanned-stream",
+            "records_read": records_read,
+            "matched_before_window": matched_before_window,
+            "scan_limit_records": TELEMETRY_SCAN_LIMIT_RECORDS,
+            "window_size": TELEMETRY_MATCH_KEEP_LAST,
+            "target_events": list(TELEMETRY_TARGET_EVENTS),
+        }
+
+    durations.sort()
+    n = len(durations)
+    p95_i = max(0, int(round(n * 0.95)) - 1)
+    p99_i = max(0, int(round(n * 0.99)) - 1)
+
+    hooks_summary = {}
+    for h, vals in per_hook.items():
+        vals.sort()
+        vn = len(vals)
+        hooks_summary[h] = {
+            "samples": vn,
+            "p50_ms": int(_median(vals)),
+            "p95_ms": vals[max(0, int(round(vn * 0.95)) - 1)],
+            "max_ms": vals[-1],
+        }
+
+    return {
+        "status": "ok",
+        "n_samples": n,
+        "p50_ms": int(_median(durations)),
+        "p95_ms": durations[p95_i],
+        "p99_ms": durations[p99_i],
+        "max_ms": durations[-1],
+        "min_ms": durations[0],
+        "records_read": records_read,
+        "matched_before_window": matched_before_window,
+        "scan_limit_records": TELEMETRY_SCAN_LIMIT_RECORDS,
+        "window_size": TELEMETRY_MATCH_KEEP_LAST,
+        "by_hook": hooks_summary,
+    }
 
 def file_size(path: Path) -> int:
     try:
@@ -171,6 +281,10 @@ class SpawnBenchmarkRecord:
     skill_catalog_inject: dict[str, Any]
     totals: dict[str, Any]
     slo: dict[str, Any]
+    # ADR-303 Phase 2: real production telemetry alongside synthetic.
+    # See aggregate_telemetry() — never None; carries {"status": "no_data", ...}
+    # when the hook-timing.jsonl stream is missing or empty in the window.
+    telemetry: dict[str, Any] = field(default_factory=lambda: {"status": "no_data", "reason": "not-collected"})
 
 
 def _measure_file_component(label: str, path: Path) -> dict[str, Any]:
@@ -265,6 +379,10 @@ def build_record(project_dir: Path, settings_path: Path) -> SpawnBenchmarkRecord
         "status": slo_status,
     }
 
+    # ADR-303 Phase 2: aggregate production telemetry alongside the synthetic
+    # measurement. Best-effort: failures degrade to {"status":"no_data"}.
+    telemetry = aggregate_telemetry(project_dir)
+
     return SpawnBenchmarkRecord(
         timestamp=now_iso(),
         project_dir=str(project_dir),
@@ -275,6 +393,7 @@ def build_record(project_dir: Path, settings_path: Path) -> SpawnBenchmarkRecord
         skill_catalog_inject=skill_catalog_inject,
         totals=totals,
         slo=slo,
+        telemetry=telemetry,
     )
 
 
@@ -342,6 +461,71 @@ def render_markdown(record: SpawnBenchmarkRecord) -> str:
     )
     lines.append("")
     lines.append(f"**Overall:** {slo['status'].upper()}")
+    lines.append("")
+
+    # ── ADR-303 Phase 2 — production telemetry beside synthetic ─────────────
+    tel = r.get("telemetry") or {"status": "no_data"}
+    lines.append("## 4. Production Telemetry (from hook-timing.jsonl)")
+    lines.append("")
+    if tel.get("status") != "ok":
+        lines.append(
+            f"_No telemetry available_ — `{tel.get('reason', 'unknown')}` "
+            f"(window={TELEMETRY_MATCH_KEEP_LAST}, events={list(TELEMETRY_TARGET_EVENTS)})."
+        )
+        lines.append("")
+        lines.append(
+            "The synthetic numbers above are a baseline only. Real spawn cost "
+            "shows up here once hook-timing-wrapper.sh accumulates "
+            "SubagentStart records in production."
+        )
+    else:
+        synth_ms = r["totals"]["total_wall_ms"]
+        real_p95 = tel["p95_ms"]
+        gap = (real_p95 / synth_ms) if synth_ms > 0 else float("inf")
+        lines.append(
+            f"Sampled {tel['n_samples']} real SubagentStart records "
+            f"from the last {TELEMETRY_MATCH_KEEP_LAST} matching production records "
+            f"({tel.get('matched_before_window', tel['n_samples'])} matches / "
+            f"{tel.get('records_read', '?')} scanned records)."
+        )
+        lines.append("")
+        lines.append("| Source | Wall time |")
+        lines.append("|--------|-----------|")
+        lines.append(f"| Synthetic (this run) | {synth_ms} ms |")
+        lines.append(f"| Real p50 | {tel['p50_ms']} ms |")
+        lines.append(f"| Real p95 | {tel['p95_ms']} ms |")
+        lines.append(f"| Real p99 | {tel['p99_ms']} ms |")
+        lines.append(f"| Real max | {tel['max_ms']} ms |")
+        lines.append(f"| Real min | {tel['min_ms']} ms |")
+        lines.append("")
+        if gap >= 2.0:
+            lines.append(
+                f"**Honest gap: production p95 is {gap:.1f}× the synthetic "
+                f"measurement.** Trust the production numbers; treat the "
+                f"synthetic block as a smoke test (does the hook chain run at "
+                f"all?) not a latency estimate."
+            )
+        elif gap >= 1.2:
+            lines.append(
+                f"Production p95 is {gap:.1f}× the synthetic measurement — "
+                f"some divergence, watch for drift."
+            )
+        else:
+            lines.append(
+                f"Synthetic and production p95 are within {gap:.1f}× — the "
+                f"synthetic measurement is currently a reasonable proxy."
+            )
+        if tel.get("by_hook"):
+            lines.append("")
+            lines.append("**Per-hook breakdown (real samples):**")
+            lines.append("")
+            lines.append("| Hook | Samples | p50 ms | p95 ms | max ms |")
+            lines.append("|------|--------:|-------:|-------:|-------:|")
+            for h, s in sorted(tel["by_hook"].items()):
+                lines.append(
+                    f"| {h} | {s['samples']} | {s['p50_ms']} | "
+                    f"{s['p95_ms']} | {s['max_ms']} |"
+                )
     lines.append("")
     return "\n".join(lines)
 
