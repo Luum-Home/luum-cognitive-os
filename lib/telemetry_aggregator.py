@@ -266,6 +266,24 @@ def compute_metric(slo: dict, records: list[dict]) -> tuple[float | None, dict]:
         summary["n_cache_hit"] = n_hit
         return n_hit / n, summary
 
+    # exit_success_ratio: exit_code == 0 / count
+    if metric_expr.strip() == "exit_success_ratio":
+        n = len(records)
+        if n == 0:
+            return None, summary
+        n_ok = sum(1 for r in records if r.get("exit_code") == 0)
+        summary["n_exit_success"] = n_ok
+        return n_ok / n, summary
+
+    # allow_ratio: allowed == True / count
+    if metric_expr.strip() == "allow_ratio":
+        n = len(records)
+        if n == 0:
+            return None, summary
+        n_allowed = sum(1 for r in records if r.get("allowed") is True)
+        summary["n_allowed"] = n_allowed
+        return n_allowed / n, summary
+
     # latest.<dotted.path>
     if metric_expr.startswith("latest."):
         if not records:
@@ -348,12 +366,26 @@ def aggregate_streams(
             continue
 
         window_n = _parse_window(slo.get("window"))
-        records = read_jsonl(stream_path, tail=window_n)
+        # Correct ordering: filter the source stream first, then apply the
+        # declared window to the matching records. Applying `tail` before the
+        # filter made sparse streams look like `no_data` whenever the last N
+        # global records were unrelated noise (for example SubagentStart mixed
+        # into a busy hook-timing.jsonl stream).
+        records = read_jsonl(stream_path)
 
         filter_fn = _compile_filter(slo.get("filter"))
-        filtered = [r for r in records if filter_fn(r)]
+        filtered_all = [r for r in records if filter_fn(r)]
+        filtered = (
+            filtered_all[-window_n:]
+            if window_n is not None and len(filtered_all) > window_n
+            else filtered_all
+        )
 
         value, summary = compute_metric(slo, filtered)
+        summary["n_records_read"] = len(records)
+        summary["n_matched_before_window"] = len(filtered_all)
+        if window_n is not None:
+            summary["window_records"] = window_n
         if value is None:
             evaluations.append(
                 {
@@ -490,8 +522,10 @@ def _propose_self_tuning(
 
         # Check stdout_bytes signal
         hook_timing = repo_root / ".cognitive-os/metrics/hook-timing.jsonl"
-        recent = read_jsonl(hook_timing, tail=500)
-        relevant = [r for r in recent if r.get("hook") == offending_hook]
+        recent_all = [
+            r for r in read_jsonl(hook_timing) if r.get("hook") == offending_hook
+        ]
+        relevant = recent_all[-500:]
         if not relevant:
             continue
         has_stdout_field = any("stdout_bytes" in r for r in relevant)
