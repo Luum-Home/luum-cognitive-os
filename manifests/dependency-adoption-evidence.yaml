@@ -60,6 +60,21 @@ adoptions:
       is not viable on current PyPI (stuck at 0.0.3, no Route/RouteLayer
       symbols); the routing arithmetic is small enough to own.
     audit_link: docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md
+  - package: rich
+    version_constraint: ">=14.3.1,<15"
+    consumer: pyproject.toml (core)
+    owner_adr: ADR-288  # constraint relaxed because of ADR-288's browser-use pin
+    due_diligence_id: rich-cli-rendering
+    license: MIT
+    integration_pattern: TTY rendering already in repository (status lines, panels, tables) — no NEW adoption, just constraint relaxation
+    rationale: |
+      browser-use==0.12.6 (latest on PyPI as of 2026-05-13) hard-pins
+      rich==14.3.1, which made `uv sync --extra semantic-routing`
+      unresolvable when the project advertised `rich>=15`. Dropping the
+      floor to >=14.3.1 unblocks the canonical install path for ADR-296
+      without changing runtime behaviour (no rich-15-exclusive features
+      were in use). Ceiling lifts when browser-use ships rich-15 compat.
+    audit_link: docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md
 # 2026-05-13: revalidated entries above against the manifest commit landing
 # (root pyproject.toml [web-automation] extra + packages/agent-service/pyproject.toml).
 # Endpoint count corrected to 26 ops / 25 distinct paths after csrf-token removal
