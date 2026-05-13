@@ -137,9 +137,9 @@ cc_driver_emit() {
       "hooks/docker-drift-detector.sh"         "true"  \
       "hooks/cos-executor-daemon-launcher.sh"  "true"  \
       "hooks/engram-daemon-launcher.sh"        "true"  \
-      "hooks/crash-recovery.sh"               "false" \
+      "hooks/crash-recovery.sh"               "true"  \
       "hooks/session-resume.sh"               "false" \
-      "hooks/session-sanity.sh"               "false" \
+      "hooks/session-sanity.sh"               "true"  \
       "hooks/validation-lock-cleanup.sh"      "false" \
       "hooks/infra-health.sh"                 "true"  \
       "hooks/aspirational-audit-weekly.sh"    "true"  \
@@ -150,8 +150,8 @@ cc_driver_emit() {
       "hooks/session-start-stash-reapply.sh"  "false" \
       "hooks/session-startup-protocol.sh"     "false" \
       "hooks/mcp-scan.sh"                     "true"  \
-      "hooks/dangerous-env-flag-detector.sh" "false" \
-      "hooks/history-rewrite-documented.sh"   "false" \
+      "hooks/dangerous-env-flag-detector.sh" "true"  \
+      "hooks/history-rewrite-documented.sh"   "true"  \
       "hooks/cos-session-start-projector.sh"  "false" \
       "hooks/skill-drift-detector.sh"         "false" \
       "hooks/session-start-stack-recommend.sh" "true"  \
