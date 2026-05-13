@@ -163,7 +163,7 @@ class TestMeasureOverhead:
         # claude_md_tokens may be non-zero if ~/.claude/CLAUDE.md exists globally
 
     def test_reads_rules_compact(self, tmp_path):
-        metrics_dir = _setup_project(tmp_path, rules_content="x" * 400)
+        _setup_project(tmp_path, rules_content="x" * 400)
         m = SymbiosisMonitor(str(tmp_path))
         overhead = m.measure_overhead()
         # 400 chars / 4 = 100 tokens

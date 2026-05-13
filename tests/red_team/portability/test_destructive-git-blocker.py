@@ -1,11 +1,11 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/destructive-git-blocker.sh — ADR-116 P3.2 WIP guard.
 
 These tests run the hook against a temporary, non-SO git repository to prove that
 the WIP-guard logic does not depend on any repository-local runtime state from the
 luum-agent-os project itself.
 
-Paired with: hooks/destructive-git-blocker.sh  (# SCOPE: both)
+Paired with: hooks/destructive-git-blocker.sh  (# SCOPE: os-only)
 """
 
 from __future__ import annotations

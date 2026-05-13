@@ -11,10 +11,7 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 from lib.agent_permissions import (
-    PERMISSION_PROFILES,
-    AccessLog,
     AgentPermissionManager,
-    PermissionGrant,
     PermissionLevel,
     get_profile_for_task,
     grant_from_profile,

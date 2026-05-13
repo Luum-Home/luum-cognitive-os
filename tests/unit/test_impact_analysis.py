@@ -12,9 +12,7 @@ Covers:
 
 from __future__ import annotations
 
-import os
 import pytest
-from pathlib import Path
 
 from lib.impact_analysis import (
     analyze_impact,

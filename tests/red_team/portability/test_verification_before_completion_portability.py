@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proof for verification-before-completion SKILL.md.
 
 Asserts that no consumer-project service names leak into the SKILL source.

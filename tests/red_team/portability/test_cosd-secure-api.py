@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for rules/cosd-secure-api.md — ADR-260 dual-auth schema.
 
 These probes exercise behavioral guarantees that the rule file documents the

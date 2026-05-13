@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-pending-truth-close (ADR-275).
 
 Bilateral assertion: close primitive verifies the proof, applies the

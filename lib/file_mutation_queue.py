@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """
 File Mutation Queue — Per-file serialization for concurrent writes.
 
@@ -18,7 +18,7 @@ Key differences from our advisory-only concurrent-write-guard.sh:
 import threading
 import os
 from pathlib import Path
-from typing import Callable, TypeVar, Any
+from typing import Callable, TypeVar
 from contextlib import contextmanager
 
 T = TypeVar('T')

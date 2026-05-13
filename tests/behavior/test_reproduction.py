@@ -5,7 +5,6 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 COS_SCRIPT = PROJECT_ROOT / "bin" / "cognitive-os.sh"

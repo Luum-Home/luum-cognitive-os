@@ -5,19 +5,16 @@ that have failed >= threshold times within a rolling time window.
 """
 
 import json
-import os
 import sys
-import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-import pytest
 
 # Make sure lib is on the path regardless of working directory
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from lib.consequence_engine import ConsequenceEngine, PerformanceRecord
+from lib.consequence_engine import ConsequenceEngine
 
 
 # ---------------------------------------------------------------------------

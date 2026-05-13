@@ -22,7 +22,6 @@ from performance_monitor import (
     _Timer,
     _fmt_ms,
     _percentile,
-    measure_hook,
 )
 
 pytestmark = pytest.mark.unit

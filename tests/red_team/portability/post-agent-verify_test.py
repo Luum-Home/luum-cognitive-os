@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/post-agent-verify.sh."""
 
 from __future__ import annotations

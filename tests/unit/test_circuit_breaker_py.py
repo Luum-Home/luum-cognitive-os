@@ -8,7 +8,6 @@ Validates the Python CircuitBreaker state machine:
   State persistence: write and read back from JSON
 """
 import json
-import time
 from pathlib import Path
 
 import pytest

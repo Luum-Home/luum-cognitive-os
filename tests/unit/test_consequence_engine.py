@@ -8,7 +8,6 @@ Python 3.9+ compatible.
 
 import json
 from pathlib import Path
-from typing import List
 
 import pytest
 

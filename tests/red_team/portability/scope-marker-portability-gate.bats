@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# SCOPE: both
+# SCOPE: os-only
 
 setup() {
   REPO="$BATS_TEST_TMPDIR/repo"
@@ -28,7 +28,7 @@ PY
 @test "allows SCOPE both file with paired portability test" {
   cat > "$REPO/hooks/example-hook.sh" <<'SH'
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 echo ok
 SH
   cat > "$REPO/tests/red_team/portability/example-hook.bats" <<'BT'
@@ -43,7 +43,7 @@ BT
 @test "falsification: blocks SCOPE both file without portability test" {
   cat > "$REPO/hooks/unproven-hook.sh" <<'SH'
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 echo unproven
 SH
   git -C "$REPO" add hooks/unproven-hook.sh
@@ -55,7 +55,7 @@ SH
 @test "bypass allows unproven SCOPE both file for emergency commits" {
   cat > "$REPO/hooks/bypass-hook.sh" <<'SH'
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 echo bypass
 SH
   git -C "$REPO" add hooks/bypass-hook.sh

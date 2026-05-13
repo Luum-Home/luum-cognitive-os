@@ -26,9 +26,8 @@ Python 3.9+ compatible.
 """
 
 import json
-import os
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -119,7 +118,7 @@ def _read_jsonl(path: Path, max_age_seconds: Optional[int] = None) -> List[dict]
                         ts_str = obj.get("timestamp", "")
                         if ts_str:
                             try:
-                                from datetime import datetime, timezone
+                                from datetime import datetime
 
                                 dt = datetime.fromisoformat(
                                     ts_str.replace("Z", "+00:00")

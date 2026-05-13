@@ -15,9 +15,6 @@ if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
 from phase_timing import (
-    MODEL_COSTS,
-    PHASE_ESTIMATED_TOKENS,
-    PHASE_MODEL_ROUTING,
     PhaseTimer,
     TimingRecord,
     _format_duration,

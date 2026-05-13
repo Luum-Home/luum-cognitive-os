@@ -6,10 +6,8 @@ calculation, and graceful degradation when no cost data exists.
 from __future__ import annotations
 
 import json
-import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Optional
 
 import pytest
 

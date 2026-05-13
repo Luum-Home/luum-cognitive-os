@@ -310,7 +310,7 @@ class TestBudgetDowngradeChain:
         caps = MODEL_CAPABILITIES.get(model, {})
         in_cost = caps.get("cost_per_1m_in", -1)
         out_cost = caps.get("cost_per_1m_out", -1)
-        is_local = caps.get("local", False)
+        caps.get("local", False)
         # Must be in the known capabilities registry
         assert model in MODEL_CAPABILITIES, (
             f"prefer_local + budget=0 returned unknown model {model!r}"

@@ -1,6 +1,5 @@
 """Unit tests for lib/trust_report_parser.py."""
 
-import pytest
 
 from lib.trust_report_parser import TrustReport, TrustReportParser, score_to_status
 

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/scope-marker-portability-gate.sh — ADR-111 consumer projection.
 
 Verifies that the scope-marker-portability-gate fires equivalently under
@@ -6,7 +6,7 @@ simulated Codex invocation (PreToolUse[Bash] matcher, COGNITIVE_OS_HARNESS=codex
 
 Projection type: bash-projectable (native Codex PreToolUse bash matcher).
 
-Paired with: hooks/scope-marker-portability-gate.sh  (# SCOPE: both)
+Paired with: hooks/scope-marker-portability-gate.sh  (# SCOPE: os-only)
 ADR reference: ADR-111 §Gate-2
 """
 
@@ -69,7 +69,7 @@ def _stage_scope_both_hook(path: Path, stem: str) -> Path:
     hooks_dir = path / "hooks"
     hooks_dir.mkdir(exist_ok=True)
     hook_file = hooks_dir / f"{stem}.sh"
-    hook_file.write_text(f"#!/usr/bin/env bash\n# SCOPE: both\necho hello\n")
+    hook_file.write_text(f"#!/usr/bin/env bash\n# SCOPE: os-only\necho hello\n")
     subprocess.run(["git", "add", str(hook_file)], cwd=path, check=True, capture_output=True)
     return hook_file
 
@@ -144,7 +144,7 @@ def test_portability_test_files_self_exempt(tmp_path: Path) -> None:
     tests_dir = tmp_path / "tests" / "red_team" / "portability"
     tests_dir.mkdir(parents=True, exist_ok=True)
     portability_file = tests_dir / "my-gate.bats"
-    portability_file.write_text("# SCOPE: both\n@test 'fires' {{ true; }}\n")
+    portability_file.write_text("# SCOPE: os-only\n@test 'fires' {{ true; }}\n")
     subprocess.run(["git", "add", str(portability_file)], cwd=tmp_path, check=True, capture_output=True)
     result = _run("git commit -m 'add portability test'", tmp_path)
     assert result.returncode == 0, (

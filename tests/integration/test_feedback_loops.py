@@ -14,7 +14,6 @@ Run:
 from __future__ import annotations
 
 import json
-import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -50,7 +49,6 @@ try:
         estimate_tokens,
         detect_success,
         append_cost_event,
-        classify_task_type,
     )
 except Exception as exc:
     lib_available = False

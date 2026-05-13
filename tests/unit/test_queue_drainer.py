@@ -3,14 +3,9 @@
 from __future__ import annotations
 
 import json
-import os
-import tempfile
-import time
-from unittest.mock import patch
 
-import pytest
 
-from lib.queue_drainer import QueueDrainer, _prompt_fingerprint
+from lib.queue_drainer import QueueDrainer
 
 
 # ---------------------------------------------------------------------------
@@ -242,7 +237,7 @@ class TestQueueFileFormat:
         with open(drainer.queue_path) as fh:
             items = json.load(fh)
 
-        priorities = {i["description"][:4]: i["priority"] for i in items}
+        {i["description"][:4]: i["priority"] for i in items}
         # Both should be clamped (0→1, 99→10)
         for item in items:
             assert 1 <= item["priority"] <= 10

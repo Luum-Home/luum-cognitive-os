@@ -11,11 +11,8 @@ These tests use mock callables that mimic engram MCP tool signatures
 so they run without a live engram connection.
 """
 
-import os
 import textwrap
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
-from unittest.mock import MagicMock
+from typing import Any, Dict, List
 
 import pytest
 
@@ -237,7 +234,7 @@ class TestSaveReviewToEngram:
             files_reviewed=1,
         )
 
-        payload = reviewer.save_review_to_engram(
+        reviewer.save_review_to_engram(
             report, project="test-proj", service="auth",
             mem_save_fn=fake_engram.mem_save,
         )

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/statusline-coverage.sh.
 
 Verifies the statusline segment works portably against non-SO project

@@ -15,7 +15,7 @@ import signal
 import time
 from pathlib import Path
 from typing import Any, Dict, List
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -58,8 +58,6 @@ from singularity import (
     _build_pipeline_prompt,
     _COOLDOWN_SECONDS,
     _MAX_PARALLEL,
-    _ERROR_PATTERN_THRESHOLD,
-    _SKILL_FAILURE_THRESHOLD,
     _PRIORITY_ORDER,
     _PIPELINE_ROUTING,
 )
@@ -842,7 +840,7 @@ class TestPlan:
         event1 = _make_event(EventType.BUG_REPORT, dedup_key=key)
         event2 = _make_event(EventType.BUG_REPORT, dedup_key=key)
 
-        result = analyze([event1, event2], set(), {})
+        analyze([event1, event2], set(), {})
         # Both have same dedup_key but since they are different objects,
         # the first passes, second passes too (analyze checks processed_keys set).
         # To truly dedup, the first needs to be marked as processed.

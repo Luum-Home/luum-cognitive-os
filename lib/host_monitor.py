@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Host Resource Monitor — adaptive agent throttling based on system pressure.
 
 Cross-platform (macOS Darwin + Linux). No external dependencies.
@@ -17,7 +17,6 @@ Python 3.9+ compatible. stdlib only: platform, subprocess, shutil, os, json.
 
 from __future__ import annotations
 
-import json
 import os
 import platform
 import shutil

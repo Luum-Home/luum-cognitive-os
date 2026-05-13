@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-integration-shard-plan.
 
 Bilateral assertion: invoking the script via python3 on any harness with

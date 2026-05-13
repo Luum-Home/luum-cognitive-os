@@ -59,7 +59,7 @@ def _fixture(root: Path, script_body: str) -> Path:
 
 
 def test_static_audit_blocks_propose_only_manifest_write_fixture(tmp_path: Path) -> None:
-    manifest = _fixture(tmp_path, "# SCOPE: both\nfrom pathlib import Path\nPath('manifests/x.yaml').write_text('bad')\n")
+    manifest = _fixture(tmp_path, "# SCOPE: os-only\nfrom pathlib import Path\nPath('manifests/x.yaml').write_text('bad')\n")
 
     report = primitive_authority_audit.build_report(tmp_path, manifest, include_dynamic=False)
 
@@ -74,7 +74,7 @@ def test_static_audit_blocks_propose_only_manifest_write_fixture(tmp_path: Path)
 def test_static_audit_allows_propose_only_review_artifact_fixture(tmp_path: Path) -> None:
     manifest = _fixture(
         tmp_path,
-        "# SCOPE: both\nfrom pathlib import Path\nPath('.cognitive-os/improvements/proposals/x.json').write_text('{}')\n",
+        "# SCOPE: os-only\nfrom pathlib import Path\nPath('.cognitive-os/improvements/proposals/x.json').write_text('{}')\n",
     )
 
     report = primitive_authority_audit.build_report(tmp_path, manifest, include_dynamic=False)

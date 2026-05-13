@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proofs for scripts/push_collision_detect.py — ADR-116 P4.2.
 
 These tests run the CLI against a temporary, non-SO git repository to confirm

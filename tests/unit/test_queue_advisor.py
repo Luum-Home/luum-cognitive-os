@@ -4,20 +4,15 @@ from __future__ import annotations
 
 import json
 import os
-import time
 from datetime import datetime, timezone, timedelta
-from typing import Any, Dict, List
+from typing import Any, Dict
 from unittest.mock import patch, MagicMock
 
-import pytest
 
 from lib.queue_advisor import (
     QueueAdvisor,
     _minutes_since,
     _estimate_tokens,
-    _MODEL_EFFICIENCY,
-    _BUDGET_PRESSURE_THRESHOLD,
-    _CONTEXT_PRESSURE_THRESHOLD,
 )
 
 
@@ -293,7 +288,7 @@ class TestStaleness:
         item_5min = _make_item(minutes_ago=5)
         item_20min = _make_item(minutes_ago=20)
 
-        state = advisor.get_runtime_state()
+        advisor.get_runtime_state()
         score_5 = advisor._score_staleness(item_5min)
         score_20 = advisor._score_staleness(item_20min)
 
@@ -302,7 +297,7 @@ class TestStaleness:
     def test_staleness_score_capped_at_100(self, tmp_path):
         advisor = _make_advisor(tmp_path)
         very_old = _make_item(minutes_ago=300)  # 5 hours
-        state = advisor.get_runtime_state()
+        advisor.get_runtime_state()
         score = advisor._score_staleness(very_old)
         assert score == 100.0
 

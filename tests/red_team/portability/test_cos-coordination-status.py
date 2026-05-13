@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 """
 Portability proofs for scripts/cos-coordination-status.sh — P3.3 coordination

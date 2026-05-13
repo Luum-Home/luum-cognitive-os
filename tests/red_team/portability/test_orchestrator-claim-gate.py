@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proofs for hooks/orchestrator-claim-gate.sh.
 
 These tests invoke the hook against a minimal, non-SO repository to prove that

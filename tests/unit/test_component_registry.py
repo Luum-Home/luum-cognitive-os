@@ -1,6 +1,5 @@
 """Tests for lib/component_registry.py — component registration detection."""
 
-import pytest
 from pathlib import Path
 
 from lib.component_registry import (

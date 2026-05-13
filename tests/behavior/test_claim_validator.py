@@ -8,7 +8,6 @@ metrics, phase-aware blocking, and test count claim detection.
 import json
 import os
 import subprocess
-import tempfile
 
 import pytest
 

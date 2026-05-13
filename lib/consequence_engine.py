@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """OKR-driven consequence engine for Cognitive OS.
 
 Connects performance metrics to real consequences: when agents/skills
@@ -18,12 +18,11 @@ Author: luum
 """
 
 import json
-import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from lib.metric_event import MetricEvent, append_event
 
@@ -636,7 +635,7 @@ class ConsequenceEngine:
 
         # Collect recent promotions
         promotions = [e for e in raw if e.get("record_type") == "promotion"]
-        warnings_and_degrades = [
+        [
             e for e in raw
             if e.get("record_type") in ("action",)
             and e.get("consequence") in ("warn", "degrade")

@@ -23,7 +23,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO = Path(__file__).parent.parent.parent
 COS_INIT_PY = REPO / "scripts" / "cos_init.py"

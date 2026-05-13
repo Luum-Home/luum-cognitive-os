@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Migration helper: legacy rate-limit-queue.json → JSONL append-only format.
 
 This module exposes the on-boot migration logic that ``RateLimitQueue.__init__``
@@ -32,9 +32,7 @@ Python 3.9+ compatible. Author: luum.
 
 from __future__ import annotations
 
-import json
 import os
-import time
 from typing import Optional
 
 # Re-export the canonical implementation from rate_limiter so callers have

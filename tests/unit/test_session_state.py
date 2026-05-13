@@ -12,7 +12,6 @@ import sys
 import threading
 import time
 from pathlib import Path
-from typing import Any, Dict, Optional
 
 import pytest
 
@@ -91,7 +90,7 @@ class TestSaveLoadRoundtrip:
 
     def test_basic_roundtrip(self, state_dir: Path) -> None:
         """save_state followed by load_state returns the same data."""
-        saved = save_state(
+        save_state(
             session_id="sess-001",
             agents=[{"id": "a1", "description": "test agent", "status": "running", "files_expected": ["f.py"], "files_created": []}],
             pending_tasks=["task-a", "task-b"],

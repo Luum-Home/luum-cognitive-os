@@ -19,7 +19,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from lib.tool_adoption_evaluator import (
     ToolAdoptionEvaluator,
     _classify_deployment,
-    _classify_license,
     _classify_ui,
     _compute_overlap,
 )

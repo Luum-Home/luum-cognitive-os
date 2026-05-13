@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import importlib.util
-import json
 import textwrap
 from pathlib import Path
 
@@ -132,7 +131,7 @@ def test_query_ranks_path_match_highest(indexed_project: Path) -> None:
     # lib/rate_limiter.py has path match (score +3)
     path_matches = [r for r in results if "rate_limiter" in r["key"]]
     assert path_matches, "Expected at least one result with rate_limiter in path"
-    highest_score = results[0]["score"]
+    results[0]["score"]
     for pm in path_matches:
         assert pm["score"] >= 1
 

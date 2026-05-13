@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Behavior tests for ADR-054/055 docs writers.
 
 Covers:

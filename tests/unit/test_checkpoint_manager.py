@@ -15,7 +15,6 @@ import sys
 import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Any, Dict, List
 
 import pytest
 
@@ -24,7 +23,7 @@ sys.path.insert(
     0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
 
-from lib.checkpoint_manager import Checkpoint, CheckpointManager
+from lib.checkpoint_manager import CheckpointManager
 
 
 # ---------------------------------------------------------------------------
@@ -137,7 +136,7 @@ class TestCreateCheckpoint:
         """A git stash entry with cos- prefix should exist after checkpoint."""
         cp = manager.create_checkpoint()
 
-        result = subprocess.run(
+        subprocess.run(
             ["git", "stash", "list"],
             cwd=str(dirty_repo),
             capture_output=True,

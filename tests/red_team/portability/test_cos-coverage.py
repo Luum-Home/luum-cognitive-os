@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-coverage (bash shim).
 
 Verifies the shim correctly delegates to cos_coverage.py and works portably

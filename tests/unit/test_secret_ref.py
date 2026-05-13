@@ -4,7 +4,6 @@ Validates SecretRef resolution from env, file, and literal sources,
 config secret resolution, masking, and edge cases.
 """
 
-import os
 
 import pytest
 

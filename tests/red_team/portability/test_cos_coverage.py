@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos_coverage.py and scripts/cos-coverage shim.
 
 These probes execute the CLI against temporary non-SO project directories to

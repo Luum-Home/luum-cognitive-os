@@ -9,7 +9,6 @@ and reloads lib.process_registry to pick up the new path.
 """
 from __future__ import annotations
 
-import importlib
 import json
 import os
 import subprocess
@@ -17,7 +16,6 @@ import sys
 import time
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 REGISTER_BG = PROJECT_ROOT / "hooks" / "_lib" / "register-bg.sh"

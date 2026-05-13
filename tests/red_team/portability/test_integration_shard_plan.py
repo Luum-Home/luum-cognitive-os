@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for lib/integration_shard_plan.py — F1 sharding primitive.
 
 Bilateral assertion: plan_shards() produces deterministic, balanced shards on

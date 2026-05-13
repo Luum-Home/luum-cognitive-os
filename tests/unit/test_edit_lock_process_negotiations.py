@@ -100,7 +100,7 @@ def test_already_seen_request_is_skipped(fake_project):
     req_file = _make_negotiation_request(fake_project, my_session="session-A", requester_session="session-B")
     # Pre-mark as seen.
     req_file.write_text(req_file.read_text() + 'seen_at: "2026-04-30T09:00:00Z"\n')
-    original_content = req_file.read_text()
+    req_file.read_text()
 
     r = _run_hook(fake_project, session="session-A")
     assert r.returncode == 0

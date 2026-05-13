@@ -4,13 +4,11 @@ Validates claim extraction, claim verification against filesystem,
 hallucination score calculation, and report formatting.
 """
 
-import os
 
 import pytest
 
 from lib.ground_truth import (
     Claim,
-    VerificationResult,
     extract_claims,
     format_verification_report,
     verify_all_claims,

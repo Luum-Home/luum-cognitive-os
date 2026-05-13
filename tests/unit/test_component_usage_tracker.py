@@ -7,7 +7,6 @@ Run with: pytest tests/unit/test_component_usage_tracker.py -v
 """
 
 import json
-import os
 import sys
 from pathlib import Path
 

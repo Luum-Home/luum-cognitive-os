@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/claim-validator.sh — ADR-111 consumer projection.
 
 This test proves the documented gap and the commit-time fallback enforcement path.

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for lib/dspy_pilot.py — W3-2 DSPy structured-skill pilot.
 
 Bilateral assertion: importing the module and invoking build_pilot_report() works

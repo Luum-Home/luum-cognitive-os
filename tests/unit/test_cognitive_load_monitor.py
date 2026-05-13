@@ -8,7 +8,6 @@ Python 3.9+ compatible.
 """
 
 import json
-import time
 from pathlib import Path
 
 import pytest
@@ -17,7 +16,6 @@ from lib.cognitive_load_monitor import (
     CognitiveLoadMonitor,
     CognitiveSnapshot,
     _BASELINE_WINDOW,
-    _SAVE_AND_SPLIT_THRESHOLD,
 )
 
 pytestmark = pytest.mark.unit

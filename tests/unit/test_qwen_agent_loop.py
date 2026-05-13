@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Unit tests for lib/qwen_agent_loop (ADR-051 Phase 1).
 
 All tests mock the openai-compatible client via types.SimpleNamespace — no

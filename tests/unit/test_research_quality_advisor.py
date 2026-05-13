@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Tests for lib/research_quality_advisor.py (ADR-175).
 
 Three guarantees verified against the 2026-05-05 audit reports:

@@ -201,7 +201,7 @@ class TestModelCatalogIntegration:
         from lib.model_catalog import ModelCatalog
 
         try:
-            canonical = ModelCatalog.resolve("claude-opus-4-20250514")
+            ModelCatalog.resolve("claude-opus-4-20250514")
             # If the alias exists, _tier_index should resolve it
             assert _tier_index("claude-opus-4-20250514") == 3
         except KeyError:

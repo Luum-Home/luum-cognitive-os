@@ -17,7 +17,6 @@ import textwrap
 import types
 import json
 from pathlib import Path
-from unittest import mock
 
 import pytest
 

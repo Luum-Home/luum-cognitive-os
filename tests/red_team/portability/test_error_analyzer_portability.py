@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proof for error-analyzer SKILL.md."""
 from __future__ import annotations
 

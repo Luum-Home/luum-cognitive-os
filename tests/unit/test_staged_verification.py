@@ -7,7 +7,6 @@ Python 3.9+ compatible.
 """
 
 from pathlib import Path
-from typing import Dict, List
 from unittest.mock import patch
 
 import pytest

@@ -7,7 +7,6 @@ Python 3.9+ compatible.
 """
 
 import json
-import os
 from pathlib import Path
 
 import pytest

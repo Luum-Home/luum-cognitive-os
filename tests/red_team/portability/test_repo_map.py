@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for lib/repo_map.py — W3-1 repo-map context selector.
 
 Bilateral assertion: build_repo_map() runs on any harness with python3 against

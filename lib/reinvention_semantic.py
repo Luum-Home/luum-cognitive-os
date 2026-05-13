@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Reinvention-gate Phase B — semantic similarity index (Jaccard + Embeddings).
 
 See: docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md
@@ -547,7 +547,6 @@ class EmbeddingsIndex:
 
 def _cli() -> int:
     import argparse
-    import os
     parser = argparse.ArgumentParser(
         description="Reinvention semantic index (Phase B-α Jaccard / Phase B-β Embeddings)."
     )

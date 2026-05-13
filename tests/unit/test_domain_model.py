@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Behavior tests for lib.domain_model (ADR-054 Phase 2).
 
 Real filesystem via tmp_path. No mocks.
@@ -11,7 +11,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
 from lib.domain_model import (
     DomainModelScaffolder,

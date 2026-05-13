@@ -16,7 +16,6 @@ from lib.smart_reader import (
     SmartReader,
     SmartReaderConfig,
     FileSummary,
-    ReadResult,
     format_file_advisory,
     _CHARS_PER_TOKEN,
 )

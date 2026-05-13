@@ -8,7 +8,6 @@ Tests that concurrent enqueue/dequeue operations:
 from __future__ import annotations
 
 import json
-import os
 import sys
 import threading
 import time
@@ -122,7 +121,6 @@ def test_lock_timeout_logged_and_no_deadlock(tmp_path: Path, monkeypatch: pytest
     monkeypatch.setenv("_QUEUE_LOCK_TIMEOUT_LOG", log_path)
     # Patch the module-level constant so _log_lock_timeout writes to our log
     import lib.rate_limiter as rl_mod
-    original_log = rl_mod._QUEUE_LOCK_TIMEOUT_LOG
     monkeypatch.setattr(rl_mod, "_QUEUE_LOCK_TIMEOUT_LOG", log_path)
 
     queue_path = str(tmp_path / "queue.json")

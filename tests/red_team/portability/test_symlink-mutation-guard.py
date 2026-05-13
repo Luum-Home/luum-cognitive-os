@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for hooks/symlink-mutation-guard.sh — ADR-111 consumer projection.
 
 Verifies that the symlink-mutation-guard fires equivalently under simulated
@@ -6,7 +6,7 @@ Codex invocation (PreToolUse[Bash] matcher, COGNITIVE_OS_HARNESS=codex).
 
 Projection type: bash-projectable (native Codex PreToolUse bash matcher).
 
-Paired with: hooks/symlink-mutation-guard.sh  (# SCOPE: both)
+Paired with: hooks/symlink-mutation-guard.sh  (# SCOPE: os-only)
 ADR reference: ADR-111 §Gate-1
 """
 

@@ -1,10 +1,10 @@
-# SCOPE: both
+# SCOPE: os-only
 """Threat classification using STRIDE categories."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from dataclasses import dataclass
+from typing import Dict, List
 
 # ---------------------------------------------------------------------------
 # STRIDE keyword mapping

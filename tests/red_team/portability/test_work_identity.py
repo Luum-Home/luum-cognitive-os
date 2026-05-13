@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proofs for packages/agent-coordination/lib/work_identity.py.
 
 These tests run work_identity functions against a temporary, standalone

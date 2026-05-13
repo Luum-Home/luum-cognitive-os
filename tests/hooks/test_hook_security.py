@@ -7,8 +7,6 @@ Focused tests for:
 """
 
 import json
-import os
-from pathlib import Path
 
 import pytest
 

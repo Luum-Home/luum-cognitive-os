@@ -14,7 +14,6 @@ import pytest
 from lib.planning_poker import (
     Complexity,
     Estimate,
-    PokerRound,
     build_consensus,
     calculate_accuracy,
     create_estimate,

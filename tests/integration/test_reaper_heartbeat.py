@@ -13,7 +13,6 @@ from __future__ import annotations
 import os
 import signal
 import subprocess
-import sys
 import time
 from pathlib import Path
 
@@ -57,7 +56,6 @@ def _run_hook(tmp_project: Path, env_overrides: dict | None = None) -> tuple[int
 
     Returns (returncode, stdout_text, stderr_text).
     """
-    import tempfile
 
     env = {
         **os.environ,

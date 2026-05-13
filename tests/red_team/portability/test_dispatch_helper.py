@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for lib/dispatch_helper.py — ADR-264 envelope integration.
 
 Falsification probe: wrap_dispatch_tool_result must exist and apply envelope

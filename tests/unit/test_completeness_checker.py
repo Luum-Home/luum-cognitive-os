@@ -1,8 +1,6 @@
 import pytest
 
 from lib.completeness_checker import (
-    ArtifactStatus,
-    CompletenessReport,
     check_artifact,
     check_predev_artifacts,
     format_report,

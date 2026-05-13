@@ -3,12 +3,8 @@ from __future__ import annotations
 
 import os
 import sys
-import subprocess
-from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
-import pytest
-import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from lib.release_analyzer import ReleaseAnalyzer, _bump

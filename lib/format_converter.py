@@ -14,7 +14,7 @@ Python 3.9+ compatible. No external dependencies.
 from __future__ import annotations
 
 import json
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 
 def _to_str(value: Any) -> str:

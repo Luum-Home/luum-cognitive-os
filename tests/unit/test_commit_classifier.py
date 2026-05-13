@@ -1,6 +1,5 @@
 """Tests for lib/commit_classifier.py"""
 
-import pytest
 from lib.commit_classifier import classify_files, detect_related_files, propose_commits
 
 

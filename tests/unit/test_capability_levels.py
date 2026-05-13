@@ -9,7 +9,6 @@ import pytest
 from lib.capability_levels import (
     DEFAULT_AUTO_DISABLE,
     DEFAULT_LEVEL,
-    VALID_LEVELS,
     format_capability_report,
     get_auto_disable_map,
     get_capability_level,

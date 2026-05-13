@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 """Portability proofs for scripts/precommit_content_hash.py — P4.1 (ADR-116).
 

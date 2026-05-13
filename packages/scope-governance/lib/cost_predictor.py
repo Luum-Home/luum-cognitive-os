@@ -13,7 +13,6 @@ Python 3.9+ compatible.
 from __future__ import annotations
 
 import json
-import os
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone

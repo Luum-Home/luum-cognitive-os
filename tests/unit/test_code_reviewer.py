@@ -4,7 +4,6 @@ Validates code review logic: file review, diff review, adversarial protocol
 enforcement, engram integration helpers, and report formatting.
 """
 
-import os
 import textwrap
 
 import pytest
@@ -196,7 +195,7 @@ class TestReviewFiles:
         )
         reviewer = CodeReviewer(project_root=str(tmp_path))
         report = reviewer.review_files(["mixed.py"])
-        severities = {f.severity for f in report.findings}
+        {f.severity for f in report.findings}
         # Should have findings — at least the security ones
         assert len(report.findings) >= 1
         # Every finding has a valid severity

@@ -10,14 +10,13 @@ Requires: pip install testcontainers pytest cognee
 import os
 import time
 import pytest
-import asyncio
 
 # Skip all tests if testcontainers not available
 tc_available = True
 RUN_COGNEE_REFERENCE = os.environ.get("COS_RUN_COGNEE_REFERENCE") == "1"
 try:
     from testcontainers.core.container import DockerContainer
-    from testcontainers.core.network import Network
+    from testcontainers.core.network import Network  # noqa: F401
 except ImportError:
     tc_available = False
 

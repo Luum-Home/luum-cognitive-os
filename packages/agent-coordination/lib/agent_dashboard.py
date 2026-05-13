@@ -14,12 +14,11 @@ Python 3.9+ compatible.
 """
 
 import argparse
-import json
 import os
 import sys
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

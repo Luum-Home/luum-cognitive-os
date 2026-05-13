@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-dspy-pilot.
 
 Bilateral assertion: invoking the script via python3 on any harness produces

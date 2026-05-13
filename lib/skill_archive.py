@@ -16,7 +16,6 @@ Author: luum
 
 import hashlib
 import json
-import os
 import statistics
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -401,7 +400,7 @@ class SkillArchiveManager:
         lines = ["SKILL ARCHIVE REPORT", ""]
         names = sorted(by_skill.keys())
         for i, name in enumerate(names):
-            snaps = by_skill[name]
+            by_skill[name]
             archive = self.get_archive(name)
             trend_info = self.get_skill_trend(name)
             is_last = i == len(names) - 1

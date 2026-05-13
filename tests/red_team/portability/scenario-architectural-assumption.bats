@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# SCOPE: both
+# SCOPE: os-only
 # Portability test for scenario architectural-assumption — verifies the
 # scenario YAML executes correctly in a non-SO mini-repo (tempdir) and
 # that the symlink-mutation-guard catches the false-architecture pattern.

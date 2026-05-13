@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability proof for systematic-debugging SKILL reference docs.
 
 Covers BOTH defense-in-depth.md AND root-cause-tracing.md under references/.

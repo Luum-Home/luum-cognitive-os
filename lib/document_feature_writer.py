@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Document-feature adopter-path writer (ADR-054 Phase 2 extension).
 
 Extends the `document-feature` skill so its output can be routed to the
@@ -16,7 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 __all__ = ["BacklogAppender", "AppendResult", "render_entry"]
 

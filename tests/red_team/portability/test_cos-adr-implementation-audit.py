@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-adr-implementation-audit.py (ADR-281).
 
 Bilateral: synthetic ADR + manifest combinations exercise the audit.

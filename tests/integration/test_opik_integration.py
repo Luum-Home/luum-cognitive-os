@@ -8,20 +8,16 @@ Run: python -m pytest tests/integration/test_opik_integration.py -v
 Requires: pip install testcontainers pytest opik mysql-connector-python
 """
 import os
-import time
 import pytest
-import json
-import urllib.request
-import urllib.error
 
 # Skip all tests if testcontainers not available
 tc_available = True
 RUN_OPIK_REFERENCE = os.environ.get("COS_RUN_OPIK_REFERENCE") == "1"
 try:
     from testcontainers.mysql import MySqlContainer
-    from testcontainers.core.container import DockerContainer
+    from testcontainers.core.container import DockerContainer  # noqa: F401
     from testcontainers.core.network import Network
-    from testcontainers.core.waiting_utils import wait_for_logs
+    from testcontainers.core.waiting_utils import wait_for_logs  # noqa: F401
 except ImportError:
     tc_available = False
 
@@ -112,7 +108,7 @@ class TestOpikService:
         os.environ["OPIK_API_URL"] = "http://localhost:5173/api"
         os.environ["OPIK_PROJECT_NAME"] = "cognitive-os-test"
         try:
-            import opik
+            import opik  # noqa: F401
             # Verify env vars are respected (doesn't connect)
             assert os.environ.get("OPIK_API_URL") == "http://localhost:5173/api"
         except ImportError:

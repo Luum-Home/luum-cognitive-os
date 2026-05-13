@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probe for lib/tool_result_envelope.py — ADR-264.
 
 Behavioral probes verifying that the envelope logic is harness-agnostic:

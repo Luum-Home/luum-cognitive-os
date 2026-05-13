@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-pending-truth-verify (ADR-273 Slice B).
 
 Bilateral assertion: verifier reads a synthetic ledger, runs deterministic

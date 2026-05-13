@@ -11,13 +11,11 @@ the full cognitive-os infrastructure.
 from __future__ import annotations
 import os
 import subprocess
-import sys
 import time
 import threading
 import signal
 from pathlib import Path
 
-import pytest
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -245,7 +243,6 @@ class TestReaperSingleInstance:
             stderr=subprocess.DEVNULL,
             start_new_session=True,
         )
-        orphan_pid = orphan.pid
         time.sleep(0.3)  # give it a moment to start
 
         # Now invoke the hook for our real project_dir.

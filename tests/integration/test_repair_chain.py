@@ -85,7 +85,7 @@ class TestRepairChain:
             "1",
         )
 
-        result = subprocess.run(
+        subprocess.run(
             ["bash", str(hook)],
             stdin=open(input_file),
             capture_output=True,

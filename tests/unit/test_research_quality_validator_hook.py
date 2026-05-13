@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Tests for hooks/research-quality-validator.sh (ADR-175).
 
 The hook is non-blocking and writes a JSONL log entry per scored report.

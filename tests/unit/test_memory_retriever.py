@@ -3,9 +3,7 @@ Unit tests for lib/memory_retriever.py
 """
 
 import pytest
-import os
 import sqlite3
-import tempfile
 from lib.memory_retriever import MemoryRetriever, RetrievalResult
 
 

@@ -19,8 +19,7 @@ import os
 import re
 import subprocess
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Tuple
 
 
 @dataclass
@@ -575,10 +574,6 @@ class PatternDetector:
         structural_asserts = 0
 
         # Patterns indicating structural-only tests
-        structural_patterns = {
-            "exists", "is_file", "is_dir", "isfile", "isdir",
-            "path.exists", "os.path.isfile", "os.path.isdir",
-        }
         structural_string_patterns = [
             re.compile(r'assert.*\.exists\(\)'),
             re.compile(r'assert.*is_file\(\)'),

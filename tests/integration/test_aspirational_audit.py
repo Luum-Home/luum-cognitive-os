@@ -7,12 +7,9 @@ All tests use tmp_path with synthetic project structures.
 from __future__ import annotations
 
 import json
-import os
-import sys
 import time
 from pathlib import Path
 
-import pytest
 
 # ---------------------------------------------------------------------------
 # Import target under test (resolve absolute path so it works from any cwd)
@@ -233,7 +230,6 @@ class TestCLIFlags:
         jsonl = project / ".cognitive-os" / "metrics" / "aspirational-audit.jsonl"
         assert not jsonl.exists(), "JSONL should not be written in --dry-run"
 
-        import glob
         reports = list((project / "docs" / "reports").glob("aspirational-audit-*.md"))
         assert len(reports) == 0, "Report should not be written in --dry-run"
 
@@ -343,7 +339,7 @@ class TestTimestampMarker:
         aa.main(["--project-root", str(project)])
 
         jsonl = project / ".cognitive-os" / "metrics" / "aspirational-audit.jsonl"
-        count_after_first = len(jsonl.read_text().splitlines()) if jsonl.exists() else 0
+        len(jsonl.read_text().splitlines()) if jsonl.exists() else 0
 
         # Simulate the hook throttle: marker was just written, so a second full
         # audit call would normally fire (script doesn't read its own marker),

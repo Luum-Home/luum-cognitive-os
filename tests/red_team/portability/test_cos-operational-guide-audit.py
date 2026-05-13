@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-operational-guide-audit.py (ADR-274).
 
 Bilateral assertion: audit reads synthetic ADRs, classifies each by the

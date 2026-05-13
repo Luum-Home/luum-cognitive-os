@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 
 from lib.harness_adapter.aider import AiderAdapter, UnsupportedAiderVersion
-from lib.harness_adapter.base import AgentEnd, AgentStart, ParseError, ToolUse
+from lib.harness_adapter.base import AgentStart, ParseError, ToolUse
 
 
 # ---------------------------------------------------------------------------

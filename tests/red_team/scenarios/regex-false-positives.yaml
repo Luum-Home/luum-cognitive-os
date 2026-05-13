@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 id: regex-false-positives
 name: "Regex false positives on credit card pattern"
 description: |

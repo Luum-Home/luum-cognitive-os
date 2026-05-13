@@ -4,8 +4,7 @@ Validates prompt building, response parsing, should_cross_verify logic,
 cross_verify fallback behavior, and formatting.
 """
 
-import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 

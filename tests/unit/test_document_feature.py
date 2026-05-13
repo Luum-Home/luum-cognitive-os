@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Behavior tests for lib.document_feature_writer (ADR-054 Phase 2 extension).
 
 Tests ONLY the new --project-dir path (backlog append). The original

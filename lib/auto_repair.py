@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Auto-repair system — worktree-isolated repair engine.
 
 Classifies errors, applies known remediations from a registry, and executes
@@ -395,7 +395,7 @@ class AutoRepairEngine:
         # Remove the repair branch (ignore errors — HEAD may not have committed)
         try:
             # Find branch name from worktree directory name
-            slug = re.sub(r"[^a-z0-9]", "-", "")  # placeholder
+            re.sub(r"[^a-z0-9]", "-", "")  # placeholder
             # Instead, list worktrees to find the branch name, then delete
             result = subprocess.run(
                 ["git", "branch", "--list", f"repair/*-*"],
@@ -442,12 +442,6 @@ class AutoRepairEngine:
         Tries several verifiers and returns True if none fail hard.
         Skips verifiers that are not installed.
         """
-        verifiers = [
-            # Python syntax check
-            (["python3", "-m", "py_compile"], "*.py"),
-            # Shell syntax check
-            (["bash", "-n"], "*.sh"),
-        ]
 
         # Try to find and run a project-level test command
         for test_cmd in [

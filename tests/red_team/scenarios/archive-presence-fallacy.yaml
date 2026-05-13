@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 id: archive-presence-fallacy
 name: "Archive presence fallacy"
 description: |

@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Portability probes for scripts/cos-doc-cross-reference-audit.py (ADR-275).
 
 Bilateral: builds a synthetic mini-project where some surfaces mention

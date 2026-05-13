@@ -8,13 +8,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
 
 from lib.license_guard import (
     BLOCKED_LICENSES,
-    CAUTION_LICENSES,
-    SAFE_LICENSES,
-    LicenseCheckResult,
     auto_block_in_content_policy,
     check_and_enforce,
     check_license,

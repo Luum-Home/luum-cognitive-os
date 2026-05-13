@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Checkpoint Manager -- periodic WAL-like saves for crash recovery.
 
 Creates named git stashes at regular intervals so uncommitted work survives
@@ -16,7 +16,7 @@ import os
 import subprocess
 import tempfile
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 

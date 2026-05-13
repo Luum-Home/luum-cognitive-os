@@ -244,7 +244,6 @@ class TestDriftDetection:
         # We simulate by writing a temporary yaml that introduces drift.
         # Simpler: invoke the script with a monkey-patched annotation parser via
         # a helper script. Easiest path: patch cognitive-os.yaml temporarily.
-        import shutil
         yaml_path = REPO_ROOT / "cognitive-os.yaml"
         backup = yaml_path.read_text()
         try:

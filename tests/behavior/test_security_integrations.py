@@ -12,8 +12,6 @@ Each integration follows the ecosystem-tools pattern:
 - Configuration in cognitive-os.yaml
 """
 
-import json
-import os
 from pathlib import Path
 
 import pytest

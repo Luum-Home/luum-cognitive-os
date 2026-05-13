@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Behavioral tests for check_test_quality.py scope isolation.
 
 These tests verify that the script:

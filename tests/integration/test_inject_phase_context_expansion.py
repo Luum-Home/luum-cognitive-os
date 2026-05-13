@@ -120,7 +120,7 @@ class TestRefKeyExpansion:
         # We verify that any marker that ended up in CONTEXT_BUF was handled:
         # if the rule file exists, expansions should not leave raw markers.
         # Count remaining unexpanded markers from the rules/ directory.
-        remaining = [m for m in ["[`adaptive-bypass`]"] if m in additional_ctx]
+        [m for m in ["[`adaptive-bypass`]"] if m in additional_ctx]
         # If the preamble injected the marker, it should be gone.
         # If it wasn't injected, remaining is empty — still valid.
         # The key assertion: no import errors crashed the expansion.
@@ -128,7 +128,6 @@ class TestRefKeyExpansion:
             "ref_key_loader should not crash during expansion"
         )
         # The adaptive-bypass rule content must appear if the marker was present
-        rule_excerpt = "Adaptive Bypass"
         if "[`adaptive-bypass`]" not in additional_ctx:
             # Marker was not injected; expansion not triggered — test is still valid.
             pass

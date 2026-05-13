@@ -7,7 +7,6 @@ logic independently of the shell hook.
 """
 
 import re
-import pytest
 
 
 # ── Inline Python implementation of the logic ─────────────────────────────────
@@ -138,7 +137,6 @@ class TestUnavailableBaseline:
     def test_unavailable_does_not_warn_on_failures(self):
         """Without a real baseline we can't attribute blame, so no warning."""
         baseline = "baseline: unavailable"
-        after = "8 passed, 2 failed in 1.50s"
         # From 0 failed to 2 failed — would fire without the unavailable check
         # The hook itself checks for the sentinel string before calling parse;
         # at the Python level, parse returns zeros, so delta_failed = 2.

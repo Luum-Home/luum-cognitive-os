@@ -8,7 +8,6 @@ import tempfile
 import time
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 HOOK = PROJECT_ROOT / "hooks" / "usage-health-check.sh"
@@ -92,7 +91,7 @@ def test_runs_if_stale():
         stale_ts = int(time.time()) - (25 * 3600)
         last_run_file.write_text(str(stale_ts))
 
-        mtime_before = last_run_file.stat().st_mtime
+        last_run_file.stat().st_mtime
         # Run from project root (python3 import path needs lib/)
         result = run_hook(cwd=str(PROJECT_ROOT))
 

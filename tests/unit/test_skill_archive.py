@@ -13,9 +13,7 @@ from pathlib import Path
 import pytest
 
 from lib.skill_archive import (
-    SkillArchive,
     SkillArchiveManager,
-    SkillSnapshot,
     _content_hash,
 )
 

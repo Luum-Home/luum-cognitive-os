@@ -61,13 +61,6 @@ class TestDetectorImport:
         from lib.escalation_detector import EscalationDetector
 
         # These are the documented signal types from the rule.
-        expected_types = {
-            "loop_detected",
-            "no_progress",
-            "confidence_drop",
-            "error_repeat",
-            "timeout_risk",
-        }
         # We verify by checking the method names exist for each check.
         d = EscalationDetector()
         for check_name in [

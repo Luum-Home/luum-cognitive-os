@@ -17,10 +17,8 @@ import os
 import shutil
 import stat
 import subprocess
-import time
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 HOOK_PATH = REPO_ROOT / "hooks" / "agent-bash-cwd-enforcer.sh"

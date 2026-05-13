@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import sys
 import textwrap
 from pathlib import Path
 
@@ -39,7 +38,7 @@ def fake_project(tmp_path: Path) -> Path:
     lib.mkdir()
     (lib / "sample_module.py").write_text(
         textwrap.dedent("""\
-            # SCOPE: both
+            # SCOPE: os-only
             class Foo:
                 pass
 

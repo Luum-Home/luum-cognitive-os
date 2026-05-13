@@ -3,7 +3,6 @@
 import json
 
 import pytest
-from pathlib import Path
 from lib.session_parser import (
     parse_session,
     list_sessions,

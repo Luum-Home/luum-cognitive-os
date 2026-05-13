@@ -23,7 +23,6 @@ import subprocess
 from pathlib import Path
 from typing import Optional, Tuple
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 COS_UPDATE = REPO_ROOT / "scripts" / "cos-update.sh"
@@ -230,7 +229,7 @@ class TestRegenerateSettings:
         sha_file = project / ".cognitive-os" / "state" / "apply-efficiency-profile.sha"
         assert not sha_file.exists()
 
-        result = _run_harness(project, marker)
+        _run_harness(project, marker)
         # The harness itself uses `set -e` but the regen function returns 1
         # rather than `exit 1`, so the harness script should still terminate
         # cleanly via the trailing `echo EXIT=...`. We accept either pattern:

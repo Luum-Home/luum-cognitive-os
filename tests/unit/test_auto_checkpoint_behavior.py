@@ -7,7 +7,6 @@ Verifies:
 - Hook creates a checkpoint when the marker is older than the 5-minute interval
 """
 
-import json
 import os
 import subprocess
 import time
@@ -104,7 +103,7 @@ class TestAutoCheckpointSkipsWhenMarkerRecent:
 
         # Marker timestamp should NOT have been updated (hook exited early)
         marker_value_after = int(marker.read_text().strip())
-        delta = abs(marker_value_after - int(time.time()))
+        abs(marker_value_after - int(time.time()))
         # It should still reflect the original "recent" value (within a couple
         # of seconds tolerance for slow CI)
         # If the hook ran to completion it would update the marker to right now.
@@ -117,7 +116,7 @@ class TestAutoCheckpointCreatesWhenMarkerMissing:
         """Hook must run (and create/update the marker) when no marker exists."""
         # tmp_path is NOT a git repo, so the hook will skip the stash step
         # but it should still update the marker after the git check.
-        chk_dir = _checkpoint_dir(tmp_path)
+        _checkpoint_dir(tmp_path)
         # Do NOT create the marker
         assert not _marker_file(tmp_path).exists()
 

@@ -4,7 +4,6 @@ Validates issue classification, branch name generation, worktree path
 construction, port assignment, PR dedup check logic, status comment
 formatting, and mock fetch_issue with subprocess.
 """
-import hashlib
 import json
 import os
 import sys

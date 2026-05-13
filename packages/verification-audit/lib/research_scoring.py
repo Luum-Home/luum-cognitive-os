@@ -12,7 +12,7 @@ import math
 import re
 import string
 from datetime import datetime, timezone
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set
 
 # ---------------------------------------------------------------------------
 # Scoring weights

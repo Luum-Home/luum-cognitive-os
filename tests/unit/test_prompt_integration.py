@@ -10,8 +10,6 @@ from __future__ import annotations
 
 import pytest
 from pathlib import Path
-from typing import Any, Dict, List
-from unittest.mock import patch
 
 pytestmark = pytest.mark.unit
 
@@ -157,7 +155,7 @@ class TestContextDietRuleSelection:
         diet_reco = ContextDiet({"project": {"phase": "reconstruction"}})
 
         prod_rules = set(diet_prod.select_rules("implement"))
-        reco_rules = set(diet_reco.select_rules("implement"))
+        set(diet_reco.select_rules("implement"))
 
         # Production adds phase-aware-agents.md
         assert "phase-aware-agents.md" in prod_rules
@@ -445,10 +443,10 @@ class TestNoBreakageOfExistingModules:
         from lib.prompt_builder import PromptBuilder
 
         # Use both independently
-        rules = get_minimal_rules("review")
+        get_minimal_rules("review")
         diet = ContextDiet({"project": {"phase": "production"}})
         content = diet.get_lean_context("review")
-        blocks = apply_cache_to_system_prompt(content)
+        apply_cache_to_system_prompt(content)
 
         # And through the builder
         builder = PromptBuilder(diet=diet, project_dir=".", enable_cache=True)

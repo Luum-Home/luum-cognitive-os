@@ -14,7 +14,6 @@ import stat
 import subprocess
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 HOOK_PATH = REPO_ROOT / "hooks" / "agent-working-dir-inject.sh"

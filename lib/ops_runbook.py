@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Ops runbook scaffolder — operations.md + admin-processes.md + monitoring.md
 under docs/06-backoffice/ (ADR-054 Phase 2).
 
@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 __all__ = ["OpsRunbookScaffolder", "ScaffoldResult", "FILES"]
 

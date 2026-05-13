@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 """Code Reviewer — Engram-integrated code review with adversarial protocol.
 
 Provides structured code review with severity tiers (BLOCKER/CONCERN/SUGGESTION/QUESTION),
@@ -20,15 +20,13 @@ Author: luum
 License: MIT
 """
 
-import json
 import os
 import re
 import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, List, Optional
 
 
 class Severity(str, Enum):

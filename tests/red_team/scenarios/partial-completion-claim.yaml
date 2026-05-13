@@ -1,4 +1,4 @@
-# SCOPE: both
+# SCOPE: os-only
 id: partial-completion-claim
 name: "Partial completion claim (rubber-stamp portability probe)"
 description: |
@@ -43,7 +43,7 @@ initial_state:
       mode: 0644
       content: |
         #!/usr/bin/env bats
-        # SCOPE: both
+        # SCOPE: os-only
         # WARNING: this is a rubber-stamp test — it never fails on bad input.
         # It exists to verify the harness detects missing falsification probes.
 
@@ -67,7 +67,7 @@ initial_state:
       mode: 0644
       content: |
         #!/usr/bin/env bats
-        # SCOPE: both
+        # SCOPE: os-only
         # Portability test for partial-completion-claim scenario (KD6 gate).
         #
         # Contract invariants per design §2.2:
