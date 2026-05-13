@@ -1,19 +1,26 @@
 <!-- SCOPE: both -->
 ---
 name: agent-dashboard
-description: "Use when you need this Cognitive OS skill: Show real-time status of all running background agents; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Show real-time status of all running background agents; do not use
+  when a narrower skill directly matches the task.'
 audience: os
 scope: os
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bagent[- ]?dashboard\b'
-    confidence: 0.95
-  - pattern: '\b(agent\s+status|running\s+agents|background\s+agents)\b'
-    confidence: 0.8
-  - pattern: '\bshow\s+agents?\b'
-    confidence: 0.75
+- pattern: \bagent[- ]?dashboard\b
+  confidence: 0.95
+- pattern: \b(agent\s+status|running\s+agents|background\s+agents)\b
+  confidence: 0.8
+- pattern: \bshow\s+agents?\b
+  confidence: 0.75
+summary_line: Show real-time status of all running background agents.
+routing_intents:
+- intent: agent_dashboard_request
+  description: User asks to show real-time status of all running background agents.
+  confidence: 0.85
 ---
 
 # /agent-dashboard

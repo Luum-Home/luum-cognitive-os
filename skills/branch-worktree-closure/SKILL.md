@@ -1,22 +1,39 @@
 <!-- SCOPE: both -->
 ---
 name: branch-worktree-closure
-description: Use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature worktrees and must decide whether to merge, preserve, or remove them safely.
+description: Use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature worktrees
+  and must decide whether to merge, preserve, or remove them safely.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
 audience: both
-tags: [git, worktrees, branches, merge-queue, coordination, cleanup]
-summary_line: "Close leftover agent branches/worktrees without losing work or bypassing main landing gates."
-platforms: ["codex", "claude-code", "generic-cli"]
-prerequisites: ["git", "python3"]
+tags:
+- git
+- worktrees
+- branches
+- merge-queue
+- coordination
+- cleanup
+summary_line: Close leftover agent branches/worktrees without losing work or bypassing main landing gates.
+platforms:
+- codex
+- claude-code
+- generic-cli
+prerequisites:
+- git
+- python3
 routing_patterns:
-  - pattern: '\bbranch[- ]?worktree[- ]?closure\b'
-    confidence: 0.95
-  - pattern: '\b(leftover|cleanup)\s+(codex|claude)\b'
-    confidence: 0.8
-  - pattern: '\b(merge|preserve|remove)\s+worktrees?\b'
-    confidence: 0.75
+- pattern: \bbranch[- ]?worktree[- ]?closure\b
+  confidence: 0.95
+- pattern: \b(leftover|cleanup)\s+(codex|claude)\b
+  confidence: 0.8
+- pattern: \b(merge|preserve|remove)\s+worktrees?\b
+  confidence: 0.75
+routing_intents:
+- intent: branch_worktree_closure_request
+  description: User asks to use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature
+    worktrees and must decide whether to merge, preserve, or remove them safely.
+  confidence: 0.85
 ---
 
 # Branch / Worktree Closure

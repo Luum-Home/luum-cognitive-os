@@ -1,21 +1,32 @@
 <!-- SCOPE: os-only -->
 ---
 name: hook-timing
-description: "Use when you need this Cognitive OS skill: Report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event filtering, and session scoping.; do not use when a narrower skill directly matches the task."
-version: "1.0.0"
+description: 'Use when you need this Cognitive OS skill: Report hook execution timing statistics (p50/p95/p99) from the COS
+  hook-timing wrapper. Supports live tail, event filtering, and session scoping.; do not use when a narrower skill directly
+  matches the task.'
+version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: os
 model: sonnet
 summary_line: Analyze hook execution latency — full stats, live tail, per-event or per-session views.
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
-tags: [observability, performance, debugging]
+tags:
+- observability
+- performance
+- debugging
 routing_patterns:
-  - pattern: '\bhook[- ]?timing\b'
-    confidence: 0.95
-  - pattern: '\bhook\s+(stats|timing|performance|p50|p95|p99)\b'
-    confidence: 0.85
+- pattern: \bhook[- ]?timing\b
+  confidence: 0.95
+- pattern: \bhook\s+(stats|timing|performance|p50|p95|p99)\b
+  confidence: 0.85
+routing_intents:
+- intent: hook_timing_request
+  description: User asks to report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports
+    live tail, event filtering, and session scoping.
+  confidence: 0.85
 ---
 
 # Hook Timing Skill

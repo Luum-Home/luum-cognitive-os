@@ -1,7 +1,8 @@
 <!-- SCOPE: os-only -->
 ---
 name: audit-integrity
-description: "Use when you need this Cognitive OS skill: Symlink-aware integrity audit of hooks, libs, and skills. Resolves symlinks before classifying, preventing false ghost reports.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Symlink-aware integrity audit of hooks, libs, and skills. Resolves
+  symlinks before classifying, preventing false ghost reports.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: true
@@ -11,17 +12,22 @@ license: MIT
 metadata:
   author: luum
 audience: os
-summary_line: "Symlink-aware integrity audit of hooks, libs, and skills."
-
-platforms: ["claude-code"]
+summary_line: Symlink-aware integrity audit of hooks, libs, and skills.
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\baudit[- ]?integrity\b'
-    confidence: 0.95
-  - pattern: '\b(symlink|symlinks?)\s+(aware|audit|check)\b'
-    confidence: 0.85
-  - pattern: '\b(integrity|integridad)\s+(audit|check|reporte?)\b'
-    confidence: 0.80
+- pattern: \baudit[- ]?integrity\b
+  confidence: 0.95
+- pattern: \b(symlink|symlinks?)\s+(aware|audit|check)\b
+  confidence: 0.85
+- pattern: \b(integrity|integridad)\s+(audit|check|reporte?)\b
+  confidence: 0.8
+routing_intents:
+- intent: audit_integrity_request
+  description: User asks to symlink-aware integrity audit of hooks, libs, and skills. Resolves symlinks before classifying,
+    preventing false ghost reports.
+  confidence: 0.85
 ---
 
 ## Purpose

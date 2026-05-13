@@ -1,23 +1,36 @@
 <!-- SCOPE: os-only -->
 ---
 name: adr-tombstone
-description: "Use when you need this Cognitive OS skill: Create or repair neutral tombstones for removed ADR numbers; use when an ADR is deleted, purged, superseded without replacement text, or ADR numbering has gaps that must stay auditable without reusing numbers.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Create or repair neutral tombstones for removed ADR numbers; use
+  when an ADR is deleted, purged, superseded without replacement text, or ADR numbering has gaps that must stay auditable
+  without reusing numbers.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 last-updated: 2026-05-05
 user-invocable: true
 auto-generated: false
 audience: os-dev
-tags: [adr, tombstone, governance, numbering]
+tags:
+- adr
+- tombstone
+- governance
+- numbering
 summary_line: Agentic primitive for creating neutral ADR tombstones while preserving ADR numbering integrity.
-platforms: ["claude-code", "codex"]
+platforms:
+- claude-code
+- codex
 prerequisites: []
 routing_patterns:
-  - pattern: "\\badr[- ]?tombstone\\b"
-    confidence: 0.95
-  - pattern: "\\b(tombstone|neutraliz\\w*)\\s+(an?\\s+)?ADR\\b"
-    confidence: 0.90
-  - pattern: "\\bADR\\s*(gap|hole|hueco|numeraci[oó]n|numbering)\\b"
-    confidence: 0.85
+- pattern: \badr[- ]?tombstone\b
+  confidence: 0.95
+- pattern: \b(tombstone|neutraliz\w*)\s+(an?\s+)?ADR\b
+  confidence: 0.9
+- pattern: \bADR\s*(gap|hole|hueco|numeraci[oó]n|numbering)\b
+  confidence: 0.85
+routing_intents:
+- intent: adr_tombstone_request
+  description: User asks to create or repair neutral tombstones for removed ADR numbers; use when an ADR is deleted, purged,
+    superseded without replacement text, or ADR numbering has gaps that must stay auditable without reusing numbers.
+  confidence: 0.85
 ---
 
 # ADR Tombstone

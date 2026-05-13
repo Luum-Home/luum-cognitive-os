@@ -1,6 +1,6 @@
 # Routing Model Benchmark Report
 
-- Generated: 2026-05-13T22:20:25.683231+00:00
+- Generated: 2026-05-13T22:30:25.138313+00:00
 - Schema: `routing-benchmark-report/v1`
 - Corpus signature: `43683aab1b8d9397`
 - Corpus: 10 skills, 300 prompts

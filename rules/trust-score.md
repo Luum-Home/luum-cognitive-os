@@ -4,14 +4,19 @@
 enforcement: hybrid
 trigger_priority: high
 routing_patterns:
-  - pattern: "\\btrust report\\b"
-    confidence: 0.95
-  - pattern: "\\b(uncertainty|honest doubt)\\b"
-    confidence: 0.85
-  - pattern: "\\b(evidence|verify what)\\b"
-    confidence: 0.80
-  - pattern: "\\bconfidence (score|level|gate)\\b"
-    confidence: 0.82
+- pattern: \btrust report\b
+  confidence: 0.95
+- pattern: \b(uncertainty|honest doubt)\b
+  confidence: 0.85
+- pattern: \b(evidence|verify what)\b
+  confidence: 0.8
+- pattern: \bconfidence (score|level|gate)\b
+  confidence: 0.82
+summary_line: Require evidence-backed trust reports with uncertainties and verification guidance.
+routing_intents:
+- intent: trust_score_request
+  description: User asks about trust reports, confidence, evidence, uncertainty, or verification of a completion claim.
+  confidence: 0.85
 ---
 # Trust Score Protocol
 

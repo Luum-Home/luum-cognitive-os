@@ -1,19 +1,26 @@
 <!-- SCOPE: both -->
 ---
 name: queue-drain
-description: "Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use when a narrower
+  skill directly matches the task.'
 trigger: Scheduled via CronCreate every 5 minutes, or invoked manually when agents may be stuck
 version: 1.0.0
 audience: os-dev
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bqueue[- ]?drain\b'
-    confidence: 0.95
-  - pattern: '\bdrain\s+(the\s+)?queue\b'
-    confidence: 0.85
-  - pattern: '\bagent\s+queue\s+(drain|health)\b'
-    confidence: 0.8
+- pattern: \bqueue[- ]?drain\b
+  confidence: 0.95
+- pattern: \bdrain\s+(the\s+)?queue\b
+  confidence: 0.85
+- pattern: \bagent\s+queue\s+(drain|health)\b
+  confidence: 0.8
+summary_line: Periodic agent queue drain and health check.
+routing_intents:
+- intent: queue_drain_request
+  description: User asks to periodic agent queue drain and health check.
+  confidence: 0.85
 ---
 
 # Queue Drain

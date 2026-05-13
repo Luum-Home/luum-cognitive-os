@@ -3,22 +3,27 @@
 name: resource-governor
 version: 1.0.0
 last-updated: 2026-03-22
-description: "Use when you need this Cognitive OS skill: Master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Master resource optimizer — coordinates budget, infrastructure, agents,
+  skills, and tokens system-wide; do not use when a narrower skill directly matches the task.'
 auto-generated: false
 audience: project
-summary_line: "Master resource optimizer — coordinates budget, infrastructure, agents, skills…"
-
-platforms: ["claude-code"]
+summary_line: Master resource optimizer — coordinates budget, infrastructure, agents, skills…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bresource\s+govern(or|ance)\b'
-    confidence: 0.96
-  - pattern: '\b(budget|infrastructure|agent|skill)\s+optimizer\b'
-    confidence: 0.84
-  - pattern: '\boptimi[sz]e\s+resource\s+budget\b'
-    confidence: 0.86
-  - pattern: '\boptimi[sz]e\s+(resources|budget|infra)\b'
-    confidence: 0.86
+- pattern: \bresource\s+govern(or|ance)\b
+  confidence: 0.96
+- pattern: \b(budget|infrastructure|agent|skill)\s+optimizer\b
+  confidence: 0.84
+- pattern: \boptimi[sz]e\s+resource\s+budget\b
+  confidence: 0.86
+- pattern: \boptimi[sz]e\s+(resources|budget|infra)\b
+  confidence: 0.86
+routing_intents:
+- intent: resource_governor_request
+  description: User asks to master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide.
+  confidence: 0.85
 ---
 
 # Resource Governor

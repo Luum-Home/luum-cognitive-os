@@ -2,25 +2,35 @@
 ---
 name: proof-drill
 version: 1.0.0
-description: "Use when you need this Cognitive OS skill: Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Select and run opt-in proof drills and smoke checks for COS self-build
+  and consumer-project validation without polluting default test lanes.; do not use when a narrower skill directly matches
+  the task.'
 summary_line: Select opt-in proof drills and smoke checks without default-lane pollution.
 audience: both
-platforms: [claude-code, codex, shell]
+platforms:
+- claude-code
+- codex
+- shell
 triggers:
-  - proof drill
-  - smoke opt-in
-  - one-off smoke
-  - runtime proof
-  - prove headless
-  - prueba manual
-  - prueba opt-in
+- proof drill
+- smoke opt-in
+- one-off smoke
+- runtime proof
+- prove headless
+- prueba manual
+- prueba opt-in
 routing_patterns:
-  - pattern: '\bproof[- ]?drill\b'
-    confidence: 0.95
-  - pattern: '\brun\s+proof\s+drills?\b'
-    confidence: 0.85
-  - pattern: '\bsmoke\s+check\s+(cos|self[- ]build)\b'
-    confidence: 0.75
+- pattern: \bproof[- ]?drill\b
+  confidence: 0.95
+- pattern: \brun\s+proof\s+drills?\b
+  confidence: 0.85
+- pattern: \bsmoke\s+check\s+(cos|self[- ]build)\b
+  confidence: 0.75
+routing_intents:
+- intent: proof_drill_request
+  description: User asks to select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation
+    without polluting default test lanes.
+  confidence: 0.85
 ---
 
 # Proof Drill

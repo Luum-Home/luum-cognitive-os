@@ -5,16 +5,22 @@ description: Analyze KPI history and auto-calibrate thresholds for meaningful al
 trigger: calibrate metrics, adjust thresholds, metric calibration, KPI tuning
 model: sonnet
 audience: os-dev
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bmetrics[- ]?calibrat\w*\b'
-    confidence: 0.95
-  - pattern: '\bcalibrat\w*\s+(kpi|threshold|metric)\b'
-    confidence: 0.85
-  - pattern: '\bauto[- ]?calibrat\w*\s+thresholds?\b'
-    confidence: 0.8
+- pattern: \bmetrics[- ]?calibrat\w*\b
+  confidence: 0.95
+- pattern: \bcalibrat\w*\s+(kpi|threshold|metric)\b
+  confidence: 0.85
+- pattern: \bauto[- ]?calibrat\w*\s+thresholds?\b
+  confidence: 0.8
+summary_line: Analyze KPI history and auto-calibrate thresholds for meaningful alerting.
+routing_intents:
+- intent: metrics_calibrator_request
+  description: User asks to analyze KPI history and auto-calibrate thresholds for meaningful alerting.
+  confidence: 0.85
 ---
 
 # Metrics Calibrator

@@ -1,21 +1,29 @@
 <!-- SCOPE: both -->
 ---
 name: red-team
-description: "Use when you need this Cognitive OS skill: Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities; do not use when a narrower skill directly matches the task."
-triggers: ["/red-team", "/redteam", "/promptfoo"]
+description: 'Use when you need this Cognitive OS skill: Red team testing for agent prompts — detects injection, jailbreak,
+  and manipulation vulnerabilities; do not use when a narrower skill directly matches the task.'
+triggers:
+- /red-team
+- /redteam
+- /promptfoo
 audience: os-dev
 version: 1.0.0
-summary_line: "\"Red team testing for agent prompts — detects injection, jailbreak, and…"
-
-platforms: ["claude-code"]
+summary_line: '"Red team testing for agent prompts — detects injection, jailbreak, and…'
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bred[- ]?team(ing)?\b'
-    confidence: 0.95
-  - pattern: '\b(prompt\s+)?(injection|jailbreak)\s+(test|probe|audit)\b'
-    confidence: 0.90
-  - pattern: '\badversarial\s+(prompt|safety)\s+(test|review)\b'
-    confidence: 0.86
+- pattern: \bred[- ]?team(ing)?\b
+  confidence: 0.95
+- pattern: \b(prompt\s+)?(injection|jailbreak)\s+(test|probe|audit)\b
+  confidence: 0.9
+- pattern: \badversarial\s+(prompt|safety)\s+(test|review)\b
+  confidence: 0.86
+routing_intents:
+- intent: red_team_request
+  description: User asks to red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities.
+  confidence: 0.85
 ---
 
 # /red-team

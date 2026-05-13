@@ -1,19 +1,29 @@
 <!-- SCOPE: both -->
 ---
 name: add-skill
-description: "Use when you need this Cognitive OS skill: Step-by-step guide for adding a new skill to the Cognitive OS; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding a new skill to the Cognitive OS; do
+  not use when a narrower skill directly matches the task.'
 version: 0.1.0
 audience: os
-tags: [development, extension, skills]
-platforms: ["claude-code"]
+tags:
+- development
+- extension
+- skills
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\badd[- ]?skill\b'
-    confidence: 0.95
-  - pattern: '\b(add|agregar?)\s+(a\s+|un[ao]?\s+)?skill\b'
-    confidence: 0.86
-  - pattern: '\bnuev[ao]?\s+skill\b'
-    confidence: 0.80
+- pattern: \badd[- ]?skill\b
+  confidence: 0.95
+- pattern: \b(add|agregar?)\s+(a\s+|un[ao]?\s+)?skill\b
+  confidence: 0.86
+- pattern: \bnuev[ao]?\s+skill\b
+  confidence: 0.8
+summary_line: Step-by-step guide for adding a new skill to the Cognitive OS.
+routing_intents:
+- intent: add_skill_request
+  description: User asks to step-by-step guide for adding a new skill to the Cognitive OS.
+  confidence: 0.85
 ---
 
 # Add Skill

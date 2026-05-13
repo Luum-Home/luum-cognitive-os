@@ -1,19 +1,30 @@
 <!-- SCOPE: both -->
 ---
 name: peer-card
-description: "Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) backed by
+  Engram FTS5. ADR-077 Phase 1.; do not use when a narrower skill directly matches the task.'
 version: 0.1.0
 audience: os
-tags: [memory, user-model, engram, adr-077]
-platforms: ["claude-code"]
+tags:
+- memory
+- user-model
+- engram
+- adr-077
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bpeer[- ]?card\b'
-    confidence: 0.95
-  - pattern: '\buser\s+memory\s+card\b'
-    confidence: 0.8
-  - pattern: '\bpeer\s+(read|edit|forget|explain)\b'
-    confidence: 0.75
+- pattern: \bpeer[- ]?card\b
+  confidence: 0.95
+- pattern: \buser\s+memory\s+card\b
+  confidence: 0.8
+- pattern: \bpeer\s+(read|edit|forget|explain)\b
+  confidence: 0.75
+summary_line: Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
+routing_intents:
+- intent: peer_card_request
+  description: User asks to local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
+  confidence: 0.85
 ---
 
 # Peer Card

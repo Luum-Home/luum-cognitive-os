@@ -3,21 +3,31 @@
 name: cognitive-os-benchmark
 description: Run benchmark comparisons between Cognitive OS and BMAD METHOD v6
 triggers:
-  - /benchmark
-  - /run-benchmark
-  - /compare-bmad
-tags: [testing, benchmark, comparison, quality]
+- /benchmark
+- /run-benchmark
+- /compare-bmad
+tags:
+- testing
+- benchmark
+- comparison
+- quality
 audience: os-dev
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcognitive[- ]?os[- ]?benchmark\b'
-    confidence: 0.95
-  - pattern: '\bbenchmark\s+(cognitive[- ]?os|cos)\b'
-    confidence: 0.85
-  - pattern: '\bcos\s+vs\s+(bmad|baseline)\b'
-    confidence: 0.75
+- pattern: \bcognitive[- ]?os[- ]?benchmark\b
+  confidence: 0.95
+- pattern: \bbenchmark\s+(cognitive[- ]?os|cos)\b
+  confidence: 0.85
+- pattern: \bcos\s+vs\s+(bmad|baseline)\b
+  confidence: 0.75
+summary_line: Run benchmark comparisons between Cognitive OS and BMAD METHOD v6.
+routing_intents:
+- intent: cognitive_os_benchmark_request
+  description: User asks to run benchmark comparisons between Cognitive OS and BMAD METHOD v6.
+  confidence: 0.85
 ---
 
 # Cognitive OS Benchmark Skill

@@ -4,14 +4,19 @@
 enforcement: agent-instruction
 trigger_priority: high
 routing_patterns:
-  - pattern: "\\b(definition of done|DoD)\\b"
-    confidence: 0.95
-  - pattern: "\\b(task )?complexity\\b"
-    confidence: 0.85
-  - pattern: "\\b(trivial|small|medium|large|critical)\\b"
-    confidence: 0.78
-  - pattern: "\\bmark.*as done\\b"
-    confidence: 0.85
+- pattern: \b(definition of done|DoD)\b
+  confidence: 0.95
+- pattern: \b(task )?complexity\b
+  confidence: 0.85
+- pattern: \b(trivial|small|medium|large|critical)\b
+  confidence: 0.78
+- pattern: \bmark.*as done\b
+  confidence: 0.85
+summary_line: Apply task-complexity-specific definition-of-done criteria before completion.
+routing_intents:
+- intent: definition_of_done_request
+  description: User asks about definition of done, task complexity, marking work done, or completion criteria.
+  confidence: 0.85
 ---
 # Definition of Done (DoD) by Task Complexity
 

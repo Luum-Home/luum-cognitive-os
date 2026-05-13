@@ -1,27 +1,33 @@
 <!-- SCOPE: both -->
 ---
 name: sdd-compound
-description: "Extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive to crystallize patterns, update skill routing, and improve future iterations."
+description: Extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive to crystallize
+  patterns, update skill routing, and improve future iterations.
 allowed-tools:
-  - Read
-  - Grep
-  - Bash
-  - mcp__plugin_engram_engram__mem_save
-  - mcp__plugin_engram_engram__mem_search
-  - mcp__plugin_engram_engram__mem_get_observation
+- Read
+- Grep
+- Bash
+- mcp__plugin_engram_engram__mem_save
+- mcp__plugin_engram_engram__mem_search
+- mcp__plugin_engram_engram__mem_get_observation
 audience: project
-summary_line: "\"Extract learnings and compound knowledge after completing an SDD change."
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: '"Extract learnings and compound knowledge after completing an SDD change.'
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsdd[- ]?compound\b'
-    confidence: 0.95
-  - pattern: '\bcompound\s+knowledge\s+(after|post)\s+sdd\b'
-    confidence: 0.8
-  - pattern: '\bcrystallize\s+patterns?\b'
-    confidence: 0.75
+- pattern: \bsdd[- ]?compound\b
+  confidence: 0.95
+- pattern: \bcompound\s+knowledge\s+(after|post)\s+sdd\b
+  confidence: 0.8
+- pattern: \bcrystallize\s+patterns?\b
+  confidence: 0.75
+routing_intents:
+- intent: sdd_compound_request
+  description: User asks to extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive
+    to crystallize patterns, update skill routing, and improve future iterations.
+  confidence: 0.85
 ---
 
 # SDD Compound — Post-Archive Learning Extraction

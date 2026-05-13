@@ -1,27 +1,36 @@
 <!-- SCOPE: both -->
 ---
 name: deep-tool-research
-description: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation before an adoption decision (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis annexes A-G for mechanical cross-tool comparison.
+description: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation
+  before an adoption decision (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis annexes A-G for
+  mechanical cross-tool comparison.
 scope: both
 audience: os-dev
 status: skeleton
 model_hint: opus
 routing_patterns:
-  - pattern: '\bdeep[- ]tool[- ]research\b'
-    confidence: 0.95
-  - pattern: '\bexternal tool (evaluation|research|adoption)\b'
-    confidence: 0.85
+- pattern: \bdeep[- ]tool[- ]research\b
+  confidence: 0.95
+- pattern: \bexternal tool (evaluation|research|adoption)\b
+  confidence: 0.85
 dependencies:
-  - skills/repo-scout/SKILL.md
-  - skills/repo-forensics/SKILL.md
-  - rules/license-policy.md
-  - rules/recommendation-grounding.md
+- skills/repo-scout/SKILL.md
+- skills/repo-forensics/SKILL.md
+- rules/license-policy.md
+- rules/recommendation-grounding.md
 inspired_by:
-  - docs/03-PoCs/research/holaos-comparison-2026-05-10.md
+- docs/03-PoCs/research/holaos-comparison-2026-05-10.md
 diverges_from:
-  - docs/03-PoCs/research/helixdb-comparison-2026-05-11.md
-  - docs/03-PoCs/research/ifixai-comparison-2026-05-11.md
-  - docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
+- docs/03-PoCs/research/helixdb-comparison-2026-05-11.md
+- docs/03-PoCs/research/ifixai-comparison-2026-05-11.md
+- docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
+summary_line: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation…
+routing_intents:
+- intent: deep_tool_research_request
+  description: User asks to use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex
+    deep evaluation before an adoption decision (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis
+    annexes A-G for mechanical cross-tool comparison.
+  confidence: 0.85
 ---
 
 # `/deep-tool-research <tool>` — Canonical Deep Evaluation Pipeline

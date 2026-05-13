@@ -1,30 +1,40 @@
 <!-- SCOPE: both -->
 ---
 name: agent-control
-version: "1.0.0"
-description: "Use when you need this Cognitive OS skill: Send governed bidirectional control and clarification signals between the orchestrator and live agents.; do not use when a narrower skill directly matches the task."
+version: 1.0.0
+description: 'Use when you need this Cognitive OS skill: Send governed bidirectional control and clarification signals between
+  the orchestrator and live agents.; do not use when a narrower skill directly matches the task.'
 audience: os
 scope: os
-platforms: ["claude-code", "codex", "shell"]
+platforms:
+- claude-code
+- codex
+- shell
 prerequisites:
-  - Agent ID from heartbeat, list-live, scan-stale, or .cognitive-os/agent-bus.
+- Agent ID from heartbeat, list-live, scan-stale, or .cognitive-os/agent-bus.
 triggers:
-  - stop agent
-  - pause agent
-  - resume agent
-  - answer agent
-  - kill hung agent
-  - list live agents
-  - scan stale agents
+- stop agent
+- pause agent
+- resume agent
+- answer agent
+- kill hung agent
+- list live agents
+- scan stale agents
 routing_patterns:
-  - pattern: '\\b(stop|pause|resume)\\s+(the\\s+)?agent\\b'
-    confidence: 0.95
-  - pattern: '\\banswer\\s+(the\\s+)?agent\\b'
-    confidence: 0.95
-  - pattern: '\\bkill\\s+(-| )?hung\\s+(agent|worker)\\b'
-    confidence: 0.90
-  - pattern: '\\b(list[- ]live|live agents?|scan[- ]stale|stale agents?)\\b'
-    confidence: 0.88
+- pattern: \\b(stop|pause|resume)\\s+(the\\s+)?agent\\b
+  confidence: 0.95
+- pattern: \\banswer\\s+(the\\s+)?agent\\b
+  confidence: 0.95
+- pattern: \\bkill\\s+(-| )?hung\\s+(agent|worker)\\b
+  confidence: 0.9
+- pattern: \\b(list[- ]live|live agents?|scan[- ]stale|stale agents?)\\b
+  confidence: 0.88
+summary_line: Send governed bidirectional control and clarification signals between the orchestrator and live agents.
+routing_intents:
+- intent: agent_control_request
+  description: User asks to send governed bidirectional control and clarification signals between the orchestrator and live
+    agents.
+  confidence: 0.85
 ---
 
 # Agent Control

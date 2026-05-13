@@ -4,14 +4,19 @@
 enforcement: agent-instruction
 trigger_priority: high
 routing_patterns:
-  - pattern: "\\breconstruction phase\\b"
-    confidence: 0.95
-  - pattern: "\\bphase[- ]aware\\b"
-    confidence: 0.92
-  - pattern: "\\brewrite\\s*(>|over|vs\\.?|instead of)\\s*patch\\b"
-    confidence: 0.90
-  - pattern: "\\b(rewrite|reconstruct).*(legacy|broken|stub)\\b"
-    confidence: 0.80
+- pattern: \breconstruction phase\b
+  confidence: 0.95
+- pattern: \bphase[- ]aware\b
+  confidence: 0.92
+- pattern: \brewrite\s*(>|over|vs\.?|instead of)\s*patch\b
+  confidence: 0.9
+- pattern: \b(rewrite|reconstruct).*(legacy|broken|stub)\b
+  confidence: 0.8
+summary_line: Apply reconstruction/stabilization/production/maintenance phase behavior to agent work.
+routing_intents:
+- intent: phase_aware_agents_request
+  description: User asks about project phase behavior, rewrite-versus-patch choices, or reconstruction policy.
+  confidence: 0.85
 ---
 # Phase-Aware Agent Protocol
 

@@ -2,16 +2,29 @@
 ---
 name: so-vs-vanilla
 audience: os-only
-description: "Use when you need this Cognitive OS skill: A/B benchmark harness that measures Cognitive OS governance value by running the same task under full governance AND with all governance disabled (COS_DISABLE_ALL_GOVERNANCE=1). Produces per-task verdicts and aggregate cost/quality deltas. Trigger: user asks to \"prove the SO works\", \"compare SO vs vanilla\", \"benchmark governance\", or runs `/so-vs-vanilla`.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: A/B benchmark harness that measures Cognitive OS governance value
+  by running the same task under full governance AND with all governance disabled (COS_DISABLE_ALL_GOVERNANCE=1). Produces
+  per-task verdicts and aggregate cost/quality deltas. Trigger: user asks to "prove the SO works", "compare SO vs vanilla",
+  "benchmark governance", or runs `/so-vs-vanilla`.; do not use when a narrower skill directly matches the task.'
 model: sonnet
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bso[- ]?vs[- ]?vanilla\b'
-    confidence: 0.95
-  - pattern: '\bcognitive[- ]?os\s+vs\s+(vanilla|baseline)\b'
-    confidence: 0.85
+- pattern: \bso[- ]?vs[- ]?vanilla\b
+  confidence: 0.95
+- pattern: \bcognitive[- ]?os\s+vs\s+(vanilla|baseline)\b
+  confidence: 0.85
+summary_line: A/B benchmark harness that measures Cognitive OS governance value by running the same task under full governance
+  AND…
+routing_intents:
+- intent: so_vs_vanilla_request
+  description: 'User asks to a/B benchmark harness that measures Cognitive OS governance value by running the same task under
+    full governance AND with all governance disabled (COS_DISABLE_ALL_GOVERNANCE=1). Produces per-task verdicts and aggregate
+    cost/quality deltas. Trigger: user asks to "prove the SO works", "compare SO vs vanilla", "benchmark governance", or runs
+    `/so-vs-vanilla`.'
+  confidence: 0.85
 ---
 
 # /so-vs-vanilla — Governance Value Benchmark

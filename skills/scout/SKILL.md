@@ -2,27 +2,34 @@
 ---
 name: scout
 command: /scout
-description: "Use when you need this Cognitive OS skill: Quick pre-implementation codebase reconnaissance with 3 depth levels; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Quick pre-implementation codebase reconnaissance with 3 depth levels;
+  do not use when a narrower skill directly matches the task.'
 trigger: Before medium+ implementation tasks, or when user invokes /scout
 inputs:
-  - target: File path, directory, service name, or task description to scout
-  - depth (optional): quick, standard, or deep (auto-determined from task complexity if omitted)
+- target: File path, directory, service name, or task description to scout
+- depth (optional): quick, standard, or deep (auto-determined from task complexity if omitted)
 outputs:
-  - scout_report: Structured terrain map with file counts, dependencies, constraints
-  - risk_signals: Unexpected complexity or missing coverage
-  - recommended_approach: Brief guidance based on terrain
+- scout_report: Structured terrain map with file counts, dependencies, constraints
+- risk_signals: Unexpected complexity or missing coverage
+- recommended_approach: Brief guidance based on terrain
 version: 1.0.0
 last-updated: 2026-03-28
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bscout\b'
-    confidence: 0.94
-  - pattern: '\b(pre[- ]?implementation|codebase)\s+recon(naissance)?\b'
-    confidence: 0.92
-  - pattern: '\bquick\s+(codebase\s+)?recon\b'
-    confidence: 0.88
+- pattern: \bscout\b
+  confidence: 0.94
+- pattern: \b(pre[- ]?implementation|codebase)\s+recon(naissance)?\b
+  confidence: 0.92
+- pattern: \bquick\s+(codebase\s+)?recon\b
+  confidence: 0.88
+summary_line: Quick pre-implementation codebase reconnaissance with 3 depth levels.
+routing_intents:
+- intent: scout_request
+  description: User asks to quick pre-implementation codebase reconnaissance with 3 depth levels.
+  confidence: 0.85
 ---
 
 # Scout -- Pre-Implementation Codebase Reconnaissance

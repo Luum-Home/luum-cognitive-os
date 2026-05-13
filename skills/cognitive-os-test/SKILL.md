@@ -1,20 +1,32 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-test
-description: "Use when you need this Cognitive OS skill: Run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not for adopting projects.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Run the Cognitive OS test suite with persisted summary (junit + failures
+  + tails). SO-only; not for adopting projects.; do not use when a narrower skill directly matches the task.'
 invoke: /cognitive-os-test
 version: 2.0.0
 audience: os-dev
-triggers: ["/cognitive-os-test", "/cos-test", "/os-test"]
-platforms: ["claude-code"]
+triggers:
+- /cognitive-os-test
+- /cos-test
+- /os-test
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcognitive[- ]?os\s+test(s| suite)?\b'
-    confidence: 0.96
-  - pattern: '\brun\s+(the\s+)?cos\s+tests\b'
-    confidence: 0.90
-  - pattern: '\bpersist(ed)?\s+(test\s+)?summary\b'
-    confidence: 0.78
+- pattern: \bcognitive[- ]?os\s+test(s| suite)?\b
+  confidence: 0.96
+- pattern: \brun\s+(the\s+)?cos\s+tests\b
+  confidence: 0.9
+- pattern: \bpersist(ed)?\s+(test\s+)?summary\b
+  confidence: 0.78
+summary_line: Run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not for adopting
+  projects.
+routing_intents:
+- intent: cognitive_os_test_request
+  description: User asks to run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not
+    for adopting projects.
+  confidence: 0.85
 ---
 
 # Cognitive OS Test Runner

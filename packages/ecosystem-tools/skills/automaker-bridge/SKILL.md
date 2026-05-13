@@ -9,13 +9,19 @@ auto-generated: false
 trigger: automaker, setup automaker, kanban, visual board, automaker bridge
 model: sonnet
 audience: os-dev
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bautomaker[- ]?bridge\b'
-    confidence: 0.95
-  - pattern: '\bautomaker\s+(config|setup|integration)\b'
-    confidence: 0.8
+- pattern: \bautomaker[- ]?bridge\b
+  confidence: 0.95
+- pattern: \bautomaker\s+(config|setup|integration)\b
+  confidence: 0.8
+summary_line: Configure AutoMaker to use Cognitive OS as its execution brain.
+routing_intents:
+- intent: automaker_bridge_request
+  description: User asks to configure AutoMaker to use Cognitive OS as its execution brain.
+  confidence: 0.85
 ---
 
 # AutoMaker Bridge

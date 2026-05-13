@@ -1,21 +1,31 @@
 <!-- SCOPE: both -->
 ---
 name: detect-stack
-description: "Use when you need this Cognitive OS skill: Scan a project root and produce detected-stack.json with detected languages, frameworks, databases, auth, cache, messaging, and services.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Scan a project root and produce detected-stack.json with detected
+  languages, frameworks, databases, auth, cache, messaging, and services.; do not use when a narrower skill directly matches
+  the task.'
 version: 0.1.0
 audience: both
-tags: [init, setup, detection]
+tags:
+- init
+- setup
+- detection
 summary_line: Scan a project root and produce detected-stack.json with detected languages…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bdetect[- ]?stack\b'
-    confidence: 0.95
-  - pattern: '\bscan\s+project\s+(stack|tech)\b'
-    confidence: 0.85
-  - pattern: '\bdetected[- ]?stack\b'
-    confidence: 0.8
+- pattern: \bdetect[- ]?stack\b
+  confidence: 0.95
+- pattern: \bscan\s+project\s+(stack|tech)\b
+  confidence: 0.85
+- pattern: \bdetected[- ]?stack\b
+  confidence: 0.8
+routing_intents:
+- intent: detect_stack_request
+  description: User asks to scan a project root and produce detected-stack.json with detected languages, frameworks, databases,
+    auth, cache, messaging, and services.
+  confidence: 0.85
 ---
 
 # Detect Stack

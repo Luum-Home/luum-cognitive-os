@@ -1,19 +1,29 @@
 <!-- SCOPE: both -->
 ---
 name: add-hook
-description: "Use when you need this Cognitive OS skill: Step-by-step guide for adding a new hook to the Cognitive OS; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding a new hook to the Cognitive OS; do
+  not use when a narrower skill directly matches the task.'
 version: 0.1.0
 audience: os
-tags: [development, extension, hooks]
-platforms: ["claude-code"]
+tags:
+- development
+- extension
+- hooks
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\badd[- ]?hook\b'
-    confidence: 0.95
-  - pattern: '\b(agregar?|a[ñn]adir|crear)\s+(un\s+)?hook\b'
-    confidence: 0.8
-  - pattern: '\bnew\s+hook\b'
-    confidence: 0.75
+- pattern: \badd[- ]?hook\b
+  confidence: 0.95
+- pattern: \b(agregar?|a[ñn]adir|crear)\s+(un\s+)?hook\b
+  confidence: 0.8
+- pattern: \bnew\s+hook\b
+  confidence: 0.75
+summary_line: Step-by-step guide for adding a new hook to the Cognitive OS.
+routing_intents:
+- intent: add_hook_request
+  description: User asks to step-by-step guide for adding a new hook to the Cognitive OS.
+  confidence: 0.85
 ---
 
 # Add Hook

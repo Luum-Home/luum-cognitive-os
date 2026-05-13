@@ -1,23 +1,36 @@
 <!-- SCOPE: both -->
 ---
 name: session-backlog
-description: "Use when you need this Cognitive OS skill: Inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority and produce a structured backlog document for future sessions.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Inventory all pending work across plans, engram, tasks, todos, audits,
+  and git. Classify by priority and produce a structured backlog document for future sessions.; do not use when a narrower
+  skill directly matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
 audience: both
-tags: [session, planning, backlog, inventory]
-summary_line: "Inventory all pending work across plans, engram, tasks, todos, audits, and git."
-
-platforms: ["codex", "claude-code", "generic-cli"]
+tags:
+- session
+- planning
+- backlog
+- inventory
+summary_line: Inventory all pending work across plans, engram, tasks, todos, audits, and git.
+platforms:
+- codex
+- claude-code
+- generic-cli
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsession[- ]?backlog\b'
-    confidence: 0.95
-  - pattern: '\binventor\w+\s+(pending|all)\s+work\b'
-    confidence: 0.8
-  - pattern: '\bbacklog\s+inventory\b'
-    confidence: 0.75
+- pattern: \bsession[- ]?backlog\b
+  confidence: 0.95
+- pattern: \binventor\w+\s+(pending|all)\s+work\b
+  confidence: 0.8
+- pattern: \bbacklog\s+inventory\b
+  confidence: 0.75
+routing_intents:
+- intent: session_backlog_request
+  description: User asks to inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority
+    and produce a structured backlog document for future sessions.
+  confidence: 0.85
 ---
 
 # Session Backlog — Pending Work Inventory

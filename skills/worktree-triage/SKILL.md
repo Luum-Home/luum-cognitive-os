@@ -1,26 +1,42 @@
 <!-- SCOPE: both -->
 ---
 name: worktree-triage
-description: "Use when you need this Cognitive OS skill: Triage linked Git worktrees or remote cleanup branches against a target branch, port only unapplied work, validate, and remove/delete only when clean and safe.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Triage linked Git worktrees or remote cleanup branches against a
+  target branch, port only unapplied work, validate, and remove/delete only when clean and safe.; do not use when a narrower
+  skill directly matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
 audience: both
-tags: [git, worktree, coordination, safety, triage]
-summary_line: "Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete checklist."
-platforms: ["codex", "claude-code", "generic-cli"]
-prerequisites: ["git"]
+tags:
+- git
+- worktree
+- coordination
+- safety
+- triage
+summary_line: Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete checklist.
+platforms:
+- codex
+- claude-code
+- generic-cli
+prerequisites:
+- git
 routing_patterns:
-  - pattern: '\bworktree[- ]?triage\b'
-    confidence: 0.95
-  - pattern: '\btriage\s+(linked\s+)?worktree\b'
-    confidence: 0.85
-  - pattern: '\bport\s+unapplied\s+work\b'
-    confidence: 0.75
-  - pattern: '\bremote\s+branch\s+(cleanup|triage|delete)\b'
-    confidence: 0.85
-  - pattern: '\bpatch[- ]?equivalent\s+branch\b'
-    confidence: 0.85
+- pattern: \bworktree[- ]?triage\b
+  confidence: 0.95
+- pattern: \btriage\s+(linked\s+)?worktree\b
+  confidence: 0.85
+- pattern: \bport\s+unapplied\s+work\b
+  confidence: 0.75
+- pattern: \bremote\s+branch\s+(cleanup|triage|delete)\b
+  confidence: 0.85
+- pattern: \bpatch[- ]?equivalent\s+branch\b
+  confidence: 0.85
+routing_intents:
+- intent: worktree_triage_request
+  description: User asks to triage linked Git worktrees or remote cleanup branches against a target branch, port only unapplied
+    work, validate, and remove/delete only when clean and safe.
+  confidence: 0.85
 ---
 
 # Worktree Triage

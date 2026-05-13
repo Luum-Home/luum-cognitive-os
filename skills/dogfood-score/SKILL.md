@@ -1,24 +1,33 @@
 <!-- SCOPE: os-only -->
 ---
 name: dogfood-score
-description: "Use when you need this Cognitive OS skill: Measure the SO's self-build maturity as a composite 0-100 score across test health, skill coverage, hook wiring, ADR discipline, harness portability, commit activity, and doc freshness. Analog to rules/trust-score.md but for the project itself, not for agents.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Measure the SO''s self-build maturity as a composite 0-100 score
+  across test health, skill coverage, hook wiring, ADR discipline, harness portability, commit activity, and doc freshness.
+  Analog to rules/trust-score.md but for the project itself, not for agents.; do not use when a narrower skill directly matches
+  the task.'
 invoke: /dogfood-score
 tag: os-only
 model: haiku
 audience: os-dev
 effort: haiku
-summary_line: "Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs)."
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs).
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bdogfood[- ]?score\b'
-    confidence: 0.95
-  - pattern: '\bself[- ]?build\s+maturity\b'
-    confidence: 0.85
-  - pattern: '\bdogfood\s+(check|metric|measure)\b'
-    confidence: 0.8
+- pattern: \bdogfood[- ]?score\b
+  confidence: 0.95
+- pattern: \bself[- ]?build\s+maturity\b
+  confidence: 0.85
+- pattern: \bdogfood\s+(check|metric|measure)\b
+  confidence: 0.8
+routing_intents:
+- intent: dogfood_score_request
+  description: User asks to measure the SO's self-build maturity as a composite 0-100 score across test health, skill coverage,
+    hook wiring, ADR discipline, harness portability, commit activity, and doc freshness. Analog to rules/trust-score.md but
+    for the project itself, not for agents.
+  confidence: 0.85
 ---
 
 # Dogfood Maturity Score

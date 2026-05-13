@@ -1,19 +1,29 @@
 <!-- SCOPE: both -->
 ---
 name: phoenix-trace-ui
-description: "Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker); do not use when a narrower skill directly matches the task."
-triggers: ["/phoenix-trace-ui", "/phoenix", "/trace-ui"]
+description: 'Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no
+  Docker); do not use when a narrower skill directly matches the task.'
+triggers:
+- /phoenix-trace-ui
+- /phoenix
+- /trace-ui
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bphoenix[- ]?trace[- ]?ui\b'
-    confidence: 0.95
-  - pattern: '\barize\s+phoenix\b'
-    confidence: 0.9
-  - pattern: '\bphoenix\s+(ui|trace|llm)\b'
-    confidence: 0.8
+- pattern: \bphoenix[- ]?trace[- ]?ui\b
+  confidence: 0.95
+- pattern: \barize\s+phoenix\b
+  confidence: 0.9
+- pattern: \bphoenix\s+(ui|trace|llm)\b
+  confidence: 0.8
+summary_line: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker).
+routing_intents:
+- intent: phoenix_trace_ui_request
+  description: User asks to start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker).
+  confidence: 0.85
 ---
 
 # /phoenix-trace-ui

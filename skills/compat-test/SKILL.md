@@ -1,23 +1,30 @@
 <!-- SCOPE: both -->
 ---
 name: compat-test
-description: "Use when you need this Cognitive OS skill: Smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness, and error handling.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Smoke test suite verifying Cognitive OS works correctly with the
+  current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget
+  awareness, and error handling.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 invoke: /cognitive-os-compat-test
 audience: os-dev
 summary_line: Smoke test suite verifying Cognitive OS works correctly with the current AI…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcompat[- ]?test\b'
-    confidence: 0.95
-  - pattern: '\bcompatibility\s+(test|check|smoke)\b'
-    confidence: 0.85
-  - pattern: '\bos\s+compat\b'
-    confidence: 0.75
+- pattern: \bcompat[- ]?test\b
+  confidence: 0.95
+- pattern: \bcompatibility\s+(test|check|smoke)\b
+  confidence: 0.85
+- pattern: \bos\s+compat\b
+  confidence: 0.75
+routing_intents:
+- intent: compat_test_request
+  description: User asks to smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill
+    triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness, and error handling.
+  confidence: 0.85
 ---
 
 # Model Compatibility Test

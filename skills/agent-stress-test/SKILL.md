@@ -1,23 +1,33 @@
 <!-- SCOPE: both -->
 ---
 name: agent-stress-test
-description: "Use when you need this Cognitive OS skill: Stress-test agent cognitive health to detect context-induced degradation; do not use when a narrower skill directly matches the task."
-triggers: ["/agent-stress-test", "/stress-test", "/cognitive-stress"]
+description: 'Use when you need this Cognitive OS skill: Stress-test agent cognitive health to detect context-induced degradation;
+  do not use when a narrower skill directly matches the task.'
+triggers:
+- /agent-stress-test
+- /stress-test
+- /cognitive-stress
 audience: os-dev
 version: 1.0.0
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bstress[- ]?test\b'
-    confidence: 0.94
-  - pattern: '\bagent[- ]?stress\b'
-    confidence: 0.90
-  - pattern: '\b(agent|cognitive)\s+stress[- ]?test\b'
-    confidence: 0.95
-  - pattern: '\b(context[- ]?induced|cognitive)\s+degradation\b'
-    confidence: 0.88
-  - pattern: '\bstress[- ]?test\s+(agents?|cognitive health)\b'
-    confidence: 0.86
+- pattern: \bstress[- ]?test\b
+  confidence: 0.94
+- pattern: \bagent[- ]?stress\b
+  confidence: 0.9
+- pattern: \b(agent|cognitive)\s+stress[- ]?test\b
+  confidence: 0.95
+- pattern: \b(context[- ]?induced|cognitive)\s+degradation\b
+  confidence: 0.88
+- pattern: \bstress[- ]?test\s+(agents?|cognitive health)\b
+  confidence: 0.86
+summary_line: Stress-test agent cognitive health to detect context-induced degradation.
+routing_intents:
+- intent: agent_stress_test_request
+  description: User asks to stress-test agent cognitive health to detect context-induced degradation.
+  confidence: 0.85
 ---
 
 # /agent-stress-test

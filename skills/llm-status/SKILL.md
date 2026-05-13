@@ -1,20 +1,35 @@
 <!-- SCOPE: both -->
 ---
 name: llm-status
-description: "Use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost accounting. Purpose: Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured (with tier and model_map), kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected, recent dispatch totals (calls, tokens, cost, latency), and last-dispatch outcome."
-triggers: ["/llm-status", "llm status", "provider status", "/provider-status"]
+description: 'Use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost accounting. Purpose:
+  Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured (with tier and model_map),
+  kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected, recent dispatch totals (calls,
+  tokens, cost, latency), and last-dispatch outcome.'
+triggers:
+- /llm-status
+- llm status
+- provider status
+- /provider-status
 audience: both
 version: 2.0.0
-summary_line: "Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals."
-platforms: ["claude-code"]
+summary_line: Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals.
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bllm[- ]?status\b'
-    confidence: 0.95
-  - pattern: '\bllm\s+(dispatch|provider|state)\b'
-    confidence: 0.85
-  - pattern: '\bllm\s+(config|routing)\b'
-    confidence: 0.8
+- pattern: \bllm[- ]?status\b
+  confidence: 0.95
+- pattern: \bllm\s+(dispatch|provider|state)\b
+  confidence: 0.85
+- pattern: \bllm\s+(config|routing)\b
+  confidence: 0.8
+routing_intents:
+- intent: llm_status_request
+  description: 'User asks to use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost
+    accounting. Purpose: Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured
+    (with tier and model_map), kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected,
+    recent dispatch totals (calls, tokens, cost, latency), and last-dispatch outcome.'
+  confidence: 0.85
 ---
 
 # /llm-status — LLM Dispatch Transparency

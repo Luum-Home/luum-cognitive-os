@@ -1,19 +1,29 @@
 <!-- SCOPE: os-only -->
 ---
 name: test-contract-repair
-description: "Use when you need this Cognitive OS skill: Repair failing or misleading tests without greenwashing. Classify the contract, confirm history, fix runtime when needed, and strengthen structural checks into behavioral proof.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Repair failing or misleading tests without greenwashing. Classify
+  the contract, confirm history, fix runtime when needed, and strengthen structural checks into behavioral proof.; do not
+  use when a narrower skill directly matches the task.'
 invoke: /test-contract-repair
 version: 1.0.0
 audience: os-dev
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\btest[- ]?contract[- ]?repair\b'
-    confidence: 0.95
-  - pattern: '\brepair\s+(failing|misleading)\s+tests?\b'
-    confidence: 0.85
-  - pattern: '\btest\s+contract\s+(fix|repair)\b'
-    confidence: 0.8
+- pattern: \btest[- ]?contract[- ]?repair\b
+  confidence: 0.95
+- pattern: \brepair\s+(failing|misleading)\s+tests?\b
+  confidence: 0.85
+- pattern: \btest\s+contract\s+(fix|repair)\b
+  confidence: 0.8
+summary_line: Repair failing or misleading tests without greenwashing. Classify the contract, confirm history, fix runtime
+  when…
+routing_intents:
+- intent: test_contract_repair_request
+  description: User asks to repair failing or misleading tests without greenwashing. Classify the contract, confirm history,
+    fix runtime when needed, and strengthen structural checks into behavioral proof.
+  confidence: 0.85
 ---
 
 # Test Contract Repair

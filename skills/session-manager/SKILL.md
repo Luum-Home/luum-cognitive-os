@@ -1,19 +1,26 @@
 <!-- SCOPE: both -->
 ---
 name: session-manager
-description: "Use when you need this Cognitive OS skill: Manage concurrent Cognitive OS sessions — list, inspect, and clean up; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Manage concurrent Cognitive OS sessions — list, inspect, and clean
+  up; do not use when a narrower skill directly matches the task.'
 audience: project
 effort: haiku
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsession\s+manager\b'
-    confidence: 0.96
-  - pattern: '\bmanage\s+(concurrent\s+)?sessions\b'
-    confidence: 0.90
-  - pattern: '\b(list|inspect|clean\s+up)\s+sessions\b'
-    confidence: 0.84
+- pattern: \bsession\s+manager\b
+  confidence: 0.96
+- pattern: \bmanage\s+(concurrent\s+)?sessions\b
+  confidence: 0.9
+- pattern: \b(list|inspect|clean\s+up)\s+sessions\b
+  confidence: 0.84
+summary_line: Manage concurrent Cognitive OS sessions — list, inspect, and clean up.
+routing_intents:
+- intent: session_manager_request
+  description: User asks to manage concurrent Cognitive OS sessions — list, inspect, and clean up.
+  confidence: 0.85
 ---
 
 # Session Manager

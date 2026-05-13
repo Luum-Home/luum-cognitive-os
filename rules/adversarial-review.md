@@ -4,14 +4,19 @@
 enforcement: agent-instruction
 trigger_priority: medium
 routing_patterns:
-  - pattern: "\\b(review|audit|critique)\\b"
-    confidence: 0.82
-  - pattern: "\\blooks good\\b"
-    confidence: 0.90
-  - pattern: "\\b(no issues found|nothing to flag)\\b"
-    confidence: 0.92
-  - pattern: "\\badversarial\\b"
-    confidence: 0.95
+- pattern: \b(review|audit|critique)\b
+  confidence: 0.82
+- pattern: \blooks good\b
+  confidence: 0.9
+- pattern: \b(no issues found|nothing to flag)\b
+  confidence: 0.92
+- pattern: \badversarial\b
+  confidence: 0.95
+summary_line: Apply adversarial review expectations when reviewing, auditing, or critiquing work.
+routing_intents:
+- intent: adversarial_review_request
+  description: User asks for review, audit, critique, adversarial review, or tries to accept a zero-finding review.
+  confidence: 0.85
 ---
 # Adversarial Review Protocol (BMAD v6 Pattern 1)
 

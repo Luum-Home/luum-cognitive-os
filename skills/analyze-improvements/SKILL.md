@@ -1,25 +1,35 @@
 <!-- SCOPE: both -->
 ---
 name: analyze-improvements
-description: "Use when you need this Cognitive OS skill: Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes NO file changes.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Analyze KPIs, error patterns, and skill metrics to identify improvement
+  opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes
+  NO file changes.; do not use when a narrower skill directly matches the task.'
 version: 0.1.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-04-10
 audience: both
 effort: opus
-tags: [self-improvement, analysis, kpis]
-summary_line: "Analyze KPIs, error patterns, and skill metrics to identify improvement…"
-
-platforms: ["claude-code"]
+tags:
+- self-improvement
+- analysis
+- kpis
+summary_line: Analyze KPIs, error patterns, and skill metrics to identify improvement…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\banalyze[- ]?improvements?\b'
-    confidence: 0.95
-  - pattern: '\b(kpi|error\s+patterns?|skill\s+metrics)\s+analysis\b'
-    confidence: 0.8
-  - pattern: '\bimprovement\s+opportunities?\b'
-    confidence: 0.75
+- pattern: \banalyze[- ]?improvements?\b
+  confidence: 0.95
+- pattern: \b(kpi|error\s+patterns?|skill\s+metrics)\s+analysis\b
+  confidence: 0.8
+- pattern: \bimprovement\s+opportunities?\b
+  confidence: 0.75
+routing_intents:
+- intent: analyze_improvements_request
+  description: User asks to analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces
+    a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification.
+  confidence: 0.85
 ---
 
 # Analyze Improvements Skill

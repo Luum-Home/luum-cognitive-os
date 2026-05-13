@@ -1,22 +1,35 @@
 <!-- SCOPE: os-only -->
 ---
 name: component-reality-check
-description: "Use when you need this Cognitive OS skill: Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Measure declared-but-unwired vs real agentic primitives of the SO
+  using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.;
+  do not use when a narrower skill directly matches the task.'
 invoke: /component-reality-check
 version: 1.0.0
 last-updated: 2026-04-24
 audience: os-dev
-tags: [audit, dogfooding, metrics, wiring]
-summary_line: "Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime."
-platforms: ["claude-code"]
+tags:
+- audit
+- dogfooding
+- metrics
+- wiring
+summary_line: Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations
+  and observable runtime.
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcomponent[- ]?reality[- ]?check\b'
-    confidence: 0.95
-  - pattern: '\b(real|dormant|unwired)\s+(vs\.?\s+)?(dormant|unwired|declared)\b'
-    confidence: 0.85
-  - pattern: '\b(agentic\s+)?primitives?\s+(audit|reality|classification|classify)\b'
-    confidence: 0.80
+- pattern: \bcomponent[- ]?reality[- ]?check\b
+  confidence: 0.95
+- pattern: \b(real|dormant|unwired)\s+(vs\.?\s+)?(dormant|unwired|declared)\b
+  confidence: 0.85
+- pattern: \b(agentic\s+)?primitives?\s+(audit|reality|classification|classify)\b
+  confidence: 0.8
+routing_intents:
+- intent: component_reality_check_request
+  description: User asks to measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script.
+    Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
+  confidence: 0.85
 ---
 
 # Agentic Primitive Reality Check
