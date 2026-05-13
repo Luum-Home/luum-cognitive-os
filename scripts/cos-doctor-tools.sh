@@ -294,7 +294,7 @@ if [ "$ACTIVE_HARNESS" = "codex" ]; then
   fi
 fi
 
-if [ "${COS_DOCTOR_SKIP_MEMORY_LIFECYCLE:-0}" != "1" ]; then
+if [ "${COS_DOCTOR_SKIP_MEMORY_LIFECYCLE:-0}" != "1" ] && [ "$warnings" -eq 0 ] && [ "$failures" -eq 0 ]; then
   MEMORY_DOCTOR="$OS_SOURCE_ROOT/scripts/cos-doctor-memory-lifecycle.sh"
   if [ -x "$MEMORY_DOCTOR" ]; then
     MEMORY_OUTPUT="$(mktemp "${TMPDIR:-/tmp}/cos-memory-doctor.XXXXXX")"

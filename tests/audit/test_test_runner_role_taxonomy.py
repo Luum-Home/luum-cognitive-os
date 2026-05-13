@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-ROLE_DOC = ROOT / "docs" / "testing" / "test-runner-roles.md"
+ROLE_DOC = ROOT / "docs" / "09-Quality" / "testing" / "test-runner-roles.md"
 LEGACY_SCRIPTS = [
     ROOT / "scripts" / "pytest-with-summary.sh",
     ROOT / "scripts" / "cos-smoke.sh",

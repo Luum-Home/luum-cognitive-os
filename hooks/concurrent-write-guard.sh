@@ -101,6 +101,10 @@ if [ -f "$LOCK_FILE" ]; then
     # Advisory message preserves the historical contract (matched by
     # tests/behavior/test_file_locking.py::test_cross_session_warning).
     echo "CONCURRENT WRITE WARNING: $FILE_PATH is being edited by session $LOCK_SESSION (${LOCK_AGE}s old)." >&2
+    if ! command -v flock >/dev/null 2>&1; then
+      echo "WRITE ADVISORY: flock unavailable; continuing without blocking serialization." >&2
+      exit 0
+    fi
     echo "WRITE QUEUED: Waiting up to 10s for lock release..." >&2
     exec 200>"$LOCK_FILE.flock"
     if ! flock -w 10 200; then
@@ -112,8 +116,10 @@ if [ -f "$LOCK_FILE" ]; then
 fi
 
 # --- Acquire flock + write metadata for this session ---
-exec 200>"$LOCK_FILE.flock"
-flock -w 10 200 2>/dev/null || true
+if command -v flock >/dev/null 2>&1; then
+  exec 200>"$LOCK_FILE.flock"
+  flock -w 10 200 2>/dev/null || true
+fi
 
 jq -c -n \
   --arg sid "$SESSION_ID" \

@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 INVENTORY = ROOT / ".cognitive-os" / "migrations" / "test-architecture-inventory.md"
-ADR = ROOT / "docs" / "adrs" / "ADR-073-test-architecture-role-registry.md"
+ADR = ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-073-test-architecture-role-registry.md"
 ROLES = {"Selection", "Execution", "Reporting", "Governance", "Lifecycle"}
 
 

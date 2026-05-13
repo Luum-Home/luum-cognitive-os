@@ -192,7 +192,7 @@ fi
 command -v git-filter-repo >/dev/null 2>&1 || { echo "cos-filter-repo-wrap: git-filter-repo not found" >&2; exit 2; }
 PRE_HEAD="$HEAD_SHA"
 set +e
-git -C "$PROJECT_DIR" filter-repo "${PASSTHROUGH[@]}" --replace-text "$RULES_FILE" --force
+git -C "$PROJECT_DIR" filter-repo ${PASSTHROUGH+"${PASSTHROUGH[@]}"} --replace-text "$RULES_FILE" --force
 RC=$?
 set -e
 RESTORED_JSON="$(restore_remotes "$REMOTES_JSON")"

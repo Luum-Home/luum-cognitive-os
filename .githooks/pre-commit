@@ -95,6 +95,15 @@ if [ -n "$staged_py" ]; then
         errors=$((errors + 1))
       fi
     done <<< "$staged_py"
+  else
+    while IFS= read -r file; do
+      [ -z "$file" ] && continue
+      [ ! -f "$file" ] && continue
+      if ! python3 -m py_compile "$file" 2>/dev/null; then
+        python3 -m py_compile "$file" 2>&1 || true
+        errors=$((errors + 1))
+      fi
+    done <<< "$staged_py"
   fi
 
   # For lib/ modules: verify actual import works

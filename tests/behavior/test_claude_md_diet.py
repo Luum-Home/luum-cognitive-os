@@ -149,7 +149,7 @@ class TestExcludedRulesCount:
         missing = []
         for rule in excluded_rules:
             rule_path = REPO_ROOT / "rules" / rule
-            pattern_path = REPO_ROOT / "docs" / "patterns" / rule
+            pattern_path = REPO_ROOT / "docs" / "04-Concepts" / "patterns" / rule
             if not rule_path.exists() and not pattern_path.exists() and not pattern_path.is_symlink():
                 missing.append(rule)
         assert not missing, (
