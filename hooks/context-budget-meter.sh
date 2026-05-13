@@ -13,25 +13,22 @@ HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}}"
 INPUT="$(cat 2>/dev/null || true)"
-START_NS="$(python3 - <<'PY'
-import time
-print(time.perf_counter_ns())
-PY
-)"
 
-python3 - "$PROJECT_DIR" "$COS_ROOT" "$SESSION_ID" "$START_NS" "$INPUT" <<'PY'
+python3 - "$PROJECT_DIR" "$COS_ROOT" "$SESSION_ID" "$INPUT" <<'PY'
 from __future__ import annotations
 import json
 import sys
 import time
 from pathlib import Path
+
+start_ns = time.perf_counter_ns()
 project = Path(sys.argv[1]).resolve()
 cos_root = Path(sys.argv[2]).resolve()
 session_id = sys.argv[3]
-start_ns = int(sys.argv[4])
-raw = sys.argv[5] if len(sys.argv) > 5 else ""
+raw = sys.argv[4] if len(sys.argv) > 4 else ""
 sys.path.insert(0, str(cos_root))
 from lib.context_budget import append_metric, count_tokens, evaluate, read_budget
+
 try:
     data = json.loads(raw) if raw.strip() else {}
 except json.JSONDecodeError:

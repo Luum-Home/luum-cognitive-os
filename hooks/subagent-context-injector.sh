@@ -66,34 +66,24 @@ fi
 
 sidecar=""
 
-if [ -n "$agent_name" ] && command -v python3 >/dev/null 2>&1; then
-  # Best-effort sidecar lookup with 2s timeout
-  sidecar=$(timeout 2 python3 -c "
-import sys, json
-sys.path.insert(0, '$_PROJECT_DIR')
-try:
-    # Use engram MCP tools if available via subprocess
-    import subprocess
-    # Search engram for agent sidecar
-    result = subprocess.run(
-        ['python3', '-c', '''
+if [ -n "$agent_name" ] && [ "${COS_SUBAGENT_SIDECAR_LOOKUP:-0}" = "1" ] && command -v python3 >/dev/null 2>&1; then
+  # Best-effort sidecar lookup. Opt-in because this hook is on the critical
+  # sub-agent cold-start path; missing/slow Engram must never add seconds to
+  # every spawn.
+  sidecar=$(timeout "${COS_SUBAGENT_SIDECAR_TIMEOUT:-0.4}" python3 - "$_PROJECT_DIR" "$agent_name" <<'PY' 2>/dev/null || true
 import sys
-sys.path.insert(0, \"$_PROJECT_DIR\")
+project_dir = sys.argv[1]
+agent_name = sys.argv[2]
+sys.path.insert(0, project_dir)
 try:
     from lib.engram_client import search_observations
-    results = search_observations(\"agent/$agent_name/sidecar\", limit=1)
+    results = search_observations(f"agent/{agent_name}/sidecar", limit=1)
     if results:
-        print(results[0].get(\"content\", \"\"))
+        print(results[0].get("content", ""))
 except Exception:
     pass
-'''],
-        capture_output=True, text=True, timeout=2
-    )
-    if result.returncode == 0 and result.stdout.strip():
-        print(result.stdout.strip())
-except Exception:
-    pass
-" 2>/dev/null || true)
+PY
+)
 fi
 
 # ─── Load mandatory project rules ──────────────────────────────────────────

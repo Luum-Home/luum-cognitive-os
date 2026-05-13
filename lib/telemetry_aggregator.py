@@ -215,6 +215,16 @@ def _get_nested(record: dict, dotted_path: str) -> Any:
     return cur
 
 
+
+def _is_no_provider_skip(record: dict) -> bool:
+    """True when a row represents provider-unavailable skip, not a failed call."""
+    if record.get("provider_used") == "none" or record.get("provider") == "none":
+        err = str(record.get("error") or "").lower()
+        if "no providers" in err or ("provider" in err and "unavailable" in err):
+            return True
+    return False
+
+
 _PERCENTILE_RE = re.compile(r"percentile\(\s*(\w+)\s*,\s*([0-9.]+)\s*\)")
 
 
@@ -248,13 +258,20 @@ def compute_metric(slo: dict, records: list[dict]) -> tuple[float | None, dict]:
         summary["max"] = float(max(vals))
         return _percentile(vals, q), summary
 
-    # success_ratio: count(success == True) / count
+    # success_ratio: count(success == True) / count(actionable records).
+    # Dispatch/enrichment calls made when no provider is configured are an
+    # availability/configuration skip, not a model-quality failure. Exclude
+    # those from success-ratio math so provider-off machines do not create
+    # false SLO breaches; a separate provider-availability SLO can own that.
     if metric_expr.strip() == "success_ratio":
-        n = len(records)
+        actionable = [r for r in records if not _is_no_provider_skip(r)]
+        n = len(actionable)
+        summary["n_skipped_no_provider"] = len(records) - n
         if n == 0:
             return None, summary
-        n_ok = sum(1 for r in records if r.get("success") is True)
+        n_ok = sum(1 for r in actionable if r.get("success") is True)
         summary["n_success"] = n_ok
+        summary["n_actionable"] = n
         return n_ok / n, summary
 
     # cache_hit_ratio: cache_hit == True / count

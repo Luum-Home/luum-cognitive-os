@@ -247,6 +247,59 @@ def test_window_applies_after_filter_for_sparse_stream(tmp_repo: Path):
     assert breaches[0].window_summary["n_records_read"] == 103
 
 
+def test_success_ratio_ignores_no_provider_skips(tmp_repo: Path):
+    _write_jsonl(
+        tmp_repo / ".cognitive-os/metrics/llm-dispatch.jsonl",
+        [
+            {"success": False, "provider_used": "none", "error": "no providers in cascade produced a result"},
+            {"success": True, "provider_used": "qwen"},
+        ],
+    )
+    manifest = _write_manifest(
+        tmp_repo,
+        [
+            {
+                "id": "llm-dispatch-success-ratio",
+                "source_stream": ".cognitive-os/metrics/llm-dispatch.jsonl",
+                "metric": "success_ratio",
+                "target_gte": 0.85,
+                "severity_on_breach": "warn",
+                "rationale": "r",
+            }
+        ],
+    )
+    report = aggregate_streams(tmp_repo, manifest, enable_self_tuning=False)
+    ev = report.evaluations[0]
+    assert ev["status"] == "pass"
+    assert ev["value"] == 1.0
+    assert ev["window_summary"]["n_skipped_no_provider"] == 1
+    assert ev["window_summary"]["n_actionable"] == 1
+
+
+def test_success_ratio_no_data_when_only_no_provider_skips(tmp_repo: Path):
+    _write_jsonl(
+        tmp_repo / ".cognitive-os/metrics/skill-enrichment.jsonl",
+        [{"success": False, "provider": "none", "error": "no providers in cascade produced a result"}],
+    )
+    manifest = _write_manifest(
+        tmp_repo,
+        [
+            {
+                "id": "skill-enrichment-success-ratio",
+                "source_stream": ".cognitive-os/metrics/skill-enrichment.jsonl",
+                "metric": "success_ratio",
+                "target_gte": 0.80,
+                "severity_on_breach": "warn",
+                "rationale": "r",
+            }
+        ],
+    )
+    report = aggregate_streams(tmp_repo, manifest, enable_self_tuning=False)
+    assert report.evaluations[0]["status"] == "no_data"
+    assert report.evaluations[0]["window_summary"]["n_skipped_no_provider"] == 1
+    assert report.findings == []
+
+
 def test_remediation_queue_append_does_not_duplicate(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
