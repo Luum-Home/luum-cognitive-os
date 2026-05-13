@@ -1,0 +1,333 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Inventory SCOPE: both artifacts and paired portability proof coverage.
+
+Generates a canonical JSON/Markdown ledger for portability proof debt. This is
+an audit/reporting tool, not the commit-time enforcer; the enforcer remains
+hooks/scope-marker-portability-gate.sh.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any
+
+SCAN_ROOTS = ("hooks", "scripts", "lib", "skills")
+REPORT_JSON = ".cognitive-os/reports/scope-both-portability-audit.json"
+REPORT_MD = ".cognitive-os/reports/scope-both-portability-audit.md"
+PORTABILITY_DIR = "tests/red_team/portability"
+
+HOT_EVENTS = {"PreToolUse", "PostToolUse", "SubagentStart", "UserPromptSubmit"}
+AGENT_TOKENS = ("agent", "subagent", "session", "task")
+
+
+@dataclass
+class InventoryRow:
+    artifact: str
+    kind: str
+    scope: str
+    paired_test: str | None
+    status: str
+    priority: str
+    owner: str
+    wired_in_settings: bool
+    last_commit: str
+    suggested_test_path: str
+    reason_if_deferred: str
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[1]
+
+
+def _is_text_file(path: Path) -> bool:
+    if not path.is_file():
+        return False
+    if "__pycache__" in path.parts or ".git" in path.parts:
+        return False
+    try:
+        path.read_text(encoding="utf-8", errors="ignore")[:256]
+        return True
+    except OSError:
+        return False
+
+
+def _has_scope_both(path: Path) -> bool:
+    try:
+        head = "\n".join(path.read_text(encoding="utf-8", errors="ignore").splitlines()[:3])
+    except OSError:
+        return False
+    return "SCOPE: both" in head
+
+
+def _kind(rel: str) -> str:
+    if rel.startswith("hooks/"):
+        return "hook"
+    if rel.startswith("scripts/"):
+        return "script"
+    if rel.startswith("lib/"):
+        return "lib"
+    if rel.startswith("skills/"):
+        return "skill"
+    return "other"
+
+
+def _paired_candidates(rel: str) -> list[str]:
+    base = Path(rel).name
+    stem = base.rsplit(".", 1)[0]
+    # First four match hooks/scope-marker-portability-gate.sh exactly.
+    candidates = [
+        f"{PORTABILITY_DIR}/{stem}.bats",
+        f"{PORTABILITY_DIR}/{base}.bats",
+        f"{PORTABILITY_DIR}/{stem}_test.py",
+        f"{PORTABILITY_DIR}/test_{stem}.py",
+    ]
+    # Skills all share SKILL.md, so add a non-gate informational convention.
+    if rel.startswith("skills/") and rel.endswith("/SKILL.md"):
+        skill_name = Path(rel).parent.name.replace("-", "_")
+        candidates.append(f"{PORTABILITY_DIR}/test_skill_{skill_name}.py")
+    return candidates
+
+
+def _suggested_test_path(rel: str) -> str:
+    return _paired_candidates(rel)[3]
+
+
+def _find_paired_test(repo: Path, rel: str) -> str | None:
+    for cand in _paired_candidates(rel):
+        if (repo / cand).exists():
+            return cand
+    return None
+
+
+def _settings_wiring(repo: Path) -> dict[str, dict[str, Any]]:
+    out: dict[str, dict[str, Any]] = {}
+    settings = repo / ".claude/settings.json"
+    if not settings.exists():
+        return out
+    try:
+        data = json.loads(settings.read_text(encoding="utf-8"))
+    except Exception:
+        return out
+    hooks = data.get("hooks") if isinstance(data.get("hooks"), dict) else {}
+    for event, groups in hooks.items():
+        if not isinstance(groups, list):
+            continue
+        for group in groups:
+            if not isinstance(group, dict):
+                continue
+            for hook in group.get("hooks") or []:
+                if not isinstance(hook, dict):
+                    continue
+                command = str(hook.get("command") or "")
+                async_flag = hook.get("async") is True
+                for root in ("hooks/", "scripts/"):
+                    idx = command.find(root)
+                    if idx == -1:
+                        continue
+                    rel = command[idx:].split('"', 1)[0].split("'", 1)[0].split()[0]
+                    out.setdefault(rel, {"events": set(), "async": True})
+                    out[rel]["events"].add(str(event))
+                    out[rel]["async"] = bool(out[rel]["async"] and async_flag)
+    return out
+
+
+def _last_commit_map(repo: Path) -> dict[str, str]:
+    """Return first commit that touched each path, newest first, in one git call."""
+    try:
+        result = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(repo),
+                "log",
+                "--name-only",
+                "--format=@@COMMIT@@%h %cs %s",
+                "--",
+                *SCAN_ROOTS,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        )
+    except Exception:
+        return {}
+    if result.returncode != 0:
+        return {}
+    current = ""
+    mapping: dict[str, str] = {}
+    for raw in result.stdout.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("@@COMMIT@@"):
+            current = line[len("@@COMMIT@@") :]
+            continue
+        if current and line not in mapping:
+            mapping[line] = current
+    return mapping
+
+
+def _priority(rel: str, kind: str, wiring: dict[str, Any] | None) -> str:
+    name = Path(rel).name.lower()
+    if rel.startswith("hooks/_lib/") or rel.startswith("lib/"):
+        return "shared_lib"
+    events = set((wiring or {}).get("events") or [])
+    is_async = bool((wiring or {}).get("async", False))
+    if events & HOT_EVENTS and not is_async:
+        return "hot_path"
+    if kind == "hook" and any(token in name for token in AGENT_TOKENS):
+        return "agent_lifecycle"
+    if kind == "script" and any(token in name for token in AGENT_TOKENS):
+        return "agent_lifecycle"
+    return "other"
+
+
+def build_inventory(repo: Path) -> tuple[list[InventoryRow], dict[str, Any]]:
+    wiring = _settings_wiring(repo)
+    last_commits = _last_commit_map(repo)
+    rows: list[InventoryRow] = []
+    for root_name in SCAN_ROOTS:
+        root = repo / root_name
+        if not root.exists():
+            continue
+        for path in sorted(root.rglob("*")):
+            if not _is_text_file(path) or not _has_scope_both(path):
+                continue
+            rel = path.relative_to(repo).as_posix()
+            kind = _kind(rel)
+            paired = _find_paired_test(repo, rel)
+            status = "covered" if paired else "missing"
+            row_wiring = wiring.get(rel)
+            rows.append(
+                InventoryRow(
+                    artifact=rel,
+                    kind=kind,
+                    scope="both",
+                    paired_test=paired,
+                    status=status,
+                    priority=_priority(rel, kind, row_wiring),
+                    owner="platform-portability",
+                    wired_in_settings=row_wiring is not None,
+                    last_commit=last_commits.get(rel, ""),
+                    suggested_test_path=_suggested_test_path(rel),
+                    reason_if_deferred="",
+                )
+            )
+    summary = summarize(rows)
+    return rows, summary
+
+
+def summarize(rows: list[InventoryRow]) -> dict[str, Any]:
+    summary: dict[str, Any] = {
+        "total": len(rows),
+        "covered": sum(1 for r in rows if r.status == "covered"),
+        "missing": sum(1 for r in rows if r.status == "missing"),
+        "exempt": sum(1 for r in rows if r.status == "exempt"),
+        "by_kind": {},
+        "by_priority": {},
+        "hot_path_missing": sum(1 for r in rows if r.status == "missing" and r.priority == "hot_path"),
+    }
+    for row in rows:
+        summary["by_kind"].setdefault(row.kind, {"total": 0, "covered": 0, "missing": 0})
+        summary["by_kind"][row.kind]["total"] += 1
+        summary["by_kind"][row.kind][row.status] = summary["by_kind"][row.kind].get(row.status, 0) + 1
+        summary["by_priority"].setdefault(row.priority, {"total": 0, "covered": 0, "missing": 0})
+        summary["by_priority"][row.priority]["total"] += 1
+        summary["by_priority"][row.priority][row.status] = summary["by_priority"][row.priority].get(row.status, 0) + 1
+    return summary
+
+
+def write_reports(repo: Path, rows: list[InventoryRow], summary: dict[str, Any], json_path: Path, md_path: Path) -> None:
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "scope-both-portability-audit/v1",
+        "repo_root": str(repo),
+        "summary": summary,
+        "rows": [asdict(r) for r in rows],
+    }
+    json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    missing = [r for r in rows if r.status == "missing"]
+    priority_order = {"hot_path": 0, "shared_lib": 1, "agent_lifecycle": 2, "other": 3}
+    missing.sort(key=lambda r: (priority_order.get(r.priority, 9), r.kind, r.artifact))
+    lines = [
+        "# SCOPE: both Portability Audit",
+        "",
+        "Canonical inventory of universal artifacts and paired red-team portability proofs.",
+        "",
+        "## Summary",
+        "",
+        f"- Total SCOPE both artifacts: {summary['total']}",
+        f"- Covered: {summary['covered']}",
+        f"- Missing: {summary['missing']}",
+        f"- Exempt: {summary['exempt']}",
+        f"- Hot-path missing: {summary['hot_path_missing']}",
+        "",
+        "## By priority",
+        "",
+        "| Priority | Total | Covered | Missing |",
+        "|---|---:|---:|---:|",
+    ]
+    for priority, item in sorted(summary["by_priority"].items(), key=lambda kv: priority_order.get(kv[0], 9)):
+        lines.append(f"| {priority} | {item.get('total', 0)} | {item.get('covered', 0)} | {item.get('missing', 0)} |")
+    lines += [
+        "",
+        "## Missing proofs (prioritized)",
+        "",
+        "| Priority | Kind | Artifact | Wired | Suggested test | Last commit |",
+        "|---|---|---|---:|---|---|",
+    ]
+    for row in missing[:250]:
+        lines.append(
+            f"| {row.priority} | {row.kind} | `{row.artifact}` | {str(row.wired_in_settings).lower()} | "
+            f"`{row.suggested_test_path}` | {row.last_commit or ''} |"
+        )
+    if len(missing) > 250:
+        lines += ["", f"_Truncated: {len(missing) - 250} additional missing rows in JSON report._"]
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo-root", type=Path, default=_repo_root())
+    parser.add_argument("--json-output", type=Path, default=None)
+    parser.add_argument("--md-output", type=Path, default=None)
+    parser.add_argument("--json", action="store_true", help="Print JSON report to stdout")
+    parser.add_argument("--strict", action="store_true", help="Exit 2 if any missing proof exists")
+    args = parser.parse_args(argv)
+
+    repo = args.repo_root.resolve()
+    rows, summary = build_inventory(repo)
+    json_path = args.json_output or repo / REPORT_JSON
+    md_path = args.md_output or repo / REPORT_MD
+    write_reports(repo, rows, summary, json_path, md_path)
+    payload = {
+        "schema_version": "scope-both-portability-audit/v1",
+        "repo_root": str(repo),
+        "summary": summary,
+        "rows": [asdict(r) for r in rows],
+        "reports": {"json": str(json_path), "markdown": str(md_path)},
+    }
+    if args.json:
+        json.dump(payload, sys.stdout, indent=2, sort_keys=True)
+        sys.stdout.write("\n")
+    else:
+        print(
+            "[scope-both-portability-audit] "
+            f"total={summary['total']} covered={summary['covered']} "
+            f"missing={summary['missing']} hot_path_missing={summary['hot_path_missing']} "
+            f"json={json_path} md={md_path}"
+        )
+    return 2 if args.strict and summary["missing"] else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

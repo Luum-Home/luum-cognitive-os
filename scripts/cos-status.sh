@@ -11,7 +11,7 @@
 #   - Install source / last session
 #   - Health checks (3 asserts)
 #
-# Flags: --verbose, --json, --observability, --help
+# Flags: --verbose, --json, --observability, --portability, --help
 #
 # Example:
 #   bash scripts/cos-status.sh
@@ -80,6 +80,7 @@ active_settings_driver_path() {
 MODE="pretty"   # pretty | json
 VERBOSE=0
 OBSERVABILITY=0
+PORTABILITY=0
 
 usage() {
   cat <<EOF
@@ -93,6 +94,8 @@ Flags:
   --json       Machine-parseable JSON output (implies no color)
   --observability
                Show ADR-304 telemetry SLO status only
+  --portability
+               Show SCOPE: both portability proof coverage only
   --help       Show this help and exit
 
 Reads:
@@ -118,6 +121,7 @@ while [ "$#" -gt 0 ]; do
     --verbose|-v) VERBOSE=1 ;;
     --json)       MODE="json" ;;
     --observability) OBSERVABILITY=1 ;;
+    --portability) PORTABILITY=1 ;;
     --help|-h)    usage; exit 0 ;;
     *) echo "Unknown flag: $1" >&2; usage >&2; exit 2 ;;
   esac
@@ -196,6 +200,50 @@ for ev in snapshot["evaluations"]:
         print(f"  - {sid}: {status}{suffix}")
 PYEOF
 }
+
+
+# ── Portability-only surface ───────────────────────────────────────────────
+
+emit_portability_status() {
+  local mode="$1"
+  if [ "$mode" = "json" ]; then
+    python3 "$PROJECT_ROOT/scripts/cos-scope-both-portability-audit" --repo-root "$PROJECT_ROOT" --json
+    return
+  fi
+  local tmp_json
+  tmp_json="$(mktemp "${TMPDIR:-/tmp}/cos-portability.XXXXXX.json")"
+  python3 "$PROJECT_ROOT/scripts/cos-scope-both-portability-audit" --repo-root "$PROJECT_ROOT" --json > "$tmp_json"
+  python3 - "$tmp_json" <<'PYEOF'
+import json
+import sys
+payload = json.load(open(sys.argv[1], encoding="utf-8"))
+summary = payload["summary"]
+print("COS Portability")
+print("═══════════════")
+print("SCOPE both portability:")
+print(f"  covered: {summary['covered']}")
+print(f"  missing: {summary['missing']}")
+print(f"  hot-path missing: {summary['hot_path_missing']}")
+print(f"  total: {summary['total']}")
+print("")
+print("By priority:")
+for priority in ("hot_path", "shared_lib", "agent_lifecycle", "other"):
+    item = summary.get("by_priority", {}).get(priority)
+    if not item:
+        continue
+    print(f"  {priority}: {item.get('covered', 0)}/{item.get('total', 0)} covered, {item.get('missing', 0)} missing")
+print("")
+print("Reports:")
+print(f"  JSON: {payload['reports']['json']}")
+print(f"  Markdown: {payload['reports']['markdown']}")
+PYEOF
+  rm -f "$tmp_json" 2>/dev/null || true
+}
+
+if [ "$PORTABILITY" -eq 1 ]; then
+  emit_portability_status "$MODE"
+  exit 0
+fi
 
 if [ "$OBSERVABILITY" -eq 1 ]; then
   emit_observability_status "$MODE"
