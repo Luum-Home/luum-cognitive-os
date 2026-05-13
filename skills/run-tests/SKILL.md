@@ -1,24 +1,35 @@
 <!-- SCOPE: both -->
 ---
 name: run-tests
-description: "Use when you need this Cognitive OS skill: Auto-detect project test framework and run tests with structured reporting; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Auto-detect project test framework and run tests with structured
+  reporting; do not use when a narrower skill directly matches the task.'
 invoke: /run-tests
 version: 1.1.0
 audience: project
-triggers: ["/run-tests", "/test", "/tests"]
-platforms: ["claude-code"]
+triggers:
+- /run-tests
+- /test
+- /tests
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\b(run|corr[eé]\w*|ejecut[áa]\w*)\s+(the|los|las|all)?\s*test'
-    confidence: 0.95
-  - pattern: '\bpytest\b'
-    confidence: 0.86
-  - pattern: '\brun\s+tests?\b'
-    confidence: 0.94
-  - pattern: '\btest\s+(suite|framework)\b'
-    confidence: 0.82
-  - pattern: '\bauto[- ]?detect\s+(project\s+)?test\s+framework\b'
-    confidence: 0.90
+- pattern: \brun[- ]?tests?\b
+  confidence: 0.96
+- pattern: \bpytest\b
+  confidence: 0.86
+- pattern: \brun\s+tests?\b
+  confidence: 0.94
+- pattern: \btest\s+(suite|framework)\b
+  confidence: 0.82
+- pattern: \bauto[- ]?detect\s+(project\s+)?test\s+framework\b
+  confidence: 0.9
+- pattern: \b(run|corr[eé]\w*|ejecut[áa]\w*)\s+(the|los|las|all)?\s*test
+  confidence: 0.95
+routing_intents:
+- intent: run_project_tests
+  description: User asks to run, execute, detect, or report the project's test suite or test framework.
+  confidence: 0.9
 ---
 
 # /run-tests

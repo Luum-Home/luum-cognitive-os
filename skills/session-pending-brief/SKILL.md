@@ -1,19 +1,34 @@
 <!-- SCOPE: both -->
 ---
 name: session-pending-brief
-description: "Use when starting a session OR when the operator asks 'qué hay pendiente?' / 'what's open?' / 'what should I attack?' — runs the ADR-275 session-start projector and presents a ranked attack list spanning tasks, ADR decisions, audits, staged deploys, and git state in one bounded view. Do not use for executing the work itself."
+description: Use when starting a session OR when the operator asks 'qué hay pendiente?' / 'what's open?' / 'what should I
+  attack?' — runs the ADR-275 session-start projector and presents a ranked attack list spanning tasks, ADR decisions, audits,
+  staged deploys, and git state in one bounded view. Do not use for executing the work itself.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-12
 audience: both
-tags: [session-start, pending, projector, adr-275, attack-list]
-summary_line: "Bridge prompt → cos-session-start-projector → ranked attack list."
-platforms: ["claude-code", "codex", "cos-runner"]
+tags:
+- session-start
+- pending
+- projector
+- adr-275
+- attack-list
+summary_line: Bridge prompt → cos-session-start-projector → ranked attack list.
+platforms:
+- claude-code
+- codex
+- cos-runner
 prerequisites: []
 routing_patterns:
-  - pattern: '\bpending[- ]?brief\b'
-  - pattern: '\b(que|qué|what).{0,30}(pendiente|open|attack|to.do|abierto)\b'
-  - pattern: '\bsession[- ]?start[- ]?brief\b'
+- pattern: \bpending[- ]?brief\b
+- pattern: \bsession[- ]?start[- ]?brief\b
+- pattern: \b(que|qué|what).{0,30}(pendiente|open|attack|to.do|abierto)\b
+  confidence: 0.86
+routing_intents:
+- intent: session_pending_work_brief
+  description: User asks what work is pending, open, left, next, or worth attacking at the start or middle of a session.
+  confidence: 0.88
 ---
 
 # session-pending-brief

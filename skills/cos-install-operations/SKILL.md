@@ -1,13 +1,27 @@
 <!-- SCOPE: os-only -->
 ---
 name: cos-install-operations
-description: "Use when installing, bootstrapping, upgrading, uninstalling, onboarding, or safely running Cognitive OS operator/setup scripts. Routes setup and install work through protected canonical scripts instead of ad-hoc shell commands."
+description: Use when installing, bootstrapping, upgrading, uninstalling, onboarding, or safely running Cognitive OS operator/setup
+  scripts. Routes setup and install work through protected canonical scripts instead of ad-hoc shell commands.
 version: 1.0.0
 user-invocable: true
 audience: os-dev
-tags: [install, bootstrap, upgrade, setup, operator, protected-surface]
+tags:
+- install
+- bootstrap
+- upgrade
+- setup
+- operator
+- protected-surface
 summary_line: Route COS install/bootstrap/upgrade/operator setup through canonical scripts.
-platforms: ["claude-code", "codex", "shell"]
+platforms:
+- claude-code
+- codex
+- shell
+routing_intents:
+- intent: cos_install_operations
+  description: User wants to install, bootstrap, upgrade, uninstall, onboard, or safely run Cognitive OS operator setup scripts.
+  confidence: 0.84
 ---
 
 # COS Install Operations

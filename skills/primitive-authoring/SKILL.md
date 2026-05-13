@@ -1,19 +1,40 @@
 <!-- SCOPE: both -->
 ---
 name: primitive-authoring
-description: "Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive, deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service impact. Purpose: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in consumer projects."
+description: 'Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive,
+  deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service
+  impact. Purpose: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in
+  consumer projects.'
 version: 0.2.0
 audience: both
-tags: [primitives, governance, portability, authoring, projection, observability, portable-ai]
+tags:
+- primitives
+- governance
+- portability
+- authoring
+- projection
+- observability
+- portable-ai
 user-invocable: true
-platforms: [claude, codex, opencode, cursor, vscode-copilot, shell-ci]
+platforms:
+- claude
+- codex
+- opencode
+- cursor
+- vscode-copilot
+- shell-ci
 routing_patterns:
-  - pattern: '\bprimitive[- ]?authoring\b'
-    confidence: 0.96
-  - pattern: '\b(create|build|add|author|promote|modify)\s+(a\s+)?(new\s+)?(agentic\s+)?primitive\b'
-    confidence: 0.92
-  - pattern: '\b(nueva?|crear|construir|agregar|promover)\s+(una?\s+)?primitiva\b'
-    confidence: 0.90
+- pattern: \bprimitive[- ]?authoring\b
+  confidence: 0.96
+- pattern: \b(create|build|add|author|promote|modify)\s+(a\s+)?(new\s+)?(agentic\s+)?primitive\b
+  confidence: 0.92
+- pattern: \b(nueva?|crear|construir|agregar|promover)\s+(una?\s+)?primitiva\b
+  confidence: 0.9
+routing_intents:
+- intent: agentic_primitive_authoring
+  description: User wants to create, modify, promote, or assess an agentic primitive such as a skill, rule, hook, script,
+    or reusable workflow.
+  confidence: 0.9
 ---
 
 # Primitive Authoring

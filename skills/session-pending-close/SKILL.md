@@ -1,19 +1,36 @@
 <!-- SCOPE: both -->
 ---
 name: session-pending-close
-description: "Use when closing one or many pending-truth items with bilateral proof — invokes scripts/cos-pending-truth-close for TASKS and scripts/cos-adr-close for DECISIONS, refreshes aggregator + audits, and reports closure-trail deltas. Do not use to discover what's open (use session-pending-brief)."
+description: Use when closing one or many pending-truth items with bilateral proof — invokes scripts/cos-pending-truth-close
+  for TASKS and scripts/cos-adr-close for DECISIONS, refreshes aggregator + audits, and reports closure-trail deltas. Do not
+  use to discover what's open (use session-pending-brief).
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-12
 audience: both
-tags: [closure, atomic, bilateral-proof, adr-275, adr-273]
-summary_line: "Atomic close of pending-truth task and/or ADR-decision items with audit trail."
-platforms: ["claude-code", "codex", "cos-runner"]
+tags:
+- closure
+- atomic
+- bilateral-proof
+- adr-275
+- adr-273
+summary_line: Atomic close of pending-truth task and/or ADR-decision items with audit trail.
+platforms:
+- claude-code
+- codex
+- cos-runner
 prerequisites: []
 routing_patterns:
-  - pattern: '\bpending[- ]?close\b'
-  - pattern: '\bcerr(ar|á)\b.{0,30}(item|tarea|adr|ledger)'
-  - pattern: '\bclose\b.{0,30}(item|task|adr|ledger|pending)'
+- pattern: \bpending[- ]?close\b
+- pattern: \bcerr(ar|á)\b.{0,30}(item|tarea|adr|ledger)
+  confidence: 0.86
+- pattern: \bclose\b.{0,30}(item|task|adr|ledger|pending)
+  confidence: 0.84
+routing_intents:
+- intent: close_pending_truth_item
+  description: User asks to close one or more pending task, ADR, ledger, or pending-truth items with proof and audit trail
+    updates.
+  confidence: 0.88
 ---
 
 # session-pending-close

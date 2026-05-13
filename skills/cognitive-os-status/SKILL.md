@@ -1,19 +1,28 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-status
-description: "Use when you need this Cognitive OS skill: Full health check of all Cognitive OS agentic primitives; do not use when a narrower skill directly matches the task."
-triggers: ["/cognitive-os-status", "/aos-status", "/health"]
+description: 'Use when you need this Cognitive OS skill: Full health check of all Cognitive OS agentic primitives; do not
+  use when a narrower skill directly matches the task.'
+triggers:
+- /cognitive-os-status
+- /aos-status
+- /health
 audience: both
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcognitive[- ]?os\s+status\b'
-    confidence: 0.96
-  - pattern: '\b(os|system)\s+health\s+check\b'
-    confidence: 0.86
-  - pattern: '\b(status|health)\s+(of|for)\s+(cognitive[- ]?os|agentic primitives)\b'
-    confidence: 0.84
+- pattern: \bcognitive[- ]?os\s+status\b
+  confidence: 0.96
+- pattern: \b(os|system)\s+health\s+check\b
+  confidence: 0.86
+- pattern: \b(status|health)\s+(of|for)\s+(cognitive[- ]?os|agentic primitives)\b
+  confidence: 0.84
+routing_intents:
+- intent: cognitive_os_health_status
+  description: User asks for a health check or status report of Cognitive OS, its hooks, skills, rules, or agentic primitives.
+  confidence: 0.88
 ---
 
 # /cognitive-os-status

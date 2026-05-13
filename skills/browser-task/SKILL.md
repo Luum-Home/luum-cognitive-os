@@ -1,21 +1,34 @@
 <!-- SCOPE: os-only -->
 ---
 name: browser-task
-description: "Use when an agent or operator needs to drive a real web browser - navigate to a URL, click elements, fill forms, scrape live page content, or extract evidence from a site that static HTTP fetches cannot reach. Backed by browser-use (MIT) per ADR-288."
+description: Use when an agent or operator needs to drive a real web browser - navigate to a URL, click elements, fill forms,
+  scrape live page content, or extract evidence from a site that static HTTP fetches cannot reach. Backed by browser-use (MIT)
+  per ADR-288.
 version: 0.1.0
 audience: both
-tags: [web-automation, browser, scraping, evidence, browser-use]
-platforms: ["claude-code"]
+tags:
+- web-automation
+- browser
+- scraping
+- evidence
+- browser-use
+platforms:
+- claude-code
 prerequisites:
-  - "uv sync --extra web-automation"
+- uv sync --extra web-automation
 routing_patterns:
-  - pattern: '\bbrowser[-\s]?task\b'
-    confidence: 0.95
-  - pattern: '\b(navigate|browse|scrape|extract|click|fill).+(url|website|page|form)\b'
-    confidence: 0.78
-  - pattern: '\bweb[-\s]?automation\b'
-    confidence: 0.82
+- pattern: \bbrowser[-\s]?task\b
+  confidence: 0.95
+- pattern: \bweb[-\s]?automation\b
+  confidence: 0.82
+- pattern: \b(navigate|browse|scrape|extract|click|fill).+(url|website|page|form)\b
+  confidence: 0.78
 related_adr: ADR-288
+routing_intents:
+- intent: interactive_browser_task
+  description: User needs a real browser to navigate pages, click elements, fill forms, scrape dynamic content, or extract
+    evidence from a live website.
+  confidence: 0.86
 ---
 
 # Browser Task

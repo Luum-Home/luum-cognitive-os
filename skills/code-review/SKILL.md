@@ -1,7 +1,9 @@
 <!-- SCOPE: both -->
 ---
 name: code-review
-description: "Use when you need this Cognitive OS skill: Engram-integrated code review with adversarial protocol. Reviews changed files for quality, security, conventions, and test coverage. Uses engram memory for past review patterns and saves findings for future reference.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Engram-integrated code review with adversarial protocol. Reviews
+  changed files for quality, security, conventions, and test coverage. Uses engram memory for past review patterns and saves
+  findings for future reference.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,16 +16,21 @@ context info:
 audience: project
 effort: opus
 summary_line: Engram-integrated code review with adversarial protocol.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcode[- ]?review\b'
-    confidence: 0.95
-  - pattern: '\b(review|revis[áa]\w*)\s+(my\s+|el\s+|la\s+|this\s+)?code\b'
-    confidence: 0.88
-  - pattern: '\bengram[- ]?(integrated\s+)?code[- ]?review\b'
-    confidence: 0.95
+- pattern: \bcode[- ]?review\b
+  confidence: 0.95
+- pattern: \bengram[- ]?(integrated\s+)?code[- ]?review\b
+  confidence: 0.95
+- pattern: \b(review|revis[áa]\w*)\s+(my\s+|el\s+|la\s+|this\s+)?code\b
+  confidence: 0.88
+routing_intents:
+- intent: code_review_request
+  description: User asks for a review of code, changes, a pull request, or implementation quality, including security, conventions,
+    or test coverage concerns.
+  confidence: 0.88
 ---
 
 ## Purpose

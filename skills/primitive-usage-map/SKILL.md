@@ -1,23 +1,30 @@
 <!-- SCOPE: os-only -->
 ---
 name: primitive-usage-map
-description: "Use when you need this Cognitive OS skill: Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Map which Cognitive OS skills, hooks, rules, tests, docs, workflows,
+  and configs reference each primitive or script.; do not use when a narrower skill directly matches the task.'
 invoke: /primitive-usage-map
 tag: os-only
 model: haiku
 audience: os-dev
 effort: haiku
 summary_line: Static primitive consumer map for scripts, hooks, skills, and rules.
-version: "1.0.0"
-platforms: ["claude-code", "codex"]
+version: 1.0.0
+platforms:
+- claude-code
+- codex
 prerequisites: []
 routing_patterns:
-  - pattern: '\bprimitive[- ]?usage[- ]?map\b'
-    confidence: 0.95
-  - pattern: '\bmap\s+primitive\s+usage\b'
-    confidence: 0.85
-  - pattern: '\bwhich\s+skills\s+(reference|use)\s+primitive\b'
-    confidence: 0.75
+- pattern: \bprimitive[- ]?usage[- ]?map\b
+  confidence: 0.95
+- pattern: \bmap\s+primitive\s+usage\b
+  confidence: 0.85
+- pattern: \bwhich\s+skills\s+(reference|use)\s+primitive\b
+  confidence: 0.85
+routing_intents:
+- intent: primitive_usage_mapping
+  description: User asks which skills, scripts, rules, hooks, or other primitives reference or depend on a given agentic primitive.
+  confidence: 0.86
 ---
 
 # Primitive Usage Map

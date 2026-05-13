@@ -2,41 +2,45 @@
 ---
 name: sdd-explore
 command: /sdd-explore
-description: "Use when you need this Cognitive OS skill: Explore and investigate ideas before committing to a change — deep feasibility analysis; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Explore and investigate ideas before committing to a change — deep
+  feasibility analysis; do not use when a narrower skill directly matches the task.'
 trigger: When the orchestrator launches you to think through a feature, investigate the codebase, or clarify requirements
 inputs:
-  - topic: What to explore (feature idea, technical question, codebase area)
-  - scout-report (optional): Scout report from a prior /scout run
-  - change-name (optional): SDD change name if part of a pipeline
+- topic: What to explore (feature idea, technical question, codebase area)
+- scout-report (optional): Scout report from a prior /scout run
+- change-name (optional): SDD change name if part of a pipeline
 outputs:
-  - exploration: Structured feasibility analysis with approach recommendation
-  - risks: Identified risks and open questions
-  - recommendation: Proceed/pivot/abandon with reasoning
+- exploration: Structured feasibility analysis with approach recommendation
+- risks: Identified risks and open questions
+- recommendation: Proceed/pivot/abandon with reasoning
 version: 1.0.0
 audience: project
 last-updated: 2026-03-28
 summary_line: Explore and investigate ideas before committing to a change — deep feasibility…
-# ADR-050 per-skill routing: exploration needs frontier reasoning for risk
-# analysis and feasibility. Prefer Claude; allow Qwen fallback on Claude
-# rate-limit but not on other errors (we want real signal, not a weaker
-# model silently taking over).
 routing:
   tier: frontier
   need_long_context: true
-  providers_preferred: [claude, qwen]
+  providers_preferred:
+  - claude
+  - qwen
   fallback_on_rate_limit: true
   fallback_on_any_error: false
-  budget_max_usd_per_call: 1.50
-
-platforms: ["claude-code"]
+  budget_max_usd_per_call: 1.5
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsdd[- ]?explore\b'
-    confidence: 0.96
-  - pattern: '\bexplore\s+(idea|feasibility|before\s+implementing)\b'
-    confidence: 0.86
-  - pattern: '\bpre[- ]?development\s+exploration\b'
-    confidence: 0.84
+- pattern: \bsdd[- ]?explore\b
+  confidence: 0.96
+- pattern: \bpre[- ]?development\s+exploration\b
+  confidence: 0.84
+- pattern: \bexplore\s+(idea|feasibility|before\s+implementing)\b
+  confidence: 0.82
+routing_intents:
+- intent: pre_implementation_feasibility_exploration
+  description: User wants to explore an idea, investigate feasibility, clarify requirements, or analyze risks before implementing
+    a change.
+  confidence: 0.86
 ---
 
 # SDD Explore -- Deep Feasibility Analysis

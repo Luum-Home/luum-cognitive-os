@@ -1,23 +1,29 @@
 <!-- SCOPE: both -->
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims
+description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running
+  verification commands and confirming output before making any success claims
 version: 1.0.0
 last-updated: 2026-03-21
 source: superpowers (obra/superpowers)
 tech: verification
 audience: project
-summary_line: "Use when about to claim work is complete, fixed, or passing, before committing…"
-
-platforms: ["claude-code"]
+summary_line: Use when about to claim work is complete, fixed, or passing, before committing…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bverification[- ]?before[- ]?completion\b'
-    confidence: 0.95
-  - pattern: '\bverif\w+\s+before\s+(claim\w*|complet\w*)\b'
-    confidence: 0.85
-  - pattern: '\brun\s+verification\s+commands?\b'
-    confidence: 0.75
+- pattern: \bverification[- ]?before[- ]?completion\b
+  confidence: 0.95
+- pattern: \brun\s+verification\s+commands?\b
+  confidence: 0.75
+- pattern: \bverif\w+\s+before\s+(claim\w*|complet\w*)\b
+  confidence: 0.85
+routing_intents:
+- intent: verify_before_success_claim
+  description: User is about to claim work is complete, fixed, passing, or ready and needs to run verification before making
+    the success claim.
+  confidence: 0.88
 ---
 
 # Verification Before Completion

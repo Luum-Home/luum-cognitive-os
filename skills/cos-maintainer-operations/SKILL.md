@@ -1,13 +1,30 @@
 <!-- SCOPE: os-only -->
 ---
 name: cos-maintainer-operations
-description: "Use when maintaining Cognitive OS capability/audit/control-plane scripts such as ACC, active primitive index, adapter compile, CI local validation, memory lifecycle doctor, runtime hook reality, release/security red-team, proof drills, or script exposure follow-up. Prefer these canonical scripts instead of ad-hoc repo scans."
+description: Use when maintaining Cognitive OS capability/audit/control-plane scripts such as ACC, active primitive index,
+  adapter compile, CI local validation, memory lifecycle doctor, runtime hook reality, release/security red-team, proof drills,
+  or script exposure follow-up. Prefer these canonical scripts instead of ad-hoc repo scans.
 version: 1.0.0
 user-invocable: true
 audience: os-dev
-tags: [maintainer, scripts, audits, capability, release, security, proof]
+tags:
+- maintainer
+- scripts
+- audits
+- capability
+- release
+- security
+- proof
 summary_line: Route high-value COS maintainer operations through canonical scripts.
-platforms: ["claude-code", "codex", "shell"]
+platforms:
+- claude-code
+- codex
+- shell
+routing_intents:
+- intent: cos_maintainer_operations
+  description: User wants to run or maintain Cognitive OS capability, audit, control-plane, release, red-team, proof, or operational
+    scripts.
+  confidence: 0.84
 ---
 
 # COS Maintainer Operations
