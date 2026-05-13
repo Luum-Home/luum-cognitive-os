@@ -270,3 +270,60 @@ def test_skill_drift_invalidates_cache(tmp_path):
     sig_a = _catalog_signature([idx_a], sm.DEFAULT_MODEL_NAME)
     sig_b = _catalog_signature([idx_b], sm.DEFAULT_MODEL_NAME)
     assert sig_a != sig_b, "signature must change when SKILL.md description changes"
+
+
+# ----------------------------------------------------------------------------
+# Regression gate: cos-language-dependence-audit baseline
+# ----------------------------------------------------------------------------
+# Pre-ADR-296 baseline (captured 2026-05-13 with --min-severity low):
+#   total_findings = 326, medium_severity = 97, primitives_affected = 112
+# This test asserts the audit count does not grow. ADR-296 makes most of
+# these obsolete because the semantic matcher reads SKILL.md description
+# directly, so routing_patterns can be removed over time. Allowing the
+# count to grow would silently re-introduce the monolingual-regex anti-
+# pattern. Cap is set above the 2026-05-13 baseline with a small headroom
+# for new skills that haven't yet been migrated.
+
+@pytest.mark.audit
+def test_language_dependence_audit_does_not_regress():
+    """ADR-296 regression gate.
+
+    Runs scripts/cos-language-dependence-audit and asserts the total
+    finding count stays at or below the captured baseline. New skills
+    landing patterns will tick this up; the cap forces the contributor
+    to either justify the regex (and bump the cap explicitly) or use the
+    semantic path instead.
+    """
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    script = repo / "scripts" / "cos-language-dependence-audit"
+    if not script.exists():
+        pytest.skip("language-dependence-audit script not present")
+
+    proc = subprocess.run(
+        [str(script), "--json", "--min-severity", "low"],
+        capture_output=True,
+        text=True,
+        cwd=str(repo),
+        timeout=60,
+    )
+    _ = sys  # quiet F401 — module retained for future env injection if needed
+    assert proc.returncode == 0, f"audit failed: {proc.stderr[:400]}"
+    data = json.loads(proc.stdout)
+    total = int(data.get("total_finding_count") or data.get("finding_count") or 0)
+
+    # Baseline captured 2026-05-13 immediately before ADR-296 lands.
+    # Cap = baseline + 10 for in-flight new skills. Tighten this number
+    # as routing_patterns are removed in favour of the semantic path.
+    BASELINE = 326
+    CAP = BASELINE + 10
+    assert total <= CAP, (
+        f"cos-language-dependence-audit regressed: {total} findings "
+        f"(cap {CAP}, pre-ADR-296 baseline {BASELINE}). "
+        f"Either remove the new language-dependent regex (prefer ADR-296 "
+        f"semantic path) or bump the cap with a justification."
+    )
