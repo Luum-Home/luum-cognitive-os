@@ -18,12 +18,26 @@ import os
 import shutil
 import sqlite3
 import subprocess
+import sys
 import uuid
 from pathlib import Path
 from typing import Any, Optional
 
 import pytest
 import yaml
+
+# Make both the repository root and the tests package root importable in the
+# parent process. Python's multiprocessing "spawn" start method copies this
+# sys.path into child interpreters before unpickling Process targets. Pytest
+# can collect tests/unit/*.py with module names like "unit.test_event_bus"
+# because tests/unit has __init__.py; without tests/ itself on sys.path, child
+# processes fail before running any worker code with:
+#   ModuleNotFoundError: No module named 'unit'
+_TESTS_ROOT = Path(__file__).resolve().parent
+_REPO_ROOT = _TESTS_ROOT.parent
+for _path in (str(_REPO_ROOT), str(_TESTS_ROOT)):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
 
 # ----------------------------------------------------------------------------
 # Default subprocess.run timeout (test-only safety net).
