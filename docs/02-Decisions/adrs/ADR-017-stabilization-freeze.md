@@ -2,16 +2,16 @@
 adr: 17
 title: Stabilization Freeze -- No New Features Until Wiring Complete
 status: accepted
-implementation_status: partial
+implementation_status: not-applicable
 date: '2026-04-11'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted record with explicit partial/phase scope
-partial_remaining: Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.
-partial_remaining_basis: generic audit fallback
+classification_basis: temporal freeze expired; preserved as historical governance record
+partial_remaining: null
+partial_remaining_basis: temporal freeze expired
 ---
 
 # ADR-017: Stabilization Freeze -- No New Features Until Wiring Complete
@@ -47,6 +47,21 @@ Declare a stabilization freeze: no new features until the existing system is ful
 - **Continue feature development with parallel stabilization**: Keeps momentum but the wiring gap widens faster than it closes. Each new feature adds agentic primitives that need wiring. Rejected as unsustainable.
 - **Archive everything unwired and start clean**: Drastic but eliminates the debt. Rejected because many unwired agentic primitives are valuable -- they just need connection points.
 - **Hire/assign someone to stabilization while features continue**: Not applicable to a solo developer project.
+
+
+## Current Status
+
+This ADR is obsolete-by-context as an operational freeze. It governed the April
+2026 stabilization window and is preserved as historical rationale. New feature
+work is no longer globally blocked by ADR-017; current work is governed by
+`project.phase`, current ADRs, readiness gates, lifecycle ledgers, and narrower
+freezes such as release, adoption, and compliance freezes.
+
+ADR-017 was correct for the original growth crisis. The expired part is using it
+today as a global anti-feature limit. The surviving principle is narrower: do
+not add agentic primitives without lifecycle/wiring evidence, do not expand in
+ways that break readiness, do not accumulate dead code, and do not bypass active
+gates.
 
 ## Consequences
 

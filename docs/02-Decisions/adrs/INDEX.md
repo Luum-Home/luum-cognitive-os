@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 294 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 301 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (126)
+### Active / Implemented (131)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -138,6 +138,11 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [282](ADR-282-product-answer-card-cache-and-freshness-ledger.md) | Product Answer Card Cache and Freshness Ledger | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
 | [283](ADR-283-script-exposure-audit-and-invocation-ratchet.md) | Script Exposure Audit and Invocation Ratchet | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
 | [284](ADR-284-doc-path-reference-audit.md) | Documentation Path Reference Audit | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
+| [285](ADR-285-skill-registry-runtime-drift-detection.md) | Skill Registry Runtime Drift Detection | accepted | implemented | 2026-05-13 | Accepted and implemented — 2026-05-13. |
+| [286](ADR-286-stack-aware-skill-recommendation-session-start.md) | Stack-Aware Skill Recommendation at Session Start | accepted | implemented | 2026-05-13 | Accepted and implemented — 2026-05-13. |
+| [287](ADR-287-engram-v3-evidence-grounded-claims-and-portable-bundles.md) | Engram v3: Evidence-Grounded Claims, Write Gate, BM25 Retrieval Wrapper, and Portable Bundles | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
+| [288](ADR-288-web-automation-adapter-for-dispatch.md) | Web-Automation Adapter for Dispatch (browser-use) | accepted | implemented | 2026-05-13 | - **Status:** Accepted |
+| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
 
 ### Active / Partial (118)
 
@@ -149,7 +154,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [014](ADR-014-sdd-fast-path.md) | SDD Fast Path -- Skip Phases for Capable Models | accepted | partial | 2026-03-31 | **Date:** 2026-03-31 |
 | [015](ADR-015-rules-to-hooks-migration.md) | Rules-to-Hooks Migration -- From Context to Enforcement | accepted | partial | 2026-04-10 | **Date:** 2026-04-10 |
 | [016](ADR-016-context-diet.md) | Context Diet -- Token Optimization Strategy | accepted | partial | 2026-03-31 | **Date:** 2026-03-31 |
-| [017](ADR-017-stabilization-freeze.md) | Stabilization Freeze -- No New Features Until Wiring Complete | accepted | partial | 2026-04-11 | **Date:** 2026-04-11 |
 | [018](ADR-018-docker-to-pip-migration.md) | Docker-to-pip Migration -- Service Infrastructure Change | accepted | partial | 2026-04-11 | **Date:** 2026-04-11 to 2026-04-13 |
 | [019](ADR-019-scope-tagging.md) | Scope Tagging -- Agentic Primitive Audience Classification | accepted | partial | 2026-04-13 | **Date:** 2026-04-13 |
 | [020](ADR-020-contamination-fix.md) | Contamination Fix -- Remove Project-Specific Code from OS | accepted | partial | 2026-04-13 | **Date:** 2026-04-13 |
@@ -261,6 +265,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [274](ADR-274-operational-guide-required-for-capability-adrs.md) | Operational Guide Required for Maintainer-Tier Capability ADRs | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (audit + Phase 1 enforcement). |
 | [275](ADR-275-closure-and-projection-primitives.md) | Closure & Projection Primitives (Pending-Truth Read/Write Symmetry) | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (projector + close primitive + tests). Hook |
 | [278](ADR-278-subprocess-run-timeout-discipline.md) | subprocess.run Timeout Discipline | accepted | partial | 2026-05-12 | Accepted — audit + allowlist + test-default shipped 2026-05-12. Per-call |
+| [289](ADR-289-three-layer-knowledge-architecture.md) | Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram | accepted | partial | 2026-05-13 | Accepted — 2026-05-13. |
 
 ### Active / Partial / Blocked (1)
 
@@ -280,11 +285,12 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 |---|---|---|---|---|---|
 | [137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) | Operational Trajectory — From Governance Layer Over Agents to Embedded Runtime | accepted | planned | 2026-05-03 | **Accepted** for the trajectory itself. The directional commitment (B → A, defined below) is firm. |
 
-### Active / Not Applicable (6)
+### Active / Not Applicable (7)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [007](ADR-007-cognitive-os-rebrand.md) | Rebrand from Agent OS to Cognitive OS | accepted | not-applicable | 2026-03-24 | **Date:** 2026-03-24 |
+| [017](ADR-017-stabilization-freeze.md) | Stabilization Freeze -- No New Features Until Wiring Complete | accepted | not-applicable | 2026-04-11 | **Date:** 2026-04-11 |
 | [103](ADR-103-audit-contract-lane-recovery.md) | Audit and contract lane recovery before parallel flip | accepted | not-applicable | 2026-05-12 | Accepted. |
 | [122](ADR-122-preflight-gate-refinements.md) | Preflight Gate Refinements | accepted | not-applicable | 2026-05-02 | **Author**: Maintainer (operator) |
 | [133](ADR-133-expansion-without-monsterization.md) | Expansion Without Monsterization | accepted | not-applicable | 2026-05-03 | Accepted — 2026-05-03 |
