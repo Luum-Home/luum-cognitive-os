@@ -112,6 +112,8 @@
 | code-review | Engram-integrated code review: quality, security, conventions, test coverage with memory | `/code-review` | project |
 | pr-review | Pull Request review: diff-based review with test verification and PASSED/FAILED verdict | `/pr-review` | project |
 | self-review | Lightweight 4-question post-implementation checklist for non-SDD work | `/self-review` | project |
+| browser-task | Drive a real browser for navigation, extraction, and form-fill workflows when static HTTP fetches are insufficient | `/browser-task` | both |
+| wiki-ingest | Ingest raw URLs, files, or pasted text into the compiled docs vault with raw-source indexing | `/wiki-ingest` | both |
 | web-crawler | Fetch and convert web pages to LLM-ready markdown using Crawl4AI | `/web-crawler` | project |
 | deep-research | Multi-hop research with configurable depth (quick/standard/deep/exhaustive), structured reports | `/deep-research` | project |
 | deep-tool-research | Canonical 7-annex deep evaluation of an external tool (A–G fixed taxonomy) after repo-scout pass; produces parent comparison doc + annexes for cross-tool comparability | `/deep-tool-research <tool>` | both |
@@ -349,6 +351,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **vulnerability-scan** — Run LLM vulnerability probes using Garak against configured endpoints
 - **web-crawler** — Fetch and convert web pages to LLM-ready markdown using Crawl4AI. Supports single-page fetch, structured data extraction, and multi-page site crawling.
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
+- **wiki-ingest** — Ingest a source (URL, file, or pasted text) into the compiled vault: creates a structured page in docs/04-Concepts/ingested/, registers the source with SHA-256 hash in docs/08-References/raw/index.jsonl, and emits an observation claim to engram.
 - **worktree-triage** — Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.
 - **agent-control** — Send governed bidirectional control and clarification signals between the orchestrator and live agents.
 - **primitive-harness-coverage** — Measure effective agentic primitive implementation by surface so agents do not confuse `SCOPE: both` with equal Claude/Codex/CLI/UI behavior.

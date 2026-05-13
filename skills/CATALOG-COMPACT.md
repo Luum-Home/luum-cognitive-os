@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 169
+Total skills: 171
 
 ## os (18)
 
@@ -73,7 +73,7 @@ Total skills: 169
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Use when you need this Cognitive OS skill: Run LLM vulnerability probes using Garak against configu… |
 
-## both (38)
+## both (40)
 
 | Skill | Description |
 |-------|-------------|
@@ -81,6 +81,7 @@ Total skills: 169
 | analyze-improvements | Analyze KPIs, error patterns, and skill metrics to identify improvement… |
 | apply-improvements | Apply approved self-improvement changes from an analyze-improvements report. |
 | branch-worktree-closure | Close leftover agent branches/worktrees without losing work or bypassing main landing gates. |
+| browser-task | Use when an agent or operator needs to drive a real web browser - navigate to a URL, click elements… |
 | catalog-full | Load and display the full skills catalog (skills/CATALOG.md) with invocations… |
 | caveman | Ultra-compressed communication mode. |
 | caveman-es | Modo cavernícola en español. |
@@ -114,7 +115,8 @@ Total skills: 169
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
-| worktree-triage | Compare a worktree to main and produce a safe port/validate/remove checklist. |
+| wiki-ingest | Use when raw URLs, files, or pasted text need to be ingested into the compiled docs vault with raw-… |
+| worktree-triage | Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete checklist. |
 
 ## project (70)
 
