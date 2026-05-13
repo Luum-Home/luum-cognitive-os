@@ -39,3 +39,37 @@ models:
       560M params, 1024-dim, 94 languages. Untested locally. Loader may
       require the `intfloat/` namespace to be allow-listed by fastembed;
       benchmark may legitimately report load-failure.
+
+  - id: qwen3-embedding-0.6b
+    adapter: fastembed-bi-encoder
+    model_name: Qwen/Qwen3-Embedding-0.6B
+    license: Apache-2.0
+    role: bi-encoder
+    note: |
+      Alibaba/Qwen, released Jun 2025. 0.6B params, 1024-dim, 100+ langs.
+      Independent Nov 2025 benchmark: +8% MMTEB vs BGE-M3; ~25ms CPU avg
+      on AWS c5.2xlarge (claim, not Apple Silicon). Survey 3/4 consensus.
+      Adapter may require namespace allowlist.
+
+  - id: harrier-oss-v1-270m
+    adapter: fastembed-bi-encoder
+    model_name: microsoft/harrier-oss-v1-270m
+    license: MIT
+    role: bi-encoder
+    note: |
+      Microsoft, released 30 Mar 2026. 270M params, 32K context, 94 langs.
+      Claimed #1 MMTEB v2 at release (66.5). Smallest of the SOTA tier.
+      Loader status with fastembed unverified; benchmark may report
+      legitimate load-failure if not in registry.
+
+  - id: bge-reranker-v2-m3
+    adapter: fastembed-bi-encoder  # placeholder — needs cross-encoder adapter
+    model_name: BAAI/bge-reranker-v2-m3
+    license: Apache-2.0
+    role: reranker
+    note: |
+      Cross-encoder reranker. Practitioner-validated ~130ms/16-pair batch
+      on CPU. ADAPTER MISMATCH: requires a cross-encoder adapter not yet
+      implemented (current adapter is bi-encoder). Entry kept for license
+      gate verification; harness will refuse to run it cleanly until the
+      cross-encoder adapter lands. See ADR-298 §Roadmap.
