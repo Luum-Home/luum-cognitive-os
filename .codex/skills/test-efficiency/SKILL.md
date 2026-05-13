@@ -27,7 +27,7 @@ scripts/cos-test-efficiency-plan --from-git --commands --include-final-laptop
 scripts/cos-pytest-serial-repair tests/ --timeout-seconds 600 --maxfail 1
 ```
 
-If it times out, isolate the last surfaced test/file; do not repeat an unbounded full suite.
+If it exits `124`, check whether it reported `PYTEST_CHUNK_TIMEOUT` or `PYTEST_BUDGET_EXHAUSTED`; rerun the same command to resume saved progress instead of repeating from zero.
 7. Only after targeted groups and the serial repair lane pass, run `make test-laptop` or the parallel full lane once.
 
 ## Failure file flow

@@ -222,7 +222,7 @@ Use `scripts/cos-pytest-serial-repair` for the SO maintainer serial maxfail=1 re
 scripts/cos-pytest-serial-repair tests/ --timeout-seconds 600 --maxfail 1
 ```
 
-Exit `124` means the external wall-clock timeout fired; isolate the last surfaced test/file before continuing. Once this serial lane passes, run the broader parallel lane.
+In `auto` mode, broad directory inputs run file chunks and persist progress in `.cognitive-os/runtime/pytest-serial-repair-state.json`. Exit `124` means either the invocation budget or one chunk timeout fired; rerun the same command to resume from the next unfinished file, or inspect the reported `PYTEST_CHUNK_TIMEOUT` chunk. Once this serial lane passes, run the broader parallel lane.
 
 Use `scripts/pytest-with-summary.sh` for any repair-oriented partial or full
 test run. It preserves the full output, a short summary, failure snippets,
