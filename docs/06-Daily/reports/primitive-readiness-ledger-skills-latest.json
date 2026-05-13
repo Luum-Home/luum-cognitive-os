@@ -78,7 +78,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 7,
         "script": 1,
         "test": 4
@@ -89,8 +89,20 @@
           "path": "manifests/pending-truth.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
           "family": "doc",
           "path": "docs/00-MOCs/entrypoints/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -107,14 +119,6 @@
         {
           "family": "doc",
           "path": "docs/08-References/root/competitive-landscape.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-codegen-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
         },
         {
           "family": "script",
@@ -142,7 +146,7 @@
         "script_consumers:1",
         "test_consumers:4",
         "doc_consumers:7",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -152,7 +156,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -329,13 +333,17 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 5,
+        "doc": 6,
         "rule": 1,
         "script": 1,
         "skill": 1,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-285-skill-registry-runtime-drift-detection.md"
+        },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -350,11 +358,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
+          "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/how-to-extend.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "rule",
@@ -391,7 +399,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:5"
+        "doc_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -401,7 +409,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -411,6 +419,10 @@
         "doc": 6
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/orchestration-gaps/tool-discovery-dynamic-registration.md"
+        },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -425,15 +437,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/orchestration-gaps/tool-discovery-dynamic-registration.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         }
       ],
       "distribution": null,
@@ -476,11 +484,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
+          "path": "docs/05-Methodology/root/how-to-extend.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/how-to-extend.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "rule",
@@ -523,7 +531,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 2,
-        "doc": 12,
+        "doc": 13,
         "rule": 2,
         "script": 1,
         "skill": 2,
@@ -564,6 +572,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -576,7 +588,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
         },
         {
           "family": "doc",
@@ -584,7 +596,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/root/research-log.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "rule",
@@ -625,7 +637,7 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:2"
       ],
       "family": "skills",
@@ -636,7 +648,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "high",
@@ -770,15 +782,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-185-cross-agent-audit-findings.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/07-Capabilities/acc/latest-compact.md"
         },
         {
           "family": "doc",
           "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-185-cross-agent-audit-findings.md"
         },
         {
           "family": "hook",
@@ -874,11 +886,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-092-harness-skills-sync-path.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -899,18 +923,6 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
         },
         {
           "family": "script",
@@ -1006,14 +1018,22 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
-        "doc": 9,
+        "config": 3,
+        "doc": 10,
         "skill": 2
       },
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "doc",
@@ -1033,6 +1053,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -1045,11 +1069,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/root/research-log.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -1063,8 +1087,8 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
-        "doc_consumers:9",
-        "config_consumers:1"
+        "doc_consumers:10",
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1074,18 +1098,22 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 15
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 3,
         "skill": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -1119,7 +1147,7 @@
       "evidence": [
         "skill_consumers:2",
         "doc_consumers:3",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1129,7 +1157,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -1249,15 +1277,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-123-operational-stability-friction-reduction.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "test",
@@ -1278,6 +1306,43 @@
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
       "total_consumers": 4
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_dispatch_web_automation_routing.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/browser-task/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 3
     },
     {
       "confidence": "medium",
@@ -1365,7 +1430,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "rule": 1,
         "script": 1,
@@ -1375,6 +1440,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
         },
         {
           "family": "doc",
@@ -1407,7 +1476,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1417,7 +1486,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -1483,15 +1552,15 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
         },
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         },
         {
           "family": "test",
@@ -1547,18 +1616,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/component-sources.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
@@ -1568,6 +1625,18 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
           "family": "hook",
@@ -1659,10 +1728,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
@@ -1707,7 +1772,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/bmad-v6-patterns.md"
+          "path": "docs/04-Concepts/root/global-vs-project-config.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/root/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/cos-package-manager.md"
         },
         {
           "family": "doc",
@@ -1719,15 +1792,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/root/cos-package-manager.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/root/global-vs-project-config.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/self-usage-audit.md"
+          "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
           "family": "hook",
@@ -1840,11 +1909,47 @@
         },
         {
           "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/getting-started.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/overview.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/01-Build-Log/root/roadmap.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/megamemory-annex-d-explorer-installer-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/megamemory-annex-e-primitives-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -1872,11 +1977,31 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/04-Concepts/patterns/os-vs-project.md"
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
+          "path": "docs/04-Concepts/root/component-sources.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/design-philosophy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/singularity.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/measurements/sessionstart-baseline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
@@ -1892,71 +2017,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/component-sources.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/design-philosophy.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/getting-started.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/measurements/sessionstart-baseline.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/root/os-vs-project-separation.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/overview.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/patterns/os-vs-project.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/megamemory-annex-d-explorer-installer-2026-05-11.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/megamemory-annex-e-primitives-2026-05-11.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/root/roadmap.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/singularity.md"
+          "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
         },
         {
           "family": "rule",
@@ -2036,7 +2105,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "doc",
@@ -2060,6 +2129,30 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/execution-backends.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/health-monitoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/ux-principles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/root/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/99-Archive/archive/plans/docs-hook-rule-candidates.md"
         },
         {
@@ -2069,30 +2162,6 @@
         {
           "family": "doc",
           "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/execution-backends.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/health-monitoring.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/self-usage-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/ux-principles.md"
         },
         {
           "family": "rule",
@@ -2147,7 +2216,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
+          "path": "docs/00-MOCs/entrypoints/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/getting-started.md"
         },
         {
           "family": "doc",
@@ -2167,22 +2240,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/docs-rescan-results.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/getting-started.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/04-Concepts/patterns/cognitive-os-changes.md"
         },
         {
@@ -2195,7 +2252,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/root/testing-cognitive-os-suite.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/99-Archive/archive/plans/docs-rescan-results.md"
         },
         {
           "family": "rule",
@@ -2264,6 +2333,10 @@
       "consumers": [
         {
           "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/faq.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
         },
         {
@@ -2273,10 +2346,6 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "rule",
@@ -2369,19 +2438,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/root/agent-capability-coverage.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
+          "path": "docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -2389,7 +2450,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
+          "path": "docs/07-Capabilities/root/agent-capability-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "rule",
@@ -2426,7 +2495,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 7,
         "test": 1
       },
@@ -2449,15 +2518,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/shell-ci-projection.yaml"
         },
         {
           "family": "doc",
           "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-02.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
@@ -2473,11 +2542,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/quality/test-coverage-report.md"
+          "path": "docs/03-PoCs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/quality/test-coverage-report.md"
         },
         {
           "family": "test",
@@ -2488,7 +2561,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:7",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2498,7 +2571,43 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cos-install-operations/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 0
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cos-maintainer-operations/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 0
     },
     {
       "confidence": "high",
@@ -2554,6 +2663,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-026a-decisions.md"
         },
         {
@@ -2590,6 +2707,26 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/onboarding/recording-recipe.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/onboarding/walkthrough.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/usage/cos-status.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/migration-from/from-hermes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
@@ -2623,34 +2760,6 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/shell-ci-formal-harness.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/migration-from/from-hermes.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/migration-from/from-vanilla-claude-code.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/05-Methodology/onboarding/recording-recipe.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/05-Methodology/onboarding/walkthrough.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/release/roadmap-v1.0-full-e2e.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/05-Methodology/usage/cos-status.md"
         },
         {
           "family": "hook",
@@ -2776,11 +2885,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/patterns/cost-predictor.md"
+          "path": "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md"
+          "path": "docs/04-Concepts/patterns/cost-predictor.md"
         },
         {
           "family": "rule",
@@ -2912,7 +3021,8 @@
       "consumer_families": {
         "doc": 3,
         "rule": 1,
-        "test": 1
+        "skill": 1,
+        "test": 2
       },
       "consumers": [
         {
@@ -2921,25 +3031,34 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
+          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
         },
         {
           "family": "rule",
           "path": "rules/recommendation-grounding.md"
         },
         {
+          "family": "skill",
+          "path": "skills/product-answer/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_product_answer_skill.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -2950,7 +3069,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -3122,15 +3241,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/08-References/business/open-source-design.md"
         },
         {
           "family": "doc",
           "path": "docs/08-References/business/roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -3302,10 +3421,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/patterns/dogfood-score.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/03-PoCs/research/ifixai-annex-e-primitives-2026-05-11.md"
         },
         {
@@ -3315,6 +3430,10 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/patterns/dogfood-score.md"
         },
         {
           "family": "rule",
@@ -3513,6 +3632,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/overview.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-095-skill-synthesis-success-patterns.md"
         },
         {
@@ -3526,82 +3649,6 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-263-tool-replay-budget-ledger.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/root/agent-teams-testing.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/root/agent-teams.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/runtime-hardcoding-discipline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/durable-product-master-plan.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/master-plan-checklist.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/master-plan-execution-requirements.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/root/competitive-landscape.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/kernel-contract.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/09-Quality/manual-tests/five-minute-demo.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/model-evolution-resilience.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/overview.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/product-zones.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/root/research-log.md"
         },
         {
           "family": "doc",
@@ -3630,6 +3677,78 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/deep/stanfordnlp__dspy-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/runtime-hardcoding-discipline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/kernel-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/model-evolution-resilience.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/product-zones.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/agent-teams-testing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/root/agent-teams.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/competitive-reassessment-openclaw-hermes-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/durable-product-master-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-execution-requirements.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/competitive-landscape.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/codex-host-tooling-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/five-minute-demo.md"
         },
         {
           "family": "hook",
@@ -3804,11 +3923,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/08-References/business/portability-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/08-References/business/portability-plan.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -3900,6 +4019,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/dx-cloud-flow-bootstrap-plan.md"
         },
         {
@@ -3908,15 +4031,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/06-Daily/measurements/hook-timing-runbook.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/root/research-log.md"
+          "path": "docs/09-Quality/manual-tests/claude-code-startup-hang-regression.md"
         },
         {
           "family": "script",
@@ -4042,11 +4161,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
         }
       ],
       "distribution": null,
@@ -4082,11 +4201,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
+          "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md"
         },
         {
           "family": "doc",
-          "path": "docs/02-Decisions/adrs/ADR-044-context-payload-slimming.md"
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "hook",
@@ -4308,10 +4427,15 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 7,
         "script": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/script-exposure-dispositions.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
@@ -4360,7 +4484,8 @@
       "distribution": null,
       "evidence": [
         "script_consumers:4",
-        "doc_consumers:7"
+        "doc_consumers:7",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4370,14 +4495,14 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 7,
+        "doc": 8,
         "hook": 1,
         "test": 1
       },
@@ -4396,6 +4521,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/adr-collision-reconciliation.md"
         },
         {
@@ -4404,11 +4537,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/root/research-log.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+          "path": "docs/reports/adr-partial-backlog-latest.md"
         },
         {
           "family": "hook",
@@ -4423,7 +4552,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:7"
+        "doc_consumers:8"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4433,7 +4562,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -4450,6 +4579,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/infrastructure-service-catalog.md"
         },
         {
@@ -4459,10 +4592,6 @@
         {
           "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
           "family": "test",
@@ -4497,6 +4626,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 13,
         "script": 1,
         "skill": 1,
@@ -4504,8 +4634,16 @@
       },
       "consumers": [
         {
+          "family": "config",
+          "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
           "family": "doc",
           "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/overview.md"
         },
         {
           "family": "doc",
@@ -4529,6 +4667,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -4546,14 +4688,6 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/root/configurable-quality-gates.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/overview.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
         },
         {
           "family": "script",
@@ -4577,7 +4711,8 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:13"
+        "doc_consumers:13",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4587,7 +4722,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -4637,12 +4772,20 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
-        "doc": 4,
+        "config": 3,
+        "doc": 5,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/product-claim-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/self-programming-agent-patterns.yaml"
@@ -4661,11 +4804,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
         },
         {
           "family": "script",
           "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_core_skills_check.py"
         },
         {
           "family": "test",
@@ -4679,9 +4830,9 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "test_consumers:2",
-        "doc_consumers:4",
-        "config_consumers:1"
+        "test_consumers:3",
+        "doc_consumers:5",
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4691,7 +4842,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -4722,15 +4873,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-189-harness-implementation-coverage.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/surface-5-and-secure-cosd-roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4816,8 +4967,8 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 6,
-        "doc": 5,
+        "config": 7,
+        "doc": 7,
         "script": 2,
         "test": 3
       },
@@ -4837,6 +4988,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-claim-evidence.yaml"
         },
         {
           "family": "config",
@@ -4864,7 +5019,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/08-References/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/reports/adr-partial-backlog-latest.md"
         },
         {
           "family": "script",
@@ -4891,8 +5054,8 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:5",
-        "config_consumers:6"
+        "doc_consumers:7",
+        "config_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4902,7 +5065,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -4916,11 +5079,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/INDEX.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "script",
@@ -4960,8 +5123,8 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
-        "doc": 3,
+        "config": 2,
+        "doc": 4,
         "script": 2,
         "test": 3
       },
@@ -4971,16 +5134,24 @@
           "path": "manifests/primitive-contracts.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/INDEX.md"
+        },
+        {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/primitive-readiness-continuity-plan.md"
         },
         {
           "family": "doc",
-          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/INDEX.md"
+          "path": "docs/08-References/business/conversation-reality-audit-2026-04-30.md"
         },
         {
           "family": "script",
@@ -5007,8 +5178,8 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:3",
-        "config_consumers:1"
+        "doc_consumers:4",
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5018,19 +5189,31 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 11
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
-        "doc": 6,
+        "config": 5,
+        "doc": 8,
         "script": 2,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/product-claim-evidence.yaml"
@@ -5053,7 +5236,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md"
         },
         {
           "family": "doc",
@@ -5088,8 +5279,8 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:6",
-        "config_consumers:2"
+        "doc_consumers:8",
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5099,7 +5290,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -5169,9 +5360,10 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 10,
+        "config": 11,
         "doc": 13,
         "script": 7,
+        "skill": 1,
         "test": 6
       },
       "consumers": [
@@ -5209,6 +5401,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/service-control-plane-schema.yaml"
         },
         {
@@ -5218,10 +5414,6 @@
         {
           "family": "doc",
           "path": "docs/00-MOCs/entrypoints/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -5237,6 +5429,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/research/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/headless-runtime-proof-strategy.md"
         },
         {
@@ -5246,6 +5442,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -5262,10 +5462,6 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/INDEX.md"
         },
         {
           "family": "script",
@@ -5296,6 +5492,10 @@
           "path": "scripts/proof_drill_select.py"
         },
         {
+          "family": "skill",
+          "path": "skills/cos-maintainer-operations/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_anthropic_api_key_references.py"
         },
@@ -5322,10 +5522,11 @@
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "script_consumers:7",
         "test_consumers:6",
         "doc_consumers:13",
-        "config_consumers:10"
+        "config_consumers:11"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5335,7 +5536,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 36
+      "total_consumers": 38
     },
     {
       "confidence": "medium",
@@ -5451,6 +5652,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/cos-service-runtime-boundary.md"
         },
         {
@@ -5467,19 +5676,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/helixdb-annex-c-runtime-mcp-2026-05-11.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/05-Methodology/root/rules-consolidation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/service-control-plane-proof-drills.md"
         },
         {
           "family": "hook",
@@ -5569,11 +5770,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md"
+          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
         },
         {
           "family": "doc",
-          "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
+          "path": "docs/01-Build-Log/root/SESSION-ADR-CLOSURE-2026-05-04.md"
         },
         {
           "family": "doc",
@@ -5630,7 +5831,7 @@
         "hook": 1,
         "rule": 2,
         "script": 6,
-        "skill": 3,
+        "skill": 4,
         "test": 7
       },
       "consumers": [
@@ -5676,67 +5877,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-05-02.md"
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
+          "path": "docs/01-Build-Log/root/RED-TEAM-CHANGELOG.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/f1-cleanup.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/tooling-stack-rationalization.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/component-sources.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/09-Quality/quality/test-coverage-report.md"
         },
         {
           "family": "doc",
@@ -5788,7 +5937,63 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/agentic-mastery-license-weight-dx-matrix.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/f1-cleanup.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/tooling-stack-rationalization.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/component-sources.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/security-stack.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/tool-stack.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/quality/test-coverage-report.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/root/testing-cognitive-os.md"
         },
         {
           "family": "doc",
@@ -5808,11 +6013,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/root/testing-cognitive-os.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/tool-stack.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "hook",
@@ -5849,6 +6050,10 @@
         {
           "family": "script",
           "path": "scripts/verify-archived.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cos-maintainer-operations/SKILL.md"
         },
         {
           "family": "skill",
@@ -5893,7 +6098,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:3",
+        "skill_consumers:4",
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:6",
@@ -5909,7 +6114,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 64
+      "total_consumers": 65
     },
     {
       "confidence": "high",
@@ -5929,14 +6134,6 @@
         {
           "family": "doc",
           "path": "docs/01-Build-Log/root/RED-TEAM-COVERAGE.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
         },
         {
           "family": "doc",
@@ -5965,6 +6162,14 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/red-team-harness-proposal.md"
         },
         {
           "family": "doc",
@@ -6178,26 +6383,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/master-plan-checklist.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
         },
         {
@@ -6210,7 +6395,27 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/self-building-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "rule",
@@ -6285,6 +6490,10 @@
       "consumers": [
         {
           "family": "doc",
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-080-hermes-cross-harness-adoption.md"
         },
         {
@@ -6313,14 +6522,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/cleanup-verification.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/06-Daily/root/complexity-audit.md"
         },
         {
@@ -6329,15 +6530,19 @@
         },
         {
           "family": "doc",
-          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/06-Daily/root/self-usage-audit.md"
         },
         {
           "family": "doc",
           "path": "docs/09-Quality/root/testing-cognitive-os-suite.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/99-Archive/archive/cleanup-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "hook",
@@ -6400,7 +6605,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 12,
+        "doc": 13,
         "test": 1
       },
       "consumers": [
@@ -6418,11 +6623,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+          "path": "docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md"
         },
         {
           "family": "doc",
@@ -6454,6 +6655,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/root/self-building-protocol.md"
         },
         {
@@ -6464,7 +6673,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -6475,7 +6684,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -6613,10 +6822,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
@@ -6630,6 +6835,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md"
         },
         {
           "family": "doc",
@@ -6649,11 +6858,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/manual-tests/proof-drill-registry.md"
+          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
+          "path": "docs/06-Daily/root/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "doc",
@@ -6665,11 +6878,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/03-PoCs/research/orchestration-gaps/cost-aware-routing.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/self-usage-audit.md"
+          "path": "docs/09-Quality/manual-tests/proof-drill-registry.md"
         },
         {
           "family": "rule",
@@ -6746,11 +6955,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/05-Methodology/usage/skill-authoring.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/usage/skill-authoring.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -6799,12 +7008,12 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 101,
+        "doc": 102,
         "hook": 1,
         "rule": 9,
         "script": 2,
-        "skill": 6,
-        "test": 10
+        "skill": 7,
+        "test": 11
       },
       "consumers": [
         {
@@ -6842,6 +7051,10 @@
         {
           "family": "doc",
           "path": "docs/01-Build-Log/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/01-Build-Log/root/roadmap.md"
         },
         {
           "family": "doc",
@@ -6886,58 +7099,6 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-rules.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/opensage-self-programming-patterns.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/architecture/untracked-work-preservation.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/master-plan-checklist.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/ecosystem-comparison.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
@@ -7213,7 +7374,47 @@
         },
         {
           "family": "doc",
-          "path": "docs/01-Build-Log/root/roadmap.md"
+          "path": "docs/04-Concepts/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/opensage-self-programming-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/architecture/untracked-work-preservation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/ecosystem-comparison.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/04-Concepts/root/tool-stack.md"
         },
         {
           "family": "doc",
@@ -7221,7 +7422,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/root/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/09-Quality/manual-tests/cross-stack-license-audit-cli.md"
         },
         {
           "family": "doc",
@@ -7229,7 +7442,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/root/tool-stack.md"
+          "path": "docs/reports/adr-partial-backlog-latest.md"
         },
         {
           "family": "hook",
@@ -7293,6 +7506,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/product-answer/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/radar-update/SKILL.md"
         },
         {
@@ -7333,6 +7550,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_product_answer_skill.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_routing_pattern_deriver.py"
         },
         {
@@ -7346,12 +7567,12 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:6",
+        "skill_consumers:7",
         "hook_consumers:1",
         "rule_consumers:9",
         "script_consumers:2",
-        "test_consumers:10",
-        "doc_consumers:101",
+        "test_consumers:11",
+        "doc_consumers:102",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -7362,7 +7583,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 134
+      "total_consumers": 137
     },
     {
       "confidence": "medium",
@@ -7374,6 +7595,14 @@
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/getting-started.md"
+        },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-128-data-layer-integrity-fixes.md"
@@ -7388,23 +7617,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/bmad-v6-patterns.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/getting-started.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/06-Daily/root/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
           "family": "rule",
@@ -7453,6 +7674,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/01-Build-Log/root/roadmap.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-019-scope-tagging.md"
         },
         {
@@ -7481,19 +7706,15 @@
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/automation.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/open-source-design.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/04-Concepts/root/organizational-model.md"
         },
         {
           "family": "doc",
-          "path": "docs/01-Build-Log/root/roadmap.md"
+          "path": "docs/05-Methodology/root/automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/05-Methodology/root/skills.md"
         },
         {
           "family": "doc",
@@ -7501,7 +7722,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/skills.md"
+          "path": "docs/08-References/business/open-source-design.md"
         },
         {
           "family": "hook",
@@ -7606,6 +7827,10 @@
       "consumers": [
         {
           "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/faq.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
@@ -7623,10 +7848,6 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
         },
         {
           "family": "rule",
@@ -7690,14 +7911,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/03-PoCs/research/ifixai-annex-a-taxonomy-2026-05-11.md"
         },
         {
@@ -7719,6 +7932,14 @@
         {
           "family": "doc",
           "path": "docs/03-PoCs/research/repo-scout/deep/ifixai-ai__iFixAi-2026-05-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/07-Capabilities/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7790,7 +8011,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
+          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
         },
         {
           "family": "doc",
@@ -7842,19 +8063,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/05-Methodology/guides/queue-classes-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "doc",
           "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/05-Methodology/guides/queue-classes-routing.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/release/v1.0-release-criteria.md"
         },
         {
           "family": "hook",
@@ -7952,10 +8173,6 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
@@ -7981,6 +8198,10 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "test",
@@ -8112,10 +8333,6 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
@@ -8129,6 +8346,10 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
         },
         {
           "family": "hook",
@@ -8161,7 +8382,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 10,
-        "doc": 10,
+        "doc": 11,
         "hook": 3,
         "rule": 2,
         "script": 5,
@@ -8219,10 +8440,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/adoption-tiers.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-030.md"
         },
         {
@@ -8247,7 +8464,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/08-References/root/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/reports/adr-partial-backlog-latest.md"
         },
         {
           "family": "hook",
@@ -8321,7 +8546,7 @@
         "rule_consumers:2",
         "script_consumers:5",
         "test_consumers:5",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:10"
       ],
       "family": "skills",
@@ -8332,7 +8557,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 36
+      "total_consumers": 37
     },
     {
       "confidence": "medium",
@@ -8348,7 +8573,19 @@
       "consumers": [
         {
           "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/00-MOCs/entrypoints/overview.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/00-MOCs/onboarding.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/01-Build-Log/root/roadmap.md"
         },
         {
           "family": "doc",
@@ -8376,6 +8613,22 @@
         },
         {
           "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/03-PoCs/root/research-log.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture.md"
         },
         {
@@ -8396,14 +8649,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/business/features.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/08-References/business/open-source-design.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/04-Concepts/root/component-sources.md"
         },
         {
@@ -8412,7 +8657,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/faq.md"
+          "path": "docs/04-Concepts/root/singularity.md"
         },
         {
           "family": "doc",
@@ -8420,43 +8665,23 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/migration-from/from-hermes.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/00-MOCs/entrypoints/overview.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/root/research-log.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/03-PoCs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/01-Build-Log/root/roadmap.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/05-Methodology/root/rules.md"
         },
         {
           "family": "doc",
-          "path": "docs/04-Concepts/root/singularity.md"
+          "path": "docs/05-Methodology/root/skills.md"
         },
         {
           "family": "doc",
-          "path": "docs/05-Methodology/root/skills.md"
+          "path": "docs/08-References/business/features.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/08-References/migration-from/from-hermes.md"
         },
         {
           "family": "rule",
@@ -8779,11 +9004,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/08-References/root/bmad-v6-patterns.md"
+          "path": "docs/06-Daily/root/component-audit.md"
         },
         {
           "family": "doc",
-          "path": "docs/06-Daily/root/component-audit.md"
+          "path": "docs/08-References/root/bmad-v6-patterns.md"
         },
         {
           "family": "rule",
@@ -8846,11 +9071,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
-          "path": "docs/09-Quality/legal/pre-public-readiness-checklist.md"
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "skill",
@@ -8975,15 +9200,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
+          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
           "path": "docs/04-Concepts/root/component-sources.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/04-Concepts/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
@@ -8996,6 +9217,10 @@
         {
           "family": "doc",
           "path": "docs/09-Quality/security/security-red-team.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/99-Archive/archive/plans/self-optimizing-pipeline.md"
         },
         {
           "family": "rule",
@@ -9032,6 +9257,39 @@
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
       "total_consumers": 13
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 1,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-wiki-ingest"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "doc_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/wiki-ingest/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 2
     },
     {
       "confidence": "high",
@@ -9116,23 +9374,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 63,
-      "medium": 39
+      "high": 65,
+      "medium": 41
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 2,
-      "repo-skill-not-projectable": 95,
+      "repo-skill-not-projectable": 99,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 63,
-      "lab": 8,
+      "compatibility-wrapper": 65,
+      "lab": 9,
       "project-extension": 16,
-      "so-maintainer": 15
+      "so-maintainer": 16
     },
-    "total": 102,
-    "without_consumers": 2,
-    "without_lifecycle": 100
+    "total": 106,
+    "without_consumers": 4,
+    "without_lifecycle": 104
   },
   "target_family": "skills"
 }
