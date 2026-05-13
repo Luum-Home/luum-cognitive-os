@@ -40,6 +40,10 @@ adoptions:
     owner_adr: ADR-291
     due_diligence_id: agent-runtime-web-service
     license: MIT
-    integration_pattern: typed request/response schemas for all 26 agent-service endpoints
+    integration_pattern: typed request/response schemas for all 26 agent-service endpoints (25 distinct paths)
     rationale: De-facto Python type-validation library bundled with FastAPI; alternative would mean rewriting all schemas from scratch.
     audit_link: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
+# 2026-05-13: revalidated entries above against the manifest commit landing
+# (root pyproject.toml [web-automation] extra + packages/agent-service/pyproject.toml).
+# Endpoint count corrected to 26 ops / 25 distinct paths after csrf-token removal
+# in the security pass (see ADR-291 §Security).
