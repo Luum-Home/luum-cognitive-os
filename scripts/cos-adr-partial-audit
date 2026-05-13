@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_VERSION = "adr-partial-audit/v1"
-LEDGER_JSON = Path("docs/reports/adr-partial-backlog-latest.json")
+LEDGER_JSON = Path("docs/06-Daily/reports/adr-partial-backlog-latest.json")
 STALE_DAYS_DEFAULT = 45
 
 FUTURE_TOKENS = ("future", "defer", "pending", "blocked", "not implemented", "not yet", "remains", "remaining", "follow-up", "follow up", "partial")

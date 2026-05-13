@@ -104,23 +104,6 @@
       "title": "Context Diet -- Token Optimization Strategy"
     },
     {
-      "adr": "ADR-017",
-      "classification_basis": "accepted record with explicit partial/phase scope",
-      "date": "2026-04-11",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [],
-      "implementation_status": "partial",
-      "number": "017",
-      "owner": "",
-      "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
-      "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/02-Decisions/adrs/ADR-017-stabilization-freeze.md",
-      "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
-      "remaining_in_scope": null,
-      "title": "Stabilization Freeze -- No New Features Until Wiring Complete"
-    },
-    {
       "adr": "ADR-018",
       "classification_basis": "implementation evidence plus partial/deferred/future signal",
       "date": "2026-04-11",
@@ -2146,6 +2129,30 @@
       "remaining": "Audit + allowlist + test-default shipped; per-call backfill (984 of 1824 calls) tracked as Phase 2.",
       "remaining_in_scope": null,
       "title": "subprocess.run Timeout Discipline"
+    },
+    {
+      "adr": "ADR-289",
+      "classification_basis": "Layer 2 (vault) and Layer 3 (engram) are implemented; Layer 1 (raw sources) canonical location and ingest pipeline are not yet formalized.",
+      "date": "2026-05-13",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "docs/",
+        "lib/engram_wave3_schema.py",
+        "lib/engram_obsidian_exporter.py",
+        "lib/engram_crystallizer.py",
+        "lib/engram_bundle_exporter.py",
+        "manifests/capability-coverage.yaml"
+      ],
+      "implementation_status": "partial",
+      "number": "289",
+      "owner": "",
+      "partial_remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest\npipeline from raw to vault; vault->engram retrieve pipeline is also not\nimplemented. Both are tracked as known gaps.\n",
+      "partial_remaining_basis": "specific classification_basis",
+      "path": "docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md",
+      "remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest\npipeline from raw to vault; vault->engram retrieve pipeline is also not\nimplemented. Both are tracked as known gaps.\n",
+      "remaining_in_scope": null,
+      "title": "Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",

@@ -11,8 +11,9 @@ from typing import Any
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "docs" / "reports" / "adr-partial-backlog-latest.md"
-OUT_JSON = ROOT / "docs" / "reports" / "adr-partial-backlog-latest.json"
+REPORTS_DIR = ROOT / "docs" / "06-Daily" / "reports"
+OUT = REPORTS_DIR / "adr-partial-backlog-latest.md"
+OUT_JSON = REPORTS_DIR / "adr-partial-backlog-latest.json"
 SCHEMA_VERSION = "adr-partial-backlog/v1"
 
 sys.path.insert(0, str(ROOT))
@@ -100,7 +101,7 @@ def render() -> str:
             "| "
             + " | ".join(
                 [
-                    f"[{row['number']}](../02-Decisions/adrs/{Path(row['path']).name})",
+                    f"[{row['number']}](../../02-Decisions/adrs/{Path(row['path']).name})",
                     md_escape(str(row["implementation_status"])),
                     md_escape(str(row["remaining"])),
                     md_escape(in_scope_text),
