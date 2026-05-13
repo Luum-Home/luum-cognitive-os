@@ -77,8 +77,8 @@ def test_cli_writes_family_json_and_markdown(tmp_path: Path) -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    payload = json.loads((root / "docs" / "reports" / "primitive-readiness-ledger-hooks-latest.json").read_text())
+    payload = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-hooks-latest.json").read_text())
     assert payload["target_family"] == "hooks"
     assert payload["summary"]["total"] == 1
     assert payload["items"][0]["consumer_accessibility"] == "lifecycle-declared-consumer-candidate"
-    assert "Primitive Readiness Ledger" in (root / "docs" / "reports" / "primitive-readiness-ledger-hooks-latest.md").read_text()
+    assert "Primitive Readiness Ledger" in (root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-hooks-latest.md").read_text()

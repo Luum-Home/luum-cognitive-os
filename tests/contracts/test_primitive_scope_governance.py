@@ -76,7 +76,7 @@ def test_every_family_has_regenerable_or_contract_classification_surface() -> No
         timeout=60,
     )
     assert script_result.returncode == 0, script_result.stderr + script_result.stdout
-    scripts_report = json.loads((REPO / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json").read_text())
+    scripts_report = json.loads((REPO / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.json").read_text())
     assert scripts_report["target_family"] == "scripts"
     assert scripts_report["summary"]["total_scripts"] > 0
 
@@ -90,7 +90,7 @@ def test_every_family_has_regenerable_or_contract_classification_surface() -> No
             timeout=60,
         )
         assert result.returncode == 0, result.stderr + result.stdout
-        payload = json.loads((REPO / "docs" / "reports" / f"primitive-readiness-ledger-{family}-latest.json").read_text())
+        payload = json.loads((REPO / "docs" / "06-Daily" / "reports" / f"primitive-readiness-ledger-{family}-latest.json").read_text())
         assert payload["target_family"] == family
         assert payload["summary"]["total"] == len(_family_paths(family))
 

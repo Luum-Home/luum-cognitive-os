@@ -1,56 +1,12 @@
 {
-  "items": [
-    {
-      "confidence": "high",
-      "consumer_families": {
-        "doc": 1,
-        "skill": 2,
-        "test": 1
-      },
-      "install_surface": null,
-      "next_action": "create ADR-126 lifecycle row or downgrade role before claiming shared/harness-portable support",
-      "path": "scripts/cos-pytest-serial-repair",
-      "priority": "high",
-      "protected_install_surface": false,
-      "reason": "skill-facing agentic primitive lacks lifecycle metadata",
-      "recommended_distribution": "team",
-      "recommended_kind": "script",
-      "recommended_lifecycle_state": "candidate",
-      "recommended_maturity": "advisory",
-      "role_source": "usage:skill",
-      "skill_consumers": 2,
-      "total_consumers": 4,
-      "wrapper_for": null
-    },
-    {
-      "confidence": "high",
-      "consumer_families": {
-        "skill": 1,
-        "test": 1
-      },
-      "install_surface": null,
-      "next_action": "create ADR-126 lifecycle row or downgrade role before claiming shared/harness-portable support",
-      "path": "scripts/cos-remote-branch-triage",
-      "priority": "high",
-      "protected_install_surface": false,
-      "reason": "skill-facing agentic primitive lacks lifecycle metadata",
-      "recommended_distribution": "team",
-      "recommended_kind": "script",
-      "recommended_lifecycle_state": "candidate",
-      "recommended_maturity": "advisory",
-      "role_source": "usage:skill",
-      "skill_consumers": 1,
-      "total_consumers": 2,
-      "wrapper_for": null
-    }
-  ],
+  "items": [],
   "purpose": "agentic primitives missing ADR-126 lifecycle metadata",
   "schema_version": 1,
   "summary": {
-    "high": 2,
+    "high": 0,
     "medium": 0,
     "protected": 0,
-    "total": 2
+    "total": 0
   },
   "target_family": "scripts"
 }

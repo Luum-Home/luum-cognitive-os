@@ -137,7 +137,7 @@ def scope_for(root: Path, relpath: str, overrides: list[dict[str, str]]) -> str:
 
 
 def readiness_by_path(root: Path) -> dict[str, dict[str, Any]]:
-    data = read_json(root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json")
+    data = read_json(root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.json")
     rows = data.get("scripts", []) if isinstance(data, dict) else []
     return {str(row.get("path")): row for row in rows if row.get("path")}
 

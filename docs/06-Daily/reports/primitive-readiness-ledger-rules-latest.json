@@ -135,7 +135,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 99,
+        "doc": 100,
         "hook": 5,
         "rule": 4,
         "script": 12,
@@ -290,6 +290,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-266-protected-config-write-guard-bash-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
         },
         {
           "family": "doc",
@@ -795,7 +799,7 @@
         "rule_consumers:4",
         "script_consumers:12",
         "test_consumers:30",
-        "doc_consumers:99",
+        "doc_consumers:100",
         "config_consumers:6"
       ],
       "family": "rules",
@@ -806,7 +810,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 161
+      "total_consumers": 162
     },
     {
       "confidence": "medium",
@@ -2318,7 +2322,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 32,
+        "doc": 33,
         "hook": 3,
         "rule": 10,
         "script": 3,
@@ -2376,6 +2380,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-274-operational-guide-required-for-capability-adrs.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
           "family": "doc",
@@ -2564,7 +2572,7 @@
         "rule_consumers:10",
         "script_consumers:3",
         "test_consumers:8",
-        "doc_consumers:32",
+        "doc_consumers:33",
         "config_consumers:2"
       ],
       "family": "rules",
@@ -2575,7 +2583,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 58
+      "total_consumers": 59
     },
     {
       "confidence": "medium",
@@ -3209,11 +3217,11 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 34,
+        "doc": 35,
         "hook": 2,
         "rule": 2,
         "script": 5,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -3291,6 +3299,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-271-clean-room-detection-tier-2-ast-similarity.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-297-llm-dispatched-routing-fallback.md"
         },
         {
           "family": "doc",
@@ -3407,6 +3419,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_llm_routing_fallback.py"
         }
       ],
       "distribution": null,
@@ -3414,8 +3430,8 @@
         "hook_consumers:2",
         "rule_consumers:2",
         "script_consumers:5",
-        "test_consumers:2",
-        "doc_consumers:34",
+        "test_consumers:3",
+        "doc_consumers:35",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -3426,7 +3442,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 48
+      "total_consumers": 50
     },
     {
       "confidence": "medium",
@@ -7803,7 +7819,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 22,
+        "doc": 21,
         "hook": 1,
         "rule": 1,
         "test": 1
@@ -7898,10 +7914,6 @@
           "path": "docs/09-Quality/manual-tests/proof-paths.md"
         },
         {
-          "family": "doc",
-          "path": "docs/reports/adr-partial-backlog-latest.md"
-        },
-        {
           "family": "hook",
           "path": "hooks/self-install.sh"
         },
@@ -7919,7 +7931,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:22",
+        "doc_consumers:21",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -7930,7 +7942,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 26
+      "total_consumers": 25
     },
     {
       "confidence": "medium",
@@ -8658,11 +8670,11 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 94,
+        "doc": 96,
         "hook": 7,
         "rule": 2,
-        "script": 61,
-        "skill": 11,
+        "script": 62,
+        "skill": 13,
         "test": 52
       },
       "consumers": [
@@ -8857,6 +8869,14 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
         },
         {
           "family": "doc",
@@ -9252,6 +9272,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-skill-description-enrich"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-team"
         },
         {
@@ -9364,6 +9388,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/add-skill/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/apply-improvements/SKILL.md"
         },
         {
@@ -9385,6 +9413,10 @@
         {
           "family": "skill",
           "path": "skills/doc-review-personas/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
         },
         {
           "family": "skill",
@@ -9617,12 +9649,12 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:11",
+        "skill_consumers:13",
         "hook_consumers:7",
         "rule_consumers:2",
-        "script_consumers:61",
+        "script_consumers:62",
         "test_consumers:52",
-        "doc_consumers:94",
+        "doc_consumers:96",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -9633,7 +9665,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 237
+      "total_consumers": 242
     },
     {
       "confidence": "medium",
@@ -11457,7 +11489,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 9,
+        "doc": 8,
         "rule": 1,
         "test": 1
       },
@@ -11499,10 +11531,6 @@
           "path": "docs/06-Daily/measurements/cos-adr-namespace-audit-2026-04-30.md"
         },
         {
-          "family": "doc",
-          "path": "docs/reports/adr-partial-backlog-latest.md"
-        },
-        {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
         },
@@ -11515,7 +11543,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:9",
+        "doc_consumers:8",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -11526,7 +11554,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -11534,7 +11562,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 48,
+        "doc": 49,
         "hook": 2,
         "rule": 2,
         "script": 1,
@@ -11601,6 +11629,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md"
         },
         {
           "family": "doc",
@@ -11794,7 +11826,7 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:48",
+        "doc_consumers:49",
         "config_consumers:4"
       ],
       "family": "rules",
@@ -11805,20 +11837,20 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 61
+      "total_consumers": 62
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
-        "doc": 24,
+        "config": 8,
+        "doc": 29,
         "hook": 3,
         "rule": 1,
         "script": 8,
         "skill": 1,
-        "test": 9
+        "test": 11
       },
       "consumers": [
         {
@@ -11828,6 +11860,10 @@
         {
           "family": "config",
           "path": "manifests/credential-safe-scripts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/observability-slo.yaml"
         },
         {
           "family": "config",
@@ -11891,6 +11927,22 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-297-llm-dispatched-routing-fallback.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/03-PoCs/research/ifixai-annex-d-provider-imeisplit-2026-05-11.md"
         },
         {
@@ -11936,6 +11988,10 @@
         {
           "family": "doc",
           "path": "docs/05-Methodology/runbooks/llm-dispatch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/session-2026-05-13-skill-router-overhaul.md"
         },
         {
           "family": "doc",
@@ -12032,6 +12088,14 @@
         {
           "family": "test",
           "path": "tests/unit/test_provider_benchmark_and_optimizer.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_start_banner_telemetry.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_telemetry_aggregator.py"
         }
       ],
       "distribution": null,
@@ -12040,9 +12104,9 @@
         "hook_consumers:3",
         "rule_consumers:1",
         "script_consumers:8",
-        "test_consumers:9",
-        "doc_consumers:24",
-        "config_consumers:7"
+        "test_consumers:11",
+        "doc_consumers:29",
+        "config_consumers:8"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12052,7 +12116,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 53
+      "total_consumers": 61
     },
     {
       "confidence": "medium",
@@ -12586,13 +12650,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 13,
-        "doc": 106,
-        "hook": 12,
+        "config": 15,
+        "doc": 107,
+        "hook": 13,
         "rule": 3,
-        "script": 8,
+        "script": 10,
         "skill": 5,
-        "test": 20
+        "test": 24
       },
       "consumers": [
         {
@@ -12602,6 +12666,10 @@
         {
           "family": "config",
           "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agent-orchestration-adapters.yaml"
         },
         {
           "family": "config",
@@ -12618,6 +12686,10 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/observability-slo.yaml"
         },
         {
           "family": "config",
@@ -12794,6 +12866,14 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-195-surface-5-operable-tui-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
         },
         {
           "family": "doc",
@@ -13068,10 +13148,6 @@
           "path": "docs/09-Quality/security/cognitive-os-attack-surface-inventory.md"
         },
         {
-          "family": "doc",
-          "path": "docs/reports/adr-partial-backlog-latest.md"
-        },
-        {
           "family": "hook",
           "path": "hooks/error-pipeline.sh"
         },
@@ -13109,6 +13185,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/telemetry-budget-violator-detect.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/tool-loop-detector.sh"
         },
         {
@@ -13138,6 +13218,14 @@
         {
           "family": "script",
           "path": "scripts/cos-coverage"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-status.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-telemetry-aggregate"
         },
         {
           "family": "script",
@@ -13237,7 +13325,15 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-status.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_adr_reserve.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_spawn_budget.py"
         },
         {
           "family": "test",
@@ -13261,18 +13357,26 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_telemetry_aggregator.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_telemetry_self_tuning_proposer.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_test_run_inventory.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:5",
-        "hook_consumers:12",
+        "hook_consumers:13",
         "rule_consumers:3",
-        "script_consumers:8",
-        "test_consumers:20",
-        "doc_consumers:106",
-        "config_consumers:13"
+        "script_consumers:10",
+        "test_consumers:24",
+        "doc_consumers:107",
+        "config_consumers:15"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -13282,7 +13386,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 167
+      "total_consumers": 177
     },
     {
       "confidence": "medium",
@@ -18524,7 +18628,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 13,
-        "doc": 75,
+        "doc": 74,
         "hook": 3,
         "rule": 15,
         "script": 15,
@@ -18881,10 +18985,6 @@
           "path": "docs/99-Archive/archive/plans/docs-rescan-results.md"
         },
         {
-          "family": "doc",
-          "path": "docs/reports/adr-partial-backlog-latest.md"
-        },
-        {
           "family": "hook",
           "path": "hooks/_lib/common.sh"
         },
@@ -19160,7 +19260,7 @@
         "rule_consumers:15",
         "script_consumers:15",
         "test_consumers:28",
-        "doc_consumers:75",
+        "doc_consumers:74",
         "config_consumers:13"
       ],
       "family": "rules",
@@ -19171,7 +19271,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 155
+      "total_consumers": 154
     },
     {
       "confidence": "medium",

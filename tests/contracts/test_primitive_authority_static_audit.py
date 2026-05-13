@@ -27,7 +27,7 @@ def _write(path: Path, text: str) -> None:
 def _fixture(root: Path, script_body: str) -> Path:
     _write(root / "scripts" / "bad.py", script_body)
     _write(
-        root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json",
+        root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.json",
         json.dumps(
             {
                 "scripts": [
