@@ -124,7 +124,7 @@ def test_aggregator_skips_missing_streams_with_info_finding(tmp_repo: Path):
 def test_aggregator_emits_breach_finding_with_stable_id(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
-        [{"session_start": {"total_duration_ms": 9703}}],
+        [{"session_start": {"blocking_total_ms": 9703, "total_duration_ms": 9703}}],
     )
     manifest = _write_manifest(
         tmp_repo,
@@ -132,7 +132,7 @@ def test_aggregator_emits_breach_finding_with_stable_id(tmp_repo: Path):
             {
                 "id": "session-start-blocking-total",
                 "source_stream": ".cognitive-os/metrics/startup-benchmark.jsonl",
-                "metric": "latest.session_start.total_duration_ms",
+                "metric": "latest.session_start.blocking_total_ms",
                 "target_lt": 2000,
                 "severity_on_breach": "warn",
                 "rationale": "ADR-028",
@@ -152,7 +152,7 @@ def test_aggregator_emits_breach_finding_with_stable_id(tmp_repo: Path):
 def test_stable_id_dedupes_same_window(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
-        [{"session_start": {"total_duration_ms": 9703}}],
+        [{"session_start": {"blocking_total_ms": 9703, "total_duration_ms": 9703}}],
     )
     manifest = _write_manifest(
         tmp_repo,
@@ -160,7 +160,7 @@ def test_stable_id_dedupes_same_window(tmp_repo: Path):
             {
                 "id": "session-start-blocking-total",
                 "source_stream": ".cognitive-os/metrics/startup-benchmark.jsonl",
-                "metric": "latest.session_start.total_duration_ms",
+                "metric": "latest.session_start.blocking_total_ms",
                 "target_lt": 2000,
                 "severity_on_breach": "warn",
                 "rationale": "r",
@@ -213,10 +213,44 @@ def test_percentile_filter_combination_for_subagent_p95(tmp_repo: Path):
     assert "p95" in breaches[0].window_summary
 
 
+def test_window_applies_after_filter_for_sparse_stream(tmp_repo: Path):
+    records = [
+        {"hook": "subagent-context-injector", "duration_ms": 1000, "event": "SubagentStart"},
+        {"hook": "subagent-context-injector", "duration_ms": 6000, "event": "SubagentStart"},
+        {"hook": "subagent-context-injector", "duration_ms": 10000, "event": "SubagentStart"},
+    ]
+    records += [
+        {"hook": "other", "duration_ms": 1, "event": "PostToolUse"}
+        for _ in range(100)
+    ]
+    _write_jsonl(tmp_repo / ".cognitive-os/metrics/hook-timing.jsonl", records)
+    manifest = _write_manifest(
+        tmp_repo,
+        [
+            {
+                "id": "subagent-spawn-p95",
+                "source_stream": ".cognitive-os/metrics/hook-timing.jsonl",
+                "filter": 'event == "SubagentStart"',
+                "metric": "percentile(duration_ms, 0.95)",
+                "window": "last_3_records",
+                "target_lt": 5000,
+                "severity_on_breach": "warn",
+                "rationale": "r",
+            }
+        ],
+    )
+    report = aggregate_streams(tmp_repo, manifest, enable_self_tuning=False)
+    breaches = [f for f in report.findings if f.code == "telemetry-slo-breach"]
+    assert len(breaches) == 1
+    assert breaches[0].window_summary["n_samples"] == 3
+    assert breaches[0].window_summary["n_matched_before_window"] == 3
+    assert breaches[0].window_summary["n_records_read"] == 103
+
+
 def test_remediation_queue_append_does_not_duplicate(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
-        [{"session_start": {"total_duration_ms": 9703}}],
+        [{"session_start": {"blocking_total_ms": 9703, "total_duration_ms": 9703}}],
     )
     manifest = _write_manifest(
         tmp_repo,
@@ -224,7 +258,7 @@ def test_remediation_queue_append_does_not_duplicate(tmp_repo: Path):
             {
                 "id": "session-start-blocking-total",
                 "source_stream": ".cognitive-os/metrics/startup-benchmark.jsonl",
-                "metric": "latest.session_start.total_duration_ms",
+                "metric": "latest.session_start.blocking_total_ms",
                 "target_lt": 2000,
                 "severity_on_breach": "warn",
                 "rationale": "r",
@@ -249,7 +283,7 @@ def test_remediation_queue_append_does_not_duplicate(tmp_repo: Path):
 def test_strict_mode_exits_2_on_any_breach(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
-        [{"session_start": {"total_duration_ms": 9703}}],
+        [{"session_start": {"blocking_total_ms": 9703, "total_duration_ms": 9703}}],
     )
     _write_manifest(
         tmp_repo,
@@ -257,7 +291,7 @@ def test_strict_mode_exits_2_on_any_breach(tmp_repo: Path):
             {
                 "id": "session-start-blocking-total",
                 "source_stream": ".cognitive-os/metrics/startup-benchmark.jsonl",
-                "metric": "latest.session_start.total_duration_ms",
+                "metric": "latest.session_start.blocking_total_ms",
                 "target_lt": 2000,
                 "severity_on_breach": "warn",
                 "rationale": "r",
@@ -288,7 +322,7 @@ def test_strict_mode_exits_2_on_any_breach(tmp_repo: Path):
 def test_quiet_mode_silent_on_pass(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
-        [{"session_start": {"total_duration_ms": 100}}],
+        [{"session_start": {"blocking_total_ms": 100, "total_duration_ms": 100}}],
     )
     _write_manifest(
         tmp_repo,
@@ -296,7 +330,7 @@ def test_quiet_mode_silent_on_pass(tmp_repo: Path):
             {
                 "id": "session-start-blocking-total",
                 "source_stream": ".cognitive-os/metrics/startup-benchmark.jsonl",
-                "metric": "latest.session_start.total_duration_ms",
+                "metric": "latest.session_start.blocking_total_ms",
                 "target_lt": 2000,
                 "severity_on_breach": "warn",
                 "rationale": "r",
@@ -328,7 +362,7 @@ def test_quiet_mode_silent_on_pass(tmp_repo: Path):
 def test_snapshot_yaml_is_well_formed(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/startup-benchmark.jsonl",
-        [{"session_start": {"total_duration_ms": 9703}}],
+        [{"session_start": {"blocking_total_ms": 9703, "total_duration_ms": 9703}}],
     )
     manifest = _write_manifest(
         tmp_repo,
@@ -336,7 +370,7 @@ def test_snapshot_yaml_is_well_formed(tmp_repo: Path):
             {
                 "id": "session-start-blocking-total",
                 "source_stream": ".cognitive-os/metrics/startup-benchmark.jsonl",
-                "metric": "latest.session_start.total_duration_ms",
+                "metric": "latest.session_start.blocking_total_ms",
                 "target_lt": 2000,
                 "severity_on_breach": "warn",
                 "rationale": "r",

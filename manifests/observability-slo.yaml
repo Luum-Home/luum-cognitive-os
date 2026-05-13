@@ -4,17 +4,25 @@ owner: platform-observability
 adr: ADR-304
 rationale: |
   Single source of truth for telemetry SLO budgets. Consumed by
-  lib/telemetry_aggregator.py via scripts/cos-telemetry-aggregate.
+  lib/telemetry_aggregator.py via scripts/cos-telemetry-aggregate and exposed
+  to operators through `cos status --observability`.
   Closes the "data lake without consumers" anti-pattern documented in
   docs/06-Daily/reports/postmortem-observability-data-lake-without-consumers-2026-05-13.md.
 
 slos:
   - id: session-start-blocking-total
     source_stream: .cognitive-os/metrics/startup-benchmark.jsonl
-    metric: latest.session_start.total_duration_ms
+    metric: latest.session_start.blocking_total_ms
     target_lt: 2000
     severity_on_breach: warn
-    rationale: ADR-028 SessionStart latency target (2 s blocking budget).
+    rationale: ADR-028 blocking SessionStart latency target (2 s budget); serial worst-case remains diagnostic only.
+
+  - id: session-start-core-payload-tokens
+    source_stream: .cognitive-os/metrics/startup-benchmark.jsonl
+    metric: latest.payload.core_payload_tokens
+    target_lt: 50000
+    severity_on_breach: warn
+    rationale: ADR-028 core startup payload budget.
 
   - id: subagent-spawn-p95
     source_stream: .cognitive-os/metrics/hook-timing.jsonl
@@ -24,8 +32,8 @@ slos:
     target_lt: 5000
     severity_on_breach: warn
     rationale: |
-      ADR-303 cold-start budget. Tight enough to fire on real bloat, loose
-      enough not to drown signal in current p95 (~55 s historical).
+      ADR-304 authoritative real-production SLO for ADR-303 sub-agent spawn.
+      ADR-303 synthetic benchmark is smoke/lower-bound only.
 
   - id: subagent-spawn-p99
     source_stream: .cognitive-os/metrics/hook-timing.jsonl
@@ -34,7 +42,33 @@ slos:
     window: last_100_records
     target_lt: 15000
     severity_on_breach: warn
-    rationale: ADR-303 tail latency ceiling for sub-agent spawn.
+    rationale: ADR-304 authoritative tail latency ceiling for real sub-agent spawn.
+
+  - id: hook-pretooluse-p95
+    source_stream: .cognitive-os/metrics/hook-timing.jsonl
+    filter: 'event == "PreToolUse"'
+    metric: percentile(duration_ms, 0.95)
+    window: last_1000_records
+    target_lt: 500
+    severity_on_breach: warn
+    rationale: Keeps per-tool gating overhead visible instead of burying it in aggregate hook noise.
+
+  - id: hook-posttooluse-p95
+    source_stream: .cognitive-os/metrics/hook-timing.jsonl
+    filter: 'event == "PostToolUse"'
+    metric: percentile(duration_ms, 0.95)
+    window: last_1000_records
+    target_lt: 1000
+    severity_on_breach: warn
+    rationale: Keeps post-tool validation overhead bounded for normal interactive work.
+
+  - id: hook-health-exit-success-ratio
+    source_stream: .cognitive-os/metrics/hook-health.jsonl
+    metric: exit_success_ratio
+    window: last_1000_records
+    target_gte: 0.98
+    severity_on_breach: warn
+    rationale: Hook health stream should surface systemic hook exits before operators notice degraded behavior.
 
   - id: llm-dispatch-success-ratio
     source_stream: .cognitive-os/metrics/llm-dispatch.jsonl
@@ -44,6 +78,14 @@ slos:
     severity_on_breach: warn
     rationale: ADR-049 dispatch reliability budget.
 
+  - id: llm-dispatch-latency-p95
+    source_stream: .cognitive-os/metrics/llm-dispatch.jsonl
+    metric: percentile(latency_ms, 0.95)
+    window: last_200_records
+    target_lt: 10000
+    severity_on_breach: warn
+    rationale: Dispatch fallback should fail or return quickly enough not to stall routing/enrichment loops.
+
   - id: skill-enrichment-success-ratio
     source_stream: .cognitive-os/metrics/skill-enrichment.jsonl
     metric: success_ratio
@@ -51,3 +93,41 @@ slos:
     target_gte: 0.80
     severity_on_breach: warn
     rationale: Skill enrichment effectiveness — falls under ADR-297 cache regime.
+
+  - id: skill-enrichment-latency-p95
+    source_stream: .cognitive-os/metrics/skill-enrichment.jsonl
+    metric: percentile(latency_ms, 0.95)
+    window: last_200_records
+    target_lt: 30000
+    severity_on_breach: warn
+    rationale: Enrichment may call external/local providers, but failures and successes should remain bounded.
+
+  - id: context-budget-allow-ratio
+    source_stream: .cognitive-os/metrics/context-budget.jsonl
+    metric: allow_ratio
+    window: last_1000_records
+    target_gte: 0.95
+    severity_on_breach: warn
+    rationale: Detects when context budget policy starts blocking routine user/static prompt flows.
+
+  - id: context-budget-latency-p95
+    source_stream: .cognitive-os/metrics/context-budget.jsonl
+    metric: percentile(latency_ms, 0.95)
+    window: last_1000_records
+    target_lt: 250
+    severity_on_breach: warn
+    rationale: Context budget metering must stay cheap enough for per-prompt invocation.
+
+  - id: agent-spawn-payload-tokens
+    source_stream: .cognitive-os/metrics/agent-spawn-benchmark.jsonl
+    metric: latest.totals.total_payload_tokens
+    target_lt: 20000
+    severity_on_breach: warn
+    rationale: ADR-303 static payload budget; latency authority lives in subagent-spawn-p95/p99 above.
+
+  - id: agent-spawn-synthetic-wall-smoke
+    source_stream: .cognitive-os/metrics/agent-spawn-benchmark.jsonl
+    metric: latest.totals.total_wall_ms
+    target_lt: 3000
+    severity_on_breach: info
+    rationale: ADR-303 synthetic lower-bound smoke only; do not use this as real spawn latency authority.

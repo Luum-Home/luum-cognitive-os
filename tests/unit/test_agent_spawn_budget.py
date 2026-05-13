@@ -1,16 +1,8 @@
-"""Sub-agent spawn cold-start budget regression test (ADR-303).
+"""Sub-agent spawn cold-start budget tests (ADR-303/ADR-304).
 
-Reads the latest entry from .cognitive-os/metrics/agent-spawn-benchmark.jsonl
-and asserts that the SubagentStart hook chain stays within wall-clock and
-payload-token budgets.
-
-Mirrors tests/unit/test_startup_budget.py. Auto-skips on fresh clones where
-no benchmark has been run yet.
-
-Environment overrides:
-  AGENT_SPAWN_BUDGET_MS         — max total SubagentStart wall ms (default: 3000)
-  AGENT_SPAWN_TOKEN_BUDGET      — max payload tokens per spawn (default: 20000)
-  AGENT_SPAWN_BENCHMARK_FILE    — override path to the JSONL file
+ADR-303's synthetic benchmark is now only a smoke/lower-bound signal. Real
+latency authority lives in ADR-304's declarative telemetry aggregator and the
+SLOs in manifests/observability-slo.yaml.
 """
 
 from __future__ import annotations
@@ -21,12 +13,14 @@ from pathlib import Path
 
 import pytest
 
+from lib.telemetry_aggregator import aggregate_streams
+
 _THIS_FILE = Path(__file__).resolve()
 _PROJECT_ROOT = _THIS_FILE.parent.parent.parent
 
-DEFAULT_WALL_BUDGET_MS = 3000
 DEFAULT_TOKEN_BUDGET = 20000
 PER_HOOK_TIMEOUT_MS = 5000
+REAL_SPAWN_SLOS = {"subagent-spawn-p95", "subagent-spawn-p99"}
 
 
 def _benchmark_path() -> Path:
@@ -34,6 +28,13 @@ def _benchmark_path() -> Path:
     if override:
         return Path(override)
     return _PROJECT_ROOT / ".cognitive-os" / "metrics" / "agent-spawn-benchmark.jsonl"
+
+
+def _manifest_path() -> Path:
+    override = os.environ.get("OBSERVABILITY_SLO_MANIFEST", "")
+    if override:
+        return Path(override)
+    return _PROJECT_ROOT / "manifests" / "observability-slo.yaml"
 
 
 def _load_latest_record() -> dict | None:
@@ -47,10 +48,6 @@ def _load_latest_record() -> dict | None:
         return json.loads(lines[-1])
     except json.JSONDecodeError:
         return None
-
-
-def _wall_budget_ms() -> int:
-    return int(os.environ.get("AGENT_SPAWN_BUDGET_MS", str(DEFAULT_WALL_BUDGET_MS)))
 
 
 def _token_budget() -> int:
@@ -92,20 +89,47 @@ def test_record_has_required_keys(latest_record):
     assert not missing, f"benchmark record missing keys: {sorted(missing)}"
 
 
-def test_total_wall_within_budget(latest_record):
-    budget = _wall_budget_ms()
-    measured = latest_record.get("totals", {}).get("total_wall_ms", 0)
-    if measured > budget:
-        hooks = latest_record.get("subagent_start_hooks", [])
-        offenders = sorted(hooks, key=lambda h: h.get("duration_ms", 0), reverse=True)[:5]
-        formatted = "\n".join(
-            f"  {h['hook']}: {h['duration_ms']} ms" for h in offenders
+def test_real_spawn_latency_slos_are_authoritative():
+    """ADR-304 aggregator is the real latency budget gate.
+
+    Synthetic ADR-303 wall-clock is intentionally not asserted here because it
+    can be ~150x lower than production telemetry. If there is no production
+    telemetry on a fresh clone, skip rather than convert smoke data into false
+    authority.
+    """
+    report = aggregate_streams(
+        _PROJECT_ROOT,
+        _manifest_path(),
+        enable_self_tuning=False,
+    )
+    evaluations = {
+        e.get("slo_id"): e for e in report.evaluations if e.get("slo_id") in REAL_SPAWN_SLOS
+    }
+    missing = REAL_SPAWN_SLOS - set(evaluations)
+    assert not missing, f"manifest missing real spawn SLOs: {sorted(missing)}"
+
+    no_data = [sid for sid, e in evaluations.items() if e.get("status") in {"no_data", "stream_missing"}]
+    if no_data:
+        pytest.skip(f"No production telemetry yet for {', '.join(sorted(no_data))}")
+
+    breaches = [e for e in evaluations.values() if e.get("status") == "breach"]
+    if breaches:
+        details = "\n".join(
+            f"  {e['slo_id']}: {e.get('value')} {e.get('comparator')} {e.get('target')} "
+            f"samples={e.get('window_summary', {}).get('n_samples')}"
+            for e in breaches
         )
         pytest.fail(
-            f"Spawn wall-clock {measured} ms exceeds budget {budget} ms.\n"
-            f"Top offenders:\n{formatted}\n"
-            f"Tighten hooks or raise AGENT_SPAWN_BUDGET_MS to acknowledge the regression."
+            "Real sub-agent spawn telemetry breached ADR-304 SLOs.\n"
+            f"{details}\n"
+            "Treat ADR-303 synthetic benchmark as smoke/lower-bound only."
         )
+
+
+def test_synthetic_wall_is_smoke_only(latest_record):
+    measured = latest_record.get("totals", {}).get("total_wall_ms", 0)
+    assert isinstance(measured, (int, float))
+    assert measured >= 0
 
 
 def test_payload_tokens_within_budget(latest_record):
