@@ -911,14 +911,17 @@ def execute(
     ts = timestamp or _utc_timestamp()
 
     # 1. Pre-conditions
-    _check_filter_repo_installed()
-    _check_destructive_env(manifest)
+    # Release-freeze transaction mismatch is an OS policy guard, so surface it
+    # before host-tool availability checks like git-filter-repo. That keeps
+    # freeze violations diagnosable on minimal CI/dev hosts.
     try:
         from lib.release_freeze import assert_history_sanitize_allowed
 
         assert_history_sanitize_allowed(project)
     except RuntimeError as exc:
         raise SanitizationError("release-freeze-transaction-required", str(exc)) from exc
+    _check_filter_repo_installed()
+    _check_destructive_env(manifest)
     _check_clean_worktree(project)
 
     backup_path = _backup_destination(project, ts)

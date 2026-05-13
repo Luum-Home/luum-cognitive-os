@@ -11,8 +11,8 @@ pytestmark = pytest.mark.behavior
 
 ROOT = Path(__file__).resolve().parents[2]
 CLAIM_TASK = ROOT / "scripts" / "claim_task.py"
-CONTRACT_DOC = ROOT / "docs" / "architecture" / "concurrency-safety-core-consumer-contract.md"
-READINESS_PLAN = ROOT / "docs" / "architecture" / "primitive-readiness-continuity-plan.md"
+CONTRACT_DOC = ROOT / "docs" / "04-Concepts" / "architecture" / "concurrency-safety-core-consumer-contract.md"
+READINESS_PLAN = ROOT / "docs" / "04-Concepts" / "architecture" / "primitive-readiness-continuity-plan.md"
 
 
 def run_claim(project_dir: Path, *args: str) -> subprocess.CompletedProcess[str]:

@@ -177,43 +177,26 @@ def test_idempotent_on_clean_state(tmp_path):
     assert len(rows2) == len(rows1), "re-run on clean state must not append audit rows"
 
 
-def test_merged_branch_listed_in_tier2():
-    # Use the real REPO_ROOT git so rev-list works. Create a throwaway branch
-    # at HEAD (== merged) matching the cos pattern, then ensure it appears as a
-    # tier-2 candidate. Clean up afterward.
+def test_merged_branch_listed_in_tier2(tmp_path):
+    # Use an isolated real git repo so tier-2 branch detection is exercised
+    # without scanning the developer checkout's live .cognitive-os runtime.
+    repo = _make_fake_repo(tmp_path)
     branch = "feat/cos-cleanup-test-merged-tmp"
-    subprocess.run(["git", "branch", "-D", branch], cwd=REPO_ROOT, capture_output=True)
-    try:
-        # Branch from main directly so rev-list count = 0.
-        head = subprocess.run(
-            ["git", "rev-parse", "main"], cwd=REPO_ROOT, capture_output=True, text=True
-        )
-        if head.returncode != 0:
-            pytest.skip("no main branch")
-        sha = head.stdout.strip()
-        rc = subprocess.run(["git", "branch", branch, sha], cwd=REPO_ROOT, capture_output=True)
-        if rc.returncode != 0:
-            pytest.skip("could not create test branch")
-        env = os.environ.copy()
-        audit = REPO_ROOT / ".cognitive-os" / f"cleanup-audit-test-{os.getpid()}.jsonl"
-        env["COS_CLEANUP_AUDIT_LOG"] = str(audit)
-        env["COS_CLEANUP_NONINTERACTIVE"] = "1"
-        proc = subprocess.run(
-            [str(SCRIPT), "--tier=2", "--dry-run"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            env=env,
-        )
-        assert proc.returncode in (0, 1)
-        rows = [json.loads(l) for l in audit.read_text().splitlines() if l.strip()]
-        assert any(r["action"] == "rm-branch" and r["target"] == branch for r in rows), \
-            f"branch {branch} not listed as tier-2 candidate"
-    finally:
-        subprocess.run(["git", "branch", "-D", branch], cwd=REPO_ROOT, capture_output=True)
-        audit = REPO_ROOT / ".cognitive-os" / f"cleanup-audit-test-{os.getpid()}.jsonl"
-        if audit.exists():
-            audit.unlink()
+    subprocess.run(["git", "init", "-b", "main"], cwd=repo, capture_output=True, check=True)
+    subprocess.run(["git", "config", "user.name", "Tester"], cwd=repo, capture_output=True, check=True)
+    subprocess.run(["git", "config", "user.email", "tester@example.com"], cwd=repo, capture_output=True, check=True)
+    (repo / "README.md").write_text("hello\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=repo, capture_output=True, check=True)
+    subprocess.run(["git", "commit", "-m", "init"], cwd=repo, capture_output=True, check=True)
+    subprocess.run(["git", "branch", branch, "main"], cwd=repo, capture_output=True, check=True)
+
+    audit = repo / ".cognitive-os" / f"cleanup-audit-test-{os.getpid()}.jsonl"
+    proc = _run(repo, "--tier=2", "--dry-run", env_extra={"COS_CLEANUP_AUDIT_LOG": str(audit)})
+
+    assert proc.returncode in (0, 1)
+    rows = [json.loads(l) for l in audit.read_text().splitlines() if l.strip()]
+    assert any(r["action"] == "rm-branch" and r["target"] == branch for r in rows), \
+        f"branch {branch} not listed as tier-2 candidate"
 
 
 def test_sigterm_grace_via_mocked_subprocess():

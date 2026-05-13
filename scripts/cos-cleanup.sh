@@ -221,7 +221,7 @@ PY
         audit 1 "rm-file" "$f" "task-claim lock expired" 0 "ok" ""
       fi
     fi
-  done < <(find "$runtime" -type f -name '*.json' 2>/dev/null)
+  done < <(find "$runtime" -maxdepth 1 -type f -name 'claim-*.json' 2>/dev/null)
 }
 
 tier1_stale_session_pointers() {
