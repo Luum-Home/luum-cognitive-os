@@ -21,6 +21,30 @@ policy:
     latest_json: docs/06-Daily/reports/capability-coverage-latest.json
 
 capabilities:
+  - id: engram-v3-evidence-grounded
+    label: Engram v3 — evidence-grounded claims, write gate, BM25 wrapper, portable bundles
+    owner_adr: ADR-287
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [lib, schema, retrieval]
+    implementation:
+      - lib/engram_wave3_schema.py
+      - lib/engram_write_gate.py
+      - lib/engram_fts5_search.py
+      - lib/engram_bundle_exporter.py
+      - lib/engram_bundle_importer.py
+    consumers: []
+    tests:
+      - tests/unit/test_engram_wave3_schema.py
+      - tests/unit/test_engram_write_gate.py
+      - tests/unit/test_engram_fts5_search.py
+      - tests/unit/test_engram_bundle_roundtrip.py
+    receipts: [engram-write-gate]
+    control_plane_audits: []
+    known_gaps:
+      - strict-approval-and-strict-evidence-modes-are-opt-in-only
+      - no-mem_save-call-sites-routed-through-the-write-gate-yet
+
   - id: handoff-envelope-cycle-dedup
     label: Agent handoff envelope and cycle deduplication
     owner_adr: ADR-230
