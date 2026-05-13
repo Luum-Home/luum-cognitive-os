@@ -100,7 +100,7 @@ def render() -> str:
             "| "
             + " | ".join(
                 [
-                    f"[{row['number']}](../adrs/{Path(row['path']).name})",
+                    f"[{row['number']}](../02-Decisions/adrs/{Path(row['path']).name})",
                     md_escape(str(row["implementation_status"])),
                     md_escape(str(row["remaining"])),
                     md_escape(in_scope_text),

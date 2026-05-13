@@ -9,7 +9,7 @@ from typing import Any
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ADRS = REPO_ROOT / "docs" / "adrs"
+ADRS = REPO_ROOT / "docs" / "02-Decisions" / "adrs"
 
 EXPECTED = {
     "ADR-044-context-payload-slimming.md": ("accepted", "partial-blocked"),
