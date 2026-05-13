@@ -29,6 +29,10 @@ METRICS_DIR="${PROJECT_DIR}/.cognitive-os/metrics"
 LOG_FILE="${METRICS_DIR}/crystallization-events.jsonl"
 
 run_crystallizer() {
+  if [ "${COS_SKIP_ENGRAM_CRYSTALLIZER:-0}" = "1" ]; then
+    echo "0"
+    return 0
+  fi
   local count
   count=$(python3 -c "
 import sys

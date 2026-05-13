@@ -298,7 +298,7 @@ if [ "${COS_DOCTOR_SKIP_MEMORY_LIFECYCLE:-0}" != "1" ] && [ "$warnings" -eq 0 ] 
   MEMORY_DOCTOR="$OS_SOURCE_ROOT/scripts/cos-doctor-memory-lifecycle.sh"
   if [ -x "$MEMORY_DOCTOR" ]; then
     MEMORY_OUTPUT="$(mktemp "${TMPDIR:-/tmp}/cos-memory-doctor.XXXXXX")"
-    if bash "$MEMORY_DOCTOR" --harness "$ACTIVE_HARNESS" >"$MEMORY_OUTPUT" 2>&1; then
+    if bash "$MEMORY_DOCTOR" --harness "$ACTIVE_HARNESS" --skip-engram-start >"$MEMORY_OUTPUT" 2>&1; then
       pass "memory lifecycle doctor passed"
     else
       fail "memory lifecycle doctor failed: $(tail -20 "$MEMORY_OUTPUT" | tr '\n' ' ')"

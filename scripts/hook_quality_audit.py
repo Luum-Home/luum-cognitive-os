@@ -11,6 +11,7 @@ REPO = Path(__file__).resolve().parents[1]
 QUALITY_MANIFEST = REPO / "manifests" / "hook-quality.yaml"
 CONFIG = REPO / "cognitive-os.yaml"
 TEST_ROOTS = [REPO / "tests" / n for n in ("unit", "behavior", "contracts", "chaos")]
+_TEST_TEXT_INDEX: list[tuple[Path, str]] | None = None
 REQUIRED_BEHAVIOR_COVERAGE = ["secret-detector", "dispatch-gate", "clarification-gate", "blast-radius", "completion-gate", "claim-validator", "trust-score-validator", "confidence-gate", "auto-rollback-trigger", "content-policy"]
 SECURITY_TERMS = ("secret", "confidential", "content-policy", "lethal", "destructive", "private-mode", "semgrep", "mcp-scan")
 QUALITY_TERMS = ("completion", "claim", "trust", "confidence", "frontmatter", "validator", "adr", "doc-sync", "surface-fix", "review")
@@ -101,16 +102,27 @@ def codex_tier(event: str, matcher: str) -> str:
     return "unsupported"
 
 
+def test_text_index() -> list[tuple[Path, str]]:
+    global _TEST_TEXT_INDEX
+    if _TEST_TEXT_INDEX is not None:
+        return _TEST_TEXT_INDEX
+    rows: list[tuple[Path, str]] = []
+    for root in TEST_ROOTS:
+        if not root.is_dir():
+            continue
+        for path in sorted(root.glob("test_*.py")):
+            rows.append((path, path.read_text(encoding="utf-8", errors="ignore")))
+    _TEST_TEXT_INDEX = rows
+    return rows
+
+
 def discover_behavior_tests(hook_id: str, script: str) -> list[str]:
     base = Path(script).name
     needles = {hook_id, base, base.removesuffix(".sh")}
     found: list[str] = []
-    for root in TEST_ROOTS:
-        if not root.is_dir(): continue
-        for path in sorted(root.glob("test_*.py")):
-            text = path.read_text(encoding="utf-8", errors="ignore")
-            if any(n and n in text for n in needles):
-                found.append(str(path.relative_to(REPO)))
+    for path, text in test_text_index():
+        if any(n and n in text for n in needles):
+            found.append(str(path.relative_to(REPO)))
     return sorted(set(found))
 
 

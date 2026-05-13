@@ -124,6 +124,6 @@ execution:
     monkeypatch.setenv("COS_RELEASE_TRANSACTION_ID", "wrong-id")
 
     with pytest.raises(SanitizationError) as exc:
-        execute(repo, confirmed=True, timestamp="20260101T000000Z")
+        execute(repo, confirmed=True, timestamp="20260101T000000Z", adr_ref="ADR-269")
 
     assert exc.value.code == "release-freeze-transaction-required"
