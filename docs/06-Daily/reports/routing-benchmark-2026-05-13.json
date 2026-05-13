@@ -1,6 +1,6 @@
 {
   "schema_version": "routing-benchmark-report/v1",
-  "timestamp": "2026-05-13T21:36:57.889462+00:00",
+  "timestamp": "2026-05-13T22:20:25.683231+00:00",
   "environment": {
     "python_version": "3.14.4",
     "platform": "darwin",
@@ -20,16 +20,16 @@
       "license_ok": true,
       "loaded": true,
       "load_error": null,
-      "total_queries": 300,
+      "total_queries": 100,
       "failures": 0,
-      "precision_at_1": 0.7533333333333333,
-      "precision_at_5": 0.9566666666666667,
-      "mrr": 0.8425396825396825,
-      "cold_start_ms": 3941.5407909982605,
-      "warm_p50_ms": 4.515124994213693,
-      "warm_p95_ms": 26.6032958563301,
-      "warm_p99_ms": 73.92683841608229,
-      "peak_rss_mb": 840.078125,
+      "precision_at_1": 0.79,
+      "precision_at_5": 0.98,
+      "mrr": 0.8699166666666666,
+      "cold_start_ms": 1732.6423750055255,
+      "warm_p50_ms": 3.8992920017335564,
+      "warm_p95_ms": 19.683889300358707,
+      "warm_p99_ms": 29.595659914339258,
+      "peak_rss_mb": 845.484375,
       "model_size_mb": 0.0,
       "per_language": [
         {
@@ -48,31 +48,31 @@
         },
         {
           "language": "pt",
-          "queries": 50,
-          "precision_at_1": 0.7,
-          "precision_at_5": 0.96,
-          "mrr": 0.8164126984126986
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "de",
-          "queries": 50,
-          "precision_at_1": 0.76,
-          "precision_at_5": 0.94,
-          "mrr": 0.8438888888888889
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "fr",
-          "queries": 50,
-          "precision_at_1": 0.72,
-          "precision_at_5": 0.92,
-          "mrr": 0.8066904761904762
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "it",
-          "queries": 50,
-          "precision_at_1": 0.76,
-          "precision_at_5": 0.96,
-          "mrr": 0.8484126984126985
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         }
       ]
     },
@@ -85,16 +85,16 @@
       "license_ok": true,
       "loaded": true,
       "load_error": null,
-      "total_queries": 300,
+      "total_queries": 100,
       "failures": 0,
-      "precision_at_1": 0.8866666666666667,
+      "precision_at_1": 0.9,
       "precision_at_5": 1.0,
-      "mrr": 0.9377777777777777,
-      "cold_start_ms": 108970.49474999949,
-      "warm_p50_ms": 27.48108300147578,
-      "warm_p95_ms": 39.98054725307156,
-      "warm_p99_ms": 52.3737504206655,
-      "peak_rss_mb": 1397.59375,
+      "mrr": 0.9458333333333333,
+      "cold_start_ms": 10365.50441700092,
+      "warm_p50_ms": 99.13829149445519,
+      "warm_p95_ms": 1221.2530295037127,
+      "warm_p99_ms": 2031.209563838202,
+      "peak_rss_mb": 1222.484375,
       "model_size_mb": 0.0,
       "per_language": [
         {
@@ -113,31 +113,31 @@
         },
         {
           "language": "pt",
-          "queries": 50,
-          "precision_at_1": 0.92,
-          "precision_at_5": 1.0,
-          "mrr": 0.955
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "de",
-          "queries": 50,
-          "precision_at_1": 0.84,
-          "precision_at_5": 1.0,
-          "mrr": 0.9116666666666666
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "fr",
-          "queries": 50,
-          "precision_at_1": 0.82,
-          "precision_at_5": 1.0,
-          "mrr": 0.8983333333333334
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "it",
-          "queries": 50,
-          "precision_at_1": 0.94,
-          "precision_at_5": 1.0,
-          "mrr": 0.97
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         }
       ]
     },
@@ -150,16 +150,16 @@
       "license_ok": true,
       "loaded": true,
       "load_error": null,
-      "total_queries": 300,
+      "total_queries": 100,
       "failures": 0,
-      "precision_at_1": 0.8966666666666666,
+      "precision_at_1": 0.92,
       "precision_at_5": 1.0,
-      "mrr": 0.9410555555555555,
-      "cold_start_ms": 63784.98016600497,
-      "warm_p50_ms": 27.519249997567385,
-      "warm_p95_ms": 47.00336670211983,
-      "warm_p99_ms": 82.28192983413462,
-      "peak_rss_mb": 1654.1875,
+      "mrr": 0.9583333333333333,
+      "cold_start_ms": 14887.571083992952,
+      "warm_p50_ms": 44.03233299672138,
+      "warm_p95_ms": 184.55206459839246,
+      "warm_p99_ms": 1057.5417061553176,
+      "peak_rss_mb": 1242.140625,
       "model_size_mb": 0.0,
       "per_language": [
         {
@@ -178,31 +178,31 @@
         },
         {
           "language": "pt",
-          "queries": 50,
-          "precision_at_1": 0.88,
-          "precision_at_5": 1.0,
-          "mrr": 0.9273333333333332
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "de",
-          "queries": 50,
-          "precision_at_1": 0.9,
-          "precision_at_5": 1.0,
-          "mrr": 0.9466666666666668
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "fr",
-          "queries": 50,
-          "precision_at_1": 0.88,
-          "precision_at_5": 1.0,
-          "mrr": 0.924
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "it",
-          "queries": 50,
-          "precision_at_1": 0.88,
-          "precision_at_5": 1.0,
-          "mrr": 0.9316666666666665
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         }
       ]
     },
@@ -215,16 +215,16 @@
       "license_ok": true,
       "loaded": true,
       "load_error": null,
-      "total_queries": 300,
+      "total_queries": 100,
       "failures": 0,
-      "precision_at_1": 0.81,
-      "precision_at_5": 0.96,
-      "mrr": 0.8702301587301587,
-      "cold_start_ms": 73603.42258401215,
-      "warm_p50_ms": 8.527333506208379,
-      "warm_p95_ms": 15.384052394801987,
-      "warm_p99_ms": 34.493423094390664,
-      "peak_rss_mb": 1654.1875,
+      "precision_at_1": 0.85,
+      "precision_at_5": 0.98,
+      "mrr": 0.8978333333333333,
+      "cold_start_ms": 7253.0645840015495,
+      "warm_p50_ms": 23.37281249492662,
+      "warm_p95_ms": 102.90882645203962,
+      "warm_p99_ms": 177.74598475473238,
+      "peak_rss_mb": 1327.734375,
       "model_size_mb": 0.0,
       "per_language": [
         {
@@ -243,33 +243,99 @@
         },
         {
           "language": "pt",
-          "queries": 50,
-          "precision_at_1": 0.8,
-          "precision_at_5": 0.94,
-          "mrr": 0.8622460317460318
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "de",
-          "queries": 50,
-          "precision_at_1": 0.82,
-          "precision_at_5": 0.96,
-          "mrr": 0.8688888888888888
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "fr",
-          "queries": 50,
-          "precision_at_1": 0.74,
-          "precision_at_5": 0.96,
-          "mrr": 0.8350238095238095
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         },
         {
           "language": "it",
-          "queries": 50,
-          "precision_at_1": 0.8,
-          "precision_at_5": 0.94,
-          "mrr": 0.8595555555555555
+          "queries": 0,
+          "precision_at_1": 0.0,
+          "precision_at_5": 0.0,
+          "mrr": 0.0
         }
       ]
+    },
+    {
+      "model_id": "qwen3-embedding-0.6b",
+      "model_name": "Qwen/Qwen3-Embedding-0.6B",
+      "adapter": "fastembed-bi-encoder",
+      "license": "Apache-2.0",
+      "role": "bi-encoder",
+      "license_ok": true,
+      "loaded": false,
+      "load_error": "load failed: Model Qwen/Qwen3-Embedding-0.6B is not supported in TextEmbedding. Please check the supported models using `TextEmbedding.list_supported_models()`",
+      "total_queries": 0,
+      "failures": 0,
+      "precision_at_1": 0.0,
+      "precision_at_5": 0.0,
+      "mrr": 0.0,
+      "cold_start_ms": 0.0,
+      "warm_p50_ms": 0.0,
+      "warm_p95_ms": 0.0,
+      "warm_p99_ms": 0.0,
+      "peak_rss_mb": 0.0,
+      "model_size_mb": 0.0,
+      "per_language": []
+    },
+    {
+      "model_id": "harrier-oss-v1-270m",
+      "model_name": "microsoft/harrier-oss-v1-270m",
+      "adapter": "fastembed-bi-encoder",
+      "license": "MIT",
+      "role": "bi-encoder",
+      "license_ok": true,
+      "loaded": false,
+      "load_error": "load failed: Model microsoft/harrier-oss-v1-270m is not supported in TextEmbedding. Please check the supported models using `TextEmbedding.list_supported_models()`",
+      "total_queries": 0,
+      "failures": 0,
+      "precision_at_1": 0.0,
+      "precision_at_5": 0.0,
+      "mrr": 0.0,
+      "cold_start_ms": 0.0,
+      "warm_p50_ms": 0.0,
+      "warm_p95_ms": 0.0,
+      "warm_p99_ms": 0.0,
+      "peak_rss_mb": 0.0,
+      "model_size_mb": 0.0,
+      "per_language": []
+    },
+    {
+      "model_id": "bge-reranker-v2-m3",
+      "model_name": "BAAI/bge-reranker-v2-m3",
+      "adapter": "fastembed-bi-encoder",
+      "license": "Apache-2.0",
+      "role": "reranker",
+      "license_ok": true,
+      "loaded": false,
+      "load_error": "load failed: Model BAAI/bge-reranker-v2-m3 is not supported in TextEmbedding. Please check the supported models using `TextEmbedding.list_supported_models()`",
+      "total_queries": 0,
+      "failures": 0,
+      "precision_at_1": 0.0,
+      "precision_at_5": 0.0,
+      "mrr": 0.0,
+      "cold_start_ms": 0.0,
+      "warm_p50_ms": 0.0,
+      "warm_p95_ms": 0.0,
+      "warm_p99_ms": 0.0,
+      "peak_rss_mb": 0.0,
+      "model_size_mb": 0.0,
+      "per_language": []
     }
   ]
 }

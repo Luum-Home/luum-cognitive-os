@@ -136,6 +136,31 @@ impact:
   service_mode: harness-embedded-only|shell-ci-safe|headless-worker-safe|cosd-service-safe|unsupported
 ```
 
+
+## 3b. Language-agnostic routing metadata
+
+When the primitive is a skill or any user-routed primitive, follow ADR-302:
+
+- Keep `routing_patterns` only for deterministic aliases: slash commands,
+  primitive IDs, URLs, paths, file extensions, config keys, or other machine
+  shapes.
+- Do not add keyword regexes for natural-language intent detection.
+- Add `summary_line`: one short routing-oriented sentence.
+- Add `routing_intents`: semantic descriptions of what the user is asking for.
+- If broader language coverage is needed, use ADR-299 enrichment as corpus data,
+  not as hard routing logic:
+
+```bash
+scripts/cos-skill-description-enrich --dry-run --skills {skill-name} --languages en,es,pt,de,fr,it --intents-per-lang 2
+scripts/cos-routing-benchmark --quick
+scripts/cos-language-dependence-audit --output .cognitive-os/reports/language-dependence-audit.md
+```
+
+For SO primitives, semantic metadata belongs in canonical COS source. For
+consumer-project primitives, project-specific vocabulary belongs in the project
+overlay/config; do not hardcode downstream product/team language into OS-level
+regex.
+
 ## 4. Projection fidelity
 
 Do not claim stronger fidelity than the harness/service can prove.

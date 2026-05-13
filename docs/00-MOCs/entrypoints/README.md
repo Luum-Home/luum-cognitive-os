@@ -32,6 +32,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-302: Language-Agnostic Primitive Routing Authoring Contract](adrs/ADR-302-language-agnostic-primitive-routing-authoring.md) — authoring contract for keeping regex routing limited to deterministic aliases while moving natural-language primitive routing into semantic metadata and benchmark evidence.
 - [Rust Transpiler Scope Correction — 2026-05-12](reports/rust-transpiler-scope-correction-2026-05-12.md) — clarifies that the first transpiler run tested real COS scripts, then adds a fair capability fixture probe.
 - [Rust Transpiler Evaluation Lane](architecture/rust-transpiler-evaluation-lane.md) — repeatable lab lane for evaluating py2many/Tsuchinoko as Rust migration assistants without automatic replacement.
 - [Rust Migration Script Inventory — 2026-05-12](architecture/rust-migration-script-inventory.md) — classifies tracked Python, Go, and Bash surfaces into core runtime, CLI, diagnostics, test helpers, generators, and legacy before any Rust migration.

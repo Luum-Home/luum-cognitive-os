@@ -66,6 +66,10 @@ class RoutingPatternFinding:
     structural_score: int
     severity: str
     recommendation: str
+    category: str
+    category_reason: str
+    has_routing_intents: bool
+    has_summary_line: bool
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -80,6 +84,10 @@ class RoutingPatternFinding:
             "structural_score": self.structural_score,
             "severity": self.severity,
             "recommendation": self.recommendation,
+            "category": self.category,
+            "category_reason": self.category_reason,
+            "has_routing_intents": self.has_routing_intents,
+            "has_summary_line": self.has_summary_line,
         }
 
 
@@ -258,6 +266,75 @@ def _fallback_language_guesses(literals: Sequence[str]) -> tuple[LanguageGuess, 
     return tuple(guesses)
 
 
+
+
+def _has_non_empty_routing_intents(frontmatter: dict[str, Any]) -> bool:
+    intents = frontmatter.get("routing_intents")
+    return isinstance(intents, list) and any(bool(item) for item in intents)
+
+
+def _has_summary_line(frontmatter: dict[str, Any]) -> bool:
+    return bool(str(frontmatter.get("summary_line") or "").strip())
+
+
+def _is_localized_primitive(path: Path, frontmatter: dict[str, Any], primitive: str) -> bool:
+    name = str(frontmatter.get("name") or primitive or path.parent.name).lower()
+    tags = frontmatter.get("tags") or []
+    text_tags = " ".join(str(tag).lower() for tag in tags) if isinstance(tags, list) else str(tags).lower()
+    return bool(re.search(r"(?:^|-)(?:es|spanish|localized|localised)(?:$|-)", name) or "localized" in text_tags or "localised" in text_tags)
+
+
+def _is_explicit_alias_pattern(pattern: str, primitive: str) -> bool:
+    """Return True for command/identifier regexes, not intent prose matching."""
+    compact = pattern.replace(r"\b", "").replace("^", "").replace("$", "")
+    compact = compact.strip("'\"`()")
+    primitive_variants = {primitive, primitive.replace("-", " "), primitive.replace("-", "[- ]?")}
+    if compact.startswith("/") and re.fullmatch(r"/[a-z0-9][a-z0-9_.-]*", compact, re.IGNORECASE):
+        return True
+    if any(variant and variant in compact for variant in primitive_variants):
+        # Alternations around the primitive name are usually invocation aliases.
+        return structural_risk_score(pattern, extract_regex_literals(pattern)) <= 3
+    return False
+
+
+def _classify_pattern(
+    *,
+    path: Path,
+    primitive_type: str,
+    primitive: str,
+    pattern: str,
+    frontmatter: dict[str, Any],
+) -> tuple[str, str, bool, bool]:
+    has_intents = _has_non_empty_routing_intents(frontmatter)
+    has_summary = _has_summary_line(frontmatter)
+    if _is_explicit_alias_pattern(pattern, primitive):
+        return (
+            "explicit_alias",
+            "Regex appears to match an explicit command or primitive identifier, which remains allowed.",
+            has_intents,
+            has_summary,
+        )
+    if primitive_type == "skill" and _is_localized_primitive(path, frontmatter, primitive):
+        return (
+            "localized_skill",
+            "Primitive is intentionally localized; language-specific trigger text is expected but should still be paired with semantic metadata.",
+            has_intents,
+            has_summary,
+        )
+    if has_intents:
+        return (
+            "regex_with_intents",
+            "Semantic routing metadata exists; treat this regex as compatibility fallback unless benchmark evidence says it is still needed.",
+            has_intents,
+            has_summary,
+        )
+    return (
+        "regex_without_intents",
+        "No routing_intents found; this is the priority migration bucket for summary_line/routing_intents enrichment.",
+        has_intents,
+        has_summary,
+    )
+
 def _pattern_finding(
     *,
     root: Path,
@@ -268,6 +345,7 @@ def _pattern_finding(
     confidence: float,
     line: int | None,
     detector: OptionalLinguaDetector,
+    frontmatter: dict[str, Any],
 ) -> RoutingPatternFinding | None:
     literals = extract_regex_literals(pattern)
     if not literals:
@@ -283,6 +361,13 @@ def _pattern_finding(
     severity = "high" if score >= 5 and any(guess.detector != "heuristic" for guess in guesses) else "medium"
     if score < 4:
         severity = "low"
+    category, category_reason, has_intents, has_summary = _classify_pattern(
+        path=path,
+        primitive_type=primitive_type,
+        primitive=primitive,
+        pattern=pattern,
+        frontmatter=frontmatter,
+    )
     return RoutingPatternFinding(
         file=str(path.relative_to(root)),
         primitive=primitive,
@@ -295,14 +380,15 @@ def _pattern_finding(
         structural_score=score,
         severity=severity,
         recommendation=(
-            "Prefer ADR-296 semantic routing — the SKILL.md `description` "
-            "field is now the multilingual source of truth. Delete or migrate "
-            "language-dependent routing_patterns; reserve routing_patterns "
-            "ONLY for explicit slash-commands, IDs, URLs, and paths "
-            "(routing_intents lists are also indexed by the semantic matcher "
-            "if you need supplementary utterances). Ambiguous prompts are "
-            "broken by ADR-297's LLM fallback."
+            "Prefer ADR-296 semantic routing. Keep routing_patterns for explicit "
+            "slash-commands, primitive IDs, URLs, and paths. Migrate natural-language "
+            "fallback regexes into summary_line/routing_intents and validate with "
+            "ADR-298/300 benchmark evidence before deleting compatibility aliases."
         ),
+        category=category,
+        category_reason=category_reason,
+        has_routing_intents=has_intents,
+        has_summary_line=has_summary,
     )
 
 
@@ -350,6 +436,7 @@ def audit(root: Path, min_severity: str = "medium") -> AuditReport:
                 confidence=confidence,
                 line=_routing_pattern_line(text, pattern),
                 detector=detector,
+                frontmatter=frontmatter,
             )
             if finding:
                 findings.append(finding)
@@ -380,15 +467,23 @@ def render_markdown(report: AuditReport) -> str:
     if not report.findings:
         lines.append("No language-dependent routing patterns found.")
         return "\n".join(lines) + "\n"
-    lines.extend(["| Severity | File | Line | Primitive | Languages | Pattern |", "|---|---|---:|---|---|---|"])
+    category_counts: dict[str, int] = {}
+    for finding in report.findings:
+        category_counts[finding.category] = category_counts.get(finding.category, 0) + 1
+    lines.append("## Classification")
+    lines.append("")
+    for category, count in sorted(category_counts.items()):
+        lines.append(f"- `{category}`: {count}")
+    lines.append("")
+    lines.extend(["| Severity | Category | File | Line | Primitive | Languages | Pattern |", "|---|---|---|---:|---|---|---|"])
     for finding in report.findings:
         languages = ", ".join(sorted({guess.language for guess in finding.language_guesses})) or "unknown"
         pattern = finding.pattern.replace("|", "\\|")
         lines.append(
-            f"| {finding.severity} | `{finding.file}` | {finding.line or ''} | `{finding.primitive}` | {languages} | `{pattern}` |"
+            f"| {finding.severity} | `{finding.category}` | `{finding.file}` | {finding.line or ''} | `{finding.primitive}` | {languages} | `{pattern}` |"
         )
     lines.append("")
-    lines.append("Recommendation: migrate natural-language intent matching to `routing_intents`; keep regex routing for explicit commands, primitive IDs, URLs, and file/path shapes.")
+    lines.append("Recommendation: first fix `regex_without_intents` by adding `summary_line` and `routing_intents`, treat `regex_with_intents` as benchmarked compatibility fallback, keep `explicit_alias`, and document any `localized_skill` exception.")
     return "\n".join(lines) + "\n"
 
 

@@ -49,6 +49,14 @@ description: {One-line description — this appears in CATALOG.md}
 version: 0.1.0
 audience: {os|project|both}
 tags: [{tag1}, {tag2}]
+summary_line: {One short routing-oriented sentence}
+routing_patterns:
+  - pattern: '\b{skill-name}\b|/{skill-name}'
+    confidence: 0.96
+routing_intents:
+  - intent: {semantic_intent_name}
+    description: User asks to {describe the capability without language-specific keywords}.
+    confidence: 0.85
 ---
 
 # {Skill Display Name}
@@ -98,6 +106,26 @@ Decide whether the skill is:
 
 If the skill depends on one harness for triggers, file layout, or workflow
 surface, state that explicitly in a short `## Portability` section.
+
+
+### 2c. Add language-agnostic routing metadata
+
+Follow ADR-302 for every new skill:
+
+- `routing_patterns` may contain explicit command/identifier aliases only.
+- Do not add natural-language keyword regexes in English, Spanish, or any other
+  language.
+- Put natural-language trigger meaning in `summary_line` and `routing_intents`.
+- For multilingual coverage, generate or curate semantic examples with:
+
+```bash
+scripts/cos-skill-description-enrich --dry-run --skills {skill-name} --languages en,es,pt,de,fr,it --intents-per-lang 2
+scripts/cos-routing-benchmark --quick
+scripts/cos-language-dependence-audit --output .cognitive-os/reports/language-dependence-audit.md
+```
+
+These examples are embedding corpus data, not hard keyword gates. This applies
+both to SO skills and project-local skills in consumer overlays.
 
 ### 3. Add to `skills/CATALOG.md`
 

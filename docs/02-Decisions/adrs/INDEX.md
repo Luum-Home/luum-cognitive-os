@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 301 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 312 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (134)
+### Active / Implemented (141)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -142,10 +142,17 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [286](ADR-286-stack-aware-skill-recommendation-session-start.md) | Stack-Aware Skill Recommendation at Session Start | accepted | implemented | 2026-05-13 | Accepted and implemented — 2026-05-13. |
 | [287](ADR-287-engram-v3-evidence-grounded-claims-and-portable-bundles.md) | Engram v3: Evidence-Grounded Claims, Write Gate, BM25 Retrieval Wrapper, and Portable Bundles | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
 | [288](ADR-288-web-automation-adapter-for-dispatch.md) | Web-Automation Adapter for Dispatch (browser-use) | accepted | implemented | 2026-05-13 | - **Status:** Accepted |
-| [292](ADR-292-runtime-perf-primitives-lazy-imports-and-mcp-thread-bridge.md) | Runtime Performance Primitives: Lazy Imports and MCP Sync↔Async Thread Bridge | accepted | implemented | 2026-05-13 | Split from ADR-290 (Patterns 1+3). |
-| [293](ADR-293-typed-hook-event-contracts.md) | Typed Hook Event Contracts: Frozen Dataclasses for Claude Code Hook Payloads | accepted | implemented | 2026-05-13 | Split from ADR-290 (Pattern 2) with inline migration plan. |
-| [294](ADR-294-memory-quality-scoring-extension.md) | Memory Quality Scoring: Four-Dimension Quality Fields and min_quality Filter for Engram v3 | accepted | implemented | 2026-05-13 | Split from ADR-290 (Pattern 4); extends ADR-287. |
-| [295](ADR-295-agent-reflection-loop-primitive.md) | Agent Reflection Loop Primitive: Bounded Iterative Critique with Min/Max Floors | accepted | implemented | 2026-05-13 | Split from ADR-290 (Pattern 5); runtime wiring reserved for ADR-296. |
+| [292](ADR-292-runtime-perf-primitives-lazy-imports-and-mcp-thread-bridge.md) | Runtime Performance Primitives: Lazy Imports and MCP Sync↔Async Thread Bridge | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
+| [293](ADR-293-typed-hook-event-contracts.md) | Typed Hook Event Contracts: Frozen Dataclasses for Claude Code Hook Payloads | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
+| [294](ADR-294-memory-quality-scoring-extension.md) | Memory Quality Scoring: Four-Dimension Quality Fields and min_quality Filter for Engram v3 | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
+| [295](ADR-295-agent-reflection-loop-primitive.md) | Agent Reflection Loop Primitive: Bounded Iterative Critique with Min/Max Floors | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
+| [296](ADR-296-language-agnostic-semantic-routing.md) | Language-Agnostic Semantic Routing for the COS Skill Router | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
+| [297](ADR-297-llm-dispatched-routing-fallback.md) | LLM-Dispatched Routing as Low-Confidence Fallback for the Skill Router | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
+| [298](ADR-298-routing-model-benchmark-harness.md) | Reproducible Routing-Model Benchmark Harness | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
+| [299](ADR-299-skill-description-enrichment.md) | LLM-Driven Multilingual Enrichment of Skill Routing Intents | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. Implemented in the same change. |
+| [300](ADR-300-semantic-routing-model-selection.md) | Semantic Routing Model Selection — Operator Swap + Benchmark Winner Discovery | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
+| [301](ADR-301-onnx-direct-routing-adapter.md) | ONNX-Direct Routing Adapter — Generic HF-Hosted ONNX Bi-Encoder Loader | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
+| [302](ADR-302-language-agnostic-primitive-routing-authoring.md) | Language-Agnostic Primitive Routing Authoring Contract | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. Implemented in the same change. |
 
 ### Active / Partial (118)
 
@@ -352,7 +359,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [084](ADR-084-headless-clustered-runtime-shape.md) | Headless and Clustered Runtime Shape | superseded | not-applicable | 2026-04-30 | **Author**: Maintainer |
 | [170](ADR-170-operator-cli-as-primary-ui-surface.md) | Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists | superseded | not-applicable | 2026-05-05 | Superseded by [ADR-172](ADR-172-multi-surface-ui-architecture.md) (2026-05-05). |
 | [187](ADR-187-surface-5-adoption-proof-contract.md) | Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI | superseded | not-applicable | 2026-05-06 | **Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather |
-| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | superseded | implemented | 2026-05-13 | Split into ADR-292, ADR-293, ADR-294, ADR-295 because the bundle silently amended ADR-287 and left two reconstruction-phase deferrals open-ended. |
+| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | superseded | implemented | 2026-05-13 | **Status: superseded — 2026-05-13.** Split into four standalone ADRs because this |
 
 </details>
 
