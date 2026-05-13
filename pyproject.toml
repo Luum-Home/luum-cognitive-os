@@ -8,7 +8,12 @@ requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
     "jinja2>=3.1",
-    "rich>=15",  # core lane can advance independently from memory/cognee lane (ADR-145)
+    # rich pinned to >=14.3.1,<15 until browser-use (ADR-288) relaxes its
+    # `rich==14.3.1` exact pin. Bump back to `>=15` once browser-use ships
+    # compat with rich 15 (currently 0.12.6 is the latest available on PyPI
+    # and still hard-pins to 14.3.1). Tracked: drop the ceiling when CI
+    # validates browser-use against rich>=15 successfully.
+    "rich>=14.3.1,<15",
 ]
 
 [project.optional-dependencies]
