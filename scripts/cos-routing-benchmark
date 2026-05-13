@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# ADR-298 — Reproducible model-evaluation harness for the COS skill router.
+#
+# This wrapper invokes lib.routing_benchmark with the project's canonical
+# .venv interpreter so cold-start measurements use the same environment
+# the router itself uses at runtime.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Canonical interpreter (commit b61a33c1) — falls back to python3 for CI.
+if [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+  PYTHON="$REPO_ROOT/.venv/bin/python"
+else
+  PYTHON="${PYTHON:-python3}"
+fi
+
+cd "$REPO_ROOT"
+exec "$PYTHON" -m lib.routing_benchmark "$@"

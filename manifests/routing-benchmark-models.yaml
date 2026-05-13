@@ -1,0 +1,41 @@
+# SCOPE: os-only
+# Routing model candidate manifest (ADR-298).
+#
+# Every entry MUST declare an adapter, weights, license, and role.
+# License gate: any entry whose license is not in
+#   {MIT, BSD, BSD-2-Clause, BSD-3-Clause, Apache, Apache-2.0}
+# is REFUSED by the harness before download/load. See ADR-298 + ADR-006.
+#
+# To add a candidate:
+#   1. Append an entry below with verified upstream license string.
+#   2. Run `scripts/cos-routing-benchmark --models <new-id>`.
+#   3. Append the resulting report path to the model-selection ADR.
+schema_version: routing-benchmark-models/v1
+models:
+  - id: baseline-minilm
+    adapter: fastembed-bi-encoder
+    model_name: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+    license: Apache-2.0
+    role: bi-encoder
+    note: |
+      Current production matcher (ADR-296). Baseline against which all
+      candidates must be compared. ~220 MB ONNX INT8.
+
+  - id: bge-m3
+    adapter: fastembed-bi-encoder
+    model_name: BAAI/bge-m3
+    license: MIT
+    role: bi-encoder
+    note: |
+      Multilingual (100+ langs), 1024-dim. Larger (~2.3 GB) but strong
+      cross-lingual retrieval per upstream evals. Untested locally.
+
+  - id: multilingual-e5-large
+    adapter: fastembed-bi-encoder
+    model_name: intfloat/multilingual-e5-large
+    license: MIT
+    role: bi-encoder
+    note: |
+      560M params, 1024-dim, 94 languages. Untested locally. Loader may
+      require the `intfloat/` namespace to be allow-listed by fastembed;
+      benchmark may legitimately report load-failure.

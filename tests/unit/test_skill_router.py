@@ -499,20 +499,6 @@ class TestSafetyRecoveryNegativeContext:
             pytest.param(
                 "Skill router /deep-research para escritura — falso positivo",
                 "/deep-research",
-                marks=pytest.mark.xfail(
-                    reason=(
-                        "ADR-296: the multilingual semantic matcher now correctly "
-                        "cross-embeds 'escritura' (writing) with /deep-research's "
-                        "research+writing description. The remaining cases in this "
-                        "cluster have stronger negative signals (numeric ratings, "
-                        "'ignoré la sugerencia', 'dogfood evidence') that the matcher "
-                        "still rejects. This single prompt has no such signal — it "
-                        "is a genuine ambiguity. ADR-297's LLM tie-breaker is the "
-                        "right disambiguator. Re-enable when ADR-297 lands and the "
-                        "fallback gate suppresses false positives in this class."
-                    ),
-                    strict=True,
-                ),
             ),
             (
                 "Ignoré la sugerencia del router /auto-refine 0.95 para síntesis",

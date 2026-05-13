@@ -1,0 +1,442 @@
+# SCOPE: os-only
+# AUTO-GENERATED seed corpus for ADR-298 routing-benchmark harness.
+# Refine prompts manually as needed — the harness measures regressions,
+# not absolute truth. Stable order, deterministic hash.
+#
+# Regenerate (LLM-assisted, full 385 skills) via:
+#   scripts/cos-routing-benchmark --regenerate-corpus
+#
+# Schema:
+#   schema_version: routing-benchmark-corpus/v1
+#   skills:
+#     <skill-name>:
+#       description: <SKILL.md description, source of truth>
+#       prompts:
+#         en: [...]
+#         es: [...]
+#         pt: [...]
+#         de: [...]
+#         fr: [...]
+#         it: [...]
+schema_version: routing-benchmark-corpus/v1
+skills:
+  product-answer:
+    description: |
+      Answer COS product/commercial questions (differentiator, moat,
+      wedge, ICP, pricing, competitors, pitch, positioning) from cached
+      ADR-282 evidence cards rather than broad repo research.
+    prompts:
+      en:
+        - "what is our differentiator?"
+        - "what's the COS moat versus competitors?"
+        - "give me the product pitch"
+        - "what is our ICP?"
+        - "answer a product question: what's our wedge?"
+      es:
+        - "¿cuál es nuestro diferenciador?"
+        - "¿cuál es el moat de COS frente a competidores?"
+        - "dame el pitch del producto"
+        - "¿cuál es nuestro ICP?"
+        - "responde una pregunta de producto: ¿cuál es nuestro wedge?"
+      pt:
+        - "qual é o nosso diferenciador?"
+        - "qual é o moat do COS contra concorrentes?"
+        - "me dá o pitch do produto"
+        - "qual é o nosso ICP?"
+        - "responde uma pergunta de produto: qual é o nosso wedge?"
+      de:
+        - "was ist unser Differenzierungsmerkmal?"
+        - "was ist der COS-Moat gegenüber Wettbewerbern?"
+        - "gib mir den Produkt-Pitch"
+        - "wer ist unser ICP?"
+        - "beantworte eine Produktfrage: was ist unser Wedge?"
+      fr:
+        - "quel est notre facteur différenciant ?"
+        - "quel est le moat de COS face aux concurrents ?"
+        - "donne-moi le pitch produit"
+        - "quel est notre ICP ?"
+        - "réponds à une question produit : quel est notre wedge ?"
+      it:
+        - "qual è il nostro differenziatore?"
+        - "qual è il moat di COS rispetto ai concorrenti?"
+        - "dammi il pitch del prodotto"
+        - "qual è il nostro ICP?"
+        - "rispondi a una domanda di prodotto: qual è il nostro wedge?"
+
+  security-audit:
+    description: |
+      Run a security audit of the current changes: scan for secrets,
+      injection risks, license-violation imports, and unsafe defaults.
+    prompts:
+      en:
+        - "run a security audit on the current branch"
+        - "scan my changes for secrets and vulnerabilities"
+        - "audit this code for security issues"
+        - "check for hardcoded credentials"
+        - "do a security review"
+      es:
+        - "ejecuta una auditoría de seguridad sobre la rama actual"
+        - "escanea mis cambios buscando secretos y vulnerabilidades"
+        - "audita este código por problemas de seguridad"
+        - "busca credenciales hardcodeadas"
+        - "haz una revisión de seguridad"
+      pt:
+        - "roda uma auditoria de segurança na branch atual"
+        - "escaneie minhas mudanças por segredos e vulnerabilidades"
+        - "audite este código por problemas de segurança"
+        - "verifique credenciais hardcoded"
+        - "faça uma revisão de segurança"
+      de:
+        - "führe ein Security-Audit für den aktuellen Branch durch"
+        - "scanne meine Änderungen nach Secrets und Schwachstellen"
+        - "auditiere diesen Code auf Sicherheitsprobleme"
+        - "prüfe auf hartkodierte Zugangsdaten"
+        - "mach ein Security-Review"
+      fr:
+        - "exécute un audit de sécurité sur la branche actuelle"
+        - "scanne mes changements pour secrets et vulnérabilités"
+        - "audite ce code pour les problèmes de sécurité"
+        - "vérifie les identifiants codés en dur"
+        - "fais une revue de sécurité"
+      it:
+        - "esegui un audit di sicurezza sul branch corrente"
+        - "scansiona le mie modifiche per segreti e vulnerabilità"
+        - "audita questo codice per problemi di sicurezza"
+        - "controlla credenziali hardcoded"
+        - "fai una review di sicurezza"
+
+  run-tests:
+    description: |
+      Execute the project test suite (or a focused subset) and report
+      pass/fail counts, durations, and failing test names.
+    prompts:
+      en:
+        - "run the tests"
+        - "execute the unit test suite"
+        - "run pytest"
+        - "verify tests pass"
+        - "kick off the test run"
+      es:
+        - "ejecuta los tests"
+        - "corre la suite de pruebas unitarias"
+        - "ejecuta pytest"
+        - "verifica que los tests pasan"
+        - "lanza la ejecución de tests"
+      pt:
+        - "rode os testes"
+        - "execute a suíte de testes unitários"
+        - "rode pytest"
+        - "verifique que os testes passam"
+        - "inicie a execução dos testes"
+      de:
+        - "führe die Tests aus"
+        - "starte die Unit-Test-Suite"
+        - "führe pytest aus"
+        - "verifiziere dass die Tests bestehen"
+        - "starte den Testlauf"
+      fr:
+        - "lance les tests"
+        - "exécute la suite de tests unitaires"
+        - "lance pytest"
+        - "vérifie que les tests passent"
+        - "démarre l'exécution des tests"
+      it:
+        - "esegui i test"
+        - "lancia la suite di test unitari"
+        - "esegui pytest"
+        - "verifica che i test passano"
+        - "avvia l'esecuzione dei test"
+
+  code-review:
+    description: |
+      Perform an adversarial code review of staged or recent changes:
+      flag bugs, design smells, missing tests, and unsafe patterns.
+    prompts:
+      en:
+        - "review my code"
+        - "do a code review on this PR"
+        - "review the staged changes"
+        - "give me a critique of my latest commit"
+        - "review code adversarially"
+      es:
+        - "revisa mi código"
+        - "haz una revisión de código sobre este PR"
+        - "revisa los cambios en stage"
+        - "dame una crítica de mi último commit"
+        - "revisión adversarial de código"
+      pt:
+        - "revise meu código"
+        - "faça um code review neste PR"
+        - "revise as mudanças staged"
+        - "me dê uma crítica do meu último commit"
+        - "revisão adversarial de código"
+      de:
+        - "review meinen Code"
+        - "mach ein Code-Review zu diesem PR"
+        - "review die gestageten Änderungen"
+        - "gib mir eine Kritik meines letzten Commits"
+        - "adversariales Code-Review"
+      fr:
+        - "review mon code"
+        - "fais une revue de code sur ce PR"
+        - "revue les changements stagés"
+        - "donne-moi une critique de mon dernier commit"
+        - "revue de code adversariale"
+      it:
+        - "rivedi il mio codice"
+        - "fai una code review su questa PR"
+        - "rivedi le modifiche staged"
+        - "dammi una critica del mio ultimo commit"
+        - "code review avversariale"
+
+  deep-research:
+    description: |
+      Conduct deep, multi-source research on a topic and produce a
+      structured report with citations and contradictions surfaced.
+    prompts:
+      en:
+        - "do deep research on this topic"
+        - "research how X is typically implemented"
+        - "produce a deep research report"
+        - "investigate this question thoroughly"
+        - "build a research dossier"
+      es:
+        - "haz investigación profunda sobre este tema"
+        - "investiga cómo se implementa X habitualmente"
+        - "produce un informe de investigación profunda"
+        - "investiga esta pregunta exhaustivamente"
+        - "arma un dossier de investigación"
+      pt:
+        - "faça pesquisa profunda sobre este tema"
+        - "pesquise como X é tipicamente implementado"
+        - "produza um relatório de pesquisa profunda"
+        - "investigue esta pergunta exaustivamente"
+        - "monte um dossiê de pesquisa"
+      de:
+        - "mach Deep Research zu diesem Thema"
+        - "recherchiere wie X typischerweise implementiert wird"
+        - "erstelle einen Deep-Research-Bericht"
+        - "untersuche diese Frage gründlich"
+        - "baue ein Recherche-Dossier"
+      fr:
+        - "fais une recherche approfondie sur ce sujet"
+        - "recherche comment X est typiquement implémenté"
+        - "produis un rapport de recherche approfondie"
+        - "investigue cette question en profondeur"
+        - "construis un dossier de recherche"
+      it:
+        - "fai una ricerca approfondita su questo tema"
+        - "ricerca come X è tipicamente implementato"
+        - "produci un report di ricerca approfondita"
+        - "investiga questa domanda a fondo"
+        - "costruisci un dossier di ricerca"
+
+  systematic-debugging:
+    description: |
+      Apply a systematic debugging protocol — reproduce, bisect,
+      hypothesise, verify — to root-cause a bug rather than guess-fixing.
+    prompts:
+      en:
+        - "help me systematically debug this"
+        - "root-cause this bug"
+        - "apply systematic debugging"
+        - "bisect this regression"
+        - "find the real root cause"
+      es:
+        - "ayúdame a debuggear esto sistemáticamente"
+        - "analiza la causa raíz de este bug"
+        - "aplica debugging sistemático"
+        - "bisecta esta regresión"
+        - "encuentra la causa raíz real"
+      pt:
+        - "me ajude a debugar isto sistematicamente"
+        - "ache a causa raiz deste bug"
+        - "aplique debugging sistemático"
+        - "bisete esta regressão"
+        - "encontre a real causa raiz"
+      de:
+        - "hilf mir systematisch zu debuggen"
+        - "finde die Root-Cause dieses Bugs"
+        - "wende systematisches Debugging an"
+        - "bisect diese Regression"
+        - "finde die echte Ursache"
+      fr:
+        - "aide-moi à debugger systématiquement"
+        - "trouve la cause racine de ce bug"
+        - "applique un debugging systématique"
+        - "bisect cette régression"
+        - "trouve la vraie cause racine"
+      it:
+        - "aiutami a debuggare sistematicamente"
+        - "trova la causa radice di questo bug"
+        - "applica debugging sistematico"
+        - "bisect questa regressione"
+        - "trova la vera causa radice"
+
+  pr-review:
+    description: |
+      Review a pull request end-to-end: change correctness, test
+      coverage, doc updates, and merge readiness.
+    prompts:
+      en:
+        - "review this PR"
+        - "do a pull request review"
+        - "is this PR ready to merge?"
+        - "evaluate this PR for merge"
+        - "review pull request"
+      es:
+        - "revisa este PR"
+        - "haz revisión de pull request"
+        - "¿este PR está listo para mergear?"
+        - "evalúa este PR para merge"
+        - "revisa pull request"
+      pt:
+        - "revise este PR"
+        - "faça revisão de pull request"
+        - "este PR está pronto para merge?"
+        - "avalie este PR para merge"
+        - "revise pull request"
+      de:
+        - "review diesen PR"
+        - "mach ein Pull-Request-Review"
+        - "ist dieser PR merge-ready?"
+        - "bewerte diesen PR für den Merge"
+        - "review Pull Request"
+      fr:
+        - "review cette PR"
+        - "fais une revue de pull request"
+        - "cette PR est-elle prête à merger ?"
+        - "évalue cette PR pour le merge"
+        - "revue pull request"
+      it:
+        - "rivedi questa PR"
+        - "fai una pull request review"
+        - "questa PR è pronta per il merge?"
+        - "valuta questa PR per il merge"
+        - "rivedi pull request"
+
+  cos-status:
+    description: |
+      Show overall Cognitive OS status — active sessions, pending
+      tasks, queue depth, recent errors, KPI snapshot.
+    prompts:
+      en:
+        - "what's the COS status?"
+        - "show cognitive os status"
+        - "give me an OS status snapshot"
+        - "current state of the cognitive OS?"
+        - "cos status please"
+      es:
+        - "¿cuál es el estado de COS?"
+        - "muestra el estado del cognitive os"
+        - "dame un snapshot del estado del OS"
+        - "¿estado actual del cognitive OS?"
+        - "estado de cos por favor"
+      pt:
+        - "qual é o status do COS?"
+        - "mostre o status do cognitive os"
+        - "me dê um snapshot do status do OS"
+        - "estado atual do cognitive OS?"
+        - "status do cos por favor"
+      de:
+        - "wie ist der COS-Status?"
+        - "zeige den Cognitive-OS-Status"
+        - "gib mir einen OS-Status-Snapshot"
+        - "aktueller Stand des Cognitive OS?"
+        - "cos Status bitte"
+      fr:
+        - "quel est le statut COS ?"
+        - "montre le statut du cognitive os"
+        - "donne-moi un snapshot du statut OS"
+        - "état actuel du cognitive OS ?"
+        - "statut cos s'il te plaît"
+      it:
+        - "qual è lo stato di COS?"
+        - "mostra lo stato del cognitive os"
+        - "dammi uno snapshot dello stato OS"
+        - "stato attuale del cognitive OS?"
+        - "stato cos per favore"
+
+  add-skill:
+    description: |
+      Create or register a new skill in the project — scaffold SKILL.md,
+      wire routing, and update the registry.
+    prompts:
+      en:
+        - "add a new skill"
+        - "create a skill called foo"
+        - "register a new skill"
+        - "scaffold a skill"
+        - "I want to add a skill"
+      es:
+        - "agrega una nueva skill"
+        - "crea una skill llamada foo"
+        - "registra una nueva skill"
+        - "scaffold de una skill"
+        - "quiero agregar una skill"
+      pt:
+        - "adicione uma nova skill"
+        - "crie uma skill chamada foo"
+        - "registre uma nova skill"
+        - "scaffold de uma skill"
+        - "quero adicionar uma skill"
+      de:
+        - "füge eine neue Skill hinzu"
+        - "erstelle eine Skill namens foo"
+        - "registriere eine neue Skill"
+        - "scaffolde eine Skill"
+        - "ich möchte eine Skill hinzufügen"
+      fr:
+        - "ajoute une nouvelle skill"
+        - "crée une skill nommée foo"
+        - "enregistre une nouvelle skill"
+        - "scaffolde une skill"
+        - "je veux ajouter une skill"
+      it:
+        - "aggiungi una nuova skill"
+        - "crea una skill chiamata foo"
+        - "registra una nuova skill"
+        - "scaffolda una skill"
+        - "voglio aggiungere una skill"
+
+  sdd-init:
+    description: |
+      Initialise Spec-Driven Development in this project — detect stack,
+      conventions, and bootstrap the active persistence backend.
+    prompts:
+      en:
+        - "initialise SDD in this project"
+        - "sdd init"
+        - "bootstrap spec-driven development here"
+        - "set up SDD"
+        - "configure SDD for this repo"
+      es:
+        - "inicia SDD en este proyecto"
+        - "sdd init"
+        - "bootstrap de spec-driven development aquí"
+        - "configura SDD"
+        - "configura SDD para este repo"
+      pt:
+        - "inicialize SDD neste projeto"
+        - "sdd init"
+        - "bootstrap de spec-driven development aqui"
+        - "configure SDD"
+        - "configure SDD para este repo"
+      de:
+        - "initialisiere SDD in diesem Projekt"
+        - "sdd init"
+        - "bootstrap Spec-Driven Development hier"
+        - "richte SDD ein"
+        - "konfiguriere SDD für dieses Repo"
+      fr:
+        - "initialise SDD dans ce projet"
+        - "sdd init"
+        - "bootstrap spec-driven development ici"
+        - "configure SDD"
+        - "configure SDD pour ce repo"
+      it:
+        - "inizializza SDD in questo progetto"
+        - "sdd init"
+        - "bootstrap spec-driven development qui"
+        - "configura SDD"
+        - "configura SDD per questa repo"
