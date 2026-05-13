@@ -632,13 +632,47 @@ class TestSemanticRoutingProductAnswer:
 class TestSemanticMatcherUnit:
     """Direct unit tests for SemanticSkillMatcher independent of SkillRouter."""
 
-    # ADR-296 removed the Jaccard token-overlap fallback (it returned 0 across
-    # languages — Spanish prompt vs English corpus = empty token intersection).
-    # The previous `test_overlap_path_returns_match_when_no_model` exercised
-    # that branch and is gone with the branch. Graceful degradation when
-    # fastembed is absent is covered by `test_kill_switch_short_circuits` in
-    # tests/unit/test_semantic_skill_matcher.py and by the import-guard inside
-    # lib/semantic_skill_matcher.py:_load_model itself.
+    def test_graceful_degradation_when_embedding_model_unavailable(self, monkeypatch):
+        """ADR-296: when ``_load_model`` returns None (fastembed missing,
+        network down, model file unavailable) the matcher MUST return [] for
+        every prompt — never raise, never silently invent matches.
+
+        The prior `test_overlap_path_returns_match_when_no_model` exercised
+        the Jaccard token-overlap fallback. ADR-296 tombstoned that branch
+        because it collapsed to zero across languages (Spanish prompt vs
+        English corpus = empty intersection). The remaining contract is:
+        no embeddings → no semantic matches.
+        """
+        from lib import semantic_skill_matcher as ssm
+
+        # Force the matcher to behave as if the embedding stack is missing.
+        # _load_model is the single chokepoint the public API calls; returning
+        # None is the documented "model unavailable" code path.
+        monkeypatch.setattr(ssm, "_load_model", lambda _name=None: None)
+        monkeypatch.setattr(ssm, "_MODEL", None, raising=False)
+        monkeypatch.setattr(ssm, "_MODEL_TRIED", False, raising=False)
+
+        class _Entry:
+            skill_name = "demo-skill"
+            invoke_command = "/demo-skill"
+
+        matcher = ssm.SemanticSkillMatcher.from_routing_table(
+            [_Entry()],
+            {
+                "demo-skill": {
+                    "description": "Help developers troubleshoot architecture decisions",
+                    "summary_line": "Troubleshoot architecture decisions for developers",
+                    "routing_intents": [
+                        "architecture_help: User needs help with architecture decisions",
+                    ],
+                }
+            },
+        )
+        results = matcher.match("help with architecture decisions")
+        assert results == [], (
+            "matcher must return [] when the embedding model is unavailable; "
+            f"got {results!r}"
+        )
 
     def test_empty_prompt_returns_no_semantic_matches(self):
         from lib import semantic_skill_matcher as ssm

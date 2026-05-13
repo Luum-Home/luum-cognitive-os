@@ -3,6 +3,18 @@
 The audit is intentionally structural: it extracts string literals from regex
 patterns and lets an optional language detector decide whether those literals
 look like human language. It does not maintain a list of Spanish/English words.
+
+ADR-296 + ADR-297 context (post-2026-05-13):
+
+  Findings reported by this audit are no longer "broken right now" — the
+  semantic matcher (ADR-296) and the LLM tie-breaker (ADR-297) catch
+  multilingual prompts independently of regex coverage. Findings are now
+  **tech debt to clean up over time** plus a **regression gate**: each
+  language-dependent pattern represents work that should migrate to the
+  semantic path (or be deleted if redundant). The
+  `test_language_dependence_audit_does_not_regress` test in
+  tests/unit/test_semantic_skill_matcher.py caps the total finding count
+  so new monolingual patterns cannot land silently.
 """
 
 from __future__ import annotations
@@ -282,7 +294,15 @@ def _pattern_finding(
         language_guesses=guesses,
         structural_score=score,
         severity=severity,
-        recommendation="Move natural-language intent matching to routing_intents; keep routing_patterns for explicit commands, IDs, URLs, and paths.",
+        recommendation=(
+            "Prefer ADR-296 semantic routing — the SKILL.md `description` "
+            "field is now the multilingual source of truth. Delete or migrate "
+            "language-dependent routing_patterns; reserve routing_patterns "
+            "ONLY for explicit slash-commands, IDs, URLs, and paths "
+            "(routing_intents lists are also indexed by the semantic matcher "
+            "if you need supplementary utterances). Ambiguous prompts are "
+            "broken by ADR-297's LLM fallback."
+        ),
     )
 
 
