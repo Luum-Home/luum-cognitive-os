@@ -77,3 +77,31 @@ fn accepts_dispositions_manifest() {
         1
     );
 }
+
+#[test]
+fn preserves_non_string_disposition_fields() {
+    let ledger = fixture("ledger.json");
+    let dispositions = fixture("dispositions.yaml");
+    let report = run_json(&[
+        "--project-dir",
+        env!("CARGO_MANIFEST_DIR"),
+        "--ledger",
+        ledger.to_str().unwrap(),
+        "--dispositions",
+        dispositions.to_str().unwrap(),
+        "--json",
+    ]);
+    let finding = report["findings"]
+        .members()
+        .find(|finding| finding["path"] == "scripts/internal-backend.py")
+        .expect("internal backend fixture finding should exist");
+    let disposition = &finding["disposition"];
+
+    assert_eq!(disposition["resolution"], "internal_backend");
+    assert_eq!(disposition["evidence"][0], "tests/parity.rs");
+    assert_eq!(disposition["evidence"][1], "scripts/internal-wrapper");
+    assert_eq!(disposition["metadata"]["nested_owner"]["team"], "synthetic");
+    assert_eq!(disposition["metadata"]["priority"], 2);
+    assert_eq!(disposition["audited"], true);
+    assert_eq!(disposition["confidence"], 0.75);
+}

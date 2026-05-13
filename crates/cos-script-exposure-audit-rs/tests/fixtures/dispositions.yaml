@@ -9,6 +9,15 @@ scripts:
     resolution: internal_backend
     owner: synthetic wrapper
     rationale: synthetic backend
+    evidence:
+      - tests/parity.rs
+      - scripts/internal-wrapper
+    metadata:
+      nested_owner:
+        team: synthetic
+      priority: 2
+    audited: true
+    confidence: 0.75
   - path: scripts/operator-workflow.sh
     resolution: operator_workflow
     owner: synthetic operator

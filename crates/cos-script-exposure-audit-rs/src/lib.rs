@@ -6,7 +6,8 @@ use std::path::{Path, PathBuf};
 use yaml_rust2::{Yaml, YamlLoader};
 
 pub const SCHEMA_VERSION: &str = "script-exposure-audit/v1";
-pub const DEFAULT_LEDGER: &str = "docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json";
+pub const DEFAULT_LEDGER: &str =
+    "docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json";
 pub const DEFAULT_DISPOSITIONS: &str = "manifests/script-exposure-dispositions.yaml";
 
 const PRIORITIES: [&str; 5] = ["P0", "P1", "P2", "P3", "OK"];
@@ -16,7 +17,7 @@ const COMMAND_ROUTER_CONSUMER_PATHS: [&str; 1] = ["scripts/cos"];
 #[derive(Debug, Clone, Default)]
 pub struct Disposition {
     pub resolution: String,
-    pub fields: BTreeMap<String, String>,
+    pub fields: BTreeMap<String, JsonValue>,
 }
 
 fn str_field(row: &JsonValue, key: &str, default: &str) -> String {
@@ -99,7 +100,8 @@ fn channel(channels: &JsonValue, key: &str) -> i64 {
 fn disposition_field(disposition: Option<&Disposition>, key: &str, default: &str) -> String {
     disposition
         .and_then(|d| d.fields.get(key))
-        .cloned()
+        .and_then(JsonValue::as_str)
+        .map(ToString::to_string)
         .unwrap_or_else(|| default.to_string())
 }
 
@@ -290,7 +292,7 @@ pub fn classify_script(row: &JsonValue, disposition: Option<&Disposition>) -> Js
     if let Some(disposition) = disposition {
         disposition_json = object! { resolution: disposition.resolution.clone() };
         for (key, value) in &disposition.fields {
-            disposition_json[key] = value.clone().into();
+            disposition_json[key] = value.clone();
         }
     }
 
@@ -325,6 +327,36 @@ fn yaml_string(value: &Yaml) -> Option<String> {
     value.as_str().map(ToString::to_string)
 }
 
+fn yaml_to_json(value: &Yaml) -> JsonValue {
+    match value {
+        Yaml::Real(raw) => raw
+            .parse::<f64>()
+            .map(JsonValue::from)
+            .unwrap_or_else(|_| raw.clone().into()),
+        Yaml::Integer(raw) => (*raw).into(),
+        Yaml::String(raw) => raw.clone().into(),
+        Yaml::Boolean(raw) => (*raw).into(),
+        Yaml::Array(values) => {
+            let mut out = array![];
+            for item in values {
+                out.push(yaml_to_json(item))
+                    .expect("array push cannot fail");
+            }
+            out
+        }
+        Yaml::Hash(values) => {
+            let mut out = object! {};
+            for (key, item) in values {
+                if let Some(key) = yaml_string(key) {
+                    out[key] = yaml_to_json(item);
+                }
+            }
+            out
+        }
+        Yaml::Null | Yaml::BadValue | Yaml::Alias(_) => JsonValue::Null,
+    }
+}
+
 pub fn load_dispositions(path: &Path) -> Result<BTreeMap<String, Disposition>> {
     if !path.exists() {
         return Ok(BTreeMap::new());
@@ -344,9 +376,11 @@ pub fn load_dispositions(path: &Path) -> Result<BTreeMap<String, Disposition>> {
                     continue;
                 };
                 let mut fields = BTreeMap::new();
-                for key in ["path", "route", "rationale", "owner", "evidence"] {
-                    if let Some(value) = yaml_string(&row[key]) {
-                        fields.insert(key.to_string(), value);
+                if let Yaml::Hash(values) = row {
+                    for (key, value) in values {
+                        if let Some(key) = yaml_string(key) {
+                            fields.insert(key, yaml_to_json(value));
+                        }
                     }
                 }
                 let resolution = yaml_string(&row["resolution"]).unwrap_or_default();
