@@ -44,7 +44,7 @@ except ImportError:  # pragma: no cover
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 ADR_DIRS: list[Path] = [
-    REPO_ROOT / "docs" / "adrs",
+    REPO_ROOT / "docs" / "02-Decisions" / "adrs",
 ]
 
 # ── Finding level constants ───────────────────────────────────────────────────

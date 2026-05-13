@@ -186,7 +186,7 @@ def submit_intent(
 
 
 def iter_adr_numbers(project_dir: str | Path) -> Iterable[int]:
-    adrs_dir = Path(project_dir).resolve() / "docs" / "adrs"
+    adrs_dir = Path(project_dir).resolve() / "docs" / "02-Decisions" / "adrs"
     if not adrs_dir.is_dir():
         return []
     numbers: list[int] = []

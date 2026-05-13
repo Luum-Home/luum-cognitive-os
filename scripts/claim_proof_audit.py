@@ -40,7 +40,7 @@ class ClaimRow:
 def candidate_docs(root: Path) -> list[Path]:
     paths = [root / "README.md", root / "docs" / "README.md"]
     paths.extend(sorted((root / "docs" / "business").glob("*.md")) if (root / "docs" / "business").exists() else [])
-    paths.extend(sorted((root / "docs" / "adrs").glob("ADR-*.md")) if (root / "docs" / "adrs").exists() else [])
+    paths.extend(sorted((root / "docs" / "02-Decisions" / "adrs").glob("ADR-*.md")) if (root / "docs" / "02-Decisions" / "adrs").exists() else [])
     return [path for path in paths if path.exists()]
 
 

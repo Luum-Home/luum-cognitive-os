@@ -329,7 +329,7 @@ class AdrRouter:
             self._project_root = Path(project_root).resolve()
 
         if adrs_dir is None:
-            self._adrs_dir = self._project_root / "docs" / "adrs"
+            self._adrs_dir = self._project_root / "docs" / "02-Decisions" / "adrs"
         else:
             self._adrs_dir = Path(adrs_dir).resolve()
 

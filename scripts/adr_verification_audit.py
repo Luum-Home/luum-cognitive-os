@@ -13,7 +13,6 @@ import argparse
 import json
 import re
 import shlex
-import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -21,7 +20,7 @@ from typing import Any, Iterable
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-ADRS_DIR = ROOT / "docs" / "adrs"
+ADRS_DIR = ROOT / "docs" / "02-Decisions" / "adrs"
 SCHEMA_VERSION = "adr-verification-audit/v1"
 ENFORCEMENT_CUTOFF = 67
 STRONG_PATTERNS = (
@@ -242,7 +241,7 @@ def audit_adr_file(path: Path, root: Path = ROOT) -> AdrVerificationRow:
 
 
 def adr_files(root: Path) -> list[Path]:
-    return sorted((root / "docs" / "adrs").glob("ADR-*.md"), key=lambda p: (adr_number(p), p.name))
+    return sorted((root / "docs" / "02-Decisions" / "adrs").glob("ADR-*.md"), key=lambda p: (adr_number(p), p.name))
 
 
 def build_report(root: Path) -> dict[str, Any]:

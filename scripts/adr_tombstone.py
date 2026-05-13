@@ -289,7 +289,7 @@ def create_tombstone(
     """
 
     project_dir = project_dir.resolve()
-    adrs_dir = project_dir / "docs" / "adrs"
+    adrs_dir = project_dir / "docs" / "02-Decisions" / "adrs"
     adrs_dir.mkdir(parents=True, exist_ok=True)
     aid = adr_id(number)
     target = adrs_dir / f"{aid}-tombstone.md"

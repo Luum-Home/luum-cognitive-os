@@ -18,10 +18,9 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import os
 import re
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -267,7 +266,7 @@ def _build_codebase_summary(
 
     # 3. ADR index
     adr_entries: list[tuple[str, str, str]] = []
-    for adr_file in sorted((project_dir / "docs" / "adrs").glob("ADR-*.md")):
+    for adr_file in sorted((project_dir / "docs" / "02-Decisions" / "adrs").glob("ADR-*.md")):
         try:
             content = adr_file.read_text(encoding="utf-8", errors="replace")
         except OSError:

@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Iterable
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_ADR_DIR = REPO_ROOT / "docs" / "adrs"
+DEFAULT_ADR_DIR = REPO_ROOT / "docs" / "02-Decisions" / "adrs"
 PROMOTED_TIERS = {"core", "team"}
 TIER_RE = re.compile(r"^tier:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
 HEADING_RE = re.compile(r"^(#{2,6})\s+Evidence\s*$", re.IGNORECASE | re.MULTILINE)

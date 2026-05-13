@@ -209,7 +209,7 @@ def _search_adrs(
     top_k: int = TOP_K,
 ) -> list[dict]:
     """Search ADR filenames and first-paragraph content via Jaccard."""
-    adrs_dir = project_root / "docs" / "adrs"
+    adrs_dir = project_root / "docs" / "02-Decisions" / "adrs"
     if not adrs_dir.is_dir():
         return []
 

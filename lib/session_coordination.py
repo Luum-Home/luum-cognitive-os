@@ -266,7 +266,7 @@ def release_claim(project_dir: str | Path, *, kind: str, subject: str, session_i
 def adr_files_for_number(project_dir: str | Path, number: int) -> list[Path]:
     """Return ADR files that use a given number."""
 
-    adrs = Path(project_dir) / "docs" / "adrs"
+    adrs = Path(project_dir) / "docs" / "02-Decisions" / "adrs"
     if not adrs.exists():
         return []
     prefix = f"ADR-{number:03d}"
