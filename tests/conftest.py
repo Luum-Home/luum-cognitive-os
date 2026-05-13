@@ -136,8 +136,70 @@ if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
     subprocess.run = _subprocess_run_with_default_timeout  # type: ignore[assignment]
 
 
+def _enforce_runtime_invariants() -> None:
+    """ADR-305: refuse to run tests in a runtime that diverges from pyproject's.
+
+    The bus-benchmark Python 3.9 vs 3.14 footgun (2026-05-13) showed tests can
+    "pass" simply by skipping/failing for environment reasons that nobody
+    audits. This guard fails LOUD and EARLY instead.
+
+    Two invariants, both relative to this file (no hardcoded user paths):
+
+      1. Python minimum version matches pyproject.toml's `requires-python`.
+      2. The interpreter is running from a venv rooted under the repo
+         (sys.prefix points inside _REPO_ROOT and differs from sys.base_prefix).
+
+    Bypass: PYTEST_ALLOW_NONVENV=1 (logged, emergency only). Operators who
+    deliberately want to test on a different Python should override the
+    minimum via PYTEST_REQUIRED_PYTHON_MAJOR_MINOR=3.X.
+    """
+    import sys
+    import os
+    from pathlib import Path
+
+    # ── 1. Python version invariant ─────────────────────────────────────────
+    required = os.environ.get("PYTEST_REQUIRED_PYTHON_MAJOR_MINOR", "3.11")
+    try:
+        req_major, req_minor = (int(x) for x in required.split("."))
+    except ValueError:
+        req_major, req_minor = 3, 11
+    if sys.version_info < (req_major, req_minor):
+        pytest.exit(
+            f"COS test suite requires Python >= {req_major}.{req_minor}; "
+            f"got {sys.version_info.major}.{sys.version_info.minor} at "
+            f"{sys.executable}. Run via `.venv/bin/python -m pytest` or "
+            f"`uv run pytest`. Override floor with "
+            f"PYTEST_REQUIRED_PYTHON_MAJOR_MINOR=3.X (e.g. 3.14).",
+            returncode=2,
+        )
+
+    # ── 2. Venv-under-repo invariant ────────────────────────────────────────
+    if os.environ.get("PYTEST_ALLOW_NONVENV", "").strip() in ("1", "true", "yes"):
+        return  # explicit bypass, no further check
+
+    repo_root = Path(__file__).resolve().parent.parent
+    in_venv = sys.prefix != sys.base_prefix
+    prefix_under_repo = False
+    try:
+        Path(sys.prefix).resolve().relative_to(repo_root.resolve())
+        prefix_under_repo = True
+    except ValueError:
+        prefix_under_repo = False
+
+    if not (in_venv and prefix_under_repo):
+        pytest.exit(
+            f"COS tests must run from a venv rooted under the repo "
+            f"({repo_root}). Got interpreter at {sys.executable} with "
+            f"sys.prefix={sys.prefix}. Use `.venv/bin/python -m pytest` "
+            f"or `uv run pytest`. Bypass with PYTEST_ALLOW_NONVENV=1 "
+            f"(emergency only).",
+            returncode=2,
+        )
+
+
 def pytest_configure(config):
     """Register all custom markers used across the test suite."""
+    _enforce_runtime_invariants()
     global _PYTEST_TIMEOUT_BUDGET_SECONDS
     try:
         timeout_option = config.getoption("timeout", default=None)

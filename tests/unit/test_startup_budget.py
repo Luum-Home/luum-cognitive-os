@@ -115,9 +115,19 @@ def test_session_start_hook_count(latest_record):
 
 
 def test_session_start_total_within_budget(latest_record):
-    """Total serial SessionStart time must be within STARTUP_BUDGET_SECONDS."""
+    """SessionStart BLOCKING total must be within STARTUP_BUDGET_SECONDS.
+
+    Reads `blocking_total_ms` (sum of hooks where async!=true) — the only
+    figure that maps to user-visible first-turn latency. Falls back to the
+    legacy `total_duration_ms` field for records written before the
+    blocking/async split landed.
+    """
     budget_ms = int(_budget_seconds() * 1000)
-    measured_ms = latest_record.get("session_start", {}).get("total_duration_ms", 0)
+    session_start = latest_record.get("session_start", {})
+    # New field (post blocking/async split) is preferred; fall back for old records.
+    measured_ms = session_start.get("blocking_total_ms")
+    if measured_ms is None:
+        measured_ms = session_start.get("total_duration_ms", 0)
 
     if measured_ms > budget_ms:
         # Build offender list

@@ -92,8 +92,8 @@ echo ""
 # ── Section 1: Hook timing ───────────────────────────────────────────────────────
 echo "## 1. SessionStart Hook Timing"
 echo ""
-echo "| # | Hook | Duration (ms) | Exit |"
-echo "|---|------|---------------|------|"
+echo "| # | Hook | Duration (ms) | Exit | Mode |"
+echo "|---|------|---------------|------|------|"
 
 # Set up environment that hooks expect
 export CLAUDE_PROJECT_DIR="$PROJECT_DIR"
@@ -126,24 +126,39 @@ try:
         for h in grp.get("hooks", []):
             cmd = h.get("command", "")
             if cmd:
-                print(cmd)
+                # Pipe-delimit: cmd|is_async  (is_async = "1" or "0").
+                # The async flag determines whether the hook contributes to
+                # blocking-critical-path total or only to the diagnostic
+                # serial-worst-case total. Per ADR-302/ADR-303 follow-up:
+                # do not conflate them.
+                async_flag = "1" if h.get("async") else "0"
+                # Escape pipes in command (rare) so the split below stays clean.
+                safe_cmd = cmd.replace("|", "\\|")
+                print(f"{safe_cmd}|{async_flag}")
 except Exception:
     pass
 PYEOF
 fi
 
-TOTAL_HOOK_MS=0
+TOTAL_HOOK_MS=0       # diagnostic: serial worst case (all hooks added up)
+BLOCKING_HOOK_MS=0    # SLO-relevant: only hooks where async != true
+ASYNC_HOOK_MS=0       # informational: hooks that don't block SessionStart
 HOOK_RESULTS_JSON="["
 HOOK_NUM=0
 
-while IFS= read -r cmd; do
-  [[ -z "$cmd" ]] && continue
+while IFS= read -r line; do
+  [[ -z "$line" ]] && continue
   HOOK_NUM=$(( HOOK_NUM + 1 ))
+
+  # Split "cmd|async_flag" — async_flag is the LAST field
+  async_flag="${line##*|}"
+  cmd="${line%|*}"
+  cmd="${cmd//\\|/|}"   # un-escape pipes
 
   # Extract hook name
   hook_name=$(echo "$cmd" | sed 's|.*hooks/||' | sed 's|"||g' | sed 's|[[:space:]].*||')
 
-  # Time the hook (5s timeout, silent)
+  # Time the hook (8s timeout, silent)
   t_start=$(epoch_ms)
   timeout 8 bash -c "cd '$PROJECT_DIR' && $cmd" </dev/null >/dev/null 2>/dev/null
   exit_code=$?
@@ -154,19 +169,35 @@ while IFS= read -r cmd; do
   [[ $exit_code -eq 124 ]] && duration_ms=8000
 
   TOTAL_HOOK_MS=$(( TOTAL_HOOK_MS + duration_ms ))
+  if [[ "$async_flag" == "1" ]]; then
+    ASYNC_HOOK_MS=$(( ASYNC_HOOK_MS + duration_ms ))
+    async_tag="(async)"
+  else
+    BLOCKING_HOOK_MS=$(( BLOCKING_HOOK_MS + duration_ms ))
+    async_tag=""
+  fi
 
-  printf "| %d | %-40s | %6d | %d |\n" "$HOOK_NUM" "$hook_name" "$duration_ms" "$exit_code"
+  printf "| %d | %-40s | %6d | %d | %-8s |\n" "$HOOK_NUM" "$hook_name" "$duration_ms" "$exit_code" "$async_tag"
 
   # Accumulate JSON
   [[ "$HOOK_RESULTS_JSON" != "[" ]] && HOOK_RESULTS_JSON="${HOOK_RESULTS_JSON},"
-  HOOK_RESULTS_JSON="${HOOK_RESULTS_JSON}{\"hook\":\"${hook_name}\",\"duration_ms\":${duration_ms},\"exit_code\":${exit_code}}"
+  # The string is embedded inside a Python heredoc later, so use Python's
+  # True/False literals — `json.dumps(record)` will normalise them back to
+  # JSON lowercase true/false in the final file.
+  HOOK_RESULTS_JSON="${HOOK_RESULTS_JSON}{\"hook\":\"${hook_name}\",\"duration_ms\":${duration_ms},\"exit_code\":${exit_code},\"async\":$([ "$async_flag" = "1" ] && echo True || echo False)}"
 done < "$HOOKS_TMP"
 rm -f "$HOOKS_TMP"
 
 HOOK_RESULTS_JSON="${HOOK_RESULTS_JSON}]"
 
 echo ""
-echo "**Total serial SessionStart time: ${TOTAL_HOOK_MS} ms**"
+echo "**Totals** — distinguishing blocking vs async (ADR-302/303 follow-up):"
+echo ""
+echo "| Metric | Value | Meaning |"
+echo "|---|---:|---|"
+echo "| Blocking (SLO-relevant) | ${BLOCKING_HOOK_MS} ms | Sum of hooks that block SessionStart. This is the number to enforce SLO against. |"
+echo "| Async (informational)   | ${ASYNC_HOOK_MS} ms | Sum of hooks marked async — runs in parallel, does NOT block first-turn latency. |"
+echo "| Serial-worst-case (diagnostic) | ${TOTAL_HOOK_MS} ms | Sum of all hooks if they ran serially. Useful for hook-by-hook tuning, NOT for SLO. |"
 echo ""
 
 # ── Section 2: Payload sizes ─────────────────────────────────────────────────────
@@ -266,14 +297,20 @@ PAYLOAD_JSON="${PAYLOAD_JSON}\"core_payload_bytes\":${CORE_PAYLOAD_BYTES},\"core
 # ── Section 3: SLO status ────────────────────────────────────────────────────────
 echo "## 3. SLO Status"
 echo ""
+# SLO is enforced against BLOCKING total (the only hooks that delay the
+# first-turn user-visible latency). Async hooks run in parallel and do not
+# count. The serial-worst-case TOTAL is kept as a diagnostic but never
+# the SLO basis. See ADR-302/ADR-303 follow-up.
 SLO_1_STATUS="PASS"
-[[ $TOTAL_HOOK_MS -gt 2000 ]] && SLO_1_STATUS="BREACH"
+[[ $BLOCKING_HOOK_MS -gt 2000 ]] && SLO_1_STATUS="BREACH"
 SLO_10_STATUS="PASS"
 [[ $CORE_PAYLOAD_TOKENS -gt 50000 ]] && SLO_10_STATUS="BREACH"
 
 echo "| SLO | Description | Target | Measured | Status |"
 echo "|-----|-------------|--------|----------|--------|"
-printf "| 1   | SessionStart p95 duration          | < 2000 ms | %5d ms | %s |\n" "$TOTAL_HOOK_MS" "$SLO_1_STATUS"
+printf "| 1   | SessionStart blocking total        | < 2000 ms | %5d ms | %s |\n" "$BLOCKING_HOOK_MS" "$SLO_1_STATUS"
+printf "| 1a  | SessionStart serial-worst-case     | (diagnostic) | %5d ms | — |\n" "$TOTAL_HOOK_MS"
+printf "| 1b  | SessionStart async total           | (informational) | %5d ms | — |\n" "$ASYNC_HOOK_MS"
 printf "| 10  | Initial context payload tokens     | < 50000   | %5d   | %s |\n" "$CORE_PAYLOAD_TOKENS" "$SLO_10_STATUS"
 echo ""
 
@@ -288,13 +325,17 @@ record = {
     "session_start": {
         "hook_count": $HOOK_NUM,
         "total_duration_ms": $TOTAL_HOOK_MS,
+        "blocking_total_ms": $BLOCKING_HOOK_MS,
+        "async_total_ms": $ASYNC_HOOK_MS,
         "hooks": $HOOK_RESULTS_JSON
     },
     "payload": $PAYLOAD_JSON,
     "slo": {
         "session_start_target_ms": 2000,
-        "session_start_measured_ms": $TOTAL_HOOK_MS,
+        "session_start_measured_ms": $BLOCKING_HOOK_MS,
         "session_start_status": "$SLO_1_STATUS",
+        "session_start_serial_worst_case_ms": $TOTAL_HOOK_MS,
+        "session_start_async_total_ms": $ASYNC_HOOK_MS,
         "payload_token_target": 50000,
         "payload_token_measured": $CORE_PAYLOAD_TOKENS,
         "payload_token_status": "$SLO_10_STATUS"
