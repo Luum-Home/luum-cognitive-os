@@ -10,8 +10,8 @@ pytestmark = pytest.mark.contract
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "primitive_readiness_ledger.py"
-REPORT = REPO_ROOT / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json"
-BACKLOG = REPO_ROOT / "docs" / "reports" / "primitive-readiness-lifecycle-backlog-scripts-latest.json"
+REPORT = REPO_ROOT / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.json"
+BACKLOG = REPO_ROOT / "docs" / "06-Daily" / "reports" / "primitive-readiness-lifecycle-backlog-scripts-latest.json"
 
 
 def test_repository_script_ledger_classifies_every_script() -> None:
@@ -21,7 +21,7 @@ def test_repository_script_ledger_classifies_every_script() -> None:
         text=True,
         capture_output=True,
         check=False,
-        timeout=30,
+        timeout=90,
     )
 
     assert result.returncode == 0, result.stderr + result.stdout

@@ -105,10 +105,10 @@ def make_repo(tmp_path: Path) -> Path:
             },
         ],
     }
-    write_json(root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json", script_payload)
+    write_json(root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.json", script_payload)
     for family in ("hooks", "skills", "rules"):
         write_json(
-            root / "docs" / "reports" / f"primitive-readiness-ledger-{family}-latest.json",
+            root / "docs" / "06-Daily" / "reports" / f"primitive-readiness-ledger-{family}-latest.json",
             {
                 "summary": {},
                 "items": [
@@ -128,7 +128,7 @@ def make_repo(tmp_path: Path) -> Path:
         )
 
     write_json(
-        root / "docs" / "reports" / "primitive-readiness-ledger-templates-latest.json",
+        root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-templates-latest.json",
         {
             "summary": {},
             "items": [

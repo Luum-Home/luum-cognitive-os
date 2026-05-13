@@ -102,7 +102,7 @@ def test_cli_writes_machine_readable_and_markdown_ledgers(tmp_path: Path) -> Non
     )
 
     assert result.returncode == 0, result.stderr
-    payload = json.loads((root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json").read_text())
+    payload = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.json").read_text())
     assert payload["schema_version"] == 1
     assert payload["target_family"] == "scripts"
     assert payload["summary"]["total_scripts"] == 6
@@ -112,12 +112,12 @@ def test_cli_writes_machine_readable_and_markdown_ledgers(tmp_path: Path) -> Non
     assert all(row["consumer_accessibility"] for row in payload["scripts"])
     assert all(row["consumer_access_next_action"] for row in payload["scripts"])
     assert "Primitive Readiness Ledger" in (
-        root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.md"
+        root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.md"
     ).read_text()
     assert "Consumer Access" in (
-        root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.md"
+        root / "docs" / "06-Daily" / "reports" / "primitive-readiness-ledger-scripts-latest.md"
     ).read_text()
-    backlog = json.loads((root / "docs" / "reports" / "primitive-readiness-lifecycle-backlog-scripts-latest.json").read_text())
+    backlog = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-readiness-lifecycle-backlog-scripts-latest.json").read_text())
     assert backlog["purpose"] == "agentic primitives missing ADR-126 lifecycle metadata"
     assert backlog["summary"]["total"] >= 1
     protected = [item for item in backlog["items"] if item["priority"] == "protected"]

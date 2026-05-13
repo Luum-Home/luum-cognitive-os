@@ -23,7 +23,7 @@ def test_repository_family_ledgers_cover_hooks_skills_and_rules() -> None:
             timeout=60,
         )
         assert result.returncode == 0, result.stderr + result.stdout
-        report = REPO_ROOT / "docs" / "reports" / f"primitive-readiness-ledger-{family}-latest.json"
+        report = REPO_ROOT / "docs" / "06-Daily" / "reports" / f"primitive-readiness-ledger-{family}-latest.json"
         payload = json.loads(report.read_text())
         assert payload["target_family"] == family
         assert payload["summary"]["total"] > 0

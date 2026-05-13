@@ -8886,6 +8886,94 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: scripts/cos-language-dependence-audit
+  kind: script
+  owner_adr: ADR-296
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-language-dependence-audit
+  runtime_projection: false
+  behavior_evidence: Skill-facing routing audit for detecting language-dependent primitive routing debt.
+  evidence_commands:
+  - bash -n scripts/cos-language-dependence-audit
+  - python3 -m pytest tests/unit/test_language_dependence_audit.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle if the ADR-296 routing audit is archived or replaced.
+  sunset_criteria: Archive after semantic routing contracts no longer need language-dependence regression coverage.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-skill-description-enrich
+  kind: script
+  owner_adr: ADR-299
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-skill-description-enrich
+  runtime_projection: false
+  behavior_evidence: Skill-facing enrichment tool for maintaining routing intent examples from skill descriptions.
+  evidence_commands:
+  - bash -n scripts/cos-skill-description-enrich
+  - python3 -m pytest tests/unit/test_skill_description_enricher.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle if ADR-299 enrichment is retired.
+  sunset_criteria: Archive after skill-description enrichment is superseded by another governed routing corpus primitive.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-pytest-serial-repair
+  kind: script
+  owner_adr: ADR-072
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-pytest-serial-repair
+  runtime_projection: false
+  behavior_evidence: Maintainer-facing repair loop for bounded serial pytest execution.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos-pytest-serial-repair
+  - python3 -m pytest tests/unit/test_cos_pytest_serial_repair.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle if the serial repair lane is replaced by another governed test-efficiency primitive.
+  sunset_criteria: Archive after test-efficiency workflow no longer requires resumable serial repair.
+  docs_claim_level: advisory
+  exit_behavior: exit_nonzero_on_failure
+  metrics_file: .cognitive-os/runtime/pytest-serial-repair-state.json
+- id: scripts/cos-remote-branch-triage
+  kind: script
+  owner_adr: ADR-089
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: git-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-remote-branch-triage
+  runtime_projection: false
+  behavior_evidence: Maintainer-facing branch hygiene CLI for patch-equivalence based remote branch cleanup.
+  evidence_commands:
+  - bash -n scripts/cos-remote-branch-triage
+  - python3 -m pytest tests/behavior/test_cos_remote_branch_triage.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle if remote branch triage is retired or folded into another git-safety primitive.
+  sunset_criteria: Archive after branch hygiene is fully covered by a different governed git coordination primitive.
+  docs_claim_level: advisory
+  exit_behavior: exit_nonzero_on_failure
+  metrics_file: none
 - id: scripts/cos-operational-guide-audit.py
   kind: script
   owner_adr: ADR-126

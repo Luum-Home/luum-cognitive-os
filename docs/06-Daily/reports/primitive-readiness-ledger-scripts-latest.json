@@ -173,10 +173,10 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 18,
+        "doc": 19,
         "hook": 2,
         "script": 5,
-        "test": 10
+        "test": 12
       },
       "consumers": [
         {
@@ -261,6 +261,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/multi-session-orchestration-audit-2026-05-02.md"
         },
         {
@@ -337,15 +341,23 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_startup_budget.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_startup_protocol.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_telemetry_self_tuning_proposer.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/hook-timing-wrapper.sh",
-        "test_consumers:10",
+        "test_consumers:12",
         "hook_consumers:2",
-        "doc_consumers:18",
+        "doc_consumers:19",
         "config_consumers:5",
         "script_consumers:5"
       ],
@@ -361,7 +373,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 40,
+      "total_consumers": 43,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -1772,12 +1784,12 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 8,
-        "doc": 72,
+        "doc": 73,
         "hook": 7,
         "rule": 4,
         "script": 8,
         "skill": 1,
-        "test": 21
+        "test": 22
       },
       "consumers": [
         {
@@ -1975,6 +1987,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
         },
         {
           "family": "doc",
@@ -2262,6 +2278,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_telemetry_self_tuning_proposer.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_wiring_validator.py"
         }
       ],
@@ -2271,9 +2291,9 @@
         "protected_install_surface:profile-application",
         "wrapper_for:scripts/_lib/settings-driver-claude-code.sh",
         "skill_consumers:1",
-        "test_consumers:21",
+        "test_consumers:22",
         "hook_consumers:7",
-        "doc_consumers:72",
+        "doc_consumers:73",
         "rule_consumers:4",
         "config_consumers:8",
         "script_consumers:8"
@@ -2292,7 +2312,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 121,
+      "total_consumers": 123,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -4159,13 +4179,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 77,
-        "doc": 691,
-        "hook": 105,
+        "config": 80,
+        "doc": 705,
+        "hook": 106,
         "rule": 46,
-        "script": 317,
-        "skill": 71,
-        "test": 483,
+        "script": 319,
+        "skill": 72,
+        "test": 492,
         "workflow": 1
       },
       "consumers": [
@@ -4319,6 +4339,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/observability-slo.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/orchestration-research-evaluation.yaml"
         },
         {
@@ -4400,6 +4424,14 @@
         {
           "family": "config",
           "path": "manifests/release-freeze.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/routing-benchmark-corpus.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/routing-benchmark-models.yaml"
         },
         {
           "family": "config",
@@ -5623,6 +5655,54 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-292-runtime-perf-primitives-lazy-imports-and-mcp-thread-bridge.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-293-typed-hook-event-contracts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-294-memory-quality-scoring-extension.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-295-agent-reflection-loop-primitive.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-297-llm-dispatched-routing-fallback.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-300-semantic-routing-model-selection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/INDEX.md"
         },
         {
@@ -6443,6 +6523,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/rust-migration-routes.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/rust-migration-script-inventory.md"
         },
         {
@@ -6836,6 +6920,10 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/root/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/session-2026-05-13-skill-router-overhaul.md"
         },
         {
           "family": "doc",
@@ -7599,6 +7687,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/telemetry-budget-violator-detect.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/token-budget-monitor.sh"
         },
         {
@@ -7960,6 +8052,10 @@
         {
           "family": "script",
           "path": "scripts/cos-agent-message"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-agent-spawn-benchmark"
         },
         {
           "family": "script",
@@ -8472,6 +8568,10 @@
         {
           "family": "script",
           "path": "scripts/cos-sessions.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-skill-description-enrich"
         },
         {
           "family": "script",
@@ -9208,6 +9308,10 @@
         {
           "family": "skill",
           "path": "skills/add-mcp/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/add-skill/SKILL.md"
         },
         {
           "family": "skill",
@@ -10463,6 +10567,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-status.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-subprocess-timeout-audit.py"
         },
         {
@@ -10504,6 +10612,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_queue_rebase.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_self_knowledge.py"
         },
         {
           "family": "test",
@@ -10568,6 +10680,14 @@
         {
           "family": "test",
           "path": "tests/unit/test_agent_runner.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_spawn_benchmark.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_spawn_budget.py"
         },
         {
           "family": "test",
@@ -11179,6 +11299,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_scope_both_portability_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_scope_creep.py"
         },
         {
@@ -11203,6 +11327,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_semantic_skill_matcher.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_service_control_plane_local_queue.py"
         },
         {
@@ -11212,6 +11340,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_session_coordination.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_start_banner_telemetry.py"
         },
         {
           "family": "test",
@@ -11236,6 +11368,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_skill_archive_migration.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_description_enricher.py"
         },
         {
           "family": "test",
@@ -11284,6 +11420,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_task_tracker_lifecycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_telemetry_aggregator.py"
         },
         {
           "family": "test",
@@ -11338,14 +11478,14 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:71",
-        "test_consumers:483",
-        "hook_consumers:105",
+        "skill_consumers:72",
+        "test_consumers:492",
+        "hook_consumers:106",
         "workflow_consumers:1",
-        "doc_consumers:691",
+        "doc_consumers:705",
         "rule_consumers:46",
-        "config_consumers:77",
-        "script_consumers:317"
+        "config_consumers:80",
+        "script_consumers:319"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -11357,11 +11497,11 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 71,
+      "skill_consumers": 72,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1791,
+      "total_consumers": 1821,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -11900,7 +12040,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 1,
+        "doc": 4,
         "test": 2
       },
       "consumers": [
@@ -11921,6 +12061,18 @@
           "path": "docs/02-Decisions/adrs/ADR-281-adr-implementation-reality-audit.md"
         },
         {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_python_naming.py"
         },
@@ -11932,7 +12084,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "install_surface": null,
@@ -11947,7 +12099,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -12362,6 +12514,48 @@
       ],
       "total_consumers": 14,
       "wrapper_for": "scripts/cos_agent_message.py"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_spawn_benchmark.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_spawn_budget.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-agent-spawn-benchmark",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
     },
     {
       "confidence": "medium",
@@ -13959,8 +14153,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
-        "doc": 10,
+        "config": 6,
+        "doc": 11,
         "hook": 1,
         "test": 1
       },
@@ -13968,6 +14162,14 @@
         {
           "family": "config",
           "path": "manifests/capability-coverage.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
         },
         {
           "family": "config",
@@ -14019,6 +14221,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/pending-truth-architecture.md"
         },
         {
@@ -14034,8 +14240,8 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:10",
-        "config_consumers:4"
+        "doc_consumers:11",
+        "config_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14049,7 +14255,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 16,
+      "total_consumers": 19,
       "wrapper_for": null
     },
     {
@@ -18923,6 +19129,67 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 1,
+        "doc": 2,
+        "skill": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/session-2026-05-13-skill-router-overhaul.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/add-skill/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_semantic_skill_matcher.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:2",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-language-dependence-audit",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-language-dependence-audit",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -21527,14 +21794,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "skill": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/09-Quality/root/testing.md"
@@ -21552,25 +21824,29 @@
           "path": "tests/unit/test_cos_pytest_serial_repair.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-pytest-serial-repair",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-pytest-serial-repair",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 2,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -22200,13 +22476,18 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "skill",
           "path": "skills/worktree-triage/SKILL.md"
@@ -22216,24 +22497,28 @@
           "path": "tests/behavior/test_cos_remote_branch_triage.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "test_consumers:1"
+        "test_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-remote-branch-triage",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-remote-branch-triage",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 2,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -22580,6 +22865,74 @@
     },
     {
       "confidence": "medium",
+      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
+      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 5,
+        "skill": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/routing-benchmark-corpus.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/routing-benchmark-models.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-300-semantic-routing-model-selection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/session-2026-05-13-skill-router-overhaul.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/add-skill/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "doc_consumers:5",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-routing-benchmark",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "skill_consumers": 2,
+      "supported_harnesses": [],
+      "total_consumers": 9,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
@@ -22906,8 +23259,46 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/cos-status.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_scope_both_portability_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-scope-both-portability-audit",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -22921,6 +23312,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/architecture/rust-migration-routes.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/04-Concepts/architecture/rust-migration-script-inventory.md"
         },
         {
@@ -22931,7 +23326,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -22946,7 +23341,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -23791,6 +24186,65 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 1,
+        "doc": 3,
+        "skill": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/06-Daily/session-2026-05-13-skill-router-overhaul.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/add-skill/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-skill-description-enrich",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/cos-skill-description-enrich",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 2,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -23988,7 +24442,7 @@
         "doc": 18,
         "script": 7,
         "skill": 1,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -24145,6 +24599,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-status.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
         },
         {
@@ -24160,7 +24618,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:18",
         "config_consumers:7",
         "script_consumers:7"
@@ -24179,7 +24637,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 41,
+      "total_consumers": 42,
       "wrapper_for": null
     },
     {
@@ -24377,6 +24835,72 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 3,
+        "doc": 2,
+        "hook": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/control-plane-audits.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/observability-slo.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-028.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/telemetry-budget-violator-detect.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_start_banner_telemetry.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_telemetry_aggregator.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "hook_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-telemetry-aggregate",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -29647,9 +30171,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "script": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "script",
           "path": "scripts/cos-remote-branch-triage"
@@ -29657,6 +30186,7 @@
       ],
       "distribution": null,
       "evidence": [
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -29671,7 +30201,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -34088,7 +34618,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 5,
-        "doc": 6,
+        "doc": 7,
         "script": 5,
         "skill": 1,
         "test": 6
@@ -34125,6 +34655,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
         },
         {
           "family": "doc",
@@ -34192,7 +34726,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:6",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:5",
         "script_consumers:5"
       ],
@@ -34210,7 +34744,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 23,
+      "total_consumers": 24,
       "wrapper_for": null
     },
     {
@@ -43304,11 +43838,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "rule": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
+        },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/bootstrap-portability.md"
@@ -43327,6 +43865,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_startup-benchmark.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
         },
         {
@@ -43337,8 +43879,8 @@
       "distribution": null,
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver.sh",
-        "test_consumers:3",
-        "doc_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:3",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -43353,7 +43895,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 8,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -44851,29 +45393,29 @@
     }
   ],
   "summary": {
-    "agentic_primitives_without_lifecycle": 2,
+    "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 198,
+      "high": 200,
       "low": 19,
-      "medium": 334
+      "medium": 338
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 76,
+      "lifecycle-declared-consumer-candidate": 80,
       "lifecycle-declared-maintainer": 58,
-      "skill-referenced-not-projectable": 4,
-      "so-local-only": 394
+      "skill-referenced-not-projectable": 3,
+      "so-local-only": 397
     },
     "low_confidence_rows": 19,
     "roles": {
-      "agentic-primitive": 121,
+      "agentic-primitive": 123,
       "archive": 12,
       "driver-specific": 14,
-      "lab": 34,
-      "maintainer-tool": 354,
+      "lab": 36,
+      "maintainer-tool": 356,
       "migration-only": 16
     },
-    "total_scripts": 551,
+    "total_scripts": 557,
     "without_consumers": 5
   },
   "target_family": "scripts"
