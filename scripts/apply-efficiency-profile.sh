@@ -161,6 +161,8 @@ run_claude_code_driver() {
     spdx-header-required.sh external-cache-content-leak.sh attribution-completeness-validator.sh \
     history-rewrite-documented.sh \
     lib-symlink-divergence-detector.sh \
+    skill-drift-detector.sh \
+    session-start-stack-recommend.sh \
 ; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
@@ -210,7 +212,7 @@ echo "Hook summary for profile '$PROFILE' (Claude projection):"
 if [ "$PROFILE" = "core" ]; then
   echo "  SessionStart: session-init.sh, cross-session-event-emit.sh, validation-lock-cleanup.sh, session-start-stash-reapply.sh"
 else
-  echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards, dangerous-env-flag-detector.sh"
+  echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards, dangerous-env-flag-detector.sh, skill-drift-detector.sh (ADR-285; maintainer+full), session-start-stack-recommend.sh (ADR-286; async; maintainer+full)"
 fi
 echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async), cross-session-peer-context.sh (async), agent-message-inbox-context.sh (async), skill-router-prompt-suggest.sh (async), rule-router-prompt-suggest.sh (async), adr-relevance-suggest.sh (async), context-budget-meter.sh (last-in-chain)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"

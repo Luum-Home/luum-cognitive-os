@@ -410,3 +410,11 @@ entries:
   status: future
   rationale: Per rules/ROADMAP.md (section 2.2) - built in UX2 sprint; registration status unverified; needs PreToolUse or PostToolUse matcher definition.
   next_action: Define trigger matcher and register once DoD-gate is production-ready.
+- path: hooks/skill-drift-detector.sh
+  status: active
+  rationale: ADR-285 — runtime SHA-256 drift detection against skills/REGISTRY.lock. Wired in SessionStart on standard/full profiles. 8/8 unit tests pass.
+  next_action: Monitor drift events in .cognitive-os/metrics/skill-drift.jsonl. Promote policy from warn to block after soak period.
+- path: hooks/session-start-stack-recommend.sh
+  status: active
+  rationale: ADR-286 — async SessionStart hook that runs stack_skill_recommender and writes .cognitive-os/state/stack-recommendations.json. Complementary to skill_router (intent vs stack). 6/6 unit tests pass.
+  next_action: Wire HUD/panel consumer of stack-recommendations.json so suggestions reach the user.
