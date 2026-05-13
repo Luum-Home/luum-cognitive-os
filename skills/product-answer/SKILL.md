@@ -18,6 +18,30 @@ routing_patterns:
     confidence: 0.86
   - pattern: '\b(what|qué|que).{0,30}(claim|prometer|diferencia|vende|vendemos)\b'
     confidence: 0.80
+intent_examples:
+  # English
+  - "can this help a developer who does not know best practices?"
+  - "what can this OS do for me?"
+  - "what is our differentiator or moat?"
+  - "is this useful for someone without architecture experience?"
+  # Spanish
+  - "¿este sistema operativo puede ayudar a un dev sin experiencia?"
+  - "¿puede ayudar a alguien sin conocimiento de arquitectura?"
+  - "¿cuál es nuestro diferenciador?"
+  - "¿sirve para alguien que no conoce testing?"
+  # Portuguese
+  - "pode ajudar um dev sem experiência?"
+  - "qual é o diferenciador deste sistema?"
+  - "este SO serve para alguém sem conhecimento de arquitetura?"
+  # German
+  - "ist das für einen Entwickler ohne Erfahrung nützlich?"
+  - "was ist unser Alleinstellungsmerkmal?"
+  - "kann das einem Entwickler ohne Architekturkenntnisse helfen?"
+  # French
+  - "est-ce que ça peut aider un développeur sans expérience?"
+  - "quel est notre facteur différenciateur?"
+  # Italian
+  - "può aiutare uno sviluppatore senza esperienza?"
 ---
 
 # Product Answer
