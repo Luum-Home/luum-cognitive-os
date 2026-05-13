@@ -1,11 +1,11 @@
 ---
 adr: 290
 title: 'Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop'
-status: accepted
+status: superseded
 implementation_status: implemented
 date: '2026-05-13'
 supersedes: []
-superseded_by: null
+superseded_by: [ADR-292, ADR-293, ADR-294, ADR-295]
 implementation_files:
   - lib/lazy_imports.py
   - lib/hook_event_types.py
@@ -34,9 +34,44 @@ verification:
 
 # ADR-290 — Five Agent Quality-of-Life Patterns
 
+## Tombstone Note
+
+**Status: superseded — 2026-05-13.** Split into four standalone ADRs because this
+document bundled five independent decisions across four unrelated domains
+(runtime performance, hook schema contracts, memory schema, and agent runtime
+features). The bundling produced two concrete harms:
+
+1. **Pattern 4 silently amended ADR-287.** The memory quality scoring extension
+   changed the semantics of `search_bm25` and added four nullable columns to the
+   v3 `Claim` dataclass without an `extends: [ADR-287]` backref. A reader of
+   ADR-287 had no way to discover the `min_quality` filter from the ADR index.
+   Repaired by ADR-294, which carries the explicit `extends` link and surfaces
+   the "missing == 0" filter policy in plain text.
+2. **Two reconstruction-phase deferrals were left open-ended.** Pattern 2's
+   "237 hooks not migrated" and Pattern 5's "wiring deferred" had no follow-up
+   ADR numbers reserved. Repaired by ADR-293 (inline staged migration plan A→D)
+   and ADR-295 (wiring scoped out and reserved for ADR-296).
+
+Per ADR-281, this tombstone records the split honestly rather than retroactively
+editing history. The §Context section below is preserved as the historical
+record of why the five patterns were originally observed together.
+
+| Original pattern | New ADR |
+|---|---|
+| Pattern 1 — Lazy imports (`lib/lazy_imports.py`) | ADR-292 |
+| Pattern 2 — Typed hook events (`lib/hook_event_types.py`) | ADR-293 |
+| Pattern 3 — MCP thread bridge (`lib/mcp_thread_bridge.py`) | ADR-292 |
+| Pattern 4 — Memory quality scoring (`lib/engram_wave3_schema.py`, `lib/engram_fts5_search.py`) | ADR-294 (extends ADR-287) |
+| Pattern 5 — Reflection loop (`lib/agent_reflection.py`) | ADR-295 |
+
+The implementation files declared in this ADR's frontmatter still exist on disk;
+they are now owned by the successor ADRs.
+
+---
+
 ## Status
 
-Accepted
+Superseded by ADR-292, ADR-293, ADR-294, ADR-295
 
 **Date:** 2026-05-13
 **Owner:** orchestrator

@@ -8,7 +8,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 
 ## Active
 
-### Active / Implemented (131)
+### Active / Implemented (134)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -142,7 +142,10 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [286](ADR-286-stack-aware-skill-recommendation-session-start.md) | Stack-Aware Skill Recommendation at Session Start | accepted | implemented | 2026-05-13 | Accepted and implemented — 2026-05-13. |
 | [287](ADR-287-engram-v3-evidence-grounded-claims-and-portable-bundles.md) | Engram v3: Evidence-Grounded Claims, Write Gate, BM25 Retrieval Wrapper, and Portable Bundles | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
 | [288](ADR-288-web-automation-adapter-for-dispatch.md) | Web-Automation Adapter for Dispatch (browser-use) | accepted | implemented | 2026-05-13 | - **Status:** Accepted |
-| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | accepted | implemented | 2026-05-13 | **Date:** 2026-05-13 |
+| [292](ADR-292-runtime-perf-primitives-lazy-imports-and-mcp-thread-bridge.md) | Runtime Performance Primitives: Lazy Imports and MCP Sync↔Async Thread Bridge | accepted | implemented | 2026-05-13 | Split from ADR-290 (Patterns 1+3). |
+| [293](ADR-293-typed-hook-event-contracts.md) | Typed Hook Event Contracts: Frozen Dataclasses for Claude Code Hook Payloads | accepted | implemented | 2026-05-13 | Split from ADR-290 (Pattern 2) with inline migration plan. |
+| [294](ADR-294-memory-quality-scoring-extension.md) | Memory Quality Scoring: Four-Dimension Quality Fields and min_quality Filter for Engram v3 | accepted | implemented | 2026-05-13 | Split from ADR-290 (Pattern 4); extends ADR-287. |
+| [295](ADR-295-agent-reflection-loop-primitive.md) | Agent Reflection Loop Primitive: Bounded Iterative Critique with Min/Max Floors | accepted | implemented | 2026-05-13 | Split from ADR-290 (Pattern 5); runtime wiring reserved for ADR-296. |
 
 ### Active / Partial (118)
 
@@ -339,7 +342,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [238](ADR-238-tier-1-4-followup-bug-tracking.md) | Tier 1-4 Follow-Up Bug Tracking | resolved | resolved | 2026-05-07 | During the Tier 1-4 case-study leak audit (privacy decoupling, commits |
 
 <details>
-<summary>Superseded ADRs (4)</summary>
+<summary>Superseded ADRs (5)</summary>
 
 ## Superseded
 
@@ -349,6 +352,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [084](ADR-084-headless-clustered-runtime-shape.md) | Headless and Clustered Runtime Shape | superseded | not-applicable | 2026-04-30 | **Author**: Maintainer |
 | [170](ADR-170-operator-cli-as-primary-ui-surface.md) | Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists | superseded | not-applicable | 2026-05-05 | Superseded by [ADR-172](ADR-172-multi-surface-ui-architecture.md) (2026-05-05). |
 | [187](ADR-187-surface-5-adoption-proof-contract.md) | Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI | superseded | not-applicable | 2026-05-06 | **Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather |
+| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | superseded | implemented | 2026-05-13 | Split into ADR-292, ADR-293, ADR-294, ADR-295 because the bundle silently amended ADR-287 and left two reconstruction-phase deferrals open-ended. |
 
 </details>
 
