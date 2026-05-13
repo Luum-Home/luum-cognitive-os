@@ -4,7 +4,6 @@ from agent_service.models.events import NotImplementedResponse
 from agent_service.models.health import (
     AgentCapability,
     AgentOptionsResponse,
-    CsrfTokenResponse,
     HealthResponse,
     VersionResponse,
 )
@@ -44,7 +43,6 @@ from agent_service.models.workspace import (
 __all__ = [
     "AgentCapability",
     "AgentOptionsResponse",
-    "CsrfTokenResponse",
     "GenerateSummaryRequest",
     "HealthResponse",
     "ModelsListResponse",

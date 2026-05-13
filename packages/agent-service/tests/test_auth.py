@@ -11,7 +11,6 @@ from agent_service.config import ServiceConfig, ServiceDisabledError
 
 PROTECTED_ENDPOINTS_GET = [
     "/api/v1/version",
-    "/api/v1/csrf-token",
     "/api/v1/agent/options",
     "/api/v1/runtime-settings",
     "/api/v1/models",

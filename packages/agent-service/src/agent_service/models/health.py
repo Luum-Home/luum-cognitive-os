@@ -17,11 +17,6 @@ class VersionResponse(BaseModel):
     commit: str | None = None
 
 
-class CsrfTokenResponse(BaseModel):
-    token: str
-    expires_in_seconds: int = Field(default=3600)
-
-
 class AgentCapability(BaseModel):
     name: str
     enabled: bool

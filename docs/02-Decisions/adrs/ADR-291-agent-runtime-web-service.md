@@ -22,9 +22,11 @@ tags:
   - http
   - sse
   - runtime
-classification_basis: phase-1 contract skeleton with 27 endpoints (26 distinct path strings), 4 functional (health/version/csrf/agent options), 22 returning 501 with typed schemas, full contract test suite
+classification_basis: phase-1 contract skeleton with 26 operations (25 distinct path strings), 3 functional (health/version/agent options), 23 returning 501 with typed schemas, full contract test suite. The /csrf-token endpoint was removed in the security pass — it was token-shaped string theater without server-side store; real CSRF defense ships with Phase 2.
 verification:
-  level: strong
+  level: medium  # Phase 1 tests assert status codes + schema. They do NOT exercise the
+                 # agent runner (23/26 endpoints return 501 by design). Promote to `strong`
+                 # when Phase 2 wires the in-process runner and behavior tests cover it.
   commands:
     - python3 -m pytest packages/agent-service/tests -q
   proves:
@@ -144,9 +146,14 @@ an HTTP service. Stack:
 - **Server-Sent Events** for all streaming endpoints, emitted via a small helper
   in `agent_service.sse`.
 - **Bearer token auth** on every endpoint except `GET /api/v1/health`, sourced
-  from `COS_AGENT_SERVICE_TOKEN`.
-- **CSRF token** issued by `GET /api/v1/csrf-token` and required for mutating
-  routes in Phase 2.
+  from `COS_AGENT_SERVICE_TOKEN`. Comparison uses `secrets.compare_digest` —
+  constant-time, timing-attack safe. The naive `!=` in the first cut was
+  removed during the security pass.
+- **CSRF (deferred to Phase 2)**: real server-side state with double-submit
+  cookie + verified token. The Phase 1 `/csrf-token` placeholder was removed
+  because emitting a fresh `secrets.token_urlsafe(32)` per call with no store
+  and no verification is not a CSRF defense — it was token-shaped string
+  theater. Shipping no endpoint is honest; shipping a fake one is worse.
 - **Kill switch** `COS_DISABLE_AGENT_SERVICE=1` that refuses to start the app.
 - **OpenAPI** auto-served at `/openapi.json` and Swagger UI at `/docs`.
 
@@ -157,9 +164,8 @@ an HTTP service. Stack:
    HTTP client  ---->  | agent-service (this ADR)    |
    (UI, mobile,        |   FastAPI + Uvicorn         |
     cron, webhook)     |   - auth (bearer)           |
-                       |   - csrf (mutations)        |
                        |   - sse helpers             |
-                       |   - 5 routers, 27 endpoints (26 distinct path strings) |
+                       |   - 5 routers, 26 ops (25 distinct paths) |
                        +--------------+--------------+
                                       |
                                       v
@@ -170,13 +176,12 @@ an HTTP service. Stack:
                        +-----------------------------+
 ```
 
-### Endpoint inventory (27 operations across 26 distinct paths)
+### Endpoint inventory (26 operations across 25 distinct paths)
 
-**Health & metadata (3, all functional in Phase 1):**
+**Health & metadata (2, both functional in Phase 1):**
 
 - `GET /api/v1/health`
 - `GET /api/v1/version`
-- `GET /api/v1/csrf-token`
 
 **Agent config (6, one functional in Phase 1):**
 
@@ -219,10 +224,10 @@ an HTTP service. Stack:
 
 Counted as router operations (method + path). The shared path
 `/api/v1/runtime-settings` serves GET and POST, so the OpenAPI document
-exposes 26 distinct paths for the 27 operations.
+exposes 25 distinct paths for the 26 operations.
 
-In Phase 1, the 4 functional endpoints (`/health`, `/version`, `/csrf-token`,
-`/agent/options`) return real data. The remaining 22 return HTTP 501 with a
+In Phase 1, the 3 functional endpoints (`/health`, `/version`,
+`/agent/options`) return real data. The remaining 23 return HTTP 501 with a
 Pydantic-validated `NotImplementedResponse` body so contracts can be exercised
 end-to-end by clients before Phase 2 ships.
 
@@ -232,9 +237,9 @@ end-to-end by clients before Phase 2 ships.
 
 - Package `packages/agent-service/` with pyproject, src layout, tests.
 - FastAPI app factory, bearer auth, kill switch.
-- All 27 endpoints (26 distinct path strings) registered with typed request/response models.
-- 4 functional endpoints (health, version, csrf-token, agent options).
-- 22 stub endpoints returning 501 with valid schema.
+- All 26 endpoints (25 distinct path strings) registered with typed request/response models.
+- 3 functional endpoints (health, version, agent options).
+- 23 stub endpoints returning 501 with valid schema.
 - SSE helpers and stub SSE generators that emit one `not_implemented` event and close.
 - Contract tests (1 per endpoint), auth tests, SSE format tests, health functional tests.
 - OpenAPI exposed at `/openapi.json`, Swagger UI at `/docs`.
@@ -290,16 +295,22 @@ end-to-end by clients before Phase 2 ships.
 
 - **Authentication.** Bearer token sourced from `COS_AGENT_SERVICE_TOKEN`. If the
   env var is unset, every protected endpoint rejects with 401; `/api/v1/health`
-  remains reachable so health probes do not need credentials.
-- **CSRF.** `GET /api/v1/csrf-token` returns a freshly generated token. Phase 2
-  enforces the token on every mutating route via header.
+  remains reachable so health probes do not need credentials. Token comparison
+  uses `secrets.compare_digest` (constant-time, defeats timing attacks).
+- **CSRF (deferred to Phase 2).** Real double-submit cookie with server-side
+  token store ships with Phase 2's mutation handlers. The Phase 1 placeholder
+  `/csrf-token` was removed — it emitted unverified `secrets.token_urlsafe(32)`
+  with no store, so it provided no CSRF protection. Shipping the fake endpoint
+  was worse than shipping none.
+- **Rate limiting (Phase 2, hard requirement).** Phase 2 MUST land a FastAPI
+  middleware that caps requests per token per minute before the in-process
+  agent runner is wired. Without it, a leaked bearer becomes unlimited LLM
+  consumption — a regression from current security posture, not a wash.
 - **Kill switch.** `COS_DISABLE_AGENT_SERVICE=1` causes `create_app()` to raise
   `RuntimeError` before any route is registered. This is a hard refusal, not a
   feature flag.
 - **No public endpoints beyond health.** Every other route requires bearer auth
   by construction (router dependencies, not per-endpoint annotations).
-- **Rate limiting.** Phase 2 adds a FastAPI middleware that caps requests per
-  token per minute.
 
 ## Operational notes
 
@@ -338,7 +349,7 @@ python3 -m pytest packages/agent-service/tests -q
 ```
 
 Proves:
-- all 27 endpoints (26 distinct path strings) registered
+- all 26 endpoints (25 distinct path strings) registered
 - bearer token enforced on protected routes
 - kill switch blocks startup
 - functional endpoints return 200
