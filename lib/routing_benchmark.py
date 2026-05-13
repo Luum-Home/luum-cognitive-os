@@ -298,9 +298,212 @@ class FastembedBiEncoderAdapter:
         gc.collect()
 
 
-# Registry: adapter_kind -> factory(model_id, model_name, role) -> RoutingAdapter
+ONNX_CACHE_DIR_DEFAULT = Path(".cognitive-os/cache/onnx-models")
+
+
+def _onnx_cache_path(model_name: str, revision: str) -> Path:
+    """Revision-aware cache dir so multiple revisions of one repo coexist."""
+    key = hashlib.sha256(f"{model_name}@{revision}".encode("utf-8")).hexdigest()[:32]
+    return ONNX_CACHE_DIR_DEFAULT / key
+
+
+class OnnxDirectBiEncoderAdapter:
+    """Adapter for HF-hosted ONNX models not in FastEmbed's registry (ADR-301).
+
+    Downloads ``model.onnx`` + tokenizer files from huggingface.co lazily on
+    first use. Caches under ``.cognitive-os/cache/onnx-models/<hash>/``.
+    Uses onnxruntime CPU provider. Mean-pooled, L2-normalised embeddings —
+    same contract as :class:`FastembedBiEncoderAdapter`.
+    """
+
+    def __init__(
+        self,
+        model_id: str,
+        model_name: str,
+        role: str = "bi-encoder",
+        *,
+        onnx_subpath: str = "model.onnx",
+        revision: str = "main",
+    ):
+        self.model_id = model_id
+        self.model_name = model_name
+        self.role = role
+        self.onnx_subpath = onnx_subpath
+        self.revision = revision
+        self._session: Any = None
+        self._tokenizer: Any = None
+        self._catalog_matrix: Any = None
+        self._catalog_skills: List[str] = []
+        self._catalog_signature: Optional[str] = None
+        self._model_dir: Optional[Path] = None
+
+    # ------------------------------------------------------------------ cache
+    def cache_dir(self) -> Path:
+        return _onnx_cache_path(self.model_name, self.revision)
+
+    # ------------------------------------------------------------------- load
+    def load(self) -> None:
+        if self._session is not None:
+            return
+        try:
+            from huggingface_hub import hf_hub_download  # type: ignore
+            import onnxruntime as ort  # type: ignore
+            from tokenizers import Tokenizer  # type: ignore
+        except Exception as exc:  # pragma: no cover - import-time failure
+            raise RuntimeError(
+                f"onnx-direct deps unavailable: {exc}"
+            ) from exc
+
+        cache_dir = self.cache_dir()
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
+        # Resolve sibling directory of the .onnx file for tokenizer lookups.
+        onnx_dir_in_repo = ""
+        if "/" in self.onnx_subpath:
+            onnx_dir_in_repo = self.onnx_subpath.rsplit("/", 1)[0]
+
+        def _fetch(filename: str, *, required: bool) -> Optional[str]:
+            try:
+                return hf_hub_download(
+                    repo_id=self.model_name,
+                    filename=filename,
+                    revision=self.revision,
+                    cache_dir=str(cache_dir),
+                )
+            except Exception as exc:
+                if required:
+                    raise RuntimeError(
+                        f"hf download failed for {self.model_name}:{filename} "
+                        f"@ {self.revision}: {exc}"
+                    ) from exc
+                LOGGER.debug("optional file missing %s: %s", filename, exc)
+                return None
+
+        # Required: ONNX weights file.
+        onnx_path = _fetch(self.onnx_subpath, required=True)
+        # External-data sidecar (e.g. BGE-M3's model.onnx_data). Optional.
+        _fetch(self.onnx_subpath + "_data", required=False)
+
+        # Tokenizer files. Try the onnx/ subdir first, fall back to repo root.
+        tok_filename: Optional[str] = None
+        for candidate in (
+            f"{onnx_dir_in_repo}/tokenizer.json" if onnx_dir_in_repo else "tokenizer.json",
+            "tokenizer.json",
+        ):
+            path = _fetch(candidate, required=False)
+            if path is not None:
+                tok_filename = path
+                break
+        if tok_filename is None:
+            raise RuntimeError(
+                f"no tokenizer.json found for {self.model_name}@{self.revision}"
+            )
+
+        # Best-effort fetch of accompanying tokenizer metadata.
+        for extra in ("tokenizer_config.json", "special_tokens_map.json", "sentencepiece.bpe.model"):
+            for candidate in (
+                f"{onnx_dir_in_repo}/{extra}" if onnx_dir_in_repo else extra,
+                extra,
+            ):
+                if _fetch(candidate, required=False) is not None:
+                    break
+
+        self._tokenizer = Tokenizer.from_file(tok_filename)
+        self._session = ort.InferenceSession(
+            onnx_path, providers=["CPUExecutionProvider"]
+        )
+        self._model_dir = Path(onnx_path).parent
+
+    # --------------------------------------------------------------- encoding
+    def _encode(self, texts: List[str]) -> Any:
+        import numpy as np  # type: ignore
+
+        encodings = self._tokenizer.encode_batch(texts)
+        # Pad to longest in batch.
+        max_len = max((len(e.ids) for e in encodings), default=1)
+        input_ids = np.zeros((len(encodings), max_len), dtype=np.int64)
+        attention_mask = np.zeros((len(encodings), max_len), dtype=np.int64)
+        for i, enc in enumerate(encodings):
+            ids = enc.ids[:max_len]
+            input_ids[i, : len(ids)] = ids
+            attention_mask[i, : len(ids)] = 1
+
+        feed: Dict[str, Any] = {
+            "input_ids": input_ids,
+            "attention_mask": attention_mask,
+        }
+        # Some ONNX exports also expect token_type_ids.
+        input_names = {inp.name for inp in self._session.get_inputs()}
+        if "token_type_ids" in input_names:
+            feed["token_type_ids"] = np.zeros_like(input_ids)
+        # Only pass declared inputs.
+        feed = {k: v for k, v in feed.items() if k in input_names}
+
+        outputs = self._session.run(None, feed)
+        last_hidden = outputs[0]  # (batch, seq, hidden)
+        mask = attention_mask.astype(np.float32)[:, :, None]
+        summed = (last_hidden * mask).sum(axis=1)
+        denom = mask.sum(axis=1)
+        denom[denom == 0] = 1.0
+        pooled = summed / denom
+        norms = np.linalg.norm(pooled, axis=1, keepdims=True)
+        norms[norms == 0] = 1.0
+        return pooled / norms
+
+    def _ensure_catalog(self, candidates: List[Tuple[str, str]]) -> None:
+        sig = hashlib.sha256(
+            json.dumps(candidates, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+        if self._catalog_signature == sig and self._catalog_matrix is not None:
+            return
+        texts = [desc or name for (name, desc) in candidates]
+        self._catalog_matrix = self._encode(texts)
+        self._catalog_skills = [name for (name, _desc) in candidates]
+        self._catalog_signature = sig
+
+    def predict(
+        self, prompt: str, candidates: List[Tuple[str, str]]
+    ) -> List[Tuple[str, float]]:
+        if self._session is None:
+            self.load()
+        self._ensure_catalog(candidates)
+
+        q = self._encode([prompt])[0]
+        sims = (self._catalog_matrix @ q).tolist()
+        ranked = sorted(
+            zip(self._catalog_skills, sims),
+            key=lambda kv: kv[1],
+            reverse=True,
+        )
+        return [(s, float(v)) for s, v in ranked]
+
+    def unload(self) -> None:
+        self._session = None
+        self._tokenizer = None
+        self._catalog_matrix = None
+        self._catalog_skills = []
+        self._catalog_signature = None
+        gc.collect()
+
+
+def _build_fastembed(model_id, model_name, role, **_kw):
+    return FastembedBiEncoderAdapter(model_id, model_name, role)
+
+
+def _build_onnx_direct(model_id, model_name, role, **kw):
+    return OnnxDirectBiEncoderAdapter(
+        model_id,
+        model_name,
+        role,
+        onnx_subpath=kw.get("onnx_subpath", "model.onnx"),
+        revision=kw.get("revision", "main"),
+    )
+
+
+# Registry: adapter_kind -> factory(model_id, model_name, role, **kw)
 _ADAPTER_REGISTRY: Dict[str, Callable[..., RoutingAdapter]] = {
-    "fastembed-bi-encoder": FastembedBiEncoderAdapter,
+    "fastembed-bi-encoder": _build_fastembed,
+    "onnx-direct-bi-encoder": _build_onnx_direct,
 }
 
 
@@ -314,7 +517,13 @@ def build_adapter(entry: Dict[str, Any]) -> RoutingAdapter:
             f"unknown adapter kind {kind!r} for model {entry.get('id')!r}. "
             f"Known adapters: {sorted(_ADAPTER_REGISTRY)}"
         )
-    return factory(entry["id"], entry["model_name"], entry.get("role", "bi-encoder"))
+    return factory(
+        entry["id"],
+        entry["model_name"],
+        entry.get("role", "bi-encoder"),
+        onnx_subpath=entry.get("onnx_subpath", "model.onnx"),
+        revision=entry.get("revision", "main"),
+    )
 
 
 # ---------------------------------------------------------------------------

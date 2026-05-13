@@ -1,6 +1,6 @@
 # Routing Model Benchmark Report
 
-- Generated: 2026-05-13T21:20:41.666683+00:00
+- Generated: 2026-05-13T21:36:57.889462+00:00
 - Schema: `routing-benchmark-report/v1`
 - Corpus signature: `43683aab1b8d9397`
 - Corpus: 10 skills, 300 prompts
@@ -17,6 +17,7 @@
 | model | role | precision@1 | precision@5 | MRR | warm p95 ms | cold start ms | peak MB | size MB | license | loaded |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
 | baseline-minilm | bi-encoder | 0.753 | 0.957 | 0.843 | 26.6 | 3941.5 | 840.1 | 0.0 | Apache-2.0 | yes |
+| bge-m3 | bi-encoder | 0.887 | 1.000 | 0.938 | 40.0 | 108970.5 | 1397.6 | 0.0 | MIT | yes |
 | multilingual-e5-large | bi-encoder | 0.897 | 1.000 | 0.941 | 47.0 | 63785.0 | 1654.2 | 0.0 | MIT | yes |
 | multilingual-mpnet-base | bi-encoder | 0.810 | 0.960 | 0.870 | 15.4 | 73603.4 | 1654.2 | 0.0 | Apache-2.0 | yes |
 
@@ -25,6 +26,7 @@
 | model | en | es | pt | de | fr | it |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | baseline-minilm | 0.800 | 0.780 | 0.700 | 0.760 | 0.720 | 0.760 |
+| bge-m3 | 0.900 | 0.900 | 0.920 | 0.840 | 0.820 | 0.940 |
 | multilingual-e5-large | 0.960 | 0.880 | 0.880 | 0.900 | 0.880 | 0.880 |
 | multilingual-mpnet-base | 0.900 | 0.800 | 0.800 | 0.820 | 0.740 | 0.800 |
 
@@ -33,6 +35,7 @@
 | model | loaded | failures | load_error |
 | --- | --- | ---: | --- |
 | baseline-minilm | yes | 0 |  |
+| bge-m3 | yes | 0 |  |
 | multilingual-e5-large | yes | 0 |  |
 | multilingual-mpnet-base | yes | 0 |  |
 
