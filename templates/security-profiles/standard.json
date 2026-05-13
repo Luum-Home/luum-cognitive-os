@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
-  "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 141,
+  "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
+  "_hook_count": 143,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -89,6 +89,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/cos-session-start-projector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-drift-detector.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-start-stack-recommend.sh\"",
+            "async": true
           }
         ]
       }

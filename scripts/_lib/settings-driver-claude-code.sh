@@ -153,6 +153,8 @@ cc_driver_emit() {
       "hooks/dangerous-env-flag-detector.sh" "false" \
       "hooks/history-rewrite-documented.sh"   "false" \
       "hooks/cos-session-start-projector.sh"  "false" \
+      "hooks/skill-drift-detector.sh"         "false" \
+      "hooks/session-start-stack-recommend.sh" "true"  \
     )
   fi
 

@@ -115,16 +115,18 @@ class TestTimeoutConfiguration:
             "the default bash timeout (120000ms)"
         )
 
-    def test_full_suite_timing_fast_subset(self):
+    def test_full_suite_timing_fast_subset(self, tmp_path):
         """Run a fast test subset and measure timing.
 
         Even a small subset may take a few seconds, demonstrating why
         background execution helps for larger suites.
         """
-        # Pick a single fast unit test file to measure
-        test_file = PROJECT_ROOT / "tests" / "unit" / "test_rate_limiter.py"
-        if not test_file.exists():
-            pytest.skip("test_rate_limiter.py not found -- skip timing test")
+        test_file = tmp_path / "test_fast_subset.py"
+        test_file.write_text(
+            "def test_fast_subset_smoke():\n"
+            "    assert 1 + 1 == 2\n",
+            encoding="utf-8",
+        )
 
         start = time.monotonic()
         subprocess.run(
@@ -139,7 +141,7 @@ class TestTimeoutConfiguration:
             # nested pytest subprocess below that ceiling so pytest-timeout can
             # report the real assertion instead of killing the whole test.
             timeout=20,
-            cwd=str(PROJECT_ROOT),
+            cwd=str(tmp_path),
         )
         elapsed = time.monotonic() - start
 

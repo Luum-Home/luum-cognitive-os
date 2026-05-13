@@ -202,6 +202,12 @@ def _append_jsonl(path: str, entry: Dict[str, Any]) -> None:
         else:
             event_type = "singularity.event"
         timestamp = entry.pop("timestamp", "")
+        if (
+            len(timestamp) >= 5
+            and timestamp[-5] in ("+", "-")
+            and timestamp[-4:].isdigit()
+        ):
+            timestamp = f"{timestamp[:-2]}:{timestamp[-2:]}"
         event = MetricEvent(
             source="singularity",
             event_type=event_type,
