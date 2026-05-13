@@ -1,21 +1,30 @@
 <!-- SCOPE: both -->
 ---
 name: cos-status
-description: "Use when a user asks about OS state, installation verification, or troubleshooting. Purpose: Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks."
-triggers: ["/cos-status", "/status", "cos status"]
+description: 'Use when a user asks about OS state, installation verification, or troubleshooting. Purpose: Display current
+  Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks.'
+triggers:
+- /cos-status
+- /status
+- cos status
 audience: both
 version: 1.0.0
-summary_line: "Display current Cognitive OS state — active profile, skills exposed, hooks…"
-
-platforms: ["claude-code"]
+summary_line: Display current Cognitive OS state — active profile, skills exposed, hooks…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcos[- ]?status\b'
-    confidence: 0.95
-  - pattern: '\bcognitive[- ]?os\s+state\b'
-    confidence: 0.85
-  - pattern: '\bos\s+(health|installation|profile)\b'
-    confidence: 0.75
+- pattern: \bcos[- ]?status\b
+  confidence: 0.95
+- pattern: \bcognitive[- ]?os\s+state\b
+  confidence: 0.85
+- pattern: \bos\s+(health|installation|profile)\b
+  confidence: 0.75
+routing_intents:
+- intent: cos_installation_state
+  description: User asks about current Cognitive OS state, installation verification, active profile, exposed skills, wired
+    hooks, loaded rules, or troubleshooting.
+  confidence: 0.86
 ---
 
 # /cos-status — Cognitive OS State Transparency

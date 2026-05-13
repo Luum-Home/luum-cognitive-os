@@ -2,14 +2,24 @@
 ---
 name: wiki-ingest
 version: 0.1.0
-description: "Use when raw URLs, files, or pasted text need to be ingested into the compiled docs vault with raw-source indexing and optional Engram claim capture."
+description: Use when raw URLs, files, or pasted text need to be ingested into the compiled docs vault with raw-source indexing
+  and optional Engram claim capture.
 audience: both
-tags: [knowledge-architecture, ingestion, docs, engram]
+tags:
+- knowledge-architecture
+- ingestion
+- docs
+- engram
 triggers:
-  - wiki-ingest
-  - ingest raw source
-  - compile source into vault
+- wiki-ingest
+- ingest raw source
+- compile source into vault
 related_adr: ADR-289
+routing_intents:
+- intent: wiki_ingest_source
+  description: User wants to ingest a URL, file, or pasted source into the docs vault with raw-source indexing and optional
+    memory capture.
+  confidence: 0.84
 ---
 
 # Wiki Ingest

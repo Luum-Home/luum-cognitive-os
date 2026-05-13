@@ -1,7 +1,9 @@
 <!-- SCOPE: both -->
 ---
 name: repo-forensics
-description: "Use when you need this Cognitive OS skill: Deep forensic analysis of git repositories. Clones, analyzes ALL code, dependencies, architecture patterns, tools, features, API endpoints, and produces exhaustive structured reports. Optionally compares with Cognitive OS capabilities.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Deep forensic analysis of git repositories. Clones, analyzes ALL
+  code, dependencies, architecture patterns, tools, features, API endpoints, and produces exhaustive structured reports. Optionally
+  compares with Cognitive OS capabilities.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -12,20 +14,25 @@ metadata:
 audience: both
 effort: opus
 summary_line: Deep forensic analysis of git repositories.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: 'https?://github\.com/[\w.\-]+/[\w.\-]+'
-    confidence: 0.99
-  - pattern: '\binvestig[áa]\w*\s+(this|the|ese?|este?)?\s*repo\b'
-    confidence: 0.90
-  - pattern: '\brepo(sitory)?\s+forensics\b'
-    confidence: 0.96
-  - pattern: '\bdeep\s+(repo|repository|source)\s+analysis\b'
-    confidence: 0.88
-  - pattern: '\banalyze\s+all\s+(code|dependencies|configs)\b'
-    confidence: 0.82
+- pattern: https?://github\.com/[\w.\-]+/[\w.\-]+
+  confidence: 0.99
+- pattern: \brepo(sitory)?\s+forensics\b
+  confidence: 0.96
+- pattern: \bdeep\s+(repo|repository|source)\s+analysis\b
+  confidence: 0.88
+- pattern: \binvestig[áa]\w*\s+(this|the|ese?|este?)?\s*repo\b
+  confidence: 0.9
+- pattern: \banalyze\s+all\s+(code|dependencies|configs)\b
+  confidence: 0.82
+routing_intents:
+- intent: deep_repository_forensics
+  description: User asks to deeply investigate, clone, inspect, or analyze an entire repository, including source code, dependencies,
+    configs, architecture, and risks.
+  confidence: 0.88
 ---
 
 ## Purpose

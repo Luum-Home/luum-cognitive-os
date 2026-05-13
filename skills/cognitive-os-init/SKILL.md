@@ -1,24 +1,32 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-init
-description: "Use when you need this Cognitive OS skill: META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: META skill — initialize Cognitive OS for a project by chaining detect-stack
+  → generate-config → scaffold-project.; do not use when a narrower skill directly matches the task.'
 version: 2.0.0
 last-updated: 2026-04-10
 user-invocable: true
 auto-generated: false
 audience: both
-tags: [init, setup, meta]
+tags:
+- init
+- setup
+- meta
 summary_line: META skill — initialize Cognitive OS for a project by chaining detect-stack →…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcognitive[- ]?os[- ]?init\b'
-    confidence: 0.95
-  - pattern: '\b(init|initializ\w*|inicializar?)\s+(cognitive\s+os|cos)\b'
-    confidence: 0.90
-  - pattern: '\bset\s*up\s+(cognitive\s+os|cos)\s+(for|en|on)\s+(this|a)\s+project\b'
-    confidence: 0.85
+- pattern: \bcognitive[- ]?os[- ]?init\b
+  confidence: 0.95
+- pattern: \b(init|initializ\w*|inicializar?)\s+(cognitive\s+os|cos)\b
+  confidence: 0.9
+- pattern: \bset\s*up\s+(cognitive\s+os|cos)\s+(for|en|on)\s+(this|a)\s+project\b
+  confidence: 0.85
+routing_intents:
+- intent: initialize_cognitive_os
+  description: User wants to initialize, set up, configure, or bootstrap Cognitive OS for a project.
+  confidence: 0.9
 ---
 
 # Cognitive OS Init

@@ -1,22 +1,29 @@
 <!-- SCOPE: os-only -->
 ---
 name: memory-scan
-description: "Use when you need this Cognitive OS skill: Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Scan text content (or a file) for prompt injection, credential exfiltration,
+  and invisible Unicode threats before persisting to memory.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: os
 model: haiku
 summary_line: Scan content for memory threats (prompt injection, exfiltration, invisible Unicode).
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bmemory[- ]?scan\b'
-    confidence: 0.95
-  - pattern: '\bscan\s+(for\s+)?(prompt\s+injection|credentials?)\b'
-    confidence: 0.85
-  - pattern: '\bprompt\s+injection\s+(scan|check)\b'
-    confidence: 0.8
+- pattern: \bmemory[- ]?scan\b
+  confidence: 0.95
+- pattern: \bscan\s+(for\s+)?(prompt\s+injection|credentials?)\b
+  confidence: 0.85
+- pattern: \bprompt\s+injection\s+(scan|check)\b
+  confidence: 0.85
+routing_intents:
+- intent: memory_security_scan
+  description: User wants to scan memory, prompts, transcripts, or stored context for prompt injection, credentials, secrets,
+    or unsafe content.
+  confidence: 0.88
 ---
 
 # Memory Scan Skill

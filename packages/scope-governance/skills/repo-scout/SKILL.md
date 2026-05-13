@@ -1,10 +1,11 @@
 <!-- SCOPE: both -->
 ---
 name: repo-scout
-description: >
-  Scout external git repositories for potential inclusion in the tech radar.
-  Three-level assessment: DeepWiki summary, shallow clone analysis, deep evaluation.
-  Supports bulk mode (--batch <file>) for evaluating multiple repos in one pass.
+description: 'Scout external git repositories for potential inclusion in the tech radar. Three-level assessment: DeepWiki
+  summary, shallow clone analysis, deep evaluation. Supports bulk mode (--batch <file>) for evaluating multiple repos in one
+  pass.
+
+  '
 version: 2.0.1
 user-invocable: true
 auto-generated: false
@@ -14,18 +15,22 @@ metadata:
   author: luum
 audience: both
 summary_line: Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals).
-
 routing_patterns:
-  - pattern: 'https?://github\.com/[\w.\-]+/[\w.\-]+'
-    confidence: 0.75
-  - pattern: '\brepo[- ]?scout\b'
-    confidence: 0.95
-  - pattern: '\b(evalua[rt]\w*|evaluate)\s+(this|the|ese?|este?)?\s*repo'
-    confidence: 0.85
-  - pattern: '\btech\s*radar\b'
-    confidence: 0.80
-platforms: ["claude-code"]
+- pattern: https?://github\.com/[\w.\-]+/[\w.\-]+
+  confidence: 0.75
+- pattern: \brepo[- ]?scout\b
+  confidence: 0.95
+- pattern: \btech\s*radar\b
+  confidence: 0.8
+- pattern: \b(evalua[rt]\w*|evaluate)\s+(this|the|ese?|este?)?\s*repo
+  confidence: 0.85
+platforms:
+- claude-code
 prerequisites: []
+routing_intents:
+- intent: repository_scouting_evaluation
+  description: User asks to evaluate, scout, or assess an external git repository for tech radar, adoption, or tool comparison.
+  confidence: 0.86
 ---
 
 ## Purpose
