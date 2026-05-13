@@ -15,7 +15,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
+from lib.lazy_imports import LazyImport
+
+# Lazy yaml import (ADR-290 Pattern 1) — yaml is only needed when this module
+# actually loads a manifest, not on every import.
+_yaml = LazyImport(lambda: __import__("yaml"))
 
 ENFORCEMENT_FIDELITY = {"native-lifecycle-enforced", "governed-wrapper-enforced", "ci-enforced"}
 STRUCTURAL_FIDELITY = {"structural-advisory", "documented-only", "host-plugin-lifecycle-capable"}
@@ -66,7 +70,7 @@ class CompileReceipt:
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) if path.exists() else {}
+    data = _yaml.get().safe_load(path.read_text(encoding="utf-8")) if path.exists() else {}
     return data if isinstance(data, dict) else {}
 
 
