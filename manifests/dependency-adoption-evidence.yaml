@@ -43,6 +43,23 @@ adoptions:
     integration_pattern: typed request/response schemas for all 26 agent-service endpoints (25 distinct paths)
     rationale: De-facto Python type-validation library bundled with FastAPI; alternative would mean rewriting all schemas from scratch.
     audit_link: docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md
+  - package: fastembed
+    version_constraint: ">=0.6,<0.9"
+    consumer: pyproject.toml ([semantic-routing] extra)
+    owner_adr: ADR-296
+    due_diligence_id: semantic-skill-routing
+    license: Apache-2.0
+    integration_pattern: embedding engine for lib/semantic_skill_matcher.py — multilingual ONNX (sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2) loaded lazily, catalog cached on disk under .cognitive-os/cache/semantic-router/
+    kill_switch: COS_DISABLE_SEMANTIC_ROUTING=1
+    rationale: |
+      Replaces the prior Jaccard token-overlap matcher which silently
+      returned zero signal across languages (Spanish prompt vs English
+      corpus). CPU-only ONNX INT8 with no torch dependency keeps cold
+      install lightweight; multilingual model covers EN/ES/PT/DE/FR/IT
+      natively. The originally surveyed wrapper (aurelio-labs/semantic-router)
+      is not viable on current PyPI (stuck at 0.0.3, no Route/RouteLayer
+      symbols); the routing arithmetic is small enough to own.
+    audit_link: docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md
 # 2026-05-13: revalidated entries above against the manifest commit landing
 # (root pyproject.toml [web-automation] extra + packages/agent-service/pyproject.toml).
 # Endpoint count corrected to 26 ops / 25 distinct paths after csrf-token removal

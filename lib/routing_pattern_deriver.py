@@ -238,39 +238,6 @@ class RoutingPatternDeriver:
 # ---------------------------------------------------------------------------
 
 
-def derive_intent_examples(skill_name: str, description: str) -> list[str]:
-    """Derive multilingual intent example phrases for semantic routing.
-
-    Returns 4-6 example phrases in EN/ES/PT/DE that describe when to invoke
-    the skill. Used as the training signal for ``lib/semantic_skill_matcher``.
-
-    The output is deliberately simple — it seeds the semantic index for a
-    new skill without requiring an LLM call. Authors are expected to refine
-    or extend these examples in the SKILL.md frontmatter.
-    """
-    base = (description or "").strip().rstrip(".")
-    if not base:
-        base = skill_name.replace("-", " ")
-    pretty = skill_name.replace("-", " ").replace("_", " ")
-
-    # Trim to a reasonable length for templated phrasing.
-    short = base if len(base) <= 80 else base[:80].rsplit(" ", 1)[0]
-
-    examples: list[str] = [
-        # English (2)
-        f"I want to {pretty}",
-        f"help me with: {short}",
-        # Spanish (2)
-        f"quiero {pretty}",
-        f"necesito ayuda con: {short}",
-        # Portuguese (1)
-        f"preciso de ajuda com: {short}",
-        # German (1)
-        f"ich brauche Hilfe bei: {short}",
-    ]
-    return examples
-
-
 def _build_yaml_block(patterns: list[dict]) -> str:
     """Render patterns as a YAML list block for embedding in SKILL.md frontmatter."""
     lines = ["routing_patterns:"]

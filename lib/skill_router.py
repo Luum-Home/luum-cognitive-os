@@ -22,7 +22,7 @@ from __future__ import annotations
 import hashlib
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
@@ -40,6 +40,15 @@ class SkillMatch:
         return f"{self.invoke_command} (confidence={self.confidence:.2f}): {self.reason}"
 
 
+@dataclass(frozen=True)
+class RoutingIntent:
+    """Language-agnostic natural-language routing intent."""
+
+    intent: str
+    description: str
+    confidence: float = 0.80
+
+
 @dataclass
 class _RoutingEntry:
     """Internal routing table entry."""
@@ -49,6 +58,7 @@ class _RoutingEntry:
     invoke_command: str
     fallback_command: Optional[str]
     reason_template: str
+    intents: List[RoutingIntent] = field(default_factory=list)
 
 
 def _compile(patterns: List[Tuple[str, float]]) -> List[Tuple[re.Pattern, float]]:
@@ -282,13 +292,46 @@ def _parse_routing_patterns_block(skill_md_path: Path) -> Optional[List[Tuple[st
     return results if results else None
 
 
-def _skill_md_to_routing_entry(skill_md: Path) -> Optional[_RoutingEntry]:
-    """Convert a SKILL.md with routing_patterns into a _RoutingEntry.
+def _parse_routing_intents_block(skill_md_path: Path) -> Optional[List[RoutingIntent]]:
+    """Read a SKILL.md and extract routing_intents if present.
 
-    Returns None if the file has no routing_patterns or cannot be parsed.
+    ``routing_intents`` are semantic descriptions of user intent. They are not
+    regexes and are intended to be evaluated by the semantic fallback layer.
     """
-    patterns_raw = _parse_routing_patterns_block(skill_md)
-    if not patterns_raw:
+    try:
+        text = skill_md_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+    if "routing_intents" not in text:
+        return None
+    fm = _parse_frontmatter(text)
+    raw = fm.get("routing_intents")
+    if not raw or not isinstance(raw, list):
+        return None
+    result: List[RoutingIntent] = []
+    for entry in raw:
+        if not isinstance(entry, dict):
+            continue
+        intent = str(entry.get("intent") or "").strip()
+        description = str(entry.get("description") or "").strip()
+        if not intent or not description:
+            continue
+        try:
+            confidence = float(entry.get("confidence", 0.80))
+        except (TypeError, ValueError):
+            confidence = 0.80
+        result.append(RoutingIntent(intent=intent, description=description, confidence=confidence))
+    return result if result else None
+
+
+def _skill_md_to_routing_entry(skill_md: Path) -> Optional[_RoutingEntry]:
+    """Convert a SKILL.md with routing metadata into a _RoutingEntry.
+
+    Returns None if the file has neither routing_patterns nor routing_intents.
+    """
+    patterns_raw = _parse_routing_patterns_block(skill_md) or []
+    intents = _parse_routing_intents_block(skill_md) or []
+    if not patterns_raw and not intents:
         return None
 
     # Determine skill name: prefer frontmatter 'name', fallback to directory name
@@ -317,6 +360,7 @@ def _skill_md_to_routing_entry(skill_md: Path) -> Optional[_RoutingEntry]:
         invoke_command=str(invoke_cmd),
         fallback_command=None,
         reason_template=f"Auto-routed via {skill_name} frontmatter",
+        intents=intents,
     )
 
 
@@ -328,8 +372,8 @@ def _load_routing_from_frontmatter(skills_root: Path) -> List[_RoutingEntry]:
       <skills_root>/packages/*/skills/*/SKILL.md
       <skills_root>/.cognitive-os/skills/*/SKILL.md
 
-    Only skills with a ``routing_patterns:`` frontmatter block are included.
-    Skills without it are silently skipped (backward-compat; migrate via ADR-174).
+    Skills with either ``routing_patterns:`` or ``routing_intents:`` frontmatter are included.
+    Regex patterns remain compatibility aliases; routing_intents carry semantic intent.
     """
     entries: List[_RoutingEntry] = []
     seen: Set[str] = set()  # deduplicate by skill_name

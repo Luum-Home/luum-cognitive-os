@@ -40,6 +40,18 @@ claude-sdk = [
 web-automation = [
     "browser-use>=0.12.6,<0.13",
 ]
+# ADR-296 — Language-agnostic semantic skill routing.
+# Multilingual ONNX embedding model (~220MB) via fastembed; consumed by
+# lib/semantic_skill_matcher.py. CPU-only, no torch. Opt-in: required only
+# when the regex skill router needs cross-language fallback. Kill switch:
+# COS_DISABLE_SEMANTIC_ROUTING=1.
+# Install with: uv sync --extra semantic-routing
+# Note on aurelio-labs/semantic-router: the live PyPI release line is stuck
+# at 0.0.3 (no Route/RouteLayer symbols exported); the 0.1.x line referenced
+# upstream has not been published. We therefore consume fastembed directly.
+semantic-routing = [
+    "fastembed>=0.6,<0.9",
+]
 testing = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",

@@ -1,47 +1,58 @@
 <!-- SCOPE: os-only -->
 ---
 name: product-answer
-description: "Use when the user asks a Cognitive OS product/commercial question such as differentiator, moat, wedge, ICP, pricing, competitors, pitch, positioning, or what claims are safe. Always prefer the cached ADR-282 product answer cards before reading broad docs."
+description: Use when the user asks a Cognitive OS product/commercial question such as differentiator, moat, wedge, ICP, pricing,
+  competitors, pitch, positioning, or what claims are safe. Always prefer the cached ADR-282 product answer cards before reading
+  broad docs.
 version: 1.0.0
 user-invocable: true
 audience: os-dev
-tags: [product, commercial, evidence, positioning, token-efficiency]
-summary_line: "Answer COS product/commercial questions from cached evidence cards, not broad repo research."
-platforms: ["claude-code", "codex", "shell"]
+tags:
+- product
+- commercial
+- evidence
+- positioning
+- token-efficiency
+summary_line: Answer COS product/commercial questions from cached evidence cards, not broad repo research.
+platforms:
+- claude-code
+- codex
+- shell
 prerequisites: []
 routing_patterns:
-  - pattern: '\b(diferenciador|factor diferenciador|moat|wedge|positioning|posicionamiento)\b'
-    confidence: 0.96
-  - pattern: '\b(product|producto|commercial|comercial)\b.{0,40}\b(question|pregunta|answer|respuesta)\b'
-    confidence: 0.90
-  - pattern: '\b(ICP|buyer|pricing|precio|competitors|competencia|pitch|landing)\b'
-    confidence: 0.86
-  - pattern: '\b(what|qué|que).{0,30}(claim|prometer|diferencia|vende|vendemos)\b'
-    confidence: 0.80
-intent_examples:
-  # English
-  - "can this help a developer who does not know best practices?"
-  - "what can this OS do for me?"
-  - "what is our differentiator or moat?"
-  - "is this useful for someone without architecture experience?"
-  # Spanish
-  - "¿este sistema operativo puede ayudar a un dev sin experiencia?"
-  - "¿puede ayudar a alguien sin conocimiento de arquitectura?"
-  - "¿cuál es nuestro diferenciador?"
-  - "¿sirve para alguien que no conoce testing?"
-  # Portuguese
-  - "pode ajudar um dev sem experiência?"
-  - "qual é o diferenciador deste sistema?"
-  - "este SO serve para alguém sem conhecimento de arquitetura?"
-  # German
-  - "ist das für einen Entwickler ohne Erfahrung nützlich?"
-  - "was ist unser Alleinstellungsmerkmal?"
-  - "kann das einem Entwickler ohne Architekturkenntnisse helfen?"
-  # French
-  - "est-ce que ça peut aider un développeur sans expérience?"
-  - "quel est notre facteur différenciateur?"
-  # Italian
-  - "può aiutare uno sviluppatore senza esperienza?"
+- pattern: \bproduct[- ]?answer\b
+  confidence: 0.99
+- pattern: \b(diferenciador|factor diferenciador|moat|wedge|positioning|posicionamiento)\b
+  confidence: 0.96
+- pattern: \b(product|producto|commercial|comercial)\b.{0,40}\b(question|pregunta|answer|respuesta)\b
+  confidence: 0.9
+- pattern: \b(ICP|buyer|pricing|precio|competitors|competencia|pitch|landing)\b
+  confidence: 0.86
+- pattern: \b(what|qué|que).{0,30}(claim|prometer|diferencia|vende|vendemos)\b
+  confidence: 0.8
+routing_intents:
+- intent: product_capability_question
+  description: User asks what Cognitive OS can do, whether it is useful for their situation, or whether it can help a developer
+    or team.
+  confidence: 0.88
+- intent: value_proposition_question
+  description: User asks who Cognitive OS is for, what problems it solves, why to use it, or what differentiates it from alternatives.
+  confidence: 0.88
+- intent: commercial_positioning_question
+  description: User asks about Cognitive OS positioning, ICP, buyer, pricing, competitors, pitch, landing page claims, moat,
+    wedge, or safe product claims.
+  confidence: 0.88
+# Multilingual example utterances (ADR-296). Reference paraphrases the semantic
+# router grounds against when a user question is verbose or topically diffuse.
+- "can this help a developer who does not know best practices?"
+- "is this OS useful for someone without architecture experience?"
+- "what can this OS do for me?"
+- "¿este SO me puede ayudar como desarrollador?"
+- "¿puede ayudar a alguien sin conocimiento de buenas prácticas, arquitectura o seguridad?"
+- "¿sirve este sistema operativo para alguien que no conoce testing o documentación?"
+- "este SO serve para um desenvolvedor sem experiência em arquitetura?"
+- "ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?"
+- "est-ce que ce SO peut aider un développeur sans expérience?"
 ---
 
 # Product Answer
