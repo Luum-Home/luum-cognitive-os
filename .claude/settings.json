@@ -23,19 +23,23 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/reaper-daemon-launcher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/reaper-daemon-launcher.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-watchdog-launcher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-watchdog-launcher.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/docker-drift-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/docker-drift-detector.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/cos-executor-daemon-launcher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/cos-executor-daemon-launcher.sh\"",
+            "async": true
           },
           {
             "type": "command",
@@ -65,7 +69,8 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/aspirational-audit-weekly.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/aspirational-audit-weekly.sh\"",
+            "async": true
           },
           {
             "type": "command",
@@ -109,6 +114,15 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/cos-session-start-projector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/skill-drift-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-start-stack-recommend.sh\"",
+            "async": true
           }
         ]
       }
