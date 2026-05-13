@@ -22,11 +22,12 @@ The OS follows a 3-layer architecture: universal OS agentic primitives in `hooks
 | **Rules** | `rules/` | Governance rules loaded contextually — compact index at `rules/RULES-COMPACT.md` |
 | **Skills** | `skills/` | Reusable SKILL.md procedures invoked by agents |
 | **Config** | `cognitive-os.yaml` | Single source of truth for phase, budget, infrastructure |
-| **Engram** | MCP memory plugin | Persistent memory across sessions (decisions, bugs, discoveries) |
+| **Engram** | MCP memory plugin | Persistent memory across sessions (decisions, bugs, discoveries). v3 adds evidence-grounded claims, a dry-run/approved write gate, a BM25 retrieval wrapper, and portable bundle export/import (ADR-287). |
 | **Metrics** | `.cognitive-os/metrics/*.jsonl` | JSONL append-only logs for all runtime events |
-| **Lib** | `lib/` | Python modules: cost tracking, skill routing, escalation detection, etc. |
+| **Lib** | `lib/` | Python modules: cost tracking, skill routing, escalation detection, etc. ADR-290 adds five reusable agent quality primitives: `lazy_imports.py` (thread-safe deferred imports), `hook_event_types.py` (typed dataclasses for Claude Code hook payloads), `mcp_thread_bridge.py` (sync→async bridge with dedicated event loop), quality scoring extension of `engram_wave3_schema.py` + `engram_fts5_search.py` (`min_quality` filter), and `agent_reflection.py` (bounded iterative critique loop). |
 | **Templates** | `templates/` | Prompt composition templates (agent-preamble, quality-gates, error-recovery) |
 | **Squads** | `squads/` | Squad YAML definitions for multi-agent team organization |
+| **Agent service** | `packages/agent-service/` | Optional HTTP + SSE surface that exposes the agent runtime to first-party clients independently of any IDE harness (ADR-291). |
 
 Hooks wire into the Claude Code hook system. The hook chain is: SessionStart initializes state → PreToolUse gates run before every tool call → PostToolUse validates results → Stop records session metrics.
 
@@ -192,7 +193,7 @@ No project-specific MCP servers are registered in `.claude/settings.json`. MCP s
 
 Skills follow the open SKILL.md standard. Each skill lives at `skills/{name}/SKILL.md` with YAML frontmatter and step-by-step instructions. Auto-generated skills are at `skills/auto-generated/`.
 
-Key skills: `/sdd-new`, `/sdd-apply`, `/sdd-verify`, `/scout`, `/error-analyzer`, `/agent-kpis`, `/cognitive-os-status`, `/capability-snapshot`, `/optimize-skill`, `/sandbox-sample`.
+Key skills: `/sdd-new`, `/sdd-apply`, `/sdd-verify`, `/scout`, `/error-analyzer`, `/agent-kpis`, `/cognitive-os-status`, `/capability-snapshot`, `/optimize-skill`, `/sandbox-sample`, `/browser-task` (web automation, opt-in via `uv sync --extra web-automation`, ADR-288).
 
 Run `/skill-registry` to regenerate the skill index at `.atl/skill-registry.md`.
 

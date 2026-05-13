@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
-  "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 105,
+  "_description": "Minimal security profile — core safety only. For exploration and single-dev sessions where speed matters.",
+  "_hook_count": 107,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -75,6 +75,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/cos-session-start-projector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-drift-detector.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-start-stack-recommend.sh\"",
+            "async": true
           }
         ]
       }

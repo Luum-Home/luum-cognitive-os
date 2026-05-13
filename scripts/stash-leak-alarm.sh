@@ -44,10 +44,13 @@ if [ "$age_seconds" -ge "$BLOCK_TTL" ]; then
 fi
 
 python3 - "$ALARM_FILE" "$stash_ref" "$stash_message" "$age_seconds" "$file_count" "$blocking" <<'PY'
-import json, sys, datetime
+import json
+import sys
+from datetime import datetime, timezone
+
 path, ref, msg, age, count, blocking = sys.argv[1:]
 payload = {
-    "detected_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+    "detected_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
     "stash_ref": ref,
     "stash_message": msg,
     "age_seconds": int(age),

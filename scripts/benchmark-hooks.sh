@@ -46,6 +46,35 @@ if ! command -v jq >/dev/null 2>&1; then
   exit 1
 fi
 
+run_hook_with_timeout() {
+  local hook_command="$1"
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 5 bash -c "$hook_command" </dev/null >/dev/null 2>/dev/null
+    return $?
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c '
+import subprocess
+import sys
+
+try:
+    completed = subprocess.run(
+        sys.argv[1],
+        shell=True,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        timeout=5,
+    )
+    raise SystemExit(completed.returncode)
+except subprocess.TimeoutExpired:
+    raise SystemExit(124)
+' "$hook_command"
+    return $?
+  fi
+  bash -c "$hook_command" </dev/null >/dev/null 2>/dev/null
+}
+
 # Extract all hooks with their event type
 HOOKS_JSON=$(jq -r '
   .hooks | to_entries[] | .key as $event |
@@ -90,8 +119,10 @@ while IFS=$'\t' read -r event command is_async; do
 
   # Run with timeout and measure
   start_ns=$(date +%s%N 2>/dev/null || echo "$(date +%s)000000000")
-  timeout 5 bash -c "$command" </dev/null >/dev/null 2>/dev/null
+  set +e
+  run_hook_with_timeout "$command"
   exit_code=$?
+  set -e
   end_ns=$(date +%s%N 2>/dev/null || echo "$(date +%s)000000000")
 
   # Calculate duration
