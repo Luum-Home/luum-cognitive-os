@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# ADR-299 — Enrich SKILL.md routing_intents with LLM-generated multilingual
+# user utterances. Closes the SkillRouter description-only accuracy gap.
+#
+# Usage:
+#   scripts/cos-skill-description-enrich --dry-run --skills product-answer
+#   scripts/cos-skill-description-enrich --skills all --languages en,es,pt
+#
+# See lib/skill_description_enricher.py for the contract.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+if [[ -x "$REPO_ROOT/.venv/bin/python" ]]; then
+  PYTHON="$REPO_ROOT/.venv/bin/python"
+else
+  PYTHON="${PYTHON:-python3}"
+fi
+
+cd "$REPO_ROOT"
+exec "$PYTHON" -m lib.skill_description_enricher "$@"
