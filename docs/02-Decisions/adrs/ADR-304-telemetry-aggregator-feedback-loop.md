@@ -184,11 +184,11 @@ Never auto-applied. Operator triages the queue and decides.
 
 ### Risks accepted
 
-- Aggregator semantics are deliberately tail-windowed (`last_N_records`).
-  This means an SLO can be silent if no matching record appears in the
-  window. Mitigation: when seeding SLOs, choose windows that match real
-  emission cadence (e.g., subagent SLOs need windows large enough to include
-  subagent samples).
+- Aggregator windows are applied **after** any declared filter. This is
+  required for sparse events such as `SubagentStart` inside global streams
+  like `hook-timing.jsonl`; tailing first can erase the signal and incorrectly
+  report `no_data`. Large streams may require retention/rollup work as SLO
+  coverage expands.
 - Self-tuning proposer is gated on a schema field (`stdout_bytes`) not yet
   emitted by `hook-timing-wrapper.sh`. Until that field is added, this slice
   is dormant by design. The graceful-skip is verified by

@@ -11,7 +11,7 @@
 #   - Install source / last session
 #   - Health checks (3 asserts)
 #
-# Flags: --verbose, --json, --help
+# Flags: --verbose, --json, --observability, --help
 #
 # Example:
 #   bash scripts/cos-status.sh
@@ -79,6 +79,7 @@ active_settings_driver_path() {
 
 MODE="pretty"   # pretty | json
 VERBOSE=0
+OBSERVABILITY=0
 
 usage() {
   cat <<EOF
@@ -90,6 +91,8 @@ Usage:
 Flags:
   --verbose    Expand each section with individual names
   --json       Machine-parseable JSON output (implies no color)
+  --observability
+               Show ADR-304 telemetry SLO status only
   --help       Show this help and exit
 
 Reads:
@@ -114,11 +117,90 @@ while [ "$#" -gt 0 ]; do
   case "$1" in
     --verbose|-v) VERBOSE=1 ;;
     --json)       MODE="json" ;;
+    --observability) OBSERVABILITY=1 ;;
     --help|-h)    usage; exit 0 ;;
     *) echo "Unknown flag: $1" >&2; usage >&2; exit 2 ;;
   esac
   shift
 done
+
+
+# ── Observability-only surface (ADR-304) ─────────────────────────────────
+
+emit_observability_status() {
+  local mode="$1"
+  PYTHONPATH="$PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$PROJECT_ROOT" "$mode" <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+
+import yaml
+
+from lib.telemetry_aggregator import aggregate_streams
+
+repo = Path(sys.argv[1])
+mode = sys.argv[2]
+manifest = repo / "manifests/observability-slo.yaml"
+queue = repo / ".cognitive-os/tasks/control-plane-remediation.jsonl"
+report = aggregate_streams(repo, manifest, enable_self_tuning=False)
+snapshot = report.to_snapshot_dict()
+
+queue_records = []
+if queue.exists():
+    for line in queue.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if not line.strip():
+            continue
+        try:
+            queue_records.append(json.loads(line))
+        except json.JSONDecodeError:
+            pass
+telemetry_queue = [r for r in queue_records if r.get("audit_id") == "telemetry-aggregator"]
+subprocess_noise = [
+    r for r in queue_records
+    if "subprocess-timeout" in str(r.get("code", ""))
+    or "subprocess-timeout" in str(r.get("audit_id", ""))
+    or "subprocess-timeout" in str(r.get("message", ""))
+]
+snapshot["operator"] = {
+    "manifest": str(manifest.relative_to(repo)),
+    "remediation_queue": str(queue.relative_to(repo)),
+    "queue_records": len(queue_records),
+    "telemetry_queue_records": len(telemetry_queue),
+    "subprocess_timeout_noise_records": len(subprocess_noise),
+}
+
+if mode == "json":
+    json.dump(snapshot, sys.stdout, indent=2, sort_keys=True)
+    sys.stdout.write("\n")
+    raise SystemExit(0)
+
+summary = snapshot["summary"]
+print("COS Observability")
+print("═════════════════")
+print(f"Manifest: {snapshot['operator']['manifest']}")
+print(f"SLOs: {summary['n_evaluations']} evaluated, {summary['n_breaches']} breach(es), {summary['n_stream_missing']} missing stream(s)")
+print(f"Remediation queue: {snapshot['operator']['queue_records']} total rows, {snapshot['operator']['telemetry_queue_records']} telemetry rows, {snapshot['operator']['subprocess_timeout_noise_records']} subprocess-timeout noise rows")
+print("")
+print("SLO status:")
+for ev in snapshot["evaluations"]:
+    status = ev.get("status", "unknown").upper()
+    sid = ev.get("slo_id", "?")
+    if "value" in ev:
+        target = f"{ev.get('comparator')} {ev.get('target')}"
+        samples = ev.get("window_summary", {}).get("n_samples")
+        sample_text = f", samples={samples}" if samples is not None else ""
+        print(f"  - {sid}: {status} value={ev.get('value'):.3f} target {target}{sample_text}")
+    else:
+        reason = ev.get("window_summary", {}).get("reason", "")
+        suffix = f" ({reason})" if reason else ""
+        print(f"  - {sid}: {status}{suffix}")
+PYEOF
+}
+
+if [ "$OBSERVABILITY" -eq 1 ]; then
+  emit_observability_status "$MODE"
+  exit 0
+fi
 
 # ── Color helpers ──────────────────────────────────────────────────────
 # Colorize only if stdout is a TTY AND not --json.

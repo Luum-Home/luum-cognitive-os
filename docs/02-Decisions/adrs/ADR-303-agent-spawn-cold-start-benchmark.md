@@ -27,8 +27,10 @@ classification_basis: |
   (lib/agent_spawn_benchmark.py + scripts/cos-agent-spawn-benchmark). It
   measures wall-clock latency and token payload injected at every sub-agent
   spawn, persists records to .cognitive-os/metrics/agent-spawn-benchmark.jsonl,
-  and gates regressions through tests/unit/test_agent_spawn_budget.py. No LLM
-  call is made; measurement is local hook execution against synthetic stdin.
+  persists records to .cognitive-os/metrics/agent-spawn-benchmark.jsonl.
+  As of ADR-304, synthetic wall-clock is smoke/lower-bound only; real
+  latency budget authority lives in manifests/observability-slo.yaml over
+  production hook-timing telemetry. No LLM call is made by this harness.
 ---
 
 # ADR-303: Sub-Agent Spawn Cold-Start Benchmark
@@ -66,7 +68,8 @@ SessionStart benchmark:
    - Measures stdout bytes emitted (= injected context) and estimates tokens
      (`bytes // 4`, matching ADR-028 convention).
    - Sizes the preamble, RULES-COMPACT.md, and CATALOG-COMPACT.md statically.
-   - Computes SLO pass/breach against the wall and token budgets.
+   - Computes synthetic smoke status and payload budget status; real wall-clock
+     SLO authority is delegated to ADR-304 telemetry aggregation.
 
 2. **`scripts/cos-agent-spawn-benchmark`** — bash wrapper.
    - `--json` emits the record to stdout.
@@ -75,16 +78,19 @@ SessionStart benchmark:
    - Defaults to appending one record to
      `.cognitive-os/metrics/agent-spawn-benchmark.jsonl`.
 
-3. **Budget regression test** — `tests/unit/test_agent_spawn_budget.py`,
-   modelled on `test_startup_budget.py`. Auto-skips on fresh clones.
+3. **Budget regression test** — `tests/unit/test_agent_spawn_budget.py`.
+   Payload checks still use the ADR-303 record. Real latency checks read the
+   ADR-304 SLO manifest and evaluate production `hook-timing.jsonl` telemetry.
+   Auto-skips real latency on fresh clones without production telemetry.
 
 4. **Default budgets** (env-overridable):
    - `AGENT_SPAWN_BUDGET_MS=3000` — 3 seconds total spawn overhead.
    - `AGENT_SPAWN_TOKEN_BUDGET=20000` — 20K tokens of injected context.
 
-   These are **provisional baselines**, not committed SLOs. A follow-up ADR
-   will propose firm SLO targets once a baseline distribution has been
-   collected across machines.
+   The wall budget is a synthetic smoke threshold, not the committed real
+   latency SLO. ADR-304 owns the real `subagent-spawn-p95` /
+   `subagent-spawn-p99` budgets in `manifests/observability-slo.yaml`. The
+   payload budget remains a static ADR-303 guard.
 
 ### Contract
 
@@ -97,7 +103,8 @@ the context injector **must** be re-benchmarked. Specifically:
 - Edits to `rules/RULES-COMPACT.md` (changes per-spawn payload)
 - Edits to `skills/CATALOG-COMPACT.md` (~170-skill list)
 
-Re-run: `bash scripts/cos-agent-spawn-benchmark`. The budget test guards CI.
+Re-run: `bash scripts/cos-agent-spawn-benchmark` for payload/smoke data and
+`scripts/cos status --observability` for authoritative real latency status.
 
 ## Consequences
 
@@ -114,13 +121,13 @@ Re-run: `bash scripts/cos-agent-spawn-benchmark`. The budget test guards CI.
 
 - Wall-clock measurement runs hooks against synthetic stdin; some hooks may
   short-circuit faster than they would for a real Agent payload, so the
-  numbers are a **lower bound**. Calibration against real-Agent telemetry is
-  follow-up work.
+  numbers are a **lower bound**. ADR-304 production telemetry is the calibrated
+  authority for latency.
 - Token estimator is `bytes // 4`. True tokenisation will diverge by ±15% per
   model family — adequate for budget gating, not for precise cost prediction.
-- Provisional budgets (3 s / 20 K tokens) are not based on a measured
-  baseline distribution. The first follow-up ADR will tighten or relax these
-  after a week of records have been collected.
+- The 3 s synthetic wall threshold must not be cited as evidence that real
+  sub-agent spawn is healthy. Use ADR-304's `subagent-spawn-p95` and
+  `subagent-spawn-p99` evaluations instead.
 
 ## Verification
 
@@ -134,9 +141,11 @@ python3 scripts/cos-adr-implementation-audit.py --strict
 
 ## SLO Target
 
-**TBD.** This ADR records the baseline measurement infrastructure only. A
-follow-up ADR will propose firm wall-clock and payload SLOs against the first
-N records collected from the metrics JSONL.
+Latency SLO authority moved to ADR-304. The executable targets are declared in
+`manifests/observability-slo.yaml` as `subagent-spawn-p95` and
+`subagent-spawn-p99` over `.cognitive-os/metrics/hook-timing.jsonl`. This ADR
+keeps the synthetic harness as a smoke/lower-bound check and owns the static
+per-spawn payload budget.
 
 ## References
 
