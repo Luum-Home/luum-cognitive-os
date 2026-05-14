@@ -47,6 +47,33 @@ def test_unknown_triage_groups_declared_both_os_internal_heavy(tmp_path: Path) -
     assert "rule-missing-scope-marker" in triage["rows"][0]["structural_findings"]
 
 
+def test_unknown_triage_accepts_classifier_paired_portability_test_key(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    primitive = root / "hooks" / "_lib" / "bypass-resolver.sh"
+    primitive.parent.mkdir(parents=True)
+    primitive.write_text("#!/usr/bin/env bash\n# SCOPE: both\n# Uses .cognitive-os/ and manifests/ for bypass governance.\n")
+    write_report(
+        root,
+        [
+            {
+                "path": "hooks/_lib/bypass-resolver.sh",
+                "declared_scope": "both",
+                "suggested_scope": "unknown",
+                "decision_source": "insufficient-evidence",
+                "evidence": [],
+                "paired_portability_test": "tests/red_team/portability/test_bypass-resolver.py",
+                "next_action": "add metadata",
+            }
+        ],
+    )
+
+    triage = primitive_scope_unknown_triage.build_triage(root)
+
+    row = triage["rows"][0]
+    assert "declared-both-missing-paired-proof" not in row["gap_tags"]
+    assert row["bucket"] == "os-only-semantic-candidate"
+
+
 def test_unknown_triage_groups_project_only_candidate(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     primitive = root / "scripts" / "project_scaffold.py"

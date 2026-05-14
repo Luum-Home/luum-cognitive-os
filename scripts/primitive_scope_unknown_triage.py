@@ -106,7 +106,8 @@ def _gap_tags(row: dict[str, Any], contract: PrimitiveContract) -> list[str]:
         tags.append("missing-lifecycle-row")
     if "consumer-availability" not in sources:
         tags.append("missing-consumer-availability-row")
-    if row.get("declared_scope") == "both" and row.get("paired_proof") is None:
+    paired_proof = row.get("paired_portability_test") or row.get("paired_proof")
+    if row.get("declared_scope") == "both" and paired_proof is None:
         tags.append("declared-both-missing-paired-proof")
     if row.get("decision_source") == "conflicting-distribution-evidence":
         tags.append("conflicting-distribution-evidence")

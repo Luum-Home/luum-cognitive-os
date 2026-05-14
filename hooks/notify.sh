@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PostToolUse hook: Send notifications for SDD phase completions
 # Fires on "Agent" tool use — detects SDD phase results and notifies via lib/notifications.py
 # Must complete in <5 seconds
