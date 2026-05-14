@@ -43,6 +43,7 @@ def test_dequeue_notify_emits_dispatch_and_metric_when_slot_available(tmp_path: 
 def test_memory_prefetch_writes_cache_when_provider_returns_context(tmp_path: Path) -> None:
     lib = tmp_path / "lib"
     lib.mkdir()
+    (lib / "__init__.py").write_text("# test stub package\n")
     (lib / "memory_manager.py").write_text(
         "class EngramMemoryProvider:\n"
         "    def is_available(self): return True\n"
