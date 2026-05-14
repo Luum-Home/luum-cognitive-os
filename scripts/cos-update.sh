@@ -544,6 +544,34 @@ pull_images_if_requested() {
   fi
 }
 
+
+# ---------------------------------------------------------------------------
+# Dependency maintenance — read-only coverage/triage/ratchet report.
+# ADR-308 keeps update paths non-mutating for host tools: this reports drift
+# and prints an explicit installer dry-run command; operators choose --apply.
+# ---------------------------------------------------------------------------
+run_dependency_maintenance() {
+  local mode="update"
+  if [[ "${COS_DEPS_MAINTENANCE:-1}" == "0" ]]; then
+    note "dependency maintenance skipped (COS_DEPS_MAINTENANCE=0)"
+    return 0
+  fi
+  if [[ ! -x "${PROJECT_ROOT}/scripts/cos-deps-maintain" ]]; then
+    warn "scripts/cos-deps-maintain not found — skipping dependency maintenance"
+    return 0
+  fi
+  local strict_flag=""
+  if [[ "${COS_DEPS_RATCHET_STRICT:-0}" == "1" ]]; then
+    strict_flag="--strict"
+  fi
+  note "Running dependency maintenance (${mode}, advisory unless COS_DEPS_RATCHET_STRICT=1)..."
+  if bash "${PROJECT_ROOT}/scripts/cos-deps-maintain" --mode "$mode" --profile default ${strict_flag} >&2; then
+    return 0
+  fi
+  warn "dependency maintenance reported strict failures; continuing because update must not partially strand the install"
+  return 0
+}
+
 # ---------------------------------------------------------------------------
 # Verification phase
 # ---------------------------------------------------------------------------
@@ -680,6 +708,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - sync Python deps via uv sync if pyproject.toml changed"
   say "  - regenerate active settings driver if the profile script changed"
   say "  - register mcps via scripts/register-mcps.sh if manifest changed"
+  say "  - run dependency maintenance coverage/triage/ratchet report"
   say "  - run hooks/self-install.sh"
   say "  - capture post-state snapshot and diff against pre-state"
   if [[ "$NO_VERIFY" == "true" ]]; then
@@ -718,6 +747,10 @@ regenerate_settings_if_profile_changed || warn "settings regeneration encountere
 recreate_docker_if_compose_changed || warn "docker container recreate encountered errors (see log above)"
 
 register_mcps_if_changed
+
+# Report dependency manifest/tool drift after source-level syncs and before
+# self-install. This is advisory by default and safe in offline environments.
+run_dependency_maintenance
 
 apply_rc=0
 if ! run_self_install; then

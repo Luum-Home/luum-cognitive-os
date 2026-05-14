@@ -273,6 +273,29 @@ else
   warn "Claude Code CLI not found. Install from: https://docs.anthropic.com/en/docs/claude-code"
 fi
 
+
+# ── Dependency maintenance coverage (ADR-308) ───────────────────────
+# Read-only/advisory: detects installer manifest drift and prints the
+# explicit cos-deps-install dry-run command. It never auto-installs tools.
+run_dependency_maintenance() {
+  if [ "${COS_DEPS_MAINTENANCE:-1}" = "0" ]; then
+    warn "Dependency maintenance check skipped (COS_DEPS_MAINTENANCE=0)"
+    return 0
+  fi
+  if [ -x "$PROJECT_DIR/scripts/cos-deps-maintain" ]; then
+    info "Running dependency maintenance check (install surface)..."
+    bash "$PROJECT_DIR/scripts/cos-deps-maintain" --mode install --profile default \
+      || warn "Dependency maintenance check reported warnings; run scripts/cos-deps-maintain --mode install --json for details"
+  else
+    warn "scripts/cos-deps-maintain not found; skipping dependency maintenance check"
+  fi
+}
+
+# ── 9b. Dependency maintenance check ───────────────────────────────
+echo ""
+info "--- Dependency maintenance ---"
+run_dependency_maintenance
+
 # ── 10. Verify setup ───────────────────────────────────────────────
 echo ""
 info "Running doctor check..."

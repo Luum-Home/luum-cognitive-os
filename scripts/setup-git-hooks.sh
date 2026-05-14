@@ -197,6 +197,13 @@ fi
 if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/orchestrator_claim_gate.py" ]; then
   python3 "$_COS_DIR/scripts/orchestrator_claim_gate.py" --project-dir "$_COS_DIR" --mode pre-push --command "git push" --metrics >&2 || exit 2
 fi
+if [ -n "$_COS_DIR" ] && [ -x "$_COS_DIR/scripts/cos-deps-maintain" ]; then
+  _COS_DEPS_STRICT_FLAG=""
+  if [ "${COS_DEPS_RATCHET_STRICT:-0}" = "1" ]; then
+    _COS_DEPS_STRICT_FLAG="--strict"
+  fi
+  bash "$_COS_DIR/scripts/cos-deps-maintain" --root "$_COS_DIR" --mode pre-push --profile default $_COS_DEPS_STRICT_FLAG >&2 || exit 2
+fi
 _COS_PUSH_ALLOWED=false
 while read -r _local_ref _local_sha _remote_ref _remote_sha; do
   _tag_ref="${_local_ref#refs/tags/}"
@@ -210,7 +217,7 @@ $_COS_PRE_PUSH_REFS
 EOF
 if [ "$_COS_PUSH_ALLOWED" = true ] && [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   (sleep 2 && echo "" && echo "[COS] Updating projects after push..." && \
-   bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /') &
+   COS_DEPS_MAINTENANCE_ALREADY=1 COS_DEPS_MAINTENANCE_ALREADY=1 bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /') &
 else
   echo "[COS] Auto-update skipped for this push (only main/master/tag pushes propagate)." >&2
 fi
@@ -225,10 +232,15 @@ HOOKEOF
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
 _COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}")"
+if [ -n "$_COS_DIR" ] && [ -x "$_COS_DIR/scripts/cos-deps-maintain" ]; then
+  echo ""
+  echo "[COS] Checking dependency maintenance drift..."
+  bash "$_COS_DIR/scripts/cos-deps-maintain" --root "$_COS_DIR" --mode post-merge --profile default 2>&1 | sed 's/^/[COS] /' || true
+fi
 if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   echo ""
   echo "[COS] Checking for projects to update..."
-  bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /'
+  COS_DEPS_MAINTENANCE_ALREADY=1 COS_DEPS_MAINTENANCE_ALREADY=1 bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /'
 fi
 # COS_AUTO_UPDATE END
 HOOKEOF
