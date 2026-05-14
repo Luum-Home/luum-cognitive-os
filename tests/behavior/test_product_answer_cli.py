@@ -4,8 +4,42 @@ import json
 import subprocess
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[2]
 CLI = ROOT / "scripts" / "cos-product-answer"
+
+
+def _product_manifest_source_paths() -> set[str]:
+    paths: set[str] = set()
+    question_bank = yaml.safe_load((ROOT / "manifests" / "product-question-bank.yaml").read_text(encoding="utf-8"))
+    claim_evidence = yaml.safe_load((ROOT / "manifests" / "product-claim-evidence.yaml").read_text(encoding="utf-8"))
+    for question in question_bank["questions"].values():
+        paths.update(str(item) for item in question.get("approved_sources", []) or [])
+    for claim in claim_evidence["claims"].values():
+        paths.update(str(item) for item in claim.get("evidence", []) or [])
+    return paths
+
+
+def test_product_answer_manifest_sources_are_clean_checkout_portable() -> None:
+    """Product answers must not depend on local-only strategy/cache files."""
+    missing: list[str] = []
+    untracked: list[str] = []
+    for rel in sorted(_product_manifest_source_paths()):
+        if not (ROOT / rel).exists():
+            missing.append(rel)
+            continue
+        tracked = subprocess.run(
+            ["git", "ls-files", "--error-unmatch", rel],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if tracked.returncode != 0:
+            untracked.append(rel)
+    assert missing == []
+    assert untracked == []
 
 
 def test_product_answer_cli_answers_differentiator_json() -> None:
@@ -212,4 +246,3 @@ def test_product_answer_cli_routes_ssr_primitive_enablement_question() -> None:
     assert "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "ssr_primitive_enablement_gap_backlog" for claim in report["claims"])
     assert "COS autonomously rewrites itself from chat" in report["unsafe_claims_to_avoid"]
-

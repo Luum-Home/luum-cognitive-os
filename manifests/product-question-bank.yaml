@@ -21,7 +21,6 @@ questions:
     - posicionamiento
     - positioning
     approved_sources:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/product-messaging.md
     - docs/08-References/business/cos-vs-vanilla-dx-review.md
     - docs/08-References/business/value-proposition.md
@@ -70,7 +69,6 @@ questions:
     - no es diferenciador
     - tracing
     approved_sources:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/feature-reality-audit.md
     - docs/08-References/business/product-messaging.md
     related_claims:
@@ -182,7 +180,6 @@ questions:
     - slogan
     - frase
     approved_sources:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/product-messaging.md
     - docs/08-References/business/value-proposition.md
     related_claims:
@@ -217,7 +214,6 @@ questions:
     - platform
     - go-to-market
     approved_sources:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/value-proposition.md
     - docs/08-References/business/cos-vs-vanilla-dx-review.md
     related_claims:
@@ -255,8 +251,7 @@ questions:
     - cloud
     - enterprise
     approved_sources:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - .cognitive-os/strategy/00-first-approach.md
+    - docs/08-References/business/roadmap.md
     related_claims:
     - pricing_strategy_internal_only
     - icp_vp_engineering
@@ -296,7 +291,6 @@ questions:
     - galileo
     - comparison
     approved_sources:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/feature-reality-audit.md
     - docs/08-References/business/product-messaging.md
     - docs/06-Daily/reports/external-tools-radar-INDEX.md
@@ -589,11 +583,10 @@ questions:
     - without knowledge
     - gaps de conocimiento
     approved_sources:
-    - skills/security-audit/SKILL.md
-    - skills/test-driven-development/SKILL.md
+    - skills/security-red-team/SKILL.md
+    - skills/run-tests/SKILL.md
     - skills/code-review/SKILL.md
-    - skills/document-feature/SKILL.md
-    - docs/02-Decisions/adrs/ADR-296-language-agnostic-skill-routing.md
+    - docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md
     related_claims:
     - differentiator_behavioral_governance
     answer_short: Yes. COS is designed to amplify without requiring prior knowledge of terminology, best practices, security, testing, or architecture. The developer describes the problem in natural language; COS maps it to the correct technical concept and executes.
@@ -633,8 +626,8 @@ questions:
     - typescript
     - language
     approved_sources:
-    - docs/02-Decisions/adrs/ADR-296-language-agnostic-skill-routing.md
-    - docs/02-Decisions/adrs/ADR-298-routing-benchmark-harness.md
+    - docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md
+    - docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md
     - docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md
     - lib/semantic_skill_matcher.py
     - skills/detect-stack/SKILL.md
