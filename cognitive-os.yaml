@@ -1405,6 +1405,20 @@ harness:
       scope: both
       default_projection: true
 
+    subagent-budget-enforcer:
+      script: hooks/subagent-budget-enforcer.sh
+      event: PostToolUse
+      matcher: ""
+      async: false
+      scope: both
+      default_projection: true
+      codex_projection: gap
+      codex_gap_reason: >
+        Codex v0.126.0-alpha.8 does not emit SubagentStart and only emits
+        PostToolUse for Bash. The hook is safe in Codex but cannot observe
+        first-class subagent tool calls until Codex exposes subagent lifecycle
+        hooks. Claude Code projection provides current enforcement.
+
     rate-limit-detector:
       script: hooks/rate-limit-detector.sh
       event: PostToolUse

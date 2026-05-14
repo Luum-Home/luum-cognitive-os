@@ -6,12 +6,10 @@ look like human language. It does not maintain a list of Spanish/English words.
 
 ADR-296 + ADR-297 context (post-2026-05-13):
 
-  Findings reported by this audit are no longer "broken right now" — the
+  Medium/high findings reported by this audit are actionable routing debt. Low-severity compatibility inventory is no longer "broken right now" — the
   semantic matcher (ADR-296) and the LLM tie-breaker (ADR-297) catch
   multilingual prompts independently of regex coverage. Findings are now
-  **tech debt to clean up over time** plus a **regression gate**: each
-  language-dependent pattern represents work that should migrate to the
-  semantic path (or be deleted if redundant). The
+  **tech debt to clean up over time** plus a **regression gate**: each medium/high `regex_without_intents` pattern represents work that should migrate to the semantic path. Low-severity `regex_with_intents` patterns are benchmarked compatibility fallback candidates. The
   `test_language_dependence_audit_does_not_regress` test in
   tests/unit/test_semantic_skill_matcher.py caps the total finding count
   so new monolingual patterns cannot land silently.
@@ -358,9 +356,6 @@ def _pattern_finding(
         return None
     if score < 2 and all(guess.language == "und" for guess in guesses):
         return None
-    severity = "high" if score >= 5 and any(guess.detector != "heuristic" for guess in guesses) else "medium"
-    if score < 4:
-        severity = "low"
     category, category_reason, has_intents, has_summary = _classify_pattern(
         path=path,
         primitive_type=primitive_type,
@@ -368,6 +363,17 @@ def _pattern_finding(
         pattern=pattern,
         frontmatter=frontmatter,
     )
+    severity = "high" if score >= 5 and any(guess.detector != "heuristic" for guess in guesses) else "medium"
+    if score < 4:
+        severity = "low"
+
+    # ADR-302 policy: not every natural-language regex is actionable debt.
+    # Once semantic metadata exists, regex_with_intents is a compatibility
+    # fallback to remove only with benchmark evidence. Localized skills are an
+    # explicit exception. Keep both in --min-severity low inventory, but do not
+    # report them as medium/high actionable findings.
+    if category in {"regex_with_intents", "localized_skill", "explicit_alias"}:
+        severity = "low"
     return RoutingPatternFinding(
         file=str(path.relative_to(root)),
         primitive=primitive,
@@ -465,7 +471,7 @@ def render_markdown(report: AuditReport) -> str:
         "",
     ]
     if not report.findings:
-        lines.append("No language-dependent routing patterns found.")
+        lines.append("No actionable language-dependent routing patterns found at the selected severity threshold.")
         return "\n".join(lines) + "\n"
     category_counts: dict[str, int] = {}
     for finding in report.findings:
@@ -483,7 +489,7 @@ def render_markdown(report: AuditReport) -> str:
             f"| {finding.severity} | `{finding.category}` | `{finding.file}` | {finding.line or ''} | `{finding.primitive}` | {languages} | `{pattern}` |"
         )
     lines.append("")
-    lines.append("Recommendation: first fix `regex_without_intents` by adding `summary_line` and `routing_intents`, treat `regex_with_intents` as benchmarked compatibility fallback, keep `explicit_alias`, and document any `localized_skill` exception.")
+    lines.append("Recommendation: medium/high findings are actionable. First fix `regex_without_intents` by adding `summary_line` and `routing_intents`; keep `regex_with_intents` in low-severity compatibility inventory until benchmark evidence supports deletion; keep `explicit_alias`, and document any `localized_skill` exception.")
     return "\n".join(lines) + "\n"
 
 

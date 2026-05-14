@@ -193,7 +193,7 @@ PYASYNC
     private-mode-metrics-gate.sh session-end-reap.sh control-plane-audit-hourly.sh state-retention-audit.sh skill-tracker.sh stash-budget-warn.sh \
     post-git-orphan-notifier.sh skill-router-bash-gate.sh orchestrator-skill-invocation-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh branch-ownership-release.sh \
-    skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh context-watchdog.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
+    skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh context-watchdog.sh subagent-budget-enforcer.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
     clean-room-ast-similarity-gate.sh lib-symlink-divergence-detector.sh external-pattern-cleanroom-gate.sh adoption-freeze-gate.sh \
     legal-review-required-on-runtime-import.sh \
     dependency-license-classifier.sh research-to-runtime-firewall.sh \
@@ -263,7 +263,7 @@ echo "  PreToolUse Read: document-ingest-guard.sh, large-file-advisor.sh"
 echo "  PreToolUse Bash|Edit|Write: secret-detector.sh (redaction); Edit|Write also runs project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh, skill-md-routing-validator.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, control-plane-audit.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh, agent-launch-confirmed.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
-echo "  PostToolUse *: context-watchdog.sh, rate-limit-detector.sh, tool-sequence-capture.sh, codebase-itinerary-capture.sh, aci-observation-capture.sh"
+echo "  PostToolUse *: context-watchdog.sh, subagent-budget-enforcer.sh, rate-limit-detector.sh, tool-sequence-capture.sh, codebase-itinerary-capture.sh, aci-observation-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh, post-git-orphan-notifier.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
 echo "  PostToolUse Edit|Write: content-policy.sh, ai-provider-identity-guard.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, scope-creep-detector.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"

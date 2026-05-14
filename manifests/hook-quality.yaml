@@ -471,7 +471,7 @@ hooks:
   bash-hot-path-dispatcher:
     behavior_tests:
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
-    - tests/red_team/portability/test_bash-hot-path-dispatcher.py
+    - tests/unit/test_multi_agent_coordination_primitives.py
     bypass_policy: not_required_warning_only
     criticality: coordination
     event: PreToolUse
@@ -1153,6 +1153,7 @@ hooks:
     - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_intervention_ledger.py
     - tests/contracts/test_primitive_projection_fidelity.py
+    - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_destructive_git_block.py
     - tests/unit/test_dogfood_scorer.py
     - tests/unit/test_primitive_behavior_audit.py
@@ -2533,6 +2534,7 @@ hooks:
   scope-marker-portability-gate:
     behavior_tests:
     - tests/contracts/test_redteam_portability_coverage.py
+    - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_gate_runner.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -3185,6 +3187,23 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/state-heartbeat.sh
+  subagent-budget-enforcer:
+    behavior_tests:
+    - tests/contracts/test_primitive_closure_ratchet.py
+    - tests/contracts/test_subagent_budget_enforcer.py
+    bypass_policy: not_required_warning_only
+    criticality: coordination
+    event: PostToolUse
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: ''
+    maturity: warn
+    max_runtime_ms: 1000
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/subagent-budget-enforcer.sh
   subagent-context-injector:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py

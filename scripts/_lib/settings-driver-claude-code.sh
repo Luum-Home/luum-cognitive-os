@@ -297,6 +297,7 @@ cc_driver_emit() {
   local post_all
   post_all=$(_cc_hook_group "PostToolUse" "" \
     "hooks/context-watchdog.sh"       "false" \
+    "hooks/subagent-budget-enforcer.sh" "false" \
     "hooks/rate-limit-detector.sh"    "false" \
     "hooks/tool-sequence-capture.sh"  "false" \
     "hooks/aci-observation-capture.sh" "false" \

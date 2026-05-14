@@ -886,3 +886,4 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 
 - [External Tools Adoption Manifest](../manifests/external-tools-adoption.yaml) — machine-readable COS tool adoption ledger used by ADR-254 audits.
 - [ADR-254 External Tool Intelligence Plane](adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) — COS central radar plus lightweight project overlay decision.
+- [ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) — accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement

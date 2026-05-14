@@ -1,6 +1,6 @@
 {
   "_profile": "minimal",
-  "_description": "Minimal security profile — core safety only. For exploration and single-dev sessions where speed matters.",
+  "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
   "_hook_count": 107,
   "_events_used": [
     "SessionStart",
@@ -489,6 +489,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aci-observation-capture.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/subagent-budget-enforcer.sh\""
           }
         ]
       },

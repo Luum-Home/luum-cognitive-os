@@ -128,3 +128,18 @@ def test_completed_by_other_agent_reconciles_pending_task_with_watermark(tmp_pat
     assert item.pending_session == "session-a"
     assert item.completing_session == "session-b"
     assert item.evidence_path == str(watermark)
+
+
+def test_derived_gate_treats_bash_dispatcher_as_profile_projection(monkeypatch: pytest.MonkeyPatch) -> None:
+    gate = load_derived_gate()
+    failures: list[str] = []
+    monkeypatch.setattr(
+        gate,
+        "_registrations_from_json",
+        lambda _path: [("PreToolUse", "Bash", "bash-hot-path-dispatcher.sh")],
+    )
+
+    gate.check_claude_registry_parity(failures)
+
+    joined = "\n".join(failures)
+    assert "PreToolUse:Bash" not in joined

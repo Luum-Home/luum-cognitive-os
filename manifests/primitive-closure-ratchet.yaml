@@ -1,0 +1,34 @@
+schema_version: 1
+owner_adr: ADR-311
+language_dependence:
+  report: .cognitive-os/reports/language-dependence-audit.md
+  max_medium_plus_findings: 0
+  note: >
+    Medium/high findings are actionable regex_without_intents debt.
+    regex_with_intents and localized_skill entries stay visible in
+    --min-severity low compatibility inventory, while the default report and
+    ratchet enforce zero actionable medium+ language-routing findings.
+required_runtime_proofs:
+  - primitive: subagent-budget-enforcer
+    hook: hooks/subagent-budget-enforcer.sh
+    test: tests/contracts/test_subagent_budget_enforcer.py
+  - primitive: orchestrator-skill-invocation-gate
+    hook: hooks/orchestrator-skill-invocation-gate.sh
+    test: tests/contracts/test_skill_invocation_gate.py
+critical_hook_projections:
+  - primitive: subagent-budget-enforcer
+    hook: hooks/subagent-budget-enforcer.sh
+    claude_required: true
+    codex_required: false
+    codex_gap_reason: Codex lacks SubagentStart and non-Bash PostToolUse coverage.
+  - primitive: orchestrator-skill-invocation-gate
+    hook: hooks/orchestrator-skill-invocation-gate.sh
+    claude_required: true
+    codex_required: true
+authority_paths:
+  - cognitive-os.yaml
+  - manifests/*.yaml
+  - rules/ROADMAP.md
+  - docs/02-Decisions/adrs/*.md
+  - .claude/settings.json
+  - .codex/hooks.json

@@ -590,6 +590,14 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/bash-hot-path-dispatcher.sh
+  max_occurrences: 9
+  degradation_class: probe_best_effort
+  rationale: Dispatcher tolerates unreadable hook input and absent child gates during first-install or partial projection; matched child gate failures still propagate and block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-14'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: dispatcher degradation is explicit; second maintainer may re-review before owning this surface.'
 - path: hooks/blast-radius.sh
   max_occurrences: 4
   degradation_class: metrics_best_effort
@@ -2330,6 +2338,14 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/subagent-budget-enforcer.sh
+  max_occurrences: 15
+  degradation_class: probe_best_effort
+  rationale: Subagent budget enforcement degrades open when hook payload parsing, optional python helpers, or metrics writes are unavailable; when subagent identity and counters are available, budget-exceeded paths exit 2 and block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-14'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: enforcement degradation is explicit and tests cover blocking behavior; second maintainer may re-review before owning this surface.'
 - path: hooks/subagent-context-injector.sh
   max_occurrences: 6
   degradation_class: optional_dependency

@@ -106,9 +106,9 @@ Removal requires benchmark evidence that routing quality does not regress.
 | Category | Meaning | Action |
 |---|---|---|
 | `regex_without_intents` | Natural-language regex without semantic metadata. | Priority migration bucket: add `summary_line` + `routing_intents`; consider ADR-299 enrichment. |
-| `regex_with_intents` | Natural-language regex coexists with semantic metadata. | Treat as compatibility fallback; remove only after benchmark/smoke evidence. |
+| `regex_with_intents` | Natural-language regex coexists with semantic metadata. | Low-severity compatibility inventory; remove only after benchmark/smoke evidence. |
 | `explicit_alias` | Regex matches deterministic command/identifier shape. | Allowed. |
-| `localized_skill` | Primitive is intentionally localized. | Allowed exception, but still prefer semantic metadata when practical. |
+| `localized_skill` | Primitive is intentionally localized. | Low-severity allowed exception, but still prefer semantic metadata when practical. |
 
 ### 5. Validation uses benchmark + audit
 
@@ -120,7 +120,7 @@ scripts/cos-routing-benchmark --quick
 scripts/cos-language-dependence-audit --output .cognitive-os/reports/language-dependence-audit.md
 ```
 
-The audit measures remaining lexical-routing surface. The benchmark measures
+The default audit measures actionable medium/high lexical-routing debt; `--min-severity low` measures the full compatibility inventory. The benchmark measures
 whether the semantic routing behavior actually improved.
 
 ## Applicability to SO and consumer projects

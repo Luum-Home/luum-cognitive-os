@@ -82,11 +82,15 @@ def test_audit_classifies_regex_with_intents_as_compatibility(tmp_path: Path, mo
         summary_line=True,
     )
 
-    report = audit(tmp_path)
+    default_report = audit(tmp_path)
+    assert default_report.findings == ()
+
+    report = audit(tmp_path, min_severity="low")
 
     assert len(report.findings) == 1
     finding = report.findings[0]
     assert finding.category == "regex_with_intents"
+    assert finding.severity == "low"
     assert finding.has_routing_intents is True
     assert finding.has_summary_line is True
 
@@ -99,7 +103,11 @@ def test_audit_classifies_intentionally_localized_skill(tmp_path: Path, monkeypa
         [r"\b(revisar|arreglar|hacer).{0,40}\b(codigo|código)\b"],
     )
 
-    report = audit(tmp_path)
+    default_report = audit(tmp_path)
+    assert default_report.findings == ()
+
+    report = audit(tmp_path, min_severity="low")
 
     assert len(report.findings) == 1
     assert report.findings[0].category == "localized_skill"
+    assert report.findings[0].severity == "low"
