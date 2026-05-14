@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: worktree-triage
 description: 'Use when you need this Cognitive OS skill: Triage linked Git worktrees or remote cleanup branches against a

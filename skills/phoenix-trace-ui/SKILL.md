@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: phoenix-trace-ui
 description: 'Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no

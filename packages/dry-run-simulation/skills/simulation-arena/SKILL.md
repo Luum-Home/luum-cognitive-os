@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: simulation-arena
 description: Run scripted end-to-end agent workflow simulations to validate safety mesh, measure OS evolution (cost/speed/quality), and regression-test after hook/rule/skill changes.
