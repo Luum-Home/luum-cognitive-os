@@ -14,7 +14,6 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import json
-import re
 import subprocess
 import sys
 from dataclasses import asdict, dataclass, field
@@ -28,16 +27,21 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.portability_proof_paths import paired_candidates, suggested_test_path
+from lib.primitive_parser import parse_primitive_file
 from lib.project_paths import relpath
 from lib.primitive_readiness_common import load_lifecycle
 
 VALID_SCOPES = {"os-only", "project", "both"}
-SOURCE_ROOTS = ("hooks", "skills", "rules", "scripts", "templates")
-SCOPE_RE = re.compile(r"\bSCOPE:\s*([A-Za-z0-9_-]+)")
+SOURCE_ROOTS = ("hooks", "skills", "rules", "scripts", "templates", "packages")
 PROJECTABLE_STATUSES = {"projectable-needs-driver", "shell-ci-candidate", "projected-consumer-surface"}
+SHARED_STATUSES = {"shared-surface"}
 MAINTAINER_STATUSES = {"maintainer-only", "so-local-only", "lifecycle-declared-maintainer"}
 CONSUMER_DISTRIBUTIONS = {"core", "team"}
 MAINTAINER_DISTRIBUTIONS = {"maintainer", "lab"}
+INACTIVE_STATES = {"demoted", "archived", "deleted"}
+BOTH_INSTALL_SURFACES = {"bootstrap", "settings-projection", "profile-application"}
+PROJECT_LIFECYCLE_ACCESSIBILITY = {"lifecycle-declared-consumer-candidate"}
+SHARED_LIFECYCLE_ACCESSIBILITY = {"lifecycle-declared-shared-surface"}
 
 
 @dataclass(frozen=True)
@@ -53,6 +57,7 @@ class ScopeRow:
     path: str
     declared_scope: str | None
     suggested_scope: str
+    effective_scope: str
     confidence: str
     decision_source: str
     evidence: list[Evidence] = field(default_factory=list)
@@ -71,12 +76,6 @@ def _is_text_file(path: Path) -> bool:
         return False
 
 
-def _header_scope(path: Path) -> str | None:
-    head = "\n".join(path.read_text(encoding="utf-8", errors="ignore").splitlines()[:8])
-    match = SCOPE_RE.search(head)
-    return match.group(1) if match else None
-
-
 def _primitive_files(root: Path) -> list[Path]:
     found: dict[str, Path] = {}
     for root_name in SOURCE_ROOTS:
@@ -85,6 +84,11 @@ def _primitive_files(root: Path) -> list[Path]:
             continue
         if root_name == "skills":
             for path in base.rglob("SKILL.md"):
+                if _is_text_file(path):
+                    found[relpath(root, path)] = path
+            continue
+        if root_name == "packages":
+            for path in base.glob("*/skills/*/SKILL.md"):
                 if _is_text_file(path):
                     found[relpath(root, path)] = path
             continue
@@ -103,12 +107,22 @@ def _load_scope_overrides(root: Path) -> list[dict[str, str]]:
 
 
 def _override_for(rel: str, rules: list[dict[str, str]]) -> dict[str, str] | None:
-    # Last matching rule wins, mirroring common allow/deny config semantics.
-    match: dict[str, str] | None = None
-    for rule in rules:
-        if fnmatch.fnmatch(rel, str(rule["pattern"])):
-            match = rule
-    return match
+    # Most-specific matching rule wins. Exact path beats wildcard fallback, then
+    # longer/more-specific wildcard beats broad legacy fallback. This preserves
+    # the manifest contract: broad `scripts/*.py`/`scripts/*` rules are only
+    # fallback classifications.
+    matches: list[tuple[int, int, int, dict[str, str]]] = []
+    for index, rule in enumerate(rules):
+        pattern = str(rule["pattern"])
+        if fnmatch.fnmatch(rel, pattern):
+            exact = 1 if pattern == rel else 0
+            wildcard_count = pattern.count("*")
+            specificity = len(pattern.replace("*", ""))
+            matches.append((exact, specificity, -wildcard_count, rule))
+    if not matches:
+        return None
+    matches.sort(key=lambda item: (item[0], item[1], item[2]))
+    return matches[-1][3]
 
 
 def _load_consumer_availability(root: Path) -> dict[str, dict[str, Any]]:
@@ -134,35 +148,80 @@ def _paired_test(root: Path, rel: str) -> str | None:
     return None
 
 
-def _evidence_for(root: Path, rel: str, override_rules: list[dict[str, str]], availability: dict[str, dict[str, Any]], protected: dict[str, dict[str, Any]], lifecycle: dict[str, dict[str, Any]]) -> list[Evidence]:
+def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: list[dict[str, str]], availability: dict[str, dict[str, Any]], protected: dict[str, dict[str, Any]], lifecycle: dict[str, dict[str, Any]]) -> list[Evidence]:
     evidence: list[Evidence] = []
     override = _override_for(rel, override_rules)
-    if override and override.get("scope") in VALID_SCOPES:
+    # Scope overrides are fallback metadata for legacy surfaces that predate
+    # header enforcement. `manifests/primitive-scope-overrides.yaml` explicitly
+    # says header markers remain preferred, so broad fallback patterns must not
+    # overrule an explicit SCOPE marker.
+    if override and override.get("scope") in VALID_SCOPES and (declared is None or declared == override.get("scope")):
         evidence.append(Evidence("scope-override", str(override["scope"]), 100, str(override.get("rationale") or override.get("pattern"))))
 
     if rel in protected:
-        evidence.append(Evidence("protected-install-surface", "both", 90, str(protected[rel].get("surface") or "install/profile surface")))
+        surface = str(protected[rel].get("surface") or "install/profile surface")
+        # Protected install membership means "review before demotion". Only
+        # surfaces that directly project/apply consumer profiles count as
+        # positive `both` distribution evidence by themselves. Release, doctor,
+        # optional-tool, and audit surfaces remain governed but not automatically
+        # projectable.
+        if surface in BOTH_INSTALL_SURFACES:
+            evidence.append(Evidence("protected-install-surface", "both", 90, surface))
 
     item = availability.get(rel)
     if item:
         status = str(item.get("status") or "")
         if status in MAINTAINER_STATUSES:
             evidence.append(Evidence("consumer-availability", "os-only", 80, status))
+        elif status in SHARED_STATUSES:
+            evidence.append(Evidence("consumer-availability", "both", 80, status))
         elif status in PROJECTABLE_STATUSES:
-            evidence.append(Evidence("consumer-availability", "both", 70, status))
+            # Consumer-availability proves project-facing distribution, not
+            # automatically `both`. A primitive becomes confirmed `both` only
+            # when additional evidence shows it is also a COS/core surface.
+            evidence.append(Evidence("consumer-availability", "project", 70, status))
 
     row = lifecycle.get(rel)
     if row:
         distribution = str(row.get("distribution") or "")
         state = str(row.get("lifecycle_state") or "")
-        if distribution in MAINTAINER_DISTRIBUTIONS or state in {"sandbox", "archived", "deleted"}:
+        consumer_accessibility = str(row.get("consumer_accessibility") or "")
+        if state in INACTIVE_STATES or distribution in MAINTAINER_DISTRIBUTIONS or state == "sandbox":
             evidence.append(Evidence("lifecycle", "os-only", 65, f"distribution={distribution}; state={state}"))
+        elif consumer_accessibility in SHARED_LIFECYCLE_ACCESSIBILITY:
+            evidence.append(
+                Evidence(
+                    "lifecycle",
+                    "both",
+                    65,
+                    f"distribution={distribution}; state={state}; consumer_accessibility={consumer_accessibility}",
+                )
+            )
+        elif consumer_accessibility in PROJECT_LIFECYCLE_ACCESSIBILITY:
+            # Lifecycle rows can record candidate consumer-project availability
+            # before there is proven shared/portable runtime use. That is
+            # positive project-facing evidence, not `both` proof.
+            evidence.append(
+                Evidence(
+                    "lifecycle",
+                    "project",
+                    60,
+                    f"distribution={distribution}; state={state}; consumer_accessibility={consumer_accessibility}",
+                )
+            )
         elif distribution in CONSUMER_DISTRIBUTIONS:
             evidence.append(Evidence("lifecycle", "both", 65, f"distribution={distribution}; state={state}"))
 
-    paired = _paired_test(root, rel)
-    if paired:
-        evidence.append(Evidence("portability-proof", "both", 45, paired))
+    # Project-only remains under-modeled in the current manifests. Preserve an
+    # explicit project marker as weak pending evidence instead of collapsing it
+    # to unknown/os-only/both. This is not high-confidence proof; it keeps the
+    # project bucket visible for future project-only evidence modeling.
+    if declared == "project" and not evidence:
+        evidence.append(Evidence("declared-project-pending-proof", "project", 55, "explicit SCOPE marker without distribution metadata"))
+
+    # A paired portability proof is necessary for `both`, but not sufficient to
+    # infer distribution. Keep it out of the weighted scope decision and use it
+    # only as a proof gate for declared/suggested `both`.
     return evidence
 
 
@@ -177,12 +236,19 @@ def _decide(rel: str, declared: str | None, evidence: list[Evidence], paired: st
         suggested = max(totals, key=lambda key: (totals[key], key))
         winning = totals[suggested]
         second = max([score for scope, score in totals.items() if scope != suggested], default=0)
-        confidence = "high" if winning >= 90 and winning - second >= 30 else "medium" if winning >= 65 and winning > second else "low"
-        source = "+".join(item.source for item in evidence if item.scope == suggested)
+        if second and winning - second < 30:
+            suggested = "unknown"
+            confidence = "low"
+            source = "conflicting-distribution-evidence"
+        else:
+            confidence = "high" if winning >= 90 and winning - second >= 30 else "medium" if winning >= 65 and winning > second else "low"
+            if suggested == "project" and winning < 65:
+                confidence = "low"
+            source = "+".join(item.source for item in evidence if item.scope == suggested)
     else:
-        suggested = "os-only"
+        suggested = "unknown"
         confidence = "low"
-        source = "safe-default"
+        source = "insufficient-evidence"
 
     contradiction = ""
     if declared and declared != suggested and confidence in {"high", "medium"}:
@@ -192,7 +258,11 @@ def _decide(rel: str, declared: str | None, evidence: list[Evidence], paired: st
 
     if suggested == "both" and not paired:
         next_action = f"add paired portability/falsification test, e.g. {suggested_test_path(rel)}"
-    elif confidence == "low":
+    elif suggested == "project" and source == "declared-project-pending-proof":
+        next_action = "add positive consumer-project-only projection evidence or reclassify if this is not project-only"
+    elif source == "conflicting-distribution-evidence":
+        next_action = "resolve conflicting lifecycle/projection/consumer-availability metadata before relying on this classification"
+    elif suggested == "unknown" or confidence == "low":
         next_action = "add lifecycle/projection/consumer-availability metadata before relying on this classification"
     elif contradiction:
         next_action = "change SCOPE marker or update distribution evidence so they agree"
@@ -234,19 +304,24 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
     changed = _changed_paths(root) if changed_only else set()
     for path in _primitive_files(root):
         rel = relpath(root, path)
+        contract = parse_primitive_file(path, root)
+        if not contract.is_primitive:
+            continue
         if changed_only and rel not in changed:
             continue
         if only_paths is not None and rel not in only_paths:
             continue
-        declared = _header_scope(path)
+        declared = contract.scope_marker
         paired = _paired_test(root, rel)
-        evidence = _evidence_for(root, rel, override_rules, availability, protected, lifecycle)
+        evidence = _evidence_for(root, rel, declared, override_rules, availability, protected, lifecycle)
         suggested, confidence, source, contradiction, next_action = _decide(rel, declared, evidence, paired)
+        effective = suggested if suggested != "unknown" else "os-only"
         rows.append(
             ScopeRow(
                 path=rel,
                 declared_scope=declared,
                 suggested_scope=suggested,
+                effective_scope=effective,
                 confidence=confidence,
                 decision_source=source,
                 evidence=evidence,
@@ -262,14 +337,17 @@ def summarize(rows: list[ScopeRow]) -> dict[str, Any]:
     summary: dict[str, Any] = {
         "total": len(rows),
         "by_suggested_scope": {},
+        "by_effective_scope": {},
         "by_confidence": {},
         "contradictions": sum(1 for row in rows if row.contradiction),
         "low_confidence": sum(1 for row in rows if row.confidence == "low"),
     }
     for row in rows:
         summary["by_suggested_scope"][row.suggested_scope] = summary["by_suggested_scope"].get(row.suggested_scope, 0) + 1
+        summary["by_effective_scope"][row.effective_scope] = summary["by_effective_scope"].get(row.effective_scope, 0) + 1
         summary["by_confidence"][row.confidence] = summary["by_confidence"].get(row.confidence, 0) + 1
     summary["by_suggested_scope"] = dict(sorted(summary["by_suggested_scope"].items()))
+    summary["by_effective_scope"] = dict(sorted(summary["by_effective_scope"].items()))
     summary["by_confidence"] = dict(sorted(summary["by_confidence"].items()))
     return summary
 

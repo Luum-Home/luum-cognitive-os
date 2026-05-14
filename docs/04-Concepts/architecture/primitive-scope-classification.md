@@ -2,13 +2,23 @@
 
 `SCOPE` is a distribution claim, not a source-location or grep claim. It answers where an agentic primitive is meant to be available:
 
-- `os-only` — maintainer/self-construction surface for building, validating, or operating Cognitive OS itself.
-- `project` — consumer-project-only surface.
-- `both` — portable surface valid in this repository and in downstream projects.
+- `os-only` — primitive whose principle, procedure, or implementation is only required to construct, validate, explain, or operate Cognitive OS itself.
+- `project` — primitive that affects downstream projects only, and that Cognitive OS does not need to contemplate as part of constructing or validating itself.
+- `both` — repository-construction guidance that is agnostic enough to apply to Cognitive OS and to any downstream repository.
+
+## Semantic rubric
+
+Use this rubric before trusting metadata:
+
+| Scope | Positive semantic evidence | Negative semantic evidence |
+|---|---|---|
+| `os-only` | Explains Cognitive OS internals, maintainer-only construction, governance of the OS itself, or repo-specific machinery that downstream projects will not contain. | Generic engineering advice, repo-agnostic build/test/review rules, or consumer-project projection. |
+| `both` | Describes agnostic repository construction practices: code review, testing discipline, documentation quality, safety patterns, scaffolding patterns, or governance rules usable in any repo including this one. | Depends on paths, manifests, docs, scripts, lifecycle states, or architecture that exist only in the Cognitive OS repo. |
+| `project` | Only modifies, scaffolds, validates, or constrains downstream projects, and is not required for Cognitive OS self-construction. | Needed to build, release, validate, repair, or explain Cognitive OS itself. |
 
 ## Root rule
 
-Never classify by path mentions alone. References to `.cognitive-os/`, `manifests/`, `docs/02-Decisions/`, `scripts/cos-*`, or ADRs can be legitimate implementation or validation details for a portable primitive. Those references are signals to inspect, not proof of `os-only`.
+Never classify by path mentions alone. References to `.cognitive-os/`, `manifests/`, `docs/02-Decisions/`, `scripts/cos-*`, or ADRs can be legitimate implementation or validation details for a portable primitive. Those references are signals to inspect against the rubric, not proof by themselves. They become strong `os-only` evidence when the primitive's core value proposition depends on those Cognitive OS-specific paths or internals.
 
 ## Automatic classifier
 
@@ -20,14 +30,26 @@ Use `scripts/primitive_scope_classifier.py` when creating or changing primitives
 4. `manifests/primitive-lifecycle.yaml`
 5. paired portability/falsification tests from `lib.portability_proof_paths`
 
-The classifier is intentionally conservative. A new primitive with no export/projection evidence is treated as `os-only` with low confidence and a next action to add lifecycle/projection/consumer-availability metadata before relying on the classification.
+The classifier is intentionally conservative. A new primitive with no export/projection evidence is reported as `unknown` with safe `effective_scope=os-only` and low confidence and a next action to add lifecycle/projection/consumer-availability metadata before relying on the classification.
+
+Project-facing candidate evidence is not the same as `both` evidence. `shell-ci-candidate`, `projectable-needs-driver`, `projected-consumer-surface`, and lifecycle `consumer_accessibility: lifecycle-declared-consumer-candidate` make a primitive visible as a `project` candidate. A `both` claim still needs evidence that the primitive is valid as a COS/core surface and as a downstream project surface.
+
+## Unknown triage before AI/manual review
+
+Use `scripts/primitive_scope_unknown_triage.py` after a full classifier run to turn the large `unknown` bucket into reviewable groups:
+
+```bash
+.venv/bin/python scripts/primitive_scope_unknown_triage.py --project-dir .
+```
+
+The triage report is deterministic. It groups missing evidence, metadata conflicts, likely OS-internal rows, likely agnostic `both` rows, and project-only candidates. It must not change markers by itself; it is the queue for manual or AI-assisted adjudication.
 
 ## Authoring workflow
 
 When adding a primitive:
 
 1. Start with the safest claim:
-   - no consumer projection/export evidence yet → `os-only`
+   - no consumer projection/export evidence yet → `unknown` / safe effective `os-only`
    - intended for consumer projects and this repo → add lifecycle/projection evidence, then `both`
    - intended only for generated consumer projects → add explicit projection/profile evidence, then `project`
 2. Run:
