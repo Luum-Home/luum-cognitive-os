@@ -8950,7 +8950,7 @@ primitives:
   rollback_or_repair_command: Remove from primitive lifecycle if the serial repair lane is replaced by another governed test-efficiency primitive.
   sunset_criteria: Archive after test-efficiency workflow no longer requires resumable serial repair.
   docs_claim_level: advisory
-  exit_behavior: exit_nonzero_on_failure
+  exit_behavior: mixed
   metrics_file: .cognitive-os/runtime/pytest-serial-repair-state.json
 - id: scripts/cos-remote-branch-triage
   kind: script
@@ -8958,7 +8958,7 @@ primitives:
   lifecycle_state: candidate
   maturity: advisory
   distribution: team
-  governance_class: git-safety
+  governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
   - shell
@@ -8972,7 +8972,7 @@ primitives:
   rollback_or_repair_command: Remove from primitive lifecycle if remote branch triage is retired or folded into another git-safety primitive.
   sunset_criteria: Archive after branch hygiene is fully covered by a different governed git coordination primitive.
   docs_claim_level: advisory
-  exit_behavior: exit_nonzero_on_failure
+  exit_behavior: mixed
   metrics_file: none
 - id: scripts/cos-operational-guide-audit.py
   kind: script

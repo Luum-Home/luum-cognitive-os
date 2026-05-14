@@ -208,3 +208,16 @@ python3 scripts/cos-adr-implementation-audit.py --strict
 | Cold-start cost on first call (200–500 ms model load + 1.5 s catalog embed for 196 skills) | Embeddings are cached to disk and re-used for the lifetime of the catalog SHA. |
 | Operators forget `fastembed` is opt-in | Matcher logs a one-line warning and degrades to `[]`; the regex layer keeps working. |
 | Future PyPI publication of `aurelio-labs/semantic-router 0.1.x` | We can adopt it later — the public surface of this module would not change. |
+
+## Evidence
+
+Tier claim evidence is maintained through the boring-reliability control-plane lane:
+
+```bash
+scripts/cos-boring-reliability --json
+scripts/cos-tier-claim-audit --json
+```
+
+This ADR remains `tier: core` because it affects default routing, observability,
+or primitive-governance behavior that is part of the core operator control
+plane. The tier claim is re-audited by `scripts/cos-tier-claim-audit`.

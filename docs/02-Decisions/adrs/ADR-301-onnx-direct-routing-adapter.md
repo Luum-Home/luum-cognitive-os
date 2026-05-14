@@ -113,3 +113,16 @@ only delivers the measurement capability.
   weights into `model.onnx` + `model.onnx_data`. The adapter downloads the
   sibling `.onnx_data` file when present so onnxruntime can resolve the
   external initialisers.
+
+## Evidence
+
+Tier claim evidence is maintained through the boring-reliability control-plane lane:
+
+```bash
+scripts/cos-boring-reliability --json
+scripts/cos-tier-claim-audit --json
+```
+
+This ADR remains `tier: core` because it affects default routing, observability,
+or primitive-governance behavior that is part of the core operator control
+plane. The tier claim is re-audited by `scripts/cos-tier-claim-audit`.
