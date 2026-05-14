@@ -1,0 +1,88 @@
+schema_version: primitive-structure-scopes/v1
+purpose: >
+  Structural SCOPE metadata for primitive files whose native format cannot safely
+  carry an inline SCOPE comment without changing rendered project artifacts.
+  This manifest is parser input only; semantic scope calibration remains governed
+  by ADR-314.
+items:
+- path: templates/adoption-tiers.md.j2
+  scope: project
+  rationale: Generated adoption guidance for downstream adopters.
+- path: templates/blocked-strings.example.txt
+  scope: project
+  rationale: Example private blocked-strings config for downstream projects.
+- path: templates/external-tools-overlay.yaml
+  scope: project
+  rationale: Project-local external tool overlay template.
+- path: templates/project-templates/go/README.md.tmpl
+  scope: project
+  rationale: Generated downstream Go project file.
+- path: templates/project-templates/go/cognitive-os.yaml.tmpl
+  scope: project
+  rationale: Generated downstream Go project config.
+- path: templates/project-templates/go/gitignore.tmpl
+  scope: project
+  rationale: Generated downstream Go project file.
+- path: templates/project-templates/go/go.mod.tmpl
+  scope: project
+  rationale: Generated downstream Go project file.
+- path: templates/project-templates/go/main.go.tmpl
+  scope: project
+  rationale: Generated downstream Go project file.
+- path: templates/project-templates/minimal/README.md.tmpl
+  scope: project
+  rationale: Generated downstream minimal project file.
+- path: templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  scope: project
+  rationale: Generated downstream minimal project config.
+- path: templates/project-templates/minimal/gitignore.tmpl
+  scope: project
+  rationale: Generated downstream minimal project file.
+- path: templates/project-templates/python/README.md.tmpl
+  scope: project
+  rationale: Generated downstream Python project file.
+- path: templates/project-templates/python/cognitive-os.yaml.tmpl
+  scope: project
+  rationale: Generated downstream Python project config.
+- path: templates/project-templates/python/gitignore.tmpl
+  scope: project
+  rationale: Generated downstream Python project file.
+- path: templates/project-templates/python/pyproject.toml.tmpl
+  scope: project
+  rationale: Generated downstream Python project file.
+- path: templates/project-templates/settings.json.tmpl
+  scope: project
+  rationale: Generated downstream project harness settings.
+- path: templates/project-templates/typescript/README.md.tmpl
+  scope: project
+  rationale: Generated downstream TypeScript project file.
+- path: templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  scope: project
+  rationale: Generated downstream TypeScript project config.
+- path: templates/project-templates/typescript/gitignore.tmpl
+  scope: project
+  rationale: Generated downstream TypeScript project file.
+- path: templates/project-templates/typescript/package.json.tmpl
+  scope: project
+  rationale: Generated downstream TypeScript project file.
+- path: templates/project-templates/typescript/tsconfig.json.tmpl
+  scope: project
+  rationale: Generated downstream TypeScript project file.
+- path: templates/security-profiles/minimal.json
+  scope: project
+  rationale: Security profile template is rendered as downstream project harness settings; COS source can keep it as a generator input without treating the rendered artifact as an OS-construction primitive.
+- path: templates/security-profiles/paranoid.json
+  scope: project
+  rationale: Security profile template is rendered as downstream project harness settings; COS source can keep it as a generator input without treating the rendered artifact as an OS-construction primitive.
+- path: templates/security-profiles/standard.json
+  scope: project
+  rationale: Security profile template is rendered as downstream project harness settings; COS source can keep it as a generator input without treating the rendered artifact as an OS-construction primitive.
+- path: templates/service-map.example.yaml
+  scope: project
+  rationale: Example private service map config for downstream projects.
+- path: templates/verification-commands.example.yaml
+  scope: project
+  rationale: Example private verification command config for downstream projects.
+- path: templates/CLAUDE.md.template
+  scope: project
+  rationale: Generated downstream project instruction file for Claude/Cognitive OS adopters.
