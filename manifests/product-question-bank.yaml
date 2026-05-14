@@ -535,3 +535,208 @@ questions:
     - Wire primitive harvesting into session wrap-up or explicit repeated-intent checks without auto-mutation.
     - Populate primitive fitness reports and maintainer review cadence so proposals do not pile up.
 
+  value_proposition:
+    category: positioning
+    aliases:
+    - what does this OS do
+    - what is cognitive os
+    - what is this for
+    - para que sirve
+    - para qué sirve
+    - qué hace el SO
+    - wat doet dit OS
+    - wozu dient das
+    keywords:
+    - what does
+    - what is
+    - para que
+    - sirve
+    approved_sources:
+    - AGENTS.md
+    - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
+    - docs/08-References/business/value-proposition.md
+    related_claims:
+    - differentiator_behavioral_governance
+    answer_short: Cognitive OS is a cognitive operating system that orchestrates AI agents over any software project. It amplifies developer capability across code quality, security, tests, documentation, and architecture — without requiring prior knowledge of those domains.
+    answer_long: >-
+      COS works as an intelligence layer on top of the project: the developer
+      describes in natural language what they want to achieve, the OS picks the
+      right tool (skill), and orchestrates specialized sub-agents to execute it.
+      The developer describes the problem; COS maps it to the correct technical
+      concept and acts. The result is verifiable, documented, and traceable.
+    recommended_pitch: You describe what you want to achieve. COS figures out how to do it.
+    unsafe_claims_to_avoid:
+    - COS is fully autonomous and requires no human oversight
+    - COS replaces the developer entirely
+    gaps: []
+
+  who_is_it_for:
+    category: positioning
+    aliases:
+    - can it help a developer without experience
+    - useful for someone without knowledge
+    - can a junior use this
+    - does it help someone who doesn't know best practices
+    - sirve para alguien sin experiencia
+    - puede ayudar a un dev sin conocimiento
+    - utile pour un developpeur sans experience
+    - nutzlich fur einen entwickler ohne erfahrung
+    keywords:
+    - junior
+    - beginner
+    - no experience
+    - sin experiencia
+    - without knowledge
+    - gaps de conocimiento
+    approved_sources:
+    - skills/security-audit/SKILL.md
+    - skills/test-driven-development/SKILL.md
+    - skills/code-review/SKILL.md
+    - skills/document-feature/SKILL.md
+    - docs/02-Decisions/adrs/ADR-296-language-agnostic-skill-routing.md
+    related_claims:
+    - differentiator_behavioral_governance
+    answer_short: Yes. COS is designed to amplify without requiring prior knowledge of terminology, best practices, security, testing, or architecture. The developer describes the problem in natural language; COS maps it to the correct technical concept and executes.
+    answer_long: >-
+      A developer can say "I want this to not break under heavy load" without
+      knowing what rate limiting, concurrency, or load testing means. COS
+      interprets the intent, picks the correct primitives via the semantic
+      skill router (ADR-296), and executes with specialized sub-agents. The
+      same applies to security (/security-audit, /semgrep-scan), tests
+      (/test-driven-development, /coverage-enforcement), documentation
+      (/document-feature), and architecture (/code-review, /sdd-new). No
+      knowledge of the technical term is required to get the right tool.
+    recommended_pitch: You don't need to know the technical name for the problem. Describe what you want to avoid or achieve, and COS translates it.
+    unsafe_claims_to_avoid:
+    - COS automatically teaches the developer over time
+    - no human intervention is ever needed
+    gaps: []
+
+  stack_agnostic:
+    category: technical-capabilities
+    aliases:
+    - works with any language
+    - works with any framework
+    - language agnostic
+    - stack agnostic
+    - funciona con cualquier lenguaje
+    - funciona con cualquier framework
+    - fonctionne avec n importe quel langage
+    - funktioniert mit jeder sprache
+    keywords:
+    - any language
+    - any framework
+    - stack
+    - agnostic
+    - python
+    - go
+    - typescript
+    - language
+    approved_sources:
+    - docs/02-Decisions/adrs/ADR-296-language-agnostic-skill-routing.md
+    - docs/02-Decisions/adrs/ADR-298-routing-benchmark-harness.md
+    - docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md
+    - lib/semantic_skill_matcher.py
+    - skills/detect-stack/SKILL.md
+    related_claims:
+    - cross_harness_behavioral_intelligence
+    answer_short: Yes. Skill routing is semantic (ADR-296) — not based on human-language keywords or specific programming languages. Sub-agents detect the project stack by context and work in the corresponding language or framework.
+    answer_long: >-
+      The SemanticSkillMatcher (ADR-296/298/299) uses multilingual embeddings
+      against each skill's description field — language-agnostic by nature.
+      The multilingual-e5-large model was selected empirically (+14 points
+      average over alternatives, ADR-298). Once the correct skill activates,
+      sub-agents detect the project stack (/detect-stack) and work in the
+      corresponding language and framework without additional configuration.
+    recommended_pitch: COS speaks the language of the project, not the other way around.
+    unsafe_claims_to_avoid:
+    - supports every language and framework with no limitations
+    - sub-agents know all frameworks from memory without context
+    gaps:
+    - Stack-specific knowledge depth depends on the underlying model capabilities.
+
+  codebase_scale:
+    category: product-surface
+    aliases:
+    - how much code does it have
+    - how big is the codebase
+    - how many commits
+    - cuanto codigo tiene
+    - cuánto código tiene
+    - wie viel code hat es
+    - combien de code
+    keywords:
+    - lines of code
+    - commits
+    - codebase size
+    - how big
+    - cuanto codigo
+    approved_sources:
+    - AGENTS.md
+    - docs/00-MOCs/entrypoints/README.md
+    related_claims:
+    - runtime_surfaces_cli_ui_service
+    answer_short: >-
+      Live metrics — run the commands below for current figures. The distribution
+      is architecturally significant: Python is the operational core, Markdown
+      is the knowledge base (ADRs, docs, specs), TypeScript is the SDK/UI layer,
+      Bash is hooks, Go is tooling, YAML is manifests. The ratio of documentation
+      to executable code reflects the priority of traceable decisions over opaque
+      implementation.
+    answer_long: >-
+      Exact numbers change with every commit and should not be hardcoded. To get
+      current figures run: (1) total commits: `git rev-list --count HEAD`;
+      (2) project age: `git log --format="%ad" --date=format:"%Y-%m-%d" | tail -1`;
+      (3) Python files excluding dependencies: `find . -not -path './.git/*'
+      -not -path '*/.venv/*' -not -path '*/node_modules/*' -not -path
+      '*/reference/*' -not -path './.cognitive-os/*' -name '*.py' -not -type l
+      | wc -l`; (4) total lines across all code types with the same exclusions,
+      substituting -name patterns for sh, go, ts, md, yaml. The reference/
+      directory contains vendored dependency venvs and must always be excluded
+      from project metrics.
+    recommended_pitch: The exact size is a live metric. The type distribution is the architecturally relevant signal.
+    unsafe_claims_to_avoid:
+    - the codebase has exactly N lines of code
+    - it has exactly N commits
+    gaps: []
+
+  onboarding:
+    category: adoption
+    aliases:
+    - how do I start
+    - how to install
+    - how to use this
+    - getting started
+    - first steps
+    - como empiezo
+    - cómo empiezo
+    - comment commencer
+    - wie fange ich an
+    keywords:
+    - start
+    - install
+    - getting started
+    - onboarding
+    - first steps
+    - empezar
+    approved_sources:
+    - AGENTS.md
+    - skills/cognitive-os-init/SKILL.md
+    - docs/00-MOCs/entrypoints/getting-started-quick.md
+    related_claims:
+    - runtime_surfaces_cli_ui_service
+    answer_short: The entry point is /cognitive-os-init on an existing project, or /cos-install-operations for a fresh install. AGENTS.md describes the full OS surface. The flow varies by project — COS is progressive and can start with a single skill.
+    answer_long: >-
+      For an existing project: invoke /cognitive-os-init to generate the initial
+      configuration (hooks, settings, structure). For questions about what each
+      skill does: /skills-search or consult AGENTS.md. For guided feature
+      development: /sdd-new starts the spec-driven pipeline. COS is progressive
+      — you can start with one skill and expand. The onboarding flow varies by
+      project and harness; there is no single canonical path yet.
+    recommended_pitch: Start with /cognitive-os-init. COS adapts to the project, not the other way around.
+    unsafe_claims_to_avoid:
+    - onboarding is fully automatic and frictionless
+    - works identically on all projects without configuration
+    gaps:
+    - The onboarding flow varies by project and harness — a single canonical path does not exist yet.
+

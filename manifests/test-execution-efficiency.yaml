@@ -3,7 +3,8 @@ scope: cognitive-os-maintainers-only
 status: active
 policy:
   broad_first_default: false
-  final_laptop_lane: make test-laptop
+  final_laptop_lane: scripts/cos-test-repair-loop --full-command "make test-laptop" --timeout-seconds 2400 --require-clean-start
+  direct_laptop_command: make test-laptop
   max_broad_reruns_without_targeted_pass: 0
   failure_batching: true
   serial_lanes:
@@ -36,4 +37,6 @@ workflow:
   - run_targeted_groups
   - repair_all_failures_in_group
   - rerun_targeted_groups_once
-  - run_final_laptop_lane_once
+  - run_final_laptop_repair_loop_with_timeout
+  - if_full_lane_fails_rerun_exact_failed_nodeids
+  - repair_failures_then_repeat_full_loop

@@ -32,4 +32,14 @@ def test_failure_text_extracts_nodeids() -> None:
 def test_failure_text_prefers_failed_nodeids_before_broad(project_root) -> None:
     plan = plan_tests(project_root, failure_text="FAILED tests/chaos/test_x.py::test_b - boom", include_final_laptop=True)
     assert plan.lanes[0].name == "failed-nodeids"
+    assert "scripts/cos-test-repair-loop" in plan.final_lane.command
     assert "make test-laptop" in plan.final_lane.command
+
+
+@pytest.mark.unit
+def test_final_laptop_lane_uses_bounded_repair_loop(project_root) -> None:
+    plan = plan_tests(project_root, changed_files=["lib/dispatch.py"], include_final_laptop=True)
+    assert plan.final_lane is not None
+    assert plan.final_lane.name == "laptop"
+    assert plan.final_lane.command.startswith("scripts/cos-test-repair-loop")
+    assert "--timeout-seconds" in plan.final_lane.command
