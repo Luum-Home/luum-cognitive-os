@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Scaffold paired red-team portability proofs for SCOPE: both artifacts."""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_IMPORT_ROOT))
+
+from lib.portability_proof_paths import suggested_test_path
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[1]
+
+
+def _artifact_rel(repo: Path, artifact: str) -> str:
+    path = Path(artifact)
+    abs_path = path if path.is_absolute() else repo / path
+    try:
+        rel = abs_path.resolve().relative_to(repo.resolve()).as_posix()
+    except ValueError as exc:
+        raise SystemExit(f"artifact must live under repo root: {artifact}") from exc
+    if not abs_path.exists():
+        raise SystemExit(f"artifact does not exist: {rel}")
+    return rel
+
+
+def _module_name(rel: str) -> str:
+    stem = Path(rel).name.rsplit('.', 1)[0]
+    if rel.startswith('skills/') and rel.endswith('/SKILL.md'):
+        stem = f"skill_{Path(rel).parent.name}"
+    return stem.replace('-', '_')
+
+
+def _template(rel: str) -> str:
+    module = _module_name(rel)
+    artifact_literal = repr(rel)
+    title = f"Portability proof for {rel}."
+    if rel.startswith('hooks/') and rel.endswith('.sh'):
+        probe = f'''def test_runs_from_arbitrary_project_root(tmp_path: Path) -> None:\n    \"\"\"Falsification probe: must not depend on OS repo cwd.\"\"\"\n    payload = {{\"tool_name\": \"Bash\", \"tool_input\": {{\"command\": \"echo portability-probe\"}}}}\n    env = os.environ.copy()\n    env.update({{\n        \"COGNITIVE_OS_PROJECT_DIR\": str(tmp_path),\n        \"CODEX_PROJECT_DIR\": str(tmp_path),\n        \"COS_METRICS_DIR\": str(tmp_path / \".cognitive-os\" / \"metrics\"),\n    }})\n    result = subprocess.run(\n        [\"bash\", str(ARTIFACT)],\n        input=json.dumps(payload),\n        text=True,\n        capture_output=True,\n        cwd=tmp_path,\n        env=env,\n        timeout=20,\n        check=False,\n    )\n    assert result.returncode == 0, result.stderr\n'''
+    elif rel.startswith('skills/') and rel.endswith('/SKILL.md'):
+        probe = f'''def test_loads_from_arbitrary_project_root(tmp_path: Path) -> None:\n    \"\"\"Falsification probe: skill metadata must be usable outside the OS repo cwd.\"\"\"\n    target = tmp_path / \".codex\" / \"skills\" / ARTIFACT.parent.parent.name\n    target.mkdir(parents=True)\n    copied = target / \"SKILL.md\"\n    copied.write_text(ARTIFACT.read_text(encoding=\"utf-8\"), encoding=\"utf-8\")\n\n    text = copied.read_text(encoding=\"utf-8\")\n    assert \"name:\" in text\n    assert str(REPO_ROOT) not in text\n'''
+    else:
+        probe = f'''def test_runs_from_arbitrary_project_root(tmp_path: Path) -> None:\n    \"\"\"Falsification probe: must not depend on OS repo cwd.\"\"\"\n    command = [sys.executable, str(ARTIFACT), \"--help\"] if ARTIFACT.suffix == \".py\" else [str(ARTIFACT), \"--help\"]\n    result = subprocess.run(\n        command,\n        text=True,\n        capture_output=True,\n        cwd=tmp_path,\n        timeout=20,\n        check=False,\n    )\n    assert result.returncode == 0, result.stderr or result.stdout\n'''
+    imports = "import json\nimport os\nimport subprocess\nimport sys\n" if rel.startswith('hooks/') or not rel.startswith('skills/') else ""
+    if rel.startswith('skills/'):
+        imports = ""
+    return f'''# SCOPE: os-only\n\"\"\"{title}\"\"\"\n\nfrom __future__ import annotations\n\n{imports}from pathlib import Path\n\nREPO_ROOT = Path(__file__).resolve().parents[3]\nARTIFACT = REPO_ROOT / {artifact_literal}\n\n\ndef test_{module}_artifact_exists() -> None:\n    assert ARTIFACT.exists()\n\n\n{probe}'''
+
+
+def scaffold(repo: Path, artifact: str, force: bool = False) -> Path:
+    rel = _artifact_rel(repo, artifact)
+    target = repo / suggested_test_path(rel)
+    if target.exists() and not force:
+        raise SystemExit(f"refusing to overwrite existing proof: {target.relative_to(repo).as_posix()}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(_template(rel), encoding='utf-8')
+    return target
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--repo-root', type=Path, default=_repo_root())
+    parser.add_argument('--artifact', required=True, help='SCOPE: both artifact path, relative to repo root')
+    parser.add_argument('--force', action='store_true', help='Overwrite an existing scaffold')
+    parser.add_argument('--print-path', action='store_true', help='Print only the created path')
+    args = parser.parse_args(argv)
+
+    repo = args.repo_root.resolve()
+    target = scaffold(repo, args.artifact, force=args.force)
+    rel = target.relative_to(repo).as_posix()
+    if args.print_path:
+        print(rel)
+    else:
+        print(f"[portability-proof-scaffold] created {rel}")
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

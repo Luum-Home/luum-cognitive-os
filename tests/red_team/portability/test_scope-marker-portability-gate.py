@@ -69,7 +69,7 @@ def _stage_scope_both_hook(path: Path, stem: str) -> Path:
     hooks_dir = path / "hooks"
     hooks_dir.mkdir(exist_ok=True)
     hook_file = hooks_dir / f"{stem}.sh"
-    hook_file.write_text(f"#!/usr/bin/env bash\n# SCOPE: os-only\necho hello\n")
+    hook_file.write_text(f"#!/usr/bin/env bash\n# SCOPE: both\necho hello\n")
     subprocess.run(["git", "add", str(hook_file)], cwd=path, check=True, capture_output=True)
     return hook_file
 
@@ -167,3 +167,21 @@ def test_falsification_gate_not_bypassed_without_env_var(tmp_path: Path) -> None
         "falsification: scope-marker-portability-gate must NOT allow commit "
         "without paired portability test and without bypass env var"
     )
+
+
+def test_commit_with_scope_both_skill_and_skill_specific_test_allowed_under_codex(tmp_path: Path) -> None:
+    """git commit allowed when a SCOPE: both skill uses the skill-specific proof path."""
+    _init_repo(tmp_path)
+    skill_dir = tmp_path / "skills" / "add-hook"
+    skill_dir.mkdir(parents=True)
+    skill_file = skill_dir / "SKILL.md"
+    skill_file.write_text("<!-- SCOPE: both -->\n---\nname: add-hook\n---\n", encoding="utf-8")
+    test_dir = tmp_path / "tests" / "red_team" / "portability"
+    test_dir.mkdir(parents=True)
+    proof = test_dir / "test_skill_add_hook.py"
+    proof.write_text("def test_falsification_probe():\n    assert True\n", encoding="utf-8")
+    subprocess.run(["git", "add", "skills/add-hook/SKILL.md", "tests/red_team/portability/test_skill_add_hook.py"], cwd=tmp_path, check=True, capture_output=True)
+
+    result = _run("git commit -m 'add skill with proof'", tmp_path)
+
+    assert result.returncode == 0, result.stderr

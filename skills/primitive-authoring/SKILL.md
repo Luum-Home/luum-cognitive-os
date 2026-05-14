@@ -161,6 +161,21 @@ consumer-project primitives, project-specific vocabulary belongs in the project
 overlay/config; do not hardcode downstream product/team language into OS-level
 regex.
 
+## 3c. SCOPE both portability proof scaffold
+
+When an artifact declares `SCOPE: both`, create its paired red-team proof from
+the same canonical path logic used by `scripts/cos-scope-both-portability-audit`:
+
+```bash
+scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh
+scripts/cos-portability-proof-scaffold --artifact scripts/{script-name}.py
+scripts/cos-portability-proof-scaffold --artifact skills/{skill-name}/SKILL.md
+```
+
+Then replace the generated baseline with a primitive-specific falsification
+probe. Do not invent a different filename; the scope gate and audit both use
+`lib/portability_proof_paths.py` for their suggested path logic.
+
 ## 4. Projection fidelity
 
 Do not claim stronger fidelity than the harness/service can prove.
@@ -275,7 +290,8 @@ ACCEPTANCE CRITERIA:
 7. Consumer-fleet impact considered when downstream projects may be affected.
 8. Service/headless impact considered when COS can run outside IDE lifecycle.
 9. Tests/proof match risk class.
-10. Runtime evidence plan exists, or documented-only rationale exists.
+10. Every `SCOPE: both` artifact has its scaffolded paired proof path, then a real falsification probe.
+11. Runtime evidence plan exists, or documented-only rationale exists.
 ```
 
 ## Stop conditions

@@ -93,7 +93,15 @@ while IFS= read -r rel; do
 
   base="$(basename "$rel")"
   stem="${base%.*}"
-  candidates="tests/red_team/portability/$stem.bats
+  skill_candidate=""
+  case "$rel" in
+    skills/*/SKILL.md)
+      skill_name="$(basename "$(dirname "$rel")" | tr '-' '_')"
+      skill_candidate="tests/red_team/portability/test_skill_${skill_name}.py"
+      ;;
+  esac
+  candidates="$skill_candidate
+-tests/red_team/portability/$stem.bats
 -tests/red_team/portability/$base.bats
 -tests/red_team/portability/${stem}_test.py
 -tests/red_team/portability/test_${stem}.py"
@@ -112,7 +120,7 @@ EOF_CANDIDATES
 
   [ "$found" = "true" ] && continue
   missing_report="$missing_report
-- $rel declares SCOPE: both; expected one of: tests/red_team/portability/$stem.bats, tests/red_team/portability/$base.bats, tests/red_team/portability/${stem}_test.py, tests/red_team/portability/test_${stem}.py"
+- $rel declares SCOPE: both; expected one of: ${skill_candidate:+$skill_candidate, }tests/red_team/portability/$stem.bats, tests/red_team/portability/$base.bats, tests/red_team/portability/${stem}_test.py, tests/red_team/portability/test_${stem}.py"
 done <<EOF_FILES
 $staged_files
 EOF_FILES

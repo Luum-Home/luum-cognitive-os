@@ -13,9 +13,16 @@ import argparse
 import json
 import re
 import subprocess
+import sys
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any
+
+REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_IMPORT_ROOT))
+
+from lib.portability_proof_paths import suggested_test_path
 
 CREATE_PRIMITIVE = "CREATE_PRIMITIVE"
 IMPROVE_EXISTING = "IMPROVE_EXISTING"
@@ -172,6 +179,25 @@ def infer_primitive_type(text: str) -> str:
     return "skill-and-script"
 
 
+def _primary_artifacts_for(candidate: str, primitive_type: str) -> list[str]:
+    artifacts = [f"skills/{candidate}/SKILL.md"]
+    if primitive_type in {"action-layer-script", "skill-and-script"}:
+        artifacts.insert(0, f"scripts/cos_{candidate.replace('-', '_')}.py")
+    if primitive_type == "hook-or-gate":
+        artifacts.insert(0, f"hooks/{candidate}.sh")
+    return artifacts
+
+
+def _portability_proofs_for(artifacts: list[str]) -> list[str]:
+    proofs: list[str] = []
+    for artifact in artifacts:
+        if artifact.startswith(("hooks/", "scripts/", "skills/")):
+            proof = suggested_test_path(artifact)
+            if proof not in proofs:
+                proofs.append(proof)
+    return proofs
+
+
 def artifact_plan_for(candidate: str, primitive_type: str, decision: str, existing: ExistingPrimitive | None) -> list[str]:
     if decision == DISCARD:
         return []
@@ -181,34 +207,32 @@ def artifact_plan_for(candidate: str, primitive_type: str, decision: str, existi
         base = [existing.path]
         base.extend([
             f"tests/behavior/test_{candidate.replace('-', '_')}.py",
-            f"tests/red_team/portability/test_{candidate.replace('-', '_')}_portability.py",
+            *_portability_proofs_for([existing.path]),
         ])
         return base
     if primitive_type == "documentation-decision":
         return [f"docs/02-Decisions/adrs/ADR-XXX-{candidate}.md", f"docs/04-Concepts/architecture/{candidate}.md"]
-    artifacts = [f"skills/{candidate}/SKILL.md"]
-    if primitive_type in {"action-layer-script", "skill-and-script"}:
-        artifacts.insert(0, f"scripts/cos_{candidate.replace('-', '_')}.py")
-    if primitive_type == "hook-or-gate":
-        artifacts.insert(0, f"hooks/{candidate}.sh")
+    primary = _primary_artifacts_for(candidate, primitive_type)
+    artifacts = [*primary]
     artifacts.extend([
         f"tests/behavior/test_{candidate.replace('-', '_')}.py",
-        f"tests/red_team/portability/test_{candidate.replace('-', '_')}_portability.py",
+        *_portability_proofs_for(primary),
         f"docs/02-Decisions/adrs/ADR-XXX-{candidate}.md",
         f"docs/04-Concepts/architecture/{candidate}.md",
     ])
     return artifacts
 
 
-def validation_plan_for(decision: str, candidate: str) -> list[str]:
+def validation_plan_for(decision: str, candidate: str, primitive_type: str | None, existing: ExistingPrimitive | None) -> list[str]:
     if decision == DISCARD:
         return []
     test_name = candidate.replace("-", "_")
-    return [
-        f"python3 -m pytest tests/behavior/test_{test_name}.py -q",
-        f"python3 -m pytest tests/red_team/portability/test_{test_name}_portability.py -q",
-        "python3 scripts/cos_work_inventory.py --all --strict --json",
-    ]
+    artifacts = [existing.path] if decision == IMPROVE_EXISTING and existing else _primary_artifacts_for(candidate, primitive_type or "skill-and-script")
+    proofs = _portability_proofs_for(artifacts)
+    commands = [f"python3 -m pytest tests/behavior/test_{test_name}.py -q"]
+    commands.extend(f"python3 -m pytest {proof} -q" for proof in proofs[:2])
+    commands.append("python3 scripts/cos_work_inventory.py --all --strict --json")
+    return commands
 
 
 def risk_labels(text: str) -> list[str]:
@@ -290,7 +314,7 @@ def harvest(text: str, repo: Path) -> HarvestResult:
         reasons=reasons or ["insufficient_signal"],
         risks=risk_labels(text),
         artifact_plan=artifact_plan_for(candidate, primitive_type, decision, existing),
-        validation_plan=validation_plan_for(decision, candidate),
+        validation_plan=validation_plan_for(decision, candidate, primitive_type, existing),
         next_action=next_action,
     )
 
