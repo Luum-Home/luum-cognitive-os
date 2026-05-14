@@ -3654,9 +3654,9 @@ primitives:
 - id: hooks/skill-router-prompt-suggest.sh
   kind: hook
   owner_adr: ADR-174
-  lifecycle_state: sandbox
+  lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
+  distribution: core
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:

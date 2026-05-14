@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Unified Cognitive OS security red-team runner.
 
 The runner is deterministic and local-only by default: it does not read blocked
