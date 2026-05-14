@@ -367,6 +367,8 @@ cc_driver_emit() {
     "hooks/assumption-tracker.sh"    "false" \
     "hooks/scope-proportionality.sh" "false" \
     "hooks/trust-score-validator.sh" "false" \
+    "hooks/adversarial-review-gate.sh" "false" \
+    "hooks/decision-depth-gate.sh" "false" \
     "hooks/confidence-gate.sh"       "false" \
     "hooks/audit-id-enricher.sh"     "false" \
     "hooks/auto-rollback-trigger.sh" "false" \
