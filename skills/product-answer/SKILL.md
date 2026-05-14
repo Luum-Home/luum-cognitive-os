@@ -175,6 +175,7 @@ IDs:
 - `vanilla_usage`
 - `runtime_surfaces`
 - `alternatives_choice`
+- `architecture_map`
 
 ## Output discipline
 

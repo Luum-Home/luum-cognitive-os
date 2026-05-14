@@ -131,6 +131,25 @@ claims:
     - scripts/cos-product-answer
     boundaries:
     - Generated answers are not publication approval for volatile competitive claims.
+  commercial_architecture_map_primitive:
+    status: real
+    maturity: implemented_product_answer_extension
+    confidence: 0.84
+    summary: COS can generate a commercial-safe architecture map from evidence-backed product-answer manifests without exposing implementation inventory as public copy.
+    approved_wording: Cognitive OS can explain its architecture as a governance and evidence layer over coding agents, using stable value categories and claim-safety boundaries.
+    evidence:
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/feature-reality-audit.md
+    - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
+    - docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md
+    - docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
+    - docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md
+    - manifests/product-question-bank.yaml
+    - manifests/product-claim-evidence.yaml
+    boundaries:
+    - Public/commercial architecture maps should not lead with internal implementation counts or private tool names.
+    - Architecture maps must distinguish current evidence-backed surfaces from future service/UI direction.
+    - As the SO grows, update the evidence mapping and maturity rows rather than improvising chat-only copy.
   icp_vp_engineering:
     status: partial-real
     maturity: strategy_documented
