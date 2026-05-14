@@ -244,3 +244,8 @@ Use `manifests/dependencies.yaml` as the install contract, but do not overload i
 3. False positives for internal shell helpers are classified instead of reported as missing external tools.
 4. Optional heavy Python dependencies are reported as lane candidates, not forced into core install.
 5. Existing installer behavior remains unchanged until the audit output is reviewed.
+
+
+## Follow-up Implementation
+
+The recommended read-only reconciliation primitive was implemented by [ADR-305: Dependency Coverage Reconciliation Audit](../../02-Decisions/adrs/ADR-305-dependency-coverage-reconciliation-audit.md). The implementation lives in `lib/dependency_coverage_audit.py`, `scripts/cos-deps-coverage-audit`, and `tests/unit/test_dependency_coverage_audit.py`.
