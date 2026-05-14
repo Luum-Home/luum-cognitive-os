@@ -247,3 +247,22 @@ Sources:
 - Do not require Nix or Homebrew on every platform.
 - Do not make optional heavy/security tools part of the core profile.
 - Do not run provider login flows automatically.
+
+
+## ADR-309 update — cross-platform/headless bootstrap
+
+As of 2026-05-14, `scripts/cos-deps-install.sh` emits `cos-deps-install.v2` reports and models explicit headless/service bootstrap in addition to developer machines. The installer supports `macos`, `linux`, `windows_wsl`, and `windows` report targets. Linux distro-specific commands can be represented with distro keys such as `debian`, `fedora`, `arch`, or `alpine` while preserving `linux` as a fallback.
+
+Profiles now separate operator intent:
+
+| Profile | Use |
+|---|---|
+| `core` / `default` | Minimal portable bootstrap. |
+| `dev` | Developer workstation with toolchains, quality tools, and manual/auth-bound AI CLIs. |
+| `ci` | Non-interactive validation runner. |
+| `services` | Local integration services and service CLIs. |
+| `security` | SBOM/security/sandbox tools. |
+| `headless-instance` | Standalone SO instance, VM, CI worker, or future `cosd` host without desktop/login-bound assumptions. |
+| `full` | Maintainer/lab superset. |
+
+Explicit setup/update commands may run `--apply` for portable, non-auth-bound dependencies. Git hooks remain advisory-only and must not auto-install tools during `push`, merge-based `pull`, or rebase-based `pull --rebase`.

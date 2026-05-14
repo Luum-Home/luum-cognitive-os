@@ -24,7 +24,7 @@ def run_install(*args: str) -> dict:
 def test_core_dry_run_emits_cross_platform_json(platform: str) -> None:
     payload = run_install("--profile", "core", "--platform", platform, "--dry-run", "--json")
 
-    assert payload["schema_version"] == "cos-deps-install.v1"
+    assert payload["schema_version"] in {"cos-deps-install.v1", "cos-deps-install.v2"}
     assert payload["mode"] == "dry-run"
     assert payload["platform"] == platform
     assert payload["manifest_profile"] == "default"
@@ -85,3 +85,30 @@ def test_adr_168_links_installer_and_contract_test() -> None:
 
     assert "scripts/cos-deps-install.sh" in text
     assert "tests/contracts/test_cross_device_dependencies.py" in text
+
+
+def test_headless_instance_profile_is_cross_platform_and_non_auth_bound() -> None:
+    payload = run_install("--profile", "headless-instance", "--platform", "linux", "--dry-run", "--json")
+    names = {row["name"] for bucket in ("already_present", "installable", "manual", "platform_builtin", "unsupported_platform") for row in payload[bucket]}
+
+    assert payload["schema_version"] == "cos-deps-install.v2"
+    assert payload["manifest_profile"] == "headless-instance"
+    assert payload["git_hook_policy"] == "advisory-only-no-auto-install"
+    assert {"jq", "git", "uv", "python3", "curl", "docker", "tmux", "syft", "grype", "trivy", "fastmcp"}.issubset(names)
+    assert not payload["auth_bound"]
+
+
+def test_dev_profile_models_common_toolchains_and_quality_tools() -> None:
+    payload = run_install("--profile", "dev", "--platform", "macos", "--dry-run", "--json")
+    names = {row["name"] for bucket in ("already_present", "installable", "manual", "auth_bound", "platform_builtin") for row in payload[bucket]}
+
+    assert {"go", "cargo", "node", "npm", "npx", "pip", "pytest", "shellcheck", "gofmt", "golangci-lint", "codespell", "vale", "lychee", "yq", "rg"}.issubset(names)
+    assert {row["name"] for row in payload["auth_bound"]} >= {"gh", "claude", "opencode"}
+
+
+def test_windows_platform_is_reportable_without_credential_copy() -> None:
+    payload = run_install("--profile", "core", "--platform", "windows", "--dry-run", "--json")
+
+    assert payload["platform"] == "windows"
+    assert payload["credential_policy"] == "never-copy-or-read-credential-stores"
+    assert not payload["failed"]

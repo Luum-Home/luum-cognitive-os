@@ -147,6 +147,38 @@ case "$PROFILE" in
 esac
 ok "Python dependencies installed"
 
+
+# ── Portable dependency installer (ADR-309) ─────────────────────────
+# Explicit setup is allowed to install portable, non-auth-bound tools. Git hooks
+# stay advisory-only; this path is for first-run/new-device bootstrap.
+run_portable_dependency_install() {
+  if [ "${COS_DEPS_INSTALL_APPLY:-1}" = "0" ]; then
+    warn "Portable dependency install skipped (COS_DEPS_INSTALL_APPLY=0)"
+    return 0
+  fi
+  if [ ! -x "$PROJECT_DIR/scripts/cos-deps-install.sh" ]; then
+    warn "scripts/cos-deps-install.sh not found; skipping portable dependency install"
+    return 0
+  fi
+  local deps_profile="${COS_DEPS_INSTALL_PROFILE:-dev}"
+  case "$PROFILE" in
+    --minimal) deps_profile="${COS_DEPS_INSTALL_PROFILE:-core}" ;;
+    --standard) deps_profile="${COS_DEPS_INSTALL_PROFILE:-dev}" ;;
+    --full) deps_profile="${COS_DEPS_INSTALL_PROFILE:-full}" ;;
+  esac
+  info "Installing portable dependencies (profile: $deps_profile)..."
+  if bash "$PROJECT_DIR/scripts/cos-deps-install.sh" --profile "$deps_profile" --apply; then
+    ok "Portable dependency install completed"
+  else
+    warn "Portable dependency install had failures; inspect scripts/cos-deps-install.sh --profile $deps_profile --dry-run --json"
+  fi
+}
+
+# ── 3b. Portable dependency installer ─────────────────────────────
+echo ""
+info "--- Portable dependency installer ---"
+run_portable_dependency_install
+
 # ── 4. Go via goenv ─────────────────────────────────────────────────
 echo ""
 info "--- Go environment ---"

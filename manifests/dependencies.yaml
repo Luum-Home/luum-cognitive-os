@@ -10,6 +10,8 @@ python:
     web:
     - fastapi>=0.100
     - uvicorn>=0.23
+    - fastapi
+    - flask
     observability:
     - opik>=1.0
     - langfuse>=3.0
@@ -17,6 +19,7 @@ python:
     - cognee>=0.1
     guardrails:
     - nemoguardrails
+    - garak
     jupyter:
     - jupyter
     - notebook
@@ -29,6 +32,11 @@ python:
     - pytest-xdist>=3.5
     - mutmut>=3.0
     - pytest-smell>=1.0
+    - pytest-rerunfailures
+    - cosmic-ray
+    - pytest-xdist
+    - py2many
+    - testcontainers
     enforcement:
     - pre-commit>=4.0
     - ruff>=0.9.0
@@ -36,6 +44,40 @@ python:
     - import-linter>=2.0
     - pytest-cov>=6.0
     - diff-cover>=9.0
+    - codespell
+    - semgrep
+    - pip-licenses
+    evals-observability:
+    - arize-phoenix
+    - arize-phoenix-otel
+    - deepeval
+    - mlflow
+    - mlflow-skinny
+    - ragas
+    agent-lab:
+    - browser-use
+    - claude-agent-sdk
+    - openai
+    - rich
+    - testcontainers
+    embeddings:
+    - fastembed
+    - numpy
+    - sentence-transformers
+    advisor-mcp:
+    - anthropic
+    - google-generativeai
+    - httpx
+    - pydantic
+    - python-dotenv
+    - click
+    - fastmcp
+    - litellm
+    services-python:
+    - cognee
+    - memu-ai
+    security-python:
+    - mcp-scan
 tools:
 - name: jq
   criticality: required
@@ -399,13 +441,16 @@ tools:
   install:
     macos:
       manager: pip
-      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many" ~/.cargo/bin/py2many
+      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many"
+        ~/.cargo/bin/py2many
     linux:
       manager: pip
-      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many" ~/.cargo/bin/py2many
+      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many"
+        ~/.cargo/bin/py2many
     windows_wsl:
       manager: pip
-      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many" ~/.cargo/bin/py2many
+      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many"
+        ~/.cargo/bin/py2many
   consumed_by:
   - scripts/cos-rust-transpiler-eval
   - scripts/cos_rust_transpiler_eval.py
@@ -466,6 +511,1394 @@ tools:
   auth_bound: false
   manual_url: https://docs.rs/crate/depyler/latest
   post_install: Requires Rust 1.83+ and Python 3.8+; used only by the Rust transpiler lab lane.
+- name: curl
+  criticality: required
+  check: curl --version
+  install:
+    macos:
+      manager: brew
+      command: brew install curl
+    linux:
+      manager: apt
+      command: sudo apt-get install -y curl
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y curl
+    windows:
+      manager: manual
+      url: https://repology.org/project/curl/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - default
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: go
+  criticality: recommended
+  check: go version
+  install:
+    macos:
+      manager: brew
+      command: brew install go
+    linux:
+      manager: apt
+      command: sudo apt-get install -y golang-go
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y golang-go
+    windows:
+      manager: winget
+      command: winget install GoLang.Go
+  consumed_by:
+  - dependency coverage audit
+  category: runtime
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: cargo
+  criticality: recommended
+  check: cargo --version
+  install:
+    macos:
+      manager: brew
+      command: brew install rust
+    linux:
+      manager: rustup
+      command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    windows_wsl:
+      manager: rustup
+      command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    windows:
+      manager: winget
+      command: winget install Rustlang.Rustup
+  consumed_by:
+  - dependency coverage audit
+  category: runtime
+  profiles:
+  - dev
+  - ci
+  - full
+  - rust-transpiler-lab
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: node
+  criticality: recommended
+  check: node --version
+  install:
+    macos:
+      manager: brew
+      command: brew install node
+    linux:
+      manager: apt
+      command: sudo apt-get install -y nodejs npm
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y nodejs npm
+    windows:
+      manager: winget
+      command: winget install OpenJS.NodeJS.LTS
+  consumed_by:
+  - dependency coverage audit
+  category: runtime
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: npm
+  criticality: recommended
+  check: npm --version
+  install:
+    macos:
+      manager: brew
+      command: brew install node
+    linux:
+      manager: apt
+      command: sudo apt-get install -y nodejs npm
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y nodejs npm
+    windows:
+      manager: winget
+      command: winget install OpenJS.NodeJS.LTS
+  consumed_by:
+  - dependency coverage audit
+  category: package-manager
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: npx
+  criticality: recommended
+  check: npx --version
+  install:
+    macos:
+      manager: brew
+      command: brew install node
+    linux:
+      manager: apt
+      command: sudo apt-get install -y nodejs npm
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y nodejs npm
+    windows:
+      manager: winget
+      command: winget install OpenJS.NodeJS.LTS
+  consumed_by:
+  - dependency coverage audit
+  category: package-manager
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: pip
+  criticality: recommended
+  check: python3 -m pip --version
+  install:
+    macos:
+      manager: python
+      command: python3 -m ensurepip --upgrade
+    linux:
+      manager: apt
+      command: sudo apt-get install -y python3-pip
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y python3-pip
+    windows:
+      manager: python
+      command: python -m ensurepip --upgrade
+  consumed_by:
+  - dependency coverage audit
+  category: package-manager
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: pytest
+  criticality: recommended
+  check: python3 -m pytest --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user pytest
+    linux:
+      manager: pip
+      command: python3 -m pip install --user pytest
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user pytest
+    windows:
+      manager: pip
+      command: python -m pip install --user pytest
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: shellcheck
+  criticality: recommended
+  check: shellcheck --version
+  install:
+    macos:
+      manager: brew
+      command: brew install shellcheck
+    linux:
+      manager: apt
+      command: sudo apt-get install -y shellcheck
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y shellcheck
+    windows:
+      manager: manual
+      url: https://repology.org/project/shellcheck/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: rg
+  criticality: recommended
+  check: rg --version
+  install:
+    macos:
+      manager: brew
+      command: brew install ripgrep
+    linux:
+      manager: apt
+      command: sudo apt-get install -y ripgrep
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y ripgrep
+    windows:
+      manager: manual
+      url: https://repology.org/project/ripgrep/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: yq
+  criticality: recommended
+  check: yq --version
+  install:
+    macos:
+      manager: brew
+      command: brew install yq
+    linux:
+      manager: apt
+      command: sudo apt-get install -y yq
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y yq
+    windows:
+      manager: manual
+      url: https://repology.org/project/yq/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: tmux
+  criticality: recommended
+  check: tmux --version
+  install:
+    macos:
+      manager: brew
+      command: brew install tmux
+    linux:
+      manager: apt
+      command: sudo apt-get install -y tmux
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y tmux
+    windows:
+      manager: manual
+      url: https://repology.org/project/tmux/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: bc
+  criticality: recommended
+  check: bc --version
+  install:
+    macos:
+      manager: brew
+      command: brew install bc
+    linux:
+      manager: apt
+      command: sudo apt-get install -y bc
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y bc
+    windows:
+      manager: manual
+      url: https://repology.org/project/bc/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: gofmt
+  criticality: recommended
+  check: gofmt -h
+  install:
+    macos:
+      manager: brew
+      command: brew install go
+    linux:
+      manager: apt
+      command: sudo apt-get install -y golang-go
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y golang-go
+    windows:
+      manager: winget
+      command: winget install GoLang.Go
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: golangci-lint
+  criticality: optional
+  check: golangci-lint --version
+  install:
+    macos:
+      manager: brew
+      command: brew install golangci-lint
+    linux:
+      manager: script
+      command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ~/.local/bin
+    windows_wsl:
+      manager: script
+      command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ~/.local/bin
+    windows:
+      manager: winget
+      command: winget install GolangCI.golangci-lint
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: codespell
+  criticality: recommended
+  check: codespell --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user codespell
+    linux:
+      manager: pip
+      command: python3 -m pip install --user codespell
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user codespell
+    windows:
+      manager: pip
+      command: python -m pip install --user codespell
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: fastmcp
+  criticality: optional
+  check: fastmcp --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user fastmcp
+    linux:
+      manager: pip
+      command: python3 -m pip install --user fastmcp
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user fastmcp
+    windows:
+      manager: pip
+      command: python -m pip install --user fastmcp
+  consumed_by:
+  - dependency coverage audit
+  category: mcp
+  profiles:
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: vale
+  criticality: optional
+  check: vale --version
+  install:
+    macos:
+      manager: brew
+      command: brew install vale
+    linux:
+      manager: manual
+      url: https://vale.sh/docs/vale-cli/installation/
+    windows_wsl:
+      manager: manual
+      url: https://vale.sh/docs/vale-cli/installation/
+    windows:
+      manager: choco
+      command: choco install vale
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: lychee
+  criticality: optional
+  check: lychee --version
+  install:
+    macos:
+      manager: brew
+      command: brew install lychee
+    linux:
+      manager: cargo
+      command: cargo install lychee
+    windows_wsl:
+      manager: cargo
+      command: cargo install lychee
+    windows:
+      manager: cargo
+      command: cargo install lychee
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: syft
+  criticality: optional
+  check: syft version
+  install:
+    macos:
+      manager: brew
+      command: brew install syft
+    linux:
+      manager: script
+      command: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b ~/.local/bin
+    windows_wsl:
+      manager: script
+      command: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b ~/.local/bin
+    windows:
+      manager: manual
+      url: https://github.com/anchore/syft/releases
+  consumed_by:
+  - dependency coverage audit
+  category: security
+  profiles:
+  - security
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: grype
+  criticality: optional
+  check: grype version
+  install:
+    macos:
+      manager: brew
+      command: brew install grype
+    linux:
+      manager: script
+      command: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b ~/.local/bin
+    windows_wsl:
+      manager: script
+      command: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b ~/.local/bin
+    windows:
+      manager: manual
+      url: https://github.com/anchore/grype/releases
+  consumed_by:
+  - dependency coverage audit
+  category: security
+  profiles:
+  - security
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: trivy
+  criticality: optional
+  check: trivy --version
+  install:
+    macos:
+      manager: brew
+      command: brew install trivy
+    linux:
+      manager: script
+      command: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/.local/bin
+    windows_wsl:
+      manager: script
+      command: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/.local/bin
+    windows:
+      manager: winget
+      command: winget install AquaSecurity.Trivy
+  consumed_by:
+  - dependency coverage audit
+  category: security
+  profiles:
+  - security
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: redis-cli
+  criticality: optional
+  check: redis-cli --version
+  install:
+    macos:
+      manager: brew
+      command: brew install redis
+    linux:
+      manager: apt
+      command: sudo apt-get install -y redis-tools
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y redis-tools
+    windows:
+      manager: manual
+      url: https://repology.org/project/redis/versions
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - services
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: redis-server
+  criticality: optional
+  check: redis-server --version
+  install:
+    macos:
+      manager: brew
+      command: brew install redis
+    linux:
+      manager: apt
+      command: sudo apt-get install -y redis-server
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y redis-server
+    windows:
+      manager: manual
+      url: https://repology.org/project/redis/versions
+  consumed_by:
+  - dependency coverage audit
+  category: service
+  profiles:
+  - services
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: pg_ctl
+  criticality: optional
+  check: pg_ctl --version
+  install:
+    macos:
+      manager: brew
+      command: brew install postgresql@16
+    linux:
+      manager: apt
+      command: sudo apt-get install -y postgresql
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y postgresql
+    windows:
+      manager: manual
+      url: https://repology.org/project/postgresql@16/versions
+  consumed_by:
+  - dependency coverage audit
+  category: service
+  profiles:
+  - services
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: valkey-server
+  criticality: optional
+  check: valkey-server --version
+  install:
+    macos:
+      manager: brew
+      command: brew install valkey
+    linux:
+      manager: manual
+      url: https://valkey.io/download/
+    windows_wsl:
+      manager: manual
+      url: https://valkey.io/download/
+    windows:
+      manager: manual
+      url: https://valkey.io/download/
+  consumed_by:
+  - dependency coverage audit
+  category: service
+  profiles:
+  - services
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: orb
+  criticality: optional
+  check: orb version
+  install:
+    macos:
+      manager: manual
+      url: https://orbstack.dev/download
+    linux:
+      manager: manual
+      url: https://orbstack.dev/download
+    windows_wsl:
+      manager: manual
+      url: https://orbstack.dev/download
+    windows:
+      manager: manual
+      url: https://orbstack.dev/download
+  consumed_by:
+  - dependency coverage audit
+  category: desktop-app
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://orbstack.dev/download
+- name: claude
+  criticality: optional
+  check: claude --version
+  install:
+    macos:
+      manager: manual
+      url: https://docs.anthropic.com/en/docs/claude-code
+    linux:
+      manager: manual
+      url: https://docs.anthropic.com/en/docs/claude-code
+    windows_wsl:
+      manager: manual
+      url: https://docs.anthropic.com/en/docs/claude-code
+    windows:
+      manager: manual
+      url: https://docs.anthropic.com/en/docs/claude-code
+  consumed_by:
+  - dependency coverage audit
+  category: ai-cli
+  profiles:
+  - dev
+  - full
+  scope: user
+  syncable: config-only
+  auth_bound: true
+  manual_url: https://docs.anthropic.com/en/docs/claude-code
+  post_install: Authenticate on each device; never copy token stores.
+- name: opencode
+  criticality: optional
+  check: opencode --version
+  install:
+    macos:
+      manager: manual
+      url: https://opencode.ai/
+    linux:
+      manager: manual
+      url: https://opencode.ai/
+    windows_wsl:
+      manager: manual
+      url: https://opencode.ai/
+    windows:
+      manager: manual
+      url: https://opencode.ai/
+  consumed_by:
+  - dependency coverage audit
+  category: ai-cli
+  profiles:
+  - dev
+  - full
+  scope: user
+  syncable: config-only
+  auth_bound: true
+  manual_url: https://opencode.ai/
+  post_install: Authenticate on each device; never copy token stores.
+- name: obsidian
+  criticality: optional
+  check: obsidian --version
+  install:
+    macos:
+      manager: manual
+      url: https://obsidian.md/download
+    linux:
+      manager: manual
+      url: https://obsidian.md/download
+    windows_wsl:
+      manager: manual
+      url: https://obsidian.md/download
+    windows:
+      manager: manual
+      url: https://obsidian.md/download
+  consumed_by:
+  - dependency coverage audit
+  category: desktop-app
+  profiles:
+  - full
+  scope: user
+  syncable: config-only
+  auth_bound: false
+  manual_url: https://obsidian.md/download
+- name: bwrap
+  criticality: optional
+  check: bwrap --version
+  install:
+    macos:
+      manager: unsupported
+      url: https://github.com/containers/bubblewrap
+    linux:
+      manager: apt
+      command: sudo apt-get install -y bubblewrap
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y bubblewrap
+    windows:
+      manager: unsupported
+      url: https://github.com/containers/bubblewrap
+  consumed_by:
+  - dependency coverage audit
+  category: security
+  profiles:
+  - security
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: sandbox-exec
+  criticality: optional
+  check: sandbox-exec -h
+  install:
+    macos:
+      manager: platform
+      notes: macOS platform primitive
+    linux:
+      manager: unsupported
+      url: https://www.freedesktop.org/software/systemd/man/systemd-run.html
+    windows_wsl:
+      manager: unsupported
+      url: https://learn.microsoft.com/windows/wsl/
+    windows:
+      manager: unsupported
+      url: https://learn.microsoft.com/windows/security/application-security/application-control/windows-defender-application-control/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - security
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: uuidgen
+  criticality: recommended
+  check: uuidgen --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: shasum
+  criticality: recommended
+  check: shasum --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: sha256sum
+  criticality: recommended
+  check: sha256sum --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: md5
+  criticality: recommended
+  check: md5 --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: md5sum
+  criticality: recommended
+  check: md5sum --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: flock
+  criticality: recommended
+  check: flock --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: pgrep
+  criticality: recommended
+  check: pgrep --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: timeout
+  criticality: recommended
+  check: timeout --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: tput
+  criticality: recommended
+  check: tput --version
+  install:
+    macos:
+      manager: platform
+      notes: Provided by macOS base system or coreutils fallback
+    linux:
+      manager: platform
+      notes: Provided by util-linux/coreutils/procps/ncurses
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro packages
+    windows:
+      manager: manual
+      url: https://learn.microsoft.com/powershell/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: docker-compose
+  criticality: optional
+  check: docker compose version
+  install:
+    macos:
+      manager: manual
+      url: https://docs.docker.com/get-docker/
+    linux:
+      manager: apt
+      command: sudo apt-get install -y docker-compose-plugin
+    windows_wsl:
+      manager: manual
+      url: https://docs.docker.com/get-docker/
+    windows:
+      manager: manual
+      url: https://docs.docker.com/get-docker/
+  consumed_by:
+  - dependency coverage audit
+  category: container
+  profiles:
+  - services
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: goenv
+  criticality: optional
+  check: goenv --version
+  install:
+    macos:
+      manager: brew
+      command: brew install goenv
+    linux:
+      manager: manual
+      url: https://github.com/go-nv/goenv
+    windows_wsl:
+      manager: manual
+      url: https://github.com/go-nv/goenv
+    windows:
+      manager: unsupported
+      url: https://github.com/go-nv/goenv
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: mcp-aguara
+  criticality: optional
+  check: mcp-aguara --version
+  install:
+    macos:
+      manager: go
+      command: go install github.com/garagon/mcp-aguara@latest
+    linux:
+      manager: go
+      command: go install github.com/garagon/mcp-aguara@latest
+    windows_wsl:
+      manager: go
+      command: go install github.com/garagon/mcp-aguara@latest
+    windows:
+      manager: go
+      command: go install github.com/garagon/mcp-aguara@latest
+  consumed_by:
+  - dependency coverage audit
+  category: mcp
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: pdftotext
+  criticality: optional
+  check: pdftotext -v
+  install:
+    macos:
+      manager: brew
+      command: brew install poppler
+    linux:
+      manager: apt
+      command: sudo apt-get install -y poppler-utils
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y poppler-utils
+    windows:
+      manager: manual
+      url: https://poppler.freedesktop.org/
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: pip-licenses
+  criticality: optional
+  check: pip-licenses --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user pip-licenses
+    linux:
+      manager: pip
+      command: python3 -m pip install --user pip-licenses
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user pip-licenses
+    windows:
+      manager: pip
+      command: python -m pip install --user pip-licenses
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - ci
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: repomix
+  criticality: optional
+  check: repomix --version
+  install:
+    macos:
+      manager: npm
+      command: npm install -g repomix
+    linux:
+      manager: npm
+      command: npm install -g repomix
+    windows_wsl:
+      manager: npm
+      command: npm install -g repomix
+    windows:
+      manager: npm
+      command: npm install -g repomix
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - dev
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: agnix
+  criticality: optional
+  check: agnix --version
+  install:
+    macos:
+      manager: manual
+      url: https://github.com/agnix-ai/agnix
+    linux:
+      manager: manual
+      url: https://github.com/agnix-ai/agnix
+    windows_wsl:
+      manager: manual
+      url: https://github.com/agnix-ai/agnix
+    windows:
+      manager: manual
+      url: https://github.com/agnix-ai/agnix
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: cos
+  criticality: optional
+  check: cos --version
+  install:
+    macos:
+      manager: script
+      command: bash scripts/install-cos.sh
+    linux:
+      manager: script
+      command: bash scripts/install-cos.sh
+    windows_wsl:
+      manager: script
+      command: bash scripts/install-cos.sh
+    windows:
+      manager: manual
+      url: https://github.com/Luum-Home/luum-cognitive-os
+  consumed_by:
+  - dependency coverage audit
+  category: cli
+  profiles:
+  - default
+  - dev
+  - ci
+  - full
+  - headless-instance
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: redis
+  criticality: optional
+  check: redis --version
+  install:
+    macos:
+      manager: brew
+      command: brew install redis
+    linux:
+      manager: apt
+      command: sudo apt-get install -y redis-server redis-tools
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y redis-server redis-tools
+    windows:
+      manager: manual
+      url: https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/
+  consumed_by:
+  - dependency coverage audit
+  category: service
+  profiles:
+  - services
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: valkey
+  criticality: optional
+  check: valkey --version
+  install:
+    macos:
+      manager: brew
+      command: brew install valkey
+    linux:
+      manager: manual
+      url: https://valkey.io/download/
+    windows_wsl:
+      manager: manual
+      url: https://valkey.io/download/
+    windows:
+      manager: manual
+      url: https://valkey.io/download/
+  consumed_by:
+  - dependency coverage audit
+  category: service
+  profiles:
+  - services
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: postgresql@17
+  criticality: optional
+  check: postgresql@17 --version
+  install:
+    macos:
+      manager: brew
+      command: brew install postgresql@17
+    linux:
+      manager: apt
+      command: sudo apt-get install -y postgresql
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y postgresql
+    windows:
+      manager: winget
+      command: winget install PostgreSQL.PostgreSQL
+  consumed_by:
+  - dependency coverage audit
+  category: service
+  profiles:
+  - services
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: util-linux
+  criticality: optional
+  check: util-linux --version
+  install:
+    macos:
+      manager: brew
+      command: brew install util-linux
+    linux:
+      manager: platform
+      notes: Provided by Linux base images or util-linux packages
+    windows_wsl:
+      manager: platform
+      notes: Provided by WSL distro util-linux package
+    windows:
+      manager: unsupported
+      url: https://learn.microsoft.com/windows/wsl/
+  consumed_by:
+  - dependency coverage audit
+  category: os-primitive
+  profiles:
+  - ci
+  - full
+  - headless-instance
+  scope: system
+  syncable: 'no'
+  auth_bound: false
 mcp_servers:
 - name: engram
   criticality: recommended
@@ -504,15 +1937,21 @@ profiles:
     - engram
   full:
     python_groups:
-    - llm
-    - web
-    - observability
-    - memory
+    - agent-lab
+    - crawling
+    - embeddings
+    - enforcement
+    - evals-observability
     - guardrails
     - jupyter
-    - crawling
+    - llm
+    - memory
+    - observability
     - testing
-    - enforcement
+    - web
+    - advisor-mcp
+    - services-python
+    - security-python
     tools_required:
     - jq
     - git
@@ -529,6 +1968,47 @@ profiles:
     - promptfoo
     - goreleaser
     - git-filter-repo
+    - go
+    - cargo
+    - node
+    - npm
+    - npx
+    - pip
+    - pytest
+    - shellcheck
+    - gofmt
+    - golangci-lint
+    - codespell
+    - vale
+    - lychee
+    - yq
+    - rg
+    - syft
+    - grype
+    - trivy
+    - redis-cli
+    - redis-server
+    - valkey-server
+    - pg_ctl
+    - orb
+    - tmux
+    - claude
+    - opencode
+    - fastmcp
+    - obsidian
+    - bwrap
+    - sandbox-exec
+    - bc
+    - uuidgen
+    - shasum
+    - sha256sum
+    - md5
+    - md5sum
+    - flock
+    - pgrep
+    - timeout
+    - tput
+    - curl
     mcp_servers_recommended:
     - engram
     - aguara
@@ -540,4 +2020,142 @@ profiles:
     - py2many
     - tnk
     - depyler
+    mcp_servers_recommended: []
+  dev:
+    python_groups:
+    - testing
+    - enforcement
+    - agent-lab
+    - advisor-mcp
+    - services-python
+    - security-python
+    tools_required:
+    - jq
+    - git
+    - uv
+    - python3
+    - curl
+    tools_recommended:
+    - engram
+    - gh
+    - go
+    - cargo
+    - node
+    - npm
+    - npx
+    - pip
+    - pytest
+    - shellcheck
+    - gofmt
+    - golangci-lint
+    - codespell
+    - vale
+    - lychee
+    - yq
+    - rg
+    - tmux
+    - claude
+    - opencode
+    mcp_servers_recommended:
+    - engram
+  ci:
+    python_groups:
+    - testing
+    - enforcement
+    - services-python
+    - security-python
+    tools_required:
+    - jq
+    - git
+    - uv
+    - python3
+    - curl
+    tools_recommended:
+    - go
+    - cargo
+    - node
+    - npm
+    - npx
+    - pip
+    - pytest
+    - shellcheck
+    - gofmt
+    - golangci-lint
+    - codespell
+    - lychee
+    - yq
+    - rg
+    - bc
+    - uuidgen
+    - sha256sum
+    - flock
+    - timeout
+    - tput
+    mcp_servers_recommended: []
+  security:
+    python_groups: []
+    tools_required:
+    - jq
+    - git
+    - python3
+    - curl
+    tools_recommended:
+    - semgrep
+    - syft
+    - grype
+    - trivy
+    - bwrap
+    - sandbox-exec
+    mcp_servers_recommended: []
+  services:
+    python_groups: []
+    tools_required:
+    - jq
+    - git
+    - curl
+    tools_recommended:
+    - docker
+    - redis-cli
+    - redis-server
+    - valkey-server
+    - pg_ctl
+    - tmux
+    mcp_servers_recommended: []
+  headless-instance:
+    python_groups:
+    - testing
+    - enforcement
+    - advisor-mcp
+    - services-python
+    - security-python
+    tools_required:
+    - jq
+    - git
+    - uv
+    - python3
+    - curl
+    tools_recommended:
+    - node
+    - npm
+    - npx
+    - pip
+    - rg
+    - yq
+    - tmux
+    - docker
+    - redis-cli
+    - redis-server
+    - pg_ctl
+    - syft
+    - grype
+    - trivy
+    - bwrap
+    - fastmcp
+    - bc
+    - uuidgen
+    - sha256sum
+    - flock
+    - pgrep
+    - timeout
+    - tput
     mcp_servers_recommended: []

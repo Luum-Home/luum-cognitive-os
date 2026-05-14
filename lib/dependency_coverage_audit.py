@@ -87,6 +87,16 @@ PLATFORM_BUILTINS = {
     "which",
     "xargs",
     "zsh",
+    "apt-get",
+    "brew",
+    "du",
+    "nice",
+    "pip3",
+    "ps",
+    "python",
+    "rsync",
+    "sudo",
+    "tar",
 }
 
 # Helpers commonly exposed by sourced COS shell libraries. These should not be
@@ -99,6 +109,18 @@ KNOWN_INTERNAL_HELPERS = {
     "file_exists_strict",
     "portable_epoch_now",
     "safe_jsonl_append",
+    "cos-test",
+    "failed",
+    "fallback",
+    "long-running-server",
+    "may",
+    "takes",
+    "tooler",
+    "unused-tool",
+    "v2",
+    "x",
+    "y",
+    "at",
 }
 
 COMMAND_V_RE = re.compile(r"\bcommand\s+-v\s+([A-Za-z0-9_.@/+:-]+)")
@@ -358,6 +380,8 @@ def _command_candidates_from_line(line: str) -> list[tuple[str, str]]:
                 value = value.rstrip("/").split("/")[-1].split("@")[0]
             if source == "pip-install":
                 value = value.split("[")[0]
+                if value in {"at", "takes", "x", "y"}:
+                    continue
             cleaned = _clean_command_name(value, source)
             if cleaned is None:
                 continue
@@ -378,7 +402,9 @@ def collect_command_probes(root: Path) -> list[Candidate]:
                 name = command.strip().strip('"\'')
                 if not name:
                     continue
-                if name in internal:
+                if source == "pip-install":
+                    kind = "python"
+                elif name in internal:
                     kind = "internal-helper"
                 elif name in PLATFORM_BUILTINS:
                     kind = "platform-builtin"
@@ -399,7 +425,7 @@ def build_report(root: Path, *, manifest_path: Path | None = None) -> dict[str, 
     command_rows = collect_command_probes(root)
 
     declared_host_tool_names = {row.name for row in command_rows if row.kind == "host-tool"}
-    declared_python_names = {row.name for row in package_rows if row.kind == "python"}
+    declared_python_names = {row.name for row in package_rows if row.kind == "python"} | {row.name for row in command_rows if row.kind == "python"}
 
     missing_from_manifest: list[Candidate] = []
     platform_builtin: list[Candidate] = []
@@ -418,6 +444,10 @@ def build_report(root: Path, *, manifest_path: Path | None = None) -> dict[str, 
             declared_host_tool.append(row)
             if row.name not in manifest_tools:
                 missing_from_manifest.append(row)
+        elif row.kind == "python":
+            declared_python_dependency.append(row)
+            if row.name not in manifest_python:
+                missing_from_manifest.append(Candidate(row.name, "python", row.sources, {"reason": "python package installed by script but not declared in manifests/dependencies.yaml python groups"}))
 
     for row in package_rows:
         if row.kind == "python":

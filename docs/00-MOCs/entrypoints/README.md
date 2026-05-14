@@ -32,6 +32,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-310: Cross-Platform and Headless Dependency Bootstrap](adrs/ADR-310-cross-platform-headless-dependency-bootstrap.md) — extends dependency bootstrap from advisory drift reports to explicit setup/update installs across developer machines, CI, Windows/WSL, Linux, macOS, and standalone headless SO instances.
 - [ADR-309: Current-Window Subagent Spawn SLOs with Historical Tail Diagnostics](adrs/ADR-309-current-window-subagent-spawn-slos.md) — keeps strict SubagentStart regression SLOs focused on current telemetry while preserving all-matched historical tail diagnostics for old local outliers.
 - [ADR-308: Dependency Maintenance Across Install, Update, and Git Hooks](adrs/ADR-308-dependency-maintenance-install-update-git-hooks.md) — read-only maintenance primitive wired into setup, update, auto-update, and git pull/push hooks so dependency drift is visible without hidden auto-installation.
 - [ADR-307: Dependency Tool Intake and Profile Ratchet](adrs/ADR-307-dependency-tool-intake-and-profile-ratchet.md) — maintenance loop that triages dependency coverage findings, adds fail-new ratchet support, and wires doctor/lane/adoption primitives without auto-installing observed tools.
