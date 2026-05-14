@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# Read-only dependency coverage audit for installer/adoption drift.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+exec python3 "$REPO_ROOT/lib/dependency_coverage_audit.py" "$@"
