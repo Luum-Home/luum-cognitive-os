@@ -1,5 +1,5 @@
 ---
-id: ADR-305
+id: ADR-306
 title: Scope Projection Runtime Audit
 status: accepted
 implementation_status: implemented
@@ -9,7 +9,7 @@ related: [ADR-304]
 tags: [portability, projection, scope, consumer-install, primitive-governance]
 ---
 
-# ADR-305 — Scope Projection Runtime Audit
+# ADR-306 — Scope Projection Runtime Audit
 
 ## Status
 
