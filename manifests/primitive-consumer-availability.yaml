@@ -532,6 +532,30 @@ items:
   rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
     Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
     primitive.
+- path: hooks/agent-bus-monitor.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 010 confirmed package-backed symlink hook is portable for COS adopters when Valkey/file-fallback agent bus is enabled; keep paired portability proof.
+- path: hooks/contextual-rule-loader.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 010 confirmed package-backed symlink hook is portable for COS adopters as contextual rule projection surface; keep paired portability proof.
+- path: hooks/agent-quota-advisor.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 010 confirmed Claude Agent quota advisory reads COS metrics and recommends COS orchestrator routing; this is SO runtime governance, not generic project primitive.
+- path: hooks/notify.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 010 confirmed PostToolUse SDD notification hook is COS/Claude lifecycle integration and not a generic repository guideline.
+- path: hooks/task-panel-sync.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 010 confirmed Claude native task-panel adapter hook mirrors COS task state and is SO runtime integration.
+- path: hooks/_lib/task_panel_adapter.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 010 confirmed adapter is Claude native UI bridge over COS task state, not consumer-project primitive.
+- path: hooks/_lib/recap_adapter.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 010 confirmed adapter exposes COS session state to Claude /recap UI and is SO runtime integration.
+- path: packages/skill-governance/skills/self-improve/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 010 confirmed META self-improvement skill orchestrates COS skills/hooks/config and applies to OS evolution, not project-only or generic repo construction.
 patterns:
 - pattern: scripts/**
   status: so-local-only

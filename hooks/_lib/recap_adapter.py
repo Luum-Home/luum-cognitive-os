@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Recap Adapter — exposes COS session state to Claude Code's native /recap UI.
 
 Implements ADR-021 (vendor-agnostic state with provider adapters).

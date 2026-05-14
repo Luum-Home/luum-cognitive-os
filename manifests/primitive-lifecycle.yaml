@@ -10915,3 +10915,159 @@ primitives:
   metrics_file: none
   consumer_accessibility: maintainer-only
   consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/agent-bus-monitor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: runtime-observability
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - hooks/agent-bus-monitor.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 010; package-backed symlink hook has paired portability proof and is a shared adopter surface when agent bus is enabled.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_agent-bus-monitor.py -q
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/contextual-rule-loader.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: context-loading
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - hooks/contextual-rule-loader.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 010; package-backed symlink hook has paired portability proof and remains a shared contextual rule projection surface.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_contextual-rule-loader.py -q
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/agent-quota-advisor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/agent-quota-advisor.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 010; reads .cognitive-os metrics and emits Claude Agent quota advice for COS orchestrator routing.
+  evidence_commands:
+  - bash -n hooks/agent-quota-advisor.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/llm-dispatch.jsonl
+- id: hooks/notify.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: notification
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/notify.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 010; PostToolUse Agent hook detects COS SDD phases and delegates to COS notifications.
+  evidence_commands:
+  - bash -n hooks/notify.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/notify.log
+- id: hooks/task-panel-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-ui-adapter
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/task-panel-sync.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 010; mirrors COS task state into Claude native task panel context.
+  evidence_commands:
+  - bash -n hooks/task-panel-sync.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/_lib/task_panel_adapter.py
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-ui-adapter
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/_lib/task_panel_adapter.py
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 010; helper for Claude task panel bridge over COS task state.
+  evidence_commands:
+  - python3 -m py_compile hooks/_lib/task_panel_adapter.py
+  docs_claim_level: advisory
+  exit_behavior: library
+  metrics_file: none
+- id: hooks/_lib/recap_adapter.py
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-ui-adapter
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/_lib/recap_adapter.py
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 010; helper exposes COS session state to Claude /recap UI.
+  evidence_commands:
+  - python3 -m py_compile hooks/_lib/recap_adapter.py
+  docs_claim_level: advisory
+  exit_behavior: library
+  metrics_file: none
+- id: packages/skill-governance/skills/self-improve/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: self-improvement
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - packages/skill-governance/skills/self-improve/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 010; META skill orchestrates COS analyze/apply improvement loop with human gate and COS-specific hooks/config.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/skill-governance/skills/self-improve/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none

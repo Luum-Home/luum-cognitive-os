@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-14T21:54:59+00:00'
+generated_at: '2026-05-14T22:06:42+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -12,6 +12,16 @@ primitives:
   projection_targets:
   - hooks/_lib/agent-context.sh
   sha256: 32e1186699cf8be2caf8ff3d5d599becbce32c5c66c4664574ffd053fd4f8a43
+- id: hooks/_lib/recap_adapter.py
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/recap_adapter.py
+  sha256: 7f9bb9e711cb273389c80c32bc35b8a787ae71ed961a387b1b4984ea348e3ba0
 - id: hooks/_lib/task-event.sh
   kind: hook
   owner_adr: ADR-149
@@ -22,6 +32,16 @@ primitives:
   projection_targets:
   - hooks/_lib/task-event.sh
   sha256: d0782d18825b8e60362ce3dd0a541801eafd93879297294fb43b9400d37f12a0
+- id: hooks/_lib/task_panel_adapter.py
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/task_panel_adapter.py
+  sha256: c1c8546db7dbd36179e86884683feb6611149ca6175f3052aa6eb21c48077853
 - id: hooks/aci-observation-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -100,6 +120,16 @@ primitives:
   - .claude/settings.json
   - hooks/agent-bash-cwd-enforcer.sh
   sha256: 1be848369cfbc2aa546aa182d2985c19f90a7f7a9d9ffc6d728287cd594b7bc9
+- id: hooks/agent-bus-monitor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - hooks/agent-bus-monitor.sh
+  sha256: f19827a3d1d1ec0e83dfdb1110410efdeef3d3e0e107789d3fa535c9357517fa
 - id: hooks/agent-checkpoint.sh
   kind: hook
   owner_adr: ADR-126
@@ -177,6 +207,16 @@ primitives:
   - .claude/settings.json
   - hooks/agent-prelaunch.sh
   sha256: d2a0d16f9d6fa455f076ecc67ef7de5c8097512a0f6cf0ed01b89a6fcf4ccccb
+- id: hooks/agent-quota-advisor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - hooks/agent-quota-advisor.sh
+  sha256: 83b043411ea6a43e13d8328dc97c75d684fd78df702883bc7f26daef29a161ef
 - id: hooks/agent-working-dir-inject.sh
   kind: hook
   owner_adr: ADR-126
@@ -497,6 +537,16 @@ primitives:
   projection_targets:
   - hooks/context-watchdog.sh
   sha256: 771a39a584c716ed39de3b416846916b04de6ed04d002bec9c64683598025c3b
+- id: hooks/contextual-rule-loader.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - hooks/contextual-rule-loader.sh
+  sha256: 20784925162cc335208d8b8c2bd6cd2909dda735502c6595db081c27cce006e0
 - id: hooks/control-plane-audit-hourly.sh
   kind: hook
   owner_adr: ADR-248
@@ -1093,6 +1143,16 @@ primitives:
   - scripts/network_egress_guard.py
   - manifests/network-egress-policy.yaml
   sha256: 066ddd58aec5b3cb027198131ded125a9d42d68e33831d5a98f8d79fb1a9299c
+- id: hooks/notify.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - hooks/notify.sh
+  sha256: f55d40c618d806b25c6322ad0192e76ad89d0f943cc53d622f0958d5f55d1ea4
 - id: hooks/orchestrator-claim-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -2054,6 +2114,16 @@ primitives:
   - .claude/settings.json
   - hooks/task-created.sh
   sha256: ba9e911ba8e5fabda3d394fd588bee66c0b32ee09ec94f87c779c87680484f94
+- id: hooks/task-panel-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - hooks/task-panel-sync.sh
+  sha256: a5b8038d8e061fd449ba77622d214dee88276fb8616262dbd8c807e6b9f1c03a
 - id: hooks/teammate-idle.sh
   kind: hook
   owner_adr: ADR-126
@@ -2259,6 +2329,16 @@ primitives:
   projection_targets:
   - packages/agent-lifecycle/skills/review-output/SKILL.md
   sha256: f4d0474f46e48b1f460efb0efc0b915622b438c71546972fd6032843017ab4eb
+- id: packages/skill-governance/skills/self-improve/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - packages/skill-governance/skills/self-improve/SKILL.md
+  sha256: dfc1cd30296626a782f466f31538daf9e1028bc731b3b9e5aa4c189606990633
 - id: rules/ROADMAP.md
   kind: rule
   owner_adr: ADR-314

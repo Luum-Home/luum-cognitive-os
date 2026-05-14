@@ -6,7 +6,7 @@ version: 2.0.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-04-10
-audience: both
+audience: os-only
 tags:
 - self-improvement
 - meta
@@ -21,7 +21,7 @@ triggers:
 - Self-Improve Skill (META)
 - META skill — orchestrates analyze-improvements → (human reviews) →…
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Self-Improve Skill (META)
 
 Thin orchestration wrapper around two atomic skills:

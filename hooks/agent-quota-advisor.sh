@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse:Agent hook — Adaptive dispatch quota advisor (ADR-056 L1).
 #
 # Computes a quota-pressure score from .cognitive-os/metrics/llm-dispatch.jsonl
