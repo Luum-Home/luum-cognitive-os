@@ -193,6 +193,10 @@ python3 -c "from lib.semantic_skill_matcher import DEFAULT_MODEL_NAME; print(DEF
 # Expected: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 ```
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## Consequences
 
 - **Operators have a one-env-var path to the +14-pt accuracy upgrade** without

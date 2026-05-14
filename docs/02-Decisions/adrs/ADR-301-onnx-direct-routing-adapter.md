@@ -90,6 +90,14 @@ directory.
 Qwen3-embedding and harrier-oss are deliberately left untouched — they are
 follow-up candidates once the BGE-M3 vs e5-large measurement lands.
 
+## Consequences
+
+- The decision is now part of the governed Cognitive OS primitive surface and must stay aligned with implementation, tests, and runtime projection metadata.
+
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 `docs/06-Daily/reports/routing-benchmark-2026-05-13.md` is the artefact. It
@@ -99,6 +107,10 @@ report is the new ADR-300 candidate winner. Selection-policy changes (i.e.
 making BGE-M3 the production matcher) require a follow-up ADR — this one
 only delivers the measurement capability.
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## Risks
 
 - **Disk footprint.** Each new ONNX model is ~2 GB. The cache is opt-in

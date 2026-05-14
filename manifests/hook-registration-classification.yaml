@@ -423,7 +423,7 @@ entries:
   rationale: ADR-304 control-plane-only hook; invoked via cos-control-plane-audit hourly lane, not registered as a Claude event hook.
   next_action: Operator runs scripts/cos-telemetry-aggregate or waits for the hourly lane.
 - path: hooks/agent-bash-cwd-enforcer.sh
-  status: active
+  status: profile_scoped
   rationale: Bash PreToolUse working-directory guard projected by the Claude settings driver in the full profile and by security profiles; classified so registration audits do not treat profile-scoped enforcement as unowned drift.
   next_action: Keep active; dispatcher adoption may later route this guard on the default hot path if command-context evidence shows enough value.
 - path: hooks/rate-limit-precheck.sh

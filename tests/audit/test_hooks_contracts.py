@@ -32,6 +32,7 @@ SKILLS_DIR = REPO_ROOT / "skills"
 PACKAGES_DIR = REPO_ROOT / "packages"
 RULES_DIR = REPO_ROOT / "rules"
 REGISTRATION_ALLOWLIST = HOOKS_DIR / "_lib" / "registration-allowlist.txt"
+REGISTRATION_CLASSIFICATION = REPO_ROOT / "manifests" / "hook-registration-classification.yaml"
 
 MIN_NONTRIVIAL_LINES = 5  # stub threshold per task spec
 
@@ -45,6 +46,26 @@ def _registration_allowlist() -> set[str]:
         if line and not line.startswith("#"):
             names.add(line)
     return names
+
+
+def _classified_non_default_hooks() -> set[str]:
+    """Hooks intentionally absent from the default/full settings surface."""
+    try:
+        import yaml
+
+        payload = yaml.safe_load(REGISTRATION_CLASSIFICATION.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return set()
+    out: set[str] = set()
+    for entry in payload.get("entries") or []:
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("status") == "active":
+            continue
+        path = str(entry.get("path") or "")
+        if path.startswith("hooks/"):
+            out.add(Path(path).name)
+    return out
 
 
 # Known code-dead hooks (referenced but intentionally missing): these are the
@@ -115,6 +136,7 @@ KNOWN_ORPHANS = {
     "tool-loop-detector.sh",
     "worktree-submodule-fix.sh",
 } | _registration_allowlist()
+KNOWN_ORPHANS |= _classified_non_default_hooks()
 
 
 # ── Data loaders (cached once per session) ─────────────────────────────
@@ -135,6 +157,13 @@ def _wired_in_settings() -> set[str]:
                 if m:
                     wired.add(m.group(1))
     return wired
+
+
+def _dispatcher_child_hooks() -> set[str]:
+    dispatcher = HOOKS_DIR / "bash-hot-path-dispatcher.sh"
+    if not dispatcher.exists():
+        return set()
+    return set(re.findall(r"hooks/([A-Za-z0-9_-]+\.sh)", dispatcher.read_text(encoding="utf-8", errors="replace")))
 
 
 def _profile_hooks(profile_name: str) -> set[str]:
@@ -191,7 +220,7 @@ WIRED = _wired_in_settings()
 LEAN = _profile_hooks("lean")
 STANDARD = _profile_hooks("standard")
 FULL = WIRED  # settings.json IS the full profile per rules/project-gotchas.md
-ALL_PROFILES = LEAN | STANDARD | FULL
+ALL_PROFILES = LEAN | STANDARD | FULL | _dispatcher_child_hooks()
 REFS = _skill_and_rule_refs()
 
 

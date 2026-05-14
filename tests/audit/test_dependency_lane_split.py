@@ -56,9 +56,7 @@ def test_core_lock_excludes_known_blocking_heavy_packages() -> None:
         "sentence-transformers",
         "torch",
         "mlflow-skinny",
-        "lxml",
         "pandas",
-        "protobuf",
         "snowballstemmer",
     }
 

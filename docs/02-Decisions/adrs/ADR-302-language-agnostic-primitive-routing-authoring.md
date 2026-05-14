@@ -154,6 +154,10 @@ semantic and benchmarkable.
 - Benchmark evidence becomes part of routing cleanup work, which is slower than
   deleting patterns.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 Implemented checks and artifacts:

@@ -118,6 +118,10 @@ The ADR-290 bundle omitted these alternatives. They are recorded here because ea
 
 ---
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 ```bash

@@ -58,6 +58,9 @@ def _settings_hook_names() -> set[str]:
         for group in groups:
             for hook in group.get("hooks", []):
                 names.update(re.findall(r"/hooks/([A-Za-z0-9_-]+\.sh)", hook.get("command", "")))
+    dispatcher = PROJECT_ROOT / "hooks" / "bash-hot-path-dispatcher.sh"
+    if "bash-hot-path-dispatcher.sh" in names and dispatcher.exists():
+        names.update(re.findall(r"hooks/([A-Za-z0-9_-]+\.sh)", dispatcher.read_text(encoding="utf-8", errors="replace")))
     return names
 
 

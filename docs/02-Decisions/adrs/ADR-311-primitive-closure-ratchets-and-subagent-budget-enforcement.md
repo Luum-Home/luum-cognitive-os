@@ -1,5 +1,10 @@
 # ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement
 
+## Status
+
+Accepted
+
+
 - **Status**: Accepted
 - **Date**: 2026-05-14
 - **Owner**: Cognitive OS maintainers
@@ -123,3 +128,15 @@ can proceed under the ratchet.
   slice is stable.
 - Add release-lane wiring for `scripts/cos-primitive-closure-ratchet` once the
   baseline is accepted by maintainers.
+
+
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit -q
+```

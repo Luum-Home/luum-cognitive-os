@@ -12,6 +12,11 @@ implementation_status: Implemented
 
 # ADR-308: Dependency Maintenance Across Install, Update, and Git Hooks
 
+## Status
+
+Accepted
+
+
 ## Context
 
 ADR-305 added a read-only dependency coverage audit and ADR-307 added triage plus a fail-new profile ratchet. Those primitives make dependency drift visible, but they do not automatically run when operators install the SO, update an existing install, or trigger repository maintenance through Git events.
@@ -65,9 +70,17 @@ Negative / trade-offs:
 - Strict enforcement remains opt-in until the historical baseline is reviewed.
 - The primitive reports installer plans but does not solve manifest completeness by itself; follow-up work still needs profile/lane changes.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 - `bash -n scripts/cos-deps-maintain scripts/setup.sh scripts/cos-update.sh scripts/auto-update-projects.sh scripts/setup-git-hooks.sh .githooks/pre-push .githooks/post-merge .githooks/post-rewrite`
 - `bash scripts/cos-deps-maintain --mode doctor --no-install-plan --json`
 - `.venv/bin/python -m pytest tests/unit/test_dependency_maintenance.py tests/audit/test_dependency_maintenance_integration.py -q`
 - `python3 scripts/derived_artifact_gate.py`
+
+```bash
+python3 -m pytest tests/unit -q
+```

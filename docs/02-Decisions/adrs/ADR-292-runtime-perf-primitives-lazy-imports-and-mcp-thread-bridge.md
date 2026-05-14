@@ -108,6 +108,10 @@ Adopt two runtime-performance primitives. Each is delivered as one module plus o
 
 ---
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 ```bash

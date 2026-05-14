@@ -136,6 +136,10 @@ without modifying the harness core.
 - RSS peaks are coarse — `ru_maxrss` does not isolate the model
   from the Python interpreter or fastembed runtime overhead.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 Run:

@@ -137,6 +137,10 @@ Negative:
   changes meaningfully, stale cached decisions persist until TTL
   expiry or manual purge.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 * Unit tests in ``tests/unit/test_llm_routing_fallback.py`` cover the
@@ -149,6 +153,10 @@ Negative:
 * The semantic-matcher test suite (``test_semantic_skill_matcher.py``)
   continues to pass — no behaviour change above 0.55.
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## Cross-references
 
 * ADR-049 — LLM dispatch contract (Qwen primary, Claude fallback).

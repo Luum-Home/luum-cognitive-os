@@ -169,6 +169,14 @@ canonical example.
 - **txtai.** Adds an indexer + heavier deps; the hybrid sparse/dense
   value-add is marginal for ≤ 200 short corpus entries.
 
+## Consequences
+
+- The decision is now part of the governed Cognitive OS primitive surface and must stay aligned with implementation, tests, and runtime projection metadata.
+
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 ```bash

@@ -12,6 +12,11 @@ implementation_status: Implemented
 
 # ADR-309: Current-Window Subagent Spawn SLOs with Historical Tail Diagnostics
 
+## Status
+
+Accepted
+
+
 ## Context
 
 ADR-303 introduced a synthetic sub-agent spawn cold-start benchmark. ADR-304 made production telemetry the authoritative latency signal through `manifests/observability-slo.yaml` and `lib/telemetry_aggregator.py`.
@@ -74,12 +79,20 @@ Rejected. Synthetic wall-clock remains a smoke/lower-bound signal only. Real pro
 
 Deferred. Time-based windows are the right long-term shape, but require consistent timestamp parsing and policy for malformed/missing timestamps across all JSONL streams. Record-count windows are already supported and sufficient for this corrective slice.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 - `.venv/bin/python -m pytest tests/unit/test_telemetry_aggregator.py tests/unit/test_agent_spawn_budget.py tests/unit/test_startup_budget.py -q`
 - `COS_STRICT_TELEMETRY_SLO=1 .venv/bin/python -m pytest tests/unit/test_agent_spawn_budget.py::test_real_spawn_latency_slos_are_authoritative -q`
 - `python3 scripts/cos-telemetry-aggregate --no-self-tuning --quiet --snapshot /tmp/telemetry-snapshot.yaml --findings /tmp/telemetry-findings.jsonl`
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## Follow-ups
 
 - Add time-window syntax such as `last_24h_records` or `since_timestamp` after timestamp normalization is explicit.

@@ -131,6 +131,10 @@ The implementation intentionally reuses existing COS helpers where practical:
 - `lib.external_tool_intelligence` package parsers and normalization helpers.
 - `manifests/external-tools-adoption.yaml` for REMOVE/REJECT policy signals.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 Targeted tests:

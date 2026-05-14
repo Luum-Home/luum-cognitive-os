@@ -117,6 +117,10 @@ To revert: `git checkout -- skills/<name>/SKILL.md` (or revert the commit
 that landed enrichment). Because auto-generated entries are tagged, an
 operator can also delete them by hand without touching curated intents.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 ### Architectural test (deterministic, runs in CI)
@@ -143,6 +147,10 @@ the SkillRouter paper's hypothesis end-to-end via `cos-routing-benchmark`.
 4. Idempotency: rerunning enrich on an already-enriched skill produces zero net writes (verified by file-mtime assertion in the cost-cap test and by `already_enriched` skip).
 5. The "enriched corpus improves routing" test passes with mock dispatch.
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## Consequences
 
 ### Positive

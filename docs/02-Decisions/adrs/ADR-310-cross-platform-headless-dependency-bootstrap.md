@@ -13,6 +13,11 @@ implementation_status: Implemented
 
 # ADR-310: Cross-Platform and Headless Dependency Bootstrap
 
+## Status
+
+Accepted
+
+
 ## Context
 
 ADR-168 created the dependency installation contract and ADR-308 made dependency drift visible during install, update, push, and pull. That still left a product gap: Cognitive OS is not only used on one maintainer Mac. It must be bootstrapable on multiple developer machines and in standalone/headless instances such as CI runners, service workers, Docker hosts, VM instances, or future `cosd` deployments.
@@ -71,6 +76,14 @@ Git-triggered flows remain advisory-only:
 5. Explicit setup/update commands may install only manifest-declared, non-auth-bound, non-manual dependencies for the selected platform/profile.
 6. Headless instances use `headless-instance` instead of inheriting desktop or AI-login tooling from developer machines.
 
+## Consequences
+
+- The decision is now part of the governed Cognitive OS primitive surface and must stay aligned with implementation, tests, and runtime projection metadata.
+
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 - `bash -n scripts/setup.sh scripts/cos-update.sh scripts/cos-deps-install.sh`
@@ -78,6 +91,10 @@ Git-triggered flows remain advisory-only:
 - `.venv/bin/python -m pytest tests/contracts/test_cross_device_dependencies.py tests/unit/test_manifest_loader.py -q`
 
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## Coverage result
 
 After the manifest/profile expansion and coverage-audit parser fixes, `scripts/cos-deps-maintain --mode doctor --no-install-plan --json` reports no `missing_from_manifest` and no `optional_lane_needed` findings. The only remaining actionable finding is the intentional `blocked_or_removed_by_policy` row for `litellm`, which is governed by the external-tool adoption policy rather than installed by the bootstrapper.

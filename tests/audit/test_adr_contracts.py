@@ -50,7 +50,15 @@ def _adr_number(path: Path) -> int:
 
 
 def _first_heading_number(text: str) -> int | None:
-    """Return the ADR number claimed by the first Markdown heading."""
+    """Return the ADR number claimed by the first Markdown heading.
+
+    Ignore YAML frontmatter comments; they are metadata comments, not document
+    headings, and can otherwise mask the real ``# ADR-NNN`` heading.
+    """
+    if text.startswith("---\n"):
+        parts = text.split("\n---\n", 1)
+        if len(parts) == 2:
+            text = parts[1]
     for line in text.splitlines():
         stripped = line.strip()
         if stripped.startswith("#"):

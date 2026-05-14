@@ -325,6 +325,7 @@ fi
 # Other rules reach agents via Stage 2 expand() of [ref-key] markers in RULES-COMPACT.md (see ADR-074).
 CORE_RULES=(
   "RULES-COMPACT.md"
+  "rate-limiting.md"
 )
 # NOTE: rate-limiting, content-policy, blast-radius, clarification-gate were previously kept
 # in CORE_RULES (proactive defence-in-depth). They are now moved to EXCLUDED_RULES so their
@@ -344,7 +345,6 @@ EXCLUDED_RULES=(
   "content-policy.md"              # → content-policy.sh (PostToolUse Edit|Write)
   "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh
   "prompt-quality.md"              # → prompt-quality-llm.sh (PreToolUse Agent)
-  "rate-limiting.md"               # → rate-limiter.sh (PreToolUse Bash|Agent|Edit|Write)
   "rate-limit-protection.md"       # → token-budget-monitor.sh (PreToolUse Agent)
   "skill-rewrite.md"               # → completion-gate.sh (PostToolUse Agent)
   "auto-skill-generation.md"       # → auto-skill-generator.sh (PostToolUse Agent)

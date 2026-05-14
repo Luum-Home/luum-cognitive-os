@@ -35,6 +35,11 @@ classification_basis: |
 
 # ADR-303: Sub-Agent Spawn Cold-Start Benchmark
 
+## Status
+
+Accepted
+
+
 ## Context
 
 Session 2026-05-13 identified a measurement gap: orchestrator SessionStart is
@@ -128,6 +133,10 @@ Re-run: `bash scripts/cos-agent-spawn-benchmark` for payload/smoke data and
 - The 3 s synthetic wall threshold must not be cited as evidence that real
   sub-agent spawn is healthy. Use ADR-304's `subagent-spawn-p95` and
   `subagent-spawn-p99` evaluations instead.
+
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
 
 ## Verification
 

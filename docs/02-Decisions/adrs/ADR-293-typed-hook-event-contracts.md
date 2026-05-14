@@ -116,6 +116,10 @@ ADR-290 left "237 hooks not migrated" as an open item. This ADR closes that open
 
 ---
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 ```bash

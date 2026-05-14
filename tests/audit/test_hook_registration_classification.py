@@ -27,6 +27,7 @@ VALID_STATUSES = {
     "git_or_manual",
     "internal_helper",
     "manual_trigger",
+    "profile_scoped",
     "projected_elsewhere",
 }
 
@@ -38,6 +39,12 @@ def _registered_claude_hook_paths() -> set[str]:
         for group in groups:
             for hook in group.get("hooks", []):
                 hooks.update(f"hooks/{name}" for name in re.findall(r"/hooks/([A-Za-z0-9_-]+\.sh)", hook.get("command", "")))
+    dispatcher = PROJECT_ROOT / "hooks" / "bash-hot-path-dispatcher.sh"
+    if "hooks/bash-hot-path-dispatcher.sh" in hooks and dispatcher.exists():
+        hooks.update(
+            f"hooks/{name}"
+            for name in re.findall(r"hooks/([A-Za-z0-9_-]+\.sh)", dispatcher.read_text(encoding="utf-8", errors="replace"))
+        )
     return hooks
 
 

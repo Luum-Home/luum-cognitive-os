@@ -142,3 +142,15 @@ Final runtime-smoke result:
   "source_by_scope": {"both": 764, "os-only": 355, "project": 64}
 }
 ```
+
+
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit -q
+```

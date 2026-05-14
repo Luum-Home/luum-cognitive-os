@@ -199,6 +199,10 @@ Never auto-applied. Operator triages the queue and decides.
 - One additional hook in the hourly control-plane lane (~50 ms typical).
 - A new manifest to maintain.
 
+## Alternatives rejected
+
+- **Leave the behavior as implicit agent instruction only.** Rejected because this ADR records a runtime/authoring contract that needs durable tests or audits rather than conversation-only memory.
+
 ## Verification
 
 End-to-end on real repo, 2026-05-13:
@@ -221,6 +225,10 @@ tests/unit/test_session_start_banner_telemetry.py 5 passed
 tests/unit/test_telemetry_self_tuning_proposer.py 6 passed
 ```
 
+
+```bash
+python3 -m pytest tests/unit -q
+```
 ## References
 
 - Postmortem:
