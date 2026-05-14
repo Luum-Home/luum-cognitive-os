@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: OS
+# SCOPE: os-only
 """ADR-220 worktree divergence audit.
 
 Read-only audit that compares linked git worktrees against a reference branch and
