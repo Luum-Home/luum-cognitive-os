@@ -6,19 +6,19 @@ Status: `fail`
 
 ## Summary
 
-- Tracked files: 5526
-- Scanned text files: 5362
-- Files linked to docs: 1322
-- Findings: 2084
+- Tracked files: 5658
+- Scanned text files: 5494
+- Files linked to docs: 1347
+- Findings: 2101
 
 ## Counts
 
-- `missing_exact`: 340
+- `missing_exact`: 345
 - `missing_glob`: 41
 - `legacy_reference`: 0
 - `legacy_runtime`: 0
-- `historical_allowed`: 913
-- `ambiguous`: 790
+- `historical_allowed`: 915
+- `ambiguous`: 800
 
 ## Findings
 
@@ -64,9 +64,9 @@ Status: `fail`
 | ambiguous | P3 | .gitleaks.toml | 10 | `docs/06-Daily/reports/prelaunch-history-audit-[0-9T]+Z\.(json|md)$` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P3 | .gitleaks.toml | 59 | `docs/05-Methodology/getting-started\.md$` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P3 | .gitleaks.toml | 69 | `docs/03-PoCs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06\.md$` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P3 | AGENTS.md | 43 | `docs/en/agent-sdk/overview` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | AGENTS.md | 43 | `docs/claude-code/hooks-guide` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | AGENTS.md | 180 | `docs/archiving` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | AGENTS.md | 44 | `docs/en/agent-sdk/overview` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | AGENTS.md | 44 | `docs/claude-code/hooks-guide` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | AGENTS.md | 181 | `docs/archiving` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | CHANGELOG.md | 76 | `docs/manifests/scripts` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | CHANGELOG.md | 137 | `docs/06-Daily/reports/skill-analysis-proposals` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | CHANGELOG.md | 618 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
@@ -80,9 +80,9 @@ Status: `fail`
 | ambiguous | P3 | README.md | 179 | `docs/03-PoCs/research/INDEX.md](docs/03-PoCs/research/INDEX.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | missing-exact | P0 | cmd/cos-test/internal/cli/focused_test.go | 86 | `docs/foo.txt` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P0 | cmd/cos-test/internal/cli/focused_test.go | 147 | `docs/random.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 157 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 192 | `docs/tests/config/scripts` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 240 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 159 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 194 | `docs/tests/config/scripts` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | crates/cos-script-exposure-audit-rs/src/lib.rs | 242 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docker-compose.cognitive-os.yml | 254 | `docs/backwards` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/00-MOCs/decisions.md | 13 | `docs/04-Concepts/architecture/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/00-MOCs/decisions.md | 20 | `docs/02-Decisions/adrs/ADR-NNN-*.md` | Historical file contains a documentation glob that no longer matches after migration. |
@@ -253,7 +253,6 @@ Status: `fail`
 | historical-allowed | P3 | docs/02-Decisions/adrs/ADR-116-multi-session-coordination-primitives.md | 256 | `docs/04-Concepts/architecture/engram-as-claims-sot.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-120-conversation-to-primitive-harvester.md | 41 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-147-agent-capability-coverage-pipeline.md | 55 | `docs/gap` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | docs/02-Decisions/adrs/ADR-174-auto-derived-primitive-routing.md | 277 | `docs/06-Daily/reports/skill-router-primitive-routing-postmortem-2026-05-05.md**` | Documentation glob syntax cannot be validated by pathlib. |
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-174b-prevention-followup.md | 103 | `docs/06-Daily/reports/promotion-proposals` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/02-Decisions/adrs/ADR-174b-prevention-followup.md | 195 | `docs/06-Daily/reports/promotion-proposals/*/validator-advisory-to-blocking.md` | Historical file contains a documentation glob that no longer matches after migration. |
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-176-skillstore-and-analysis-trigger.md | 104 | `docs/06-Daily/reports/skill-analysis-proposals` | Reference looks like a directory, prefix, or template rather than an exact file path. |
@@ -300,6 +299,8 @@ Status: `fail`
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-279-orphan-repo-scan-process-audit.md | 67 | `docs/99-Archive/archived` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-283-script-exposure-audit-and-invocation-ratchet.md | 69 | `docs/tests/scripts` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/02-Decisions/adrs/ADR-283-script-exposure-audit-and-invocation-ratchet.md | 108 | `docs/manifests/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| historical-allowed | P3 | docs/02-Decisions/adrs/ADR-288-web-automation-adapter-for-dispatch.md | 44 | `docs/06-Daily/reports/web-automation-tooling-2026-05-13.md` | Historical file contains an exact documentation path that no longer exists after migration. |
+| ambiguous | P3 | docs/02-Decisions/adrs/ADR-289-three-layer-knowledge-architecture.md | 127 | `docs/{00-MOCs` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P3 | docs/02-Decisions/adrs/README.md | 7 | `docs/04-Concepts/architecture/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/02-Decisions/adrs/README.md | 50 | `docs/04-Concepts/architecture/adrs/027-headless-clustered-runtime-direction.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | ambiguous | P3 | docs/03-PoCs/research/INDEX.md | 434 | `docs/06-Daily/root/component-audit.md](../component-audit.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
@@ -1310,7 +1311,7 @@ Status: `fail`
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-coverage-latest.md | 263 | `docs/99-Archive/archived/cleanup-verification.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-fitness-ledger-latest.json | 6 | `docs/06-Daily/reports/primitive-fitness/*.json` | Historical file contains a documentation glob that no longer matches after migration. |
 | ambiguous | P3 | docs/06-Daily/reports/primitive-gap-matrix-2026-04.md | 290 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json | 33284 | `docs/rules` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json | 34009 | `docs/rules` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/06-Daily/reports/primitive-readiness-review-2026-05-04.md | 30 | `docs/scripts/hooks/rules/skills/config` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-usage-map-latest.json | 1441 | `docs/04-Concepts/architecture/primitive-coverage-spike-plan-2026-04.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-usage-map-latest.json | 1988 | `docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md` | Historical file contains an exact documentation path that no longer exists after migration. |
@@ -1379,6 +1380,7 @@ Status: `fail`
 | ambiguous | P3 | docs/08-References/business/master-plan-checklist.md | 354 | `docs/08-References/business/roadmap` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/08-References/business/master-plan-checklist.md | 355 | `docs/08-References/business/executive-summary` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/08-References/business/master-plan-execution-requirements.md | 56 | `docs/04-Concepts/root/kernel-contract.md](../kernel-contract.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| historical-allowed | P3 | docs/08-References/raw/README.md | 42 | `docs/08-References/raw/index.jsonl` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/08-References/root/openclaw-patterns.md | 106 | `docs/ai-ecosystem/openclaw-patterns.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/08-References/root/openclaw-patterns.md | 107 | `docs/ai-ecosystem/INDEX.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/08-References/root/upstream-blockers.md | 54 | `docs/SESSION-HANDOFF-*.md` | Historical file contains a documentation glob that no longer matches after migration. |
@@ -1435,8 +1437,8 @@ Status: `fail`
 | missing-exact | P3 | internal/validator/impl/token_budget_monitor.go | 108 | `docs/04-Concepts/architecture/cos-dispatch/token-budget-monitor.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | internal/validator/impl/token_budget_monitor.go | 123 | `docs/04-Concepts/architecture/cos-dispatch/token-budget-monitor.md` | Exact documentation path does not exist after bridge removal. |
 | missing-glob | P0 | lib/agent_permissions.py | 13 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-glob | P0 | lib/agent_permissions.py | 48 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-glob | P0 | lib/agent_permissions.py | 414 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-glob | P0 | lib/agent_permissions.py | 47 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-glob | P0 | lib/agent_permissions.py | 413 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
 | ambiguous | P0 | lib/completeness_checker.py | 11 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/completeness_checker.py | 12 | `docs/04-security` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/completeness_checker.py | 13 | `docs/09-execution-plan` | Reference looks like a directory, prefix, or template rather than an exact file path. |
@@ -1445,7 +1447,7 @@ Status: `fail`
 | ambiguous | P0 | lib/completeness_checker.py | 19 | `docs/07-research` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/completeness_checker.py | 20 | `docs/08-standards` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/completeness_checker.py | 21 | `docs/10-summaries` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P0 | lib/cost_predictor.py | 28 | `docs/about-claude/models` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P0 | lib/cost_predictor.py | 27 | `docs/about-claude/models` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/dependency_adoption_gate.py | 52 | `docs/06-Daily/reports/repo-scout-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/dependency_adoption_gate.py | 53 | `docs/06-Daily/reports/repo-forensics-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/dependency_adoption_gate.py | 54 | `docs/06-Daily/reports/tool-adoption-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
@@ -1456,8 +1458,8 @@ Status: `fail`
 | missing-exact | P0 | lib/document_feature_writer.py | 23 | `docs/05-features/features-backlog.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P0 | lib/document_feature_writer.py | 65 | `docs/05-features/features-backlog.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P0 | lib/dogfood_scorer.py | 459 | `docs` | Could not normalize documentation reference inside repository root. |
-| missing-exact | P0 | lib/domain_model.py | 22 | `docs/03-dominio-riesgo/domain-model.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P0 | lib/domain_model.py | 79 | `docs/03-dominio-riesgo/domain-model.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P0 | lib/domain_model.py | 21 | `docs/03-dominio-riesgo/domain-model.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P0 | lib/domain_model.py | 78 | `docs/03-dominio-riesgo/domain-model.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P0 | lib/harness_action_receipts.py | 505 | `docs/06-Daily/reports/vcs-action-receipts-latest.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P0 | lib/ops_runbook.py | 3 | `docs/06-backoffice` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | lib/ops_runbook.py | 18 | `docs/06-backoffice` | Reference looks like a directory, prefix, or template rather than an exact file path. |
@@ -1482,6 +1484,8 @@ Status: `fail`
 | missing-glob | P0 | lib/traceability_checker.py | 106 | `docs/05-features/*.md` | Documentation glob reference does not match any tracked path. |
 | missing-glob | P0 | lib/traceability_checker.py | 107 | `docs/01-context/*.md` | Documentation glob reference does not match any tracked path. |
 | ambiguous | P0 | lib/validator_soak_evaluator.py | 11 | `docs/06-Daily/reports/promotion-proposals` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| missing-exact | P0 | lib/wiki_ingester.py | 8 | `docs/08-References/raw/index.jsonl` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P0 | lib/wiki_ingester.py | 130 | `docs/08-References/raw/index.jsonl` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P2 | manifests/ai-agent-harness-landscape.yaml | 35 | `docs/claude-code/hooks-guide` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P2 | manifests/ai-agent-harness-landscape.yaml | 48 | `docs/codex` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P2 | manifests/ai-agent-harness-landscape.yaml | 72 | `docs/copilot/customization/custom-instructions` | Reference looks like a directory, prefix, or template rather than an exact file path. |
@@ -1636,8 +1640,8 @@ Status: `fail`
 | ambiguous | P2 | manifests/strategy-surfaces.yaml | 93 | `docs` | Could not normalize documentation reference inside repository root. |
 | ambiguous | P2 | manifests/strategy-surfaces.yaml | 122 | `docs/06-Daily/reports/cross-stack-license-audit-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-glob | P3 | packages/agent-lifecycle/lib/agent_permissions.py | 13 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-glob | P3 | packages/agent-lifecycle/lib/agent_permissions.py | 48 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-glob | P3 | packages/agent-lifecycle/lib/agent_permissions.py | 414 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-glob | P3 | packages/agent-lifecycle/lib/agent_permissions.py | 47 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-glob | P3 | packages/agent-lifecycle/lib/agent_permissions.py | 413 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
 | missing-exact | P3 | packages/cos-index/README.md | 39 | `docs/cos-package-spec.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | packages/document-sync/hooks/doc-sync-detector.sh | 55 | `docs/migration-audit.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | packages/document-sync/hooks/doc-sync-detector.sh | 55 | `docs/feature-parity-report.md` | Exact documentation path does not exist after bridge removal. |
@@ -1667,7 +1671,7 @@ Status: `fail`
 | missing-glob | P3 | packages/quality-gates/skills/pentest-self/SKILL.md | 82 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
 | ambiguous | P3 | packages/quality-gates/skills/security-audit/SKILL.md | 43 | `docs/04-seguridad` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | packages/quality-gates/skills/security-audit/SKILL.md | 53 | `docs/04-seguridad/security-audit-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | packages/scope-governance/lib/cost_predictor.py | 28 | `docs/about-claude/models` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | packages/scope-governance/lib/cost_predictor.py | 27 | `docs/about-claude/models` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-exact | P3 | packages/scope-governance/skills/contract-drift/SKILL.md | 46 | `docs/openapi.yaml` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | packages/scope-governance/skills/contract-drift/SKILL.md | 46 | `docs/swagger.yaml` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P3 | packages/scope-governance/skills/contract-drift/SKILL.md | 54 | `docs` | Could not normalize documentation reference inside repository root. |
@@ -1703,7 +1707,7 @@ Status: `fail`
 | ambiguous | P3 | rules/research-first-protocol.md | 76 | `docs/02-Decisions/adrs/ADR-NNN-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | rules/session-close-doc-truth.md | 59 | `docs/06-Daily/reports/pending-truth-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P0 | scripts/adr_reserve.py | 121 | `docs/02-Decisions/adrs/{adr_id}-{slug}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P0 | scripts/adr_verification_audit.py | 45 | `docs/02-Decisions/adrs/ADR-?\d{1,4` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P0 | scripts/adr_verification_audit.py | 44 | `docs/02-Decisions/adrs/ADR-?\d{1,4` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | missing-glob | P0 | scripts/audit_engram_topic_keys.py | 34 | `docs/02-Decisions/adrs/ADR-NNN-*.md` | Documentation glob reference does not match any tracked path. |
 | ambiguous | P0 | scripts/cos-adoption-unfreeze | 37 | `docs/06-Daily/reports/uspto-patent-{tool}-*.json` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P0 | scripts/cos-adoption-unfreeze | 39 | `docs/06-Daily/reports/uspto-patent-{tool}-*.json` | Reference contains template, regex, shell, or prose syntax and needs human review. |
@@ -1734,10 +1738,10 @@ Status: `fail`
 | missing-exact | P0 | scripts/cos_doc_path_audit.py | 128 | `docs/file.md` | Exact documentation path does not exist after bridge removal. |
 | missing-glob | P0 | scripts/cos_doc_path_audit.py | 225 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
 | ambiguous | P0 | scripts/cos_engram_command_audit.py | 2 | `docs/code` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P0 | scripts/cos_primitive_harvester.py | 188 | `docs/02-Decisions/adrs/ADR-XXX-{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P0 | scripts/cos_primitive_harvester.py | 188 | `docs/04-Concepts/architecture/{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P0 | scripts/cos_primitive_harvester.py | 197 | `docs/02-Decisions/adrs/ADR-XXX-{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P0 | scripts/cos_primitive_harvester.py | 198 | `docs/04-Concepts/architecture/{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P0 | scripts/cos_primitive_harvester.py | 214 | `docs/02-Decisions/adrs/ADR-XXX-{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P0 | scripts/cos_primitive_harvester.py | 214 | `docs/04-Concepts/architecture/{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P0 | scripts/cos_primitive_harvester.py | 220 | `docs/02-Decisions/adrs/ADR-XXX-{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P0 | scripts/cos_primitive_harvester.py | 221 | `docs/04-Concepts/architecture/{candidate}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P0 | scripts/cos_promotion_proposer.py | 7 | `docs/06-Daily/reports/promotion-proposals` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-glob | P0 | scripts/cos_session_backlog.py | 371 | `docs/SESSION-HANDOFF-*.md` | Documentation glob reference does not match any tracked path. |
 | missing-exact | P0 | scripts/credibility-audit.sh | 115 | `docs/value-proposition.md` | Exact documentation path does not exist after bridge removal. |
@@ -1779,17 +1783,18 @@ Status: `fail`
 | missing-exact | P0 | scripts/smoke-doc-review-personas.sh | 46 | `docs/BUDGET.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P0 | scripts/smoke-doc-review-personas.sh | 56 | `docs/SPEC.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P0 | scripts/validate_tier_filter.py | 417 | `docs/06-Daily/measurements/tier-filter-validation-$(date` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P3 | skills/CATALOG-COMPACT.md | 198 | `docs/08-estandares` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | skills/CATALOG.md | 241 | `docs/05-features/fea` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | skills/CATALOG.md | 244 | `docs/03-dominio-riesgo` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | skills/CATALOG.md | 266 | `docs/06-backoffice` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | skills/CATALOG.md | 309 | `docs/03-dominio-riesgo` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | skills/CATALOG.md | 310 | `docs/08-estandares` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| missing-exact | P3 | skills/add-mcp/SKILL.md | 137 | `docs/environment-variables.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P3 | skills/adr-tombstone/SKILL.md | 33 | `docs/02-Decisions/adrs/ADR-NNN-tombstone.md` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | skills/adr-tombstone/SKILL.md | 39 | `docs/02-Decisions/adrs/ADR-NNN-tombstone.md` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| missing-exact | P3 | skills/deep-tool-research/SKILL.md | 20 | `docs/03-PoCs/research/holaos-comparison-2026-05-10.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P3 | skills/deep-tool-research/SKILL.md | 77 | `docs/06-Daily/reports/external-tools-radar-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/CATALOG-COMPACT.md | 200 | `docs/08-estandares` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/CATALOG.md | 243 | `docs/05-features/fea` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/CATALOG.md | 246 | `docs/03-dominio-riesgo` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/CATALOG.md | 268 | `docs/06-backoffice` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/CATALOG.md | 311 | `docs/03-dominio-riesgo` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/CATALOG.md | 312 | `docs/08-estandares` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| missing-exact | P3 | skills/CATALOG.md | 354 | `docs/08-References/raw/index.jsonl` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P3 | skills/add-mcp/SKILL.md | 148 | `docs/environment-variables.md` | Exact documentation path does not exist after bridge removal. |
+| ambiguous | P3 | skills/adr-tombstone/SKILL.md | 46 | `docs/02-Decisions/adrs/ADR-NNN-tombstone.md` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | skills/adr-tombstone/SKILL.md | 52 | `docs/02-Decisions/adrs/ADR-NNN-tombstone.md` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| missing-exact | P3 | skills/deep-tool-research/SKILL.md | 22 | `docs/03-PoCs/research/holaos-comparison-2026-05-10.md` | Exact documentation path does not exist after bridge removal. |
+| ambiguous | P3 | skills/deep-tool-research/SKILL.md | 86 | `docs/06-Daily/reports/external-tools-radar-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | skills/domain-model/SKILL.md | 5 | `docs/03-dominio-riesgo` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-exact | P3 | skills/domain-model/SKILL.md | 31 | `docs/03-dominio-riesgo/domain-model.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/domain-model/SKILL.md | 35 | `docs/03-dominio-riesgo/domain-model.md` | Exact documentation path does not exist after bridge removal. |
@@ -1802,8 +1807,8 @@ Status: `fail`
 | missing-exact | P3 | skills/ops-runbook/SKILL.md | 70 | `docs/06-backoffice/operations.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/ops-runbook/SKILL.md | 71 | `docs/06-backoffice/monitoring.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P3 | skills/primitive-harvester/SKILL.md | 31 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| missing-exact | P3 | skills/primitive-usage-map/SKILL.md | 58 | `docs/06-Daily/reports/primitive-usage-map-scripts.json` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P3 | skills/primitive-usage-map/SKILL.md | 59 | `docs/06-Daily/reports/primitive-usage-map-scripts.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P3 | skills/primitive-usage-map/SKILL.md | 65 | `docs/06-Daily/reports/primitive-usage-map-scripts.json` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P3 | skills/primitive-usage-map/SKILL.md | 66 | `docs/06-Daily/reports/primitive-usage-map-scripts.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/redteam-harness/SKILL.md | 68 | `docs/06-Daily/reports/redteam-baseline.json` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/redteam-harness/SKILL.md | 115 | `docs/06-Daily/reports/redteam-baseline.json` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/redteam-harness/SKILL.md | 116 | `docs/06-Daily/reports/redteam-baseline.md` | Exact documentation path does not exist after bridge removal. |
@@ -1814,9 +1819,9 @@ Status: `fail`
 | missing-exact | P3 | skills/redteam-harness/SKILL.md | 133 | `docs/06-Daily/reports/redteam-baseline-new.json` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/redteam-harness/SKILL.md | 134 | `docs/06-Daily/reports/redteam-baseline-new.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/redteam-harness/SKILL.md | 135 | `docs/06-Daily/reports/redteam-baseline.json` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P3 | skills/repo-forensics/SKILL.md | 153 | `docs/03-PoCs/research/repo-forensics/{repo-name` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P3 | skills/repo-forensics/SKILL.md | 178 | `docs/03-PoCs/research/repo-forensics/{repo-name` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P3 | skills/reverse-engineer/SKILL.md | 144 | `docs/dependencies/{repo-name` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P3 | skills/repo-forensics/SKILL.md | 160 | `docs/03-PoCs/research/repo-forensics/{repo-name` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P3 | skills/repo-forensics/SKILL.md | 185 | `docs/03-PoCs/research/repo-forensics/{repo-name` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P3 | skills/reverse-engineer/SKILL.md | 152 | `docs/dependencies/{repo-name` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P3 | skills/risk-register/SKILL.md | 5 | `docs/03-dominio-riesgo` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-exact | P3 | skills/risk-register/SKILL.md | 31 | `docs/03-dominio-riesgo/risk-register.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P3 | skills/risk-register/SKILL.md | 35 | `docs/03-dominio-riesgo/risk-register.md` | Exact documentation path does not exist after bridge removal. |
@@ -1829,16 +1834,24 @@ Status: `fail`
 | ambiguous | P3 | skills/rules-export/SKILL.md | 76 | `docs/08-estandares` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | skills/rules-export/SKILL.md | 89 | `docs/08-estandares` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-glob | P3 | skills/rules-export/SKILL.md | 90 | `docs/08-estandares/*.md` | Documentation glob reference does not match any tracked path. |
-| ambiguous | P3 | skills/session-pending-close/SKILL.md | 80 | `docs/06-Daily/reports/adr-partial-backlog-latest.{json,md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| ambiguous | P3 | skills/so-vs-vanilla/SKILL.md | 31 | `docs/08-References/benchmarks/so-vs-vanilla-results-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| missing-glob | P3 | skills/so-vs-vanilla/SKILL.md | 51 | `docs/08-References/benchmarks/so-vs-vanilla-results-*.md` | Documentation glob reference does not match any tracked path. |
+| ambiguous | P3 | skills/session-pending-close/SKILL.md | 97 | `docs/06-Daily/reports/adr-partial-backlog-latest.{json,md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P3 | skills/so-vs-vanilla/SKILL.md | 44 | `docs/08-References/benchmarks/so-vs-vanilla-results-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| missing-glob | P3 | skills/so-vs-vanilla/SKILL.md | 64 | `docs/08-References/benchmarks/so-vs-vanilla-results-*.md` | Documentation glob reference does not match any tracked path. |
 | missing-glob | P3 | skills/vuln-remediation-flow/flow_contract.yaml | 17 | `docs/03-PoCs/proposals/vuln-remediation-flow-results-*.md` | Documentation glob reference does not match any tracked path. |
+| missing-exact | P3 | skills/wiki-ingest/SKILL.md | 29 | `docs/08-References/raw/index.jsonl` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P3 | templates/adr-template.md | 45 | `docs/02-Decisions/adrs/ADR-NNN-` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | templates/agent-research-only.md | 15 | `docs/06-Daily/reports/{{topic}}-{{date}}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P3 | templates/agent-research-only.md | 30 | `docs/06-Daily/reports/{{topic}}-{{date}}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | ambiguous | P3 | templates/contracts/test_redteam_baseline.template.py | 18 | `docs/06-Daily/reports/redteam` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-glob | P1 | tests/audit/test_adr_locations.py | 139 | `docs/04-Concepts/architecture/cos-dispatch/adrs/CD-NNN-*.md` | Documentation glob reference does not match any tracked path. |
 | ambiguous | P1 | tests/audit/test_adr_locations.py | 223 | `docs/04-Concepts/architecture/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 3 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 6 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 13 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 37 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 58 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 77 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/audit/test_canonical_adr_path.py | 77 | `docs/02-Decisions/adrs:\n` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | missing-exact | P1 | tests/audit/test_doc_path_references.py | 26 | `docs/06-Daily/reports/ok.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/audit/test_doc_path_references.py | 27 | `docs/reports/missing.md` | Exact documentation path does not exist after bridge removal. |
 | missing-glob | P1 | tests/audit/test_doc_path_references.py | 28 | `docs/06-Daily/reports/*.missing` | Documentation glob reference does not match any tracked path. |
@@ -1869,12 +1882,12 @@ Status: `fail`
 | missing-exact | P1 | tests/behavior/test_dependency_adoption_gate_cli.py | 76 | `docs/06-Daily/reports/repo-forensics-httpx.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/behavior/test_hooks_batch1.py | 84 | `docs/readme.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P1 | tests/behavior/test_orphan_process_audit.py | 61 | `docs/04-Concepts/architecture/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| missing-exact | P1 | tests/behavior/test_singularity.py | 325 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/behavior/test_singularity.py | 326 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/behavior/test_singularity.py | 944 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/behavior/test_singularity.py | 1436 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/behavior/test_singularity.py | 1436 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/behavior/test_singularity.py | 1439 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/behavior/test_singularity.py | 323 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/behavior/test_singularity.py | 324 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/behavior/test_singularity.py | 942 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/behavior/test_singularity.py | 1434 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/behavior/test_singularity.py | 1434 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/behavior/test_singularity.py | 1437 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/behavior/test_subagent_capability_preflight_hook.py | 8 | `docs/06-Daily/reports/output.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/behavior/test_subagent_capability_preflight_hook.py | 25 | `docs/06-Daily/reports/output.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/contracts/test_context_budget_enforcement.py | 42 | `docs/02-Decisions/adrs/ADR-1.md` | Exact documentation path does not exist after bridge removal. |
@@ -1898,7 +1911,7 @@ Status: `fail`
 | ambiguous | P1 | tests/fixtures/codex-live-session/exec_command_end.json | 15 | `docs/02-Decisions/adrs/ADR-081-codex-harness-adapter.md\n` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | missing-exact | P1 | tests/fixtures/e2e/example-sprint.yaml | 27 | `docs/rate-limits.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/fixtures/sprints/example-sprint.yaml | 23 | `docs/rate-limits.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P1 | tests/hooks/test_hook_basics.py | 154 | `docs` | Could not normalize documentation reference inside repository root. |
+| ambiguous | P1 | tests/hooks/test_hook_basics.py | 151 | `docs` | Could not normalize documentation reference inside repository root. |
 | missing-exact | P1 | tests/integration/test_adoption_freeze_gate.sh | 167 | `docs/03-PoCs/research/test-annex-z-memory.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/integration/test_adoption_freeze_gate.sh | 169 | `docs/03-PoCs/research/test-annex-z-memory.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/integration/test_adoption_freeze_gate.sh | 237 | `docs/03-PoCs/research/holaos-annex-q-test.md` | Exact documentation path does not exist after bridge removal. |
@@ -1934,6 +1947,9 @@ Status: `fail`
 | missing-exact | P1 | tests/red_team/portability/test_cos-session-start-projector.py | 93 | `docs/02-Decisions/adrs/ADR-100-x.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/red_team/portability/test_cos-session-start-projector.py | 116 | `docs/02-Decisions/adrs/ADR-101-y.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P1 | tests/red_team/portability/test_cos-session-start-projector.py | 129 | `docs/02-Decisions/adrs/ADR-{200+i}-z.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| ambiguous | P1 | tests/red_team/portability/test_self_knowledge.py | 13 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/red_team/portability/test_self_knowledge.py | 36 | `docs/adrs` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/red_team/portability/test_self_knowledge.py | 68 | `docs` | Could not normalize documentation reference inside repository root. |
 | missing-exact | P1 | tests/red_team/scenarios/regex-false-positives.yaml | 49 | `docs/adr/ADR-105.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_acc_documentation_truth_adapter.py | 26 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_acc_pipeline.py | 205 | `docs/06-Daily/reports/primitive-fitness/projected.json` | Exact documentation path does not exist after bridge removal. |
@@ -1949,35 +1965,36 @@ Status: `fail`
 | missing-exact | P1 | tests/unit/test_adr_reserve.py | 159 | `docs/02-Decisions/adrs/ADR-002-active.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P1 | tests/unit/test_adr_router.py | 51 | `docs/02-Decisions/adrs/ADR-{adr_num:03d}.md` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | missing-exact | P1 | tests/unit/test_adr_tombstone.py | 71 | `docs/02-Decisions/adrs/ADR-007-old-system.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_adr_tombstone.py | 72 | `docs/README.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_adr_tombstone.py | 126 | `docs/02-Decisions/adrs/ADR-011-tombstone.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_agent_message_bus.py | 26 | `docs/02-Decisions/adrs/ADR-171-tombstone.md` | Exact documentation path does not exist after bridge removal. |
-| missing-glob | P1 | tests/unit/test_agent_permissions.py | 44 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-exact | P1 | tests/unit/test_agent_permissions.py | 125 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
-| missing-glob | P1 | tests/unit/test_agent_permissions.py | 179 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-exact | P1 | tests/unit/test_agent_permissions.py | 382 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
-| missing-glob | P1 | tests/unit/test_agent_permissions.py | 420 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-exact | P1 | tests/unit/test_agent_permissions.py | 422 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
-| missing-glob | P1 | tests/unit/test_agent_permissions.py | 482 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-glob | P1 | tests/unit/test_agent_permissions.py | 483 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
-| missing-exact | P1 | tests/unit/test_agent_permissions.py | 484 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_agent_permissions.py | 542 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_agent_permissions.py | 543 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-glob | P1 | tests/unit/test_agent_permissions.py | 41 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-exact | P1 | tests/unit/test_agent_permissions.py | 122 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
+| missing-glob | P1 | tests/unit/test_agent_permissions.py | 176 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-exact | P1 | tests/unit/test_agent_permissions.py | 379 | `docs/05-Methodology/setup.md` | Exact documentation path does not exist after bridge removal. |
+| missing-glob | P1 | tests/unit/test_agent_permissions.py | 417 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-exact | P1 | tests/unit/test_agent_permissions.py | 419 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-glob | P1 | tests/unit/test_agent_permissions.py | 479 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-glob | P1 | tests/unit/test_agent_permissions.py | 480 | `docs/*.md` | Documentation glob reference does not match any tracked path. |
+| missing-exact | P1 | tests/unit/test_agent_permissions.py | 481 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_agent_permissions.py | 539 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_agent_permissions.py | 540 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
 | ambiguous | P1 | tests/unit/test_anchored_summarizer.py | 120 | `docs/path` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | missing-exact | P1 | tests/unit/test_capability_matrix.py | 44 | `docs/02-Decisions/adrs/ADR-999-demo.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_capability_matrix.py | 70 | `docs/02-Decisions/adrs/ADR-100-demo.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_capability_matrix.py | 115 | `docs/02-Decisions/adrs/ADR-101-demo.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P1 | tests/unit/test_completeness_checker.py | 20 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P1 | tests/unit/test_completeness_checker.py | 32 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P1 | tests/unit/test_completeness_checker.py | 45 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 63 | `docs/01-context/context.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 64 | `docs/04-security/threats.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 65 | `docs/09-execution-plan/plan.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 112 | `docs/01-context/c.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 113 | `docs/04-security/t.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 114 | `docs/09-execution-plan/p.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 139 | `docs/01-context/c.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 140 | `docs/04-security/t.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_completeness_checker.py | 141 | `docs/09-execution-plan/p.md` | Exact documentation path does not exist after bridge removal. |
+| ambiguous | P1 | tests/unit/test_completeness_checker.py | 18 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/unit/test_completeness_checker.py | 30 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P1 | tests/unit/test_completeness_checker.py | 43 | `docs/01-context` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 61 | `docs/01-context/context.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 62 | `docs/04-security/threats.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 63 | `docs/09-execution-plan/plan.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 110 | `docs/01-context/c.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 111 | `docs/04-security/t.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 112 | `docs/09-execution-plan/p.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 137 | `docs/01-context/c.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 138 | `docs/04-security/t.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_completeness_checker.py | 139 | `docs/09-execution-plan/p.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_confidentiality_scanner.py | 132 | `docs/resumen-ejecutivo.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_confidentiality_scanner.py | 134 | `docs/01-contexto/brief.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_confidentiality_scanner.py | 138 | `docs/overview.rst` | Exact documentation path does not exist after bridge removal. |
@@ -2016,19 +2033,19 @@ Status: `fail`
 | missing-exact | P1 | tests/unit/test_dependency_adoption_gate.py | 59 | `docs/06-Daily/reports/repo-scout-leftpad.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_dependency_adoption_gate.py | 62 | `docs/06-Daily/reports/repo-scout-leftpad.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_dependency_adoption_gate.py | 68 | `docs/06-Daily/reports/repo-scout-leftpad.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 55 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 160 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 161 | `docs/b.md` | Exact documentation path does not exist after bridge removal. |
-| ambiguous | P1 | tests/unit/test_doc_review_personas.py | 176 | `docs/x.md\n` | Reference contains template, regex, shell, or prose syntax and needs human review. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 203 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 207 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 219 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 223 | `docs/y.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 247 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 250 | `docs/b.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 267 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 329 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 334 | `docs/budget.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 54 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 159 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 160 | `docs/b.md` | Exact documentation path does not exist after bridge removal. |
+| ambiguous | P1 | tests/unit/test_doc_review_personas.py | 175 | `docs/x.md\n` | Reference contains template, regex, shell, or prose syntax and needs human review. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 202 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 206 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 218 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 222 | `docs/y.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 246 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 249 | `docs/b.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 266 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 328 | `docs/a.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_doc_review_personas.py | 333 | `docs/budget.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_doc_sync.py | 75 | `docs/api-reference.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_doc_sync.py | 85 | `docs/api-reference.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_doc_sync.py | 108 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
@@ -2083,9 +2100,9 @@ Status: `fail`
 | missing-exact | P1 | tests/unit/test_project_docs_writers.py | 263 | `docs/02-arquitectura/primitive-gap-matrix.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_project_docs_writers.py | 328 | `docs/02-Decisions/adrs/ADR-001-reserved.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_projected_hook_gap_behaviors.py | 64 | `docs/example.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_release_analyzer.py | 79 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_release_analyzer.py | 80 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_release_analyzer.py | 172 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_release_analyzer.py | 75 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_release_analyzer.py | 76 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_release_analyzer.py | 168 | `docs/guide.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_research_quality_advisor.py | 138 | `docs/02-Decisions/adrs/ADR-170-operator-cli-as-primary-ui-surface.md:1-40` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_research_quality_advisor.py | 138 | `docs/02-Decisions/adrs/ADR-172-multi-surface-ui-architecture.md:1-70` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_research_quality_advisor.py | 139 | `docs/02-Decisions/adrs/ADR-125-governance-tools-value-boundary.md:20-55` | Exact documentation path does not exist after bridge removal. |
@@ -2097,14 +2114,14 @@ Status: `fail`
 | missing-exact | P1 | tests/unit/test_session_coordination.py | 46 | `docs/02-Decisions/adrs/ADR-171.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_session_coordination.py | 47 | `docs/02-Decisions/adrs/ADR-171.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_session_coordination.py | 49 | `docs/02-Decisions/adrs/ADR-171.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_singularity_suggestion.py | 219 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_singularity_suggestion.py | 252 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_singularity_suggestion.py | 281 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_smart_truncator.py | 165 | `docs/api/users.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_singularity_suggestion.py | 218 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_singularity_suggestion.py | 251 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_singularity_suggestion.py | 280 | `docs/api.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_smart_truncator.py | 164 | `docs/api/users.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_subagent_launch_preflight.py | 62 | `docs/06-Daily/reports/output.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_subagent_launch_preflight.py | 100 | `docs/06-Daily/reports/agent-output.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_subagent_launch_preflight.py | 116 | `docs/06-Daily/reports/output.md` | Exact documentation path does not exist after bridge removal. |
-| missing-exact | P1 | tests/unit/test_targeted_test_resolver.py | 73 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
+| missing-exact | P1 | tests/unit/test_targeted_test_resolver.py | 71 | `docs/x.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_task_watermark.py | 183 | `docs/foo.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_task_watermark.py | 195 | `docs/foo.md` | Exact documentation path does not exist after bridge removal. |
 | missing-exact | P1 | tests/unit/test_task_watermark.py | 219 | `docs/nonexistent-output.md` | Exact documentation path does not exist after bridge removal. |
