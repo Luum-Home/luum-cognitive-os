@@ -551,8 +551,8 @@ pull_images_if_requested() {
 # non-auth-bound tools for the selected profile. Git hooks remain advisory-only.
 # ---------------------------------------------------------------------------
 run_portable_dependency_install() {
-  if [[ "${COS_DEPS_UPDATE_INSTALL:-1}" == "0" ]]; then
-    note "portable dependency install skipped (COS_DEPS_UPDATE_INSTALL=0)"
+  if [[ "${COS_DEPS_UPDATE_INSTALL:-0}" != "1" ]]; then
+    note "portable dependency install skipped (set COS_DEPS_UPDATE_INSTALL=1 to apply)"
     return 0
   fi
   if [[ ! -x "${PROJECT_ROOT}/scripts/cos-deps-install.sh" ]]; then
