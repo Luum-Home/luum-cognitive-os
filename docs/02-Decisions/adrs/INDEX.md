@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 322 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 323 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (148)
+### Active / Implemented (149)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -160,6 +160,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [307](ADR-307-dependency-tool-intake-and-profile-ratchet.md) | Dependency Tool Intake and Profile Ratchet | accepted | implemented | 2026-05-14 | Accepted and implemented 2026-05-14. |
 | [311](ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) | Primitive Closure Ratchets and Subagent Budget Enforcement | accepted | implemented | 2026-05-14 | - **Status**: Accepted |
 | [312](ADR-312-harness-normalized-primitive-closure.md) | Harness-Normalized Primitive Closure | accepted | implemented | 2026-05-14 | - **Status**: Accepted |
+| [313](ADR-313-commercial-architecture-map-answer-primitive.md) | Commercial Architecture Map Answer Primitive | accepted | implemented | 2026-05-14 | Accepted and implemented — 2026-05-14. |
 
 ### Active / Partial (118)
 

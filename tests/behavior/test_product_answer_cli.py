@@ -246,3 +246,46 @@ def test_product_answer_cli_routes_ssr_primitive_enablement_question() -> None:
     assert "docs/04-Concepts/architecture/ssr-agentic-primitive-enablement-gaps.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "ssr_primitive_enablement_gap_backlog" for claim in report["claims"])
     assert "COS autonomously rewrites itself from chat" in report["unsafe_claims_to_avoid"]
+
+
+def test_product_answer_cli_routes_commercial_architecture_map_question() -> None:
+    result = subprocess.run(
+        [
+            str(CLI),
+            "me pasas un mapa reducido de la arquitectura del SO comercial",
+            "--no-cache",
+            "--json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["question_id"] == "architecture_map"
+    assert "governance and evidence layer" in report["answer_short"]
+    assert "```mermaid" in report["answer_long"]
+    assert "graph TD" in report["answer_long"]
+    assert "Equipo de ingeniería" in report["answer_long"]
+    assert "Cognitive OS<br/>Capa de gobernanza y evidencia" in report["answer_long"]
+    assert "commercial_architecture_map_primitive" in {
+        claim["claim_id"] for claim in report["claims"]
+    }
+    public_copy = "\n".join(
+        [
+            report["answer_short"],
+            report["answer_long"],
+            report["recommended_pitch"],
+        ]
+    )
+    assert "Claude" not in public_copy
+    assert "Codex" not in public_copy
+    assert "Engram" not in public_copy
+    assert "hooks" not in public_copy.casefold()
+    assert "skills" not in public_copy.casefold()
+    assert any(
+        "internal implementation counts" in claim
+        for claim in report["unsafe_claims_to_avoid"]
+    )

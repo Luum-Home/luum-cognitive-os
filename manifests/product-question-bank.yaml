@@ -648,6 +648,89 @@ questions:
     gaps:
     - Stack-specific knowledge depth depends on the underlying model capabilities.
 
+  architecture_map:
+    category: architecture-positioning
+    aliases:
+    - mapa del SO
+    - mapa reducido del SO
+    - mapa de arquitectura
+    - arquitectura comercial
+    - commercial architecture
+    - architecture map
+    - agent OS map
+    - cognitive os map
+    - explicame la arquitectura del SO
+    - cómo explicar Cognitive OS
+    keywords:
+    - arquitectura
+    - architecture
+    - mapa
+    - map
+    - comercial
+    - commercial
+    - SO
+    - OS
+    approved_sources:
+    - docs/08-References/business/product-messaging.md
+    - docs/08-References/business/feature-reality-audit.md
+    - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
+    - docs/04-Concepts/architecture/ide-agnostic-primitive-projection.md
+    - docs/02-Decisions/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
+    - docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md
+    related_claims:
+    - commercial_architecture_map_primitive
+    - differentiator_behavioral_governance
+    - product_answer_primitive
+    - runtime_surfaces_cli_ui_service
+    - service_mode_readiness_partial
+    answer_short: >-
+      Explain Cognitive OS as a governance and evidence layer for coding agents:
+      teams use existing agent tools, COS adds guardrails, policies, playbooks,
+      memory, and auditable evidence, and the outcome is safer, more verifiable
+      agent work.
+    answer_long: |-
+      Use this compact commercial map when the audience needs architecture without
+      implementation inventory:
+
+      ```mermaid
+      graph TD
+        A["Equipo de ingeniería"] --> B["Agentes de código"]
+
+        B --> C["Cognitive OS<br/>Capa de gobernanza y evidencia"]
+
+        C --> D["Guardrails en tiempo real<br/>Previenen acciones riesgosas"]
+        C --> E["Políticas operativas<br/>Alinean comportamiento del agente"]
+        C --> F["Playbooks reutilizables<br/>Guían tareas complejas"]
+        C --> G["Memoria persistente<br/>Conserva decisiones y aprendizajes"]
+        C --> H["Evidencia auditable<br/>Registra qué ocurrió y qué se verificó"]
+
+        D --> I["Confianza operativa"]
+        E --> I
+        F --> I
+        G --> I
+        H --> I
+
+        I --> J["Resultado<br/>Agentes más seguros, verificables y escalables"]
+
+        C --> K["Adaptadores<br/>Se proyecta sobre herramientas existentes"]
+        C --> L["Superficie de servicio<br/>Para UI, automatización y operación externa"]
+      ```
+
+      The important commercial move is to describe stable value categories, not
+      volatile implementation details. As the SO grows, update the evidence and
+      maturity behind each category; keep the public map focused on the value
+      chain from opaque agent work to governed, auditable operation.
+    recommended_pitch: Cognitive OS turns fast but opaque coding agents into a governed, evidence-backed engineering operation.
+    unsafe_claims_to_avoid:
+    - universal parity across every development tool
+    - fully autonomous self-improvement
+    - polished hosted service or dashboard readiness without current proof
+    - internal implementation counts as first-contact messaging
+    - naming private or immature runtime surfaces in public copy
+    gaps:
+    - The map is curated from approved evidence rather than fully generated from every primitive contract.
+    - Public wording should be refreshed when feature-reality or service-readiness evidence changes.
+
   codebase_scale:
     category: product-surface
     aliases:
