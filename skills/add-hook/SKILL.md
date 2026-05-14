@@ -185,5 +185,7 @@ and specialize it for the hook payload, matcher, and degradation contract.
 - [ ] Hook is listed in `.claude/settings.local.json` under the correct trigger
 - [ ] `bash tests/unit/test-{hook-name}.sh` passes
 - [ ] `scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh` was used for `SCOPE: both` hooks
+- [ ] `scripts/cos-scope-both-portability-audit --strict --no-write` passes after adding the proof
+- [ ] `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write` passes before commit when the hook can project to projects
 - [ ] Hook fires correctly: `echo '{"tool_name":"X","tool_input":{}}' | bash hooks/{hook-name}.sh`
 - [ ] Any harness-specific assumptions are isolated or explicitly documented

@@ -289,6 +289,30 @@ if [ -n "$_added_lines" ]; then
   fi
 fi
 
+# Gate 3g. Primitive scope portability contract must hold for staged primitive changes.
+# This is the cheap source-level gate: it blocks invalid SCOPE markers and
+# missing paired proofs without running the slower project-install smoke. The
+# install/projection smoke runs in `scripts/cos-ci-local.sh quick`.
+staged_primitives=$(git diff --cached --name-only --diff-filter=ACM -- \
+  'hooks/*' 'scripts/*' 'lib/*' 'skills/*' 'rules/*' 'templates/*' 2>/dev/null || true)
+if [ -n "$staged_primitives" ]; then
+  if [ -x "$COS_ROOT/scripts/cos-scope-both-portability-audit" ]; then
+    if ! python3 "$COS_ROOT/scripts/cos-scope-both-portability-audit" --repo-root "$COS_ROOT" --strict --json --no-write >/dev/null; then
+      echo "BLOCKED: SCOPE: both artifact lacks a paired portability proof." >&2
+      echo "  Run: scripts/cos-scope-both-portability-audit --strict" >&2
+      echo "  Scaffold missing proof: scripts/cos-portability-proof-scaffold --artifact <path>" >&2
+      exit 1
+    fi
+  fi
+  if [ -x "$COS_ROOT/scripts/cos-scope-projection-audit" ]; then
+    if ! python3 "$COS_ROOT/scripts/cos-scope-projection-audit" --repo-root "$COS_ROOT" --strict --json --no-write >/dev/null; then
+      echo "BLOCKED: primitive scope projection/source contract failed." >&2
+      echo "  Run: scripts/cos-scope-projection-audit --strict" >&2
+      exit 1
+    fi
+  fi
+fi
+
 # Gate 3f uses `git diff --cached --name-only --diff-filter=A` to build an
 # explicit list of NEWLY STAGED test files, then passes that list directly to
 # check_test_quality.py.  The script NEVER auto-scans the working tree; it only

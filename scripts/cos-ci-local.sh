@@ -319,6 +319,24 @@ check_core_adoption_profile() {
   fi
 }
 
+
+check_scope_portability_contract() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "scope portability contract" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-scope-both-portability-audit" ] && \
+     [ -x "$REPO_ROOT/scripts/cos-scope-projection-audit" ]; then
+    python3 "$REPO_ROOT/scripts/cos-scope-both-portability-audit" \
+      --repo-root "$REPO_ROOT" --strict --json --no-write >/dev/null && \
+    python3 "$REPO_ROOT/scripts/cos-scope-projection-audit" \
+      --repo-root "$REPO_ROOT" --run-install-smoke --strict --json --no-write >/dev/null
+  else
+    _skip "scope portability contract" "scope audit scripts not found"
+    return 0
+  fi
+}
+
 check_active_primitive_index() {
   if [ -x "$REPO_ROOT/scripts/cos-active-primitive-index" ]; then
     "$REPO_ROOT/scripts/cos-active-primitive-index" --json >/dev/null
@@ -429,6 +447,7 @@ run_quick() {
   _step "python stdin antipattern audit"      check_python_stdin_antipattern_audit
   _step "core adoption profile"               check_core_adoption_profile
   _step "active primitive index"              check_active_primitive_index
+  _step "scope portability contract"        check_scope_portability_contract
   _step "core preamble budget"                check_core_preamble_budget
   _step "lab-first promotion gate"            check_lab_first_gate
   _step "self-improvement discipline gate"    check_self_improvement_discipline_gate

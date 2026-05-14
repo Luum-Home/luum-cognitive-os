@@ -353,3 +353,18 @@ def test_status_resolves_codex_pwd_hook_commands_without_false_missing_hooks(tmp
     assert data["hooks"]["driver_path"] == ".codex/hooks.json"
     assert data["hooks"]["total"] == 3
     assert data["health"]["failures"] == 0
+
+
+def test_status_portability_combines_proofs_and_projection_json():
+    """--portability --json should expose both proof coverage and projection smoke status."""
+    result = _run(["--portability", "--json"], timeout=180)
+    assert result.returncode == 0, f"stderr: {result.stderr}\nstdout: {result.stdout[-2000:]}"
+    data = json.loads(result.stdout)
+
+    assert data["schema_version"] == "cos-portability-status/v1"
+    assert data["status"] == "pass"
+    assert "scope_both" in data
+    assert "scope_projection" in data
+    assert data["summary"]["missing_proofs"] == 0
+    assert data["summary"]["projection_block_findings"] == 0
+    assert data["summary"]["install_smoke_status"] == "pass"

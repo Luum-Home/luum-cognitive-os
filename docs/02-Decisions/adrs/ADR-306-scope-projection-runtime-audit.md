@@ -67,13 +67,26 @@ The audit emits:
 - `.cognitive-os/reports/scope-projection-audit.json`
 - `.cognitive-os/reports/scope-projection-audit.md`
 
-`--strict` exits `2` on block findings.
+`--strict` exits `2` on block findings. `--no-write` is available for gates
+and status surfaces that must not mutate the working tree.
+
+`cos status --portability` must present the operator view by combining the
+paired-proof inventory with this projection/runtime audit, including the
+consumer install smoke.
+
+`scripts/cos-ci-local.sh quick` must run the strict source/projection contract so
+new primitives are covered by the default local/pre-push lane. The `.githooks`
+pre-commit hook runs the cheaper source-only variant whenever staged primitive
+source changes.
 
 ## Implementation
 
 Files:
 
 - `scripts/cos-scope-projection-audit` — report/audit CLI.
+- `scripts/cos-scope-both-portability-audit` — supports `--no-write` for gates/status.
+- `scripts/cos-status.sh` — `--portability` now shows proof coverage plus projection/runtime smoke.
+- `scripts/cos-ci-local.sh` and `.githooks/pre-commit` — default local gates for new primitive scope regressions.
 - `scripts/cos_init.py` — `skill_scope_allows()` now treats the canonical
   `<!-- SCOPE: ... -->` marker as authoritative over legacy `audience:`.
 - `tests/unit/test_scope_projection_audit.py` — pure audit contract tests.
@@ -91,6 +104,9 @@ Positive:
   audit.
 - `os-only` leakage is caught in the same lane that operators can run before
   release or consumer packaging.
+- New primitive authoring is preventive instead of only retrospective: skills
+  for primitive creation instruct agents to scaffold paired proofs and run the
+  strict audits before commit.
 
 Tradeoffs:
 
@@ -111,6 +127,7 @@ Targeted commands used for implementation:
 .venv/bin/python -m pytest tests/unit/test_cos_init_py.py tests/behavior/test_cos_init_parity_2_2.py -q
 scripts/cos-scope-projection-audit --repo-root . --json --no-write
 scripts/cos-scope-projection-audit --repo-root . --run-install-smoke --json --no-write
+scripts/cos status --portability --json
 ```
 
 Final runtime-smoke result:

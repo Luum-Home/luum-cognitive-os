@@ -65,9 +65,11 @@ instead of creating a duplicate.
 1. Write or update the listed artifacts.
 2. For every `SCOPE: both` artifact in the plan, run `scripts/cos-portability-proof-scaffold --artifact <artifact>` instead of inventing a portability filename.
 3. Add behavior tests and specialize each scaffolded red-team portability test with a falsification probe.
-4. Validate with the emitted validation plan.
-5. Land through the governed merge queue.
-6. Save the decision/discovery to Engram.
+4. Run `scripts/cos-scope-both-portability-audit --strict --no-write` and `scripts/cos-scope-projection-audit --strict --no-write`.
+5. For consumer-visible primitives, run `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write` and check `scripts/cos status --portability`.
+6. Validate with the emitted validation plan.
+7. Land through the governed merge queue.
+8. Save the decision/discovery to Engram.
 
 ## Contextual Trigger
 

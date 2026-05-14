@@ -294,13 +294,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--md-output", type=Path, default=None)
     parser.add_argument("--json", action="store_true", help="Print JSON report to stdout")
     parser.add_argument("--strict", action="store_true", help="Exit 2 if any missing proof exists")
+    parser.add_argument("--no-write", action="store_true", help="Do not write JSON/Markdown reports")
     args = parser.parse_args(argv)
 
     repo = args.repo_root.resolve()
     rows, summary = build_inventory(repo)
     json_path = args.json_output or repo / REPORT_JSON
     md_path = args.md_output or repo / REPORT_MD
-    write_reports(repo, rows, summary, json_path, md_path)
+    if not args.no_write:
+        write_reports(repo, rows, summary, json_path, md_path)
     payload = {
         "schema_version": "scope-both-portability-audit/v1",
         "repo_root": str(repo),
@@ -311,7 +313,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         json.dump(payload, sys.stdout, indent=2, sort_keys=True)
         sys.stdout.write("\n")
-    else:
+    elif not args.no_write:
         print(
             "[scope-both-portability-audit] "
             f"total={summary['total']} covered={summary['covered']} "

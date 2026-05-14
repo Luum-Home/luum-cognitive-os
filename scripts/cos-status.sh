@@ -95,7 +95,7 @@ Flags:
   --observability
                Show ADR-304 telemetry SLO status only
   --portability
-               Show SCOPE: both portability proof coverage only
+               Show SCOPE proof coverage plus project projection/runtime scope status
   --help       Show this help and exit
 
 Reads:
@@ -206,38 +206,125 @@ PYEOF
 
 emit_portability_status() {
   local mode="$1"
-  if [ "$mode" = "json" ]; then
-    python3 "$PROJECT_ROOT/scripts/cos-scope-both-portability-audit" --repo-root "$PROJECT_ROOT" --json
-    return
-  fi
-  local tmp_json
-  tmp_json="$(mktemp "${TMPDIR:-/tmp}/cos-portability.XXXXXX.json")"
-  python3 "$PROJECT_ROOT/scripts/cos-scope-both-portability-audit" --repo-root "$PROJECT_ROOT" --json > "$tmp_json"
-  python3 - "$tmp_json" <<'PYEOF'
+  PYTHONPATH="$PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$PROJECT_ROOT" "$mode" <<'PYEOF'
 import json
+import subprocess
 import sys
-payload = json.load(open(sys.argv[1], encoding="utf-8"))
-summary = payload["summary"]
+from pathlib import Path
+
+repo = Path(sys.argv[1])
+mode = sys.argv[2]
+
+def run_json(command):
+    result = subprocess.run(command, cwd=repo, text=True, capture_output=True, check=False)
+    if result.returncode not in (0, 2):
+        return {
+            "error": "command_failed",
+            "command": command,
+            "returncode": result.returncode,
+            "stdout_tail": result.stdout[-2000:],
+            "stderr_tail": result.stderr[-2000:],
+        }
+    try:
+        payload = json.loads(result.stdout or "{}")
+    except json.JSONDecodeError as exc:
+        return {
+            "error": "invalid_json",
+            "command": command,
+            "returncode": result.returncode,
+            "message": str(exc),
+            "stdout_tail": result.stdout[-2000:],
+            "stderr_tail": result.stderr[-2000:],
+        }
+    payload["_exit_code"] = result.returncode
+    return payload
+
+scope_both = run_json([
+    "python3",
+    str(repo / "scripts" / "cos-scope-both-portability-audit"),
+    "--repo-root",
+    str(repo),
+    "--json",
+    "--no-write",
+])
+scope_projection = run_json([
+    "python3",
+    str(repo / "scripts" / "cos-scope-projection-audit"),
+    "--repo-root",
+    str(repo),
+    "--run-install-smoke",
+    "--strict",
+    "--json",
+    "--no-write",
+])
+
+proof_summary = scope_both.get("summary", {}) if isinstance(scope_both, dict) else {}
+projection_summary = scope_projection.get("summary", {}) if isinstance(scope_projection, dict) else {}
+errors = [
+    item.get("error")
+    for item in (scope_both, scope_projection)
+    if isinstance(item, dict) and item.get("error")
+]
+status = "pass"
+if errors or proof_summary.get("missing", 0) or projection_summary.get("block_findings", 0):
+    status = "fail"
+
+snapshot = {
+    "schema_version": "cos-portability-status/v1",
+    "status": status,
+    "scope_both": scope_both,
+    "scope_projection": scope_projection,
+    "summary": {
+        "both_total": projection_summary.get("both_total", proof_summary.get("total", 0)),
+        "both_with_proofs": projection_summary.get("both_with_proofs", proof_summary.get("covered", 0)),
+        "missing_proofs": proof_summary.get("missing", 0),
+        "hot_path_missing": proof_summary.get("hot_path_missing", 0),
+        "source_total": projection_summary.get("source_total", 0),
+        "source_by_scope": projection_summary.get("source_by_scope", {}),
+        "projection_total": projection_summary.get("projection_total", 0),
+        "projection_by_scope": projection_summary.get("projection_by_scope", {}),
+        "projection_block_findings": projection_summary.get("block_findings", 0),
+        "install_smoke_status": scope_projection.get("install_smoke", {}).get("status") if isinstance(scope_projection, dict) else None,
+    },
+}
+
+if mode == "json":
+    json.dump(snapshot, sys.stdout, indent=2, sort_keys=True)
+    sys.stdout.write("\n")
+    raise SystemExit(0)
+
+summary = snapshot["summary"]
 print("COS Portability")
 print("═══════════════")
+print(f"Status: {snapshot['status'].upper()}")
+print("")
 print("SCOPE both portability:")
-print(f"  covered: {summary['covered']}")
-print(f"  missing: {summary['missing']}")
-print(f"  hot-path missing: {summary['hot_path_missing']}")
-print(f"  total: {summary['total']}")
+print(f"  covered: {proof_summary.get('covered', 0)}")
+print(f"  missing: {proof_summary.get('missing', 0)}")
+print(f"  hot-path missing: {proof_summary.get('hot_path_missing', 0)}")
+print(f"  total: {proof_summary.get('total', 0)}")
 print("")
 print("By priority:")
 for priority in ("hot_path", "shared_lib", "agent_lifecycle", "other"):
-    item = summary.get("by_priority", {}).get(priority)
+    item = proof_summary.get("by_priority", {}).get(priority)
     if not item:
         continue
     print(f"  {priority}: {item.get('covered', 0)}/{item.get('total', 0)} covered, {item.get('missing', 0)} missing")
 print("")
-print("Reports:")
-print(f"  JSON: {payload['reports']['json']}")
-print(f"  Markdown: {payload['reports']['markdown']}")
+print("Scope projection/runtime:")
+print(f"  source primitives: {summary['source_total']}")
+print(f"  source by scope: {json.dumps(summary['source_by_scope'], sort_keys=True)}")
+print(f"  both proofs: {summary['both_with_proofs']}/{summary['both_total']}")
+print(f"  project projection scanned: {summary['projection_total']}")
+print(f"  project projection by scope: {json.dumps(summary['projection_by_scope'], sort_keys=True)}")
+print(f"  projection block findings: {summary['projection_block_findings']}")
+print(f"  install smoke: {summary['install_smoke_status']}")
+if errors:
+    print("")
+    print("Errors:")
+    for error in errors:
+        print(f"  - {error}")
 PYEOF
-  rm -f "$tmp_json" 2>/dev/null || true
 }
 
 if [ "$PORTABILITY" -eq 1 ]; then

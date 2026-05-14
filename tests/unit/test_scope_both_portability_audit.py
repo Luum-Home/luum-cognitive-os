@@ -70,3 +70,30 @@ def test_inventory_suggests_skill_specific_proof_path(tmp_path: Path) -> None:
     assert summary["missing"] == 1
     assert rows[0].artifact == "skills/add-hook/SKILL.md"
     assert rows[0].suggested_test_path == "tests/red_team/portability/test_skill_add_hook.py"
+
+
+def test_cli_no_write_does_not_create_reports(tmp_path: Path) -> None:
+    hook = tmp_path / "hooks" / "x.sh"
+    hook.parent.mkdir(parents=True)
+    hook.write_text("#!/usr/bin/env bash\n# SCOPE: both\necho x\n", encoding="utf-8")
+
+    import subprocess
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--repo-root",
+            str(tmp_path),
+            "--json",
+            "--no-write",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    payload = json.loads(result.stdout)
+    assert payload["summary"]["missing"] == 1
+    assert not (tmp_path / ".cognitive-os" / "reports" / "scope-both-portability-audit.json").exists()

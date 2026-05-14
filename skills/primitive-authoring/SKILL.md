@@ -176,6 +176,21 @@ Then replace the generated baseline with a primitive-specific falsification
 probe. Do not invent a different filename; the scope gate and audit both use
 `lib/portability_proof_paths.py` for their suggested path logic.
 
+Before commit, run the automatic source-level contract checks:
+
+```bash
+scripts/cos-scope-both-portability-audit --strict --no-write
+scripts/cos-scope-projection-audit --strict --no-write
+```
+
+For any primitive that can be projected or installed into a consumer project, run
+the runtime projection smoke as the authoritative check:
+
+```bash
+scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write
+scripts/cos status --portability
+```
+
 ## 4. Projection fidelity
 
 Do not claim stronger fidelity than the harness/service can prove.
@@ -291,7 +306,10 @@ ACCEPTANCE CRITERIA:
 8. Service/headless impact considered when COS can run outside IDE lifecycle.
 9. Tests/proof match risk class.
 10. Every `SCOPE: both` artifact has its scaffolded paired proof path, then a real falsification probe.
-11. Runtime evidence plan exists, or documented-only rationale exists.
+11. `scripts/cos-scope-both-portability-audit --strict --no-write` passes.
+12. `scripts/cos-scope-projection-audit --strict --no-write` passes.
+13. Consumer-visible primitives pass `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write`.
+14. Runtime evidence plan exists, or documented-only rationale exists.
 ```
 
 ## Stop conditions

@@ -210,6 +210,22 @@ echo "PASS: {skill-name} skill structure valid"
 If the skill is `driver-projected`, also add at least one characterization test
 or verification note for the projection behavior.
 
+### 6b. Validate scope projection before commit
+
+For every new skill, run the source-level scope checks. For `audience: both` or
+`<!-- SCOPE: both -->`, the paired proof must exist before these pass:
+
+```bash
+scripts/cos-scope-both-portability-audit --strict --no-write
+scripts/cos-scope-projection-audit --strict --no-write
+```
+
+If the skill can be installed into consumer projects, also run the install smoke:
+
+```bash
+scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write
+```
+
 ## Operational Skills (command-style frontmatter)
 
 For skills that are invoked as slash commands rather than loaded as context, use this alternative frontmatter format:
@@ -237,4 +253,6 @@ This is used for skills like `daily-health-check` that have a direct invocation 
 - [ ] Frontmatter has `name`, `description`, `version`, `audience` fields
 - [ ] Steps are numbered, imperative, and verifiable
 - [ ] Harness-specific assumptions are either absent or explicitly documented
+- [ ] Scope checks pass: `scripts/cos-scope-both-portability-audit --strict --no-write` and `scripts/cos-scope-projection-audit --strict --no-write`
+- [ ] Consumer-visible skills pass install projection smoke: `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write`
 - [ ] Skill loads without error: `cat skills/{skill-name}/SKILL.md | head -10`
