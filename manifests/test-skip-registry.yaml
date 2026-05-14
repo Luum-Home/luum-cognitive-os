@@ -21,7 +21,7 @@ expected_skips:
   - id: explicit-opt-in-resource-lane
     lanes: [unit, audit, system, behavior, integration, e2e, arena, benchmark]
     category: opt-in-lane
-    reason_pattern: '(requires network access|requires Docker|requires \$HOME mutation|set [A-Z0-9_]+=(true|1) to enable|COS_ALLOW_|COGNITIVE_OS_TEST_DOCKER_UP|cost-bearing|provider smoke|Docker daemon|real Langfuse|testcontainers)'
+    reason_pattern: '(requires network access|requires Docker|requires \$HOME mutation|set [A-Z0-9_]+=(true|1) to enable|COS_ALLOW_|COGNITIVE_OS_TEST_DOCKER_UP|COS_STRICT_TELEMETRY_SLO|COS_LLM_ROUTING_LIVE_TEST|cost-bearing|provider smoke|Docker daemon|real Langfuse|testcontainers|Live LLM test gated)'
     applies_when: The check is intentionally excluded from make test-laptop and default CI.
     opt_in_lane: test-docker, test-optional, test-laptop-integration, or a proof-drill registry entry.
   - id: runtime-sample-window

@@ -68,7 +68,7 @@ class TestTaskSetLoading(unittest.TestCase):
         self.assertEqual(tasks[1].tools_allowed, [])
 
     def test_real_smoke_file_parses(self):
-        smoke = _REPO / "docs" / "benchmarks" / "parity-smoke.yaml"
+        smoke = _REPO / "docs" / "08-References" / "benchmarks" / "parity-smoke.yaml"
         if not smoke.exists():
             self.skipTest("smoke file not committed yet")
         tasks = PH.load_tasks(smoke)
