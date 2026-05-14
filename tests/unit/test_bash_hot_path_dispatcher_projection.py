@@ -58,6 +58,12 @@ def test_default_bash_hot_path_uses_tier_dispatcher_only() -> None:
     assert "hooks/scope-marker-portability-gate.sh" not in commands[0]
 
 
+def test_dispatcher_preserves_state_scoped_skill_invocation_gate() -> None:
+    dispatcher = (ROOT / "hooks" / "bash-hot-path-dispatcher.sh").read_text()
+
+    assert 'hooks/orchestrator-skill-invocation-gate.sh' in dispatcher
+
+
 def test_full_profile_keeps_exhaustive_bash_mesh() -> None:
     commands = "\n".join(bash_group(emit_settings("full")))
 

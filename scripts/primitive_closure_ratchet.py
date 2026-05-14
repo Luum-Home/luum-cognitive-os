@@ -52,6 +52,23 @@ def text_contains(path: Path, needle: str) -> bool:
     return needle in path.read_text(encoding="utf-8", errors="replace")
 
 
+def projection_closes_hook(root: Path, projection: Path, hook: str) -> bool:
+    """Return true when a hook is directly projected or routed by dispatcher.
+
+    Default interactive profiles intentionally project a small Bash dispatcher
+    instead of the exhaustive PreToolUse:Bash mesh. For closure purposes, that
+    is still a real runtime route only when both conditions hold:
+
+    1. the harness projection contains the dispatcher, and
+    2. the dispatcher source names the required hook.
+    """
+
+    if text_contains(projection, hook):
+        return True
+    dispatcher = "hooks/bash-hot-path-dispatcher.sh"
+    return text_contains(projection, dispatcher) and text_contains(root / dispatcher, hook)
+
+
 def check_language_ratchet(root: Path, manifest: dict[str, Any]) -> list[Finding]:
     cfg = manifest.get("language_dependence") or {}
     report = root / str(cfg.get("report") or ".cognitive-os/reports/language-dependence-audit.md")
@@ -89,9 +106,9 @@ def check_hook_projections(root: Path, manifest: dict[str, Any]) -> list[Finding
         primitive = str(item.get("primitive") or hook)
         if not text_contains(config, hook):
             findings.append(Finding("missing_canonical_projection", "block", f"{primitive} missing from cognitive-os.yaml", "cognitive-os.yaml"))
-        if item.get("claude_required", True) and not text_contains(claude, hook):
+        if item.get("claude_required", True) and not projection_closes_hook(root, claude, hook):
             findings.append(Finding("missing_claude_projection", "block", f"{primitive} missing from .claude/settings.json", ".claude/settings.json"))
-        if item.get("codex_required", False) and not text_contains(codex, hook):
+        if item.get("codex_required", False) and not projection_closes_hook(root, codex, hook):
             findings.append(Finding("missing_codex_projection", "block", f"{primitive} missing from .codex/hooks.json", ".codex/hooks.json"))
     return findings
 

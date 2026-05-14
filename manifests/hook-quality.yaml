@@ -470,6 +470,7 @@ hooks:
     script: hooks/auto-verify.sh
   bash-hot-path-dispatcher:
     behavior_tests:
+    - tests/contracts/test_primitive_closure_ratchet.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_multi_agent_coordination_primitives.py
     bypass_policy: not_required_warning_only
@@ -1903,7 +1904,9 @@ hooks:
     script: hooks/orchestrator-decision-trace.sh
   orchestrator-skill-invocation-gate-agent:
     behavior_tests:
+    - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_skill_invocation_gate.py
+    - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_research_quality_advisor.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -1920,7 +1923,9 @@ hooks:
     script: hooks/orchestrator-skill-invocation-gate.sh
   orchestrator-skill-invocation-gate-bash:
     behavior_tests:
+    - tests/contracts/test_primitive_closure_ratchet.py
     - tests/contracts/test_skill_invocation_gate.py
+    - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_research_quality_advisor.py
     bypass_policy: not_required_observe_only
     criticality: standard

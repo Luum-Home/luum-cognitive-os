@@ -72,6 +72,62 @@ def test_required_runtime_proof_must_exist(tmp_path: Path) -> None:
     assert any(f.code == "missing_runtime_proof" for f in findings)
 
 
+def test_dispatcher_route_counts_as_codex_projection_closure(tmp_path: Path) -> None:
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".codex").mkdir()
+    (tmp_path / "hooks").mkdir()
+    hook = "hooks/orchestrator-skill-invocation-gate.sh"
+    dispatcher = "hooks/bash-hot-path-dispatcher.sh"
+    (tmp_path / "cognitive-os.yaml").write_text(hook, encoding="utf-8")
+    (tmp_path / ".claude" / "settings.json").write_text(hook, encoding="utf-8")
+    (tmp_path / ".codex" / "hooks.json").write_text(dispatcher, encoding="utf-8")
+    (tmp_path / dispatcher).write_text(f'_run_gate "{hook}"\n', encoding="utf-8")
+    manifest = {
+        "critical_hook_projections": [
+            {
+                "primitive": "skill-gate",
+                "hook": hook,
+                "claude_required": True,
+                "codex_required": True,
+            }
+        ]
+    }
+    custom = tmp_path / "primitive-closure-ratchet.yaml"
+    custom.write_text(yaml.safe_dump(manifest, sort_keys=True))
+
+    findings = run(tmp_path, custom)
+
+    assert findings == []
+
+
+def test_dispatcher_projection_without_route_is_not_closure(tmp_path: Path) -> None:
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".codex").mkdir()
+    (tmp_path / "hooks").mkdir()
+    hook = "hooks/orchestrator-skill-invocation-gate.sh"
+    dispatcher = "hooks/bash-hot-path-dispatcher.sh"
+    (tmp_path / "cognitive-os.yaml").write_text(hook, encoding="utf-8")
+    (tmp_path / ".claude" / "settings.json").write_text(hook, encoding="utf-8")
+    (tmp_path / ".codex" / "hooks.json").write_text(dispatcher, encoding="utf-8")
+    (tmp_path / dispatcher).write_text('echo "different gate"\n', encoding="utf-8")
+    manifest = {
+        "critical_hook_projections": [
+            {
+                "primitive": "skill-gate",
+                "hook": hook,
+                "claude_required": True,
+                "codex_required": True,
+            }
+        ]
+    }
+    custom = tmp_path / "primitive-closure-ratchet.yaml"
+    custom.write_text(yaml.safe_dump(manifest, sort_keys=True))
+
+    findings = run(tmp_path, custom)
+
+    assert any(f.code == "missing_codex_projection" for f in findings)
+
+
 def test_subagent_budget_enforcer_is_in_claude_projection() -> None:
     settings = REPO_ROOT / ".claude" / "settings.json"
     assert "hooks/subagent-budget-enforcer.sh" in settings.read_text()

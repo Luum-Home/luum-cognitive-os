@@ -119,7 +119,15 @@ if _is_git_boundary; then
     "hooks/agent-message-inbox-guard.sh" || exit $?
 fi
 
+# P1: state-scoped governance gates. This does not depend on command shape:
+# a high-confidence skill-router suggestion applies to the next Bash tool call
+# even when the command itself is innocuous. Keeping it behind the dispatcher
+# preserves the default one-hook projection while retaining mandatory skill
+# invocation enforcement in Codex/Claude Bash hot paths.
+_run_gate "hooks/orchestrator-skill-invocation-gate.sh" || exit $?
+
 # P1: command-scoped governance gates.
+
 if _is_git_commit; then
   _run_many \
     "hooks/git-commit-scope-guard.sh" \
