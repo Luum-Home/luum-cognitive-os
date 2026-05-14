@@ -57,8 +57,8 @@ def test_claim_proof_cli_writes_reports(tmp_path: Path) -> None:
     result = subprocess.run([sys.executable, str(CLAIM_PATH), "--project-dir", str(root)], text=True, capture_output=True)
 
     assert result.returncode == 0, result.stderr
-    assert (root / "docs" / "reports" / "claim-proof-latest.json").exists()
-    assert "Claims Needing Work" in (root / "docs" / "reports" / "claim-proof-latest.md").read_text()
+    assert (root / "docs" / "06-Daily" / "reports" / "claim-proof-latest.json").exists()
+    assert "Claims Needing Work" in (root / "docs" / "06-Daily" / "reports" / "claim-proof-latest.md").read_text()
 
 
 def test_claim_proof_cli_fail_unmapped_blocks_unproven_claim(tmp_path: Path) -> None:
@@ -79,7 +79,7 @@ def test_claim_proof_cli_fail_unmapped_blocks_unproven_claim(tmp_path: Path) -> 
 
 def test_reduction_backlog_uses_row_and_claim_audits(tmp_path: Path) -> None:
     root = tmp_path / "repo"
-    reports = root / "docs" / "reports"
+    reports = root / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True)
     (reports / "primitive-row-audit-latest.json").write_text(
         json.dumps(
@@ -111,7 +111,7 @@ def test_reduction_backlog_uses_row_and_claim_audits(tmp_path: Path) -> None:
 
 def test_reduction_backlog_fail_nonzero_blocks_pending_items(tmp_path: Path) -> None:
     root = tmp_path / "repo"
-    reports = root / "docs" / "reports"
+    reports = root / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True)
     (reports / "primitive-row-audit-latest.json").write_text(
         json.dumps(
@@ -144,7 +144,7 @@ def test_reduction_backlog_fail_nonzero_blocks_pending_items(tmp_path: Path) -> 
 
 def test_reduction_backlog_fail_nonzero_passes_clean_backlog(tmp_path: Path) -> None:
     root = tmp_path / "repo"
-    reports = root / "docs" / "reports"
+    reports = root / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True)
     (reports / "primitive-row-audit-latest.json").write_text(json.dumps({"rows": []}))
     (reports / "claim-proof-latest.json").write_text(json.dumps({"rows": []}))

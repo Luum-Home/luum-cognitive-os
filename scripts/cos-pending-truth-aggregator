@@ -331,7 +331,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = aggregate(root)
 
     if args.write:
-        reports = root / "docs" / "reports"
+        reports = root / "docs" / "06-Daily" / "reports"
         reports.mkdir(parents=True, exist_ok=True)
         json_path = reports / "pending-truth-latest.json"
         md_path = reports / "pending-truth-latest.md"

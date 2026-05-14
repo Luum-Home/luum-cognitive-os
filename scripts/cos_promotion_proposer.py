@@ -27,7 +27,7 @@ if str(PROJECT_ROOT) not in sys.path:
 DEFAULT_DB = PROJECT_ROOT / ".cognitive-os" / "skill_store.db"
 DEFAULT_LIFECYCLE = PROJECT_ROOT / "manifests" / "primitive-lifecycle.yaml"
 DEFAULT_METRICS = PROJECT_ROOT / ".cognitive-os" / "metrics" / "promotion-proposals.jsonl"
-DEFAULT_OUT_ROOT = PROJECT_ROOT / "docs" / "reports" / "promotion-proposals"
+DEFAULT_OUT_ROOT = PROJECT_ROOT / "docs" / "06-Daily" / "reports" / "promotion-proposals"
 
 
 # ---------------------------------------------------------------------------

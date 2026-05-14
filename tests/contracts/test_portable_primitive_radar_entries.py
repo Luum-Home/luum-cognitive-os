@@ -9,8 +9,8 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = REPO_ROOT / "manifests" / "external-tools-adoption.yaml"
-ADDENDUM = REPO_ROOT / "docs" / "reports" / "external-tools-radar-portable-primitives-addendum-2026-05-09.md"
-INDEX = REPO_ROOT / "docs" / "reports" / "external-tools-radar-INDEX.md"
+ADDENDUM = REPO_ROOT / "docs" / "06-Daily" / "reports" / "external-tools-radar-portable-primitives-addendum-2026-05-09.md"
+INDEX = REPO_ROOT / "docs" / "06-Daily" / "reports" / "external-tools-radar-INDEX.md"
 ECOSYSTEM = REPO_ROOT / "docs" / "patterns" / "ecosystem-tools.md"
 
 REQUIRED = {

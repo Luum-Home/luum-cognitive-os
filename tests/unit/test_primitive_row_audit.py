@@ -90,6 +90,6 @@ def test_row_audit_cli_writes_json_and_markdown(tmp_path: Path) -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    payload = json.loads((root / "docs" / "reports" / "primitive-row-audit-latest.json").read_text())
+    payload = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-row-audit-latest.json").read_text())
     assert payload["summary"]["hooks"]["total"] == 6
-    assert "High-Severity Rows" in (root / "docs" / "reports" / "primitive-row-audit-latest.md").read_text()
+    assert "High-Severity Rows" in (root / "docs" / "06-Daily" / "reports" / "primitive-row-audit-latest.md").read_text()

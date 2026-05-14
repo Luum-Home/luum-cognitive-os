@@ -16,7 +16,7 @@ from scripts.primitive_projection_fidelity import build_report
 
 DOC = REPO_ROOT / "docs" / "architecture" / "opencode-native-primitive-adapter-design.md"
 CONTRACTS = REPO_ROOT / "manifests" / "primitive-contracts.yaml"
-SMOKE = REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.json"
+SMOKE = REPO_ROOT / "docs" / "06-Daily" / "reports" / "opencode-primitive-adapter-smoke-latest.json"
 SIGNED = {
     "destructive-git-blocker",
     "destructive-rm-blocker",

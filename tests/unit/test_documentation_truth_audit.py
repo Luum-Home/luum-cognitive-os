@@ -17,14 +17,14 @@ spec.loader.exec_module(documentation_truth_audit)
 
 
 def write_fixture(root: Path, doc_text: str, block_text: str | None = None) -> Path:
-    (root / "docs" / "architecture").mkdir(parents=True)
-    (root / "docs" / "reports").mkdir(parents=True)
+    (root / "docs" / "04-Concepts" / "architecture").mkdir(parents=True)
+    (root / "docs" / "06-Daily" / "reports").mkdir(parents=True)
     (root / "manifests").mkdir(parents=True)
-    (root / "docs" / "reports" / "source.json").write_text(json.dumps({"status": "pass", "summary": {}}), encoding="utf-8")
+    (root / "docs" / "06-Daily" / "reports" / "source.json").write_text(json.dumps({"status": "pass", "summary": {}}), encoding="utf-8")
     doc_body = doc_text
     if block_text is not None:
         doc_body += "\n\n" + block_text + "\n"
-    (root / "docs" / "architecture" / "doc.md").write_text(doc_body, encoding="utf-8")
+    (root / "docs" / "04-Concepts" / "architecture" / "doc.md").write_text(doc_body, encoding="utf-8")
     manifest = {
         "schema_version": "documentation-truth-claims.v1",
         "claims": {

@@ -5,7 +5,7 @@ from pathlib import Path
 from lib.memory_retrieval_compare import compare_reports
 
 ROOT = Path(__file__).resolve().parents[2]
-REPORTS = ROOT / "docs" / "reports" / "memory-retrieval-wave2"
+REPORTS = ROOT / "docs" / "06-Daily" / "reports" / "memory-retrieval-wave2"
 
 
 def test_memory_retrieval_compare_selects_graph_path_as_smallest_passing_delta() -> None:

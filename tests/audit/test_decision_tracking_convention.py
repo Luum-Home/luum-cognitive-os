@@ -25,7 +25,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
-REPORTS_DIR = REPO / "docs" / "reports"
+REPORTS_DIR = REPO / "docs" / "06-Daily" / "reports"
 
 # Same patterns as decision_triage.py (keep in sync)
 DECISION_SECTION_PATTERNS = [

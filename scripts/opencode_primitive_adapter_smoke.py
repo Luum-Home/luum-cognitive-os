@@ -21,8 +21,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "packages" / "opencode-adapter" / "plugins" / "cos-primitive-guard.js"
-DEFAULT_JSON = ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.json"
-DEFAULT_MD = ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.md"
+DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "opencode-primitive-adapter-smoke-latest.json"
+DEFAULT_MD = ROOT / "docs" / "06-Daily" / "reports" / "opencode-primitive-adapter-smoke-latest.md"
 
 
 def _portable_path(value: str | None) -> str | None:

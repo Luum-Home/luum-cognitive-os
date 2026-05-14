@@ -54,7 +54,7 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
 
 
 def test_backlog_generator_produces_actionable_item_from_workflow_inputs(tmp_path: Path) -> None:
-    reports = tmp_path / "docs" / "reports"
+    reports = tmp_path / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True)
     (reports / "primitive-row-audit-latest.json").write_text(
         json.dumps(

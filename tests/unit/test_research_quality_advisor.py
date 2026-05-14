@@ -21,7 +21,7 @@ from lib.research_quality_advisor import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-REPORTS = REPO_ROOT / "docs" / "reports"
+REPORTS = REPO_ROOT / "docs" / "06-Daily" / "reports"
 
 
 SONNET_AUDITS = [

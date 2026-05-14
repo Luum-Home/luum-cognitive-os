@@ -13,7 +13,7 @@ pytestmark = pytest.mark.behavior
 
 
 def test_active_report_is_protected_from_cleanup(tmp_path: Path) -> None:
-    report = tmp_path / "docs" / "reports" / "validation.md"
+    report = tmp_path / "docs" / "06-Daily" / "reports" / "validation.md"
     report.parent.mkdir(parents=True)
     report.write_text("running\n", encoding="utf-8")
     runtime = tmp_path / ".cognitive-os" / "runtime"
@@ -27,7 +27,7 @@ def test_active_report_is_protected_from_cleanup(tmp_path: Path) -> None:
 
 
 def test_old_inactive_report_can_be_cleaned_after_retention(tmp_path: Path) -> None:
-    report = tmp_path / "docs" / "reports" / "old.md"
+    report = tmp_path / "docs" / "06-Daily" / "reports" / "old.md"
     report.parent.mkdir(parents=True)
     report.write_text("old\n", encoding="utf-8")
     old = time.time() - 3600

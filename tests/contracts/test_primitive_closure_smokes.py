@@ -6,14 +6,14 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TRACKED_SMOKE_REPORTS = (
-    REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.json",
-    REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.md",
-    REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.json",
-    REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.md",
-    REPO_ROOT / "docs" / "reports" / "portable-ai-real-consumer-smoke-latest.json",
-    REPO_ROOT / "docs" / "reports" / "portable-ai-real-consumer-smoke-latest.md",
-    REPO_ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.json",
-    REPO_ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.md",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "opencode-primitive-adapter-smoke-latest.json",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "opencode-primitive-adapter-smoke-latest.md",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-smoke-latest.json",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-smoke-latest.md",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-real-consumer-smoke-latest.json",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-real-consumer-smoke-latest.md",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "primitive-service-headless-smoke-latest.json",
+    REPO_ROOT / "docs" / "06-Daily" / "reports" / "primitive-service-headless-smoke-latest.md",
 )
 
 

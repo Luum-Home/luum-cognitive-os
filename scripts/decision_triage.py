@@ -35,7 +35,7 @@ from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
-REPORTS_DIR = REPO_ROOT / "docs" / "reports"
+REPORTS_DIR = REPO_ROOT / "docs" / "06-Daily" / "reports"
 # NOTE: .cognitive-os/reports/research/ is gitignored — reports now live in docs/06-Daily/reports/.
 # We keep this constant for legacy fallback but DO NOT scan it in normal operation.
 RESEARCH_REPORTS_DIR = REPO_ROOT / ".cognitive-os" / "reports" / "research"

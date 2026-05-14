@@ -20,7 +20,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.timeout(180)]
 
 REPO = Path(__file__).resolve().parent.parent.parent
 SCRIPTS_DIR = REPO / "scripts"
-REPORTS_DIR = REPO / "docs" / "reports"
+REPORTS_DIR = REPO / "docs" / "06-Daily" / "reports"
 
 
 def _engram_available() -> bool:

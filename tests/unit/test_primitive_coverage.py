@@ -119,7 +119,7 @@ def test_weekly_workflow_generates_generic_primitive_coverage_reports() -> None:
 
 def test_cos_reduction_backlog_empty_makes_weak_rows_non_actionable(tmp_path: Path) -> None:
     root = make_repo(tmp_path)
-    reports = root / "docs" / "reports"
+    reports = root / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True)
     (reports / "primitive-row-audit-latest.json").write_text(json.dumps({"rows": []}))
     (reports / "primitive-usage-map-latest.json").write_text(json.dumps({"targets": []}))

@@ -24,8 +24,8 @@ from scripts.portable_ai_overlay import build_overlay
 
 SCHEMA_VERSION = "portable-ai-consumer-package.v1"
 SMOKE_SCHEMA_VERSION = "portable-ai-consumer-package-smoke.v1"
-DEFAULT_JSON = ROOT / "docs" / "reports" / "portable-ai-consumer-package-smoke-latest.json"
-DEFAULT_MD = ROOT / "docs" / "reports" / "portable-ai-consumer-package-smoke-latest.md"
+DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-package-smoke-latest.json"
+DEFAULT_MD = ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-package-smoke-latest.md"
 
 
 def _frontmatter(**values: object) -> str:

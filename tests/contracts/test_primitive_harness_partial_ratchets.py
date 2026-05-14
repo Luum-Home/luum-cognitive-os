@@ -11,8 +11,8 @@ pytestmark = pytest.mark.contract
 REPO = Path(__file__).resolve().parents[2]
 COVERAGE_SCRIPT = REPO / "scripts" / "primitive_harness_coverage.py"
 PARTIALS_SCRIPT = REPO / "scripts" / "primitive_harness_partials.py"
-COVERAGE_REPORT = REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json"
-PARTIALS_REPORT = REPO / "docs" / "reports" / "primitive-harness-partials-latest.json"
+COVERAGE_REPORT = REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json"
+PARTIALS_REPORT = REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-partials-latest.json"
 
 
 def test_primitive_harness_partial_debt_does_not_regress() -> None:

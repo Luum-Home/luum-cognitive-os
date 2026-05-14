@@ -833,7 +833,7 @@ def main(argv: list[str] | None = None) -> int:
     today = datetime.now().strftime("%Y-%m-%d")
     metrics_dir = project_root / ".cognitive-os" / "metrics"
     jsonl_path = metrics_dir / "aspirational-audit.jsonl"
-    report_path = project_root / "docs" / "reports" / f"aspirational-audit-{today}.md"
+    report_path = project_root / "docs" / "06-Daily" / "reports" / f"aspirational-audit-{today}.md"
 
     write_jsonl(events, jsonl_path)
     write_report(events, report_path, summary)

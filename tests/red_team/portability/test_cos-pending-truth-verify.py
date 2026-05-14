@@ -28,7 +28,7 @@ SCRIPT = REPO_ROOT / "scripts" / "cos-pending-truth-verify"
 
 
 def _seed_ledger(project_dir: Path, items: list[dict]) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     payload = {
         "schema_version": "pending-truth/v1",
@@ -50,7 +50,7 @@ def _run(project_dir: Path, *extra: str) -> subprocess.CompletedProcess[str]:
 
 
 def _classify_after_run(project_dir: Path) -> dict[str, str]:
-    json_path = project_dir / "docs" / "reports" / "pending-truth-latest.json"
+    json_path = project_dir / "docs" / "06-Daily" / "reports" / "pending-truth-latest.json"
     data = json.loads(json_path.read_text())
     return {item["id"]: item["status"] for item in data["items"]}
 
@@ -135,7 +135,7 @@ def test_dry_run_does_not_modify_ledger(tmp_path: Path) -> None:
                    "status": "unverified", "last_verified": None, "evidence": [],
                    "next_action": "do something", "owner_adr": None}],
     }
-    reports = tmp_path / "docs" / "reports"
+    reports = tmp_path / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True)
     (reports / "pending-truth-latest.json").write_text(json.dumps(initial))
 

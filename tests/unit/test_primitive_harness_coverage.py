@@ -30,7 +30,7 @@ def make_repo(tmp_path: Path) -> Path:
     (root / "dashboard" / "lib").mkdir(parents=True)
     (root / "dashboard" / "app").mkdir(parents=True)
     (root / "docs" / "acc").mkdir(parents=True)
-    (root / "docs" / "reports").mkdir(parents=True)
+    (root / "docs" / "06-Daily" / "reports").mkdir(parents=True)
 
     (root / "hooks" / "session-init.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho init\n")
     (root / "hooks" / "pre-compaction-flush.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho flush\n")
@@ -44,7 +44,7 @@ def make_repo(tmp_path: Path) -> Path:
     (root / "scripts" / "primitive_harness_coverage.py").write_text("#!/usr/bin/env python3\n# SCOPE: os-only\nprint('{}')\n")
     (root / "scripts" / "acc_pipeline.py").write_text("#!/usr/bin/env python3\n# SCOPE: os-only\nprint('{}')\n")
     (root / "docs" / "acc" / "latest.json").write_text("{}")
-    (root / "docs" / "reports" / "primitive-harness-coverage-latest.json").write_text("{}")
+    (root / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json").write_text("{}")
     (root / "dashboard" / "lib" / "cos-api.ts").write_text("primitive-harness-coverage-latest.json")
     (root / "dashboard" / "app" / "page.tsx").write_text("Primitive Surface Coverage observe-only")
     (root / "skills" / "status" / "SKILL.md").write_text("<!-- SCOPE: both -->\n---\nname: status\naudience: both\n---\n")
@@ -186,7 +186,7 @@ def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    payload = json.loads((root / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text())
+    payload = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json").read_text())
     assert payload["schema_version"] == "primitive-harness-coverage.v1"
     assert payload["state_semantics"] == [
         "installed",
@@ -202,7 +202,7 @@ def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     assert payload["summary"]["harness_wired_hooks"]["claude"] == 2
     assert payload["summary"]["harness_wired_hooks"]["codex"] == 2
     assert payload["summary"]["unclassified_gaps"] == 0
-    assert "Primitive Surface Coverage" in (root / "docs" / "reports" / "primitive-harness-coverage-latest.md").read_text()
+    assert "Primitive Surface Coverage" in (root / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.md").read_text()
 
 
 def test_tui_operates_only_whitelisted_report_primitives(tmp_path: Path) -> None:

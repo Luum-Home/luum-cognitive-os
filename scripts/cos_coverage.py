@@ -53,7 +53,7 @@ def find_project_dir(hint: str | None = None) -> Path:
 
 def parse_claim_proof(project_dir: Path) -> dict[str, int]:
     """Return {mapped, weak_proof, unmapped} from claim-proof-latest.md."""
-    report = project_dir / "docs" / "reports" / "claim-proof-latest.md"
+    report = project_dir / "docs" / "06-Daily" / "reports" / "claim-proof-latest.md"
     result = {"mapped": 0, "weak_proof": 0, "unmapped": 0}
     if not report.exists():
         return result

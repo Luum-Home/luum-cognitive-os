@@ -14,7 +14,7 @@ TUI = REPO / "scripts" / "cos-tui"
 
 def _write_stub_project(root: Path) -> None:
     scripts = root / "scripts"
-    reports = root / "docs" / "reports"
+    reports = root / "docs" / "06-Daily" / "reports"
     scripts.mkdir(parents=True)
     reports.mkdir(parents=True)
     (reports / "primitive-harness-coverage-latest.json").write_text(
@@ -93,7 +93,7 @@ def test_tui_dry_run_emits_receipt_without_running_commands(tmp_path: Path) -> N
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload["outcome"] == "dry-run"
-    assert not (tmp_path / "docs" / "reports" / "stub-ran.txt").exists()
+    assert not (tmp_path / "docs" / "06-Daily" / "reports" / "stub-ran.txt").exists()
 
 
 def test_tui_receipts_report_has_schema_and_counts(tmp_path: Path) -> None:

@@ -172,7 +172,7 @@ class TestDisciplineGate:
         fake_skill_md.write_text(original_content)
 
         # Set up docs/06-Daily/reports/skill-analysis-proposals
-        proposals_dir = tmp_path / "docs" / "reports" / "skill-analysis-proposals"
+        proposals_dir = tmp_path / "docs" / "06-Daily" / "reports" / "skill-analysis-proposals"
         proposals_dir.mkdir(parents=True, exist_ok=True)
 
         # Trigger candidate heuristic: 3+ tool issues
@@ -201,7 +201,7 @@ class TestDisciplineGate:
     def test_non_candidate_does_not_write_proposal(self, tmp_path: Path) -> None:
         """When execution is clean, no proposal file is written."""
         _setup_tmp_project(tmp_path)
-        proposals_dir = tmp_path / "docs" / "reports" / "skill-analysis-proposals"
+        proposals_dir = tmp_path / "docs" / "06-Daily" / "reports" / "skill-analysis-proposals"
         proposals_dir.mkdir(parents=True, exist_ok=True)
 
         payload = _make_payload("clean-skill", status="success", tool_count=2, duration_ms=100)
@@ -219,7 +219,7 @@ class TestDisciplineGate:
     def test_proposal_contains_discipline_gate_marker(self, tmp_path: Path) -> None:
         """Proposal file must contain ADR-176 discipline gate annotation."""
         _setup_tmp_project(tmp_path)
-        proposals_dir = tmp_path / "docs" / "reports" / "skill-analysis-proposals"
+        proposals_dir = tmp_path / "docs" / "06-Daily" / "reports" / "skill-analysis-proposals"
         proposals_dir.mkdir(parents=True, exist_ok=True)
 
         payload = _make_payload(

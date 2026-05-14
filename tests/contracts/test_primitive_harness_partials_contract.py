@@ -10,8 +10,8 @@ pytestmark = pytest.mark.contract
 
 REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "primitive_harness_partials.py"
-REPORT = REPO / "docs" / "reports" / "primitive-harness-partials-latest.json"
-MARKDOWN = REPO / "docs" / "reports" / "primitive-harness-partials-latest.md"
+REPORT = REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-partials-latest.json"
+MARKDOWN = REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-partials-latest.md"
 
 
 def test_repository_partials_report_regenerates_with_priority_order() -> None:
@@ -42,7 +42,7 @@ def test_repository_partials_report_regenerates_with_priority_order() -> None:
 def test_resolved_top_ten_codex_adapter_gaps_are_no_longer_partial() -> None:
     if not REPORT.exists():
         subprocess.run(["python3", str(SCRIPT), "--project-dir", str(REPO)], cwd=REPO, check=True, timeout=120)
-    coverage = json.loads((REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
+    coverage = json.loads((REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
     rows = {row["primitive"]: row for row in coverage["items"]}
     resolved = {
         "hooks/adaptive-bypass.sh",
@@ -62,7 +62,7 @@ def test_resolved_top_ten_codex_adapter_gaps_are_no_longer_partial() -> None:
 
 
 def test_resolved_second_codex_adapter_gap_batch_is_no_longer_partial() -> None:
-    coverage = json.loads((REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
+    coverage = json.loads((REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
     rows = {row["primitive"]: row for row in coverage["items"]}
     resolved = {
         "hooks/architecture-compliance.sh",
@@ -82,7 +82,7 @@ def test_resolved_second_codex_adapter_gap_batch_is_no_longer_partial() -> None:
 
 
 def test_resolved_third_codex_adapter_gap_batch_is_no_longer_partial() -> None:
-    coverage = json.loads((REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
+    coverage = json.loads((REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
     rows = {row["primitive"]: row for row in coverage["items"]}
     resolved = {
         "hooks/clarification-gate.sh",

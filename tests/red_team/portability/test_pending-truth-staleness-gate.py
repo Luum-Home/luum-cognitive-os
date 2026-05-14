@@ -38,7 +38,7 @@ def _run(project_dir: Path, command: str) -> subprocess.CompletedProcess[str]:
 
 
 def _seed_ledger(project_dir: Path, generated_at: str) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "pending-truth-latest.json").write_text(json.dumps({
         "schema_version": "pending-truth/v1",
