@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: session-pending-brief
-description: Use when starting a session OR when the operator asks 'qué hay pendiente?' / 'what's open?' / 'what should I
-  attack?' — runs the ADR-275 session-start projector and presents a ranked attack list spanning tasks, ADR decisions, audits,
-  staged deploys, and git state in one bounded view. Do not use for executing the work itself.
+description: Use when starting a session OR when the operator asks 'qué hay pendiente?'
+  / 'what's open?' / 'what should I attack?' — runs the ADR-275 session-start projector
+  and presents a ranked attack list spanning tasks, ADR decisions, audits, staged
+  deploys, and git state in one bounded view. Do not use for executing the work itself.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-12
@@ -27,10 +27,15 @@ routing_patterns:
   confidence: 0.86
 routing_intents:
 - intent: session_pending_work_brief
-  description: User asks what work is pending, open, left, next, or worth attacking at the start or middle of a session.
+  description: User asks what work is pending, open, left, next, or worth attacking
+    at the start or middle of a session.
   confidence: 0.88
+triggers:
+- session-pending-brief
+- /session-pending-brief
+- Bridge prompt → cos-session-start-projector → ranked attack list
 ---
-
+<!-- SCOPE: both -->
 # session-pending-brief
 
 ## Purpose

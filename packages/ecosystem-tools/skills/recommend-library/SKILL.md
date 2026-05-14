@@ -1,15 +1,21 @@
-<!-- SCOPE: both -->
 ---
 name: recommend-library
-description: Search package registries and rank by relevance, adoption, maintenance, and license compliance
+description: Search package registries and rank by relevance, adoption, maintenance,
+  and license compliance
 audience: project
-summary_line: "Search package registries and rank by relevance, adoption, maintenance, and…"
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: Search package registries and rank by relevance, adoption, maintenance,
+  and…
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- recommend-library
+- /recommend-library
+- 'Skill: recommend-library'
+- Search package registries and rank by relevance, adoption, maintenance, and…
 ---
-
+<!-- SCOPE: both -->
 # Skill: recommend-library
 
 > Auto Library Recommender — searches package registries and ranks results by relevance, adoption, maintenance, and license compliance.

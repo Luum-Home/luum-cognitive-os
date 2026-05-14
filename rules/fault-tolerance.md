@@ -90,3 +90,7 @@ This enables the /resume-tasks skill and session-resume hook to verify completio
 - Completed tasks older than 7 days are pruned by /resume-tasks
 - Failed tasks are kept indefinitely until explicitly resolved
 - The active-tasks.json file is session state (gitignored), not source code
+
+## Contextual Trigger
+
+- When work relates to Fault Tolerance Protocol.

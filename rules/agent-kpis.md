@@ -177,3 +177,7 @@ Every Monday (or when the user asks for a weekly review):
 4. Identify the KPI with the largest improvement
 5. Generate a "Weekly Agent Health Report" with actionable recommendations
 6. Save to Engram with topic_key `agent-kpis/weekly/{YYYY-Www}` (ISO week format)
+
+## Contextual Trigger
+
+- When work relates to Agent KPI Protocol.

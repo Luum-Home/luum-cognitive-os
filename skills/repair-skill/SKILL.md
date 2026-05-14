@@ -1,12 +1,13 @@
-<!-- SCOPE: os-only -->
 ---
 name: repair-skill
-description: 'Use when you need this Cognitive OS skill: Drain the skill repair queue and propose regeneration or deprecation
-  for degraded skills; do not use when a narrower skill directly matches the task.'
-trigger: repair skill, repair-skill, drain repair queue, fix failing skill, skill repair
+description: 'Use when you need this Cognitive OS skill: Drain the skill repair queue
+  and propose regeneration or deprecation for degraded skills; do not use when a narrower
+  skill directly matches the task.'
+trigger: repair skill, repair-skill, drain repair queue, fix failing skill, skill
+  repair
 model: sonnet
 effort: sonnet
-audience: project
+audience: os
 version: 1.0.0
 platforms:
 - claude-code
@@ -21,13 +22,21 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bdegraded\s+skills?\s+(repair|fix)\b
   confidence: 0.75
-summary_line: Drain the skill repair queue and propose regeneration or deprecation for degraded skills.
+summary_line: Drain the skill repair queue and propose regeneration or deprecation
+  for degraded skills.
 routing_intents:
 - intent: repair_skill_request
-  description: User asks to drain the skill repair queue and propose regeneration or deprecation for degraded skills.
+  description: User asks to drain the skill repair queue and propose regeneration
+    or deprecation for degraded skills.
   confidence: 0.85
+triggers:
+- repair-skill
+- /repair-skill
+- Repair Skill
+- Drain the skill repair queue and propose regeneration or deprecation for degraded
+  skills
 ---
-
+<!-- SCOPE: os-only -->
 # Repair Skill
 
 Read the next pending entry from `skill-repair-queue.jsonl` and take the

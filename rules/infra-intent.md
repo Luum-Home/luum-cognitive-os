@@ -34,3 +34,7 @@ To add a new infrastructure category:
 2. Add a suggestion string that references where to find the stack component in config
 3. Update this rules file with the new mapping row
 4. Update `.cognitive-os/docs/04-Concepts/root/infra-intent.md` with the new category
+
+## Contextual Trigger
+
+- When work relates to Infrastructure Intent Detection Rules.

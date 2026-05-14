@@ -1,18 +1,24 @@
-<!-- SCOPE: both -->
 ---
 name: sre-agent
-description: SRE auto-repair agent. Monitors all project services, detects errors in logs, searches Engram for known fixes, and auto-repairs or proposes fixes. Invoke with /sre-agent or let it run autonomously via scheduled task.
+description: SRE auto-repair agent. Monitors all project services, detects errors
+  in logs, searches Engram for known fixes, and auto-repairs or proposes fixes. Invoke
+  with /sre-agent or let it run autonomously via scheduled task.
 version: 2.0.0
 last-updated: 2026-03-22
 user-invocable: true
 auto-generated: false
 audience: project
 summary_line: SRE auto-repair agent.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- sre-agent
+- /sre-agent
+- SRE Auto-Repair Agent
+- SRE auto-repair agent
 ---
-
+<!-- SCOPE: both -->
 # SRE Auto-Repair Agent
 
 You are the SRE agent for this project. Your job is to monitor all running services, detect errors, and either auto-repair them or propose fixes for human approval.

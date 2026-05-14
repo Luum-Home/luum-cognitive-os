@@ -1,25 +1,34 @@
-<!-- SCOPE: both -->
 ---
 name: security-red-team
 invocation_pattern: on-demand
 command: /security-red-team
-description: "Use when you need this Cognitive OS skill: Unified red-team primitive for Cognitive OS: inventories attack surface, models threats, runs deterministic abuse probes, scores security controls per primitive, and emits a mitigation backlog.; do not use when a narrower skill directly matches the task."
-triggers: ["/security-red-team", "/security-redteam", "/sec-red-team"]
+description: 'Use when you need this Cognitive OS skill: Unified red-team primitive
+  for Cognitive OS: inventories attack surface, models threats, runs deterministic
+  abuse probes, scores security controls per primitive, and emits a mitigation backlog.;
+  do not use when a narrower skill directly matches the task.'
+triggers:
+- /security-red-team
+- /security-redteam
+- /sec-red-team
 audience: os-dev
 version: 1.0.0
-summary_line: "Unified Cognitive OS security red-team: inventory, threat model, abuse probes, risk scoring, and mitigation backlog."
-platforms: ["claude-code", "codex", "bare_cli"]
+summary_line: 'Unified Cognitive OS security red-team: inventory, threat model, abuse
+  probes, risk scoring, and mitigation backlog.'
+platforms:
+- claude-code
+- codex
+- bare_cli
 prerequisites:
-  - python3
-  - PyYAML
+- python3
+- PyYAML
 entry: scripts/security-red-team
 routing_patterns:
-  - pattern: '\bsecurity[- ]?red[- ]?team\b'
-    confidence: 0.95
-  - pattern: '\bred[- ]?team\s+security\b'
-    confidence: 0.85
+- pattern: \bsecurity[- ]?red[- ]?team\b
+  confidence: 0.95
+- pattern: \bred[- ]?team\s+security\b
+  confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # /security-red-team
 
 > Run a unified local red-team pass against Cognitive OS agentic primitives and

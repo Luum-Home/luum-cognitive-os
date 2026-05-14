@@ -1,16 +1,22 @@
-<!-- SCOPE: both -->
 ---
 name: test-driven-development
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: Use when implementing any feature or bugfix, before writing implementation
+  code
 version: 1.0.0
 last-updated: 2026-03-21
 source: superpowers (obra/superpowers)
 tech: testing
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- test-driven-development
+- /test-driven-development
+- Test-Driven Development (TDD)
+- Use when implementing any feature or bugfix, before writing implementation code
 ---
-
+<!-- SCOPE: both -->
 # Test-Driven Development (TDD)
 
 ## Overview

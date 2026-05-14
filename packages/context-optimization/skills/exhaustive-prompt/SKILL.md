@@ -1,13 +1,19 @@
-<!-- SCOPE: both -->
 ---
 name: exhaustive-prompt
-description: Generate exhaustive agent prompts with scope enumeration and acceptance criteria
+description: Generate exhaustive agent prompts with scope enumeration and acceptance
+  criteria
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- exhaustive-prompt
+- /exhaustive-prompt
+- Exhaustive Prompt Generator
+- Generate exhaustive agent prompts with scope enumeration and acceptance criteria
 ---
-
+<!-- SCOPE: both -->
 # Exhaustive Prompt Generator
 
 > **Invoke**: `/exhaustive-prompt`

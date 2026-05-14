@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: sdd-compound
-description: Extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive to crystallize
-  patterns, update skill routing, and improve future iterations.
+description: Extract learnings and compound knowledge after completing an SDD change.
+  Run after sdd-archive to crystallize patterns, update skill routing, and improve
+  future iterations.
 allowed-tools:
 - Read
 - Grep
@@ -25,11 +25,17 @@ routing_patterns:
   confidence: 0.75
 routing_intents:
 - intent: sdd_compound_request
-  description: User asks to extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive
-    to crystallize patterns, update skill routing, and improve future iterations.
+  description: User asks to extract learnings and compound knowledge after completing
+    an SDD change. Run after sdd-archive to crystallize patterns, update skill routing,
+    and improve future iterations.
   confidence: 0.85
+triggers:
+- sdd-compound
+- /sdd-compound
+- SDD Compound — Post-Archive Learning Extraction
+- '"Extract learnings and compound knowledge after completing an SDD change'
 ---
-
+<!-- SCOPE: both -->
 # SDD Compound — Post-Archive Learning Extraction
 
 ## When to Use

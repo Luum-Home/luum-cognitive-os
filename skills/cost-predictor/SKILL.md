@@ -1,23 +1,25 @@
-<!-- SCOPE: both -->
 ---
 name: cost-predict
-description: "Use when you need this Cognitive OS skill: Predict task cost from Cognitive OS history, phase routing, and measured model prices.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Predict task cost from Cognitive
+  OS history, phase routing, and measured model prices.; do not use when a narrower
+  skill directly matches the task.'
 summary_line: Estimate task cost from historical metrics and default phase routing.
 version: 1.0.0
 last-updated: 2026-04-23
 auto-generated: false
 tech: python
 triggers:
-  - cost predict
-  - predict cost
-  - estimate cost
-  - budget forecast
-  - how much will this cost
+- cost predict
+- predict cost
+- estimate cost
+- budget forecast
+- how much will this cost
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Cost Predict
 
 ## Purpose

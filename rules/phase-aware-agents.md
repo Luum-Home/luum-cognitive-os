@@ -131,3 +131,11 @@ To change phases, edit `cognitive-os.yaml` -> `project.phase`. Valid values:
 - `stabilization` — Standards established, fixing remaining issues
 - `production` — Live system, incremental changes only
 - `maintenance` — Bug fixes and security patches only
+
+## Contextual Trigger
+
+- Pattern: `\breconstruction phase\b`
+- Pattern: `\bphase[- ]aware\b`
+- Pattern: `\brewrite\s*(>|over|vs\.?|instead of)\s*patch\b`
+- Pattern: `\b(rewrite|reconstruct).*(legacy|broken|stub)\b`
+- User asks about project phase behavior, rewrite-versus-patch choices, or reconstruction policy.

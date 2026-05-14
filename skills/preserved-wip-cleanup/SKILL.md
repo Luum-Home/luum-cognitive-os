@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: preserved-wip-cleanup
-description: 'Use when you need this Cognitive OS skill: Archive-first cleanup for preserved WIP stashes, temporary validation
-  capsule worktrees, and zombie session registry entries after all agents stop.; do not use when a narrower skill directly
+description: 'Use when you need this Cognitive OS skill: Archive-first cleanup for
+  preserved WIP stashes, temporary validation capsule worktrees, and zombie session
+  registry entries after all agents stop.; do not use when a narrower skill directly
   matches the task.'
 user-invocable: true
 version: 1.0.0
@@ -15,7 +15,8 @@ tags:
 - worktrees
 - coordination
 - safety
-summary_line: Backup preserved WIP, remove temporary blockers, and prove the inventory is clean.
+summary_line: Backup preserved WIP, remove temporary blockers, and prove the inventory
+  is clean.
 platforms:
 - codex
 - claude-code
@@ -32,11 +33,17 @@ routing_patterns:
   confidence: 0.75
 routing_intents:
 - intent: preserved_wip_cleanup_request
-  description: User asks to archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie
-    session registry entries after all agents stop.
+  description: User asks to archive-first cleanup for preserved WIP stashes, temporary
+    validation capsule worktrees, and zombie session registry entries after all agents
+    stop.
   confidence: 0.85
+triggers:
+- preserved-wip-cleanup
+- /preserved-wip-cleanup
+- Preserved WIP Cleanup
+- Backup preserved WIP, remove temporary blockers, and prove the inventory is clean
 ---
-
+<!-- SCOPE: both -->
 # Preserved WIP Cleanup
 
 Use this skill only after the operator confirms no agents or IDEs are still

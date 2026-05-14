@@ -85,3 +85,7 @@ When a task completes (success or failure), the orchestrator MUST call `revoke(a
 - **Agent Identity** [`agent-identity`]: Trust levels map to max permission levels (0->NONE, 1->READ, 2->WRITE, 3->EXECUTE)
 - **Agent Customization** [`agent-customization`]: `tools_allowed` in customization files align with permission profiles
 - **Credential Management** [`credential-management`]: SecretRef replaces all plaintext credential handling
+
+## Contextual Trigger
+
+- When work relates to Agent Security — Least Privilege Protocol.

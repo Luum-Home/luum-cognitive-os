@@ -31,3 +31,7 @@ The `doc-sync-detector.sh` hook automatically detects when source file edits (*.
 - **Hook**: `hooks/doc-sync-detector.sh` (PostToolUse on Edit|Write)
 - **Skill**: `/doc-sync` reads stale entries and updates docs
 - **Metrics**: `.cognitive-os/metrics/stale-docs.jsonl`
+
+## Contextual Trigger
+
+- When work relates to Doc Sync Rule.

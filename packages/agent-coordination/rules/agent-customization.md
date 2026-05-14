@@ -124,3 +124,7 @@ customization:
   validate_on_load: true       # validate overrides at agent launch
   warn_unknown_fields: true    # log warning for unrecognized fields
 ```
+
+## Contextual Trigger
+
+- When work relates to Agent Customization via Override Files (BMAD v6 Pattern 9).

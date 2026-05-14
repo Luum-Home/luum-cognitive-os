@@ -1,17 +1,22 @@
-<!-- SCOPE: both -->
 ---
 name: plan-bug
-description: Create a bug fix plan with root cause analysis and evaluation scoring. Use before fixing any non-trivial bug.
+description: Create a bug fix plan with root cause analysis and evaluation scoring.
+  Use before fixing any non-trivial bug.
 user-invocable: true
 version: 1.0.0
 audience: project
 effort: opus
 summary_line: Create a bug fix plan with root cause analysis and evaluation scoring.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- plan-bug
+- /plan-bug
+- Plan Bug Fix
+- Create a bug fix plan with root cause analysis and evaluation scoring
 ---
-
+<!-- SCOPE: both -->
 # Plan Bug Fix
 
 Create a structured bug fix plan with root cause analysis, then self-evaluate it.

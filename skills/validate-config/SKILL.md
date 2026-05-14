@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: validate-config
-description: 'Use when you need this Cognitive OS skill: Validate all Cognitive OS configuration files — agents, squads, skills,
-  rules, hooks; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Validate all Cognitive OS
+  configuration files — agents, squads, skills, rules, hooks; do not use when a narrower
+  skill directly matches the task.'
 invoke: /validate-config
 version: 1.0.0
 model: sonnet
@@ -11,7 +11,8 @@ tags:
 - config
 - health
 audience: both
-summary_line: Validate all Cognitive OS configuration files — agents, squads, skills, rules…
+summary_line: Validate all Cognitive OS configuration files — agents, squads, skills,
+  rules…
 platforms:
 - claude-code
 prerequisites: []
@@ -24,10 +25,16 @@ routing_patterns:
   confidence: 0.84
 routing_intents:
 - intent: validate_config_request
-  description: User asks to validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks.
+  description: User asks to validate all Cognitive OS configuration files — agents,
+    squads, skills, rules, hooks.
   confidence: 0.85
+triggers:
+- validate-config
+- /validate-config
+- Schema Validation for Cognitive OS Configuration (BMAD v6 Pattern 12)
+- Validate all Cognitive OS configuration files — agents, squads, skills, rules…
 ---
-
+<!-- SCOPE: both -->
 # Schema Validation for Cognitive OS Configuration (BMAD v6 Pattern 12)
 
 Validates all Cognitive OS configuration files for correctness, completeness, and consistency.

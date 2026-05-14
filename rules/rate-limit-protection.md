@@ -42,3 +42,7 @@ Set `RATE_LIMIT_OVERRIDE=true` for emergencies. This bypasses the block but does
 ### Metrics
 
 Checks logged to `.cognitive-os/metrics/rate-limit-checks.jsonl`. Cost events in `.cognitive-os/metrics/cost-events.jsonl`.
+
+## Contextual Trigger
+
+- When work relates to Token Budget Monitor (formerly Rate Limit Protection).

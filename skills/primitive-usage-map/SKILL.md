@@ -1,8 +1,8 @@
-<!-- SCOPE: os-only -->
 ---
 name: primitive-usage-map
-description: 'Use when you need this Cognitive OS skill: Map which Cognitive OS skills, hooks, rules, tests, docs, workflows,
-  and configs reference each primitive or script.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Map which Cognitive OS skills,
+  hooks, rules, tests, docs, workflows, and configs reference each primitive or script.;
+  do not use when a narrower skill directly matches the task.'
 invoke: /primitive-usage-map
 tag: os-only
 model: haiku
@@ -23,10 +23,16 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: primitive_usage_mapping
-  description: User asks which skills, scripts, rules, hooks, or other primitives reference or depend on a given agentic primitive.
+  description: User asks which skills, scripts, rules, hooks, or other primitives
+    reference or depend on a given agentic primitive.
   confidence: 0.86
+triggers:
+- primitive-usage-map
+- /primitive-usage-map
+- Primitive Usage Map
+- Static primitive consumer map for scripts, hooks, skills, and rules
 ---
-
+<!-- SCOPE: os-only -->
 # Primitive Usage Map
 
 ## Purpose

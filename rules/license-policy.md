@@ -56,3 +56,7 @@ Una herramienta con licencia AGPL/SSPL PUEDE usarse si:
 - Se aprueba explicitamente
 
 Aun asi, la recomendacion es buscar alternativa con licencia permisiva.
+
+## Contextual Trigger
+
+- When work relates to License Policy.

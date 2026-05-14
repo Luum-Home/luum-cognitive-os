@@ -1,8 +1,8 @@
-<!-- SCOPE: os-only -->
 ---
 name: component-reality-check
-description: 'Use when you need this Cognitive OS skill: Measure declared-but-unwired vs real agentic primitives of the SO
-  using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.;
+description: 'Use when you need this Cognitive OS skill: Measure declared-but-unwired
+  vs real agentic primitives of the SO using the audit classifier script. Reports
+  REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.;
   do not use when a narrower skill directly matches the task.'
 invoke: /component-reality-check
 version: 1.0.0
@@ -13,8 +13,8 @@ tags:
 - dogfooding
 - metrics
 - wiring
-summary_line: Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations
-  and observable runtime.
+summary_line: Classify every SO agentic primitive into REAL / DORMANT / UNWIRED /
+  METADATA — catch drift between declarations and observable runtime.
 platforms:
 - claude-code
 prerequisites: []
@@ -27,11 +27,18 @@ routing_patterns:
   confidence: 0.8
 routing_intents:
 - intent: component_reality_check_request
-  description: User asks to measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script.
-    Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
+  description: User asks to measure declared-but-unwired vs real agentic primitives
+    of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED
+    / METADATA counts + worst offenders + trend. SO-only.
   confidence: 0.85
+triggers:
+- component-reality-check
+- /component-reality-check
+- Agentic Primitive Reality Check
+- Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch
+  drift between declarations and obse
 ---
-
+<!-- SCOPE: os-only -->
 # Agentic Primitive Reality Check
 
 Run the SO against itself: how many declared agentic primitives (hooks, lib,

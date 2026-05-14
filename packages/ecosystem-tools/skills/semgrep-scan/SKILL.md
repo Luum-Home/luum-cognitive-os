@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: semgrep-scan
-invocation_pattern: on-demand  # @on-demand: manual SAST trigger before PRs
-description: >
-  Run Semgrep SAST security scanning on a path or changed files.
-  Reports findings in adversarial review format (BLOCKER/CONCERN/SUGGESTION).
+invocation_pattern: on-demand
+description: 'Run Semgrep SAST security scanning on a path or changed files. Reports
+  findings in adversarial review format (BLOCKER/CONCERN/SUGGESTION).
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -18,11 +18,16 @@ metadata:
   tool-score: 8.5
 audience: project
 summary_line: Run Semgrep SAST security scanning on a path or changed files.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- semgrep-scan
+- /semgrep-scan
+- or
+- Run Semgrep SAST security scanning on a path or changed files
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Provides on-demand static analysis security testing (SAST) using Semgrep.

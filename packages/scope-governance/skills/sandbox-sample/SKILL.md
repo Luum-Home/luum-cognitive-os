@@ -1,24 +1,31 @@
-<!-- SCOPE: both -->
 ---
 name: sandbox-sample
 command: /sandbox-sample
-description: Classify, sample, sandbox-verify, then scale changes across large file sets
+description: Classify, sample, sandbox-verify, then scale changes across large file
+  sets
 trigger: Epic tasks affecting >20 files, or manually via /sandbox-sample
 inputs:
-  - task-description: What changes need to be made
-  - target-files: List or glob pattern of files to modify
-  - change-strategy: The transformation to apply (sed pattern, agent rewrite, config update)
+- task-description: What changes need to be made
+- target-files: List or glob pattern of files to modify
+- change-strategy: The transformation to apply (sed pattern, agent rewrite, config
+    update)
 outputs:
-  - classification: Files grouped by type with counts
-  - sample-set: Representative files selected per type
-  - sandbox-result: PASS | PARTIAL | FAIL per type
-  - final-result: PASS | FAIL after full-scale application
+- classification: Files grouped by type with counts
+- sample-set: Representative files selected per type
+- sandbox-result: PASS | PARTIAL | FAIL per type
+- final-result: PASS | FAIL after full-scale application
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- sandbox-sample
+- /sandbox-sample
+- Sandbox Sampling
+- Classify, sample, sandbox-verify, then scale changes across large file sets
 ---
-
+<!-- SCOPE: both -->
 # Sandbox Sampling
 
 ## Purpose

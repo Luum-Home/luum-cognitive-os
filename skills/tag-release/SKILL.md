@@ -1,19 +1,29 @@
-<!-- SCOPE: os-only -->
 ---
 name: tag-release
-invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
+invocation_pattern: on-demand
 command: /tag-release
-description: "Use when you need this Cognitive OS skill: Create the release commit (VERSION + CHANGELOG) and annotated git tag; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Create the release commit
+  (VERSION + CHANGELOG) and annotated git tag; do not use when a narrower skill directly
+  matches the task.'
 version: 0.1.0
 audience: os
-tags: [release, git]
+tags:
+- release
+- git
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- tag-release
+- /tag-release
+- Tag Release
+- 'Use when you need this Cognitive OS skill: Create the release commit (VERSION +
+  CHANGELOG) and annotated git tag; do not'
 ---
-
+<!-- SCOPE: os-only -->
 # Tag Release
 
 ## Purpose

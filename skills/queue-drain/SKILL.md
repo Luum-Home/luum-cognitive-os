@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: queue-drain
-description: 'Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use when a narrower
-  skill directly matches the task.'
-trigger: Scheduled via CronCreate every 5 minutes, or invoked manually when agents may be stuck
+description: 'Use when you need this Cognitive OS skill: Periodic agent queue drain
+  and health check; do not use when a narrower skill directly matches the task.'
+trigger: Scheduled via CronCreate every 5 minutes, or invoked manually when agents
+  may be stuck
 version: 1.0.0
 audience: os-dev
 platforms:
@@ -21,8 +21,13 @@ routing_intents:
 - intent: queue_drain_request
   description: User asks to periodic agent queue drain and health check.
   confidence: 0.85
+triggers:
+- queue-drain
+- /queue-drain
+- Queue Drain
+- Periodic agent queue drain and health check
 ---
-
+<!-- SCOPE: both -->
 # Queue Drain
 
 Checks the agent dispatch queue for ready agents, launches them, and reports

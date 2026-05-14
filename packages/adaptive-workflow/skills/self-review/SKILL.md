@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: self-review
-description: >
-  Lightweight 4-question post-implementation checklist for non-SDD work.
+description: 'Lightweight 4-question post-implementation checklist for non-SDD work.
   Quick self-assessment before claiming a task is done.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,11 +14,15 @@ metadata:
   pattern: superclaude-self-review
 audience: project
 summary_line: Lightweight 4-question post-implementation checklist for non-SDD work.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- self-review
+- /self-review
+- Lightweight 4-question post-implementation checklist for non-SDD work
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 A fast, lightweight alternative to the full SDD verify phase. Use this after

@@ -1,20 +1,29 @@
-<!-- SCOPE: os-only -->
 ---
 name: validate-release
 command: /validate-release
-description: "Use when you need this Cognitive OS skill: Pre-release readiness check — validates working tree, branch, changelog, and VERSION file; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Pre-release readiness check
+  — validates working tree, branch, changelog, and VERSION file; do not use when a
+  narrower skill directly matches the task.'
 version: 0.1.0
 audience: os
-tags: [release, validation]
+tags:
+- release
+- validation
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
-summary_line: "Pre-release readiness check — validates working tree, branch, changelog, and…"
-
-platforms: ["claude-code"]
+summary_line: Pre-release readiness check — validates working tree, branch, changelog,
+  and…
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- validate-release
+- /validate-release
+- Validate Release
+- Pre-release readiness check — validates working tree, branch, changelog, and…
 ---
-
+<!-- SCOPE: os-only -->
 # Validate Release
 
 ## Purpose

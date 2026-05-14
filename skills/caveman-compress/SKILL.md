@@ -1,15 +1,25 @@
-<!-- SCOPE: both -->
 ---
 name: compress
-description: "Use when you need this Cognitive OS skill: Compress natural language memory files (CLAUDE.md, todos, preferences) into caveman format to save input tokens. Preserves all technical substance, code, URLs, and structure. Compressed version overwrites the original file. Human-readable backup saved as FILE.original.md. Trigger: /caveman:compress <filepath> or \"compress memory file; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Compress natural language
+  memory files (CLAUDE.md, todos, preferences) into caveman format to save input tokens.
+  Preserves all technical substance, code, URLs, and structure. Compressed version
+  overwrites the original file. Human-readable backup saved as FILE.original.md. Trigger:
+  /caveman:compress <filepath> or "compress memory file; do not use when a narrower
+  skill directly matches the task.'
 audience: both
-summary_line: "Compress natural language memory files (CLAUDE.md, todos, preferences) into…"
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: Compress natural language memory files (CLAUDE.md, todos, preferences)
+  into…
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- compress
+- /compress
+- Caveman Compress
+- Compress natural language memory files (CLAUDE
 ---
-
+<!-- SCOPE: both -->
 # Caveman Compress
 
 ## Purpose

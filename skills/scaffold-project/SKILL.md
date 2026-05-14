@@ -1,23 +1,33 @@
-<!-- SCOPE: both -->
 ---
 name: scaffold-project
-description: "Use when you need this Cognitive OS skill: Create the .claude/ directory structure, symlink rules, and generate project-specific rules, skills, and hooks using detected-stack.json.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Create the .claude/ directory
+  structure, symlink rules, and generate project-specific rules, skills, and hooks
+  using detected-stack.json.; do not use when a narrower skill directly matches the
+  task.'
 version: 0.1.0
 audience: both
-tags: [init, setup, scaffold]
-summary_line: "Create the .claude/ directory structure, symlink rules, and generate…"
-
-platforms: ["claude-code"]
+tags:
+- init
+- setup
+- scaffold
+summary_line: Create the .claude/ directory structure, symlink rules, and generate…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bscaffold[- ]?project\b'
-    confidence: 0.95
-  - pattern: '\bcreate\s+\.claude\b'
-    confidence: 0.85
-  - pattern: '\bproject\s+scaffold\b'
-    confidence: 0.8
+- pattern: \bscaffold[- ]?project\b
+  confidence: 0.95
+- pattern: \bcreate\s+\.claude\b
+  confidence: 0.85
+- pattern: \bproject\s+scaffold\b
+  confidence: 0.8
+triggers:
+- scaffold-project
+- /scaffold-project
+- Scaffold Project
+- 'Create the '
 ---
-
+<!-- SCOPE: both -->
 # Scaffold Project
 
 Create or update the `.claude/` directory structure for a project. Generates project-specific rules, skills, and hooks based on `.cognitive-os/detected-stack.json`.

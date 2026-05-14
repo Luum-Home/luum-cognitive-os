@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: run-tests
-description: 'Use when you need this Cognitive OS skill: Auto-detect project test framework and run tests with structured
-  reporting; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Auto-detect project test
+  framework and run tests with structured reporting; do not use when a narrower skill
+  directly matches the task.'
 invoke: /run-tests
 version: 1.1.0
 audience: project
@@ -28,10 +28,11 @@ routing_patterns:
   confidence: 0.95
 routing_intents:
 - intent: run_project_tests
-  description: User asks to run, execute, detect, or report the project's test suite or test framework.
+  description: User asks to run, execute, detect, or report the project's test suite
+    or test framework.
   confidence: 0.9
 ---
-
+<!-- SCOPE: both -->
 # /run-tests
 
 > Detect and run the project's test suite with structured pass/fail reporting.

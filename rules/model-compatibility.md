@@ -75,3 +75,7 @@ If a model fails compatibility tests:
    - Switch to `full` loading (no progressive optimization)
    - Use the model only for simple tasks (implementation, docs)
    - Route complex work to a higher-tier model via model-routing rules
+
+## Contextual Trigger
+
+- When work relates to Model Compatibility — Baseline Expectations.

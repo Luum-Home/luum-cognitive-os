@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: session-backlog
-description: 'Use when you need this Cognitive OS skill: Inventory all pending work across plans, engram, tasks, todos, audits,
-  and git. Classify by priority and produce a structured backlog document for future sessions.; do not use when a narrower
-  skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Inventory all pending work
+  across plans, engram, tasks, todos, audits, and git. Classify by priority and produce
+  a structured backlog document for future sessions.; do not use when a narrower skill
+  directly matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
@@ -13,12 +13,12 @@ tags:
 - planning
 - backlog
 - inventory
-summary_line: Inventory all pending work across plans, engram, tasks, todos, audits, and git.
+summary_line: Inventory all pending work across plans, engram, tasks, todos, audits,
+  and git.
 platforms:
 - codex
 - claude-code
 - generic-cli
-# Portable target set: platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: []
 routing_patterns:
 - pattern: \bsession[- ]?backlog\b
@@ -29,11 +29,17 @@ routing_patterns:
   confidence: 0.75
 routing_intents:
 - intent: session_backlog_request
-  description: User asks to inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority
-    and produce a structured backlog document for future sessions.
+  description: User asks to inventory all pending work across plans, engram, tasks,
+    todos, audits, and git. Classify by priority and produce a structured backlog
+    document for future sessions.
   confidence: 0.85
+triggers:
+- session-backlog
+- /session-backlog
+- Session Backlog — Pending Work Inventory
+- Inventory all pending work across plans, engram, tasks, todos, audits, and git
 ---
-
+<!-- SCOPE: both -->
 # Session Backlog — Pending Work Inventory
 
 Scan all sources of pending work, including ADR implementation status, classify by priority, and produce a structured backlog document ready for future sessions.

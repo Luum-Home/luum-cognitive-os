@@ -1,20 +1,37 @@
-<!-- SCOPE: os-only -->
-<!-- TIER: 0 -->
 ---
 name: canonical-event-emitter
-description: "Use when you need this Cognitive OS skill: Reference skill for harness-agnostic canonical event parity testing. Emits a deterministic sequence of canonical lifecycle events; used by tests/integration/test_harness_agnostic_skill_run.py to verify each harness adapter produces byte-identical events.; do not use when a narrower skill directly matches the task."
-version: "1.0.0"
+description: 'Use when you need this Cognitive OS skill: Reference skill for harness-agnostic
+  canonical event parity testing. Emits a deterministic sequence of canonical lifecycle
+  events; used by tests/integration/test_harness_agnostic_skill_run.py to verify each
+  harness adapter produces byte-identical events.; do not use when a narrower skill
+  directly matches the task.'
+version: 1.0.0
 user-invocable: false
 auto-generated: false
 audience: os
 args: []
 model: not-applicable
-summary_line: Reference contract skill — emits deterministic canonical event sequence for harness parity verification.
-platforms: ["claude-code", "codex", "bare_cli"]
+summary_line: Reference contract skill — emits deterministic canonical event sequence
+  for harness parity verification.
+platforms:
+- claude-code
+- codex
+- bare_cli
 prerequisites: []
-tags: [contracts, verification, harness-agnostic, adr-064]
+tags:
+- contracts
+- verification
+- harness-agnostic
+- adr-064
+triggers:
+- canonical-event-emitter
+- /canonical-event-emitter
+- Canonical Event Emitter — Reference Contract Skill
+- Reference contract skill — emits deterministic canonical event sequence for harness
+  parity verification
 ---
-
+<!-- SCOPE: os-only -->
+<!-- TIER: 0 -->
 # Canonical Event Emitter — Reference Contract Skill
 
 ## Status

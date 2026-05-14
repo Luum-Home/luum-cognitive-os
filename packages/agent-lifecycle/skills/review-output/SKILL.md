@@ -1,28 +1,39 @@
-<!-- SCOPE: os-only -->
 ---
 name: review-output
-description: "Manually trigger review of a specific past sub-agent output or the most recent N outputs. Bypasses sample-rate gate but respects the daily budget cap. Produces review findings in Engram and .cognitive-os/metrics/review-findings.jsonl."
+description: Manually trigger review of a specific past sub-agent output or the most
+  recent N outputs. Bypasses sample-rate gate but respects the daily budget cap. Produces
+  review findings in Engram and .cognitive-os/metrics/review-findings.jsonl.
 version: 0.1.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-05-01
-audience: both
+audience: os
 effort: sonnet
 model: sonnet
-tags: [review, audit, learning-loop, adr-096]
-trigger: "review-output, review output, audit output, /review-output"
-
-platforms: ["claude-code"]
+tags:
+- review
+- audit
+- learning-loop
+- adr-096
+trigger: review-output, review output, audit output, /review-output
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\breview[- ]?output\b'
-    confidence: 0.95
-  - pattern: '\breview\s+agent\s+output\b'
-    confidence: 0.85
-  - pattern: '\bmanual\s+output\s+review\b'
-    confidence: 0.8
+- pattern: \breview[- ]?output\b
+  confidence: 0.95
+- pattern: \breview\s+agent\s+output\b
+  confidence: 0.85
+- pattern: \bmanual\s+output\s+review\b
+  confidence: 0.8
+triggers:
+- review-output
+- /review-output
+- Review Output Skill
+- Manually trigger review of a specific past sub-agent output or the most recent N
+  outputs
 ---
-
+<!-- SCOPE: os-only -->
 # Review Output Skill
 
 Manually trigger the ADR-096 review-agent audit on a specific past sub-agent

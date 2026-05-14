@@ -75,3 +75,7 @@ Each dry-run interception creates an entry in `.cognitive-os/metrics/dry-run.jso
 - **Matcher**: Agent
 - **Exit code**: 2 (BLOCK) when DRY_RUN=true, 0 otherwise
 - **Performance**: < 100ms (reads env var, formats output)
+
+## Contextual Trigger
+
+- When work relates to Dry-Run Preview Protocol.

@@ -1,25 +1,31 @@
-<!-- SCOPE: both -->
 ---
 name: recall-search
-description: "Search past Claude Code conversations using full-text search. Use when Engram mem_search doesn't find what you're looking for -- recall searches raw conversation transcripts."
+description: Search past Claude Code conversations using full-text search. Use when
+  Engram mem_search doesn't find what you're looking for -- recall searches raw conversation
+  transcripts.
 allowed-tools:
-  - Bash
-  - Read
+- Bash
+- Read
 audience: project
-summary_line: "\"Search past Claude Code conversations using full-text search."
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: '"Search past Claude Code conversations using full-text search.'
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\brecall[- ]?search\b'
-    confidence: 0.95
-  - pattern: '\bsearch\s+(past\s+)?conversations?\b'
-    confidence: 0.85
-  - pattern: '\bfull[- ]?text\s+search\s+transcript\b'
-    confidence: 0.75
+- pattern: \brecall[- ]?search\b
+  confidence: 0.95
+- pattern: \bsearch\s+(past\s+)?conversations?\b
+  confidence: 0.85
+- pattern: \bfull[- ]?text\s+search\s+transcript\b
+  confidence: 0.75
+triggers:
+- recall-search
+- /recall-search
+- Recall Search
+- '"Search past Claude Code conversations using full-text search'
 ---
-
+<!-- SCOPE: both -->
 # Recall Search
 
 ## When to Use

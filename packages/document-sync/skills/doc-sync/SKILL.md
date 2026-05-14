@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: doc-sync
 version: 1.0.0
@@ -6,10 +5,16 @@ description: Synchronize documentation that became stale after code changes
 invocation: /doc-sync
 last-updated: 2026-03-22
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- doc-sync
+- /doc-sync
+- Doc Sync — Stale Documentation Updater
+- Synchronize documentation that became stale after code changes
 ---
-
+<!-- SCOPE: both -->
 # Doc Sync — Stale Documentation Updater
 
 ## Purpose

@@ -1,25 +1,34 @@
-<!-- SCOPE: os-only -->
 ---
 name: coordination-status
-description: "Use when you need this Cognitive OS skill: Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Inspect active multi-session
+  edit locks and decide how to respond when a target file is held by another agent.
+  Read-only introspection for sub-agents.; do not use when a narrower skill directly
+  matches the task.'
 invoke: /coordination-status
 tag: os-only
 model: haiku
 audience: os-dev
 effort: haiku
 summary_line: List who is editing what across concurrent COS sessions.
-version: "1.0.0"
-platforms: ["claude-code", "codex"]
+version: 1.0.0
+platforms:
+- claude-code
+- codex
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcoordination[- ]?status\b'
-    confidence: 0.95
-  - pattern: '\bactive\s+(edit\s+)?locks?\b'
-    confidence: 0.8
-  - pattern: '\bmulti[- ]?session\s+lock\b'
-    confidence: 0.75
+- pattern: \bcoordination[- ]?status\b
+  confidence: 0.95
+- pattern: \bactive\s+(edit\s+)?locks?\b
+  confidence: 0.8
+- pattern: \bmulti[- ]?session\s+lock\b
+  confidence: 0.75
+triggers:
+- coordination-status
+- /coordination-status
+- Coordination Status
+- List who is editing what across concurrent COS sessions
 ---
-
+<!-- SCOPE: os-only -->
 # Coordination Status
 
 ## Purpose

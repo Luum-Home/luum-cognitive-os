@@ -1,30 +1,40 @@
-<!-- SCOPE: both -->
 ---
 name: session-wrapup
-description: "Use when you need this Cognitive OS skill: End-of-session routine — run session-backlog inventory, save to engram, write session summary, and report what was accomplished and what comes next.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: End-of-session routine —
+  run session-backlog inventory, save to engram, write session summary, and report
+  what was accomplished and what comes next.; do not use when a narrower skill directly
+  matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-04-10
 audience: both
-tags: [session, closing, summary, backlog]
-summary_line: "End-of-session routine — run session-backlog inventory, save to engram, write…"
+tags:
+- session
+- closing
+- summary
+- backlog
+summary_line: End-of-session routine — run session-backlog inventory, save to engram,
+  write…
 routing:
-  # ADR-056 L3 opt-in. session-wrapup is mechanical (inventory + engram save
-  # + summary write) — tolerates loss of Skill/TodoWrite/MCP ecosystem.
   auto_fallback_to_qwen: true
   fallback_min_pressure: 0.7
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsession[- ]?wrapup\b'
-    confidence: 0.95
-  - pattern: '\bend[- ]?of[- ]?session\b'
-    confidence: 0.85
-  - pattern: '\bsession\s+close\b'
-    confidence: 0.8
+- pattern: \bsession[- ]?wrapup\b
+  confidence: 0.95
+- pattern: \bend[- ]?of[- ]?session\b
+  confidence: 0.85
+- pattern: \bsession\s+close\b
+  confidence: 0.8
+triggers:
+- session-wrapup
+- /session-wrapup
+- Session Wrapup — End-of-Session Routine
+- End-of-session routine — run session-backlog inventory, save to engram, write…
 ---
-
+<!-- SCOPE: both -->
 # Session Wrapup — End-of-Session Routine
 
 Chain all end-of-session activities: inventory pending work, persist state to engram, and produce a session summary.

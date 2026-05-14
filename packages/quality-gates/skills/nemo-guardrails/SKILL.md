@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: nemo-guardrails
-description: >
-  Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS
-  rules. Maps the safety mesh (clarification-gate, assumption-tracker,
-  confidence-gate, credential-management) to NeMo input/output rails.
+description: 'Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive
+  OS rules. Maps the safety mesh (clarification-gate, assumption-tracker, confidence-gate,
+  credential-management) to NeMo input/output rails.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -17,17 +17,23 @@ metadata:
   tool-ring: ADOPT
   tool-score: 8.0
 audience: os-dev
-summary_line: Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules.
-
-platforms: ["claude-code"]
+summary_line: Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive
+  OS rules.
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bnemo[- ]?guardrails?\b'
-    confidence: 0.95
-  - pattern: '\bintegrat\w*\s+nemo\b'
-    confidence: 0.8
+- pattern: \bnemo[- ]?guardrails?\b
+  confidence: 0.95
+- pattern: \bintegrat\w*\s+nemo\b
+  confidence: 0.8
+triggers:
+- nemo-guardrails
+- /nemo-guardrails
+- Check NeMo can load the config (in-process, no HTTP server needed)
+- Generate and configure NeMo Guardrails Colang 2
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Activate NeMo Guardrails as an AI security layer for Cognitive OS. The skill reads

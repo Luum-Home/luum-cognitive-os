@@ -1,21 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: readiness-check
 command: /readiness-check
-description: Implementation readiness gate — validates all prerequisites before coding starts
+description: Implementation readiness gate — validates all prerequisites before coding
+  starts
 trigger: Before sdd-apply, or manually via /readiness-check
 inputs:
-  - change-name (optional): SDD change to check. If omitted, checks general readiness.
+- change-name (optional): SDD change to check. If omitted, checks general readiness.
 outputs:
-  - verdict: PASS | CONCERNS | FAIL
-  - checklist: detailed results per check
-  - blockers: list of items that must be fixed before implementing
+- verdict: PASS | CONCERNS | FAIL
+- checklist: detailed results per check
+- blockers: list of items that must be fixed before implementing
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- readiness-check
+- /readiness-check
+- Implementation Readiness Check
+- Implementation readiness gate — validates all prerequisites before coding starts
 ---
-
+<!-- SCOPE: both -->
 # Implementation Readiness Check
 
 ## Purpose

@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: automaker-bridge
 description: Configure AutoMaker to use Cognitive OS as its execution brain
@@ -20,10 +19,16 @@ routing_patterns:
 summary_line: Configure AutoMaker to use Cognitive OS as its execution brain.
 routing_intents:
 - intent: automaker_bridge_request
-  description: User asks to configure AutoMaker to use Cognitive OS as its execution brain.
+  description: User asks to configure AutoMaker to use Cognitive OS as its execution
+    brain.
   confidence: 0.85
+triggers:
+- automaker-bridge
+- /automaker-bridge
+- AutoMaker Bridge
+- Configure AutoMaker to use Cognitive OS as its execution brain
 ---
-
+<!-- SCOPE: both -->
 # AutoMaker Bridge
 
 Configure a project so AutoMaker's Kanban tasks are executed with Cognitive OS governance (hooks, rules, quality gates, auto-repair).

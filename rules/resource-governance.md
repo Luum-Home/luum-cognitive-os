@@ -110,3 +110,7 @@ Every resource governance decision is logged to `.cognitive-os/metrics/resource-
 - Auto-run `/resource-governor` every N sessions (configured in `resources.optimization.governor_interval_sessions`)
 - Auto-run on session end if `resources.optimization.auto_run_on_session_end` is true
 - Manual run: user invokes `/resource-governor`
+
+## Contextual Trigger
+
+- When work relates to Resource Governance Protocol.

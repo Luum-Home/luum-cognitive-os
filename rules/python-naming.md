@@ -99,3 +99,7 @@ Old → New mapping (full list):
 
 `scripts/*.sh` and `hooks/*.sh` CAN use hyphens (e.g., `cos-bootstrap.sh`,
 `aspirational-audit-weekly.sh`) — they are shell scripts, not Python modules.
+
+## Contextual Trigger
+
+- When work relates to Python Script Naming — Snake Case Required.

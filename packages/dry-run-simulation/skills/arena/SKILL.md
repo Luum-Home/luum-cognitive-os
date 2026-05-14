@@ -1,37 +1,38 @@
-<!-- SCOPE: both -->
 ---
 name: arena
-description: "Run competitive benchmarks comparing Cognitive OS against other AI coding tools"
-invoke: "/arena"
-version: "1.0"
+description: Run competitive benchmarks comparing Cognitive OS against other AI coding
+  tools
+invoke: /arena
+version: '1.0'
 triggers:
-  - manual
+- manual
 args:
-  - name: competitor
-    description: "Filter to a specific competitor ID"
-    required: false
-  - name: task
-    description: "Filter to a specific task ID"
-    required: false
-  - name: list
-    description: "List all competitors and tasks"
-    flag: true
-  - name: dry-run
-    description: "Show what would run without executing"
-    flag: true
-  - name: evaluate
-    description: "LLM-evaluate quality of existing results"
-    flag: true
-  - name: report
-    description: "Generate report from latest results"
-    flag: true
+- name: competitor
+  description: Filter to a specific competitor ID
+  required: false
+- name: task
+  description: Filter to a specific task ID
+  required: false
+- name: list
+  description: List all competitors and tasks
+  flag: true
+- name: dry-run
+  description: Show what would run without executing
+  flag: true
+- name: evaluate
+  description: LLM-evaluate quality of existing results
+  flag: true
+- name: report
+  description: Generate report from latest results
+  flag: true
 audience: os-dev
-summary_line: "\"Run competitive benchmarks comparing Cognitive OS against other AI coding…"
-
-platforms: ["claude-code"]
+summary_line: '"Run competitive benchmarks comparing Cognitive OS against other AI
+  coding…'
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Arena — Competitive Benchmark Skill
 
 ## Purpose

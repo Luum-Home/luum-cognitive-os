@@ -1,7 +1,9 @@
-<!-- SCOPE: project -->
 ---
 name: project-scaffold
-description: "Use when you need this Cognitive OS skill: Scaffold the 10-category docs/ tree adopted by Cognitive OS projects. Creates 01-contexto through 10-resumenes with starter files and TODO markers. Idempotent. See ADR-054.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Scaffold the 10-category
+  docs/ tree adopted by Cognitive OS projects. Creates 01-contexto through 10-resumenes
+  with starter files and TODO markers. Idempotent. See ADR-054.; do not use when a
+  narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: false
@@ -11,22 +13,23 @@ license: MIT
 metadata:
   author: luum
 audience: project
-summary_line: "Create the 10-category docs/ convention (ADR-054) in a project root."
+summary_line: Create the 10-category docs/ convention (ADR-054) in a project root.
 triggers:
-  - scaffold project
-  - scaffold docs
-  - new project
-  - project structure
-  - 10 categories
-platforms: ["claude-code"]
+- scaffold project
+- scaffold docs
+- new project
+- project structure
+- 10 categories
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bproject[- ]?scaffold\b'
-    confidence: 0.95
-  - pattern: '\bscaffold\s+project\b'
-    confidence: 0.85
+- pattern: \bproject[- ]?scaffold\b
+  confidence: 0.95
+- pattern: \bscaffold\s+project\b
+  confidence: 0.85
 ---
-
+<!-- SCOPE: project -->
 ## Purpose
 
 Adopting projects organize their documentation in 10 canonical

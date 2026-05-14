@@ -1,7 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: rules-export
-description: "Use when you need this Cognitive OS skill: Export a snapshot of Cognitive OS rules/ (so-slo, definition-of-done, credential-management, etc.) into an adopting project's docs/08-estandares/ directory. Follows the 10-category convention (ADR-054/055).; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Export a snapshot of Cognitive
+  OS rules/ (so-slo, definition-of-done, credential-management, etc.) into an adopting
+  project''s docs/08-estandares/ directory. Follows the 10-category convention (ADR-054/055).;
+  do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -11,17 +13,23 @@ metadata:
   author: luum
   category: standards
 audience: adopters
-summary_line: "Export SO rules/ as a point-in-time snapshot into docs/08-estandares/."
+summary_line: Export SO rules/ as a point-in-time snapshot into docs/08-estandares/.
 model: haiku
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\brules[- ]?export\b'
-    confidence: 0.95
-  - pattern: '\bexport\s+rules?\b'
-    confidence: 0.85
+- pattern: \brules[- ]?export\b
+  confidence: 0.95
+- pattern: \bexport\s+rules?\b
+  confidence: 0.85
+triggers:
+- rules-export
+- /rules-export
+- Smoke test in tmp dir
+- Export SO rules/ as a point-in-time snapshot into docs/08-estandares/
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Adopting projects commit to a set of SO rules as their own standards.

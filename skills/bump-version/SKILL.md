@@ -1,19 +1,29 @@
-<!-- SCOPE: os-only -->
 ---
 name: bump-version
-invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
+invocation_pattern: on-demand
 command: /bump-version
-description: "Use when you need this Cognitive OS skill: Calculate and write the new version to the VERSION file; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Calculate and write the new
+  version to the VERSION file; do not use when a narrower skill directly matches the
+  task.'
 version: 0.1.0
 audience: os
-tags: [release, versioning]
+tags:
+- release
+- versioning
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- bump-version
+- /bump-version
+- Bump Version
+- 'Use when you need this Cognitive OS skill: Calculate and write the new version
+  to the VERSION file; do not use when a na'
 ---
-
+<!-- SCOPE: os-only -->
 # Bump Version
 
 ## Purpose

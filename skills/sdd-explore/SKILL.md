@@ -1,10 +1,11 @@
-<!-- SCOPE: both -->
 ---
 name: sdd-explore
 command: /sdd-explore
-description: 'Use when you need this Cognitive OS skill: Explore and investigate ideas before committing to a change — deep
-  feasibility analysis; do not use when a narrower skill directly matches the task.'
-trigger: When the orchestrator launches you to think through a feature, investigate the codebase, or clarify requirements
+description: 'Use when you need this Cognitive OS skill: Explore and investigate ideas
+  before committing to a change — deep feasibility analysis; do not use when a narrower
+  skill directly matches the task.'
+trigger: When the orchestrator launches you to think through a feature, investigate
+  the codebase, or clarify requirements
 inputs:
 - topic: What to explore (feature idea, technical question, codebase area)
 - scout-report (optional): Scout report from a prior /scout run
@@ -38,11 +39,16 @@ routing_patterns:
   confidence: 0.82
 routing_intents:
 - intent: pre_implementation_feasibility_exploration
-  description: User wants to explore an idea, investigate feasibility, clarify requirements, or analyze risks before implementing
-    a change.
+  description: User wants to explore an idea, investigate feasibility, clarify requirements,
+    or analyze risks before implementing a change.
   confidence: 0.86
+triggers:
+- sdd-explore
+- /sdd-explore
+- SDD Explore -- Deep Feasibility Analysis
+- Explore and investigate ideas before committing to a change — deep feasibility…
 ---
-
+<!-- SCOPE: both -->
 # SDD Explore -- Deep Feasibility Analysis
 
 ## Purpose

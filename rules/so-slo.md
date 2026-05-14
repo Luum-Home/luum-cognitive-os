@@ -102,3 +102,7 @@ hot path once an equivalent safety signal exists.
 | `runtime.killswitch_respected: false` | Killswitch flag ignored; hooks run at full profile regardless of budget state |
 | `runtime.heartbeat.enabled: false` | SLO 9 unmeasurable — treat as unknown, not breached |
 | `runtime.reaper.enabled: false` | SLO 4 unmeasurable — reaper no-op means orphan detection disabled |
+
+## Contextual Trigger
+
+- When work relates to SO SLO Catalogue — Source of Truth (ADR-028 D5).

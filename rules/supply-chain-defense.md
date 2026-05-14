@@ -57,3 +57,7 @@ In March 2026, the TeamPCP attack compromised Trivy, LiteLLM, npm, PyPI, and Doc
 6. Run `cos audit` on all installed packages
 7. Check GitHub Actions workflow files for modifications
 8. Report to security team and upstream maintainers
+
+## Contextual Trigger
+
+- When work relates to Supply Chain Defense Protocol.

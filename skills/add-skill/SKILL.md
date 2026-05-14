@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: add-skill
-description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding a new skill to the Cognitive OS; do
-  not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding
+  a new skill to the Cognitive OS; do not use when a narrower skill directly matches
+  the task.'
 version: 0.1.0
 audience: os
 tags:
@@ -20,15 +20,28 @@ routing_patterns:
 - pattern: \bnuev[ao]?\s+skill\b
   confidence: 0.8
 summary_line: Step-by-step guide for adding a new skill to the Cognitive OS.
+triggers:
+- add-skill
+- new skill
+- skill authoring
+- Cognitive OS skill
 routing_intents:
 - intent: add_skill_request
-  description: User asks to step-by-step guide for adding a new skill to the Cognitive OS.
+  description: User asks to step-by-step guide for adding a new skill to the Cognitive
+    OS.
   confidence: 0.85
 ---
-
+<!-- SCOPE: os-only -->
 # Add Skill
 
 > Procedure for creating a new skill that agents can invoke in the Cognitive OS.
+
+## Scope note
+
+This skill is `os-only` because the procedure edits Cognitive OS skill source,
+catalogs, routing metadata, registry artifacts, and COS-specific projection
+gates. A generic "author a SKILL.md capability for any repository" procedure
+would be a separate portable primitive.
 
 ## Trigger
 

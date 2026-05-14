@@ -163,3 +163,7 @@ if match and match.confidence >= 0.80:
 Registry (knows what exists) -> Engram (remembers what worked)
   -> Hooks (detect failures in real-time) -> skill-creator (applies improvements)
 ```
+
+## Contextual Trigger
+
+- When work relates to Skill Management — Unified Protocol.

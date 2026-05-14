@@ -1,9 +1,9 @@
-<!-- SCOPE: os-only -->
 ---
 name: browser-task
-description: Use when an agent or operator needs to drive a real web browser - navigate to a URL, click elements, fill forms,
-  scrape live page content, or extract evidence from a site that static HTTP fetches cannot reach. Backed by browser-use (MIT)
-  per ADR-288.
+description: Use when an agent or operator needs to drive a real web browser - navigate
+  to a URL, click elements, fill forms, scrape live page content, or extract evidence
+  from a site that static HTTP fetches cannot reach. Backed by browser-use (MIT) per
+  ADR-288.
 version: 0.1.0
 audience: both
 tags:
@@ -26,11 +26,17 @@ routing_patterns:
 related_adr: ADR-288
 routing_intents:
 - intent: interactive_browser_task
-  description: User needs a real browser to navigate pages, click elements, fill forms, scrape dynamic content, or extract
-    evidence from a live website.
+  description: User needs a real browser to navigate pages, click elements, fill forms,
+    scrape dynamic content, or extract evidence from a live website.
   confidence: 0.86
+triggers:
+- browser-task
+- /browser-task
+- Browser Task
+- 'Use when an agent or operator needs to drive a real web browser - navigate to a
+  URL, click elements, fill forms, scrape '
 ---
-
+<!-- SCOPE: os-only -->
 # Browser Task
 
 > Drive a real browser for navigation, extraction, and form-fill workflows.

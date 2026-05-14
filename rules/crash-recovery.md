@@ -41,3 +41,7 @@ The `crash-recovery.sh` SessionStart hook detects orphaned checkpoint stashes:
 - **Hook (PostToolUse)**: `hooks/auto-checkpoint.sh` on Bash, Edit, Write
 - **Hook (SessionStart)**: `hooks/crash-recovery.sh` detects orphaned stashes
 - **Fault Tolerance**: Extends Tier 4 (Agent Resilience) with periodic checkpoints
+
+## Contextual Trigger
+
+- When work relates to Crash Recovery Protocol.

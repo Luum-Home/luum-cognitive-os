@@ -1,22 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: singularity
 version: 1.0.0
-description: Codebase Singularity — autonomous MAPE-K control loop that monitors, classifies, and routes codebase events to the right pipeline
+description: Codebase Singularity — autonomous MAPE-K control loop that monitors,
+  classifies, and routes codebase events to the right pipeline
 triggers:
-  - /singularity
-  - autonomous loop
-  - mape-k
-  - codebase health daemon
-tags: [automation, mape-k, monitoring, self-healing, autonomous]
+- /singularity
+- autonomous loop
+- mape-k
+- codebase health daemon
+tags:
+- automation
+- mape-k
+- monitoring
+- self-healing
+- autonomous
 auto-generated: false
 audience: project
 summary_line: Codebase Singularity — autonomous MAPE-K control loop that monitors…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Singularity — Autonomous MAPE-K Control Loop
 
 The Codebase Singularity is the central autonomous controller that ties all Cognitive OS capabilities together. It continuously monitors the codebase for actionable events, classifies them, plans execution strategy, launches the right pipeline, and feeds outcomes back into persistent knowledge.

@@ -51,3 +51,7 @@ When using ClaudeExecutor (ORCHESTRATOR_MODE=executor), progress markers are pub
 - DO NOT say "te aviso cuando termine" and then forget to check
 - DO NOT launch sub-agents without the agent-preamble template (no progress markers)
 - DO NOT ignore PROGRESS markers in sub-agent output — relay them to the user
+
+## Contextual Trigger
+
+- When work relates to Responsiveness Protocol.

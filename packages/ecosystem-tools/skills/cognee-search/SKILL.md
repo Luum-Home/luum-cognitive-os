@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: cognee-search
 version: 1.0.0
-description: Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrieval
+description: Semantic knowledge graph search via Cognee — complements Engram FTS5
+  with relationship-aware retrieval
 triggers:
 - semantic search
 - knowledge graph
@@ -17,7 +17,8 @@ requires:
 - COGNEE_ENABLED=true
 - Cognee container running (docker compose --profile memory)
 audience: project
-summary_line: Semantic knowledge graph search via Cognee — complements Engram FTS5 with…
+summary_line: Semantic knowledge graph search via Cognee — complements Engram FTS5
+  with…
 platforms:
 - claude-code
 prerequisites: []
@@ -30,10 +31,11 @@ routing_patterns:
   confidence: 0.75
 routing_intents:
 - intent: cognee_search_request
-  description: User asks to semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrieval.
+  description: User asks to semantic knowledge graph search via Cognee — complements
+    Engram FTS5 with relationship-aware retrieval.
   confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # Cognee Search
 
 ## Purpose

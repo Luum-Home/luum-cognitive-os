@@ -1,15 +1,16 @@
-<!-- SCOPE: os-only -->
 ---
 name: hook-timing
-description: 'Use when you need this Cognitive OS skill: Report hook execution timing statistics (p50/p95/p99) from the COS
-  hook-timing wrapper. Supports live tail, event filtering, and session scoping.; do not use when a narrower skill directly
-  matches the task.'
+description: 'Use when you need this Cognitive OS skill: Report hook execution timing
+  statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event
+  filtering, and session scoping.; do not use when a narrower skill directly matches
+  the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: os
 model: sonnet
-summary_line: Analyze hook execution latency — full stats, live tail, per-event or per-session views.
+summary_line: Analyze hook execution latency — full stats, live tail, per-event or
+  per-session views.
 platforms:
 - claude-code
 prerequisites: []
@@ -24,11 +25,18 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: hook_timing_request
-  description: User asks to report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports
-    live tail, event filtering, and session scoping.
+  description: User asks to report hook execution timing statistics (p50/p95/p99)
+    from the COS hook-timing wrapper. Supports live tail, event filtering, and session
+    scoping.
   confidence: 0.85
+triggers:
+- hook-timing
+- /hook-timing
+- Hook Timing Skill
+- Analyze hook execution latency — full stats, live tail, per-event or per-session
+  views
 ---
-
+<!-- SCOPE: os-only -->
 # Hook Timing Skill
 
 Inspect hook execution latency recorded by `scripts/hook-timing-wrapper.sh`. The wrapper runs as a trampoline around every hook in `settings.json` and appends structured JSONL records to `.cognitive-os/metrics/hook-timing.jsonl`. This skill surfaces that data in human-readable form.

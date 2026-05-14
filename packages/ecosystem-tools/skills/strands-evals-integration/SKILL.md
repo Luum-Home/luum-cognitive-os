@@ -1,7 +1,7 @@
-<!-- SCOPE: both -->
 ---
 name: strands-evals-integration
-description: 'Configure Strands Evals for trace-based agent trajectory evaluation using OpenTelemetry instrumentation.
+description: 'Configure Strands Evals for trace-based agent trajectory evaluation
+  using OpenTelemetry instrumentation.
 
   '
 version: 1.0.0
@@ -16,7 +16,8 @@ metadata:
   tool-ring: TRIAL
   tool-score: 7.4
 audience: os-dev
-summary_line: Configure Strands Evals for trace-based agent trajectory evaluation using…
+summary_line: Configure Strands Evals for trace-based agent trajectory evaluation
+  using…
 platforms:
 - claude-code
 prerequisites: []
@@ -27,10 +28,16 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: strands_evals_integration_request
-  description: User asks to configure Strands Evals for trace-based agent trajectory evaluation using OpenTelemetry instrumentation.
+  description: User asks to configure Strands Evals for trace-based agent trajectory
+    evaluation using OpenTelemetry instrumentation.
   confidence: 0.85
+triggers:
+- strands-evals-integration
+- /strands-evals-integration
+- Captures tool calls, LLM interactions, and decision points
+- Configure Strands Evals for trace-based agent trajectory evaluation using…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Strands Evals provides trace-based evaluation of agent trajectories using OpenTelemetry. It captures agent execution traces and evaluates them with built-in evaluators for tool selection accuracy, parameter correctness, and goal success.

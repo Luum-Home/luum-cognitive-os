@@ -56,3 +56,7 @@ Violations are logged to `.cognitive-os/metrics/content-policy.jsonl`:
 | Agent preamble | Prohibited terms listed in preamble template |
 | Adversarial review | Complements "no LGTM" rule |
 | Secret detector | Complements credential scanning |
+
+## Contextual Trigger
+
+- When work relates to Content Policy — Automated Enforcement.

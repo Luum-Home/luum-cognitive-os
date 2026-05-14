@@ -1,7 +1,12 @@
-<!-- SCOPE: both -->
 ---
 name: doc-review-personas
-description: "Use when you need this Cognitive OS skill: Multi-persona adversarial review of a documentation corpus. Runs N Haiku sub-agents in parallel — each one reading the same docs with a different human-role lens (CFO, Tech Lead, Commercial, New Dev, Editor) — then consolidates findings into a severity-tiered report (S1/S2/S3/S4). Different lenses catch non-overlapping gaps; the consolidated output is a prioritized fix-plan, not a set of independent critiques.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Multi-persona adversarial
+  review of a documentation corpus. Runs N Haiku sub-agents in parallel — each one
+  reading the same docs with a different human-role lens (CFO, Tech Lead, Commercial,
+  New Dev, Editor) — then consolidates findings into a severity-tiered report (S1/S2/S3/S4).
+  Different lenses catch non-overlapping gaps; the consolidated output is a prioritized
+  fix-plan, not a set of independent critiques.; do not use when a narrower skill
+  directly matches the task.'
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: false
@@ -11,25 +16,26 @@ license: MIT
 metadata:
   author: luum
 audience: both
-summary_line: "N-persona parallel doc review with severity-tiered consolidation."
+summary_line: N-persona parallel doc review with severity-tiered consolidation.
 model: haiku
 triggers:
-  - "review docs"
-  - "doc review"
-  - "review documentation"
-  - "personas"
-  - "multi-persona"
-  - "hallazgos"
-  - "findings from different lenses"
-platforms: ["claude-code"]
+- review docs
+- doc review
+- review documentation
+- personas
+- multi-persona
+- hallazgos
+- findings from different lenses
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bdoc[- ]?review[- ]?personas?\b'
-    confidence: 0.95
-  - pattern: '\bdocumentation\s+review\s+personas?\b'
-    confidence: 0.8
+- pattern: \bdoc[- ]?review[- ]?personas?\b
+  confidence: 0.95
+- pattern: \bdocumentation\s+review\s+personas?\b
+  confidence: 0.8
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 A single reviewer sees what a single reviewer sees. Five different reviewers,

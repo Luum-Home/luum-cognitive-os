@@ -139,3 +139,7 @@ content: "Steps completed: 1-4 of 6. Current: step-05. Blockers: none."
 ```
 
 This enables cross-session recovery even if step files are not accessible.
+
+## Contextual Trigger
+
+- When work relates to Step-File Architecture for Long Phases (BMAD v6 Pattern 5).

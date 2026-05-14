@@ -1,22 +1,28 @@
-<!-- SCOPE: both -->
 ---
 name: memu-context
 description: Query memU proactive memory for relevant context before starting work
-trigger: what do I know about, context for, remember, prior context, memu, proactive context
+trigger: what do I know about, context for, remember, prior context, memu, proactive
+  context
 model: haiku
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bmemu[- ]?context\b'
-    confidence: 0.95
-  - pattern: '\bmemu\s+proactive\s+memory\b'
-    confidence: 0.85
-  - pattern: '\bquery\s+memu\b'
-    confidence: 0.8
+- pattern: \bmemu[- ]?context\b
+  confidence: 0.95
+- pattern: \bmemu\s+proactive\s+memory\b
+  confidence: 0.85
+- pattern: \bquery\s+memu\b
+  confidence: 0.8
+triggers:
+- memu-context
+- /memu-context
+- memU Context Loader
+- Query memU proactive memory for relevant context before starting work
 ---
-
+<!-- SCOPE: both -->
 # memU Context Loader
 
 ## Purpose

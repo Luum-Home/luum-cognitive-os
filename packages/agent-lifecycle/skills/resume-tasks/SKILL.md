@@ -1,17 +1,23 @@
-<!-- SCOPE: both -->
 ---
 name: resume-tasks
-description: Check for incomplete tasks from previous sessions and offer to resume them. Use when starting a new session or after a crash.
+description: Check for incomplete tasks from previous sessions and offer to resume
+  them. Use when starting a new session or after a crash.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-03-21
 audience: project
-summary_line: Check for incomplete tasks from previous sessions and offer to resume them.
-
-platforms: ["claude-code"]
+summary_line: Check for incomplete tasks from previous sessions and offer to resume
+  them.
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- resume-tasks
+- /resume-tasks
+- Resume Tasks — Fault Tolerance Recovery
+- Check for incomplete tasks from previous sessions and offer to resume them
 ---
-
+<!-- SCOPE: both -->
 # Resume Tasks — Fault Tolerance Recovery
 
 ## Purpose

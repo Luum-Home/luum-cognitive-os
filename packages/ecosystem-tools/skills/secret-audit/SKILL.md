@@ -1,17 +1,23 @@
-<!-- SCOPE: both -->
 ---
 name: secret-audit
-description: Scan all services for env var usage, cross-reference with definitions, report gaps
+description: Scan all services for env var usage, cross-reference with definitions,
+  report gaps
 invoke: /secret-audit
 version: 1.0.0
 model: sonnet
 audience: project
-summary_line: "Scan all services for env var usage, cross-reference with definitions, report…"
-
-platforms: ["claude-code"]
+summary_line: Scan all services for env var usage, cross-reference with definitions,
+  report…
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- secret-audit
+- /secret-audit
+- Secret Audit — Environment Variable Cross-Reference
+- Scan all services for env var usage, cross-reference with definitions, report…
 ---
-
+<!-- SCOPE: both -->
 # Secret Audit — Environment Variable Cross-Reference
 
 ## Purpose

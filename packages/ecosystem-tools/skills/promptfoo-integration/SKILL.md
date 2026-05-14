@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: promptfoo-integration
-description: >
-  Configure Promptfoo for prompt regression testing and red teaming
-  of skills in CI/CD pipelines.
+description: 'Configure Promptfoo for prompt regression testing and red teaming of
+  skills in CI/CD pipelines.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,19 +14,25 @@ metadata:
   tool: promptfoo/promptfoo
   tool-license: MIT
   tool-ring: TRIAL
-  tool-score: 7.80
+  tool-score: 7.8
 audience: os-dev
-summary_line: Configure Promptfoo for prompt regression testing and red teaming of skills in…
-
-platforms: ["claude-code"]
+summary_line: Configure Promptfoo for prompt regression testing and red teaming of
+  skills in…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bpromptfoo[- ]?integration\b'
-    confidence: 0.95
-  - pattern: '\bintegrat\w*\s+promptfoo\b'
-    confidence: 0.85
+- pattern: \bpromptfoo[- ]?integration\b
+  confidence: 0.95
+- pattern: \bintegrat\w*\s+promptfoo\b
+  confidence: 0.85
+triggers:
+- promptfoo-integration
+- /promptfoo-integration
+- Initialize config
+- Configure Promptfoo for prompt regression testing and red teaming of skills in…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Promptfoo provides YAML-driven prompt regression testing and red teaming with 50+ attack plugins. Used as a CI/CD gate for skill quality and security scanning.

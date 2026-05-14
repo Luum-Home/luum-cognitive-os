@@ -1,15 +1,16 @@
-<!-- SCOPE: both -->
 ---
 name: compat-test
-description: 'Use when you need this Cognitive OS skill: Smoke test suite verifying Cognitive OS works correctly with the
-  current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget
-  awareness, and error handling.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Smoke test suite verifying
+  Cognitive OS works correctly with the current AI model. Checks skill triggers, rule
+  compliance, phase awareness, memory, progressive loading, templates, budget awareness,
+  and error handling.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 invoke: /cognitive-os-compat-test
 audience: os-dev
-summary_line: Smoke test suite verifying Cognitive OS works correctly with the current AI…
+summary_line: Smoke test suite verifying Cognitive OS works correctly with the current
+  AI…
 platforms:
 - claude-code
 prerequisites: []
@@ -22,11 +23,17 @@ routing_patterns:
   confidence: 0.75
 routing_intents:
 - intent: compat_test_request
-  description: User asks to smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill
-    triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness, and error handling.
+  description: User asks to smoke test suite verifying Cognitive OS works correctly
+    with the current AI model. Checks skill triggers, rule compliance, phase awareness,
+    memory, progressive loading, templates, budget awareness, and error handling.
   confidence: 0.85
+triggers:
+- compat-test
+- /compat-test
+- Model Compatibility Test
+- Smoke test suite verifying Cognitive OS works correctly with the current AI…
 ---
-
+<!-- SCOPE: both -->
 # Model Compatibility Test
 
 Lightweight smoke test that verifies the Cognitive OS contract is intact with the current model. Run this after model upgrades, major skill changes, or when behavior seems off.

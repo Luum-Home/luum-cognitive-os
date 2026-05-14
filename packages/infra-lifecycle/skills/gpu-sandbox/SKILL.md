@@ -1,17 +1,23 @@
-<!-- SCOPE: both -->
 ---
 name: gpu-sandbox
-description: Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calculations)
+description: Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data
+  processing, financial calculations)
 invoke: /gpu-sandbox
 version: 1.0.0
 model: sonnet
 audience: project
-summary_line: "Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data…"
-
-platforms: ["claude-code"]
+summary_line: Execute Python code in Jupyter runtime for compute-heavy tasks (ML,
+  data…
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- gpu-sandbox
+- /gpu-sandbox
+- GPU Sandbox — Jupyter Compute Runtime
+- Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data…
 ---
-
+<!-- SCOPE: both -->
 # GPU Sandbox — Jupyter Compute Runtime
 
 ## Purpose

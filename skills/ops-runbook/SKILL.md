@@ -1,31 +1,34 @@
-<!-- SCOPE: both -->
 ---
 name: ops-runbook
 version: 1.0.0
-description: "Use when you need this Cognitive OS skill: Scaffold operations.md + admin-processes.md + monitoring.md under docs/06-backoffice/ (deploy/rollback/on-call/SLOs/alerting). Idempotent.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Scaffold operations.md +
+  admin-processes.md + monitoring.md under docs/06-backoffice/ (deploy/rollback/on-call/SLOs/alerting).
+  Idempotent.; do not use when a narrower skill directly matches the task.'
 invocation: /ops-runbook --project-dir <path> [--overwrite]
 user-invocable: true
 last-updated: 2026-04-21
 audience: project
 triggers:
-  - operations runbook
-  - rollback procedure
-  - on-call runbook
-  - SLO dashboard
-  - admin processes
-summary_line: Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under 06-backoffice.
+- operations runbook
+- rollback procedure
+- on-call runbook
+- SLO dashboard
+- admin processes
+summary_line: Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under
+  06-backoffice.
 model: haiku
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bops[- ]?runbook\b'
-    confidence: 0.95
-  - pattern: '\bscaffold\s+ops\b'
-    confidence: 0.85
-  - pattern: '\boperations\.md\b'
-    confidence: 0.8
+- pattern: \bops[- ]?runbook\b
+  confidence: 0.95
+- pattern: \bscaffold\s+ops\b
+  confidence: 0.85
+- pattern: \boperations\.md\b
+  confidence: 0.8
 ---
-
+<!-- SCOPE: both -->
 # Ops Runbook Scaffolder
 
 Emits three structured runbook templates under `docs/06-backoffice/`:

@@ -86,3 +86,7 @@ Tool-call-count thresholds are approximate behavioral guides:
 - DO NOT start large multi-file operations after 70%
 - DO NOT wait for the 85% warning to save decisions — save at 70%
 - DO NOT rely solely on pre-compaction-flush — it may not have enough time to save everything
+
+## Contextual Trigger
+
+- When work relates to Context Window Management — Proactive Summarization Protocol.

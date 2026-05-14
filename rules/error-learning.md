@@ -153,3 +153,7 @@ cat .claude/metrics/error-learning.jsonl | jq -s 'group_by(.service) | map({serv
 # Errors in last 24 hours
 cat .claude/metrics/error-learning.jsonl | jq --argjson cutoff $(date -v-24H +%s) 'select(.timestamp_epoch > $cutoff)'
 ```
+
+## Contextual Trigger
+
+- When work relates to Error Learning Protocol.

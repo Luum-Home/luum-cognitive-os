@@ -1,17 +1,22 @@
-<!-- SCOPE: both -->
 ---
 name: plan-feature
-description: Create a feature implementation plan with evaluation scoring. Use before implementing any significant feature.
+description: Create a feature implementation plan with evaluation scoring. Use before
+  implementing any significant feature.
 user-invocable: true
 version: 1.0.0
 audience: project
 effort: opus
 summary_line: Create a feature implementation plan with evaluation scoring.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- plan-feature
+- /plan-feature
+- Plan Feature
+- Create a feature implementation plan with evaluation scoring
 ---
-
+<!-- SCOPE: both -->
 # Plan Feature
 
 Create a structured implementation plan for a new feature, then self-evaluate it.

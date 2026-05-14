@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: audit-website
-description: >
-  Perform a comprehensive 6-category website audit (SEO, Performance, Security,
-  Content/UX, Accessibility, Schema.org) with scored checkpoints and a structured
+description: 'Perform a comprehensive 6-category website audit (SEO, Performance,
+  Security, Content/UX, Accessibility, Schema.org) with scored checkpoints and a structured
   markdown report. Each item is PASS/FAIL/N-A with an overall grade.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -13,12 +13,18 @@ license: MIT
 metadata:
   author: luum
 audience: project
-summary_line: "Perform a comprehensive 6-category website audit (SEO, Performance, Security…"
-
-platforms: ["claude-code"]
+summary_line: Perform a comprehensive 6-category website audit (SEO, Performance,
+  Security…
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- audit-website
+- /audit-website
+- 'Website Audit Report: {url}'
+- Perform a comprehensive 6-category website audit (SEO, Performance, Security…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Audit any public website across six quality dimensions, producing actionable

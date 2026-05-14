@@ -106,3 +106,7 @@ All agents that run more than once benefit from sidecars. Priority:
 2. Implementation agents (sdd-apply) -- learn codebase conventions
 3. Planning agents (sdd-propose, sdd-spec) -- learn project preferences
 4. Infrastructure agents (stack-validator, sre-agent) -- learn environment quirks
+
+## Contextual Trigger
+
+- When work relates to Agent Sidecars via Engram (BMAD v6 Pattern 4).

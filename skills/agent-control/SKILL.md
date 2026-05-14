@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: agent-control
 version: 1.0.0
-description: 'Use when you need this Cognitive OS skill: Send governed bidirectional control and clarification signals between
-  the orchestrator and live agents.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Send governed bidirectional
+  control and clarification signals between the orchestrator and live agents.; do
+  not use when a narrower skill directly matches the task.'
 audience: os
 scope: os
 platforms:
@@ -29,14 +29,15 @@ routing_patterns:
   confidence: 0.9
 - pattern: \\b(list[- ]live|live agents?|scan[- ]stale|stale agents?)\\b
   confidence: 0.88
-summary_line: Send governed bidirectional control and clarification signals between the orchestrator and live agents.
+summary_line: Send governed bidirectional control and clarification signals between
+  the orchestrator and live agents.
 routing_intents:
 - intent: agent_control_request
-  description: User asks to send governed bidirectional control and clarification signals between the orchestrator and live
-    agents.
+  description: User asks to send governed bidirectional control and clarification
+    signals between the orchestrator and live agents.
   confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # Agent Control
 
 Use this skill when an operator asks to stop, pause, resume, answer, inspect, or kill a live agent. The governed entrypoint is `scripts/orchestrator.py`; it uses Valkey pub/sub when `AGENT_BUS_ENABLED=true` and writes filesystem fallback artifacts under `.cognitive-os/agent-bus/{agent_id}/` otherwise.

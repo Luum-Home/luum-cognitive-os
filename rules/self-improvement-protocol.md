@@ -215,3 +215,7 @@ python3 scripts/cos_governed_self_improvement.py \
 ```
 
 Reference: `docs/04-Concepts/architecture/primitive-fitness-evaluation-contract.md`.
+
+## Contextual Trigger
+
+- When work relates to Self-Improvement Protocol.

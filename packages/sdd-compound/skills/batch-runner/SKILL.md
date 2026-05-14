@@ -1,21 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: batch-runner
 version: 1.0.0
-description: Execute multiple SDD changes sequentially with timing, reporting, and failure handling
+description: Execute multiple SDD changes sequentially with timing, reporting, and
+  failure handling
 triggers:
-  - /batch-run
-  - batch pipeline
-  - run multiple changes
-tags: [sdd, batch, pipeline, automation, ci-cd]
+- /batch-run
+- batch pipeline
+- run multiple changes
+tags:
+- sdd
+- batch
+- pipeline
+- automation
+- ci-cd
 auto-generated: false
 audience: project
-summary_line: "Execute multiple SDD changes sequentially with timing, reporting, and failure…"
-
-platforms: ["claude-code"]
+summary_line: Execute multiple SDD changes sequentially with timing, reporting, and
+  failure…
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Batch Runner
 
 Run multiple SDD changes through the pipeline sequentially. Supports all SDD phases (explore, propose, spec, design, tasks, apply, verify, archive), with per-change timing, JSON reports for CI/CD, and resume commands for failures.

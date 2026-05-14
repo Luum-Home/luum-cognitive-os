@@ -1,30 +1,38 @@
-<!-- SCOPE: both -->
 ---
 name: redteam-harness
-description: "Use when you need this Cognitive OS skill: Run red-team scenarios against the agent OS to detect false-done, partial-completion, and unwired-constant failure modes per ADR-105/ADR-106.; do not use when a narrower skill directly matches the task."
-triggers: ["/redteam-harness", "/red-team-harness", "/rt-harness"]
+description: 'Use when you need this Cognitive OS skill: Run red-team scenarios against
+  the agent OS to detect false-done, partial-completion, and unwired-constant failure
+  modes per ADR-105/ADR-106.; do not use when a narrower skill directly matches the
+  task.'
+triggers:
+- /redteam-harness
+- /red-team-harness
+- /rt-harness
 audience: both
 version: 1.0.0
-summary_line: "Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb violations."
-
-platforms: ["claude-code", "codex", "bare_cli"]
+summary_line: Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb
+  violations.
+platforms:
+- claude-code
+- codex
+- bare_cli
 prerequisites:
-  - python3 (with PyYAML: pip install pyyaml)
-  - bash 4+
-  - scripts/run-redteam-scenario.sh (W5)
-  - scripts/redteam_aggregate.py (W5)
-  - scripts/verify-archived.sh (W0)
-  - tests/red_team/scenarios/*.yaml (W3, W4)
+- python3 (with PyYAML: pip install pyyaml)
+- bash 4+
+- scripts/run-redteam-scenario.sh (W5)
+- scripts/redteam_aggregate.py (W5)
+- scripts/verify-archived.sh (W0)
+- tests/red_team/scenarios/*.yaml (W3, W4)
 entry: bin/cos-skill run redteam-harness
 routing_patterns:
-  - pattern: '\bredteam[- ]?harness\b'
-    confidence: 0.95
-  - pattern: '\bred[- ]?team\s+scenarios?\b'
-    confidence: 0.85
-  - pattern: '\bfalse[- ]?done\s+detection\b'
-    confidence: 0.75
+- pattern: \bredteam[- ]?harness\b
+  confidence: 0.95
+- pattern: \bred[- ]?team\s+scenarios?\b
+  confidence: 0.85
+- pattern: \bfalse[- ]?done\s+detection\b
+  confidence: 0.75
 ---
-
+<!-- SCOPE: both -->
 # /redteam-harness
 
 > Execute red-team scenarios to detect false-done, unwired constants, and

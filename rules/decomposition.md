@@ -47,3 +47,7 @@ Do not bypass SDD for tasks that would cost >$1.00 as a single agent call.
 - **Token Economy**: `rules/token-economy.md` defines the 5 principles
 - **Model Routing**: `rules/model-routing.md` has the task-to-model mapping
 - **Resource Governance**: `rules/resource-governance.md` enforces budget limits
+
+## Contextual Trigger
+
+- When work relates to Cost-Aware Decomposition.

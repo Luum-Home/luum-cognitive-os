@@ -68,3 +68,7 @@ Allowed Tools: {list of MCP tools this agent may use}
 | SPIFFE/SPIRE | Infrastructure workload identity (X.509 SVIDs) | Phase 3 |
 
 See `docs/cognitive-os/identity-stack.md` for full architecture details.
+
+## Contextual Trigger
+
+- When work relates to Agent Identity Protocol.

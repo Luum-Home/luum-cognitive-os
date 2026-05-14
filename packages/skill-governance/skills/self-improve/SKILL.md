@@ -1,19 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: self-improve
-description: META skill — orchestrates analyze-improvements → (human reviews) → apply-improvements. The closing piece of the self-improvement loop.
+description: META skill — orchestrates analyze-improvements → (human reviews) → apply-improvements.
+  The closing piece of the self-improvement loop.
 version: 2.0.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-04-10
 audience: both
-tags: [self-improvement, meta, kpis]
+tags:
+- self-improvement
+- meta
+- kpis
 summary_line: META skill — orchestrates analyze-improvements → (human reviews) →…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- self-improve
+- /self-improve
+- Self-Improve Skill (META)
+- META skill — orchestrates analyze-improvements → (human reviews) →…
 ---
-
+<!-- SCOPE: both -->
 # Self-Improve Skill (META)
 
 Thin orchestration wrapper around two atomic skills:

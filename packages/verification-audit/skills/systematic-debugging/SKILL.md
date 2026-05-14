@@ -1,19 +1,25 @@
-<!-- SCOPE: both -->
 ---
 name: systematic-debugging
-description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+description: Use when encountering any bug, test failure, or unexpected behavior,
+  before proposing fixes
 version: 1.0.0
 last-updated: 2026-03-21
 source: superpowers (obra/superpowers)
 tech: debugging
 audience: project
 effort: opus
-summary_line: "Use when encountering any bug, test failure, or unexpected behavior, before…"
-
-platforms: ["claude-code"]
+summary_line: Use when encountering any bug, test failure, or unexpected behavior,
+  before…
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- systematic-debugging
+- /systematic-debugging
+- Systematic Debugging
+- Use when encountering any bug, test failure, or unexpected behavior, before…
 ---
-
+<!-- SCOPE: both -->
 # Systematic Debugging
 
 ## Overview

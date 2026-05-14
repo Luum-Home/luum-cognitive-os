@@ -1,12 +1,17 @@
-<!-- SCOPE: os-only -->
 ---
 name: vuln-remediation-flow
 invocation_pattern: on-demand
 command: /vuln-remediation-flow
-description: "Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud
+  flow contract for sandboxed vulnerability remediation.; do not use when a narrower
+  skill directly matches the task.'
 version: 0.1.0
 audience: os
-tags: [flows, vulnerability-remediation, cloud-worker, lab]
+tags:
+- flows
+- vulnerability-remediation
+- cloud-worker
+- lab
 last-updated: 2026-05-04
 effort: sonnet
 lifecycle_state: lab
@@ -18,16 +23,23 @@ framing_exercise_statement:
   dispatches_through_configured_providers: partial
   hooks_fire_natively: partial
   session_lifecycle_handled: partial
-  notes: Lab registration establishes the contract before worker execution; each axis remains partial until the Docker/cloud worker path runs the flow end-to-end.
+  notes: Lab registration establishes the contract before worker execution; each axis
+    remains partial until the Docker/cloud worker path runs the flow end-to-end.
 routing_patterns:
-  - pattern: '\bvuln[- ]?remediation[- ]?flow\b'
-    confidence: 0.95
-  - pattern: '\bvulnerability\s+remediation\b'
-    confidence: 0.85
-  - pattern: '\bsandboxed\s+vulnerability\s+remediation\b'
-    confidence: 0.75
+- pattern: \bvuln[- ]?remediation[- ]?flow\b
+  confidence: 0.95
+- pattern: \bvulnerability\s+remediation\b
+  confidence: 0.85
+- pattern: \bsandboxed\s+vulnerability\s+remediation\b
+  confidence: 0.75
+triggers:
+- vuln-remediation-flow
+- /vuln-remediation-flow
+- Vulnerability Remediation Flow
+- 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract
+  for sandboxed vulnerability remedi'
 ---
-
+<!-- SCOPE: os-only -->
 # Vulnerability Remediation Flow
 
 ## Purpose

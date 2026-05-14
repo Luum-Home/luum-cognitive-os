@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: deep-tool-research
-description: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation
-  before an adoption decision (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis annexes A-G for
+description: Use when an external tool has passed the shallow `repo-scout` gate and
+  needs a canonical 7-annex deep evaluation before an adoption decision (`ASSESS`,
+  `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis annexes A-G for
   mechanical cross-tool comparison.
 scope: both
 audience: os-dev
@@ -24,15 +24,24 @@ diverges_from:
 - docs/03-PoCs/research/helixdb-comparison-2026-05-11.md
 - docs/03-PoCs/research/ifixai-comparison-2026-05-11.md
 - docs/03-PoCs/research/megamemory-comparison-2026-05-11.md
-summary_line: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation…
+summary_line: Use when an external tool has passed the shallow `repo-scout` gate and
+  needs a canonical 7-annex deep evaluation…
 routing_intents:
 - intent: deep_tool_research_request
-  description: User asks to use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex
-    deep evaluation before an adoption decision (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis
+  description: User asks to use when an external tool has passed the shallow `repo-scout`
+    gate and needs a canonical 7-annex deep evaluation before an adoption decision
+    (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis
     annexes A-G for mechanical cross-tool comparison.
   confidence: 0.85
+triggers:
+- deep-tool-research
+- /deep-tool-research
+- '`/deep-tool-research <tool>` — Canonical Deep Evaluation Pipeline'
+- Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical
+  7-annex deep evaluation…
+version: 0.1.0
 ---
-
+<!-- SCOPE: both -->
 # `/deep-tool-research <tool>` — Canonical Deep Evaluation Pipeline
 
 > Skeleton only. Implementation lands in a follow-up SDD change. Do not register in any manifest until the operator approves the taxonomy.

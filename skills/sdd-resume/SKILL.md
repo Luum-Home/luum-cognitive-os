@@ -1,40 +1,48 @@
-<!-- SCOPE: both -->
 ---
 name: sdd-resume
 command: /sdd-resume
 version: 1.0.0
-description: "Use when you need this Cognitive OS skill: Resume an SDD pipeline from its last completed phase with timing and state visibility; do not use when a narrower skill directly matches the task."
-trigger: User invokes /sdd-resume [change-name] [--from phase], or needs to inspect/continue SDD state
+description: 'Use when you need this Cognitive OS skill: Resume an SDD pipeline from
+  its last completed phase with timing and state visibility; do not use when a narrower
+  skill directly matches the task.'
+trigger: User invokes /sdd-resume [change-name] [--from phase], or needs to inspect/continue
+  SDD state
 inputs:
-  - change-name (optional): SDD change to resume. If omitted, lists all in-progress changes.
-  - --from (optional): Force resume from a specific phase (skips auto-detection).
+- change-name (optional): SDD change to resume. If omitted, lists all in-progress
+    changes.
+- --from (optional): Force resume from a specific phase (skips auto-detection).
 audience: project
 outputs:
-  - next_phase: The phase to execute next
-  - state_summary: Current pipeline state with timing data
-  - timing_table: ASCII table of per-phase durations and costs
-summary_line: Resume an SDD pipeline from its last completed phase with timing and state…
-# ADR-050 per-skill routing: resume is mechanical state inspection + phase
-# dispatch. No reasoning required — route to cheap provider first, allow
-# fallback on any error since this must always succeed.
+- next_phase: The phase to execute next
+- state_summary: Current pipeline state with timing data
+- timing_table: ASCII table of per-phase durations and costs
+summary_line: Resume an SDD pipeline from its last completed phase with timing and
+  state…
 routing:
   tier: cheap
-  providers_preferred: [qwen, claude]
+  providers_preferred:
+  - qwen
+  - claude
   fallback_on_rate_limit: true
   fallback_on_any_error: true
   budget_max_usd_per_call: 0.25
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsdd[- ]?resume\b'
-    confidence: 0.96
-  - pattern: '\bresume\s+(the\s+)?sdd\b'
-    confidence: 0.90
-  - pattern: '\blast\s+completed\s+(sdd\s+)?phase\b'
-    confidence: 0.84
+- pattern: \bsdd[- ]?resume\b
+  confidence: 0.96
+- pattern: \bresume\s+(the\s+)?sdd\b
+  confidence: 0.9
+- pattern: \blast\s+completed\s+(sdd\s+)?phase\b
+  confidence: 0.84
+triggers:
+- sdd-resume
+- /sdd-resume
+- SDD Resume
+- Resume an SDD pipeline from its last completed phase with timing and state…
 ---
-
+<!-- SCOPE: both -->
 # SDD Resume
 
 ## Purpose

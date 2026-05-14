@@ -1,14 +1,15 @@
-<!-- SCOPE: os-only -->
 ---
 name: memory-scan
-description: 'Use when you need this Cognitive OS skill: Scan text content (or a file) for prompt injection, credential exfiltration,
-  and invisible Unicode threats before persisting to memory.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Scan text content (or a file)
+  for prompt injection, credential exfiltration, and invisible Unicode threats before
+  persisting to memory.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: os
 model: haiku
-summary_line: Scan content for memory threats (prompt injection, exfiltration, invisible Unicode).
+summary_line: Scan content for memory threats (prompt injection, exfiltration, invisible
+  Unicode).
 platforms:
 - claude-code
 prerequisites: []
@@ -21,11 +22,16 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: memory_security_scan
-  description: User wants to scan memory, prompts, transcripts, or stored context for prompt injection, credentials, secrets,
-    or unsafe content.
+  description: User wants to scan memory, prompts, transcripts, or stored context
+    for prompt injection, credentials, secrets, or unsafe content.
   confidence: 0.88
+triggers:
+- memory-scan
+- /memory-scan
+- Memory Scan Skill
+- Scan content for memory threats (prompt injection, exfiltration, invisible Unicode)
 ---
-
+<!-- SCOPE: os-only -->
 # Memory Scan Skill
 
 Scan text content for prompt injection, credential exfiltration attempts, role-hijacking, and invisible Unicode characters that could poison future sessions.

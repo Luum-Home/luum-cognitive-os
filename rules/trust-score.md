@@ -182,3 +182,11 @@ Trust scores are logged to `.cognitive-os/metrics/trust-scores.jsonl` with:
   "evidence_types": {"command": 3, "diff": 2, "reading": 1, "none": 0}
 }
 ```
+
+## Contextual Trigger
+
+- Pattern: `\btrust report\b`
+- Pattern: `\b(uncertainty|honest doubt)\b`
+- Pattern: `\b(evidence|verify what)\b`
+- Pattern: `\bconfidence (score|level|gate)\b`
+- User asks about trust reports, confidence, evidence, uncertainty, or verification of a completion claim.

@@ -1,24 +1,29 @@
-<!-- SCOPE: both -->
 ---
 name: evaluate-plan
-description: Evaluate any existing plan file with a 0-50 scoring system. Proposes improvements if score is low.
+description: Evaluate any existing plan file with a 0-50 scoring system. Proposes
+  improvements if score is low.
 user-invocable: true
 version: 1.0.0
 audience: project
 effort: opus
 summary_line: Evaluate any existing plan file with a 0-50 scoring system.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bevaluate[- ]?plan\b'
-    confidence: 0.95
-  - pattern: '\bscore\s+(a\s+)?plan\b'
-    confidence: 0.85
-  - pattern: '\bplan\s+evaluation\b'
-    confidence: 0.8
+- pattern: \bevaluate[- ]?plan\b
+  confidence: 0.95
+- pattern: \bscore\s+(a\s+)?plan\b
+  confidence: 0.85
+- pattern: \bplan\s+evaluation\b
+  confidence: 0.8
+triggers:
+- evaluate-plan
+- /evaluate-plan
+- Evaluate Plan
+- Evaluate any existing plan file with a 0-50 scoring system
 ---
-
+<!-- SCOPE: both -->
 # Evaluate Plan
 
 Score an existing plan on 5 criteria (0-50 total) and propose improvements if needed.

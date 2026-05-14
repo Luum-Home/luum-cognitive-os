@@ -97,3 +97,11 @@ The consolidator deduplicates findings by `(location, what-prefix)` and keeps
 the highest severity when two personas independently flag the same issue. This
 is the canonical implementation when the subject under review is docs, not
 code — for code-level adversarial review, use `skills/code-review`.
+
+## Contextual Trigger
+
+- Pattern: `\b(review|audit|critique)\b`
+- Pattern: `\blooks good\b`
+- Pattern: `\b(no issues found|nothing to flag)\b`
+- Pattern: `\badversarial\b`
+- User asks for review, audit, critique, adversarial review, or tries to accept a zero-finding review.

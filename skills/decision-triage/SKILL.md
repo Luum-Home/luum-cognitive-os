@@ -1,25 +1,40 @@
-<!-- SCOPE: both -->
 ---
 name: decision-triage
-description: "Use when you need this Cognitive OS skill: Surface all pending operator decisions across research reports and ADRs. Companion to /session-backlog — counts decisions instead of tasks. Read-only inventory.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Surface all pending operator
+  decisions across research reports and ADRs. Companion to /session-backlog — counts
+  decisions instead of tasks. Read-only inventory.; do not use when a narrower skill
+  directly matches the task.'
 command: /decision-triage
 audience: both
 version: 0.1.0
 last-updated: 2026-04-25
-summary_line: Surface pending operator decisions across research reports + ADR open questions in unified urgency-sorted view.
-tags: [triage, decisions, research, governance, operator]
+summary_line: Surface pending operator decisions across research reports + ADR open
+  questions in unified urgency-sorted view.
+tags:
+- triage
+- decisions
+- research
+- governance
+- operator
 script: scripts/decision_triage.py
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bdecision[- ]?triage\b'
-    confidence: 0.95
-  - pattern: '\bpending\s+(operator\s+)?decisions?\b'
-    confidence: 0.8
-  - pattern: '\btriage\s+decisions?\b'
-    confidence: 0.75
+- pattern: \bdecision[- ]?triage\b
+  confidence: 0.95
+- pattern: \bpending\s+(operator\s+)?decisions?\b
+  confidence: 0.8
+- pattern: \btriage\s+decisions?\b
+  confidence: 0.75
+triggers:
+- decision-triage
+- /decision-triage
+- Decision Triage
+- Surface pending operator decisions across research reports + ADR open questions
+  in unified urgency-sorted view
 ---
-
+<!-- SCOPE: both -->
 # Decision Triage
 
 ## Purpose

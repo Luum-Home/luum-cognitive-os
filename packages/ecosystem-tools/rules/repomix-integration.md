@@ -71,3 +71,7 @@ tools:
 ## Graceful Degradation
 
 If Repomix is not installed, skills fall back to our existing file reading patterns (Glob + Read with targeted paths). Repomix is an optimization, not a requirement.
+
+## Contextual Trigger
+
+- When work relates to Repomix Integration — Repository Context Packing.

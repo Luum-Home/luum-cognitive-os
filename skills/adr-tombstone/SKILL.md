@@ -1,9 +1,9 @@
-<!-- SCOPE: os-only -->
 ---
 name: adr-tombstone
-description: 'Use when you need this Cognitive OS skill: Create or repair neutral tombstones for removed ADR numbers; use
-  when an ADR is deleted, purged, superseded without replacement text, or ADR numbering has gaps that must stay auditable
-  without reusing numbers.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Create or repair neutral
+  tombstones for removed ADR numbers; use when an ADR is deleted, purged, superseded
+  without replacement text, or ADR numbering has gaps that must stay auditable without
+  reusing numbers.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 last-updated: 2026-05-05
 user-invocable: true
@@ -14,7 +14,8 @@ tags:
 - tombstone
 - governance
 - numbering
-summary_line: Agentic primitive for creating neutral ADR tombstones while preserving ADR numbering integrity.
+summary_line: Agentic primitive for creating neutral ADR tombstones while preserving
+  ADR numbering integrity.
 platforms:
 - claude-code
 - codex
@@ -28,11 +29,18 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: adr_tombstone_request
-  description: User asks to create or repair neutral tombstones for removed ADR numbers; use when an ADR is deleted, purged,
-    superseded without replacement text, or ADR numbering has gaps that must stay auditable without reusing numbers.
+  description: User asks to create or repair neutral tombstones for removed ADR numbers;
+    use when an ADR is deleted, purged, superseded without replacement text, or ADR
+    numbering has gaps that must stay auditable without reusing numbers.
   confidence: 0.85
+triggers:
+- adr-tombstone
+- /adr-tombstone
+- ADR Tombstone
+- Agentic primitive for creating neutral ADR tombstones while preserving ADR numbering
+  integrity
 ---
-
+<!-- SCOPE: os-only -->
 # ADR Tombstone
 
 This is an **agentic primitive**: the reusable procedure and deterministic tooling for tombstoning ADR records. The ADR files it creates are documentation records, not the primitive itself.

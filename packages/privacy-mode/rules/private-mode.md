@@ -41,3 +41,7 @@ Users need a way to have personal, casual conversations without:
 - If session crashes during private mode, flag persists until reboot or manual deletion
 - Private mode does NOT disable Claude's built-in safety (harmful content, etc.)
 - Private mode conversations are still in Claude's session transcript (Anthropic can see them) but NOT in project persistence
+
+## Contextual Trigger
+
+- When work relates to Private Mode Protocol.

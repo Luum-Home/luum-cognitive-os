@@ -1,15 +1,16 @@
-<!-- SCOPE: both -->
 ---
 name: red-team
-description: 'Use when you need this Cognitive OS skill: Red team testing for agent prompts — detects injection, jailbreak,
-  and manipulation vulnerabilities; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Red team testing for agent
+  prompts — detects injection, jailbreak, and manipulation vulnerabilities; do not
+  use when a narrower skill directly matches the task.'
 triggers:
 - /red-team
 - /redteam
 - /promptfoo
 audience: os-dev
 version: 1.0.0
-summary_line: '"Red team testing for agent prompts — detects injection, jailbreak, and…'
+summary_line: '"Red team testing for agent prompts — detects injection, jailbreak,
+  and…'
 platforms:
 - claude-code
 prerequisites: []
@@ -22,10 +23,11 @@ routing_patterns:
   confidence: 0.86
 routing_intents:
 - intent: red_team_request
-  description: User asks to red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities.
+  description: User asks to red team testing for agent prompts — detects injection,
+    jailbreak, and manipulation vulnerabilities.
   confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # /red-team
 
 > Run adversarial red team tests against agent prompts using Promptfoo.

@@ -59,3 +59,7 @@ The hook is a no-op when executor mode is off — it will not touch OrbStack.
 * `lib/agent_bus.py` -- Valkey pub/sub communication (FallbackBus when Valkey is down)
 * `lib/file_lock_registry.py` -- distributed file locking
 * `hooks/valkey-ensure.sh` -- SessionStart hook to auto-start Valkey in executor mode
+
+## Contextual Trigger
+
+- When work relates to Orchestrator Mode — Subprocess-Based Delegation.

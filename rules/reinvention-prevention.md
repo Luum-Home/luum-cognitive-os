@@ -53,3 +53,7 @@ that mention creating new lib/hook/skill files. Advisory only (exit 0).
 137 commits in 5 days → features built without checking Hermes, Pi, or evaluated tools.
 The cost: redundant implementations of things like context compressors, file-mutation
 queues, and resilience patterns that upstream had already solved.
+
+## Contextual Trigger
+
+- When work relates to Reinvention Prevention.

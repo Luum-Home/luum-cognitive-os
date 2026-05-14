@@ -270,3 +270,7 @@ This rule applies to ALL sub-agent launches. The orchestrator MUST include succe
 | Documentation | File exists + not empty |
 | Bug fix | Regression test passes + original error no longer occurs |
 | Refactor | All existing tests still pass + no new lint errors |
+
+## Contextual Trigger
+
+- When work relates to Closed-Loop Prompts — Self-Correcting Agent Execution.

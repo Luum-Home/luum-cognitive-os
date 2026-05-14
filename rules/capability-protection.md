@@ -36,3 +36,7 @@
 - **Hook**: `pre-cleanup-snapshot.sh` (PreToolUse on Agent) detects cleanup intent and advises snapshot.
 - **Skill**: `/capability-snapshot` provides save/diff/restore sub-commands.
 - **Metrics**: detections logged to `.cognitive-os/metrics/capability-snapshots.jsonl`.
+
+## Contextual Trigger
+
+- When work relates to Capability Protection.

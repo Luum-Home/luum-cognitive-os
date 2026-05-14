@@ -1,16 +1,24 @@
-<!-- SCOPE: both -->
 ---
 name: sprint
 description: Lightweight agent-managed sprint tracking — plan, status, retro, course-correct
 invoke: /sprint
 version: 1.0.0
 model: sonnet
-tags: [planning, tracking, workflow]
+tags:
+- planning
+- tracking
+- workflow
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- sprint
+- /sprint
+- Sprint Tracking (BMAD v6 Pattern 10)
+- Lightweight agent-managed sprint tracking — plan, status, retro, course-correct
 ---
-
+<!-- SCOPE: both -->
 # Sprint Tracking (BMAD v6 Pattern 10)
 
 Lightweight sprint management for agent-driven development. Not human Scrum — this tracks what the agent team is working on across sessions.

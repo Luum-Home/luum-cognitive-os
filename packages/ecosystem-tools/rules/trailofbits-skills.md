@@ -35,3 +35,7 @@ These skills complement our existing security stack:
 ## Graceful Degradation
 
 If the submodule is not installed, security audits use only our built-in Semgrep scanning. Trail of Bits skills are an optional enhancement.
+
+## Contextual Trigger
+
+- When work relates to Trail of Bits Security Skills.

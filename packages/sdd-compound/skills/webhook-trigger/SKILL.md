@@ -1,7 +1,7 @@
-<!-- SCOPE: both -->
 ---
 name: webhook-trigger
-description: GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
+description: GitHub webhook server that receives issue events and launches SDD pipelines
+  automatically via ClaudeExecutor.
 version: 1.0.0
 last-updated: 2026-03-26
 user-invocable: true
@@ -9,11 +9,16 @@ auto-generated: false
 tech: python, fastapi
 audience: project
 summary_line: GitHub webhook server that receives issue events and launches SDD pipelines…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- webhook-trigger
+- /webhook-trigger
+- Webhook Trigger
+- GitHub webhook server that receives issue events and launches SDD pipelines…
 ---
-
+<!-- SCOPE: both -->
 # Webhook Trigger
 
 GitHub webhook server that receives issue events and launches SDD pipelines automatically.

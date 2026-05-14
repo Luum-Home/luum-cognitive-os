@@ -1,10 +1,11 @@
-<!-- SCOPE: both -->
 ---
 name: llm-status
-description: 'Use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost accounting. Purpose:
-  Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured (with tier and model_map),
-  kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected, recent dispatch totals (calls,
-  tokens, cost, latency), and last-dispatch outcome.'
+description: 'Use when user asks about LLM provider state, rate-limit diagnosis, dispatch
+  debugging, or cost accounting. Purpose: Inspect LLM dispatch state for the current
+  Cognitive OS install — which providers are configured (with tier and model_map),
+  kill-switches active, cascade config from cognitive-os.yaml, active environment
+  keys detected, recent dispatch totals (calls, tokens, cost, latency), and last-dispatch
+  outcome.'
 triggers:
 - /llm-status
 - llm status
@@ -12,7 +13,8 @@ triggers:
 - /provider-status
 audience: both
 version: 2.0.0
-summary_line: Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals.
+summary_line: Inspect LLM dispatch state — provider inventory, kill-switches, cascade
+  config, recent dispatch totals.
 platforms:
 - claude-code
 prerequisites: []
@@ -25,13 +27,15 @@ routing_patterns:
   confidence: 0.8
 routing_intents:
 - intent: llm_status_request
-  description: 'User asks to use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost
-    accounting. Purpose: Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured
-    (with tier and model_map), kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected,
-    recent dispatch totals (calls, tokens, cost, latency), and last-dispatch outcome.'
+  description: 'User asks to use when user asks about LLM provider state, rate-limit
+    diagnosis, dispatch debugging, or cost accounting. Purpose: Inspect LLM dispatch
+    state for the current Cognitive OS install — which providers are configured (with
+    tier and model_map), kill-switches active, cascade config from cognitive-os.yaml,
+    active environment keys detected, recent dispatch totals (calls, tokens, cost,
+    latency), and last-dispatch outcome.'
   confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # /llm-status — LLM Dispatch Transparency
 
 Report the state of the LLM dispatch subsystem (ADR-062): which providers are

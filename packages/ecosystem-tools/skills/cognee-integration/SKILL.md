@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: cognee-integration
-description: >
-  Configure and use Cognee for knowledge graph memory.
-  Provides structured knowledge extraction, graph-based retrieval, and MCP server integration.
+description: 'Configure and use Cognee for knowledge graph memory. Provides structured
+  knowledge extraction, graph-based retrieval, and MCP server integration.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,21 +14,26 @@ metadata:
   tool: topoteretes/cognee
   tool-license: Apache-2.0
   tool-ring: ADOPT
-  tool-score: 8.20
+  tool-score: 8.2
 audience: os-dev
 summary_line: Configure and use Cognee for knowledge graph memory.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcognee[- ]?integration\b'
-    confidence: 0.95
-  - pattern: '\bintegrat\w*\s+cognee\b'
-    confidence: 0.8
-  - pattern: '\bset\s+up\s+cognee\b'
-    confidence: 0.75
+- pattern: \bcognee[- ]?integration\b
+  confidence: 0.95
+- pattern: \bintegrat\w*\s+cognee\b
+  confidence: 0.8
+- pattern: \bset\s+up\s+cognee\b
+  confidence: 0.75
+triggers:
+- cognee-integration
+- /cognee-integration
+- Add source
+- Configure and use Cognee for knowledge graph memory
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Integrate Cognee as a knowledge graph memory layer that complements Engram. While Engram provides flat observation-based memory, Cognee adds relationship-aware knowledge graphs with semantic search, enabling agents to understand connections between concepts, decisions, and patterns.

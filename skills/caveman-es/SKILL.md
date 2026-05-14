@@ -1,20 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: caveman-es
-description: "Use when you need this Cognitive OS skill: Modo cavernícola en español. Corta ~75% de tokens hablando como cavernícola técnico. Misma precisión técnica, menos palabrería. Niveles: lite, full (default), ultra. Usar cuando el usuario diga \"modo cavernícola\", \"habla como cavernícola\", \"menos tokens\", \"sé breve\", o invoque /caveman-es.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Modo cavernícola en español.
+  Corta ~75% de tokens hablando como cavernícola técnico. Misma precisión técnica,
+  menos palabrería. Niveles: lite, full (default), ultra. Usar cuando el usuario diga
+  "modo cavernícola", "habla como cavernícola", "menos tokens", "sé breve", o invoque
+  /caveman-es.; do not use when a narrower skill directly matches the task.'
 audience: both
 summary_line: Modo cavernícola en español.
-
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcaveman[- ]?es\b'
-    confidence: 0.95
-  - pattern: '\bsimplify\s+(en\s+)?espa[ñn]ol\b'
-    confidence: 0.8
+- pattern: \bcaveman[- ]?es\b
+  confidence: 0.95
+- pattern: \bsimplify\s+(en\s+)?espa[ñn]ol\b
+  confidence: 0.8
+triggers:
+- caveman-es
+- /caveman-es
+- Modo cavernícola en español
 ---
-
+<!-- SCOPE: both -->
 Responder breve como cavernícola listo. Toda sustancia técnica queda. Solo relleno muere.
 
 Default: **full**. Cambiar: `/caveman-es lite|full|ultra`.

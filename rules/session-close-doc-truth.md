@@ -130,3 +130,7 @@ The rule is enforced by:
 - `skills/session-wrapup/SKILL.md` Step 2b (per-session)
 - ADR-277 (canonical contract)
 - The control-plane `documentation_truth` audit through ACC refresh/session wrapup
+
+## Contextual Trigger
+
+- When work relates to Session-Close Documentation-Truth Discipline (ADR-277 + ADR-275).

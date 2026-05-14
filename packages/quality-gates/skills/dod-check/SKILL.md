@@ -1,22 +1,28 @@
-<!-- SCOPE: both -->
 ---
 name: dod-check
 command: /dod-check
 description: Verify Definition of Done criteria for a task at a given complexity level
 trigger: Manual invocation or before claiming task completion
 inputs:
-  - task_description (optional): What was done
-  - complexity (optional): trivial | small | medium | large | critical. Auto-classified if omitted.
+- task_description (optional): What was done
+- complexity (optional): trivial | small | medium | large | critical. Auto-classified
+    if omitted.
 outputs:
-  - verdict: PASS | PARTIAL | FAIL
-  - criteria_results: per-criterion pass/fail with evidence
-  - missing_items: what needs to be done to pass
+- verdict: PASS | PARTIAL | FAIL
+- criteria_results: per-criterion pass/fail with evidence
+- missing_items: what needs to be done to pass
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- dod-check
+- /dod-check
+- Definition of Done Check
+- Verify Definition of Done criteria for a task at a given complexity level
 ---
-
+<!-- SCOPE: both -->
 # Definition of Done Check
 
 ## Purpose

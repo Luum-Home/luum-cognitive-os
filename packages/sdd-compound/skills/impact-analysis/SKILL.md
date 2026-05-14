@@ -1,16 +1,18 @@
-<!-- SCOPE: both -->
 ---
 name: impact-analysis
-description: "Analyze change impact: imports, tests, configs, services, and SDD artifacts affected"
-triggers: ["/impact-analysis"]
+description: 'Analyze change impact: imports, tests, configs, services, and SDD artifacts
+  affected'
+triggers:
+- /impact-analysis
 audience: project
-summary_line: "\"Analyze change impact: imports, tests, configs, services, and SDD artifacts…"
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: '"Analyze change impact: imports, tests, configs, services, and SDD
+  artifacts…'
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # /impact-analysis
 
 > Analyze the blast radius of a set of changed files before making changes.

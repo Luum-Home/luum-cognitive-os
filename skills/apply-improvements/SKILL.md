@@ -1,21 +1,32 @@
-<!-- SCOPE: both -->
 ---
 name: apply-improvements
-description: "Use when you need this Cognitive OS skill: Apply approved self-improvement changes from an analyze-improvements report. Applies AUTO changes immediately; presents HUMAN-APPROVAL changes for explicit confirmation before touching files.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Apply approved self-improvement
+  changes from an analyze-improvements report. Applies AUTO changes immediately; presents
+  HUMAN-APPROVAL changes for explicit confirmation before touching files.; do not
+  use when a narrower skill directly matches the task.'
 version: 0.1.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-04-10
 audience: both
-tags: [self-improvement, apply, verification]
+tags:
+- self-improvement
+- apply
+- verification
 disable-model-invocation: true
 effort: sonnet
-summary_line: Apply approved self-improvement changes from an analyze-improvements report.
-
-platforms: ["claude-code"]
+summary_line: Apply approved self-improvement changes from an analyze-improvements
+  report.
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- apply-improvements
+- /apply-improvements
+- Apply Improvements Skill
+- Apply approved self-improvement changes from an analyze-improvements report
 ---
-
+<!-- SCOPE: both -->
 # Apply Improvements Skill
 
 Takes the structured output from `/analyze-improvements` and applies changes to rules, skills, and templates.

@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: devbox-checkpoint
 description: Save and restore environment state snapshots using devbox
@@ -6,10 +5,16 @@ invoke: /checkpoint
 version: 1.0.0
 model: sonnet
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- devbox-checkpoint
+- /devbox-checkpoint
+- Devbox Checkpoint — State Snapshots
+- Save and restore environment state snapshots using devbox
 ---
-
+<!-- SCOPE: both -->
 # Devbox Checkpoint — State Snapshots
 
 ## Purpose

@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: add-rule
-description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding a new rule to the Cognitive OS; do
-  not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding
+  a new rule to the Cognitive OS; do not use when a narrower skill directly matches
+  the task.'
 version: 0.1.0
 audience: os
 tags:
@@ -22,10 +22,16 @@ routing_patterns:
 summary_line: Step-by-step guide for adding a new rule to the Cognitive OS.
 routing_intents:
 - intent: add_rule_request
-  description: User asks to step-by-step guide for adding a new rule to the Cognitive OS.
+  description: User asks to step-by-step guide for adding a new rule to the Cognitive
+    OS.
   confidence: 0.85
+triggers:
+- add-rule
+- /add-rule
+- Add Rule
+- Step-by-step guide for adding a new rule to the Cognitive OS
 ---
-
+<!-- SCOPE: both -->
 # Add Rule
 
 > Procedure for creating a new always-active rule file in the Cognitive OS.

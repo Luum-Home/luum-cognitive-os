@@ -1,7 +1,9 @@
-<!-- SCOPE: os-only -->
 ---
 name: pattern-audit
-description: "Use when you need this Cognitive OS skill: Pattern/regex audit of a codebase with MANDATORY sample verification before publishing counts as severity. Prevents alarmist \"N occurrences = problem\" conclusions based on unverified regex hits.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Pattern/regex audit of a
+  codebase with MANDATORY sample verification before publishing counts as severity.
+  Prevents alarmist "N occurrences = problem" conclusions based on unverified regex
+  hits.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: false
@@ -11,24 +13,26 @@ license: MIT
 metadata:
   author: luum
 audience: os-dev
-summary_line: "Grep/regex audit with mandatory sampling — forbids unverified severity counts."
+summary_line: Grep/regex audit with mandatory sampling — forbids unverified severity
+  counts.
 triggers:
-  - audit
-  - grep
-  - pattern
-  - "how many"
-  - "N occurrences"
-  - fragility
-  - "find all"
-platforms: ["claude-code"]
+- audit
+- grep
+- pattern
+- how many
+- N occurrences
+- fragility
+- find all
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bpattern[- ]?audit\b'
-    confidence: 0.95
-  - pattern: '\baudit\s+patterns?\b'
-    confidence: 0.85
+- pattern: \bpattern[- ]?audit\b
+  confidence: 0.95
+- pattern: \baudit\s+patterns?\b
+  confidence: 0.85
 ---
-
+<!-- SCOPE: os-only -->
 ## Purpose
 
 When asked to audit a codebase for a pattern (fragile tests, TODOs, hardcoded

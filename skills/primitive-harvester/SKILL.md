@@ -1,24 +1,41 @@
-<!-- SCOPE: both -->
 ---
 name: primitive-harvester
-description: "Use when you need this Cognitive OS skill: Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Classify whether a conversation
+  should become a reusable agentic primitive, improve an existing primitive, use an
+  existing primitive, become documentation only, or be discarded.; do not use when
+  a narrower skill directly matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
 audience: both
-tags: [meta, primitives, skills, automation, governance]
-summary_line: "Turn repeatable high-value conversation recipes into governed primitive proposals."
-platforms: ["codex", "claude-code", "generic-cli"]
-prerequisites: ["python3"]
+tags:
+- meta
+- primitives
+- skills
+- automation
+- governance
+summary_line: Turn repeatable high-value conversation recipes into governed primitive
+  proposals.
+platforms:
+- codex
+- claude-code
+- generic-cli
+prerequisites:
+- python3
 routing_patterns:
-  - pattern: '\bprimitive[- ]?harvester\b'
-    confidence: 0.95
-  - pattern: '\bclassify\s+conversation\s+(as\s+)?primitive\b'
-    confidence: 0.8
-  - pattern: '\bharvest\s+primitive\b'
-    confidence: 0.75
+- pattern: \bprimitive[- ]?harvester\b
+  confidence: 0.95
+- pattern: \bclassify\s+conversation\s+(as\s+)?primitive\b
+  confidence: 0.8
+- pattern: \bharvest\s+primitive\b
+  confidence: 0.75
+triggers:
+- primitive-harvester
+- /primitive-harvester
+- Primitive Harvester
+- Turn repeatable high-value conversation recipes into governed primitive proposals
 ---
-
+<!-- SCOPE: both -->
 # Primitive Harvester
 
 Use this skill when a conversation starts producing a repeatable workflow,

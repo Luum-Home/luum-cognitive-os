@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: code-review
-description: 'Use when you need this Cognitive OS skill: Engram-integrated code review with adversarial protocol. Reviews
-  changed files for quality, security, conventions, and test coverage. Uses engram memory for past review patterns and saves
-  findings for future reference.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Engram-integrated code review
+  with adversarial protocol. Reviews changed files for quality, security, conventions,
+  and test coverage. Uses engram memory for past review patterns and saves findings
+  for future reference.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -28,11 +28,16 @@ routing_patterns:
   confidence: 0.88
 routing_intents:
 - intent: code_review_request
-  description: User asks for a review of code, changes, a pull request, or implementation quality, including security, conventions,
-    or test coverage concerns.
+  description: User asks for a review of code, changes, a pull request, or implementation
+    quality, including security, conventions, or test coverage concerns.
   confidence: 0.88
+triggers:
+- code-review
+- /code-review
+- Code Review Report
+- Engram-integrated code review with adversarial protocol
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 AI-powered code review that leverages persistent memory (Engram) to learn from

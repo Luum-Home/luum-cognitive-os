@@ -1,21 +1,29 @@
-<!-- SCOPE: both -->
 ---
 name: coverage-enforcement
 version: 1.0.0
 command: /coverage-report
-description: Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml, report per-package results. Service root read from project.architecture.services_root.go config.
+description: Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml,
+  report per-package results. Service root read from project.architecture.services_root.go
+  config.
 last-updated: 2026-04-13
 auto-generated: false
 tech: go
 audience: project
 effort: haiku
-paths: ["*.go", "go.mod"]
-summary_line: "Run Go test coverage for all services, enforce thresholds from…"
-
-platforms: ["claude-code"]
+paths:
+- '*.go'
+- go.mod
+summary_line: Run Go test coverage for all services, enforce thresholds from…
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- coverage-enforcement
+- /coverage-enforcement
+- Coverage Enforcement Skill
+- Run Go test coverage for all services, enforce thresholds from…
 ---
-
+<!-- SCOPE: both -->
 # Coverage Enforcement Skill
 
 ## Purpose

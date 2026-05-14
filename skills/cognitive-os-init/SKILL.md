@@ -1,8 +1,8 @@
-<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-init
-description: 'Use when you need this Cognitive OS skill: META skill — initialize Cognitive OS for a project by chaining detect-stack
-  → generate-config → scaffold-project.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: META skill — initialize Cognitive
+  OS for a project by chaining detect-stack → generate-config → scaffold-project.;
+  do not use when a narrower skill directly matches the task.'
 version: 2.0.0
 last-updated: 2026-04-10
 user-invocable: true
@@ -12,7 +12,8 @@ tags:
 - init
 - setup
 - meta
-summary_line: META skill — initialize Cognitive OS for a project by chaining detect-stack →…
+summary_line: META skill — initialize Cognitive OS for a project by chaining detect-stack
+  →…
 platforms:
 - claude-code
 prerequisites: []
@@ -25,10 +26,16 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: initialize_cognitive_os
-  description: User wants to initialize, set up, configure, or bootstrap Cognitive OS for a project.
+  description: User wants to initialize, set up, configure, or bootstrap Cognitive
+    OS for a project.
   confidence: 0.9
+triggers:
+- cognitive-os-init
+- /cognitive-os-init
+- Cognitive OS Init
+- META skill — initialize Cognitive OS for a project by chaining detect-stack →…
 ---
-
+<!-- SCOPE: os-only -->
 # Cognitive OS Init
 
 META skill. Chains three atomic skills to fully initialize Cognitive OS for a project.

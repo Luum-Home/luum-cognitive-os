@@ -49,3 +49,7 @@ All events logged to `.cognitive-os/metrics/consequence-history.jsonl`. Use `Con
 | `lib/model_router.py` | Model selection affected by degradation |
 | `rules/trust-score.md` | Trust Report that provides the input score |
 | `rules/agent-kpis.md` | OKR targets that define thresholds |
+
+## Contextual Trigger
+
+- When work relates to Consequence System — OKR-Driven Feedback Loop.

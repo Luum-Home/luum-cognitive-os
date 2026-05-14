@@ -1,30 +1,40 @@
-<!-- SCOPE: both -->
 ---
 name: sdd-continue
 command: /sdd-continue
-description: "Use when you need this Cognitive OS skill: Enhanced SDD continuation with state inspection — determines optimal next action; do not use when a narrower skill directly matches the task."
-trigger: User invokes /sdd-continue [change-name], or orchestrator needs to determine next SDD step
+description: 'Use when you need this Cognitive OS skill: Enhanced SDD continuation
+  with state inspection — determines optimal next action; do not use when a narrower
+  skill directly matches the task.'
+trigger: User invokes /sdd-continue [change-name], or orchestrator needs to determine
+  next SDD step
 inputs:
-  - change-name (optional): SDD change to continue. If omitted, scans for any in-progress changes.
+- change-name (optional): SDD change to continue. If omitted, scans for any in-progress
+    changes.
 outputs:
-  - recommended_action: The optimal next SDD phase to run
-  - alternatives: Other possible actions ranked by impact
-  - state_summary: Current state of all artifacts
-  - reasoning: Why the recommended action was chosen
+- recommended_action: The optimal next SDD phase to run
+- alternatives: Other possible actions ranked by impact
+- state_summary: Current state of all artifacts
+- reasoning: Why the recommended action was chosen
 audience: project
 effort: opus
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsdd[- ]?continue\b'
-    confidence: 0.96
-  - pattern: '\bcontinue\s+(the\s+)?sdd\b'
-    confidence: 0.90
-  - pattern: '\binspect\s+sdd\s+state\b'
-    confidence: 0.84
+- pattern: \bsdd[- ]?continue\b
+  confidence: 0.96
+- pattern: \bcontinue\s+(the\s+)?sdd\b
+  confidence: 0.9
+- pattern: \binspect\s+sdd\s+state\b
+  confidence: 0.84
+triggers:
+- sdd-continue
+- /sdd-continue
+- Enhanced SDD Continue (BMAD v6 Pattern 6)
+- 'Use when you need this Cognitive OS skill: Enhanced SDD continuation with state
+  inspection — determines optimal next act'
 ---
-
+<!-- SCOPE: both -->
 # Enhanced SDD Continue (BMAD v6 Pattern 6)
 
 ## Purpose

@@ -1,8 +1,12 @@
-<!-- SCOPE: os-only -->
 ---
 name: radar-update
 command: /radar-update
-description: "Use when you need this Cognitive OS skill: Tech radar curation pipeline. Evaluates one or more GitHub repos via /repo-scout, then merges the results into the canonical radar docs (ecosystem-tools.md, blocked-tools.md) while preserving all human-authored prose. Dry-run by default; --apply writes files. Delegates per-repo evaluation to /repo-scout unchanged.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Tech radar curation pipeline.
+  Evaluates one or more GitHub repos via /repo-scout, then merges the results into
+  the canonical radar docs (ecosystem-tools.md, blocked-tools.md) while preserving
+  all human-authored prose. Dry-run by default; --apply writes files. Delegates per-repo
+  evaluation to /repo-scout unchanged.; do not use when a narrower skill directly
+  matches the task.'
 version: 0.1.0
 user-invocable: true
 auto-generated: false
@@ -12,19 +16,25 @@ audience: os-dev
 metadata:
   author: luum
   adr: docs/02-Decisions/adrs/ADR-065-radar-update-curation-pipeline.md
-summary_line: >
-  Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md
+summary_line: 'Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md
   while preserving human-authored prose. Dry-run by default, --apply writes.
 
-platforms: ["claude-code"]
+  '
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bradar[- ]?update\b'
-    confidence: 0.95
-  - pattern: '\bupdate\s+(tech\s+)?radar\b'
-    confidence: 0.85
+- pattern: \bradar[- ]?update\b
+  confidence: 0.95
+- pattern: \bupdate\s+(tech\s+)?radar\b
+  confidence: 0.85
+triggers:
+- radar-update
+- /radar-update
+- '`/radar-update` — Tech Radar Curation Pipeline'
+- Merge /repo-scout evaluations into ecosystem-tools
 ---
-
+<!-- SCOPE: os-only -->
 <!-- SCOPE: os-only -->
 
 # `/radar-update` — Tech Radar Curation Pipeline

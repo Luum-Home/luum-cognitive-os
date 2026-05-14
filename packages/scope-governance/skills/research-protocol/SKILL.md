@@ -1,11 +1,11 @@
-<!-- SCOPE: both -->
 ---
 name: research-protocol
-description: >
-  Meta-skill that teaches agents HOW to investigate any source material
-  systematically. Covers reading protocols per file type, comparison frameworks,
-  quality assessment rubrics, and structured verdicts. Every research task follows
-  DISCOVER, ANALYZE, COMPARE, SYNTHESIZE.
+description: 'Meta-skill that teaches agents HOW to investigate any source material
+  systematically. Covers reading protocols per file type, comparison frameworks, quality
+  assessment rubrics, and structured verdicts. Every research task follows DISCOVER,
+  ANALYZE, COMPARE, SYNTHESIZE.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -15,16 +15,20 @@ metadata:
   author: luum
 audience: project
 summary_line: Meta-skill that teaches agents HOW to investigate any source material…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bresearch[- ]?protocol\b'
-    confidence: 0.95
-  - pattern: '\bresearch\s+first\s+protocol\b'
-    confidence: 0.85
+- pattern: \bresearch[- ]?protocol\b
+  confidence: 0.95
+- pattern: \bresearch\s+first\s+protocol\b
+  confidence: 0.85
+triggers:
+- research-protocol
+- /research-protocol
+- Meta-skill that teaches agents HOW to investigate any source material…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 A research methodology framework that ensures consistent, thorough investigation of any source material. This is the META-SKILL: it defines HOW to research. Other skills like `repo-scout` (GitHub repos) and `deep-research` (multi-hop topics) SHOULD follow this protocol internally.

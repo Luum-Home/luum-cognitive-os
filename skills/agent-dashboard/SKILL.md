@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: agent-dashboard
-description: 'Use when you need this Cognitive OS skill: Show real-time status of all running background agents; do not use
-  when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Show real-time status of
+  all running background agents; do not use when a narrower skill directly matches
+  the task.'
 audience: os
 scope: os
 version: 1.0.0
@@ -21,8 +21,12 @@ routing_intents:
 - intent: agent_dashboard_request
   description: User asks to show real-time status of all running background agents.
   confidence: 0.85
+triggers:
+- agent-dashboard
+- /agent-dashboard
+- Show real-time status of all running background agents
 ---
-
+<!-- SCOPE: both -->
 # /agent-dashboard
 
 Show status of all background agents launched in this session.

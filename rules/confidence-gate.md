@@ -98,3 +98,7 @@ auto-verify.sh runs acceptance criteria
 - **Matcher**: Agent
 - **Exit code**: 0 (pass/warn) or 2 (block in production/maintenance)
 - **Performance**: < 200ms
+
+## Contextual Trigger
+
+- When work relates to Confidence Gate Protocol.

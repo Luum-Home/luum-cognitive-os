@@ -76,3 +76,7 @@ These components are foundational and remain active at every capability level:
 | `content-policy.sh` | Security -- never optional |
 | `result-truncator.sh` | Context protection |
 | `completion-gate.sh` | Acceptance criteria verification |
+
+## Contextual Trigger
+
+- When work relates to Capability Levels — Auto-Disable Components.

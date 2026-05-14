@@ -1,34 +1,39 @@
-<!-- SCOPE: both -->
 ---
 name: resolve-blockers
 command: /resolve-blockers
-description: >
-  Automatically resolve blockers reported by readiness-check. Maps each blocker
-  type to a resolution sub-agent, re-runs readiness-check after fixes, and
+description: 'Automatically resolve blockers reported by readiness-check. Maps each
+  blocker type to a resolution sub-agent, re-runs readiness-check after fixes, and
   escalates to human after 2 failed attempts.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-03-26
 trigger: After readiness-check returns FAIL
 inputs:
-  - change-name (required): SDD change whose blockers to resolve
+- change-name (required): SDD change whose blockers to resolve
 outputs:
-  - status: RESOLVED | PARTIAL | ESCALATED
-  - resolved: list of blockers that were fixed
-  - unresolved: list of blockers still open
-  - attempts: number of resolution cycles used
-  - recommendation: next action for orchestrator or human
+- status: RESOLVED | PARTIAL | ESCALATED
+- resolved: list of blockers that were fixed
+- unresolved: list of blockers still open
+- attempts: number of resolution cycles used
+- recommendation: next action for orchestrator or human
 metadata:
   author: luum
   pattern-source: .cognitive-os/Archive (3)/ai-workflow/ai_workflow_resolve_iso.py
 audience: project
 summary_line: Automatically resolve blockers reported by readiness-check.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- resolve-blockers
+- /resolve-blockers
+- Resolve Blockers
+- Automatically resolve blockers reported by readiness-check
 ---
-
+<!-- SCOPE: both -->
 # Resolve Blockers
 
 ## Purpose

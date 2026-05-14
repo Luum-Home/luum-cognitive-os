@@ -1,16 +1,22 @@
-<!-- SCOPE: both -->
 ---
 name: private-mode
-description: Toggle private conversation mode. When active, nothing is saved to Engram, metrics, error logs, or git. Use for personal conversations, sensitive topics, or casual chat. Activate with /private, deactivate with /private off.
+description: Toggle private conversation mode. When active, nothing is saved to Engram,
+  metrics, error logs, or git. Use for personal conversations, sensitive topics, or
+  casual chat. Activate with /private, deactivate with /private off.
 user-invocable: true
 audience: project
 summary_line: Toggle private conversation mode.
-
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- private-mode
+- /private-mode
+- Private Mode
+- Toggle private conversation mode
 ---
-
+<!-- SCOPE: both -->
 # Private Mode
 
 Toggle private conversation mode on or off.

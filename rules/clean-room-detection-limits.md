@@ -97,3 +97,7 @@ Generic phrasing for the bottom of every error block:
 4. **CI cadence vs commit cadence** — T1 and T2 are pre-commit. T3 nightly is
    the target. Should there be a release gate that re-runs T1-T2 on the full
    diff between main and release tag? Operator decision.
+
+## Contextual Trigger
+
+- When work relates to Clean-Room Detection — Mechanical Limits.

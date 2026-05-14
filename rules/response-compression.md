@@ -39,3 +39,7 @@ The orchestrator MUST minimize its own token output. Every token spent on orches
 ## Integration
 
 This rule applies to the ORCHESTRATOR only, not to sub-agents (they have their own quality rules in `agent-quality.md`).
+
+## Contextual Trigger
+
+- When work relates to Response Compression — Orchestrator Output Discipline.

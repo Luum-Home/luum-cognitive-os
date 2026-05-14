@@ -1,9 +1,9 @@
-<!-- SCOPE: os-only -->
 ---
 name: product-answer
-description: Use when the user asks a Cognitive OS product/commercial question such as differentiator, moat, wedge, ICP, pricing,
-  competitors, pitch, positioning, or what claims are safe. Always prefer the cached ADR-282 product answer cards before reading
-  broad docs.
+description: Use when the user asks a Cognitive OS product/commercial question such
+  as differentiator, moat, wedge, ICP, pricing, competitors, pitch, positioning, or
+  what claims are safe. Always prefer the cached ADR-282 product answer cards before
+  reading broad docs.
 version: 1.0.0
 user-invocable: true
 audience: os-dev
@@ -13,7 +13,8 @@ tags:
 - evidence
 - positioning
 - token-efficiency
-summary_line: Answer COS product/commercial questions from cached evidence cards, not broad repo research.
+summary_line: Answer COS product/commercial questions from cached evidence cards,
+  not broad repo research.
 platforms:
 - claude-code
 - codex
@@ -32,29 +33,34 @@ routing_patterns:
   confidence: 0.8
 routing_intents:
 - intent: product_capability_question
-  description: User asks what Cognitive OS can do, whether it is useful for their situation, or whether it can help a developer
-    or team.
+  description: User asks what Cognitive OS can do, whether it is useful for their
+    situation, or whether it can help a developer or team.
   confidence: 0.88
 - intent: value_proposition_question
-  description: User asks who Cognitive OS is for, what problems it solves, why to use it, or what differentiates it from alternatives.
+  description: User asks who Cognitive OS is for, what problems it solves, why to
+    use it, or what differentiates it from alternatives.
   confidence: 0.88
 - intent: commercial_positioning_question
-  description: User asks about Cognitive OS positioning, ICP, buyer, pricing, competitors, pitch, landing page claims, moat,
-    wedge, or safe product claims.
+  description: User asks about Cognitive OS positioning, ICP, buyer, pricing, competitors,
+    pitch, landing page claims, moat, wedge, or safe product claims.
   confidence: 0.88
-# Multilingual example utterances (ADR-296). Reference paraphrases the semantic
-# router grounds against when a user question is verbose or topically diffuse.
-- "can this help a developer who does not know best practices?"
-- "is this OS useful for someone without architecture experience?"
-- "what can this OS do for me?"
-- "¿este SO me puede ayudar como desarrollador?"
-- "¿puede ayudar a alguien sin conocimiento de buenas prácticas, arquitectura o seguridad?"
-- "¿sirve este sistema operativo para alguien que no conoce testing o documentación?"
-- "este SO serve para um desenvolvedor sem experiência em arquitetura?"
-- "ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?"
-- "est-ce que ce SO peut aider un développeur sans expérience?"
+- can this help a developer who does not know best practices?
+- is this OS useful for someone without architecture experience?
+- what can this OS do for me?
+- ¿este SO me puede ayudar como desarrollador?
+- ¿puede ayudar a alguien sin conocimiento de buenas prácticas, arquitectura o seguridad?
+- ¿sirve este sistema operativo para alguien que no conoce testing o documentación?
+- este SO serve para um desenvolvedor sem experiência em arquitetura?
+- ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?
+- est-ce que ce SO peut aider un développeur sans expérience?
+triggers:
+- product-answer
+- /product-answer
+- Product Answer
+- Answer COS product/commercial questions from cached evidence cards, not broad repo
+  research
 ---
-
+<!-- SCOPE: os-only -->
 # Product Answer
 
 ## Purpose

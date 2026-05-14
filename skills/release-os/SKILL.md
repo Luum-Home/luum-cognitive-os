@@ -1,20 +1,28 @@
-<!-- SCOPE: os-only -->
 ---
 name: release-os
 command: /release-os
-description: "Use when you need this Cognitive OS skill: META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: META — orchestrate the full
+  Cognitive OS release by chaining the 5 atomic release skills; do not use when a
+  narrower skill directly matches the task.'
 version: 2.0.0
 audience: os
-tags: [release, meta]
+tags:
+- release
+- meta
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: sonnet
 summary_line: META — orchestrate the full Cognitive OS release by chaining the 5 atomic…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- release-os
+- /release-os
+- Release OS — META Skill
+- META — orchestrate the full Cognitive OS release by chaining the 5 atomic…
 ---
-
+<!-- SCOPE: os-only -->
 # Release OS — META Skill
 
 ## Purpose

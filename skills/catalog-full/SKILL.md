@@ -1,25 +1,34 @@
-<!-- SCOPE: both -->
 ---
 name: catalog-full
-description: "Use when the compact Level-1 catalog does not have enough detail. Purpose: Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns."
+description: 'Use when the compact Level-1 catalog does not have enough detail. Purpose:
+  Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections,
+  and audience columns.'
 version: 1.0.0
 command: /catalog-full
 last-updated: 2026-04-16
 audience: both
-tags: [catalog, skills, context-optimization]
+tags:
+- catalog
+- skills
+- context-optimization
 summary_line: Load and display the full skills catalog (skills/CATALOG.md) with invocations…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcatalog[- ]?full\b'
-    confidence: 0.95
-  - pattern: '\bfull\s+skills?\s+catalog\b'
-    confidence: 0.85
-  - pattern: '\bshow\s+(full\s+)?catalog\b'
-    confidence: 0.75
+- pattern: \bcatalog[- ]?full\b
+  confidence: 0.95
+- pattern: \bfull\s+skills?\s+catalog\b
+  confidence: 0.85
+- pattern: \bshow\s+(full\s+)?catalog\b
+  confidence: 0.75
+triggers:
+- catalog-full
+- /catalog-full
+- Catalog Full
+- Load and display the full skills catalog (skills/CATALOG
 ---
-
+<!-- SCOPE: both -->
 # Catalog Full
 
 ## Purpose

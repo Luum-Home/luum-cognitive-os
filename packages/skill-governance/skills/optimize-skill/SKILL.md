@@ -1,19 +1,25 @@
-<!-- SCOPE: both -->
 ---
 name: optimize-skill
-description: Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prompt
+description: Optimizar un skill de Claude Code iterativamente usando evals, midiendo
+  mejoras y refinando el prompt
 user_invocable: true
 disable-model-invocation: true
 model: claude-opus-4-6
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 audience: project
-summary_line: "Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras…"
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: Optimizar un skill de Claude Code iterativamente usando evals, midiendo
+  mejoras…
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- optimize-skill
+- /optimize-skill
+- /optimize-skill — Karpathy Loop para Skills de Claude Code
+- Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras…
 ---
-
+<!-- SCOPE: both -->
 # /optimize-skill — Karpathy Loop para Skills de Claude Code
 
 ## Argumentos

@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: session-manager
-description: 'Use when you need this Cognitive OS skill: Manage concurrent Cognitive OS sessions — list, inspect, and clean
-  up; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Manage concurrent Cognitive
+  OS sessions — list, inspect, and clean up; do not use when a narrower skill directly
+  matches the task.'
 audience: project
 effort: haiku
 version: 1.0.0
@@ -19,10 +19,16 @@ routing_patterns:
 summary_line: Manage concurrent Cognitive OS sessions — list, inspect, and clean up.
 routing_intents:
 - intent: session_manager_request
-  description: User asks to manage concurrent Cognitive OS sessions — list, inspect, and clean up.
+  description: User asks to manage concurrent Cognitive OS sessions — list, inspect,
+    and clean up.
   confidence: 0.85
+triggers:
+- session-manager
+- /session-manager
+- Session Manager
+- Manage concurrent Cognitive OS sessions — list, inspect, and clean up
 ---
-
+<!-- SCOPE: both -->
 # Session Manager
 
 > Manage concurrent Cognitive OS sessions: list, inspect, and clean up.

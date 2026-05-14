@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: add-mcp
-description: 'Use when you need this Cognitive OS skill: Step-by-step guide for integrating a new MCP server into the Cognitive
-  OS; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Step-by-step guide for integrating
+  a new MCP server into the Cognitive OS; do not use when a narrower skill directly
+  matches the task.'
 version: 0.1.0
 audience: os
 tags:
@@ -20,13 +20,20 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bnew\s+mcp\s+(server|integration)\b
   confidence: 0.75
-summary_line: Step-by-step guide for integrating a new MCP server into the Cognitive OS.
+summary_line: Step-by-step guide for integrating a new MCP server into the Cognitive
+  OS.
 routing_intents:
 - intent: add_mcp_request
-  description: User asks to step-by-step guide for integrating a new MCP server into the Cognitive OS.
+  description: User asks to step-by-step guide for integrating a new MCP server into
+    the Cognitive OS.
   confidence: 0.85
+triggers:
+- add-mcp
+- /add-mcp
+- Add MCP Server
+- Step-by-step guide for integrating a new MCP server into the Cognitive OS
 ---
-
+<!-- SCOPE: both -->
 # Add MCP Server
 
 > Procedure for integrating a new MCP server so its tools are available to agents.

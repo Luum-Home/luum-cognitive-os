@@ -1,23 +1,24 @@
-<!-- SCOPE: both -->
 ---
 name: planning-poker
-description: Multi-agent complexity estimation using planning-poker rounds — triangulate task effort, surface disagreements, and calibrate estimates against actual outcomes.
+description: Multi-agent complexity estimation using planning-poker rounds — triangulate
+  task effort, surface disagreements, and calibrate estimates against actual outcomes.
 summary_line: Multi-agent complexity estimation via planning-poker rounds.
 version: 1.0.0
 last-updated: 2026-03-27
 auto-generated: false
 tech: python
 triggers:
-  - estimation
-  - complexity
-  - planning poker
-  - how big is this task
-  - estimate effort
+- estimation
+- complexity
+- planning poker
+- how big is this task
+- estimate effort
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Planning Poker — Multi-Agent Complexity Estimation
 
 ## Purpose

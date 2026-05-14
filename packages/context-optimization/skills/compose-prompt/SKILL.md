@@ -1,16 +1,21 @@
-<!-- SCOPE: both -->
 ---
 name: compose-prompt
-description: Compose a sub-agent prompt from reusable templates. Use when launching sub-agents to ensure consistent instructions.
+description: Compose a sub-agent prompt from reusable templates. Use when launching
+  sub-agents to ensure consistent instructions.
 user-invocable: true
 version: 1.0.0
 audience: project
 summary_line: Compose a sub-agent prompt from reusable templates.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- compose-prompt
+- /compose-prompt
+- Compose Prompt
+- Compose a sub-agent prompt from reusable templates
 ---
-
+<!-- SCOPE: both -->
 # Compose Prompt
 
 Assemble a sub-agent prompt by selecting and combining templates from `.cognitive-os/templates/`.

@@ -1,24 +1,35 @@
-<!-- SCOPE: os-only -->
 ---
 name: synthesize-skill
-description: "Use when you need this Cognitive OS skill: Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates; do not use when a narrower skill directly matches the task."
-trigger: synthesize skill, synthesize-skill, skill synthesis, review synthesis queue, skill proposals, experimental skills
+description: 'Use when you need this Cognitive OS skill: Review the skill synthesis
+  queue, list proposed drafts, and accept/reject/defer promotion candidates; do not
+  use when a narrower skill directly matches the task.'
+trigger: synthesize skill, synthesize-skill, skill synthesis, review synthesis queue,
+  skill proposals, experimental skills
 model: sonnet
 effort: sonnet
-audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+audience: os
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites:
-  commands: [python3, jq]
+  commands:
+  - python3
+  - jq
 routing_patterns:
-  - pattern: '\bsynthesize[- ]?skill\b'
-    confidence: 0.95
-  - pattern: '\bskill\s+synthesis\s+queue\b'
-    confidence: 0.85
-  - pattern: '\bpromote\s+skill\s+candidate\b'
-    confidence: 0.75
+- pattern: \bsynthesize[- ]?skill\b
+  confidence: 0.95
+- pattern: \bskill\s+synthesis\s+queue\b
+  confidence: 0.85
+- pattern: \bpromote\s+skill\s+candidate\b
+  confidence: 0.75
+triggers:
+- synthesize-skill
+- /synthesize-skill
+- Synthesize Skill
+- 'Use when you need this Cognitive OS skill: Review the skill synthesis queue, list
+  proposed drafts, and accept/reject/def'
 ---
-
+<!-- SCOPE: os-only -->
 # Synthesize Skill
 
 Drain and review the skill synthesis queue produced by `hooks/skill-synthesis-scanner.sh`.

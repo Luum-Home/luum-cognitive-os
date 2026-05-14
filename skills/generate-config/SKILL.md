@@ -1,23 +1,34 @@
-<!-- SCOPE: both -->
 ---
 name: generate-config
-description: "Use when you need this Cognitive OS skill: Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Read detected-stack.json
+  and generate or update cognitive-os.yaml with detected infrastructure, quality gates,
+  and stack-specific settings.; do not use when a narrower skill directly matches
+  the task.'
 version: 0.1.0
 audience: both
-tags: [init, setup, config]
-summary_line: Read detected-stack.json and generate or update cognitive-os.yaml with detected…
-
-platforms: ["claude-code"]
+tags:
+- init
+- setup
+- config
+summary_line: Read detected-stack.json and generate or update cognitive-os.yaml with
+  detected…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bgenerate[- ]?config\b'
-    confidence: 0.95
-  - pattern: '\bgenerate\s+cognitive[- ]?os\.yaml\b'
-    confidence: 0.85
-  - pattern: '\bauto[- ]?generate\s+(os\s+)?config\b'
-    confidence: 0.75
+- pattern: \bgenerate[- ]?config\b
+  confidence: 0.95
+- pattern: \bgenerate\s+cognitive[- ]?os\.yaml\b
+  confidence: 0.85
+- pattern: \bauto[- ]?generate\s+(os\s+)?config\b
+  confidence: 0.75
+triggers:
+- generate-config
+- /generate-config
+- Generate Config
+- Read detected-stack
 ---
-
+<!-- SCOPE: both -->
 # Generate Config
 
 Read `.cognitive-os/detected-stack.json` (produced by `/detect-stack`) and generate or update `cognitive-os.yaml` for the current project.

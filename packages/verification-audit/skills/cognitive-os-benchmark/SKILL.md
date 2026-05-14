@@ -1,4 +1,3 @@
-<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-benchmark
 description: Run benchmark comparisons between Cognitive OS and BMAD METHOD v6
@@ -26,10 +25,11 @@ routing_patterns:
 summary_line: Run benchmark comparisons between Cognitive OS and BMAD METHOD v6.
 routing_intents:
 - intent: cognitive_os_benchmark_request
-  description: User asks to run benchmark comparisons between Cognitive OS and BMAD METHOD v6.
+  description: User asks to run benchmark comparisons between Cognitive OS and BMAD
+    METHOD v6.
   confidence: 0.85
 ---
-
+<!-- SCOPE: os-only -->
 # Cognitive OS Benchmark Skill
 
 Run standardized benchmarks to compare Cognitive OS vs BMAD METHOD v6 on 5 coding tasks.

@@ -1,25 +1,33 @@
-<!-- SCOPE: os-only -->
 ---
 name: primitive-surface-reduction
-description: "Use when you need this Cognitive OS skill: Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Plan or apply conservative
+  surface reduction for Cognitive OS agentic primitives; OS source repo only, plan
+  by default.; do not use when a narrower skill directly matches the task.'
 invoke: /primitive-surface-reduction
 tag: os-only
 model: sonnet
 audience: os-dev
 effort: sonnet
 summary_line: Plan/apply safe reduction of unused Cognitive OS primitive surface.
-version: "1.0.0"
-platforms: ["claude-code", "codex"]
+version: 1.0.0
+platforms:
+- claude-code
+- codex
 prerequisites: []
 routing_patterns:
-  - pattern: '\bprimitive[- ]?surface[- ]?reduction\b'
-    confidence: 0.95
-  - pattern: '\breduce\s+primitive\s+surface\b'
-    confidence: 0.85
-  - pattern: '\bconservative\s+surface\s+reduction\b'
-    confidence: 0.75
+- pattern: \bprimitive[- ]?surface[- ]?reduction\b
+  confidence: 0.95
+- pattern: \breduce\s+primitive\s+surface\b
+  confidence: 0.85
+- pattern: \bconservative\s+surface\s+reduction\b
+  confidence: 0.75
+triggers:
+- primitive-surface-reduction
+- /primitive-surface-reduction
+- Primitive Surface Reduction
+- Plan/apply safe reduction of unused Cognitive OS primitive surface
 ---
-
+<!-- SCOPE: os-only -->
 # Primitive Surface Reduction
 
 ## Purpose

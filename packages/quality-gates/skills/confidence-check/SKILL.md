@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: confidence-check
-description: >
-  Pre-implementation confidence assessment. Before writing code, check 5
-  dimensions to verify readiness: no duplicates, architecture compliance,
-  documentation verified, prior art reviewed, and root cause identified.
+description: 'Pre-implementation confidence assessment. Before writing code, check
+  5 dimensions to verify readiness: no duplicates, architecture compliance, documentation
+  verified, prior art reviewed, and root cause identified.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -15,11 +15,15 @@ metadata:
   pattern: superclaude-confidence
 audience: project
 summary_line: Pre-implementation confidence assessment.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- confidence-check
+- /confidence-check
+- Pre-implementation confidence assessment
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Prevent wasted implementation effort by verifying the agent is ready to write

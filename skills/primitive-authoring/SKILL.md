@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: primitive-authoring
-description: 'Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive,
-  deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service
-  impact. Purpose: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in
-  consumer projects.'
+description: 'Use when building a new skill/rule/hook/script/workflow, converting
+  a repeated conversation into a primitive, deciding whether a primitive belongs in
+  the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service
+  impact. Purpose: Governed workflow for creating, modifying, or promoting Cognitive
+  OS agentic primitives in the SO or in consumer projects.'
 version: 0.2.0
 audience: both
 tags:
@@ -32,11 +32,17 @@ routing_patterns:
   confidence: 0.9
 routing_intents:
 - intent: agentic_primitive_authoring
-  description: User wants to create, modify, promote, or assess an agentic primitive such as a skill, rule, hook, script,
-    or reusable workflow.
+  description: User wants to create, modify, promote, or assess an agentic primitive
+    such as a skill, rule, hook, script, or reusable workflow.
   confidence: 0.9
+triggers:
+- primitive-authoring
+- /primitive-authoring
+- Primitive Authoring
+- Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation
+  into a primitive, deciding w
 ---
-
+<!-- SCOPE: both -->
 # Primitive Authoring
 
 Use this skill before creating or changing any agentic primitive: skill, rule,

@@ -44,3 +44,7 @@ This symlinks `hooks/pre-commit-gate.sh` to `.git/hooks/pre-commit`.
 - **Error Learning**: Test failures detected by this hook are not logged to error-learning.jsonl (it runs outside Claude sessions)
 - **Coverage Report**: Uses the same `tests/coverage-report.sh` as the CI pipeline
 - **Quality Gates**: Complements the agent-level quality gates with a developer-level gate
+
+## Contextual Trigger
+
+- When work relates to Pre-Commit Coverage Gate.

@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: deep-research
-description: >
-  Multi-hop research skill for deep investigation of topics. Executes structured
-  research with configurable depth levels (quick/standard/deep/exhaustive),
+description: 'Multi-hop research skill for deep investigation of topics. Executes
+  structured research with configurable depth levels (quick/standard/deep/exhaustive),
   multi-hop reasoning chains, confidence self-assessment, and Engram persistence.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -15,11 +15,16 @@ metadata:
 audience: project
 effort: opus
 summary_line: Multi-hop research skill for deep investigation of topics.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- deep-research
+- /deep-research
+- 'Research Report: {topic}'
+- Multi-hop research skill for deep investigation of topics
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Conduct structured, multi-hop research on any topic with configurable depth.

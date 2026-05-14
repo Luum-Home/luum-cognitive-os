@@ -1,20 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: primitive-classifier
-description: "Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package. Purpose: Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE."
+description: 'Use when adding new functionality to determine if it belongs in the
+  OS kernel or should be a cos package. Purpose: Classify a new agentic primitive
+  (skill, hook, rule, lib) as CORE or PACKAGE.'
 allowed-tools:
-  - Read
-  - Grep
-  - Bash
-  - mcp__plugin_engram_engram__mem_search
+- Read
+- Grep
+- Bash
+- mcp__plugin_engram_engram__mem_search
 audience: os-dev
-summary_line: "Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE."
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: Classify a new agentic primitive (skill, hook, rule, lib) as CORE or
+  PACKAGE.
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- primitive-classifier
+- /primitive-classifier
+- Agentic Primitive Classifier
+- Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE
 ---
-
+<!-- SCOPE: both -->
 # Agentic Primitive Classifier
 
 ## When to Use

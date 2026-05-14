@@ -1,23 +1,30 @@
-<!-- SCOPE: both -->
 ---
 name: skill-creator
-description: "Use when you need this Cognitive OS skill: Creates new AI agent skills following the Agent Skills spec, then generates cos package scaffolding for sharing.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Creates new AI agent skills
+  following the Agent Skills spec, then generates cos package scaffolding for sharing.;
+  do not use when a narrower skill directly matches the task.'
 summary_line: Create new AI agent skills + cos package scaffolding.
 version: 1.1.0
 audience: both
 invoke: /skill-creator
 effort: opus
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bskill[- ]?creator\b'
-    confidence: 0.96
-  - pattern: '\bcreate\s+(a\s+)?(new\s+)?skill\b'
-    confidence: 0.90
-  - pattern: '\bagent\s+skills?\s+spec\b'
-    confidence: 0.82
+- pattern: \bskill[- ]?creator\b
+  confidence: 0.96
+- pattern: \bcreate\s+(a\s+)?(new\s+)?skill\b
+  confidence: 0.9
+- pattern: \bagent\s+skills?\s+spec\b
+  confidence: 0.82
+triggers:
+- skill-creator
+- /skill-creator
+- Skill Creator with cos Packaging
+- Create new AI agent skills + cos package scaffolding
 ---
-
+<!-- SCOPE: both -->
 # Skill Creator with cos Packaging
 
 > Creates new AI agent skills following the Agent Skills spec, then generates cos package scaffolding for sharing.

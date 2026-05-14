@@ -1,9 +1,9 @@
-<!-- SCOPE: os-only -->
 ---
 name: test-contract-repair
-description: 'Use when you need this Cognitive OS skill: Repair failing or misleading tests without greenwashing. Classify
-  the contract, confirm history, fix runtime when needed, and strengthen structural checks into behavioral proof.; do not
-  use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Repair failing or misleading
+  tests without greenwashing. Classify the contract, confirm history, fix runtime
+  when needed, and strengthen structural checks into behavioral proof.; do not use
+  when a narrower skill directly matches the task.'
 invoke: /test-contract-repair
 version: 1.0.0
 audience: os-dev
@@ -17,15 +17,21 @@ routing_patterns:
   confidence: 0.85
 - pattern: \btest\s+contract\s+(fix|repair)\b
   confidence: 0.8
-summary_line: Repair failing or misleading tests without greenwashing. Classify the contract, confirm history, fix runtime
-  when…
+summary_line: Repair failing or misleading tests without greenwashing. Classify the
+  contract, confirm history, fix runtime when…
 routing_intents:
 - intent: test_contract_repair_request
-  description: User asks to repair failing or misleading tests without greenwashing. Classify the contract, confirm history,
-    fix runtime when needed, and strengthen structural checks into behavioral proof.
+  description: User asks to repair failing or misleading tests without greenwashing.
+    Classify the contract, confirm history, fix runtime when needed, and strengthen
+    structural checks into behavioral proof.
   confidence: 0.85
+triggers:
+- test-contract-repair
+- /test-contract-repair
+- Test Contract Repair
+- Repair failing or misleading tests without greenwashing
 ---
-
+<!-- SCOPE: os-only -->
 # Test Contract Repair
 
 Use this skill when Cognitive OS tests fail, skip suspiciously, or appear to

@@ -1,33 +1,39 @@
-<!-- SCOPE: both -->
 ---
 name: session-report-executive
-description: "Use when you need this Cognitive OS skill: Generate an executive-level session report translating technical metrics into business language. For non-technical leaders who need to know what the Cognitive OS did during a session.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Generate an executive-level
+  session report translating technical metrics into business language. For non-technical
+  leaders who need to know what the Cognitive OS did during a session.; do not use
+  when a narrower skill directly matches the task.'
 user-invocable: true
 version: 0.1.0
 last-updated: 2026-04-09
 audience: human
 effort: haiku
-tags: [governance, transparency, reporting]
+tags:
+- governance
+- transparency
+- reporting
 triggers:
-  - session report
-  - executive report
-  - what did the OS do
-  - qué hizo el SO
-  - audit report
-  - reporte ejecutivo
-summary_line: Generate an executive-level session report translating technical metrics into…
-
-platforms: ["claude-code"]
+- session report
+- executive report
+- what did the OS do
+- qué hizo el SO
+- audit report
+- reporte ejecutivo
+summary_line: Generate an executive-level session report translating technical metrics
+  into…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsession[- ]?report[- ]?executive\b'
-    confidence: 0.95
-  - pattern: '\bexecutive\s+(session\s+)?report\b'
-    confidence: 0.85
-  - pattern: '\bbusiness\s+language\s+report\b'
-    confidence: 0.75
+- pattern: \bsession[- ]?report[- ]?executive\b
+  confidence: 0.95
+- pattern: \bexecutive\s+(session\s+)?report\b
+  confidence: 0.85
+- pattern: \bbusiness\s+language\s+report\b
+  confidence: 0.75
 ---
-
+<!-- SCOPE: both -->
 # Session Report — Executive View
 
 Translate technical JSONL metrics into a business-readable session report. Plain language. Actual numbers. Honest about what was and was not verified.

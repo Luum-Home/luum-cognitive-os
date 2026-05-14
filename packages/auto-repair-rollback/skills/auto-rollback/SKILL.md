@@ -1,15 +1,20 @@
-<!-- SCOPE: both -->
 ---
 name: auto-rollback
-description: "Prepare a human-approved rollback plan when SDD verify-apply exceeds max retries"
-triggers: ["/auto-rollback", "Verify-apply loop exceeded 3 retries", "rollback plan required"]
+description: Prepare a human-approved rollback plan when SDD verify-apply exceeds
+  max retries
+triggers:
+- /auto-rollback
+- Verify-apply loop exceeded 3 retries
+- rollback plan required
 audience: project
-summary_line: "Prepare a human-approved rollback evidence package; never silently reverts work."
-version: "2.0.0"
-platforms: ["claude-code"]
+summary_line: Prepare a human-approved rollback evidence package; never silently reverts
+  work.
+version: 2.0.0
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # /auto-rollback
 
 Prepare a rollback evidence package. Do not run destructive git commands until the operator explicitly approves the plan.

@@ -25,3 +25,7 @@ b = MLflowBridge()
 b.log_agent_run("my-agent", "sonnet", tokens=1200, duration_ms=3000, success=True, cost_usd=0.07)
 b.log_session_summary("session-123", agents_launched=5, total_cost=0.35, total_tokens=8000)
 ```
+
+## Contextual Trigger
+
+- When work relates to Observability — MLflow Integration.

@@ -1,17 +1,22 @@
-<!-- SCOPE: both -->
 ---
 name: error-analyzer
-description: Analyze accumulated errors from test/lint/build runs and propose skill improvements. Use when error patterns repeat.
+description: Analyze accumulated errors from test/lint/build runs and propose skill
+  improvements. Use when error patterns repeat.
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: project
 summary_line: Analyze accumulated errors from test/lint/build runs and propose skill…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- error-analyzer
+- /error-analyzer
+- Error Analyzer Skill
+- Analyze accumulated errors from test/lint/build runs and propose skill…
 ---
-
+<!-- SCOPE: both -->
 # Error Analyzer Skill
 
 Analyze accumulated error patterns from `.claude/metrics/error-learning.jsonl` and propose skill improvements.

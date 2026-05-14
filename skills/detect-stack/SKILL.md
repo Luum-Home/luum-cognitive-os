@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: detect-stack
-description: 'Use when you need this Cognitive OS skill: Scan a project root and produce detected-stack.json with detected
-  languages, frameworks, databases, auth, cache, messaging, and services.; do not use when a narrower skill directly matches
-  the task.'
+description: 'Use when you need this Cognitive OS skill: Scan a project root and produce
+  detected-stack.json with detected languages, frameworks, databases, auth, cache,
+  messaging, and services.; do not use when a narrower skill directly matches the
+  task.'
 version: 0.1.0
 audience: both
 tags:
@@ -23,11 +23,16 @@ routing_patterns:
   confidence: 0.8
 routing_intents:
 - intent: detect_stack_request
-  description: User asks to scan a project root and produce detected-stack.json with detected languages, frameworks, databases,
-    auth, cache, messaging, and services.
+  description: User asks to scan a project root and produce detected-stack.json with
+    detected languages, frameworks, databases, auth, cache, messaging, and services.
   confidence: 0.85
+triggers:
+- detect-stack
+- /detect-stack
+- Detect Stack
+- Scan a project root and produce detected-stack
 ---
-
+<!-- SCOPE: both -->
 # Detect Stack
 
 Scan the current project directory for stack indicators and write a machine-readable `detected-stack.json` to `.cognitive-os/`.

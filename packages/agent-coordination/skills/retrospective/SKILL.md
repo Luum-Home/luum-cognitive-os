@@ -1,18 +1,23 @@
-<!-- SCOPE: both -->
 ---
 name: retrospective
-invocation_pattern: on-demand  # @on-demand: periodic — invoked manually after sprints
+invocation_pattern: on-demand
 version: 1.0.0
 command: /retrospective
-description: Weekly analysis of all squads with trend analysis and auto-reconfiguration proposals
+description: Weekly analysis of all squads with trend analysis and auto-reconfiguration
+  proposals
 last-updated: 2026-03-22
 audience: project
 summary_line: Weekly analysis of all squads with trend analysis and auto-reconfiguration…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- retrospective
+- /retrospective
+- Retrospective Skill
+- Weekly analysis of all squads with trend analysis and auto-reconfiguration…
 ---
-
+<!-- SCOPE: both -->
 # Retrospective Skill
 
 ## Purpose

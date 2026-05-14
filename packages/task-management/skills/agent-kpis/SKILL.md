@@ -1,18 +1,23 @@
-<!-- SCOPE: both -->
 ---
 name: agent-kpis
-description: Calculate and report Cognitive OS KPIs and OKRs. Shows agent health, efficiency, quality metrics. Use periodically or when evaluating agent performance.
+description: Calculate and report Cognitive OS KPIs and OKRs. Shows agent health,
+  efficiency, quality metrics. Use periodically or when evaluating agent performance.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-03-21
 audience: both
 effort: haiku
 summary_line: Calculate and report Cognitive OS KPIs and OKRs.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- agent-kpis
+- /agent-kpis
+- Agent KPI Dashboard
+- Calculate and report Cognitive OS KPIs and OKRs
 ---
-
+<!-- SCOPE: both -->
 # Agent KPI Dashboard
 
 Calculate, display, and track Cognitive OS performance metrics across 5 OKR categories.

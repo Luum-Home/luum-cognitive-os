@@ -1,8 +1,8 @@
-<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-status
-description: 'Use when you need this Cognitive OS skill: Full health check of all Cognitive OS agentic primitives; do not
-  use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Full health check of all
+  Cognitive OS agentic primitives; do not use when a narrower skill directly matches
+  the task.'
 triggers:
 - /cognitive-os-status
 - /aos-status
@@ -21,10 +21,11 @@ routing_patterns:
   confidence: 0.84
 routing_intents:
 - intent: cognitive_os_health_status
-  description: User asks for a health check or status report of Cognitive OS, its hooks, skills, rules, or agentic primitives.
+  description: User asks for a health check or status report of Cognitive OS, its
+    hooks, skills, rules, or agentic primitives.
   confidence: 0.88
 ---
-
+<!-- SCOPE: os-only -->
 # /cognitive-os-status
 
 > Complete health report of the Cognitive OS in one command.

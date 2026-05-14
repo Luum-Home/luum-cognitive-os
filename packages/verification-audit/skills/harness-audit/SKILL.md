@@ -1,9 +1,9 @@
-<!-- SCOPE: os-only -->
 ---
 name: harness-audit
-description: >
-  Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance.
-  Identify candidates for simplification or retirement as models improve.
+description: 'Evaluate harness agentic primitives (hooks, rules, skills) for continued
+  relevance. Identify candidates for simplification or retirement as models improve.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -12,17 +12,22 @@ license: MIT
 metadata:
   author: luum
 audience: os-dev
-summary_line: "Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance."
-
-platforms: ["claude-code"]
+summary_line: Evaluate harness agentic primitives (hooks, rules, skills) for continued
+  relevance.
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bharness[- ]?audit\b'
-    confidence: 0.95
-  - pattern: '\baudit\s+harness\b'
-    confidence: 0.85
+- pattern: \bharness[- ]?audit\b
+  confidence: 0.95
+- pattern: \baudit\s+harness\b
+  confidence: 0.85
+triggers:
+- harness-audit
+- /harness-audit
+- Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance
 ---
-
+<!-- SCOPE: os-only -->
 ## Purpose
 
 Periodic self-assessment of the Cognitive OS harness. The question is: "Which guardrails are still earning their keep?"

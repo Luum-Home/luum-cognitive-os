@@ -1,13 +1,14 @@
-<!-- SCOPE: both -->
 ---
 name: resource-governor
 version: 1.0.0
 last-updated: 2026-03-22
-description: 'Use when you need this Cognitive OS skill: Master resource optimizer — coordinates budget, infrastructure, agents,
-  skills, and tokens system-wide; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Master resource optimizer
+  — coordinates budget, infrastructure, agents, skills, and tokens system-wide; do
+  not use when a narrower skill directly matches the task.'
 auto-generated: false
 audience: project
-summary_line: Master resource optimizer — coordinates budget, infrastructure, agents, skills…
+summary_line: Master resource optimizer — coordinates budget, infrastructure, agents,
+  skills…
 platforms:
 - claude-code
 prerequisites: []
@@ -22,10 +23,16 @@ routing_patterns:
   confidence: 0.86
 routing_intents:
 - intent: resource_governor_request
-  description: User asks to master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide.
+  description: User asks to master resource optimizer — coordinates budget, infrastructure,
+    agents, skills, and tokens system-wide.
   confidence: 0.85
+triggers:
+- resource-governor
+- /resource-governor
+- Resource Governor
+- Master resource optimizer — coordinates budget, infrastructure, agents, skills…
 ---
-
+<!-- SCOPE: both -->
 # Resource Governor
 
 The economic brain of the Cognitive OS. Calculates efficiency metrics across all resource dimensions and generates optimization actions.

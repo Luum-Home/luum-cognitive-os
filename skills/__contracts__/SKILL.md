@@ -1,18 +1,19 @@
-<!-- SCOPE: os-only -->
 ---
 name: __contracts__
 version: 1.0.0
-description: "Use when you need this Cognitive OS skill: Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Structural namespace for
+  shared Cognitive OS skill contracts used by other agentic primitives.; do not use
+  when a narrower skill directly matches the task.'
 triggers: []
 user-invocable: false
 audience: os-dev
 routing_patterns:
-  - pattern: '\b__contracts__\b'
-    confidence: 0.95
-  - pattern: '\bskill\s+contracts?\b'
-    confidence: 0.75
+- pattern: \b__contracts__\b
+  confidence: 0.95
+- pattern: \bskill\s+contracts?\b
+  confidence: 0.75
 ---
-
+<!-- SCOPE: os-only -->
 # Contracts Namespace
 
 This directory groups non-user-facing contract skills used by other Cognitive OS

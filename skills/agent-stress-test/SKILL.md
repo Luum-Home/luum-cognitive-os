@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: agent-stress-test
-description: 'Use when you need this Cognitive OS skill: Stress-test agent cognitive health to detect context-induced degradation;
-  do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Stress-test agent cognitive
+  health to detect context-induced degradation; do not use when a narrower skill directly
+  matches the task.'
 triggers:
 - /agent-stress-test
 - /stress-test
@@ -26,10 +26,11 @@ routing_patterns:
 summary_line: Stress-test agent cognitive health to detect context-induced degradation.
 routing_intents:
 - intent: agent_stress_test_request
-  description: User asks to stress-test agent cognitive health to detect context-induced degradation.
+  description: User asks to stress-test agent cognitive health to detect context-induced
+    degradation.
   confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # /agent-stress-test
 
 > Diagnostic skill that stress-tests agent quality to find the degradation point.

@@ -70,3 +70,7 @@ Use `/sessions` to manage sessions:
 - `/sessions list` -- show all active sessions
 - `/sessions current` -- show current session info
 - `/sessions cleanup` -- remove stale sessions (dead PIDs)
+
+## Contextual Trigger
+
+- When work relates to Session Concurrency.

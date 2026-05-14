@@ -1,10 +1,10 @@
-<!-- SCOPE: os-only -->
 ---
 name: deps-update
 invocation_pattern: on-demand
 command: /deps-update
-description: 'Use when you need this Cognitive OS skill: Audit and upgrade Cognitive OS dependencies (engram, brew packages,
-  Python deps, Docker images, Claude plugins) using the canonical scripts/deps-update.sh primitive; do not use when a narrower
+description: 'Use when you need this Cognitive OS skill: Audit and upgrade Cognitive
+  OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins)
+  using the canonical scripts/deps-update.sh primitive; do not use when a narrower
   skill directly matches the task.'
 version: 0.1.0
 audience: os
@@ -25,14 +25,22 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bupgrad\w*\s+dependencies\b
   confidence: 0.8
-summary_line: Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins)…
+summary_line: Audit and upgrade Cognitive OS dependencies (engram, brew packages,
+  Python deps, Docker images, Claude plugins)…
 routing_intents:
 - intent: deps_update_request
-  description: User asks to audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images,
-    Claude plugins) using the canonical scripts/deps-update.sh primitive.
+  description: User asks to audit and upgrade Cognitive OS dependencies (engram, brew
+    packages, Python deps, Docker images, Claude plugins) using the canonical scripts/deps-update.sh
+    primitive.
   confidence: 0.85
+triggers:
+- deps-update
+- /deps-update
+- Deps Update
+- Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps,
+  Docker images, Claude plugins)…
 ---
-
+<!-- SCOPE: os-only -->
 # Deps Update
 
 ## Purpose

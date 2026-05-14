@@ -32,3 +32,7 @@ Frequently-used library docs should be cached in Engram under topic key `docs/li
 ## Graceful Degradation
 
 If Context7 is unavailable, the agent proceeds with prior model knowledge but notes the uncertainty in the Trust Report.
+
+## Contextual Trigger
+
+- When work relates to Context7 Auto-Trigger — Library Documentation Lookup.

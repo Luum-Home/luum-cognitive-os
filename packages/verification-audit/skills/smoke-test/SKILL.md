@@ -1,18 +1,19 @@
-<!-- SCOPE: both -->
 ---
 name: smoke-test
 version: 1.0.0
-description: Run end-to-end smoke tests that validate the real Cognitive OS system works
+description: Run end-to-end smoke tests that validate the real Cognitive OS system
+  works
 triggers:
-  - smoke test
-  - system check
-  - e2e test
-  - take it out of the garage
+- smoke test
+- system check
+- e2e test
+- take it out of the garage
 audience: os-dev
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Smoke Test
 
 Run end-to-end smoke tests that validate the real Cognitive OS system works -- not just unit tests, but actual hooks, config parsing, Python lib imports, safety mesh hooks, SDD pipeline logic, Docker services, and Claude CLI integration.

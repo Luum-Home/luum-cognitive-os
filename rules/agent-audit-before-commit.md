@@ -36,3 +36,7 @@ After every agent completion, BEFORE `git add` + `git commit`:
 
 Agents optimize for "tests pass", not "decision is correct". Tests verify behavior,
 not design intent. The orchestrator is the design reviewer — hooks can't do this.
+
+## Contextual Trigger
+
+- When work relates to Agent Audit Before Commit.

@@ -153,3 +153,7 @@ analysis.
 | `task-dag.md` | Dependency scoring uses the same `depends_on` fields that the TaskDAG system populates. |
 | `context-management.md` | Context score uses the same 70% threshold that triggers context-management warnings. |
 | `model-routing.md` | Model efficiency scoring reinforces the preference for cheaper models under budget pressure. |
+
+## Contextual Trigger
+
+- When work relates to Queue Advisor — Dynamic Dispatch Prioritization.

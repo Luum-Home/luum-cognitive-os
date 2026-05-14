@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: ragas-integration
-description: >
-  Configure and use RAGAS for memory quality testing, retrieval evaluation,
+description: 'Configure and use RAGAS for memory quality testing, retrieval evaluation,
   and synthetic test generation for agent scenarios.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,19 +14,25 @@ metadata:
   tool: explodinggradients/ragas
   tool-license: Apache-2.0
   tool-ring: ADOPT
-  tool-score: 8.30
+  tool-score: 8.3
 audience: os-dev
-summary_line: "Configure and use RAGAS for memory quality testing, retrieval evaluation, and…"
-
-platforms: ["claude-code"]
+summary_line: Configure and use RAGAS for memory quality testing, retrieval evaluation,
+  and…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bragas[- ]?integration\b'
-    confidence: 0.95
-  - pattern: '\bintegrat\w*\s+ragas\b'
-    confidence: 0.85
+- pattern: \bragas[- ]?integration\b
+  confidence: 0.95
+- pattern: \bintegrat\w*\s+ragas\b
+  confidence: 0.85
+triggers:
+- ragas-integration
+- /ragas-integration
+- Configure evaluation LLM
+- Configure and use RAGAS for memory quality testing, retrieval evaluation, and…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 RAGAS is the core evaluation framework for testing memory quality (engram + cognee), retrieval accuracy, and generating synthetic test scenarios. It provides 40+ metrics and a knowledge-graph-based test generator.

@@ -38,3 +38,7 @@ The auto-repair system monitors errors and applies known fixes autonomously.
 - `metrics/remediation-registry.jsonl` — known fix database
 - `metrics/circuit-breaker/` — breaker state per error:service
 - `/cognitive-os-status` reports repair stats in health check
+
+## Contextual Trigger
+
+- When work relates to Auto-Repair System.

@@ -35,3 +35,7 @@ Use `/compose-prompt` skill for automated template selection and assembly. For s
 2. Keep it under 100 words
 3. Add to this table
 4. Update `/compose-prompt` skill's auto-select table
+
+## Contextual Trigger
+
+- When work relates to Prompt Composition Rule.

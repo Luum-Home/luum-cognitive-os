@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: web-crawler
-description: >
-  Fetch and convert web pages to LLM-ready markdown using Crawl4AI.
-  Supports single-page fetch, structured data extraction, and multi-page site crawling.
+description: 'Fetch and convert web pages to LLM-ready markdown using Crawl4AI. Supports
+  single-page fetch, structured data extraction, and multi-page site crawling.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -17,11 +17,16 @@ metadata:
   tool-score: null
 audience: project
 summary_line: Fetch and convert web pages to LLM-ready markdown using Crawl4AI.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- web-crawler
+- /web-crawler
+- Async -- single page
+- Fetch and convert web pages to LLM-ready markdown using Crawl4AI
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Provide standardized web crawling across Cognitive OS skills via `lib/web_crawler.py`.

@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: squad-manager
 version: 1.0.0
@@ -6,17 +5,23 @@ command: /squad-report
 description: Evaluate squad performance and propose reconfigurations
 last-updated: 2026-03-22
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bsquad[- ]?manager\b'
-    confidence: 0.95
-  - pattern: '\bsquad\s+performance\b'
-    confidence: 0.85
-  - pattern: '\breconfigur\w+\s+squad\b'
-    confidence: 0.75
+- pattern: \bsquad[- ]?manager\b
+  confidence: 0.95
+- pattern: \bsquad\s+performance\b
+  confidence: 0.85
+- pattern: \breconfigur\w+\s+squad\b
+  confidence: 0.75
+triggers:
+- squad-manager
+- /squad-manager
+- Squad Manager Skill
+- Evaluate squad performance and propose reconfigurations
 ---
-
+<!-- SCOPE: both -->
 # Squad Manager Skill
 
 ## Purpose

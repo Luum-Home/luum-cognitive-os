@@ -130,3 +130,7 @@ MCP configurations, and LLM API calls are common patterns.
 
 Add project-specific Semgrep rules in `.semgrep/` directory at the project root.
 Semgrep will automatically include these alongside the community rules.
+
+## Contextual Trigger
+
+- When work relates to Security Scanning — Semgrep SAST Integration.

@@ -1,31 +1,34 @@
-<!-- SCOPE: both -->
 ---
 name: risk-register
 version: 1.0.0
-description: "Use when you need this Cognitive OS skill: Scaffold STRIDE-based risk-register.md under docs/03-dominio-riesgo/ with impact/likelihood matrix and 6 seed rows (one per STRIDE category). Idempotent.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Scaffold STRIDE-based risk-register.md
+  under docs/03-dominio-riesgo/ with impact/likelihood matrix and 6 seed rows (one
+  per STRIDE category). Idempotent.; do not use when a narrower skill directly matches
+  the task.'
 invocation: /risk-register --project-dir <path> [--assets "<brief>"] [--overwrite]
 user-invocable: true
 last-updated: 2026-04-21
 audience: project
 triggers:
-  - risk register
-  - STRIDE
-  - threat categories
-  - impact likelihood
-  - risk-register.md
+- risk register
+- STRIDE
+- threat categories
+- impact likelihood
+- risk-register.md
 summary_line: Scaffold STRIDE risk register with impact/likelihood matrix idempotently.
 model: haiku
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\brisk[- ]?register\b'
-    confidence: 0.95
-  - pattern: '\bstride\s+risk\b'
-    confidence: 0.85
-  - pattern: '\bscaffold\s+risk\b'
-    confidence: 0.75
+- pattern: \brisk[- ]?register\b
+  confidence: 0.95
+- pattern: \bstride\s+risk\b
+  confidence: 0.85
+- pattern: \bscaffold\s+risk\b
+  confidence: 0.75
 ---
-
+<!-- SCOPE: both -->
 # Risk Register Scaffolder
 
 Scaffolds `docs/03-dominio-riesgo/risk-register.md` with a STRIDE-organized table and an impact × likelihood matrix legend. This is a **template scaffolder**, not a threat-modeling engine — it seeds one row per STRIDE category and expects human/agent fill-in.

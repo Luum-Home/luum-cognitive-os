@@ -1,21 +1,29 @@
-<!-- SCOPE: os-only -->
 ---
 name: push-release
-invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
+invocation_pattern: on-demand
 command: /push-release
-description: "Use when you need this Cognitive OS skill: Push the release commit and tags to the remote — always requires explicit confirmation; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Push the release commit and
+  tags to the remote — always requires explicit confirmation; do not use when a narrower
+  skill directly matches the task.'
 version: 0.1.0
 audience: os
-tags: [release, git]
+tags:
+- release
+- git
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
 summary_line: Push the release commit and tags to the remote — always requires explicit…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- push-release
+- /push-release
+- Push Release
+- Push the release commit and tags to the remote — always requires explicit…
 ---
-
+<!-- SCOPE: os-only -->
 # Push Release
 
 ## Purpose

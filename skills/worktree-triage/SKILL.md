@@ -1,9 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: worktree-triage
-description: 'Use when you need this Cognitive OS skill: Triage linked Git worktrees or remote cleanup branches against a
-  target branch, port only unapplied work, validate, and remove/delete only when clean and safe.; do not use when a narrower
-  skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Triage linked Git worktrees
+  or remote cleanup branches against a target branch, port only unapplied work, validate,
+  and remove/delete only when clean and safe.; do not use when a narrower skill directly
+  matches the task.'
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
@@ -14,7 +14,8 @@ tags:
 - coordination
 - safety
 - triage
-summary_line: Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete checklist.
+summary_line: Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete
+  checklist.
 platforms:
 - codex
 - claude-code
@@ -34,11 +35,18 @@ routing_patterns:
   confidence: 0.85
 routing_intents:
 - intent: worktree_triage_request
-  description: User asks to triage linked Git worktrees or remote cleanup branches against a target branch, port only unapplied
-    work, validate, and remove/delete only when clean and safe.
+  description: User asks to triage linked Git worktrees or remote cleanup branches
+    against a target branch, port only unapplied work, validate, and remove/delete
+    only when clean and safe.
   confidence: 0.85
+triggers:
+- worktree-triage
+- /worktree-triage
+- Worktree Triage
+- Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete
+  checklist
 ---
-
+<!-- SCOPE: both -->
 # Worktree Triage
 
 Use this skill when a branch/worktree such as `bb5a` may contain useful work and

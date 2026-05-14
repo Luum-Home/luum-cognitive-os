@@ -1,20 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: caveman
-description: "Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman. Also auto-triggers when token efficiency is requested. Purpose: Ultra-compressed communication mode. Cuts token usage ~75% by speaking like caveman while keeping full technical accuracy. Supports intensity levels: lite, full (default), ultra."
+description: 'Use when user says "caveman mode", "talk like caveman", "use caveman",
+  "less tokens", "be brief", or invokes /caveman. Also auto-triggers when token efficiency
+  is requested. Purpose: Ultra-compressed communication mode. Cuts token usage ~75%
+  by speaking like caveman while keeping full technical accuracy. Supports intensity
+  levels: lite, full (default), ultra.'
 audience: both
 summary_line: Ultra-compressed communication mode.
-
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bcaveman\b'
-    confidence: 0.95
-  - pattern: '\bsimplify\s+prompt\b'
-    confidence: 0.75
+- pattern: \bcaveman\b
+  confidence: 0.95
+- pattern: \bsimplify\s+prompt\b
+  confidence: 0.75
+triggers:
+- caveman
+- /caveman
+- Ultra-compressed communication mode
 ---
-
+<!-- SCOPE: both -->
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
 
 Default: **full**. Switch: `/caveman lite|full|ultra`.

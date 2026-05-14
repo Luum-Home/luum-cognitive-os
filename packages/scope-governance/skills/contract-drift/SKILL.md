@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: contract-drift
-description: >
-  Detect drift between HTTP calls in source code and OpenAPI/Swagger contract
-  definitions. Scans for fetch, axios, http.*, requests, and httpx patterns,
-  compares against the contract spec, and produces a structured drift report.
+description: 'Detect drift between HTTP calls in source code and OpenAPI/Swagger contract
+  definitions. Scans for fetch, axios, http.*, requests, and httpx patterns, compares
+  against the contract spec, and produces a structured drift report.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,11 +14,15 @@ metadata:
   author: luum
 audience: project
 summary_line: Detect drift between HTTP calls in source code and OpenAPI/Swagger contract…
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- contract-drift
+- /contract-drift
+- Detect drift between HTTP calls in source code and OpenAPI/Swagger contract…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Identify mismatches between the HTTP endpoints used in source code and the

@@ -1,22 +1,36 @@
-<!-- SCOPE: both -->
 ---
 name: primitive-harness-coverage
-description: "Use when you need this Cognitive OS skill: Measure effective agentic primitive implementation by surface so agents do not confuse `SCOPE: both` with equal Claude/Codex/CLI/UI behavior.; do not use when a narrower skill directly matches the task."
-triggers: ["harness coverage", "surface coverage", "primitive harness", "primitive surface", "Claude vs Codex primitives", "CLI primitive coverage", "UI primitive coverage", "scope both parity"]
+description: 'Use when you need this Cognitive OS skill: Measure effective agentic
+  primitive implementation by surface so agents do not confuse `SCOPE: both` with
+  equal Claude/Codex/CLI/UI behavior.; do not use when a narrower skill directly matches
+  the task.'
+triggers:
+- harness coverage
+- surface coverage
+- primitive harness
+- primitive surface
+- Claude vs Codex primitives
+- CLI primitive coverage
+- UI primitive coverage
+- scope both parity
 audience: both
 version: 1.0.0
-summary_line: "Generate the primitive surface coverage report and inspect IDE/CLI/UI/report implementation gaps."
-platforms: ["claude-code", "codex", "shell"]
+summary_line: Generate the primitive surface coverage report and inspect IDE/CLI/UI/report
+  implementation gaps.
+platforms:
+- claude-code
+- codex
+- shell
 user-invocable: true
 routing_patterns:
-  - pattern: "harness.*coverage"
-    confidence: 0.9
-  - pattern: "Claude.*Codex.*primitive"
-    confidence: 0.9
-  - pattern: "scope.*both.*IDE"
-    confidence: 0.85
+- pattern: harness.*coverage
+  confidence: 0.9
+- pattern: Claude.*Codex.*primitive
+  confidence: 0.9
+- pattern: scope.*both.*IDE
+  confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # Primitive Surface Coverage
 
 Use this skill when a user asks whether a primitive works the same across Claude Code, Codex, CLI commands, Shell-CI, dashboard/UI, reports, or other IDE/harness projections.

@@ -1,9 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: repo-forensics
-description: 'Use when you need this Cognitive OS skill: Deep forensic analysis of git repositories. Clones, analyzes ALL
-  code, dependencies, architecture patterns, tools, features, API endpoints, and produces exhaustive structured reports. Optionally
-  compares with Cognitive OS capabilities.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Deep forensic analysis of
+  git repositories. Clones, analyzes ALL code, dependencies, architecture patterns,
+  tools, features, API endpoints, and produces exhaustive structured reports. Optionally
+  compares with Cognitive OS capabilities.; do not use when a narrower skill directly
+  matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -30,11 +31,15 @@ routing_patterns:
   confidence: 0.82
 routing_intents:
 - intent: deep_repository_forensics
-  description: User asks to deeply investigate, clone, inspect, or analyze an entire repository, including source code, dependencies,
-    configs, architecture, and risks.
+  description: User asks to deeply investigate, clone, inspect, or analyze an entire
+    repository, including source code, dependencies, configs, architecture, and risks.
   confidence: 0.88
+triggers:
+- repo-forensics
+- /repo-forensics
+- Deep forensic analysis of git repositories
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Full forensic analysis of external (or internal) repositories. Goes far beyond

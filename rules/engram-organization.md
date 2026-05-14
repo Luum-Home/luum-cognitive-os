@@ -170,3 +170,7 @@ memory:
     legacy_fallback: true        # Search old sdd/ prefix as fallback
     migrate_on_read: true        # Re-save under new prefix when old data is read
 ```
+
+## Contextual Trigger
+
+- When work relates to Engram Organization — Path Segregation (BMAD v6 Pattern 8).

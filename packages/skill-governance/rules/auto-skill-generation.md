@@ -136,3 +136,7 @@ rm -rf .claude/skills/auto-generated/{skill-slug}/
 
 Skills with `auto-generated: true` are never prioritized over manually created skills
 with the same purpose.
+
+## Contextual Trigger
+
+- When work relates to Auto-Skill Generation Protocol.

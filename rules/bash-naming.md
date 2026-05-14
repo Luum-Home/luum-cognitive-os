@@ -83,3 +83,7 @@ script_name="${feature_name}.sh"   # if feature_name has underscores
 - `rules/python-naming.md` — sister rule for Python (snake_case)
 - `.github/workflows/go-quality.yml.disabled` — preserved sister enforcement reference for Go (gofmt) after ADR-131 moved CI enforcement local-first
 - `tests/audit/test_bash_naming.py` — enforcement test
+
+## Contextual Trigger
+
+- When work relates to Bash Script Naming — Kebab-Case Required.

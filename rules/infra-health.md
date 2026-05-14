@@ -161,3 +161,7 @@ Every health check is logged to `.cognitive-os/metrics/infra-health.jsonl`:
 - **Related**: `hooks/cognitive-os-health.sh` also checks Docker services as part of overall health
 - **Resource governance**: `rules/resource-governance.md` manages infrastructure auto-scaling during sessions
 - **Infra intent**: `rules/infra-intent.md` detects infrastructure needs in agent prompts
+
+## Contextual Trigger
+
+- When work relates to Infrastructure Health Check.

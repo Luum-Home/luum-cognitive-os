@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: branch-worktree-closure
-description: Use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature worktrees
-  and must decide whether to merge, preserve, or remove them safely.
+description: Use when an agent finds leftover codex/* or claude/* branches, extra
+  git worktrees, or open feature worktrees and must decide whether to merge, preserve,
+  or remove them safely.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
@@ -14,7 +14,8 @@ tags:
 - merge-queue
 - coordination
 - cleanup
-summary_line: Close leftover agent branches/worktrees without losing work or bypassing main landing gates.
+summary_line: Close leftover agent branches/worktrees without losing work or bypassing
+  main landing gates.
 platforms:
 - codex
 - claude-code
@@ -31,11 +32,18 @@ routing_patterns:
   confidence: 0.75
 routing_intents:
 - intent: branch_worktree_closure_request
-  description: User asks to use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature
-    worktrees and must decide whether to merge, preserve, or remove them safely.
+  description: User asks to use when an agent finds leftover codex/* or claude/* branches,
+    extra git worktrees, or open feature worktrees and must decide whether to merge,
+    preserve, or remove them safely.
   confidence: 0.85
+triggers:
+- branch-worktree-closure
+- /branch-worktree-closure
+- Branch / Worktree Closure
+- Close leftover agent branches/worktrees without losing work or bypassing main landing
+  gates
 ---
-
+<!-- SCOPE: both -->
 # Branch / Worktree Closure
 
 Use this skill whenever a repo has an unexpected `codex/*`, `claude/*`, or

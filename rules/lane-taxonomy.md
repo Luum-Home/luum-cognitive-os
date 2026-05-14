@@ -95,3 +95,7 @@ ADR-072 fixes.
 - **`tests/conftest.py`** — auto-marker injection site.
 - **`pytest.ini`** — marker registry.
 - **`docs/09-Quality/testing/test-runner-roles.md`** — operator-facing role taxonomy.
+
+## Contextual Trigger
+
+- When work relates to Test Lane Taxonomy.

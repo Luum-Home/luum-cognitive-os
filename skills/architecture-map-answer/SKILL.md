@@ -1,39 +1,42 @@
-<!-- SCOPE: os-only -->
 ---
 name: architecture-map-answer
 version: 1.0.0
-description: Use when you need a commercial-safe Cognitive OS architecture map from evidence-backed product-answer primitives, avoiding internal tool names and immature claims.
+description: Use when you need a commercial-safe Cognitive OS architecture map from
+  evidence-backed product-answer primitives, avoiding internal tool names and immature
+  claims.
 triggers:
-  - architecture map
-  - mapa del SO
-  - mapa de arquitectura
-  - commercial architecture
-  - arquitectura comercial
+- architecture map
+- mapa del SO
+- mapa de arquitectura
+- commercial architecture
+- arquitectura comercial
 user-invocable: true
 audience: os-dev
 tags:
-  - product
-  - architecture
-  - commercial
-  - evidence
-  - claim-safety
-summary_line: Produce a sanitized commercial architecture map through the ADR-313 architecture_map product answer.
+- product
+- architecture
+- commercial
+- evidence
+- claim-safety
+summary_line: Produce a sanitized commercial architecture map through the ADR-313
+  architecture_map product answer.
 platforms:
-  - claude-code
-  - codex
-  - shell
+- claude-code
+- codex
+- shell
 prerequisites: []
 routing_patterns:
-  - pattern: "\\b(architecture|arquitectura).{0,40}(map|mapa|commercial|comercial)\\b"
-    confidence: 0.95
-  - pattern: "\\b(mapa del SO|mapa reducido|agent OS map|cognitive os map)\\b"
-    confidence: 0.95
+- pattern: \b(architecture|arquitectura).{0,40}(map|mapa|commercial|comercial)\b
+  confidence: 0.95
+- pattern: \b(mapa del SO|mapa reducido|agent OS map|cognitive os map)\b
+  confidence: 0.95
 routing_intents:
-  - intent: commercial_architecture_map
-    description: User wants a concise buyer-safe map of Cognitive OS architecture and how it grows without leaking implementation inventory.
-    confidence: 0.92
+- intent: commercial_architecture_map
+  description: User wants a concise buyer-safe map of Cognitive OS architecture and
+    how it grows without leaking implementation inventory.
+  confidence: 0.92
 ---
-
+<!-- SCOPE: os-only -->
 # Architecture Map Answer
 
 ## Purpose

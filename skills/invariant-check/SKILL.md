@@ -1,22 +1,32 @@
-<!-- SCOPE: both -->
 ---
 name: invariant-check
-description: "Use when you need this Cognitive OS skill: Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between them, and writes pytest assertions that enforce the relationship. Trigger when a review finds \"two values look inconsistent\", when landing new numeric constants that might drift across ADR and implementation, or when closing a decision-depth-gate finding of type \"two values inconsistent\".; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Scans a target file pair
+  (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between
+  them, and writes pytest assertions that enforce the relationship. Trigger when a
+  review finds "two values look inconsistent", when landing new numeric constants
+  that might drift across ADR and implementation, or when closing a decision-depth-gate
+  finding of type "two values inconsistent".; do not use when a narrower skill directly
+  matches the task.'
 version: 1.0
 audience: project
-summary_line: "Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs…"
-
-platforms: ["claude-code"]
+summary_line: Scans a target file pair (ADR + lib, or similar) for numeric-constant
+  pairs…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\binvariant[- ]?check\b'
-    confidence: 0.95
-  - pattern: '\bcheck\s+invariants?\b'
-    confidence: 0.85
-  - pattern: '\bnumeric\s+invariants?\b'
-    confidence: 0.75
+- pattern: \binvariant[- ]?check\b
+  confidence: 0.95
+- pattern: \bcheck\s+invariants?\b
+  confidence: 0.85
+- pattern: \bnumeric\s+invariants?\b
+  confidence: 0.75
+triggers:
+- invariant-check
+- /invariant-check
+- Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs…
 ---
-
+<!-- SCOPE: both -->
 # invariant-check
 
 > **Invoke**: `/invariant-check <file-a> <file-b> [--test-file <path>]`

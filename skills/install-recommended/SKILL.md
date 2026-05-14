@@ -1,22 +1,27 @@
-<!-- SCOPE: both -->
 ---
 name: install-recommended
-description: "Use when you need this Cognitive OS skill: Detect project stack and recommend relevant skills to install; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Detect project stack and
+  recommend relevant skills to install; do not use when a narrower skill directly
+  matches the task.'
 invoke: /install-recommended
 version: 1.0.0
 audience: project
-triggers: ["/install-recommended", "/recommend-skills", "/stack-skills"]
-platforms: ["claude-code"]
+triggers:
+- /install-recommended
+- /recommend-skills
+- /stack-skills
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\binstall[- ]?recommended\b'
-    confidence: 0.95
-  - pattern: '\brecommended\s+skills?\s+(to\s+)?install\b'
-    confidence: 0.85
-  - pattern: '\bdetect\s+stack\s+recommend\b'
-    confidence: 0.75
+- pattern: \binstall[- ]?recommended\b
+  confidence: 0.95
+- pattern: \brecommended\s+skills?\s+(to\s+)?install\b
+  confidence: 0.85
+- pattern: \bdetect\s+stack\s+recommend\b
+  confidence: 0.75
 ---
-
+<!-- SCOPE: both -->
 # /install-recommended
 
 > Detect your project's technology stack and recommend skills to install.

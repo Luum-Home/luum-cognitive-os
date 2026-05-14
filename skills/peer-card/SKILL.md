@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: peer-card
-description: 'Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) backed by
-  Engram FTS5. ADR-077 Phase 1.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Local user-memory peer card
+  (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.; do not use when
+  a narrower skill directly matches the task.'
 version: 0.1.0
 audience: os
 tags:
@@ -20,13 +20,20 @@ routing_patterns:
   confidence: 0.8
 - pattern: \bpeer\s+(read|edit|forget|explain)\b
   confidence: 0.75
-summary_line: Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
+summary_line: Local user-memory peer card (read/edit/forget/explain) backed by Engram
+  FTS5. ADR-077 Phase 1.
 routing_intents:
 - intent: peer_card_request
-  description: User asks to local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
+  description: User asks to local user-memory peer card (read/edit/forget/explain)
+    backed by Engram FTS5. ADR-077 Phase 1.
   confidence: 0.85
+triggers:
+- peer-card
+- /peer-card
+- Peer Card
+- Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5
 ---
-
+<!-- SCOPE: both -->
 # Peer Card
 
 > Local replacement for Honcho's `honcho_profile`. A **single Engram observation

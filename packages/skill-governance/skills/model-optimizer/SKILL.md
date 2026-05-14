@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: model-optimizer
 version: 1.0.0
@@ -6,10 +5,16 @@ last-updated: 2026-03-21
 description: Analyze skill execution metrics and recommend optimal model routing
 auto-generated: false
 audience: both
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- model-optimizer
+- /model-optimizer
+- Model Optimizer
+- Analyze skill execution metrics and recommend optimal model routing
 ---
-
+<!-- SCOPE: both -->
 # Model Optimizer
 
 Analyze collected skill metrics and generate model routing recommendations.

@@ -1,8 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: phoenix-trace-ui
-description: 'Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no
-  Docker); do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native
+  trace UI locally (pip-based, no Docker); do not use when a narrower skill directly
+  matches the task.'
 triggers:
 - /phoenix-trace-ui
 - /phoenix
@@ -22,10 +22,11 @@ routing_patterns:
 summary_line: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker).
 routing_intents:
 - intent: phoenix_trace_ui_request
-  description: User asks to start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker).
+  description: User asks to start the Arize Phoenix LLM-native trace UI locally (pip-based,
+    no Docker).
   confidence: 0.85
 ---
-
+<!-- SCOPE: both -->
 # /phoenix-trace-ui
 
 > Boot the Phoenix UI (http://localhost:6006) to inspect OTel spans emitted

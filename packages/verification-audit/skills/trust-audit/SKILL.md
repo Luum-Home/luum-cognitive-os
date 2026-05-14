@@ -1,19 +1,24 @@
-<!-- SCOPE: both -->
 ---
 name: trust-audit
-description: Analyze trust scores across agents and tasks, identify patterns, recommend reviews
+description: Analyze trust scores across agents and tasks, identify patterns, recommend
+  reviews
 invoke: /trust-audit
 tag: universal
 model: sonnet
 audience: both
 effort: haiku
-summary_line: "Analyze trust scores across agents and tasks, identify patterns, recommend…"
-
-version: "1.0.0"
-platforms: ["claude-code"]
+summary_line: Analyze trust scores across agents and tasks, identify patterns, recommend…
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- trust-audit
+- /trust-audit
+- Trust Audit Skill
+- Analyze trust scores across agents and tasks, identify patterns, recommend…
 ---
-
+<!-- SCOPE: both -->
 # Trust Audit Skill
 
 ## Purpose

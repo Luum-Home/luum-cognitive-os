@@ -1,31 +1,28 @@
-<!-- SCOPE: both -->
 ---
 name: document-feature
 version: 1.1.0
-description: "Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg). Extension (v1.1, ADR-054 Phase 2): accepts --project-dir to append to docs/05-features/features-backlog.md in an adopter project."
+description: 'Generate or update structured feature documentation using 3-layer detection
+  (SDD spec, git diff, CLI arg). Extension (v1.1, ADR-054 Phase 2): accepts --project-dir
+  to append to docs/05-features/features-backlog.md in an adopter project.'
 invocation: /document-feature [feature-name] [--project-dir <path>]
 user-invocable: true
 last-updated: 2026-03-26
 triggers:
-  - feature documentation
-  - document feature
-  - generate docs
-  - update feature docs
+- feature documentation
+- document feature
+- generate docs
+- update feature docs
 audience: project
 summary_line: Generate or update structured feature documentation using 3-layer detection…
 routing:
-  # ADR-056 Level 3 — transparent Qwen bridge (per-skill opt-in).
-  # This skill is mechanical (template-fill + structured write) and tolerates the
-  # Qwen agent-loop tool-set loss (no Skill/TodoWrite/MCP). Safe to redirect when
-  # Claude-Max quota pressure is high.
   auto_fallback_to_qwen: true
   fallback_min_pressure: 0.6
   tier: cheap
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 ---
-
+<!-- SCOPE: both -->
 # Document Feature
 
 Generate or incrementally update structured documentation for project features. Uses a 3-layer detection strategy inspired by the AI Workflow document-iso pattern.

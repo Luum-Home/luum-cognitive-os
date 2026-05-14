@@ -1,7 +1,9 @@
-<!-- SCOPE: both -->
 ---
 name: pr-review
-description: "Use when you need this Cognitive OS skill: Pull Request review skill. Gets PR diff against base branch, runs code review with engram context, checks tests/coverage/lint, and produces structured PR review output with file-level comments and PASSED/FAILED status.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Pull Request review skill.
+  Gets PR diff against base branch, runs code review with engram context, checks tests/coverage/lint,
+  and produces structured PR review output with file-level comments and PASSED/FAILED
+  status.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,18 +16,23 @@ context info:
 audience: project
 effort: opus
 summary_line: Pull Request review skill.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bpr[- ]?review\b'
-    confidence: 0.95
-  - pattern: '\breview\s+(a\s+)?pr\b'
-    confidence: 0.85
-  - pattern: '\bpull\s+request\s+review\b'
-    confidence: 0.8
+- pattern: \bpr[- ]?review\b
+  confidence: 0.95
+- pattern: \breview\s+(a\s+)?pr\b
+  confidence: 0.85
+- pattern: \bpull\s+request\s+review\b
+  confidence: 0.8
+triggers:
+- pr-review
+- /pr-review
+- PR Review Summary
+- Pull Request review skill
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Structured Pull Request review workflow that combines diff-based code review

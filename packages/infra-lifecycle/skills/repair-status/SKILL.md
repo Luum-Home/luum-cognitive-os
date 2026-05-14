@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: repair-status
 description: Report on auto-repair system health and statistics
@@ -6,11 +5,17 @@ trigger: repair status, repair report, auto-repair, circuit breaker status
 model: haiku
 effort: haiku
 audience: project
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- repair-status
+- /repair-status
+- Repair Status
+- Report on auto-repair system health and statistics
 ---
-
+<!-- SCOPE: both -->
 # Repair Status
 
 Report on the auto-repair system's current state.

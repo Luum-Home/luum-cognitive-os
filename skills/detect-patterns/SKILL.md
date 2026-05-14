@@ -1,7 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: detect-patterns
-description: "Use when you need this Cognitive OS skill: Detect systemic problems in the Cognitive OS codebase: dead metadata, broken chains, phantom entries, and structural tests.; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Detect systemic problems
+  in the Cognitive OS codebase: dead metadata, broken chains, phantom entries, and
+  structural tests.; do not use when a narrower skill directly matches the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -11,17 +12,23 @@ metadata:
   author: luum
 audience: os-dev
 effort: haiku
-summary_line: "Detect systemic problems in the Cognitive OS codebase: dead metadata, broken…"
-
-platforms: ["claude-code"]
+summary_line: 'Detect systemic problems in the Cognitive OS codebase: dead metadata,
+  broken…'
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bdetect[- ]?patterns?\b'
-    confidence: 0.95
-  - pattern: '\bpattern\s+detection\b'
-    confidence: 0.8
+- pattern: \bdetect[- ]?patterns?\b
+  confidence: 0.95
+- pattern: \bpattern\s+detection\b
+  confidence: 0.8
+triggers:
+- detect-patterns
+- /detect-patterns
+- Run all detectors or a specific one
+- 'Detect systemic problems in the Cognitive OS codebase: dead metadata, broken…'
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Systematically finds code-level rot that accumulates over time. Detects four categories of systemic problems:

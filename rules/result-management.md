@@ -131,3 +131,7 @@ The index lists all project files exceeding 40KB with their size, line count, an
 Truncation events are logged to `.cognitive-os/metrics/truncation-events.jsonl` with original size, truncated size, and the command that produced the output.
 
 Large file read advisories are logged to `.cognitive-os/metrics/large-file-reads.jsonl` with file path, size, and estimated tokens.
+
+## Contextual Trigger
+
+- When work relates to Result Management — Large Output Prevention.

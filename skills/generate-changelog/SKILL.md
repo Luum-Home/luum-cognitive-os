@@ -1,19 +1,29 @@
-<!-- SCOPE: os-only -->
 ---
 name: generate-changelog
-invocation_pattern: on-demand  # @on-demand: release pipeline — manual trigger
+invocation_pattern: on-demand
 command: /generate-changelog
-description: "Use when you need this Cognitive OS skill: Move [Unreleased] CHANGELOG entries into a versioned release section; do not use when a narrower skill directly matches the task."
+description: 'Use when you need this Cognitive OS skill: Move [Unreleased] CHANGELOG
+  entries into a versioned release section; do not use when a narrower skill directly
+  matches the task.'
 version: 0.1.0
 audience: os
-tags: [release, changelog]
+tags:
+- release
+- changelog
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- generate-changelog
+- /generate-changelog
+- Generate Changelog
+- 'Use when you need this Cognitive OS skill: Move [Unreleased] CHANGELOG entries
+  into a versioned release section; do not '
 ---
-
+<!-- SCOPE: os-only -->
 # Generate Changelog
 
 ## Purpose

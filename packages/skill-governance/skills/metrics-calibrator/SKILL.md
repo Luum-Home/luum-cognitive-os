@@ -1,4 +1,3 @@
-<!-- SCOPE: both -->
 ---
 name: metrics-calibrator
 description: Analyze KPI history and auto-calibrate thresholds for meaningful alerting
@@ -19,10 +18,16 @@ routing_patterns:
 summary_line: Analyze KPI history and auto-calibrate thresholds for meaningful alerting.
 routing_intents:
 - intent: metrics_calibrator_request
-  description: User asks to analyze KPI history and auto-calibrate thresholds for meaningful alerting.
+  description: User asks to analyze KPI history and auto-calibrate thresholds for
+    meaningful alerting.
   confidence: 0.85
+triggers:
+- metrics-calibrator
+- /metrics-calibrator
+- Metrics Calibrator
+- Analyze KPI history and auto-calibrate thresholds for meaningful alerting
 ---
-
+<!-- SCOPE: both -->
 # Metrics Calibrator
 
 ## Purpose

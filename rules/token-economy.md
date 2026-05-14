@@ -63,3 +63,7 @@ Check `rules/model-routing.md` for the routing table.
 - **Model Routing**: `rules/model-routing.md` maps tasks to optimal models
 - **Context Optimization**: `rules/context-optimization.md` reduces token overhead
 - **Decomposition**: `rules/decomposition.md` breaks costly tasks into cheaper sub-tasks
+
+## Contextual Trigger
+
+- When work relates to Token Economy — Cost Transparency and Waste Prevention.

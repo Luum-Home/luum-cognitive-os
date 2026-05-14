@@ -103,3 +103,7 @@ Run `/model-optimizer` to analyze collected metrics and update the static routin
 
 This table is auto-updated by running `/model-optimizer`.
 Last updated: 2026-03-21 (initial defaults)
+
+## Contextual Trigger
+
+- When work relates to Model Routing — Auto-Updated by /model-optimizer.

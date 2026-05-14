@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: persistent-agent
-description: >
-  Create persistent agents that maintain their own state across sessions.
-  Generates a skill directory with identity profile, event log, and
-  auto-fixation checklist for continuous learning.
+description: 'Create persistent agents that maintain their own state across sessions.
+  Generates a skill directory with identity profile, event log, and auto-fixation
+  checklist for continuous learning.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,11 +14,16 @@ metadata:
   author: luum
 audience: project
 summary_line: Create persistent agents that maintain their own state across sessions.
-
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- persistent-agent
+- /persistent-agent
+- 'Agent Profile: {name}'
+- Create persistent agents that maintain their own state across sessions
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Create agents that accumulate knowledge and maintain state across sessions.

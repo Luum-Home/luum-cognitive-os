@@ -1,15 +1,23 @@
-<!-- SCOPE: both -->
 ---
 name: issue-pipeline
 version: 1.0.0
 description: Fetch a GitHub issue, run the SDD pipeline, and open a pull request
 invoke: /issue-to-pr <number>
-tags: [universal, automation, pipeline]
+tags:
+- universal
+- automation
+- pipeline
 audience: project
-platforms: ["claude-code"]
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- issue-pipeline
+- /issue-pipeline
+- Issue-to-PR Pipeline
+- Fetch a GitHub issue, run the SDD pipeline, and open a pull request
 ---
-
+<!-- SCOPE: both -->
 # Issue-to-PR Pipeline
 
 Automates the full lifecycle from GitHub issue to pull request using the SDD pipeline.

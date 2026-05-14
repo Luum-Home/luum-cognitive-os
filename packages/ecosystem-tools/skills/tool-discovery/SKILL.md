@@ -1,15 +1,21 @@
-<!-- SCOPE: both -->
 ---
 name: tool-discovery
 description: Discover new open-source tools that could enhance Cognitive OS capabilities
-trigger: discover tools, find new tools, tool scan, what's new in open source, tool radar
+trigger: discover tools, find new tools, tool scan, what's new in open source, tool
+  radar
 model: sonnet
 audience: os-dev
-version: "1.0.0"
-platforms: ["claude-code"]
+version: 1.0.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- tool-discovery
+- /tool-discovery
+- Tool Discovery
+- Discover new open-source tools that could enhance Cognitive OS capabilities
 ---
-
+<!-- SCOPE: both -->
 # Tool Discovery
 
 ## Purpose

@@ -1,10 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: security-audit
-invocation_pattern: on-demand  # @on-demand: periodic — manual security review
-description: >
-  Comprehensive security audit of Cognitive OS configuration, secrets, hooks,
-  permissions, and infrastructure. Reports findings with severity levels.
+invocation_pattern: on-demand
+description: 'Comprehensive security audit of Cognitive OS configuration, secrets,
+  hooks, permissions, and infrastructure. Reports findings with severity levels.
+
+  '
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -14,22 +14,28 @@ metadata:
   author: luum
   category: security
 audience: os-dev
-summary_line: "Comprehensive security audit of Cognitive OS configuration, secrets, hooks…"
-# ADR-050 per-skill routing: security-critical skill. Lock to Claude (frontier),
-# explicitly exclude cheap providers, disable ALL fallback — we want a hard
-# failure rather than a silent downgrade that could miss vulnerabilities.
+summary_line: Comprehensive security audit of Cognitive OS configuration, secrets,
+  hooks…
 routing:
   tier: frontier
-  providers_preferred: [claude]
-  providers_excluded: [minimax, qwen]
+  providers_preferred:
+  - claude
+  providers_excluded:
+  - minimax
+  - qwen
   fallback_on_rate_limit: false
   fallback_on_any_error: false
-  budget_max_usd_per_call: 2.00
-
-platforms: ["claude-code"]
+  budget_max_usd_per_call: 2.0
+platforms:
+- claude-code
 prerequisites: []
+triggers:
+- security-audit
+- /security-audit
+- Persist a rendered report into an adopting project.
+- Comprehensive security audit of Cognitive OS configuration, secrets, hooks…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Scan the Cognitive OS installation and project configuration for security issues:

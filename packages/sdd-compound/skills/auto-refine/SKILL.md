@@ -1,24 +1,30 @@
-<!-- SCOPE: both -->
 ---
 name: auto-refine
-description: Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. Implements the PITER Refine step.
+description: Analyze a failed agent's output, determine root cause, and re-launch
+  with refined instructions. Implements the PITER Refine step.
 version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: project
-summary_line: "Analyze a failed agent's output, determine root cause, and re-launch with…"
-
-platforms: ["claude-code"]
+summary_line: Analyze a failed agent's output, determine root cause, and re-launch
+  with…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bauto[- ]?refine\b'
-    confidence: 0.95
-  - pattern: '\brefine\s+(failed\s+)?agent\b'
-    confidence: 0.8
-  - pattern: '\bpiter\s+refine\b'
-    confidence: 0.75
+- pattern: \bauto[- ]?refine\b
+  confidence: 0.95
+- pattern: \brefine\s+(failed\s+)?agent\b
+  confidence: 0.8
+- pattern: \bpiter\s+refine\b
+  confidence: 0.75
+triggers:
+- auto-refine
+- /auto-refine
+- Auto-Refine Skill
+- Analyze a failed agent's output, determine root cause, and re-launch with…
 ---
-
+<!-- SCOPE: both -->
 # Auto-Refine Skill
 
 Closes the PITER loop by analyzing agent failures and re-launching with corrective context.

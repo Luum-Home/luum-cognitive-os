@@ -119,3 +119,7 @@ Escalate to Human (user notification)
 | Fault Tolerance | Squad manager monitors agent health via active-tasks.json |
 | Constitutional Gates | Squad YAML declares which gates apply to its domain |
 | Model Routing | Squad manager can override model-routing for its agents |
+
+## Contextual Trigger
+
+- When work relates to Squad Protocol.

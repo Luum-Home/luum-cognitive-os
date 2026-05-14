@@ -95,3 +95,7 @@ permanent posture.
 - `hooks/skill-router-prompt-suggest.sh` (advisory layer)
 - `lib/skill_router.py` — `last_suggestion(session_id)`
 - `tests/contracts/test_skill_invocation_gate.py`
+
+## Contextual Trigger
+
+- When work relates to Skill Invocation Mandatory at High Router Confidence (ADR-188).

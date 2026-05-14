@@ -148,3 +148,7 @@ The dual-search protocol respects token budgets:
 ## Configuration
 
 All settings in `cognitive-os.yaml` under `skills.loading`, `rules.loading`, and `cost.optimization`.
+
+## Contextual Trigger
+
+- When work relates to Context Optimization Protocol.

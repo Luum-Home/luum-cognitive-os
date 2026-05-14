@@ -1,13 +1,14 @@
-<!-- SCOPE: both -->
 ---
 name: scout
 command: /scout
-description: 'Use when you need this Cognitive OS skill: Quick pre-implementation codebase reconnaissance with 3 depth levels;
-  do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Quick pre-implementation
+  codebase reconnaissance with 3 depth levels; do not use when a narrower skill directly
+  matches the task.'
 trigger: Before medium+ implementation tasks, or when user invokes /scout
 inputs:
 - target: File path, directory, service name, or task description to scout
-- depth (optional): quick, standard, or deep (auto-determined from task complexity if omitted)
+- depth (optional): quick, standard, or deep (auto-determined from task complexity
+    if omitted)
 outputs:
 - scout_report: Structured terrain map with file counts, dependencies, constraints
 - risk_signals: Unexpected complexity or missing coverage
@@ -28,10 +29,16 @@ routing_patterns:
 summary_line: Quick pre-implementation codebase reconnaissance with 3 depth levels.
 routing_intents:
 - intent: scout_request
-  description: User asks to quick pre-implementation codebase reconnaissance with 3 depth levels.
+  description: User asks to quick pre-implementation codebase reconnaissance with
+    3 depth levels.
   confidence: 0.85
+triggers:
+- scout
+- /scout
+- Scout -- Pre-Implementation Codebase Reconnaissance
+- Quick pre-implementation codebase reconnaissance with 3 depth levels
 ---
-
+<!-- SCOPE: both -->
 # Scout -- Pre-Implementation Codebase Reconnaissance
 
 ## Purpose

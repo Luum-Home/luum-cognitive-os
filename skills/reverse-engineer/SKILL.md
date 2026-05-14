@@ -1,9 +1,10 @@
-<!-- SCOPE: both -->
 ---
 name: reverse-engineer
-description: 'Use when you need this Cognitive OS skill: Deep source code analysis of a dependency to understand its internal
-  APIs, config schemas, CLI commands, environment variables, and undocumented behavior. When docs are incomplete, reading
-  source code gives the EXACT answer in minutes.; do not use when a narrower skill directly matches the task.'
+description: 'Use when you need this Cognitive OS skill: Deep source code analysis
+  of a dependency to understand its internal APIs, config schemas, CLI commands, environment
+  variables, and undocumented behavior. When docs are incomplete, reading source code
+  gives the EXACT answer in minutes.; do not use when a narrower skill directly matches
+  the task.'
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -13,7 +14,8 @@ metadata:
   author: luum
 audience: both
 effort: opus
-summary_line: Deep source code analysis of a dependency to understand its internal APIs…
+summary_line: Deep source code analysis of a dependency to understand its internal
+  APIs…
 platforms:
 - claude-code
 prerequisites: []
@@ -28,12 +30,18 @@ routing_patterns:
   confidence: 0.82
 routing_intents:
 - intent: reverse_engineer_request
-  description: User asks to deep source code analysis of a dependency to understand its internal APIs, config schemas, CLI
-    commands, environment variables, and undocumented behavior. When docs are incomplete, reading source code gives the EXACT
-    answer in minutes.
+  description: User asks to deep source code analysis of a dependency to understand
+    its internal APIs, config schemas, CLI commands, environment variables, and undocumented
+    behavior. When docs are incomplete, reading source code gives the EXACT answer
+    in minutes.
   confidence: 0.85
+triggers:
+- reverse-engineer
+- /reverse-engineer
+- Individual analyses
+- Deep source code analysis of a dependency to understand its internal APIs…
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Reading documentation saves hours. Reading source code saves days.

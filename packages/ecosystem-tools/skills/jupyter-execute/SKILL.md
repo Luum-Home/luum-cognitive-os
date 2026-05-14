@@ -1,25 +1,33 @@
-<!-- SCOPE: both -->
 ---
 name: jupyter-execute
-description: Execute code in a Jupyter kernel sandbox for data analysis, Python snippets, and benchmarks
+description: Execute code in a Jupyter kernel sandbox for data analysis, Python snippets,
+  and benchmarks
 invoke: /jupyter-exec
 version: 1.0.0
 model: sonnet
 audience: project
-paths: ["*.py", "*.ipynb", "pyproject.toml"]
-summary_line: "Execute code in a Jupyter kernel sandbox for data analysis, Python snippets…"
-
-platforms: ["claude-code"]
+paths:
+- '*.py'
+- '*.ipynb'
+- pyproject.toml
+summary_line: Execute code in a Jupyter kernel sandbox for data analysis, Python snippets…
+platforms:
+- claude-code
 prerequisites: []
 routing_patterns:
-  - pattern: '\bjupyter[- ]?execute\b'
-    confidence: 0.95
-  - pattern: '\brun\s+(in\s+)?jupyter\b'
-    confidence: 0.85
-  - pattern: '\bjupyter\s+kernel\b'
-    confidence: 0.8
+- pattern: \bjupyter[- ]?execute\b
+  confidence: 0.95
+- pattern: \brun\s+(in\s+)?jupyter\b
+  confidence: 0.85
+- pattern: \bjupyter\s+kernel\b
+  confidence: 0.8
+triggers:
+- jupyter-execute
+- /jupyter-execute
+- Jupyter Execute — Sandboxed Code Execution
+- Execute code in a Jupyter kernel sandbox for data analysis, Python snippets…
 ---
-
+<!-- SCOPE: both -->
 # Jupyter Execute — Sandboxed Code Execution
 
 ## Purpose

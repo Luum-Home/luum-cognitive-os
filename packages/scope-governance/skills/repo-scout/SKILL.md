@@ -1,9 +1,8 @@
-<!-- SCOPE: both -->
 ---
 name: repo-scout
-description: 'Scout external git repositories for potential inclusion in the tech radar. Three-level assessment: DeepWiki
-  summary, shallow clone analysis, deep evaluation. Supports bulk mode (--batch <file>) for evaluating multiple repos in one
-  pass.
+description: 'Scout external git repositories for potential inclusion in the tech
+  radar. Three-level assessment: DeepWiki summary, shallow clone analysis, deep evaluation.
+  Supports bulk mode (--batch <file>) for evaluating multiple repos in one pass.
 
   '
 version: 2.0.1
@@ -14,7 +13,8 @@ license: MIT
 metadata:
   author: luum
 audience: both
-summary_line: Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals).
+summary_line: Scout external git repositories for tech radar classification (bulk
+  mode, markdown artifacts, adoption signals).
 routing_patterns:
 - pattern: https?://github\.com/[\w.\-]+/[\w.\-]+
   confidence: 0.75
@@ -29,10 +29,17 @@ platforms:
 prerequisites: []
 routing_intents:
 - intent: repository_scouting_evaluation
-  description: User asks to evaluate, scout, or assess an external git repository for tech radar, adoption, or tool comparison.
+  description: User asks to evaluate, scout, or assess an external git repository
+    for tech radar, adoption, or tool comparison.
   confidence: 0.86
+triggers:
+- repo-scout
+- /repo-scout
+- 'for each sha: gh api repos/{owner}/{repo}/commits/{sha} --jq ''.commit.committer.date'''
+- Scout external git repositories for tech radar classification (bulk mode, markdown
+  artifacts, adoption signals)
 ---
-
+<!-- SCOPE: both -->
 ## Purpose
 
 Structured evaluation of external repositories for tech radar classification. Provides a repeatable, scored assessment instead of ad-hoc review. Supports single-repo and bulk-batch invocations, writes markdown artifacts per repo, and captures adoption signals (issue velocity, release cadence, CI health).
