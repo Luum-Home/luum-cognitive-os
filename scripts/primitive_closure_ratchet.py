@@ -21,6 +21,21 @@ from typing import Any
 import yaml
 
 
+VALID_HARNESS_REQUIREMENT_STATUSES = {
+    "required",
+    "capability_gap",
+    "adapter_gap",
+    "structural_advisory",
+    "command_surface",
+    "roadmap",
+}
+
+RUNTIME_PROJECTION_PATHS = {
+    "claude": ".claude/settings.json",
+    "codex": ".codex/hooks.json",
+}
+
+
 @dataclass(frozen=True)
 class Finding:
     code: str
@@ -69,6 +84,73 @@ def projection_closes_hook(root: Path, projection: Path, hook: str) -> bool:
     return text_contains(projection, dispatcher) and text_contains(root / dispatcher, hook)
 
 
+def implemented_harness_ids(root: Path) -> set[str]:
+    projection_manifest = load_manifest(root / "manifests" / "harness-projection.yaml")
+    harnesses = projection_manifest.get("harnesses") or []
+    ids: set[str] = set()
+    for harness in harnesses:
+        if isinstance(harness, dict) and harness.get("status") == "implemented" and harness.get("id"):
+            ids.add(str(harness["id"]))
+    return ids
+
+
+def expanded_harness_requirements(item: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    requirements = item.get("harness_requirements")
+    if not isinstance(requirements, dict):
+        return {}
+    expanded: dict[str, dict[str, Any]] = {}
+    for key, raw in requirements.items():
+        if not isinstance(raw, dict):
+            expanded[str(key)] = {"status": str(raw)}
+            continue
+        targets = raw.get("applies_to") or [key]
+        if isinstance(targets, str):
+            targets = [targets]
+        for target in targets:
+            expanded[str(target)] = raw
+    return expanded
+
+
+def check_harness_requirement_contract(root: Path, item: dict[str, Any], primitive: str) -> list[Finding]:
+    findings: list[Finding] = []
+    requirements = item.get("harness_requirements")
+    if not isinstance(requirements, dict) or not requirements:
+        findings.append(
+            Finding(
+                "legacy_claude_codex_only_projection_contract",
+                "block",
+                f"{primitive} must declare harness_requirements; claude_required/codex_required booleans are no longer sufficient",
+                "manifests/primitive-closure-ratchet.yaml",
+            )
+        )
+        return findings
+
+    for key, raw in requirements.items():
+        if not isinstance(raw, dict):
+            findings.append(Finding("invalid_harness_requirement", "block", f"{primitive} harness requirement {key} must be a mapping", "manifests/primitive-closure-ratchet.yaml"))
+            continue
+        status = str(raw.get("status") or "")
+        if status not in VALID_HARNESS_REQUIREMENT_STATUSES:
+            findings.append(Finding("invalid_harness_requirement_status", "block", f"{primitive} harness requirement {key} has unsupported status {status!r}", "manifests/primitive-closure-ratchet.yaml"))
+        if status != "required" and not str(raw.get("reason") or "").strip():
+            findings.append(Finding("missing_harness_gap_reason", "block", f"{primitive} harness requirement {key} must explain non-required status {status!r}", "manifests/primitive-closure-ratchet.yaml"))
+
+    implemented = implemented_harness_ids(root)
+    if implemented:
+        covered = set(expanded_harness_requirements(item))
+        missing = sorted(implemented - covered)
+        if missing:
+            findings.append(
+                Finding(
+                    "missing_harness_projection_requirement",
+                    "block",
+                    f"{primitive} does not classify implemented harnesses: {', '.join(missing)}",
+                    "manifests/primitive-closure-ratchet.yaml",
+                )
+            )
+    return findings
+
+
 def check_language_ratchet(root: Path, manifest: dict[str, Any]) -> list[Finding]:
     cfg = manifest.get("language_dependence") or {}
     report = root / str(cfg.get("report") or ".cognitive-os/reports/language-dependence-audit.md")
@@ -98,18 +180,30 @@ def check_runtime_proofs(root: Path, manifest: dict[str, Any]) -> list[Finding]:
 
 def check_hook_projections(root: Path, manifest: dict[str, Any]) -> list[Finding]:
     findings: list[Finding] = []
-    claude = root / ".claude/settings.json"
-    codex = root / ".codex/hooks.json"
     config = root / "cognitive-os.yaml"
     for item in manifest.get("critical_hook_projections") or []:
         hook = str(item.get("hook") or "")
         primitive = str(item.get("primitive") or hook)
         if not text_contains(config, hook):
             findings.append(Finding("missing_canonical_projection", "block", f"{primitive} missing from cognitive-os.yaml", "cognitive-os.yaml"))
-        if item.get("claude_required", True) and not projection_closes_hook(root, claude, hook):
-            findings.append(Finding("missing_claude_projection", "block", f"{primitive} missing from .claude/settings.json", ".claude/settings.json"))
-        if item.get("codex_required", False) and not projection_closes_hook(root, codex, hook):
-            findings.append(Finding("missing_codex_projection", "block", f"{primitive} missing from .codex/hooks.json", ".codex/hooks.json"))
+
+        findings.extend(check_harness_requirement_contract(root, item, primitive))
+        for harness_id, requirement in expanded_harness_requirements(item).items():
+            if requirement.get("status") != "required":
+                continue
+            projection_path = RUNTIME_PROJECTION_PATHS.get(harness_id)
+            if projection_path is None:
+                findings.append(
+                    Finding(
+                        "uncheckable_required_harness_projection",
+                        "block",
+                        f"{primitive} marks {harness_id} required but the ratchet has no runtime projection checker for that harness",
+                        "manifests/primitive-closure-ratchet.yaml",
+                    )
+                )
+                continue
+            if not projection_closes_hook(root, root / projection_path, hook):
+                findings.append(Finding(f"missing_{harness_id}_projection", "block", f"{primitive} missing from {projection_path}", projection_path))
     return findings
 
 
