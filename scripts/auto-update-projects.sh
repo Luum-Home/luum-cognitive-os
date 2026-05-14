@@ -97,13 +97,13 @@ fi
 # ── Get current COS version ────────────────────────────────────────
 # Prefer git tag (most accurate), then VERSION file, then short SHA
 cos_version="unknown"
-if [ -d "$COS_SOURCE_DIR/.git" ]; then
+if git -C "$COS_SOURCE_DIR" rev-parse --git-dir >/dev/null 2>&1; then
   cos_version=$(cd "$COS_SOURCE_DIR" && git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || true)
 fi
 if [ -z "$cos_version" ] || [ "$cos_version" = "unknown" ]; then
   if [ -f "$COS_SOURCE_DIR/VERSION" ]; then
     cos_version=$(tr -d '[:space:]' < "$COS_SOURCE_DIR/VERSION")
-  elif [ -d "$COS_SOURCE_DIR/.git" ]; then
+  elif git -C "$COS_SOURCE_DIR" rev-parse --git-dir >/dev/null 2>&1; then
     cos_version=$(cd "$COS_SOURCE_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "dev")
   fi
 fi

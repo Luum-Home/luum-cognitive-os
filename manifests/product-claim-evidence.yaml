@@ -21,7 +21,6 @@ claims:
     - docs/08-References/business/cos-vs-vanilla-dx-review.md
     - docs/08-References/business/value-proposition.md
     - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     boundaries:
     - Do not frame COS as another IDE, generic tracing dashboard, or model wrapper.
     - Keep cross-harness claims scoped to supported/evidenced drivers.
@@ -112,7 +111,6 @@ claims:
     approved_wording: COS should not lead with generic tracing; it should lead with
       evidence-backed behavioral governance.
     evidence:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/product-messaging.md
     - docs/08-References/business/feature-reality-audit.md
     boundaries:
@@ -142,7 +140,6 @@ claims:
     approved_wording: The strongest initial buyer is a VP Eng or Head of Platform
       managing AI-assisted development risk across a real team.
     evidence:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/value-proposition.md
     - docs/08-References/business/cos-vs-vanilla-dx-review.md
     boundaries:
@@ -156,8 +153,7 @@ claims:
     approved_wording: Cloud and Enterprise packaging should be discussed as internal
       strategy until validated with buyers.
     evidence:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
-    - .cognitive-os/strategy/00-first-approach.md
+    - docs/08-References/business/roadmap.md
     boundaries:
     - Do not publish exact price points without current pricing decision and buyer
       validation.
@@ -169,7 +165,6 @@ claims:
     summary: Competitive positioning should lead with behavioral governance and avoid generic tracing claims; already-analyzed tools should be answered from the local radar first, while volatile named comparisons require fresh fact-checking before publication.
     approved_wording: COS should position above generic tracing by focusing on evidence-backed behavioral governance. For previously analyzed tools, start from the local Tech Radar and external-tool manifests; use fresh verification for volatile public claims.
     evidence:
-    - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/08-References/business/feature-reality-audit.md
     - docs/08-References/business/product-messaging.md
     - docs/06-Daily/reports/external-tools-radar-INDEX.md
