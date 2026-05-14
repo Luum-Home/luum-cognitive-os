@@ -1,0 +1,233 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Run the Cognitive OS full-test repair protocol with bounded timeouts.
+
+This is the agent-facing primitive for requests such as "run all SO tests".
+It runs the broad command once, never unbounded; on failure it extracts pytest
+nodeids and reruns each failing node individually to produce focused evidence.
+If no nodeids are visible, it falls back to the bounded serial repair lane.
+
+The script does not edit code. The intended loop is:
+  1. run this script,
+  2. if it reports failures, repair them,
+  3. rerun the exact failed node(s),
+  4. rerun this script until the full lane passes.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shlex
+import subprocess
+import sys
+import time
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Sequence
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.test_efficiency_planner import extract_failed_nodeids  # noqa: E402
+
+
+@dataclass(frozen=True)
+class CommandResult:
+    name: str
+    command: str
+    returncode: int
+    duration_seconds: float
+    timed_out: bool
+    stdout: str
+    stderr: str
+
+    def combined_output(self) -> str:
+        return f"{self.stdout}\n{self.stderr}"
+
+
+def tail(text: str, chars: int) -> str:
+    if len(text) <= chars:
+        return text
+    return text[-chars:]
+
+
+def run_shell_command(name: str, command: str, cwd: Path, timeout_seconds: int) -> CommandResult:
+    start = time.monotonic()
+    try:
+        proc = subprocess.run(
+            command,
+            cwd=cwd,
+            shell=True,
+            text=True,
+            capture_output=True,
+            timeout=timeout_seconds,
+            check=False,
+        )
+        return CommandResult(name, command, proc.returncode, time.monotonic() - start, False, proc.stdout, proc.stderr)
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
+        return CommandResult(name, command, 124, time.monotonic() - start, True, stdout, stderr)
+
+
+def run_argv_command(name: str, argv: Sequence[str], cwd: Path, timeout_seconds: int) -> CommandResult:
+    start = time.monotonic()
+    try:
+        proc = subprocess.run(
+            list(argv),
+            cwd=cwd,
+            text=True,
+            capture_output=True,
+            timeout=timeout_seconds,
+            check=False,
+        )
+        return CommandResult(name, shlex.join(list(argv)), proc.returncode, time.monotonic() - start, False, proc.stdout, proc.stderr)
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        stderr = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
+        return CommandResult(name, shlex.join(list(argv)), 124, time.monotonic() - start, True, stdout, stderr)
+
+
+def git_tracked_status(cwd: Path) -> list[str]:
+    proc = subprocess.run(
+        ["git", "status", "--porcelain=v1", "--untracked-files=no"],
+        cwd=cwd,
+        text=True,
+        capture_output=True,
+        timeout=10,
+        check=False,
+    )
+    if proc.returncode != 0:
+        return []
+    return [line for line in proc.stdout.splitlines() if line.strip()]
+
+
+def write_report(path: Path, results: list[CommandResult], failed_nodeids: list[str], dirty_after: list[str]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "cos-test-repair-loop/v1",
+        "failed_nodeids": failed_nodeids,
+        "dirty_after": dirty_after,
+        "results": [
+            {
+                **asdict(result),
+                "stdout_tail": tail(result.stdout, 12000),
+                "stderr_tail": tail(result.stderr, 4000),
+                "stdout": "",
+                "stderr": "",
+            }
+            for result in results
+        ],
+    }
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def print_result(result: CommandResult, tail_chars: int) -> None:
+    status = "TIMEOUT" if result.timed_out else f"RC={result.returncode}"
+    print(f"TEST_REPAIR_LOOP_COMMAND {result.name} {status} duration={result.duration_seconds:.1f}s")
+    print(f"command={result.command}")
+    if result.stdout:
+        print("--- stdout tail ---")
+        print(tail(result.stdout, tail_chars))
+    if result.stderr:
+        print("--- stderr tail ---", file=sys.stderr)
+        print(tail(result.stderr, max(4000, tail_chars // 3)), file=sys.stderr)
+
+
+def rerun_failed_nodeids(nodeids: list[str], cwd: Path, timeout_seconds: int, tail_chars: int) -> list[CommandResult]:
+    results: list[CommandResult] = []
+    for nodeid in nodeids:
+        argv = [sys.executable, "-m", "pytest", nodeid, "-q", "--tb=short", "--disable-warnings"]
+        result = run_argv_command(f"failed-node::{nodeid}", argv, cwd, timeout_seconds)
+        print("TEST_REPAIR_LOOP_INDIVIDUAL_RERUN", nodeid, "timeout" if result.timed_out else result.returncode)
+        print_result(result, tail_chars)
+        results.append(result)
+    return results
+
+
+def run_serial_fallback(args: argparse.Namespace, cwd: Path) -> CommandResult:
+    script = cwd / "scripts" / "cos-pytest-serial-repair"
+    argv = [
+        sys.executable,
+        str(script),
+        "tests/",
+        "--timeout-seconds",
+        str(args.serial_timeout_seconds),
+        "--chunk-timeout-seconds",
+        str(args.serial_chunk_timeout_seconds),
+        "--maxfail",
+        "1",
+        "--reset-state",
+    ]
+    return run_argv_command("serial-repair-fallback", argv, cwd, args.serial_timeout_seconds + 15)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run full SO tests with bounded repair evidence collection.")
+    parser.add_argument("--full-command", default="make test-laptop", help="Broad validation command; default: make test-laptop")
+    parser.add_argument("--timeout-seconds", type=int, default=2400, help="Timeout for the broad command; default: 2400")
+    parser.add_argument("--individual-timeout-seconds", type=int, default=180, help="Timeout per failed-node rerun; default: 180")
+    parser.add_argument("--serial-timeout-seconds", type=int, default=600, help="Fallback serial-repair budget; default: 600")
+    parser.add_argument("--serial-chunk-timeout-seconds", type=int, default=120, help="Fallback per-file timeout; default: 120")
+    parser.add_argument("--tail-chars", type=int, default=12000, help="Output tail size printed per command")
+    parser.add_argument("--report", default=".cognitive-os/runtime/test-repair-loop/latest.json", help="JSON report path")
+    parser.add_argument("--require-clean-start", action="store_true", help="Refuse to start if tracked files are already dirty")
+    parser.add_argument("--allow-dirty-after", action="store_true", help="Do not fail when tests generate tracked-file drift")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    cwd = Path.cwd()
+    before_status = git_tracked_status(cwd)
+    if args.require_clean_start and before_status:
+        print("TEST_REPAIR_LOOP_DIRTY_START")
+        for line in before_status:
+            print(line)
+        return 3
+
+    results: list[CommandResult] = []
+    full = run_shell_command("full", args.full_command, cwd, args.timeout_seconds)
+    results.append(full)
+    print_result(full, args.tail_chars)
+
+    failed_nodeids = extract_failed_nodeids(full.combined_output())
+    if failed_nodeids:
+        print("TEST_REPAIR_LOOP_FAILED_NODEIDS")
+        for nodeid in failed_nodeids:
+            print(nodeid)
+        results.extend(rerun_failed_nodeids(failed_nodeids, cwd, args.individual_timeout_seconds, args.tail_chars))
+    elif full.returncode != 0:
+        print("TEST_REPAIR_LOOP_NO_NODEIDS_FALLBACK")
+        fallback = run_serial_fallback(args, cwd)
+        results.append(fallback)
+        print_result(fallback, args.tail_chars)
+        failed_nodeids = extract_failed_nodeids(fallback.combined_output())
+
+    after_status = git_tracked_status(cwd)
+    dirty_after = sorted(set(after_status) - set(before_status))
+    report_path = cwd / args.report
+    write_report(report_path, results, failed_nodeids, dirty_after)
+    print(f"TEST_REPAIR_LOOP_REPORT {report_path}")
+
+    if dirty_after and not args.allow_dirty_after:
+        print("TEST_REPAIR_LOOP_DIRTY_AFTER_RUN")
+        for line in dirty_after:
+            print(line)
+        return 3
+
+    if full.timed_out:
+        print("TEST_REPAIR_LOOP_TIMEOUT")
+        return 124
+    if full.returncode != 0:
+        print("TEST_REPAIR_LOOP_REPAIR_REQUIRED")
+        return full.returncode or 1
+
+    print("TEST_REPAIR_LOOP_PASS")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
