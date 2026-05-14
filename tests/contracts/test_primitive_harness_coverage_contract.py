@@ -11,7 +11,7 @@ pytestmark = pytest.mark.contract
 
 REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "primitive_harness_coverage.py"
-REPORT = REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json"
+REPORT = REPO / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json"
 
 
 @pytest.mark.timeout(120)

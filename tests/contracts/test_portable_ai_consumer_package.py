@@ -45,7 +45,7 @@ def test_consumer_package_smoke_proves_tempdir_no_mutation() -> None:
 
 
 def test_consumer_package_smoke_cli_check_is_non_mutating() -> None:
-    latest = REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-package-smoke-latest.json"
+    latest = REPO_ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-package-smoke-latest.json"
     before = latest.read_text(encoding="utf-8") if latest.exists() else None
     result = subprocess.run(
         [str(REPO_ROOT / "scripts" / "cos-portable-ai-consumer-package-smoke"), "--check", "--json"],

@@ -36,7 +36,7 @@ from scripts.cos_promotion_proposer import (  # noqa: E402  (sibling import)
 DEFAULT_DB = PROJECT_ROOT / ".cognitive-os" / "skill_store.db"
 DEFAULT_LIFECYCLE = PROJECT_ROOT / "manifests" / "primitive-lifecycle.yaml"
 DEFAULT_METRICS = PROJECT_ROOT / ".cognitive-os" / "metrics" / "demotion-proposals.jsonl"
-DEFAULT_OUT_ROOT = PROJECT_ROOT / "docs" / "reports" / "demotion-proposals"
+DEFAULT_OUT_ROOT = PROJECT_ROOT / "docs" / "06-Daily" / "reports" / "demotion-proposals"
 
 
 def _records_in_window(db_path: Path, name: str, days: int) -> int:

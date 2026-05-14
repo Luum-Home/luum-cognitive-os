@@ -214,7 +214,7 @@ def audit(repo: Path) -> dict[str, Any]:
     checks["commit_author_email_policy"] = "preserve-human-author-emails; do-not-auto-rewrite"
 
     docs_history = repo / "docs" / "history"
-    docs_reports = repo / "docs" / "reports"
+    docs_reports = repo / "docs" / "06-Daily" / "reports"
     required_evidence = {
         "docs/01-Build-Log/history/README.md": docs_history / "README.md",
         "docs/01-Build-Log/history/manifest-snapshot-*.yaml": list(docs_history.glob("manifest-snapshot-*.yaml")),

@@ -17,8 +17,8 @@ if str(ROOT) not in sys.path:
 
 from scripts.portable_ai_overlay import build_overlay
 
-DEFAULT_JSON = ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.json"
-DEFAULT_MD = ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.md"
+DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-smoke-latest.json"
+DEFAULT_MD = ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-consumer-smoke-latest.md"
 
 
 def build_report(root: Path) -> dict[str, Any]:

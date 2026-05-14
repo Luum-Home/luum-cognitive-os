@@ -120,8 +120,8 @@ def _receipts_report(root: Path, *, json_output: bool) -> tuple[int, str]:
     return 0, "\n".join(lines) + "\n"
 
 def _snapshot(root: Path) -> tuple[int, str]:
-    coverage_path = root / "docs" / "reports" / "primitive-harness-coverage-latest.json"
-    partials_path = root / "docs" / "reports" / "primitive-harness-partials-latest.json"
+    coverage_path = root / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json"
+    partials_path = root / "docs" / "06-Daily" / "reports" / "primitive-harness-partials-latest.json"
     if not coverage_path.exists():
         return 2, "Primitive surface coverage report missing. Run: python3 scripts/primitive_harness_coverage.py --project-dir .\n"
     coverage = _load(coverage_path)

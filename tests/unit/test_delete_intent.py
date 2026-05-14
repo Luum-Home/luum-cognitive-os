@@ -79,7 +79,7 @@ def test_allows_untracked_delete_with_approved_classification_and_reason(tmp_pat
 
 def test_hook_blocks_find_delete_on_untracked_reports(tmp_path: Path) -> None:
     root = _git_repo(tmp_path)
-    target = root / "docs" / "reports" / "audit.md"
+    target = root / "docs" / "06-Daily" / "reports" / "audit.md"
     target.parent.mkdir(parents=True)
     target.write_text("uncommitted report\n")
 

@@ -78,7 +78,7 @@ def test_usage_map_cli_writes_reports_and_can_fail_on_orphans(tmp_path: Path) ->
     )
 
     assert result.returncode == 0, result.stderr
-    payload = json.loads((root / "docs" / "reports" / "primitive-usage-map-latest.json").read_text())
+    payload = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-usage-map-latest.json").read_text())
     assert payload["summary"]["without_any_consumer"] == 1
-    assert "Primitive Usage Map" in (root / "docs" / "reports" / "primitive-usage-map-latest.md").read_text()
+    assert "Primitive Usage Map" in (root / "docs" / "06-Daily" / "reports" / "primitive-usage-map-latest.md").read_text()
     assert failing.returncode == 1

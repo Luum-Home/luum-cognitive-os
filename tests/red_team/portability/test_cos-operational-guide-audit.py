@@ -89,7 +89,7 @@ def _run(project_dir: Path, *extra: str) -> tuple[subprocess.CompletedProcess[st
     env.pop("CLAUDE_PROJECT_DIR", None)
     cmd = [sys.executable, str(SCRIPT), "--project-dir", str(project_dir), "--write", *extra]
     cp = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=30)
-    json_path = project_dir / "docs" / "reports" / "operational-guide-audit-latest.json"
+    json_path = project_dir / "docs" / "06-Daily" / "reports" / "operational-guide-audit-latest.json"
     payload = json.loads(json_path.read_text()) if json_path.exists() else {}
     return cp, payload
 

@@ -95,7 +95,7 @@ def test_main_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     project = tmp_path / "project"
     seed_all_candidates(candidates)
     write(project / "skills" / "demo" / "SKILL.md", "# Demo skill")
-    write(project / "docs" / "reports" / "primitive-coverage-latest.md", "# Compact evidence")
+    write(project / "docs" / "06-Daily" / "reports" / "primitive-coverage-latest.md", "# Compact evidence")
 
     exit_code = primitive_backend_benchmark.main(
         [

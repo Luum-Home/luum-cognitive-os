@@ -77,7 +77,7 @@ def _run_hook(tmp_path: Path, file_path: Path, env_extra=None) -> subprocess.Com
 
 
 def _make_report(tmp_path: Path, name: str, content: str) -> Path:
-    reports_dir = tmp_path / "docs" / "reports"
+    reports_dir = tmp_path / "docs" / "06-Daily" / "reports"
     reports_dir.mkdir(parents=True, exist_ok=True)
     fpath = reports_dir / name
     fpath.write_text(content, encoding="utf-8")

@@ -32,7 +32,7 @@ def _run(project_dir: Path, *extra: str) -> subprocess.CompletedProcess[str]:
 
 
 def _seed_ledger(project_dir: Path, items: list[dict]) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "pending-truth-latest.json").write_text(json.dumps({
         "schema_version": "pending-truth/v1",
@@ -133,7 +133,7 @@ def test_strict_passes_on_high(tmp_path: Path) -> None:
 def test_tracked_baseline_counts_as_audited(tmp_path: Path) -> None:
     """Tracked baseline records pre-ADR-275 manual closures without committing runtime trail."""
     _seed_ledger(tmp_path, [{"id": "d1", "status": "verified-done"}])
-    reports = tmp_path / "docs" / "reports"
+    reports = tmp_path / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "closure-trust-baseline.json").write_text(json.dumps({
         "schema_version": "closure-trust-baseline/v1",

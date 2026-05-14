@@ -38,7 +38,7 @@ def _run(project_dir: Path, *extra: str) -> subprocess.CompletedProcess[str]:
 
 
 def _seed_pending_truth(project_dir: Path, items: list[dict]) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     by_status: dict[str, int] = {}
     for it in items:
@@ -53,7 +53,7 @@ def _seed_pending_truth(project_dir: Path, items: list[dict]) -> None:
 
 
 def _seed_og_audit(project_dir: Path, results: list[dict]) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     by_priority: dict[str, int] = {}
     for r in results:
@@ -94,8 +94,8 @@ def test_bilateral_all_sources_populated(tmp_path: Path) -> None:
          "verdict": "missing", "priority": "P0", "age_days": 1, "tier": "maintainer",
          "status": "accepted", "subsection_count": 0},
     ])
-    (tmp_path / "docs" / "runbooks" / "adr-X-staging").mkdir(parents=True)
-    (tmp_path / "docs" / "runbooks" / "adr-X-staging" / "README.md").write_text("staged")
+    (tmp_path / "docs" / "05-Methodology" / "runbooks" / "adr-X-staging").mkdir(parents=True)
+    (tmp_path / "docs" / "05-Methodology" / "runbooks" / "adr-X-staging" / "README.md").write_text("staged")
 
     cp = _run(tmp_path, "--json")
     assert cp.returncode == 0, cp.stderr
@@ -131,7 +131,7 @@ def test_suggested_actions_rank_staged_first(tmp_path: Path) -> None:
          "status": "accepted", "subsection_count": 0}
         for i in range(3)
     ])
-    (tmp_path / "docs" / "runbooks" / "adr-Y-staging").mkdir(parents=True)
+    (tmp_path / "docs" / "05-Methodology" / "runbooks" / "adr-Y-staging").mkdir(parents=True)
 
     cp = _run(tmp_path, "--json")
     payload = json.loads(cp.stdout)
@@ -170,7 +170,7 @@ def test_limit_caps_top_actionable(tmp_path: Path) -> None:
 
 
 def _seed_adr_partial_backlog(project_dir: Path, items: list[dict]) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     by_impl: dict[str, int] = {}
     for item in items:

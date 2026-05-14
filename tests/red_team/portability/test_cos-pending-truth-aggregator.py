@@ -53,7 +53,7 @@ def test_bilateral_aggregator_runs_against_synthetic_repo(tmp_path: Path) -> Non
         encoding="utf-8",
     )
     # Radar tracker with one 🔲 row
-    reports_dir = tmp_path / "docs" / "reports"
+    reports_dir = tmp_path / "docs" / "06-Daily" / "reports"
     reports_dir.mkdir(parents=True)
     (reports_dir / "radar-2026-05-08-implementation-tracker.md").write_text(
         "# Tracker\n\n| T1 | demo follow-up | 🔲 | source |\n",
@@ -156,8 +156,8 @@ def test_write_mode_emits_json_and_md(tmp_path: Path) -> None:
     (plan_dir / "p.md").write_text("- [ ] one\n", encoding="utf-8")
     result = _run(tmp_path, "--write")
     assert result.returncode == 0, f"stderr: {result.stderr}"
-    json_path = tmp_path / "docs" / "reports" / "pending-truth-latest.json"
-    md_path = tmp_path / "docs" / "reports" / "pending-truth-latest.md"
+    json_path = tmp_path / "docs" / "06-Daily" / "reports" / "pending-truth-latest.json"
+    md_path = tmp_path / "docs" / "06-Daily" / "reports" / "pending-truth-latest.md"
     assert json_path.is_file()
     assert md_path.is_file()
     data = json.loads(json_path.read_text())

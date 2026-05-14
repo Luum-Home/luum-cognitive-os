@@ -15,7 +15,7 @@ spec.loader.exec_module(acc_pipeline)
 
 
 def test_acc_loads_documentation_truth_report(tmp_path: Path) -> None:
-    report = tmp_path / "docs" / "reports" / "documentation-truth-latest.json"
+    report = tmp_path / "docs" / "06-Daily" / "reports" / "documentation-truth-latest.json"
     report.parent.mkdir(parents=True)
     report.write_text(
         json.dumps(

@@ -208,7 +208,7 @@ def evaluate_validator_soak(
 
     # --- Emit proposal ---
     date_str = now.strftime("%Y-%m-%d")
-    proposal_dir = project_root / "docs" / "reports" / "promotion-proposals" / date_str
+    proposal_dir = project_root / "docs" / "06-Daily" / "reports" / "promotion-proposals" / date_str
     proposal_dir.mkdir(parents=True, exist_ok=True)
     proposal_path = proposal_dir / "validator-advisory-to-blocking.md"
 

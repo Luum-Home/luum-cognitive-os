@@ -61,7 +61,7 @@ def test_gate_allows_research_report_write_with_security_terms(tmp_path: Path) -
         {
             "tool_name": "Write",
             "tool_input": {
-                "file_path": str(tmp_path / "docs" / "reports" / "comparative-matrix.md"),
+                "file_path": str(tmp_path / "docs" / "06-Daily" / "reports" / "comparative-matrix.md"),
                 "content": (
                     "MCP tool wrapper references https://github.com/anthropics/claude-code. "
                     "Private memory persistence research mentions Engram and mempalace. "

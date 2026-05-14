@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUT = ROOT / "docs" / "reports" / "proof-drill-evidence-latest.json"
+DEFAULT_OUT = ROOT / "docs" / "06-Daily" / "reports" / "proof-drill-evidence-latest.json"
 
 
 def utc_now() -> str:

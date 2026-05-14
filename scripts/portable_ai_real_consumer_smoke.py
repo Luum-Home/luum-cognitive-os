@@ -35,8 +35,8 @@ from lib.consumer_fleet_audit import build_report as build_consumer_report
 from scripts.portable_ai_overlay import build_overlay
 
 SCHEMA_VERSION = "portable-ai-real-consumer-smoke.v1"
-DEFAULT_JSON = ROOT / "docs" / "reports" / "portable-ai-real-consumer-smoke-latest.json"
-DEFAULT_MD = ROOT / "docs" / "reports" / "portable-ai-real-consumer-smoke-latest.md"
+DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-real-consumer-smoke-latest.json"
+DEFAULT_MD = ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-real-consumer-smoke-latest.md"
 
 
 def _ai_snapshot(project: Path) -> dict[str, Any]:

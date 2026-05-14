@@ -12,7 +12,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from scripts.portable_ai_overlay import build_overlay
 
-REPORT = REPO_ROOT / "docs" / "reports" / "portable-ai-primitive-standards-due-diligence-2026-05-09.md"
+REPORT = REPO_ROOT / "docs" / "06-Daily" / "reports" / "portable-ai-primitive-standards-due-diligence-2026-05-09.md"
 ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-258-portable-ai-overlay-for-agentic-primitives.md"
 
 REQUIRED_CLASSIFICATIONS = [

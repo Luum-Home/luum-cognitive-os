@@ -43,7 +43,7 @@ def write_report(path: Path, primitive_id: str, verdict: str, candidate: float, 
 
 def test_build_ledger_groups_reports_by_family(tmp_path: Path) -> None:
     root = tmp_path / "repo"
-    skills = write_report(root / "docs" / "reports" / "primitive-fitness" / "skill.json", "skills/example/SKILL.md", "promote", 86)
+    skills = write_report(root / "docs" / "06-Daily" / "reports" / "primitive-fitness" / "skill.json", "skills/example/SKILL.md", "promote", 86)
     hooks = write_report(root / "custom" / "hook.json", "hooks/pre-tool.sh", "needs_evidence", 81)
 
     payload = primitive_fitness_ledger.build_ledger(root, [str(hooks)])

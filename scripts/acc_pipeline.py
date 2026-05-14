@@ -696,7 +696,7 @@ def load_proof_drill_claim_map(root: Path, evidence_by_id: dict[str, dict[str, A
 
 
 def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
-    path = root / "docs" / "reports" / "proof-drill-evidence-latest.json"
+    path = root / "docs" / "06-Daily" / "reports" / "proof-drill-evidence-latest.json"
     if not path.exists():
         return AdapterStatus("unverified", "docs/06-Daily/reports/proof-drill-evidence-latest.json", error="missing proof drill evidence report"), [], []
     data = read_json(path)
@@ -758,7 +758,7 @@ def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capabilit
 
 
 def load_primitive_fitness_ledger(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
-    path = root / "docs" / "reports" / "primitive-fitness-ledger-latest.json"
+    path = root / "docs" / "06-Daily" / "reports" / "primitive-fitness-ledger-latest.json"
     if not path.exists():
         return AdapterStatus("unverified", "docs/06-Daily/reports/primitive-fitness-ledger-latest.json", error="missing primitive fitness ledger"), [], []
     data = read_json(path)
@@ -836,7 +836,7 @@ def load_primitive_fitness_ledger(root: Path) -> tuple[AdapterStatus, list[Capab
     ), capabilities, findings
 
 def load_harness_coverage(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
-    path = root / "docs" / "reports" / "primitive-harness-coverage-latest.json"
+    path = root / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json"
     if not path.exists():
         return AdapterStatus("unverified", "docs/06-Daily/reports/primitive-harness-coverage-latest.json", error="missing harness coverage report"), [], []
     data = read_json(path)
@@ -892,7 +892,7 @@ def load_harness_coverage(root: Path) -> tuple[AdapterStatus, list[Capability], 
 
 
 def load_projection_fidelity(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
-    path = root / "docs" / "reports" / "primitive-projection-fidelity-latest.json"
+    path = root / "docs" / "06-Daily" / "reports" / "primitive-projection-fidelity-latest.json"
     if not path.exists():
         return AdapterStatus("unverified", str(path.relative_to(root)), error="missing projection fidelity report"), [], []
     data = read_json(path)
@@ -937,7 +937,7 @@ def load_projection_fidelity(root: Path) -> tuple[AdapterStatus, list[Capability
 
 
 def load_authority_write_effects(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
-    path = root / "docs" / "reports" / "primitive-authority-latest.json"
+    path = root / "docs" / "06-Daily" / "reports" / "primitive-authority-latest.json"
     if not path.exists():
         return AdapterStatus("unverified", str(path.relative_to(root)), error="missing primitive authority audit report"), [], []
     data = read_json(path)
@@ -1011,7 +1011,7 @@ def load_authority_write_effects(root: Path) -> tuple[AdapterStatus, list[Capabi
 
 
 def load_documentation_truth(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
-    path = root / "docs" / "reports" / "documentation-truth-latest.json"
+    path = root / "docs" / "06-Daily" / "reports" / "documentation-truth-latest.json"
     if not path.exists():
         return AdapterStatus("unverified", str(path.relative_to(root)), error="missing documentation truth report"), [], []
     data = read_json(path)
@@ -1142,7 +1142,7 @@ def load_codebase_itinerary(root: Path) -> tuple[AdapterStatus, list[Capability]
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
-    docs_report = root / "docs" / "reports" / "docs-execution-latest.json"
+    docs_report = root / "docs" / "06-Daily" / "reports" / "docs-execution-latest.json"
     if docs_report.exists():
         data = read_json(docs_report)
         summary = data.get("summary", {})

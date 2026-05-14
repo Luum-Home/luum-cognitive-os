@@ -13,8 +13,8 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_JSON = ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.json"
-DEFAULT_MD = ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.md"
+DEFAULT_JSON = ROOT / "docs" / "06-Daily" / "reports" / "primitive-service-headless-smoke-latest.json"
+DEFAULT_MD = ROOT / "docs" / "06-Daily" / "reports" / "primitive-service-headless-smoke-latest.md"
 
 
 def _env(project: Path) -> dict[str, str]:

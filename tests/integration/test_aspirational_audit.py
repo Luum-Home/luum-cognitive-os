@@ -230,7 +230,7 @@ class TestCLIFlags:
         jsonl = project / ".cognitive-os" / "metrics" / "aspirational-audit.jsonl"
         assert not jsonl.exists(), "JSONL should not be written in --dry-run"
 
-        reports = list((project / "docs" / "reports").glob("aspirational-audit-*.md"))
+        reports = list((project / "docs" / "06-Daily" / "reports").glob("aspirational-audit-*.md"))
         assert len(reports) == 0, "Report should not be written in --dry-run"
 
     def test_json_flag_produces_parseable_output(self, tmp_path, capsys):
@@ -304,7 +304,7 @@ class TestReportFile:
         project = make_project(tmp_path)
         aa.main(["--project-root", str(project)])
         today = datetime.now().strftime("%Y-%m-%d")
-        report = project / "docs" / "reports" / f"aspirational-audit-{today}.md"
+        report = project / "docs" / "06-Daily" / "reports" / f"aspirational-audit-{today}.md"
         assert report.exists(), f"Expected report at {report}"
         content = report.read_text()
         assert "Aspirational Audit" in content
@@ -317,7 +317,7 @@ class TestReportFile:
         aa.main(["--project-root", str(project)])
         from datetime import datetime
         today = datetime.now().strftime("%Y-%m-%d")
-        report = project / "docs" / "reports" / f"aspirational-audit-{today}.md"
+        report = project / "docs" / "06-Daily" / "reports" / f"aspirational-audit-{today}.md"
         content = report.read_text()
         assert "| REAL" in content or "REAL |" in content
 

@@ -22,7 +22,7 @@ def write_json(path: Path, payload: dict) -> None:
 
 def make_repo(tmp_path: Path) -> Path:
     root = tmp_path / "repo"
-    (root / "docs" / "reports").mkdir(parents=True)
+    (root / "docs" / "06-Daily" / "reports").mkdir(parents=True)
     (root / "manifests").mkdir(parents=True)
     (root / "cognitive-os.yaml").write_text(yaml.safe_dump({"project": {"phase": "reconstruction"}}))
     (root / "manifests" / "harness-projection.yaml").write_text(
@@ -145,7 +145,7 @@ def make_repo(tmp_path: Path) -> Path:
         },
     )
     write_json(
-        root / "docs" / "reports" / "primitive-harness-coverage-latest.json",
+        root / "docs" / "06-Daily" / "reports" / "primitive-harness-coverage-latest.json",
         {
             "schema_version": "primitive-harness-coverage.v1",
             "summary": {
@@ -184,7 +184,7 @@ def make_repo(tmp_path: Path) -> Path:
     )
 
     write_json(
-        root / "docs" / "reports" / "primitive-fitness-ledger-latest.json",
+        root / "docs" / "06-Daily" / "reports" / "primitive-fitness-ledger-latest.json",
         {
             "schema_version": "primitive-fitness-ledger.v1",
             "summary": {
@@ -210,7 +210,7 @@ def make_repo(tmp_path: Path) -> Path:
         },
     )
     write_json(
-        root / "docs" / "reports" / "primitive-projection-fidelity-latest.json",
+        root / "docs" / "06-Daily" / "reports" / "primitive-projection-fidelity-latest.json",
         {
             "schema_version": "primitive-projection-fidelity.v1",
             "summary": {"contracts": 1, "projection_rows": 2, "aligned": 2, "pending_runtime_smoke": 0},
@@ -244,7 +244,7 @@ def make_repo(tmp_path: Path) -> Path:
         },
     )
     write_json(
-        root / "docs" / "reports" / "docs-execution-latest.json",
+        root / "docs" / "06-Daily" / "reports" / "docs-execution-latest.json",
         {
             "summary": {"items": 1},
             "rows": [

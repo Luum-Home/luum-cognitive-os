@@ -38,7 +38,7 @@ def _run(project_dir: Path) -> subprocess.CompletedProcess[str]:
 
 
 def _seed(project_dir: Path, ran_at: str, items: list[dict] | None = None) -> None:
-    reports = project_dir / "docs" / "reports"
+    reports = project_dir / "docs" / "06-Daily" / "reports"
     reports.mkdir(parents=True, exist_ok=True)
     (reports / "pending-truth-latest.json").write_text(json.dumps({
         "schema_version": "pending-truth/v1",

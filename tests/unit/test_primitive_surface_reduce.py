@@ -108,10 +108,10 @@ def test_cli_writes_plan_and_apply_reports(tmp_path: Path) -> None:
 
     assert plan.returncode == 0, plan.stderr
     assert apply.returncode == 0, apply.stderr
-    payload = json.loads((root / "docs" / "reports" / "primitive-surface-reduction-latest.json").read_text())
+    payload = json.loads((root / "docs" / "06-Daily" / "reports" / "primitive-surface-reduction-latest.json").read_text())
     assert payload["mode"] == "apply-safe"
     assert len(payload["applied"]) == 1
-    assert "Primitive Surface Reduction" in (root / "docs" / "reports" / "primitive-surface-reduction-latest.md").read_text()
+    assert "Primitive Surface Reduction" in (root / "docs" / "06-Daily" / "reports" / "primitive-surface-reduction-latest.md").read_text()
 
 
 def test_cli_refuses_non_os_repo(tmp_path: Path) -> None:

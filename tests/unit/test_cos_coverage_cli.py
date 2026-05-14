@@ -84,7 +84,7 @@ def fake_project(tmp_path: Path) -> Path:
     ]
     make_audit_jsonl(metrics / "aspirational-audit.jsonl", records)
     make_claim_proof_md(
-        tmp_path / "docs" / "reports" / "claim-proof-latest.md",
+        tmp_path / "docs" / "06-Daily" / "reports" / "claim-proof-latest.md",
         mapped=10, weak=2, unmapped=1,
     )
     return tmp_path
@@ -164,7 +164,7 @@ class TestEmptyHistoryFallback:
     def test_no_audit_file_exits_ok(self, tmp_path: Path) -> None:
         # No aspirational-audit.jsonl at all
         make_claim_proof_md(
-            tmp_path / "docs" / "reports" / "claim-proof-latest.md",
+            tmp_path / "docs" / "06-Daily" / "reports" / "claim-proof-latest.md",
             mapped=0, weak=0, unmapped=0,
         )
         result = run_coverage(tmp_path, "--json")
