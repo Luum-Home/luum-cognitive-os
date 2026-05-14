@@ -32,6 +32,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-307: Dependency Tool Intake and Profile Ratchet](adrs/ADR-307-dependency-tool-intake-and-profile-ratchet.md) — maintenance loop that triages dependency coverage findings, adds fail-new ratchet support, and wires doctor/lane/adoption primitives without auto-installing observed tools.
 - [Dependency Installer Coverage Gap Post-Mortem — 2026-05-14](reports/dependency-installer-coverage-gap-postmortem-2026-05-14.md) — root-cause record for Python/CLI/tooling dependencies used by COS but not modeled in the installer manifest, leading to ADR-305.
 - [ADR-305: Dependency Coverage Reconciliation Audit](adrs/ADR-305-dependency-coverage-reconciliation-audit.md) — read-only audit that reconciles package manifests, script/tool probes, install manifest coverage, dependency lanes, and external-tool policy before installer changes.
 - [ADR-306: Scope Projection Runtime Audit](adrs/ADR-306-scope-projection-runtime-audit.md) — automated source/projection audit that enforces `os-only`, `project`, and `both` scope claims against paired proofs and disposable consumer installs.

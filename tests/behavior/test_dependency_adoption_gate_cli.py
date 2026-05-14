@@ -74,3 +74,49 @@ def test_dependency_adoption_gate_cli_passes_with_evidence(project_root: Path, t
     payload = json.loads(result.stdout)
     assert payload["status"] == "pass"
     assert payload["evidence_files"] == ["docs/06-Daily/reports/repo-forensics-httpx.md"]
+
+
+@pytest.mark.behavior
+def test_dependency_adoption_gate_cli_coverage_aware(project_root: Path, tmp_path: Path) -> None:
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "manifests/dependencies.yaml").write_text(
+        """schema_version: 1
+python:
+  required: []
+  groups: {}
+tools: []
+mcp_servers: []
+profiles:
+  default:
+    python_groups: []
+    tools_required: []
+    tools_recommended: []
+    mcp_servers_recommended: []
+  full:
+    python_groups: []
+    tools_required: []
+    tools_recommended: []
+    mcp_servers_recommended: []
+""",
+        encoding="utf-8",
+    )
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts/probe.sh").write_text("command -v shellcheck >/dev/null\n", encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            str(project_root / "scripts/cos-dependency-adoption-gate"),
+            "--project-dir",
+            str(tmp_path),
+            "--coverage-aware",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    payload = json.loads(result.stdout)
+    assert payload["schema_version"] == "cos-deps-triage.v1"
+    assert payload["summary"]["actionable"] >= 1

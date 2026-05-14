@@ -224,6 +224,40 @@ else
   fail "manifest-check.sh or python3 unavailable; dependency manifest was not checked"
 fi
 
+
+if [ -x "$OS_SOURCE_ROOT/scripts/cos-deps-coverage-audit" ] && command -v python3 >/dev/null 2>&1; then
+  COVERAGE_JSON="$(mktemp "${TMPDIR:-/tmp}/cos-deps-coverage.XXXXXX")"
+  if "$OS_SOURCE_ROOT/scripts/cos-deps-coverage-audit" --json >"$COVERAGE_JSON" 2>/dev/null; then
+    coverage_summary="$(python3 - "$COVERAGE_JSON" <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+payload = json.loads(Path(sys.argv[1]).read_text())
+summary = payload.get("summary", {})
+print("|".join(str(summary.get(key, 0)) for key in [
+    "missing_from_manifest",
+    "optional_lane_needed",
+    "blocked_or_removed_by_policy",
+]))
+PYEOF
+)"
+    missing="${coverage_summary%%|*}"
+    rest="${coverage_summary#*|}"
+    optional="${rest%%|*}"
+    blocked="${rest#*|}"
+    if [ "$missing" = "0" ] && [ "$optional" = "0" ] && [ "$blocked" = "0" ]; then
+      pass "dependency coverage audit has no actionable drift"
+    else
+      warn "dependency coverage drift: missing_from_manifest=${missing} optional_lane_needed=${optional} blocked_or_removed_by_policy=${blocked}"
+    fi
+  else
+    warn "dependency coverage audit failed"
+  fi
+  rm -f "$COVERAGE_JSON"
+else
+  warn "cos-deps-coverage-audit unavailable; dependency coverage drift was not checked"
+fi
+
 if command -v engram >/dev/null 2>&1; then
   ENGRAM_BIN="$(command -v engram)"
   pass "engram CLI found: $ENGRAM_BIN"

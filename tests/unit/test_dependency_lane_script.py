@@ -51,3 +51,11 @@ def test_unknown_lane_fails_with_available_lanes() -> None:
     assert result.returncode != 0
     assert "unknown lane" in result.stderr
     assert "observability" in result.stderr
+
+
+def test_audit_reports_lane_coverage_gap() -> None:
+    result = run_script("audit", "semantic")
+
+    assert result.returncode == 0, result.stderr
+    assert "dependency lane audit: semantic" in result.stdout
+    assert "numpy" in result.stdout or "sentence-transformers" in result.stdout

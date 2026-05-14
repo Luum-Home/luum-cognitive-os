@@ -162,3 +162,8 @@ hook-quality / harness-projection drift unrelated to this dependency audit
 slice. The failure did not identify files introduced by ADR-305. The broad final
 `make test-laptop` lane was not run as part of this focused implementation
 slice.
+
+
+## Follow-up
+
+ADR-307 adds the maintenance loop above this detector: `scripts/cos-deps-triage`, `scripts/cos-deps-profile-ratchet`, lane audit integration, doctor warnings, and coverage-aware adoption-gate mode.

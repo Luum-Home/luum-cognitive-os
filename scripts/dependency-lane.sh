@@ -13,6 +13,7 @@ Usage:
   bash scripts/dependency-lane.sh list
   bash scripts/dependency-lane.sh path <lane>
   bash scripts/dependency-lane.sh show <lane>
+  bash scripts/dependency-lane.sh audit <lane>
   bash scripts/dependency-lane.sh install <lane>
 
 Optional heavy dependency lanes live outside pyproject.toml extras so they do
@@ -64,6 +65,33 @@ case "$cmd" in
   show)
     [ $# -eq 2 ] || { usage >&2; exit 1; }
     cat "$(lane_path "$2")"
+    ;;
+  audit)
+    [ $# -eq 2 ] || { usage >&2; exit 1; }
+    req="$(lane_path "$2")"
+    if [ ! -x "$ROOT/scripts/cos-deps-coverage-audit" ] || ! command -v python3 >/dev/null 2>&1; then
+      echo "dependency-lane: coverage audit unavailable" >&2
+      exit 2
+    fi
+    audit_json="$(mktemp "${TMPDIR:-/tmp}/dependency-lane-audit.XXXXXX")"
+    "$ROOT/scripts/cos-deps-coverage-audit" --json >"$audit_json"
+    python3 - "$2" "$audit_json" <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+
+lane = sys.argv[1]
+payload = json.loads(Path(sys.argv[2]).read_text())
+needle = f"requirements/dependency-lanes/{lane}.txt"
+rows = []
+for row in payload.get("optional_lane_needed", []):
+    if any(src.get("path") == needle for src in row.get("sources", [])):
+        rows.append(row)
+print(f"dependency lane audit: {lane} optional_missing={len(rows)}")
+for row in rows:
+    print(f"- {row['name']}")
+PYEOF
+    rm -f "$audit_json"
     ;;
   install)
     [ $# -eq 2 ] || { usage >&2; exit 1; }
