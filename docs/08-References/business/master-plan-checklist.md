@@ -99,6 +99,9 @@
 ## 5. Onboarding and Operational Simplicity
 
 - [x] Standalone ship-readiness status is captured in [Standalone Ship Readiness — 2026-05-06](../architecture/standalone-ship-readiness-2026-05-06.md), including release, Surface 5, `cosd` API, and install-root portability evidence.
+- [x] Standalone runtime adapter options are documented in [Standalone Agent Runtime Adapter Options](../architecture/standalone-agent-runtime-adapter-options.md), clarifying that `cosd` and ADR-291 provide control-plane/service surfaces while the autonomous model/tool loop still needs a signed runtime adapter proof.
+- [x] Pi, Gollem/Fugue, Hermes Agent, and Goose were cloned and compared at code level in [Runtime Candidates Deep Code Audit — 2026-05-14](../architecture/runtime-candidates-deep-code-audit-2026-05-14.md), splitting their COS roles into lifecycle harness, embedded Go backend, product UX benchmark, and safety/interoperability harness.
+- [x] COS-owned native runtime harness design is captured in [COS Native Runtime Harness Design](../architecture/cos-native-runtime-harness-design.md), combining Pi lifecycle clarity, Gollem/Fugue embedded execution, Goose safety/interoperability, and Hermes product UX while preserving primitive contracts as source of truth.
 - [x] Surface 5 and secure `cosd` next-slice scope is grounded in existing SO features through [Surface 5 TUI and Secure cosd Roadmap](../architecture/surface-5-and-secure-cosd-roadmap.md).
 - [x] `cosd` remote exposure is guarded by [ADR-194](../adrs/ADR-194-cosd-secure-remote-api.md): non-local binds require `--allow-remote` plus bearer-token auth, and protected writes emit audit rows.
 - [x] Surface 5 has a read-only operator MVP through [ADR-195](../adrs/ADR-195-surface-5-operable-tui-contract.md), `cos tui`, and `cos tui --snapshot`.
@@ -355,3 +358,6 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 - [x] Public docs/08-References/business/executive-summary — Problem section expanded with replay-Devin-framing and $47K-incident framing.
 
 - [x] **ADR-279** Orphan Repo-Scan Process Audit — `scripts/cos-orphan-process-audit.py` + `lib/orphan_process_audit.py` detect stale PPID=1 Claude/zsh/grep-style repo scans, stay dry-run by default, require explicit `--kill`, and carry behavior tests.
+
+
+- [ ] Add primitive parser contracts as a prerequisite for scope-taxonomy automation: `docs/02-Decisions/adrs/ADR-315-primitive-parser-contracts.md`, `docs/04-Concepts/architecture/primitive-parser-contracts.md`, and `lib/primitive_parser.py`.

@@ -32,7 +32,11 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
-- [Primitive Scope Classification](../../04-Concepts/architecture/primitive-scope-classification.md) — evidence-weighted `SCOPE` classifier that prevents grep-only `both`/`os-only` reclassification mistakes.
+- [Primitive Scope Classification](../../04-Concepts/architecture/primitive-scope-classification.md)
+- [Primitive Parser Contracts](../../04-Concepts/architecture/primitive-parser-contracts.md) — normalized parser contracts for skills, rules, hooks, scripts, templates, and package skills before scope classification.
+- [Primitive Structure Standardization Report](../../06-Daily/reports/primitive-structure-standardization-2026-05-14.md) — latest structure-only normalization pass for primitive parser contracts.
+- [Primitive Structure Manual Audit Checklist](../../06-Daily/reports/primitive-structure-manual-audit-checklist-2026-05-14.md) — manual review checklist for parser/structure standardization.
+- [Primitive Scope Unknown Triage](../../06-Daily/reports/primitive-scope-unknown-triage-latest.md) — latest grouped backlog of unclassified primitives by missing metadata and semantic hints.
 - [ADR-310: Cross-Platform and Headless Dependency Bootstrap](adrs/ADR-310-cross-platform-headless-dependency-bootstrap.md) — extends dependency bootstrap from advisory drift reports to explicit setup/update installs across developer machines, CI, Windows/WSL, Linux, macOS, and standalone headless SO instances.
 - [ADR-309: Current-Window Subagent Spawn SLOs with Historical Tail Diagnostics](adrs/ADR-309-current-window-subagent-spawn-slos.md) — keeps strict SubagentStart regression SLOs focused on current telemetry while preserving all-matched historical tail diagnostics for old local outliers.
 - [ADR-308: Dependency Maintenance Across Install, Update, and Git Hooks](adrs/ADR-308-dependency-maintenance-install-update-git-hooks.md) — read-only maintenance primitive wired into setup, update, auto-update, and git pull/push hooks so dependency drift is visible without hidden auto-installation.
@@ -60,6 +64,9 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR Status Taxonomy](adrs/STATUS-TAXONOMY.md) — canonical separation of decision status, implementation status, and index bucket for ADR metadata/tooling.
 - [ADR Implementation Status Backfill — 2026-05-12](reports/adr-implementation-status-backfill-2026-05-12.md) — first conservative frontmatter backfill and remaining Active/Unclassified scope.
 - [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains canonical primitives, portable contracts, harness/runtime projection, fidelity, consumer-fleet impact, service/headless impact, and the `.ai/` product-overlay lesson.
+- [Standalone Agent Runtime Adapter Options](architecture/standalone-agent-runtime-adapter-options.md) — boundary and candidate matrix for turning `cosd` + `agent-service` into a standalone runtime through native, Pi, Goose, OpenCode, or other adapters without overclaiming current autonomy.
+- [Runtime Candidates Deep Code Audit — 2026-05-14](architecture/runtime-candidates-deep-code-audit-2026-05-14.md) — code-level comparison of Pi, Gollem/Fugue, Hermes Agent, and Goose for COS harness/runtime improvements.
+- [COS Native Runtime Harness Design](architecture/cos-native-runtime-harness-design.md) — COS-owned runtime/harness architecture that combines Pi lifecycle clarity, Gollem/Fugue embedded execution, Goose safety/interoperability, and Hermes product UX without making any candidate the primitive source of truth.
 - [Agent Training Harness](architecture/agent-training-harness.md) — canonical contract for operational agent training via telemetry, memory, evals, and governed primitive updates; explicitly not provider-weight fine-tuning.
 - [Agent Training Harness Gap Audit — 2026-05-12](reports/agent-training-harness-gap-audit-2026-05-12.md) — closure audit for the training-harness manifest, claim gate, and prioritized lifecycle metadata.
 - [Portable `.ai` Consumer Package Spec](architecture/portable-ai-consumer-package-spec.md) — README-first Markdown package shape generated from the maintainer overlay for consumer projects.
