@@ -156,9 +156,9 @@ class TestScopeAllows:
         assert cos_init.scope_allows(str(f), install_scope="both") is True
 
     def test_hash_scope_both_allowed_under_project(self, tmp_path: Path) -> None:
-        """# SCOPE: os-only is allowed when install_scope=project."""
+        """# SCOPE: both is allowed when install_scope=project."""
         f = tmp_path / "both_rule.sh"
-        f.write_text("# SCOPE: os-only\n# content\n")
+        f.write_text("# SCOPE: both\n# content\n")
         assert cos_init.scope_allows(str(f), install_scope="project") is True
 
     def test_hash_scope_os_only_blocked_under_both(self, tmp_path: Path) -> None:
@@ -265,6 +265,20 @@ class TestSkillScopeAllows:
         skill_dir.mkdir()
         (skill_dir / "SKILL.md").write_text("---\ntitle: My Skill\n---\n# Skill\n")
         assert cos_init.skill_scope_allows(str(skill_dir), install_scope="both") is True
+
+    def test_scope_marker_os_only_overrides_audience_both(self, tmp_path: Path) -> None:
+        """Canonical SCOPE marker blocks project install even when legacy audience says both."""
+        skill_dir = tmp_path / "skill-marker-os-only"
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        (skill_dir / "SKILL.md").write_text("<!-- SCOPE: os-only -->\n---\naudience: both\n---\n# Skill\n")
+        assert cos_init.skill_scope_allows(str(skill_dir), install_scope="project") is False
+
+    def test_scope_marker_both_overrides_audience_os_only(self, tmp_path: Path) -> None:
+        """Canonical SCOPE marker allows project install when legacy audience is stale."""
+        skill_dir = tmp_path / "skill-marker-both"
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        (skill_dir / "SKILL.md").write_text("<!-- SCOPE: both -->\n---\naudience: os-only\n---\n# Skill\n")
+        assert cos_init.skill_scope_allows(str(skill_dir), install_scope="project") is True
 
 
 # ── Phase 2.3: install_rule() unit tests ─────────────────────────────

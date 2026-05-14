@@ -136,9 +136,9 @@ class TestParityScopeAllows:
         assert sub_rc == 1
 
     def test_parity_both_scope_tag_allowed(self, tmp_path: Path) -> None:
-        """# SCOPE: os-only → exit 0 under project install_scope."""
+        """# SCOPE: both → exit 0 under project install_scope."""
         f = tmp_path / "both.sh"
-        f.write_text("# SCOPE: os-only\n# content\n")
+        f.write_text("# SCOPE: both\n# content\n")
         sub_rc = _py_scope_allows_subprocess(f, "project")
         dir_rc = _py_scope_allows_direct(f, "project")
         assert sub_rc == dir_rc
@@ -188,7 +188,16 @@ class TestParitySkillScopeAllows:
         sub_rc = _py_skill_scope_subprocess(skill_dir, "both")
         dir_rc = _py_skill_scope_direct(skill_dir, "both")
         assert sub_rc == dir_rc
-        assert sub_rc == 0
+
+    def test_parity_scope_marker_os_only_overrides_audience_both(self, tmp_path: Path) -> None:
+        """SCOPE marker is authoritative over legacy audience frontmatter."""
+        skill_dir = tmp_path / "marker-os-only"
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        (skill_dir / "SKILL.md").write_text("<!-- SCOPE: os-only -->\n---\naudience: both\n---\n# Skill\n")
+        sub_rc = _py_skill_scope_subprocess(skill_dir, "project")
+        dir_rc = _py_skill_scope_direct(skill_dir, "project")
+        assert sub_rc == dir_rc
+        assert sub_rc == 1
 
     def test_parity_scope_field_os_only_blocked(self, tmp_path: Path) -> None:
         """scope: os-only → exit 1 (scope: field is equivalent to audience:)."""

@@ -1,0 +1,340 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""Audit whether primitive scope claims are backed by projection/runtime evidence.
+
+This is the end-to-end complement to `cos-scope-both-portability-audit`:
+- source taxonomy validity (`os-only`, `project`, `both` only),
+- `both` paired portability proof coverage,
+- optional installed consumer projection scan for os-only leakage,
+- optional source-root hardcoding scan for project/both primitives.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+import tempfile
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_IMPORT_ROOT))
+
+from lib.portability_proof_paths import paired_candidates, suggested_test_path
+
+SCHEMA_VERSION = "scope-projection-audit/v1"
+VALID_SCOPES = {"os-only", "project", "both"}
+SOURCE_ROOTS = ("hooks", "scripts", "lib", "skills", "rules", "templates")
+DEFAULT_JSON = Path(".cognitive-os/reports/scope-projection-audit.json")
+DEFAULT_MD = Path(".cognitive-os/reports/scope-projection-audit.md")
+SCOPE_RE = re.compile(r"\bSCOPE:\s*([A-Za-z0-9_-]+)")
+
+
+@dataclass(frozen=True)
+class Finding:
+    code: str
+    severity: str
+    artifact: str
+    scope: str | None
+    message: str
+    evidence: dict[str, Any]
+
+
+def _is_text_file(path: Path) -> bool:
+    if not path.is_file() or ".git" in path.parts or "__pycache__" in path.parts:
+        return False
+    try:
+        path.read_text(encoding="utf-8", errors="ignore")[:128]
+        return True
+    except OSError:
+        return False
+
+
+def _header_scope(path: Path) -> str | None:
+    try:
+        head = "\n".join(path.read_text(encoding="utf-8", errors="ignore").splitlines()[:8])
+    except OSError:
+        return None
+    match = SCOPE_RE.search(head)
+    return match.group(1) if match else None
+
+
+def _source_inventory(repo: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for root_name in SOURCE_ROOTS:
+        root = repo / root_name
+        if not root.exists():
+            continue
+        for path in sorted(root.rglob("*")):
+            if not _is_text_file(path):
+                continue
+            scope = _header_scope(path)
+            if not scope:
+                continue
+            rel = path.relative_to(repo).as_posix()
+            paired = None
+            if scope == "both":
+                for cand in paired_candidates(rel):
+                    if (repo / cand).exists():
+                        paired = cand
+                        break
+            rows.append(
+                {
+                    "artifact": rel,
+                    "scope": scope,
+                    "kind": rel.split("/", 1)[0],
+                    "paired_portability_test": paired,
+                    "suggested_test_path": suggested_test_path(rel) if scope == "both" else "",
+                }
+            )
+    return rows
+
+
+def _scan_installed_projection(target: Path) -> list[dict[str, Any]]:
+    roots = [
+        target / ".cognitive-os",
+        target / ".claude",
+        target / ".codex",
+        target / ".ai",
+    ]
+    rows: list[dict[str, Any]] = []
+    for root in roots:
+        if not root.exists():
+            continue
+        for path in sorted(root.rglob("*")):
+            if not _is_text_file(path):
+                continue
+            scope = _header_scope(path)
+            if not scope:
+                continue
+            rows.append({"artifact": path.relative_to(target).as_posix(), "scope": scope})
+    return rows
+
+
+def _source_hardcoding_findings(repo: Path, rows: list[dict[str, Any]]) -> list[Finding]:
+    findings: list[Finding] = []
+    repo_str = str(repo)
+    home = str(Path.home())
+    for row in rows:
+        if row["scope"] not in {"project", "both"}:
+            continue
+        path = repo / row["artifact"]
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        needles = [repo_str]
+        # Developer home paths are only findings when the concrete checkout owner leaks.
+        if "/Users/" in home or "/home/" in home:
+            needles.append(home)
+        leaked = [needle for needle in needles if needle and needle in text]
+        if leaked:
+            findings.append(
+                Finding(
+                    code="project-scope-hardcoded-source-root",
+                    severity="block",
+                    artifact=row["artifact"],
+                    scope=row["scope"],
+                    message="project/both primitive embeds the source checkout or developer home path",
+                    evidence={"needles": leaked[:3]},
+                )
+            )
+    return findings
+
+
+def _run_project_install_smoke(repo: Path) -> tuple[Path | None, dict[str, Any]]:
+    cos_init = repo / "scripts" / "cos-init.sh"
+    if not cos_init.exists():
+        return None, {"status": "skipped", "reason": "scripts/cos-init.sh missing"}
+    temp = Path(tempfile.mkdtemp(prefix="cos-scope-projection-"))
+    env = {
+        **dict(),
+        **__import__("os").environ,
+        "COGNITIVE_OS_FORCE": "true",
+        "COGNITIVE_OS_SKIP_MANIFEST_CHECK": "true",
+        "COS_SOURCE_DIR": str(repo),
+        "COS_INSTALL_SCOPE": "project",
+        "COS_REGISTRY_FILE": str(temp / ".cos-test-registry.json"),
+    }
+    result = subprocess.run(
+        ["bash", str(cos_init), "--full"],
+        cwd=temp,
+        env=env,
+        text=True,
+        capture_output=True,
+        timeout=120,
+        check=False,
+    )
+    meta = {
+        "status": "pass" if result.returncode == 0 else "fail",
+        "target": str(temp),
+        "returncode": result.returncode,
+        "stderr_tail": result.stderr[-2000:],
+        "stdout_tail": result.stdout[-2000:],
+    }
+    return (temp if result.returncode == 0 else None), meta
+
+
+def build_report(repo: Path, projection_root: Path | None = None, run_install_smoke: bool = False) -> dict[str, Any]:
+    rows = _source_inventory(repo)
+    findings: list[Finding] = []
+
+    for row in rows:
+        scope = row["scope"]
+        if scope not in VALID_SCOPES:
+            findings.append(
+                Finding(
+                    code="invalid-scope-marker",
+                    severity="block",
+                    artifact=row["artifact"],
+                    scope=scope,
+                    message="scope marker is not one of os-only, project, both",
+                    evidence={"valid_scopes": sorted(VALID_SCOPES)},
+                )
+            )
+        if scope == "both" and not row.get("paired_portability_test"):
+            findings.append(
+                Finding(
+                    code="both-without-portability-proof",
+                    severity="block",
+                    artifact=row["artifact"],
+                    scope=scope,
+                    message="SCOPE: both artifact lacks paired red-team portability proof",
+                    evidence={"suggested_test_path": row.get("suggested_test_path")},
+                )
+            )
+
+    findings.extend(_source_hardcoding_findings(repo, rows))
+
+    install_smoke: dict[str, Any] = {"status": "not-requested"}
+    target = projection_root
+    if run_install_smoke:
+        target, install_smoke = _run_project_install_smoke(repo)
+
+    projection_rows: list[dict[str, Any]] = []
+    if target:
+        projection_rows = _scan_installed_projection(target)
+        for row in projection_rows:
+            if row["scope"] == "os-only":
+                findings.append(
+                    Finding(
+                        code="os-only-projected-to-project",
+                        severity="block",
+                        artifact=row["artifact"],
+                        scope=row["scope"],
+                        message="os-only primitive appeared in a consumer project projection",
+                        evidence={"projection_root": str(target)},
+                    )
+                )
+            if row["scope"] not in VALID_SCOPES:
+                findings.append(
+                    Finding(
+                        code="invalid-projected-scope-marker",
+                        severity="block",
+                        artifact=row["artifact"],
+                        scope=row["scope"],
+                        message="projected file has invalid scope marker",
+                        evidence={"projection_root": str(target), "valid_scopes": sorted(VALID_SCOPES)},
+                    )
+                )
+
+    by_scope: dict[str, int] = {}
+    for row in rows:
+        by_scope[row["scope"]] = by_scope.get(row["scope"], 0) + 1
+    projection_by_scope: dict[str, int] = {}
+    for row in projection_rows:
+        projection_by_scope[row["scope"]] = projection_by_scope.get(row["scope"], 0) + 1
+
+    summary = {
+        "source_total": len(rows),
+        "source_by_scope": by_scope,
+        "projection_total": len(projection_rows),
+        "projection_by_scope": projection_by_scope,
+        "findings": len(findings),
+        "block_findings": sum(1 for f in findings if f.severity == "block"),
+        "both_total": sum(1 for r in rows if r["scope"] == "both"),
+        "both_with_proofs": sum(1 for r in rows if r["scope"] == "both" and r.get("paired_portability_test")),
+    }
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "repo_root": str(repo),
+        "projection_root": str(target) if target else None,
+        "install_smoke": install_smoke,
+        "summary": summary,
+        "source_inventory": rows,
+        "projection_inventory": projection_rows,
+        "findings": [asdict(f) for f in findings],
+    }
+
+
+def render_markdown(report: dict[str, Any]) -> str:
+    summary = report["summary"]
+    lines = [
+        "# Scope Projection Audit",
+        "",
+        f"Generated: {report['generated_at']}",
+        f"Schema: `{report['schema_version']}`",
+        "",
+        "## Summary",
+        "",
+        f"- Source primitives with scope markers: {summary['source_total']}",
+        f"- Source by scope: `{json.dumps(summary['source_by_scope'], sort_keys=True)}`",
+        f"- `both` proofs: {summary['both_with_proofs']}/{summary['both_total']}",
+        f"- Projected scoped files scanned: {summary['projection_total']}",
+        f"- Projection by scope: `{json.dumps(summary['projection_by_scope'], sort_keys=True)}`",
+        f"- Findings: {summary['findings']} (block: {summary['block_findings']})",
+        "",
+        "## Findings",
+        "",
+    ]
+    if not report["findings"]:
+        lines.append("No findings.")
+    else:
+        lines.extend(["| Severity | Code | Artifact | Scope | Message |", "|---|---|---|---|---|"])
+        for finding in report["findings"]:
+            lines.append(
+                f"| {finding['severity']} | `{finding['code']}` | `{finding['artifact']}` | "
+                f"`{finding.get('scope')}` | {finding['message']} |"
+            )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo-root", type=Path, default=REPO_IMPORT_ROOT)
+    parser.add_argument("--projection-root", type=Path, default=None, help="Existing consumer projection to scan")
+    parser.add_argument("--run-install-smoke", action="store_true", help="Create a temporary project install with COS_INSTALL_SCOPE=project and scan it")
+    parser.add_argument("--json-output", type=Path, default=None)
+    parser.add_argument("--md-output", type=Path, default=None)
+    parser.add_argument("--json", action="store_true", help="Print report JSON to stdout")
+    parser.add_argument("--strict", action="store_true", help="Exit 2 when block findings exist")
+    parser.add_argument("--no-write", action="store_true")
+    args = parser.parse_args(argv)
+
+    repo = args.repo_root.resolve()
+    report = build_report(repo, args.projection_root.resolve() if args.projection_root else None, args.run_install_smoke)
+    if not args.no_write:
+        json_path = args.json_output or repo / DEFAULT_JSON
+        md_path = args.md_output or repo / DEFAULT_MD
+        json_path.parent.mkdir(parents=True, exist_ok=True)
+        json_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        md_path.write_text(render_markdown(report), encoding="utf-8")
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    elif not args.no_write:
+        print(
+            "[scope-projection-audit] "
+            f"source={report['summary']['source_total']} findings={report['summary']['findings']} "
+            f"blocks={report['summary']['block_findings']}"
+        )
+    return 2 if args.strict and report["summary"]["block_findings"] else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

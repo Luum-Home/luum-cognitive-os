@@ -222,42 +222,52 @@ def scope_allows(file_path: str, install_scope: str = "both") -> bool:
 
 
 def skill_scope_allows(skill_dir: str, install_scope: str = "both") -> bool:
-    """Port from scripts/cos-init.sh::skill_scope_allows() (lines 147-167).
+    """Return True when a skill may be installed for the requested scope.
 
-    Returns True if the skill's `audience:` or `scope:` SKILL.md frontmatter
-    allows installation. Mirror the bash logic exactly.
-
-    Byte-for-byte port — do NOT optimise the bash logic.
+    The canonical `<!-- SCOPE: ... -->` marker takes precedence over legacy
+    `audience:` frontmatter. Several OS-maintainer skills are user-invocable and
+    historically declared `audience: both`; without marker precedence they leak
+    into consumer-project installs despite `SCOPE: os-only`.
     """
     skill_md = Path(skill_dir) / "SKILL.md"
 
-    # No SKILL.md → allow (matches: [ -f "$skill_md" ] || return 0)
+    # No SKILL.md → allow (matches historical behavior).
     if not skill_md.is_file():
         return True
 
-    # If scope is "all", never filter
+    # If scope is "all", never filter.
     if install_scope == "all":
         return True
 
-    # Extract audience/scope field from frontmatter.
-    # Bash: grep -E '^(audience|scope):' | head -1 | awk -F: '{print $2}' | tr -d " '\"\r"
-    audience = ""
     try:
-        with skill_md.open(encoding="utf-8", errors="replace") as fh:
-            for line in fh:
-                stripped = line.rstrip("\n")
-                if stripped.startswith(("audience:", "scope:")):
-                    # awk -F: '{print $2}' gives everything after the first colon
-                    parts = stripped.split(":", 1)
-                    if len(parts) == 2:
-                        audience = parts[1].translate(
-                            str.maketrans("", "", " '\"\r")
-                        )
-                    break
+        lines = skill_md.read_text(encoding="utf-8", errors="replace").splitlines()
     except OSError:
         return True
 
-    # No audience field → allow
+    import re as _re
+
+    for line in lines[:8]:
+        match = _re.search(r"<!--\s*SCOPE:\s*([A-Za-z0-9_-]+)\s*-->", line)
+        if not match:
+            continue
+        scope_marker = match.group(1).strip()
+        if scope_marker in ("project", "both"):
+            return True
+        if scope_marker == "os-only":
+            return False
+        return True
+
+    # Legacy fallback: extract audience/scope field from frontmatter.
+    audience = ""
+    for line in lines:
+        stripped = line.rstrip("\n")
+        if stripped.startswith(("audience:", "scope:")):
+            parts = stripped.split(":", 1)
+            if len(parts) == 2:
+                audience = parts[1].translate(str.maketrans("", "", " \'\"\r"))
+            break
+
+    # No audience field → allow.
     if not audience:
         return True
 
@@ -265,7 +275,7 @@ def skill_scope_allows(skill_dir: str, install_scope: str = "both") -> bool:
         return True
     if audience in ("os", "os-dev", "os-only"):
         return False
-    # Unknown → allow (be permissive)
+    # Unknown → allow (be permissive).
     return True
 
 
