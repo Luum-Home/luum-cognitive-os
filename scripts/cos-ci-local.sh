@@ -169,7 +169,7 @@ for f in glob.glob('**/*.yaml', recursive=True) + glob.glob('**/*.yml', recursiv
         continue
     try:
         with open(f, encoding='utf-8') as fh:
-            yaml.safe_load(fh)
+            list(yaml.safe_load_all(fh))
     except Exception as e:
         print(f'  FAIL: {f}: {e}')
         errors += 1
