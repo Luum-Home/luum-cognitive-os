@@ -47,6 +47,9 @@ Add an ADR-311 closure layer with two first implementation slices:
    - Blocks if required high-risk runtime proof tests are missing.
    - Blocks if required hook projections are missing from canonical or generated
      harness surfaces.
+   - Treats a harness-projected dispatcher as closure only when the dispatcher
+     source explicitly routes to the required hook; a dispatcher mention alone is
+     not enough.
    - Optionally warns on dirty governance authority paths via `--check-dirty`.
 
 This ADR does not attempt to solve all closure gaps at once. It establishes the
@@ -63,6 +66,9 @@ ratchet shape and implements the highest-risk runtime gap: subagents exceeding
 - Runtime proof tests become first-class evidence for mandatory governance
   primitives.
 - Projection drift is caught by a small, fast audit before broad lanes.
+- Codex keeps a one-hook Bash hot path without losing mandatory skill invocation:
+  `bash-hot-path-dispatcher.sh` routes to
+  `orchestrator-skill-invocation-gate.sh`, and the ratchet verifies that route.
 
 ### Negative / Tradeoffs
 
