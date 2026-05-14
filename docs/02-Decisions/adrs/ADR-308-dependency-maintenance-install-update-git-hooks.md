@@ -22,7 +22,7 @@ The existing construction surfaces are split across several paths:
 - `install.sh`, `scripts/cos-bootstrap.sh`, `scripts/cos-deps-install.sh`, and `scripts/cos_deps_install.py` for installation and host-tool profiles.
 - `scripts/cos-update.sh`, `hooks/self-install.sh`, and `scripts/register-mcps.sh` for update/sync behavior.
 - `scripts/auto-update-projects.sh` for propagating COS source updates to registered installations.
-- `scripts/setup-git-hooks.sh` plus checked-in `.githooks/pre-push` and `.githooks/post-merge` for Git-triggered propagation after `git push` and `git pull`/merge.
+- `scripts/setup-git-hooks.sh` plus checked-in `.githooks/pre-push`, `.githooks/post-merge`, and `.githooks/post-rewrite` for Git-triggered propagation after `git push`, merge-based `git pull`, and rebase-based `git pull --rebase`.
 - `.githooks/pre-commit`, `.githooks/post-commit`, and hook gates under `hooks/` for local safety checks.
 
 The high-risk failure mode is hidden mutation: a `git pull`, `git push`, or background auto-update must not unexpectedly install host tools or rewrite an operator machine. The second failure mode is silent drift: if new scripts start requiring tools, the SO should surface that during the normal construction/update lifecycle, not only when a maintainer remembers to run an audit manually.
@@ -45,10 +45,10 @@ Wire the primitive into the construction surfaces where drift matters:
 - `scripts/setup.sh` after Python/tool setup and before doctor.
 - `scripts/cos-update.sh` after source-level sync helpers and before `hooks/self-install.sh`.
 - `scripts/auto-update-projects.sh` once per source update before downstream project propagation.
-- `scripts/setup-git-hooks.sh` generated `pre-push` and `post-merge` blocks.
-- checked-in `.githooks/pre-push` and `.githooks/post-merge` so the current repository uses the same contract.
+- `scripts/setup-git-hooks.sh` generated `pre-push`, `post-merge`, and `post-rewrite` blocks.
+- checked-in `.githooks/pre-push`, `.githooks/post-merge`, and `.githooks/post-rewrite` so the current repository uses the same contract.
 
-`COS_DEPS_MAINTENANCE=0` disables the check for emergency/offline flows. Git hook wrappers set `COS_DEPS_MAINTENANCE_ALREADY=1` when handing off to auto-update so pull/push paths do not run the same advisory audit twice. `COS_DEPS_RATCHET_STRICT=1` enables strict ratchet mode for hooks/CI that intentionally want to reject unaccepted findings. Normal install/update/git hooks keep the check advisory.
+`COS_DEPS_MAINTENANCE=0` disables the check for emergency/offline flows. Git hook wrappers set `COS_DEPS_MAINTENANCE_ALREADY=1` when handing off to auto-update so pull/push paths do not run the same advisory audit twice. `COS_DEPS_RATCHET_STRICT=1` enables strict ratchet mode for hooks/CI that intentionally want to reject unaccepted findings; at the time of this ADR it blocks because the repository has 114 unaccepted actionable findings and no accepted baseline. Normal install/update/git hooks keep the check advisory.
 
 ## Consequences
 
@@ -67,7 +67,7 @@ Negative / trade-offs:
 
 ## Verification
 
-- `bash -n scripts/cos-deps-maintain scripts/setup.sh scripts/cos-update.sh scripts/auto-update-projects.sh scripts/setup-git-hooks.sh .githooks/pre-push .githooks/post-merge`
+- `bash -n scripts/cos-deps-maintain scripts/setup.sh scripts/cos-update.sh scripts/auto-update-projects.sh scripts/setup-git-hooks.sh .githooks/pre-push .githooks/post-merge .githooks/post-rewrite`
 - `bash scripts/cos-deps-maintain --mode doctor --no-install-plan --json`
 - `.venv/bin/python -m pytest tests/unit/test_dependency_maintenance.py tests/audit/test_dependency_maintenance_integration.py -q`
 - `python3 scripts/derived_artifact_gate.py`

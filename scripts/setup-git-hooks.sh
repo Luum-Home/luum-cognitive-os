@@ -90,6 +90,7 @@ _resolve_hooks_dir() {
 GIT_HOOKS_DIR="$(_resolve_hooks_dir)"
 POST_MERGE_HOOK="$GIT_HOOKS_DIR/post-merge"
 PRE_PUSH_HOOK="$GIT_HOOKS_DIR/pre-push"
+POST_REWRITE_HOOK="$GIT_HOOKS_DIR/post-rewrite"
 MARKER="# COS_AUTO_UPDATE"
 
 # ── Parse args ─────────────────────────────────────────────────────
@@ -121,7 +122,7 @@ fi
 
 # ── Status check ───────────────────────────────────────────────────
 if [ "$ACTION" = "status" ]; then
-  for hook_file in "$POST_MERGE_HOOK" "$PRE_PUSH_HOOK"; do
+  for hook_file in "$POST_MERGE_HOOK" "$PRE_PUSH_HOOK" "$POST_REWRITE_HOOK"; do
     hook_name=$(basename "$hook_file")
     if [ -f "$hook_file" ] && grep -qF "$MARKER" "$hook_file" 2>/dev/null; then
       echo "COS auto-update ($hook_name): INSTALLED"
@@ -163,6 +164,7 @@ _remove_cos_block() {
 if [ "$ACTION" = "remove" ]; then
   _remove_cos_block "$POST_MERGE_HOOK"
   _remove_cos_block "$PRE_PUSH_HOOK"
+  _remove_cos_block "$POST_REWRITE_HOOK"
   exit 0
 fi
 
@@ -179,7 +181,29 @@ _install_cos_block() {
 
   # The hook content — pre-push runs in background after push completes
   local hook_block
-  if [ "$hook_name" = "pre-push" ]; then
+  if [ "$hook_name" = "post-rewrite" ]; then
+    hook_block=$(cat << 'HOOKEOF'
+
+# COS_AUTO_UPDATE BEGIN — Do not edit this block manually
+# Auto-updates all registered COS installations after git pull --rebase / rebase rewrites.
+# Installed by: bash scripts/setup-git-hooks.sh
+# Remove with:  bash scripts/setup-git-hooks.sh --remove
+_COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null || printf '%s' "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}")"
+_COS_REWRITE_COMMAND="${1:-}"
+if [ "$_COS_REWRITE_COMMAND" = "rebase" ] && [ -n "$_COS_DIR" ] && [ -x "$_COS_DIR/scripts/cos-deps-maintain" ]; then
+  echo ""
+  echo "[COS] Checking dependency maintenance drift after rebase..."
+  bash "$_COS_DIR/scripts/cos-deps-maintain" --root "$_COS_DIR" --mode post-merge --profile default 2>&1 | sed 's/^/[COS] /' || true
+fi
+if [ "$_COS_REWRITE_COMMAND" = "rebase" ] && [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
+  echo ""
+  echo "[COS] Checking for projects to update after rebase..."
+  COS_DEPS_MAINTENANCE_ALREADY=1 bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /'
+fi
+# COS_AUTO_UPDATE END
+HOOKEOF
+    )
+  elif [ "$hook_name" = "pre-push" ]; then
     hook_block=$(cat << 'HOOKEOF'
 
 # COS_AUTO_UPDATE BEGIN — Do not edit this block manually
@@ -265,12 +289,14 @@ mkdir -p "$GIT_HOOKS_DIR"
 
 _install_cos_block "$POST_MERGE_HOOK"
 _install_cos_block "$PRE_PUSH_HOOK"
+_install_cos_block "$POST_REWRITE_HOOK"
 
 echo ""
 echo "Hooks directory: $GIT_HOOKS_DIR"
 echo ""
 echo "Auto-update triggers:"
-echo "  git pull  -> post-merge  (users pulling updates)"
-echo "  git push  -> pre-push    (maintainers pushing changes)"
+echo "  git pull          -> post-merge   (merge-based pulls)"
+echo "  git pull --rebase -> post-rewrite (rebase-based pulls)"
+echo "  git push          -> pre-push     (maintainers pushing changes)"
 echo ""
-echo "All registered COS installations will be updated on either event."
+echo "All registered COS installations will be updated on supported git events."

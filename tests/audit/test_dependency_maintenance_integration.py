@@ -21,11 +21,15 @@ def test_generated_and_checked_in_git_hooks_have_dependency_maintenance() -> Non
     setup_hooks = read("scripts/setup-git-hooks.sh")
     pre_push = read(".githooks/pre-push")
     post_merge = read(".githooks/post-merge")
+    post_rewrite = read(".githooks/post-rewrite")
 
     assert "cos-deps-maintain\" --root \"$_COS_DIR\" --mode pre-push" in setup_hooks
     assert "Checking dependency maintenance drift" in setup_hooks
     assert "cos-deps-maintain\" --root \"$_COS_DIR\" --mode pre-push" in pre_push
     assert "Checking dependency maintenance drift" in post_merge
+    assert "Checking dependency maintenance drift after rebase" in setup_hooks
+    assert "Checking dependency maintenance drift after rebase" in post_rewrite
+    assert "COS_DEPS_MAINTENANCE_ALREADY=1 bash" in post_rewrite
 
 
 def test_git_hook_status_command_exercises_integration_path() -> None:
@@ -43,3 +47,4 @@ def test_git_hook_status_command_exercises_integration_path() -> None:
     assert result.returncode == 0
     assert "COS auto-update (post-merge):" in result.stdout
     assert "COS auto-update (pre-push):" in result.stdout
+    assert "COS auto-update (post-rewrite):" in result.stdout
