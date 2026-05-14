@@ -422,3 +422,55 @@ entries:
   status: conditional_opt_in
   rationale: ADR-304 control-plane-only hook; invoked via cos-control-plane-audit hourly lane, not registered as a Claude event hook.
   next_action: Operator runs scripts/cos-telemetry-aggregate or waits for the hourly lane.
+- path: hooks/agent-bash-cwd-enforcer.sh
+  status: active
+  rationale: Bash PreToolUse working-directory guard projected by the Claude settings driver in the full profile and by security profiles; classified so registration audits do not treat profile-scoped enforcement as unowned drift.
+  next_action: Keep active; dispatcher adoption may later route this guard on the default hot path if command-context evidence shows enough value.
+- path: hooks/bash-hot-path-dispatcher.sh
+  status: active
+  rationale: Default/maintainer Bash PreToolUse dispatcher for Claude and Codex. It is the effective projection root for command-scoped gates that should not all run on every Bash command.
+  next_action: Keep active and require dispatcher-route tests whenever a codex_required or default-profile Bash gate moves behind it.
+- path: hooks/branch-ownership-lock.sh
+  status: active
+  rationale: Git-boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git-boundary commands.
+- path: hooks/external-pattern-cleanroom-gate.sh
+  status: active
+  rationale: Commit-boundary clean-room guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git commit commands.
+- path: hooks/git-commit-scope-guard.sh
+  status: active
+  rationale: Commit-scope guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git commit commands.
+- path: hooks/network-egress-guard.sh
+  status: active
+  rationale: External-network boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for curl/wget/ssh/git network commands.
+- path: hooks/orchestrator-claim-gate.sh
+  status: active
+  rationale: Commit-boundary claim guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git commit commands.
+- path: hooks/pre-commit-content-hash-dedupe.sh
+  status: active
+  rationale: Commit-boundary duplicate-content guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git commit commands.
+- path: hooks/release-guard.sh
+  status: active
+  rationale: Release-boundary guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git tag and VERSION mutation commands.
+- path: hooks/scope-marker-portability-gate.sh
+  status: active
+  rationale: Commit-boundary portability metadata guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for git commit commands.
+- path: hooks/skill-router-bash-gate.sh
+  status: active
+  rationale: Dependency-mutation skill-routing guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for package-manager mutation commands.
+- path: hooks/symlink-mutation-guard.sh
+  status: active
+  rationale: Filesystem mutation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for rm/mv/ln/find-delete commands.
+- path: hooks/untracked-work-preservation-guard.sh
+  status: active
+  rationale: Git-boundary work-preservation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
+  next_action: Keep active; preserve dispatcher coverage for destructive git boundary commands.

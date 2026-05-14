@@ -216,6 +216,38 @@ ordering_constraints: []
     assert any(f["code"] == "active-hook-not-registered" for f in payload["findings"])
 
 
+def test_dispatcher_route_satisfies_active_classification(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '''{
+      "hooks": {"PreToolUse": [{"matcher": "Bash", "hooks": [
+        {"command": "bash hooks/bash-hot-path-dispatcher.sh"}
+      ]}]}
+    }''')
+    _write(repo / "hooks" / "bash-hot-path-dispatcher.sh", '''#!/usr/bin/env bash
+_run_gate "hooks/orchestrator-skill-invocation-gate.sh" || exit $?
+''')
+    _write(repo / "manifests" / "hook-registration-classification.yaml", '''entries:
+  - path: hooks/orchestrator-skill-invocation-gate.sh
+    status: active
+    rationale: projected through dispatcher
+    next_action: keep active
+''')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+registration:
+  classification_manifest: manifests/hook-registration-classification.yaml
+  active_statuses: [active]
+  must_not_be_registered_statuses: [manual_trigger, future, deprecated, demoted]
+surfaces: []
+ordering_constraints: []
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "pass"
+    assert not payload["findings"]
+
+
 def test_blocks_manual_trigger_registered_in_settings(tmp_path: Path) -> None:
     repo = _repo(tmp_path)
     _write(repo / ".claude" / "settings.json", '''{
