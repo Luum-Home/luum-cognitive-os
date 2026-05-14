@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit the ADR-251 agent orchestration adapter boundary.
 
 Read-only: verifies that multi-agent orchestration stays declared, adapterized,

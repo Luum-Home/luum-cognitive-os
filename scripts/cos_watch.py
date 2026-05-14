@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-watch — live agent TUI (ADR-034).
 
 Subscribes to the canonical live channel (``cos:canonical:live``) or,

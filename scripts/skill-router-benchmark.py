@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Run the ADR-250 minimal skill-router benchmark fixtures."""
 from __future__ import annotations
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit the ADR-126 agentic primitive lifecycle manifest."""
 from __future__ import annotations
 

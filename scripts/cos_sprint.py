@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-sprint — Sprint orchestration CLI (ADR-036 MVP).
 
 Subcommands:

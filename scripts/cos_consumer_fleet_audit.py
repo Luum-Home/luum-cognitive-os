@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """CLI for the Cognitive OS consumer-fleet audit."""
 from __future__ import annotations
 

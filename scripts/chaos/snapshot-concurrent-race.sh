@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # chaos/snapshot-concurrent-race.sh
 #
 # Spawns 3 parallel pre-agent-snapshot.sh invocations against the same repo.

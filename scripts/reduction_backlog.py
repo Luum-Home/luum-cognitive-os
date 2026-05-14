@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Create a keep/harden/demote/delete backlog from audit outputs."""
 
 from __future__ import annotations

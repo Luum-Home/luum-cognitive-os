@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """ADR-244 high-stakes completion claim enforcer.
 
 A TRUST_REPORT with a high-stakes completion/test claim must carry a structured

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """audit_adrs.py — Validate ADR YAML frontmatter and implementation file existence.
 
 Walks docs/02-Decisions/adrs/*.md, parses the YAML

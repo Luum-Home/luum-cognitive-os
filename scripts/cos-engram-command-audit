@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 set -euo pipefail
 exec python3 "$(dirname "${BASH_SOURCE[0]}")/cos_engram_command_audit.py" "$@"

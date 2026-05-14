@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """CLI for ADR-280/281 product question-to-evidence answers."""
 from __future__ import annotations
 

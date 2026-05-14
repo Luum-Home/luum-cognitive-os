@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit whether critical primitive tests prove behavior, not just existence.
 
 ADR-249 Slice A is intentionally static and read-only. It scans declared proof

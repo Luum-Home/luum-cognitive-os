@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 # @on-demand: invoke to check lazy catalog health from skill-discovery.jsonl telemetry; no automated trigger
 """
 check_lazy_catalog_health.py — Lazy Catalog Telemetry Aggregator

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Regenerate ADR-282 product answer cards and routing index."""
 from __future__ import annotations
 

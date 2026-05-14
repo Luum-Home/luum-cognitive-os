@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Run an automated live ADR-100 headroom validation.
 
 This is intentionally an on-demand proof, not a default unit test fixture. It

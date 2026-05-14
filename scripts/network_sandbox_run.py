@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Run commands in a no-network sandbox when Docker is available.
 
 This is a real egress boundary only in `docker-none` mode. Dry-run is provided

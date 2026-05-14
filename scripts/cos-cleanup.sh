@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-cleanup.sh — Tiered automatic cleanup for stale repo artifacts.
 #
 # See docs/05-Methodology/runbooks/cos-cleanup.md for operator guidance.

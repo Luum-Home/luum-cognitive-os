@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Automated validation harness for tier_filter: [0] decision.
 
 Replaces the 30-min human session requirement from stage2-expansion-baseline.md

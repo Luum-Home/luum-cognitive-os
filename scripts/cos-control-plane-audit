@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Run manifest-declared control-plane audits by lane.
 
 ADR-248 control loop:

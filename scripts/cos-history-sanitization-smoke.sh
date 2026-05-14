@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # ADR-218 post-execute smoke test.
 #
 # Asserts that NO sensitive token configured in

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Generate a periodic primitive gap snapshot for Cognitive OS.
 
 The snapshot is intentionally heuristic. It answers: which primitive families are

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Detect duplicated primitive/config/code patterns and suggest common homes.
 
 This audit is intentionally local and dependency-free. External clone detectors

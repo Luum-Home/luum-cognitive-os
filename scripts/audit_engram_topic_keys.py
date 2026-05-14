@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit Engram observation topic_keys vs canonical filenames in the repo.
 
 The convention (see rules/engram-organization.md) is that an observation

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-chaos-template — Chaos test skeleton generator for dormant components.
 
 Generates tests/chaos/test_{component_name}_exercised.py with:

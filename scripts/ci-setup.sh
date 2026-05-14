@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # @manual-trigger: run via `make ci-deps` or `bash scripts/ci-setup.sh` to install optional CI deps
 # ci-setup.sh — Install optional CI dependencies that unblock skipped tests.
 #

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-uspto-patent-search — Query USPTO PatentsView for producer/keywords.
 
 ADR-270 primitive #1. Stores raw API response + relevance classification.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-adoption-unfreeze — Per-tool unfreeze gated by counsel evidence.
 
 ADR-270 primitive #6. Pre-flight checks (ALL must pass):

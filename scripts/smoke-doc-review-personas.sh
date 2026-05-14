@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: live e2e smoke test for /doc-review-personas; requires ALIBABA_QWEN_API_KEY; exits 77 (skip) if absent
 # smoke-doc-review-personas.sh — live end-to-end check for /doc-review-personas.
 #

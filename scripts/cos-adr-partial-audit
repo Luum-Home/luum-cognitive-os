@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit ADR partial lifecycle debt for control-plane consumption.
 
 This is the bridge between the ADR lifecycle lane and ADR-248 control-plane:

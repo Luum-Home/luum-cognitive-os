@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit tracked references to documentation paths.
 
 The audit treats any tracked text file containing a docs/ reference as linked to

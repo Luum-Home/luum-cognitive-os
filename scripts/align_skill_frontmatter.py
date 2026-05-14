@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 # @manual-trigger: run to idempotently align SKILL.md frontmatter across all skills; safe to re-run anytime
 """
 align_skill_frontmatter.py — Idempotent SKILL.md frontmatter alignment.

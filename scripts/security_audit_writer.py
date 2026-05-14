@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: project
 """CLI sidecar for the security-audit skill (ADR-054/055).
 
 The /security-audit skill is READ-ONLY and produces a markdown report in the

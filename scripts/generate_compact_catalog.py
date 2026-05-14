@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Generate skills/CATALOG-COMPACT.md from SKILL.md frontmatter.
 
 Walks skills/*/SKILL.md and packages/*/skills/*/SKILL.md, extracts

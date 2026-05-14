@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # audit-consumer-dependence.sh
 #
 # Pre-rename safety check. Before genericizing client-coupled tokens in this

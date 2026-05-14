@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 # ONE-SHOT SCRIPT — regen bullet list in skills/CATALOG.md
 # Run from repo root: uv run python3 scripts/regen_catalog_bullets.py
 #

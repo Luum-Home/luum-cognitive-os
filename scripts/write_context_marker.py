@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Write a JSON context marker for the current process.
 
 Used by session-init.sh (kind=orchestrator) and agent preamble paths (kind=subagent)

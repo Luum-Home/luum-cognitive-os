@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Private content audit — ADR-202.
 
 Classifies private content by path without reading secret-never-touch file

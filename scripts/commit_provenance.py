@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Add COS provenance trailers to commit messages.
 
 Used by `.githooks/prepare-commit-msg`. The hook is intentionally local-only:

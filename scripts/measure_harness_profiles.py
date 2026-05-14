@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Measure Cognitive OS minimal vs full harness surfaces.
 
 This is a static, no-mutation measurement: it compares the committed minimal

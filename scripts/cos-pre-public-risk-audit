@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Pre-public repository risk audit.
 
 Non-destructive release-readiness wrapper for reputation/transparency checks.

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-session-spawn.sh — ADR-098 Phase D4: smart multi-session launcher
 #
 # Detects existing concurrent COS sessions on the current repo and either:

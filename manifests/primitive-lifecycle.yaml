@@ -5662,8 +5662,8 @@ primitives:
   - scripts/cos-key-learnings-capture
   - scripts/cos_key_learnings_capture.py
   runtime_projection: false
-  behavior_evidence: Opt-in key-learnings capture helper for turning session learnings
-    into improvement signals.
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n scripts/cos-key-learnings-capture
   - python3 -m py_compile scripts/cos_key_learnings_capture.py
@@ -5674,6 +5674,8 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: .cognitive-os/metrics/*/key-learnings.jsonl
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/cos-lab-first-gate
   kind: script
   owner_adr: ADR-133
@@ -6680,7 +6682,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
@@ -6688,8 +6690,8 @@ primitives:
   projection_targets:
   - scripts/cos_primitive_harvester.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=8
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - python3 -m py_compile scripts/cos_primitive_harvester.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -6700,9 +6702,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/cos_recovery_drill.py
   kind: script
   owner_adr: ADR-146
@@ -6773,8 +6774,8 @@ primitives:
   projection_targets:
   - scripts/cos_session_backlog.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=5
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/cos_session_backlog.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -6785,9 +6786,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/cos_work_inventory.py
   kind: script
   owner_adr: ADR-146
@@ -6801,8 +6801,8 @@ primitives:
   projection_targets:
   - scripts/cos_work_inventory.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=3; total_consumers=24
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/cos_work_inventory.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -6813,9 +6813,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/cos_worktree_triage.py
   kind: script
   owner_adr: ADR-146
@@ -6829,8 +6828,8 @@ primitives:
   projection_targets:
   - scripts/cos_worktree_triage.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=4
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/cos_worktree_triage.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -6841,9 +6840,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/cosd
   kind: script
   owner_adr: ADR-194
@@ -6896,8 +6894,8 @@ primitives:
   projection_targets:
   - scripts/cost_predict.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=3
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/cost_predict.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -6908,9 +6906,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/create-release.sh
   kind: script
   owner_adr: ADR-146
@@ -6947,7 +6944,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -6955,8 +6952,8 @@ primitives:
   projection_targets:
   - scripts/decision_triage.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=10
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - python3 -m py_compile scripts/decision_triage.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -6967,9 +6964,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/demo-first-run-onboarding.sh
   kind: script
   owner_adr: ADR-146
@@ -7102,8 +7098,8 @@ primitives:
   projection_targets:
   - scripts/doc_review_personas.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=5
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/doc_review_personas.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7114,9 +7110,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/docs_execution_audit.py
   kind: script
   owner_adr: ADR-146
@@ -7158,8 +7153,8 @@ primitives:
   projection_targets:
   - scripts/document_feature_append.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=3
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/document_feature_append.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7171,8 +7166,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/dogfood_score.py
   kind: script
   owner_adr: ADR-146
@@ -7214,8 +7209,8 @@ primitives:
   projection_targets:
   - scripts/domain_model.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=3
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/domain_model.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7227,8 +7222,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/edit-coop.sh
   kind: script
   owner_adr: ADR-146
@@ -7242,8 +7237,8 @@ primitives:
   projection_targets:
   - scripts/edit-coop.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=20
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n scripts/edit-coop.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7254,9 +7249,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/generate-project-settings.sh
   kind: script
   owner_adr: ADR-146
@@ -7294,7 +7288,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
@@ -7302,8 +7296,8 @@ primitives:
   projection_targets:
   - scripts/generate_compact_catalog.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=12
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - python3 -m py_compile scripts/generate_compact_catalog.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7314,15 +7308,14 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/hook-stream-statusline.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
@@ -7330,8 +7323,8 @@ primitives:
   projection_targets:
   - scripts/hook-stream-statusline.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=3
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - bash -n scripts/hook-stream-statusline.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7342,9 +7335,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/hook-timing-wrapper.sh
   kind: script
   owner_adr: ADR-146
@@ -7358,8 +7350,8 @@ primitives:
   projection_targets:
   - scripts/hook-timing-wrapper.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=18
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n scripts/hook-timing-wrapper.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7370,9 +7362,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/hook_timing_report.py
   kind: script
   owner_adr: ADR-146
@@ -7386,8 +7377,8 @@ primitives:
   projection_targets:
   - scripts/hook_timing_report.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=4
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/hook_timing_report.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7398,9 +7389,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/install-garak.sh
   kind: script
   owner_adr: ADR-146
@@ -7478,8 +7468,8 @@ primitives:
   projection_targets:
   - scripts/invariant_check_helper.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=4
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/invariant_check_helper.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7490,9 +7480,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/llm_status.py
   kind: script
   owner_adr: ADR-146
@@ -7506,8 +7495,8 @@ primitives:
   projection_targets:
   - scripts/llm_status.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=6
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/llm_status.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7519,8 +7508,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/merge-to-main.sh
   kind: script
   owner_adr: ADR-146
@@ -7534,8 +7523,8 @@ primitives:
   projection_targets:
   - scripts/merge-to-main.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=9
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n scripts/merge-to-main.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7546,9 +7535,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/ops_runbook.py
   kind: script
   owner_adr: ADR-146
@@ -7562,8 +7550,8 @@ primitives:
   projection_targets:
   - scripts/ops_runbook.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=3
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/ops_runbook.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7575,8 +7563,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/orchestrator.py
   kind: script
   owner_adr: ADR-042
@@ -7797,8 +7785,8 @@ primitives:
   projection_targets:
   - scripts/radar_merge.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=4
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/radar_merge.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7810,14 +7798,14 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/redteam_aggregate.py
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
@@ -7825,8 +7813,8 @@ primitives:
   projection_targets:
   - scripts/redteam_aggregate.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=5
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - python3 -m py_compile scripts/redteam_aggregate.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7837,9 +7825,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/risk_register.py
   kind: script
   owner_adr: ADR-146
@@ -7853,8 +7840,8 @@ primitives:
   projection_targets:
   - scripts/risk_register.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=3
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/risk_register.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7866,8 +7853,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/rules_export.py
   kind: script
   owner_adr: ADR-146
@@ -7881,8 +7868,8 @@ primitives:
   projection_targets:
   - scripts/rules_export.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=5
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/rules_export.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -7894,8 +7881,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/run-all-tests.sh
   kind: script
   owner_adr: ADR-146
@@ -7957,7 +7944,7 @@ primitives:
   owner_adr: ADR-164
   lifecycle_state: candidate
   maturity: advisory
-  distribution: team
+  distribution: maintainer
   governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
@@ -7968,8 +7955,8 @@ primitives:
   - manifests/security-red-team.yaml
   - docs/09-Quality/security/security-red-team.md
   runtime_projection: false
-  behavior_evidence: Opt-in security red-team workflow runner for inventory, threat
-    modeling, abuse probes, risk scoring, and mitigation backlog generation.
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - bash -n scripts/security-red-team
   - python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py
@@ -7981,6 +7968,8 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: .cognitive-os/reports/security-red-team-latest.json
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/security_audit_writer.py
   kind: script
   owner_adr: ADR-146
@@ -7994,8 +7983,8 @@ primitives:
   projection_targets:
   - scripts/security_audit_writer.py
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=5
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - python3 -m py_compile scripts/security_audit_writer.py
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -8007,8 +7996,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/security_red_team.py
   kind: script
   owner_adr: ADR-164
@@ -8104,7 +8093,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -8112,8 +8101,8 @@ primitives:
   projection_targets:
   - scripts/smoke-doc-review-personas.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=1
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - bash -n scripts/smoke-doc-review-personas.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -8124,15 +8113,14 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/smoke-multi-provider-fallback.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
@@ -8140,8 +8128,8 @@ primitives:
   projection_targets:
   - scripts/smoke-multi-provider-fallback.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=2
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - bash -n scripts/smoke-multi-provider-fallback.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -8152,15 +8140,14 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/smoke-qwen-fallback.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
@@ -8168,8 +8155,8 @@ primitives:
   projection_targets:
   - scripts/smoke-qwen-fallback.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=5
+  behavior_evidence: Manual scope calibration batch 002 confirmed maintainer-only
+    COS internal/smoke/catalog behavior.
   evidence_commands:
   - bash -n scripts/smoke-qwen-fallback.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -8180,9 +8167,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
 - id: scripts/sprint-test-summary.sh
   kind: script
   owner_adr: ADR-146
@@ -8196,8 +8182,8 @@ primitives:
   projection_targets:
   - scripts/sprint-test-summary.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=2
+  behavior_evidence: Manual scope calibration batch 002 confirmed downstream project-only
+    behavior.
   evidence_commands:
   - bash -n scripts/sprint-test-summary.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -8209,8 +8195,8 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_access_next_action: Keep as downstream project surface; add projection
+    proof as needed.
 - id: scripts/test-all.sh
   kind: script
   owner_adr: ADR-146
@@ -8398,8 +8384,8 @@ primitives:
   projection_targets:
   - scripts/verify-archived.sh
   runtime_projection: false
-  behavior_evidence: primitive-readiness lifecycle backlog closure; priority=high;
-    role_source=usage:skill; skill_consumers=1; total_consumers=11
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n scripts/verify-archived.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
@@ -8410,9 +8396,8 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
-  consumer_access_next_action: prove installation/projection into a consumer project
-    for each supported harness before claiming shared availability
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: scripts/weekly-aspirational-audit.sh
   kind: script
   owner_adr: ADR-146
@@ -9730,8 +9715,8 @@ primitives:
   - .codex/hooks.json
   - hooks/bash-hot-path-dispatcher.sh
   runtime_projection: true
-  behavior_evidence: Default Bash hot-path dispatcher fans out command-scoped P0/P1
-    gates while keeping harness settings small.
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n hooks/bash-hot-path-dispatcher.sh
   - python3 -m pytest tests/unit/test_runtime_hook_reality.py -q
@@ -9748,6 +9733,8 @@ primitives:
   false_positive_tests:
   - tests/unit/test_bash_hot_path_dispatcher_projection.py
   - tests/red_team/portability/test_bash-hot-path-dispatcher.py
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: hooks/subagent-budget-enforcer.sh
   kind: hook
   owner_adr: ADR-311
@@ -9764,8 +9751,8 @@ primitives:
   - .codex/hooks.json
   - hooks/subagent-budget-enforcer.sh
   runtime_projection: true
-  behavior_evidence: PostToolUse Agent budget enforcer blocks or escalates subagents
-    beyond the tool-call budget.
+  behavior_evidence: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    behavior.
   evidence_commands:
   - bash -n hooks/subagent-budget-enforcer.sh
   - python3 -m pytest tests/unit/test_runtime_hook_reality.py -q
@@ -9782,6 +9769,8 @@ primitives:
   false_positive_tests:
   - tests/contracts/test_subagent_budget_enforcer.py
   - tests/red_team/portability/test_subagent-budget-enforcer.py
+  consumer_accessibility: lifecycle-declared-shared-surface
+  consumer_access_next_action: Add or strengthen paired portability proof if absent.
 - id: hooks/decision-depth-gate.sh
   kind: hook
   owner_adr: ADR-311
@@ -9981,3 +9970,948 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/primitive-readiness.jsonl
+- id: skills/add-hook/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-authoring
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/add-hook/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Iteration 7 scope review: current body teaches Cognitive OS
+    hook authoring and COS-specific projection/portability gates, not generic downstream
+    hook authoring.'
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    skills/add-hook/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Revert marker/metadata or split a generic portable hook-authoring
+    primitive with paired portability proof.
+  sunset_criteria: Promote to both only after extracting a repository-agnostic hook-authoring
+    primitive with consumer projection proof.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep as OS authoring skill unless a generic portable
+    primitive is split out.
+- id: skills/add-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-authoring
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/add-skill/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Iteration 7 scope review: current body teaches Cognitive OS
+    skill authoring, catalogs, routing metadata, registry, and COS projection gates,
+    not generic downstream SKILL.md authoring.'
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    skills/add-skill/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Revert marker/metadata or split a generic portable SKILL.md
+    authoring primitive with paired portability proof.
+  sunset_criteria: Promote to both only after extracting a repository-agnostic skill-authoring
+    primitive with consumer projection proof.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep as OS authoring skill unless a generic portable
+    primitive is split out.
+- id: scripts/primitive_scope_unknown_triage.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/primitive_scope_unknown_triage.py
+  runtime_projection: false
+  behavior_evidence: Groups Cognitive OS primitive scope unknown rows by evidence
+    gaps and semantic hints before manual/AI adjudication.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_primitive_scope_unknown_triage.py -q
+  - .venv/bin/python scripts/primitive_scope_unknown_triage.py --project-dir .
+  rollback_or_repair_command: Use scripts/primitive_scope_classifier.py JSON directly
+    and review unknown rows manually.
+  sunset_criteria: Archive only if the classifier gains equivalent first-class unknown
+    triage and report output.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/reports/primitive-scope-unknown-triage.json
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep as maintainer-only scope governance aid.
+- id: rules/recommendation-grounding.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: quality
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  - generic-doc
+  projection_targets:
+  - rules/recommendation-grounding.md
+  runtime_projection: false
+  behavior_evidence: Repo-agnostic rule requiring ranked recommendations to cite operational
+    signals; COS-specific paths are examples, not the core principle.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_recommendation-grounding.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    rules/recommendation-grounding.md --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for rules/recommendation-grounding.md,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: rules/trust-score.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: quality
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  - generic-doc
+  projection_targets:
+  - rules/trust-score.md
+  runtime_projection: false
+  behavior_evidence: Repo-agnostic trust-report doctrine requiring evidence, uncertainty,
+    and verification guidance; COS parser/enforcer references are implementation details.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_trust-score.py -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    rules/trust-score.md --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for rules/trust-score.md,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: hooks/agent-output-verifier.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/agent-output-verifier.sh
+  runtime_projection: true
+  behavior_evidence: Agent-output file-claim verification is portable agent-safety
+    behavior; current hook degrades safely from arbitrary project roots.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_agent-output-verifier.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/agent-output-verifier.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for hooks/agent-output-verifier.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/*.jsonl
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: hooks/clarification-interceptor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: quality
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/clarification-interceptor.sh
+  runtime_projection: true
+  behavior_evidence: Clarification interception is portable agent-orchestration behavior;
+    current hook degrades safely from arbitrary project roots.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_clarification-interceptor.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/clarification-interceptor.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for hooks/clarification-interceptor.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/*.jsonl
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: hooks/epic-task-detector.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/epic-task-detector.sh
+  runtime_projection: true
+  behavior_evidence: Large-task detection before agent launch is portable repository-safety
+    behavior; current hook has arbitrary-project-root proof.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_epic-task-detector.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/epic-task-detector.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for hooks/epic-task-detector.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/*.jsonl
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: hooks/resource-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: cost-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/resource-check.sh
+  runtime_projection: true
+  behavior_evidence: Agent-launch budget checking is portable cost-governance behavior
+    for COS-managed projects; current hook has arbitrary-project-root proof.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_resource-check.py -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/resource-check.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for hooks/resource-check.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/*.jsonl
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: hooks/subagent-capability-preflight.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/subagent-capability-preflight.sh
+  runtime_projection: true
+  behavior_evidence: Subagent capability preflight is portable artifact-contract safety
+    for COS-managed projects; current hook has arbitrary-project-root proof.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_subagent-capability-preflight.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/subagent-capability-preflight.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for hooks/subagent-capability-preflight.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/*.jsonl
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: scripts/cos-governed-agent.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-governed-agent.sh
+  runtime_projection: false
+  behavior_evidence: Portable agent launcher guard for harnesses without Agent hook
+    parity; proof covers safe invocation outside the OS checkout.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos-governed-agent.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    scripts/cos-governed-agent.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for scripts/cos-governed-agent.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: scripts/cos-governed-edit.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-governed-edit.sh
+  runtime_projection: false
+  behavior_evidence: Portable edit guard for harnesses without Edit/Write hook parity;
+    proof covers safe invocation outside the OS checkout.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_cos-governed-edit.py
+    -q
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    scripts/cos-governed-edit.sh --fail-contradictions
+  rollback_or_repair_command: Remove or demote the lifecycle row for scripts/cos-governed-edit.sh,
+    then rerun primitive scope classifier.
+  sunset_criteria: Demote only if semantic review finds the primitive depends on Cognitive
+    OS self-construction rather than repository-agnostic governance behavior.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep paired portability proof current before claiming
+    broad consumer availability.
+- id: scripts/primitive_parse_inventory.py
+  kind: script
+  owner_adr: ADR-315
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/primitive_parse_inventory.py
+  runtime_projection: false
+  behavior_evidence: Parses Cognitive OS primitive files into normalized structural
+    contracts before scope classification.
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_primitive_parser.py -q
+  - .venv/bin/python scripts/primitive_parse_inventory.py --project-dir . --paths
+    scripts/primitive_parse_inventory.py
+  rollback_or_repair_command: Use lib/primitive_parser.py directly from targeted tests
+    or review files manually.
+  sunset_criteria: Archive only if parser inventory is replaced by a richer primitive
+    registry command.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/reports/primitive-parse-inventory.json
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep as maintainer-only parser governance aid.
+- id: hooks/cognitive-os-health.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/cognitive-os-health.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/cognitive-os-health.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/cos-executor-heartbeat.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/cos-executor-heartbeat.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/cos-executor-heartbeat.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/cosd-intent-submit.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/cosd-intent-submit.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/cosd-intent-submit.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/metrics-calibrator-trigger.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/metrics-calibrator-trigger.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/metrics-calibrator-trigger.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/reaper-heartbeat.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/reaper-heartbeat.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/reaper-heartbeat.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/recap-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/recap-sync.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/recap-sync.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/session-hygiene.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/session-hygiene.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/session-hygiene.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/session-knowledge-extractor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/session-knowledge-extractor.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/session-knowledge-extractor.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/session-state-save.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/session-state-save.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/session-state-save.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/sync-to-repo.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/sync-to-repo.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/sync-to-repo.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/task-bridge-notify.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/task-bridge-notify.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/task-bridge-notify.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/telemetry-budget-violator-detect.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/telemetry-budget-violator-detect.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/telemetry-budget-violator-detect.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/usage-health-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/usage-health-check.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    hooks/usage-health-check.sh --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: packages/agent-lifecycle/skills/review-output/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - packages/agent-lifecycle/skills/review-output/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    packages/agent-lifecycle/skills/review-output/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: rules/research-first-protocol.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - rules/research-first-protocol.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    rules/research-first-protocol.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: rules/ROADMAP.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - rules/ROADMAP.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    rules/ROADMAP.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/cos-install-operations/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - skills/cos-install-operations/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    skills/cos-install-operations/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/hook-timing/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - skills/hook-timing/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    skills/hook-timing/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/repair-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - skills/repair-skill/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    skills/repair-skill/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/synthesize-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-scope-calibration
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - skills/synthesize-skill/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration batch 001 confirmed this primitive depends
+    on Cognitive OS maintainer/runtime internals.
+  evidence_commands:
+  - .venv/bin/python scripts/primitive_scope_classifier.py --project-dir . --paths
+    skills/synthesize-skill/SKILL.md --fail-contradictions
+  rollback_or_repair_command: Reopen ADR-314 manual calibration ledger batch 001 and
+    remove this metadata if consumer projection evidence is added.
+  sunset_criteria: Promote only if a generic project-facing primitive is split out
+    and proved with consumer projection evidence.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: maintainer-only
+  consumer_access_next_action: Keep out of default consumer-project projection.

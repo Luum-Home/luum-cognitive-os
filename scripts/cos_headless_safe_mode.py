@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Local headless safe-mode primitive for Cognitive OS task admission.
 
 Safe mode is a repair-first kill switch for unattended headless workers: when

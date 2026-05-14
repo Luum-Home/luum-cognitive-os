@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """
 detect_runner_capacity.py — Adaptive pytest worker count detector.
 

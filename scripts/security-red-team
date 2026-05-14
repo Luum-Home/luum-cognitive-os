@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @manual-trigger: run unified Cognitive OS security red-team probes.
 set -euo pipefail
 cd "$(dirname "$0")/.."

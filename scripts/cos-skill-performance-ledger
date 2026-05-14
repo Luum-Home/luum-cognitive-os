@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """CLI for ADR-207 skill performance/lifecycle ledger."""
 from __future__ import annotations
 

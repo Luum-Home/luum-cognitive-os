@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 # @manual-trigger: one-shot backfill; run once to persist already-answered ADR-069 decisions into engram
 """backfill_session_decisions.py — One-shot script to persist already-answered decisions.
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit cross-primitive ownership, registration, and ordering coherence.
 
 Slice A is intentionally read-only. It detects contradictions but does not fix

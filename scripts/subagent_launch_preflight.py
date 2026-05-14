@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Subagent launch preflight — ADR-203.
 
 Validates selected subagent type against prompt-required output capabilities.

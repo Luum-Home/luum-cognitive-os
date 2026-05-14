@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Detect near-duplicate Markdown documentation.
 
 This audit is designed for prevention: keep today's baseline visible, then fail

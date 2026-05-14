@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # chaos/snapshot-crash-rollback.sh
 #
 # Full crash + recovery cycle:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Read persisted cos-test/pytest-with-summary artifacts.
 
 Governance hooks use this helper to consume existing test evidence instead of

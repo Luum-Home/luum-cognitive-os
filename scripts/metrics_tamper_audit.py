@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Detect malformed or suspicious metrics rows without reading secrets."""
 from __future__ import annotations
 import argparse, json

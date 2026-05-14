@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-classify-coverage — Tier classifier for dormant/aspirational components.
 
 Reads .cognitive-os/metrics/aspirational-audit.jsonl, applies path + content

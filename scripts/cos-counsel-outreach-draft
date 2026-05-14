@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-counsel-outreach-draft — Template-driven email drafter.
 
 ADR-270 primitive #4. Produces a markdown draft for operator review. NEVER

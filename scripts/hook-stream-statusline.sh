@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # ROLE: observability
 # CANONICAL: scripts/hook-stream-statusline.sh
 # @on-demand: started manually by operator to display hook-stream statusline; requires hook-stream FIFO to be active

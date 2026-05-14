@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 from __future__ import annotations
 import argparse, json, re
 from pathlib import Path

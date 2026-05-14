@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit COS self-programming pattern extraction contracts.
 
 This keeps OpenSage-like self-programming ideas as governed patterns until COS

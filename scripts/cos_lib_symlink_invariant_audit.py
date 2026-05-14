@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-lib-symlink-invariant-audit — ADR-267 follow-up.
 
 Detects silent drift between lib/*.py (root) and packages/*/lib/*.py

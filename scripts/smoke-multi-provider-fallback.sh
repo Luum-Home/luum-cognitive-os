@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: run to verify each configured provider responds; ADR-062 Phase 4 smoke; not a Claude event hook
 # smoke-multi-provider-fallback.sh — Exercise each configured provider in isolation (ADR-062 Phase 4).
 #

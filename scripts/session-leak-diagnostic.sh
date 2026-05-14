@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # session-leak-diagnostic.sh — detect leaked Claude sessions and MCP children.
 #
 # Root cause addressed (2026-04-20):

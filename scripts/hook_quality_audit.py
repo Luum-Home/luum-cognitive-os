@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Hook Quality System audit and manifest synchronizer."""
 from __future__ import annotations
 

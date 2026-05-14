@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Compile ADR-201 Performance Ledger from validated ADR-204 reward signals."""
 from __future__ import annotations
 

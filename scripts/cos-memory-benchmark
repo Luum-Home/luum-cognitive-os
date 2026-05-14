@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Run the Wave 2 Slice 0 memory retrieval benchmark."""
 from __future__ import annotations
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SCOPE: os-only
 // semantic-lookup.mjs — Vector similarity search for error patterns
 // Requires: npm install @zvec/zvec (optional, falls back to TF-IDF)
 

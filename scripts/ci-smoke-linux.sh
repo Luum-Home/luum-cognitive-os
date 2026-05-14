@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # @manual-trigger: run inside ci-linux Docker container or locally as spot-check; not a Claude event hook
 # ci-smoke-linux.sh — Linux smoke test for cross-platform discipline.
 #

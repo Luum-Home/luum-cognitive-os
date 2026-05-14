@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """ADR-089 Layer 3 — ADR slot reservation entry point.
 
 Thin CLI wrapper around the core adr_reserve module (scripts/adr_reserve.py).

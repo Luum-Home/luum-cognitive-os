@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Map product-facing claims to available proof signals.
 
 The goal is not semantic truth. It creates a durable queue of strong claims that

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-executor — harness-agnostic live event daemon (ADR-034).
 
 Subscribes to the Valkey agent pub/sub bus (or tails FallbackBus JSONL

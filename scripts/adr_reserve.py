@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Reserve ADR numbers atomically across concurrent COS sessions."""
 
 from __future__ import annotations

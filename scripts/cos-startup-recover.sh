@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # ROLE: operator-recovery
 # CANONICAL: scripts/cos-startup-recover.sh
 # Activate bounded startup safe mode and clear stale locks after a Claude Code

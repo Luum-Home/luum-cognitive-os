@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Smoke: ADR-056 Level 2 agent-quota-redirect hook
 # Seeds high-pressure metrics + enables opt-in + invokes hook +
 # verifies block (exit 2) + AGENT_REDIRECT block is parseable.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Detect provider proof rows that spoof live provider delegation."""
 from __future__ import annotations
 import argparse, json
