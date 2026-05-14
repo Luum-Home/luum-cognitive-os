@@ -99,6 +99,46 @@ def registered_hooks(settings: dict[str, Any]) -> set[str]:
     return hooks
 
 
+def _read_text(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8", errors="ignore") if path.exists() else ""
+    except OSError:
+        return ""
+
+
+def dispatcher_targets(repo: Path) -> set[str]:
+    text = _read_text(repo / "hooks" / "bash-hot-path-dispatcher.sh")
+    return set(re.findall(r'"hooks/([A-Za-z0-9_.-]+\.sh)"', text))
+
+
+def effective_registered_hooks(repo: Path, settings: dict[str, Any]) -> set[str]:
+    """Return hooks registered directly or through committed projection sources.
+
+    The default/maintainer Bash hot path intentionally projects a dispatcher
+    rather than every command-scoped gate. Treating only concrete
+    .claude/settings.json entries as registered creates false contradictions
+    against the projection model. This helper resolves the effective closure:
+    direct settings, settings-driver sources, Codex projection, and dispatcher
+    fan-out when the dispatcher itself is projected.
+    """
+    hooks = registered_hooks(settings)
+    projection_text = "\n".join(
+        [
+            _read_text(repo / ".codex" / "hooks.json"),
+            _read_text(repo / "scripts" / "_lib" / "settings-driver-claude-code.sh"),
+            _read_text(repo / "scripts" / "_lib" / "settings-driver-codex.sh"),
+            _read_text(repo / "scripts" / "_lib" / "settings-driver-bare.sh"),
+        ]
+    )
+    for match in re.findall(r"\bhooks/([A-Za-z0-9_.-]+\.sh)", projection_text):
+        hooks.add(match)
+    for match in re.findall(r"/hooks/([A-Za-z0-9_.-]+\.sh)", projection_text):
+        hooks.add(match)
+    if "bash-hot-path-dispatcher.sh" in hooks:
+        hooks.update(dispatcher_targets(repo))
+    return hooks
+
+
 def check_ordering(repo: Path, manifest: dict[str, Any]) -> list[Finding]:
     settings = load_yaml(repo / ".claude" / "settings.json")
     findings: list[Finding] = []
@@ -256,7 +296,7 @@ def check_classification_projection(repo: Path, manifest: dict[str, Any]) -> lis
     """
     reg = manifest.get("registration") or {}
     settings = load_yaml(repo / ".claude" / "settings.json")
-    registered = registered_hooks(settings)
+    registered = effective_registered_hooks(repo, settings)
     classes = classification_map(repo, manifest)
     active_statuses = set(reg.get("active_statuses", ["active"]) or [])
     inactive_statuses = set(reg.get("must_not_be_registered_statuses", ["manual_trigger", "future", "deprecated", "demoted"]) or [])

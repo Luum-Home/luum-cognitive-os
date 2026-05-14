@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""Validate that all hooks in hooks/*.sh are registered in security/efficiency profiles.
+"""Validate that all hooks in hooks/*.sh have an effective projection path.
 
-A hook is considered registered when it appears in ALL of:
-  - templates/security-profiles/*.json
-  - scripts/apply-efficiency-profile.sh
-  - .claude/settings.local.json  (or settings.json)
+A hook is considered registered when it is directly named by a projection
+artifact or when a projected dispatcher names it. This keeps the checker aligned
+with the current default/maintainer profile, where the Bash hot path projects
+hooks/bash-hot-path-dispatcher.sh and lets that dispatcher fan out to
+command-scoped gates.
 
 Hooks that intentionally skip registration can be allowlisted in
-hooks/_lib/registration-allowlist.txt.
+hooks/_lib/registration-allowlist.txt or classified with an intentional-absence
+status in manifests/hook-registration-classification.yaml.
 
 Exit 0 if all registered (or allowlisted), exit 1 with details of unregistered hooks.
 """
@@ -16,6 +18,8 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+import re
+import yaml
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -44,11 +48,12 @@ def _read_file_safe(path: Path) -> str:
 
 
 def get_settings_content(root: Path) -> str:
-    """Return combined content of settings files."""
+    """Return combined content of concrete settings files."""
     parts = []
     for name in ("settings.local.json", "settings.json"):
         p = root / ".claude" / name
         parts.append(_read_file_safe(p))
+    parts.append(_read_file_safe(root / ".codex" / "hooks.json"))
     return "\n".join(parts)
 
 
@@ -68,14 +73,49 @@ def get_security_profile_content(root: Path) -> str:
     )
 
 
+def get_projection_source_content(root: Path) -> str:
+    """Return committed projection source content.
+
+    Settings drivers are authoritative projection producers. They matter even
+    when the currently checked-out settings file is using a lean profile.
+    """
+    paths = [
+        root / "scripts" / "_lib" / "settings-driver-claude-code.sh",
+        root / "scripts" / "_lib" / "settings-driver-codex.sh",
+        root / "scripts" / "_lib" / "settings-driver-bare.sh",
+    ]
+    return "\n".join(_read_file_safe(path) for path in paths)
+
+
+def dispatcher_targets(root: Path) -> set[str]:
+    """Return hooks invoked by the hot-path dispatcher."""
+    text = _read_file_safe(root / "hooks" / "bash-hot-path-dispatcher.sh")
+    return set(re.findall(r'"hooks/([A-Za-z0-9_.-]+\.sh)"', text))
+
+
+def dispatcher_projected(root: Path) -> bool:
+    name = "bash-hot-path-dispatcher.sh"
+    return name in "\n".join(
+        [
+            get_settings_content(root),
+            get_projection_source_content(root),
+            get_security_profile_content(root),
+            _read_file_safe(root / "scripts" / "apply-efficiency-profile.sh"),
+        ]
+    )
+
+
 def check_hook_registered(hook_name: str, root: Path) -> dict[str, bool]:
     security = get_security_profile_content(root)
     efficiency = _read_file_safe(root / "scripts" / "apply-efficiency-profile.sh")
     settings = get_settings_content(root)
+    projection_sources = get_projection_source_content(root)
+    routed_by_dispatcher = dispatcher_projected(root) and hook_name in dispatcher_targets(root)
+    directly_projected = hook_name in "\n".join([security, efficiency, settings, projection_sources])
     return {
-        "security_profile": hook_name in security,
-        "efficiency_profile": hook_name in efficiency,
-        "settings_json": hook_name in settings,
+        "direct_projection": directly_projected,
+        "dispatcher_projection": routed_by_dispatcher,
+        "effective_projection": directly_projected or routed_by_dispatcher,
     }
 
 
@@ -91,10 +131,40 @@ def load_allowlist(root: Path) -> set[str]:
     return result
 
 
+def load_intentionally_absent_classifications(root: Path) -> set[str]:
+    path = root / "manifests" / "hook-registration-classification.yaml"
+    if not path.exists():
+        return set()
+    intentional_statuses = {
+        "candidate_promote",
+        "conditional_opt_in",
+        "demoted",
+        "deprecated",
+        "future",
+        "git_or_manual",
+        "internal_helper",
+        "manual_trigger",
+        "opt_in",
+        "projected_elsewhere",
+    }
+    try:
+        payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return set()
+    absent: set[str] = set()
+    for entry in payload.get("entries", []) or []:
+        status = str(entry.get("status", ""))
+        if status in intentional_statuses:
+            absent.add(Path(str(entry.get("path", ""))).name)
+    return absent
+
+
 def main() -> int:
     root = get_project_root()
     on_disk = get_hooks_on_disk(root)
     allowlist = load_allowlist(root)
+    intentionally_absent = load_intentionally_absent_classifications(root)
+    intentionally_skipped = (allowlist | intentionally_absent) & on_disk
 
     if not on_disk:
         print("Hook registration OK: no hooks found on disk")
@@ -102,10 +172,10 @@ def main() -> int:
 
     unregistered: list[tuple[str, dict[str, bool]]] = []
     for hook in sorted(on_disk):
-        if hook in allowlist:
+        if hook in intentionally_skipped:
             continue
         checks = check_hook_registered(hook, root)
-        if not all(checks.values()):
+        if not checks["effective_projection"]:
             unregistered.append((hook, checks))
 
     if unregistered:
@@ -123,11 +193,11 @@ def main() -> int:
         )
         return 1
 
-    wired = len(on_disk) - len(allowlist & on_disk)
+    wired = len(on_disk) - len(intentionally_skipped)
     print(
         f"Hook registration OK: {len(on_disk)} hooks on disk, "
         f"{wired} fully registered, "
-        f"{len(allowlist & on_disk)} allowlisted"
+        f"{len(intentionally_skipped)} intentionally absent"
     )
     return 0
 
