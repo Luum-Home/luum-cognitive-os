@@ -9,10 +9,13 @@ Project: `<repo-root>`
 |---|---|---:|---:|---:|---|---|---:|
 | py2many | `tests/fixtures/rust_transpiler_eval/pure_ints_lists.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 | tnk | `tests/fixtures/rust_transpiler_eval/pure_ints_lists.py` | generated-and-compiles | 0 | 0 | pass | low | 1 |
+| depyler | `tests/fixtures/rust_transpiler_eval/pure_ints_lists.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 | py2many | `tests/fixtures/rust_transpiler_eval/simple_parse_no_io.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 | tnk | `tests/fixtures/rust_transpiler_eval/simple_parse_no_io.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
+| depyler | `tests/fixtures/rust_transpiler_eval/simple_parse_no_io.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 | py2many | `tests/fixtures/rust_transpiler_eval/list_dict_transform.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 | tnk | `tests/fixtures/rust_transpiler_eval/list_dict_transform.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
+| depyler | `tests/fixtures/rust_transpiler_eval/list_dict_transform.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 
 ## Decision Rule
 

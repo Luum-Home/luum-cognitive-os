@@ -67,6 +67,19 @@ def test_core_tools_report_no_credential_copy_paths(platform: str) -> None:
     assert all(not row["never_copy"] for row in rows if row["name"] in {"jq", "git", "uv", "python3"})
 
 
+
+
+def test_rust_transpiler_lab_profile_reports_lab_tools() -> None:
+    payload = run_install("--profile", "rust-transpiler-lab", "--platform", "macos", "--dry-run", "--json")
+    rows = {row["name"]: row for bucket in ("already_present", "installable", "manual") for row in payload[bucket]}
+
+    assert payload["manifest_profile"] == "rust-transpiler-lab"
+    assert {"py2many", "tnk", "depyler"}.issubset(rows)
+    assert rows["depyler"]["install_command"] == "cargo install depyler"
+    assert rows["tnk"]["install_manager"] == "cargo"
+    assert rows["py2many"]["install_manager"] == "pip"
+
+
 def test_adr_168_links_installer_and_contract_test() -> None:
     text = ADR.read_text(encoding="utf-8")
 

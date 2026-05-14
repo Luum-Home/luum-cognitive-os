@@ -4,18 +4,23 @@
     "scripts/regen_catalog_bullets.py",
     "scripts/backfill_cost_events.py"
   ],
+  "mode": "scripts",
   "project_dir": "<repo-root>",
   "results": [
     {
       "candidate": "scripts/agentic_mastery_summary.py",
-      "compile_excerpt": "Updating crates.io index\nerror: failed to select a version for the requirement `pathlib = \"^0.1\"`\ncandidate versions found which didn't match: 0.0.0\nlocation searched: crates.io index\nrequired by package `cos_transpiler_probe v0.1.0 (<tmp>)`",
+      "compile_excerpt": "Updating crates.io index\n     Locking 2 packages to latest compatible versions\n Downloading crates ...\n  Downloaded pathlib v0.0.0\n   Compiling anyhow v1.0.102\n    Checking pathlib v0.0.0\n    Checking cos_transpiler_probe v0.1.0 (<tmp>)\nerror: cannot find macro `raise` in this scope\n  --> src/main.rs:61:1\n   |\n61 | raise!(SystemExit(main_func())); //unsupported\n   | ^^^^^\n\nerror[E0425]: cannot find value `__file__` in this scope\n  --> src/main.rs:43:23\n   |\n43 | pub const ROOT = Path(__file__).resolve().parents[1];\n   |                       ^^^^^^^^ not found in this scope\n\nerror[E0423]: expected function, tuple struct or tuple variant, found trait `Path`\n  --> src/main.rs:43:18\n   |\n43 | pub const ROOT = Path(__file__).resolve().parents[1];\n   |                  ^^^^ not a function, tuple struct or tuple variant\n\nerror: missing type for `const` item\n  --> src/main.rs:43:15\n   |\n43 | pub const ROOT = Path(__file__).resolve().parents[1];\n   |               ^\n   |\nhelp: provide a type for the item\n   |\n43 | pub const ROOT: <type> = Path(__file__).resolve().parents[1];\n   |               ++++++++\n\nerror[E0369]: cannot divide `&str` by `&str`\n  --> src/main.rs:46:280\n   |\n46 | ...rajectory-schema.md\")), (\"Skill efficacy\", (REPORTS/\"skill-efficacy-smoke-report.md\")), (\"Runtime benchmark\", (REPORTS/\"runtime-benchm...\n   |                                                -------^-------------------------------- &str\n   |                                                |\n   |                                                &str\n\nerror[E0369]: cannot divide `&str` by `&str`\n  --> src/main.rs:46:347\n   |\n46 | ...smoke-report.md\")), (\"Runtime benchmark\", (REPORTS/\"runtime-benchmark-leaderboard.md\")), (\"Adversarial generalization\", (REPORTS/\"adve...\n   |                                               -------^---------------------------------- &str\n   |                                            ",
       "compile_exit_code": 101,
-      "elapsed_ms": 372,
+      "elapsed_ms": 367,
       "exit_code": 1,
       "generated_files": [
         "py2many/agentic_mastery_summary.rs"
       ],
       "manual_fix_cost": "high",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "<repo-root>/.cognitive-os/reports/agentic-mastery-summary.md",
+      "rust_stdout": "",
       "status": "partial-output-with-tool-errors",
       "stderr_excerpt": "Writing to: <repo-root>/.cognitive-os/transpiler-eval/latest/py2many",
       "stdout_excerpt": "<repo-root>/scripts/agentic_mastery_summary.py ... <repo-root>/.cognitive-os/transpiler-eval/latest/py2many/agentic_mastery_summary.rs\nError: ['rustfmt', '--edition=2021', '<repo-root>/.cognitive-os/transpiler-eval/latest/py2many/agentic_mastery_summary.rs'] (code: 1):\nb'error: missing type for `const` item\\n  --> <repo-root>/.cognitive-os/transpiler-eval/latest/py2many/agentic_mastery_summary.rs:43:15\\n   |\\n43 | pub const ROOT = Path(__file__).resolve().parents[1];\\n   |               ^\\n   |\\nhelp: provide a type for the item\\n   |\\n43 | pub const ROOT: <type> = Path(__file__).resolve().parents[1];\\n   |               ++++++++\\n\\n'b''",
@@ -23,9 +28,9 @@
     },
     {
       "candidate": "scripts/agentic_mastery_summary.py",
-      "compile_excerpt": "Updating crates.io index\n     Locking 57 packages to latest compatible versions\n      Adding thiserror v1.0.69 (available: v2.0.18)\n   Compiling proc-macro2 v1.0.106\n   Compiling quote v1.0.45\n   Compiling unicode-ident v1.0.24\n   Compiling serde_core v1.0.228\n   Compiling libc v0.2.186\n   Compiling getrandom v0.4.2\n   Compiling zmij v1.0.21\n   Compiling thiserror v1.0.69\n    Checking cfg-if v1.0.4\n   Compiling serde_json v1.0.149\n   Compiling serde v1.0.228\n    Checking memchr v2.8.0\n    Checking itoa v1.0.18\n    Checking uuid v1.23.1\n   Compiling syn v2.0.117\n   Compiling serde_derive v1.0.228\n   Compiling thiserror-impl v1.0.69\n    Checking agentic_mastery_summary_project v0.1.0 (<tmp>)\nerror: this `if` expression is missing a block after the condition\n  --> src/main.rs:75:33\n   |\n75 |         status = Some(\"present\" if path.exists() else \"missing\");\n   |                                 ^^\n   |\nhelp: add a block here\n  --> src/main.rs:75:49\n   |\n75 |         status = Some(\"present\" if path.exists() else \"missing\");\n   |                                                 ^\n\nerror: expected one of `)`, `,`, `.`, `?`, or an operator, found keyword `if`\n  --> src/main.rs:75:33\n   |\n75 |         status = Some(\"present\" if path.exists() else \"missing\");\n   |                                 ^^ expected one of `)`, `,`, `.`, `?`, or an operator\n\nerror[E0425]: cannot find value `SECTIONS` in this scope\n  --> src/main.rs:74:25\n   |\n74 |     for (name, path) in SECTIONS {\n   |                         ^^^^^^^^ not found in this scope\n\nerror[E0425]: cannot find value `ROOT` in this scope\n  --> src/main.rs:76:94\n   |\n76 |         lines.push(format!(\"| {:?} | {} | `{:?}` |\", name, status.unwrap(), path.relative_to(ROOT.clone())).to_string());\n   |                                                                                              ^^^^ not found in this scope\n\nerror[E0425]: cann",
+      "compile_excerpt": "Updating crates.io index\n     Locking 57 packages to latest compatible versions\n      Adding thiserror v1.0.69 (available: v2.0.18)\n   Compiling proc-macro2 v1.0.106\n   Compiling unicode-ident v1.0.24\n   Compiling quote v1.0.45\n   Compiling serde_core v1.0.228\n   Compiling libc v0.2.186\n   Compiling getrandom v0.4.2\n   Compiling zmij v1.0.21\n   Compiling serde v1.0.228\n   Compiling serde_json v1.0.149\n    Checking cfg-if v1.0.4\n   Compiling thiserror v1.0.69\n    Checking memchr v2.8.0\n    Checking itoa v1.0.18\n   Compiling syn v2.0.117\n   Compiling serde_derive v1.0.228\n   Compiling thiserror-impl v1.0.69\n    Checking uuid v1.23.1\n    Checking agentic_mastery_summary_project v0.1.0 (<tmp>)\nerror: this `if` expression is missing a block after the condition\n  --> src/main.rs:75:33\n   |\n75 |         status = Some(\"present\" if path.exists() else \"missing\");\n   |                                 ^^\n   |\nhelp: add a block here\n  --> src/main.rs:75:49\n   |\n75 |         status = Some(\"present\" if path.exists() else \"missing\");\n   |                                                 ^\n\nerror: expected one of `)`, `,`, `.`, `?`, or an operator, found keyword `if`\n  --> src/main.rs:75:33\n   |\n75 |         status = Some(\"present\" if path.exists() else \"missing\");\n   |                                 ^^ expected one of `)`, `,`, `.`, `?`, or an operator\n\nerror[E0425]: cannot find value `SECTIONS` in this scope\n  --> src/main.rs:74:25\n   |\n74 |     for (name, path) in SECTIONS {\n   |                         ^^^^^^^^ not found in this scope\n\nerror[E0425]: cannot find value `ROOT` in this scope\n  --> src/main.rs:76:94\n   |\n76 |         lines.push(format!(\"| {:?} | {} | `{:?}` |\", name, status.unwrap(), path.relative_to(ROOT.clone())).to_string());\n   |                                                                                              ^^^^ not found in this scope\n\nerror[E0425]: cann",
       "compile_exit_code": 101,
-      "elapsed_ms": 7368,
+      "elapsed_ms": 8895,
       "exit_code": 1,
       "generated_files": [
         "tnk/agentic_mastery_summary_project/.gitignore",
@@ -43,21 +48,48 @@
         "tnk/agentic_mastery_summary_project/src/main.rs"
       ],
       "manual_fix_cost": "high",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "<repo-root>/.cognitive-os/reports/agentic-mastery-summary.md",
+      "rust_stdout": "",
       "status": "partial-output-with-tool-errors",
       "stderr_excerpt": "Error: This code uses external Python libraries via PythonBridge.\n       Please use --project option to generate a complete project:\n\n       tnk <repo-root>/scripts/agentic_mastery_summary.py --project ./output_project\n\n       The --project option generates a Cargo project with:\n         - bridge/ mod.rs: Python worker communication module\n         - Cargo.toml: Dependencies (serde, serde_json, uuid, thiserror)\n\n       After generation, run:\n         source venv/bin/activate\n         cd ./output_project && cargo run --release\n\n--- project retry ---",
       "stdout_excerpt": "--- project retry ---\n\u2705 Generated project: <repo-root>/.cognitive-os/transpiler-eval/latest/tnk/agentic_mastery_summary_project/\n   Run: cd <repo-root>/.cognitive-os/transpiler-eval/latest/tnk/agentic_mastery_summary_project && cargo build --release",
       "tool": "tnk"
     },
     {
+      "candidate": "scripts/agentic_mastery_summary.py",
+      "compile_excerpt": "Updating crates.io index\n     Locking 1 package to latest compatible version\n   Compiling anyhow v1.0.102\n    Checking cos_transpiler_probe v0.1.0 (<tmp>)\nwarning: unused macro definition: `annotations`\n --> src/main.rs:7:14\n  |\n7 | macro_rules! annotations { ($($args:expr),* $(,)?) => { DepylerValue::default() }; }\n  |              ^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_macros)]` on by default\n\nerror[E0277]: the trait bound `LazyLock<Vec<String>>: AsRef<Path>` is not satisfied\n    --> src/main.rs:3369:26\n     |\n3369 |     std::fs::create_dir(&REPORTS).expect(\"operation failed\");\n     |     -------------------  ^^^^^^^ the trait `AsRef<Path>` is not implemented for `LazyLock<Vec<String>>`\n     |     |\n     |     required by a bound introduced by this call\n     |\n     = note: required for `&LazyLock<Vec<String>>` to implement `AsRef<Path>`\nnote: required by a bound in `create_dir`\n    --> <rustup>/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/fs.rs:2751:22\n     |\n2751 | pub fn create_dir<P: AsRef<Path>>(path: P) -> io::Result<()> {\n     |                      ^^^^^^^^^^^ required by this bound in `create_dir`\n\nerror[E0308]: mismatched types\n    --> src/main.rs:3376:9\n     |\n3376 |     for (name, path) in SECTIONS.iter().cloned() {\n     |         ^^^^^^^^^^^^    ------------------------ this is an iterator with items of type `String`\n     |         |\n     |         expected `String`, found `(_, _)`\n     |\n     = note: expected struct `String`\n                 found tuple `(_, _)`\n\nerror[E0308]: mismatched types\n    --> src/main.rs:3377:49\n     |\n3377 |         let status: String = if path.exists() { \"present\" } else { \"missing\" };\n     |                                                 ^^^^^^^^^- help: try using a conversion method: `.to_string()`\n     |                                                 |\n     |             ",
+      "compile_exit_code": 101,
+      "elapsed_ms": 1234,
+      "exit_code": 0,
+      "generated_files": [
+        "depyler/agentic_mastery_summary.rs"
+      ],
+      "manual_fix_cost": "medium",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "<repo-root>/.cognitive-os/reports/agentic-mastery-summary.md",
+      "rust_stdout": "",
+      "status": "generated-but-compile-fails",
+      "stderr_excerpt": "Type inference hints:\nHint: str for variable 'name' [Medium] (usage patterns suggest this type)\nHint: str for variable 'status' [Medium] (usage patterns suggest this type)\nHint: list[Any] for variable 'lines' [High] (usage patterns suggest this type)\n\nHM inference: applied 2 type substitutions\n\nPerformance Warnings\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n[1] [Low] Multiple append calls in loop\n   Location: main, line 2 (in loop, depth: 1)\n   Impact: Complexity: O(1) amortized, but more calls, Scales: Yes, Hot path: Yes\n   Why: Multiple append operations can be less efficient than extend\n   Fix: Consider collecting items and using extend() once\n\nSummary: Found 1 warnings (0 critical, 0 high severity)\n\n\nProfiling Report\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nSummary\n  Total estimated instructions: 63\n  Total estimated allocations: 1\n  Functions analyzed: 1\n\nHot Paths\n  [1] main (1000.0% of execution time)\n\nFunction Metrics\n\ud83d\udd25 main                           1000.0% time |     63 inst |    1 alloc\n\nPerformance Predictions\n  \u2022 Rust's iterator fusion can optimize chained operations (1.2x speedup, 80% confidence)\n  \u2022 Rust's memory layout is more cache-friendly than Python (1.3x speedup, 70% confidence)\n\n\ud83d\ude80 Estimated overall speedup: 1.6x",
+      "stdout_excerpt": "2026-05-14T00:10:13.187684Z  WARN depyler_analysis::type_mapper: UnificationVar(28) encountered in type mapper. Falling back to DepylerValue.\n\u2713 <repo-root>/.cognitive-os/transpiler-eval/latest/depyler/agentic_mastery_summary.rs\n\u2713 <repo-root>/.cognitive-os/transpiler-eval/latest/depyler/Cargo.toml (with 0 dependencies)",
+      "tool": "depyler"
+    },
+    {
       "candidate": "scripts/regen_catalog_bullets.py",
       "compile_excerpt": "",
       "compile_exit_code": null,
-      "elapsed_ms": 226,
+      "elapsed_ms": 223,
       "exit_code": 1,
       "generated_files": [
         "py2many/regen_catalog_bullets.rs"
       ],
       "manual_fix_cost": "high",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "Regenerated 173 bullets in skills/CATALOG.md\nSkills with 'No description': 0",
+      "rust_stdout": "",
       "status": "partial-output-with-tool-errors",
       "stderr_excerpt": "Writing to: <repo-root>/.cognitive-os/transpiler-eval/latest/py2many",
       "stdout_excerpt": "<repo-root>/scripts/regen_catalog_bullets.py ... <repo-root>/.cognitive-os/transpiler-eval/latest/py2many/regen_catalog_bullets.rs\n<repo-root>/scripts/regen_catalog_bullets.py:33:8: py2many.exceptions.AstNotImplementedError: try_dummy not implemented\nError: ['rustfmt', '--edition=2021', '<repo-root>/.cognitive-os/transpiler-eval/latest/py2many/regen_catalog_bullets.rs'] (code: 1):\nb'error: expected one of `!` or `::`, found `<eof>`\\n --> <repo-root>/.cognitive-os/transpiler-eval/latest/py2many/regen_catalog_bullets.rs:1:1\\n  |\\n1 | FAILED\\n  | ^^^^^^ expected one of `!` or `::`\\n\\n'b''",
@@ -71,21 +103,48 @@
       "exit_code": 1,
       "generated_files": [],
       "manual_fix_cost": "blocked",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "Regenerated 173 bullets in skills/CATALOG.md\nSkills with 'No description': 0",
+      "rust_stdout": "",
       "status": "no-usable-output",
       "stderr_excerpt": "",
       "stdout_excerpt": "[TNK-UNSUPPORTED-SYNTAX] <repo-root>/scripts/regen_catalog_bullets.py:56:20 unsupported builtin: next()",
       "tool": "tnk"
     },
     {
+      "candidate": "scripts/regen_catalog_bullets.py",
+      "compile_excerpt": "Updating crates.io index\n     Locking 1 package to latest compatible version\n   Compiling anyhow v1.0.102\n    Checking cos_transpiler_probe v0.1.0 (<tmp>)\nerror: expected expression, found `let` statement\n    --> src/main.rs:3413:21\n     |\n3413 |                     let base = (desc_single).clone();\n     |                     ^^^\n     |\n     = note: only supported directly in conditions of `if` and `while` expressions\n\nerror: expected one of `,`, `.`, `?`, or an operator, found `;`\n    --> src/main.rs:3413:53\n     |\n3413 |                     let base = (desc_single).clone();\n     |                                                     ^ expected one of `,`, `.`, `?`, or an operator\n\nerror: argument never used\n    --> src/main.rs:3424:17\n     |\n3412 |                 \"{}{}\",\n     |                 ------ formatting specifier missing\n...\n3424 |                 \"...\"\n     |                 ^^^^^ argument never used\n\nwarning: unused macro definition: `annotations`\n --> src/main.rs:7:14\n  |\n7 | macro_rules! annotations { ($($args:expr),* $(,)?) => { DepylerValue::default() }; }\n  |              ^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_macros)]` on by default\n\nerror[E0599]: no method named `display` found for struct `LazyLock<Vec<String>>` in the current scope\n    --> src/main.rs:3378:84\n     |\n3378 |         let mut sorted_vec = std::path::PathBuf::from(&format!(\"{}/{}\", SKILLS_DIR.display(), \"*/SKILL.md\"))\n     |                                                                                    ^^^^^^^ method not found in `LazyLock<Vec<String>>`\n\nerror[E0599]: no method named `expect` found for struct `PathBuf` in the current scope\n    --> src/main.rs:3379:14\n     |\n3378 |           let mut sorted_vec = std::path::PathBuf::from(&format!(\"{}/{}\", SKILLS_DIR.display(), \"*/SKILL.md\"))\n     |  ______________________________-\n3379 | |             .expect(\"operation failed\")\n     | |       ",
+      "compile_exit_code": 101,
+      "elapsed_ms": 507,
+      "exit_code": 0,
+      "generated_files": [
+        "depyler/regen_catalog_bullets.rs"
+      ],
+      "manual_fix_cost": "medium",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "Regenerated 173 bullets in skills/CATALOG.md\nSkills with 'No description': 0",
+      "rust_stdout": "",
+      "status": "generated-but-compile-fails",
+      "stderr_excerpt": "Type inference hints:\nHint: list[Any] for variable 'entries' [High] (usage patterns suggest this type)\nHint: str for variable 'desc' [Medium] (usage patterns suggest this type)\nHint: list[Any] for variable 'desc_single' [High] (usage patterns suggest this type)\n\nType inference hints:\nHint: str for variable 'CATALOG' [Medium] (usage patterns suggest this type)\nHint: list[Any] for variable 'new_bullets' [High] (usage patterns suggest this type)\nHint: list[Any] for variable 'lines' [High] (usage patterns suggest this type)\nHint: str for variable 'no_desc_count' [Medium] (usage patterns suggest this type)\n\nHM inference: applied 10 type substitutions\n\nMigration Suggestions\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n[1] [Warning] Consider using iterator methods in 'build_bullets'\n   Category: Iterator\n   Why: This function uses an accumulator pattern that could be replaced with iterator methods\n   Location: build_bullets line 0\n\n   Python pattern:\n   \u2502 result = []\n   \u2502 for item in items:\n   \u2502     if condition(item):\n   \u2502         result.append(transform(item))\n\n   Rust idiom:\n   \u2502 let result: Vec<_> = items.iter()\n   \u2502     .filter(|item| condition(item))\n   \u2502     .map(|item| transform(item))\n   \u2502     .collect();\n\nSummary: 1 suggestions (0 critical, 0 important)\n\n\nPerformance Warnings\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n[1] [Low] Multiple append calls in loop\n   Location: build_bullets, line 1 (in loop, depth: 1)\n   Impact: Complexity: O(1) amortized, but more calls, Scales: Yes, Hot path: Yes\n   Why: Multiple append operations can be less efficient than extend\n   Fix: Consider collecting items and using extend() once\n\nSummary: Found 1 warnings (0 critical, 0 high severity)\n\n\nProfiling Report\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nSummary\n  Total estimated instructions: 632\n  Total estimated allocations: 1\n  Functions analyzed: 3\n\nHot Paths\n  [1] regen (13.6% of execution time)\n  [2] build_bullets (848.1% of execution time)\n\nFunction Me",
+      "stdout_excerpt": "\u2713 <repo-root>/.cognitive-os/transpiler-eval/latest/depyler/regen_catalog_bullets.rs\n\u2713 <repo-root>/.cognitive-os/transpiler-eval/latest/depyler/Cargo.toml (with 1 dependencies)",
+      "tool": "depyler"
+    },
+    {
       "candidate": "scripts/backfill_cost_events.py",
       "compile_excerpt": "",
       "compile_exit_code": null,
-      "elapsed_ms": 178,
+      "elapsed_ms": 186,
       "exit_code": 1,
       "generated_files": [
         "py2many/backfill_cost_events.rs"
       ],
       "manual_fix_cost": "high",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "Backfill complete: 503 rows read, 503 rows written, 0 unparseable passthrough.\nOutput: .cognitive-os/metrics/cost-events.jsonl",
+      "rust_stdout": "",
       "status": "partial-output-with-tool-errors",
       "stderr_excerpt": "Writing to: <repo-root>/.cognitive-os/transpiler-eval/latest/py2many",
       "stdout_excerpt": "<repo-root>/scripts/backfill_cost_events.py ... <repo-root>/.cognitive-os/transpiler-eval/latest/py2many/backfill_cost_events.rs\n<repo-root>/scripts/backfill_cost_events.py:60:12: py2many.exceptions.AstNotImplementedError: try_dummy not implemented\nError: ['rustfmt', '--edition=2021', '<repo-root>/.cognitive-os/transpiler-eval/latest/py2many/backfill_cost_events.rs'] (code: 1):\nb'error: expected one of `!` or `::`, found `<eof>`\\n --> <repo-root>/.cognitive-os/transpiler-eval/latest/py2many/backfill_cost_events.rs:1:1\\n  |\\n1 | FAILED\\n  | ^^^^^^ expected one of `!` or `::`\\n\\n'b''",
@@ -95,19 +154,43 @@
       "candidate": "scripts/backfill_cost_events.py",
       "compile_excerpt": "",
       "compile_exit_code": null,
-      "elapsed_ms": 10,
+      "elapsed_ms": 8,
       "exit_code": 1,
       "generated_files": [],
       "manual_fix_cost": "blocked",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "Backfill complete: 503 rows read, 503 rows written, 0 unparseable passthrough.\nOutput: .cognitive-os/metrics/cost-events.jsonl",
+      "rust_stdout": "",
       "status": "no-usable-output",
       "stderr_excerpt": "",
       "stdout_excerpt": "[TNK-PARSE-ERROR] <repo-root>/scripts/backfill_cost_events.py:54:1 Cannot parse expression: src.open(\"r\", encoding=\"utf-8\") as fin",
       "tool": "tnk"
+    },
+    {
+      "candidate": "scripts/backfill_cost_events.py",
+      "compile_excerpt": "Updating crates.io index\n     Locking 1 package to latest compatible version\n   Compiling anyhow v1.0.102\n    Checking cos_transpiler_probe v0.1.0 (<tmp>)\nerror[E0425]: cannot find value `os` in this scope\n    --> src/main.rs:3430:5\n     |\n3430 |     os;\n     |     ^^ not found in this scope\n\nwarning: unused macro definition: `annotations`\n --> src/main.rs:7:14\n  |\n7 | macro_rules! annotations { ($($args:expr),* $(,)?) => { DepylerValue::default() }; }\n  |              ^^^^^^^^^^^\n  |\n  = note: `#[warn(unused_macros)]` on by default\n\nerror[E0599]: no method named `open` found for struct `PathBuf` in the current scope\n    --> src/main.rs:3395:28\n     |\n3395 |     let mut _context = src.open(\"r\");\n     |                            ^^^^ method not found in `PathBuf`\n\nerror[E0599]: no method named `open` found for struct `PathBuf` in the current scope\n    --> src/main.rs:3397:29\n     |\n3397 |     let mut _context = dest.open(\"w\");\n     |                             ^^^^ method not found in `PathBuf`\n\nerror[E0308]: mismatched types\n    --> src/main.rs:3424:36\n     |\n3424 |         let source = _guess_source(&row);\n     |                      ------------- ^^^^ expected `&HashMap<String, String>`, found `&HashMap<String, DepylerValue>`\n     |                      |\n     |                      arguments to this function are incorrect\n     |\n     = note: expected reference `&HashMap<_, String>`\n                found reference `&HashMap<_, DepylerValue>`\nnote: function defined here\n    --> src/main.rs:3372:8\n     |\n3372 | pub fn _guess_source(row: &std::collections::HashMap<String, String>) -> String {\n     |        ^^^^^^^^^^^^^ -----------------------------------------------\n\nerror[E0308]: `if` and `else` have incompatible types\n    --> src/main.rs:3448:9\n     |\n3441 |        let target = if std::env::args().collect::<Vec<String>>().len() as i32 > 1 {\n     |  ___________________-\n3442 |",
+      "compile_exit_code": 101,
+      "elapsed_ms": 540,
+      "exit_code": 0,
+      "generated_files": [
+        "depyler/backfill_cost_events.rs"
+      ],
+      "manual_fix_cost": "medium",
+      "parity_status": "not-checkable",
+      "python_exit_code": 0,
+      "python_stdout": "Backfill complete: 503 rows read, 503 rows written, 0 unparseable passthrough.\nOutput: .cognitive-os/metrics/cost-events.jsonl",
+      "rust_stdout": "",
+      "status": "generated-but-compile-fails",
+      "stderr_excerpt": "Type inference hints:\nHint: str for variable 'raw_line' [Medium] (usage patterns suggest this type)\nHint: str for variable 'before' [Medium] (usage patterns suggest this type)\nHint: str for variable 'after' [Medium] (usage patterns suggest this type)\nHint: str for variable 'src' [Medium] (usage patterns suggest this type)\nHint: str for variable 'os' [Medium] (usage patterns suggest this type)\nHint: str for variable 'skipped' [Medium] (usage patterns suggest this type)\nHint: str for variable 'path' [Medium] (usage patterns suggest this type)\n\nHM inference: applied 9 type substitutions\nType unification warning: TypeConflict(String, HashMap(Unknown, Unknown))\n\nPerformance Warnings\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n[1] [Medium] Large value 'row' passed by copy\n   Location: _guess_source, line 0\n   Impact: Complexity: O(n), Scales: Yes, Hot path: No\n   Why: Passing large values by copy is inefficient\n   Fix: Consider passing by reference (&) or using Box/Arc for large types\n\n[2] [Medium] Large value 'path' passed by copy\n   Location: backfill, line 0\n   Impact: Complexity: O(n), Scales: Yes, Hot path: No\n   Why: Passing large values by copy is inefficient\n   Fix: Consider passing by reference (&) or using Box/Arc for large types\n\nSummary: Found 2 warnings (0 critical, 0 high severity)\n\n\nProfiling Report\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nSummary\n  Total estimated instructions: 107\n  Total estimated allocations: 0\n  Functions analyzed: 3\n\nHot Paths\n  [1] _guess_source (13.1% of execution time)\n  [2] main (12.1% of execution time)\n  [3] backfill (74.8% of execution time)\n\nFunction Metrics\n\ud83d\udd25 backfill                         74.8% time |     80 inst |    0 alloc\n\ud83d\udd25 _guess_source                    13.1% time |     14 inst |    0 alloc\n\ud83d\udd25 main                             12.1% time |     13 inst |    0 alloc\n\nPerformance Predictions\n  \u2022 Rust's memory layout is more cache-friendly than Python (1.3x speedup, 70% confidence)\n\n\ud83d\ude80 Estimated overall ",
+      "stdout_excerpt": "\u2713 <repo-root>/.cognitive-os/transpiler-eval/latest/depyler/backfill_cost_events.rs\n\u2713 <repo-root>/.cognitive-os/transpiler-eval/latest/depyler/Cargo.toml (with 0 dependencies)",
+      "tool": "depyler"
     }
   ],
   "schema_version": "rust-transpiler-eval/v1",
   "tools": [
     "py2many",
-    "tnk"
+    "tnk",
+    "depyler"
   ]
 }

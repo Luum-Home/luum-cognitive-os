@@ -20,7 +20,7 @@ import yaml
 
 SCHEMA_VERSION = 1
 VALID_CRITICALITIES = {"required", "recommended", "optional"}
-VALID_PROFILES = {"default", "full"}
+VALID_PROFILES = {"default", "full", "rust-transpiler-lab"}
 VALID_TOOL_CATEGORIES = {"runtime", "package-manager", "cli", "ai-cli", "desktop-app", "container", "security", "mcp", "service"}
 VALID_SCOPES = {"project", "user", "system"}
 VALID_SYNCABLE = {"yes", "no", "state-only", "config-only"}

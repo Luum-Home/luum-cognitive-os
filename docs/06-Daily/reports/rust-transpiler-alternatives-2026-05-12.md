@@ -24,7 +24,7 @@ Sorted by relevance to the COS migration plan (deterministic diagnostic scanners
 |---|---|---|---|---|---|---|
 | # | Tool | Pair | Maturity | License | Verdict |
 |---|---|---|---|---|---|
-| 1 | [Depyler](https://github.com/paiml/depyler) | Py→Rust | Beta v4.1, MCP | MIT | **Top alt now wired into lane** — single-shot compile claim; gather COS-local evidence before promotion. |
+| 1 | [Depyler](https://github.com/paiml/depyler) | Py→Rust | Beta v4.1, MCP | MIT | **Evaluated in lane** — generated Rust but no selected fixture compiled; keep lab-only. |
 | 2 | [py2many](https://github.com/py2many/py2many) | Py→multi | Beta | MIT | Already evaluated; keep as draft. |
 | 3 | [Tsuchinoko/tnk](https://github.com/tanep3/Tsuchinoko) | Py→Rust | Beta 57% | MIT | Already evaluated; pure-ints only. |
 | 4 | [PyO3 + maturin](https://pyo3.rs/) | Py↔Rust FFI | Prod | Apache/MIT | **Best hot-path pattern**; ship as wheel ([guide](https://www.nandann.com/blog/rust-pyo3-python-extensions-guide)). |
@@ -71,7 +71,7 @@ Sorted by relevance to the COS migration plan (deterministic diagnostic scanners
 
 ## Three Recommendations
 
-1. **Evaluate Depyler as the third transpiler in the existing lane**. It matches the lane's contract (annotated Py → Rust), claims single-shot compile, and ships under MIT — minimal risk, maximum signal. Run capability-mode + script-mode in the same harness before any promotion.
+1. **Keep Depyler in the existing lab lane, not production**. It matches the lane's contract (annotated Py → Rust), claims single-shot compile, and ships under MIT, but the COS script-mode and capability-mode probes generated non-compiling Rust for selected fixtures. Treat it as a draft generator only until compile/parity evidence improves.
 2. **Adopt PyO3 + maturin as the canonical "selective migration" pattern** alongside the parity-crate pattern. The Wave-1 crate replaces a whole script; PyO3 enables surgical hot-path replacement when a full port is over-engineering. Cite as the second sanctioned route.
 3. **Stand up a Claude-Code-driven LLM migration loop** (translate → `cargo check` → `cargo test` → repair, capped at N iterations). Literature shows iterative repair lifts success 54%→80%; this is the most credible non-transpiler path and aligns with COS's existing parity-test gate. Keep transpilers as draft generators feeding into this loop.
 

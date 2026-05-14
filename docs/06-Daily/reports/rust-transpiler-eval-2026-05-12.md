@@ -5,14 +5,17 @@ Project: `<repo-root>`
 
 ## Summary
 
-| Tool | Candidate | Status | Exit | Compile | Manual fix cost | Generated files |
-|---|---|---:|---:|---:|---|---:|
-| py2many | `scripts/agentic_mastery_summary.py` | partial-output-with-tool-errors | 1 | 101 | high | 1 |
-| tnk | `scripts/agentic_mastery_summary.py` | partial-output-with-tool-errors | 1 | 101 | high | 13 |
-| py2many | `scripts/regen_catalog_bullets.py` | partial-output-with-tool-errors | 1 | n/a | high | 1 |
-| tnk | `scripts/regen_catalog_bullets.py` | no-usable-output | 1 | n/a | blocked | 0 |
-| py2many | `scripts/backfill_cost_events.py` | partial-output-with-tool-errors | 1 | n/a | high | 1 |
-| tnk | `scripts/backfill_cost_events.py` | no-usable-output | 1 | n/a | blocked | 0 |
+| Tool | Candidate | Status | Exit | Compile | Parity | Manual fix cost | Generated files |
+|---|---|---:|---:|---:|---|---|---:|
+| py2many | `scripts/agentic_mastery_summary.py` | partial-output-with-tool-errors | 1 | 101 | not-checkable | high | 1 |
+| tnk | `scripts/agentic_mastery_summary.py` | partial-output-with-tool-errors | 1 | 101 | not-checkable | high | 13 |
+| depyler | `scripts/agentic_mastery_summary.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
+| py2many | `scripts/regen_catalog_bullets.py` | partial-output-with-tool-errors | 1 | n/a | not-checkable | high | 1 |
+| tnk | `scripts/regen_catalog_bullets.py` | no-usable-output | 1 | n/a | not-checkable | blocked | 0 |
+| depyler | `scripts/regen_catalog_bullets.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
+| py2many | `scripts/backfill_cost_events.py` | partial-output-with-tool-errors | 1 | n/a | not-checkable | high | 1 |
+| tnk | `scripts/backfill_cost_events.py` | no-usable-output | 1 | n/a | not-checkable | blocked | 0 |
+| depyler | `scripts/backfill_cost_events.py` | generated-but-compile-fails | 0 | 101 | not-checkable | medium | 1 |
 
 ## Decision Rule
 

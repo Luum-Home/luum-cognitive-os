@@ -18,7 +18,13 @@ sys.path.insert(0, str(ROOT))
 
 from lib.manifest_loader import ManifestError, Tool, load_manifest  # noqa: E402
 
-PROFILE_ALIASES = {"core": "default", "standard": "default", "default": "default", "full": "full"}
+PROFILE_ALIASES = {
+    "core": "default",
+    "standard": "default",
+    "default": "default",
+    "full": "full",
+    "rust-transpiler-lab": "rust-transpiler-lab",
+}
 AUTH_BOUND_TOOLS = {"gh", "codex", "claude", "gemini", "opencode"}
 MANUAL_INSTALL_MARKERS = ("see ", "manual", "vendor", "app store")
 

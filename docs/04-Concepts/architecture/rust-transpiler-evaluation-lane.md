@@ -64,7 +64,8 @@ Outcome:
 
 - `py2many` generated partial Rust for all three candidates, but each run exited non-zero and required high manual-fix cost.
 - `tnk` generated a Cargo project for `scripts/agentic_mastery_summary.py` only after `--project` retry, but `cargo check` failed; the other two candidates were blocked by unsupported syntax or parse errors.
-- Neither tool qualifies as an official migration assistant yet.
+- `depyler` generated Rust for all three candidates and exited zero, but generated code did not compile under the lane probe.
+- No tool qualifies as an official migration assistant yet.
 
 
 ## Scope Correction
@@ -89,7 +90,7 @@ Capability report:
 - `docs/06-Daily/reports/rust-transpiler-capability-eval-2026-05-12.json`
 - `docs/06-Daily/reports/rust-transpiler-scope-correction-2026-05-12.md`
 
-Current capability finding: `tnk` passes a narrow pure int/list fixture with Rust compile and stdout parity; neither previously evaluated tool handles the broader parsing/dict fixtures well enough for official adoption yet. The committed 2026-05-12 reports predate Depyler wiring; rerun script-mode and capability-mode with `depyler` installed before making any Depyler adoption claim.
+Current capability finding: `tnk` passes a narrow pure int/list fixture with Rust compile and stdout parity. `py2many` and `depyler` generated Rust for all three capability fixtures, but none compiled without manual fixes. No tool handles the broader parsing/dict fixtures well enough for official adoption yet.
 
 ## Decision
 

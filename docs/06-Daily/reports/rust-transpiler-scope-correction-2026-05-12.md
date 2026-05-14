@@ -31,12 +31,14 @@ Report:
 |---|---|
 | `tnk` / Tsuchinoko | Passed the pure ints/lists fixture: generated Rust compiled and matched Python stdout. Failed compile on parsing and dict/string transformation fixtures. |
 | `py2many` | Generated Rust for all three capability fixtures, but none compiled without manual fixes. |
+| `depyler` | Generated Rust for all three capability fixtures after the 2026-05-14 lane update, but none compiled without manual fixes. |
 
 ## Updated Decision
 
 - `tnk` **does** have a useful narrow subset: pure, type-hinted integer/list algorithms.
 - `tnk` is not yet suitable for general COS scripts, string parsing, or dict-heavy transforms without manual repair.
 - `py2many` remains useful as a draft/learning generator only; this probe did not produce compiling Rust for the selected fixtures.
+- `depyler` is also lab-only after the 2026-05-14 rerun: it generated code, but the selected fixtures did not compile under the lane probe.
 - No tool becomes an official replacement path until golden Python↔Rust parity exists for the target behavior.
 
 ## Operational Rule

@@ -393,6 +393,79 @@ tools:
   syncable: 'no'
   auth_bound: false
   manual_url: https://goreleaser.com/getting-started/install/
+- name: py2many
+  criticality: optional
+  check: py2many --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many" ~/.cargo/bin/py2many
+    linux:
+      manager: pip
+      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many" ~/.cargo/bin/py2many
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user py2many && mkdir -p ~/.cargo/bin && ln -sf "$(python3 -m site --user-base)/bin/py2many" ~/.cargo/bin/py2many
+  consumed_by:
+  - scripts/cos-rust-transpiler-eval
+  - scripts/cos_rust_transpiler_eval.py
+  category: cli
+  profiles:
+  - rust-transpiler-lab
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/py2many/py2many
+  post_install: Installs with pip --user and symlinks py2many into ~/.cargo/bin, which is expected on the COS maintainer PATH.
+- name: tnk
+  criticality: optional
+  check: tnk --version
+  install:
+    macos:
+      manager: cargo
+      command: cargo install --git https://github.com/tanep3/Tsuchinoko.git --bin tnk
+    linux:
+      manager: cargo
+      command: cargo install --git https://github.com/tanep3/Tsuchinoko.git --bin tnk
+    windows_wsl:
+      manager: cargo
+      command: cargo install --git https://github.com/tanep3/Tsuchinoko.git --bin tnk
+  consumed_by:
+  - scripts/cos-rust-transpiler-eval
+  - scripts/cos_rust_transpiler_eval.py
+  category: cli
+  profiles:
+  - rust-transpiler-lab
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/tanep3/Tsuchinoko
+  post_install: Requires Rust/Cargo on PATH; installs the Tsuchinoko tnk binary.
+- name: depyler
+  criticality: optional
+  check: depyler --version
+  min_version: 4.1.1
+  install:
+    macos:
+      manager: cargo
+      command: cargo install depyler
+    linux:
+      manager: cargo
+      command: cargo install depyler
+    windows_wsl:
+      manager: cargo
+      command: cargo install depyler
+  consumed_by:
+  - scripts/cos-rust-transpiler-eval
+  - scripts/cos_rust_transpiler_eval.py
+  category: cli
+  profiles:
+  - rust-transpiler-lab
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://docs.rs/crate/depyler/latest
+  post_install: Requires Rust 1.83+ and Python 3.8+; used only by the Rust transpiler lab lane.
 mcp_servers:
 - name: engram
   criticality: recommended
@@ -459,3 +532,12 @@ profiles:
     mcp_servers_recommended:
     - engram
     - aguara
+  rust-transpiler-lab:
+    python_groups: []
+    tools_required:
+    - python3
+    tools_recommended:
+    - py2many
+    - tnk
+    - depyler
+    mcp_servers_recommended: []
