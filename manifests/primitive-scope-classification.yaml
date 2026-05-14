@@ -60,12 +60,15 @@ drift_reclassification_triggers:
   - scope marker changed
   - hardcoded source-repo dependency introduced or removed
 verification:
+  classifier:
+    - scripts/primitive_scope_classifier.py
   contract_tests:
     - tests/contracts/test_primitive_scope_classification.py
     - tests/contracts/test_primitive_scope_governance.py
     - tests/contracts/test_primitive_family_readiness_ledger_contract.py
     - tests/contracts/test_primitive_readiness_ledger_contract.py
   unit_tests:
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_primitive_scope_governance.py
     - tests/unit/test_primitive_family_readiness_ledger.py
     - tests/unit/test_primitive_readiness_ledger.py

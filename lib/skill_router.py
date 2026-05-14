@@ -125,6 +125,13 @@ def _is_router_negative_context(text: str, entry: "_RoutingEntry") -> bool:
     return bool(_ROUTER_NEGATIVE_CONTEXT_RE.search(text)) and _command_or_skill_mentioned(text, entry)
 
 
+def _is_router_negative_meta_prompt(text: str) -> bool:
+    """Return True when the whole prompt is about router behavior, not user intent."""
+    if not _ROUTER_NEGATIVE_CONTEXT_RE.search(text):
+        return False
+    return bool(re.search(r"router|skill\s*router|suggest|sugiri[oó]|sugerencia|hint|ignoro|ignored?|rechaz\w*|reject\w*", text, re.IGNORECASE))
+
+
 # ---------------------------------------------------------------------------
 # URL detectors (special-cased, not pure regex on the whole message)
 # ---------------------------------------------------------------------------
@@ -1619,6 +1626,9 @@ class SkillRouter:
             return []
 
         text = user_message.strip()
+        if _is_router_negative_meta_prompt(text):
+            return []
+
         matches: List[SkillMatch] = []
 
         for entry in self._routing_table:
@@ -1666,7 +1676,7 @@ class SkillRouter:
         # candidates for skills the regex layer missed entirely.
         top_regex_conf = max((m.confidence for m in best_per_skill.values()), default=0.0)
         semantic_matches: List[Any] = []
-        if top_regex_conf < 0.75:
+        if top_regex_conf < 0.75 and os.environ.get("COS_SKILL_ROUTER_DISABLE_SEMANTIC") != "1":
             semantic_matches = self._semantic_match(text)
             for sm in semantic_matches:
                 if sm.skill_name in best_per_skill:

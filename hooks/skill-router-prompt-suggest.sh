@@ -56,7 +56,7 @@ _SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
 # Pass prompt via env to avoid shell injection risks.
 # Note: PROJECT_DIR is used for metrics output path only.
 # SkillRouter auto-detects its project root from __file__, so no path arg needed.
-_ROUTER_RESULT=$(PROJECT_DIR="$_PROJECT_DIR" _SRPS_PROMPT="$prompt_text" _SRPS_SESSION="$_SESSION_ID" python3 - <<'PYEOF' 2>/dev/null || true
+_ROUTER_RESULT=$(COS_SKILL_ROUTER_DISABLE_SEMANTIC=1 PROJECT_DIR="$_PROJECT_DIR" _SRPS_PROMPT="$prompt_text" _SRPS_SESSION="$_SESSION_ID" python3 - <<'PYEOF' 2>/dev/null || true
 import os
 import sys
 import json

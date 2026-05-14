@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """cos_init.py — Python bootstrap for Cognitive OS project initialization.
 
 Phase 2.final: full Python main(). scripts/cos-init.sh is now a 1-line shim.
