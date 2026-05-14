@@ -1110,6 +1110,12 @@ harness:
 
     # ── PreToolUse — Bash only ────────────────────────────────────────────────
     # Codex: limited (Bash matcher only — these project to Codex PreToolUse)
+    bash-hot-path-dispatcher:
+      script: hooks/bash-hot-path-dispatcher.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     network-egress-guard:
       script: hooks/network-egress-guard.sh
       event: PreToolUse

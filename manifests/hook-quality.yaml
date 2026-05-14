@@ -468,6 +468,23 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: both
     script: hooks/auto-verify.sh
+  bash-hot-path-dispatcher:
+    behavior_tests:
+    - tests/unit/test_bash_hot_path_dispatcher_projection.py
+    - tests/red_team/portability/test_bash-hot-path-dispatcher.py
+    bypass_policy: not_required_warning_only
+    criticality: coordination
+    event: PreToolUse
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    maturity: warn
+    max_runtime_ms: 1000
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/bash-hot-path-dispatcher.sh
   blast-radius:
     behavior_tests:
     - tests/behavior/test_cos_init_parity_2_3.py

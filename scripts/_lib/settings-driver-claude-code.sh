@@ -234,11 +234,7 @@ cc_driver_emit() {
     )
   else
     pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
-      "hooks/network-egress-guard.sh"        "false" \
-      "hooks/destructive-rm-blocker.sh"      "false" \
-      "hooks/destructive-git-blocker.sh"     "false" \
-      "hooks/untracked-work-preservation-guard.sh" "false" \
-      "hooks/direct-main-guard.sh"           "false" \
+      "hooks/bash-hot-path-dispatcher.sh"    "false" \
     )
   fi
 
