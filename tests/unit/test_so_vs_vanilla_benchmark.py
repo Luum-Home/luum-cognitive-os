@@ -24,7 +24,7 @@ import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_PATH = PROJECT_ROOT / "scripts" / "so_vs_vanilla_benchmark.py"
-TASKS_YAML = PROJECT_ROOT / "docs" / "benchmarks" / "so-vs-vanilla-tasks.yaml"
+TASKS_YAML = PROJECT_ROOT / "docs" / "08-References" / "benchmarks" / "so-vs-vanilla-tasks.yaml"
 KILLSWITCH = PROJECT_ROOT / "hooks" / "_lib" / "killswitch_check.sh"
 
 

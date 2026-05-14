@@ -86,3 +86,8 @@ If the orchestrator finds itself drafting a ranking with fewer than 3 cited sign
 ## 8. Origin
 
 Derived from the 2026-05-11 self-critique cluster C (methodology), Finding 6. Co-introduced with the canonical `/deep-tool-research` skill (Finding 5 remediation) — together they convert deep evaluations from per-tool opinion into slot-comparable, signal-grounded artifacts.
+
+## Contextual Trigger
+
+Keywords: priority table, P0, P1, P2, recommendation grounding,
+operational signals, ranked next steps, deep evaluation priorities.

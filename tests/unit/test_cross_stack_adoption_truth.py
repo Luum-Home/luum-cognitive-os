@@ -9,12 +9,13 @@ from lib.cross_stack_adoption_truth import build_report, normalize_name
 
 def _write_fixture(project: Path) -> None:
     (project / "manifests").mkdir()
-    (project / "docs" / "business").mkdir(parents=True)
+    (project / "docs" / "04-Concepts" / "root").mkdir(parents=True)
+    (project / "docs" / "08-References" / "business").mkdir(parents=True)
     (project / "pyproject.toml").write_text('[project]\ndependencies = ["requests>=2", "untracked-lib==1"]\n', encoding="utf-8")
     (project / "package.json").write_text('{"dependencies":{"left-pad":"1.3.0"}}', encoding="utf-8")
     (project / "go.mod").write_text('module example.com/app\n\nrequire github.com/acme/go-lib v1.0.0\n', encoding="utf-8")
     (project / "NOTICE").write_text('requests\nLicensed under Apache-2.0\n\nGhostLib\nLicensed under MIT\n', encoding="utf-8")
-    (project / "docs" / "component-sources.md").write_text(
+    (project / "docs" / "04-Concepts" / "root" / "component-sources.md").write_text(
         '| Source | URL | License | Components | Status |\n'
         '|---|---|---|---|---|\n'
         '| requests | https://example.com/requests | Apache-2.0 | HTTP | ACTIVE -- used |\n'
@@ -22,7 +23,7 @@ def _write_fixture(project: Path) -> None:
         '| WatchTool | https://example.com/watch | MIT | Watch feature | WATCH -- not integrated |\n',
         encoding="utf-8",
     )
-    (project / "docs" / "business" / "pitch.md").write_text('We use watchtool for routing. PlannedTool dashboard is included.\n', encoding="utf-8")
+    (project / "docs" / "08-References" / "business" / "pitch.md").write_text('We use watchtool for routing. PlannedTool dashboard is included.\n', encoding="utf-8")
     (project / "manifests" / "cross-stack-adoption-truth.yaml").write_text(
         yaml.safe_dump(
             {

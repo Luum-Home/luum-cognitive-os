@@ -128,6 +128,18 @@ _ENTRIES: Tuple[ModelEntry, ...] = (
         capabilities={"reasoning": 5, "speed": 8, "code": 8},
         aliases=("codex",),
     ),
+    ModelEntry(
+        id="claude-shell-snapshot-repo-scan",
+        family="shell-snapshot",
+        provider="internal",
+        short_name="shell-snapshot-scan",
+        input_price_per_m=0.0,
+        output_price_per_m=0.0,
+        context_window=0,
+        capabilities={"reasoning": 1, "speed": 10, "code": 1},
+        local=True,
+        aliases=(),
+    ),
     # --- Google ---
     ModelEntry(
         id="gemini-2.5-pro",

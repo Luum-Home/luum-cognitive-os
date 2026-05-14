@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_provider_benchmark_fixture_scores_without_external_calls() -> None:
-    task_set = REPO_ROOT / "docs" / "benchmarks" / "provider-quality-smoke.yaml"
+    task_set = REPO_ROOT / "docs" / "08-References" / "benchmarks" / "provider-quality-smoke.yaml"
 
     results = run_benchmark(task_set, ["fixture-strong", "fixture-weak"], benchmark_id="test")
     summary = summarize(results)
@@ -28,7 +28,7 @@ def test_benchmark_cli_writes_jsonl(tmp_path: Path) -> None:
             "python3",
             str(REPO_ROOT / "scripts" / "benchmark_providers.py"),
             "--task-set",
-            str(REPO_ROOT / "docs" / "benchmarks" / "provider-quality-smoke.yaml"),
+            str(REPO_ROOT / "docs" / "08-References" / "benchmarks" / "provider-quality-smoke.yaml"),
             "--providers",
             "fixture-strong,fixture-weak",
             "--output-jsonl",

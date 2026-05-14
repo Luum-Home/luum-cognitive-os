@@ -18,6 +18,7 @@ platforms:
 - codex
 - claude-code
 - generic-cli
+# Portable target set: platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: []
 routing_patterns:
 - pattern: \bsession[- ]?backlog\b

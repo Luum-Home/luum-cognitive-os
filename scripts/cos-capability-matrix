@@ -69,7 +69,7 @@ def _rel_exists(repo: Path, rel: str) -> bool:
 
 def accepted_adr_numbers(repo: Path, low: int, high: int) -> dict[str, str]:
     result: dict[str, str] = {}
-    for path in sorted((repo / "docs" / "adrs").glob("ADR-*.md")):
+    for path in sorted((repo / "docs" / "02-Decisions" / "adrs").glob("ADR-*.md")):
         match = re.match(r"ADR-(\d+)", path.name)
         if not match:
             continue

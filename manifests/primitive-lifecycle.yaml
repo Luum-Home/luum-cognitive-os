@@ -9178,3 +9178,111 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
+- id: hooks/bash-hot-path-dispatcher.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses: [claude, codex]
+  projection_targets: [.claude/settings.json, .codex/hooks.json, hooks/bash-hot-path-dispatcher.sh]
+  runtime_projection: true
+  behavior_evidence: Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.
+  evidence_commands: [bash -n hooks/bash-hot-path-dispatcher.sh, python3 -m pytest tests/unit/test_runtime_hook_reality.py -q]
+  rollback_or_repair_command: Remove projection from harness settings and rerun runtime hook reality audit.
+  sunset_criteria: Archive only after an equivalent primitive replaces dispatcher runtime behavior with tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/hook-timing.jsonl
+- id: hooks/subagent-budget-enforcer.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses: [claude, codex]
+  projection_targets: [.claude/settings.json, .codex/hooks.json, hooks/subagent-budget-enforcer.sh]
+  runtime_projection: true
+  behavior_evidence: PostToolUse Agent budget enforcer blocks or escalates subagents beyond the tool-call budget.
+  evidence_commands: [bash -n hooks/subagent-budget-enforcer.sh, python3 -m pytest tests/unit/test_runtime_hook_reality.py -q]
+  rollback_or_repair_command: Remove projection from harness settings and rerun runtime hook reality audit.
+  sunset_criteria: Archive only after an equivalent primitive replaces budget enforcement with tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/subagent-budget.jsonl
+- id: hooks/decision-depth-gate.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: [claude]
+  projection_targets: [.claude/settings.json, hooks/decision-depth-gate.sh]
+  runtime_projection: true
+  behavior_evidence: PostToolUse Agent advisory gate checks decision-depth evidence in delegated reviews.
+  evidence_commands: [bash -n hooks/decision-depth-gate.sh, python3 -m pytest tests/unit/test_runtime_hook_reality.py -q]
+  rollback_or_repair_command: Remove projection from harness settings and rerun runtime hook reality audit.
+  sunset_criteria: Archive after delegated review contracts provide equivalent structured evidence checks.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/hook-timing.jsonl
+- id: hooks/session-start-stack-recommend.sh
+  kind: hook
+  owner_adr: ADR-310
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: [claude, codex]
+  projection_targets: [.claude/settings.json, .codex/hooks.json, hooks/session-start-stack-recommend.sh]
+  runtime_projection: true
+  behavior_evidence: SessionStart advisory recommends stack bootstrap checks for portable sessions.
+  evidence_commands: [bash -n hooks/session-start-stack-recommend.sh, python3 -m pytest tests/unit/test_runtime_hook_reality.py -q]
+  rollback_or_repair_command: Remove projection from harness settings and rerun runtime hook reality audit.
+  sunset_criteria: Archive when stack bootstrap recommendations move into a typed startup planner.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/hook-timing.jsonl
+- id: hooks/skill-drift-detector.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: [claude, codex]
+  projection_targets: [.claude/settings.json, .codex/hooks.json, hooks/skill-drift-detector.sh]
+  runtime_projection: true
+  behavior_evidence: SessionStart advisory detects skill registry/runtime drift.
+  evidence_commands: [bash -n hooks/skill-drift-detector.sh, python3 -m pytest tests/unit/test_runtime_hook_reality.py -q]
+  rollback_or_repair_command: Remove projection from harness settings and rerun runtime hook reality audit.
+  sunset_criteria: Archive after skill registry drift is enforced by the projection compiler.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/hook-timing.jsonl
+- id: hooks/adversarial-review-gate.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: [claude]
+  projection_targets: [.claude/settings.json, hooks/adversarial-review-gate.sh]
+  runtime_projection: true
+  behavior_evidence: PostToolUse Agent advisory gate warns when reviews contain no findings or prohibited LGTM phrasing.
+  evidence_commands: [bash -n hooks/adversarial-review-gate.sh, python3 -m pytest tests/unit/test_runtime_hook_reality.py -q]
+  rollback_or_repair_command: Remove projection from harness settings and rerun runtime hook reality audit.
+  sunset_criteria: Archive after delegated review contracts require machine-readable findings.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/adversarial-review-gate.jsonl

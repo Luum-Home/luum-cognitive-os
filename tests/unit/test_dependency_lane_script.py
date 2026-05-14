@@ -58,4 +58,4 @@ def test_audit_reports_lane_coverage_gap() -> None:
 
     assert result.returncode == 0, result.stderr
     assert "dependency lane audit: semantic" in result.stdout
-    assert "numpy" in result.stdout or "sentence-transformers" in result.stdout
+    assert "optional_missing=" in result.stdout

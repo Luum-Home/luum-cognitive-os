@@ -14,7 +14,7 @@ pytestmark = [pytest.mark.unit, pytest.mark.behavior]
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = PROJECT_ROOT / "scripts" / "check_absolute_paths.py"
-DOC = PROJECT_ROOT / "docs" / "architecture" / "path-portability-and-privacy.md"
+DOC = PROJECT_ROOT / "docs" / "04-Concepts" / "architecture" / "path-portability-and-privacy.md"
 
 
 def mac_home_path(user: str, *parts: str) -> str:
@@ -381,6 +381,6 @@ def test_path_portability_policy_is_documented_and_linked() -> None:
     ]:
         assert phrase in content
 
-    assert "architecture/path-portability-and-privacy.md" in (
-        PROJECT_ROOT / "docs" / "README.md"
+    assert "path-portability-and-privacy.md" in (
+        PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md"
     ).read_text()

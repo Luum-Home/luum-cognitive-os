@@ -426,6 +426,14 @@ entries:
   status: active
   rationale: Bash PreToolUse working-directory guard projected by the Claude settings driver in the full profile and by security profiles; classified so registration audits do not treat profile-scoped enforcement as unowned drift.
   next_action: Keep active; dispatcher adoption may later route this guard on the default hot path if command-context evidence shows enough value.
+- path: hooks/rate-limit-precheck.sh
+  status: profile_scoped
+  rationale: Advisory rate-limit precheck is retained for full/security profiles but is intentionally absent from the default maintainer hot path.
+  next_action: Keep classified as profile-scoped unless quota-pressure evidence justifies default projection.
+- path: hooks/rate-limiter.sh
+  status: profile_scoped
+  rationale: Blocking rate limiter is available in security profiles; the default profile relies on lighter budget and quota primitives to avoid hot-path false positives.
+  next_action: Keep out of default projection unless runtime quota evidence requires blocking enforcement.
 - path: hooks/bash-hot-path-dispatcher.sh
   status: active
   rationale: Default/maintainer Bash PreToolUse dispatcher for Claude and Codex. It is the effective projection root for command-scoped gates that should not all run on every Bash command.
@@ -474,3 +482,11 @@ entries:
   status: active
   rationale: Git-boundary work-preservation guard routed by hooks/bash-hot-path-dispatcher.sh on the default path and directly projected by security profiles and the Claude full profile.
   next_action: Keep active; preserve dispatcher coverage for destructive git boundary commands.
+- path: hooks/adversarial-review-gate.sh
+  status: active
+  rationale: "PostToolUse Agent hook enforcing adversarial-review rule deterministically. Warns when agent review output contains no findings or prohibited phrases like 'looks good' / 'no issues found'. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only."
+  next_action: Keep active; promote to blocking (exit 1) after signal collection from metrics/adversarial-review-gate.jsonl confirms false-positive rate is acceptable.
+- path: hooks/decision-depth-gate.sh
+  status: active
+  rationale: "PostToolUse Agent hook enforcing decision-depth-gate rule deterministically. Warns when agent closes a finding via documentation alone without investigating the underlying invariant. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only."
+  next_action: Keep active; promote to blocking after signal collection from metrics/decision-depth-gate.jsonl confirms false-positive rate is acceptable.

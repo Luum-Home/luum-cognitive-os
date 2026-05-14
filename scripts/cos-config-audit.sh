@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # SCOPE: both
+from __future__ import annotations
+
 """
 cos-config-audit.sh — Aspirational-vs-Real Config Validator for Cognitive OS
 

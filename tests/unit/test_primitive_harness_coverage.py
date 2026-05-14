@@ -32,8 +32,8 @@ def make_repo(tmp_path: Path) -> Path:
     (root / "docs" / "acc").mkdir(parents=True)
     (root / "docs" / "06-Daily" / "reports").mkdir(parents=True)
 
-    (root / "hooks" / "session-init.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho init\n")
-    (root / "hooks" / "pre-compaction-flush.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho flush\n")
+    (root / "hooks" / "session-init.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho init\n")
+    (root / "hooks" / "pre-compaction-flush.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho flush\n")
     (root / "hooks" / "concurrent-write-guard-codex-proxy.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho codex\n")
     (root / "rules" / "RULES-COMPACT.md").write_text("<!-- SCOPE: both -->\n# Rules\n")
     (root / "scripts" / "cos").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho cos\n")
@@ -95,9 +95,10 @@ def make_repo(tmp_path: Path) -> Path:
                 {"policy": "acceptable-claude-only", "family": "hooks", "primitives": ["hooks/pre-compaction-flush.sh"]},
                 {"policy": "codex-adapter-needed", "family": "hooks", "primitives": ["hooks/concurrent-write-guard-codex-proxy.sh"]},
                 {"policy": "structural-only-ok", "families": ["rules", "skills", "templates"], "scopes": ["both", "project"]},
-                {"policy": "shell-command-only", "family": "scripts", "harness": "shell-ci", "scopes": ["both", "project"]},
+                {"policy": "shell-command-only", "family": "scripts", "harness": "shell-ci", "scopes": ["os-only", "both", "project"]},
                 {"policy": "on-demand-command-only", "family": "scripts", "harness": "cos-cli", "scopes": ["both", "project"]},
                 {"policy": "structural-only-ok", "family": "scripts", "harness": "acc-report", "scopes": ["both", "project"]},
+                {"policy": "on-demand-command-only", "family": "scripts", "gap_contains": "behavior proof", "scopes": ["os-only", "both"]},
                 {"policy": "codex-adapter-needed", "family": "hooks", "missing_harness": "codex", "scopes": ["both", "project"]},
             ],
         })
@@ -108,7 +109,6 @@ def make_repo(tmp_path: Path) -> Path:
             {"primitive": "hooks/pre-compaction-flush.sh", "tests": ["tests/test_session_init.py"]},
             {"primitive": "hooks/concurrent-write-guard-codex-proxy.sh", "tests": ["tests/test_session_init.py"]},
             {"primitive": "rules/RULES-COMPACT.md", "tests": ["tests/test_session_init.py"]},
-            {"primitive": "scripts/cos-status.sh", "tests": ["tests/test_session_init.py"]},
         ]})
     )
     return root

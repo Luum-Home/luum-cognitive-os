@@ -149,3 +149,8 @@ After computing `decay_class`, `get_policy(type)` is called:
 - ADR-078 -- Mid-Task Memory Tool (governs write-time decisions, orthogonal
   to this recall-time governance layer).
 - `rules/RULES-COMPACT.md` §11 -- type string conventions (extended by this file).
+
+## Contextual Trigger
+
+Keywords: memory governance, typed memory policy, stale Engram observation,
+recall boost, verification tier, retention policy.

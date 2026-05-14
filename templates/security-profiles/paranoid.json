@@ -666,6 +666,14 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-post-execution-analysis.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adversarial-review-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/decision-depth-gate.sh\""
           }
         ]
       },

@@ -173,7 +173,7 @@ def test_product_claims_fail_missing_readme_hook_claim(tmp_path: Path) -> None:
 
 
 def test_product_claims_fail_stale_model_readiness_naming(tmp_path: Path) -> None:
-    docs = tmp_path / "docs" / "business"
+    docs = tmp_path / "docs" / "08-References" / "business"
     docs.mkdir(parents=True)
     docs.joinpath("x.md").write_text("Run cos-opus-readiness for the Opus critique.\n", encoding="utf-8")
 

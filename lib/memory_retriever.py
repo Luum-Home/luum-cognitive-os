@@ -250,6 +250,8 @@ class MemoryRetriever:
 
         conn = sqlite3.connect(self.db_path)
         try:
+            columns = {row[1] for row in conn.execute("PRAGMA table_info(observations)").fetchall()}
+            obs_type_expr = "COALESCE(o.type, '')" if "type" in columns else "''"
             sql = """
                 SELECT o.id,
                        o.title,
@@ -257,12 +259,12 @@ class MemoryRetriever:
                        COALESCE(o.topic_key, '') AS topic_key,
                        COALESCE(o.project,   '') AS project,
                        fts.rank                  AS fts_rank_raw,
-                       COALESCE(o.type,       '') AS obs_type
+                       {obs_type_expr} AS obs_type
                 FROM observations_fts fts
                 JOIN observations o ON o.id = fts.rowid
                 WHERE observations_fts MATCH ?
                   AND o.deleted_at IS NULL
-            """
+            """.format(obs_type_expr=obs_type_expr)
             params: list = [safe_query]
 
             if project:

@@ -185,7 +185,7 @@ PYASYNC
     agent-control-inbound-guard.sh cosd-auth-guard.sh lethal-trifecta-gate.sh dispatch-gate.sh subagent-capability-preflight.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh control-plane-audit.sh \
     pre-agent-snapshot.sh agent-launch-confirmed.sh post-agent-snapshot-restore.sh completeness-check.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
     control-plane-audit.sh content-policy.sh ai-provider-identity-guard.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh cross-session-coordination-guard.sh agent-message-inbox-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
-    aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
+    aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh adversarial-review-gate.sh decision-depth-gate.sh \
     skill-usage-tracker.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
     error-learning.sh document-ingest-guard.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \

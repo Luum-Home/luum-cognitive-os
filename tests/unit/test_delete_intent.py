@@ -46,7 +46,7 @@ def test_extracts_recursive_rm_git_clean_and_find_delete() -> None:
 
 def test_blocks_untracked_research_delete_without_intent(tmp_path: Path) -> None:
     root = _git_repo(tmp_path)
-    target = root / "docs" / "research" / "repo-scout" / "report.md"
+    target = root / "docs" / "03-PoCs" / "research" / "repo-scout" / "report.md"
     target.parent.mkdir(parents=True)
     target.write_text("active agent work\n")
 
@@ -110,7 +110,7 @@ def test_hook_allows_when_explicit_delete_intent_is_present(tmp_path: Path) -> N
 
 def test_safe_clean_dry_run_reports_without_deleting(tmp_path: Path) -> None:
     root = _git_repo(tmp_path)
-    target = root / "docs" / "research" / "repo-scout" / "report.md"
+    target = root / "docs" / "03-PoCs" / "research" / "repo-scout" / "report.md"
     target.parent.mkdir(parents=True)
     target.write_text("preserve\n")
 

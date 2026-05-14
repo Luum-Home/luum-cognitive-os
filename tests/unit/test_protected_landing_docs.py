@@ -6,8 +6,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DOCS = [
     PROJECT_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-116-multi-session-coordination-primitives.md",
-    PROJECT_ROOT / "docs" / "architecture" / "direct-main-policy.md",
-    PROJECT_ROOT / "docs" / "architecture" / "protected-landing-contract.md",
+    PROJECT_ROOT / "docs" / "04-Concepts" / "architecture" / "direct-main-policy.md",
+    PROJECT_ROOT / "docs" / "04-Concepts" / "architecture" / "protected-landing-contract.md",
     PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "multi-session-coordination-primitives-plan.md",
 ]
 
@@ -45,7 +45,7 @@ def test_docs_do_not_require_gh_or_github_as_core_dependency() -> None:
 
 
 def test_protected_landing_contract_lists_required_guarantees() -> None:
-    text = (PROJECT_ROOT / "docs" / "architecture" / "protected-landing-contract.md").read_text().lower()
+    text = (PROJECT_ROOT / "docs" / "04-Concepts" / "architecture" / "protected-landing-contract.md").read_text().lower()
     for guarantee in [
         "serialized writes",
         "fresh-base validation",

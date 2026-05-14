@@ -61,7 +61,7 @@ def title_matches(title: str, expected: str) -> bool:
 
 
 def collect_adrs(project: Path) -> list[dict[str, Any]]:
-    adrs_dir = project / "docs" / "adrs"
+    adrs_dir = project / "docs" / "02-Decisions" / "adrs"
     rows: list[dict[str, Any]] = []
     for path in sorted(adrs_dir.glob("ADR-*.md")):
         match = re.match(r"ADR-0*([0-9]+)", path.name)

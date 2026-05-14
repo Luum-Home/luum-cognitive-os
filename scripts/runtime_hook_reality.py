@@ -16,8 +16,9 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SETTINGS = REPO_ROOT / ".claude" / "settings.json"
 DEFAULT_MANIFEST = REPO_ROOT / "manifests" / "primitive-lifecycle.yaml"
+DEFAULT_REGISTRATION_CLASSIFICATION = REPO_ROOT / "manifests" / "hook-registration-classification.yaml"
 HOOK_PATH_RE = re.compile(r"hooks/[A-Za-z0-9_.-]+\.sh")
-EXIT_2_RE = re.compile(r"(?:^|[;&|({\s])(?:exit|return)\s+2(?:\s|[;&|)}]|$)")
+EXIT_2_RE = re.compile(r"(?:^|[;&|({\s])(?:exit|return)\s+(?:2|\$\?)(?:\s|[;&|)}]|$)")
 METRICS_RE = re.compile(
     r"(safe-jsonl|\.jsonl\b|/metrics/|\.cognitive-os/metrics|record[_-]?metric|emit[_-]?metric|metrics)",
     re.IGNORECASE,
@@ -108,6 +109,24 @@ def _load_yaml(path: Path) -> dict[str, Any]:
     return loaded
 
 
+def _load_registration_classification(root: Path) -> dict[str, str]:
+    path = root / "manifests" / "hook-registration-classification.yaml"
+    if not path.exists():
+        return {}
+    try:
+        loaded = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except (OSError, yaml.YAMLError):
+        return {}
+    entries = loaded.get("entries")
+    if not isinstance(entries, list):
+        return {}
+    out: dict[str, str] = {}
+    for entry in entries:
+        if isinstance(entry, dict) and entry.get("path"):
+            out[str(entry["path"])] = str(entry.get("status") or "classified")
+    return out
+
+
 def _string_tuple(value: Any) -> tuple[str, ...]:
     if not isinstance(value, list):
         return ()
@@ -144,7 +163,7 @@ def load_projected_hooks(settings_path: Path) -> dict[str, ProjectedHook]:
                     commands_by_path.setdefault(hook_path, set()).add(command)
                     async_by_path[hook_path] = bool(async_by_path.get(hook_path) or hook_def.get("async"))
 
-    return {
+    projected = {
         path: ProjectedHook(
             path=path,
             events=tuple(sorted(events_by_path[path])),
@@ -153,6 +172,24 @@ def load_projected_hooks(settings_path: Path) -> dict[str, ProjectedHook]:
         )
         for path in sorted(events_by_path)
     }
+    root = settings_path.resolve().parents[1]
+    dispatcher = projected.get("hooks/bash-hot-path-dispatcher.sh")
+    dispatcher_path = root / "hooks" / "bash-hot-path-dispatcher.sh"
+    if dispatcher and dispatcher_path.exists():
+        text = dispatcher_path.read_text(encoding="utf-8", errors="ignore")
+        for child in sorted(set(HOOK_PATH_RE.findall(text))):
+            if child == dispatcher.path:
+                continue
+            projected.setdefault(
+                child,
+                ProjectedHook(
+                    path=child,
+                    events=dispatcher.events,
+                    async_projected=dispatcher.async_projected,
+                    commands=tuple(f"{command} -> {child}" for command in dispatcher.commands),
+                ),
+            )
+    return projected
 
 
 def load_documented_hooks(manifest_path: Path) -> dict[str, DocumentedHook]:
@@ -298,6 +335,7 @@ def build_report(
     root = project_root.resolve()
     projected = load_projected_hooks(settings_path)
     documented = load_documented_hooks(manifest_path)
+    classified_absence = _load_registration_classification(root)
     all_paths = sorted(set(projected) | set(documented))
     classified = [classify_hook(root, path, projected.get(path), documented.get(path)) for path in all_paths]
 
@@ -311,7 +349,13 @@ def build_report(
         if hook.category == "projected_but_undocumented":
             findings.append({"id": "projected-hook-undocumented", "severity": "fail", "hook": hook.path})
         elif hook.category == "documented_but_not_projected":
-            findings.append({"id": "documented-hook-not-projected", "severity": "fail", "hook": hook.path})
+            severity = "warn" if hook.path in classified_absence else "fail"
+            findings.append({
+                "id": "documented-hook-not-projected",
+                "severity": severity,
+                "hook": hook.path,
+                "classification": classified_absence.get(hook.path),
+            })
         elif hook.lifecycle_state not in INACTIVE_STATES and hook.maturity in BLOCKING_LABELS and not hook.exit2_observable:
             findings.append({"id": "blocking-hook-without-exit2", "severity": "fail", "hook": hook.path})
         elif hook.hook_exists is False:

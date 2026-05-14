@@ -50,7 +50,19 @@ mkdir -p "$METRICS_DIR" 2>/dev/null || true
 LOG_FILE="$METRICS_DIR/research-quality.jsonl"
 
 # Score via Python (stdlib only).  Hard-cap latency.
-SCORE_JSON="$(timeout 1 python3 - <<PYEOF 2>/dev/null
+PYTHON_BIN="${COS_PYTHON_BIN:-}"
+if [ -z "$PYTHON_BIN" ]; then
+  if [ -x "$COS_ROOT/.venv/bin/python" ]; then
+    PYTHON_BIN="$COS_ROOT/.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
+PY_CMD=("$PYTHON_BIN")
+if command -v timeout >/dev/null 2>&1; then
+  PY_CMD=(timeout 1 "$PYTHON_BIN")
+fi
+SCORE_JSON="$("${PY_CMD[@]}" - <<PYEOF 2>/dev/null
 import json, sys, pathlib
 sys.path.insert(0, "${COS_ROOT}")
 sys.path.insert(0, "${PROJECT_DIR}")

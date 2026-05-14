@@ -35,10 +35,9 @@ import argparse
 import json
 import os
 import re
-import subprocess
 import sys
 import time
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -51,8 +50,8 @@ except ImportError:
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-TASKS_YAML = PROJECT_ROOT / "docs" / "benchmarks" / "so-vs-vanilla-tasks.yaml"
-RESULTS_DIR = PROJECT_ROOT / "docs" / "benchmarks"
+TASKS_YAML = PROJECT_ROOT / "docs" / "08-References" / "benchmarks" / "so-vs-vanilla-tasks.yaml"
+RESULTS_DIR = PROJECT_ROOT / "docs" / "08-References" / "benchmarks"
 
 
 TRUST_HEADER_RE = re.compile(

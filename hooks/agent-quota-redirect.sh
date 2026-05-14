@@ -34,6 +34,14 @@ METRICS_FILE="$METRICS_DIR/agent-redirect.jsonl"
 RATE_LIMIT_FILE="$METRICS_DIR/rate-limit-events.jsonl"
 PRESSURE_THRESHOLD="${COS_QUOTA_PRESSURE_THRESHOLD:-0.7}"
 RATE_LIMIT_WINDOW_SEC="${COS_RATE_LIMIT_WINDOW_SEC:-300}"
+PYTHON_BIN="${COS_PYTHON_BIN:-}"
+if [ -z "$PYTHON_BIN" ]; then
+  if [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
+    PYTHON_BIN="$PROJECT_DIR/.venv/bin/python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
 
 mkdir -p "$METRICS_DIR" 2>/dev/null || true
 
@@ -78,7 +86,7 @@ fi
 # dependency and to handle multi-line prompts safely.
 PROMPT=""
 if [ -n "$INPUT" ]; then
-  PROMPT=$(printf '%s' "$INPUT" | uv run python3 -c '
+  PROMPT=$(printf '%s' "$INPUT" | "$PYTHON_BIN" -c '
 import json, sys
 try:
     data = json.loads(sys.stdin.read())
@@ -94,7 +102,7 @@ fi
 # Uses lib/quota_pressure.py when available (Agent A's artifact). Falls
 # back to a local stub that reads rate-limit-events.jsonl directly so
 # this hook ships independently.
-PRESSURE_AND_RL=$(uv run python3 -c "
+PRESSURE_AND_RL=$("$PYTHON_BIN" -c "
 import json, os, sys, time
 from pathlib import Path
 
@@ -170,7 +178,7 @@ fi
 # Use the Python helper for stable formatting + safe shlex quoting. If
 # the import fails for any reason, fall back to a hand-built block.
 BLOCK_MSG=$(PROMPT_ENV="$PROMPT" REASON_ENV="$REASON" PRESSURE_ENV="$CURRENT_PRESSURE" \
-  uv run python3 -c "
+  "$PYTHON_BIN" -c "
 import os, sys
 sys.path.insert(0, os.environ['CLAUDE_PROJECT_DIR'] if os.environ.get('CLAUDE_PROJECT_DIR') else os.getcwd())
 try:

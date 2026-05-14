@@ -32,7 +32,7 @@ def catalog_text(project_root) -> str:
 @pytest.fixture
 def adoption_registry(project_root) -> dict:
     """Return the parsed adoption registry."""
-    path = project_root / "adoption-registry.yaml"
+    path = project_root / ".cognitive-os" / "adoption-registry.yaml"
     return yaml.safe_load(path.read_text())
 
 
