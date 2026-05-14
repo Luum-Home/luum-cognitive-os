@@ -114,12 +114,6 @@ for arg in "$@"; do
   esac
 done
 
-# ── Verify we're in a git repo ─────────────────────────────────────
-if [ ! -d "$COS_SOURCE_DIR/.git" ]; then
-  echo "Error: Not a git repository: $COS_SOURCE_DIR" >&2
-  exit 1
-fi
-
 # ── Status check ───────────────────────────────────────────────────
 if [ "$ACTION" = "status" ]; then
   for hook_file in "$POST_MERGE_HOOK" "$PRE_PUSH_HOOK" "$POST_REWRITE_HOOK"; do
@@ -131,6 +125,12 @@ if [ "$ACTION" = "status" ]; then
     fi
   done
   exit 0
+fi
+
+# ── Verify we're in a git repo ─────────────────────────────────────
+if [ ! -d "$COS_SOURCE_DIR/.git" ]; then
+  echo "Error: Not a git repository: $COS_SOURCE_DIR" >&2
+  exit 1
 fi
 
 # ── Helper: remove COS block from a hook file ────────────────────
