@@ -545,6 +545,33 @@ pull_images_if_requested() {
 }
 
 
+
+# ---------------------------------------------------------------------------
+# Portable dependency installer — explicit update path may install portable,
+# non-auth-bound tools for the selected profile. Git hooks remain advisory-only.
+# ---------------------------------------------------------------------------
+run_portable_dependency_install() {
+  if [[ "${COS_DEPS_UPDATE_INSTALL:-1}" == "0" ]]; then
+    note "portable dependency install skipped (COS_DEPS_UPDATE_INSTALL=0)"
+    return 0
+  fi
+  if [[ ! -x "${PROJECT_ROOT}/scripts/cos-deps-install.sh" ]]; then
+    warn "scripts/cos-deps-install.sh not found — skipping portable dependency install"
+    return 0
+  fi
+  local deps_profile="${COS_DEPS_UPDATE_PROFILE:-dev}"
+  local mode_flag="--apply"
+  if [[ "$DRY_RUN" == "true" ]]; then
+    mode_flag="--dry-run"
+  fi
+  note "Running portable dependency installer (${deps_profile}, ${mode_flag})..."
+  if bash "${PROJECT_ROOT}/scripts/cos-deps-install.sh" --profile "$deps_profile" "$mode_flag" >&2; then
+    return 0
+  fi
+  warn "portable dependency installer reported failures; continuing update with degraded tools"
+  return 0
+}
+
 # ---------------------------------------------------------------------------
 # Dependency maintenance — read-only coverage/triage/ratchet report.
 # ADR-308 keeps update paths non-mutating for host tools: this reports drift
@@ -708,6 +735,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - sync Python deps via uv sync if pyproject.toml changed"
   say "  - regenerate active settings driver if the profile script changed"
   say "  - register mcps via scripts/register-mcps.sh if manifest changed"
+  say "  - run portable dependency installer for explicit update command"
   say "  - run dependency maintenance coverage/triage/ratchet report"
   say "  - run hooks/self-install.sh"
   say "  - capture post-state snapshot and diff against pre-state"
@@ -747,6 +775,8 @@ regenerate_settings_if_profile_changed || warn "settings regeneration encountere
 recreate_docker_if_compose_changed || warn "docker container recreate encountered errors (see log above)"
 
 register_mcps_if_changed
+
+run_portable_dependency_install
 
 # Report dependency manifest/tool drift after source-level syncs and before
 # self-install. This is advisory by default and safe in offline environments.

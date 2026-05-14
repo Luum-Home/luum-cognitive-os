@@ -61,9 +61,9 @@ Options:
   --from PATH            Use a local Cognitive OS repo instead of cloning.
   --force                Overwrite existing installation without prompting.
   --skip-manifest-check  Skip the post-install dependency report.
-  --install-deps         After advisory manifest check, actually install missing
-                         dependencies: run uv sync for Python deps and register
-                         MCP servers via scripts/register-mcps.sh.
+  --install-deps         After advisory manifest check, install portable,
+                         non-auth-bound dependencies via cos-deps-install,
+                         then run uv sync and register MCP servers.
   --scope=SCOPE          Filter installed files by SCOPE tag (default: both).
                            project  — files tagged SCOPE:project or SCOPE:both
                            both     — same as project (default for user projects)
@@ -560,6 +560,20 @@ fi
 if [ "$INSTALL_DEPS" = "true" ]; then
   echo "Installing dependencies (--install-deps)..."
   echo ""
+
+  # Host/tool dependencies via the manifest-driven installer.
+  COS_DEPS_INSTALL="${TEMP_DIR}/scripts/cos-deps-install.sh"
+  if [ -x "$COS_DEPS_INSTALL" ]; then
+    deps_profile="$PROFILE"
+    echo "Running cos-deps-install.sh --profile ${deps_profile} --apply..."
+    if bash "$COS_DEPS_INSTALL" --profile "$deps_profile" --apply; then
+      echo "  cos-deps-install: OK"
+    else
+      echo "  WARN: cos-deps-install reported failures — continuing with degraded tools" >&2
+    fi
+  else
+    echo "  WARN: cos-deps-install.sh not found — skipping host dependency install" >&2
+  fi
 
   # Python deps via uv sync
   if command -v uv >/dev/null 2>&1; then
