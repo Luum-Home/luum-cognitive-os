@@ -1,5 +1,5 @@
 schema_version: 1
-owner_adr: ADR-311
+owner_adr: ADR-312
 language_dependence:
   report: .cognitive-os/reports/language-dependence-audit.md
   max_medium_plus_findings: 0
@@ -18,13 +18,75 @@ required_runtime_proofs:
 critical_hook_projections:
   - primitive: subagent-budget-enforcer
     hook: hooks/subagent-budget-enforcer.sh
-    claude_required: true
-    codex_required: false
-    codex_gap_reason: Codex lacks SubagentStart and non-Bash PostToolUse coverage.
+    harness_requirements:
+      claude:
+        status: required
+      codex:
+        status: capability_gap
+        reason: Codex lacks SubagentStart and non-Bash PostToolUse coverage, so the gap must stay explicit instead of being modeled as projected.
+      opencode:
+        status: adapter_gap
+        reason: OpenCode has plugin-capable tool lifecycle events, but COS has not signed a subagent-budget plugin adapter or runtime smoke.
+      shell-ci:
+        status: command_surface
+        reason: Shell/CI can run command-level audits but cannot enforce interactive SubagentStart budgets.
+      structural_instruction_harnesses:
+        status: structural_advisory
+        applies_to:
+          - cursor
+          - vscode-copilot
+          - agents-md
+          - qwen-code
+          - kimi-code
+          - gemini-cli
+          - warp
+          - amp-code
+          - jetbrains-junie
+          - qoder
+          - factory-droid
+          - cline
+          - continue-dev
+          - kilo-code
+          - zed-ai
+          - augment-code
+          - goose
+          - aider
+        reason: These harnesses currently project rules/instructions/skills only; no native COS lifecycle hook enforcement is claimed.
   - primitive: orchestrator-skill-invocation-gate
     hook: hooks/orchestrator-skill-invocation-gate.sh
-    claude_required: true
-    codex_required: true
+    harness_requirements:
+      claude:
+        status: required
+      codex:
+        status: required
+      opencode:
+        status: adapter_gap
+        reason: OpenCode exposes plugin lifecycle events, but COS has not signed a skill-invocation gate plugin adapter or runtime smoke.
+      shell-ci:
+        status: command_surface
+        reason: Shell/CI can audit skill metadata and commands but cannot intercept every interactive skill decision.
+      structural_instruction_harnesses:
+        status: structural_advisory
+        applies_to:
+          - cursor
+          - vscode-copilot
+          - agents-md
+          - qwen-code
+          - kimi-code
+          - gemini-cli
+          - warp
+          - amp-code
+          - jetbrains-junie
+          - qoder
+          - factory-droid
+          - cline
+          - continue-dev
+          - kilo-code
+          - zed-ai
+          - augment-code
+          - goose
+          - aider
+        reason: These harnesses currently project rules/instructions/skills only; no native COS lifecycle hook enforcement is claimed.
 authority_paths:
   - cognitive-os.yaml
   - manifests/*.yaml
