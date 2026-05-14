@@ -28,21 +28,26 @@ slos:
     source_stream: .cognitive-os/metrics/hook-timing.jsonl
     filter: 'event == "SubagentStart" or hook == "subagent-context-injector"'
     metric: percentile(duration_ms, 0.95)
-    window: last_100_records
+    window: last_20_records
     target_lt: 5000
     severity_on_breach: warn
     rationale: |
       ADR-304 authoritative real-production SLO for ADR-303 sub-agent spawn.
+      ADR-309 scopes strict regression enforcement to the current matching-record
+      window; historical all-matched tail diagnostics remain in window_summary.
       ADR-303 synthetic benchmark is smoke/lower-bound only.
 
   - id: subagent-spawn-p99
     source_stream: .cognitive-os/metrics/hook-timing.jsonl
     filter: 'event == "SubagentStart" or hook == "subagent-context-injector"'
     metric: percentile(duration_ms, 0.99)
-    window: last_100_records
+    window: last_20_records
     target_lt: 15000
     severity_on_breach: warn
-    rationale: ADR-304 authoritative tail latency ceiling for real sub-agent spawn.
+    rationale: |
+      ADR-304 authoritative tail latency ceiling for real sub-agent spawn.
+      ADR-309 keeps historical outliers visible as all-matched diagnostics
+      without making prior local incidents fail the current regression gate.
 
   - id: hook-pretooluse-p95
     source_stream: .cognitive-os/metrics/hook-timing.jsonl

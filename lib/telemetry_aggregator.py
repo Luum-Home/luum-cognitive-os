@@ -403,6 +403,14 @@ def aggregate_streams(
         summary["n_matched_before_window"] = len(filtered_all)
         if window_n is not None:
             summary["window_records"] = window_n
+        if window_n is not None and len(filtered_all) > len(filtered):
+            # ADR-309: current regression windows must not be blocked forever by
+            # old local incidents, but those incidents still need to remain
+            # visible to operators. Attach an all-matched diagnostic summary so
+            # snapshots/status can show historical tail evidence without using
+            # it as the current SLO value.
+            _, all_matched_summary = compute_metric(slo, filtered_all)
+            summary["all_matched_summary"] = all_matched_summary
         if value is None:
             evaluations.append(
                 {

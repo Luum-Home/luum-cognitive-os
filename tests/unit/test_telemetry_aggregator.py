@@ -247,6 +247,56 @@ def test_window_applies_after_filter_for_sparse_stream(tmp_repo: Path):
     assert breaches[0].window_summary["n_records_read"] == 103
 
 
+def test_windowed_slo_keeps_all_matched_tail_diagnostics(tmp_repo: Path):
+    records = [
+        {
+            "hook": "subagent-context-injector",
+            "duration_ms": 90000,
+            "event": "SubagentStart",
+        },
+        {
+            "hook": "subagent-context-injector",
+            "duration_ms": 80000,
+            "event": "SubagentStart",
+        },
+    ]
+    records += [
+        {
+            "hook": "subagent-context-injector",
+            "duration_ms": 1000 + i,
+            "event": "SubagentStart",
+        }
+        for i in range(20)
+    ]
+    _write_jsonl(tmp_repo / ".cognitive-os/metrics/hook-timing.jsonl", records)
+    manifest = _write_manifest(
+        tmp_repo,
+        [
+            {
+                "id": "subagent-spawn-p99",
+                "source_stream": ".cognitive-os/metrics/hook-timing.jsonl",
+                "filter": 'event == "SubagentStart"',
+                "metric": "percentile(duration_ms, 0.99)",
+                "window": "last_20_records",
+                "target_lt": 15000,
+                "severity_on_breach": "warn",
+                "rationale": "r",
+            }
+        ],
+    )
+
+    report = aggregate_streams(tmp_repo, manifest, enable_self_tuning=False)
+
+    evaluation = report.evaluations[0]
+    assert evaluation["status"] == "pass"
+    summary = evaluation["window_summary"]
+    assert summary["n_samples"] == 20
+    assert summary["n_matched_before_window"] == 22
+    assert summary["max"] < 15000
+    assert summary["all_matched_summary"]["n_samples"] == 22
+    assert summary["all_matched_summary"]["max"] == 90000.0
+
+
 def test_success_ratio_ignores_no_provider_skips(tmp_repo: Path):
     _write_jsonl(
         tmp_repo / ".cognitive-os/metrics/llm-dispatch.jsonl",
