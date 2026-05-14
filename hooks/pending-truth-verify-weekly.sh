@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: pending-truth-ledger, weekly-verification, anti-staleness
 # Stop hook — ADR-273 Slice C
 # Async run: if ledger is stale (>7 days since last verifier run) OR

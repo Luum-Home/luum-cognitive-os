@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # validation-lock.sh — shared validation capsule lock helpers.
 
 # Return 0 when PROJECT_DIR has an active validation capsule lock.

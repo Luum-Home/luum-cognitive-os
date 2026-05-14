@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: architecture, governance, documentation
 # ADR auto-detector — PostToolUse hook on Bash
 # Fires on git commit commands, analyzes the commit for architectural

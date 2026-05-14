@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: quality, decision-depth, invariant-drift
 # surface-fix-detector — PostToolUse for Edit|Write|MultiEdit
 # Advisory hook: detects "surface fix" patterns where a diff is ~100% additions

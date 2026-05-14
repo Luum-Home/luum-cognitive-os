@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # UserPromptSubmit hook — auto-suggest /session-wrapup when user signals close.
 # ADR-030 Q1. Advisory only (exit 0 always). Emits additionalContext to the
 # orchestrator when the prompt matches a closure regex.

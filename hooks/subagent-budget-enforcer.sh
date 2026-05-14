@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # subagent-budget-enforcer.sh — ADR-311
 #
 # PostToolUse hook. Counts tool calls for subagent sessions and forces a

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # ADR-241 shared bypass resolver.
 # Usage: source this file, then call `cos_bypass_allows <stable-key>`.
 # Stable keys are read from COS_BYPASS (comma-separated) and from the optional

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Stop hook: ensures a session_summary observation lands in engram before
 # the session ends. Two-stage protection:
 #

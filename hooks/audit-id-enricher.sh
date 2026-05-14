@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # audit-id-enricher.sh — PostToolUse hook on Agent|Bash
 # CONCERNS: audit, cross-cutting-id
 #

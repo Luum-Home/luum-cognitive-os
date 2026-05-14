@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: safety, git-ops, adr-003-mechanism-c
 # Destructive Git Op Blocker — PreToolUse Bash
 #

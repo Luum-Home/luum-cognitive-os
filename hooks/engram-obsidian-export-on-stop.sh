@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # engram-obsidian-export-on-stop.sh — optional Stop hook for Engram → Obsidian export.
 #
 # This hook is deliberately opt-in:

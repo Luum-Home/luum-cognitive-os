@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: quality, definition-of-done, phase-aware
 # DoD Gate Hook — PostToolUse for Agent
 # Reads the agent RESULT block, infers task complexity (trivial/small/medium/

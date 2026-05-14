@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # TaskCompleted hook: Verify completion criteria when a teammate marks a task done.
 #
 # Event: TaskCompleted

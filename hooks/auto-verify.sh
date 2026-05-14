@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: quality, verification, acceptance-criteria
 # Auto-Verify Hook — PostToolUse for Agent
 # Extracts ACCEPTANCE CRITERIA from the agent prompt or response, runs each

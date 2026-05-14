@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse guard: blocks exfiltration-shaped external network shell commands.
 set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/common.sh"

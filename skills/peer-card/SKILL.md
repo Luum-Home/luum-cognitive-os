@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: peer-card
 description: 'Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) backed by

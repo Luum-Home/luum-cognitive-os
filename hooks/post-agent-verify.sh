@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: safety, agent-lifecycle, adr-003-mechanism-b, adr-099
 # Post-Agent Verify Hook — PostToolUse Agent
 #

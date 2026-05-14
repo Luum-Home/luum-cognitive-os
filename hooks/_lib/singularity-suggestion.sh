@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # _singularity_suggestion — Advisory singularity run suggestion.
 # Sourced by session-init.sh; also sourced directly by tests.
 # Pure bash, no Python calls, always exits 0.

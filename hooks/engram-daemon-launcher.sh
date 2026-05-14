@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Ensure engram serve daemon (port 7437) is running for ADR-071 lifecycle hooks
 # EVENT: SessionStart
 # EXIT_CODES: 0=advisory (always)

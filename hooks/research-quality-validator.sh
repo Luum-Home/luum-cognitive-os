@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: research-quality, audit-symmetry, evidence
 #
 # PostToolUse hook on Edit|Write — when a markdown file is written under

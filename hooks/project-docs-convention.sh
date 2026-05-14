@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: documentation, governance
 # Project 10-category docs convention check (ADR-054/055).
 #

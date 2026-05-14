@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Guard high-risk multi-session operations with a shared coordination ledger.
 
 set -euo pipefail

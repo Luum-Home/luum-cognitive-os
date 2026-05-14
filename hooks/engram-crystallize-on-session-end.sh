@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Crystallise over-represented topic_keys at session end
 # EVENT: Stop
 # EXIT_CODES: 0=always (advisory — crystallisation failure must not interrupt session shutdown)

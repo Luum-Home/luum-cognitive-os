@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse hook on Agent — checks resource budget before agent launches.
 # Reads daily/monthly spend from cost-events.jsonl, compares against budget in cognitive-os.yaml.
 # If approaching limit: injects model downgrade instruction.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # orchestrator-skill-invocation-gate.sh — ADR-188
 #
 # PreToolUse hook (matcher: Agent, Bash). Enforces that when the skill router

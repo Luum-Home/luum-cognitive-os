@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: add-rule
 description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding a new rule to the Cognitive OS; do
@@ -65,7 +65,7 @@ Then fill in the template. The field contract (ADR-067 Phase 2) requires:
 Example structure:
 
 ```markdown
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 
 # Rule Name
 

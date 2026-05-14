@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # edit-lock-session-end.sh — ADR-098 Phase C: release this session's edit locks on Stop.
 #
 # Registered as a Stop hook. Walks .cognitive-os/runtime/edit-locks/ and removes

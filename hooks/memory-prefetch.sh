@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Memory Prefetch — UserPromptSubmit hook
 # Warms the MemoryManager cache before each agent turn by running
 # EngramMemoryProvider.prefetch_all() with the incoming user message as the

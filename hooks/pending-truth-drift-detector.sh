@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: drift-prevention, pending-truth-ledger, anti-accumulation
 # PostToolUse Edit/Write hook — ADR-273 Slice C
 # When code lands that may close a pending-truth item, emit additionalContext

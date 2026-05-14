@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PostToolUse hook: Auto-Repair Dispatcher
 # Fires on "Agent" completions — checks if known fixes exist for detected errors.
 # When 3+ same errors are detected, attempts worktree-isolated repair.

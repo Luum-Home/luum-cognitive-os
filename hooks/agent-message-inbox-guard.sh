@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # ADR-185: warn/block risky Bash/git boundaries when this session has unacked block messages.
 
 set -uo pipefail

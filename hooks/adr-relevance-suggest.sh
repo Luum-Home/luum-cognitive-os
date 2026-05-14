@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # UserPromptSubmit hook: ADR Relevance Suggest
 #
 # Runs lib/adr_router.py against the incoming user prompt and, when at least one

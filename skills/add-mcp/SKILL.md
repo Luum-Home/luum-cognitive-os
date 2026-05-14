@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: add-mcp
 description: 'Use when you need this Cognitive OS skill: Step-by-step guide for integrating a new MCP server into the Cognitive

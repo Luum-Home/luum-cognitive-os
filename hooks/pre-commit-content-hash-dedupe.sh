@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # pre-commit-content-hash-dedupe.sh — P4.1 (ADR-116)
 #
 # Pre-commit hook that detects when the staged diff matches a commit already

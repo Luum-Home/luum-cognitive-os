@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: security-red-team
 invocation_pattern: on-demand

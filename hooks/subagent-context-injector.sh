@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # SubagentStart hook: Inject agent preamble + engram sidecar context into every subagent.
 #
 # Event: SubagentStart

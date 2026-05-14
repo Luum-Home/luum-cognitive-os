@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # killswitch_check.sh — ADR-028 D5
 #
 # Source this file at the TOP of any hook to suppress non-critical hooks

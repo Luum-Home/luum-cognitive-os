@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # CONCERNS: subagent-contracts, launch-preflight, artifact-safety
 # PreToolUse hook on Agent — ADR-203 capability contract enforcement.
 # Blocks launches where the selected subagent type cannot satisfy requested artifacts.

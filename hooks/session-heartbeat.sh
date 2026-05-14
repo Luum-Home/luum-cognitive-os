@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # session-heartbeat.sh — Liveness signal for ADR-047 session lifecycle watchdog.
 #
 # Fires on: UserPromptSubmit, PreToolUse (matcher: *)

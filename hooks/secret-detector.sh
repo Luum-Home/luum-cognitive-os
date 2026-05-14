@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Secret Detector — dual-mode hook (PreToolUse + PostToolUse).
 #
 # PreToolUse mode (Bash | Edit | Write):

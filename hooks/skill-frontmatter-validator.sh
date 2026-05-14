@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # skill-frontmatter-validator.sh — PostToolUse hook (Edit|Write)
 #
 # Fires when an agent writes or edits a file matching skills/*/SKILL.md.

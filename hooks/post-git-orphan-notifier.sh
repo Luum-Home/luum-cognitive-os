@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # post-git-orphan-notifier.sh — PostToolUse Bash
 # CONCERNS: safety, git-ops, orphan-commit-detection, adr-116-p3-1
 #

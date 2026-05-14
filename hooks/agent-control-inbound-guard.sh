@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Blocks hook-capable harnesses at tool/action boundaries when an inbound
 # Agent Bus control signal says stop or pause. This is the portable enforcement
 # path for harnesses where Cognitive OS does not own a child process handle.

@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: agent-dashboard
 description: 'Use when you need this Cognitive OS skill: Show real-time status of all running background agents; do not use

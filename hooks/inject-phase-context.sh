@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse hook on Agent — injects phase context from cognitive-os.yaml into agent prompts.
 # Universal hook: reads project type and phase from config, does NOT hardcode any
 # project-specific architecture standards or constitutional gates.

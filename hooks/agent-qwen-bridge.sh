@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse:Agent hook — ADR-056 Level 3: transparent Qwen bridge (per-skill opt-in)
 #
 # PURPOSE

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse hook on Agent — injects semantically relevant ADRs, lib modules,
 # and debt-register entries into every sub-agent's additionalContext.
 #

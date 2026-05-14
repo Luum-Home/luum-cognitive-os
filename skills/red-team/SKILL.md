@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: red-team
 description: 'Use when you need this Cognitive OS skill: Red team testing for agent prompts — detects injection, jailbreak,

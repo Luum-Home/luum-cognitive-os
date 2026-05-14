@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PreToolUse guard for ADR-194: cosd remote API requires explicit remote opt-in
 # plus bearer-token auth; edits to cosd API/control-plane config require review.
 set -uo pipefail

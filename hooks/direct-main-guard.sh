@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # direct-main-guard.sh — ADR-116 P2.1/P2.2 local branch-isolation policy.
 # Local policy: agents block on main/master commits; direct main pushes block
 # unless they are executed by the governed merge queue or explicit emergency env.

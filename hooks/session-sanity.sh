@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: advisory diagnostic; invoke manually when troubleshooting cos-status or missing .cognitive-os dir
 # session-sanity.sh — Advisory session-state sanity check for cos-status references.
 

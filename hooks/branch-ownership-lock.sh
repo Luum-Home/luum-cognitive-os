@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # ADR-182: acquire/enforce per-branch single-writer locks for destructive git operations.
 
 set -uo pipefail

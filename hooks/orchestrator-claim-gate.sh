@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # orchestrator-claim-gate.sh — Cross-IDE PreToolUse gate for high-stakes closure claims.
 #
 # Runs on Bash tool invocations in any harness that can project Bash hooks. It

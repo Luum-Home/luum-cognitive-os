@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # TaskCreated hook: Validate task quality when created in the shared task list.
 #
 # Event: TaskCreated

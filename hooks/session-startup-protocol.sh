@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # SessionStart hook: Startup Protocol Reminder
 #
 # Formalizes the 5-step session-startup protocol documented in

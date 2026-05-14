@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # UserPromptSubmit hook: Rule Router Prompt Suggest (ADR-179)
 #
 # Runs lib/rule_router.py against the incoming user prompt and, when at
