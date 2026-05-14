@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PostToolUse hook: Orchestrator Decision Trace
 #
 # Fires on every Agent tool call and cross-references the agent prompt against

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PreToolUse hook on Agent — injects a WORKING DIR directive into every sub-agent's
 # additionalContext so that agents started from inside a git worktree still commit
 # to, and write files under, the correct directory.

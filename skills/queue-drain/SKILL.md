@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: queue-drain
 description: 'Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use when a narrower

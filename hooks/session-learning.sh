@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # Session Learning Hook — Stop hook (runs at session end)
 # Summarizes what went WRONG this session: failed tasks, failed acceptance criteria,
 # iteration counts. Saves structured learnings for cross-session analysis by /self-improve.

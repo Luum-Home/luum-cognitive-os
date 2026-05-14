@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PreToolUse Read guard: block direct PDF reads and route through cos-document-ingest.
 set -uo pipefail
 

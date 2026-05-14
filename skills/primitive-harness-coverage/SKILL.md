@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: primitive-harness-coverage
 description: "Use when you need this Cognitive OS skill: Measure effective agentic primitive implementation by surface so agents do not confuse `SCOPE: both` with equal Claude/Codex/CLI/UI behavior.; do not use when a narrower skill directly matches the task."

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ADR-183: inject compact peer-session awareness on UserPromptSubmit.
 
 set -uo pipefail

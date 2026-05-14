@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PreToolUse hook on Bash — legacy main_worktree policy rewriter.
 # Rewrites git operations issued from a non-main cwd only when
 # cognitive-os.yaml orchestration.sub_agent_cwd=main_worktree.

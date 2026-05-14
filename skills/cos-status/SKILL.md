@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: cos-status
 description: 'Use when a user asks about OS state, installation verification, or troubleshooting. Purpose: Display current

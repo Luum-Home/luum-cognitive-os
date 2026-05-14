@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # SessionStart hook: Worktree Nudge — Layer 1 of ADR-035 defense
 #
 # Detects if Claude Code was launched from inside a git worktree (non-main)

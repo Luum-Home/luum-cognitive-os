@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: agent-stress-test
 description: 'Use when you need this Cognitive OS skill: Stress-test agent cognitive health to detect context-induced degradation;

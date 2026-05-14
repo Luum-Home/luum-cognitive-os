@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: primitive-coherence, postmortem-regression, periodic-drift
 # ADR-248 hourly/session-end control-plane sweep with cooldown.
 set -euo pipefail

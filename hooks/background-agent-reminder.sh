@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # background-agent-reminder.sh — UserPromptSubmit hook
 #
 # Reminds the orchestrator about pending background agents so it doesn't

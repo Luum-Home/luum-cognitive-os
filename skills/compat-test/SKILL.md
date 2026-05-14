@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: compat-test
 description: 'Use when you need this Cognitive OS skill: Smoke test suite verifying Cognitive OS works correctly with the

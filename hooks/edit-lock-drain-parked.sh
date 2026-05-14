@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # edit-lock-drain-parked.sh — ADR-098 Phase D1: parked-edit drain notification
 #
 # PostToolUse[Edit|Write] hook (also usable as a Stop hook).

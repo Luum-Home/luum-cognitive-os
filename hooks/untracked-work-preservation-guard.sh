@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PreToolUse Bash guard: preserve untracked cross-session work.
 # Blocks rm -r, git clean -f, and find -delete when they target untracked work
 # unless the command carries an explicit delete classification, reason, and

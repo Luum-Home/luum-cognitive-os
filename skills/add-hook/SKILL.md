@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: add-hook
 description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding a new hook to the Cognitive OS; do

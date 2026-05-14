@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: primitive-harvester
 description: "Use when you need this Cognitive OS skill: Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.; do not use when a narrower skill directly matches the task."

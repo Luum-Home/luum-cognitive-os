@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ADR-183: emit standardized cross-session events into .cognitive-os/sessions/events.jsonl.
 
 set -uo pipefail

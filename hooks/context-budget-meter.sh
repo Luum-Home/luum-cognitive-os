@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ADR-186: last-in-chain UserPromptSubmit context-budget meter.
 
 set -uo pipefail

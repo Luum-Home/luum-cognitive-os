@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # session-end-cleanup.sh — runs `cos-cleanup --tier=1 --apply` quietly.
 #
 # Idempotent. Quiet by default; verbose with COS_CLEANUP_VERBOSE=1.

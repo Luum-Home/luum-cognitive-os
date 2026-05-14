@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: fault-tolerance, recovery, checkpoints
 # Auto-checkpoint -- periodic WAL-like saves for crash recovery
 # PostToolUse hook on Bash|Edit|Write

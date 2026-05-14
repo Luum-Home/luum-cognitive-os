@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # concurrent-write-guard-codex-proxy.sh — UserPromptSubmit (prompt) Codex
 # projection of hooks/concurrent-write-guard.sh.
 #

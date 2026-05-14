@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: safety, agent-lifecycle, adr-003-mechanism-a, adr-099
 # Pre-Agent Snapshot Hook — PreToolUse Agent
 #

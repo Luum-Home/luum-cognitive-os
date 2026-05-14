@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # UserPromptSubmit hook: Skill Router Prompt Suggest
 #
 # Runs lib/skill_router.py against the incoming user prompt and, when

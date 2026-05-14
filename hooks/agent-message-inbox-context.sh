@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ADR-185: inject pending directed agent messages on UserPromptSubmit.
 
 set -uo pipefail

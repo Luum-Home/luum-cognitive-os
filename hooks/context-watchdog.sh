@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # Context Watchdog — estimates context usage and emits one-shot checkpoint warnings.
 # Type: PostToolUse
 # Matcher: (none — fires on all tools when projected)

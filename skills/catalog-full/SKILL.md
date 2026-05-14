@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: catalog-full
 description: "Use when the compact Level-1 catalog does not have enough detail. Purpose: Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns."

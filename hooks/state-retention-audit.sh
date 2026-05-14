@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # state-retention-audit.sh — ADR-199 retention drift monitor.
 # Read-only by default; use scripts/state_retention_audit.py --reap --execute for
 # operator-approved cleanup.

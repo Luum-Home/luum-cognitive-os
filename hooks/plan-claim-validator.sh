@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # plan-claim-validator.sh — PreToolUse hook for Edit/Write/MultiEdit on plan files.
 #
 # Detects checkbox transitions ([ ] → [x]) in plan files that lack a

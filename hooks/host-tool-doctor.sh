@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # SessionStart hook: cached host tooling doctor.
 #
 # This hook schedules a lightweight host tooling check without blocking agent

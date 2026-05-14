@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # symlink-mutation-guard.sh — PreToolUse Bash hook that catches symlink-related
 # mutation hazards before they execute.
 #

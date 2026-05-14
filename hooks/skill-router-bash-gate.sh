@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PreToolUse hook: Skill Router Bash Gate
 #
 # Uses lib/skill_router.py to detect shell commands that bypass a mandatory

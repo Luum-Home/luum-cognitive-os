@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: quality, refinement, piter-loop, phase-aware
 # Auto-Refine Hook — PostToolUse for Agent
 # Detects failure markers in the agent's output and emits retry instructions

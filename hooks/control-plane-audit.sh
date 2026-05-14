@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: primitive-coherence, postmortem-regression, control-plane-loop
 # ADR-248 hook-fast wrapper: run manifest-declared non-mutating control-plane audits.
 set -euo pipefail

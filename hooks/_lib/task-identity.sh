@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # Resolve one canonical task id for cross-session claim coordination.
 
 _cos_normalize_task_text() {

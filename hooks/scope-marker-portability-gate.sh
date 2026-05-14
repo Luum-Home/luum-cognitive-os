@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # scope-marker-portability-gate.sh — PreToolUse Bash hook for KD6 portability proof.
 #
 # Blocks `git commit` when a staged artifact declares `SCOPE: both` but lacks a

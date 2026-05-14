@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: pending-truth-ledger, anti-staleness, pre-commit-gate
 # PreToolUse Bash hook on git commit — ADR-273 Slice C
 # Warn (not block) if pending-truth ledger is stale > 30 days.

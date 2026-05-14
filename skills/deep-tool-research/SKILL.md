@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: deep-tool-research
 description: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation

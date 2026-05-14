@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: primitive-authoring
 description: 'Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive,

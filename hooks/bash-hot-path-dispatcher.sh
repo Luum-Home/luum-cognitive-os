@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # bash-hot-path-dispatcher.sh — default PreToolUse:Bash tier dispatcher.
 #
 # Keeps the interactive Bash hot path small without dropping governed agentic

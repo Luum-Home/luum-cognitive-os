@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: safety, agent-lifecycle, adr-222, adr-221
 # ADR-222 Phase 2 — commit a pre-agent snapshot plan only after launch gates passed.
 set -uo pipefail

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: fault-tolerance, recovery
 # Crash Recovery -- detects unclean shutdown and offers recovery
 # SessionStart hook

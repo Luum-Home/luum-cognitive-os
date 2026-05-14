@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # Shared ADR-186 context-budget accountant for hooks that emit additionalContext.
 
 context_budget_project_dir() {

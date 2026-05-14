@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # PURPOSE: Reinforce engram observations on mem_search and mem_get_observation access
 # EVENT: PostToolUse
 # MATCHER: mcp__plugin_engram_engram__mem_search|mcp__plugin_engram_engram__mem_get_observation
