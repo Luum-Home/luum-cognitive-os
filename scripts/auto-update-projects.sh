@@ -44,6 +44,24 @@ for arg in "$@"; do
   esac
 done
 
+
+# ── Source dependency maintenance (ADR-308) ─────────────────────────
+# Read-only/advisory. Git-triggered auto-update must not install host tools
+# behind the operator's back; it only reports manifest/tool drift.
+run_source_dependency_maintenance() {
+  if [ "${COS_DEPS_MAINTENANCE_ALREADY:-0}" = "1" ]; then
+    return 0
+  fi
+  if [ "${COS_DEPS_MAINTENANCE:-1}" = "0" ]; then
+    echo "[COS] Dependency maintenance skipped (COS_DEPS_MAINTENANCE=0)"
+    return 0
+  fi
+  if [ -x "$COS_SOURCE_DIR/scripts/cos-deps-maintain" ]; then
+    bash "$COS_SOURCE_DIR/scripts/cos-deps-maintain" --root "$COS_SOURCE_DIR" --mode post-merge --profile default \
+      || echo "[COS] Dependency maintenance reported advisory warnings"
+  fi
+}
+
 # ── Ensure jq is available ─────────────────────────────────────────
 if ! command -v jq >/dev/null 2>&1; then
   echo "Error: jq is required. Install jq and try again." >&2
@@ -126,6 +144,10 @@ echo "=== COS Auto-Update (v$cos_version) ==="
 echo "Source: $COS_SOURCE_DIR"
 echo "Projects to update: $project_count"
 echo ""
+
+# Keep dependency coverage visible whenever git pull/push triggers project
+# propagation. This runs once for the COS source, not once per consumer project.
+run_source_dependency_maintenance
 
 # ── Update each project ───────────────────────────────────────────
 updated=0
