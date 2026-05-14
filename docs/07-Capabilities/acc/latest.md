@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-14T14:49:29Z
+Generated: 2026-05-14T15:01:02Z
 Phase: reconstruction
 Gate: pass
 
@@ -28,7 +28,7 @@ Gate: pass
 | harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 273, "rules": 120, "scripts": 567, "skills": 106, "templates": 22}, "by_scope": {"both": 589, "os-only": 435, "project": 64}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 5, "` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 22, "planned": 5, "total": 27, "unsupported": 0}` |
 | primitive_fitness_ledger | ok | `docs/06-Daily/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
-| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"warn": 2}, "primitive_count": 1}` |
+| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"warn": 4}, "primitive_count": 1}` |
 | projection_fidelity | ok | `docs/06-Daily/reports/primitive-projection-fidelity-latest.json` | `{"contracts": 308, "statuses": {"aligned": 308, "gap": 3}}` |
 | projection_profiles | ok | `manifests/primitive-projection-profiles.yaml` | `{"profile_driver_scripts": 19, "profiles": ["default", "full"], "projection_classes": ["default", "full", "maintainer-only", "profile-driver", "shared"]}` |
 | proof_drill_evidence | ok | `docs/06-Daily/reports/proof-drill-evidence-latest.json` | `{"claim_map": {"claims": 4, "proof_status_counts": {"passed": 4}}, "rows": 5, "status_counts": {"passed": 5}}` |

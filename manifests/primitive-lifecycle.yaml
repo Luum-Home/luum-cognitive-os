@@ -9656,7 +9656,7 @@ primitives:
   rollback_or_repair_command: Revert this lifecycle entry or demote the skill to lab-only
     if the self-improvement human gate is removed.
   sunset_criteria: Archive after 90 days with no references from self-improvement
-    docs, training-harness manifest, or active skill routing.
+    docs, agent-learning manifest, or active skill routing.
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
