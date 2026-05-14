@@ -141,3 +141,12 @@ def test_git_status_helper_ignores_untracked_files(tmp_path: Path) -> None:
     subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
     (tmp_path / "untracked.txt").write_text("new\n", encoding="utf-8")
     assert runner.git_tracked_status(tmp_path) == []
+
+
+@pytest.mark.unit
+def test_repair_loop_prefers_repo_venv_python(tmp_path: Path) -> None:
+    runner = _load_runner()
+    python_path = tmp_path / ".venv" / "bin" / "python"
+    python_path.parent.mkdir(parents=True)
+    python_path.write_text("#!/bin/sh\n", encoding="utf-8")
+    assert runner.preferred_python(tmp_path) == str(python_path)

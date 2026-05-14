@@ -104,6 +104,14 @@ def git_tracked_status(cwd: Path) -> list[str]:
     return [line for line in proc.stdout.splitlines() if line.strip()]
 
 
+def preferred_python(cwd: Path) -> str:
+    """Use the repo venv Python for pytest subprocesses when available."""
+    venv_python = cwd / ".venv" / "bin" / "python"
+    if venv_python.exists():
+        return str(venv_python)
+    return sys.executable
+
+
 def write_report(path: Path, results: list[CommandResult], failed_nodeids: list[str], dirty_after: list[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -138,8 +146,9 @@ def print_result(result: CommandResult, tail_chars: int) -> None:
 
 def rerun_failed_nodeids(nodeids: list[str], cwd: Path, timeout_seconds: int, tail_chars: int) -> list[CommandResult]:
     results: list[CommandResult] = []
+    python_exe = preferred_python(cwd)
     for nodeid in nodeids:
-        argv = [sys.executable, "-m", "pytest", nodeid, "-q", "--tb=short", "--disable-warnings"]
+        argv = [python_exe, "-m", "pytest", nodeid, "-q", "--tb=short", "--disable-warnings"]
         result = run_argv_command(f"failed-node::{nodeid}", argv, cwd, timeout_seconds)
         print("TEST_REPAIR_LOOP_INDIVIDUAL_RERUN", nodeid, "timeout" if result.timed_out else result.returncode)
         print_result(result, tail_chars)
@@ -149,8 +158,9 @@ def rerun_failed_nodeids(nodeids: list[str], cwd: Path, timeout_seconds: int, ta
 
 def run_serial_fallback(args: argparse.Namespace, cwd: Path) -> CommandResult:
     script = cwd / "scripts" / "cos-pytest-serial-repair"
+    python_exe = preferred_python(cwd)
     argv = [
-        sys.executable,
+        python_exe,
         str(script),
         "tests/",
         "--timeout-seconds",

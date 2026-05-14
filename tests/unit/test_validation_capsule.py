@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 
 import pytest
+from tests import conftest as root_conftest
 
 pytestmark = pytest.mark.unit
 
@@ -50,6 +51,17 @@ def test_validation_capsule_runs_in_isolated_worktree(tmp_path: Path) -> None:
     assert str(repo) not in capsule_pwd
     assert "cos-validation-capsules" in capsule_pwd
     assert not (repo / ".cognitive-os" / "runtime" / "validation-capsule.lock").exists()
+
+
+def test_pytest_runtime_invariant_allows_capsule_symlinked_source_venv(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    source = tmp_path / "source"
+    capsule = tmp_path / "capsule"
+    source_venv = source / ".venv"
+    source_venv.mkdir(parents=True)
+    capsule.mkdir()
+    monkeypatch.setenv("COS_VALIDATION_SOURCE_PROJECT_DIR", str(source))
+
+    assert root_conftest._prefix_under_allowed_test_root(str(source_venv), capsule)
 
 def test_validation_lock_helper_treats_live_lock_as_active(tmp_path: Path) -> None:
     runtime = tmp_path / ".cognitive-os" / "runtime"

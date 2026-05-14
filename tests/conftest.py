@@ -136,6 +136,29 @@ if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
     subprocess.run = _subprocess_run_with_default_timeout  # type: ignore[assignment]
 
 
+def _prefix_under_allowed_test_root(prefix: str, repo_root: Path) -> bool:
+    """Return true when a venv prefix is valid for this checkout.
+
+    Validation capsules intentionally symlink the source checkout's .venv into a
+    detached worktree to avoid reinstalling dependencies for every broad test
+    run. In that mode the tests are collected from the capsule, but sys.prefix
+    resolves under COS_VALIDATION_SOURCE_PROJECT_DIR. That is still a governed
+    repo venv and must not be mistaken for an arbitrary global interpreter.
+    """
+    roots = [repo_root.resolve()]
+    source_root = os.environ.get("COS_VALIDATION_SOURCE_PROJECT_DIR", "").strip()
+    if source_root:
+        roots.append(Path(source_root).resolve())
+    resolved_prefix = Path(prefix).resolve()
+    for root in roots:
+        try:
+            resolved_prefix.relative_to(root)
+            return True
+        except ValueError:
+            continue
+    return False
+
+
 def _enforce_runtime_invariants() -> None:
     """ADR-305: refuse to run tests in a runtime that diverges from pyproject's.
 
@@ -179,12 +202,7 @@ def _enforce_runtime_invariants() -> None:
 
     repo_root = Path(__file__).resolve().parent.parent
     in_venv = sys.prefix != sys.base_prefix
-    prefix_under_repo = False
-    try:
-        Path(sys.prefix).resolve().relative_to(repo_root.resolve())
-        prefix_under_repo = True
-    except ValueError:
-        prefix_under_repo = False
+    prefix_under_repo = _prefix_under_allowed_test_root(sys.prefix, repo_root)
 
     if not (in_venv and prefix_under_repo):
         pytest.exit(
