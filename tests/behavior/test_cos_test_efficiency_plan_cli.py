@@ -20,7 +20,8 @@ def test_cos_test_efficiency_plan_cli_outputs_commands() -> None:
     assert proc.returncode == 0
     lines = proc.stdout.strip().splitlines()
     assert lines[0].startswith("python3 -m py_compile")
-    assert lines[-1] == "make test-laptop"
+    assert lines[-1].startswith("scripts/cos-test-repair-loop")
+    assert "make test-laptop" in lines[-1]
 
 
 @pytest.mark.behavior

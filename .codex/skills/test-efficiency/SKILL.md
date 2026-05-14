@@ -28,7 +28,23 @@ scripts/cos-pytest-serial-repair tests/ --timeout-seconds 600 --maxfail 1
 ```
 
 If it exits `124`, check whether it reported `PYTEST_CHUNK_TIMEOUT` or `PYTEST_BUDGET_EXHAUSTED`; rerun the same command to resume saved progress instead of repeating from zero.
-7. Only after targeted groups and the serial repair lane pass, run `make test-laptop` or the parallel full lane once.
+7. Only after targeted groups and the serial repair lane pass, run the full SO
+   lane through the bounded repair primitive, not as an unbounded direct command:
+
+```bash
+scripts/cos-test-repair-loop --full-command "make test-laptop" --timeout-seconds 2400 --require-clean-start
+```
+
+If this reports `TEST_REPAIR_LOOP_REPAIR_REQUIRED`, repair the failures, rerun
+the exact failed node IDs shown by `TEST_REPAIR_LOOP_FAILED_NODEIDS`, then rerun
+the same `scripts/cos-test-repair-loop ...` command. Repeat until the full lane
+prints `TEST_REPAIR_LOOP_PASS`. If it reports `TEST_REPAIR_LOOP_TIMEOUT`, treat
+the timeout itself as the failing primitive: isolate the timed-out node/file,
+repair or quarantine via the skip registry, and rerun the loop.
+
+8. Do not treat “run all tests” as a single fire-and-forget command. In SO
+   maintenance, it means the full repair loop: bounded full run → exact failing
+   node reruns → repair → exact rerun → full rerun.
 
 ## Failure file flow
 
