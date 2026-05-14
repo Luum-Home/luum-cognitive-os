@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-13T13:22:44+00:00'
+generated_at: '2026-05-14T21:54:59+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -78,6 +78,17 @@ primitives:
   - .claude/settings.json
   - hooks/adr-section-validator.sh
   sha256: 0af9b01c5c5a9d8f2e5b51839920d05b93200a0802f1a3e0596fc78b4d6e3b0c
+- id: hooks/adversarial-review-gate.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - hooks/adversarial-review-gate.sh
+  sha256: 384cdff963e925d949885c46e104d879657a969debfb0f1679b855b0242b6ff3
 - id: hooks/agent-bash-cwd-enforcer.sh
   kind: hook
   owner_adr: ADR-126
@@ -145,6 +156,16 @@ primitives:
   - .claude/settings.json
   - hooks/agent-message-inbox-guard.sh
   sha256: 688d3f583ac9959e64be7207983272f7d1f2977c674740b5ed3c1453e82a5334
+- id: hooks/agent-output-verifier.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - hooks/agent-output-verifier.sh
+  sha256: 3866b57ca792f9cd910e9fdb2167757f379b386f8a23f3a4499a4207dd732363
 - id: hooks/agent-prelaunch.sh
   kind: hook
   owner_adr: ADR-126
@@ -279,6 +300,18 @@ primitives:
   - .claude/settings.json
   - hooks/auto-verify.sh
   sha256: 0e446fa0f81772b6ee18bde021e0bd69c0ebf744ded2df9e4d863f8327ee9ead
+- id: hooks/bash-hot-path-dispatcher.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/bash-hot-path-dispatcher.sh
+  sha256: cc8a5c0b6fbe61943088954624e2fa8aa44690a4f28359a768afbe4a0598b9ea
 - id: hooks/blast-radius.sh
   kind: hook
   owner_adr: ADR-126
@@ -334,6 +367,16 @@ primitives:
   - .claude/settings.json
   - hooks/clarification-gate.sh
   sha256: a7d408e3dcaa4ecc9f573e2aeeadcfdb161356e790a2fa9ae6485f0352a0e361
+- id: hooks/clarification-interceptor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - hooks/clarification-interceptor.sh
+  sha256: c95041587970b2e05dded10bb7c4b44553c7bd86a0e458dd96fb8d8e1cbf49f2
 - id: hooks/codebase-itinerary-capture.sh
   kind: hook
   owner_adr: ADR-256
@@ -345,6 +388,16 @@ primitives:
   - .claude/settings.json
   - hooks/codebase-itinerary-capture.sh
   sha256: 93ad0c07c4b759cf18ab346faeea20551fea85c1ba46f49b129871093342777b
+- id: hooks/cognitive-os-health.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/cognitive-os-health.sh
+  sha256: ed07a1fa86ec9600cd882d3784d0323c0e071b805f5d734266437e26f3267794
 - id: hooks/completeness-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -479,6 +532,16 @@ primitives:
   - .claude/settings.json
   - hooks/cos-executor-daemon-launcher.sh
   sha256: 2ef061783b39f9d7e4e23d716f3d3bfa8747eecb457a90a23e6b74fb3319b33c
+- id: hooks/cos-executor-heartbeat.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/cos-executor-heartbeat.sh
+  sha256: 07d37eac3239826d59d223502ac2d850020b5b3d92ca91c70bae6cdef06eac5f
 - id: hooks/cos-session-start-projector.sh
   kind: hook
   owner_adr: ADR-275
@@ -502,6 +565,16 @@ primitives:
   - scripts/_lib/settings-driver-claude-code.sh
   - rules/cosd-secure-api.md
   sha256: 1256f5ad7eb75f7a0adb5f6c054185195b0d9f914e4b9cc7912288dba2b7f482
+- id: hooks/cosd-intent-submit.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/cosd-intent-submit.sh
+  sha256: 53d485f6e0a8d23951db127ac31d3936cfd799c20d222566bbf626bcfe5f631a
 - id: hooks/crash-recovery.sh
   kind: hook
   owner_adr: ADR-126
@@ -559,6 +632,17 @@ primitives:
   - hooks/dangerous-env-flag-detector.sh
   - scripts/dangerous_env_flag_detector.py
   sha256: 5740f7f4092851736a1e3b59ecd4c7a9a6c9d67df9471a8a440d6d7b08b64583
+- id: hooks/decision-depth-gate.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - hooks/decision-depth-gate.sh
+  sha256: d1445482e46fba5706959e63625b42b2ac0026695d6179629c806d62cc340994
 - id: hooks/dependency-license-classifier.sh
   kind: hook
   owner_adr: ADR-267
@@ -756,6 +840,16 @@ primitives:
   - .claude/settings.json
   - hooks/engram-reinforce-on-access.sh
   sha256: 768d091c8ad7188ed1527af0fd42b0e3fa98302352d9f473cf8ddcb7ffeacb7e
+- id: hooks/epic-task-detector.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - hooks/epic-task-detector.sh
+  sha256: 678d26caedbf807fd8e62878cd30977d545d599502268c1aa48a0ccd71df7b6e
 - id: hooks/error-learning.sh
   kind: hook
   owner_adr: ADR-126
@@ -965,6 +1059,16 @@ primitives:
   - .claude/settings.json
   - hooks/memory-prefetch.sh
   sha256: 5ffd5b99782f27f7dda5bcde72c510d015acc1a033ee299c4b85de7525bd413a
+- id: hooks/metrics-calibrator-trigger.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/metrics-calibrator-trigger.sh
+  sha256: 5f832165ba7e27349b8e0527ace63aa2f6ba254f0adeda1e6ee4863d165c4dc4
 - id: hooks/native-agent-heartbeat.sh
   kind: hook
   owner_adr: ADR-126
@@ -1290,6 +1394,26 @@ primitives:
   - .claude/settings.json
   - hooks/reaper-daemon-launcher.sh
   sha256: dacfdee3e74a6ae1113c67801d83cb878d356636d25a2cabe310b7348a072907
+- id: hooks/reaper-heartbeat.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/reaper-heartbeat.sh
+  sha256: b0917b51bf861b1b21a036f6380392d11ab49af2f04584ccda469ba3ebff8ac5
+- id: hooks/recap-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/recap-sync.sh
+  sha256: c7a565c5191ea14c976fee75b5b88f7e3c910f1a69a8fb8862a77a116090a4af
 - id: hooks/reinvention-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -1336,6 +1460,16 @@ primitives:
   - .claude/settings.json
   - hooks/research-to-runtime-firewall.sh
   sha256: b3c4082764dfce165131441e1560558bc03bc326052b9646c02e3de8218aaad4
+- id: hooks/resource-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - hooks/resource-check.sh
+  sha256: 9a3c3b6a2b8e405330ab76c79635a3a29f7b17a6168e72e42d9f4d46abad68b5
 - id: hooks/result-truncator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1503,6 +1637,16 @@ primitives:
   - .claude/settings.json
   - hooks/session-heartbeat.sh
   sha256: 960bc14cc5d0f3ac16d6b35aa54551a73835997cac24ae513c4c1da11404dc11
+- id: hooks/session-hygiene.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/session-hygiene.sh
+  sha256: 50ba75e85a56285a9bf72062c6c94ee252739acfd8674e14904a9cdafb654fbd
 - id: hooks/session-init.sh
   kind: hook
   owner_adr: ADR-126
@@ -1514,6 +1658,16 @@ primitives:
   - .claude/settings.json
   - hooks/session-init.sh
   sha256: edc12afe3cfff993c0767e2bdf183cc1b7134d72fbc987ff3d438fb3996ada30
+- id: hooks/session-knowledge-extractor.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/session-knowledge-extractor.sh
+  sha256: a98f088a8b148f94c7951fa06913bdcf402b6c7503cb445e93fe6c20f190180e
 - id: hooks/session-learning.sh
   kind: hook
   owner_adr: ADR-126
@@ -1547,6 +1701,18 @@ primitives:
   - .claude/settings.json
   - hooks/session-sanity.sh
   sha256: 4c6e88f8c2c1c42b3c59e949ff54cec1f3a04f0015edc2788f3ccd0f7046632d
+- id: hooks/session-start-stack-recommend.sh
+  kind: hook
+  owner_adr: ADR-310
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/session-start-stack-recommend.sh
+  sha256: db6f6d047ebbc49119ae42cc899bfd1094dd89501cba47650f3280d6fc38f931
 - id: hooks/session-start-stash-reapply.sh
   kind: hook
   owner_adr: ADR-126
@@ -1580,6 +1746,16 @@ primitives:
   - .claude/settings.json
   - hooks/session-startup-protocol.sh
   sha256: b3b83dc6a2aa094233b6528451af906aa9d01ede851bbaa8a6bacd2891888159
+- id: hooks/session-state-save.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/session-state-save.sh
+  sha256: 5fa49a1eaf29cd1c97fa6fa65212596a59c5059760d2e59ea72d2f8cc9b0c2a9
 - id: hooks/session-summary-reminder.sh
   kind: hook
   owner_adr: ADR-126
@@ -1613,6 +1789,18 @@ primitives:
   - .claude/settings.json
   - hooks/session-wrapup-trigger.sh
   sha256: cd3b1fe7ee07dfc0bb9f378468c314af4e15fe718db3b775ce8b148da550c1b9
+- id: hooks/skill-drift-detector.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/skill-drift-detector.sh
+  sha256: b3741cd883ac05d874043a8efb3da476af6b2898f08d28d767f0e73b554122dd
 - id: hooks/skill-failure-monitor.sh
   kind: hook
   owner_adr: ADR-126
@@ -1695,15 +1883,15 @@ primitives:
 - id: hooks/skill-router-prompt-suggest.sh
   kind: hook
   owner_adr: ADR-174
-  lifecycle_state: sandbox
+  lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
+  distribution: core
   runtime_projection: true
   projection_targets:
   - .claude/settings.json
   - .codex/hooks.json
   - hooks/skill-router-prompt-suggest.sh
-  sha256: 14ba3baf02fd05caa53d39e17cb8a035d50c46386c800523fdcaae6b9c6061fc
+  sha256: ea231225c8b878451b811db0c4956a8b9259491d460cee982a7f4f203e399c75
 - id: hooks/skill-synthesis-scanner.sh
   kind: hook
   owner_adr: ADR-126
@@ -1770,6 +1958,28 @@ primitives:
   - .claude/settings.json
   - hooks/state-heartbeat.sh
   sha256: bfed0c850bdda00ac5b6adf0f4d0ca484344a83391cdbc5d3f833371fbc06c1b
+- id: hooks/subagent-budget-enforcer.sh
+  kind: hook
+  owner_adr: ADR-311
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/subagent-budget-enforcer.sh
+  sha256: 20460bfd1a480a738bf405b5827aa8e5a68b989b0e35f3f086b2a6d60041d2a0
+- id: hooks/subagent-capability-preflight.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  runtime_projection: true
+  projection_targets:
+  - hooks/subagent-capability-preflight.sh
+  sha256: a02e026340c436f9ab4ec078aa7d5da54a6ec35c5c05fedc4713b7d743bc672c
 - id: hooks/subagent-context-injector.sh
   kind: hook
   owner_adr: ADR-126
@@ -1803,6 +2013,26 @@ primitives:
   - .claude/settings.json
   - hooks/symlink-mutation-guard.sh
   sha256: acac3857e8ea09dbbb82a6c84e4a4b1aeeb959d8ddd6432c686530ed20f0847e
+- id: hooks/sync-to-repo.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/sync-to-repo.sh
+  sha256: 9f34f9a7c7c9b5581ff5dcbec100cde66976ab6d94f6b2bd453bc921eebb8062
+- id: hooks/task-bridge-notify.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/task-bridge-notify.sh
+  sha256: d04e8c154778390972d9e6f6972f3ad8fe71e26ad39dd92a79e4bedf18e5d475
 - id: hooks/task-completed.sh
   kind: hook
   owner_adr: ADR-126
@@ -1835,6 +2065,16 @@ primitives:
   - .claude/settings.json
   - hooks/teammate-idle.sh
   sha256: ee9fdd01c65dc2e87b92e9cae85c6f124fe2cb1f4fbf5d236e77fd0adce87eed
+- id: hooks/telemetry-budget-violator-detect.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/telemetry-budget-violator-detect.sh
+  sha256: fa1eb5fcfe0af669a0599c3ede558d87202dd8268fb735e558bb81e3f7d1e4a8
 - id: hooks/token-budget-monitor.sh
   kind: hook
   owner_adr: ADR-144
@@ -1881,6 +2121,16 @@ primitives:
   - .codex/hooks.json
   - hooks/untracked-work-preservation-guard.sh
   sha256: 3ce8e8fddab7b4cc2b92d52b61bd850e73f43b878c73e23216563f8bd29beacf
+- id: hooks/usage-health-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/usage-health-check.sh
+  sha256: 4cd482cd0594a78cdcfa2c4d44631d219032e5be7a1be77bcd62be0622cc55e8
 - id: hooks/user-prompt-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -1999,6 +2249,46 @@ primitives:
   - packages/agent-lifecycle/lib/harness_adapter/base.py
   - packages/agent-lifecycle/lib/harness_adapter/dispatch.py
   sha256: 6497bc11e500547911e7576ca5149a3d801f67277c88dc9c0f1d0251a1a562da
+- id: packages/agent-lifecycle/skills/review-output/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - packages/agent-lifecycle/skills/review-output/SKILL.md
+  sha256: f4d0474f46e48b1f460efb0efc0b915622b438c71546972fd6032843017ab4eb
+- id: rules/ROADMAP.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - rules/ROADMAP.md
+  sha256: 8d08d15b82bd7c3bf1e517f1d1a98ba0a3c05a9319c4daad9a7e60f0f2712ca2
+- id: rules/recommendation-grounding.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - rules/recommendation-grounding.md
+  sha256: 04c22b7552c8c3f222e054f8187bb9a97de0d294e88311dcfb768cc1998d99ec
+- id: rules/research-first-protocol.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - rules/research-first-protocol.md
+  sha256: 2e6ab2355afb6f3a08a8107a2e9d6c1d1f015a9d1eefea5a600b2f90c974df14
 - id: rules/self-improvement-protocol.md
   kind: rule
   owner_adr: ADR-083
@@ -2009,6 +2299,16 @@ primitives:
   projection_targets:
   - rules/self-improvement-protocol.md
   sha256: 3a7c3250865fedcee525f98a9094cb3547e2f99c077b6dfe919258e4bd412d61
+- id: rules/trust-score.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - rules/trust-score.md
+  sha256: 7047d56ae84f9d951c0fe59fdb9567afa6197f2b408c57595c5bd657bfb2ad54
 - id: scripts/_lib/session-id.sh
   kind: script
   owner_adr: ADR-149
@@ -2476,6 +2776,26 @@ primitives:
   - skills/vuln-remediation-flow/flow_contract.yaml
   - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
   sha256: 5c1bf2c1060ab0077567b307a4cd3b7afee045094cd1d20071d8fb2f04edbeed
+- id: scripts/cos-governed-agent.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-governed-agent.sh
+  sha256: c8aead530e4de1420d9f41a6640ac4e3ae0ebd019f52d50b7bf48e2aa38c1b3c
+- id: scripts/cos-governed-edit.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-governed-edit.sh
+  sha256: 2d7422d55d80f00df5c06235ce8f8cac1205d51462af1bcc18c7b5568b6543d5
 - id: scripts/cos-headless-service-drill
   kind: script
   owner_adr: ADR-162
@@ -2535,6 +2855,16 @@ primitives:
   - scripts/lab_first_promotion_gate.py
   - manifests/primitive-lifecycle.yaml
   sha256: 8b9fd804a957643e85701fbac27f8912c51ac805be935dda7bf9e6cc12e4145e
+- id: scripts/cos-language-dependence-audit
+  kind: script
+  owner_adr: ADR-296
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-language-dependence-audit
+  sha256: bfe433a8ca2ed3e56a1c391352dff7c92b4cb97f1a5dfbc59967b4f6ad8cd85f
 - id: scripts/cos-manifest-tier-claim-audit
   kind: script
   owner_adr: ADR-132
@@ -2618,6 +2948,16 @@ primitives:
   projection_targets:
   - scripts/cos-pending-truth-verify
   sha256: e2a6eae9a6a771a54a0d8f4707a1c1fc84f9ca5b22184140c96f166650b247b9
+- id: scripts/cos-portability-proof-scaffold
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-portability-proof-scaffold
+  sha256: 097c4469050841d0404bb27c1c312005d8188c316b9606e59239dcbb547f129d
 - id: scripts/cos-portable-ai-overlay
   kind: script
   owner_adr: ADR-258
@@ -2670,6 +3010,16 @@ primitives:
   projection_targets:
   - scripts/cos-public-claim-gate
   sha256: b2015c2e1e3d88e8b7e59b66929e5cedf4e829d66f791aad9f30273fa24aa2e0
+- id: scripts/cos-pytest-serial-repair
+  kind: script
+  owner_adr: ADR-072
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-pytest-serial-repair
+  sha256: 56e0fb789edfa79128b0572191adea73f338bcd5835399deec7b6190a78a8c61
 - id: scripts/cos-queue-drain
   kind: script
   owner_adr: ADR-091
@@ -2715,6 +3065,16 @@ primitives:
   projection_targets:
   - scripts/cos-release-check.sh
   sha256: 17c60aaa846643853e8c8ebf75603dd5a93162ef7d2caa4db5603b16b9f8712e
+- id: scripts/cos-remote-branch-triage
+  kind: script
+  owner_adr: ADR-089
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-remote-branch-triage
+  sha256: 3f20da972ab4df343d49f7b489fc3f3c9d985211ba049f8d92b045241950acd0
 - id: scripts/cos-runtime-hook-reality
   kind: script
   owner_adr: ADR-126
@@ -2727,6 +3087,26 @@ primitives:
   - scripts/runtime_hook_reality.py
   - docs/04-Concepts/architecture/boring-reliability-control-plane.md
   sha256: ea9fa42a9a969f232cc305cb1bd594b0033e5711b143ab027d63f7509b7fe9c8
+- id: scripts/cos-scope-both-portability-audit
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-scope-both-portability-audit
+  sha256: 1bdec18f3fac9be8797b20115176d3ad12ca487e5890e75045480d16b3129a43
+- id: scripts/cos-scope-projection-audit
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-scope-projection-audit
+  sha256: b91fdf9c3b520ca7d45c19232f77c9fbc68419ddebfb4800f3c80320d3489236
 - id: scripts/cos-self-improvement-discipline-gate
   kind: script
   owner_adr: ADR-134
@@ -2809,6 +3189,16 @@ primitives:
   - scripts/silent_failure_audit.py
   - manifests/silent-failure-allowlist.yaml
   sha256: 61e27e6a1fb236a7e474be38fbdd6fe06d56bcc60bdd473b8fc1c6e12f38a674
+- id: scripts/cos-skill-description-enrich
+  kind: script
+  owner_adr: ADR-299
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-skill-description-enrich
+  sha256: 8461b4529997dad900bda6e48d777dd25aeab86697c26630b4d6f944e4b045b1
 - id: scripts/cos-smoke.sh
   kind: script
   owner_adr: ADR-146
@@ -2851,6 +3241,16 @@ primitives:
   - scripts/cos-test-efficiency-plan
   - .codex/skills/test-efficiency/SKILL.md
   sha256: d14765c19700dcd298fab436e40e1c0c7691ba4cc7d6398a032aa5112e91fa70
+- id: scripts/cos-test-repair-loop
+  kind: script
+  owner_adr: ADR-311
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-test-repair-loop
+  sha256: 7029ef136f52f9615449d77c620d7cdbc326c055b698550fdd624c20cbf3c893
 - id: scripts/cos-tier-claim-audit
   kind: script
   owner_adr: ADR-133
@@ -3026,11 +3426,11 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/cos_primitive_harvester.py
-  sha256: 75f1d93d04e3574f6acf5c80ba2e2e8b876650917fccd9d360556f5e59707f4e
+  sha256: 0051cd61a9c77d7190ca384050fc993e481a2db85f81418d9eb143bd757584ea
 - id: scripts/cos_recovery_drill.py
   kind: script
   owner_adr: ADR-146
@@ -3119,11 +3519,11 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/decision_triage.py
-  sha256: b5b370333058e0e404e698c4b1bdd458f00134684309384be725674e0029a2e7
+  sha256: d8baa5dce6aac66315abcddebc37cb8802ae0a987e11af3de10a47014f9a3024
 - id: scripts/demo-first-run-onboarding.sh
   kind: script
   owner_adr: ADR-146
@@ -3251,21 +3651,21 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/generate_compact_catalog.py
-  sha256: 0ba2b3167207a92f4b017613b7c375cb6c899d3dd9b69010512fe8f58d1e8d9f
+  sha256: f31016bc525b4c1f35286b520aac770b49c59d37702c52f1711f83f06b1a5ef3
 - id: scripts/hook-stream-statusline.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/hook-stream-statusline.sh
-  sha256: da7219dd38ae30337a5ffd308443590c5043814db25949a5fcf59a67d5cb38c7
+  sha256: 462a3f174f4dc7bc9ac1dd8a3b2d2679d893bb9e6dcb4a17f74cec2fa87dcf8f
 - id: scripts/hook-timing-wrapper.sh
   kind: script
   owner_adr: ADR-146
@@ -3381,6 +3781,26 @@ primitives:
   - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   - docs/06-Daily/reports/primitive-harness-coverage-latest.md
   sha256: be4c72ca427599be2081db396ec279943c1a885545cb204636ec642462fd437a
+- id: scripts/primitive_parse_inventory.py
+  kind: script
+  owner_adr: ADR-315
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/primitive_parse_inventory.py
+  sha256: 8a18cb24f0634f731ce160155a5c1947445bbc3089c23ff0122a8bc10828aed0
+- id: scripts/primitive_scope_unknown_triage.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/primitive_scope_unknown_triage.py
+  sha256: 9ae1ba150330ee00d9fcb76384bee40b88c5ac8f4a6a97f3812becddcf60ec4e
 - id: scripts/primitive_surface_reduce.py
   kind: script
   owner_adr: ADR-146
@@ -3458,11 +3878,11 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/redteam_aggregate.py
-  sha256: 1e3adfc717dd91535dceffccead778361ffca32965660a816857f9409747fee3
+  sha256: 84ccd950a4d1cd94bd074295b3ecea3f307bcf63705b4992be4477ad981e4f94
 - id: scripts/risk_register.py
   kind: script
   owner_adr: ADR-146
@@ -3508,14 +3928,14 @@ primitives:
   owner_adr: ADR-164
   lifecycle_state: candidate
   maturity: advisory
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/security-red-team
   - scripts/security_red_team.py
   - manifests/security-red-team.yaml
   - docs/09-Quality/security/security-red-team.md
-  sha256: 7ea18c1364a7c8587c99c146d19b39d44de8af9c2b10f1f7193d48ee29438653
+  sha256: 750b6f36e7a5ee8990d878ba70a1f39c22c105bfba016f83c1e025a8ca700ad3
 - id: scripts/security_audit_writer.py
   kind: script
   owner_adr: ADR-146
@@ -3564,31 +3984,31 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/smoke-doc-review-personas.sh
-  sha256: eec8116dd5f967d32002b442618f79804deaf6db9a613f6eee8df79a0f46b268
+  sha256: 523a28e2722d40cd55a0799b96d1cff84c578ee00f15bf2e0ad6b18ccd44479e
 - id: scripts/smoke-multi-provider-fallback.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/smoke-multi-provider-fallback.sh
-  sha256: f6216e3d045d7d820a721f60197d34e2a15c386623d6f309b860d2e824598cbe
+  sha256: 6f65fe346220abb3bd86a7001778bfaed57ba951798cd571caf4f680e46fee7f
 - id: scripts/smoke-qwen-fallback.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/smoke-qwen-fallback.sh
-  sha256: 3461cb23ef87b035d1b8f7156e95da2b36bdc7c20f0ad890abc8cb09941bba2e
+  sha256: 1e15a0a3ca0312feec0143ae4f90ac410ddcb84064152e89550fbb31f6daa70d
 - id: scripts/sprint-test-summary.sh
   kind: script
   owner_adr: ADR-146
@@ -3683,6 +4103,26 @@ primitives:
   projection_targets:
   - scripts/weekly-aspirational-audit.sh
   sha256: 5dc134c5724404e4fabc19837ddda21485020e9469b195cad715fda2d8b6f52a
+- id: skills/add-hook/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/add-hook/SKILL.md
+  sha256: f6a1d94722eb5121bed09f28b8e433dc6f35ca2d1359fb552070cb2e59ba44da
+- id: skills/add-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/add-skill/SKILL.md
+  sha256: 4f01c57f6d5af17a352ca57470c1d4e051a686f37accf8e9469fe940e6a54e4a
 - id: skills/agent-control/SKILL.md
   kind: skill
   owner_adr: ADR-042
@@ -3704,6 +4144,26 @@ primitives:
   projection_targets:
   - skills/agent-kpis/SKILL.md
   sha256: b9c4577867ea3d9bbe877f4fd81c2a6d31a524067205754de7a4938d1956ead1
+- id: skills/cos-install-operations/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/cos-install-operations/SKILL.md
+  sha256: 72f80ca1053b636933904cf3e854066363b8d07f2e7ce2ff85b595c423d6b44c
+- id: skills/hook-timing/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/hook-timing/SKILL.md
+  sha256: 709be73b58c2d0e302bd9f73a5514cbbb427626204ec5b1757ced0d28fc5be6b
 - id: skills/primitive-harness-coverage/SKILL.md
   kind: skill
   owner_adr: ADR-189
@@ -3714,6 +4174,16 @@ primitives:
   projection_targets:
   - skills/primitive-harness-coverage/SKILL.md
   sha256: 6bb538ca89ce45e5774ac95f0169f1e3a9379a824748a28565833cd41b826d98
+- id: skills/repair-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/repair-skill/SKILL.md
+  sha256: 3ec67babb5831fee5d97ef145ef2bdd7011e06e8b6b653370b7151dcbde5538d
 - id: skills/self-improve/SKILL.md
   kind: skill
   owner_adr: ADR-083
@@ -3724,3 +4194,13 @@ primitives:
   projection_targets:
   - skills/self-improve/SKILL.md
   sha256: d70e15b466a0a0ec40258d9fe96766a7f7198f4a56033b8a2e9e535213eb4ccc
+- id: skills/synthesize-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/synthesize-skill/SKILL.md
+  sha256: d614c9fea53d096ffc0147fa284c8444fba9dfa9cbb06bb5e0f98b06b6243bc4
