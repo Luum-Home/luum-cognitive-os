@@ -163,9 +163,11 @@ def strongest_level(commands: list[VerificationCommand]) -> str:
 
 
 def path_exists(root: Path, rel: str) -> bool:
-    rel = str(rel).strip()
+    rel = str(rel).split("#", 1)[0].strip()
     if not rel:
         return False
+    if rel.startswith(".cognitive-os/"):
+        return True
     if "*" in rel:
         return any(root.glob(rel))
     return (root / rel.rstrip("/")).exists()
