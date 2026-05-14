@@ -66,10 +66,17 @@ SUMMARY_JSON=""
 AUDIT_FAILED=0
 
 run_audit() {
-    timeout 30 python3 "${AUDIT_SCRIPT}" \
-        --json \
-        --project-root "${PROJECT_DIR}" \
-        2>/dev/null
+    if command -v timeout >/dev/null 2>&1; then
+        timeout 30 python3 "${AUDIT_SCRIPT}" \
+            --json \
+            --project-root "${PROJECT_DIR}" \
+            2>/dev/null
+    else
+        python3 "${AUDIT_SCRIPT}" \
+            --json \
+            --project-root "${PROJECT_DIR}" \
+            2>/dev/null
+    fi
 }
 
 SUMMARY_JSON=$(run_audit 2>/dev/null) || AUDIT_FAILED=1
@@ -80,9 +87,15 @@ if [[ "${AUDIT_FAILED}" -eq 1 ]] || [[ -z "${SUMMARY_JSON}" ]]; then
 fi
 
 # Also trigger the full (write) run so JSONL and report are written
-timeout 30 python3 "${AUDIT_SCRIPT}" \
-    --project-root "${PROJECT_DIR}" \
-    >/dev/null 2>&1 || true
+if command -v timeout >/dev/null 2>&1; then
+    timeout 30 python3 "${AUDIT_SCRIPT}" \
+        --project-root "${PROJECT_DIR}" \
+        >/dev/null 2>&1 || true
+else
+    python3 "${AUDIT_SCRIPT}" \
+        --project-root "${PROJECT_DIR}" \
+        >/dev/null 2>&1 || true
+fi
 
 # ── Parse ratio and emit advisory ────────────────────────────────────────────
 ratio=$(echo "${SUMMARY_JSON}" | python3 -c "

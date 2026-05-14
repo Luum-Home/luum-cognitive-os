@@ -28,6 +28,11 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_D
 METRICS_DIR="${PROJECT_DIR}/.cognitive-os/metrics"
 LOG_FILE="${METRICS_DIR}/crystallization-events.jsonl"
 
+HOOK_PAYLOAD=""
+if [ ! -t 0 ]; then
+  HOOK_PAYLOAD="$(cat 2>/dev/null || true)"
+fi
+
 run_crystallizer() {
   if [ "${COS_SKIP_ENGRAM_CRYSTALLIZER:-0}" = "1" ]; then
     echo "0"
@@ -35,9 +40,11 @@ run_crystallizer() {
   fi
   local count
   count=$(python3 -c "
+import signal
 import sys
 sys.path.insert(0, '${HOOK_REPO_ROOT}')
 from lib.engram_crystallizer import EngramCrystallizer
+signal.alarm(int('${COS_ENGRAM_CRYSTALLIZER_TIMEOUT_SECONDS:-10}'))
 digests = EngramCrystallizer().crystallize_all()
 print(len(digests))
 " 2>/dev/null) || count=0
@@ -55,6 +62,13 @@ log_event() {
 
 main() {
   local digest_count
+  case "$(printf '%s' "${HOOK_PAYLOAD}" | tr -d '[:space:]')" in
+    ""|"{}")
+      digest_count="0"
+      log_event "${digest_count}"
+      return 0
+      ;;
+  esac
   digest_count="$(run_crystallizer)"
   log_event "${digest_count}"
 }
