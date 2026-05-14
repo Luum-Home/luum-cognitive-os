@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: automaker-bridge
 description: Configure AutoMaker to use Cognitive OS as its execution brain

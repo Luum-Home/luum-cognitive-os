@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: session-pending-close
 description: Use when closing one or many pending-truth items with bilateral proof — invokes scripts/cos-pending-truth-close

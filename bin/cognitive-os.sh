@@ -171,7 +171,7 @@ cmd_init() {
   fi
 
   echo "Installing Cognitive OS into $target_dir..."
-  install_cognitive_os_tree "$target_dir"
+  cp -R "$PACKAGE_DIR/.cognitive-os" "$target_dir/.cognitive-os"
 
   if [ ! -f "$target_dir/cognitive-os.yaml" ]; then
     cp "$PACKAGE_DIR/cognitive-os.yaml" "$target_dir/cognitive-os.yaml"
@@ -277,35 +277,6 @@ HEADER
   echo "  2. claude"
   echo "  3. /cognitive-os-init"
   echo ""
-}
-
-install_cognitive_os_tree() {
-  local target_dir="$1"
-  local source_dir="$PACKAGE_DIR/.cognitive-os"
-  local dest_dir="$target_dir/.cognitive-os"
-
-  mkdir -p "$dest_dir"
-
-  local entry
-  for entry in "$source_dir"/* "$source_dir"/.[!.]* "$source_dir"/..?*; do
-    [ -e "$entry" ] || continue
-    local name
-    name="$(basename "$entry")"
-    case "$name" in
-      .hook-pipe|.locks|agent-bus|archive|archives|artifacts|cache|checkpoints|engram-bundles|engram-import-proposals|external-source-cache|logs|metrics|recovery|reports|runs|runtime|sessions|snapshots|tmp|transcripts)
-        continue
-        ;;
-      *.jsonl|*.lock|*.bak|*.db)
-        continue
-        ;;
-      context-injector-cache.json|cwd-inject-cache.json|rate-limit-queue.json.deprecated|rate-limit-state.json|review_agent_commit_msg.txt|tmp-commit-msg.txt|work-queue.json|work-queue.jsonl)
-        continue
-        ;;
-    esac
-    cp -R "$entry" "$dest_dir/$name"
-  done
-
-  mkdir -p "$dest_dir"/{metrics,reports,runtime,sessions,tasks,cache}
 }
 
 # ── Command: version ───────────────────────────────────────────────────

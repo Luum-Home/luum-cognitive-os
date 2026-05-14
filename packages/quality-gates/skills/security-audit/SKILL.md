@@ -1,4 +1,4 @@
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ---
 name: security-audit
 invocation_pattern: on-demand  # @on-demand: periodic — manual security review

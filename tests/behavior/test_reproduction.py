@@ -184,18 +184,4 @@ class TestProfileSuggestion:
         assert result.returncode == 0
         assert "Suggested preset: startup" in result.stdout
 
-    def test_init_does_not_copy_parent_runtime_payloads(self, tmp_path: Path):
-        """Installed projects should get a slim runtime skeleton, not parent caches."""
-        target = tmp_path / "small-app"
-        target.mkdir()
-        (target / "main.py").write_text("print('ok')\n")
-
-        result = run_cos_init(target)
-
-        assert result.returncode == 0
-        assert (target / ".cognitive-os" / "skills").exists()
-        assert (target / ".cognitive-os" / "runtime").exists()
-        assert not (target / ".cognitive-os" / "cache" / "semantic-routing").exists()
-        assert not (target / ".cognitive-os" / "metrics" / "hook-timing.jsonl").exists()
-        assert not (target / ".cognitive-os" / "reports" / "test-runs").exists()
 
