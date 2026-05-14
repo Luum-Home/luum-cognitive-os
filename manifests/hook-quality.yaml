@@ -1,25 +1,5 @@
 generated_by: scripts/hook_quality_audit.py --sync
 hooks:
-  telemetry-budget-violator-detect:
-    # ADR-304 — control-plane-only hook. Registered via
-    # manifests/control-plane-audits.yaml hourly lane, NOT settings.json,
-    # because it runs as part of `cos-control-plane-audit --lane hourly`,
-    # not on every Claude event. Classified manually so primitive-coherence
-    # does not flag it as "unregistered hook".
-    behavior_tests:
-    - tests/unit/test_telemetry_aggregator.py
-    - tests/unit/test_telemetry_self_tuning_proposer.py
-    bypass_policy: not_required_observe_only
-    criticality: standard
-    event: HourlyControlPlaneLane
-    false_positive_tests: []
-    harness_tiers:
-      claude: native
-    matcher: ''
-    maturity: active
-    max_runtime_ms: 5000
-    safe_degradation: warn_and_continue_unless_exit_2
-    script: hooks/telemetry-budget-violator-detect.sh
   aci-observation-capture:
     behavior_tests:
     - tests/contracts/test_aci_observation_capture_hook.py
@@ -276,7 +256,8 @@ hooks:
     scope: os-only
     script: hooks/agent-working-dir-inject.sh
   aspirational-audit-weekly:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -918,6 +899,7 @@ hooks:
   cos-executor-daemon-launcher:
     behavior_tests:
     - tests/contracts/test_self_install_no_container_spawn.py
+    - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -1267,6 +1249,7 @@ hooks:
   docker-drift-detector:
     behavior_tests:
     - tests/unit/test_docker_drift_detector.py
+    - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -2198,6 +2181,7 @@ hooks:
   promotion-proposer-weekly:
     behavior_tests:
     - tests/unit/test_behavior_evidence_remaining_hooks.py
+    - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -2340,6 +2324,7 @@ hooks:
     - tests/contracts/test_self_install_no_container_spawn.py
     - tests/unit/test_cos_config_audit.py
     - tests/unit/test_primitive_duplication_audit.py
+    - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -2825,6 +2810,22 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/session-sanity.sh
+  session-start-stack-recommend:
+    behavior_tests:
+    - tests/unit/test_session_start_stack_recommend.py
+    bypass_policy: not_required_observe_only
+    criticality: lifecycle
+    event: SessionStart
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: ''
+    maturity: observe
+    max_runtime_ms: 2500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/session-start-stack-recommend.sh
   session-start-stash-reapply:
     behavior_tests:
     - tests/behavior/test_efficiency_profiles.py
@@ -2891,6 +2892,7 @@ hooks:
   session-watchdog-launcher:
     behavior_tests:
     - tests/contracts/test_self_install_no_container_spawn.py
+    - tests/unit/test_session_start_budget.py
     - tests/unit/test_session_watchdog_launcher.py
     bypass_policy: not_required_observe_only
     criticality: lifecycle
@@ -2920,6 +2922,21 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/session-wrapup-trigger.sh
+  skill-drift-detector:
+    behavior_tests: []
+    bypass_policy: not_required_observe_only
+    criticality: standard
+    event: SessionStart
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: ''
+    maturity: observe
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/skill-drift-detector.sh
   skill-failure-monitor:
     behavior_tests:
     - tests/unit/test_projected_hook_gap_behaviors.py
@@ -3154,6 +3171,9 @@ hooks:
   subagent-context-injector:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/unit/test_agent_spawn_benchmark.py
+    - tests/unit/test_telemetry_aggregator.py
+    - tests/unit/test_telemetry_self_tuning_proposer.py
     bypass_policy: not_required_warning_only
     criticality: coordination
     event: SubagentStart
@@ -3363,6 +3383,7 @@ hooks:
   validator-soak-weekly:
     behavior_tests:
     - tests/unit/test_behavior_evidence_remaining_hooks.py
+    - tests/unit/test_session_start_budget.py
     bypass_policy: not_required_warning_only
     criticality: quality
     event: SessionStart
