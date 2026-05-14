@@ -99,7 +99,17 @@ def check_claude_registry_parity(failures: list[str]) -> None:
                 continue
             expected.add((str(entry["event"]), str(entry.get("matcher") or ""), Path(str(entry["script"])).name))
     actual = set(_registrations_from_json(ROOT / ".claude" / "settings.json"))
-    missing = sorted(expected - actual)
+    missing_set = expected - actual
+
+    # ADR-311/interactive maintainer profile: the default Claude Bash hot path
+    # can be represented by a tiered dispatcher instead of projecting every
+    # command-scoped Bash gate synchronously. The settings driver check above is
+    # the byte-for-byte authority for the active profile; this parity check must
+    # not re-expand the dispatcher back into the exhaustive full profile.
+    if ("PreToolUse", "Bash", "bash-hot-path-dispatcher.sh") in actual:
+        missing_set = {item for item in missing_set if item[0:2] != ("PreToolUse", "Bash")}
+
+    missing = sorted(missing_set)
     extra = sorted(actual - expected)
     if missing or extra:
         details = []
