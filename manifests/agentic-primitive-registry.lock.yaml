@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-14T22:06:42+00:00'
+generated_at: '2026-05-14T22:12:27+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -3038,6 +3038,16 @@ primitives:
   projection_targets:
   - scripts/cos-portability-proof-scaffold
   sha256: 097c4469050841d0404bb27c1c312005d8188c316b9606e59239dcbb547f129d
+- id: scripts/cos-portable-ai-consumer-smoke
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - docs/06-Daily/reports/portable-ai-consumer-smoke-latest.json
+  sha256: 7e5f49ade81238fbe4b6ae3857462af133bb4a8b136d8a918adc9ae7dcd2656a
 - id: scripts/cos-portable-ai-overlay
   kind: script
   owner_adr: ADR-258
@@ -3840,6 +3850,26 @@ primitives:
   - packages/agent-coordination/lib/agent_bus.py
   - lib/agent_bus_metrics.py
   sha256: c50a348c336a181e07e8357b96520e3bed14a8e7ba377f3b2b0996ef9bdac5af
+- id: scripts/portable_ai_consumer_impact.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - docs/06-Daily/reports/portable-ai-consumer-impact-latest.json
+  sha256: eb7e2c94629595e3accf3c2db35ffcf294c3ccc409d6ce33630d9ef1bcd04857
+- id: scripts/portable_ai_consumer_smoke.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - docs/06-Daily/reports/portable-ai-consumer-smoke-latest.json
+  sha256: 21bf72c809f80f30ba406da008831068fb7430f42130a6474729bed7f864f5d7
 - id: scripts/portable_ai_overlay.py
   kind: script
   owner_adr: ADR-258
@@ -3850,6 +3880,16 @@ primitives:
   projection_targets:
   - scripts/portable_ai_overlay.py
   sha256: 3f7c394396462e3d0f9ed1055ee2978141ada79b776e4e7ce8b5391c018f27cb
+- id: scripts/primitive_authority_audit.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - docs/06-Daily/reports/primitive-authority-latest.json
+  sha256: b328addeb7ea16fc3f20765c2fcf8cf5f0e8fb8222b88817094130bedcbe503b
 - id: scripts/primitive_harness_coverage.py
   kind: script
   owner_adr: ADR-189
@@ -3861,6 +3901,16 @@ primitives:
   - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   - docs/06-Daily/reports/primitive-harness-coverage-latest.md
   sha256: be4c72ca427599be2081db396ec279943c1a885545cb204636ec642462fd437a
+- id: scripts/primitive_harness_partials.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - docs/06-Daily/reports/primitive-harness-partials-latest.md
+  sha256: 7f91c97d38a1244178b4e4cf637987b58ada462c2528b7c60486a6c3e77f7188
 - id: scripts/primitive_parse_inventory.py
   kind: script
   owner_adr: ADR-315
@@ -4234,6 +4284,16 @@ primitives:
   projection_targets:
   - skills/cos-install-operations/SKILL.md
   sha256: 72f80ca1053b636933904cf3e854066363b8d07f2e7ce2ff85b595c423d6b44c
+- id: skills/domain-model/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - docs/03-dominio-riesgo/domain-model.md
+  sha256: 00b6ddfc65c9ac19a5a14a1fa9c025f1d0c56d503c1529b7273a4ff0805f41c8
 - id: skills/hook-timing/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -4244,6 +4304,28 @@ primitives:
   projection_targets:
   - skills/hook-timing/SKILL.md
   sha256: 709be73b58c2d0e302bd9f73a5514cbbb427626204ec5b1757ced0d28fc5be6b
+- id: skills/ops-runbook/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - docs/06-backoffice/operations.md
+  - docs/06-backoffice/admin-processes.md
+  - docs/06-backoffice/monitoring.md
+  sha256: 7663942be6cbeb6dc7ef63678b6dbc6742012f30f2f8f056435d6ab1d595264c
+- id: skills/primitive-authoring/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/primitive-authoring/SKILL.md
+  sha256: 90d977ecade3a9561da29c7b526c8e86effdafa91a2c3c45a171322a3bc52b17
 - id: skills/primitive-harness-coverage/SKILL.md
   kind: skill
   owner_adr: ADR-189
@@ -4264,6 +4346,26 @@ primitives:
   projection_targets:
   - skills/repair-skill/SKILL.md
   sha256: 3ec67babb5831fee5d97ef145ef2bdd7011e06e8b6b653370b7151dcbde5538d
+- id: skills/risk-register/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - docs/03-dominio-riesgo/risk-register.md
+  sha256: c19215fdba38d65309d2e0d733084d7bfed5bd932855aac2774cf38800d02845
+- id: skills/rules-export/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - docs/08-estandares/rules-snapshot-*.md
+  sha256: d808679eec5e1ea96879d361135eed90536c9a41e4362f258ed6cb37cdef0078
 - id: skills/self-improve/SKILL.md
   kind: skill
   owner_adr: ADR-083
@@ -4274,6 +4376,16 @@ primitives:
   projection_targets:
   - skills/self-improve/SKILL.md
   sha256: d70e15b466a0a0ec40258d9fe96766a7f7198f4a56033b8a2e9e535213eb4ccc
+- id: skills/session-backlog/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - .cognitive-os/sessions/{SESSION_ID}/backlog.md
+  sha256: 2422258fa8705d8023d7bd42b0f646848a8f4844363065f5d1faa344251d8b7b
 - id: skills/synthesize-skill/SKILL.md
   kind: skill
   owner_adr: ADR-314

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Smoke generated `.ai` overlay projection into a disposable consumer project."""
 from __future__ import annotations
 

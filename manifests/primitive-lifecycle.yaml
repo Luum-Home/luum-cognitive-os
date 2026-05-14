@@ -11071,3 +11071,239 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
+- id: scripts/cos-portable-ai-consumer-smoke
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: projection-smoke
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - docs/06-Daily/reports/portable-ai-consumer-smoke-latest.json
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; validates generated `.ai`
+    overlay in a disposable consumer fixture from COS source.
+  evidence_commands:
+  - python3 scripts/cos-portable-ai-consumer-smoke --check --json
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/portable_ai_consumer_impact.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: projection-impact-report
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - docs/06-Daily/reports/portable-ai-consumer-impact-latest.json
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; generates ADR-258 consumer
+    impact reports from COS overlay and consumer-fleet audit state.
+  evidence_commands:
+  - python3 scripts/portable_ai_consumer_impact.py --no-write --json
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/portable_ai_consumer_smoke.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: projection-smoke
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - docs/06-Daily/reports/portable-ai-consumer-smoke-latest.json
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; validates generated `.ai`
+    overlay in a disposable consumer fixture from COS source.
+  evidence_commands:
+  - python3 scripts/portable_ai_consumer_smoke.py --check --json
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/primitive_authority_audit.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: primitive-authority-audit
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - docs/06-Daily/reports/primitive-authority-latest.json
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; audits COS primitive
+    authority contracts and report outputs.
+  evidence_commands:
+  - python3 scripts/primitive_authority_audit.py --help
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/primitive_harness_partials.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: harness-coverage-report
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - docs/06-Daily/reports/primitive-harness-partials-latest.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; reports unresolved COS
+    harness/projection coverage partials.
+  evidence_commands:
+  - python3 scripts/primitive_harness_partials.py --help
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: skills/domain-model/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffolding
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - docs/03-dominio-riesgo/domain-model.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; scaffolds adopter-project
+    DDD documentation.
+  evidence_commands:
+  - python3 scripts/domain_model.py --help
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/ops-runbook/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffolding
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - docs/06-backoffice/operations.md
+  - docs/06-backoffice/admin-processes.md
+  - docs/06-backoffice/monitoring.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; scaffolds adopter-project
+    operational runbooks.
+  evidence_commands:
+  - python3 scripts/ops_runbook.py --help
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/risk-register/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffolding
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - docs/03-dominio-riesgo/risk-register.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; scaffolds adopter-project
+    STRIDE risk register.
+  evidence_commands:
+  - python3 scripts/risk_register.py --help
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/rules-export/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-documentation-export
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - docs/08-estandares/rules-snapshot-*.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; exports SO rules snapshots
+    into adopting projects.
+  evidence_commands:
+  - python3 scripts/rules_export.py --help
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/primitive-authoring/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: primitive-authoring
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/primitive-authoring/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; governs primitive creation
+    in COS source and consumer-project overlays.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/primitive-authoring/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/session-backlog/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: session-backlog
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - .cognitive-os/sessions/{SESSION_ID}/backlog.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 011; documents both COS source
+    and consumer-project execution paths.
+  evidence_commands:
+  - python3 scripts/cos_session_backlog.py --help
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/backlog-reconciliation.jsonl

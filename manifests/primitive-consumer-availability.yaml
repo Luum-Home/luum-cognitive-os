@@ -556,6 +556,39 @@ items:
 - path: packages/skill-governance/skills/self-improve/SKILL.md
   status: maintainer-only
   rationale: Manual scope calibration iteration 010 confirmed META self-improvement skill orchestrates COS skills/hooks/config and applies to OS evolution, not project-only or generic repo construction.
+- path: scripts/cos-portable-ai-consumer-smoke
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 011 confirmed this is a COS maintainer smoke for generated `.ai` overlay projection into a disposable fixture; it validates consumer packaging but is not shipped as a project primitive.
+- path: scripts/portable_ai_consumer_impact.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 011 confirmed this writes ADR-258 impact reports from COS source and consumer-fleet audits; it is maintainer analysis, not project-local behavior.
+- path: scripts/portable_ai_consumer_smoke.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 011 confirmed this is a COS maintainer smoke for generated `.ai` overlay projection and report writing.
+- path: scripts/primitive_authority_audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 011 confirmed this audits COS primitive authority manifests and generated reports; consumer projects consume results, not the maintainer audit primitive.
+- path: scripts/primitive_harness_partials.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 011 confirmed this reports unresolved COS harness/projection coverage partials and is not a project primitive.
+- path: skills/domain-model/SKILL.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 011 confirmed this scaffolds DDD domain model docs inside adopting projects and is project-only.
+- path: skills/ops-runbook/SKILL.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 011 confirmed this scaffolds operations/admin/monitoring runbooks inside adopting projects and is project-only.
+- path: skills/risk-register/SKILL.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 011 confirmed this scaffolds STRIDE risk register docs inside adopting projects and is project-only.
+- path: skills/rules-export/SKILL.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 011 confirmed this exports SO rules snapshots into adopting projects; it affects project documentation, not SO construction.
+- path: skills/primitive-authoring/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 011 confirmed this governs primitive creation in both COS source and consumer-project overlays.
+- path: skills/session-backlog/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 011 confirmed this has explicit source-repo and consumer-project execution paths and shared backlog ledgers.
 patterns:
 - pattern: scripts/**
   status: so-local-only

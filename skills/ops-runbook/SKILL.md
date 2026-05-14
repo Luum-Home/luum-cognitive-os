@@ -28,7 +28,7 @@ routing_patterns:
 - pattern: \boperations\.md\b
   confidence: 0.8
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # Ops Runbook Scaffolder
 
 Emits three structured runbook templates under `docs/06-backoffice/`:

@@ -12,7 +12,7 @@ license: Apache-2.0
 metadata:
   author: luum
   category: standards
-audience: adopters
+audience: project
 summary_line: Export SO rules/ as a point-in-time snapshot into docs/08-estandares/.
 model: haiku
 platforms:
@@ -29,7 +29,7 @@ triggers:
 - Smoke test in tmp dir
 - Export SO rules/ as a point-in-time snapshot into docs/08-estandares/
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 ## Purpose
 
 Adopting projects commit to a set of SO rules as their own standards.

@@ -28,7 +28,7 @@ routing_patterns:
 - pattern: \bscaffold\s+risk\b
   confidence: 0.75
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # Risk Register Scaffolder
 
 Scaffolds `docs/03-dominio-riesgo/risk-register.md` with a STRIDE-organized table and an impact × likelihood matrix legend. This is a **template scaffolder**, not a threat-modeling engine — it seeds one row per STRIDE category and expects human/agent fill-in.

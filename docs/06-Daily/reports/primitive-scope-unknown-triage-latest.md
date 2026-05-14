@@ -10,28 +10,27 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
     "both-semantic-candidate": 36,
     "declared-both-needs-proof-and-metadata": 70,
     "insufficient-metadata": 344,
-    "os-only-semantic-candidate": 41,
-    "project-only-semantic-candidate": 11
+    "os-only-semantic-candidate": 41
   },
   "by_declared_scope": {
-    "both": 437,
+    "both": 426,
     "os-only": 65
   },
   "by_gap": {
     "declared-both-missing-paired-proof": 70,
-    "missing-consumer-availability-row": 502,
-    "missing-lifecycle-row": 502,
-    "no-distribution-evidence": 502
+    "missing-consumer-availability-row": 491,
+    "missing-lifecycle-row": 491,
+    "no-distribution-evidence": 491
   },
   "by_prefix": {
     "hooks": 58,
     "packages": 72,
     "rules": 115,
-    "scripts": 146,
-    "skills": 90,
+    "scripts": 141,
+    "skills": 84,
     "templates": 21
   },
-  "total_unknown": 502
+  "total_unknown": 491
 }
 ```
 
@@ -246,20 +245,4 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `templates/generator-validator-pair.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Generator + Validator Pair Template |
 | `templates/prompt-hooks/clarification-gate-prompt.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Score this agent prompt for ambiguity on a 0-100 scale. |
 | `templates/prompt-hooks/prompt-quality-prompt.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Score this agent prompt for quality on 5 dimensions (each 0-20, total 0-100). |
-
-## project-only-semantic-candidate (11)
-
-| Path | Declared | Hints | Gaps | Structure | Summary |
-|---|---|---|---|---|---|
-| `scripts/cos-portable-ai-consumer-smoke` | both | os=2; generic=0; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Smoke generated `.ai` overlay projection into a disposable consumer project. |
-| `scripts/portable_ai_consumer_impact.py` | both | os=2; generic=0; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Generate ADR-258 consumer impact report for the portable `.ai` overlay. |
-| `scripts/portable_ai_consumer_smoke.py` | both | os=2; generic=0; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Smoke generated `.ai` overlay projection into a disposable consumer project. |
-| `scripts/primitive_authority_audit.py` | both | os=5; generic=1; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit primitive read/write authority contracts. |
-| `scripts/primitive_harness_partials.py` | both | os=2; generic=3; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Generate a prioritized report for unresolved primitive surface coverage partials. |
-| `skills/domain-model/SKILL.md` | both | os=1; generic=1; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: domain-model |
-| `skills/ops-runbook/SKILL.md` | both | os=0; generic=1; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: ops-runbook |
-| `skills/primitive-authoring/SKILL.md` | both | os=6; generic=6; project=3 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: primitive-authoring |
-| `skills/risk-register/SKILL.md` | both | os=0; generic=1; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: risk-register |
-| `skills/rules-export/SKILL.md` | both | os=1; generic=1; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: rules-export |
-| `skills/session-backlog/SKILL.md` | both | os=2; generic=1; project=2 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: session-backlog |
 

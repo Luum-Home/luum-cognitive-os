@@ -29,7 +29,7 @@ routing_patterns:
 - pattern: \bscaffold\s+domain\b
   confidence: 0.75
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # Domain Model Scaffolder
 
 Scaffolds `docs/03-dominio-riesgo/domain-model.md` in an adopting project. This is a **template scaffolder**, not a content generator — it emits structured markdown with `<!-- TODO -->` markers that humans or downstream agents fill in.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit primitive read/write authority contracts.
 
 Static pass: classify script authority from explicit manifest rows and existing

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Generate ADR-258 consumer impact report for the portable `.ai` overlay."""
 from __future__ import annotations
 

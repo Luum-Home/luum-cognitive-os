@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Generate a prioritized report for unresolved primitive surface coverage partials."""
 from __future__ import annotations
 
