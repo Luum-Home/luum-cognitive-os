@@ -43,6 +43,13 @@ if [ -z "${PROJECT_DIR:-}" ]; then
 fi
 
 HOOKS_FILE="$PROJECT_DIR/.codex/hooks.json"
+PROFILE="${PROFILE:-default}"
+case "$PROFILE" in
+  default) PROFILE="maintainer" ;;
+  core|maintainer|full) ;;
+  *) PROFILE="maintainer" ;;
+esac
+export PROFILE
 
 # ── Parse flags ───────────────────────────────────────────────────────────────
 CHECK_MODE=false
@@ -95,7 +102,7 @@ GROUPEOF
 
 # ── Emit the full .codex/hooks.json content ───────────────────────────────────
 codex_driver_emit() {
-  python3 - "$PROJECT_DIR" <<'PYEOF'
+  python3 - "$PROJECT_DIR" "$PROFILE" <<'PYEOF'
 import json
 import sys
 from pathlib import Path
@@ -103,6 +110,7 @@ from pathlib import Path
 import yaml
 
 project_dir = Path(sys.argv[1])
+profile = sys.argv[2]
 config = yaml.safe_load((project_dir / "cognitive-os.yaml").read_text()) or {}
 hooks = (config.get("harness") or {}).get("hooks") or {}
 
@@ -151,6 +159,16 @@ def groups_for(event):
         script = entry.get("script")
         if not script:
             continue
+        # ADR-311 interactive profile: Codex has the same Bash hot-path budget
+        # problem as Claude Code. In core/default/maintainer, represent the
+        # Bash governance mesh through bash-hot-path-dispatcher.sh; PROFILE=full
+        # remains the exhaustive SO/release projection.
+        if event == "PreToolUse" and matcher == "bash" and profile != "full":
+            if str(script) != "hooks/bash-hot-path-dispatcher.sh":
+                continue
+        if event == "PreToolUse" and matcher == "bash" and profile == "full":
+            if str(script) == "hooks/bash-hot-path-dispatcher.sh":
+                continue
         by_matcher.setdefault(matcher, []).append(command_for(str(script)))
     return [{"hooks": entries, "matcher": matcher} for matcher, entries in by_matcher.items()]
 
