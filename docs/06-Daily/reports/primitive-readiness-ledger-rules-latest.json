@@ -13,7 +13,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 11,
         "hook": 4,
         "rule": 2,
@@ -24,6 +24,10 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-closure-ratchet.yaml"
         },
         {
           "family": "doc",
@@ -117,7 +121,7 @@
         "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:11",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -127,7 +131,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
@@ -140,7 +144,7 @@
         "rule": 4,
         "script": 12,
         "skill": 5,
-        "test": 30
+        "test": 31
       },
       "consumers": [
         {
@@ -733,6 +737,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_RULES-COMPACT.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_boring_reliability_tools.py"
         },
         {
@@ -798,7 +806,7 @@
         "hook_consumers:5",
         "rule_consumers:4",
         "script_consumers:12",
-        "test_consumers:30",
+        "test_consumers:31",
         "doc_consumers:100",
         "config_consumers:6"
       ],
@@ -810,7 +818,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 162
+      "total_consumers": 163
     },
     {
       "confidence": "medium",
@@ -823,7 +831,7 @@
         "rule": 13,
         "script": 4,
         "skill": 3,
-        "test": 14
+        "test": 15
       },
       "consumers": [
         {
@@ -1064,6 +1072,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_acceptance-criteria.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_context_diet.py"
         },
         {
@@ -1101,7 +1113,7 @@
         "hook_consumers:2",
         "rule_consumers:13",
         "script_consumers:4",
-        "test_consumers:14",
+        "test_consumers:15",
         "doc_consumers:29",
         "config_consumers:2"
       ],
@@ -1113,7 +1125,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 67
+      "total_consumers": 68
     },
     {
       "confidence": "medium",
@@ -1125,7 +1137,7 @@
         "hook": 1,
         "rule": 4,
         "script": 5,
-        "test": 17
+        "test": 18
       },
       "consumers": [
         {
@@ -1354,6 +1366,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_adaptive-bypass.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_boring_reliability_tools.py"
         },
         {
@@ -1378,7 +1394,7 @@
         "hook_consumers:1",
         "rule_consumers:4",
         "script_consumers:5",
-        "test_consumers:17",
+        "test_consumers:18",
         "doc_consumers:24",
         "config_consumers:10"
       ],
@@ -1390,25 +1406,45 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 61
+      "total_consumers": 62
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 7,
         "doc": 25,
-        "hook": 1,
+        "hook": 2,
         "rule": 2,
-        "script": 1,
+        "script": 3,
         "skill": 4,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
           "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
@@ -1516,6 +1552,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/adversarial-review-gate.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/self-install.sh"
         },
         {
@@ -1525,6 +1565,14 @@
         {
           "family": "rule",
           "path": "rules/broken-window-policy.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
         },
         {
           "family": "script",
@@ -1552,6 +1600,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_adversarial-review.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_context_diet.py"
         },
         {
@@ -1566,12 +1618,12 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:4",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "rule_consumers:2",
-        "script_consumers:1",
-        "test_consumers:4",
+        "script_consumers:3",
+        "test_consumers:5",
         "doc_consumers:25",
-        "config_consumers:2"
+        "config_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -1581,7 +1633,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 39
+      "total_consumers": 48
     },
     {
       "confidence": "medium",
@@ -1590,7 +1642,8 @@
       "consumer_families": {
         "doc": 2,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -1608,12 +1661,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-audit-before-commit.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:2"
       ],
       "family": "rules",
@@ -1624,7 +1682,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -1635,7 +1693,7 @@
         "doc": 11,
         "hook": 1,
         "rule": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -1708,6 +1766,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_agent-communication.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_smart_infra.py"
         }
       ],
@@ -1715,7 +1777,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:11",
         "config_consumers:1"
       ],
@@ -1727,7 +1789,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "medium",
@@ -1737,7 +1799,8 @@
         "config": 1,
         "doc": 8,
         "hook": 1,
-        "rule": 2
+        "rule": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -1787,12 +1850,17 @@
         {
           "family": "rule",
           "path": "rules/agent-security.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-customization.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
+        "test_consumers:1",
         "doc_consumers:8",
         "config_consumers:1"
       ],
@@ -1804,7 +1872,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -1815,7 +1883,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -1888,6 +1956,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_agent-escalation.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_escalation_wiring.py"
         }
       ],
@@ -1896,7 +1968,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:14"
       ],
       "family": "rules",
@@ -1907,7 +1979,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "medium",
@@ -1919,7 +1991,7 @@
         "hook": 1,
         "rule": 3,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -2001,6 +2073,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-identity.py"
         }
       ],
       "distribution": null,
@@ -2008,7 +2084,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:13",
         "config_consumers:1"
       ],
@@ -2020,7 +2096,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 20
+      "total_consumers": 21
     },
     {
       "confidence": "medium",
@@ -2032,7 +2108,7 @@
         "hook": 1,
         "rule": 9,
         "skill": 1,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -2233,6 +2309,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_agent-kpis.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         },
         {
@@ -2245,7 +2325,7 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:9",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:29",
         "config_consumers:5"
       ],
@@ -2257,7 +2337,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 51
+      "total_consumers": 52
     },
     {
       "confidence": "medium",
@@ -2267,7 +2347,8 @@
         "config": 1,
         "doc": 4,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -2297,12 +2378,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-output-reading.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:4",
         "config_consumers:1"
       ],
@@ -2314,7 +2400,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -2326,7 +2412,7 @@
         "hook": 3,
         "rule": 10,
         "script": 3,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -2555,6 +2641,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_agent-quality.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_auto_repair_worktree.py"
         },
         {
@@ -2571,7 +2661,7 @@
         "hook_consumers:3",
         "rule_consumers:10",
         "script_consumers:3",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:33",
         "config_consumers:2"
       ],
@@ -2583,7 +2673,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 59
+      "total_consumers": 60
     },
     {
       "confidence": "medium",
@@ -2595,7 +2685,7 @@
         "hook": 1,
         "rule": 3,
         "script": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -2713,6 +2803,10 @@
         {
           "family": "test",
           "path": "tests/integration/test_auto_update_safety.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-security.py"
         }
       ],
       "distribution": null,
@@ -2720,7 +2814,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:3",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:17",
         "config_consumers:2"
       ],
@@ -2732,7 +2826,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "medium",
@@ -2741,7 +2835,8 @@
       "consumer_families": {
         "doc": 6,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -2775,12 +2870,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-sidecars.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -2791,7 +2891,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
@@ -2801,7 +2901,7 @@
         "doc": 10,
         "hook": 1,
         "rule": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -2866,6 +2966,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_aguara-integration.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_ref_key_loader.py"
         }
       ],
@@ -2873,7 +2977,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:10"
       ],
       "family": "rules",
@@ -2884,19 +2988,19 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 3,
         "hook": 1,
         "rule": 1,
         "script": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -2910,6 +3014,10 @@
         {
           "family": "config",
           "path": "manifests/script-exposure-dispositions.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -2954,6 +3062,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_ai_provider_identity_guard_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_ai-provider-identity.py"
         }
       ],
       "distribution": null,
@@ -2961,9 +3073,9 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:3",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -2973,7 +3085,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -2984,7 +3096,8 @@
         "doc": 16,
         "hook": 1,
         "rule": 1,
-        "script": 2
+        "script": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -3074,6 +3187,10 @@
         {
           "family": "script",
           "path": "scripts/validate_tier_filter.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_anti-hallucination.py"
         }
       ],
       "distribution": null,
@@ -3081,6 +3198,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:2",
+        "test_consumers:1",
         "doc_consumers:16",
         "config_consumers:2"
       ],
@@ -3092,7 +3210,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
@@ -3104,7 +3222,7 @@
         "hook": 3,
         "rule": 2,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -3189,6 +3307,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_assumption-tracking.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_levels.py"
         }
       ],
@@ -3197,7 +3319,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:12",
         "config_consumers:2"
       ],
@@ -3209,7 +3331,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -3221,7 +3343,7 @@
         "hook": 2,
         "rule": 2,
         "script": 5,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -3418,6 +3540,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_audit-trail.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py"
         },
         {
@@ -3430,7 +3556,7 @@
         "hook_consumers:2",
         "rule_consumers:2",
         "script_consumers:5",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:35",
         "config_consumers:3"
       ],
@@ -3442,7 +3568,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 50
+      "total_consumers": 51
     },
     {
       "confidence": "medium",
@@ -3454,7 +3580,7 @@
         "hook": 8,
         "rule": 2,
         "script": 5,
-        "test": 10
+        "test": 12
       },
       "consumers": [
         {
@@ -3783,6 +3909,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_auto-repair-dispatcher.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_auto-repair.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_auto_repair.py"
         },
         {
@@ -3807,7 +3941,7 @@
         "hook_consumers:8",
         "rule_consumers:2",
         "script_consumers:5",
-        "test_consumers:10",
+        "test_consumers:12",
         "doc_consumers:47",
         "config_consumers:14"
       ],
@@ -3819,7 +3953,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 86
+      "total_consumers": 88
     },
     {
       "confidence": "medium",
@@ -3831,7 +3965,7 @@
         "hook": 2,
         "rule": 4,
         "script": 9,
-        "test": 15
+        "test": 17
       },
       "consumers": [
         {
@@ -4124,6 +4258,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_auto-rollback-trigger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_auto-rollback.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_chaos_template.py"
         },
         {
@@ -4152,7 +4294,7 @@
         "hook_consumers:2",
         "rule_consumers:4",
         "script_consumers:9",
-        "test_consumers:15",
+        "test_consumers:17",
         "doc_consumers:39",
         "config_consumers:9"
       ],
@@ -4164,7 +4306,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 78
+      "total_consumers": 80
     },
     {
       "confidence": "medium",
@@ -4175,7 +4317,7 @@
         "doc": 15,
         "hook": 2,
         "rule": 3,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -4268,6 +4410,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_auto-skill-generation.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_adr_router.py"
         }
       ],
@@ -4275,7 +4421,7 @@
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:3",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:15",
         "config_consumers:1"
       ],
@@ -4287,7 +4433,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -4297,7 +4443,7 @@
         "doc": 6,
         "hook": 2,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4339,13 +4485,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_bash_naming.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_bash-naming.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -4356,7 +4506,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -4369,7 +4519,7 @@
         "rule": 9,
         "script": 9,
         "skill": 1,
-        "test": 24
+        "test": 25
       },
       "consumers": [
         {
@@ -4842,6 +4992,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_blast-radius.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_blast_radius_additional_context.py"
         },
         {
@@ -4891,7 +5045,7 @@
         "hook_consumers:5",
         "rule_consumers:9",
         "script_consumers:9",
-        "test_consumers:24",
+        "test_consumers:25",
         "doc_consumers:66",
         "config_consumers:14"
       ],
@@ -4903,7 +5057,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 128
+      "total_consumers": 129
     },
     {
       "confidence": "medium",
@@ -4912,7 +5066,8 @@
       "consumer_families": {
         "doc": 6,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -4946,12 +5101,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_broken-window-policy.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -4962,7 +5122,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
@@ -4972,7 +5132,8 @@
         "config": 1,
         "doc": 10,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -5026,12 +5187,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_capability-levels.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:10",
         "config_consumers:1"
       ],
@@ -5043,7 +5209,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "medium",
@@ -5114,7 +5280,7 @@
         "hook": 5,
         "rule": 9,
         "script": 7,
-        "test": 23
+        "test": 25
       },
       "consumers": [
         {
@@ -5459,6 +5625,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_clarification-gate-prompt.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_clarification-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_levels.py"
         },
         {
@@ -5499,7 +5673,7 @@
         "hook_consumers:5",
         "rule_consumers:9",
         "script_consumers:7",
-        "test_consumers:23",
+        "test_consumers:25",
         "doc_consumers:38",
         "config_consumers:12"
       ],
@@ -5511,7 +5685,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 94
+      "total_consumers": 96
     },
     {
       "confidence": "medium",
@@ -5574,7 +5748,7 @@
         "hook": 1,
         "rule": 9,
         "script": 3,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -5787,6 +5961,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_closed-loop-prompts.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_context_diet.py"
         },
         {
@@ -5799,7 +5977,7 @@
         "hook_consumers:1",
         "rule_consumers:9",
         "script_consumers:3",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:33",
         "config_consumers:1"
       ],
@@ -5811,7 +5989,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 54
+      "total_consumers": 55
     },
     {
       "confidence": "medium",
@@ -5821,7 +5999,7 @@
         "doc": 6,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -5858,6 +6036,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cognitive-load.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cognitive_load_monitor.py"
         }
       ],
@@ -5865,7 +6047,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -5876,7 +6058,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -5888,7 +6070,7 @@
         "hook": 4,
         "rule": 6,
         "script": 8,
-        "test": 13
+        "test": 15
       },
       "consumers": [
         {
@@ -6157,6 +6339,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_confidence-gate-llm.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_confidence-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
@@ -6181,7 +6371,7 @@
         "hook_consumers:4",
         "rule_consumers:6",
         "script_consumers:8",
-        "test_consumers:13",
+        "test_consumers:15",
         "doc_consumers:29",
         "config_consumers:11"
       ],
@@ -6193,7 +6383,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 71
+      "total_consumers": 73
     },
     {
       "confidence": "medium",
@@ -6203,7 +6393,8 @@
         "doc": 6,
         "hook": 1,
         "rule": 2,
-        "script": 1
+        "script": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -6245,6 +6436,10 @@
         {
           "family": "script",
           "path": "scripts/validate_tier_filter.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_confidentiality-protection.py"
         }
       ],
       "distribution": null,
@@ -6252,6 +6447,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:1",
+        "test_consumers:1",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -6262,7 +6458,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -6273,7 +6469,7 @@
         "doc": 8,
         "hook": 1,
         "rule": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -6330,6 +6526,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_consequence-system.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_auto_skill_generator_routing.py"
         }
       ],
@@ -6337,7 +6537,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:8",
         "config_consumers:2"
       ],
@@ -6349,7 +6549,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -6362,7 +6562,7 @@
         "rule": 8,
         "script": 12,
         "skill": 3,
-        "test": 22
+        "test": 23
       },
       "consumers": [
         {
@@ -6751,6 +6951,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_content-policy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         },
         {
@@ -6784,7 +6988,7 @@
         "hook_consumers:3",
         "rule_consumers:8",
         "script_consumers:12",
-        "test_consumers:22",
+        "test_consumers:23",
         "doc_consumers:43",
         "config_consumers:12"
       ],
@@ -6796,7 +7000,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 103
+      "total_consumers": 104
     },
     {
       "confidence": "medium",
@@ -6809,7 +7013,7 @@
         "rule": 6,
         "script": 1,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -6958,6 +7162,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_context-management.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_levels.py"
         }
       ],
@@ -6967,7 +7175,7 @@
         "hook_consumers:2",
         "rule_consumers:6",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:23",
         "config_consumers:1"
       ],
@@ -6979,7 +7187,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "medium",
@@ -6991,7 +7199,7 @@
         "hook": 1,
         "rule": 3,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -7100,6 +7308,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_context-optimization.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_catalog_loading.py"
         }
       ],
@@ -7108,7 +7320,7 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:17",
         "config_consumers:2"
       ],
@@ -7120,7 +7332,7 @@
       "role": "doctrine",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -7130,7 +7342,7 @@
         "doc": 6,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -7168,13 +7380,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_context7-auto-trigger.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -7185,7 +7401,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -7254,7 +7470,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -7296,6 +7512,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cost-prediction.py"
         }
       ],
       "distribution": null,
@@ -7303,7 +7523,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5",
         "config_consumers:1"
       ],
@@ -7315,7 +7535,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -7328,7 +7548,7 @@
         "rule": 2,
         "script": 7,
         "skill": 1,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -7586,6 +7806,10 @@
         {
           "family": "test",
           "path": "tests/integration/test_compaction_resilience.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_crash-recovery.py"
         }
       ],
       "distribution": null,
@@ -7594,7 +7818,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:7",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:32",
         "config_consumers:13"
       ],
@@ -7606,7 +7830,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 64
+      "total_consumers": 65
     },
     {
       "confidence": "medium",
@@ -7618,7 +7842,7 @@
         "rule": 4,
         "script": 4,
         "skill": 3,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -7779,6 +8003,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_credential-management.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_context_diet.py"
         },
         {
@@ -7799,7 +8027,7 @@
         "skill_consumers:3",
         "rule_consumers:4",
         "script_consumers:4",
-        "test_consumers:9",
+        "test_consumers:10",
         "doc_consumers:21",
         "config_consumers:2"
       ],
@@ -7811,7 +8039,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 43
+      "total_consumers": 44
     },
     {
       "confidence": "medium",
@@ -7822,7 +8050,7 @@
         "doc": 21,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -7924,13 +8152,17 @@
         {
           "family": "test",
           "path": "tests/integration/test_installer.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cross-harness-authoring.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:21",
         "config_consumers:1"
       ],
@@ -7942,25 +8174,41 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 5,
         "doc": 2,
-        "hook": 2,
+        "hook": 3,
         "rule": 1,
-        "script": 1,
+        "script": 3,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
           "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -7969,6 +8217,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-048-docker-container-image-freshness.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/decision-depth-gate.sh"
         },
         {
           "family": "hook",
@@ -7984,6 +8236,14 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/set-security-profile.sh"
         },
         {
@@ -7996,18 +8256,22 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_decision-depth-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_session_watchdog.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
-        "hook_consumers:2",
+        "hook_consumers:3",
         "rule_consumers:1",
-        "script_consumers:1",
-        "test_consumers:2",
+        "script_consumers:3",
+        "test_consumers:3",
         "doc_consumers:2",
-        "config_consumers:1"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -8017,7 +8281,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 18
     },
     {
       "confidence": "medium",
@@ -8029,7 +8293,7 @@
         "hook": 1,
         "rule": 4,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -8142,6 +8406,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_decomposition.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_validate_tier_filter.py"
         }
       ],
@@ -8150,7 +8418,7 @@
         "hook_consumers:1",
         "rule_consumers:4",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:20",
         "config_consumers:1"
       ],
@@ -8162,7 +8430,7 @@
       "role": "doctrine",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 29
     },
     {
       "confidence": "medium",
@@ -8175,7 +8443,7 @@
         "rule": 5,
         "script": 4,
         "skill": 1,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -8344,6 +8612,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_definition-of-done.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_init_py.py"
         },
         {
@@ -8373,7 +8645,7 @@
         "hook_consumers:1",
         "rule_consumers:5",
         "script_consumers:4",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:24",
         "config_consumers:2"
       ],
@@ -8385,7 +8657,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 47
+      "total_consumers": 48
     },
     {
       "confidence": "medium",
@@ -8393,11 +8665,11 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 24,
+        "doc": 23,
         "hook": 2,
         "rule": 4,
         "script": 9,
-        "test": 12
+        "test": 13
       },
       "consumers": [
         {
@@ -8503,10 +8775,6 @@
         {
           "family": "doc",
           "path": "docs/06-Daily/root/self-usage-audit.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -8630,6 +8898,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_doc-sync.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
@@ -8650,8 +8922,8 @@
         "hook_consumers:2",
         "rule_consumers:4",
         "script_consumers:9",
-        "test_consumers:12",
-        "doc_consumers:24",
+        "test_consumers:13",
+        "doc_consumers:23",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -8670,12 +8942,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 96,
+        "doc": 98,
         "hook": 7,
         "rule": 2,
-        "script": 62,
+        "script": 63,
         "skill": 13,
-        "test": 52
+        "test": 54
       },
       "consumers": [
         {
@@ -8877,6 +9149,14 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-308-dependency-maintenance-install-update-git-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-310-cross-platform-headless-dependency-bootstrap.md"
         },
         {
           "family": "doc",
@@ -9372,6 +9652,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/setup.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/so-reaper.sh"
         },
         {
@@ -9576,6 +9860,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_dry-run.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_merge_rollback.py"
         },
         {
@@ -9601,6 +9889,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_delete_intent.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_dependency_maintenance.py"
         },
         {
           "family": "test",
@@ -9652,9 +9944,9 @@
         "skill_consumers:13",
         "hook_consumers:7",
         "rule_consumers:2",
-        "script_consumers:62",
-        "test_consumers:52",
-        "doc_consumers:96",
+        "script_consumers:63",
+        "test_consumers:54",
+        "doc_consumers:98",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -9665,7 +9957,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 242
+      "total_consumers": 247
     },
     {
       "confidence": "medium",
@@ -9674,7 +9966,8 @@
       "consumer_families": {
         "doc": 4,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -9700,12 +9993,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_dynamic-tool-creation.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:4"
       ],
       "family": "rules",
@@ -9716,7 +10014,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -9726,7 +10024,7 @@
         "doc": 13,
         "hook": 1,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -9796,13 +10094,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_e2b-integration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:13"
       ],
       "family": "rules",
@@ -9813,7 +10115,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "medium",
@@ -9822,7 +10124,8 @@
       "consumer_families": {
         "doc": 5,
         "hook": 1,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -9852,12 +10155,17 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_engram-api-safety.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:5"
       ],
       "family": "rules",
@@ -9868,7 +10176,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -9998,7 +10306,7 @@
         "rule": 10,
         "script": 5,
         "skill": 3,
-        "test": 42
+        "test": 43
       },
       "consumers": [
         {
@@ -10531,6 +10839,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_error-learning.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         },
         {
@@ -10624,7 +10936,7 @@
         "hook_consumers:12",
         "rule_consumers:10",
         "script_consumers:5",
-        "test_consumers:42",
+        "test_consumers:43",
         "doc_consumers:69",
         "config_consumers:13"
       ],
@@ -10636,7 +10948,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 154
+      "total_consumers": 155
     },
     {
       "confidence": "medium",
@@ -10647,7 +10959,7 @@
         "doc": 7,
         "hook": 1,
         "rule": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -10697,13 +11009,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_estimation-calibration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:7",
         "config_consumers:1"
       ],
@@ -10715,7 +11031,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -10726,7 +11042,7 @@
         "doc": 22,
         "hook": 3,
         "rule": 4,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -10852,13 +11168,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_fault-tolerance.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:3",
         "rule_consumers:4",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:22",
         "config_consumers:1"
       ],
@@ -10870,7 +11190,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
@@ -10880,7 +11200,7 @@
         "doc": 7,
         "hook": 1,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -10926,13 +11246,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_hcom-integration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:7"
       ],
       "family": "rules",
@@ -10943,7 +11267,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -10954,7 +11278,7 @@
         "doc": 10,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -11012,13 +11336,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_hook_disable_env.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_hook-security-profiles.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:10",
         "config_consumers:1"
       ],
@@ -11030,7 +11358,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -11043,7 +11371,7 @@
         "rule": 3,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -11120,6 +11448,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_impact-analysis.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
@@ -11129,7 +11461,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:10",
         "config_consumers:1"
       ],
@@ -11141,7 +11473,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "medium",
@@ -11153,7 +11485,7 @@
         "hook": 2,
         "rule": 1,
         "script": 3,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -11311,6 +11643,10 @@
         {
           "family": "test",
           "path": "tests/hooks/test_hook_graceful_degradation.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_infra-health.py"
         }
       ],
       "distribution": null,
@@ -11318,7 +11654,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:20",
         "config_consumers:9"
       ],
@@ -11330,7 +11666,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 39
+      "total_consumers": 40
     },
     {
       "confidence": "medium",
@@ -11341,7 +11677,7 @@
         "doc": 16,
         "hook": 3,
         "rule": 3,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -11462,6 +11798,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_infra-intent.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         }
       ],
@@ -11469,7 +11809,7 @@
       "evidence": [
         "hook_consumers:3",
         "rule_consumers:3",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:16",
         "config_consumers:3"
       ],
@@ -11481,7 +11821,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "medium",
@@ -11567,7 +11907,7 @@
         "rule": 2,
         "script": 1,
         "skill": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -11816,6 +12156,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_license-policy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_memory_retrieval_benchmark.py"
         }
       ],
@@ -11825,7 +12169,7 @@
         "hook_consumers:2",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:49",
         "config_consumers:4"
       ],
@@ -11837,7 +12181,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 62
+      "total_consumers": 63
     },
     {
       "confidence": "medium",
@@ -11850,7 +12194,7 @@
         "rule": 1,
         "script": 8,
         "skill": 1,
-        "test": 11
+        "test": 12
       },
       "consumers": [
         {
@@ -12063,6 +12407,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_llm-dispatch.py"
+        },
+        {
+          "family": "test",
           "path": "tests/security/test_adversarial_p1_p2.py"
         },
         {
@@ -12104,7 +12452,7 @@
         "hook_consumers:3",
         "rule_consumers:1",
         "script_consumers:8",
-        "test_consumers:11",
+        "test_consumers:12",
         "doc_consumers:29",
         "config_consumers:8"
       ],
@@ -12116,7 +12464,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 61
+      "total_consumers": 62
     },
     {
       "confidence": "medium",
@@ -12125,7 +12473,7 @@
       "consumer_families": {
         "doc": 2,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -12143,12 +12491,16 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_engram_lifecycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_memory-governance.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2"
       ],
       "family": "rules",
@@ -12159,7 +12511,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -12169,7 +12521,7 @@
         "doc": 6,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -12207,13 +12559,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_model-compatibility.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:6"
       ],
       "family": "rules",
@@ -12224,7 +12580,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -12235,7 +12591,8 @@
         "doc": 5,
         "hook": 1,
         "rule": 1,
-        "script": 1
+        "script": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -12273,6 +12630,10 @@
         {
           "family": "script",
           "path": "scripts/validate_tier_filter.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_model-directive.py"
         }
       ],
       "distribution": null,
@@ -12280,6 +12641,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
+        "test_consumers:1",
         "doc_consumers:5",
         "config_consumers:1"
       ],
@@ -12291,7 +12653,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -12304,7 +12666,7 @@
         "rule": 12,
         "script": 2,
         "skill": 2,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -12553,6 +12915,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_model-routing.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_validate_tier_filter.py"
         }
       ],
@@ -12562,7 +12928,7 @@
         "hook_consumers:2",
         "rule_consumers:12",
         "script_consumers:2",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:35",
         "config_consumers:2"
       ],
@@ -12574,7 +12940,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 62
+      "total_consumers": 63
     },
     {
       "confidence": "medium",
@@ -12586,7 +12952,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -12624,6 +12990,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_non-blocking-retry.py"
         }
       ],
       "distribution": null,
@@ -12631,7 +13001,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:3",
         "config_consumers:1"
       ],
@@ -12643,7 +13013,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -12651,12 +13021,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 15,
-        "doc": 107,
+        "doc": 115,
         "hook": 13,
         "rule": 3,
         "script": 10,
         "skill": 5,
-        "test": 24
+        "test": 26
       },
       "consumers": [
         {
@@ -12869,11 +13239,43 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-296-language-agnostic-semantic-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-297-llm-dispatched-routing-fallback.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-298-routing-model-benchmark-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-299-skill-description-enrichment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-300-semantic-routing-model-selection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-301-onnx-direct-routing-adapter.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-302-language-agnostic-primitive-routing-authoring.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-303-agent-spawn-cold-start-benchmark.md"
         },
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-309-current-window-subagent-spawn-slos.md"
         },
         {
           "family": "doc",
@@ -13329,6 +13731,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_observability.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_adr_reserve.py"
         },
         {
@@ -13342,6 +13748,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_dependency_lane_script.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_dependency_tool_intake.py"
         },
         {
           "family": "test",
@@ -13374,8 +13784,8 @@
         "hook_consumers:13",
         "rule_consumers:3",
         "script_consumers:10",
-        "test_consumers:24",
-        "doc_consumers:107",
+        "test_consumers:26",
+        "doc_consumers:115",
         "config_consumers:15"
       ],
       "family": "rules",
@@ -13386,7 +13796,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 177
+      "total_consumers": 187
     },
     {
       "confidence": "medium",
@@ -13398,7 +13808,7 @@
         "hook": 4,
         "rule": 1,
         "script": 1,
-        "test": 3
+        "test": 5
       },
       "consumers": [
         {
@@ -13504,6 +13914,14 @@
         {
           "family": "test",
           "path": "tests/integration/test_orchestrator_capabilities_live.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_orchestrator-mode-detect.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_orchestrator-mode.py"
         }
       ],
       "distribution": null,
@@ -13511,7 +13929,7 @@
         "hook_consumers:4",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:5",
         "doc_consumers:14",
         "config_consumers:3"
       ],
@@ -13523,7 +13941,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 26
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -13533,7 +13951,8 @@
         "doc": 3,
         "hook": 1,
         "rule": 1,
-        "script": 1
+        "script": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -13559,6 +13978,10 @@
         {
           "family": "script",
           "path": "scripts/compose_agent_prompt.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_orchestrator-prompt-compose.py"
         }
       ],
       "distribution": null,
@@ -13566,6 +13989,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
+        "test_consumers:1",
         "doc_consumers:3"
       ],
       "family": "rules",
@@ -13576,7 +14000,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -13586,7 +14010,7 @@
         "doc": 8,
         "hook": 1,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -13636,13 +14060,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_parry-integration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:8"
       ],
       "family": "rules",
@@ -13653,7 +14081,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -13665,7 +14093,7 @@
         "hook": 1,
         "rule": 2,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -13727,6 +14155,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_pentesting-readiness.py"
         }
       ],
       "distribution": null,
@@ -13734,7 +14166,7 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:8",
         "config_consumers:1"
       ],
@@ -13746,7 +14178,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -13757,7 +14189,7 @@
         "doc": 5,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -13795,13 +14227,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_performance-monitoring.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5",
         "config_consumers:1"
       ],
@@ -13813,7 +14249,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -13825,7 +14261,7 @@
         "hook": 1,
         "rule": 4,
         "script": 2,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -13974,6 +14410,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_phase-aware-agents.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_integration.py"
         },
         {
@@ -13986,7 +14426,7 @@
         "hook_consumers:1",
         "rule_consumers:4",
         "script_consumers:2",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:23",
         "config_consumers:1"
       ],
@@ -13998,7 +14438,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "medium",
@@ -14006,12 +14446,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 28,
+        "doc": 27,
         "hook": 3,
         "rule": 4,
         "script": 1,
         "skill": 1,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -14116,10 +14556,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/07-Capabilities/acc/latest.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/09-Quality/root/hook-security-profiles.md"
         },
         {
@@ -14204,6 +14640,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_pre-commit-gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_coverage_cli.py"
         }
       ],
@@ -14213,8 +14653,8 @@
         "hook_consumers:3",
         "rule_consumers:4",
         "script_consumers:1",
-        "test_consumers:8",
-        "doc_consumers:28",
+        "test_consumers:9",
+        "doc_consumers:27",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -14292,7 +14732,7 @@
         "hook": 16,
         "rule": 1,
         "script": 6,
-        "test": 12
+        "test": 13
       },
       "consumers": [
         {
@@ -14517,6 +14957,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_private-mode.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_dispatch_gate_perf.py"
         }
       ],
@@ -14525,7 +14969,7 @@
         "hook_consumers:16",
         "rule_consumers:1",
         "script_consumers:6",
-        "test_consumers:12",
+        "test_consumers:13",
         "doc_consumers:15",
         "config_consumers:6"
       ],
@@ -14537,7 +14981,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 56
+      "total_consumers": 57
     },
     {
       "confidence": "medium",
@@ -14548,7 +14992,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -14614,6 +15058,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_prompt-composition.py"
         }
       ],
       "distribution": null,
@@ -14621,7 +15069,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:12"
       ],
       "family": "rules",
@@ -14632,7 +15080,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
@@ -14644,7 +15092,7 @@
         "hook": 2,
         "rule": 1,
         "script": 6,
-        "test": 2
+        "test": 5
       },
       "consumers": [
         {
@@ -14829,6 +15277,18 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_prompt-quality-llm.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_prompt-quality-prompt.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_prompt-quality.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_hooks.py"
         }
       ],
@@ -14837,7 +15297,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:6",
-        "test_consumers:2",
+        "test_consumers:5",
         "doc_consumers:25",
         "config_consumers:10"
       ],
@@ -14849,7 +15309,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 46
+      "total_consumers": 49
     },
     {
       "confidence": "medium",
@@ -14859,7 +15319,7 @@
         "config": 1,
         "doc": 8,
         "rule": 2,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -14916,6 +15376,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_python-naming.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_check_mcp_servers.py"
         },
         {
@@ -14926,7 +15390,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:2",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:8",
         "config_consumers:1"
       ],
@@ -14938,7 +15402,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -14948,7 +15412,7 @@
         "doc": 2,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -14970,13 +15434,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_queue-advisor.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2"
       ],
       "family": "rules",
@@ -14987,7 +15455,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -15000,7 +15468,7 @@
         "rule": 2,
         "script": 3,
         "skill": 1,
-        "test": 4
+        "test": 6
       },
       "consumers": [
         {
@@ -15125,6 +15593,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_queue-drain.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_queue_drain.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_service_control_plane_local_queue.py"
         }
       ],
@@ -15134,7 +15610,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:3",
-        "test_consumers:4",
+        "test_consumers:6",
         "doc_consumers:12",
         "config_consumers:6"
       ],
@@ -15146,7 +15622,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 33
     },
     {
       "confidence": "medium",
@@ -15158,7 +15634,7 @@
         "hook": 3,
         "rule": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -15256,6 +15732,10 @@
         {
           "family": "test",
           "path": "tests/hooks/test_hook_basics.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_rate-limit-protection.py"
         }
       ],
       "distribution": null,
@@ -15263,7 +15743,7 @@
         "hook_consumers:3",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:14",
         "config_consumers:3"
       ],
@@ -15275,7 +15755,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "medium",
@@ -15287,7 +15767,7 @@
         "hook": 4,
         "rule": 2,
         "script": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -15392,6 +15872,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_rate-limiting.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_rule_router.py"
         },
         {
@@ -15404,7 +15888,7 @@
         "hook_consumers:4",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:14",
         "config_consumers:2"
       ],
@@ -15416,7 +15900,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -15426,7 +15910,7 @@
         "doc": 1,
         "rule": 1,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -15444,13 +15928,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_recommendation-grounding.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1"
       ],
       "family": "rules",
@@ -15461,7 +15949,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -15540,7 +16028,7 @@
         "doc": 9,
         "hook": 1,
         "rule": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -15597,6 +16085,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_repomix-integration.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_repomix_integration.py"
         }
       ],
@@ -15604,7 +16096,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:9"
       ],
       "family": "rules",
@@ -15615,7 +16107,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -15705,7 +16197,7 @@
         "doc": 30,
         "hook": 1,
         "rule": 9,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -15879,13 +16371,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_resource-governance.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:9",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:30",
         "config_consumers:1"
       ],
@@ -15897,7 +16393,7 @@
       "role": "doctrine",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 43
+      "total_consumers": 44
     },
     {
       "confidence": "medium",
@@ -15908,7 +16404,7 @@
         "hook": 1,
         "rule": 2,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -15942,6 +16438,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_response-compression.py"
         }
       ],
       "distribution": null,
@@ -15949,7 +16449,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3"
       ],
       "family": "rules",
@@ -15960,7 +16460,7 @@
       "role": "doctrine",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
@@ -15973,7 +16473,7 @@
         "rule": 3,
         "script": 3,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -16086,6 +16586,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_responsiveness.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_project_docs_writers.py"
         }
       ],
@@ -16095,7 +16599,7 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "script_consumers:3",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:13",
         "config_consumers:1"
       ],
@@ -16107,7 +16611,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 29
     },
     {
       "confidence": "medium",
@@ -16118,7 +16622,7 @@
         "doc": 15,
         "rule": 1,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -16204,13 +16708,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_result-management.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:15",
         "config_consumers:1"
       ],
@@ -16222,7 +16730,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -16232,7 +16740,7 @@
         "config": 2,
         "doc": 10,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -16290,12 +16798,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_retry_contract_manifest.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_retry-contract.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:10",
         "config_consumers:2"
       ],
@@ -16307,7 +16819,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -16318,7 +16830,7 @@
         "doc": 11,
         "hook": 1,
         "rule": 5,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -16400,13 +16912,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_sandbox-sampling.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:5",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:11",
         "config_consumers:1"
       ],
@@ -16418,7 +16934,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 20
+      "total_consumers": 21
     },
     {
       "confidence": "medium",
@@ -16430,7 +16946,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -16479,6 +16995,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_scope-creep-detection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_scope_creep.py"
         }
       ],
@@ -16487,7 +17007,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:6",
         "config_consumers:1"
       ],
@@ -16499,7 +17019,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -16512,7 +17032,7 @@
         "rule": 3,
         "script": 5,
         "skill": 1,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -16725,6 +17245,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_scope-proportionality.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         },
         {
@@ -16738,7 +17262,7 @@
         "hook_consumers:3",
         "rule_consumers:3",
         "script_consumers:5",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:24",
         "config_consumers:11"
       ],
@@ -16750,7 +17274,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 54
+      "total_consumers": 55
     },
     {
       "confidence": "medium",
@@ -16760,7 +17284,8 @@
         "doc": 5,
         "hook": 1,
         "rule": 1,
-        "skill": 2
+        "skill": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -16798,6 +17323,10 @@
         {
           "family": "skill",
           "path": "skills/scout/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_scout-pattern.py"
         }
       ],
       "distribution": null,
@@ -16805,6 +17334,7 @@
         "skill_consumers:2",
         "hook_consumers:1",
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:5"
       ],
       "family": "rules",
@@ -16815,7 +17345,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -16827,7 +17357,7 @@
         "hook": 1,
         "rule": 2,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -16889,6 +17419,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_semgrep_integration.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_security-scanning.py"
         }
       ],
       "distribution": null,
@@ -16896,7 +17430,7 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:7",
         "config_consumers:1"
       ],
@@ -16908,7 +17442,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -16919,7 +17453,7 @@
         "doc": 11,
         "hook": 1,
         "rule": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -17013,6 +17547,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_self_improvement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_self-improvement-protocol.py"
         }
       ],
       "distribution": "maintainer",
@@ -17020,7 +17558,7 @@
         "lifecycle",
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:11",
         "config_consumers:5"
       ],
@@ -17036,7 +17574,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -17045,7 +17583,8 @@
       "consumer_families": {
         "rule": 1,
         "script": 1,
-        "skill": 2
+        "skill": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -17063,13 +17602,18 @@
         {
           "family": "skill",
           "path": "skills/session-wrapup/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_session-close-doc-truth.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
         "rule_consumers:1",
-        "script_consumers:1"
+        "script_consumers:1",
+        "test_consumers:1"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -17079,7 +17623,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -17090,7 +17634,7 @@
         "doc": 11,
         "hook": 1,
         "rule": 3,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -17164,13 +17708,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_session-concurrency.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:11",
         "config_consumers:1"
       ],
@@ -17182,7 +17730,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "medium",
@@ -17194,7 +17742,7 @@
         "hook": 5,
         "rule": 3,
         "script": 1,
-        "test": 8
+        "test": 10
       },
       "consumers": [
         {
@@ -17431,6 +17979,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_singularity-suggestion.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_singularity.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_metric_event_migration.py"
         },
         {
@@ -17447,7 +18003,7 @@
         "hook_consumers:5",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:8",
+        "test_consumers:10",
         "doc_consumers:40",
         "config_consumers:4"
       ],
@@ -17459,7 +18015,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 61
+      "total_consumers": 63
     },
     {
       "confidence": "medium",
@@ -17467,7 +18023,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 4,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -17489,11 +18046,16 @@
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill-invocation-mandatory.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:4"
       ],
       "family": "rules",
@@ -17504,7 +18066,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -17514,7 +18076,7 @@
         "doc": 8,
         "hook": 1,
         "rule": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -17564,13 +18126,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill-management.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:8"
       ],
       "family": "rules",
@@ -17581,7 +18147,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -17592,7 +18158,7 @@
         "doc": 6,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -17633,6 +18199,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill-rewrite.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_rewrite.py"
         }
       ],
@@ -17640,7 +18210,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:6",
         "config_consumers:1"
       ],
@@ -17652,7 +18222,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -17665,7 +18235,7 @@
         "rule": 1,
         "script": 1,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -17722,6 +18292,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_so-slo.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_project_docs_writers.py"
         },
         {
@@ -17739,7 +18313,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:6",
         "config_consumers:1"
       ],
@@ -17751,7 +18325,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
@@ -17761,7 +18335,8 @@
         "config": 1,
         "doc": 5,
         "hook": 2,
-        "rule": 2
+        "rule": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -17803,12 +18378,17 @@
         {
           "family": "rule",
           "path": "rules/agent-escalation.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_split-and-resume.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:2",
+        "test_consumers:1",
         "doc_consumers:5",
         "config_consumers:1"
       ],
@@ -17820,7 +18400,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -17831,7 +18411,7 @@
         "doc": 10,
         "hook": 1,
         "rule": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -17900,6 +18480,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_squad-protocol.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_efficiency_optimization.py"
         }
       ],
@@ -17907,7 +18491,7 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:10",
         "config_consumers:1"
       ],
@@ -17919,7 +18503,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "medium",
@@ -17931,7 +18515,7 @@
         "hook": 2,
         "rule": 1,
         "script": 3,
-        "test": 2
+        "test": 4
       },
       "consumers": [
         {
@@ -18044,6 +18628,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_session-startup-protocol.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_startup-protocol.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_startup_protocol.py"
         }
       ],
@@ -18052,7 +18644,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:2",
+        "test_consumers:4",
         "doc_consumers:10",
         "config_consumers:10"
       ],
@@ -18064,7 +18656,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 30
     },
     {
       "confidence": "medium",
@@ -18075,7 +18667,7 @@
         "doc": 6,
         "hook": 1,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -18121,13 +18713,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_step-files.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:6",
         "config_consumers:1"
       ],
@@ -18139,7 +18735,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -18150,7 +18746,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -18208,6 +18804,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_supply-chain-defense.py"
         }
       ],
       "distribution": null,
@@ -18215,7 +18815,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:10"
       ],
       "family": "rules",
@@ -18226,7 +18826,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -18236,7 +18836,7 @@
         "doc": 5,
         "hook": 1,
         "rule": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -18274,13 +18874,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_task-dag.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5"
       ],
       "family": "rules",
@@ -18291,7 +18895,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -18301,7 +18905,7 @@
         "doc": 5,
         "hook": 1,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -18339,13 +18943,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_tero-integration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:5"
       ],
       "family": "rules",
@@ -18356,7 +18964,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "medium",
@@ -18368,7 +18976,7 @@
         "hook": 1,
         "rule": 2,
         "script": 3,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -18501,6 +19109,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_token-economy.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_init_py.py"
         },
         {
@@ -18517,7 +19129,7 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:3",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:20",
         "config_consumers:1"
       ],
@@ -18529,7 +19141,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "medium",
@@ -18540,7 +19152,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -18602,6 +19214,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_trailofbits-skills.py"
         }
       ],
       "distribution": null,
@@ -18609,7 +19225,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:10"
       ],
       "family": "rules",
@@ -18620,7 +19236,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -18633,7 +19249,7 @@
         "rule": 15,
         "script": 15,
         "skill": 6,
-        "test": 28
+        "test": 30
       },
       "consumers": [
         {
@@ -19198,6 +19814,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_trust-score-validator.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_trust-score.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         },
         {
@@ -19259,7 +19883,7 @@
         "hook_consumers:3",
         "rule_consumers:15",
         "script_consumers:15",
-        "test_consumers:28",
+        "test_consumers:30",
         "doc_consumers:74",
         "config_consumers:13"
       ],
@@ -19271,7 +19895,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 154
+      "total_consumers": 156
     },
     {
       "confidence": "medium",
@@ -19284,7 +19908,7 @@
         "rule": 1,
         "script": 7,
         "skill": 1,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -19486,6 +20110,10 @@
         {
           "family": "test",
           "path": "tests/hooks/test_hook_graceful_degradation.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_user-prompt-capture.py"
         }
       ],
       "distribution": null,
@@ -19494,7 +20122,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:7",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:21",
         "config_consumers:11"
       ],
@@ -19506,7 +20134,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 50
+      "total_consumers": 51
     },
     {
       "confidence": "medium",
@@ -19516,7 +20144,7 @@
         "doc": 7,
         "hook": 2,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -19562,13 +20190,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_workload-scheduling.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:7"
       ],
       "family": "rules",
@@ -19579,7 +20211,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     }
   ],
   "schema_version": 1,

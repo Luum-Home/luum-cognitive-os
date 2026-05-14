@@ -274,6 +274,7 @@ def test_engram_crystallize_logs_under_codex_project_dir_without_claude_env(
     env = os.environ.copy()
     env.pop("CLAUDE_PROJECT_DIR", None)
     env["CODEX_PROJECT_DIR"] = str(project)
+    env["COS_SKIP_ENGRAM_CRYSTALLIZER"] = "1"
 
     result = subprocess.run(
         ["bash", str(HOOKS_DIR / "engram-crystallize-on-session-end.sh")],

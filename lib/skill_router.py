@@ -130,7 +130,10 @@ def _is_router_negative_meta_prompt(text: str) -> bool:
     """Return True when the whole prompt is about router behavior, not user intent."""
     if not _ROUTER_NEGATIVE_CONTEXT_RE.search(text):
         return False
-    return bool(re.search(r"router|skill\s*router|suggest|sugiri[oó]|sugerencia|hint|ignoro|ignored?|rechaz\w*|reject\w*", text, re.IGNORECASE))
+    lowered = text.lower()
+    if re.search(r"router|skill\s*router", lowered, re.IGNORECASE):
+        return True
+    return bool(re.search(r"ignoro|ignored?|rechaz\w*|reject\w*|sugerencia\s+del\s+agente|agent\s+suggestion", lowered, re.IGNORECASE))
 
 
 # ---------------------------------------------------------------------------

@@ -13,16 +13,22 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1
+        "doc": 1,
+        "test": 1
       },
       "consumers": [
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_adr-template.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:1",
         "doc_consumers:1"
       ],
       "family": "templates",
@@ -33,7 +39,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 1
+      "total_consumers": 2
     },
     {
       "confidence": "medium",
@@ -384,7 +390,7 @@
       "consumer_families": {
         "doc": 4,
         "rule": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -414,12 +420,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_research_reports_format.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_agent-research-only.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:4"
       ],
       "family": "templates",
@@ -430,7 +440,7 @@
       "role": "prompt-composition",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -564,7 +574,7 @@
         "doc": 21,
         "hook": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -666,13 +676,17 @@
         {
           "family": "test",
           "path": "tests/integration/test_installer.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cross-harness-authoring.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:21",
         "config_consumers:1"
       ],
@@ -684,7 +698,7 @@
       "role": "prompt-composition",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
@@ -725,7 +739,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 6,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -755,11 +770,16 @@
         {
           "family": "rule",
           "path": "rules/prompt-composition.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_error-recovery.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:6"
       ],
       "family": "templates",
@@ -770,7 +790,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -814,16 +834,22 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1
+        "doc": 1,
+        "test": 1
       },
       "consumers": [
         {
           "family": "doc",
           "path": "docs/06-Daily/root/component-audit.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_generator-validator-pair.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:1",
         "doc_consumers:1"
       ],
       "family": "templates",
@@ -834,7 +860,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 1
+      "total_consumers": 2
     },
     {
       "confidence": "medium",
@@ -958,10 +984,19 @@
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_assumption-tracker-prompt.py"
+        }
+      ],
       "distribution": null,
-      "evidence": [],
+      "evidence": [
+        "test_consumers:1"
+      ],
       "family": "templates",
       "lifecycle_id": null,
       "lifecycle_state": null,
@@ -970,16 +1005,25 @@
       "role": "prompt-composition",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 0
+      "total_consumers": 1
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_clarification-gate-prompt.py"
+        }
+      ],
       "distribution": null,
-      "evidence": [],
+      "evidence": [
+        "test_consumers:1"
+      ],
       "family": "templates",
       "lifecycle_id": null,
       "lifecycle_state": null,
@@ -988,16 +1032,25 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 0
+      "total_consumers": 1
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_prompt-quality-prompt.py"
+        }
+      ],
       "distribution": null,
-      "evidence": [],
+      "evidence": [
+        "test_consumers:1"
+      ],
       "family": "templates",
       "lifecycle_id": null,
       "lifecycle_state": null,
@@ -1006,16 +1059,25 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 0
+      "total_consumers": 1
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_scope-creep-prompt.py"
+        }
+      ],
       "distribution": null,
-      "evidence": [],
+      "evidence": [
+        "test_consumers:1"
+      ],
       "family": "templates",
       "lifecycle_id": null,
       "lifecycle_state": null,
@@ -1024,7 +1086,7 @@
       "role": "prompt-composition",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 0
+      "total_consumers": 1
     },
     {
       "confidence": "medium",
@@ -1034,7 +1096,7 @@
         "config": 1,
         "doc": 21,
         "rule": 2,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -1139,6 +1201,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_quality-gates.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_completion_gate_perf.py"
         },
         {
@@ -1153,7 +1219,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:2",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:21",
         "config_consumers:1"
       ],
@@ -1165,7 +1231,7 @@
       "role": "quality-gate",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 29
     },
     {
       "confidence": "medium",
@@ -1310,7 +1376,7 @@
       "recovery": 1
     },
     "total": 22,
-    "without_consumers": 4,
+    "without_consumers": 0,
     "without_lifecycle": 22
   },
   "target_family": "templates"

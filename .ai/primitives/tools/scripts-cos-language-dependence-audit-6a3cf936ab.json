@@ -1,0 +1,88 @@
+{
+  "canonical_source": "scripts/cos-language-dependence-audit",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Skill-facing routing audit for detecting language-dependent primitive routing debt.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Skill-facing routing audit for detecting language-dependent primitive routing debt.",
+    "evidence_commands": [
+      "bash -n scripts/cos-language-dependence-audit",
+      "python3 -m pytest tests/unit/test_language_dependence_audit.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-296",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Skill-facing routing audit for detecting language-dependent primitive routing debt.",
+      "evidence_commands": [
+        "bash -n scripts/cos-language-dependence-audit",
+        "python3 -m pytest tests/unit/test_language_dependence_audit.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Skill-facing routing audit for detecting language-dependent primitive routing debt.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-language-dependence-audit"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos-language-dependence-audit",
+  "projection_targets": [
+    "scripts/cos-language-dependence-audit"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-language-dependence-audit",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

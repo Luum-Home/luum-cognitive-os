@@ -49,7 +49,7 @@ def _source_skill_names() -> list[str]:
     return sorted(
         p.name
         for p in SOURCE_SKILLS.iterdir()
-        if p.is_dir() and (p / "SKILL.md").is_file() and _skill_audience_allows(p / "SKILL.md")
+        if p.is_dir() and (p / "SKILL.md").is_file() and _scope_allows(p / "SKILL.md") and _skill_audience_allows(p / "SKILL.md")
     )
 
 

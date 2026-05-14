@@ -9,7 +9,7 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[2]
 MANIFEST = REPO / "manifests" / "credential-safe-scripts.yaml"
-DOC = REPO / "docs" / "manual-tests" / "credential-safe-script-runner.md"
+DOC = REPO / "docs" / "09-Quality" / "manual-tests" / "credential-safe-script-runner.md"
 
 
 def _manifest() -> dict:

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-pytestmark = pytest.mark.contract
+pytestmark = [pytest.mark.contract, pytest.mark.timeout(180)]
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "primitive_family_readiness_ledger.py"

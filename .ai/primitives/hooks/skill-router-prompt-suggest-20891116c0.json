@@ -73,11 +73,11 @@
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "maintainer",
+    "distribution": "core",
     "docs_claim_level": "advisory",
     "exit_behavior": "exit_0",
     "governance_class": "meta-governance",
-    "lifecycle_state": "sandbox",
+    "lifecycle_state": "advisory",
     "maturity": "advisory",
     "owner_adr": "ADR-174",
     "risk_class": "advisory",

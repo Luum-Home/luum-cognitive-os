@@ -1,171 +1,220 @@
 schema_version: primitive-harness-gap-policy.v1
-purpose: Classify primitive harness coverage gaps so SCOPE intent is not confused with equal IDE implementation.
+purpose: Classify primitive harness coverage gaps so SCOPE intent is not confused
+  with equal IDE implementation.
 policies:
-  - id: acceptable-claude-only
-    severity: advisory
-    status: aligned
-    rationale: Harness exposes a Claude-only lifecycle event with no current Codex equivalent; document rather than block.
-  - id: codex-adapter-needed
-    severity: medium
-    status: partial
-    rationale: Scope says portable, but Codex lacks an equivalent adapter or wiring.
-  - id: acceptable-codex-no-agent-event
-    severity: advisory
-    status: aligned
-    rationale: Codex currently has no native Agent-tool lifecycle event equivalent for this primitive; keep surface intent but do not block parity.
-  - id: optional-env-gated-surface
-    severity: advisory
-    status: aligned
-    rationale: Primitive is intentionally off unless an operator enables an environment variable or optional service.
-  - id: optional-governance-observer
-    severity: advisory
-    status: aligned
-    rationale: Primitive is an optional governance observer that can run on demand or in selected profiles rather than every IDE lifecycle.
-  - id: acceptable-codex-limited-tool-events
-    severity: advisory
-    status: aligned
-    rationale: Codex currently has narrower native tool-event matchers than Claude; keep the primitive portable through other surfaces without claiming full lifecycle parity.
-  - id: optional-background-orchestration
-    severity: advisory
-    status: aligned
-    rationale: Background orchestration reminders are optional session ergonomics and should not block primitive portability when not wired in every harness.
-  - id: claude-posttool-agent-only
-    severity: advisory
-    status: aligned
-    rationale: Primitive is a Claude Agent PostToolUse observer; Codex lacks an equivalent native Agent completion event.
-  - id: structural-only-ok
-    severity: advisory
-    status: aligned
-    rationale: Rules, skills, and templates are context/structure surfaces; native hook wiring is not expected.
-  - id: shell-command-only
-    severity: advisory
-    status: aligned
-    rationale: Command surfaces are projected through shell/CI rather than IDE lifecycle hooks.
-  - id: must-fix-parity
-    severity: high
-    status: partial
-    rationale: Runtime safety primitive claims portability but lacks required Claude/Codex parity.
-  - id: hook-helper-library
-    severity: advisory
-    status: aligned
-    rationale: Hook helper libraries are sourced by wired hooks; direct harness event wiring is not expected.
-  - id: codex-adapter
-    severity: advisory
-    status: aligned
-    rationale: Codex-specific adapter is intentionally wired only in Codex.
-  - id: on-demand-command-only
-    severity: advisory
-    status: aligned
-    rationale: Script is an on-demand command/maintainer executable; IDE lifecycle hook wiring is not expected.
-  - id: projectable-needs-driver
-    severity: medium
-    status: partial
-    rationale: Project-scoped command is not yet projected by a consumer harness/profile.
-  - id: behavior-proof-needed
-    severity: medium
-    status: partial
-    rationale: Primitive is projected/wired but needs explicit behavior evidence mapping.
-  - id: os-internal-observability-surface
-    severity: advisory
-    status: aligned
-    rationale: OS-internal primitives can be observable through ACC/dashboard without per-IDE lifecycle projection; family audits remain the behavior guard.
-  - id: unclassified
-    severity: medium
-    status: partial
-    rationale: Gap has not yet been triaged.
+- id: acceptable-claude-only
+  severity: advisory
+  status: aligned
+  rationale: Harness exposes a Claude-only lifecycle event with no current Codex equivalent;
+    document rather than block.
+- id: codex-adapter-needed
+  severity: medium
+  status: partial
+  rationale: Scope says portable, but Codex lacks an equivalent adapter or wiring.
+- id: acceptable-codex-no-agent-event
+  severity: advisory
+  status: aligned
+  rationale: Codex currently has no native Agent-tool lifecycle event equivalent for
+    this primitive; keep surface intent but do not block parity.
+- id: optional-env-gated-surface
+  severity: advisory
+  status: aligned
+  rationale: Primitive is intentionally off unless an operator enables an environment
+    variable or optional service.
+- id: optional-governance-observer
+  severity: advisory
+  status: aligned
+  rationale: Primitive is an optional governance observer that can run on demand or
+    in selected profiles rather than every IDE lifecycle.
+- id: acceptable-codex-limited-tool-events
+  severity: advisory
+  status: aligned
+  rationale: Codex currently has narrower native tool-event matchers than Claude;
+    keep the primitive portable through other surfaces without claiming full lifecycle
+    parity.
+- id: optional-background-orchestration
+  severity: advisory
+  status: aligned
+  rationale: Background orchestration reminders are optional session ergonomics and
+    should not block primitive portability when not wired in every harness.
+- id: claude-posttool-agent-only
+  severity: advisory
+  status: aligned
+  rationale: Primitive is a Claude Agent PostToolUse observer; Codex lacks an equivalent
+    native Agent completion event.
+- id: structural-only-ok
+  severity: advisory
+  status: aligned
+  rationale: Rules, skills, and templates are context/structure surfaces; native hook
+    wiring is not expected.
+- id: shell-command-only
+  severity: advisory
+  status: aligned
+  rationale: Command surfaces are projected through shell/CI rather than IDE lifecycle
+    hooks.
+- id: must-fix-parity
+  severity: high
+  status: partial
+  rationale: Runtime safety primitive claims portability but lacks required Claude/Codex
+    parity.
+- id: hook-helper-library
+  severity: advisory
+  status: aligned
+  rationale: Hook helper libraries are sourced by wired hooks; direct harness event
+    wiring is not expected.
+- id: codex-adapter
+  severity: advisory
+  status: aligned
+  rationale: Codex-specific adapter is intentionally wired only in Codex.
+- id: on-demand-command-only
+  severity: advisory
+  status: aligned
+  rationale: Script is an on-demand command/maintainer executable; IDE lifecycle hook
+    wiring is not expected.
+- id: projectable-needs-driver
+  severity: medium
+  status: partial
+  rationale: Project-scoped command is not yet projected by a consumer harness/profile.
+- id: behavior-proof-needed
+  severity: medium
+  status: partial
+  rationale: Primitive is projected/wired but needs explicit behavior evidence mapping.
+- id: os-internal-observability-surface
+  severity: advisory
+  status: aligned
+  rationale: OS-internal primitives can be observable through ACC/dashboard without
+    per-IDE lifecycle projection; family audits remain the behavior guard.
+- id: unclassified
+  severity: medium
+  status: partial
+  rationale: Gap has not yet been triaged.
+- id: profile-scoped-hook
+  severity: advisory
+  status: aligned
+  rationale: Primitive is intentionally projected only in full/security profiles or
+    selected operators, not the default hot path.
 rules:
-  - policy: hook-helper-library
-    family: hooks
-    path_prefix: hooks/_lib/
-  - policy: codex-adapter
-    family: hooks
-    primitives:
-      - hooks/concurrent-write-guard-codex-proxy.sh
-  - policy: acceptable-claude-only
-    family: hooks
-    primitives:
-      - hooks/pre-compaction-flush.sh
-      - hooks/subagent-context-injector.sh
-      - hooks/task-created.sh
-      - hooks/teammate-idle.sh
-  - policy: acceptable-codex-no-agent-event
-    family: hooks
-    primitives:
-      - hooks/adaptive-bypass.sh
-      - hooks/agent-checkpoint.sh
-      - hooks/agent-prelaunch.sh
-      - hooks/agent-quota-advisor.sh
-      - hooks/agent-qwen-bridge.sh
-      - hooks/agent-working-dir-inject.sh
-      - hooks/aguara-scan.sh
-      - hooks/assumption-tracker.sh
-      - hooks/auto-refine.sh
-      - hooks/auto-repair-dispatcher.sh
-      - hooks/auto-rollback-trigger.sh
-      - hooks/auto-verify.sh
-      - hooks/blast-radius.sh
-      - hooks/claim-validator.sh
-      - hooks/clarification-gate.sh
-      - hooks/clarification-interceptor.sh
-      - hooks/completeness-check-llm.sh
-      - hooks/completion-gate.sh
-      - hooks/confidence-gate-llm.sh
-      - hooks/confidence-gate.sh
-      - hooks/consequence-evaluator.sh
-      - hooks/context-diet.sh
-  - policy: optional-env-gated-surface
-    family: hooks
-    primitives:
-      - hooks/agent-bus-monitor.sh
-  - policy: optional-governance-observer
-    family: hooks
-    primitives:
-      - hooks/adr-detector.sh
-      - hooks/code-review-on-commit.sh
-  - policy: acceptable-codex-limited-tool-events
-    family: hooks
-    primitives:
-      - hooks/auto-checkpoint.sh
-      - hooks/concurrent-write-guard.sh
-      - hooks/confidentiality-enforcer.sh
-      - hooks/content-policy.sh
-      - hooks/context-watchdog.sh
-      - hooks/document-ingest-guard.sh
-  - policy: optional-background-orchestration
-    family: hooks
-    primitives:
-      - hooks/background-agent-reminder.sh
-  - policy: claude-posttool-agent-only
-    family: hooks
-    primitives:
-      - hooks/agent-output-verifier.sh
-  - policy: structural-only-ok
-    families: [rules, skills, templates]
-    scopes: [os-only, project, both]
-  - policy: shell-command-only
-    family: scripts
-    harness: shell-ci
-    scopes: [project, both]
-  - policy: codex-adapter-needed
-    family: hooks
-    missing_harness: codex
-    scopes: [project, both]
-  - policy: must-fix-parity
-    family: hooks
-    role_patterns: [runtime-safety, memory-lifecycle]
-    missing_harness_any: [claude, codex]
-    scopes: [project, both]
-  - policy: os-internal-observability-surface
-    family: hooks
-    scopes: [os-only]
-    gap_contains: behavior proof
-  - policy: behavior-proof-needed
-    family: hooks
-    gap_contains: behavior proof
-  - policy: on-demand-command-only
-    family: scripts
-    scopes: [os-only, both]
-    missing_harness_any: [claude, codex]
-  - policy: projectable-needs-driver
-    family: scripts
-    scopes: [project]
+- policy: hook-helper-library
+  family: hooks
+  path_prefix: hooks/_lib/
+- policy: profile-scoped-hook
+  family: hooks
+  primitives:
+  - hooks/agent-bash-cwd-enforcer.sh
+  - hooks/rate-limit-precheck.sh
+  - hooks/rate-limiter.sh
+- policy: codex-adapter
+  family: hooks
+  primitives:
+  - hooks/concurrent-write-guard-codex-proxy.sh
+- policy: acceptable-claude-only
+  family: hooks
+  primitives:
+  - hooks/pre-compaction-flush.sh
+  - hooks/subagent-context-injector.sh
+  - hooks/task-created.sh
+  - hooks/teammate-idle.sh
+- policy: acceptable-codex-no-agent-event
+  family: hooks
+  primitives:
+  - hooks/adaptive-bypass.sh
+  - hooks/agent-checkpoint.sh
+  - hooks/agent-prelaunch.sh
+  - hooks/agent-quota-advisor.sh
+  - hooks/agent-qwen-bridge.sh
+  - hooks/agent-working-dir-inject.sh
+  - hooks/aguara-scan.sh
+  - hooks/assumption-tracker.sh
+  - hooks/auto-refine.sh
+  - hooks/auto-repair-dispatcher.sh
+  - hooks/auto-rollback-trigger.sh
+  - hooks/auto-verify.sh
+  - hooks/blast-radius.sh
+  - hooks/claim-validator.sh
+  - hooks/clarification-gate.sh
+  - hooks/clarification-interceptor.sh
+  - hooks/completeness-check-llm.sh
+  - hooks/completion-gate.sh
+  - hooks/confidence-gate-llm.sh
+  - hooks/confidence-gate.sh
+  - hooks/consequence-evaluator.sh
+  - hooks/context-diet.sh
+  - hooks/subagent-budget-enforcer.sh
+- policy: optional-env-gated-surface
+  family: hooks
+  primitives:
+  - hooks/agent-bus-monitor.sh
+- policy: optional-governance-observer
+  family: hooks
+  primitives:
+  - hooks/adr-detector.sh
+  - hooks/code-review-on-commit.sh
+- policy: acceptable-codex-limited-tool-events
+  family: hooks
+  primitives:
+  - hooks/auto-checkpoint.sh
+  - hooks/concurrent-write-guard.sh
+  - hooks/confidentiality-enforcer.sh
+  - hooks/content-policy.sh
+  - hooks/context-watchdog.sh
+  - hooks/document-ingest-guard.sh
+- policy: optional-background-orchestration
+  family: hooks
+  primitives:
+  - hooks/background-agent-reminder.sh
+- policy: claude-posttool-agent-only
+  family: hooks
+  primitives:
+  - hooks/agent-output-verifier.sh
+- policy: structural-only-ok
+  families:
+  - rules
+  - skills
+  - templates
+  scopes:
+  - os-only
+  - project
+  - both
+- policy: shell-command-only
+  family: scripts
+  harness: shell-ci
+  scopes:
+  - project
+  - both
+- policy: codex-adapter-needed
+  family: hooks
+  missing_harness: codex
+  scopes:
+  - project
+  - both
+- policy: must-fix-parity
+  family: hooks
+  role_patterns:
+  - runtime-safety
+  - memory-lifecycle
+  missing_harness_any:
+  - claude
+  - codex
+  scopes:
+  - project
+  - both
+- policy: os-internal-observability-surface
+  family: hooks
+  scopes:
+  - os-only
+  gap_contains: behavior proof
+- policy: behavior-proof-needed
+  family: hooks
+  gap_contains: behavior proof
+- policy: on-demand-command-only
+  family: scripts
+  scopes:
+  - os-only
+  - both
+  missing_harness_any:
+  - claude
+  - codex
+- policy: projectable-needs-driver
+  family: scripts
+  scopes:
+  - project

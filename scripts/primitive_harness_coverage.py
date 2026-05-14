@@ -216,6 +216,31 @@ def _load_json(path: Path) -> Any:
         return None
 
 
+
+
+def _dispatcher_targets(root: Path) -> set[str]:
+    text = read_text(root / "hooks" / "bash-hot-path-dispatcher.sh")
+    return set(re.findall(r'"(hooks/[A-Za-z0-9_.-]+\.sh)"', text))
+
+
+def _expand_dispatcher_wiring(root: Path, wiring: dict[str, dict[str, list[str]]]) -> dict[str, dict[str, list[str]]]:
+    dispatcher = "hooks/bash-hot-path-dispatcher.sh"
+    dispatcher_wire = wiring.get(dispatcher)
+    if not dispatcher_wire:
+        return wiring
+    for child in sorted(_dispatcher_targets(root)):
+        if child == dispatcher:
+            continue
+        child_wire = wiring.setdefault(child, {"events": [], "commands": []})
+        for event in dispatcher_wire.get("events", []):
+            if event not in child_wire["events"]:
+                child_wire["events"].append(event)
+        for command in dispatcher_wire.get("commands", []):
+            routed = f"{command} -> {child}"
+            if routed not in child_wire["commands"]:
+                child_wire["commands"].append(routed)
+    return wiring
+
 def _claude_wiring(root: Path) -> dict[str, dict[str, list[str]]]:
     data = _load_json(root / ".claude" / "settings.json") or {}
     hooks = data.get("hooks") or {}
@@ -229,7 +254,7 @@ def _claude_wiring(root: Path) -> dict[str, dict[str, list[str]]]:
                     wiring.setdefault(ref, {"events": [], "commands": []})
                     wiring[ref]["events"].append(str(event))
                     wiring[ref]["commands"].append(command)
-    return wiring
+    return _expand_dispatcher_wiring(root, wiring)
 
 
 def _codex_wiring(root: Path) -> dict[str, dict[str, list[str]]]:
@@ -244,7 +269,7 @@ def _codex_wiring(root: Path) -> dict[str, dict[str, list[str]]]:
                     wiring.setdefault(ref, {"events": [], "commands": []})
                     wiring[ref]["events"].append(str(event))
                     wiring[ref]["commands"].append(command)
-    return wiring
+    return _expand_dispatcher_wiring(root, wiring)
 
 
 def _shell_ci_projection(root: Path) -> dict[str, dict[str, list[str]]]:

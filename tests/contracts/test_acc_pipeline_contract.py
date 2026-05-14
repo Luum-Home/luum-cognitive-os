@@ -11,8 +11,8 @@ pytestmark = pytest.mark.contract
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "acc_pipeline.py"
-REPORT = REPO_ROOT / "docs" / "acc" / "latest.json"
-COMPACT = REPO_ROOT / "docs" / "acc" / "latest-compact.md"
+REPORT = REPO_ROOT / "docs" / "07-Capabilities" / "acc" / "latest.json"
+COMPACT = REPO_ROOT / "docs" / "07-Capabilities" / "acc" / "latest-compact.md"
 
 
 @pytest.mark.timeout(90)

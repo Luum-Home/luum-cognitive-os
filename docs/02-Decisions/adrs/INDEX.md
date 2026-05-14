@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 312 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 322 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (141)
+### Active / Implemented (148)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -153,6 +153,13 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [300](ADR-300-semantic-routing-model-selection.md) | Semantic Routing Model Selection — Operator Swap + Benchmark Winner Discovery | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
 | [301](ADR-301-onnx-direct-routing-adapter.md) | ONNX-Direct Routing Adapter — Generic HF-Hosted ONNX Bi-Encoder Loader | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. |
 | [302](ADR-302-language-agnostic-primitive-routing-authoring.md) | Language-Agnostic Primitive Routing Authoring Contract | accepted | implemented | 2026-05-13 | Accepted — 2026-05-13. Implemented in the same change. |
+| [303](ADR-303-agent-spawn-cold-start-benchmark.md) | Sub-Agent Spawn Cold-Start Benchmark | accepted | implemented | 2026-05-13 | Session 2026-05-13 identified a measurement gap: orchestrator SessionStart is |
+| [304](ADR-304-telemetry-aggregator-feedback-loop.md) | Telemetry Aggregator + Feedback Loop | accepted | implemented | 2026-05-13 | Accepted, implemented 2026-05-13. |
+| [305](ADR-305-dependency-coverage-reconciliation-audit.md) | Dependency Coverage Reconciliation Audit | accepted | implemented | 2026-05-14 | Accepted and implemented 2026-05-14. |
+| [306](ADR-306-scope-projection-runtime-audit.md) | Scope Projection Runtime Audit | accepted | implemented | 2026-05-14 | Accepted, implemented 2026-05-14. |
+| [307](ADR-307-dependency-tool-intake-and-profile-ratchet.md) | Dependency Tool Intake and Profile Ratchet | accepted | implemented | 2026-05-14 | Accepted and implemented 2026-05-14. |
+| [311](ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) | Primitive Closure Ratchets and Subagent Budget Enforcement | accepted | implemented | 2026-05-14 | - **Status**: Accepted |
+| [312](ADR-312-harness-normalized-primitive-closure.md) | Harness-Normalized Primitive Closure | accepted | implemented | 2026-05-14 | - **Status**: Accepted |
 
 ### Active / Partial (118)
 

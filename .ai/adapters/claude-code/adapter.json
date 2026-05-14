@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 340,
+  "projected_primitive_count": 346,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -588,6 +588,48 @@
       "portable_id": "hook-spdx-header-required",
       "primitive_file": "primitives/hooks/hook-spdx-header-required-6044a391b9.json",
       "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/adversarial-review-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-adversarial-review-gate-sh-e773c94c30.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/bash-hot-path-dispatcher.sh",
+      "primitive_file": "primitives/hooks/hooks-bash-hot-path-dispatcher-sh-cf58f59273.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/decision-depth-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-decision-depth-gate-sh-aa174e7de4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-start-stack-recommend.sh",
+      "primitive_file": "primitives/hooks/hooks-session-start-stack-recommend-sh-6916846e79.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-drift-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-drift-detector-sh-818ec0f6fd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/subagent-budget-enforcer.sh",
+      "primitive_file": "primitives/hooks/hooks-subagent-budget-enforcer-sh-4b672bc9f4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": true,

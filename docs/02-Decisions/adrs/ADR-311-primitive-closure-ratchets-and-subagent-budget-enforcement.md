@@ -1,3 +1,10 @@
+---
+adr: 311
+title: Primitive Closure Ratchets and Subagent Budget Enforcement
+status: accepted
+implementation_status: implemented
+date: 2026-05-14
+---
 # ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement
 
 ## Status

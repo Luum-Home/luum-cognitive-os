@@ -15,7 +15,7 @@ if str(REPO_ROOT) not in sys.path:
 from scripts.portable_ai_overlay import build_overlay  # noqa: E402
 
 ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-272-structural-rule-backend-boundary.md"
-CHECKLIST = REPO_ROOT / "docs" / "business" / "master-plan-checklist.md"
+CHECKLIST = REPO_ROOT / "docs" / "08-References" / "business" / "master-plan-checklist.md"
 
 
 def test_agents_md_backend_boundary_flows_through_overlay_and_compile_receipt(tmp_path: Path) -> None:

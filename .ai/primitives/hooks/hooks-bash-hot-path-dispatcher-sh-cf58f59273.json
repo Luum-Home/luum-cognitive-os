@@ -1,0 +1,100 @@
+{
+  "canonical_source": "hooks/bash-hot-path-dispatcher.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+    "evidence_commands": [
+      "bash -n hooks/bash-hot-path-dispatcher.sh",
+      "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/hook-timing.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-311",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+      "evidence_commands": [
+        "bash -n hooks/bash-hot-path-dispatcher.sh",
+        "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/hook-timing.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        "hooks/bash-hot-path-dispatcher.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/bash-hot-path-dispatcher.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/bash-hot-path-dispatcher.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/bash-hot-path-dispatcher.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

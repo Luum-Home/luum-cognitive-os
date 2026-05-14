@@ -1,0 +1,92 @@
+{
+  "canonical_source": "hooks/decision-depth-gate.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "PostToolUse Agent advisory gate checks decision-depth evidence in delegated reviews.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "PostToolUse Agent advisory gate checks decision-depth evidence in delegated reviews.",
+    "evidence_commands": [
+      "bash -n hooks/decision-depth-gate.sh",
+      "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/hook-timing.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-311",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "PostToolUse Agent advisory gate checks decision-depth evidence in delegated reviews.",
+      "evidence_commands": [
+        "bash -n hooks/decision-depth-gate.sh",
+        "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/hook-timing.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "PostToolUse Agent advisory gate checks decision-depth evidence in delegated reviews.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/decision-depth-gate.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/decision-depth-gate.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/decision-depth-gate.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/decision-depth-gate.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

@@ -47,6 +47,16 @@
       "gap_policy": "codex-adapter-needed",
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/control-plane-audit.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/cosd-auth-guard.sh",
       "scope": "both"
     },
@@ -288,16 +298,6 @@
       "gap_severity": "medium",
       "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
       "primitive": "hooks/pre-cleanup-snapshot.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "hooks",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "codex-adapter-needed",
-      "gap_severity": "medium",
-      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
-      "primitive": "hooks/pre-commit-gate.sh",
       "scope": "project"
     },
     {
@@ -672,7 +672,7 @@
       "medium": 66
     },
     "partial_count": 66,
-    "total_gaps": 874,
+    "total_gaps": 786,
     "unclassified_gaps": 0
   }
 }

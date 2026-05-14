@@ -1,17 +1,17 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-12T19:44:46Z
+Generated: 2026-05-14T14:49:29Z
 Phase: reconstruction
 Gate: pass
 
 ## Summary
 
-- ACC: 0.9839
-- ACC effective: 0.9902
-- Total weight: 6208
-- Capabilities: 2967
+- ACC: 0.9843
+- ACC effective: 0.9904
+- Total weight: 6351
+- Capabilities: 3039
 - Findings: 71
-- Mapping weights: {'aligned': 6108, 'missing': 0, 'overexposed': 0, 'partial': 78, 'stale': 0, 'unverified': 22}
+- Mapping weights: {'aligned': 6251, 'missing': 0, 'overexposed': 0, 'partial': 78, 'stale': 0, 'unverified': 22}
 - Primitive fitness reports: 0
 - New debt gate: pass (0)
 
@@ -20,23 +20,23 @@ Gate: pass
 | Adapter | Status | Source | Summary |
 |---|---|---|---|
 | authority_write_effects | ok | `docs/06-Daily/reports/primitive-authority-latest.json` | `{"block_count": 0, "by_mode": {"observe-only": 233, "os-maintainer-write": 265, "profile-projection-write": 35, "propose-only": 3}, "by_status": {"pass": 527, "warn": 9}, "dynamic_blocks": 0, "dynamic_smokes": 4, "total_scripts": 536}` |
-| codebase_itinerary | ok | `.cognitive-os/metrics/codebase-itinerary.jsonl` | `{"categories": {"read": 756}, "rows": 756, "sessions": 754, "tools": {"Read": 756}}` |
-| consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 91, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 3, "maintainer-only": 60, "pattern:so-local-only": 6, "shell-ci-candidate": 15, "so-local-only": 13}}` |
-| consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"agents-md/default": 73, "agents-md/full": 396, "aider/default": 73, "aider/full": 396, "amp-code/default": 73, "amp-code/full": 396, "augment-code/default": 73, "augment-code/full": 396, "claude/default": 73, "claud` |
-| docs_execution_report | ok | `docs/06-Daily/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 2}, "docs/00-MOCs/architecture.md": {"proposed": 2}, "docs/00-MOCs/decisions.md": {"done_with_proof": 1}, "docs/00-MOCs/operations.md": {"don` |
+| codebase_itinerary | unverified | `.cognitive-os/metrics/codebase-itinerary.jsonl` | `{}` |
+| consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 105, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 3, "maintainer-only": 71, "pattern:so-local-only": 6, "shell-ci-candidate": 15, "so-local-only": 16}}` |
+| consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"agents-md/default": 73, "agents-md/full": 424, "aider/default": 73, "aider/full": 424, "amp-code/default": 73, "amp-code/full": 424, "augment-code/default": 73, "augment-code/full": 424, "claude/default": 73, "claud` |
+| docs_execution_report | ok | `docs/06-Daily/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 2}, "docs/00-MOCs/architecture.md": {"proposed": 2}, "docs/00-MOCs/decisions.md": {"done_with_proof": 1}, "docs/00-MOCs/entrypoints/HOW-TO-US` |
 | documentation_truth | ok | `docs/06-Daily/reports/documentation-truth-latest.json` | `{"block_count": 0, "by_claim": {"consumer_projection_harnesses": {"pass": 17}, "documentation_truth_control": {"pass": 8}, "primitive_authority_write_effects": {"pass": 16}, "session_pending_protocol": {"pass": 75}, "subprocess_timeout_disc` |
-| harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 266, "rules": 120, "scripts": 541, "skills": 101, "templates": 22}, "by_scope": {"both": 580, "os-only": 406, "project": 64}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 6, "` |
+| harness_coverage | ok | `docs/06-Daily/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 273, "rules": 120, "scripts": 567, "skills": 106, "templates": 22}, "by_scope": {"both": 589, "os-only": 435, "project": 64}, "gap_policies": {"acceptable-claude-only": 4, "acceptable-codex-limited-tool-events": 5, "` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 22, "planned": 5, "total": 27, "unsupported": 0}` |
 | primitive_fitness_ledger | ok | `docs/06-Daily/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
-| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"advise": 4, "allow": 146, "block": 58, "suggest": 378, "warn": 93}, "primitive_count": 7}` |
+| primitive_interventions | ok | `.cognitive-os/metrics/primitive-interventions.jsonl` | `{"actions": {"warn": 2}, "primitive_count": 1}` |
 | projection_fidelity | ok | `docs/06-Daily/reports/primitive-projection-fidelity-latest.json` | `{"contracts": 308, "statuses": {"aligned": 308, "gap": 3}}` |
 | projection_profiles | ok | `manifests/primitive-projection-profiles.yaml` | `{"profile_driver_scripts": 19, "profiles": ["default", "full"], "projection_classes": ["default", "full", "maintainer-only", "profile-driver", "shared"]}` |
 | proof_drill_evidence | ok | `docs/06-Daily/reports/proof-drill-evidence-latest.json` | `{"claim_map": {"claims": 4, "proof_status_counts": {"passed": 4}}, "rows": 5, "status_counts": {"passed": 5}}` |
-| readiness:hooks | ok | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 173, "medium": 93}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 1, "lifecycle-declared-maintainer": 155, "projected-consumer-surface": 17, "so-local-only": 93}, "roles": {"driver-specific": 23` |
+| readiness:hooks | ok | `docs/06-Daily/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 179, "medium": 94}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 1, "lifecycle-declared-maintainer": 158, "projected-consumer-surface": 20, "so-local-only": 94}, "roles": {"driver-specific": 23` |
 | readiness:rules | ok | `docs/06-Daily/reports/primitive-readiness-ledger-rules-latest.json` | `{"confidence": {"medium": 120}, "consumer_accessibility": {"lifecycle-declared-maintainer": 1, "so-local-only": 119}, "roles": {"context-only": 6, "doctrine": 4, "driver-specific": 52, "hook-enforced": 47, "lab": 11}, "total": 120, "without` |
-| readiness:scripts | ok | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 181, "low": 23, "medium": 334}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 73, "lifecycle-declared-maintainer": 58, "` |
-| readiness:skills | ok | `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json` | `{"confidence": {"high": 62, "medium": 39}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 2, "repo-skill-not-projectable": 94, "so-local-only": 5}, "roles": {"compatibility-wrapper": 62, "lab": 8, "project-extension": 1` |
-| readiness:templates | ok | `docs/06-Daily/reports/primitive-readiness-ledger-templates-latest.json` | `{"confidence": {"medium": 22}, "consumer_accessibility": {"so-local-only": 22}, "roles": {"agent-preamble": 1, "prompt-composition": 11, "quality-gate": 9, "recovery": 1}, "total": 22, "without_consumers": 4, "without_lifecycle": 22}` |
+| readiness:scripts | ok | `docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 204, "low": 14, "medium": 349}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 80, "lifecycle-declared-maintainer": 62, "` |
+| readiness:skills | ok | `docs/06-Daily/reports/primitive-readiness-ledger-skills-latest.json` | `{"confidence": {"high": 66, "medium": 40}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 2, "repo-skill-not-projectable": 99, "so-local-only": 5}, "roles": {"compatibility-wrapper": 66, "lab": 9, "project-extension": 1` |
+| readiness:templates | ok | `docs/06-Daily/reports/primitive-readiness-ledger-templates-latest.json` | `{"confidence": {"medium": 22}, "consumer_accessibility": {"so-local-only": 22}, "roles": {"agent-preamble": 1, "prompt-composition": 11, "quality-gate": 9, "recovery": 1}, "total": 22, "without_consumers": 0, "without_lifecycle": 22}` |
 | shell_ci_projection | ok | `manifests/shell-ci-projection.yaml` | `{"commands": 15, "profiles": ["default", "full"], "workflows": 1}` |
 
 ## Findings
@@ -49,6 +49,7 @@ Gate: pass
 | `harness_coverage:hooks/agent-launch-confirmed.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/ai-provider-identity-guard.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/contextual-rule-loader.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
+| `harness_coverage:hooks/control-plane-audit.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/cosd-auth-guard.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/doc-sync-detector.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/dod-gate.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
@@ -74,7 +75,6 @@ Gate: pass
 | `harness_coverage:hooks/post-agent-verify.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/pre-agent-snapshot.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/pre-cleanup-snapshot.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
-| `harness_coverage:hooks/pre-commit-gate.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/predev-completeness-check.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/private-mode-gate.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
 | `harness_coverage:hooks/private-mode-metrics-gate.sh` | medium | partial | Harness implementation coverage gap | classify the gap policy or add the missing harness projection/proof |
@@ -126,13 +126,13 @@ Gate: pass
 - install-profile-managed: 19
 - lifecycle-declared-consumer-candidate: 65
 - lifecycle-declared-maintainer: 58
-- maintainer-only: 60
+- maintainer-only: 71
 - profile-driver: 19
-- projected-consumer-surface: 1360
-- runtime-evidence: 8
+- projected-consumer-surface: 1398
+- runtime-evidence: 1
 - shell-ci-candidate: 15
 - skill-referenced-not-projectable: 12
-- so-local-only: 1351
+- so-local-only: 1381
 
 ## Persistence
 

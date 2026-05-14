@@ -2,11 +2,11 @@
 
 > Context diet entrypoint. Read this before opening `docs/07-Capabilities/acc/latest.json`.
 
-Generated: 2026-05-12T19:44:46Z
+Generated: 2026-05-14T14:49:29Z
 Gate: pass (reconstruction)
-ACC: 0.9839
-ACC effective: 0.9902
-Capabilities: 2967
+ACC: 0.9843
+ACC effective: 0.9904
+Capabilities: 3039
 Findings: 71
 New debt gate: pass (0)
 Primitive fitness reports: 0
@@ -17,7 +17,7 @@ Primitive fitness reports: 0
 
 ## Mapping Weights
 
-- aligned: 6108
+- aligned: 6251
 - missing: 0
 - overexposed: 0
 - partial: 78
@@ -29,13 +29,13 @@ Primitive fitness reports: 0
 - install-profile-managed: 19
 - lifecycle-declared-consumer-candidate: 65
 - lifecycle-declared-maintainer: 58
-- maintainer-only: 60
+- maintainer-only: 71
 - profile-driver: 19
-- projected-consumer-surface: 1360
-- runtime-evidence: 8
+- projected-consumer-surface: 1398
+- runtime-evidence: 1
 - shell-ci-candidate: 15
 - skill-referenced-not-projectable: 12
-- so-local-only: 1351
+- so-local-only: 1381
 
 ## Top Findings
 
@@ -45,8 +45,8 @@ Primitive fitness reports: 0
 - `harness_coverage:hooks/agent-launch-confirmed.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 - `harness_coverage:hooks/ai-provider-identity-guard.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 - `harness_coverage:hooks/contextual-rule-loader.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
+- `harness_coverage:hooks/control-plane-audit.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 - `harness_coverage:hooks/cosd-auth-guard.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
-- `harness_coverage:hooks/doc-sync-detector.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 
 ## New Debt
 

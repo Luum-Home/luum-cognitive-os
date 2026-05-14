@@ -1,0 +1,100 @@
+{
+  "canonical_source": "hooks/session-start-stack-recommend.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "SessionStart advisory recommends stack bootstrap checks for portable sessions.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "SessionStart advisory recommends stack bootstrap checks for portable sessions.",
+    "evidence_commands": [
+      "bash -n hooks/session-start-stack-recommend.sh",
+      "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/hook-timing.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-310",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "SessionStart advisory recommends stack bootstrap checks for portable sessions.",
+      "evidence_commands": [
+        "bash -n hooks/session-start-stack-recommend.sh",
+        "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/hook-timing.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "SessionStart advisory recommends stack bootstrap checks for portable sessions.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        "hooks/session-start-stack-recommend.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/session-start-stack-recommend.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/session-start-stack-recommend.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/session-start-stack-recommend.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

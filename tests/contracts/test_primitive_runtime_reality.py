@@ -39,6 +39,16 @@ def _hook_text(hook_path: str) -> str:
     return (REPO_ROOT / hook_path).read_text(encoding="utf-8", errors="ignore")
 
 
+def _has_blocking_exit_behavior(hook_path: str) -> bool:
+    text = _hook_text(hook_path)
+    if "exit 2" in text:
+        return True
+    # Dispatcher-style hooks preserve blocking child exit codes instead of
+    # spelling out exit 2 directly. Treat explicit rc propagation as real
+    # blocking behavior, not an aspirational claim.
+    return 'return "$rc"' in text and 'exit $?' in text
+
+
 def test_every_projected_hook_has_lifecycle_metadata() -> None:
     projected = _projected_hooks()
     manifest_hooks = {str(item["id"]) for item in _manifest_primitives() if str(item.get("id", "")).startswith("hooks/")}
@@ -65,7 +75,7 @@ def test_blocking_maturity_matches_real_exit2_behavior_and_tests() -> None:
         hook_path = str(item["id"])
         evidence = [str(command) for command in item.get("evidence_commands", [])]
         has_test_evidence = any("pytest" in command and "test" in command for command in evidence)
-        if item.get("exit_behavior") != "exit_2" or "exit 2" not in _hook_text(hook_path) or not has_test_evidence:
+        if item.get("exit_behavior") != "exit_2" or not _has_blocking_exit_behavior(hook_path) or not has_test_evidence:
             offenders.append(hook_path)
     assert offenders == []
 

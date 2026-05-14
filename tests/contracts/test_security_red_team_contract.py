@@ -11,7 +11,7 @@ MANIFEST = REPO / "manifests" / "security-red-team.yaml"
 SKILL = REPO / "skills" / "security-red-team" / "SKILL.md"
 RUNNER = REPO / "scripts" / "security_red_team.py"
 SHIM = REPO / "scripts" / "security-red-team"
-DOC = REPO / "docs" / "security" / "security-red-team.md"
+DOC = REPO / "docs" / "09-Quality" / "security" / "security-red-team.md"
 
 
 def test_manifest_shape() -> None:

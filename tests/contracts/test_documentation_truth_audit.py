@@ -16,7 +16,7 @@ REPO = Path(__file__).resolve().parents[2]
 def test_documentation_truth_contract_surfaces_exist_and_are_linked() -> None:
     manifest_path = REPO / "manifests" / "documentation-truth-claims.yaml"
     adr = REPO / "docs" / "02-Decisions" / "adrs" / "ADR-277-documentation-truth-control.md"
-    doc = REPO / "docs" / "architecture" / "documentation-truth-control.md"
+    doc = REPO / "docs" / "04-Concepts" / "architecture" / "documentation-truth-control.md"
     assert manifest_path.exists()
     assert adr.exists()
     assert doc.exists()
@@ -29,7 +29,7 @@ def test_documentation_truth_contract_surfaces_exist_and_are_linked() -> None:
         assert manifest["claims"][claim]["required_docs"]
         assert manifest["claims"][claim]["generated_block"]["required"] is True
 
-    readme = (REPO / "docs" / "README.md").read_text(encoding="utf-8")
+    readme = (REPO / "docs" / "00-MOCs" / "entrypoints" / "README.md").read_text(encoding="utf-8")
     assert "ADR-277: Documentation Truth Control" in readme
     assert "Documentation Truth Control" in readme
 
