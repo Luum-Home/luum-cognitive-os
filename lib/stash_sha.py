@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: OS
+# SCOPE: os-only
 """Immutable stash identity helpers (ADR-221).
 
 Git's ``stash@{N}`` reflog positions drift whenever another stash is pushed.
