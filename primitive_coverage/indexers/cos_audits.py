@@ -16,7 +16,7 @@ def load_json(path: Path) -> dict:
 
 
 def merge_cos_audits(root: Path, rows: dict[str, PrimitiveRow]) -> None:
-    row_audit = load_json(root / "docs" / "reports" / "primitive-row-audit-latest.json")
+    row_audit = load_json(root / "docs" / "06-Daily" / "reports" / "primitive-row-audit-latest.json")
     for item in row_audit.get("rows", []):
         path = item.get("path")
         family = item.get("family")
@@ -42,7 +42,7 @@ def merge_cos_audits(root: Path, rows: dict[str, PrimitiveRow]) -> None:
         if "registered=True" in evidence or "wired=True" in evidence:
             row.signals["wired"] = True
 
-    usage = load_json(root / "docs" / "reports" / "primitive-usage-map-latest.json")
+    usage = load_json(root / "docs" / "06-Daily" / "reports" / "primitive-usage-map-latest.json")
     for item in usage.get("targets", []):
         path = item.get("path")
         if not path:
@@ -58,7 +58,7 @@ def merge_cos_audits(root: Path, rows: dict[str, PrimitiveRow]) -> None:
                     row.signals["referenced"] = True
                 break
 
-    claims = load_json(root / "docs" / "reports" / "claim-proof-latest.json")
+    claims = load_json(root / "docs" / "06-Daily" / "reports" / "claim-proof-latest.json")
     for item in claims.get("rows", []):
         doc_path = item.get("path") or item.get("file")
         if not doc_path:
@@ -70,7 +70,7 @@ def merge_cos_audits(root: Path, rows: dict[str, PrimitiveRow]) -> None:
                     row.signals["proof"] = True
                 break
 
-    backlog = load_json(root / "docs" / "reports" / "reduction-backlog-latest.json")
+    backlog = load_json(root / "docs" / "06-Daily" / "reports" / "reduction-backlog-latest.json")
     backlog_items = backlog.get("items", [])
     if "items" in backlog and not backlog_items:
         # COS uses reduction_backlog as the authoritative hard-gap queue. Generic
