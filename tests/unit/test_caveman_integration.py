@@ -3,6 +3,7 @@
 Verifies that the caveman skills are installed correctly, the agent preamble
 contains the Caveman-Lite section, and the adoption registry is updated.
 """
+import os
 from pathlib import Path
 
 import pytest
@@ -14,6 +15,9 @@ from tests.unit._helpers import assert_preamble_contains_concepts
 @pytest.fixture
 def project_root() -> Path:
     """Return the absolute path to the project root directory."""
+    source_project = os.environ.get("COS_VALIDATION_SOURCE_PROJECT_DIR")
+    if source_project:
+        return Path(source_project)
     return Path(__file__).resolve().parent.parent.parent
 
 

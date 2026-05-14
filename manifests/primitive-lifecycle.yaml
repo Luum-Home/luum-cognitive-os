@@ -9196,6 +9196,11 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/hook-timing.jsonl
+  latency_budget_ms: 500
+  repair_message: Dispatcher failed or blocked; inspect the child hook output, repair the unsafe command state, then rerun dispatcher projection tests.
+  false_positive_tests:
+  - tests/unit/test_bash_hot_path_dispatcher_projection.py
+  - tests/red_team/portability/test_bash-hot-path-dispatcher.py
 - id: hooks/subagent-budget-enforcer.sh
   kind: hook
   owner_adr: ADR-311
@@ -9214,6 +9219,11 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/subagent-budget.jsonl
+  latency_budget_ms: 500
+  repair_message: Subagent budget was exceeded; escalate, summarize current trajectory, or split work before launching more delegated tool calls.
+  false_positive_tests:
+  - tests/contracts/test_subagent_budget_enforcer.py
+  - tests/red_team/portability/test_subagent-budget-enforcer.py
 - id: hooks/decision-depth-gate.sh
   kind: hook
   owner_adr: ADR-311

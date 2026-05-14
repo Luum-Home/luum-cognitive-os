@@ -1627,6 +1627,18 @@ harness:
       matcher: Agent
       scope: os-only
 
+    adversarial-review-gate:
+      script: hooks/adversarial-review-gate.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    decision-depth-gate:
+      script: hooks/decision-depth-gate.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
     confidence-gate:
       script: hooks/confidence-gate.sh
       event: PostToolUse
