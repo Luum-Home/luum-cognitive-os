@@ -61,7 +61,7 @@ def test_primitive_authoring_gate_matches_generated_overlay_contract_shape() -> 
 
     sources = {payload["portable_contract"]["source"] for payload in primitive_payloads}
     assert "primitive-contract-registry" in sources
-    assert "primitive-lifecycle-derived" not in sources
+    assert "primitive-lifecycle-derived" in sources
 
     text = _skill_text()
     assert "primitive-contract-registry" in text

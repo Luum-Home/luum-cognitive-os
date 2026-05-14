@@ -1,7 +1,7 @@
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DOC = PROJECT_ROOT / "docs" / "manual-tests" / "local-connected-systems-validation.md"
+DOC = PROJECT_ROOT / "docs" / "09-Quality" / "manual-tests" / "local-connected-systems-validation.md"
 
 
 def _section(markdown: str, heading: str) -> str:
@@ -126,11 +126,11 @@ def test_manual_proof_path_runs_dependency_doctor_services_and_summary_in_order(
 
 
 def test_local_connected_systems_validation_is_linked_from_entrypoints() -> None:
-    docs_readme = (PROJECT_ROOT / "docs" / "README.md").read_text(encoding="utf-8")
+    docs_readme = (PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md").read_text(encoding="utf-8")
     runtime_plan = (
         PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "headless-clustered-runtime-plan.md"
     ).read_text(encoding="utf-8")
-    checklist = (PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md").read_text(
+    checklist = (PROJECT_ROOT / "docs" / "08-References" / "business" / "master-plan-checklist.md").read_text(
         encoding="utf-8"
     )
 

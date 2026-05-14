@@ -7,7 +7,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 LANDSCAPE = REPO_ROOT / "manifests" / "ai-agent-harness-landscape.yaml"
 PROJECTION = REPO_ROOT / "manifests" / "harness-projection.yaml"
-IDE_COMPAT = REPO_ROOT / "docs" / "ide-compatibility.md"
+IDE_COMPAT = REPO_ROOT / "docs" / "04-Concepts" / "root" / "ide-compatibility.md"
 
 REQUIRED_FIELDS = {
     "id",

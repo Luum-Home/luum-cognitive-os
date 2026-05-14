@@ -67,8 +67,8 @@ def test_benchmark_plan_is_linked_from_runtime_plan_and_docs() -> None:
     runtime_plan = (
         PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "headless-clustered-runtime-plan.md"
     ).read_text(encoding="utf-8")
-    docs_readme = (PROJECT_ROOT / "docs" / "README.md").read_text(encoding="utf-8")
-    checklist = (PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md").read_text(
+    docs_readme = (PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md").read_text(encoding="utf-8")
+    checklist = (PROJECT_ROOT / "docs" / "08-References" / "business" / "master-plan-checklist.md").read_text(
         encoding="utf-8"
     )
 

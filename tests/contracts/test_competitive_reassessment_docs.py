@@ -7,7 +7,7 @@ import pytest
 pytestmark = pytest.mark.contract
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DOC = PROJECT_ROOT / "docs" / "business" / "competitive-reassessment-openclaw-hermes-2026-04.md"
+DOC = PROJECT_ROOT / "docs" / "08-References" / "business" / "competitive-reassessment-openclaw-hermes-2026-04.md"
 
 
 def _table_rows(markdown: str, heading: str) -> list[list[str]]:
@@ -25,10 +25,10 @@ def _table_rows(markdown: str, heading: str) -> list[list[str]]:
 
 def test_competitive_reassessment_is_linked_from_product_entrypoints() -> None:
     assert "business/competitive-reassessment-openclaw-hermes-2026-04.md" in (
-        PROJECT_ROOT / "docs" / "README.md"
+        PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md"
     ).read_text(encoding="utf-8")
     assert "competitive-reassessment-openclaw-hermes-2026-04.md" in (
-        PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md"
+        PROJECT_ROOT / "docs" / "08-References" / "business" / "master-plan-checklist.md"
     ).read_text(encoding="utf-8")
 
 

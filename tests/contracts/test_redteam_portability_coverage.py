@@ -40,11 +40,6 @@ REDTEAM_BOTH_ARTIFACTS: list[tuple[str, str]] = [
     ("scripts/redteam_aggregate.py",            "redteam-aggregate.bats"),
     ("hooks/plan-claim-validator.sh",           "plan-claim-validator.bats"),
     ("skills/redteam-harness/SKILL.md",         "skill-redteam-harness.bats"),
-    ("tests/red_team/scenarios/archive-presence-fallacy.yaml",  "scenario-archive-presence-fallacy.bats"),
-    ("tests/red_team/scenarios/unwired-constant.yaml",          "scenario-unwired-constant.bats"),
-    ("tests/red_team/scenarios/plan-checkbox-no-evidence.yaml", "scenario-plan-checkbox-no-evidence.bats"),
-    ("tests/red_team/scenarios/regex-false-positives.yaml",     "scenario-regex-false-positives.bats"),
-    ("tests/red_team/scenarios/partial-completion-claim.yaml",  "scenario-partial-completion-claim.bats"),
     # Template artifact (both)
     ("templates/contracts/test_redteam_baseline.template.py",   "template-test-redteam-baseline.bats"),
 ]

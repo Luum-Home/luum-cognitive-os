@@ -12,15 +12,15 @@ import pytest
 pytestmark = pytest.mark.contract
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DOC = PROJECT_ROOT / "docs" / "architecture" / "harness-transparency-status.md"
+DOC = PROJECT_ROOT / "docs" / "04-Concepts" / "architecture" / "harness-transparency-status.md"
 
 
 def test_harness_transparency_status_doc_is_linked_from_entrypoints() -> None:
     assert "architecture/harness-transparency-status.md" in (
-        PROJECT_ROOT / "docs" / "README.md"
+        PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md"
     ).read_text()
     assert "Harness transparency status is documented honestly" in (
-        PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md"
+        PROJECT_ROOT / "docs" / "08-References" / "business" / "master-plan-checklist.md"
     ).read_text()
 
 

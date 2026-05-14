@@ -164,7 +164,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 1,
+        "doc": 2,
         "test": 1
       },
       "consumers": [
@@ -189,6 +189,10 @@
           "path": "docs/02-Decisions/adrs/ADR-237-test-execution-efficiency-protocol.md"
         },
         {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-305-dependency-coverage-reconciliation-audit.md"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_cos_test_efficiency_plan_cli.py"
         }
@@ -196,7 +200,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -207,7 +211,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -337,7 +341,7 @@
         "rule": 1,
         "script": 1,
         "skill": 1,
-        "test": 4
+        "test": 8
       },
       "consumers": [
         {
@@ -382,7 +386,23 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_scope-marker-portability-gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_add_hook.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_pattern_detector.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_portability_proof_scaffold.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_scope_both_portability_audit.py"
         },
         {
           "family": "test",
@@ -398,7 +418,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:8",
         "doc_consumers:6"
       ],
       "family": "skills",
@@ -409,14 +429,15 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 6
+        "doc": 6,
+        "test": 1
       },
       "consumers": [
         {
@@ -442,10 +463,15 @@
         {
           "family": "doc",
           "path": "docs/99-Archive/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_add_mcp.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:1",
         "doc_consumers:6"
       ],
       "family": "skills",
@@ -456,7 +482,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -467,7 +493,7 @@
         "rule": 1,
         "script": 1,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -505,6 +531,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_add_rule.py"
         }
       ],
       "distribution": null,
@@ -512,7 +542,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5"
       ],
       "family": "skills",
@@ -523,7 +553,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -535,7 +565,7 @@
         "rule": 2,
         "script": 1,
         "skill": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -632,6 +662,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_add_skill.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         },
         {
@@ -644,7 +678,7 @@
         "skill_consumers:2",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:14",
         "config_consumers:3"
       ],
@@ -656,7 +690,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "high",
@@ -666,7 +700,7 @@
         "config": 5,
         "doc": 3,
         "script": 2,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -719,6 +753,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-adr-tombstone.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_intent_arbiter.py"
         },
         {
@@ -729,7 +767,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:2",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:3",
         "config_consumers:5"
       ],
@@ -741,19 +779,19 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 3,
         "hook": 1,
         "rule": 1,
         "script": 5,
-        "test": 6
+        "test": 8
       },
       "consumers": [
         {
@@ -787,6 +825,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -850,6 +892,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_agent-control-inbound-guard.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_agent_control.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_coherence_audit.py"
         }
       ],
@@ -859,9 +909,9 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:5",
-        "test_consumers:6",
+        "test_consumers:8",
         "doc_consumers:3",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": "skills/agent-control/SKILL.md",
@@ -875,7 +925,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 24
+      "total_consumers": 27
     },
     {
       "confidence": "medium",
@@ -885,7 +935,7 @@
         "config": 1,
         "doc": 10,
         "script": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -950,13 +1000,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_agent_dashboard.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_init_py.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:10",
         "config_consumers:1"
       ],
@@ -968,7 +1022,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
@@ -977,7 +1031,7 @@
       "consumer_families": {
         "doc": 3,
         "rule": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -1002,13 +1056,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_agent_stress_test.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -1019,7 +1077,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -1028,7 +1086,8 @@
       "consumer_families": {
         "config": 3,
         "doc": 10,
-        "skill": 2
+        "skill": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -1090,11 +1149,16 @@
         {
           "family": "skill",
           "path": "skills/deep-tool-research/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_analyze_improvements.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
+        "test_consumers:1",
         "doc_consumers:10",
         "config_consumers:3"
       ],
@@ -1106,7 +1170,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -1115,7 +1179,8 @@
       "consumer_families": {
         "config": 3,
         "doc": 3,
-        "skill": 2
+        "skill": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -1149,11 +1214,16 @@
         {
           "family": "skill",
           "path": "skills/deep-tool-research/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_apply_improvements.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
+        "test_consumers:1",
         "doc_consumers:3",
         "config_consumers:3"
       ],
@@ -1165,7 +1235,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -1280,7 +1350,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 3,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -1298,11 +1368,15 @@
         {
           "family": "test",
           "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_branch_worktree_closure.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -1313,7 +1387,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -1452,7 +1526,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -1481,6 +1555,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_catalog_full.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_catalog_loading.py"
         },
         {
@@ -1493,7 +1571,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -1504,7 +1582,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -1514,7 +1592,7 @@
         "config": 1,
         "doc": 3,
         "hook": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -1539,13 +1617,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_caveman_compress.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_caveman_integration.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3",
         "config_consumers:1"
       ],
@@ -1557,7 +1639,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -1565,7 +1647,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 3,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -1582,6 +1664,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_caveman_es.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_caveman_integration.py"
         },
         {
@@ -1591,7 +1677,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -1602,7 +1688,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -1613,7 +1699,7 @@
         "doc": 9,
         "hook": 1,
         "skill": 2,
-        "test": 6
+        "test": 9
       },
       "consumers": [
         {
@@ -1682,6 +1768,18 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_caveman.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_caveman_compress.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_caveman_es.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_auto_skill_generator_routing.py"
         },
         {
@@ -1701,7 +1799,7 @@
       "evidence": [
         "skill_consumers:2",
         "hook_consumers:1",
-        "test_consumers:6",
+        "test_consumers:9",
         "doc_consumers:9",
         "config_consumers:2"
       ],
@@ -1713,19 +1811,19 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 20
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 20,
         "hook": 1,
         "rule": 3,
         "skill": 1,
-        "test": 11
+        "test": 12
       },
       "consumers": [
         {
@@ -1735,6 +1833,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -1882,6 +1984,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_code_review.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_provider_benchmark_and_optimizer.py"
         },
         {
@@ -1902,9 +2008,9 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:11",
+        "test_consumers:12",
         "doc_consumers:20",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1914,14 +2020,14 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 42
+      "total_consumers": 44
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 32,
         "rule": 2,
         "script": 3,
@@ -1932,6 +2038,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -2113,7 +2223,7 @@
         "script_consumers:3",
         "test_consumers:4",
         "doc_consumers:32",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2123,7 +2233,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 44
+      "total_consumers": 45
     },
     {
       "confidence": "medium",
@@ -2370,7 +2480,7 @@
       "consumer_families": {
         "doc": 4,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -2395,13 +2505,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_compat_test.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_compat_test.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:4"
       ],
       "family": "skills",
@@ -2412,7 +2526,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -2420,7 +2534,8 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 4
+        "doc": 4,
+        "test": 1
       },
       "consumers": [
         {
@@ -2442,10 +2557,15 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/patterns/component-classification.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_component_classifier.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:1",
         "doc_consumers:4",
         "config_consumers:1"
       ],
@@ -2457,7 +2577,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -2619,10 +2739,19 @@
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
-      "consumer_families": {},
-      "consumers": [],
+      "consumer_families": {
+        "config": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
+        }
+      ],
       "distribution": null,
-      "evidence": [],
+      "evidence": [
+        "config_consumers:1"
+      ],
       "family": "skills",
       "lifecycle_id": null,
       "lifecycle_state": null,
@@ -2631,7 +2760,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 0
+      "total_consumers": 1
     },
     {
       "confidence": "high",
@@ -2657,10 +2786,11 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 9,
-        "doc": 27,
+        "doc": 28,
         "hook": 1,
         "script": 9,
-        "test": 11
+        "test": 12,
+        "workflow": 1
       },
       "consumers": [
         {
@@ -2734,6 +2864,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-306-scope-projection-runtime-audit.md"
         },
         {
           "family": "doc",
@@ -2877,6 +3011,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_cos_status.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_acc_pipeline.py"
         },
         {
@@ -2890,15 +3028,20 @@
         {
           "family": "test",
           "path": "tests/unit/test_project_shell_ci.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/scope-portability.yml"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "script_consumers:9",
-        "test_consumers:11",
-        "doc_consumers:27",
-        "config_consumers:9"
+        "test_consumers:12",
+        "doc_consumers:28",
+        "config_consumers:9",
+        "workflow_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2908,7 +3051,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 57
+      "total_consumers": 60
     },
     {
       "confidence": "high",
@@ -2918,7 +3061,7 @@
         "config": 1,
         "doc": 4,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -2951,13 +3094,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_cost_predictor.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:4",
         "config_consumers:1"
       ],
@@ -2969,7 +3116,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -2981,7 +3128,7 @@
         "rule": 1,
         "script": 2,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -3042,6 +3189,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_decision_triage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_decision_triage.py"
         }
       ],
@@ -3050,7 +3201,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:5",
         "config_consumers:1"
       ],
@@ -3062,7 +3213,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -3072,7 +3223,7 @@
         "doc": 3,
         "rule": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -3101,6 +3252,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_deep_tool_research.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_product_answer_skill.py"
         }
       ],
@@ -3108,7 +3263,7 @@
       "evidence": [
         "skill_consumers:1",
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -3119,7 +3274,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -3127,7 +3282,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 6,
-        "doc": 6,
+        "doc": 8,
         "hook": 1,
         "script": 1,
         "skill": 1,
@@ -3180,6 +3335,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-305-dependency-coverage-reconciliation-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-307-dependency-tool-intake-and-profile-ratchet.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/05-Methodology/root/tooling-update-protocol.md"
         },
         {
@@ -3213,7 +3376,7 @@
         "hook_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -3224,7 +3387,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 20
     },
     {
       "confidence": "medium",
@@ -3232,7 +3395,8 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 4,
-        "hook": 1
+        "hook": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -3254,11 +3418,16 @@
         {
           "family": "hook",
           "path": "hooks/pattern-check.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_detect_patterns.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
+        "test_consumers:1",
         "doc_consumers:4"
       ],
       "family": "skills",
@@ -3269,18 +3438,23 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "skill": 3,
-        "test": 1
+        "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -3315,14 +3489,19 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_detect_stack.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_repetition_detector.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "test_consumers:1",
-        "doc_consumers:5"
+        "test_consumers:2",
+        "doc_consumers:5",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3332,7 +3511,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -3342,7 +3521,8 @@
         "config": 4,
         "doc": 1,
         "rule": 2,
-        "script": 2
+        "script": 2,
+        "test": 2
       },
       "consumers": [
         {
@@ -3380,12 +3560,21 @@
         {
           "family": "script",
           "path": "scripts/smoke-doc-review-personas.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_doc_review_personas.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_smoke-doc-review-personas.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:2",
         "script_consumers:2",
+        "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:4"
       ],
@@ -3397,7 +3586,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -3546,7 +3735,7 @@
         "rule": 1,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -3571,6 +3760,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_domain_model.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_domain_model.py"
         },
         {
@@ -3583,7 +3776,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "config_consumers:2"
       ],
       "family": "skills",
@@ -3594,7 +3787,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -3603,7 +3796,7 @@
       "consumer_families": {
         "config": 1,
         "doc": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -3624,12 +3817,16 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_eval_repo.py"
+        },
+        {
+          "family": "test",
           "path": "tests/utils/eval_repo_score.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:2",
         "config_consumers:1"
       ],
@@ -3641,7 +3838,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -3956,7 +4153,7 @@
       "consumer_families": {
         "doc": 5,
         "skill": 3,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -3993,13 +4190,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_generate_config.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_repetition_detector.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5"
       ],
       "family": "skills",
@@ -4010,7 +4211,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -4018,9 +4219,9 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 7,
-        "doc": 14,
+        "doc": 15,
         "script": 12,
-        "test": 14
+        "test": 16
       },
       "consumers": [
         {
@@ -4086,6 +4287,10 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-304-telemetry-aggregator-feedback-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-309-current-window-subagent-spawn-slos.md"
         },
         {
           "family": "doc",
@@ -4165,6 +4370,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_reproduction.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_run_flight_recorder.py"
         },
         {
@@ -4182,6 +4391,10 @@
         {
           "family": "test",
           "path": "tests/integration/test_startup_circuit_breaker.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_hook-timing-wrapper.py"
         },
         {
           "family": "test",
@@ -4215,8 +4428,8 @@
       "distribution": null,
       "evidence": [
         "script_consumers:12",
-        "test_consumers:14",
-        "doc_consumers:14",
+        "test_consumers:16",
+        "doc_consumers:15",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -4227,14 +4440,15 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 47
+      "total_consumers": 50
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2
+        "doc": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -4244,10 +4458,15 @@
         {
           "family": "doc",
           "path": "docs/04-Concepts/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_install_recommended.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "test_consumers:1",
         "doc_consumers:2"
       ],
       "family": "skills",
@@ -4258,7 +4477,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 2
+      "total_consumers": 3
     },
     {
       "confidence": "high",
@@ -4270,7 +4489,7 @@
         "hook": 1,
         "rule": 1,
         "script": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -4303,6 +4522,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_invariant_check.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_invariant_check.py"
         },
         {
@@ -4315,7 +4538,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:2",
         "config_consumers:1"
       ],
@@ -4327,7 +4550,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -4338,7 +4561,7 @@
         "doc": 4,
         "rule": 2,
         "script": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -4379,6 +4602,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_llm_status.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_llm_status.py"
         }
       ],
@@ -4386,7 +4613,7 @@
       "evidence": [
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:4",
         "config_consumers:1"
       ],
@@ -4398,7 +4625,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -4463,7 +4690,7 @@
         "config": 1,
         "doc": 1,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4481,12 +4708,16 @@
         {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_ops_runbook.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:1"
       ],
@@ -4498,7 +4729,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -4582,7 +4813,7 @@
       "consumer_families": {
         "doc": 7,
         "hook": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4619,13 +4850,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_peer_card.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_peer_card.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:7"
       ],
       "family": "skills",
@@ -4636,7 +4871,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -4644,7 +4879,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 5,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -4677,12 +4912,16 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_phoenix_trace_ui.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:5"
       ],
       "family": "skills",
@@ -4693,7 +4932,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
@@ -4702,9 +4941,10 @@
       "consumer_families": {
         "config": 2,
         "doc": 13,
+        "hook": 1,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -4768,6 +5008,10 @@
           "path": "docs/05-Methodology/root/configurable-quality-gates.md"
         },
         {
+          "family": "hook",
+          "path": "hooks/adversarial-review-gate.sh"
+        },
+        {
           "family": "script",
           "path": "scripts/cos-pr-review.sh"
         },
@@ -4782,13 +5026,18 @@
         {
           "family": "test",
           "path": "tests/behavior/test_code_review_skill.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_pr_review.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
+        "hook_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:13",
         "config_consumers:2"
       ],
@@ -4800,7 +5049,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 19
+      "total_consumers": 21
     },
     {
       "confidence": "high",
@@ -4809,7 +5058,7 @@
       "consumer_families": {
         "script": 1,
         "skill": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -4827,13 +5076,17 @@
         {
           "family": "test",
           "path": "tests/behavior/test_cos_primitive_harvester.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_preserved_wip_cleanup.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
         "script_consumers:1",
-        "test_consumers:1"
+        "test_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4843,7 +5096,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "high",
@@ -4853,7 +5106,7 @@
         "config": 3,
         "doc": 6,
         "script": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -4911,12 +5164,16 @@
         {
           "family": "test",
           "path": "tests/integration/test_fresh_install_canary.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_primitive_authoring.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:6",
         "config_consumers:3"
       ],
@@ -4928,7 +5185,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -4938,7 +5195,7 @@
         "config": 3,
         "doc": 6,
         "script": 5,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -5019,6 +5276,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_primitive_harness_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_acc_pipeline.py"
         },
         {
@@ -5030,7 +5291,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:5",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:6",
         "config_consumers:3"
       ],
@@ -5046,7 +5307,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -5056,7 +5317,7 @@
         "config": 7,
         "doc": 6,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -5125,6 +5386,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_primitive_harvester.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_consumer_fleet_audit.py"
         },
         {
@@ -5135,7 +5400,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:6",
         "config_consumers:7"
       ],
@@ -5147,7 +5412,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -5279,7 +5544,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 6,
-        "doc": 12,
+        "doc": 13,
         "script": 3,
         "test": 8
       },
@@ -5346,6 +5611,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/04-Concepts/root/developer-as-orchestrator.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/06-Daily/session-2026-05-13-skill-router-overhaul.md"
         },
         {
@@ -5405,7 +5674,7 @@
       "evidence": [
         "script_consumers:3",
         "test_consumers:8",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:6"
       ],
       "family": "skills",
@@ -5416,7 +5685,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -5490,7 +5759,7 @@
         "doc": 13,
         "script": 7,
         "skill": 1,
-        "test": 6
+        "test": 9
       },
       "consumers": [
         {
@@ -5643,6 +5912,18 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_proof-drill-evidence-record.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_proof-drill-select.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_proof_drill.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_proof_drill_evidence_record.py"
         }
       ],
@@ -5650,7 +5931,7 @@
       "evidence": [
         "skill_consumers:1",
         "script_consumers:7",
-        "test_consumers:6",
+        "test_consumers:9",
         "doc_consumers:13",
         "config_consumers:11"
       ],
@@ -5662,7 +5943,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 41
     },
     {
       "confidence": "medium",
@@ -5733,7 +6014,7 @@
         "hook": 3,
         "rule": 3,
         "script": 3,
-        "test": 4
+        "test": 6
       },
       "consumers": [
         {
@@ -5858,6 +6139,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_queue-drain.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_queue_drain.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_service_control_plane_local_queue.py"
         }
       ],
@@ -5866,7 +6155,7 @@
         "hook_consumers:3",
         "rule_consumers:3",
         "script_consumers:3",
-        "test_consumers:4",
+        "test_consumers:6",
         "doc_consumers:12",
         "config_consumers:6"
       ],
@@ -5878,7 +6167,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 33
     },
     {
       "confidence": "high",
@@ -5953,12 +6242,12 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 7,
-        "doc": 38,
+        "doc": 40,
         "hook": 1,
         "rule": 2,
-        "script": 7,
-        "skill": 4,
-        "test": 7
+        "script": 9,
+        "skill": 5,
+        "test": 10
       },
       "consumers": [
         {
@@ -6012,6 +6301,14 @@
         {
           "family": "doc",
           "path": "docs/02-Decisions/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-305-dependency-coverage-reconciliation-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/02-Decisions/adrs/ADR-306-scope-projection-runtime-audit.md"
         },
         {
           "family": "doc",
@@ -6155,7 +6452,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-portability-proof-scaffold"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-scope-both-portability-audit"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-scope-projection-audit"
         },
         {
           "family": "script",
@@ -6187,6 +6492,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/primitive-harvester/SKILL.md"
         },
         {
@@ -6215,6 +6524,18 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_security-red-team.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_red_team.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_security_red_team.py"
+        },
+        {
+          "family": "test",
           "path": "tests/security/test_boundary_enforcement_p0.py"
         },
         {
@@ -6228,12 +6549,12 @@
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:4",
+        "skill_consumers:5",
         "hook_consumers:1",
         "rule_consumers:2",
-        "script_consumers:7",
-        "test_consumers:7",
-        "doc_consumers:38",
+        "script_consumers:9",
+        "test_consumers:10",
+        "doc_consumers:40",
         "config_consumers:7"
       ],
       "family": "skills",
@@ -6244,7 +6565,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 66
+      "total_consumers": 74
     },
     {
       "confidence": "high",
@@ -6254,7 +6575,7 @@
         "doc": 14,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -6328,13 +6649,17 @@
         {
           "family": "test",
           "path": "tests/contracts/test_redteam_portability_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_redteam_harness.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:14"
       ],
       "family": "skills",
@@ -6345,7 +6670,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -6472,7 +6797,7 @@
         "doc": 14,
         "rule": 1,
         "skill": 2,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -6573,6 +6898,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_repo_forensics.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_dependency_adoption_gate.py"
         },
         {
@@ -6596,7 +6925,7 @@
       "evidence": [
         "skill_consumers:2",
         "rule_consumers:1",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:14",
         "config_consumers:4"
       ],
@@ -6608,7 +6937,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "medium",
@@ -6619,7 +6948,7 @@
         "hook": 1,
         "rule": 3,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -6713,6 +7042,10 @@
         {
           "family": "test",
           "path": "tests/integration/test_fresh_install_canary.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_resource_governor.py"
         }
       ],
       "distribution": null,
@@ -6720,7 +7053,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "script_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:14"
       ],
       "family": "skills",
@@ -6731,7 +7064,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -6740,7 +7073,7 @@
       "consumer_families": {
         "config": 1,
         "doc": 13,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -6802,11 +7135,15 @@
         {
           "family": "test",
           "path": "tests/contracts/test_orchestrator_skill_routing.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_reverse_engineer.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:13",
         "config_consumers:1"
       ],
@@ -6818,7 +7155,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -6829,7 +7166,7 @@
         "rule": 1,
         "script": 1,
         "skill": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -6854,6 +7191,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_risk_register.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_project_scaffolder.py"
         },
         {
@@ -6866,7 +7207,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "config_consumers:2"
       ],
       "family": "skills",
@@ -6877,7 +7218,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -6888,7 +7229,7 @@
         "doc": 2,
         "rule": 1,
         "script": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -6917,6 +7258,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_rules_export.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_project_docs_writers.py"
         }
       ],
@@ -6924,7 +7269,7 @@
       "evidence": [
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:2",
         "config_consumers:1"
       ],
@@ -6936,7 +7281,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -6947,7 +7292,7 @@
         "doc": 16,
         "rule": 1,
         "skill": 2,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -7056,6 +7401,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_run_tests.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_semantic_skill_matcher.py"
         },
         {
@@ -7067,7 +7416,7 @@
       "evidence": [
         "skill_consumers:2",
         "rule_consumers:1",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:16",
         "config_consumers:2"
       ],
@@ -7079,7 +7428,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 29
     },
     {
       "confidence": "high",
@@ -7088,7 +7437,7 @@
       "consumer_families": {
         "doc": 4,
         "skill": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -7129,13 +7478,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_scaffold_project.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_repetition_detector.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:4"
       ],
       "family": "skills",
@@ -7146,7 +7499,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -7159,7 +7512,7 @@
         "rule": 9,
         "script": 2,
         "skill": 7,
-        "test": 12
+        "test": 14
       },
       "consumers": [
         {
@@ -7684,6 +8037,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_scout-pattern.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_scout.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_delete_intent.py"
         },
         {
@@ -7717,7 +8078,7 @@
         "hook_consumers:1",
         "rule_consumers:9",
         "script_consumers:2",
-        "test_consumers:12",
+        "test_consumers:14",
         "doc_consumers:101",
         "config_consumers:5"
       ],
@@ -7729,7 +8090,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 137
+      "total_consumers": 139
     },
     {
       "confidence": "medium",
@@ -7738,7 +8099,7 @@
       "consumer_families": {
         "doc": 8,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -7783,13 +8144,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_sdd_continue.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_notifications.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:8"
       ],
       "family": "skills",
@@ -7800,7 +8165,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -7811,7 +8176,7 @@
         "hook": 3,
         "rule": 5,
         "skill": 2,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -7928,6 +8293,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_sdd_explore.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_completeness_checker.py"
         },
         {
@@ -7948,7 +8317,7 @@
         "skill_consumers:2",
         "hook_consumers:3",
         "rule_consumers:5",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:14"
       ],
       "family": "skills",
@@ -7959,7 +8328,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 32
+      "total_consumers": 33
     },
     {
       "confidence": "medium",
@@ -7968,7 +8337,7 @@
       "consumer_families": {
         "doc": 6,
         "rule": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -8001,13 +8370,17 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_sdd_resume.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_routing.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:6"
       ],
       "family": "skills",
@@ -8018,7 +8391,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -8028,7 +8401,7 @@
         "config": 5,
         "doc": 12,
         "script": 1,
-        "test": 3
+        "test": 5
       },
       "consumers": [
         {
@@ -8109,6 +8482,14 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_security-red-team.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_security_red_team.py"
+        },
+        {
+          "family": "test",
           "path": "tests/security/test_boundary_enforcement_p0.py"
         },
         {
@@ -8119,7 +8500,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:5",
         "doc_consumers:12",
         "config_consumers:5"
       ],
@@ -8131,7 +8512,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 23
     },
     {
       "confidence": "high",
@@ -8144,7 +8525,7 @@
         "rule": 1,
         "script": 2,
         "skill": 2,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -8281,6 +8662,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_session_backlog.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_session_backlog.py"
         },
         {
@@ -8294,7 +8679,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:17",
         "config_consumers:2"
       ],
@@ -8306,7 +8691,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "medium",
@@ -8314,7 +8699,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 8,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -8352,11 +8737,15 @@
         {
           "family": "test",
           "path": "tests/integration/test_auto_trigger_honoured.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_session_manager.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:8"
       ],
       "family": "skills",
@@ -8367,7 +8756,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -8377,7 +8766,8 @@
         "config": 2,
         "doc": 1,
         "script": 1,
-        "skill": 1
+        "skill": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -8399,12 +8789,17 @@
         {
           "family": "skill",
           "path": "skills/session-pending-close/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_session_pending_brief.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
+        "test_consumers:1",
         "doc_consumers:1",
         "config_consumers:2"
       ],
@@ -8416,7 +8811,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -8426,7 +8821,8 @@
         "config": 2,
         "doc": 1,
         "script": 1,
-        "skill": 1
+        "skill": 1,
+        "test": 1
       },
       "consumers": [
         {
@@ -8448,12 +8844,17 @@
         {
           "family": "skill",
           "path": "skills/session-pending-brief/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_session_pending_close.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
+        "test_consumers:1",
         "doc_consumers:1",
         "config_consumers:2"
       ],
@@ -8465,7 +8866,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -8474,7 +8875,7 @@
       "consumer_families": {
         "doc": 5,
         "hook": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -8504,12 +8905,16 @@
         {
           "family": "test",
           "path": "tests/hooks/test_session_init_nudge.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_session_report_executive.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:5"
       ],
       "family": "skills",
@@ -8520,7 +8925,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -8533,7 +8938,7 @@
         "rule": 2,
         "script": 5,
         "skill": 1,
-        "test": 5
+        "test": 7
       },
       "consumers": [
         {
@@ -8679,6 +9084,14 @@
         {
           "family": "test",
           "path": "tests/integration/test_request_persistence.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_session-wrapup-trigger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_session_wrapup.py"
         }
       ],
       "distribution": null,
@@ -8687,7 +9100,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:5",
-        "test_consumers:5",
+        "test_consumers:7",
         "doc_consumers:10",
         "config_consumers:10"
       ],
@@ -8699,7 +9112,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 36
+      "total_consumers": 38
     },
     {
       "confidence": "medium",
@@ -8710,7 +9123,7 @@
         "rule": 5,
         "script": 1,
         "skill": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -8863,6 +9276,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_skill_creator.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
@@ -8871,7 +9288,7 @@
         "skill_consumers:1",
         "rule_consumers:5",
         "script_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:28"
       ],
       "family": "skills",
@@ -8882,7 +9299,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "high",
@@ -9125,7 +9542,7 @@
       "consumer_families": {
         "doc": 6,
         "rule": 1,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -9162,6 +9579,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_validate_config.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_compat_test.py"
         },
         {
@@ -9172,7 +9593,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:6"
       ],
       "family": "skills",
@@ -9183,7 +9604,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -9325,7 +9746,7 @@
         "rule": 1,
         "script": 1,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -9378,6 +9799,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_skill_vulnerability_scan.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
@@ -9386,7 +9811,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:8",
         "config_consumers:1"
       ],
@@ -9398,7 +9823,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "medium",
@@ -9406,7 +9831,8 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 1,
-        "script": 1
+        "script": 1,
+        "test": 2
       },
       "consumers": [
         {
@@ -9416,11 +9842,20 @@
         {
           "family": "script",
           "path": "scripts/cos-wiki-ingest"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-wiki-ingest.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_wiki_ingest.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "script_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1"
       ],
       "family": "skills",
@@ -9431,7 +9866,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 2
+      "total_consumers": 4
     },
     {
       "confidence": "high",
@@ -9442,7 +9877,7 @@
         "doc": 2,
         "script": 1,
         "skill": 2,
-        "test": 2
+        "test": 4
       },
       "consumers": [
         {
@@ -9492,13 +9927,21 @@
         {
           "family": "test",
           "path": "tests/behavior/test_cos_worktree_triage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-worktree-triage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_skill_worktree_triage.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
         "script_consumers:1",
-        "test_consumers:2",
+        "test_consumers:4",
         "doc_consumers:2",
         "config_consumers:5"
       ],
@@ -9510,7 +9953,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 14
     }
   ],
   "schema_version": 1,
@@ -9531,7 +9974,7 @@
       "so-maintainer": 16
     },
     "total": 106,
-    "without_consumers": 4,
+    "without_consumers": 3,
     "without_lifecycle": 104
   },
   "target_family": "skills"

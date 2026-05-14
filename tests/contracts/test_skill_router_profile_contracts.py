@@ -159,8 +159,9 @@ def test_parse_routing_intents_block(tmp_path: Path) -> None:
     assert intents[0].confidence == 0.87
 
 
-def test_service_router_cache_invalidates_on_skill_md_checksum(tmp_path: Path) -> None:
+def test_service_router_cache_invalidates_on_skill_md_checksum(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """A long-running service router cache must refresh after SKILL.md edits."""
+    monkeypatch.setenv("COS_SKILL_ROUTER_DISABLE_SEMANTIC", "1")
     _write_skill(tmp_path, "alpha", pattern="alpha intent")
     _write_catalog(tmp_path, ["alpha"])
     _write_manifest(tmp_path, profile="lean", projected_skills=["alpha"])

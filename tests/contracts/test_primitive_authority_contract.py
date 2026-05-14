@@ -9,7 +9,7 @@ pytestmark = pytest.mark.contract
 
 REPO = Path(__file__).resolve().parents[2]
 MANIFEST = REPO / "manifests" / "primitive-authority.yaml"
-DOC = REPO / "docs" / "architecture" / "primitive-authority-write-effects.md"
+DOC = REPO / "docs" / "04-Concepts" / "architecture" / "primitive-authority-write-effects.md"
 ADR = REPO / "docs" / "02-Decisions" / "adrs" / "ADR-276-primitive-authority-write-effects.md"
 VALID_MODES = {
     "observe-only",

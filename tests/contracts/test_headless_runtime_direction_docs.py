@@ -73,8 +73,8 @@ def test_headless_runtime_claims_have_explicit_boundary_sections() -> None:
 
 
 def test_headless_runtime_docs_are_linked_from_entrypoints() -> None:
-    docs_readme = (PROJECT_ROOT / "docs" / "README.md").read_text(encoding="utf-8")
-    checklist = (PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md").read_text(
+    docs_readme = (PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md").read_text(encoding="utf-8")
+    checklist = (PROJECT_ROOT / "docs" / "08-References" / "business" / "master-plan-checklist.md").read_text(
         encoding="utf-8"
     )
 

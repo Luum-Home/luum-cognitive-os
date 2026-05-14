@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import json
 import subprocess
+import shutil
+
+import pytest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -37,6 +40,8 @@ def _run_json(script: str) -> dict[str, object]:
 
 
 def test_opencode_native_plugin_smoke_proves_signed_subset() -> None:
+    if shutil.which("opencode") is None:
+        pytest.skip("opencode binary is optional for laptop contract lane")
     report = _run_json("cos-opencode-primitive-adapter-smoke")
     assert report["schema_version"] == "opencode-primitive-adapter-smoke.v1"
     assert report["status"] == "pass"

@@ -8,7 +8,7 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[2]
 MANIFEST = REPO / "manifests" / "runtime-env-flags.yaml"
-DOC = REPO / "docs" / "runtime-env-flags.md"
+DOC = REPO / "docs" / "04-Concepts" / "root" / "runtime-env-flags.md"
 ENV_EXAMPLE = REPO / "env.example"
 
 

@@ -70,8 +70,9 @@ def test_cross_ide_hook_projection_contains_orchestrator_claim_gate() -> None:
     claude = (REPO / ".claude" / "settings.json").read_text()
     codex = (REPO / ".codex" / "hooks.json").read_text()
     generator = (REPO / "scripts" / "generate-project-settings.sh").read_text()
-    assert "hooks/orchestrator-claim-gate.sh" in claude
-    assert "hooks/orchestrator-claim-gate.sh" in codex
+    dispatcher = (REPO / "hooks" / "bash-hot-path-dispatcher.sh").read_text()
+    assert "hooks/orchestrator-claim-gate.sh" in claude or "hooks/orchestrator-claim-gate.sh" in dispatcher
+    assert "hooks/orchestrator-claim-gate.sh" in codex or "hooks/orchestrator-claim-gate.sh" in dispatcher
     assert "orchestrator-claim-gate.sh" in generator
 
 

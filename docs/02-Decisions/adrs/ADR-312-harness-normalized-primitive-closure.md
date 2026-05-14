@@ -1,3 +1,10 @@
+---
+adr: 312
+title: Harness-Normalized Primitive Closure
+status: accepted
+implementation_status: implemented
+date: 2026-05-14
+---
 # ADR-312: Harness-Normalized Primitive Closure
 
 ## Status

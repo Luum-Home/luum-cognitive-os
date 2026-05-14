@@ -11,8 +11,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = REPO_ROOT / "manifests" / "cos-instance-profiles.yaml"
 SCRIPT = REPO_ROOT / "scripts" / "cos-instance-init"
 ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-163-cos-instance-installer.md"
-ARCH = REPO_ROOT / "docs" / "architecture" / "cos-instance-installer.md"
-MANUAL = REPO_ROOT / "docs" / "manual-tests" / "cos-instance-installer.md"
+ARCH = REPO_ROOT / "docs" / "04-Concepts" / "architecture" / "cos-instance-installer.md"
+MANUAL = REPO_ROOT / "docs" / "09-Quality" / "manual-tests" / "cos-instance-installer.md"
 
 REQUIRED_PROFILE_FIELDS = {
     "id",
@@ -99,8 +99,12 @@ def test_write_creates_instance_metadata_in_disposable_workspace() -> None:
                 capture_output=True,
                 check=False,
             )
-            assert result.returncode == 0, result.stderr + result.stdout
             payload = json.loads(result.stdout)
+            if profile == "docker-headless" and payload.get("result", {}).get("status") == "requirements-missing":
+                assert result.returncode == 1
+                assert {row["requirement"] for row in payload["result"]["missing"]} & {"docker", "docker-compose-v2"}
+                continue
+            assert result.returncode == 0, result.stderr + result.stdout
             assert payload["result"]["status"] == "written"
             assert (repo / ".cognitive-os" / "instances" / profile / "instance.json").exists()
             assert (repo / ".cognitive-os" / "instances" / profile / "commands.md").exists()

@@ -20,6 +20,7 @@ Lines starting with '#' and blank lines are ignored.
 
 import json
 import re
+import yaml
 from pathlib import Path
 
 import pytest
@@ -69,16 +70,30 @@ def _collect_registered_hooks() -> set[str]:
                 _walk(item)
 
     _walk(settings.get("hooks", {}))
+    if "bash-hot-path-dispatcher.sh" in registered:
+        dispatcher = HOOKS_DIR / "bash-hot-path-dispatcher.sh"
+        if dispatcher.exists():
+            for match in re.findall(r'"hooks/([^/\s"\']+\.sh)"', dispatcher.read_text(encoding="utf-8", errors="ignore")):
+                registered.add(match)
     return registered
 
 
 def _collect_whitelist() -> dict[str, str]:
     """
-    Parse EXCLUDED_HOOKS.txt and return {filename: reason}.
+    Parse EXCLUDED_HOOKS.txt plus hook-registration-classification and return {filename: reason}.
     Lines starting with '#' or empty lines are ignored.
     Entries may include a _lib/ prefix for library files.
     """
     whitelist: dict[str, str] = {}
+    classification = PROJECT_ROOT / "manifests" / "hook-registration-classification.yaml"
+    if classification.exists():
+        data = yaml.safe_load(classification.read_text(encoding="utf-8")) or {}
+        for item in data.get("entries", []) or data.get("hooks", []) or []:
+            status = str(item.get("status") or "")
+            if status in {"profile_scoped", "conditional_opt_in", "library", "future"}:
+                filename = Path(str(item.get("path") or "")).name
+                if filename:
+                    whitelist[filename] = f"{status}: {item.get('rationale', '')}"
     if not EXCLUDED_HOOKS_FILE.exists():
         return whitelist
 

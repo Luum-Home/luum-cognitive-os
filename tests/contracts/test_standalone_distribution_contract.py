@@ -45,10 +45,10 @@ def test_homebrew_local_canary_is_documented() -> None:
     assert "brew install --build-from-source" in script
     assert "COS_RUN_HOMEBREW_CANARY=1" in script
 
-    readiness = (REPO / "docs" / "architecture" / "standalone-ship-readiness-2026-05-06.md").read_text(
+    readiness = (REPO / "docs" / "04-Concepts" / "architecture" / "standalone-ship-readiness-2026-05-06.md").read_text(
         encoding="utf-8"
     )
-    release = (REPO / "docs" / "release" / "v1.0-release-criteria.md").read_text(encoding="utf-8")
+    release = (REPO / "docs" / "01-Build-Log" / "release" / "v1.0-release-criteria.md").read_text(encoding="utf-8")
 
     for doc in (readiness, release):
         assert "scripts/cos-homebrew-local-canary" in doc

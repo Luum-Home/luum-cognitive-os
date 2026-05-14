@@ -13,12 +13,12 @@ import pytest
 pytestmark = pytest.mark.contract
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DOC = PROJECT_ROOT / "docs" / "architecture" / "harness-engineering.md"
+DOC = PROJECT_ROOT / "docs" / "04-Concepts" / "architecture" / "harness-engineering.md"
 
 
 def test_harness_engineering_doc_is_linked_from_docs_index() -> None:
     assert DOC.exists()
-    assert "architecture/harness-engineering.md" in (PROJECT_ROOT / "docs" / "README.md").read_text()
+    assert "architecture/harness-engineering.md" in (PROJECT_ROOT / "docs" / "00-MOCs" / "entrypoints" / "README.md").read_text()
 
 
 def test_harness_engineering_doc_maps_real_components() -> None:

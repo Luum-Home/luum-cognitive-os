@@ -7,7 +7,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = REPO_ROOT / "manifests" / "task-lifecycle-schema.yaml"
 ADR = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md"
-MANUAL = REPO_ROOT / "docs" / "manual-tests" / "task-lifecycle-worktree-pr-flow.md"
+MANUAL = REPO_ROOT / "docs" / "09-Quality" / "manual-tests" / "task-lifecycle-worktree-pr-flow.md"
 
 REQUIRED_TASK_STATUSES = {
     "queued",

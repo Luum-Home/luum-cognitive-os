@@ -36,7 +36,7 @@ def test_testcontainer_lanes_are_explicitly_opt_in() -> None:
 
 def test_optional_docker_lane_flags_are_documented() -> None:
     """Every COS_RUN_* gate in integration tests should appear in docs/09-Quality/root/testing.md."""
-    docs = (PROJECT_ROOT / "docs" / "testing.md").read_text(errors="replace")
+    docs = (PROJECT_ROOT / "docs" / "09-Quality" / "root" / "testing.md").read_text(errors="replace")
     missing: list[str] = []
 
     for path in _integration_test_files():
