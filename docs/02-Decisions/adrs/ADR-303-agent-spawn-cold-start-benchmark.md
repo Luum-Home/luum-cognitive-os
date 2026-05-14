@@ -155,3 +155,16 @@ per-spawn payload budget.
 - `scripts/startup-benchmark.sh` — direct stylistic ancestor.
 - `tests/unit/test_startup_budget.py` — directly mirrored in
   `test_agent_spawn_budget.py`.
+
+## Evidence
+
+Tier claim evidence is maintained through the boring-reliability control-plane lane:
+
+```bash
+scripts/cos-boring-reliability --json
+scripts/cos-tier-claim-audit --json
+```
+
+This ADR remains `tier: core` because it affects default routing, observability,
+or primitive-governance behavior that is part of the core operator control
+plane. The tier claim is re-audited by `scripts/cos-tier-claim-audit`.

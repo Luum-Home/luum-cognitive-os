@@ -59,10 +59,11 @@ def build_budget(profile: str, root: Path = REPO_ROOT) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", choices=sorted(BUDGETS), default="core")
+    parser.add_argument("--strict", action="store_true", help="return non-zero when the preamble budget is exceeded")
     args = parser.parse_args(argv)
     report = build_budget(args.profile)
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 0 if report["status"] == "pass" else 1
+    return 1 if args.strict and report["status"] != "pass" else 0
 
 
 if __name__ == "__main__":

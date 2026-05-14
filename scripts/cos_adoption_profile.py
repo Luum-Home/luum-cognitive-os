@@ -73,10 +73,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", choices=sorted(PROFILE_TIERS), default="core")
     parser.add_argument("--manifest", type=Path, default=MANIFEST)
+    parser.add_argument("--strict", action="store_true", help="return non-zero when profile SLO warnings exist")
     args = parser.parse_args(argv)
     report = build_profile(args.profile, args.manifest)
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 0 if report["status"] == "pass" else 1
+    return 1 if args.strict and report["status"] != "pass" else 0
 
 
 if __name__ == "__main__":

@@ -74,9 +74,9 @@ WARN: UNDOCUMENTED HISTORY REWRITE DETECTED (ADR-269)
   Bypass : COS_ALLOW_UNDOCUMENTED_REWRITES=1 (logged)
 EOF
 
-printf '%s' "$ORPHANS_JSON" | python3 - <<'PY2' 1>&2 2>/dev/null || true
-import json, sys
-data = json.load(sys.stdin)
+ORPHANS_JSON="$ORPHANS_JSON" python3 - <<'PY2' 1>&2 2>/dev/null || true
+import json, os
+data = json.loads(os.environ.get("ORPHANS_JSON", "{}"))
 for p in (data.get("orphans") or [])[:5]:
     print(f"  - {p}")
 PY2

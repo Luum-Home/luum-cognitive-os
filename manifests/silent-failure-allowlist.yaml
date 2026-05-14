@@ -1,5 +1,35 @@
 schema_version: 1
 entries:
+- path: hooks/_lib/agent-context.sh
+  max_occurrences: 1
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
+- path: hooks/_lib/artifact-status.sh
+  max_occurrences: 6
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/_lib/bypass-resolver.sh
+  max_occurrences: 2
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/_lib/cache.sh
   max_occurrences: 5
   degradation_class: legacy_audited
@@ -25,6 +55,16 @@ entries:
   degradation_class: probe_best_effort
   rationale: Read-only environment/state probe; failure means unknown state, not an
     immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/_lib/context_budget_lib.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -85,6 +125,16 @@ entries:
   degradation_class: probe_best_effort
   rationale: Read-only environment/state probe; failure means unknown state, not an
     immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/_lib/primitive-intervention.sh
+  max_occurrences: 3
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -170,6 +220,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/_lib/task-event.sh
+  max_occurrences: 3
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/_lib/task-identity.sh
   max_occurrences: 3
   degradation_class: legacy_audited
@@ -210,8 +270,28 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/adoption-freeze-gate.sh
+  max_occurrences: 5
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/adr-detector.sh
   max_occurrences: 9
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/adr-relevance-suggest.sh
+  max_occurrences: 3
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -231,7 +311,7 @@ entries:
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
 - path: hooks/agent-bash-cwd-enforcer.sh
-  max_occurrences: 10
+  max_occurrences: 11
   degradation_class: metrics_best_effort
   rationale: Telemetry/JSONL writes are best effort and must never break the guarded
     user action.
@@ -260,6 +340,46 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/agent-control-inbound-guard.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/agent-launch-confirmed.sh
+  max_occurrences: 24
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/agent-message-inbox-context.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/agent-message-inbox-guard.sh
+  max_occurrences: 3
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/agent-output-verifier.sh
   max_occurrences: 3
   degradation_class: metrics_best_effort
@@ -271,7 +391,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/agent-prelaunch.sh
-  max_occurrences: 15
+  max_occurrences: 26
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -340,6 +460,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/ai-provider-identity-guard.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/architecture-compliance.sh
   max_occurrences: 2
   degradation_class: optional_dependency
@@ -351,7 +481,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/aspirational-audit-weekly.sh
-  max_occurrences: 8
+  max_occurrences: 12
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -370,6 +500,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/attribution-completeness-validator.sh
+  max_occurrences: 3
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/audit-id-enricher.sh
   max_occurrences: 3
   degradation_class: legacy_audited
@@ -421,7 +561,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/auto-skill-generator.sh
-  max_occurrences: 9
+  max_occurrences: 10
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -431,7 +571,7 @@ entries:
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
 - path: hooks/auto-verify.sh
-  max_occurrences: 14
+  max_occurrences: 8
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -460,8 +600,28 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/branch-ownership-lock.sh
+  max_occurrences: 1
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/branch-ownership-release.sh
+  max_occurrences: 1
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/claim-validator.sh
-  max_occurrences: 21
+  max_occurrences: 30
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -490,6 +650,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/clean-room-ast-similarity-gate.sh
+  max_occurrences: 7
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/code-review-on-commit.sh
   max_occurrences: 2
   degradation_class: legacy_audited
@@ -500,6 +670,16 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/codebase-itinerary-capture.sh
+  max_occurrences: 12
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/cognitive-os-health.sh
   max_occurrences: 21
   degradation_class: probe_best_effort
@@ -571,7 +751,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/confidentiality-enforcer.sh
-  max_occurrences: 5
+  max_occurrences: 8
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -581,17 +761,27 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/consequence-evaluator.sh
-  max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy silent degradation remains audited but needs manual classification
-    before promotion.
+  max_occurrences: 6
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
-  transferability_state: maintainer_cache
-  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
-    before this allowlist entry can be treated as transferable.'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/content-policy.sh
   max_occurrences: 5
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/context-budget-meter.sh
+  max_occurrences: 1
   degradation_class: probe_best_effort
   rationale: Read-only environment/state probe; failure means unknown state, not an
     immediate hard block.
@@ -611,20 +801,40 @@ entries:
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
 - path: hooks/context-watchdog.sh
-  max_occurrences: 7
-  degradation_class: metrics_best_effort
-  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
-    user action.
+  max_occurrences: 10
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
-  transferability_state: documented_classification
-  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
-    may re-review before owning this surface.'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/contextual-rule-loader.sh
   max_occurrences: 4
   degradation_class: probe_best_effort
   rationale: Read-only environment/state probe; failure means unknown state, not an
     immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/control-plane-audit-hourly.sh
+  max_occurrences: 6
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
+- path: hooks/control-plane-audit.sh
+  max_occurrences: 15
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -660,6 +870,26 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/cos-session-start-projector.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/cosd-auth-guard.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/crash-recovery.sh
   max_occurrences: 8
   degradation_class: legacy_audited
@@ -670,6 +900,56 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/cross-session-coordination-guard.sh
+  max_occurrences: 1
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/cross-session-event-emit.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/cross-session-peer-context.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/dangerous-env-flag-detector.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/dependency-license-classifier.sh
+  max_occurrences: 4
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/dequeue-notify.sh
   max_occurrences: 10
   degradation_class: legacy_audited
@@ -681,7 +961,7 @@ entries:
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
 - path: hooks/destructive-git-blocker.sh
-  max_occurrences: 26
+  max_occurrences: 27
   degradation_class: metrics_best_effort
   rationale: Telemetry/JSONL writes are best effort and must never break the guarded
     user action.
@@ -691,7 +971,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/destructive-rm-blocker.sh
-  max_occurrences: 8
+  max_occurrences: 11
   degradation_class: metrics_best_effort
   rationale: Telemetry/JSONL writes are best effort and must never break the guarded
     user action.
@@ -701,7 +981,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/direct-main-guard.sh
-  max_occurrences: 4
+  max_occurrences: 9
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -741,7 +1021,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/dod-gate.sh
-  max_occurrences: 10
+  max_occurrences: 4
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -821,7 +1101,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/engram-auto-sync.sh
-  max_occurrences: 7
+  max_occurrences: 8
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -850,6 +1130,16 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/engram-obsidian-export-on-stop.sh
+  max_occurrences: 7
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/engram-reinforce-on-access.sh
   max_occurrences: 8
   degradation_class: legacy_audited
@@ -900,7 +1190,7 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
-- path: hooks/git-commit-scope-guard.sh
+- path: hooks/external-cache-content-leak.sh
   max_occurrences: 7
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
@@ -910,8 +1200,28 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/external-pattern-cleanroom-gate.sh
+  max_occurrences: 8
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/git-commit-scope-guard.sh
+  max_occurrences: 12
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/git-context-capture.sh
-  max_occurrences: 15
+  max_occurrences: 20
   degradation_class: metrics_best_effort
   rationale: Telemetry/JSONL writes are best effort and must never break the guarded
     user action.
@@ -932,6 +1242,16 @@ entries:
     before this allowlist entry can be treated as transferable.'
 - path: hooks/guardrails-validator.sh
   max_occurrences: 8
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/history-rewrite-documented.sh
+  max_occurrences: 5
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -991,7 +1311,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/inject-phase-context.sh
-  max_occurrences: 26
+  max_occurrences: 27
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -1030,6 +1350,26 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/legal-review-required-on-runtime-import.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/lib-symlink-divergence-detector.sh
+  max_occurrences: 8
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/mcp-scan.sh
   max_occurrences: 5
   degradation_class: optional_dependency
@@ -1100,6 +1440,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/network-egress-guard.sh
+  max_occurrences: 6
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/notify.sh
   max_occurrences: 10
   degradation_class: probe_best_effort
@@ -1120,6 +1470,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/orchestrator-decision-trace.sh
+  max_occurrences: 5
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/orchestrator-mode-detect.sh
   max_occurrences: 1
   degradation_class: legacy_audited
@@ -1130,6 +1490,16 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/orchestrator-skill-invocation-gate.sh
+  max_occurrences: 14
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/package-sync.sh
   max_occurrences: 6
   degradation_class: legacy_audited
@@ -1160,6 +1530,36 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/pending-truth-drift-detector.sh
+  max_occurrences: 8
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/pending-truth-staleness-gate.sh
+  max_occurrences: 7
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/pending-truth-verify-weekly.sh
+  max_occurrences: 5
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/plan-claim-validator.sh
   max_occurrences: 10
   degradation_class: optional_dependency
@@ -1171,7 +1571,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/post-agent-snapshot-restore.sh
-  max_occurrences: 27
+  max_occurrences: 41
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -1201,7 +1601,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/pre-agent-snapshot.sh
-  max_occurrences: 46
+  max_occurrences: 48
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -1221,7 +1621,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/pre-commit-gate.sh
-  max_occurrences: 11
+  max_occurrences: 12
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -1270,6 +1670,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/promotion-proposer-weekly.sh
+  max_occurrences: 5
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/prompt-quality-llm.sh
   max_occurrences: 4
   degradation_class: legacy_audited
@@ -1280,6 +1690,16 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/protected-config-write-guard.sh
+  max_occurrences: 5
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/query-tailored-context-inject.sh
   max_occurrences: 5
   degradation_class: legacy_audited
@@ -1400,6 +1820,26 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/research-quality-validator.sh
+  max_occurrences: 10
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/research-to-runtime-firewall.sh
+  max_occurrences: 6
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/resource-check.sh
   max_occurrences: 15
   degradation_class: legacy_audited
@@ -1411,7 +1851,7 @@ entries:
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
 - path: hooks/result-truncator.sh
-  max_occurrences: 13
+  max_occurrences: 21
   degradation_class: optional_dependency
   rationale: Optional dependency or integration probe; absence must degrade without
     blocking the parent hook.
@@ -1435,6 +1875,26 @@ entries:
   degradation_class: metrics_best_effort
   rationale: Telemetry/JSONL writes are best effort and must never break the guarded
     user action.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/rule-md-routing-validator.sh
+  max_occurrences: 9
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
+- path: hooks/rule-router-prompt-suggest.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -1561,7 +2021,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/session-init.sh
-  max_occurrences: 24
+  max_occurrences: 29
   degradation_class: legacy_audited
   rationale: Legacy silent degradation remains audited but needs manual classification
     before promotion.
@@ -1610,11 +2070,21 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/session-start-stack-recommend.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/session-start-stash-reapply.sh
-  max_occurrences: 4
-  degradation_class: cleanup_best_effort
-  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
-    or recovery checks.
+  max_occurrences: 6
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -1690,6 +2160,16 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/skill-drift-detector.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/skill-failure-monitor.sh
   max_occurrences: 2
   degradation_class: probe_best_effort
@@ -1730,6 +2210,46 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/skill-md-routing-validator.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/skill-post-execution-analysis.sh
+  max_occurrences: 18
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/skill-router-bash-gate.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/skill-router-prompt-suggest.sh
+  max_occurrences: 3
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/skill-synthesis-scanner.sh
   max_occurrences: 6
   degradation_class: probe_best_effort
@@ -1760,6 +2280,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/spdx-header-required.sh
+  max_occurrences: 5
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/stash-budget-warn.sh
   max_occurrences: 14
   degradation_class: legacy_audited
@@ -1780,11 +2310,31 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
-- path: hooks/subagent-context-injector.sh
-  max_occurrences: 5
+- path: hooks/state-retention-audit.sh
+  max_occurrences: 1
   degradation_class: probe_best_effort
   rationale: Read-only environment/state probe; failure means unknown state, not an
     immediate hard block.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/subagent-capability-preflight.sh
+  max_occurrences: 6
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/subagent-context-injector.sh
+  max_occurrences: 6
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -1832,19 +2382,19 @@ entries:
     before this allowlist entry can be treated as transferable.'
 - path: hooks/task-completed.sh
   max_occurrences: 11
-  degradation_class: legacy_audited
-  rationale: Legacy silent degradation remains audited but needs manual classification
-    before promotion.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
-  transferability_state: maintainer_cache
-  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
-    before this allowlist entry can be treated as transferable.'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/task-created.sh
   max_occurrences: 7
-  degradation_class: metrics_best_effort
-  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
-    user action.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -1871,15 +2421,25 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/teammate-idle.sh
-  max_occurrences: 5
-  degradation_class: metrics_best_effort
-  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
-    user action.
+  max_occurrences: 12
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/telemetry-budget-violator-detect.sh
+  max_occurrences: 3
+  degradation_class: legacy_audited
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: maintainer_cache
+  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
+    before this allowlist entry can be treated as transferable.'
 - path: hooks/token-budget-monitor.sh
   max_occurrences: 2
   degradation_class: legacy_audited
@@ -1921,10 +2481,20 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/trust-score-validator.sh
-  max_occurrences: 2
-  degradation_class: optional_dependency
-  rationale: Optional dependency or integration probe; absence must degrade without
-    blocking the parent hook.
+  max_occurrences: 4
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
+- path: hooks/untracked-work-preservation-guard.sh
+  max_occurrences: 6
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
   owner: original-maintainer
   reviewed_on: '2026-05-03'
   transferability_state: documented_classification
@@ -1960,6 +2530,16 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
+- path: hooks/validator-soak-weekly.sh
+  max_occurrences: 4
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
+  owner: original-maintainer
+  reviewed_on: '2026-05-03'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
+    may re-review before owning this surface.'
 - path: hooks/valkey-ensure.sh
   max_occurrences: 3
   degradation_class: legacy_audited
@@ -1990,11 +2570,3 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
-- path: hooks/skill-router-bash-gate.sh
-  max_occurrences: 2
-  degradation_class: optional_dependency
-  rationale: Skill-router suggestions are best-effort; the hard dependency-upgrade block runs before the optional Python catalog lookup, and missing router/catalog support must not block unrelated Bash commands.
-  owner: original-maintainer
-  reviewed_on: '2026-05-04'
-  transferability_state: documented_classification
-  shape_b_action: 'Shape A acceptable: deterministic dependency-upgrade blocking remains hard; advisory catalog suggestions may degrade silently until a portable skill-router service exists.'

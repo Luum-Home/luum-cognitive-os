@@ -227,3 +227,16 @@ python3 -c "from lib.semantic_skill_matcher import DEFAULT_MODEL_NAME; print(DEF
   not exercised in this run)
 - `docs/06-Daily/reports/routing-benchmark-2026-05-13.md` — the empirical
   evidence backing this decision
+
+## Evidence
+
+Tier claim evidence is maintained through the boring-reliability control-plane lane:
+
+```bash
+scripts/cos-boring-reliability --json
+scripts/cos-tier-claim-audit --json
+```
+
+This ADR remains `tier: core` because it affects default routing, observability,
+or primitive-governance behavior that is part of the core operator control
+plane. The tier claim is re-audited by `scripts/cos-tier-claim-audit`.
