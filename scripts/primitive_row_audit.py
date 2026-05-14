@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Row-level reality audit for COS primitive families.
 
 This complements the family-level primitive_gap_snapshot by producing concrete

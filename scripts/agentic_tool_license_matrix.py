@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Deterministic license/default gate for Agentic Mastery optional tools.
 
 The gate reads a pinned JSON manifest and emits a Markdown report. It is pure

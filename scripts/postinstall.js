@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// SCOPE: os-only
 // postinstall.js — Show instructions after npm install
 
 console.log(`

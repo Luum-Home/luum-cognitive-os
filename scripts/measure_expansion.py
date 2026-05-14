@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Measure token impact of tier_filter selective expansion.
 
 Usage:

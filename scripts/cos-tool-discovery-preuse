@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """CLI for Tool Discovery Pre-Use Gate."""
 from __future__ import annotations
 

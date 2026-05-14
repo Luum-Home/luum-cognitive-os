@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: run weekly/before releases/after env changes to verify ADR-049 Qwen fallback still works
 # smoke-qwen-fallback.sh — End-to-end verification of ADR-049 fallback.
 #

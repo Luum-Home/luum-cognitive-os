@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-legal-approve — Mark Annex F as reviewed-by-legal with counsel evidence.
 
 ADR-270 primitive #5. Operations:

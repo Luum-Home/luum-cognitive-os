@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # @on-demand: run periodically to prune snapshots older than ttl_days (ADR-099); no Claude event triggers it
 # cleanup-snapshots.sh — Prune expired pre-agent snapshots (ADR-099)
 #

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """ADR-269 Primitive 3 — operator CLI for history-rewrite ledger audit.
 
 Usage:

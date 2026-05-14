@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Benchmark candidate code-intelligence backends for primitive coverage.
 
 This is intentionally a metadata/protocol benchmark by default. It reads local

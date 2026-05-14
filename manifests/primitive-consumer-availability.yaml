@@ -9,6 +9,8 @@ status_values:
   so-local-only: Local-only helper or context surface; not consumer-project debt.
   shell-ci-candidate: Candidate CLI/shell surface for future shell/CI projection proof;
     remains partial until projected.
+  shared-surface: Primitive is intended for both Cognitive OS and consumer-project
+    use; paired proof still required for final both confidence.
 items:
 - path: scripts/aspirational_audit.py
   status: maintainer-only
@@ -16,69 +18,80 @@ items:
     reports or ACC summaries, not this maintainer scanner by default.
 - path: scripts/cos_primitive_harvester.py
   status: maintainer-only
-  rationale: Harvests conversation/codebase signals into SO primitive work inventory;
-    not a default consumer project command.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/cos_session_backlog.py
-  status: maintainer-only
-  rationale: Maintainer backlog synthesis over SO session artifacts.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cos_work_inventory.py
-  status: maintainer-only
-  rationale: Maintainer inventory over SO work products and ADR/readiness surfaces.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cos_worktree_triage.py
-  status: maintainer-only
-  rationale: Maintainer worktree triage implementation behind local coordination flows.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cost_predict.py
-  status: maintainer-only
-  rationale: SO cost prediction primitive; consumer use needs a package/profile contract
-    before projection.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/decision_triage.py
   status: maintainer-only
-  rationale: Maintainer decision-report triage, not installed consumer runtime.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/doc_review_personas.py
-  status: maintainer-only
-  rationale: SO documentation review helper; consumer projection needs explicit docs
-    package decision.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/document_feature_append.py
-  status: maintainer-only
-  rationale: Maintainer documentation writer helper, not a projected primitive.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/dogfood_score.py
   status: maintainer-only
   rationale: Scores SO dogfooding signals; consumer projects should not receive it
     by default.
 - path: scripts/domain_model.py
-  status: maintainer-only
-  rationale: Internal domain-model analysis helper.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/edit-coop.sh
-  status: maintainer-only
-  rationale: Local multi-session editing coordination command; consumer exposure requires
-    separate concurrency package.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/generate_compact_catalog.py
   status: maintainer-only
-  rationale: Maintainer catalog generator for context diet artifacts.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/hook-stream-statusline.sh
   status: maintainer-only
-  rationale: Local hook/statusline observability helper; not part of consumer projection
-    yet.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/hook-timing-wrapper.sh
-  status: maintainer-only
-  rationale: SO hook timing instrumentation wrapper; consumer exposure requires observability
-    profile proof.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/hook_timing_report.py
-  status: maintainer-only
-  rationale: Maintainer report generator over hook metrics.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/invariant_check_helper.py
-  status: maintainer-only
-  rationale: Maintainer test-authoring helper for constants/invariants.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/llm_status.py
-  status: maintainer-only
-  rationale: Local model/provider diagnostic helper; consumer provider projection
-    is separate.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/merge-to-main.sh
-  status: maintainer-only
-  rationale: Repository governance command for this SO's main branch policy.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/ops_runbook.py
-  status: maintainer-only
-  rationale: Maintainer runbook synthesis helper.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/primitive_surface_reduce.py
   status: maintainer-only
   rationale: SO primitive-surface reduction analysis helper.
@@ -86,40 +99,48 @@ items:
   status: maintainer-only
   rationale: Maintainer primitive usage map generator.
 - path: scripts/radar_merge.py
-  status: maintainer-only
-  rationale: Maintainer radar merge utility.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/redteam_aggregate.py
   status: maintainer-only
-  rationale: Maintainer red-team report aggregator.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/risk_register.py
-  status: maintainer-only
-  rationale: Maintainer risk-register generator.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/rules_export.py
-  status: maintainer-only
-  rationale: Rule export helper requires explicit consumer package contract before
-    projection.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/security_audit_writer.py
-  status: maintainer-only
-  rationale: Maintainer security audit writer helper.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/smoke-doc-review-personas.sh
   status: maintainer-only
-  rationale: Smoke wrapper for SO documentation review personas.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/smoke-multi-provider-fallback.sh
   status: maintainer-only
-  rationale: Maintainer/provider smoke proof; not a projected consumer primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/smoke-qwen-fallback.sh
   status: maintainer-only
-  rationale: Provider fallback smoke wrapper; Qwen harness projection remains planned
-    separately.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/sprint-test-summary.sh
-  status: maintainer-only
-  rationale: Maintainer sprint summary helper.
+  status: projected-consumer-surface
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream
+    writer/scaffolder surface.
 - path: scripts/test_run_inventory.py
   status: maintainer-only
   rationale: Maintainer test-run inventory analyzer.
 - path: scripts/verify-archived.sh
-  status: maintainer-only
-  rationale: Archive verification command for SO maintenance.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/weekly-aspirational-audit.sh
   status: maintainer-only
   rationale: Scheduled maintainer audit wrapper.
@@ -326,16 +347,16 @@ items:
   rationale: Python analyzer behind the local network-egress PreToolUse guard; not
     a standalone consumer capability.
 - path: scripts/security-red-team
-  status: lifecycle-declared-maintainer
-  rationale: Opt-in maintainer security workflow; lifecycle metadata controls projection
-    before consumer claims.
+  status: maintainer-only
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
+    primitive.
 - path: scripts/security_red_team.py
   status: lifecycle-declared-maintainer
   rationale: Python implementation behind the opt-in security workflow wrapper.
 - path: scripts/cos-key-learnings-capture
-  status: lifecycle-declared-maintainer
-  rationale: Opt-in team learning-capture helper; lifecycle metadata controls projection
-    before consumer claims.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cos-subprocess-timeout-audit.py
   status: maintainer-only
   rationale: ADR-278 maintainer/control-plane audit over this repository's subprocess
@@ -384,13 +405,133 @@ items:
   rationale: Local delegated-review quality advisory; projected through SO harness
     profiles, not a standalone consumer capability.
 - path: hooks/bash-hot-path-dispatcher.sh
-  status: so-local-only
-  rationale: Local Bash dispatcher for projected hook profiles; consumer availability
-    is through generated settings, not as a standalone command.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
 - path: hooks/subagent-budget-enforcer.sh
-  status: so-local-only
-  rationale: Local subagent governance hook; consumer availability depends on harness
-    projection and is not a standalone product capability.
+  status: shared-surface
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
+    surface; keep lifecycle/proof evidence aligned.
+- path: skills/add-hook/SKILL.md
+  status: maintainer-only
+  rationale: Procedure creates and registers Cognitive OS hooks, projection metadata,
+    efficiency profiles, and COS portability gates; generic hook authoring would be
+    a separate primitive.
+- path: skills/add-skill/SKILL.md
+  status: maintainer-only
+  rationale: Procedure creates Cognitive OS skills, catalogs, routing metadata, registry
+    entries, and COS projection gates; generic SKILL.md authoring would be a separate
+    primitive.
+- path: scripts/primitive_scope_unknown_triage.py
+  status: maintainer-only
+  rationale: Maintainer review aid for Cognitive OS primitive scope debt; it summarizes
+    classifier unknowns and must not be projected as a consumer-project primitive
+    by default.
+- path: scripts/primitive_parse_inventory.py
+  status: maintainer-only
+  rationale: Maintainer structural parser inventory for Cognitive OS primitives; it
+    exposes parser debt and must not be projected as a consumer-project primitive
+    by default.
+- path: hooks/cognitive-os-health.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/cos-executor-heartbeat.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/cosd-intent-submit.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/metrics-calibrator-trigger.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/reaper-heartbeat.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/recap-sync.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/session-hygiene.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/session-knowledge-extractor.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/session-state-save.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/sync-to-repo.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/task-bridge-notify.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/telemetry-budget-violator-detect.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: hooks/usage-health-check.sh
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: packages/agent-lifecycle/skills/review-output/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: rules/research-first-protocol.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: rules/ROADMAP.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: skills/cos-install-operations/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: skills/hook-timing/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: skills/repair-skill/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
+- path: skills/synthesize-skill/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
+    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
+    primitive.
 patterns:
 - pattern: scripts/**
   status: so-local-only

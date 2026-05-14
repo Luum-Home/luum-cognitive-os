@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: project
 """Export SO rules/ content into an adopting project's docs/08-estandares/.
 
 Part of ADR-054/055: skills emit into the 10-category convention. The

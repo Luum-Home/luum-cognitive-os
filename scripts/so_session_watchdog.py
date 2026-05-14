@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """so_session_watchdog.py — Phase A (log-only) session lifecycle daemon.
 
 ADR-047 Phase A implementation.  Observes Claude Code sessions and logs

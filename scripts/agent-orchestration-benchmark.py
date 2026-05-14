@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Run the ADR-251 agent orchestration boundary benchmark fixtures.
 
 The benchmark is static and cheap by design. It verifies that historical

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit MCP server definitions against trust-on-first-use pins.
 
 Fingerprints include server name, command, args, env key names, and config path;

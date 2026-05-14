@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Project Cognitive OS shell/CI command surfaces into a consumer project."""
 from __future__ import annotations
 

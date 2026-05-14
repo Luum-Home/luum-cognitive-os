@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit the ADR-250 skill-router retrieval adapter boundary.
 
 Read-only: verifies that router retrieval/ranking remains declared, adapterized,

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Resolve ADR numbers against canonical repository state."""
 from __future__ import annotations
 

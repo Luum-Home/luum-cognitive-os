@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos_verbatim_copy_detector.py — ADR-267 Hook #2 companion detector.
 
 Scans staged (or all) COS files for verbatim code-block matches against the

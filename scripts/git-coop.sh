@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # git-coop.sh — ADR-089 Layer 2: cooperative session lock for git index operations
 #
 # Provides atomic acquire/release of a per-project git-index lock so concurrent

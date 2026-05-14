@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # ADR-242 governed wrapper around git-filter-repo.
 set -euo pipefail
 

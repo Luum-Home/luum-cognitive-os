@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Generate/check the Active/Partial ADR backlog ledger."""
 from __future__ import annotations
 

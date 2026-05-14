@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # cos — minimal subcommand dispatcher for Cognitive OS
 #
 # Routes:

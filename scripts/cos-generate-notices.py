@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-generate-notices.py — NOTICE.md and THIRD_PARTY_LICENSES.txt generator.
 
 Combines two data sources:

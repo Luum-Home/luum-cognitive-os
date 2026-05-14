@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-work-queue — CLI for the work-queue event log (.cognitive-os/work-queue.jsonl).
 
 Commands:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """CLI for ADR-217 cross-stack adoption-truth audit."""
 from __future__ import annotations
 

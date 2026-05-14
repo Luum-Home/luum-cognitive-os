@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Generic governed-tool runner for COS hook surfaces not emitted natively.
 
 Harness drivers use native projection when possible. When a harness cannot emit

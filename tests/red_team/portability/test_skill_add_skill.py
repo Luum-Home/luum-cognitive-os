@@ -1,5 +1,5 @@
 # SCOPE: os-only
-"""Portability proof for skills/add-skill/SKILL.md."""
+"""Load characterization for the os-only skills/add-skill/SKILL.md metadata."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ ARTIFACT = REPO_ROOT / "skills/add-skill/SKILL.md"
 
 
 def test_skill_add_skill_skill_loads_from_arbitrary_project_root(tmp_path: Path) -> None:
-    """Falsification probe: skill metadata must be usable outside the OS repo cwd."""
+    """The skill file remains structurally loadable even though its procedure is COS-specific."""
     target = tmp_path / ".codex" / "skills" / "add-skill"
     target.mkdir(parents=True)
     copied = target / "SKILL.md"

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # chaos/snapshot-vanishing-untracked.sh
 #
 # Reproduces the original ADR-099 bug and demonstrates the fix.

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # @manual-trigger: invoke `bash scripts/lint-shell.sh [--new-only|--baseline]` for shellcheck gate; advisory only until CI-enforced
 # lint-shell.sh — ShellCheck gate for all scripts/ and hooks/ shell files.
 #

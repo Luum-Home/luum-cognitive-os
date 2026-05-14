@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Audit Engram command shapes used by COS docs/code.
 
 The audit intentionally flags stale commands that Engram v1.15.x does not

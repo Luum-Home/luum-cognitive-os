@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """
 cos_clean_room_ast_similarity.py — ADR-271 Tier 2 clean-room detection.
 

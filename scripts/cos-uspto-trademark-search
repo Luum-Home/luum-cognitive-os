@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """cos-uspto-trademark-search — Query USPTO TSDR for wordmarks.
 
 ADR-270 primitive #2. USPTO TSDR Data API:

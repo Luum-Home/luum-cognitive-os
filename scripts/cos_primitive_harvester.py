@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Detect when conversational workflow should become an agentic primitive.
 
 The harvester is advisory. It classifies a conversation into one of:

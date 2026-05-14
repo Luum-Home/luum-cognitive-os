@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """ADR-226 Slice B guardrail validator.
 
 Checks the IMPLEMENTATION-CHECKLIST guardrail: consumer ADRs (228/230/233/projections)

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 set -euo pipefail
 
 cmd="${1:-}"

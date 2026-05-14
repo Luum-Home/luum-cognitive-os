@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Generate docs/02-Decisions/adrs/INDEX.md from ADR metadata.
 
 The generator follows docs/02-Decisions/adrs/STATUS-TAXONOMY.md: decision status, implementation

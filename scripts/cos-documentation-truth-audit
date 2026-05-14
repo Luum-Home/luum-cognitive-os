@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 exec python3 "$ROOT/scripts/documentation_truth_audit.py" "$@"

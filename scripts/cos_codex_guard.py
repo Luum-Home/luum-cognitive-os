@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Compatibility wrapper for the generic governed-tool runner on Codex."""
 
 from __future__ import annotations

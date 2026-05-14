@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Detect active high-risk Cognitive OS env flags without reading secrets."""
 from __future__ import annotations
 import argparse, json, os
