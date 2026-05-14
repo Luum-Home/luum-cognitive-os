@@ -2038,6 +2038,18 @@ harness:
       event: SessionStart
       scope: os-only
 
+    # ── ADR-285/286 — session-start skill registry and stack recommendation ──
+    skill-drift-detector:
+      script: hooks/skill-drift-detector.sh
+      event: SessionStart
+      scope: os-only
+
+    session-start-stack-recommend:
+      script: hooks/session-start-stack-recommend.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
 # ---------------------------------------------------------------------------
 # Evolve Loop Spike (ADR-262) — opt-in, disabled by default during spike window
 # ---------------------------------------------------------------------------

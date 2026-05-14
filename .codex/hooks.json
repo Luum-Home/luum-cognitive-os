@@ -101,6 +101,14 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/cos-session-start-projector.sh\" ]; then bash \"$PWD/hooks/cos-session-start-projector.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-drift-detector.sh\" ]; then bash \"$PWD/hooks/skill-drift-detector.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-stack-recommend.sh\" ]; then bash \"$PWD/hooks/session-start-stack-recommend.sh\"; fi"
         }
       ],
       "matcher": "startup"
