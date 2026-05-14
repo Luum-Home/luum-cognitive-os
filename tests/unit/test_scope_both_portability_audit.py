@@ -57,3 +57,16 @@ def test_report_writer_emits_json_and_markdown(tmp_path: Path) -> None:
     assert payload["schema_version"] == "scope-both-portability-audit/v1"
     assert payload["summary"]["missing"] == 1
     assert "Missing proofs" in md_path.read_text(encoding="utf-8")
+
+
+def test_inventory_suggests_skill_specific_proof_path(tmp_path: Path) -> None:
+    mod = _load_module()
+    skill = tmp_path / "skills" / "add-hook" / "SKILL.md"
+    skill.parent.mkdir(parents=True)
+    skill.write_text("<!-- SCOPE: both -->\n---\nname: add-hook\n---\n", encoding="utf-8")
+
+    rows, summary = mod.build_inventory(tmp_path)
+
+    assert summary["missing"] == 1
+    assert rows[0].artifact == "skills/add-hook/SKILL.md"
+    assert rows[0].suggested_test_path == "tests/red_team/portability/test_skill_add_hook.py"

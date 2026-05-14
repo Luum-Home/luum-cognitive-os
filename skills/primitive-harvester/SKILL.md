@@ -63,10 +63,11 @@ instead of creating a duplicate.
 ## Required follow-up for CREATE/IMPROVE
 
 1. Write or update the listed artifacts.
-2. Add behavior tests and red-team/portability tests.
-3. Validate with the emitted validation plan.
-4. Land through the governed merge queue.
-5. Save the decision/discovery to Engram.
+2. For every `SCOPE: both` artifact in the plan, run `scripts/cos-portability-proof-scaffold --artifact <artifact>` instead of inventing a portability filename.
+3. Add behavior tests and specialize each scaffolded red-team portability test with a falsification probe.
+4. Validate with the emitted validation plan.
+5. Land through the governed merge queue.
+6. Save the decision/discovery to Engram.
 
 ## Contextual Trigger
 

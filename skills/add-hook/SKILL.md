@@ -140,6 +140,18 @@ echo "PASS: {hook-name} tests"
 
 Run `bash tests/run-all-tests.sh` to verify.
 
+### 5b. Add paired portability proof for universal hooks
+
+If the hook declares `# SCOPE: both`, scaffold the exact paired proof path before
+committing:
+
+```bash
+scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh
+```
+
+Keep the generated `test_runs_from_arbitrary_project_root` falsification probe
+and specialize it for the hook payload, matcher, and degradation contract.
+
 ## Available Trigger Reference
 
 | Trigger | When it fires | Input available | Can block? |
@@ -164,6 +176,7 @@ Run `bash tests/run-all-tests.sh` to verify.
 - `hooks/{hook-name}.sh` — executable hook script
 - `.claude/settings.local.json` — updated with hook registration
 - `tests/unit/test-{hook-name}.sh` — passing test
+- `tests/red_team/portability/test_{hook-name}.py` — paired proof when `SCOPE: both`
 - Efficiency profile updated (if always-active)
 
 ## Success Criteria
@@ -171,5 +184,6 @@ Run `bash tests/run-all-tests.sh` to verify.
 - [ ] `bash -n hooks/{hook-name}.sh` exits 0 (syntax valid)
 - [ ] Hook is listed in `.claude/settings.local.json` under the correct trigger
 - [ ] `bash tests/unit/test-{hook-name}.sh` passes
+- [ ] `scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh` was used for `SCOPE: both` hooks
 - [ ] Hook fires correctly: `echo '{"tool_name":"X","tool_input":{}}' | bash hooks/{hook-name}.sh`
 - [ ] Any harness-specific assumptions are isolated or explicitly documented

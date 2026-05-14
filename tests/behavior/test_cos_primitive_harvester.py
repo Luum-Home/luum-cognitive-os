@@ -126,3 +126,14 @@ def test_no_duplicate_when_existing_worktree_triage_matches() -> None:
 
     assert payload["decision"] == "USE_EXISTING"
     assert payload["existing_match"]["name"] == "worktree-triage"
+
+
+def test_artifact_plan_uses_canonical_portability_proof_path() -> None:
+    payload = run_harvester(
+        "Creemos un hook de gate para bloquear commits riesgosos con tests automatizados y portabilidad."
+    )
+
+    assert payload["decision"] == "CREATE_PRIMITIVE"
+    assert any(path.startswith("hooks/") for path in payload["artifact_plan"])
+    assert any(path.startswith("tests/red_team/portability/test_") and not path.endswith("_portability.py") for path in payload["artifact_plan"])
+    assert any("cos-portability-proof-scaffold" not in command and "tests/red_team/portability/test_" in command for command in payload["validation_plan"])

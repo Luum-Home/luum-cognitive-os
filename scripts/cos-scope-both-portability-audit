@@ -17,6 +17,12 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_IMPORT_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_IMPORT_ROOT))
+
+from lib.portability_proof_paths import paired_candidates, suggested_test_path
+
 SCAN_ROOTS = ("hooks", "scripts", "lib", "skills")
 REPORT_JSON = ".cognitive-os/reports/scope-both-portability-audit.json"
 REPORT_MD = ".cognitive-os/reports/scope-both-portability-audit.md"
@@ -78,25 +84,11 @@ def _kind(rel: str) -> str:
 
 
 def _paired_candidates(rel: str) -> list[str]:
-    base = Path(rel).name
-    stem = base.rsplit(".", 1)[0]
-    # First four match hooks/scope-marker-portability-gate.sh exactly.
-    candidates = [
-        f"{PORTABILITY_DIR}/{stem}.bats",
-        f"{PORTABILITY_DIR}/{base}.bats",
-        f"{PORTABILITY_DIR}/{stem}_test.py",
-        f"{PORTABILITY_DIR}/test_{stem}.py",
-    ]
-    # Skills all share SKILL.md, so add a non-gate informational convention.
-    if rel.startswith("skills/") and rel.endswith("/SKILL.md"):
-        skill_name = Path(rel).parent.name.replace("-", "_")
-        candidates.append(f"{PORTABILITY_DIR}/test_skill_{skill_name}.py")
-    return candidates
+    return paired_candidates(rel)
 
 
 def _suggested_test_path(rel: str) -> str:
-    return _paired_candidates(rel)[3]
-
+    return suggested_test_path(rel)
 
 def _find_paired_test(repo: Path, rel: str) -> str | None:
     for cand in _paired_candidates(rel):

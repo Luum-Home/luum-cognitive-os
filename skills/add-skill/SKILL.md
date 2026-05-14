@@ -117,6 +117,15 @@ Decide whether the skill is:
 If the skill depends on one harness for triggers, file layout, or workflow
 surface, state that explicitly in a short `## Portability` section.
 
+If the skill declares `<!-- SCOPE: both -->` or `audience: both`, scaffold the
+paired portability proof using the canonical suggested path:
+
+```bash
+scripts/cos-portability-proof-scaffold --artifact skills/{skill-name}/SKILL.md
+```
+
+The generated path is `tests/red_team/portability/test_skill_{skill_name}.py`
+with hyphens normalized to underscores, matching the audit and scope gate.
 
 ### 2c. Add language-agnostic routing metadata
 
@@ -219,6 +228,7 @@ This is used for skills like `daily-health-check` that have a direct invocation 
 - `skills/{skill-name}/SKILL.md` — skill file with frontmatter and steps
 - `skills/CATALOG.md` — updated with new entry
 - `tests/unit/test-{skill-name}.sh` — structure test (optional but recommended)
+- `tests/red_team/portability/test_skill_{skill_name}.py` — paired proof when `SCOPE: both`
 
 ## Success Criteria
 
