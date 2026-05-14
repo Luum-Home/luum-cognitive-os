@@ -101,6 +101,15 @@ _summary() {
 # ── Individual check functions ─────────────────────────────────────────────────
 
 check_shellcheck() {
+  if ! command -v shellcheck >/dev/null 2>&1; then
+    for candidate in /opt/homebrew/bin/shellcheck /usr/local/bin/shellcheck; do
+      if [ -x "$candidate" ]; then
+        PATH="$(dirname "$candidate"):$PATH"
+        export PATH
+        break
+      fi
+    done
+  fi
   command -v shellcheck >/dev/null 2>&1 || {
     _skip "shellcheck" "shellcheck not installed (brew install shellcheck)"
     return 0
