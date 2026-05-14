@@ -72,8 +72,9 @@ fi
 #   2. gdate +%s%3N — if GNU coreutils installed via Homebrew
 #   3. date +%s × 1000 — second precision fallback (1000ms granularity)
 _now_ms() {
-  python3 -c "import time; print(int(time.time()*1000))" 2>/dev/null \
+  perl -MTime::HiRes=time -e 'print int(time()*1000), "\n"' 2>/dev/null \
     || { gdate +%s%3N 2>/dev/null; } \
+    || python3 -c "import time; print(int(time.time()*1000))" 2>/dev/null \
     || echo $(( $(date +%s) * 1000 ))
 }
 
@@ -99,7 +100,7 @@ COGNITIVE_OS_SESSION_SOURCE=""
 COGNITIVE_OS_HOOK_AGENT_TYPE=""
 COGNITIVE_OS_HOOK_AGENT_ID=""
 COGNITIVE_OS_SESSION_KIND="${COGNITIVE_OS_SESSION_KIND:-orchestrator}"
-if [ -n "$HOOK_INPUT_JSON" ] && command -v python3 >/dev/null 2>&1; then
+if [ -n "$HOOK_INPUT_JSON" ] && { [ "$EVENT_NAME" = "SessionStart" ] || [ "$EVENT_NAME" = "SubagentStart" ]; } && command -v python3 >/dev/null 2>&1; then
   _hook_meta=$(HOOK_INPUT_JSON="$HOOK_INPUT_JSON" python3 - <<'PYMETA' 2>/dev/null || true
 import json, os
 try:

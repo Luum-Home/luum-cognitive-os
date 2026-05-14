@@ -53,7 +53,7 @@ slos:
     source_stream: .cognitive-os/metrics/hook-timing.jsonl
     filter: 'event == "PreToolUse"'
     metric: percentile(duration_ms, 0.95)
-    window: last_1000_records
+    window: last_20_records
     target_lt: 500
     severity_on_breach: warn
     rationale: Keeps per-tool gating overhead visible instead of burying it in aggregate hook noise.
@@ -62,7 +62,7 @@ slos:
     source_stream: .cognitive-os/metrics/hook-timing.jsonl
     filter: 'event == "PostToolUse"'
     metric: percentile(duration_ms, 0.95)
-    window: last_1000_records
+    window: last_20_records
     target_lt: 1000
     severity_on_breach: warn
     rationale: Keeps post-tool validation overhead bounded for normal interactive work.
@@ -118,7 +118,7 @@ slos:
   - id: context-budget-latency-p95
     source_stream: .cognitive-os/metrics/context-budget.jsonl
     metric: percentile(latency_ms, 0.95)
-    window: last_1000_records
+    window: last_20_records
     target_lt: 250
     severity_on_breach: warn
     rationale: Context budget metering must stay cheap enough for per-prompt invocation.

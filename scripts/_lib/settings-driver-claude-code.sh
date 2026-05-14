@@ -194,38 +194,53 @@ cc_driver_emit() {
   )
 
   local pre_bash
-  pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
-    "hooks/network-egress-guard.sh"        "false" \
-    "hooks/rate-limit-precheck.sh"         "false" \
-    "hooks/agent-bash-cwd-enforcer.sh"     "false" \
-    "hooks/rate-limiter.sh"                "false" \
-    "hooks/destructive-rm-blocker.sh"      "false" \
-    "hooks/destructive-git-blocker.sh"     "false" \
-    "hooks/untracked-work-preservation-guard.sh" "false" \
-    "hooks/branch-ownership-lock.sh"       "false" \
-    "hooks/symlink-mutation-guard.sh"      "false" \
-    "hooks/git-commit-scope-guard.sh"           "false" \
-    "hooks/direct-main-guard.sh"                "false" \
-    "hooks/cross-session-coordination-guard.sh" "false" \
-    "hooks/agent-message-inbox-guard.sh"        "false" \
-    "hooks/orchestrator-claim-gate.sh"          "false" \
-    "hooks/pre-commit-content-hash-dedupe.sh"  "false" \
-    "hooks/scope-marker-portability-gate.sh"    "false" \
-    "hooks/skill-router-bash-gate.sh"           "false" \
-    "hooks/orchestrator-skill-invocation-gate.sh" "false" \
-    "hooks/release-guard.sh"                 "false" \
-    "hooks/control-plane-audit.sh"            "false" \
-    "hooks/external-pattern-cleanroom-gate.sh"           "false" \
-    "hooks/adoption-freeze-gate.sh"           "false" \
-    "hooks/dependency-license-classifier.sh"   "false" \
-    "hooks/research-to-runtime-firewall.sh"    "false" \
-    "hooks/spdx-header-required.sh"            "false" \
-    "hooks/external-cache-content-leak.sh"     "false" \
-    "hooks/attribution-completeness-validator.sh" "false" \
-    "hooks/lib-symlink-divergence-detector.sh" "false" \
-    "hooks/legal-review-required-on-runtime-import.sh" "false" \
-    "hooks/pending-truth-staleness-gate.sh"    "false" \
-  )
+  # Keep the default Bash hot path lean. Claude Code launches matching hooks in
+  # a burst; projecting the full advisory Bash mesh makes every shell command
+  # pay multi-second process contention. The full profile keeps the exhaustive
+  # governance mesh for release/audit runs, while default/maintainer keeps the
+  # destructive and externally-visible blockers on the synchronous path.
+  if [ "$PROFILE" = "full" ]; then
+    pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
+      "hooks/network-egress-guard.sh"        "false" \
+      "hooks/rate-limit-precheck.sh"         "false" \
+      "hooks/agent-bash-cwd-enforcer.sh"     "false" \
+      "hooks/rate-limiter.sh"                "false" \
+      "hooks/destructive-rm-blocker.sh"      "false" \
+      "hooks/destructive-git-blocker.sh"     "false" \
+      "hooks/untracked-work-preservation-guard.sh" "false" \
+      "hooks/branch-ownership-lock.sh"       "false" \
+      "hooks/symlink-mutation-guard.sh"      "false" \
+      "hooks/git-commit-scope-guard.sh"           "false" \
+      "hooks/direct-main-guard.sh"                "false" \
+      "hooks/cross-session-coordination-guard.sh" "false" \
+      "hooks/agent-message-inbox-guard.sh"        "false" \
+      "hooks/orchestrator-claim-gate.sh"          "false" \
+      "hooks/pre-commit-content-hash-dedupe.sh"  "false" \
+      "hooks/scope-marker-portability-gate.sh"    "false" \
+      "hooks/skill-router-bash-gate.sh"           "false" \
+      "hooks/orchestrator-skill-invocation-gate.sh" "false" \
+      "hooks/release-guard.sh"                 "false" \
+      "hooks/control-plane-audit.sh"            "false" \
+      "hooks/external-pattern-cleanroom-gate.sh"           "false" \
+      "hooks/adoption-freeze-gate.sh"           "false" \
+      "hooks/dependency-license-classifier.sh"   "false" \
+      "hooks/research-to-runtime-firewall.sh"    "false" \
+      "hooks/spdx-header-required.sh"            "false" \
+      "hooks/external-cache-content-leak.sh"     "false" \
+      "hooks/attribution-completeness-validator.sh" "false" \
+      "hooks/lib-symlink-divergence-detector.sh" "false" \
+      "hooks/legal-review-required-on-runtime-import.sh" "false" \
+      "hooks/pending-truth-staleness-gate.sh"    "false" \
+    )
+  else
+    pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
+      "hooks/network-egress-guard.sh"        "false" \
+      "hooks/destructive-rm-blocker.sh"      "false" \
+      "hooks/destructive-git-blocker.sh"     "false" \
+      "hooks/untracked-work-preservation-guard.sh" "false" \
+      "hooks/direct-main-guard.sh"           "false" \
+    )
+  fi
 
   local pre_read
   pre_read=$(_cc_hook_group "PreToolUse" "Read" \

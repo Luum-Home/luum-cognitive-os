@@ -253,18 +253,6 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-precheck.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-bash-cwd-enforcer.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""
-          },
-          {
-            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/destructive-rm-blocker.sh\""
           },
           {
@@ -277,95 +265,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/branch-ownership-lock.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/symlink-mutation-guard.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/git-commit-scope-guard.sh\""
-          },
-          {
-            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/direct-main-guard.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/cross-session-coordination-guard.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-message-inbox-guard.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-claim-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/pre-commit-content-hash-dedupe.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/scope-marker-portability-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-router-bash-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-skill-invocation-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/release-guard.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/external-pattern-cleanroom-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/adoption-freeze-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/dependency-license-classifier.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/research-to-runtime-firewall.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/spdx-header-required.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/external-cache-content-leak.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/attribution-completeness-validator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/lib-symlink-divergence-detector.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/legal-review-required-on-runtime-import.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-staleness-gate.sh\""
           }
         ]
       },
