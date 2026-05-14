@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: session-pending-brief
 description: Use when starting a session OR when the operator asks 'qué hay pendiente?' / 'what's open?' / 'what should I

@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: arena
 description: "Run competitive benchmarks comparing Cognitive OS against other AI coding tools"

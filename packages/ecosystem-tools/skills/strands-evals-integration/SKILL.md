@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ---
 name: strands-evals-integration
 description: 'Configure Strands Evals for trace-based agent trajectory evaluation using OpenTelemetry instrumentation.
