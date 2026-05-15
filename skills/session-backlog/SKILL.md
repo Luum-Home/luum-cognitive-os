@@ -15,10 +15,7 @@ tags:
 - inventory
 summary_line: Inventory all pending work across plans, engram, tasks, todos, audits,
   and git.
-platforms:
-- codex
-- claude-code
-- generic-cli
+platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: []
 routing_patterns:
 - pattern: \bsession[- ]?backlog\b
