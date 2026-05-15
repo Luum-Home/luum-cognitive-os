@@ -1,0 +1,73 @@
+schema_version: ai-resource-economy/v1
+owner_adr: ADR-325
+status: active
+ledger:
+  path: .cognitive-os/metrics/ai-resource-ledger.jsonl
+  required_fields:
+    - timestamp
+    - session_id
+    - agent_id
+    - task_id
+    - model
+    - tokens_in
+    - tokens_out
+    - estimated_cost_usd
+    - actual_cost_usd
+    - retry_count
+    - tool_calls
+    - reasoning_effort
+    - degradation_action
+    - language
+    - source
+  block_threshold_percent: 95
+  degrade_threshold_percent: 80
+  summarize_threshold_percent: 70
+preflight:
+  required_estimates:
+    - context_tokens
+    - file_count
+    - expected_agents
+    - expected_tests
+    - estimated_cost_usd
+    - loop_risk
+  actions_when_over_budget:
+    - split_task
+    - use_cheaper_model
+    - local_search_first
+    - ask_for_confirmation
+    - plan_without_execution
+language_token_economy:
+  user_language: preserve_user_language
+  internal_artifacts: compact_structured_fields
+  avoid_duplication: true
+  summarize_long_transcripts: true
+  memory_first: true
+  primitive: rules/language-token-economy.md
+local_fallback:
+  tasks:
+    - grep
+    - classification
+    - parsing
+    - inventory
+    - report_generation
+    - mechanical_audits
+    - preliminary_summaries
+  preferred_surfaces:
+    - scripts
+    - deterministic_rules
+    - local_models_when_available
+anti_loop:
+  same_failure_limit: 2
+  max_iterations_per_front: 3
+  stale_artifact_regeneration_limit: 1
+  require_diagnosis_after_same_error: true
+  no_full_suite_without_narrowed_cause: true
+public_history_hygiene:
+  audit_before_public_push: true
+  blocked_commit_message_patterns:
+    - '(?i)oops'
+    - '(?i)confusion'
+    - '(?i)wrong classification'
+    - '(?i)bad agent'
+    - '(?i)temporary'
+    - '(?i)eas.*ears|ears.*eas'
