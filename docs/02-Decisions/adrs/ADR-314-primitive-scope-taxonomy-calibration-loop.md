@@ -168,7 +168,12 @@ Tie-breakers:
 5. **Project-only requires positive proof.** A primitive should not be labeled
    `project` merely because it is useful to projects; it must be unnecessary for
    COS construction and have consumer-project-only intent.
-6. **One row, one reason.** Each resolved row needs a human-readable rationale in
+6. **Distribution tier is orthogonal to scope.** `distribution: lab` does not
+   mean `os-only`, and `distribution: core` does not mean `both`. Distribution
+   controls default projection/adoption profile. Scope controls semantic
+   audience/applicability. Lifecycle scope evidence must come from explicit
+   consumer accessibility, not the distribution tier alone.
+7. **One row, one reason.** Each resolved row needs a human-readable rationale in
    lifecycle or consumer-availability metadata so future agents do not re-infer
    scope from raw grep.
 

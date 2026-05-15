@@ -62,8 +62,20 @@ def make_repo(tmp_path: Path) -> Path:
             {
                 "schema_version": 1,
                 "primitives": [
-                    {"id": "skills/portable/SKILL.md", "kind": "skill", "distribution": "core", "lifecycle_state": "advisory"},
-                    {"id": "packages/quality/skills/portable-package/SKILL.md", "kind": "skill", "distribution": "team", "lifecycle_state": "candidate"}
+                    {
+                        "id": "skills/portable/SKILL.md",
+                        "kind": "skill",
+                        "distribution": "core",
+                        "lifecycle_state": "advisory",
+                        "consumer_accessibility": "lifecycle-declared-shared-surface",
+                    },
+                    {
+                        "id": "packages/quality/skills/portable-package/SKILL.md",
+                        "kind": "skill",
+                        "distribution": "team",
+                        "lifecycle_state": "candidate",
+                        "consumer_accessibility": "lifecycle-declared-shared-surface",
+                    },
                 ],
             }
         )
@@ -205,7 +217,13 @@ def test_conflicting_consumer_and_lifecycle_evidence_becomes_unknown(tmp_path: P
     lifecycle_path = root / "manifests" / "primitive-lifecycle.yaml"
     lifecycle = yaml.safe_load(lifecycle_path.read_text())
     lifecycle["primitives"].append(
-        {"id": "scripts/conflict.py", "kind": "script", "distribution": "team", "lifecycle_state": "candidate"}
+        {
+            "id": "scripts/conflict.py",
+            "kind": "script",
+            "distribution": "team",
+            "lifecycle_state": "candidate",
+            "consumer_accessibility": "lifecycle-declared-shared-surface",
+        }
     )
     lifecycle_path.write_text(yaml.safe_dump(lifecycle))
 
@@ -269,3 +287,58 @@ def test_lifecycle_consumer_candidate_is_project_not_both(tmp_path: Path) -> Non
     assert row.suggested_scope == "project"
     assert row.effective_scope == "project"
     assert any(item.source == "lifecycle" and item.scope == "project" for item in row.evidence)
+
+
+def test_lifecycle_distribution_tier_is_not_scope_evidence(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "skills" / "lab-tool").mkdir(parents=True)
+    (root / "skills" / "lab-tool" / "SKILL.md").write_text(
+        "<!-- SCOPE: both -->\n---\nname: lab-tool\n---\nReusable but opt-in.\n"
+    )
+
+    lifecycle_path = root / "manifests" / "primitive-lifecycle.yaml"
+    lifecycle = yaml.safe_load(lifecycle_path.read_text())
+    lifecycle["primitives"].append(
+        {
+            "id": "skills/lab-tool/SKILL.md",
+            "kind": "skill",
+            "distribution": "lab",
+            "lifecycle_state": "advisory",
+        }
+    )
+    lifecycle_path.write_text(yaml.safe_dump(lifecycle))
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["skills/lab-tool/SKILL.md"]
+
+    assert row.suggested_scope == "unknown"
+    assert row.effective_scope == "os-only"
+    assert not any(item.source == "lifecycle" and item.scope == "os-only" for item in row.evidence)
+
+
+def test_lab_distribution_with_shared_accessibility_remains_both(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "skills" / "lab-shared").mkdir(parents=True)
+    (root / "skills" / "lab-shared" / "SKILL.md").write_text(
+        "<!-- SCOPE: both -->\n---\nname: lab-shared\n---\nReusable but opt-in.\n"
+    )
+    proof = root / "tests" / "red_team" / "portability"
+    (proof / "test_skill_lab_shared.py").write_text("def test_lab_shared(): pass\n")
+
+    lifecycle_path = root / "manifests" / "primitive-lifecycle.yaml"
+    lifecycle = yaml.safe_load(lifecycle_path.read_text())
+    lifecycle["primitives"].append(
+        {
+            "id": "skills/lab-shared/SKILL.md",
+            "kind": "skill",
+            "distribution": "lab",
+            "lifecycle_state": "advisory",
+            "consumer_accessibility": "lifecycle-declared-shared-surface",
+        }
+    )
+    lifecycle_path.write_text(yaml.safe_dump(lifecycle))
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["skills/lab-shared/SKILL.md"]
+
+    assert row.suggested_scope == "both"
+    assert row.effective_scope == "both"
+    assert any(item.source == "lifecycle" and item.scope == "both" for item in row.evidence)

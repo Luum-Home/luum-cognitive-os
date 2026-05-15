@@ -36,8 +36,6 @@ SOURCE_ROOTS = ("hooks", "skills", "rules", "scripts", "templates", "packages")
 PROJECTABLE_STATUSES = {"projectable-needs-driver", "shell-ci-candidate", "projected-consumer-surface"}
 SHARED_STATUSES = {"shared-surface"}
 MAINTAINER_STATUSES = {"maintainer-only", "so-local-only", "lifecycle-declared-maintainer"}
-CONSUMER_DISTRIBUTIONS = {"core", "team"}
-MAINTAINER_DISTRIBUTIONS = {"maintainer", "lab"}
 INACTIVE_STATES = {"demoted", "archived", "deleted"}
 BOTH_INSTALL_SURFACES = {"bootstrap", "settings-projection", "profile-application"}
 PROJECT_LIFECYCLE_ACCESSIBILITY = {"lifecycle-declared-consumer-candidate"}
@@ -186,8 +184,22 @@ def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: li
         distribution = str(row.get("distribution") or "")
         state = str(row.get("lifecycle_state") or "")
         consumer_accessibility = str(row.get("consumer_accessibility") or "")
-        if state in INACTIVE_STATES or distribution in MAINTAINER_DISTRIBUTIONS or state == "sandbox":
-            evidence.append(Evidence("lifecycle", "os-only", 65, f"distribution={distribution}; state={state}"))
+        # Distribution tiers (`core`, `team`, `maintainer`, `lab`) answer
+        # adoption/projection/default-profile questions. They are deliberately
+        # orthogonal to semantic SCOPE. A lab primitive may still be `both`, and
+        # a core primitive is not automatically `both`.
+        #
+        # Therefore lifecycle scope evidence comes from explicit consumer
+        # accessibility, not from distribution tier or lifecycle state alone.
+        if consumer_accessibility in MAINTAINER_STATUSES:
+            evidence.append(
+                Evidence(
+                    "lifecycle",
+                    "os-only",
+                    65,
+                    f"distribution={distribution}; state={state}; consumer_accessibility={consumer_accessibility}",
+                )
+            )
         elif consumer_accessibility in SHARED_LIFECYCLE_ACCESSIBILITY:
             evidence.append(
                 Evidence(
@@ -209,8 +221,6 @@ def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: li
                     f"distribution={distribution}; state={state}; consumer_accessibility={consumer_accessibility}",
                 )
             )
-        elif distribution in CONSUMER_DISTRIBUTIONS:
-            evidence.append(Evidence("lifecycle", "both", 65, f"distribution={distribution}; state={state}"))
 
     # Project-only remains under-modeled in the current manifests. Preserve an
     # explicit project marker as weak pending evidence instead of collapsing it

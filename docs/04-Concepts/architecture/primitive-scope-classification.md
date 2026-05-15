@@ -1,6 +1,8 @@
 # Primitive Scope Classification
 
-`SCOPE` is a distribution claim, not a source-location or grep claim. It answers where an agentic primitive is meant to be available:
+`SCOPE` is an audience/applicability claim, not a source-location, grep, or
+distribution-tier claim. It answers where an agentic primitive is semantically
+needed:
 
 - `os-only` — primitive whose principle, procedure, or implementation is only required to construct, validate, explain, or operate Cognitive OS itself.
 - `project` — primitive that affects downstream projects only, and that Cognitive OS does not need to contemplate as part of constructing or validating itself.
@@ -31,6 +33,22 @@ Use `scripts/primitive_scope_classifier.py` when creating or changing primitives
 5. paired portability/falsification tests from `lib.portability_proof_paths`
 
 The classifier is intentionally conservative. A new primitive with no export/projection evidence is reported as `unknown` with safe `effective_scope=os-only` and low confidence and a next action to add lifecycle/projection/consumer-availability metadata before relying on the classification.
+
+`distribution: core | team | maintainer | lab` is orthogonal metadata. It says
+which adoption/profile tier should receive the primitive by default. It must not
+be used as scope evidence by itself:
+
+- `distribution: lab` does not mean `os-only`;
+- `distribution: core` does not mean `both`;
+- a reusable `both` primitive may still be `lab` if it is opt-in, experimental,
+  or too heavy for default projection;
+- an `os-only` primitive may still be important without being part of the
+  default `core` surface.
+
+Lifecycle scope evidence comes from explicit `consumer_accessibility` values
+such as `lifecycle-declared-shared-surface`,
+`lifecycle-declared-consumer-candidate`, or
+`lifecycle-declared-maintainer`, not from distribution tier alone.
 
 Project-facing candidate evidence is not the same as `both` evidence. `shell-ci-candidate`, `projectable-needs-driver`, `projected-consumer-surface`, and lifecycle `consumer_accessibility: lifecycle-declared-consumer-candidate` make a primitive visible as a `project` candidate. A `both` claim still needs evidence that the primitive is valid as a COS/core surface and as a downstream project surface.
 
@@ -66,7 +84,7 @@ When adding a primitive:
 The failed reclassification pattern treated OS-internal strings as sufficient evidence. The classifier separates:
 
 - implementation detail: source paths, docs references, COS commands;
-- distribution evidence: lifecycle distribution, consumer availability, install/profile surfaces, scope overrides, projection proof;
+- scope/distribution evidence: lifecycle `consumer_accessibility`, consumer availability, install/profile surfaces, scope overrides, projection proof;
 - proof evidence: paired portability tests.
 
 Only the latter two can justify `project` or `both`. Source mentions alone cannot demote a portable primitive to `os-only`.
