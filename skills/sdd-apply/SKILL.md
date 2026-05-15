@@ -30,7 +30,7 @@ triggers:
 
 ## Purpose
 
-Implement the approved task list while preserving traceability from code changes to EAS requirements, acceptance criteria, and detractor objections.
+Implement the approved task list while preserving traceability from code changes to EAS requirements, EARS trigger/response wording, acceptance criteria, and detractor objections.
 
 ## EAS Implementation Rule
 

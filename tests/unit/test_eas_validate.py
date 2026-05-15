@@ -28,7 +28,7 @@ Ship a safe sample behavior.
 
 | ID | Requirement | Type | Source | Priority |
 |---|---|---|---|---|
-| REQ-1 | The system accepts valid input. | functional | PRD-1 | must |
+| REQ-1 | WHEN the caller submits valid input THE SYSTEM SHALL accept it. | functional | PRD-1 | must |
 
 ## Non-goals
 
@@ -127,3 +127,23 @@ def test_cli_returns_nonzero_for_invalid_file(tmp_path: Path) -> None:
     result = validate_eas_text(path.read_text(encoding="utf-8"), str(path))
     assert not result.ok
     assert "missing required section: Requirements" in result.errors
+
+
+def test_non_ears_functional_requirement_warns_by_default() -> None:
+    text = VALID_EAS.replace(
+        "WHEN the caller submits valid input THE SYSTEM SHALL accept it.",
+        "The system accepts valid input.",
+    )
+    result = validate_eas_text(text, "non-ears-warning.md")
+    assert result.ok, result.errors
+    assert any("EARS syntax" in warning for warning in result.warnings)
+
+
+def test_require_ears_promotes_warning_to_error() -> None:
+    text = VALID_EAS.replace(
+        "WHEN the caller submits valid input THE SYSTEM SHALL accept it.",
+        "The system accepts valid input.",
+    )
+    result = validate_eas_text(text, "non-ears-error.md", require_ears=True)
+    assert not result.ok
+    assert any("EARS syntax" in error for error in result.errors)

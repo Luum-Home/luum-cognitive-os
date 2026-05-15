@@ -65,6 +65,14 @@ def test_eas_detractor_role_names_selectable_modes_sources_and_adr() -> None:
     assert "ADR-319" in doc
 
 
+def test_eas_doc_rule_and_template_distinguish_eas_from_ears() -> None:
+    corpus = "\n".join([_read(EAS_DOC), _read(EAS_TEMPLATE), _read(EAS_RULE), _read(EAS_ADR)])
+    assert "Easy Approach to Requirements Syntax" in corpus
+    assert "WHEN <event> THE SYSTEM SHALL" in corpus
+    assert "IF <condition> THEN THE SYSTEM SHALL" in corpus
+    assert "EARS is" in corpus
+
+
 def test_eas_rule_points_to_template_validator_and_sdd_integration() -> None:
     text = _read(EAS_RULE)
     assert "templates/eas.md" in text

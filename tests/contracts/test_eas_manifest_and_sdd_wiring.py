@@ -43,7 +43,7 @@ def test_eas_primitives_have_lifecycle_rows() -> None:
 
 def test_sdd_phase_skills_are_wired_to_eas_and_validator() -> None:
     expected = {
-        "skills/sdd-spec/SKILL.md": ["templates/eas.md", "REQ-*", "AC-*", "Detractor"],
+        "skills/sdd-spec/SKILL.md": ["templates/eas.md", "REQ-*", "AC-*", "Detractor", "EARS", "THE SYSTEM SHALL"],
         "skills/sdd-tasks/SKILL.md": ["gap matrix", "AC-*", "OBJ-*", "scripts/eas_validate.py"],
         "skills/sdd-apply/SKILL.md": ["REQ-*", "AC-*", "OBJ-*", "EAS"],
         "skills/sdd-verify/SKILL.md": ["scripts/eas_validate.py", "adversarial-review", "residual risks"],

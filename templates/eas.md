@@ -16,9 +16,11 @@ Describe the problem, desired outcome, affected users/operators, and why this ch
 
 ## Requirements
 
+Functional requirements should use EARS (Easy Approach to Requirements Syntax): `WHEN <event> THE SYSTEM SHALL <response>`, `IF <condition> THEN THE SYSTEM SHALL <response>`, `WHILE <state> THE SYSTEM SHALL <response>`, `WHERE <feature/context> THE SYSTEM SHALL <response>`, or `THE SYSTEM SHALL <response>`.
+
 | ID | Requirement | Type | Source | Priority |
 |---|---|---|---|---|
-| REQ-1 | <requirement> | functional | <source> | must |
+| REQ-1 | WHEN <event> THE SYSTEM SHALL <observable response> | functional | <source> | must |
 
 ## Non-goals
 
@@ -28,7 +30,7 @@ Describe the problem, desired outcome, affected users/operators, and why this ch
 
 | ID | Requirement | Acceptance criterion | Verification method | Expected result |
 |---|---|---|---|---|
-| AC-1 | REQ-1 | <measurable condition> | <test/command/manual check> | <expected output or pass condition> |
+| AC-1 | REQ-1 | <measurable condition proving the EARS response> | <test/command/manual check> | <expected output or pass condition> |
 
 ## ATDD/TDD Mapping
 

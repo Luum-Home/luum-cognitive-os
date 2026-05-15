@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""Validate Executable Acceptance Specification (EAS) Markdown artifacts."""
+"""Validate Executable Acceptance Specification (EAS) Markdown artifacts.
+
+EAS is the evidence artifact. EARS (Easy Approach to Requirements Syntax) is
+a requirements-writing syntax that EAS may embed in its Requirements section.
+"""
 
 from __future__ import annotations
 
@@ -34,6 +38,14 @@ _NONE_RISK_RE = re.compile(r"\b(no residual risks?|none)\b", re.IGNORECASE)
 _DETRACTOR_MODE_RE = re.compile(
     r"\b(Tenth Man Rule|Tenth Man|Devil'?s Advocate|Pre-mortem|Premortem|Black Hat|Red Team)\b",
     re.IGNORECASE,
+)
+_EARS_RE = re.compile(
+    r"(?:\bWHEN\b.+\bTHE SYSTEM SHALL\b|"
+    r"\bIF\b.+\bTHEN\b.+\bTHE SYSTEM SHALL\b|"
+    r"\bWHILE\b.+\bTHE SYSTEM SHALL\b|"
+    r"\bWHERE\b.+\bTHE SYSTEM SHALL\b|"
+    r"\bTHE SYSTEM SHALL\b)",
+    re.IGNORECASE | re.DOTALL,
 )
 
 
@@ -102,7 +114,35 @@ def _ids(pattern: re.Pattern[str], values: Iterable[str]) -> set[str]:
     return found
 
 
-def validate_eas_text(markdown: str, path: str = "<memory>") -> EASValidationResult:
+def _requirement_rows(section: str) -> list[list[str]]:
+    rows = _table_rows(section)
+    if rows:
+        return rows
+    bullet_rows: list[list[str]] = []
+    for line in section.splitlines():
+        match = re.match(r"^\s*[-*]\s+(REQ-[A-Za-z0-9._-]+)\s*:?\s*(.+?)\s*$", line)
+        if match:
+            bullet_rows.append([match.group(1), match.group(2), "functional"])
+    return bullet_rows
+
+
+def _is_functional_requirement(row: list[str]) -> bool:
+    if len(row) >= 3 and re.search(r"\bfunctional\b", row[2], re.IGNORECASE):
+        return True
+    return len(row) < 3
+
+
+def _requirement_text(row: list[str]) -> str:
+    if len(row) >= 2:
+        return row[1]
+    return " ".join(row)
+
+
+def _ears_like(text: str) -> bool:
+    return bool(_EARS_RE.search(text))
+
+
+def validate_eas_text(markdown: str, path: str = "<memory>", *, require_ears: bool = False) -> EASValidationResult:
     errors: list[str] = []
     warnings: list[str] = []
     sections = _sections(markdown)
@@ -124,6 +164,7 @@ def validate_eas_text(markdown: str, path: str = "<memory>") -> EASValidationRes
     residual = sections.get("residual risks", "")
 
     req_ids = _ids(_REQ_RE, [requirements])
+    req_rows = _requirement_rows(requirements)
     ac_rows = _table_rows(acceptance)
     gap_rows = _table_rows(gap_matrix)
     objection_rows = _table_rows(objections)
@@ -131,6 +172,18 @@ def validate_eas_text(markdown: str, path: str = "<memory>") -> EASValidationRes
 
     if not req_ids:
         errors.append("requirements section must define at least one REQ-* id")
+
+    for row in req_rows:
+        row_text = " ".join(row)
+        if not _REQ_RE.search(row_text) or not _is_functional_requirement(row):
+            continue
+        requirement = _requirement_text(row)
+        if not _ears_like(requirement):
+            message = f"functional requirement should use EARS syntax: {row_text}"
+            if require_ears:
+                errors.append(message)
+            else:
+                warnings.append(message)
 
     ac_by_req: dict[str, list[list[str]]] = {req: [] for req in req_ids}
     for row in ac_rows:
@@ -209,17 +262,18 @@ def validate_eas_text(markdown: str, path: str = "<memory>") -> EASValidationRes
     return EASValidationResult(path=path, ok=not errors, errors=errors, warnings=warnings)
 
 
-def validate_eas_file(path: Path) -> EASValidationResult:
-    return validate_eas_text(path.read_text(encoding="utf-8"), str(path))
+def validate_eas_file(path: Path, *, require_ears: bool = False) -> EASValidationResult:
+    return validate_eas_text(path.read_text(encoding="utf-8"), str(path), require_ears=require_ears)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate an Executable Acceptance Specification Markdown file.")
     parser.add_argument("path", type=Path, help="Path to EAS Markdown file")
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
+    parser.add_argument("--require-ears", action="store_true", help="Fail functional requirements that do not use EARS syntax")
     args = parser.parse_args(argv)
 
-    result = validate_eas_file(args.path)
+    result = validate_eas_file(args.path, require_ears=args.require_ears)
     if args.json:
         print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
     elif result.ok:

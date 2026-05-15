@@ -30,13 +30,13 @@ triggers:
 
 ## Purpose
 
-Convert requirements, design decisions, and EAS coverage gaps into concrete implementation tasks.
+Convert requirements, design decisions, and EAS coverage gaps into concrete implementation tasks; preserve EARS requirement wording when deriving tasks.
 
 ## EAS Consumption Rule
 
 When an EAS path exists, tasks must be derived from:
 
-- each `REQ-*` requirement;
+- each `REQ-*` requirement, preserving any EARS trigger/condition/state/context and `THE SYSTEM SHALL` response;
 - each `AC-*` acceptance row;
 - every gap-matrix row whose status is not covered;
 - every `OBJ-*` detractor objection whose disposition requires a task;
