@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:04:15+00:00'
+generated_at: '2026-05-15T11:14:45+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -2297,6 +2297,16 @@ primitives:
   projection_targets:
   - docs/06-Daily/reports/primitive-harness-coverage-latest.json
   sha256: 3b58bf419dd607be8bb4df2230959771d3719092cb0439510f01d8233b3585d0
+- id: packages/adaptive-workflow/skills/self-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/adaptive-workflow/skills/self-review/SKILL.md
+  sha256: 4f4a39ed4a45f272f3e3e65635b404f2d34c5a11aad43353459108ca0c7d149c
 - id: packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt
   kind: library
   owner_adr: ADR-042
@@ -2308,6 +2318,26 @@ primitives:
   - packages/agent-coordination/lib/agent_bus.py
   - hooks/agent-control-inbound-guard.sh
   sha256: a7e87c91a48103b37ab37ad8b416878eb1df10c03461c7bf0fe4c315763a5cb4
+- id: packages/agent-coordination/skills/retrospective/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/agent-coordination/skills/retrospective/SKILL.md
+  sha256: d0d1bff9460667fc0e5b7b7828267562c292837db9810fb7668ba22e06fcd6bf
+- id: packages/agent-coordination/skills/squad-manager/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/agent-coordination/skills/squad-manager/SKILL.md
+  sha256: ee72930e15c98d038e1cb1e188d5f0b8a16080c58f2a1c20ac9fa3d8fe2b0242
 - id: packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal
   kind: library
   owner_adr: ADR-033
@@ -2319,6 +2349,26 @@ primitives:
   - packages/agent-lifecycle/lib/harness_adapter/base.py
   - packages/agent-lifecycle/lib/harness_adapter/dispatch.py
   sha256: 6497bc11e500547911e7576ca5149a3d801f67277c88dc9c0f1d0251a1a562da
+- id: packages/agent-lifecycle/skills/persistent-agent/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/agent-lifecycle/skills/persistent-agent/SKILL.md
+  sha256: 029c7a0568b0d586fa29e994ff6b966bd3d114c462a6f4e43bbef06913347d76
+- id: packages/agent-lifecycle/skills/resume-tasks/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/agent-lifecycle/skills/resume-tasks/SKILL.md
+  sha256: 5a5d9373772ea91a9c1ec90155b6379b37b90427bf27c852c621f3c4bcbbc537
 - id: packages/agent-lifecycle/skills/review-output/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -2329,6 +2379,566 @@ primitives:
   projection_targets:
   - packages/agent-lifecycle/skills/review-output/SKILL.md
   sha256: f4d0474f46e48b1f460efb0efc0b915622b438c71546972fd6032843017ab4eb
+- id: packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
+  sha256: 227e82549d743f1a20d57eaf24b8f67a47bb1b4e5fb03fd8bfae69c335cf72c1
+- id: packages/context-optimization/skills/compose-prompt/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/context-optimization/skills/compose-prompt/SKILL.md
+  sha256: 55d85d6ee1049a4e8c5017d2268c455ae693a2c5e203d7dfb5c169b90cea11eb
+- id: packages/context-optimization/skills/exhaustive-prompt/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/context-optimization/skills/exhaustive-prompt/SKILL.md
+  sha256: bc3b4625d13c857621b074c74837797bfb8eec5f0150bf2c23f73e9fe97a8a8b
+- id: packages/document-sync/skills/doc-sync/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/document-sync/skills/doc-sync/SKILL.md
+  sha256: a0e93f6f49b24671ebb30a1d808e5d41176f384b1b052f0c4c067c706381c0c9
+- id: packages/document-sync/skills/document-feature/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/document-sync/skills/document-feature/SKILL.md
+  sha256: 4cc247ff78d73efad475c034007acdd812bcba8dda4c956e913c354fac223b3c
+- id: packages/dry-run-simulation/skills/arena/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/dry-run-simulation/skills/arena/SKILL.md
+  sha256: ac1a10f119ac64f533e2734c6cde016b47edb1a56586d17cf9da8dc2c32c3251
+- id: packages/dry-run-simulation/skills/simulation-arena/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/dry-run-simulation/skills/simulation-arena/SKILL.md
+  sha256: b5a3c7537895cd46a61f47320fc5f842f10465361ff5821fc13a7ad4ff3ac164
+- id: packages/ecosystem-tools/skills/audit-website/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/audit-website/SKILL.md
+  sha256: fe76268027d3e25359d4d473db53c2ad74c38774d6e98a0b537d2dcddb980cf1
+- id: packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
+  sha256: f24871ddc78c2d2d4927363055466def2d16a2b0565ed9fa6e9b0c4acbbe2d75
+- id: packages/ecosystem-tools/skills/cognee-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/cognee-integration/SKILL.md
+  sha256: a2cf7c4c7b42f9c2ced0dacdd6431b3f40d0a346da070fa36032fcef56e0122a
+- id: packages/ecosystem-tools/skills/cognee-search/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/cognee-search/SKILL.md
+  sha256: a2a6f903d9611564866e7c1de60a29272be1e0393bfb32485979a18bd8799929
+- id: packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
+  sha256: 1414e5a2a70bfc9b6718dbea85e3f58413e477b89a188cf815514a9bb06a9142
+- id: packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
+  sha256: 058359be4319cdc78afc90b8c591a28250c2c0ab72c529bc7e487b886b953440
+- id: packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
+  sha256: a2f3a15c38746e60ffa68e15587b9d5e2cbf861ccbcd0b2532f12ce6f9dd209c
+- id: packages/ecosystem-tools/skills/ragas-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/ragas-integration/SKILL.md
+  sha256: 8c37133e24393f7ffb51456ee4f9571b63c719375c268425202dd4d0276c0c75
+- id: packages/ecosystem-tools/skills/recommend-library/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/recommend-library/SKILL.md
+  sha256: d8da9993ca6d0b091fbe40c4056873a34fdfec6a7966d733ec444a458137e240
+- id: packages/ecosystem-tools/skills/secret-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/secret-audit/SKILL.md
+  sha256: c643ee46cca0cd81945ca82de74cd43a6d6d965d8a0d3b525db3581b1f49655e
+- id: packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
+  sha256: 91d4a93c78616e5fd7fd1a916ffa74eb62d10b0e280c2455f842b192e8a1027e
+- id: packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
+  sha256: 13d1bb8e5d4bd2b072100d64c874d397ca7ff43e1e1a5a05d75963311915d907
+- id: packages/ecosystem-tools/skills/tool-discovery/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/tool-discovery/SKILL.md
+  sha256: c10bc519311086dd70b5bed2ca23e7888f0f5abec9bf5dd844f2dd64f79b2544
+- id: packages/ecosystem-tools/skills/web-crawler/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/ecosystem-tools/skills/web-crawler/SKILL.md
+  sha256: d73501e9883292934ee138a39c26b6894f5d0f9f51aa07a9487e4096906f381a
+- id: packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
+  sha256: 9c6715e5de6292bab39188f75f6ff3f75cc680d6e403a457e92feb10b33ba59d
+- id: packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
+  sha256: e75fd02f569008dc24fcd25c640932d22db5278766cd206932dbdfc2ca1a7a7e
+- id: packages/infra-lifecycle/skills/repair-status/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/infra-lifecycle/skills/repair-status/SKILL.md
+  sha256: ae072b97192349413e2e560e327dd4057f65f2daab5c2a017834428f61a15737
+- id: packages/infra-lifecycle/skills/sre-agent/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/infra-lifecycle/skills/sre-agent/SKILL.md
+  sha256: 81cea7e39d623f8c107d7228efa305721d14fb7187b3b9016253b0f4ea8180bf
+- id: packages/privacy-mode/skills/private-mode/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/privacy-mode/skills/private-mode/SKILL.md
+  sha256: e5c2e8cffe0a0ce7cc1469ca5a006f3eb27f9056a2db135fcd9587fc1851f8e8
+- id: packages/quality-gates/skills/confidence-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/confidence-check/SKILL.md
+  sha256: 5d6fa376e94051eb5f38049d4d118418779df2bcefe257455e9700f9fac771b4
+- id: packages/quality-gates/skills/dod-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/dod-check/SKILL.md
+  sha256: ce945c0a75364e472ee00faecfc5f44cea28bd03f2b004fd02cdb0e312a68b10
+- id: packages/quality-gates/skills/nemo-guardrails/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/nemo-guardrails/SKILL.md
+  sha256: 4d366b78b8d1c4b84ea61e94e4ad2bfb379bcea451faf5bd4cdd790de6360623
+- id: packages/quality-gates/skills/pentest-self/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/pentest-self/SKILL.md
+  sha256: 882831e5c631366bd2d5f86435f92af0c1f6b5bced53ad83a8d86564004d49b5
+- id: packages/quality-gates/skills/readiness-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/readiness-check/SKILL.md
+  sha256: a992f8f8c20f5161dbe66401e5107000c73e0f2840085f2444f80617617fbd22
+- id: packages/quality-gates/skills/resolve-blockers/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/resolve-blockers/SKILL.md
+  sha256: 7dd7602f6467ba23b58e104f9300be4cec5358b7bbabbc2ddcfcd2d864e7b985
+- id: packages/quality-gates/skills/security-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/quality-gates/skills/security-audit/SKILL.md
+  sha256: 9be760d68ea809dffb422c93242b2f2af5339c77250ea7d2fe6a124e64a83691
+- id: packages/recall-search/skills/conversation-memory/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/recall-search/skills/conversation-memory/SKILL.md
+  sha256: a499dfb2c3bf84b7ca25186dd546e4f4a7ee5ae068eef7570f1f75ccffa78269
+- id: packages/recall-search/skills/memu-context/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/recall-search/skills/memu-context/SKILL.md
+  sha256: 500f8a4d63177ecbf76d9cfa8fc5615f5ab9d2e468a91260378c73b5fa04228a
+- id: packages/recall-search/skills/recall-search/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/recall-search/skills/recall-search/SKILL.md
+  sha256: 975e4872c7e9f03443fb62e84cdb119876fe363d29fc4221c6489662544139e9
+- id: packages/scope-governance/skills/contract-drift/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/scope-governance/skills/contract-drift/SKILL.md
+  sha256: 53710fa6caf72c41b3878fb0c7367a369c113fced85d107fcacebb7a4fa73794
+- id: packages/scope-governance/skills/deep-research/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/scope-governance/skills/deep-research/SKILL.md
+  sha256: e4da00f16240c0724a139227711ed3a01d826ba79ab0fe684e6c0d00c4cb75b5
+- id: packages/scope-governance/skills/planning-poker/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/scope-governance/skills/planning-poker/SKILL.md
+  sha256: 51fc342c0fa702f3314c5a1f6cb53b2b8f1df157118ab4d12e92e85bdb7708da
+- id: packages/scope-governance/skills/repo-scout/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/scope-governance/skills/repo-scout/SKILL.md
+  sha256: 6f77ad80845939b3cb298cb23ec24d57eda5f6cfd4abcf8580b43bc26269189c
+- id: packages/scope-governance/skills/research-protocol/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/scope-governance/skills/research-protocol/SKILL.md
+  sha256: eb32a6a8282ebeafab280952b0d9a121d28dea35f939b189c580dae2bdaf391f
+- id: packages/scope-governance/skills/sandbox-sample/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/scope-governance/skills/sandbox-sample/SKILL.md
+  sha256: 87ae09867e6d54e5a6d3e35e22fa805f528496cd412002b9b031245acbf8c71c
+- id: packages/sdd-compound/skills/auto-refine/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/auto-refine/SKILL.md
+  sha256: 5db9febfaa780a5a2ccb5c4b581dbf6d1f09e05557076b1db1bd97a105a53fff
+- id: packages/sdd-compound/skills/batch-runner/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/batch-runner/SKILL.md
+  sha256: b75db1b758d838a80580b04942eadb2f105f69dd49ec989df95836c55e6e75ee
+- id: packages/sdd-compound/skills/evaluate-plan/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/evaluate-plan/SKILL.md
+  sha256: a1889da34fa585e584bf95fbf3626a4c2f2f91421441996fcce6c3ef0436ea26
+- id: packages/sdd-compound/skills/impact-analysis/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/impact-analysis/SKILL.md
+  sha256: 440bbc78f134d2b06c9591587aed8dd0f42331d73c5050d93d111c1149dee376
+- id: packages/sdd-compound/skills/issue-pipeline/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/issue-pipeline/SKILL.md
+  sha256: 9125373f40dc877e47ead0ef75d8be7d77d3669b8719bb47281bebe7377837c0
+- id: packages/sdd-compound/skills/plan-bug/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/plan-bug/SKILL.md
+  sha256: 6777a4639f3b72c0a028f6b5a27b03846d2e9d5dcb4d21f045f545bea6394e99
+- id: packages/sdd-compound/skills/plan-feature/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/plan-feature/SKILL.md
+  sha256: e4861dd0cd4b8a9d8f6c2e2b83ec0e2e99426aa0076161885eb87846e37f9bbe
+- id: packages/sdd-compound/skills/sdd-compound/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/sdd-compound/SKILL.md
+  sha256: e22369234855de1b59e00beff32198cf4447e4a5e93ff7c518507b7b109fe322
+- id: packages/sdd-compound/skills/singularity/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/singularity/SKILL.md
+  sha256: 69ccb7c685a44cf892ecd37b48178506ab3b70eefbf0c8250b2501b9a9788e1d
+- id: packages/sdd-compound/skills/webhook-trigger/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/sdd-compound/skills/webhook-trigger/SKILL.md
+  sha256: 360b60e9b2b5318e6712daa06175dcdba68ffdb3fc37a74a26209bd88125f8a5
+- id: packages/skill-governance/skills/error-analyzer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/skill-governance/skills/error-analyzer/SKILL.md
+  sha256: 63fb9fb28845f5b7da29af8d35cd8911b2c3f74576657cf1788a4a2fb7db411a
+- id: packages/skill-governance/skills/metrics-calibrator/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/skill-governance/skills/metrics-calibrator/SKILL.md
+  sha256: 30619ebc42cf293831e2cdc53f4143f37822300e11cd0c911c08ee9e32b9f42c
+- id: packages/skill-governance/skills/model-optimizer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/skill-governance/skills/model-optimizer/SKILL.md
+  sha256: 0607b56135d12f12af0e7d7e8a72972d8ae01c3734057e1c21e3f27f21758975
+- id: packages/skill-governance/skills/optimize-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/skill-governance/skills/optimize-skill/SKILL.md
+  sha256: c89a254751a3550b6ead0c58799439414ed565347a52a4e16df63ffa6e9ffa93
 - id: packages/skill-governance/skills/self-improve/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -2339,6 +2949,96 @@ primitives:
   projection_targets:
   - packages/skill-governance/skills/self-improve/SKILL.md
   sha256: dfc1cd30296626a782f466f31538daf9e1028bc731b3b9e5aa4c189606990633
+- id: packages/task-management/skills/agent-kpis/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/task-management/skills/agent-kpis/SKILL.md
+  sha256: 47cb8c74b6de63adcb834a3797a32cba369c8e34468e4460b496528823d05c93
+- id: packages/task-management/skills/capability-snapshot/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/task-management/skills/capability-snapshot/SKILL.md
+  sha256: 69ba798fcf6c59284781b59d2e830bcc450075e2ea5c9f69557869555d013ea4
+- id: packages/task-management/skills/sprint/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/task-management/skills/sprint/SKILL.md
+  sha256: 7278fd0f657203cf6f2caabaed4c8b9c9ffedc26a0f4f3715203b0b89ee8db64
+- id: packages/verification-audit/skills/coverage-enforcement/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/verification-audit/skills/coverage-enforcement/SKILL.md
+  sha256: 6a15466cd95f387b79473fad4117493b5a28e4bd2cb1065365191fcc3d40e877
+- id: packages/verification-audit/skills/smoke-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/verification-audit/skills/smoke-test/SKILL.md
+  sha256: a4bbb6b105dee346b815c4da1e6f7ee7f41adb91dac9b728e7056900146c4f94
+- id: packages/verification-audit/skills/systematic-debugging/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/verification-audit/skills/systematic-debugging/SKILL.md
+  sha256: 084f24a20c73ab71c27396ce07f8e7251524636e695733296b00fb6c1fcf0966
+- id: packages/verification-audit/skills/test-driven-development/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/verification-audit/skills/test-driven-development/SKILL.md
+  sha256: d00cde5f191fa0f67b371a3d64a94dc36ca8e1d4f3c3df2d480ed1588dd83f6a
+- id: packages/verification-audit/skills/trust-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/verification-audit/skills/trust-audit/SKILL.md
+  sha256: 5e836a67c60dec68a8ac78f3adbadd56987f020713650628aef8f40d4fd19ddc
+- id: packages/verification-audit/skills/verification-before-completion/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - packages/verification-audit/skills/verification-before-completion/SKILL.md
+  sha256: 553f7bc9f67cd3dd5ec22beaf3244abc33fe203c1d90ab41adb9b9934ab1b39e
 - id: rules/ROADMAP.md
   kind: rule
   owner_adr: ADR-314

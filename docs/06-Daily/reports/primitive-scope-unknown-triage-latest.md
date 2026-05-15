@@ -7,29 +7,27 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 ```json
 {
   "by_bucket": {
-    "declared-both-needs-proof-and-metadata": 70,
     "insufficient-metadata": 344,
     "os-only-semantic-candidate": 41
   },
   "by_declared_scope": {
-    "both": 390,
+    "both": 320,
     "os-only": 65
   },
   "by_gap": {
-    "declared-both-missing-paired-proof": 70,
-    "missing-consumer-availability-row": 455,
-    "missing-lifecycle-row": 455,
-    "no-distribution-evidence": 455
+    "missing-consumer-availability-row": 385,
+    "missing-lifecycle-row": 385,
+    "no-distribution-evidence": 385
   },
   "by_prefix": {
     "hooks": 58,
-    "packages": 72,
+    "packages": 2,
     "rules": 92,
     "scripts": 140,
     "skills": 75,
     "templates": 18
   },
-  "total_unknown": 455
+  "total_unknown": 385
 }
 ```
 
@@ -101,62 +99,6 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `hooks/task-recorder.sh` | both | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Stop hook: Record completed task info to task-history.jsonl |
 | `hooks/tool-discovery-trigger.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | tool-discovery-trigger.sh — Check if tool discovery scan is due |
 | … | … | … | … | … | 294 more rows in JSON report. |
-
-## declared-both-needs-proof-and-metadata (70)
-
-| Path | Declared | Hints | Gaps | Structure | Summary |
-|---|---|---|---|---|---|
-| `packages/adaptive-workflow/skills/self-review/SKILL.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: self-review |
-| `packages/agent-coordination/skills/retrospective/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: retrospective |
-| `packages/agent-coordination/skills/squad-manager/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: squad-manager |
-| `packages/agent-lifecycle/skills/persistent-agent/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: persistent-agent |
-| `packages/agent-lifecycle/skills/resume-tasks/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: resume-tasks |
-| `packages/auto-repair-rollback/skills/auto-rollback/SKILL.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: auto-rollback |
-| `packages/context-optimization/skills/compose-prompt/SKILL.md` | both | os=2; generic=2; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: compose-prompt |
-| `packages/context-optimization/skills/exhaustive-prompt/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: exhaustive-prompt |
-| `packages/document-sync/skills/doc-sync/SKILL.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: doc-sync |
-| `packages/document-sync/skills/document-feature/SKILL.md` | both | os=2; generic=4; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: document-feature |
-| `packages/dry-run-simulation/skills/arena/SKILL.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: arena |
-| `packages/dry-run-simulation/skills/simulation-arena/SKILL.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: simulation-arena |
-| `packages/ecosystem-tools/skills/audit-website/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: audit-website |
-| `packages/ecosystem-tools/skills/automaker-bridge/SKILL.md` | both | os=2; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: automaker-bridge |
-| `packages/ecosystem-tools/skills/cognee-integration/SKILL.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: cognee-integration |
-| `packages/ecosystem-tools/skills/cognee-search/SKILL.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: cognee-search |
-| `packages/ecosystem-tools/skills/deepeval-integration/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: deepeval-integration |
-| `packages/ecosystem-tools/skills/jupyter-execute/SKILL.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: jupyter-execute |
-| `packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: promptfoo-integration |
-| `packages/ecosystem-tools/skills/ragas-integration/SKILL.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: ragas-integration |
-| `packages/ecosystem-tools/skills/recommend-library/SKILL.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: recommend-library |
-| `packages/ecosystem-tools/skills/secret-audit/SKILL.md` | both | os=2; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: secret-audit |
-| `packages/ecosystem-tools/skills/semgrep-scan/SKILL.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: semgrep-scan |
-| `packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: strands-evals-integration |
-| `packages/ecosystem-tools/skills/tool-discovery/SKILL.md` | both | os=0; generic=6; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: tool-discovery |
-| `packages/ecosystem-tools/skills/web-crawler/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: web-crawler |
-| `packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: devbox-checkpoint |
-| `packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: gpu-sandbox |
-| `packages/infra-lifecycle/skills/repair-status/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: repair-status |
-| `packages/infra-lifecycle/skills/sre-agent/SKILL.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: sre-agent |
-| `packages/privacy-mode/skills/private-mode/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: private-mode |
-| `packages/quality-gates/skills/confidence-check/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: confidence-check |
-| `packages/quality-gates/skills/dod-check/SKILL.md` | both | os=0; generic=5; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: dod-check |
-| `packages/quality-gates/skills/nemo-guardrails/SKILL.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: nemo-guardrails |
-| `packages/quality-gates/skills/pentest-self/SKILL.md` | both | os=2; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: pentest-self |
-| `packages/quality-gates/skills/readiness-check/SKILL.md` | both | os=1; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: readiness-check |
-| `packages/quality-gates/skills/resolve-blockers/SKILL.md` | both | os=1; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: resolve-blockers |
-| `packages/quality-gates/skills/security-audit/SKILL.md` | both | os=1; generic=4; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: security-audit |
-| `packages/recall-search/skills/conversation-memory/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: conversation-memory |
-| `packages/recall-search/skills/memu-context/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: memu-context |
-| `packages/recall-search/skills/recall-search/SKILL.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: recall-search |
-| `packages/scope-governance/skills/contract-drift/SKILL.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: contract-drift |
-| `packages/scope-governance/skills/deep-research/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: deep-research |
-| `packages/scope-governance/skills/planning-poker/SKILL.md` | both | os=1; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: planning-poker |
-| `packages/scope-governance/skills/repo-scout/SKILL.md` | both | os=1; generic=7; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: repo-scout |
-| `packages/scope-governance/skills/research-protocol/SKILL.md` | both | os=1; generic=7; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: research-protocol |
-| `packages/scope-governance/skills/sandbox-sample/SKILL.md` | both | os=0; generic=4; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: sandbox-sample |
-| `packages/sdd-compound/skills/auto-refine/SKILL.md` | both | os=2; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: auto-refine |
-| `packages/sdd-compound/skills/batch-runner/SKILL.md` | both | os=0; generic=3; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: batch-runner |
-| `packages/sdd-compound/skills/evaluate-plan/SKILL.md` | both | os=2; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row, declared-both-missing-paired-proof |  | name: evaluate-plan |
-| … | … | … | … | … | 20 more rows in JSON report. |
 
 ## os-only-semantic-candidate (41)
 

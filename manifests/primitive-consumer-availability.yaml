@@ -733,6 +733,426 @@ items:
   status: shared-surface
   rationale: 'Manual scope calibration iteration 012: Template scores prompt quality
     independent of repository.'
+- path: packages/adaptive-workflow/skills/self-review/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `adaptive-workflow/self-review` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/agent-coordination/skills/retrospective/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `agent-coordination/retrospective` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/agent-coordination/skills/squad-manager/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `agent-coordination/squad-manager` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/agent-lifecycle/skills/persistent-agent/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `agent-lifecycle/persistent-agent` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/agent-lifecycle/skills/resume-tasks/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `agent-lifecycle/resume-tasks` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `auto-repair-rollback/auto-rollback` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/context-optimization/skills/compose-prompt/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `context-optimization/compose-prompt` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/context-optimization/skills/exhaustive-prompt/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `context-optimization/exhaustive-prompt` is a modular portable surface for COS
+    source work and adopter projects; aggregate package skill portability proof covers
+    structural projection.
+- path: packages/document-sync/skills/doc-sync/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `document-sync/doc-sync` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/document-sync/skills/document-feature/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `document-sync/document-feature` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/dry-run-simulation/skills/arena/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `dry-run-simulation/arena` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/dry-run-simulation/skills/simulation-arena/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `dry-run-simulation/simulation-arena` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/audit-website/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/audit-website` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/automaker-bridge` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/cognee-integration/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/cognee-integration` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/cognee-search/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/cognee-search` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/deepeval-integration` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/jupyter-execute` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/promptfoo-integration` is a modular portable surface for COS
+    source work and adopter projects; aggregate package skill portability proof covers
+    structural projection.
+- path: packages/ecosystem-tools/skills/ragas-integration/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/ragas-integration` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/recommend-library/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/recommend-library` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/secret-audit/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/secret-audit` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/semgrep-scan` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/strands-evals-integration` is a modular portable surface for
+    COS source work and adopter projects; aggregate package skill portability proof
+    covers structural projection.
+- path: packages/ecosystem-tools/skills/tool-discovery/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/tool-discovery` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/ecosystem-tools/skills/web-crawler/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `ecosystem-tools/web-crawler` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `infra-lifecycle/devbox-checkpoint` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `infra-lifecycle/gpu-sandbox` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/infra-lifecycle/skills/repair-status/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `infra-lifecycle/repair-status` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/infra-lifecycle/skills/sre-agent/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `infra-lifecycle/sre-agent` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/privacy-mode/skills/private-mode/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `privacy-mode/private-mode` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/confidence-check/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/confidence-check` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/dod-check/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/dod-check` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/nemo-guardrails/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/nemo-guardrails` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/pentest-self/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/pentest-self` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/readiness-check/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/readiness-check` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/resolve-blockers/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/resolve-blockers` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/quality-gates/skills/security-audit/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `quality-gates/security-audit` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/recall-search/skills/conversation-memory/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `recall-search/conversation-memory` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/recall-search/skills/memu-context/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `recall-search/memu-context` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/recall-search/skills/recall-search/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `recall-search/recall-search` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/scope-governance/skills/contract-drift/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `scope-governance/contract-drift` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/scope-governance/skills/deep-research/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `scope-governance/deep-research` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/scope-governance/skills/planning-poker/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `scope-governance/planning-poker` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/scope-governance/skills/repo-scout/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `scope-governance/repo-scout` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/scope-governance/skills/research-protocol/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `scope-governance/research-protocol` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/scope-governance/skills/sandbox-sample/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `scope-governance/sandbox-sample` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/auto-refine/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/auto-refine` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/batch-runner/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/batch-runner` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/evaluate-plan/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/evaluate-plan` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/impact-analysis/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/impact-analysis` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/issue-pipeline/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/issue-pipeline` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/plan-bug/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/plan-bug` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/plan-feature/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/plan-feature` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/sdd-compound/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/sdd-compound` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/singularity/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/singularity` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/sdd-compound/skills/webhook-trigger/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `sdd-compound/webhook-trigger` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/skill-governance/skills/error-analyzer/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `skill-governance/error-analyzer` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/skill-governance/skills/metrics-calibrator/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `skill-governance/metrics-calibrator` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/skill-governance/skills/model-optimizer/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `skill-governance/model-optimizer` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/skill-governance/skills/optimize-skill/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `skill-governance/optimize-skill` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/task-management/skills/agent-kpis/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `task-management/agent-kpis` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/task-management/skills/capability-snapshot/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `task-management/capability-snapshot` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/task-management/skills/sprint/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `task-management/sprint` is a modular portable surface for COS source work and
+    adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/verification-audit/skills/coverage-enforcement/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `verification-audit/coverage-enforcement` is a modular portable surface for COS
+    source work and adopter projects; aggregate package skill portability proof covers
+    structural projection.
+- path: packages/verification-audit/skills/smoke-test/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `verification-audit/smoke-test` is a modular portable surface for COS source work
+    and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/verification-audit/skills/systematic-debugging/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `verification-audit/systematic-debugging` is a modular portable surface for COS
+    source work and adopter projects; aggregate package skill portability proof covers
+    structural projection.
+- path: packages/verification-audit/skills/test-driven-development/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `verification-audit/test-driven-development` is a modular portable surface for
+    COS source work and adopter projects; aggregate package skill portability proof
+    covers structural projection.
+- path: packages/verification-audit/skills/trust-audit/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `verification-audit/trust-audit` is a modular portable surface for COS source
+    work and adopter projects; aggregate package skill portability proof covers structural
+    projection.
+- path: packages/verification-audit/skills/verification-before-completion/SKILL.md
+  status: shared-surface
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
+    `verification-audit/verification-before-completion` is a modular portable surface
+    for COS source work and adopter projects; aggregate package skill portability
+    proof covers structural projection.
 patterns:
 - pattern: scripts/**
   status: so-local-only

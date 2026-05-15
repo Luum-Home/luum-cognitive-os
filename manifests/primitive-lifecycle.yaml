@@ -12134,3 +12134,1753 @@ primitives:
   exit_behavior: template
   metrics_file: none
   consumer_accessibility: lifecycle-declared-shared-surface
+- id: packages/adaptive-workflow/skills/self-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-adaptive-workflow
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/adaptive-workflow/skills/self-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `adaptive-workflow/self-review` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/adaptive-workflow/skills/self-review/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/agent-coordination/skills/retrospective/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-agent-coordination
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/agent-coordination/skills/retrospective/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `agent-coordination/retrospective` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/agent-coordination/skills/retrospective/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/agent-coordination/skills/squad-manager/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-agent-coordination
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/agent-coordination/skills/squad-manager/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `agent-coordination/squad-manager` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/agent-coordination/skills/squad-manager/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/agent-lifecycle/skills/persistent-agent/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-agent-lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/agent-lifecycle/skills/persistent-agent/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `agent-lifecycle/persistent-agent` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/agent-lifecycle/skills/persistent-agent/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/agent-lifecycle/skills/resume-tasks/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-agent-lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/agent-lifecycle/skills/resume-tasks/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `agent-lifecycle/resume-tasks` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/agent-lifecycle/skills/resume-tasks/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-auto-repair-rollback
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `auto-repair-rollback/auto-rollback` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/context-optimization/skills/compose-prompt/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/context-optimization/skills/compose-prompt/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `context-optimization/compose-prompt` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/context-optimization/skills/compose-prompt/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/context-optimization/skills/exhaustive-prompt/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-context-optimization
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/context-optimization/skills/exhaustive-prompt/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `context-optimization/exhaustive-prompt` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/context-optimization/skills/exhaustive-prompt/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/document-sync/skills/doc-sync/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-document-sync
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/document-sync/skills/doc-sync/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `document-sync/doc-sync` remains shared between COS and adopter projects and is
+    covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/document-sync/skills/doc-sync/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/document-sync/skills/document-feature/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-document-sync
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/document-sync/skills/document-feature/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `document-sync/document-feature` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/document-sync/skills/document-feature/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/dry-run-simulation/skills/arena/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-dry-run-simulation
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/dry-run-simulation/skills/arena/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `dry-run-simulation/arena` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/dry-run-simulation/skills/arena/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/dry-run-simulation/skills/simulation-arena/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-dry-run-simulation
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/dry-run-simulation/skills/simulation-arena/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `dry-run-simulation/simulation-arena` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/dry-run-simulation/skills/simulation-arena/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/audit-website/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/audit-website/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/audit-website` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/audit-website/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/automaker-bridge` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/cognee-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/cognee-integration/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/cognee-integration` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/cognee-integration/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/cognee-search/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/cognee-search/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/cognee-search` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/cognee-search/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/deepeval-integration` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/jupyter-execute` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/promptfoo-integration` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/ragas-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/ragas-integration/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/ragas-integration` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/ragas-integration/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/recommend-library/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/recommend-library/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/recommend-library` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/recommend-library/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/secret-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/secret-audit/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/secret-audit` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/secret-audit/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/semgrep-scan` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/strands-evals-integration` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/tool-discovery/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/tool-discovery/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/tool-discovery` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/tool-discovery/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/ecosystem-tools/skills/web-crawler/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-ecosystem-tools
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/ecosystem-tools/skills/web-crawler/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `ecosystem-tools/web-crawler` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/web-crawler/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-infra-lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `infra-lifecycle/devbox-checkpoint` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-infra-lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `infra-lifecycle/gpu-sandbox` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/infra-lifecycle/skills/repair-status/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-infra-lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/infra-lifecycle/skills/repair-status/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `infra-lifecycle/repair-status` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/infra-lifecycle/skills/repair-status/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/infra-lifecycle/skills/sre-agent/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-infra-lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/infra-lifecycle/skills/sre-agent/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `infra-lifecycle/sre-agent` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/infra-lifecycle/skills/sre-agent/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/privacy-mode/skills/private-mode/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-privacy-mode
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/privacy-mode/skills/private-mode/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `privacy-mode/private-mode` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/privacy-mode/skills/private-mode/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/confidence-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/confidence-check/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/confidence-check` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/confidence-check/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/dod-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/dod-check/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/dod-check` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/dod-check/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/nemo-guardrails/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/nemo-guardrails/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/nemo-guardrails` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/nemo-guardrails/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/pentest-self/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/pentest-self/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/pentest-self` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/pentest-self/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/readiness-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/readiness-check/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/readiness-check` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/readiness-check/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/resolve-blockers/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/resolve-blockers/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/resolve-blockers` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/resolve-blockers/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/quality-gates/skills/security-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-quality-gates
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/quality-gates/skills/security-audit/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `quality-gates/security-audit` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/quality-gates/skills/security-audit/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/recall-search/skills/conversation-memory/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-recall-search
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/recall-search/skills/conversation-memory/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `recall-search/conversation-memory` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/recall-search/skills/conversation-memory/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/recall-search/skills/memu-context/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-recall-search
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/recall-search/skills/memu-context/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `recall-search/memu-context` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/recall-search/skills/memu-context/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/recall-search/skills/recall-search/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-recall-search
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/recall-search/skills/recall-search/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `recall-search/recall-search` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/recall-search/skills/recall-search/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/scope-governance/skills/contract-drift/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-scope-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/scope-governance/skills/contract-drift/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `scope-governance/contract-drift` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/scope-governance/skills/contract-drift/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/scope-governance/skills/deep-research/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-scope-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/scope-governance/skills/deep-research/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `scope-governance/deep-research` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/scope-governance/skills/deep-research/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/scope-governance/skills/planning-poker/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-scope-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/scope-governance/skills/planning-poker/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `scope-governance/planning-poker` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/scope-governance/skills/planning-poker/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/scope-governance/skills/repo-scout/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-scope-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/scope-governance/skills/repo-scout/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `scope-governance/repo-scout` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/scope-governance/skills/repo-scout/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/scope-governance/skills/research-protocol/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-scope-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/scope-governance/skills/research-protocol/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `scope-governance/research-protocol` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/scope-governance/skills/research-protocol/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/scope-governance/skills/sandbox-sample/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-scope-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/scope-governance/skills/sandbox-sample/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `scope-governance/sandbox-sample` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/scope-governance/skills/sandbox-sample/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/auto-refine/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/auto-refine/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/auto-refine` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/auto-refine/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/batch-runner/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/batch-runner/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/batch-runner` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/batch-runner/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/evaluate-plan/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/evaluate-plan/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/evaluate-plan` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/evaluate-plan/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/impact-analysis/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/impact-analysis/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/impact-analysis` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/impact-analysis/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/issue-pipeline/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/issue-pipeline/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/issue-pipeline` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/issue-pipeline/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/plan-bug/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/plan-bug/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/plan-bug` remains shared between COS and adopter projects and is
+    covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/plan-bug/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/plan-feature/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/plan-feature/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/plan-feature` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/plan-feature/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/sdd-compound/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/sdd-compound/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/sdd-compound` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/sdd-compound/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/singularity/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/singularity/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/singularity` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/singularity/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/sdd-compound/skills/webhook-trigger/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-sdd-compound
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/sdd-compound/skills/webhook-trigger/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `sdd-compound/webhook-trigger` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/sdd-compound/skills/webhook-trigger/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/skill-governance/skills/error-analyzer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-skill-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/skill-governance/skills/error-analyzer/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `skill-governance/error-analyzer` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/skill-governance/skills/error-analyzer/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/skill-governance/skills/metrics-calibrator/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-skill-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/skill-governance/skills/metrics-calibrator/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `skill-governance/metrics-calibrator` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/skill-governance/skills/metrics-calibrator/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/skill-governance/skills/model-optimizer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-skill-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/skill-governance/skills/model-optimizer/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `skill-governance/model-optimizer` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/skill-governance/skills/model-optimizer/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/skill-governance/skills/optimize-skill/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-skill-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/skill-governance/skills/optimize-skill/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `skill-governance/optimize-skill` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/skill-governance/skills/optimize-skill/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/task-management/skills/agent-kpis/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-task-management
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/task-management/skills/agent-kpis/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `task-management/agent-kpis` remains shared between COS and adopter projects and
+    is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/task-management/skills/agent-kpis/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/task-management/skills/capability-snapshot/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-task-management
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/task-management/skills/capability-snapshot/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `task-management/capability-snapshot` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/task-management/skills/capability-snapshot/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/task-management/skills/sprint/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-task-management
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/task-management/skills/sprint/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `task-management/sprint` remains shared between COS and adopter projects and is
+    covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/task-management/skills/sprint/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/coverage-enforcement/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-verification-audit
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/coverage-enforcement/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `verification-audit/coverage-enforcement` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/coverage-enforcement/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/smoke-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-verification-audit
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/smoke-test/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `verification-audit/smoke-test` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/smoke-test/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/systematic-debugging/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-verification-audit
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/systematic-debugging/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `verification-audit/systematic-debugging` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/systematic-debugging/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/test-driven-development/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-verification-audit
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/test-driven-development/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `verification-audit/test-driven-development` remains shared between COS and adopter
+    projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/test-driven-development/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/trust-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-verification-audit
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/trust-audit/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `verification-audit/trust-audit` remains shared between COS and adopter projects
+    and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/trust-audit/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/verification-before-completion/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: package-skill-verification-audit
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/verification-before-completion/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 013; package-backed skill
+    `verification-audit/verification-before-completion` remains shared between COS
+    and adopter projects and is covered by aggregate package skill portability proof.
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_package_skills.py -q
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/verification-before-completion/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none

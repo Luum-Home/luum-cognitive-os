@@ -71,7 +71,7 @@ def make_repo(tmp_path: Path) -> Path:
     proof = root / "tests" / "red_team" / "portability"
     proof.mkdir(parents=True)
     (proof / "test_skill_portable.py").write_text("def test_portable(): pass\n")
-    (proof / "test_skill_portable_package.py").write_text("def test_portable_package(): pass\n")
+    (proof / "test_package_skill_quality_portable_package.py").write_text("def test_portable_package(): pass\n")
     return root
 
 
@@ -189,6 +189,7 @@ def test_classifier_includes_packaged_skills_from_commit_scope(tmp_path: Path) -
     package = rows["packages/quality/skills/portable-package/SKILL.md"]
     assert package.suggested_scope == "both"
     assert package.effective_scope == "both"
+    assert package.paired_portability_test == "tests/red_team/portability/test_package_skill_quality_portable_package.py"
     assert any(item.source == "lifecycle" for item in package.evidence)
 
 
