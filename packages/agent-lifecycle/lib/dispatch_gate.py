@@ -14,6 +14,24 @@ from lib.retry_classifier import FailureClass, RetryPolicy, classify_failure, re
 from lib.session_budget import SessionBudget, SessionBudgetExceeded
 
 
+def _as_float(value: object, default: float = 0.0) -> float:
+    if not isinstance(value, int | float | str | bytes | bytearray):
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _as_int(value: object, default: int = 0) -> int:
+    if not isinstance(value, int | float | str | bytes | bytearray):
+        return default
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
 class IdempotencyConflict(RuntimeError):
     """Raised when an idempotency key was already claimed."""
 
@@ -126,7 +144,7 @@ class ProviderCircuitBreaker:
     def allow_call(self) -> CircuitBreakerDecision:
         data = self._load()
         state = str(data.get("state") or "closed")
-        opened = float(data.get("opened_at_epoch") or 0.0)
+        opened = _as_float(data.get("opened_at_epoch"))
         now = time.time()
         if state == "open":
             remaining = self.cooldown_seconds - (now - opened)
@@ -146,7 +164,7 @@ class ProviderCircuitBreaker:
             self._save(data)
             return data
 
-        failures = int(data.get("consecutive_failures") or 0) + 1
+        failures = _as_int(data.get("consecutive_failures")) + 1
         state = str(data.get("state") or "closed")
         if failures >= self.failure_threshold or state == "half_open":
             state = "open"

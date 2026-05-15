@@ -11,6 +11,7 @@ import asyncio
 import inspect
 import json
 import urllib.request
+from collections.abc import Coroutine
 from dataclasses import asdict, dataclass
 from typing import Any
 
@@ -111,6 +112,8 @@ def _run_awaitable(value: Any) -> Any:
     try:
         loop = asyncio.get_running_loop()
     except RuntimeError:
+        if not isinstance(value, Coroutine):
+            raise RuntimeError("async NATS operation returned non-coroutine awaitable")
         return asyncio.run(value)
     if loop.is_running():
         raise RuntimeError("async NATS operation returned awaitable inside a running loop; use async_send_inbox")
