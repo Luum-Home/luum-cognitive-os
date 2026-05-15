@@ -17,7 +17,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 
 # ---------------------------------------------------------------------------
@@ -330,7 +330,7 @@ class CostPredictor:
         scored.sort(key=lambda x: x[1], reverse=True)
         return scored[:max_results]
 
-    def get_real_model_prices(self) -> Dict[str, Dict[str, float]]:
+    def get_real_model_prices(self) -> Dict[str, Dict[str, Any]]:
         """Calculate REAL model prices from actual cost events.
 
         Instead of hardcoded prices, compute from historical data:
@@ -359,7 +359,7 @@ class CostPredictor:
             model_data[model]["total_in"] += int(ev.get("input_tokens", 0))
             model_data[model]["total_out"] += int(ev.get("output_tokens", 0))
 
-        result: Dict[str, Dict[str, float]] = {}
+        result: Dict[str, Dict[str, Any]] = {}
 
         # Calculate measured prices
         for model, data in model_data.items():
