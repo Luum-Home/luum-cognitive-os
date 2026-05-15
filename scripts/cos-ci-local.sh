@@ -338,7 +338,7 @@ check_scope_portability_contract() {
      [ -x "$REPO_ROOT/scripts/cos-scope-projection-audit" ] && \
      [ -x "$REPO_ROOT/scripts/cos-install-projection-audit" ]; then
     python3 "$REPO_ROOT/scripts/primitive_scope_classifier.py" \
-      --project-dir "$REPO_ROOT" --fail-contradictions --fail-low-confidence \
+      --project-dir "$REPO_ROOT" --fail-contradictions --fail-low-confidence --fail-medium-confidence \
       --json-out .cognitive-os/reports/primitive-scope-classifier-ci-local.json >/dev/null && \
     "$REPO_ROOT/scripts/primitive-scope-dependency-audit" \
       --project-dir "$REPO_ROOT" --strict \

@@ -63,6 +63,7 @@ jobs:
             --project-dir . \
             --fail-contradictions \
             --fail-low-confidence \
+            --fail-medium-confidence \
             --json-out .cognitive-os/reports/primitive-scope-classifier-ci.json
           scripts/primitive-scope-dependency-audit \
             --project-dir . \

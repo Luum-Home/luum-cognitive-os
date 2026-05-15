@@ -671,3 +671,34 @@ def test_batch_portability_proof_caps_both_confidence_until_specific_proof(tmp_p
     assert row.suggested_scope == "both"
     assert row.confidence == "medium"
     assert "batch portability proof is acceptable but weak" in row.next_action
+
+
+def test_cli_can_fail_medium_confidence_rows(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "scripts" / "medium.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('medium')\n")
+    consumer_path = root / "manifests" / "primitive-consumer-availability.yaml"
+    consumer = yaml.safe_load(consumer_path.read_text())
+    consumer["items"].append({"path": "scripts/medium.py", "status": "shared-surface", "rationale": "single-source medium"})
+    consumer_path.write_text(yaml.safe_dump(consumer))
+    proof = root / "tests" / "red_team" / "portability"
+    proof.mkdir(parents=True, exist_ok=True)
+    (proof / "test_medium.py").write_text("def test_medium(): pass\n")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(MODULE_PATH),
+            "--project-dir",
+            str(root),
+            "--paths",
+            "scripts/medium.py",
+            "--fail-medium-confidence",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 1
+    stdout = json.loads(result.stdout)
+    assert stdout["by_confidence"] == {"medium": 1}

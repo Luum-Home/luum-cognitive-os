@@ -666,6 +666,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--paths", nargs="*", help="Explicit repo-relative primitive paths to classify")
     parser.add_argument("--fail-contradictions", action="store_true")
     parser.add_argument("--fail-low-confidence", action="store_true")
+    parser.add_argument("--fail-medium-confidence", action="store_true", help="Exit non-zero if any primitive remains at medium confidence")
     return parser.parse_args()
 
 
@@ -681,6 +682,8 @@ def main() -> int:
     if args.fail_contradictions and summary["contradictions"]:
         return 1
     if args.fail_low_confidence and summary["low_confidence"]:
+        return 1
+    if args.fail_medium_confidence and summary["by_confidence"].get("medium", 0):
         return 1
     return 0
 
