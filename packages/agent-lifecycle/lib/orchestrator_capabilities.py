@@ -167,7 +167,8 @@ class OrchestratorCapabilities:
         self._require_detected()
         v = "✅" if self._valkey_available else "❌"
         e = "✅" if self._executor_available else "❌"
-        return f"Agent comms: {self._mode.upper()} (Valkey {v}, Executor {e})"
+        mode = str(self._mode or "unknown")
+        return f"Agent comms: {mode.upper()} (Valkey {v}, Executor {e})"
 
     def format_capabilities(self) -> str:
         """Multi-line capability report."""
@@ -175,7 +176,7 @@ class OrchestratorCapabilities:
         yes, no = "✅", "❌"
         lines = [
             "Agent Communication:",
-            f"  Mode: {self._mode.upper()}",
+            f"  Mode: {str(self._mode or 'unknown').upper()}",
             f"  Send to agent:  {yes if self.can_send_to_agent else no} (via Valkey pub/sub)" if self.can_send_to_agent else f"  Send to agent:  {no}",
             f"  Heartbeat:      {yes if self.can_receive_heartbeat else no}" + (" (5s interval)" if self.can_receive_heartbeat else ""),
             f"  Q&A mid-exec:   {yes if self.can_ask_questions else no}",
