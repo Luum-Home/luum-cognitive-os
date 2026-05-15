@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # skill-post-execution-analysis.sh — PostToolUse Agent hook (ADR-176)
 #
 # Fires after every Agent tool completion. Records execution data to SkillStore

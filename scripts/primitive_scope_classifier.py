@@ -43,6 +43,8 @@ SHARED_LIFECYCLE_ACCESSIBILITY = {"lifecycle-declared-shared-surface"}
 
 SHARED_HOOK_NAME_PATTERNS = {
     "adaptive-bypass": "shared-agent-workflow-quality",
+    "adr-detector": "shared-architecture-governance",
+    "adr-relevance-suggest": "shared-architecture-governance",
     "assumption-tracker": "shared-agent-quality",
     "auto-verify": "shared-verification",
     "blast-radius": "shared-repository-safety",
@@ -56,30 +58,34 @@ SHARED_HOOK_NAME_PATTERNS = {
     "context-watchdog": "shared-context-hygiene",
     "destructive-git-blocker": "shared-repository-safety",
     "direct-main-guard": "shared-git-safety",
+    "engram-crystallize-on-session-end": "shared-memory-lifecycle",
+    "engram-daemon-launcher": "shared-memory-lifecycle",
+    "engram-reinforce-on-access": "shared-memory-lifecycle",
     "dod-gate": "shared-delivery-quality",
     "large-file-advisor": "shared-context-hygiene",
     "prompt-quality": "shared-agent-quality",
     "resource-check": "shared-runtime-budget",
+    "rule-router-prompt-suggest": "shared-rule-routing",
     "scope-creep": "shared-scope-governance",
     "scope-proportionality": "shared-scope-governance",
     "secret-detector": "shared-repository-security",
+    "skill-frontmatter-validator": "shared-skill-authoring-governance",
+    "skill-router-bash-gate": "shared-skill-routing",
+    "skill-router-prompt-suggest": "shared-skill-routing",
     "token-budget": "shared-runtime-budget",
     "tool-loop": "shared-agent-safety",
     "trust-score": "shared-agent-quality",
 }
 
 COS_MAINTAINER_HOOK_NAME_PATTERNS = {
-    "adr-": "cos-adr-governance",
-    "control-plane": "cos-control-plane",
+    "control-plane-audit": "cos-control-plane",
     "cosd-": "cos-daemon-control",
-    "engram-": "cos-memory-lifecycle",
     "pending-truth": "cos-planning-ledger",
     "primitive-": "cos-primitive-governance",
-    "profile-drift": "cos-profile-governance",
-    "rule-": "cos-rule-governance",
+    "profile-drift-autoapply": "cos-profile-governance",
     "self-install": "cos-self-maintenance",
     "self-knowledge": "cos-self-maintenance",
-    "skill-": "cos-skill-governance",
+    "skill-post-execution-analysis": "cos-skill-evolution-governance",
 }
 
 COS_INTERNAL_CORE_TOKENS = (

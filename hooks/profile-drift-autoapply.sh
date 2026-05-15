@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Auto-reapply efficiency profile when apply-efficiency-profile.sh changes
 # EVENT: SessionStart
 # EXIT_CODES: 0=advisory (always)

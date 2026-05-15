@@ -36,8 +36,8 @@ The classifier is intentionally conservative. A new primitive with no export/pro
 
 Manual review findings must feed back into the classifier as explainable semantic patterns when the same pattern can recur. These patterns are lower-priority evidence than manifests and do not replace portability proof. Current learned hook patterns cover:
 
-- shared-surface hooks: generic repository safety, git/secret safety, prompt/task quality gates, Trust Report validation, context/resource hygiene, scope/claim governance, and tool-loop detection;
-- maintainer-only hooks: COS ADR/rule/skill/control-plane/profile/Engram governance when the hook body is bound to COS internals such as `.cognitive-os/`, `docs/02-Decisions/`, or `manifests/`.
+- shared-surface hooks: generic repository safety, git/secret safety, prompt/task quality gates, Trust Report validation, context/resource hygiene, scope/claim governance, ADR relevance, memory lifecycle, rule/skill routing, and tool-loop detection;
+- maintainer-only hooks: COS control-plane audits, profile auto-application, primitive governance, pending-truth ledgers, self-maintenance, and skill-evolution hooks when the body is bound to COS internals such as `.cognitive-os/`, `docs/02-Decisions/`, or `manifests/`.
 
 This feedback loop prevents repeated manual rediscovery while preserving the root rule: semantic patterns are evidence, not distribution-tier shortcuts.
 

@@ -363,21 +363,41 @@ def test_semantic_pattern_promotes_declared_shared_safety_hook_with_proof(tmp_pa
     assert not row.contradiction
 
 
-def test_semantic_pattern_flags_cos_governance_hook_as_os_only(tmp_path: Path) -> None:
+def test_semantic_pattern_flags_cos_control_plane_hook_as_os_only(tmp_path: Path) -> None:
     root = make_repo(tmp_path)
     (root / "hooks").mkdir(exist_ok=True)
-    (root / "hooks" / "adr-detector.sh").write_text(
-        "#!/usr/bin/env bash\n# SCOPE: both\n# Generates draft ADRs under docs/02-Decisions/adrs/ for Cognitive OS governance.\necho ok\n"
+    (root / "hooks" / "control-plane-audit.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Runs manifest-declared Cognitive OS control-plane audits from manifests/.\necho ok\n"
     )
 
-    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["hooks/adr-detector.sh"]
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["hooks/control-plane-audit.sh"]
 
     assert row.suggested_scope == "os-only"
     assert row.effective_scope == "os-only"
     assert row.confidence == "medium"
     assert row.decision_source == "semantic-pattern"
     assert "declared both conflicts" in row.contradiction
-    assert any(item.source == "semantic-pattern" and item.detail == "cos-adr-governance" for item in row.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "cos-control-plane" for item in row.evidence)
+
+
+def test_adr_and_router_hooks_are_not_demoted_by_prefix_alone(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "adr-relevance-suggest.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Suggests relevant ADRs from docs/02-Decisions/adrs/ for architecture work.\necho ok\n"
+    )
+    (root / "hooks" / "skill-router-prompt-suggest.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Suggests canonical skills for the current prompt.\necho ok\n"
+    )
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    adr = rows["hooks/adr-relevance-suggest.sh"]
+    skill = rows["hooks/skill-router-prompt-suggest.sh"]
+    assert adr.suggested_scope == "both"
+    assert skill.suggested_scope == "both"
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-architecture-governance" for item in adr.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-skill-routing" for item in skill.evidence)
 
 
 def test_semantic_patterns_do_not_use_distribution_tier_as_scope_evidence(tmp_path: Path) -> None:
