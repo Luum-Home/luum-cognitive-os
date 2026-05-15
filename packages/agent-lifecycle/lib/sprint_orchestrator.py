@@ -29,9 +29,9 @@ from pathlib import Path
 from typing import Any, ClassVar, Dict, List, Optional
 
 try:
-    from .harness_adapter.base import CanonicalEvent, now_epoch
+    from lib.harness_adapter.base import CanonicalEvent, now_epoch
 except ImportError:  # pragma: no cover — exercised only when imported as top-level
-    from harness_adapter.base import CanonicalEvent, now_epoch  # type: ignore
+    from harness_adapter.base import CanonicalEvent, now_epoch
 
 
 # ---------------------------------------------------------------------------
