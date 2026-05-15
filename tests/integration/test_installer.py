@@ -9,8 +9,11 @@ Validates:
 - .gitignore covers all runtime paths
 """
 
+import ast
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -25,6 +28,29 @@ pytestmark = [pytest.mark.integration, pytest.mark.timeout(180)]
 
 INSTALLER = Path(__file__).resolve().parent.parent.parent / "install.sh"
 RUNTIME_HOOK_REALITY = INSTALLER.parent / "scripts" / "runtime_hook_reality.py"
+COS_INIT = INSTALLER.parent / "scripts" / "cos_init.py"
+STRUCTURAL_HARNESSES = [
+    "agents-md",
+    "opencode",
+    "vscode-copilot",
+    "cursor",
+    "qwen-code",
+    "kimi-code",
+    "gemini-cli",
+    "warp",
+    "amp-code",
+    "jetbrains-junie",
+    "qoder",
+    "factory-droid",
+    "cline",
+    "continue-dev",
+    "kilo-code",
+    "zed-ai",
+    "augment-code",
+    "goose",
+    "aider",
+    "shell-ci",
+]
 
 
 @pytest.fixture
@@ -48,6 +74,31 @@ def isolate_registry(tmp_path, monkeypatch):
 def cos_source():
     """Return the path to the Cognitive OS source repo."""
     return INSTALLER.parent
+
+
+def _init_git_project(project: Path, files: dict[str, str] | None = None) -> None:
+    """Create a minimal git-backed consumer project."""
+    project.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["git", "init"], cwd=project, capture_output=True, check=False)
+    for relpath, content in (files or {}).items():
+        path = project / relpath
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+
+
+def _run_installer(project: Path, cos_source: Path, *args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+    """Run install.sh against a consumer project using the checked-out source."""
+    merged_env = os.environ.copy()
+    if env:
+        merged_env.update(env)
+    return subprocess.run(
+        [str(INSTALLER), "--from", str(cos_source), "--force", *args],
+        cwd=project,
+        capture_output=True,
+        text=True,
+        timeout=180,
+        env=merged_env,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -215,6 +266,36 @@ class TestFreshInstall:
         )
         assert audit.returncode == 0, audit.stderr + audit.stdout
 
+    def test_new_cursor_repo_local_source_install_smoke(self, tmp_path, cos_source):
+        """Smoke: top-level install.sh exposes structural harness projection beyond Claude/Codex."""
+        project = tmp_path / "new-cursor-app"
+        project.mkdir()
+        subprocess.run(["git", "init"], cwd=project, capture_output=True, check=False)
+        (project / "package.json").write_text('{"name": "new-cursor-app"}\n')
+
+        result = subprocess.run(
+            [str(INSTALLER), "--from", str(cos_source), "--force", "--harness=cursor"],
+            cwd=project,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        assert "Cognitive OS installed successfully." in result.stdout
+        assert "Harness:        cursor" in result.stdout
+        assert "Settings:       .cursor/rules/cognitive-os.mdc" in result.stdout
+        assert "Check manifests/harness-projection.yaml before claiming runtime enforcement." in result.stdout
+
+        install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())
+        assert install_meta["harness"] == "cursor"
+        assert install_meta["settings_driver"] == ".cursor/rules/cognitive-os.mdc"
+        assert (project / ".cursor" / "rules" / "cognitive-os.mdc").is_file()
+        assert (project / ".cursor" / "mcp.json").is_file()
+        assert (project / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").is_file()
+        assert not (project / ".claude" / "CLAUDE.md").exists()
+        assert not (project / ".claude" / "skills").exists()
+
     def test_new_claude_repo_local_source_install_smoke(self, tmp_path, cos_source):
         """Smoke: a brand-new repo can install COS for Claude with portable instructions."""
         project = tmp_path / "new-claude-app"
@@ -248,6 +329,181 @@ class TestFreshInstall:
         assert install_meta["harness"] == "claude"
         assert (project / ".claude" / "settings.json").is_file()
         assert (project / ".claude" / "skills" / "cos-status").exists()
+
+    @pytest.mark.parametrize(
+        ("harness", "profile_args", "settings_file", "profile"),
+        [
+            ("claude", (), ".claude/settings.json", "default"),
+            ("codex", (), ".codex/hooks.json", "default"),
+            ("claude", ("--full",), ".claude/settings.json", "full"),
+            ("codex", ("--full",), ".codex/hooks.json", "full"),
+        ],
+    )
+    def test_install_sh_claude_codex_profile_matrix(
+        self,
+        tmp_path,
+        cos_source,
+        harness,
+        profile_args,
+        settings_file,
+        profile,
+    ):
+        """Matrix: install.sh supports default/full profiles for Claude and Codex."""
+        project = tmp_path / f"{harness}-{profile}-app"
+        _init_git_project(project, {"README.md": f"# {harness} {profile}\n"})
+
+        result = _run_installer(project, cos_source, f"--harness={harness}", *profile_args)
+
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        assert f"Profile:        {profile}" in result.stdout
+        assert f"Harness:        {harness}" in result.stdout
+        assert f"Settings:       {settings_file}" in result.stdout
+        assert (project / settings_file).is_file()
+
+        install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())
+        assert install_meta["harness"] == harness
+        assert install_meta["mode"] == profile
+        assert (project / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").is_file()
+        if harness == "claude":
+            assert (project / ".claude" / "CLAUDE.md").is_file()
+            assert (project / ".claude" / "skills").is_dir()
+        else:
+            assert not (project / ".claude" / "CLAUDE.md").exists()
+            assert not (project / ".claude" / "skills").exists()
+
+    @pytest.mark.parametrize("scope", ["project", "both", "all"])
+    @pytest.mark.parametrize("harness", ["claude", "codex", "cursor"])
+    def test_install_sh_scope_matrix_for_primary_harnesses(self, tmp_path, cos_source, harness, scope):
+        """Matrix: install.sh propagates COS_INSTALL_SCOPE/--scope for representative harness classes."""
+        project = tmp_path / f"{harness}-{scope}-scope-app"
+        _init_git_project(project, {"README.md": f"# {harness} {scope}\n"})
+
+        result = _run_installer(project, cos_source, f"--harness={harness}", f"--scope={scope}")
+
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        assert f"Harness:        {harness}" in result.stdout
+        install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())
+        assert install_meta["harness"] == harness
+        assert (project / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").is_file()
+        if harness == "codex":
+            audit = subprocess.run(
+                [
+                    sys.executable,
+                    str(RUNTIME_HOOK_REALITY),
+                    "--project-root",
+                    str(project),
+                    "--settings",
+                    str(project / ".codex" / "hooks.json"),
+                    "--dependency-closure",
+                    "--install-scope",
+                    scope,
+                    "--fail-on-findings",
+                ],
+                cwd=project,
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            assert audit.returncode == 0, audit.stderr + audit.stdout
+
+    @pytest.mark.parametrize("harness", STRUCTURAL_HARNESSES)
+    def test_install_sh_accepts_all_structural_harnesses(self, tmp_path, cos_source, harness):
+        """Matrix: top-level install.sh accepts every structural harness supported by cos_init.py."""
+        project = tmp_path / f"{harness}-install-app"
+        _init_git_project(project, {"README.md": f"# {harness}\n"})
+
+        result = _run_installer(project, cos_source, f"--harness={harness}")
+
+        assert result.returncode == 0, f"{harness} install failed:\n{result.stderr}\n{result.stdout}"
+        assert f"Harness:        {harness}" in result.stdout
+        assert "Check manifests/harness-projection.yaml before claiming runtime enforcement." in result.stdout
+        install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())
+        assert install_meta["harness"] == harness
+        assert (project / install_meta["settings_driver"]).exists()
+        assert not (project / ".claude" / "CLAUDE.md").exists()
+        assert not (project / ".claude" / "skills").exists()
+
+    def test_remote_install_without_from_uses_configured_git_remote(self, tmp_path, cos_source):
+        """Smoke: curl-pipe style install without --from clones a git remote source."""
+        remote_source = tmp_path / "remote-source"
+        shutil.copytree(
+            cos_source,
+            remote_source,
+            ignore=shutil.ignore_patterns(
+                ".git",
+                ".venv",
+                "node_modules",
+                "reference",
+                ".cognitive-os/metrics",
+                ".cognitive-os/runtime",
+                "__pycache__",
+            ),
+        )
+        subprocess.run(["git", "init"], cwd=remote_source, capture_output=True, check=True)
+        subprocess.run(["git", "config", "user.email", "cos@example.test"], cwd=remote_source, check=True)
+        subprocess.run(["git", "config", "user.name", "COS Tests"], cwd=remote_source, check=True)
+        subprocess.run(["git", "add", "."], cwd=remote_source, check=True)
+        subprocess.run(["git", "commit", "-m", "seed remote source"], cwd=remote_source, capture_output=True, check=True)
+        subprocess.run(["git", "branch", "-M", "main"], cwd=remote_source, check=True)
+
+        project = tmp_path / "remote-install-app"
+        _init_git_project(project, {"README.md": "# Remote Install\n"})
+        env = os.environ.copy()
+        env["COGNITIVE_OS_REPO_URL"] = str(remote_source)
+        env["COGNITIVE_OS_VERSION"] = "main"
+
+        result = subprocess.run(
+            ["bash", "-s", "--", "--force", "--harness=codex"],
+            cwd=project,
+            input=INSTALLER.read_text(),
+            capture_output=True,
+            text=True,
+            timeout=180,
+            env=env,
+        )
+
+        assert result.returncode == 0, f"Remote installer failed:\n{result.stderr}\n{result.stdout}"
+        assert "Downloading Cognitive OS (main)..." in result.stdout
+        assert "Harness:        codex" in result.stdout
+        assert (project / ".codex" / "hooks.json").is_file()
+        assert not (project / ".claude" / "CLAUDE.md").exists()
+
+    def test_codex_reinstall_preserves_existing_claude_settings_without_claude_md(self, tmp_path, cos_source):
+        """Upgrade: Codex install must not synthesize Claude instructions in a legitimate .claude/ dir."""
+        project = tmp_path / "codex-with-existing-claude-settings"
+        _init_git_project(project, {"README.md": "# Codex Project\n"})
+        claude_settings = project / ".claude" / "settings.json"
+        claude_settings.parent.mkdir(parents=True, exist_ok=True)
+        original_settings = {"permissions": {"allow": ["Bash(echo user-owned)"]}}
+        claude_settings.write_text(json.dumps(original_settings, indent=2) + "\n")
+
+        first = _run_installer(project, cos_source, "--harness=codex")
+        second = _run_installer(project, cos_source, "--harness=codex")
+
+        assert first.returncode == 0, first.stderr + first.stdout
+        assert second.returncode == 0, second.stderr + second.stdout
+        assert json.loads(claude_settings.read_text()) == original_settings
+        assert (project / ".codex" / "hooks.json").is_file()
+        assert not (project / ".claude" / "CLAUDE.md").exists()
+        assert not (project / ".claude" / "skills").exists()
+
+    def test_codex_reinstall_preserves_preexisting_user_claude_md(self, tmp_path, cos_source):
+        """Upgrade: Codex reinstall preserves a user-owned .claude/CLAUDE.md instead of replacing it."""
+        project = tmp_path / "codex-with-user-claude-md"
+        _init_git_project(project, {"README.md": "# Codex Project\n"})
+        claude_md = project / ".claude" / "CLAUDE.md"
+        claude_md.parent.mkdir(parents=True, exist_ok=True)
+        original_instructions = "# User Claude Instructions\n\nOwned by this repo, not COS.\n"
+        claude_md.write_text(original_instructions)
+
+        first = _run_installer(project, cos_source, "--harness=codex")
+        second = _run_installer(project, cos_source, "--harness=codex")
+
+        assert first.returncode == 0, first.stderr + first.stdout
+        assert second.returncode == 0, second.stderr + second.stdout
+        assert claude_md.read_text() == original_instructions
+        assert (project / ".codex" / "hooks.json").is_file()
+        assert not (project / ".claude" / "skills").exists()
 
 
 # ---------------------------------------------------------------------------
@@ -722,7 +978,29 @@ class TestHelpFlag:
         assert "--harness=NAME" in result.stdout
         assert "claude" in result.stdout
         assert "codex" in result.stdout
+        assert "cursor" in result.stdout
+        assert "opencode" in result.stdout
+        assert "shell-ci" in result.stdout
         assert "default: claude" in result.stdout
+
+    def test_installer_harness_list_matches_cos_init(self):
+        """install.sh and cos_init.py must not drift on first-run harness names."""
+        install_text = INSTALLER.read_text()
+        match = re.search(r'^SUPPORTED_HARNESSES="([^"]+)"', install_text, re.MULTILINE)
+        assert match, "install.sh missing SUPPORTED_HARNESSES"
+        install_harnesses = set(match.group(1).split())
+
+        module = ast.parse(COS_INIT.read_text())
+        cos_harnesses = None
+        for node in module.body:
+            if not isinstance(node, ast.Assign):
+                continue
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id == "SUPPORTED_HARNESSES":
+                    cos_harnesses = set(ast.literal_eval(node.value))
+                    break
+        assert cos_harnesses is not None, "cos_init.py missing SUPPORTED_HARNESSES"
+        assert install_harnesses == cos_harnesses
 
     def test_help_explains_from_flag(self):
         """--help should explain when --from is needed."""
