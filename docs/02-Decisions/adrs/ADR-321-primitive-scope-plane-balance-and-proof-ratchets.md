@@ -139,9 +139,10 @@ the per-code budget in `review_exemption_policy`. If a detector stops producing
 the underlying signal, the exemption becomes stale and must be removed.
 
 `proof_level: none` is now budgeted. Shared `both` primitives have a zero budget;
-project and `os-only` primitives may retain the current baseline only as a
-ratchet. New primitives should either add paired proof or explicitly spend down
-that budget rather than increasing it.
+project primitives also have a zero budget after the project-scope family proof;
+`os-only` primitives retain the explicit internal-tooling baseline as a ratchet.
+New primitives should either add paired proof or explicitly spend down that budget
+rather than increasing it.
 
 ## 2026-05-15 ratchet promotion
 
@@ -154,14 +155,37 @@ The first health-dashboard queue produced three signals:
 - `pattern-audit` was a true over-internalization finding. It is now `both`
   because its grep/regex sampling protocol is repo-agnostic and has no COS
   source-checkout dependency.
-- Five generic-looking COS status/audit skills remain `os-only` by explicit
-  review exemption because their bodies operate on Cognitive OS control-plane
-  inventories, metrics, hooks, or benchmark machinery.
+- Five generic-looking COS status/audit skills originally needed explicit review
+  exemptions. The detector now treats broad Cognitive OS control-plane markers as
+  internal evidence, so those exemptions were removed and the exemption budget is
+  zero.
 
 The skills `project_min_warning` threshold moved from `5` to `4.5` because the
 current 4.9% project-skill ratio was a rounding-edge signal, not evidence of a
 classification bug. Future project-skill growth should be evidence-led rather
 than forced to satisfy a round number.
+
+## 2026-05-15 controlled-debt closure
+
+The follow-up closure pass removed the remaining active `review_exemptions` and
+added a project-scope family proof for the 44 consumer-facing primitives that had
+`proof_level: none`. The standing budgets are now:
+
+```yaml
+review_exemption_policy:
+  max_active_by_code:
+    os-only-generic-candidate: 0
+    both-needs-specific-proof: 0
+proof_level_budgets:
+  none_by_scope:
+    both: 0
+    project: 0
+    os-only: 459
+```
+
+`os-only` proof debt remains intentionally budgeted because it is mostly internal
+control-plane/factory tooling. It should be reduced opportunistically, but it is
+not allowed to grow without an explicit budget update.
 
 ## Consequences
 

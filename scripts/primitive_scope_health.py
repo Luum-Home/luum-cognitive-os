@@ -35,7 +35,7 @@ _SPEC.loader.exec_module(primitive_scope_classifier)
 
 VALID_PLANES = {"control-plane", "user-plane", "factory-plane", "runtime-plane"}
 GENERIC_NAME_RE = re.compile(r"(review|test|security|secret|docs?|architecture|health|license|audit|status|browser|quality|verify|validation|coverage|lint)", re.I)
-INTERNAL_RE = re.compile(r"(docs/02-Decisions|docs/06-Daily|manifests/|primitive-lifecycle|primitive-readiness|ADR-\d+|\.cognitive-os/(reports|strategy|sessions)|source Cognitive OS|COS maintainer)", re.I)
+INTERNAL_RE = re.compile(r"(docs/02-Decisions|docs/06-Daily|manifests/|primitive-lifecycle|primitive-readiness|ADR-\d+|cognitive[- ]os|\.cognitive-os/|hooks/_lib/|COS maintainer)", re.I)
 SOURCE_PATH_RE = re.compile("(" + "/" + "Users" + "/|matias" + r"\.nahuel)")
 BATCH_PROOF_RE = re.compile(r"test_low_confidence_scope_batch\.py|batch", re.I)
 

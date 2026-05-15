@@ -62,33 +62,16 @@ expected_scope_distribution:
     os-only_expected_high: true
   templates:
     project_expected_high: true
-review_exemptions:
-  os-only-generic-candidate:
-  - path: packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
-    rationale: COS-vs-baseline benchmark control-plane package; reads COS benchmark
-      config, worktrees, metrics, and reports rather than operating as a consumer
-      project skill.
-  - path: packages/verification-audit/skills/harness-audit/SKILL.md
-    rationale: COS harness-retirement and relevance audit; reviews Cognitive OS
-      primitive inventories, metrics, and governance signals.
-  - path: skills/agent-stress-test/SKILL.md
-    rationale: COS cognitive-health stress diagnostic backed by internal cognitive
-      load monitoring primitives and COS rule context.
-  - path: skills/audit-integrity/SKILL.md
-    rationale: COS integrity audit for hooks, libs, settings, symlinks, and skill
-      wiring; the generic audit name is not consumer-project portability evidence.
-  - path: skills/cognitive-os-status/SKILL.md
-    rationale: COS subsystem status report over installed Cognitive OS hooks,
-      rules, skills, squads, agents, and metrics.
+review_exemptions: {}
 review_exemption_policy:
   min_rationale_chars: 40
   max_active_by_code:
-    os-only-generic-candidate: 5
+    os-only-generic-candidate: 0
     both-needs-specific-proof: 0
 proof_level_budgets:
   none_by_scope:
     both: 0
-    project: 44
+    project: 0
     os-only: 459
 families:
   hooks:
