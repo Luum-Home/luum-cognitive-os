@@ -4840,7 +4840,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
+  consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project
     for each supported harness before claiming shared availability
 - id: scripts/check_mcp_servers.py
@@ -7378,7 +7378,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
+  consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project
     for each supported harness before claiming shared availability
 - id: scripts/domain_model.py
@@ -7847,7 +7847,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
+  consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project
     for each supported harness before claiming shared availability
 - id: scripts/primitive_usage_map.py
@@ -7875,7 +7875,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
+  consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project
     for each supported harness before claiming shared availability
 - id: scripts/project_scaffold.py
@@ -8467,7 +8467,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
+  consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project
     for each supported harness before claiming shared availability
 - id: scripts/test_skip_registry.py
@@ -8612,7 +8612,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-consumer-candidate
+  consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project
     for each supported harness before claiming shared availability
 - id: skills/agent-control/SKILL.md

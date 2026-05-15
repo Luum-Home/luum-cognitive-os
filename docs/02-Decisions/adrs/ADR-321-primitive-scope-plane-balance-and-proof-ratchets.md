@@ -138,11 +138,9 @@ a path-specific rationale, still suppress an active review signal, and stay unde
 the per-code budget in `review_exemption_policy`. If a detector stops producing
 the underlying signal, the exemption becomes stale and must be removed.
 
-`proof_level: none` is now budgeted. Shared `both` primitives have a zero budget;
-project primitives also have a zero budget after the project-scope family proof;
-`os-only` primitives retain the explicit internal-tooling baseline as a ratchet.
-New primitives should either add paired proof or explicitly spend down that budget
-rather than increasing it.
+`proof_level: none` is now budgeted. Shared `both`, `project`, and `os-only`
+primitives all have zero budget after the family proof closures. New primitives
+must add paired proof instead of increasing a hidden baseline.
 
 ## 2026-05-15 ratchet promotion
 
@@ -183,9 +181,30 @@ proof_level_budgets:
     os-only: 459
 ```
 
-`os-only` proof debt remains intentionally budgeted because it is mostly internal
-control-plane/factory tooling. It should be reduced opportunistically, but it is
-not allowed to grow without an explicit budget update.
+The final closure pass then added an `os-only` family proof and lowered the
+remaining `os-only` budget to zero. All scopes now have a zero `proof_level:none`
+budget; future primitives must provide proof when classified.
+
+## 2026-05-15 os-only proof closure
+
+The final proof-debt pass added `tests/red_team/portability/test_os_only_scope_family.py`
+and behavior-evidence rows for every remaining `os-only proof_level:none`
+primitive. The test verifies that each baseline primitive still exists, remains
+`os-only`, has maintainer-only consumer metadata, and is control/factory/runtime
+plane rather than user-plane. While adding the proof, six stale lifecycle rows
+that still declared `lifecycle-declared-consumer-candidate` were corrected to
+`lifecycle-declared-maintainer` to match their maintainer-only consumer-availability
+classification.
+
+The standing proof budget is now:
+
+```yaml
+proof_level_budgets:
+  none_by_scope:
+    both: 0
+    project: 0
+    os-only: 0
+```
 
 ## Consequences
 

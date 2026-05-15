@@ -72,7 +72,7 @@ proof_level_budgets:
   none_by_scope:
     both: 0
     project: 0
-    os-only: 459
+    os-only: 0
 families:
   hooks:
     marker: '# SCOPE: <scope>'
