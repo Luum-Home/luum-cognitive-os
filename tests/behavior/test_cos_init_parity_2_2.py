@@ -145,6 +145,21 @@ class TestParityScopeAllows:
         assert sub_rc == 0
 
 
+    def test_project_and_both_are_currently_equivalent_install_surfaces(self, tmp_path: Path) -> None:
+        """ADR-320: project and both are CLI aliases, not separate install surfaces."""
+        cases = {
+            "project": "# SCOPE: project\n# content\n",
+            "both": "# SCOPE: both\n# content\n",
+            "os_only": "# SCOPE: os-only\n# content\n",
+            "unscoped": "# content\n",
+        }
+        for name, body in cases.items():
+            f = tmp_path / f"{name}.sh"
+            f.write_text(body)
+            assert _py_scope_allows_direct(f, "project") == _py_scope_allows_direct(f, "both")
+            assert _py_scope_allows_subprocess(f, "project") == _py_scope_allows_subprocess(f, "both")
+
+
 # ── skill_scope_allows parity tests ─────────────────────────────────
 
 class TestParitySkillScopeAllows:
@@ -225,3 +240,19 @@ class TestParitySkillScopeAllows:
         dir_rc = _py_skill_scope_direct(skill_dir, "both")
         assert sub_rc == dir_rc
         assert sub_rc == 1
+
+    def test_project_and_both_are_currently_equivalent_for_skill_audience(self, tmp_path: Path) -> None:
+        """ADR-320: skill filtering also collapses project and both install surfaces."""
+        cases = {
+            "project": "audience: project",
+            "both": "audience: both",
+            "adopters": "audience: adopters",
+            "os_only": "audience: os-only",
+            "os_dev": "audience: os-dev",
+        }
+        for name, frontmatter in cases.items():
+            skill_dir = tmp_path / name
+            self._make_skill(skill_dir, frontmatter)
+            assert _py_skill_scope_direct(skill_dir, "project") == _py_skill_scope_direct(skill_dir, "both")
+            assert _py_skill_scope_subprocess(skill_dir, "project") == _py_skill_scope_subprocess(skill_dir, "both")
+

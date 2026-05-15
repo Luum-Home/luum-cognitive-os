@@ -33,6 +33,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Key Documents
 
 - [Primitive Scope Classification](../../04-Concepts/architecture/primitive-scope-classification.md)
+- [ADR-320: Install Scope Surface Debt and Protected Config Boundary](adrs/ADR-320-install-scope-surface-debt.md) — records that `project` and `both` install scopes are aliases today, `all` is the maintainer superset, and `.env` is outside protected-config policy.
 - [Primitive Parser Contracts](../../04-Concepts/architecture/primitive-parser-contracts.md) — normalized parser contracts for skills, rules, hooks, scripts, templates, and package skills before scope classification.
 - [Primitive Structure Standardization Report](../../06-Daily/reports/primitive-structure-standardization-2026-05-14.md) — latest structure-only normalization pass for primitive parser contracts.
 - [Primitive Structure Manual Audit Checklist](../../06-Daily/reports/primitive-structure-manual-audit-checklist-2026-05-14.md) — manual review checklist for parser/structure standardization.
@@ -868,7 +869,8 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
 - [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
 - [Promise Compliance Audit — 2026-05-15](business/promise-compliance-audit-2026-05-15.md) — Current audit of product promises, fulfilled evidence, partial compliance, overclaims, and the agentic literacy boundary
-- [Executable Acceptance Specification (EAS)](../../05-Methodology/root/executable-acceptance-specification.md) — optional evidence artifact bridging SDD, existing documentation formats, ATDD/TDD mapping, gap coverage, and detractor review.
+- [Executable Acceptance Specification (EAS)](../../05-Methodology/root/executable-acceptance-specification.md) — optional evidence artifact bridging SDD, existing documentation formats, ATDD/TDD mapping, gap coverage, and Detractor review modes.
+- [ADR-319: Detractor Review Modes for Planning and Verification](adrs/ADR-319-detractor-review-modes.md) — canonical Tenth-Man / Devil's-Advocate-inspired reviewer slot with Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, and Red Team modes.
 - [ADR-316: Agentic Literacy Before OS Abstraction](adrs/ADR-316-agentic-literacy-before-os-abstraction.md) — Decision that COS must teach and expose underlying harness discipline instead of hiding it
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
 - [ADR-201: Maintainer Agent and Telemetry Promotion Loop](adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md) — proposed owner-backed loop for converting COS telemetry into governed improvement proposals

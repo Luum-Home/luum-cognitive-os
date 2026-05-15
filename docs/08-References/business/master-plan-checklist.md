@@ -34,7 +34,7 @@
 - [x] Product and commercial answers are now evidence-backed through [ADR-280](../adrs/ADR-280-product-question-to-evidence-primitive.md), [Product Answer Playbook](product-answer-playbook.md), `manifests/product-question-bank.yaml`, `manifests/product-claim-evidence.yaml`, and `scripts/cos-product-answer`.
 - [x] Product promises, partial compliance, overclaims, and the missing agentic literacy boundary are documented in [Promise Compliance Audit — 2026-05-15](promise-compliance-audit-2026-05-15.md).
 - [x] Agentic literacy before OS abstraction is accepted in [ADR-316](../adrs/ADR-316-agentic-literacy-before-os-abstraction.md).
-- [x] Executable Acceptance Specification (EAS) doctrine is operationalized as an optional SDD evidence artifact through [ADR-317](../adrs/ADR-317-executable-acceptance-specification-eas.md), [EAS methodology](../../05-Methodology/root/executable-acceptance-specification.md), `templates/eas.md`, `rules/eas-evidence-artifact.md`, `scripts/eas_validate.py`, SDD phase skills, manifests, and focused tests.
+- [x] Executable Acceptance Specification (EAS) doctrine is operationalized as an optional SDD evidence artifact through [ADR-317](../adrs/ADR-317-executable-acceptance-specification-eas.md), [ADR-319](../adrs/ADR-319-detractor-review-modes.md), [EAS methodology](../../05-Methodology/root/executable-acceptance-specification.md), `templates/eas.md`, `rules/eas-evidence-artifact.md`, `scripts/eas_validate.py`, SDD phase skills, manifests, and focused tests.
 - [ ] Close the SSR developer primitive-enablement gaps in [SSR Developer Primitive Enablement Gap Backlog](../architecture/ssr-agentic-primitive-enablement-gaps.md): add a question-to-primitive router, developer guide, task-centric skill index, harvester/session trigger, primitive gap report, and populated primitive-fitness cadence.
 - [x] Repeated product and commercial answers are token-efficient through [ADR-282](../adrs/ADR-282-product-answer-card-cache-and-freshness-ledger.md), local `.cognitive-os/product-answers/` answer cards, source-hash freshness checks, compact routing index, and `scripts/cos-product-answer-refresh`.
 
@@ -224,6 +224,7 @@
 ## Success Signal
 
 - [x] A new user can understand the product quickly.
+- [x] Install-scope surface debt is documented in [ADR-320](../adrs/ADR-320-install-scope-surface-debt.md): `project` and `both` are aliases today, `all` is maintainer/self-hosting, and protected-config policy does not cover `.env` writes.
 - [x] A new user can install it without pain.
 - [x] A new user can see real evidence of value quickly.
 - [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.

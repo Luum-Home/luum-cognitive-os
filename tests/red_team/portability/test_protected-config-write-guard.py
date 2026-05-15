@@ -34,3 +34,47 @@ def test_protected_config_write_guard_passes_unrelated_tool_from_arbitrary_proje
         check=False,
     )
     assert result.returncode == 0, result.stderr
+
+
+def _run_guard(tmp_path: Path, payload: dict[str, object]) -> subprocess.CompletedProcess[str]:
+    env = os.environ.copy()
+    env.update({
+        "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+        "CODEX_PROJECT_DIR": str(tmp_path),
+        "CLAUDE_PROJECT_DIR": str(tmp_path),
+        "COS_METRICS_DIR": str(tmp_path / ".cognitive-os" / "metrics"),
+        "COS_PRIVATE_MODE": "0",
+    })
+    manifests = tmp_path / "manifests"
+    manifests.mkdir(parents=True, exist_ok=True)
+    (manifests / "protected-config-write-policy.yaml").write_text(
+        (REPO_ROOT / "manifests" / "protected-config-write-policy.yaml").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    return subprocess.run(
+        ["bash", str(ARTIFACT)],
+        input=json.dumps(payload),
+        text=True,
+        capture_output=True,
+        cwd=tmp_path,
+        env=env,
+        timeout=20,
+        check=False,
+    )
+
+
+def test_protected_config_write_guard_blocks_control_plane_settings(tmp_path: Path) -> None:
+    """ADR-320: protected-config guard blocks control-plane config paths."""
+    payload = {"tool_name": "Write", "tool_input": {"file_path": ".claude/settings.json"}}
+    result = _run_guard(tmp_path, payload)
+
+    assert result.returncode == 2
+    assert ".claude/settings.json" in result.stderr
+
+
+def test_protected_config_write_guard_does_not_claim_env_file_policy(tmp_path: Path) -> None:
+    """ADR-320: .env is not in protected-config policy unless a future ADR adds it."""
+    payload = {"tool_name": "Write", "tool_input": {"file_path": ".env"}}
+    result = _run_guard(tmp_path, payload)
+
+    assert result.returncode == 0, result.stderr

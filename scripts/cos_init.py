@@ -174,12 +174,12 @@ def detect_harness(project_root: str = ".") -> str:
 
 
 def scope_allows(file_path: str, install_scope: str = "both") -> bool:
-    """Port from scripts/cos-init.sh::scope_allows() (lines 121-143).
+    """Return whether a SCOPE-tagged file belongs in the requested install surface.
 
-    Returns True if the file's SCOPE header allows installation under the
-    given install_scope. Files without a SCOPE header are universal (always allowed).
-
-    Byte-for-byte port — do NOT optimise the bash logic.
+    ADR-320 records the current product boundary: ``project`` and ``both`` are
+    backward-compatible aliases for the same consumer filtered install surface;
+    only ``all`` is a distinct maintainer/self-hosting superset. Files without a
+    SCOPE header are universal and always allowed.
     """
     import re as _re
 
@@ -1471,6 +1471,10 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     print(f"=== Cognitive OS Init ({mode}) ===")
     print(f"Harness: {harness}")
     print(f"Scope filter: {install_scope}")
+    if install_scope in {"project", "both"}:
+        print("Scope surface: consumer-filtered (project and both are equivalent; ADR-320)")
+    elif install_scope == "all":
+        print("Scope surface: maintainer/self-hosting (includes os-only primitives; ADR-320)")
     print()
     print(f"Project: {project_name}")
     if detected_stack:

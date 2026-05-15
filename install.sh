@@ -22,8 +22,9 @@ SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
 INSTALL_DEPS=false
 HARNESS="${COGNITIVE_OS_HARNESS:-}"
 # INSTALL_SCOPE controls which SCOPE-tagged files are copied.
-# Values: project (SCOPE:project + SCOPE:both), both (same as project),
-#         all (everything, including SCOPE:os-only — for COS self-hosting).
+# Values: project (SCOPE:project + SCOPE:both), both (backward-compatible
+#         alias for project; not a separate installed surface), all
+#         (everything, including SCOPE:os-only — for COS self-hosting).
 INSTALL_SCOPE="${COS_INSTALL_SCOPE:-both}"
 
 cleanup() { rm -rf "$TEMP_DIR"; }
@@ -65,10 +66,12 @@ Options:
                          non-auth-bound dependencies via cos-deps-install,
                          then run uv sync and register MCP servers.
   --scope=SCOPE          Filter installed files by SCOPE tag (default: both).
-                           project  — files tagged SCOPE:project or SCOPE:both
-                           both     — same as project (default for user projects)
-                           all      — every file, including SCOPE:os-only
-                                      (use when self-hosting COS)
+                           project  — consumer filtered install; files tagged
+                                      SCOPE:project or SCOPE:both
+                           both     — backward-compatible alias for project;
+                                      not a separate installed surface (ADR-320)
+                           all      — maintainer/self-hosting install; every file,
+                                      including SCOPE:os-only
   --help, -h             Show this help message.
 
 Environment variables:
