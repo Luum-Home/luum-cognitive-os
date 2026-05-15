@@ -171,7 +171,7 @@ def build_report() -> dict[str, Any]:
     signed = [str(item) for item in raw_signed if item] if isinstance(raw_signed, list) else []
     by_id = {str(row.get("primitive_id")) for row in rows}
     missing_rows = sorted(set(signed) - by_id)
-    failed_outcomes = sorted(key for key in signed if not outcomes.get(key))
+    failed_outcomes = sorted(key for key in signed if not bool(outcomes.get(key)))
     status = "pass" if binary and node.get("node_returncode") == 0 and signed and not missing_rows and not failed_outcomes and node.get("content_free") else "fail"
     return {
         "schema_version": "opencode-primitive-adapter-smoke.v1",

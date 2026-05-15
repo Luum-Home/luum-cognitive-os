@@ -627,3 +627,29 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 6: **268 → 116** non-import Pyrefly errors.
+
+### Remediation pass 7 — residual governance/UI narrowings
+
+Follow-up fixes after pass 6:
+
+- `packages/agent-lifecycle/lib/sprint_orchestrator.py`: removed the relative/absolute import union entirely and imports `CanonicalEvent` from the canonical `lib.harness_adapter.base` path.
+- `scripts/lab_first_promotion_gate.py`: narrowed finding rows before CLI rendering.
+- `scripts/opencode_primitive_adapter_smoke.py`: forced outcome checks through `bool(...)` after payload narrowing.
+
+Validation:
+
+```bash
+uv run pytest \
+  tests/unit/test_sprint_orchestrator.py \
+  tests/unit/test_primitive_harness_coverage.py \
+  tests/unit/test_test_quality_auditor.py \
+  tests/unit/test_adr_reserve.py \
+  tests/unit/test_prelaunch_audit.py \
+  tests/red_team/portability/test_opencode_primitive_adapter_smoke.py -q
+# 42 passed in 3.85s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=107 elapsed_seconds=2 ...
+```
+
+Running baseline after pass 7: **268 → 107** non-import Pyrefly errors.

@@ -164,8 +164,10 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
         print(f"lab-first promotion gate: {report['status']}")
-        for finding in report.get("findings", []):
-            print(f"- {finding['primitive_id']}::{finding['field']}: {finding['message']}")
+        findings = report.get("findings", [])
+        finding_rows = [item for item in findings if isinstance(item, dict)] if isinstance(findings, list) else []
+        for finding in finding_rows:
+            print(f"- {finding.get('primitive_id', '')}::{finding.get('field', '')}: {finding.get('message', '')}")
     return 0 if report["status"] == "pass" else 1
 
 
