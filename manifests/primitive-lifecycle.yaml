@@ -183,6 +183,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -203,12 +204,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/cwd-enforcer.jsonl
+
 - id: hooks/agent-checkpoint.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -229,6 +232,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
+
 - id: hooks/agent-control-inbound-guard.sh
   kind: hook
   owner_adr: ADR-042
@@ -264,7 +268,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/agent-control-inbound.jsonl
-  consumer_accessibility: lifecycle-declared-core
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep projected in standard/paranoid profiles for hook-boundary
     safety.
 - id: hooks/agent-launch-confirmed.sh
@@ -273,6 +277,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -293,12 +298,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
+
 - id: hooks/agent-message-inbox-context.sh
   kind: hook
   owner_adr: ADR-185
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -318,12 +325,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/coordination/agent-messages.jsonl
+
 - id: hooks/agent-message-inbox-guard.sh
   kind: hook
   owner_adr: ADR-185
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -348,12 +357,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/coordination/agent-messages.jsonl
+
 - id: hooks/agent-prelaunch.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -380,12 +391,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: none
+
 - id: hooks/agent-working-dir-inject.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -406,6 +419,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/cwd-inject.jsonl
+
 - id: hooks/aspirational-audit-weekly.sh
   kind: hook
   owner_adr: ADR-126
@@ -2212,6 +2226,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2238,12 +2253,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
+
 - id: hooks/orchestrator-decision-trace.sh
   kind: hook
   owner_adr: ADR-176
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2262,12 +2279,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/orchestrator-decision-trace.jsonl
+
 - id: hooks/orchestrator-skill-invocation-gate.sh
   kind: hook
   owner_adr: ADR-188
   lifecycle_state: blocking
   maturity: blocking
   distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2303,6 +2322,7 @@ primitives:
     rationale: ADR-188 introduces a blocking guard to prevent high-confidence skill-router
       contracts from being silently bypassed; the hook has contract tests for pass,
       warn, block, annotation, and env override behavior.
+
 - id: hooks/plan-claim-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -4018,6 +4038,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4038,6 +4059,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/surface-fix-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -4102,6 +4124,7 @@ primitives:
   lifecycle_state: demoted
   maturity: blocking
   distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -4139,12 +4162,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/task-completed.jsonl
+
 - id: hooks/task-created.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -4171,12 +4196,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/task-created.jsonl
+
 - id: hooks/teammate-idle.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -4203,6 +4230,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/teammate-idle.jsonl
+
 - id: hooks/token-budget-monitor.sh
   kind: hook
   owner_adr: ADR-144
@@ -10207,7 +10235,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: .cognitive-os/metrics/*.jsonl
-  consumer_accessibility: lifecycle-declared-team
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming
     broad consumer availability.
 - id: hooks/clarification-interceptor.sh
@@ -10334,7 +10362,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/*.jsonl
-  consumer_accessibility: lifecycle-declared-team
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming
     broad consumer availability.
 - id: scripts/cos-governed-agent.sh

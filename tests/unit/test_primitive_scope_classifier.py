@@ -488,3 +488,23 @@ def test_recovery_and_git_safety_hooks_are_shared_patterns(tmp_path: Path) -> No
     assert any(item.source == "semantic-pattern" and item.detail == "shared-git-safety" for item in branch.evidence)
     assert any(item.source == "semantic-pattern" and item.detail == "shared-concurrent-edit-safety" for item in edit.evidence)
     assert any(item.source == "semantic-pattern" and item.detail == "shared-subagent-safety" for item in snapshot.evidence)
+
+
+def test_agent_orchestrator_and_team_hooks_are_shared_patterns(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    samples = {
+        "agent-output-verifier.sh": "# Verifies agent file output claims.\n",
+        "orchestrator-claim-gate.sh": "# Blocks high-stakes closure claims without evidence.\n",
+        "subagent-capability-preflight.sh": "# Blocks subagent launches that cannot satisfy artifacts.\n",
+        "task-created.sh": "# Validates shared task quality at creation.\n",
+    }
+    for name, body in samples.items():
+        (root / "hooks" / name).write_text(f"#!/usr/bin/env bash\n# SCOPE: both\n{body}echo ok\n")
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    assert rows["hooks/agent-output-verifier.sh"].suggested_scope == "both"
+    assert rows["hooks/orchestrator-claim-gate.sh"].suggested_scope == "both"
+    assert rows["hooks/subagent-capability-preflight.sh"].suggested_scope == "both"
+    assert rows["hooks/task-created.sh"].suggested_scope == "both"

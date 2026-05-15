@@ -2034,6 +2034,63 @@ items:
 - path: hooks/untracked-work-preservation-guard.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 029: blocking destructive deletes of untracked work is generic repository safety.'
+- path: hooks/agent-bash-cwd-enforcer.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: subagent git cwd enforcement prevents wrong-worktree commits in COS and adopter repos.'
+- path: hooks/agent-checkpoint.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: tracking subagent task completion in active task state is shared multi-agent runtime behavior.'
+- path: hooks/agent-control-inbound-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: agent bus stop/pause enforcement is shared multi-agent control-plane behavior when projected.'
+- path: hooks/agent-launch-confirmed.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: committing snapshot plans after agent launch gates pass is shared subagent lifecycle safety.'
+- path: hooks/agent-message-inbox-context.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: directed agent message context injection is shared multi-agent coordination behavior.'
+- path: hooks/agent-message-inbox-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: blocking risky git boundaries when directed agent messages are unacknowledged is shared coordination safety.'
+- path: hooks/agent-output-verifier.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: verifying agent file-output claims against filesystem reality is shared multi-agent quality control.'
+- path: hooks/agent-prelaunch.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: registering subagent tasks before launch is shared multi-agent runtime behavior.'
+- path: hooks/agent-qwen-bridge.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: provider fallback bridge is shared runtime routing behavior for opted-in mechanical skills.'
+- path: hooks/agent-working-dir-inject.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: injecting correct working directory context into subagents is shared repository safety.'
+- path: hooks/orchestrator-claim-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: blocking high-stakes closure claims without repo evidence is shared orchestrator safety.'
+- path: hooks/orchestrator-decision-trace.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: tracing whether orchestrator followed skill suggestions is shared observability.'
+- path: hooks/orchestrator-mode-detect.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: detecting connected versus fire-and-forget orchestrator mode is shared runtime diagnostics.'
+- path: hooks/orchestrator-skill-invocation-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: enforcing high-confidence skill-router suggestions is shared orchestration governance.'
+- path: hooks/subagent-capability-preflight.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: blocking subagent launches that cannot satisfy requested artifacts is shared launch safety.'
+- path: hooks/subagent-context-injector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: injecting consistent subagent preamble and memory sidecar is shared subagent runtime behavior.'
+- path: hooks/task-completed.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: validating shared task completion criteria is shared team-agent governance.'
+- path: hooks/task-created.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: validating shared task quality at creation is shared team-agent governance.'
+- path: hooks/teammate-idle.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 030: suggesting unclaimed tasks before a teammate goes idle is shared team-agent coordination.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
