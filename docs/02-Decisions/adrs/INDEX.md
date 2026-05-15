@@ -400,3 +400,4 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [253](ADR-253-tombstone-squads.md) | Tombstone — squads orchestration superseded by ADR-251 | tombstone | not-applicable | 2026-05-08 | The `packages/squads/` orchestration package (multi-agent team coordination |
 
 </details>
+| [321](ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) | Primitive Scope Plane Balance and Proof Ratchets | accepted | implemented | 2026-05-15 | Scope answers install surface; plane answers why the primitive exists; proof level answers evidence strength. |

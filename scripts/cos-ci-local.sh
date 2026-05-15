@@ -343,6 +343,21 @@ check_scope_portability_contract() {
     "$REPO_ROOT/scripts/primitive-scope-dependency-audit" \
       --project-dir "$REPO_ROOT" --strict \
       --json-out .cognitive-os/reports/primitive-scope-dependency-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-plane-audit" \
+      --project-dir "$REPO_ROOT" --strict \
+      --json-out .cognitive-os/reports/primitive-scope-plane-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-balance-audit" \
+      --project-dir "$REPO_ROOT" \
+      --json-out .cognitive-os/reports/primitive-scope-balance-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-generic-os-only-audit" \
+      --project-dir "$REPO_ROOT" \
+      --json-out .cognitive-os/reports/primitive-scope-generic-os-only-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-false-both-audit" \
+      --project-dir "$REPO_ROOT" \
+      --json-out .cognitive-os/reports/primitive-scope-false-both-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-health" \
+      --project-dir "$REPO_ROOT" \
+      --json-out .cognitive-os/reports/primitive-scope-health-ci-local.json >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-both-portability-audit" \
       --repo-root "$REPO_ROOT" --strict --json --no-write >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-projection-audit" \

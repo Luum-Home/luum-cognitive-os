@@ -40,6 +40,7 @@ jobs:
             scripts/cos-scope-projection-audit \
             scripts/primitive_scope_classifier.py \
             scripts/primitive_scope_dependency_audit.py \
+            scripts/primitive_scope_health.py \
             scripts/primitive_scope_random_audit.py
           bash -n scripts/cos-status.sh scripts/cos-ci-local.sh .githooks/pre-commit
 
@@ -50,6 +51,7 @@ jobs:
             tests/unit/test_scope_projection_audit.py \
             tests/unit/test_primitive_scope_classifier.py \
             tests/unit/test_primitive_scope_dependency_audit.py \
+            tests/unit/test_primitive_scope_health.py \
             tests/unit/test_primitive_scope_random_audit.py \
             tests/contracts/test_primitive_scope_governance.py \
             tests/integration/test_install_projection_audit.py \
@@ -69,6 +71,22 @@ jobs:
             --project-dir . \
             --strict \
             --json-out .cognitive-os/reports/primitive-scope-dependency-audit-ci.json
+          scripts/primitive-scope-plane-audit \
+            --project-dir . \
+            --strict \
+            --json-out .cognitive-os/reports/primitive-scope-plane-audit-ci.json
+          scripts/primitive-scope-balance-audit \
+            --project-dir . \
+            --json-out .cognitive-os/reports/primitive-scope-balance-audit-ci.json
+          scripts/primitive-scope-generic-os-only-audit \
+            --project-dir . \
+            --json-out .cognitive-os/reports/primitive-scope-generic-os-only-audit-ci.json
+          scripts/primitive-scope-false-both-audit \
+            --project-dir . \
+            --json-out .cognitive-os/reports/primitive-scope-false-both-audit-ci.json
+          scripts/primitive-scope-health \
+            --project-dir . \
+            --json-out .cognitive-os/reports/primitive-scope-health-ci.json
 
       - name: Run strict scope projection audits
         run: |
