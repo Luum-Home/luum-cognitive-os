@@ -2259,6 +2259,16 @@ items:
 - path: scripts/cos-doctor-work-inventory.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 034: branch/worktree/stash/dirty-WIP inventory is generic multi-agent workspace hygiene.'
+
+- path: scripts/cos-engram-bundle
+  status: shared-surface
+  rationale: 'Manual scope review iteration 035: project-scoped Engram bundle export is portable memory federation for COS and adopter repositories.'
+- path: scripts/cos-engram-import-propose
+  status: shared-surface
+  rationale: 'Manual scope review iteration 035: propose-only Engram bundle import is safe project-scoped memory review for COS and adopter repositories.'
+- path: scripts/engram-sync.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 035: project-scoped Engram sync/export is cross-device memory portability for COS and adopter repositories.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

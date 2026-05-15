@@ -34,3 +34,25 @@ def test_engram_sync_safe_invocation_from_arbitrary_project_root(tmp_path: Path)
     assert result.returncode in {0, 1, 2, 12, 64, 77}, output
     assert "No such file or directory" not in output
     assert "Traceback" not in output
+
+
+def test_engram_sync_has_passing_scope_contract() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/primitive_scope_classifier.py",
+            "--project-dir",
+            ".",
+            "--paths",
+            "scripts/engram-sync.sh",
+            "--fail-contradictions",
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert '"by_effective_scope": {"both": 1}' in result.stdout
