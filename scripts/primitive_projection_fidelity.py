@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Generate ADR-256 primitive projection fidelity report.
 
 This report joins the portable primitive contract registry with the existing

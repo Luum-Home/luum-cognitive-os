@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # ROLE: observability
 # CANONICAL: scripts/statusline-coverage.sh
 # @on-demand: Emit ACC coverage segment for statusline integrations.

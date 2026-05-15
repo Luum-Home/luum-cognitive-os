@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-275 — Session-start projector for pending-truth + audit state.
 
 Reads existing reports (no aggregation — that's ADR-273's aggregator's job)

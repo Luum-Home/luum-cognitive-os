@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 set -euo pipefail
 python3 "$(dirname "$0")/self_improvement_discipline_gate.py" "$@"

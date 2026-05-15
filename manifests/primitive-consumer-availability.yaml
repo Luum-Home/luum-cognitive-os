@@ -2169,3 +2169,151 @@ patterns:
 - path: scripts/stash-leak-alarm.sh
   status: shared-surface
   rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Detects hidden auto-pre-agent stashes in project repositories before work is lost.
+
+- path: scripts/active_primitive_index.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Builds active primitive indexes from COS lifecycle manifests; this governs SO primitive inventory, not a consumer-project tool."
+- path: scripts/check_catalog_sync.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Validates COS skill catalog/install sync; tied to skills/CATALOG.md and installed SO skill surfaces."
+- path: scripts/check_hook_registration.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Validates COS hook registration/projection against hooks manifests and harness settings."
+- path: scripts/check_lib_wiring.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits internal lib/*.py wiring for the Cognitive OS repository."
+- path: scripts/cos-architecture-readiness
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Architecture-readiness gate for COS reconstruction governance and ADR evidence."
+- path: scripts/cos-closure-trust-signal.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. COS closure-trail trust signal over pending truth/self-improvement governance."
+- path: scripts/cos-demotion-loop-audit
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS primitive demotion loop behavior and default-surface claims."
+- path: scripts/cos-doc-cross-reference-audit.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS docs for primitive cross-reference coverage."
+- path: scripts/cos-federation-trigger-audit
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS federation trigger configuration and evidence."
+- path: scripts/cos-homebrew-local-canary
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Local canary for the Cognitive OS Homebrew formula; release/maintainer only."
+- path: scripts/cos-manifest-tier-claim-audit
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS manifest tier claims against primitive lifecycle/profile contracts."
+- path: scripts/cos-observe-primitives
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Reports COS primitive self-use from COS trace streams."
+- path: scripts/cos-operational-guide-audit.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits ADR operational-guide sections in COS decision docs."
+- path: scripts/cos-pending-truth-aggregator
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Aggregates COS pending-truth surfaces for self-improvement governance."
+- path: scripts/cos-pending-truth-close
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Closes COS pending-truth items with bilateral proof."
+- path: scripts/cos-pending-truth-verify
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Verifies COS pending-truth ledger items."
+- path: scripts/cos-primitive-authority-audit
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS primitive authority and ownership metadata."
+- path: scripts/cos-primitive-fitness
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Compares COS candidate primitive fitness against lifecycle baselines."
+- path: scripts/cos-registry-lock
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Maintains the COS agentic primitive and skill registry lockfiles."
+- path: scripts/cos-self-improvement-discipline-gate
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Gates COS self-improvement against governance discipline rules."
+- path: scripts/cos-self-improvement-loop
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Runs governed COS self-improvement loop, not consumer project delivery."
+- path: scripts/cos-service-readiness-gate
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Service-mode readiness gate for COS runtime/service contracts."
+- path: scripts/cos-session-start-projector
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Projects COS session-start pending-truth/audit state."
+- path: scripts/cos-tier-claim-audit
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS tier/profile claims for evidence-backed purity."
+- path: scripts/cos-tui
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Terminal dashboard for COS primitive coverage reports."
+- path: scripts/cos_adoption_profile.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Reports adoptable COS profiles from primitive lifecycle metadata."
+- path: scripts/cos_context_budget_report.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Reports COS context-budget calibration from .cognitive-os metrics."
+- path: scripts/cos_default_visible_reducer.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Recommends COS default-visible primitive demotions."
+- path: scripts/cos_dispatch_smoke.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Offline smoke for COS LLM dispatch and task-history metrics paths."
+- path: scripts/cos_false_positive_ledger.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Summarizes COS hook false-positive metrics."
+- path: scripts/cos_governed_self_improvement.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. CLI for governed COS self-improvement loop."
+- path: scripts/cos_headless_publication.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Protected-publication checker for headless COS workers."
+- path: scripts/cos_primitive_fitness.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Fitness comparison for COS candidate primitives."
+- path: scripts/cos_profile_bootstrap.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Bootstraps local COS project profile drafts."
+- path: scripts/cos_tier_claim_audit.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits COS ADR tier claims for evidence-backed profile purity."
+- path: scripts/opencode_primitive_adapter_smoke.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Smokes native OpenCode COS primitive guard plugin."
+- path: scripts/primitive_harness_coverage.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Reports per-harness implementation coverage for COS primitives."
+- path: scripts/primitive_projection_fidelity.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Generates COS primitive projection fidelity reports."
+- path: scripts/primitive_service_headless_smoke.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Smokes portable COS primitive enforcement outside IDE lifecycle."
+- path: scripts/promote_lifecycle_primitives_to_contracts.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Promotes COS lifecycle-derived primitives into ADR-256 contracts."
+- path: scripts/run_skill_lifecycle_promotion_smoke.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Isolated smoke for COS skill lifecycle promotion ladder."
+- path: scripts/self_improvement_discipline_gate.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Gates COS headless self-improvement against default-surface inflation."
+- path: scripts/session_start_budget.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Reports/enforces COS SessionStart hook budget by adoption profile."
+- path: scripts/silent_failure_audit.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits intentional shell error swallowing in COS hooks."
+- path: scripts/smoke-agent-quota-advisor.sh
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Live smoke for COS agent-quota-advisor hook."
+- path: scripts/so-emergency-stop.sh
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. SO runtime emergency-stop kill switch."
+- path: scripts/so-vitals.sh
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Unified SO runtime dashboard."
+- path: scripts/state_retention_audit.py
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. Audits/reaps bounded COS state surfaces."
+- path: scripts/statusline-coverage.sh
+  status: maintainer-only
+  rationale: "Manual scope calibration iteration 039 classified os-only. COS observability/statusline coverage report."

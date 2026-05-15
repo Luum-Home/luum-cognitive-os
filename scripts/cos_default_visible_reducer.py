@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Recommend demotions to shrink default-visible primitive surface."""
 from __future__ import annotations
 

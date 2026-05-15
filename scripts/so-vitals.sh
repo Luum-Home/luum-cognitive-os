@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # so-vitals.sh — ADR-028 D1.D unified SO runtime dashboard
 # Usage: scripts/so-vitals.sh [--json]
 set -uo pipefail

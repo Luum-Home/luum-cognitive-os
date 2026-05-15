@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-275 — Close a pending-truth item atomically with bilateral proof.
 
 Verifies the proof, applies the canonical closure edit to the original

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Validate that versioned and installed skills match CATALOG.md entries.
 
 Exit 0 if in sync, exit 1 with details if mismatched.

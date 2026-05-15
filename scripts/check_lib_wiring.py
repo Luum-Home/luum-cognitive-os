@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Validate that every lib/*.py is imported by at least 1 non-lib file.
 
 Exit 0 if all wired (or allowlisted), exit 1 with details of unwired libs.

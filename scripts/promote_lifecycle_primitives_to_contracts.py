@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Promote lifecycle-derived primitives into conservative ADR-256 contracts.
 
 This is intentionally conservative: it makes every primitive registry-backed

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-274 — Audit ADRs for §Operational Guide section presence.
 
 Scans docs/02-Decisions/adrs/ADR-*.md, identifies ADRs subject to the §Operational Guide
