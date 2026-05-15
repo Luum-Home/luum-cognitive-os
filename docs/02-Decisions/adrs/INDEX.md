@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 331 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 332 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -402,3 +402,4 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 </details>
 | [321](ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) | Primitive Scope Plane Balance and Proof Ratchets | accepted | implemented | 2026-05-15 | Scope answers install surface; plane answers why the primitive exists; proof level answers evidence strength. |
 | [322](ADR-322-consumer-sdd-lane-contract.md) | Consumer SDD Lane Contract | accepted | partial | 2026-05-15 | Local-first consumer SDD workflow with durable specs, approval, traceability review, and planned external task-state adapters. |
+| [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Separate proof presence from proof depth; ratchet structural-only primitive evidence. |

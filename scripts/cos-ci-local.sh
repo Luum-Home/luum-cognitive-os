@@ -362,6 +362,10 @@ check_scope_portability_contract() {
       --project-dir "$REPO_ROOT" \
       --strict \
       --json-out .cognitive-os/reports/primitive-scope-proof-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-behavior-depth-audit" \
+      --project-dir "$REPO_ROOT" \
+      --strict \
+      --json-out .cognitive-os/reports/primitive-behavior-depth-audit-ci-local.json >/dev/null && \
     "$REPO_ROOT/scripts/primitive-scope-health" \
       --project-dir "$REPO_ROOT" \
       --json-out .cognitive-os/reports/primitive-scope-health-ci-local.json >/dev/null && \

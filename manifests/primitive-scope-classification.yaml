@@ -73,6 +73,14 @@ proof_level_budgets:
     both: 0
     project: 0
     os-only: 0
+behavior_depth_policy:
+  minimum_by_scope:
+    both: structural
+    project: structural
+    os-only: structural
+  max_by_depth:
+    none: 0
+    structural: 471
 families:
   hooks:
     marker: '# SCOPE: <scope>'
