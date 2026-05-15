@@ -678,3 +678,21 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 Note: `tests/unit/test_routing_benchmark_onnx_adapter.py` attempted a Hugging Face/Xet model download and timed out in this local run; this is an external/network fixture issue, not a local assertion failure from the narrowing patch.
 
 Running baseline after pass 8: **268 → 88** non-import Pyrefly errors.
+
+### Remediation pass 9 — runtime scalar and optional-callable narrowings
+
+| Files | Finding class | Change | Pyrefly effect |
+|---|---|---|---:|
+| `lib/agent_health_monitor.py`, `lib/agent_reflection.py`, `lib/agent_team_transport.py` | Optional prompt/callable/awaitable shapes | Normalized prompt string, stored non-optional callback, and rejected non-coroutine awaitables before `asyncio.run`. | Removed 4 findings. |
+| `lib/auto_repair.py`, `lib/changelog_generator.py`, `lib/cognee_client.py`, `lib/cost_dashboard.py` | Payload shape and mixed dict value types | Widened/normalized result payloads, numeric cost sum, Cognee returns, and action keys. | Removed 8 findings. |
+| `lib/dispatch_gate.py`, `lib/gateway_selector.py`, `lib/harness_adapter/codex.py` | JSON/env scalar casts and optional arithmetic | Added scalar conversion helpers, defaulted LiteLLM URL to string, and guarded duration arithmetic. | Removed 6 findings. |
+| `lib/kpi_collector.py`, `lib/outcome_metrics.py`, `lib/self_improvement.py`, `lib/work_queue.py` | Numeric/object casts and mutable default | Normalized numeric defaults, stringified error type keys, and changed `depends_on` default to optional. | Removed 4 findings. |
+
+Validation:
+
+```bash
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=67 elapsed_seconds=1 ...
+```
+
+Running baseline after pass 9: **268 → 67** non-import Pyrefly errors.

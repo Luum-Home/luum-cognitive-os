@@ -48,8 +48,8 @@ def compute_dispatch_outcomes(records: Iterable[Mapping[str, object]]) -> Dispat
         )
 
     successes = sum(1 for row in rows if bool(row.get("success", False)))
-    latencies = [float(row.get("latency_ms", 0) or 0) for row in rows]
-    costs = [float(row.get("cost_usd", 0) or 0) for row in rows]
+    latencies = [float(row.get("latency_ms", 0) or 0.0) for row in rows]
+    costs = [float(row.get("cost_usd", 0) or 0.0) for row in rows]
     total_cost = sum(costs)
 
     return DispatchOutcomeSnapshot(

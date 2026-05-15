@@ -421,7 +421,7 @@ class AgentHealthMonitor:
                 kwargs["queue_path"] = self._queue_path
 
             drainer = QueueDrainer(**kwargs)
-            prompt = task.get("description", task.get("id", "unknown task"))
+            prompt = str(task.get("description", task.get("id", "unknown task")) or "unknown task")
             drainer.enqueue(
                 prompt=prompt,
                 description=prompt[:200],

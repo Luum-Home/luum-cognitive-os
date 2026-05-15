@@ -151,7 +151,7 @@ def generate_session_changelog(project_dir: str, session_id: str) -> SessionChan
         e for e in cost_events
         if not session_id or e.get("session_id", session_id) == session_id
     ]
-    cost_usd: float = sum(e.get("estimated_cost_usd", e.get("cost_usd", 0.0)) for e in session_costs)
+    cost_usd: float = sum(float(e.get("estimated_cost_usd", e.get("cost_usd", 0.0)) or 0.0) for e in session_costs)
     cost_usd = round(cost_usd, 6)
 
     # --- duration -----------------------------------------------------------
@@ -164,7 +164,8 @@ def generate_session_changelog(project_dir: str, session_id: str) -> SessionChan
         duration_minutes = 0.0
 
     # --- decisions (from engram-style or meta) ------------------------------
-    decisions: List[str] = meta.get("decisions", [])
+    raw_decisions = meta.get("decisions", [])
+    decisions: List[str] = [str(item) for item in raw_decisions] if isinstance(raw_decisions, list) else []
 
     return SessionChangelog(
         session_id=session_id,

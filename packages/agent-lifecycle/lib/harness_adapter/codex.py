@@ -227,7 +227,7 @@ class CodexAdapter(HarnessAdapter):
         duration = payload.get("duration")
         duration_ms = None
         if isinstance(duration, dict):
-            duration_ms = _as_int(duration.get("secs"), 0) * 1000 + _as_int(duration.get("nanos"), 0) // 1_000_000
+            duration_ms = (_as_int(duration.get("secs"), 0) or 0) * 1000 + (_as_int(duration.get("nanos"), 0) or 0) // 1_000_000
         else:
             duration_ms = _as_int(payload.get("duration_ms"))
         return ToolUseEnd(

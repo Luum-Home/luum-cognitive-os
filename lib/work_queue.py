@@ -65,7 +65,7 @@ class WorkQueue:
         self._save()
 
     def add_task(self, task_id: str, description: str, priority: int = 3,
-                 depends_on: list[str] = None, estimated_effort: str = "",
+                 depends_on: list[str] | None = None, estimated_effort: str = "",
                  context: str = ""):
         """Add a new task. Skips if ID already exists."""
         existing_ids = {t["id"] for t in self._data.get("priority_queue", [])}
