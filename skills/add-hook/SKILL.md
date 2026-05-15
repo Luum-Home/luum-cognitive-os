@@ -80,6 +80,18 @@ for all NEW hooks:
 The `hooks/hook-header-validator.sh` PostToolUse hook will warn if these are missing
 when you Write/Edit a hooks/*.sh file.
 
+Before choosing `# SCOPE:`, classify the hook semantically:
+
+| Scope | Use when |
+|---|---|
+| `os-only` | The hook builds/operates Cognitive OS itself, references COS source internals, maintainer manifests, ADR governance, local operator workflows, or source-repo automation. |
+| `project` | The hook affects adopter projects only and is not needed for COS self-construction. |
+| `both` | The hook is repo-agnostic agent/repository governance useful in COS and adopter repositories. |
+
+Do not use lifecycle event, distribution tier, projection profile, or routing/exposure
+labels as the sole SCOPE decision. If unsure, keep the hook out of consumer
+projection until the classifier/audit evidence is added.
+
 Key conventions:
 - Read stdin JSON via `INPUT=$(cat)` — contains `tool_name`, `tool_input`, and (PostToolUse) `tool_response`
 - Add a FAST PATH: `case "$INPUT" in *"TRIGGER"*) ;; *) exit 0 ;; esac` to avoid Python startup overhead
@@ -178,6 +190,26 @@ This proves generated `.codex/hooks.json` and `.claude/settings.json` do not
 reference a hook that the same filtered install failed to copy, and do not
 register `SCOPE: os-only` hooks under consumer `project`/`both` installs.
 
+### 5d. Run the scope classifier for this hook
+
+Every new or reclassified hook must pass the evidence-weighted classifier before
+commit:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths hooks/{hook-name}.sh \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+If this fails, add the missing evidence instead of weakening the classifier:
+
+- `manifests/primitive-consumer-availability.yaml` for consumer/shared/maintainer availability.
+- `manifests/primitive-behavior-evidence.yaml` for paired portability proof rows.
+- `tests/red_team/portability/<proof>.py` for `SCOPE: both`.
+- lifecycle metadata when the primitive becomes a durable runtime surface.
+
 ## Available Trigger Reference
 
 | Trigger | When it fires | Input available | Can block? |
@@ -211,6 +243,7 @@ register `SCOPE: os-only` hooks under consumer `project`/`both` installs.
 - [ ] Hook is listed in `.claude/settings.local.json` under the correct trigger
 - [ ] `bash tests/unit/test-{hook-name}.sh` passes
 - [ ] `scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh` was used for `SCOPE: both` hooks
+- [ ] `python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/{hook-name}.sh --fail-contradictions --fail-low-confidence` passes
 - [ ] `scripts/cos-scope-both-portability-audit --strict --no-write` passes after adding the proof
 - [ ] `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write` passes before commit when the hook can project to projects
 - [ ] `scripts/cos-install-projection-audit --json` passes when generated harness hook settings are affected

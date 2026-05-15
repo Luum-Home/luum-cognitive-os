@@ -349,6 +349,20 @@ def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> li
             return [Evidence("semantic-pattern", "both", 65, SHARED_SKILL_NAME_PATTERNS[skill_name])]
         return []
 
+    if rel.startswith("templates/"):
+        path = root / rel
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore").lower()[:12000]
+        except OSError:
+            text = ""
+        if (
+            "working on cos internals" in text
+            or "cognitive os internals" in text
+            or ("hooks/ → packages" in text and ".cognitive-os/" in text)
+        ):
+            return [Evidence("semantic-pattern", "os-only", 70, "cos-internal-template-context")]
+        return []
+
     if not rel.startswith("hooks/"):
         return []
     stem = Path(rel).stem.lower()

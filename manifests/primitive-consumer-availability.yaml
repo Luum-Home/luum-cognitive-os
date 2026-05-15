@@ -3592,10 +3592,10 @@ items:
     adapted into consumer projects as project-local configuration/context, not used to build
     COS itself.
 - path: templates/project-gotchas.md
-  status: projected-consumer-surface
-  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
-    adapted into consumer projects as project-local configuration/context, not used to build
-    COS itself.
+  status: maintainer-only
+  rationale: Random scope audit iteration 042 reclassified os-only. The template is COS
+    maintainer trap context for symlinks, generated settings, hooks, packages, and
+    .cognitive-os internals rather than adopter-project generic gotchas.
 - path: templates/project-templates/go/README.md.tmpl
   status: projected-consumer-surface
   rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
