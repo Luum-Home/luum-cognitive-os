@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T15:30:20+00:00'
+generated_at: '2026-05-15T15:36:21+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -3909,6 +3909,16 @@ primitives:
   projection_targets:
   - rules/squad-protocol.md
   sha256: 32052e28a7737cc0e714d207621f1fdcbd90ea7c9ba3b743fa303c959c255ad7
+- id: rules/stash-quarantine.md
+  kind: rule
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/stash-quarantine.md
+  sha256: 360cee23f32a346fba5dfc86bbf02c56ce2bf5e17f671ef7f26d5f4e34e8aa41
 - id: rules/trailofbits-skills.md
   kind: rule
   owner_adr: ADR-314
@@ -5759,6 +5769,16 @@ primitives:
   projection_targets:
   - scripts/startup-benchmark.sh
   sha256: c4282a1bd6b9f6090eaaf780b87f76063b879a404b51dc03626e151f0b96cd87
+- id: scripts/stash_quarantine_audit.py
+  kind: script
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - scripts/stash_quarantine_audit.py
+  sha256: 61d83be1015b7dbb68f86d0447f1610ecfd8accda856491a5f9f1584ae28218a
 - id: scripts/test-all.sh
   kind: script
   owner_adr: ADR-146
@@ -6826,6 +6846,16 @@ primitives:
   projection_targets:
   - skills/so-vs-vanilla/SKILL.md
   sha256: a743d91f2e34d62abbfdec61c5efe0df6d19fd6181502e5cafb5f591e62d5be8
+- id: skills/stash-quarantine/SKILL.md
+  kind: skill
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/stash-quarantine/SKILL.md
+  sha256: 5e266dc52e91241d1ffb20d00dfd6fd3e8c7198c96f1afe0da1cff5eb1f6c02e
 - id: skills/synthesize-skill/SKILL.md
   kind: skill
   owner_adr: ADR-314

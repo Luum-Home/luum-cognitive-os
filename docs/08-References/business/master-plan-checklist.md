@@ -364,3 +364,7 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 
 
 - [ ] Add primitive parser contracts as a prerequisite for scope-taxonomy automation: `docs/02-Decisions/adrs/ADR-315-primitive-parser-contracts.md`, `docs/04-Concepts/architecture/primitive-parser-contracts.md`, and `lib/primitive_parser.py`.
+
+## Work Preservation Hardening
+
+- [x] ADR-318 copy-only checkpoints and stash quarantine primitives added; stash positional refs are not durable SO identity.

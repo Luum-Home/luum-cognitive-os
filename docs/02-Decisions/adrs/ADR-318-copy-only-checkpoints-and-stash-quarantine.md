@@ -8,7 +8,11 @@ supersedes: []
 superseded_by: null
 implementation_files:
 - hooks/auto-checkpoint.sh
+- rules/stash-quarantine.md
+- skills/stash-quarantine/SKILL.md
+- scripts/stash_quarantine_audit.py
 - tests/integration/test_auto_checkpoint_named_stash.py
+- tests/unit/test_stash_quarantine_audit.py
 - docs/06-Daily/reports/stash-reference-incident-postmortem-2026-05-15.md
 tier: maintainer
 classification_basis: copy-only checkpoint implementation, regression tests, and postmortem from the stash-reference incident
@@ -19,8 +23,8 @@ classification_basis: copy-only checkpoint implementation, regression tests, and
 ## Context
 
 `git stash` is useful as a human emergency tool, but it is a poor default
-primitive for an agent operating system. Stash positions such as `stash@{0}` are
-reflog positions, not identities. They drift whenever another stash is pushed.
+primitive for an agent operating system. Positional stash refs such as
+`stash@{0}` are reflog positions, not identities. They drift whenever another stash is pushed.
 Even when stashes are named, a hook that performs a stash round trip can hide
 operator WIP if `apply` conflicts, the hook is interrupted, or another hook
 mutates the stash stack concurrently.
@@ -46,6 +50,16 @@ COS_ALLOW_DESTRUCTIVE_GIT=1
 
 Stash remains a quarantined compatibility mechanism, not the canonical OS state
 store.
+
+## Shared Primitives
+
+ADR-318 is not only an internal hook fix. It also defines shared agentic primitives for any repository using agents:
+
+- `rules/stash-quarantine.md` — contextual rule for stash references, WIP recovery, and work-front isolation.
+- `skills/stash-quarantine/SKILL.md` — manual workflow for named quarantine, inspected restore, and durable alternatives.
+- `scripts/stash_quarantine_audit.py` — audit tool that flags unsafe stash guidance in docs/code.
+
+These primitives are `SCOPE: both` because the problem appears while maintaining Cognitive OS and while operating adopter projects. The implementation hook remains a Cognitive OS runtime surface, but the doctrine and audit are portable.
 
 ## Hard Rules
 

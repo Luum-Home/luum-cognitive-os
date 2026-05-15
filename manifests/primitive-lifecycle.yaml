@@ -17182,6 +17182,73 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
+- id: rules/stash-quarantine.md
+  kind: rule
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: work-preservation-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/stash-quarantine.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-318: shared rule prevents positional stash identity and unsafe stash recovery instructions.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_stash-quarantine.py -q
+  - python3 scripts/stash_quarantine_audit.py --project-dir . --fail rules/stash-quarantine.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: skills/stash-quarantine/SKILL.md
+  kind: skill
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: work-preservation-workflow
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/stash-quarantine/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-318: shared skill guides named quarantine, inspected restore, and durable work-front alternatives.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/red_team/portability/test_skill_stash_quarantine.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/stash_quarantine_audit.py
+  kind: script
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: quality-validator
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/stash_quarantine_audit.py
+  runtime_projection: false
+  behavior_evidence: 'ADR-318: shared audit flags bare stash apply/pop/drop and non-forensic positional refs in docs/code.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/unit/test_stash_quarantine_audit.py tests/red_team/portability/test_stash_quarantine_audit.py -q
+  docs_claim_level: advisory
+  exit_behavior: blocking-on-invocation
+  metrics_file: .cognitive-os/metrics/stash-quarantine-audit.jsonl
 - id: hooks/_lib/cache.sh
   kind: script-lib
   owner_adr: ADR-314

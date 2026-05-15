@@ -2237,6 +2237,15 @@ items:
 - path: skills/sdd-verify/SKILL.md
   status: shared-surface
   rationale: 'ADR-317: sdd-verify validates EAS coverage and detractor disposition for both COS and adopter-project changes.'
+- path: rules/stash-quarantine.md
+  status: shared-surface
+  rationale: 'ADR-318: stash quarantine rule is generic WIP/recovery guidance for COS maintenance and adopter projects.'
+- path: skills/stash-quarantine/SKILL.md
+  status: shared-surface
+  rationale: 'ADR-318: stash quarantine skill guides safe work-front isolation and stash recovery in COS and adopter repositories.'
+- path: scripts/stash_quarantine_audit.py
+  status: shared-surface
+  rationale: 'ADR-318: stash quarantine audit checks generic docs/code for unsafe stash instructions and can run in COS or adopter repositories.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
