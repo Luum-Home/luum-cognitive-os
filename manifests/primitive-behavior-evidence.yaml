@@ -793,6 +793,10 @@ evidence:
 - primitive: hooks/architecture-compliance.sh
   tests:
   - tests/behavior/test_hooks_batch1.py
+  - tests/red_team/portability/test_project_scope_family.py
+  harnesses:
+  - shell-ci
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
 - primitive: scripts/cos-cloud-worker-bootstrap.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
@@ -822,7 +826,10 @@ evidence:
 - primitive: scripts/document_feature_append.py
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/install-aguara.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
@@ -865,7 +872,10 @@ evidence:
 - primitive: scripts/sprint-test-summary.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/cos-tui
   tests:
   - tests/contracts/test_cos_tui_operable_surface_contract.py
@@ -1131,6 +1141,252 @@ evidence:
   tests:
   - tests/red_team/portability/test_shared_audit_scripts.py
   rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/dry-run-preview.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: hooks/infra-intent-detector.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: hooks/jupyter-sandbox.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/check_mcp_servers.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/cos
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/docs_execution_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/domain_model.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/llm_status.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/ops_runbook.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/project_scaffold.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/radar_merge.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: skills/project-scaffold/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/CLAUDE.md.template
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/adoption-tiers.md.j2
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/blocked-strings.example.txt
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/external-tools-overlay.yaml
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/fintech-gates.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/go-service-context.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/go.mod.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/main.go.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/minimal/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/minimal/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/pyproject.toml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/settings.json.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/package.json.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/tsconfig.json.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/security-profiles/minimal.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/security-profiles/paranoid.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/security-profiles/standard.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/service-map.example.yaml
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/verification-commands.example.yaml
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
 patterns:
 - pattern: tests/**
   behavior_proven: true
