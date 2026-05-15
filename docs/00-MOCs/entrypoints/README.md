@@ -910,6 +910,7 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [ADR-254 External Tool Intelligence Plane](adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) — COS central radar plus lightweight project overlay decision.
 - [ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) — accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement
 - [ADR-321: Primitive Scope Plane Balance and Proof Ratchets](../../02-Decisions/adrs/ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) — plane/scope/proof-level health audits for avoiding over-internalization and false shared-surface claims.
+- [ADR-325: AI Resource Economy, Budget Preflight, and Graceful Degradation](../../02-Decisions/adrs/ADR-325-ai-resource-economy-and-degradation.md) — token/cost ledger, budget preflight, language-token economy, local fallback, and anti-loop degradation controls.
 
 ## Work Preservation / Stash Quarantine
 
