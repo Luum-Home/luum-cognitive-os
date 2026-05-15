@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-14T22:12:27+00:00'
+generated_at: '2026-05-15T11:04:15+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -7,7 +7,7 @@ skills:
 - path: skills/add-hook/SKILL.md
   sha256: bb7e0ac2a6fac07d8004bae16d0f04750f71543c252da18e59f10619f39ed514
 - path: skills/add-mcp/SKILL.md
-  sha256: 73476ffae5e2d870129510c7ab6bb1b7f28d95546be59e774888baeab325649d
+  sha256: 7ab37ed33d6efa7a6ed56d479a06f5836e96d2875253467d8924d424a7e920cd
 - path: skills/add-rule/SKILL.md
   sha256: 0370e88888eb9a014f20f316778cd9df70e15ac63dacaa6003e0aeba7170ccf9
 - path: skills/add-skill/SKILL.md
@@ -21,7 +21,7 @@ skills:
 - path: skills/agent-kpis/SKILL.md
   sha256: ecba162c7e0c0a3e0a793498ee59444935e136e578a61bee643d2d936ba66d60
 - path: skills/agent-stress-test/SKILL.md
-  sha256: 25885d7236e0f1b03625608dc5f3ae8a31933e4d38d717647feefc8d94d73fd8
+  sha256: fe45aba36ba2d9aa9c516bd481dc939ee8a65697f5e09fad7239e80e17907627
 - path: skills/analyze-improvements/SKILL.md
   sha256: 0a3b107f917536f15e14215d4aef99142e87fce91fbd588a92758e4f08cce3ae
 - path: skills/apply-improvements/SKILL.md
@@ -151,7 +151,7 @@ skills:
 - path: skills/impact-analysis/SKILL.md
   sha256: 15ae30afbe394b50ca3924f237e5da7e909090d3293a7057f8111857aa6be4a5
 - path: skills/install-recommended/SKILL.md
-  sha256: 5d09c361ed0f427482a20159222df51d1fde6e5fe03d10814bd33ed2d6a8e980
+  sha256: b0c45125df01b94d17234e965ab7a5202fd94fbf833ca791659b6e8b8d26b08c
 - path: skills/invariant-check/SKILL.md
   sha256: f3b25da45fb6fcfa6ac742f1e348b26e92bee8c4ae5b291173de0e76ffb65fd4
 - path: skills/issue-pipeline/SKILL.md

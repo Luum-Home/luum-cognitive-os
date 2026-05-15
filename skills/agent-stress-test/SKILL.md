@@ -30,7 +30,7 @@ routing_intents:
     degradation.
   confidence: 0.85
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /agent-stress-test
 
 > Diagnostic skill that stress-tests agent quality to find the degradation point.

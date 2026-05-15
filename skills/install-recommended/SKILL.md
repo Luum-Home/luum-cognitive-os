@@ -21,7 +21,7 @@ routing_patterns:
 - pattern: \bdetect\s+stack\s+recommend\b
   confidence: 0.75
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # /install-recommended
 
 > Detect your project's technology stack and recommend skills to install.

@@ -11307,3 +11307,830 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: .cognitive-os/metrics/backlog-reconciliation.jsonl
+- id: rules/acceptance-criteria.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/acceptance-criteria.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines acceptance
+    criteria discipline for any repository and for COS itself.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/acceptance-criteria.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/adversarial-review.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/adversarial-review.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines adversarial
+    review expectations for any codebase and COS changes.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/adversarial-review.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/agent-quality.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/agent-quality.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines agent output
+    quality standards independent of repository stack.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/agent-quality.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/agent-sidecars.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/agent-sidecars.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines reusable
+    Engram sidecar continuity for project agents and COS agents.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/agent-sidecars.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/auto-repair.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/auto-repair.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines shared
+    agentic auto-repair behavior for COS and adopter projects using the runtime.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/auto-repair.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/broken-window-policy.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/broken-window-policy.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule is a generic repository
+    maintenance policy used by COS and adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/broken-window-policy.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/decomposition.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/decomposition.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule is generic cost-aware
+    work decomposition for any repo task.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/decomposition.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/error-learning.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/error-learning.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines reusable
+    error capture/learning loop for builds, tests, and lint in COS or adopter repos.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/error-learning.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/fault-tolerance.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/fault-tolerance.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines reusable
+    agent/session resilience patterns for COS and consumer-project agents.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/fault-tolerance.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/hook-security-profiles.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/hook-security-profiles.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines portable
+    hook security profile tradeoffs for adopter hook meshes and COS.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/hook-security-profiles.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/impact-analysis.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/impact-analysis.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule is generic change
+    impact analysis for any repository.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/impact-analysis.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/model-routing.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/model-routing.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines model routing
+    behavior for agent tasks in COS and adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/model-routing.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/pentesting-readiness.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/pentesting-readiness.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines generic
+    security-readiness expectations for repositories.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/pentesting-readiness.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/pre-commit-gate.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/pre-commit-gate.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines generic
+    pre-commit test/coverage gating for code repositories.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/pre-commit-gate.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/private-mode.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/private-mode.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines privacy
+    constraints that apply to COS and project work.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/private-mode.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/python-naming.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/python-naming.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines generic
+    Python naming conventions for repository scripts.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/python-naming.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/response-compression.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/response-compression.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines agent response
+    compression discipline independent of repository stack.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/response-compression.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/sandbox-sampling.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/sandbox-sampling.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines generic
+    sandbox-before-scaling validation discipline.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/sandbox-sampling.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/scout-pattern.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/scout-pattern.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines generic
+    pre-implementation reconnaissance discipline.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/scout-pattern.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/skill-management.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/skill-management.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines skill management/routing
+    for COS and project-local skill sets.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/skill-management.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/squad-protocol.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/squad-protocol.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines portable
+    squad/agent coordination semantics for COS and adopting organizations.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/squad-protocol.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/trailofbits-skills.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/trailofbits-skills.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines optional
+    security skill usage for COS and adopter project audits.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/trailofbits-skills.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: rules/user-prompt-capture.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/user-prompt-capture.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Rule defines portable
+    user-intent capture for any agentic project session.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/user-prompt-capture.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: scripts/check_test_quality.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: quality-gate
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/check_test_quality.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Script checks explicit
+    test file lists and is safe as shared repo quality gate.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/check_test_quality.py
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: skills/add-mcp/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/add-mcp/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill is written as
+    a Cognitive OS integration procedure and updates COS ecosystem docs/config.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/add-mcp/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/agent-stress-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/agent-stress-test/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill depends on COS
+    cognitive-load monitoring internals and measures COS agent runtime health.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/agent-stress-test/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/code-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/code-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill reviews changed
+    files in any repository and also reviews COS changes.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/code-review/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: skills/install-recommended/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/install-recommended/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill detects an adopter
+    project''s stack and recommends project skills; COS construction does not require
+    it.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/install-recommended/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+- id: skills/pr-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/pr-review/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill reviews pull requests
+    in any repository and also COS PRs.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/pr-review/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: skills/repo-forensics/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/repo-forensics/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill performs repository
+    forensics for arbitrary repos and COS comparisons.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/repo-forensics/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: skills/reverse-engineer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/reverse-engineer/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill reverse-engineers
+    dependencies or repos independent of COS internals.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/reverse-engineer/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: skills/scout/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/scout/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill maps codebase
+    terrain before implementation in any repository.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/scout/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: skills/sdd-explore/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: agent-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/sdd-explore/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Skill explores feature
+    feasibility in any repository and in COS.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/sdd-explore/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: templates/generator-validator-pair.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: prompt-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/generator-validator-pair.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Template is a generic
+    generator/validator pattern for any repo artifact.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/generator-validator-pair.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: templates/prompt-hooks/clarification-gate-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: prompt-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/prompt-hooks/clarification-gate-prompt.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Template scores agent
+    prompt ambiguity independent of repository.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/prompt-hooks/clarification-gate-prompt.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface
+- id: templates/prompt-hooks/prompt-quality-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: prompt-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/prompt-hooks/prompt-quality-prompt.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 012: Template scores prompt
+    quality independent of repository.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/prompt-hooks/prompt-quality-prompt.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-shared-surface

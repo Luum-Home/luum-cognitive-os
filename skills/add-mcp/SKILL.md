@@ -33,7 +33,7 @@ triggers:
 - Add MCP Server
 - Step-by-step guide for integrating a new MCP server into the Cognitive OS
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Add MCP Server
 
 > Procedure for integrating a new MCP server so its tools are available to agents.

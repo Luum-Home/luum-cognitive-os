@@ -7,30 +7,29 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 ```json
 {
   "by_bucket": {
-    "both-semantic-candidate": 36,
     "declared-both-needs-proof-and-metadata": 70,
     "insufficient-metadata": 344,
     "os-only-semantic-candidate": 41
   },
   "by_declared_scope": {
-    "both": 426,
+    "both": 390,
     "os-only": 65
   },
   "by_gap": {
     "declared-both-missing-paired-proof": 70,
-    "missing-consumer-availability-row": 491,
-    "missing-lifecycle-row": 491,
-    "no-distribution-evidence": 491
+    "missing-consumer-availability-row": 455,
+    "missing-lifecycle-row": 455,
+    "no-distribution-evidence": 455
   },
   "by_prefix": {
     "hooks": 58,
     "packages": 72,
-    "rules": 115,
-    "scripts": 141,
-    "skills": 84,
-    "templates": 21
+    "rules": 92,
+    "scripts": 140,
+    "skills": 75,
+    "templates": 18
   },
-  "total_unknown": 491
+  "total_unknown": 455
 }
 ```
 
@@ -204,45 +203,4 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `skills/cos-status/SKILL.md` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: cos-status |
 | `skills/decision-triage/SKILL.md` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: decision-triage |
 | `skills/phoenix-trace-ui/SKILL.md` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: phoenix-trace-ui |
-
-## both-semantic-candidate (36)
-
-| Path | Declared | Hints | Gaps | Structure | Summary |
-|---|---|---|---|---|---|
-| `rules/acceptance-criteria.md` | both | os=0; generic=5; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | enforcement: agent-instruction |
-| `rules/adversarial-review.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | enforcement: agent-instruction |
-| `rules/agent-quality.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Quality: Maximum Output, Not Minimum |
-| `rules/agent-sidecars.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Sidecars via Engram (BMAD v6 Pattern 4) |
-| `rules/auto-repair.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Auto-Repair System |
-| `rules/broken-window-policy.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Broken Window Policy |
-| `rules/decomposition.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Cost-Aware Decomposition |
-| `rules/error-learning.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Error Learning Protocol |
-| `rules/fault-tolerance.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Fault Tolerance Protocol |
-| `rules/hook-security-profiles.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Hook Security Profiles |
-| `rules/impact-analysis.md` | both | os=0; generic=5; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Change Impact Analysis Protocol |
-| `rules/model-routing.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Model Routing — Auto-Updated by /model-optimizer |
-| `rules/pentesting-readiness.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Pentesting Readiness |
-| `rules/pre-commit-gate.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Pre-Commit Coverage Gate |
-| `rules/private-mode.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Private Mode Protocol |
-| `rules/python-naming.md` | both | os=0; generic=5; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Python Script Naming — Snake Case Required |
-| `rules/response-compression.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Response Compression — Orchestrator Output Discipline |
-| `rules/sandbox-sampling.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Sandbox Sampling Rule |
-| `rules/scout-pattern.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Scout Pattern -- Pre-Implementation Reconnaissance |
-| `rules/skill-management.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Skill Management — Unified Protocol |
-| `rules/squad-protocol.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Squad Protocol |
-| `rules/trailofbits-skills.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Trail of Bits Security Skills |
-| `rules/user-prompt-capture.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | User Prompt Capture Protocol |
-| `scripts/check_test_quality.py` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Detect structural-only test files that verify existence rather than behavior. |
-| `skills/add-mcp/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: add-mcp |
-| `skills/agent-stress-test/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: agent-stress-test |
-| `skills/code-review/SKILL.md` | both | os=0; generic=5; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: code-review |
-| `skills/install-recommended/SKILL.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: install-recommended |
-| `skills/pr-review/SKILL.md` | both | os=0; generic=6; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: pr-review |
-| `skills/repo-forensics/SKILL.md` | both | os=0; generic=6; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: repo-forensics |
-| `skills/reverse-engineer/SKILL.md` | both | os=0; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: reverse-engineer |
-| `skills/scout/SKILL.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: scout |
-| `skills/sdd-explore/SKILL.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: sdd-explore |
-| `templates/generator-validator-pair.md` | both | os=0; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Generator + Validator Pair Template |
-| `templates/prompt-hooks/clarification-gate-prompt.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Score this agent prompt for ambiguity on a 0-100 scale. |
-| `templates/prompt-hooks/prompt-quality-prompt.md` | both | os=0; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Score this agent prompt for quality on 5 dimensions (each 0-20, total 0-100). |
 
