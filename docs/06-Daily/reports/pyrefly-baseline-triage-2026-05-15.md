@@ -570,3 +570,31 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 4: **268 → 147** non-import Pyrefly errors.
+
+### Remediation pass 5 — small renderer and payload clusters
+
+| Files | Finding class | Change | Pyrefly effect |
+|---|---|---|---:|
+| `lib/process_user_message.py` | Heterogeneous result payload inferred as `dict[str, str]` | Annotated results as `dict[str, object]`. | Removed 4 payload assignment findings. |
+| `lib/prelaunch_audit.py` | History sample payloads mixing strings and booleans; patch line tuples typed as strings | Widened sample dict values to `object`, typed patch line/file tuples, initialized `current_file`. | Removed 5 history-scan findings. |
+| `scripts/primitive_lifecycle.py` | Invalid-manifest CLI rendering over unknown `findings` shape | Narrowed findings list to dict rows and used safe accessors. | Removed 5 CLI rendering findings. |
+| `scripts/radar_merge.py` | Optional exact-match entry not narrowed | Guarded exact branch with `entry is not None`, narrowed frontmatter dict, and normalized slice offsets. | Removed 5 merge findings. |
+
+Validation:
+
+```bash
+uv run pytest \
+  tests/unit/test_process_user_message.py \
+  tests/red_team/portability/test_process_user_message.py \
+  tests/unit/test_prelaunch_audit.py \
+  tests/unit/test_radar_merge.py -q
+# 53 passed in 2.90s
+
+python3 scripts/primitive_lifecycle.py /tmp/invalid-manifest
+# exits 1 and renders finding rows safely
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=131 elapsed_seconds=2 ...
+```
+
+Running baseline after pass 5: **268 → 131** non-import Pyrefly errors.

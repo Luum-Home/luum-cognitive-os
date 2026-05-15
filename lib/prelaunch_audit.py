@@ -161,13 +161,14 @@ def history_patch_text(repo: Path, *, timeout: float) -> tuple[str, str | None]:
     return proc.stdout, None
 
 
-def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tuple[list[str], list[str], list[dict[str, str]]]:
+def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tuple[list[str], list[str], list[dict[str, object]]]:
     pattern = rule.compiled()
     commits: list[str] = []
     risky_commits: list[str] = []
-    samples: list[dict[str, str]] = []
+    samples: list[dict[str, object]] = []
     current_sha = ""
-    current_lines: list[str] = []
+    current_lines: list[tuple[str, str]] = []
+    current_file = ""
 
     def flush() -> None:
         if not current_sha:

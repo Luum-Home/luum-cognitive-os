@@ -351,9 +351,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Recommendations: {report['recommendation_count']} lifecycle action(s) suggested")
     else:
         print(f"INVALID: {report['finding_count']} lifecycle manifest finding(s)", file=sys.stderr)
-        for finding in report["findings"]:
+        findings = report.get("findings", [])
+        finding_rows = [item for item in findings if isinstance(item, dict)] if isinstance(findings, list) else []
+        for finding in finding_rows:
             print(
-                f"- {finding['primitive_id']}::{finding['field']}: {finding['message']}",
+                f"- {finding.get('primitive_id', '')}::{finding.get('field', '')}: {finding.get('message', '')}",
                 file=sys.stderr,
             )
 
