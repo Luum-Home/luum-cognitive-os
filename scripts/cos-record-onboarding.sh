@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # cos-record-onboarding.sh — Drive the M2 onboarding walkthrough non-interactively.
 #
 # Designed to be wrapped by `asciinema rec` so the operator can capture a

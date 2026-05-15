@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Static contract check for non-launchd headless runtime manifests."""
 from __future__ import annotations
 

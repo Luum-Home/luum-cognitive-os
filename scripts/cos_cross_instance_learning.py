@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Cross-instance learning runway commands."""
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Export/import sanitized consumer primitive improvement proposals."""
 from __future__ import annotations
 
