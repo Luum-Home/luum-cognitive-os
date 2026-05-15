@@ -10,15 +10,13 @@ historical allowlisted references.
 from __future__ import annotations
 
 import argparse
-import fnmatch
 import json
 import os
 import re
 import subprocess
-import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Sequence
 
 SCHEMA_VERSION = "doc-path-audit/v1"
 ADR = "ADR-284"
@@ -382,16 +380,26 @@ def audit(root: Path, tracked_files: Sequence[str] | None = None) -> dict[str, o
     }
 
 
+def _object_map(value: object) -> dict[str, object]:
+    return value if isinstance(value, dict) else {}
+
+
+def _finding_maps(value: object) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
+
+
 def report_markdown(payload: dict[str, object]) -> str:
-    counts = payload["counts"]
-    summary = payload["summary"]
-    findings = payload["findings"]
+    counts = _object_map(payload.get("counts", {}))
+    summary = _object_map(payload.get("summary", {}))
+    findings = _finding_maps(payload.get("findings", []))
     lines = [
         "# Documentation Path Audit — Latest",
         "",
-        f"Schema: `{payload['schema_version']}`",
-        f"ADR: `{payload['adr']}`",
-        f"Status: `{payload['status']}`",
+        f"Schema: `{payload.get('schema_version', '')}`",
+        f"ADR: `{payload.get('adr', '')}`",
+        f"Status: `{payload.get('status', '')}`",
         "",
         "## Summary",
         "",
@@ -414,12 +422,12 @@ def report_markdown(payload: dict[str, object]) -> str:
         for item in findings:
             lines.append(
                 "| {code} | {surface} | {file} | {line} | `{normalized}` | {message} |".format(
-                    code=item["code"],
-                    surface=item["surface"],
-                    file=item["file"],
-                    line=item["line"],
-                    normalized=item["normalized"] or item["reference"],
-                    message=item["message"].replace("|", "\\|"),
+                    code=item.get("code", ""),
+                    surface=item.get("surface", ""),
+                    file=item.get("file", ""),
+                    line=item.get("line", ""),
+                    normalized=item.get("normalized") or item.get("reference", ""),
+                    message=str(item.get("message", "")).replace("|", "\\|"),
                 )
             )
     lines.append("")
@@ -446,16 +454,16 @@ def parse_fail_on(value: str) -> set[str]:
 
 
 def should_fail(payload: dict[str, object], categories: set[str]) -> bool:
-    counts = payload["counts"]
-    if "missing-exact" in categories and counts["missing_exact"]:
+    counts = _object_map(payload.get("counts", {}))
+    if "missing-exact" in categories and counts.get("missing_exact"):
         return True
-    if "missing-glob" in categories and counts["missing_glob"]:
+    if "missing-glob" in categories and counts.get("missing_glob"):
         return True
-    if "legacy-reference" in categories and counts["legacy_reference"]:
+    if "legacy-reference" in categories and counts.get("legacy_reference"):
         return True
-    if "legacy-runtime" in categories and counts["legacy_runtime"]:
+    if "legacy-runtime" in categories and counts.get("legacy_runtime"):
         return True
-    if "ambiguous" in categories and counts["ambiguous"]:
+    if "ambiguous" in categories and counts.get("ambiguous"):
         return True
     return False
 
@@ -482,7 +490,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.json or not args.write_report:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
-        print(f"doc-path-audit status={payload['status']} findings={payload['summary']['findings']}")
+        summary = _object_map(payload.get("summary", {}))
+        print(f"doc-path-audit status={payload.get('status')} findings={summary.get('findings')}")
 
     fail_categories = parse_fail_on(args.fail_on)
     return 2 if should_fail(payload, fail_categories) else 0

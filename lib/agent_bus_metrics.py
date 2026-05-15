@@ -47,6 +47,13 @@ _DEFAULT_STALE_SECONDS = 300
 _DEFAULT_METRICS_PATH = ".cognitive-os/metrics/agent-heartbeat.jsonl"
 
 
+def _as_float(value: object, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def _project_root() -> Path:
     return Path(
         os.environ.get(
@@ -184,7 +191,7 @@ class AgentBusMetrics:
         age = None
         last = self._last_beat_for(agent_id)
         if last is not None:
-            age = time.time() - float(last.get("timestamp_epoch", last.get("last_beat_epoch", 0.0)))
+            age = time.time() - _as_float(last.get("timestamp_epoch", last.get("last_beat_epoch", 0.0)))
 
         self._emit(
             event_type="agent_hung",

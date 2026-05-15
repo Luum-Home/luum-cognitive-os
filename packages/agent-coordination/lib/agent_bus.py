@@ -499,7 +499,10 @@ class AgentPublisher:
                     )
                     if message and message.get("type") == "message":
                         try:
-                            data = json.loads(message["data"])
+                            raw_data = message.get("data", "{}")
+                            if not isinstance(raw_data, str | bytes | bytearray):
+                                continue
+                            data = json.loads(raw_data)
                             answers = data.get("answers", [])
                             pubsub.unsubscribe()
                             pubsub.close()
@@ -553,7 +556,10 @@ class AgentPublisher:
                     if not message or message.get("type") != "message":
                         continue
                     try:
-                        data = json.loads(message.get("data", "{}"))
+                        raw_data = message.get("data", "{}")
+                        if not isinstance(raw_data, str | bytes | bytearray):
+                            continue
+                        data = json.loads(raw_data)
                     except (json.JSONDecodeError, ValueError, TypeError):
                         continue
                     command = str(data.get("command") or "")
