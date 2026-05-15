@@ -136,7 +136,7 @@ def generate_session_changelog(project_dir: str, session_id: str) -> SessionChan
     raw_tasks = tasks_data.get("tasks", [])
     if isinstance(raw_tasks, list):
         tasks_completed = [
-            t.get("description", t.get("id", ""))
+            str(t.get("description", t.get("id", "")) or "")
             for t in raw_tasks
             if isinstance(t, dict)
             and t.get("status") == "completed"

@@ -27,6 +27,8 @@ def preserve_summary(project: Path) -> dict[str, Any]:
     proc = subprocess.run(["bash", str(script), "--project-dir", str(project), "--json"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
     try: payload = json.loads(proc.stdout)
     except json.JSONDecodeError: payload = {"raw_stdout": proc.stdout, "raw_stderr": proc.stderr}
+    if not isinstance(payload, dict):
+        payload = {"raw_payload": payload}
     payload["available"] = True; payload["exit_code"] = proc.returncode; return payload
 
 def reconcile(args: argparse.Namespace) -> int:

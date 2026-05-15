@@ -696,3 +696,22 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 9: **268 → 67** non-import Pyrefly errors.
+
+### Remediation pass 10 — renderer and scalar follow-up
+
+Follow-up fixes after pass 9:
+
+- Added local guards for remaining optional compiled regex and heterogeneous task descriptions.
+- Added `_as_float(...)` to outcome metrics for mapping payload values.
+- Normalized orchestrator capability mode formatting and report line list inference.
+- Guarded cross-session preserve payload shape and converted boolean-ish reference checks to explicit bool.
+- Normalized README badge dogfood score scalar.
+
+Validation:
+
+```bash
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=57 elapsed_seconds=1 ...
+```
+
+Running baseline after pass 10: **268 → 57** non-import Pyrefly errors.

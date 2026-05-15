@@ -32,6 +32,15 @@ def _percentile(values: list[float], percentile: float) -> float:
     return float(ordered[min(rank, len(ordered) - 1)])
 
 
+def _as_float(value: object, default: float = 0.0) -> float:
+    if not isinstance(value, int | float | str | bytes | bytearray):
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def compute_dispatch_outcomes(records: Iterable[Mapping[str, object]]) -> DispatchOutcomeSnapshot:
     """Compute provider-agnostic outcome metrics from dispatch-like records."""
     rows = list(records)
@@ -48,8 +57,8 @@ def compute_dispatch_outcomes(records: Iterable[Mapping[str, object]]) -> Dispat
         )
 
     successes = sum(1 for row in rows if bool(row.get("success", False)))
-    latencies = [float(row.get("latency_ms", 0) or 0.0) for row in rows]
-    costs = [float(row.get("cost_usd", 0) or 0.0) for row in rows]
+    latencies = [_as_float(row.get("latency_ms", 0.0)) for row in rows]
+    costs = [_as_float(row.get("cost_usd", 0.0)) for row in rows]
     total_cost = sum(costs)
 
     return DispatchOutcomeSnapshot(

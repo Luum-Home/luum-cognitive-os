@@ -104,6 +104,7 @@ class Remediation:
         self._compiled = re.compile(self.error_pattern, re.IGNORECASE)
 
     def matches(self, message: str) -> Optional[re.Match]:
+        assert self._compiled is not None
         return self._compiled.search(message)
 
 

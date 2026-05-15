@@ -100,7 +100,7 @@ def extract_scores(dogfood: dict, aspirational: dict) -> dict[str, float]:
     """Return normalized metric values keyed by badge slug."""
     dims = dogfood.get("dimensions", {})
 
-    dogfood_score = float(dogfood.get("overall", dogfood.get("score", 0.0)))
+    dogfood_score = float(dogfood.get("overall", dogfood.get("score", 0.0)) or 0.0)
 
     # REAL component percentage from aspirational audit
     total = int(aspirational.get("total", 0))

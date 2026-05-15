@@ -391,7 +391,7 @@ def write_metric(root: Path, result: GateResult, mode: str, command: str) -> Non
 def format_gate_report(result: GateResult) -> str:
     if not result.findings:
         return "orchestrator-claim-gate: PASS — no high-stakes claims requiring proof detected"
-    lines = ["orchestrator-claim-gate: %s" % ("PASS" if result.ok else "FAIL")]
+    lines: list[str] = ["orchestrator-claim-gate: %s" % ("PASS" if result.ok else "FAIL")]
     for finding in result.findings:
         lines.append(f"- [{finding.status}] {finding.source}: {finding.message}")
         if finding.evidence:
