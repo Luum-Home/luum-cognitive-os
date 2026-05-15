@@ -8,6 +8,8 @@ from pathlib import Path
 import pytest
 import yaml
 
+from lib.primitive_parser import parse_primitive_file
+
 pytestmark = pytest.mark.unit
 
 REPO = Path(__file__).resolve().parents[2]
@@ -65,7 +67,7 @@ def test_skills_declare_scope_audience_and_platforms_when_user_invocable() -> No
     failures: list[str] = []
     for path in sorted((REPO / "skills").glob("*/SKILL.md")):
         rel = path.relative_to(REPO)
-        scope = _header_scope(path)
+        scope = parse_primitive_file(path, REPO).scope_marker
         if scope not in VALID_SCOPES:
             failures.append(f"{rel}: invalid SCOPE {scope!r}")
         data = _frontmatter(path)
