@@ -118,6 +118,19 @@ Structure guidelines:
 - Author the skill once at the behavioral level. Keep harness-specific triggers,
   driver files, and projection notes separate from the main procedure.
 
+Choose the `<!-- SCOPE: ... -->` marker with the same semantic taxonomy as the
+classifier:
+
+| Scope | Use when |
+|---|---|
+| `os-only` | The skill creates/changes Cognitive OS internals, catalogs, manifests, ADR governance, harness projection files, or source-repo automation. |
+| `project` | The skill writes or scaffolds adopter-project artifacts only and is not needed for COS self-construction. |
+| `both` | The skill is a repo-agnostic procedure useful in COS and adopter repositories. |
+
+`audience`, distribution tier, or routing exposure are evidence, not automatic
+SCOPE. If `audience: both` or `<!-- SCOPE: both -->`, add paired portability
+proof and explicit behavior evidence before committing.
+
 ### 2b. Add a portability note
 
 Decide whether the skill is:
@@ -139,6 +152,10 @@ scripts/cos-portability-proof-scaffold --artifact skills/{skill-name}/SKILL.md
 
 The generated path is `tests/red_team/portability/test_skill_{skill_name}.py`
 with hyphens normalized to underscores, matching the audit and scope gate.
+
+After adding the proof, record it in `manifests/primitive-behavior-evidence.yaml`
+if the proof path is not the canonical path returned by
+`lib.portability_proof_paths.suggested_test_path`.
 
 ### 2c. Add language-agnostic routing metadata
 
@@ -219,6 +236,25 @@ fi
 
 echo "PASS: {skill-name} skill structure valid"
 ```
+
+### 6b. Run the scope classifier for this skill
+
+Every new or reclassified skill must pass the evidence-weighted classifier:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths skills/{skill-name}/SKILL.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+If it fails, update the evidence instead of hand-waving the SCOPE:
+
+- `manifests/primitive-consumer-availability.yaml` for availability.
+- `manifests/primitive-behavior-evidence.yaml` for paired portability proof rows.
+- `manifests/primitive-lifecycle.yaml` when the skill becomes durable runtime/governance surface.
+- `tests/red_team/portability/test_skill_{skill_name}.py` for `SCOPE: both`.
 
 If the skill is `driver-projected`, also add at least one characterization test
 or verification note for the projection behavior.

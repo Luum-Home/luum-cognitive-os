@@ -1,4 +1,4 @@
-<!-- SCOPE: project -->
+<!-- SCOPE: os-only -->
 
 # Project Gotchas — Read BEFORE acting
 
