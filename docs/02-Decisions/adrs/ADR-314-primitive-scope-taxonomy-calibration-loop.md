@@ -135,6 +135,43 @@ No full-repo classifier run may directly drive marker rewrites. Full runs create
 backlog. Enforcement gates must use explicit changed/staged paths through
 `--paths` or a similarly bounded input.
 
+## Classification rubric
+
+Classification is a semantic decision first and a metadata decision second. The
+classifier can expose evidence gaps, but it must not substitute for the question
+the scope marker answers:
+
+> In which runtime / authoring context is this primitive required to make correct
+> decisions?
+
+Use the following rubric before changing a marker:
+
+| Scope | Positive test | Negative test | Typical evidence |
+|---|---|---|---|
+| `os-only` | The primitive is needed to build, validate, release, migrate, document, or operate Cognitive OS itself. | A downstream project would not have the referenced internals, release process, manifests, ADR mesh, registry locks, or COS-only hook chain unless it is itself maintaining COS. | COS-specific paths, registry/manifests, release scripts, installer internals, primitive parser/classifier implementation, maintainer-only lifecycle metadata. |
+| `both` | The primitive expresses repository-agnostic agentic behavior useful while building COS and while building adopter projects. | It does not require COS-only files or maintainer capabilities to understand or apply the guidance. | Generic code review, error recovery, quality gates, SDD workflows, research prompts, reusable package skills, shared-surface consumer availability, portable proof tests. |
+| `project` | The primitive exists only to affect adopter project code or project-local workflows, and COS does not need the primitive to construct, validate, or operate itself. | Removing it from COS source development would not reduce COS maintainer correctness, only consumer-project behavior. | Project-only installation/projection evidence, project-local config overlays, consumer-facing commands that do not govern COS internals. |
+
+Tie-breakers:
+
+1. **Mentioning a COS path is not enough for `os-only`.** A portable primitive may
+   reference COS paths as examples, implementation provenance, or source location.
+2. **Having generic language is not enough for `both`.** A generic-sounding rule
+   can still be COS-only if the action it requires is only meaningful for the OS
+   maintainer.
+3. **Missing metadata is not a scope.** Missing lifecycle, consumer availability,
+   or proof rows produce `suggested_scope=unknown`; they do not justify marker
+   rewrites.
+4. **Projection safety is conservative.** Unknown rows may use
+   `effective_scope=os-only` for safe installation behavior, but that fallback is
+   not evidence that the persisted marker should become `os-only`.
+5. **Project-only requires positive proof.** A primitive should not be labeled
+   `project` merely because it is useful to projects; it must be unnecessary for
+   COS construction and have consumer-project-only intent.
+6. **One row, one reason.** Each resolved row needs a human-readable rationale in
+   lifecycle or consumer-availability metadata so future agents do not re-infer
+   scope from raw grep.
+
 ## Commit re-review findings
 
 Re-review of `a239dcff` under the current classifier showed that the commit's
