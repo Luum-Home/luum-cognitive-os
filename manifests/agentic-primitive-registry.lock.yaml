@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T16:00:16+00:00'
+generated_at: '2026-05-15T16:43:38+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -3544,21 +3544,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/acceptance-criteria.md
-  sha256: 5564ec6f7ca1aee059532fb072e00ee3a4c9c9b5e9318bc9c6b99bdacca707ee
+  sha256: 8e094c42d557849b0da6a83418db3cc25f5f92a4fa3990774d33545ce6548537
 - id: rules/adversarial-review.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/adversarial-review.md
-  sha256: 987ac349bf7b9de8368265731401d7c38d80c59455580518880f3c07488cf11a
+  sha256: 4837b75d556619d35ccc4bf83c44f3400e2db022cd5ac8d14c64d08db6198958
 - id: rules/agent-communication.md
   kind: rule
   owner_adr: ADR-314
@@ -3584,41 +3584,41 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/agent-quality.md
-  sha256: 31a89e913339e6a3a613646747a8c42c6a7a2da9bd2aef076d2cc4dffdfcb685
+  sha256: fb9e33712867379e8ddc9906791e657ffdf22b89c8b1fa902fcd037f6562d342
 - id: rules/agent-sidecars.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/agent-sidecars.md
-  sha256: ee5d57d1fa6021251bdc00ecb73bc98d689aeb2ffe479ac13f2b889909a219b4
+  sha256: c00de0a3ef0fdd8688c90502649e38400fa1a4b748b44076d76276b7eb256d32
 - id: rules/auto-repair.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/auto-repair.md
-  sha256: 71cd6e39b4a583d87f08a4782ae7030230a2d1995263f5087c345def626a9f9c
+  sha256: 6e2a08e2305d0d6ab4abe4b351f6b7b1949734d73fa482ef929aa612e67ee9af
 - id: rules/broken-window-policy.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/broken-window-policy.md
-  sha256: e62176c3373fe7193ea5f1500e76d4bcabbdcf527907968d99b7699be65f033e
+  sha256: f3ded17c28c34a05d3635cb8dc9968cd2f58468a9935b21c7c1903f52c0f39cb
 - id: rules/capability-protection.md
   kind: rule
   owner_adr: ADR-314
@@ -3664,11 +3664,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/decomposition.md
-  sha256: fafd4a90fd27529560a9c4b917f72774828272f68232e7f1d616419afef2fd3c
+  sha256: fc801ee9ce276c69931b44c0a3af1d503e4cdb2222388bac281c7f7766ab7486
 - id: rules/eas-evidence-artifact.md
   kind: rule
   owner_adr: ADR-317
@@ -3684,41 +3684,41 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/error-learning.md
-  sha256: b7d21eaea95472f385fa67c348bfcaf9e1c50195842b0adef1ca5b85d4fb9aa1
+  sha256: b8e2987bc4f523ec135c16e12dec80d957108b7742bd750455519a920dc9bed0
 - id: rules/fault-tolerance.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/fault-tolerance.md
-  sha256: 05cdaf11e47745abda0856c43c5c9f3f09ee04d9f9b62e8a23b99ce25ff66086
+  sha256: b32c348332898cdbd26f4616607b2f4d688cf0ad3e98d1496d0563b2c040af77
 - id: rules/hook-security-profiles.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/hook-security-profiles.md
-  sha256: 56f321af73a771e11c4eb0e6c72dbb9c3f67f3acc98ec3f170d87a6235175021
+  sha256: 34892e038ad9155da974716b8a79c73e393ad6a27b55917a2a512b3eddf97162
 - id: rules/impact-analysis.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/impact-analysis.md
-  sha256: 3aeb7284c544b93156fda83bc9797d9374e34522a87e2cc4ce9dad157e8b98eb
+  sha256: bc1d4d1728238b976a3d842dc30b5e32d822e04d3965de832988751c62d265d2
 - id: rules/infra-health.md
   kind: rule
   owner_adr: ADR-314
@@ -3754,11 +3754,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/model-routing.md
-  sha256: a83ad06a1dc60bfa666142678a9a9248ca0aaa00223370f31cd00a8389743b93
+  sha256: a8b8a70ac89a54f26c063128e9f914b40c437c4af0fbb39c2a723bfc237f6212
 - id: rules/orchestrator-prompt-compose.md
   kind: rule
   owner_adr: ADR-314
@@ -3774,21 +3774,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/pentesting-readiness.md
-  sha256: f8d7508084ab22ae4e9eedbca73fa2bbe5e6fdbfc33c56848c1a6b606047cd6a
+  sha256: 68061cea143026e032911f6a1daa9bb76aa8531d7224f5338a2c3cb6299be7b6
 - id: rules/pre-commit-gate.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/pre-commit-gate.md
-  sha256: 0df9dfbf0f73d84005cd50df107b0c2bca0b958badc20760e8b84ffefeaca109
+  sha256: 9d99d6e6b31e354a2acc8bc39e02ac41594fa854daa181d4d35bc48ae225ecfd
 - id: rules/pre-dev-readiness-gate.md
   kind: rule
   owner_adr: ADR-314
@@ -3804,31 +3804,31 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/private-mode.md
-  sha256: ecbdf645fd2693290a78a8cbbb344319f1904dd2875e78dbd18dd188a3fdfb82
+  sha256: 352a89d6c1002a3faa12ccc108138f57e1e04436c093cfffbdb60b74c043fec1
 - id: rules/python-naming.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/python-naming.md
-  sha256: 22aab58be79c1e6b39a35cd313e14468478eb003482a3dc461986756f1fb425e
+  sha256: d9425845502e92eeffc157dfb3ff4756c98a1da440e328895b36610165d4fa68
 - id: rules/recommendation-grounding.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: team
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/recommendation-grounding.md
-  sha256: 04c22b7552c8c3f222e054f8187bb9a97de0d294e88311dcfb768cc1998d99ec
+  sha256: d429ae0e49df28554e5a848b7f3436b21ce6688dd31432956fc2b534d5e71a39
 - id: rules/reinvention-prevention.md
   kind: rule
   owner_adr: ADR-314
@@ -3854,31 +3854,31 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/response-compression.md
-  sha256: fc7212e90b91436f1ca598dd4c1a04fd977b8fae0fd9c21231869ff4b0bf2276
+  sha256: 2e4d6c98bf7f7b0752620072ae6186aded37cf29da1cd892b7d336f280e2dccb
 - id: rules/sandbox-sampling.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/sandbox-sampling.md
-  sha256: 5306564c806cc7b1ff42a1185a543ef18b5e542ac43f2bae540b1a3b0006a34f
+  sha256: 1dc3b53ae7ccf5565c1a91efb7adad2bf5e092047bf3e526e0d1eeb3fbf0920d
 - id: rules/scout-pattern.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/scout-pattern.md
-  sha256: aac1e57378a31c306cb0193bbe8471fce130b5a09c084ee33196fd73760ec352
+  sha256: 8dd7e65ddfffbaf42c4bb4cbdda99443c17fac9ecca1c5a465260cea3d5c8e48
 - id: rules/self-improvement-protocol.md
   kind: rule
   owner_adr: ADR-083
@@ -3894,21 +3894,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/skill-management.md
-  sha256: 45b15c62e3d41f883c9358b20be5d7e8e000ef94646875ec498330164b51c1db
+  sha256: ac1cb1d682b4ebd780c78a7f3a529b122b797fd015036a04acafe8a6879be8f6
 - id: rules/squad-protocol.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/squad-protocol.md
-  sha256: 32052e28a7737cc0e714d207621f1fdcbd90ea7c9ba3b743fa303c959c255ad7
+  sha256: b9da5792cc7c8a956ea88500360f08c5311e537f01c959327016a76c1af69c24
 - id: rules/stash-quarantine.md
   kind: rule
   owner_adr: ADR-318
@@ -3924,31 +3924,31 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/trailofbits-skills.md
-  sha256: 37402192992dae477fd1723196354a842c2abbef08b9347fdd5bfb58902915fb
+  sha256: 2c4d6d05570896362274ee9c78b2bf91ea56a0b35c4fd3ce11b83c3e0bc00dd0
 - id: rules/trust-score.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: team
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/trust-score.md
-  sha256: 7047d56ae84f9d951c0fe59fdb9567afa6197f2b408c57595c5bd657bfb2ad54
+  sha256: 5511a0d9c6eb800d32fc82071fbf05fc429706ad29fd080ca9d392517a96525b
 - id: rules/user-prompt-capture.md
   kind: rule
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - rules/user-prompt-capture.md
-  sha256: 75e70ba085857ca4225e5d136aad3f7e78ec5722ec8c82bfff2f93ba5bfdab86
+  sha256: ca283c452f48a51ed3b7a6ab0301667186351ca2c6d1f3bc5bf21505f76825b9
 - id: scripts/_lib/session-id.sh
   kind: script
   owner_adr: ADR-149
@@ -6035,12 +6035,12 @@ primitives:
   owner_adr: ADR-042
   lifecycle_state: candidate
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/agent-control/SKILL.md
   - scripts/orchestrator.py
-  sha256: ca0bae4013c58ba90c9c10116306abafabd078aa5800a969e85b4a8f5983634a
+  sha256: e99842e5f717496eab604e1ef6761bbe4f737c9cd6edee68dc98b685bf6643ab
 - id: skills/agent-control/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6086,21 +6086,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/analyze-improvements/SKILL.md
-  sha256: 6c7bb17ba9371646b51e70d9cba02829dd482793bf8907dc48ad2be8da0ca00d
+  sha256: 43cce52c3b18c2e7d1199eaec72b3d86e847d41e52478ce8e1ae95ae78445dfa
 - id: skills/apply-improvements/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/apply-improvements/SKILL.md
-  sha256: 884570059caeb43c7ce17cbc54678100f6976774cc446bd9a97a69d631f02ef3
+  sha256: f531da4f4bc99e6b1b4aa512757dcb9df036f78537b77c7d3077292596bfedc3
 - id: skills/architecture-map-answer/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6126,11 +6126,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/branch-worktree-closure/SKILL.md
-  sha256: ac7a018da9d2e9ee5bf2c34f462b6c97a3b78f1c1059cf5cba2f049329f243d9
+  sha256: 1158cabe3e235067c82e9f5c44862e4a55828a375432421b37734324cd2735e1
 - id: skills/browser-task/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6156,51 +6156,51 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/catalog-full/SKILL.md
-  sha256: 746cbf7b10e26cfd2745361b2315146014b76674123ee4adede4d2e4746248ad
+  sha256: 7c363cb2c2b6b1518bd2b460c6b63a5e2cbeab816d00b060d4b5a7ec89b8b573
 - id: skills/caveman-compress/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/caveman-compress/SKILL.md
-  sha256: 1b0bb4cd07ca27bf01cc6369b209a5764f69cef221da010311798c6231fd187d
+  sha256: fda9cb5ac38c16f9a7cf4a0eedba5a425232c0cd27362f3fbb55a51e8e504af8
 - id: skills/caveman-es/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/caveman-es/SKILL.md
-  sha256: 1055103b2d08290c9c0069c83e20037635b0cff76e89f00d557c4005e91ba307
+  sha256: 3dec6674b113b0d49e7551d1df15af5cbb8e264da19fc2ed4a1f37ee67d8f331
 - id: skills/caveman/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/caveman/SKILL.md
-  sha256: e5d84015c2b5be82dd1497090184b1b565a545c09bf94a548a5872e6f098d98d
+  sha256: 7055bc630476a14ef8bd5dfe6aadb0e2a58f504ef33203b70aec73920158a739
 - id: skills/code-review/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/code-review/SKILL.md
-  sha256: fe63895c28d44ddf2dd5ca65c7ffeeea201d4d00acb6a88095f4cf9f91ae74e3
+  sha256: 5ff61d6a35f7e9abaad9380e7b5c488e0a30c51c8ad7a7b7700a4f32ff0a2d4c
 - id: skills/cognitive-os-init/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6236,11 +6236,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/compat-test/SKILL.md
-  sha256: 5b2923d154653d2029b11f1ec964a92f3547df913518ed5cb548e911fec334dd
+  sha256: 5fe3aeedba9257d23df6a22afaf76c5e8a93a19335890ae4ca99fe0fa15ba2ca
 - id: skills/component-classifier/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6306,11 +6306,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/cost-predictor/SKILL.md
-  sha256: 937a00a6e2047e9923c535cdfaf267763e17b4f2f2b85c9d07fc8fbc93e06192
+  sha256: 3b3bf5a7fd94e03ad372e21a14a3206f5edab99674c86628411a27de031405ba
 - id: skills/decision-triage/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6326,11 +6326,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/deep-tool-research/SKILL.md
-  sha256: 4921692fb5f9c91423c79788a93ef46d65e899788d43631c005ba98d12c64e5f
+  sha256: 9ca75d1c1e58c2a6f6fd741683559dca02e63cc8df5a21435f9b056feedf71aa
 - id: skills/deps-update/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6356,21 +6356,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/detect-stack/SKILL.md
-  sha256: 02772ef672744d7b5fa3783fee6b2a799f9f543acfeb87f5d2775fe093ef8746
+  sha256: 0456ac05bc01947480c172dd146ea9f84192155e4701e4687196c5684dcc1339
 - id: skills/doc-review-personas/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/doc-review-personas/SKILL.md
-  sha256: d6950a9bffb0b192ec41b3f7cffa8b07f89ec2728ed34812515d55989ebb8fe1
+  sha256: afe349fa7d9e66be69a1677852dc6e6dfa8d2a19de503d5ee244350bb6432671
 - id: skills/docs-execution-audit/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6396,21 +6396,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - docs/03-dominio-riesgo/domain-model.md
-  sha256: 00b6ddfc65c9ac19a5a14a1fa9c025f1d0c56d503c1529b7273a4ff0805f41c8
+  sha256: ff3218d0b5e0ded97e74558bef15230365544c844b78ec3c530af8a57f290474
 - id: skills/eval-repo/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/eval-repo/SKILL.md
-  sha256: 7def1e11453b9908736d4703bb0998dda0dd8b7b9e16789ca74a9d98123a39b8
+  sha256: b34cd38d235dfb7a51ccd6dac69f2b2e324dc23b19eea1230bf4e6660132179d
 - id: skills/experimental/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6446,11 +6446,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/generate-config/SKILL.md
-  sha256: f063f2f07504280f412e887daa22b54fe2120106154cd8e9484c4293a1d56521
+  sha256: e2d9f92b5e7426717d3ea6c94ae315cbf0bb8bac4edee2235b70daa93ed01acc
 - id: skills/hook-timing/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6466,31 +6466,31 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/install-recommended/SKILL.md
-  sha256: b11b269c12366f3b22679034d546cb987fb58358e112daa694fb7c101e1c7c23
+  sha256: df2bdfcccbd7950de3e89528f60a39e146046942f76a82941d5a2e39efae3124
 - id: skills/invariant-check/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/invariant-check/SKILL.md
-  sha256: e003a65e003789eb82011c2b3d1316d59b57c9b6d4566f9588e2e14ba17ce14c
+  sha256: 68d8d83ccdc49b053a88216e08f78212e4b3f5f19f40985ff599767bf1704762
 - id: skills/llm-status/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/llm-status/SKILL.md
-  sha256: 20c7a0c1541d516af28e5e60e149eb7fc3d2d2290c6717ef64ef3747eb7cf8e3
+  sha256: ad09539abf55079c08461b594022fb39790aabbe66497f7c70339ac976a4b587
 - id: skills/memory-scan/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6506,13 +6506,13 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - docs/06-backoffice/operations.md
   - docs/06-backoffice/admin-processes.md
   - docs/06-backoffice/monitoring.md
-  sha256: 7663942be6cbeb6dc7ef63678b6dbc6742012f30f2f8f056435d6ab1d595264c
+  sha256: 73b4ac5ea39336f159e7ce106e3ee201756b4d8ae1799f26425fef94ed4422c7
 - id: skills/pattern-audit/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6528,11 +6528,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/peer-card/SKILL.md
-  sha256: 5674de2e7c692f4b87c4577f7c6bbce8ec9a16f4e71fa025e0469676e4ab6e44
+  sha256: 11310812e93be6ef47b47baee2c4c5042541fe4957fce9650c4ec74e777028cd
 - id: skills/phoenix-trace-ui/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6548,41 +6548,41 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/pr-review/SKILL.md
-  sha256: 7f7d47a18c5c5c423017064e0ccf4a12103a33045ffa5fca1a749e2dff3ba963
+  sha256: abc3c94d32a2b61d3736822dce618e3c4920aead1da519dead7a1b364d80f6bf
 - id: skills/preserved-wip-cleanup/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/preserved-wip-cleanup/SKILL.md
-  sha256: 4bb263c3594b27226ad3fbe099474d50b56aa2593ab2a9fd711bd0305033b0ab
+  sha256: 47665147d3fdd45a67e12a83dfd295cfb555e47e2f97bc449339d52262a553aa
 - id: skills/primitive-authoring/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/primitive-authoring/SKILL.md
-  sha256: 90d977ecade3a9561da29c7b526c8e86effdafa91a2c3c45a171322a3bc52b17
+  sha256: 5ba475f304ffc8b340bc3b6e4fe6470968f2713306a3d8b552627ef4e2817fe6
 - id: skills/primitive-harness-coverage/SKILL.md
   kind: skill
   owner_adr: ADR-189
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/primitive-harness-coverage/SKILL.md
-  sha256: 6bb538ca89ce45e5774ac95f0169f1e3a9379a824748a28565833cd41b826d98
+  sha256: 6e02208961eaee1c3d359a3fca18096ba691d03c4a5f62158e7c3ab4d6ad3c85
 - id: skills/primitive-harness-coverage/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6598,11 +6598,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/primitive-harvester/SKILL.md
-  sha256: 82da6527f45c0026f6913c3c7d2fe1fbbc8b34a5035245d07cbe8fab69d5920a
+  sha256: a794f1654f26707acb96ba1261d9acd53f6d49b9ef302fe2ad5e5ec244a56597
 - id: skills/primitive-surface-reduction/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6668,11 +6668,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/red-team/SKILL.md
-  sha256: 16bdb87f654e2534891934def9dfb45790c1aadff1a8672d1a5fbf6ef6b3403a
+  sha256: 059fa4ff67247b00f31f9c4afa060deb8f32f08393fcd77501dced8be3a894aa
 - id: skills/redteam-harness/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6708,81 +6708,81 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/repo-forensics/SKILL.md
-  sha256: 423002ee6bf7c2910b453a3bac0817bc648263a7e9b0ac88ad57c2d4c59664f7
+  sha256: 02dc4892266f57cba0630ae73c6d8f5b3b319a8df57b29262000cd440b2eb827
 - id: skills/resource-governor/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/resource-governor/SKILL.md
-  sha256: 508a7fa34467715e0294d635c6aa1c9c1bedc8fa0a63a621214d417d579968ab
+  sha256: e673c67276ab705c021830e196548b718bb68782e0323750e2fc90d7a27fa54a
 - id: skills/reverse-engineer/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/reverse-engineer/SKILL.md
-  sha256: 52c4f4dfb37d4f99802cd68b6cc86c1d2bbfc839ebcbd8f7035a2d7c5a31e39f
+  sha256: 8e19cafc8910605e3d81497714ae409a1e4c1b5d326b5098da555a3a79a6a294
 - id: skills/risk-register/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - docs/03-dominio-riesgo/risk-register.md
-  sha256: c19215fdba38d65309d2e0d733084d7bfed5bd932855aac2774cf38800d02845
+  sha256: 829ca7238dcdeaf75b24b1cf16c593485b75c8b142e3ad7df09c437efae2709b
 - id: skills/rules-export/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - docs/08-estandares/rules-snapshot-*.md
-  sha256: d808679eec5e1ea96879d361135eed90536c9a41e4362f258ed6cb37cdef0078
+  sha256: 36a4916db86f14bd2dda7c480aee11f92865bdf0b35e98eb6d5126cab797ae69
 - id: skills/run-tests/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/run-tests/SKILL.md
-  sha256: 10230302090ef971a935493292b372078dbbcb73990eb18ebc972ef5823ab3c8
+  sha256: 2d1688206ff30d8055089ed93510b10284e8985286faa8b630efe7ce19523c1a
 - id: skills/scaffold-project/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/scaffold-project/SKILL.md
-  sha256: d812e53281c0e4f7655aa15c7cd11e459f3c0a2298098113ecd2007eed8ec6c8
+  sha256: 26254341cff18b055f207b4edd35e265e94e27109dedf0895f61a075f84e00ae
 - id: skills/scout/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/scout/SKILL.md
-  sha256: a55b22a7c4f1d6ba0029861c491be5a07591f8fca7f64a1cc90175d1a10f0ec9
+  sha256: e67335c0ac0d30ba19ea7c80e5ed876e095dd9e083b49c12b2059f7ff98bda6b
 - id: skills/sdd-apply/SKILL.md
   kind: skill
   owner_adr: ADR-317
@@ -6798,31 +6798,31 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/sdd-continue/SKILL.md
-  sha256: 99b86218f8acfb17942663379aa77fb932c583366fe58e1afcee775d91b63df5
+  sha256: a2f383ad84909b0d4d34e528433cfe667c8b02eaef001a50021d312ad0e0c8a2
 - id: skills/sdd-explore/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/sdd-explore/SKILL.md
-  sha256: da9590b386c3b4c95b7118bcf8e41c724388027dacb41e26c282ef90ffef3987
+  sha256: 0190a9c2c59ab6fd127e009ab7210abcb006bd75b8614d64706e913f939b26fa
 - id: skills/sdd-resume/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/sdd-resume/SKILL.md
-  sha256: 5dd82365f113e8316b79ff31f71ecffbb910b5a270236c1b2e923f032c040a46
+  sha256: fba0f574c5d433cb64f5290d166bdea649d3537e62f33ec7be40d7371b14f143
 - id: skills/sdd-spec/SKILL.md
   kind: skill
   owner_adr: ADR-317
@@ -6878,51 +6878,51 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - .cognitive-os/sessions/{SESSION_ID}/backlog.md
-  sha256: 2422258fa8705d8023d7bd42b0f646848a8f4844363065f5d1faa344251d8b7b
+  sha256: 86fffd84422b255f665ab413dcad45e7873624419918c4f0f08356f52aa13e13
 - id: skills/session-manager/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/session-manager/SKILL.md
-  sha256: 7192c23060ef9e4b64841aba595f4ca529732f3e8713880328976eb3bda405f0
+  sha256: 81d38437130d07cfa5df1b92442535d2eaec3c02e88556928d6d58df0468ed94
 - id: skills/session-report-executive/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/session-report-executive/SKILL.md
-  sha256: a026d186d3270c2e875911932b7536cacb0a89e1e7c198b2b5f02053a68e67f2
+  sha256: 45dff5b3b3c1798e2443bb0af16f7ec530c88e37046ae9b6f2ec0a2f79576f1a
 - id: skills/session-wrapup/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/session-wrapup/SKILL.md
-  sha256: a32b525048224a64494e7973b86c87eb90d394f09ff1e8e33b3c9a051c97d8e1
+  sha256: cb113a454b4e6e1b0bc1d78c025fe84aa5ba8e8dff27dc586514ee069b63dfdb
 - id: skills/skill-creator/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/skill-creator/SKILL.md
-  sha256: 09b2445f9d4333a32686819cd3208d9e9914706a7953f8a6825e002faea521e6
+  sha256: 71831f2228582145aed0e428e4bca6c5f242230cf3bd013c06d017a2a6becc9e
 - id: skills/so-vs-vanilla/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6978,11 +6978,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/validate-config/SKILL.md
-  sha256: 69507ff94241cf1aa52e2ccfe19e739d5f62240a60257d38b38d8efb84661e3e
+  sha256: f033f6f9ceb7691f53e3a05de6fd26a170bbfff76ade76033297176a88c70fd8
 - id: skills/validate-release/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -7008,41 +7008,41 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/vulnerability-scan/SKILL.md
-  sha256: 64573271a73f4251339f239d3f382dfb58a8946263925637585e2e406b5c8f8e
+  sha256: c9ca49d8c2d45095a41eb118cd33d227ebe278e041be24900f6eb7d088f1cd6f
 - id: skills/wiki-ingest/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/wiki-ingest/SKILL.md
-  sha256: f575be1f5b5df4e912e372b5d3a9683b5e568f6a1756f2719288e51a9d63dd8e
+  sha256: 8f845ad469422269f01309e029a81d741cb567958a153063cb1af93fb745ccb1
 - id: skills/worktree-triage/SKILL.md
   kind: skill
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - skills/worktree-triage/SKILL.md
-  sha256: bbfce074f554932db07a1a08d8a11550fee404bc1b968343fdc49028057317c0
+  sha256: f4479e8e4ea864112d7feee6d795ea3921a8f77a6a8e7e60535b749dd6f84162
 - id: templates/adr-template.md
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/adr-template.md
-  sha256: a667190a32ede706f41ffaf0419e4c276f58afba29dbe40d4e7dea62e376cd67
+  sha256: 3715adb678440c4896048811e33d53de26d2d319a4a243486477248f23d01861
 - id: templates/agent-mandatory-rules.md
   kind: template
   owner_adr: ADR-314
@@ -7068,21 +7068,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/agent-research-only.md
-  sha256: a7bda1cb1599dc7116c84db1b1601c02e1b94999b817eb808871ad822421c377
+  sha256: 7c7bffb8d5213546f6fa48b3780fc8f102e7d19cd880f3d98c48fb07b81e48b5
 - id: templates/contracts/test_redteam_baseline.template.py
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/contracts/test_redteam_baseline.template.py
-  sha256: 0f11938cce4967f3cf6d882a9a2fea7a18e65c44fae304a2ba8bafbeb3cf7ad8
+  sha256: 0652d95df1f721745a9c83ab4530b4c7ea98e9bf26609ae440ba742ebf257694
 - id: templates/counsel-outreach/clean-room-permission.md
   kind: template
   owner_adr: ADR-314
@@ -7118,11 +7118,11 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/cross-harness-authoring.md
-  sha256: 5de7e9cc685485e8c5a3fd124971b54efb771dca3efeeef8d96c3b8cf3cf235d
+  sha256: 355ee4abcd00375e6d8dddf242ee03940a4d1273621072585c50e131bfb8e853
 - id: templates/eas.md
   kind: template
   owner_adr: ADR-317
@@ -7148,21 +7148,21 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/error-recovery.md
-  sha256: 4bea097cbb0654c21c8f23f07d26f96c783873ed2aafe0299ce6fc86c78d4592
+  sha256: eec45481dc0afe74f848d9045ffccdfac42240add1124998521458b36c752030
 - id: templates/generator-validator-pair.md
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/generator-validator-pair.md
-  sha256: b8a39889ee1152634eb3421428b46b09527c3e02df5840a8a7c8481b521b74af
+  sha256: 43d9de52f80b6a9206a0f9176bbeee6405fe0540a3eac691b5f1ce7209a39487
 - id: templates/hook-template.sh
   kind: template
   owner_adr: ADR-314
@@ -7178,51 +7178,51 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/prompt-hooks/assumption-tracker-prompt.md
-  sha256: d419c192020cf06838eb6c364b905fb362066ad48f55a1f512fdbf56c4b9d208
+  sha256: 572350f41a78bcc09159701a8deee6d1cc89978972ed76227f86bba4f9b58d96
 - id: templates/prompt-hooks/clarification-gate-prompt.md
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/prompt-hooks/clarification-gate-prompt.md
-  sha256: 319bbb0e7a999d76022a2013bc6dbd9fdfa7b7265325157ccac9dc0408d447c9
+  sha256: 980088f8ea303f077af83f6bbfdd0c7ce67729f8ed6d48108e06c4df32bdfec1
 - id: templates/prompt-hooks/prompt-quality-prompt.md
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/prompt-hooks/prompt-quality-prompt.md
-  sha256: bbd3881c18f49c99df22895cab270706fe584c6f17167a6830c86aa0c87679b6
+  sha256: f6c69903ac5ca4a1bf43fa2fdbac8645a8af348a637589c289c6cecc2e75487f
 - id: templates/prompt-hooks/scope-creep-prompt.md
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/prompt-hooks/scope-creep-prompt.md
-  sha256: 135a67a438067b98c0f5c92dc41568650e4f9f2589ce9b132b0538996e5757a5
+  sha256: ee756233af5bb95001f3b4c5e8df53617df77377ccd8ade45ddfdb7b2c9bf696
 - id: templates/quality-gates.md
   kind: template
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
   runtime_projection: false
   projection_targets:
   - templates/quality-gates.md
-  sha256: 603957e99943127931ce8cd7b6104860807465a4704cf5de0ad657c32348a7d9
+  sha256: 1c75f99e7eb090f955e6282c6b39a93ffaf5e1fbdf13fe83b6e8e10199f290cd
 - id: templates/rebranding-checklist.md
   kind: template
   owner_adr: ADR-314
