@@ -371,7 +371,10 @@ def _evidence_for(
         # optional-tool, and audit surfaces remain governed but not automatically
         # projectable.
         if surface in BOTH_INSTALL_SURFACES:
-            evidence.append(Evidence("protected-install-surface", "both", 90, surface))
+            if declared == "os-only":
+                evidence.append(Evidence("protected-install-surface", "os-only", 90, surface))
+            else:
+                evidence.append(Evidence("protected-install-surface", "both", 90, surface))
 
     item = availability.get(rel)
     if item:

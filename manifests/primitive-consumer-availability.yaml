@@ -1,97 +1,72 @@
 schema_version: primitive-consumer-availability.v1
-purpose: Explicit ACC classification for lifecycle-declared consumer candidates whose
-  consumer-project availability cannot be inferred from projection output alone.
+purpose: Explicit ACC classification for lifecycle-declared consumer candidates whose consumer-project availability cannot be inferred from projection output alone.
 status_values:
-  projectable-needs-driver: Intended consumer-project surface, but no install/profile/harness
-    proof exists yet; remains partial.
-  maintainer-only: SO maintainer primitive; represented and documented, but not a
-    consumer-project surface.
+  projectable-needs-driver: Intended consumer-project surface, but no install/profile/harness proof exists yet; remains partial.
+  maintainer-only: SO maintainer primitive; represented and documented, but not a consumer-project surface.
   so-local-only: Local-only helper or context surface; not consumer-project debt.
-  shell-ci-candidate: Candidate CLI/shell surface for future shell/CI projection proof;
-    remains partial until projected.
-  shared-surface: Primitive is intended for both Cognitive OS and consumer-project
-    use; paired proof still required for final both confidence.
+  shell-ci-candidate: Candidate CLI/shell surface for future shell/CI projection proof; remains partial until projected.
+  shared-surface: Primitive is intended for both Cognitive OS and consumer-project use; paired proof still required for final both confidence.
 items:
 - path: scripts/aspirational_audit.py
   status: maintainer-only
-  rationale: Audits SO aspirational claims; consumer projects should consume generated
-    reports or ACC summaries, not this maintainer scanner by default.
+  rationale: Audits SO aspirational claims; consumer projects should consume generated reports or ACC summaries, not this maintainer scanner by default.
 - path: scripts/cos_primitive_harvester.py
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/cos_session_backlog.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cos_work_inventory.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cos_worktree_triage.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cost_predict.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/decision_triage.py
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/doc_review_personas.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/document_feature_append.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/dogfood_score.py
   status: maintainer-only
-  rationale: Scores SO dogfooding signals; consumer projects should not receive it
-    by default.
+  rationale: Scores SO dogfooding signals; consumer projects should not receive it by default.
 - path: scripts/domain_model.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/edit-coop.sh
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/generate_compact_catalog.py
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/hook-stream-statusline.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/hook-timing-wrapper.sh
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/hook_timing_report.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/invariant_check_helper.py
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/llm_status.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/merge-to-main.sh
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/ops_runbook.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/primitive_surface_reduce.py
   status: maintainer-only
   rationale: SO primitive-surface reduction analysis helper.
@@ -100,86 +75,67 @@ items:
   rationale: Maintainer primitive usage map generator.
 - path: scripts/radar_merge.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/redteam_aggregate.py
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/risk_register.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/rules_export.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/security_audit_writer.py
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/smoke-doc-review-personas.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/smoke-multi-provider-fallback.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/smoke-qwen-fallback.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/sprint-test-summary.sh
   status: projected-consumer-surface
-  rationale: Manual scope calibration batch 002 confirmed project-only downstream
-    writer/scaffolder surface.
+  rationale: Manual scope calibration batch 002 confirmed project-only downstream writer/scaffolder surface.
 - path: scripts/test_run_inventory.py
   status: maintainer-only
   rationale: Maintainer test-run inventory analyzer.
 - path: scripts/verify-archived.sh
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/weekly-aspirational-audit.sh
   status: maintainer-only
   rationale: Scheduled maintainer audit wrapper.
 - path: scripts/_lib/local-service.sh
   status: so-local-only
-  rationale: Service-control-plane shell library used by local COS runtime drills;
-    not a standalone consumer command.
+  rationale: Service-control-plane shell library used by local COS runtime drills; not a standalone consumer command.
 - path: scripts/_lib/session-id.sh
   status: so-local-only
-  rationale: Session identity helper for local queue/worker scripts; projected only
-    as support code when a service runtime profile exists.
+  rationale: Session identity helper for local queue/worker scripts; projected only as support code when a service runtime profile exists.
 - path: scripts/auto-tune-routing
   status: maintainer-only
-  rationale: Human-reviewed dispatch optimizer wrapper for SO routing experiments;
-    not a default consumer command.
+  rationale: Human-reviewed dispatch optimizer wrapper for SO routing experiments; not a default consumer command.
 - path: scripts/auto_tune_routing.py
   status: maintainer-only
-  rationale: Python implementation behind the dispatch optimizer wrapper; proposals
-    require maintainer review before use.
+  rationale: Python implementation behind the dispatch optimizer wrapper; proposals require maintainer review before use.
 - path: scripts/benchmark-providers
   status: maintainer-only
-  rationale: Provider benchmark wrapper for SO/provider research; consumer projects
-    should use their own evaluation harness unless explicitly configured.
+  rationale: Provider benchmark wrapper for SO/provider research; consumer projects should use their own evaluation harness unless explicitly configured.
 - path: scripts/benchmark_providers.py
   status: maintainer-only
-  rationale: Python provider benchmark implementation for ADR-052; not projected as
-    a default consumer primitive.
+  rationale: Python provider benchmark implementation for ADR-052; not projected as a default consumer primitive.
 - path: scripts/cos-headless-service-drill
   status: maintainer-only
-  rationale: Opt-in Docker/headless proof drill for SO runtime qualification; excluded
-    from default consumer and laptop lanes.
+  rationale: Opt-in Docker/headless proof drill for SO runtime qualification; excluded from default consumer and laptop lanes.
 - path: scripts/cos-instance-init
   status: maintainer-only
-  rationale: Operational COS instance installer wrapper; separate from consumer-project
-    projection.
+  rationale: Operational COS instance installer wrapper; separate from consumer-project projection.
 - path: scripts/cos_instance_init.py
   status: maintainer-only
-  rationale: Operational COS instance installer implementation; not a default consumer
-    projection surface.
+  rationale: Operational COS instance installer implementation; not a default consumer projection surface.
 - path: skills/proof-drill/SKILL.md
   status: shared-surface
   rationale: 'Manual scope review iteration 032: proof drills explicitly support COS self-build and consumer-project validation modes without polluting default lanes.'
@@ -191,64 +147,49 @@ items:
   rationale: 'Manual scope review iteration 032: pending close provides audited closure of task/ADR/pending ledgers for COS and adopter project sessions with bilateral proof.'
 - path: scripts/proof-drill-select
   status: maintainer-only
-  rationale: Proof-drill selector wrapper for governed opt-in validation; not a default
-    consumer command.
+  rationale: Proof-drill selector wrapper for governed opt-in validation; not a default consumer command.
 - path: scripts/proof_drill_select.py
   status: maintainer-only
-  rationale: Python proof-drill selector implementation; consumer projects should
-    use explicit proof-drill projection only.
+  rationale: Python proof-drill selector implementation; consumer projects should use explicit proof-drill projection only.
 - path: scripts/test_skip_registry.py
   status: maintainer-only
-  rationale: Maintainer validation-governance helper for classifying skipped tests;
-    not a consumer runtime command.
+  rationale: Maintainer validation-governance helper for classifying skipped tests; not a consumer runtime command.
 - path: scripts/cos-credential-safe-run
   status: maintainer-only
-  rationale: Credential-safe maintainer/runtime wrapper for approved scripts; not
-    a default consumer command.
+  rationale: Credential-safe maintainer/runtime wrapper for approved scripts; not a default consumer command.
 - path: scripts/cos_credential_safe_run.py
   status: maintainer-only
-  rationale: Python implementation behind credential-safe script runner; projected
-    only through explicit runtime profiles.
+  rationale: Python implementation behind credential-safe script runner; projected only through explicit runtime profiles.
 - path: scripts/cos-auth-probe
   status: maintainer-only
-  rationale: Provider/executor auth boundary probe for ADR-161 service-control-plane
-    work; not a default consumer surface.
+  rationale: Provider/executor auth boundary probe for ADR-161 service-control-plane work; not a default consumer surface.
 - path: scripts/cos-engram-command-audit
   status: maintainer-only
-  rationale: Maintainer Engram command audit wrapper; consumer projects should consume
-    reports, not this SO audit by default.
+  rationale: Maintainer Engram command audit wrapper; consumer projects should consume reports, not this SO audit by default.
 - path: scripts/cos-queue-drain
   status: maintainer-only
-  rationale: Local service-control-plane queue drain command for SO/runtime drills;
-    consumer projection requires a packaged service profile.
+  rationale: Local service-control-plane queue drain command for SO/runtime drills; consumer projection requires a packaged service profile.
 - path: scripts/cos-task-submit
   status: maintainer-only
-  rationale: Local task lifecycle submission command for ADR-162 runtime experiments;
-    not a default consumer command.
+  rationale: Local task lifecycle submission command for ADR-162 runtime experiments; not a default consumer command.
 - path: scripts/cos-worker-run-once
   status: maintainer-only
-  rationale: One-shot worker execution helper for headless/service runtime drills;
-    not projected to consumer projects by default.
+  rationale: One-shot worker execution helper for headless/service runtime drills; not projected to consumer projects by default.
 - path: scripts/cos_auth_probe.py
   status: maintainer-only
-  rationale: Python implementation behind the local auth probe wrapper; not a standalone
-    consumer projection surface.
+  rationale: Python implementation behind the local auth probe wrapper; not a standalone consumer projection surface.
 - path: scripts/cos_engram_command_audit.py
   status: maintainer-only
-  rationale: Python implementation for SO Engram command audits; not consumer-project
-    debt.
+  rationale: Python implementation for SO Engram command audits; not consumer-project debt.
 - path: scripts/cos_service_control_plane.py
   status: maintainer-only
-  rationale: Experimental local service-control-plane implementation; consumer availability
-    waits for ADR-161/162 runtime adapter proof.
+  rationale: Experimental local service-control-plane implementation; consumer availability waits for ADR-161/162 runtime adapter proof.
 - path: scripts/cosd
   status: maintainer-only
-  rationale: Local daemon entrypoint for service-control-plane experiments; not default-visible
-    consumer projection until packaged and smoke-tested.
+  rationale: Local daemon entrypoint for service-control-plane experiments; not default-visible consumer projection until packaged and smoke-tested.
 - path: scripts/export-engram-to-obsidian.sh
   status: maintainer-only
-  rationale: Maintainer memory/export utility for local knowledge workflows; consumer
-    projection requires an explicit memory/export package.
+  rationale: Maintainer memory/export utility for local knowledge workflows; consumer projection requires an explicit memory/export package.
 - path: hooks/_lib/agent-context.sh
   status: maintainer-only
   rationale: 'Manual scope review iteration 028: hook support library for COS agent-context detection; not a standalone shared primitive.'
@@ -260,8 +201,7 @@ items:
   rationale: Candidate consumer doctor command; needs shell/CI projection proof.
 - path: scripts/cos
   status: shell-ci-candidate
-  rationale: Top-level CLI wrapper intended for consumer use once shell/CI projection
-    is implemented.
+  rationale: Top-level CLI wrapper intended for consumer use once shell/CI projection is implemented.
 - path: scripts/cos-coordination-status.sh
   status: shell-ci-candidate
   rationale: Candidate consumer coordination status command; needs projection proof.
@@ -279,12 +219,10 @@ items:
   rationale: Candidate consumer usage-report command; needs shell/CI projection proof.
 - path: scripts/cos-worktree-triage.sh
   status: shell-ci-candidate
-  rationale: Candidate shell/CI triage command; needs projection proof before consumer
-    claim.
+  rationale: Candidate shell/CI triage command; needs projection proof before consumer claim.
 - path: scripts/docs_execution_audit.py
   status: shell-ci-candidate
-  rationale: Candidate consumer documentation reality audit; needs profile/package
-    projection proof.
+  rationale: Candidate consumer documentation reality audit; needs profile/package projection proof.
 - path: scripts/project_scaffold.py
   status: shell-ci-candidate
   rationale: Candidate consumer scaffold command; needs explicit package/profile proof.
@@ -302,27 +240,22 @@ items:
   rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
 - path: scripts/test-cognitive-os-full.sh
   status: shell-ci-candidate
-  rationale: Candidate consumer full validation wrapper; needs shell/CI projection
-    proof.
+  rationale: Candidate consumer full validation wrapper; needs shell/CI projection proof.
 - path: hooks/dangerous-env-flag-detector.sh
   status: maintainer-only
   rationale: 'Manual scope review iteration 028: detects dangerous COS override flags, which are COS runtime/operator controls rather than generic repo guidance.'
 - path: scripts/dangerous_env_flag_detector.py
   status: so-local-only
-  rationale: Python analyzer behind the local dangerous-env hook; not a standalone
-    consumer capability.
+  rationale: Python analyzer behind the local dangerous-env hook; not a standalone consumer capability.
 - path: scripts/metrics_tamper_audit.py
   status: so-local-only
-  rationale: Security red-team analyzer implementation; not a standalone consumer
-    capability.
+  rationale: Security red-team analyzer implementation; not a standalone consumer capability.
 - path: scripts/provider_spoof_audit.py
   status: so-local-only
-  rationale: Security red-team analyzer implementation; not a standalone consumer
-    capability.
+  rationale: Security red-team analyzer implementation; not a standalone consumer capability.
 - path: scripts/network_sandbox_run.py
   status: so-local-only
-  rationale: Security sandbox helper for red-team workflows; not a standalone consumer
-    capability.
+  rationale: Security sandbox helper for red-team workflows; not a standalone consumer capability.
 - path: hooks/engram-obsidian-export-on-stop.sh
   status: maintainer-only
   rationale: 'Manual scope review iteration 028: optional Engram-to-Obsidian operator export hook tied to COS memory/export scripts and operator vault configuration.'
@@ -334,47 +267,37 @@ items:
   rationale: 'Manual scope review iteration 028: protected agent control-plane config write blocking applies to COS and adopter projects with projected agent primitives.'
 - path: scripts/network_egress_guard.py
   status: so-local-only
-  rationale: Python analyzer behind the local network-egress PreToolUse guard; not
-    a standalone consumer capability.
+  rationale: Python analyzer behind the local network-egress PreToolUse guard; not a standalone consumer capability.
 - path: scripts/security-red-team
   status: maintainer-only
-  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog
-    primitive.
+  rationale: Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog primitive.
 - path: scripts/security_red_team.py
   status: lifecycle-declared-maintainer
   rationale: Python implementation behind the opt-in security workflow wrapper.
 - path: scripts/cos-key-learnings-capture
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: scripts/cos-subprocess-timeout-audit.py
   status: maintainer-only
-  rationale: ADR-278 maintainer/control-plane audit over this repository's subprocess
-    timeout discipline; consumer projects should not receive it as a default runtime
-    primitive.
+  rationale: ADR-278 maintainer/control-plane audit over this repository's subprocess timeout discipline; consumer projects should not receive it as a default runtime primitive.
 - path: scripts/adr_verification_audit.py
   status: maintainer-only
-  rationale: ADR verification evidence-strength audit for this repository's ADR contract;
-    not a default consumer-project runtime primitive.
+  rationale: ADR verification evidence-strength audit for this repository's ADR contract; not a default consumer-project runtime primitive.
 - path: scripts/cos-deps-coverage-audit
   status: maintainer-only
-  rationale: Maintainer dependency coverage audit from ADR-308; consumer projects
-    consume reports, not this local scanner by default.
+  rationale: Maintainer dependency coverage audit from ADR-308; consumer projects consume reports, not this local scanner by default.
 - path: scripts/cos-deps-maintain
   status: maintainer-only
-  rationale: Maintainer dependency-maintenance orchestrator; installation/apply remains
-    explicit and not a consumer runtime surface.
+  rationale: Maintainer dependency-maintenance orchestrator; installation/apply remains explicit and not a consumer runtime surface.
 - path: scripts/cos-deps-profile-ratchet
   status: maintainer-only
-  rationale: Maintainer ratchet for dependency profile drift; consumer projection
-    requires a separate command contract.
+  rationale: Maintainer ratchet for dependency profile drift; consumer projection requires a separate command contract.
 - path: scripts/cos-deps-triage
   status: maintainer-only
   rationale: Maintainer triage helper for dependency drift reports.
 - path: scripts/cos-portability-proof-scaffold
   status: maintainer-only
-  rationale: Maintainer scaffold for portability proof authoring, not a default consumer
-    command.
+  rationale: Maintainer scaffold for portability proof authoring, not a default consumer command.
 - path: scripts/cos-primitive-closure-ratchet
   status: maintainer-only
   rationale: Maintainer closure ratchet over primitive projection contracts.
@@ -392,136 +315,85 @@ items:
   rationale: Evidence-weighted maintainer classifier for primitive scope decisions.
 - path: hooks/adversarial-review-gate.sh
   status: so-local-only
-  rationale: Local delegated-review quality advisory; projected through SO harness
-    profiles, not a standalone consumer capability.
+  rationale: Local delegated-review quality advisory; projected through SO harness profiles, not a standalone consumer capability.
 - path: hooks/bash-hot-path-dispatcher.sh
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: hooks/subagent-budget-enforcer.sh
   status: shared-surface
-  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project
-    surface; keep lifecycle/proof evidence aligned.
+  rationale: Manual scope calibration batch 002 confirmed shared COS/consumer-project surface; keep lifecycle/proof evidence aligned.
 - path: skills/add-hook/SKILL.md
   status: maintainer-only
-  rationale: Procedure creates and registers Cognitive OS hooks, projection metadata,
-    efficiency profiles, and COS portability gates; generic hook authoring would be
-    a separate primitive.
+  rationale: Procedure creates and registers Cognitive OS hooks, projection metadata, efficiency profiles, and COS portability gates; generic hook authoring would be a separate primitive.
 - path: skills/add-skill/SKILL.md
   status: maintainer-only
-  rationale: Procedure creates Cognitive OS skills, catalogs, routing metadata, registry
-    entries, and COS projection gates; generic SKILL.md authoring would be a separate
-    primitive.
+  rationale: Procedure creates Cognitive OS skills, catalogs, routing metadata, registry entries, and COS projection gates; generic SKILL.md authoring would be a separate primitive.
 - path: scripts/primitive_scope_unknown_triage.py
   status: maintainer-only
-  rationale: Maintainer review aid for Cognitive OS primitive scope debt; it summarizes
-    classifier unknowns and must not be projected as a consumer-project primitive
-    by default.
+  rationale: Maintainer review aid for Cognitive OS primitive scope debt; it summarizes classifier unknowns and must not be projected as a consumer-project primitive by default.
 - path: scripts/primitive_parse_inventory.py
   status: maintainer-only
-  rationale: Maintainer structural parser inventory for Cognitive OS primitives; it
-    exposes parser debt and must not be projected as a consumer-project primitive
-    by default.
+  rationale: Maintainer structural parser inventory for Cognitive OS primitives; it exposes parser debt and must not be projected as a consumer-project primitive by default.
 - path: hooks/cognitive-os-health.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/cos-executor-heartbeat.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/cosd-intent-submit.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/metrics-calibrator-trigger.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/reaper-heartbeat.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/recap-sync.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/session-hygiene.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/session-knowledge-extractor.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/session-state-save.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/sync-to-repo.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/task-bridge-notify.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/telemetry-budget-violator-detect.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/usage-health-check.sh
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: packages/agent-lifecycle/skills/review-output/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: rules/research-first-protocol.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: rules/ROADMAP.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: skills/cos-install-operations/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: skills/hook-timing/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: skills/repair-skill/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: skills/synthesize-skill/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to
-    Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project
-    primitive.
+  rationale: Manual scope calibration batch 001 confirmed this primitive is tied to Cognitive OS maintainer/runtime internals and is not projected as a default consumer-project primitive.
 - path: hooks/agent-bus-monitor.sh
   status: shared-surface
   rationale: Manual scope calibration iteration 010 confirmed package-backed symlink hook is portable for COS adopters when Valkey/file-fallback agent bus is enabled; keep paired portability proof.
@@ -581,951 +453,604 @@ items:
   rationale: Manual scope calibration iteration 011 confirmed this has explicit source-repo and consumer-project execution paths and shared backlog ledgers.
 - path: rules/acceptance-criteria.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines acceptance criteria
-    discipline for any repository and for COS itself.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines acceptance criteria discipline for any repository and for COS itself.'
 - path: rules/adversarial-review.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines adversarial review
-    expectations for any codebase and COS changes.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines adversarial review expectations for any codebase and COS changes.'
 - path: rules/agent-quality.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines agent output quality
-    standards independent of repository stack.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines agent output quality standards independent of repository stack.'
 - path: rules/agent-sidecars.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines reusable Engram
-    sidecar continuity for project agents and COS agents.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines reusable Engram sidecar continuity for project agents and COS agents.'
 - path: rules/auto-repair.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines shared agentic
-    auto-repair behavior for COS and adopter projects using the runtime.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines shared agentic auto-repair behavior for COS and adopter projects using the runtime.'
 - path: rules/broken-window-policy.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule is a generic repository
-    maintenance policy used by COS and adopter projects.'
+  rationale: 'Manual scope calibration iteration 012: Rule is a generic repository maintenance policy used by COS and adopter projects.'
 - path: rules/decomposition.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule is generic cost-aware work
-    decomposition for any repo task.'
+  rationale: 'Manual scope calibration iteration 012: Rule is generic cost-aware work decomposition for any repo task.'
 - path: rules/error-learning.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines reusable error
-    capture/learning loop for builds, tests, and lint in COS or adopter repos.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines reusable error capture/learning loop for builds, tests, and lint in COS or adopter repos.'
 - path: rules/fault-tolerance.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines reusable agent/session
-    resilience patterns for COS and consumer-project agents.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines reusable agent/session resilience patterns for COS and consumer-project agents.'
 - path: rules/hook-security-profiles.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines portable hook security
-    profile tradeoffs for adopter hook meshes and COS.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines portable hook security profile tradeoffs for adopter hook meshes and COS.'
 - path: rules/impact-analysis.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule is generic change impact
-    analysis for any repository.'
+  rationale: 'Manual scope calibration iteration 012: Rule is generic change impact analysis for any repository.'
 - path: rules/model-routing.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines model routing behavior
-    for agent tasks in COS and adopter projects.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines model routing behavior for agent tasks in COS and adopter projects.'
 - path: rules/pentesting-readiness.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines generic security-readiness
-    expectations for repositories.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic security-readiness expectations for repositories.'
 - path: rules/pre-commit-gate.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines generic pre-commit
-    test/coverage gating for code repositories.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic pre-commit test/coverage gating for code repositories.'
 - path: rules/private-mode.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines privacy constraints
-    that apply to COS and project work.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines privacy constraints that apply to COS and project work.'
 - path: rules/python-naming.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines generic Python
-    naming conventions for repository scripts.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic Python naming conventions for repository scripts.'
 - path: rules/response-compression.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines agent response
-    compression discipline independent of repository stack.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines agent response compression discipline independent of repository stack.'
 - path: rules/sandbox-sampling.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines generic sandbox-before-scaling
-    validation discipline.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic sandbox-before-scaling validation discipline.'
 - path: rules/scout-pattern.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines generic pre-implementation
-    reconnaissance discipline.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic pre-implementation reconnaissance discipline.'
 - path: rules/skill-management.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines skill management/routing
-    for COS and project-local skill sets.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines skill management/routing for COS and project-local skill sets.'
 - path: rules/squad-protocol.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines portable squad/agent
-    coordination semantics for COS and adopting organizations.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines portable squad/agent coordination semantics for COS and adopting organizations.'
 - path: rules/trailofbits-skills.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines optional security
-    skill usage for COS and adopter project audits.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines optional security skill usage for COS and adopter project audits.'
 - path: rules/user-prompt-capture.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Rule defines portable user-intent
-    capture for any agentic project session.'
+  rationale: 'Manual scope calibration iteration 012: Rule defines portable user-intent capture for any agentic project session.'
 - path: scripts/check_test_quality.py
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Script checks explicit test
-    file lists and is safe as shared repo quality gate.'
+  rationale: 'Manual scope calibration iteration 012: Script checks explicit test file lists and is safe as shared repo quality gate.'
 - path: skills/add-mcp/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 012: Skill is written as a Cognitive
-    OS integration procedure and updates COS ecosystem docs/config.'
+  rationale: 'Manual scope calibration iteration 012: Skill is written as a Cognitive OS integration procedure and updates COS ecosystem docs/config.'
 - path: skills/agent-stress-test/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 012: Skill depends on COS cognitive-load
-    monitoring internals and measures COS agent runtime health.'
+  rationale: 'Manual scope calibration iteration 012: Skill depends on COS cognitive-load monitoring internals and measures COS agent runtime health.'
 - path: skills/code-review/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Skill reviews changed files
-    in any repository and also reviews COS changes.'
+  rationale: 'Manual scope calibration iteration 012: Skill reviews changed files in any repository and also reviews COS changes.'
 - path: skills/install-recommended/SKILL.md
   status: projected-consumer-surface
-  rationale: 'Manual scope calibration iteration 012: Skill detects an adopter project''s
-    stack and recommends project skills; COS construction does not require it.'
+  rationale: 'Manual scope calibration iteration 012: Skill detects an adopter project''s stack and recommends project skills; COS construction does not require it.'
 - path: skills/pr-review/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Skill reviews pull requests
-    in any repository and also COS PRs.'
+  rationale: 'Manual scope calibration iteration 012: Skill reviews pull requests in any repository and also COS PRs.'
 - path: skills/repo-forensics/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Skill performs repository forensics
-    for arbitrary repos and COS comparisons.'
+  rationale: 'Manual scope calibration iteration 012: Skill performs repository forensics for arbitrary repos and COS comparisons.'
 - path: skills/reverse-engineer/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Skill reverse-engineers dependencies
-    or repos independent of COS internals.'
+  rationale: 'Manual scope calibration iteration 012: Skill reverse-engineers dependencies or repos independent of COS internals.'
 - path: skills/scout/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Skill maps codebase terrain
-    before implementation in any repository.'
+  rationale: 'Manual scope calibration iteration 012: Skill maps codebase terrain before implementation in any repository.'
 - path: skills/sdd-explore/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Skill explores feature feasibility
-    in any repository and in COS.'
+  rationale: 'Manual scope calibration iteration 012: Skill explores feature feasibility in any repository and in COS.'
 - path: templates/generator-validator-pair.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Template is a generic generator/validator
-    pattern for any repo artifact.'
+  rationale: 'Manual scope calibration iteration 012: Template is a generic generator/validator pattern for any repo artifact.'
 - path: templates/prompt-hooks/clarification-gate-prompt.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Template scores agent prompt
-    ambiguity independent of repository.'
+  rationale: 'Manual scope calibration iteration 012: Template scores agent prompt ambiguity independent of repository.'
 - path: templates/prompt-hooks/prompt-quality-prompt.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 012: Template scores prompt quality
-    independent of repository.'
+  rationale: 'Manual scope calibration iteration 012: Template scores prompt quality independent of repository.'
 - path: packages/adaptive-workflow/skills/self-review/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `adaptive-workflow/self-review` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `adaptive-workflow/self-review` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/agent-coordination/skills/retrospective/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `agent-coordination/retrospective` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `agent-coordination/retrospective` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/agent-coordination/skills/squad-manager/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `agent-coordination/squad-manager` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `agent-coordination/squad-manager` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/agent-lifecycle/skills/persistent-agent/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `agent-lifecycle/persistent-agent` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `agent-lifecycle/persistent-agent` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/agent-lifecycle/skills/resume-tasks/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `agent-lifecycle/resume-tasks` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `agent-lifecycle/resume-tasks` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/auto-repair-rollback/skills/auto-rollback/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `auto-repair-rollback/auto-rollback` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `auto-repair-rollback/auto-rollback` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/context-optimization/skills/compose-prompt/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `context-optimization/compose-prompt` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `context-optimization/compose-prompt` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/context-optimization/skills/exhaustive-prompt/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `context-optimization/exhaustive-prompt` is a modular portable surface for COS
-    source work and adopter projects; aggregate package skill portability proof covers
-    structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `context-optimization/exhaustive-prompt` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/document-sync/skills/doc-sync/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `document-sync/doc-sync` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `document-sync/doc-sync` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/document-sync/skills/document-feature/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `document-sync/document-feature` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `document-sync/document-feature` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/dry-run-simulation/skills/arena/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `dry-run-simulation/arena` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `dry-run-simulation/arena` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/dry-run-simulation/skills/simulation-arena/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `dry-run-simulation/simulation-arena` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `dry-run-simulation/simulation-arena` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/audit-website/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/audit-website` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/audit-website` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/automaker-bridge/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/automaker-bridge` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/automaker-bridge` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/cognee-integration/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/cognee-integration` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/cognee-integration` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/cognee-search/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/cognee-search` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/cognee-search` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/deepeval-integration/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/deepeval-integration` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/deepeval-integration` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/jupyter-execute/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/jupyter-execute` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/jupyter-execute` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/promptfoo-integration` is a modular portable surface for COS
-    source work and adopter projects; aggregate package skill portability proof covers
-    structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/promptfoo-integration` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/ragas-integration/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/ragas-integration` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/ragas-integration` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/recommend-library/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/recommend-library` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/recommend-library` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/secret-audit/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/secret-audit` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/secret-audit` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/semgrep-scan/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/semgrep-scan` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/semgrep-scan` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/strands-evals-integration` is a modular portable surface for
-    COS source work and adopter projects; aggregate package skill portability proof
-    covers structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/strands-evals-integration` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/tool-discovery/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/tool-discovery` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/tool-discovery` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/ecosystem-tools/skills/web-crawler/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `ecosystem-tools/web-crawler` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `ecosystem-tools/web-crawler` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `infra-lifecycle/devbox-checkpoint` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `infra-lifecycle/devbox-checkpoint` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `infra-lifecycle/gpu-sandbox` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `infra-lifecycle/gpu-sandbox` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/infra-lifecycle/skills/repair-status/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `infra-lifecycle/repair-status` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `infra-lifecycle/repair-status` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/infra-lifecycle/skills/sre-agent/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `infra-lifecycle/sre-agent` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `infra-lifecycle/sre-agent` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/privacy-mode/skills/private-mode/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `privacy-mode/private-mode` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `privacy-mode/private-mode` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/confidence-check/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/confidence-check` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/confidence-check` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/dod-check/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/dod-check` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/dod-check` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/nemo-guardrails/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/nemo-guardrails` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/nemo-guardrails` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/pentest-self/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/pentest-self` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/pentest-self` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/readiness-check/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/readiness-check` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/readiness-check` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/resolve-blockers/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/resolve-blockers` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/resolve-blockers` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/quality-gates/skills/security-audit/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `quality-gates/security-audit` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `quality-gates/security-audit` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/recall-search/skills/conversation-memory/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `recall-search/conversation-memory` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `recall-search/conversation-memory` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/recall-search/skills/memu-context/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `recall-search/memu-context` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `recall-search/memu-context` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/recall-search/skills/recall-search/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `recall-search/recall-search` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `recall-search/recall-search` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/scope-governance/skills/contract-drift/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `scope-governance/contract-drift` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `scope-governance/contract-drift` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/scope-governance/skills/deep-research/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `scope-governance/deep-research` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `scope-governance/deep-research` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/scope-governance/skills/planning-poker/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `scope-governance/planning-poker` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `scope-governance/planning-poker` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/scope-governance/skills/repo-scout/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `scope-governance/repo-scout` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `scope-governance/repo-scout` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/scope-governance/skills/research-protocol/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `scope-governance/research-protocol` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `scope-governance/research-protocol` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/scope-governance/skills/sandbox-sample/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `scope-governance/sandbox-sample` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `scope-governance/sandbox-sample` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/auto-refine/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/auto-refine` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/auto-refine` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/batch-runner/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/batch-runner` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/batch-runner` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/evaluate-plan/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/evaluate-plan` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/evaluate-plan` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/impact-analysis/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/impact-analysis` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/impact-analysis` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/issue-pipeline/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/issue-pipeline` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/issue-pipeline` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/plan-bug/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/plan-bug` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/plan-bug` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/plan-feature/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/plan-feature` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/plan-feature` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/sdd-compound/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/sdd-compound` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/sdd-compound` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/singularity/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/singularity` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/singularity` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/sdd-compound/skills/webhook-trigger/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `sdd-compound/webhook-trigger` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `sdd-compound/webhook-trigger` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/skill-governance/skills/error-analyzer/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `skill-governance/error-analyzer` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `skill-governance/error-analyzer` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/skill-governance/skills/metrics-calibrator/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `skill-governance/metrics-calibrator` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `skill-governance/metrics-calibrator` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/skill-governance/skills/model-optimizer/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `skill-governance/model-optimizer` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `skill-governance/model-optimizer` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/skill-governance/skills/optimize-skill/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `skill-governance/optimize-skill` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `skill-governance/optimize-skill` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/task-management/skills/agent-kpis/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `task-management/agent-kpis` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `task-management/agent-kpis` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/task-management/skills/capability-snapshot/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `task-management/capability-snapshot` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `task-management/capability-snapshot` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/task-management/skills/sprint/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `task-management/sprint` is a modular portable surface for COS source work and
-    adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `task-management/sprint` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/verification-audit/skills/coverage-enforcement/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `verification-audit/coverage-enforcement` is a modular portable surface for COS
-    source work and adopter projects; aggregate package skill portability proof covers
-    structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `verification-audit/coverage-enforcement` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/verification-audit/skills/smoke-test/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `verification-audit/smoke-test` is a modular portable surface for COS source work
-    and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `verification-audit/smoke-test` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/verification-audit/skills/systematic-debugging/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `verification-audit/systematic-debugging` is a modular portable surface for COS
-    source work and adopter projects; aggregate package skill portability proof covers
-    structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `verification-audit/systematic-debugging` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/verification-audit/skills/test-driven-development/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `verification-audit/test-driven-development` is a modular portable surface for
-    COS source work and adopter projects; aggregate package skill portability proof
-    covers structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `verification-audit/test-driven-development` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/verification-audit/skills/trust-audit/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `verification-audit/trust-audit` is a modular portable surface for COS source
-    work and adopter projects; aggregate package skill portability proof covers structural
-    projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `verification-audit/trust-audit` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: packages/verification-audit/skills/verification-before-completion/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 013 confirmed package-backed skill
-    `verification-audit/verification-before-completion` is a modular portable surface
-    for COS source work and adopter projects; aggregate package skill portability
-    proof covers structural projection.
+  rationale: Manual scope calibration iteration 013 confirmed package-backed skill `verification-audit/verification-before-completion` is a modular portable surface for COS source work and adopter projects; aggregate package skill portability proof covers structural projection.
 - path: hooks/_lib/bypass-resolver.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/_lib/killswitch_check.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/_lib/primitive-intervention.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/_lib/safe-worktree-remove.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/_lib/validation-lock.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/agent-quota-redirect.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/agnix-lint.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/background-agent-reminder.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/clean-room-ast-similarity-gate.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/concurrent-write-guard-codex-proxy.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: hooks/conversation-capture.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/engram-auto-import.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/engram-auto-sync.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/idle-service-cleanup.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/memu-sync.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/metrics-rotation.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/mlflow-sync.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/package-sync.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/pattern-check.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/registration-check.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/singularity-check.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: hooks/tool-discovery-trigger.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: packages/verification-audit/skills/harness-audit/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: rules/agent-communication.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: rules/agent-customization.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: rules/capability-protection.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: rules/clean-room-detection-limits.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: rules/cosd-secure-api.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: rules/cross-harness-authoring.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: rules/infra-health.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: rules/infra-intent.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: rules/lane-taxonomy.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: rules/orchestrator-prompt-compose.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: rules/pre-dev-readiness-gate.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: rules/reinvention-prevention.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: scripts/primitive_fitness_ledger.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: scripts/runtime_hook_reality.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: scripts/so-reaper.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: scripts/startup-benchmark.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: scripts/verify_plan_claims.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: skills/__contracts__/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/__contracts__/canonical-event-emitter/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/adr-tombstone/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/architecture-map-answer/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/audit-integrity/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/browser-task/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/bump-version/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/cognitive-os-init/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/cognitive-os-status/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/cognitive-os-test/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/component-reality-check/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/coordination-status/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/cos-maintainer-operations/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/cos-status/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: skills/decision-triage/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: skills/deps-update/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/docs-execution-audit/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/dogfood-score/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/experimental/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/generate-changelog/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/memory-scan/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/pattern-audit/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/phoenix-trace-ui/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface from os-only semantic hints.
 - path: skills/primitive-surface-reduction/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/primitive-usage-map/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/product-answer/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/push-release/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/radar-update/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/release-os/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/so-vs-vanilla/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/tag-release/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/test-contract-repair/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/validate-release/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: skills/vuln-remediation-flow/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/agent-mandatory-rules.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/agent-preamble.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/counsel-outreach/clean-room-permission.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/counsel-outreach/license-clarification.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/counsel-outreach/review-request.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/edit-conflict-response.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/hook-template.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/rebranding-checklist.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/rule-template.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/skill-template.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only declaration; no consumer-project surface evidence.
 - path: templates/adr-template.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Generic ADR decision template usable for COS decisions and adopter project architecture
-    decisions.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Generic ADR decision template usable for COS decisions and adopter project architecture decisions.'
 - path: templates/agent-research-only.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Research-only agent prompt template applies to COS research tasks and adopter
-    project research phases.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Research-only agent prompt template applies to COS research tasks and adopter project research phases.'
 - path: templates/contracts/test_redteam_baseline.template.py
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Consumer-customizable red-team baseline template is designed for adopter projects
-    while mirroring COS red-team contracts.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Consumer-customizable red-team baseline template is designed for adopter projects while mirroring COS red-team contracts.'
 - path: templates/cross-harness-authoring.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Cross-harness authoring template governs portable primitive authoring in COS source
-    and project overlays.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Cross-harness authoring template governs portable primitive authoring in COS source and project overlays.'
 - path: templates/error-recovery.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Generic error recovery template applies to any agentic coding task in COS or adopter
-    repos.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Generic error recovery template applies to any agentic coding task in COS or adopter repos.'
 - path: templates/prompt-hooks/assumption-tracker-prompt.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Prompt hook template for assumption counting is repo-agnostic and reusable by
-    COS and project prompts.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Prompt hook template for assumption counting is repo-agnostic and reusable by COS and project prompts.'
 - path: templates/prompt-hooks/scope-creep-prompt.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Prompt hook template for scope checking is repo-agnostic and reusable by COS and
-    project prompts.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Prompt hook template for scope checking is repo-agnostic and reusable by COS and project prompts.'
 - path: templates/quality-gates.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
-    Generic quality gate template applies to COS development and adopter project development.'
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface: Generic quality gate template applies to COS development and adopter project development.'
 - path: skills/add-rule/SKILL.md
   status: maintainer-only
   rationale: 'Manual scope calibration iteration 016: skill authors new Cognitive OS rule files, updates COS rule indexes/symlinks, and is only required by COS maintainers.'
@@ -2246,7 +1771,6 @@ items:
 - path: scripts/stash_quarantine_audit.py
   status: shared-surface
   rationale: 'ADR-318: stash quarantine audit checks generic docs/code for unsafe stash instructions and can run in COS or adopter repositories.'
-
 - path: scripts/cos-doctor-concurrency.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 034: read-only concurrent-agent safety diagnostics are projectable for COS maintenance and adopter repositories.'
@@ -2259,7 +1783,6 @@ items:
 - path: scripts/cos-doctor-work-inventory.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 034: branch/worktree/stash/dirty-WIP inventory is generic multi-agent workspace hygiene.'
-
 - path: scripts/cos-engram-bundle
   status: shared-surface
   rationale: 'Manual scope review iteration 035: project-scoped Engram bundle export is portable memory federation for COS and adopter repositories.'
@@ -2269,7 +1792,6 @@ items:
 - path: scripts/engram-sync.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 035: project-scoped Engram sync/export is cross-device memory portability for COS and adopter repositories.'
-
 - path: scripts/compose_agent_prompt.py
   status: maintainer-only
   rationale: 'Manual scope review iteration 036: prompt trap composer embeds COS repository gotchas such as generated settings, lib symlink invariants, and .cognitive-os internals.'
@@ -2285,28 +1807,365 @@ items:
 - path: scripts/extract-agent-output.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 036: agent JSONL output extraction is a generic operator utility for COS and Claude-based adopter repositories.'
+- path: rules/RULES-COMPACT.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: COS Rules Index is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/adaptive-bypass.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Adaptive Bypass — Smart Orchestration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-audit-before-commit.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Audit Before Commit is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-escalation.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Escalation Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-identity.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Identity Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-kpis.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent KPI Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-output-reading.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Output Reading Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-security.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Security — Least Privilege Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/aguara-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Aguara -- AI Agent Security Scanner is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/ai-provider-identity.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: AI Provider Identity Guard is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/anti-hallucination.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Anti-Hallucination Rule is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/assumption-tracking.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Assumption Tracking is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/audit-trail.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Audit Trail — Automated Work Tracking is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/auto-rollback.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Rollback Planning Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/auto-skill-generation.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Auto-Skill Generation Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/bash-naming.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Bash Script Naming — Kebab-Case Required is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/blast-radius.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Blast Radius Estimation is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/capability-levels.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Capability Levels — Auto-Disable Components is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/clarification-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Mandatory Clarification Gate is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/closed-loop-prompts.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Closed-Loop Prompts — Self-Correcting Agent Execution is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/cognitive-load.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Cognitive Load Monitoring is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/confidence-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Confidence Gate Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/confidentiality-protection.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Confidentiality Protection — IP Leak Prevention is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/consequence-system.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Consequence System — OKR-Driven Feedback Loop is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/content-policy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Content Policy — Automated Enforcement is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/context-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Context Window Management — Proactive Summarization Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/context-optimization.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Context Optimization Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/context7-auto-trigger.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Context7 Auto-Trigger — Library Documentation Lookup is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/cost-prediction.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Cost Prediction Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/crash-recovery.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Crash Recovery Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/credential-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Credential Management is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/decision-depth-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Decision Depth Gate is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/definition-of-done.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Definition of Done (DoD) by Task Complexity is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/doc-sync.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Doc Sync Rule is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/dry-run.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Dry-Run Preview Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/dynamic-tool-creation.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Dynamic Tool Creation -- Mid-Task Tool Generation is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/e2b-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: E2B Sandbox -- Secure Agent Code Execution is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/engram-api-safety.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Engram API Safety — Never Mutate Production Daemon for Discovery is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/engram-organization.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Engram Organization — Path Segregation (BMAD v6 Pattern 8) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/estimation-calibration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Estimation Calibration Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/hcom-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Hcom -- Cross-Terminal Agent Communication is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/license-policy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: License Policy is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/llm-dispatch.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: LLM Dispatch Policy (ADR-049 Option B) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/memory-governance.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Memory Governance v2 — Typed Memory Policies is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/model-compatibility.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Model Compatibility — Baseline Expectations is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/model-directive.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Model Directive Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/non-blocking-retry.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Non-Blocking Retry Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/observability.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Observability — MLflow Integration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/orchestrator-mode.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Orchestrator Mode — Subprocess-Based Delegation is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/parry-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Parry -- Prompt Injection Scanner is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/performance-monitoring.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Performance Monitoring Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/phase-aware-agents.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Phase-Aware Agent Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/prompt-composition.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Prompt Composition Rule is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/prompt-quality.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Prompt Quality Scoring is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/queue-advisor.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Queue Advisor — Dynamic Dispatch Prioritization is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/queue-drain.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Queue Drain Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/rate-limit-protection.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Token Budget Monitor (formerly Rate Limit Protection) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/rate-limiting.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Rate Limiting Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/recommendation-grounding.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Purpose is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/repomix-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Repomix Integration — Repository Context Packing is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/resource-governance.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Resource Governance Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/responsiveness.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Responsiveness Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/result-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Result Management — Large Output Prevention is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/retry-contract.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Retry Contract is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/scope-creep-detection.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Scope Creep Detection is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/scope-proportionality.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Scope Proportionality Check is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/security-scanning.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Security Scanning — Semgrep SAST Integration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/self-improvement-protocol.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Self-Improvement Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/session-close-doc-truth.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Session-Close Documentation-Truth Discipline (ADR-277 + ADR-275) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/session-concurrency.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Session Concurrency is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/singularity.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Singularity Rule — Autonomous MAPE-K Control Loop is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/skill-invocation-mandatory.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Skill Invocation Mandatory at High Router Confidence (ADR-188) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/skill-rewrite.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Skill Rewrite Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/so-slo.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: SO SLO Catalogue — Source of Truth (ADR-028 D5) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/split-and-resume.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Split-and-Resume Pattern is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/startup-protocol.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Session Startup Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/step-files.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Step-File Architecture for Long Phases (BMAD v6 Pattern 5) is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/supply-chain-defense.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Supply Chain Defense Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/task-dag.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Task DAG — Dependency-Aware Agent Orchestration is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/tero-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Tero -- HTTP Testing with Chaos Engineering is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/token-economy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Token Economy — Cost Transparency and Waste Prevention is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/trust-score.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Trust Score Protocol is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/workload-scheduling.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Workload Scheduling is repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: scripts/cos-adapter-compile
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 038: adapter compiler is shared because COS uses it to produce governed adapter outputs and adopter projects consume the generated native IDE files.'
+- path: scripts/documentation_truth_audit.py
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 038: documentation truth auditing is shared repository-governance for COS docs and adopter-project docs with declared truth manifests.'
+- path: scripts/cos-governed-edit.sh
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 038: governed edit wrapper is shared runtime-safety for COS maintenance and adopter projects lacking native Edit/Write hook parity.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
-  rationale: Scripts are SO-local by default unless exact rows or projection manifests
-    classify them as consumer surfaces.
+  rationale: Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces.
 - pattern: hooks/_lib/**
   status: so-local-only
-  rationale: Hook libraries are support files projected with hooks, not standalone
-    consumer capabilities.
+  rationale: Hook libraries are support files projected with hooks, not standalone consumer capabilities.
 - pattern: hooks/*.sh
   status: so-local-only
-  rationale: Unprojected hooks are local optional/runtime surfaces unless cos_init
-    projection proves them.
+  rationale: Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.
 - pattern: rules/*.md
   status: so-local-only
-  rationale: Unprojected rules are doctrine/context surfaces unless default/full projection
-    proves them.
+  rationale: Unprojected rules are doctrine/context surfaces unless default/full projection proves them.
 - pattern: skills/**/SKILL.md
   status: so-local-only
-  rationale: Unprojected repo skills are repo-only or maintainer surfaces unless default/full
-    projection proves them.
+  rationale: Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.
 - pattern: .codex/skills/**/SKILL.md
   status: so-local-only
-  rationale: Codex workspace skills are local authoring aids, not consumer-project
-    projection surfaces.
+  rationale: Codex workspace skills are local authoring aids, not consumer-project projection surfaces.
+
+- path: scripts/agent_work_ledger.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Append-only work ledger scoped by project runtime; useful for COS maintenance and consumer repos with concurrent agents.
+- path: scripts/approval_ledger.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Approval ledger scoped by project runtime; records high-risk agent actions for COS and consumer repos.
+- path: scripts/claim_task.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Task-claim CLI over project-dir state; prevents multi-agent file/task collisions in COS and consumer repos.
+- path: scripts/cos-action-receipt
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Harness action receipt wrapper; records agent actions independently of repository domain.
+- path: scripts/cos-git-sync.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Safe no-rebase git synchronization policy for any git repository managed by agents.
+- path: scripts/cos-merge-queue-bench.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Merge-queue throughput benchmark for repository coordination; applies to COS and consumer repos adopting the queue.
+- path: scripts/cos-merge-queue.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. File-based merge queue CLI for multi-agent repository coordination in COS and consumer repos.
+- path: scripts/cos-remote-branch-triage
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Remote branch triage wrapper for shared git hygiene in COS and consumer repos.
+- path: scripts/cos-run-task
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Task runner wrapper for agent work execution in COS and consumer project worktrees.
+- path: scripts/cos-safe-clean
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Dry-run-first cleanup primitive for untracked/generated work in any project repository.
+- path: scripts/cos-session-branch.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Per-session branch isolation primitive for multi-agent work in any git repository.
+- path: scripts/cos-team
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Team coordination CLI surface for agent workflows in COS and consumer repos.
+- path: scripts/cos_branch_lock.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Branch ownership locks for concurrent agents; scoped to a project repository.
+- path: scripts/cos_cleanup_preserved_wip.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Preserved-WIP cleanup helper for project worktrees after concurrent-agent recovery.
+- path: scripts/cos_concurrent_status.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Concurrent-agent status reporter over project runtime state.
+- path: scripts/cos_coordination_status.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Coordination status reporter for claims/locks/session state in a project repository.
+- path: scripts/cos_remote_branch_triage.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Remote branch triage implementation for git repositories with agent branches.
+- path: scripts/cos_run_task.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Task runner implementation for project-scoped agent work execution.
+- path: scripts/cos_session_coordination.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Cross-session coordination CLI for claims, ownership, and worktree intake.
+- path: scripts/cos_task_claims.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Task-claims CLI for project-scoped multi-agent coordination.
+- path: scripts/cos_wip_safety_score.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. WIP safety scoring for local project repositories before risky operations.
+- path: scripts/cos_worktree_sweeper.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Worktree sweeper for stale multi-agent worktrees in COS and consumer repos.
+- path: scripts/cross_session_reconciler.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Cross-session reconciliation of agent work state in project runtime.
+- path: scripts/orphan_overwrite_detector.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Detects unreachable commits and overwritten tracked changes in any git repo.
+- path: scripts/push_collision_detect.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Push-time subject/patch collision detector for git repositories.
+- path: scripts/resource_lease.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Project-scoped cooperative resource lease primitive for concurrent agents.
+- path: scripts/session_event_bus.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Project-scoped inter-session event bus for concurrent agents.
+- path: scripts/stash-leak-alarm.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety behavior. Detects hidden auto-pre-agent stashes in project repositories before work is lost.

@@ -25,6 +25,7 @@ def make_repo(tmp_path: Path) -> Path:
     (root / "manifests").mkdir(parents=True)
 
     (root / "scripts" / "cos_init.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('install')\n")
+    (root / "scripts" / "profile_control.sh").write_text("#!/usr/bin/env bash\n# SCOPE: os-only\n")
     (root / "scripts" / "security_red_team.py").write_text("#!/usr/bin/env python3\n# SCOPE: os-only\nprint('security')\n")
     (root / "skills" / "portable" / "SKILL.md").write_text(
         "<!-- SCOPE: both -->\n---\nname: portable\naudience: os-dev\n---\nMentions manifests/ and docs/02-Decisions/ but is exported.\n"
@@ -47,7 +48,15 @@ def make_repo(tmp_path: Path) -> Path:
         )
     )
     (root / "manifests" / "primitive-readiness-protected-install-surfaces.yaml").write_text(
-        yaml.safe_dump({"schema_version": 1, "scripts": [{"path": "scripts/cos_init.py", "surface": "bootstrap"}]})
+        yaml.safe_dump(
+            {
+                "schema_version": 1,
+                "scripts": [
+                    {"path": "scripts/cos_init.py", "surface": "bootstrap"},
+                    {"path": "scripts/profile_control.sh", "surface": "profile-application"},
+                ],
+            }
+        )
     )
     (root / "manifests" / "primitive-consumer-availability.yaml").write_text(
         yaml.safe_dump(
@@ -94,6 +103,8 @@ def test_classifier_uses_distribution_evidence_not_grep_mentions(tmp_path: Path)
 
     assert rows["scripts/cos_init.py"].suggested_scope == "both"
     assert rows["scripts/cos_init.py"].confidence in {"high", "medium"}
+    assert rows["scripts/profile_control.sh"].suggested_scope == "os-only"
+    assert not rows["scripts/profile_control.sh"].contradiction
     assert rows["scripts/security_red_team.py"].suggested_scope == "os-only"
     assert rows["scripts/security_red_team.py"].confidence in {"high", "medium"}
 
