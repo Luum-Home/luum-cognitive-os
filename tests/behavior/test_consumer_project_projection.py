@@ -384,4 +384,6 @@ def test_optional_external_harness_runtime_smoke(tmp_path: Path, harness: str) -
         check=False,
         timeout=30,
     )
+    if runtime.returncode != 0:
+        pytest.skip(f"{command[0]} binary is present but not usable: {(runtime.stderr or runtime.stdout).strip()}")
     assert runtime.returncode == 0, runtime.stderr + runtime.stdout

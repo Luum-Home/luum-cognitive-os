@@ -323,6 +323,8 @@ class TestFreshInstall:
         assert ".cognitive-os/skills/cos/" in instructions
         assert "slash commands are supported" in instructions
         assert "acceptance criteria" in instructions
+        assert "cos sdd next --feature <slug>" in instructions
+        assert ".cognitive-os/workflows/sdd/<slug>" in instructions
         assert "bugfix|decision|architecture|discovery|pattern|config|preference" in instructions
 
         install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())

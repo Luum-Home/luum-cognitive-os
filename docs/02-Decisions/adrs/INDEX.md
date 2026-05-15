@@ -401,3 +401,4 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 
 </details>
 | [321](ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) | Primitive Scope Plane Balance and Proof Ratchets | accepted | implemented | 2026-05-15 | Scope answers install surface; plane answers why the primitive exists; proof level answers evidence strength. |
+| [322](ADR-322-consumer-sdd-lane-contract.md) | Consumer SDD Lane Contract | accepted | partial | 2026-05-15 | Local-first consumer SDD workflow with durable specs, approval, traceability review, and planned external task-state adapters. |
