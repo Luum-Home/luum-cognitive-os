@@ -598,3 +598,32 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 5: **268 → 131** non-import Pyrefly errors.
+
+### Remediation pass 6 — governance script narrowings
+
+| Files | Finding class | Change | Pyrefly effect |
+|---|---|---|---:|
+| `lib/sprint_orchestrator.py` | Duplicate relative/absolute `CanonicalEvent` import union made event base invalid | Prefer canonical `lib.harness_adapter.base` import with top-level fallback. | Removed 5 event inheritance findings. |
+| `scripts/adr_reserve.py` | Reservation JSON arrays and numbers not narrowed before iteration/cast | Added list/scalar guards around reservation payloads. | Removed 4 ADR reservation findings. |
+| `scripts/cos_test_quality_audit.py` | AST result list inferred too narrowly; summary total object cast | Annotated assertion list as `list[ast.AST]` and narrowed total before `int(...)`. | Removed 4 audit findings. |
+| `scripts/primitive_harness_coverage.py` | UI surface config values not narrowed before list/set operations | Normalized evidence and operable primitive lists before iteration. | Removed 4 UI harness findings. |
+| `lib/prelaunch_audit.py` | Follow-up sample value type and first-sample narrowing | Explicit sample dict type and safe sample extraction. | Removed remaining prelaunch sample findings. |
+
+Validation:
+
+```bash
+uv run pytest \
+  tests/unit/test_sprint_orchestrator.py \
+  tests/unit/test_adr_reserve.py \
+  tests/unit/test_primitive_harness_coverage.py \
+  tests/unit/test_test_quality_auditor.py \
+  tests/red_team/portability/test_cos_test_quality_audit.py \
+  tests/red_team/portability/test_primitive_harness_coverage.py \
+  tests/unit/test_prelaunch_audit.py -q
+# 43 passed in 5.01s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=116 elapsed_seconds=2 ...
+```
+
+Running baseline after pass 6: **268 → 116** non-import Pyrefly errors.

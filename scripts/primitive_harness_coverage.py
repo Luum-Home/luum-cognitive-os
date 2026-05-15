@@ -395,15 +395,21 @@ def _state_for(root: Path, primitive: str, family: str, scope: str | None, harne
             evidence.extend(str(path) for path in report.get("evidence", []))
     elif surface_kind == "ui":
         ui = UI_SURFACES.get(harness, {})
-        ui_paths = [root / str(path) for path in ui.get("evidence", [])]
+        ui_evidence = ui.get("evidence", [])
+        evidence_items = ui_evidence if isinstance(ui_evidence, list) else []
+        optional_evidence = ui.get("optional_evidence", [])
+        optional_items = optional_evidence if isinstance(optional_evidence, list) else []
+        raw_operable_primitives = ui.get("operable_primitives", [])
+        operable_primitive_items = raw_operable_primitives if isinstance(raw_operable_primitives, list) else []
+        ui_paths = [root / str(path) for path in evidence_items]
         projected = bool(ui_paths and all(path.exists() for path in ui_paths))
         wired = projected
         observable = projected
-        operable_primitives = set(ui.get("operable_primitives", []) or [])
+        operable_primitives = set(operable_primitive_items)
         operable = bool(ui.get("operable", False)) and (not operable_primitives or primitive in operable_primitives)
         if projected:
-            evidence.extend(str(path) for path in ui.get("evidence", []))
-            evidence.extend(str(path) for path in ui.get("optional_evidence", []) if (root / str(path)).exists())
+            evidence.extend(str(path) for path in evidence_items)
+            evidence.extend(str(path) for path in optional_items if (root / str(path)).exists())
     else:
         if wire:
             evidence.append("settings-wiring")
