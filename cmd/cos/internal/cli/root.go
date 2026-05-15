@@ -34,7 +34,7 @@ Commands:
   validate    Validate cos-package.yaml in the current directory
   add         Search and install skills in one step (search + install)
   install     Install a cos package from local path, GitHub, or URL
-  project     Plan project-local harness projection
+  project     Apply project-local harness projection
   remove      Remove an installed package
   list        List installed packages
   info        Show detailed information about a package

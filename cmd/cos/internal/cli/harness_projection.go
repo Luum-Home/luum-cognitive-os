@@ -30,6 +30,10 @@ var supportedHarnesses = []string{
 	"shell-ci",
 }
 
+var plannedHarnesses = map[string]string{
+	"windsurf": "planned in manifests/harness-projection.yaml; driver/proof is not implemented yet",
+}
+
 var supportedHarnessSet = func() map[string]struct{} {
 	out := make(map[string]struct{}, len(supportedHarnesses))
 	for _, harness := range supportedHarnesses {
@@ -66,6 +70,9 @@ var structuralHarnessSettings = map[string]string{
 func validateHarness(harness string) error {
 	if _, ok := supportedHarnessSet[harness]; ok {
 		return nil
+	}
+	if reason, ok := plannedHarnesses[harness]; ok {
+		return fmt.Errorf("unsupported harness %q: %s", harness, reason)
 	}
 	return fmt.Errorf("unsupported harness %q: supported harnesses are %s", harness, strings.Join(supportedHarnesses, ", "))
 }

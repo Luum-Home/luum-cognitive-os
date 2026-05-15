@@ -12,18 +12,21 @@ import (
 )
 
 var (
-	installPrimitiveHarness = "claude"
-	installProfileHarness   = "claude"
+	installPrimitiveHarness      = "claude"
+	installProfileHarness        = "claude"
+	installPrimitiveDryRun       bool
+	installProfileDryRun         bool
+	installPrimitiveRuntimeSmoke bool
+	installProfileRuntimeSmoke   bool
 )
 
 var installPrimitiveCmd = &cobra.Command{
 	Use:   "primitive <family/name>",
-	Short: "Plan a harness-aware primitive projection from the canonical COS catalog",
-	Long: `Plan installation/projection for one canonical Cognitive OS primitive.
+	Short: "Install a harness-aware primitive projection from the canonical COS catalog",
+	Long: `Install or dry-run one canonical Cognitive OS primitive projection.
 
 This command is intentionally source-of-truth-first: it reads the current
-project/repo catalog surfaces and reports the harness projection boundary instead
-of copying marketplace content into .claude/*.
+project/repo catalog surfaces and reports the harness projection boundary while keeping .cognitive-os as the canonical installed surface.
 
 Examples:
   cos install primitive skill/cos-status --harness cursor
@@ -35,8 +38,8 @@ Examples:
 
 var installProfileCmd = &cobra.Command{
 	Use:   "profile <name>",
-	Short: "Plan a harness-aware profile projection",
-	Long: `Plan installation/projection for a Cognitive OS profile.
+	Short: "Install a harness-aware profile projection",
+	Long: `Install or dry-run a Cognitive OS profile projection.
 
 Profiles are projected through scripts/cos_init.py and retain .cognitive-os as
 the canonical primitive source. The currently implemented first-run profiles are
@@ -47,12 +50,16 @@ Examples:
   cos install profile full --harness claude
   cos install profile sre --harness claude`,
 	Args: cobra.ExactArgs(1),
-	RunE: runInstallProfilePlan,
+	RunE: runInstallProfile,
 }
 
 func init() {
 	installPrimitiveCmd.Flags().StringVar(&installPrimitiveHarness, "harness", "claude", "Target harness projection")
+	installPrimitiveCmd.Flags().BoolVar(&installPrimitiveDryRun, "dry-run", false, "Show projection plan without writing files")
+	installPrimitiveCmd.Flags().BoolVar(&installPrimitiveRuntimeSmoke, "runtime-smoke", false, "Run optional harness binary smoke when the binary is installed")
 	installProfileCmd.Flags().StringVar(&installProfileHarness, "harness", "claude", "Target harness projection")
+	installProfileCmd.Flags().BoolVar(&installProfileDryRun, "dry-run", false, "Show projection plan without writing files")
+	installProfileCmd.Flags().BoolVar(&installProfileRuntimeSmoke, "runtime-smoke", false, "Run optional harness binary smoke when the binary is installed")
 	installCmd.AddCommand(installPrimitiveCmd)
 	installCmd.AddCommand(installProfileCmd)
 }
@@ -68,33 +75,69 @@ func runInstallPrimitive(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Fprintf(cmd.OutOrStdout(), "Primitive projection plan\n")
+	if installPrimitiveDryRun {
+		fmt.Fprintf(cmd.OutOrStdout(), "Primitive projection plan\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "primitive:        %s/%s\n", family, name)
+		fmt.Fprintf(cmd.OutOrStdout(), "canonical_source: %s\n", canonical)
+		fmt.Fprintf(cmd.OutOrStdout(), "harness:          %s\n", installPrimitiveHarness)
+		fmt.Fprintf(cmd.OutOrStdout(), "projection_path:  %s\n", harnessProjectionPath(installPrimitiveHarness))
+		fmt.Fprintf(cmd.OutOrStdout(), "proof_level:      %s\n", harnessProofSummary(installPrimitiveHarness))
+		fmt.Fprintf(cmd.OutOrStdout(), "apply:            rerun without --dry-run to install the primitive and write a receipt\n")
+		return nil
+	}
+
+	receipt, err := applyPrimitiveProjection(root, spec, family, name, canonical, installPrimitiveHarness, installPrimitiveRuntimeSmoke)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(cmd.OutOrStdout(), "Primitive projection applied\n")
 	fmt.Fprintf(cmd.OutOrStdout(), "primitive:        %s/%s\n", family, name)
-	fmt.Fprintf(cmd.OutOrStdout(), "canonical_source: %s\n", canonical)
+	fmt.Fprintf(cmd.OutOrStdout(), "target:           %s\n", receipt.Target)
 	fmt.Fprintf(cmd.OutOrStdout(), "harness:          %s\n", installPrimitiveHarness)
-	fmt.Fprintf(cmd.OutOrStdout(), "projection_path:  %s\n", harnessProjectionPath(installPrimitiveHarness))
-	fmt.Fprintf(cmd.OutOrStdout(), "proof_level:      %s\n", harnessProofSummary(installPrimitiveHarness))
-	fmt.Fprintf(cmd.OutOrStdout(), "apply:            use `cos project --harness %s` to re-project the selected profile after catalog/profile changes\n", installPrimitiveHarness)
+	fmt.Fprintf(cmd.OutOrStdout(), "projection_path:  %s\n", receipt.ProjectionPath)
+	fmt.Fprintf(cmd.OutOrStdout(), "proof_level:      %s\n", receipt.ProofLevel)
+	fmt.Fprintf(cmd.OutOrStdout(), "backups:          %d\n", len(receipt.Backups))
+	fmt.Fprintf(cmd.OutOrStdout(), "runtime_smoke:    %s\n", receipt.RuntimeSmoke["status"])
 	return nil
 }
 
-func runInstallProfilePlan(cmd *cobra.Command, args []string) error {
+func runInstallProfile(cmd *cobra.Command, args []string) error {
 	profile := args[0]
 	if err := validateHarness(installProfileHarness); err != nil {
 		return err
 	}
 
 	command, registered := profileProjectionCommand(profile, installProfileHarness)
-	fmt.Fprintf(cmd.OutOrStdout(), "Profile projection plan\n")
+	if installProfileDryRun || !registered {
+		fmt.Fprintf(cmd.OutOrStdout(), "Profile projection plan\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "profile:         %s\n", profile)
+		fmt.Fprintf(cmd.OutOrStdout(), "registered:      %t\n", registered)
+		fmt.Fprintf(cmd.OutOrStdout(), "harness:         %s\n", installProfileHarness)
+		fmt.Fprintf(cmd.OutOrStdout(), "projection_path: %s\n", harnessProjectionPath(installProfileHarness))
+		fmt.Fprintf(cmd.OutOrStdout(), "proof_level:     %s\n", harnessProofSummary(installProfileHarness))
+		if registered {
+			fmt.Fprintf(cmd.OutOrStdout(), "command:         %s\n", command)
+			fmt.Fprintf(cmd.OutOrStdout(), "apply:           rerun without --dry-run to project this profile and write a receipt\n")
+		} else {
+			fmt.Fprintf(cmd.OutOrStdout(), "command:         no registered profile command yet; add it to manifests/primitive-projection-profiles.yaml before applying\n")
+		}
+		return nil
+	}
+
+	root := project.FindRootOrCwd()
+	receipt, output, err := applyProfileProjection(root, installProfileHarness, profile, installProfileRuntimeSmoke)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(cmd.OutOrStdout(), "Profile projection applied\n")
 	fmt.Fprintf(cmd.OutOrStdout(), "profile:         %s\n", profile)
-	fmt.Fprintf(cmd.OutOrStdout(), "registered:      %t\n", registered)
 	fmt.Fprintf(cmd.OutOrStdout(), "harness:         %s\n", installProfileHarness)
-	fmt.Fprintf(cmd.OutOrStdout(), "projection_path: %s\n", harnessProjectionPath(installProfileHarness))
-	fmt.Fprintf(cmd.OutOrStdout(), "proof_level:     %s\n", harnessProofSummary(installProfileHarness))
-	if registered {
-		fmt.Fprintf(cmd.OutOrStdout(), "command:         %s\n", command)
-	} else {
-		fmt.Fprintf(cmd.OutOrStdout(), "command:         no registered profile command yet; add it to manifests/primitive-projection-profiles.yaml before applying\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "projection_path: %s\n", receipt.ProjectionPath)
+	fmt.Fprintf(cmd.OutOrStdout(), "proof_level:     %s\n", receipt.ProofLevel)
+	fmt.Fprintf(cmd.OutOrStdout(), "backups:         %d\n", len(receipt.Backups))
+	fmt.Fprintf(cmd.OutOrStdout(), "runtime_smoke:   %s\n", receipt.RuntimeSmoke["status"])
+	if strings.TrimSpace(output) != "" {
+		fmt.Fprintf(cmd.OutOrStdout(), "cos_init_output:\n%s", output)
 	}
 	return nil
 }
@@ -139,18 +182,18 @@ func primitiveCandidates(root string, family string, name string) ([]string, str
 	switch family {
 	case "skill", "skills":
 		return []string{
-			filepath.Join(root, ".cognitive-os", "skills", "cos", name, "SKILL.md"),
 			filepath.Join(root, "skills", name, "SKILL.md"),
+			filepath.Join(root, ".cognitive-os", "skills", "cos", name, "SKILL.md"),
 		}, "skill", nil
 	case "hook", "hooks":
 		return []string{
-			filepath.Join(root, ".cognitive-os", "hooks", "cos", name+".sh"),
 			filepath.Join(root, "hooks", name+".sh"),
+			filepath.Join(root, ".cognitive-os", "hooks", "cos", name+".sh"),
 		}, "hook", nil
 	case "rule", "rules":
 		return []string{
-			filepath.Join(root, ".cognitive-os", "rules", "cos", name+".md"),
 			filepath.Join(root, "rules", name+".md"),
+			filepath.Join(root, ".cognitive-os", "rules", "cos", name+".md"),
 		}, "rule", nil
 	default:
 		return nil, "", fmt.Errorf("unsupported primitive family %q: use skill, hook, or rule", family)
