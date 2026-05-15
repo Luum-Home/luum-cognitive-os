@@ -340,6 +340,9 @@ check_scope_portability_contract() {
     python3 "$REPO_ROOT/scripts/primitive_scope_classifier.py" \
       --project-dir "$REPO_ROOT" --fail-contradictions --fail-low-confidence \
       --json-out .cognitive-os/reports/primitive-scope-classifier-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-dependency-audit" \
+      --project-dir "$REPO_ROOT" --strict \
+      --json-out .cognitive-os/reports/primitive-scope-dependency-audit-ci-local.json >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-both-portability-audit" \
       --repo-root "$REPO_ROOT" --strict --json --no-write >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-projection-audit" \

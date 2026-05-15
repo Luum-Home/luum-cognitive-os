@@ -624,3 +624,50 @@ def test_shared_skill_semantic_patterns_for_proof_and_pending_workflows(tmp_path
     assert brief.suggested_scope == "both"
     assert any(item.source == "semantic-pattern" and item.detail == "shared-proof-drill" for item in proof.evidence)
     assert any(item.source == "semantic-pattern" and item.detail == "shared-session-pending-workflow" for item in brief.evidence)
+
+
+def test_batch_portability_proof_caps_both_confidence_until_specific_proof(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "scripts" / "batch_shared.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('shared')\n")
+
+    consumer_path = root / "manifests" / "primitive-consumer-availability.yaml"
+    consumer = yaml.safe_load(consumer_path.read_text())
+    consumer["items"].append({"path": "scripts/batch_shared.py", "status": "shared-surface", "rationale": "synthetic shared"})
+    consumer_path.write_text(yaml.safe_dump(consumer))
+
+    lifecycle_path = root / "manifests" / "primitive-lifecycle.yaml"
+    lifecycle = yaml.safe_load(lifecycle_path.read_text())
+    lifecycle["primitives"].append(
+        {
+            "id": "scripts/batch_shared.py",
+            "kind": "script",
+            "distribution": "team",
+            "lifecycle_state": "candidate",
+            "consumer_accessibility": "lifecycle-declared-shared-surface",
+        }
+    )
+    lifecycle_path.write_text(yaml.safe_dump(lifecycle))
+
+    proof = root / "tests" / "red_team" / "portability" / "test_low_confidence_scope_batch.py"
+    proof.write_text("def test_batch(): pass\n")
+    behavior_path = root / "manifests" / "primitive-behavior-evidence.yaml"
+    behavior_path.write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "primitive-behavior-evidence.v1",
+                "evidence": [
+                    {
+                        "primitive": "scripts/batch_shared.py",
+                        "harnesses": ["shell-ci"],
+                        "tests": ["tests/red_team/portability/test_low_confidence_scope_batch.py"],
+                    }
+                ],
+            }
+        )
+    )
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["scripts/batch_shared.py"]
+
+    assert row.suggested_scope == "both"
+    assert row.confidence == "medium"
+    assert "batch portability proof is acceptable but weak" in row.next_action

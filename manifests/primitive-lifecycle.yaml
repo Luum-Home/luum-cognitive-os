@@ -7521,7 +7521,8 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -7530,11 +7531,12 @@ primitives:
   - scripts/install-garak.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   runtime_projection: false
-  behavior_evidence: protected install/profile surface; surface=optional-tool-install;
+  behavior_evidence: Manual scope review iteration 044; shared optional tool installer usable by COS and consumer projects without source checkout paths.
     primitive-readiness-ledger priority=protected
   evidence_commands:
   - bash -n scripts/install-garak.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
   rollback_or_repair_command: Remove or update the scripts/install-garak.sh lifecycle
     row only after profile projection/install-path review, then regenerate primitive
     readiness ledgers.
@@ -7553,7 +7555,8 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -7562,11 +7565,12 @@ primitives:
   - scripts/install-promptfoo.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   runtime_projection: false
-  behavior_evidence: protected install/profile surface; surface=optional-tool-install;
+  behavior_evidence: Manual scope review iteration 044; shared optional tool installer usable by COS and consumer projects without source checkout paths.
     primitive-readiness-ledger priority=protected
   evidence_commands:
   - bash -n scripts/install-promptfoo.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
   rollback_or_repair_command: Remove or update the scripts/install-promptfoo.sh lifecycle
     row only after profile projection/install-path review, then regenerate primitive
     readiness ledgers.
@@ -23880,4 +23884,826 @@ primitives:
     proof is updated.
   docs_claim_level: observe
   exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos-postgres-local.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/cos-postgres-local.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/cos-postgres-local.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_local_service_scripts.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos-valkey-local.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/cos-valkey-local.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/cos-valkey-local.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_local_service_scripts.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/install-aguara.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/install-aguara.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/install-aguara.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/install-credibility-tools.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/install-credibility-tools.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/install-credibility-tools.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/install-mcp-scan.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/install-mcp-scan.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/install-mcp-scan.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/install-syft-grype.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/install-syft-grype.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/install-syft-grype.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/install-tob-skills.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/install-tob-skills.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/install-tob-skills.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/install-trivy.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: optional-runtime-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/install-trivy.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; shared optional/runtime tool usable by COS and consumer projects without source checkout paths.
+  evidence_commands:
+  - bash -n scripts/install-trivy.sh
+  - python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q
+  rollback_or_repair_command: Reclassify or remove shared-surface metadata if consumer/project usage is retired.
+  sunset_criteria: Revisit after optional tool profile adoption changes or after 90 days without consumer use.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: templates/CLAUDE.md.template
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/CLAUDE.md.template
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/CLAUDE.md.template --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/adoption-tiers.md.j2
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/adoption-tiers.md.j2
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/adoption-tiers.md.j2 --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/blocked-strings.example.txt
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/blocked-strings.example.txt
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/blocked-strings.example.txt --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/external-tools-overlay.yaml
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/external-tools-overlay.yaml
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/external-tools-overlay.yaml --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/fintech-gates.md
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/fintech-gates.md
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/fintech-gates.md --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/go-service-context.md
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/go-service-context.md
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/go-service-context.md --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/go/README.md.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/go/README.md.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/go/README.md.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/go/cognitive-os.yaml.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/go/cognitive-os.yaml.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/go/cognitive-os.yaml.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/go/gitignore.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/go/gitignore.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/go/gitignore.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/go/go.mod.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/go/go.mod.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/go/go.mod.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/go/main.go.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/go/main.go.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/go/main.go.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/minimal/README.md.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/minimal/README.md.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/minimal/README.md.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/minimal/cognitive-os.yaml.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/minimal/gitignore.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/minimal/gitignore.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/minimal/gitignore.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/python/README.md.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/python/README.md.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/python/README.md.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/python/cognitive-os.yaml.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/python/cognitive-os.yaml.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/python/cognitive-os.yaml.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/python/gitignore.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/python/gitignore.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/python/gitignore.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/python/pyproject.toml.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/python/pyproject.toml.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/python/pyproject.toml.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/settings.json.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/settings.json.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/settings.json.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/typescript/README.md.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/typescript/README.md.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/typescript/README.md.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/typescript/cognitive-os.yaml.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/typescript/gitignore.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/typescript/gitignore.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/typescript/gitignore.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/typescript/package.json.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/typescript/package.json.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/typescript/package.json.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/project-templates/typescript/tsconfig.json.tmpl
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/project-templates/typescript/tsconfig.json.tmpl
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/project-templates/typescript/tsconfig.json.tmpl --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/security-profiles/minimal.json
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/security-profiles/minimal.json
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/security-profiles/minimal.json --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/security-profiles/paranoid.json
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/security-profiles/paranoid.json
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/security-profiles/paranoid.json --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/security-profiles/standard.json
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/security-profiles/standard.json
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/security-profiles/standard.json --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/service-map.example.yaml
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/service-map.example.yaml
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/service-map.example.yaml --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
+  metrics_file: none
+- id: templates/verification-commands.example.yaml
+  kind: template
+  owner_adr: ADR-019
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-scaffold-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - templates/verification-commands.example.yaml
+  runtime_projection: false
+  behavior_evidence: Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/verification-commands.example.yaml --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Remove lifecycle row or reclassify if the template becomes COS-internal or shared across COS self-construction.
+  sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
+  docs_claim_level: observe
+  exit_behavior: data-only
   metrics_file: none

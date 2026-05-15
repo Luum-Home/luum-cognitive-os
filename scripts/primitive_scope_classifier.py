@@ -335,6 +335,13 @@ def _paired_test(root: Path, rel: str, behavior_evidence: dict[str, dict[str, An
 
 
 
+def _is_batch_portability_proof(path: str | None) -> bool:
+    if not path:
+        return False
+    name = Path(path).name
+    return name in {"test_low_confidence_scope_batch.py"} or "batch" in name and "scope" in name
+
+
 def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> list[Evidence]:
     """Return conservative semantic evidence learned from repeated manual review.
 
@@ -523,6 +530,11 @@ def _decide(rel: str, declared: str | None, evidence: list[Evidence], paired: st
             confidence = "high" if winning >= 90 and winning - second >= 30 else "medium" if winning >= 65 and winning > second else "low"
             if suggested == "project" and winning < 65:
                 confidence = "low"
+            # A batch portability file is acceptable proof that prevents a `both` contradiction,
+            # but it is intentionally weaker than a primitive-specific falsification test.
+            # Keep such rows out of high confidence until a dedicated or family-specific proof exists.
+            if suggested == "both" and confidence == "high" and _is_batch_portability_proof(paired):
+                confidence = "medium"
             source = "+".join(item.source for item in evidence if item.scope == suggested)
     else:
         suggested = "unknown"
@@ -537,6 +549,8 @@ def _decide(rel: str, declared: str | None, evidence: list[Evidence], paired: st
 
     if suggested == "both" and not paired:
         next_action = f"add paired portability/falsification test, e.g. {suggested_test_path(rel)}"
+    elif suggested == "both" and _is_batch_portability_proof(paired):
+        next_action = f"batch portability proof is acceptable but weak; add primitive-specific proof, e.g. {suggested_test_path(rel)}"
     elif suggested == "project" and source == "declared-project-pending-proof":
         next_action = "add positive consumer-project-only projection evidence or reclassify if this is not project-only"
     elif source == "conflicting-distribution-evidence":

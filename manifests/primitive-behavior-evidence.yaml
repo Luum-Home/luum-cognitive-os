@@ -800,17 +800,17 @@ evidence:
 - primitive: scripts/cos-postgres-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_local_service_scripts.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/cos-valkey-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_local_service_scripts.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/dependency-lane.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
@@ -826,38 +826,38 @@ evidence:
 - primitive: scripts/install-aguara.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_tool_installers.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-garak.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_tool_installers.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-mcp-scan.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_tool_installers.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-promptfoo.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_tool_installers.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-tob-skills.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  - tests/red_team/portability/test_shared_tool_installers.py
   harnesses:
   - shell-ci
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/setup-git-hooks.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
@@ -1097,24 +1097,24 @@ evidence:
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-syft-grype.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-trivy.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/license-audit-syft-grype.sh
   harnesses:
   - claude
