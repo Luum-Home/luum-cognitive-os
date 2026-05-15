@@ -7,23 +7,23 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 ```json
 {
   "by_bucket": {
-    "insufficient-metadata": 271
+    "insufficient-metadata": 261
   },
   "by_declared_scope": {
-    "both": 271
+    "both": 261
   },
   "by_gap": {
-    "missing-consumer-availability-row": 271,
-    "missing-lifecycle-row": 271,
-    "no-distribution-evidence": 271
+    "missing-consumer-availability-row": 261,
+    "missing-lifecycle-row": 261,
+    "no-distribution-evidence": 261
   },
   "by_prefix": {
     "hooks": 36,
     "rules": 80,
     "scripts": 115,
-    "skills": 40
+    "skills": 30
   },
-  "total_unknown": 271
+  "total_unknown": 261
 }
 ```
 
@@ -40,7 +40,7 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `os-only-semantic-candidate` | Text looks SO-internal. | Add os-only lifecycle/consumer metadata if confirmed. |
 | `insufficient-metadata` | No clear deterministic semantic direction. | Needs manual or AI-assisted adjudication. |
 
-## insufficient-metadata (271)
+## insufficient-metadata (261)
 
 | Path | Declared | Hints | Gaps | Structure | Summary |
 |---|---|---|---|---|---|
@@ -94,5 +94,5 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `rules/assumption-tracking.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Assumption Tracking |
 | `rules/audit-trail.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit Trail — Automated Work Tracking |
 | `rules/auto-rollback.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Rollback Planning Protocol |
-| … | … | … | … | … | 221 more rows in JSON report. |
+| … | … | … | … | … | 211 more rows in JSON report. |
 

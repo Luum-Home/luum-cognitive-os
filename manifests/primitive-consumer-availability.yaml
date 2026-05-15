@@ -1536,6 +1536,36 @@ items:
   status: shared-surface
   rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
     Generic quality gate template applies to COS development and adopter project development.'
+- path: skills/add-rule/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 016: skill authors new Cognitive OS rule files, updates COS rule indexes/symlinks, and is only required by COS maintainers.'
+- path: skills/agent-dashboard/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 016: skill inspects Claude/COS background-agent runtime internals via local task directories and COS monitoring library.'
+- path: skills/analyze-improvements/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: read-only improvement analysis applies to COS metrics and adopter project COS metrics / project-local skill feedback.'
+- path: skills/apply-improvements/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: approved self-improvement application can update COS rules/skills/templates and adopter project overlays under a human gate.'
+- path: skills/branch-worktree-closure/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: git branch/worktree closure protocol is repository-agnostic for COS and adopter project agent worktrees.'
+- path: skills/catalog-full/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: full skill catalog lookup is useful for COS source catalogs and installed/project skill catalogs.'
+- path: skills/caveman-compress/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: natural-language memory compression is reusable for COS memory files and adopter project memory/preferences files.'
+- path: skills/caveman-es/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: Spanish concise communication mode is repo-agnostic agent behavior for COS and adopter projects.'
+- path: skills/caveman/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: concise communication mode is repo-agnostic agent behavior for COS and adopter projects.'
+- path: skills/compat-test/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 016: model/COS compatibility smoke test applies to COS development and installed COS behavior inside adopter projects.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

@@ -26,7 +26,7 @@ triggers:
 - /agent-dashboard
 - Show real-time status of all running background agents
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /agent-dashboard
 
 Show status of all background agents launched in this session.

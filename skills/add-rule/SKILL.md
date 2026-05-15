@@ -31,7 +31,7 @@ triggers:
 - Add Rule
 - Step-by-step guide for adding a new rule to the Cognitive OS
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Add Rule
 
 > Procedure for creating a new always-active rule file in the Cognitive OS.

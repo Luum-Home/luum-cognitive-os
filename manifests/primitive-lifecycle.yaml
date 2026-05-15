@@ -15961,3 +15961,225 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: template
   metrics_file: none
+- id: skills/add-rule/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/add-rule/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: skill authors new Cognitive OS rule files, updates COS rule indexes/symlinks, and is only required by COS maintainers.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/add-rule/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/agent-dashboard/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/agent-dashboard/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: skill inspects Claude/COS background-agent runtime internals via local task directories and COS monitoring library.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/agent-dashboard/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/analyze-improvements/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/analyze-improvements/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: read-only improvement analysis applies to COS metrics and adopter project COS metrics / project-local skill feedback.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/analyze-improvements/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/apply-improvements/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/apply-improvements/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: approved self-improvement application can update COS rules/skills/templates and adopter project overlays under a human gate.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/apply-improvements/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/branch-worktree-closure/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: git branch/worktree closure protocol is repository-agnostic for COS and adopter project agent worktrees.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/branch-worktree-closure/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/catalog-full/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/catalog-full/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: full skill catalog lookup is useful for COS source catalogs and installed/project skill catalogs.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/catalog-full/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/caveman-compress/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/caveman-compress/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: natural-language memory compression is reusable for COS memory files and adopter project memory/preferences files.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/caveman-compress/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/caveman-es/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/caveman-es/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: Spanish concise communication mode is repo-agnostic agent behavior for COS and adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/caveman-es/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/caveman/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/caveman/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: concise communication mode is repo-agnostic agent behavior for COS and adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/caveman/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/compat-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/compat-test/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 016: model/COS compatibility smoke test applies to COS development and installed COS behavior inside adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/compat-test/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none

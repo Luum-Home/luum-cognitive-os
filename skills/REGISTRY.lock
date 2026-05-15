@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:21:57+00:00'
+generated_at: '2026-05-15T11:29:32+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -9,7 +9,7 @@ skills:
 - path: skills/add-mcp/SKILL.md
   sha256: 7ab37ed33d6efa7a6ed56d479a06f5836e96d2875253467d8924d424a7e920cd
 - path: skills/add-rule/SKILL.md
-  sha256: 0370e88888eb9a014f20f316778cd9df70e15ac63dacaa6003e0aeba7170ccf9
+  sha256: 9dcaa933e3da506c92d4bfefdf2456118e55418cd6234b08288ee7c31e3c1d73
 - path: skills/add-skill/SKILL.md
   sha256: 160e919f550977a05395aee090046ebfc935790a1703f53dcac5faaaa672fc7d
 - path: skills/adr-tombstone/SKILL.md
@@ -17,7 +17,7 @@ skills:
 - path: skills/agent-control/SKILL.md
   sha256: 9724eb5882e9cafa3698ab3944fbc3e5f03178142d52db9e084d08388b072f2a
 - path: skills/agent-dashboard/SKILL.md
-  sha256: 32950f98e64bf02a1476509dd32ef6b2cbf3475672bb469e5e57cc7f290ce4e1
+  sha256: 01aee162746af28fe1596c1554a6fcbf9f428ce86fdc3d4c26b74970fad6d116
 - path: skills/agent-kpis/SKILL.md
   sha256: ecba162c7e0c0a3e0a793498ee59444935e136e578a61bee643d2d936ba66d60
 - path: skills/agent-stress-test/SKILL.md

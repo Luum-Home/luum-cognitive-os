@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:21:57+00:00'
+generated_at: '2026-05-15T11:29:32+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -5623,6 +5623,16 @@ primitives:
   projection_targets:
   - skills/add-mcp/SKILL.md
   sha256: 232a3fef7a737943154089200a1ed0b13eb62f266f4cef0a9dad884fa5c413f2
+- id: skills/add-rule/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/add-rule/SKILL.md
+  sha256: 009f896474273f5c71371d47460762d6b537f83a215ff070be1596f8bfa0d49a
 - id: skills/add-skill/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -5654,6 +5664,16 @@ primitives:
   - skills/agent-control/SKILL.md
   - scripts/orchestrator.py
   sha256: ca0bae4013c58ba90c9c10116306abafabd078aa5800a969e85b4a8f5983634a
+- id: skills/agent-dashboard/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/agent-dashboard/SKILL.md
+  sha256: ef7d7c5f5982a471c4a85fdbd3ccb2034149dd849a8ecb73e07e13b523f79f2e
 - id: skills/agent-kpis/SKILL.md
   kind: skill
   owner_adr: ADR-083
@@ -5674,6 +5694,26 @@ primitives:
   projection_targets:
   - skills/agent-stress-test/SKILL.md
   sha256: 7cfb5a8674f43b5dd039ddfe8c7e23292be3b6c2ae1938aff124361c3c54c972
+- id: skills/analyze-improvements/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/analyze-improvements/SKILL.md
+  sha256: 6c7bb17ba9371646b51e70d9cba02829dd482793bf8907dc48ad2be8da0ca00d
+- id: skills/apply-improvements/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/apply-improvements/SKILL.md
+  sha256: 884570059caeb43c7ce17cbc54678100f6976774cc446bd9a97a69d631f02ef3
 - id: skills/architecture-map-answer/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -5694,6 +5734,16 @@ primitives:
   projection_targets:
   - skills/audit-integrity/SKILL.md
   sha256: fdfc81d4f7dd2a103abb06b7551d945490c404c9924984435cfa1274f0f84d27
+- id: skills/branch-worktree-closure/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/branch-worktree-closure/SKILL.md
+  sha256: ac7a018da9d2e9ee5bf2c34f462b6c97a3b78f1c1059cf5cba2f049329f243d9
 - id: skills/browser-task/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -5714,6 +5764,46 @@ primitives:
   projection_targets:
   - skills/bump-version/SKILL.md
   sha256: f0fd3c2c145b4cdaa009c166b829518b6391af7c1a9ace4936788060f21b9dca
+- id: skills/catalog-full/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/catalog-full/SKILL.md
+  sha256: 746cbf7b10e26cfd2745361b2315146014b76674123ee4adede4d2e4746248ad
+- id: skills/caveman-compress/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/caveman-compress/SKILL.md
+  sha256: 1b0bb4cd07ca27bf01cc6369b209a5764f69cef221da010311798c6231fd187d
+- id: skills/caveman-es/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/caveman-es/SKILL.md
+  sha256: 1055103b2d08290c9c0069c83e20037635b0cff76e89f00d557c4005e91ba307
+- id: skills/caveman/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/caveman/SKILL.md
+  sha256: e5d84015c2b5be82dd1497090184b1b565a545c09bf94a548a5872e6f098d98d
 - id: skills/code-review/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -5754,6 +5844,16 @@ primitives:
   projection_targets:
   - skills/cognitive-os-test/SKILL.md
   sha256: 8c7620d0ab1f14ff8f5949b849926fd6f51e102e585314b10bc8152dc60663ed
+- id: skills/compat-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/compat-test/SKILL.md
+  sha256: 5b2923d154653d2029b11f1ec964a92f3547df913518ed5cb548e911fec334dd
 - id: skills/component-reality-check/SKILL.md
   kind: skill
   owner_adr: ADR-314
