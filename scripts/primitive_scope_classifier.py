@@ -268,6 +268,14 @@ def _load_consumer_availability(root: Path) -> dict[str, dict[str, Any]]:
     if not path.exists():
         return {}
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    misplaced = [str(item.get("path")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("path")]
+    if misplaced:
+        joined = ", ".join(sorted(misplaced)[:10])
+        suffix = "..." if len(misplaced) > 10 else ""
+        raise ValueError(
+            "primitive-consumer-availability.yaml has exact path rows under patterns; "
+            f"move them to items: {joined}{suffix}"
+        )
     return {str(item["path"]): item for item in data.get("items", []) if isinstance(item, dict) and item.get("path")}
 
 

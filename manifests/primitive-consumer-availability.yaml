@@ -3229,31 +3229,6 @@ items:
   status: maintainer-only
   rationale: Manual scope calibration iteration 040 classified os-only. Writes machine-readable
     ACC proof-drill evidence under COS docs reports.
-patterns:
-- pattern: scripts/**
-  status: so-local-only
-  rationale: Scripts are SO-local by default unless exact rows or projection manifests
-    classify them as consumer surfaces.
-- pattern: hooks/_lib/**
-  status: so-local-only
-  rationale: Hook libraries are support files projected with hooks, not standalone
-    consumer capabilities.
-- pattern: hooks/*.sh
-  status: so-local-only
-  rationale: Unprojected hooks are local optional/runtime surfaces unless cos_init
-    projection proves them.
-- pattern: rules/*.md
-  status: so-local-only
-  rationale: Unprojected rules are doctrine/context surfaces unless default/full projection
-    proves them.
-- pattern: skills/**/SKILL.md
-  status: so-local-only
-  rationale: Unprojected repo skills are repo-only or maintainer surfaces unless default/full
-    projection proves them.
-- pattern: .codex/skills/**/SKILL.md
-  status: so-local-only
-  rationale: Codex workspace skills are local authoring aids, not consumer-project
-    projection surfaces.
 - path: scripts/agent_work_ledger.py
   status: shared-surface
   rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
@@ -3582,3 +3557,179 @@ patterns:
   status: maintainer-only
   rationale: Manual scope calibration iteration 039 classified os-only. COS observability/statusline
     coverage report.
+- path: skills/project-scaffold/SKILL.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Skill scaffolds adopter-
+    project documentation trees and is not required for COS self-construction.
+- path: templates/CLAUDE.md.template
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/adoption-tiers.md.j2
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/blocked-strings.example.txt
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/external-tools-overlay.yaml
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/fintech-gates.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/go-service-context.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/project-gotchas.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/project-templates/go/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/go.mod.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/main.go.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/minimal/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/minimal/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/pyproject.toml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/settings.json.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/package.json.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/tsconfig.json.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/security-profiles/minimal.json
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Security profile
+    template configures consumer hook adoption levels and is not a COS maintainer primitive.
+- path: templates/security-profiles/paranoid.json
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Security profile
+    template configures consumer hook adoption levels and is not a COS maintainer primitive.
+- path: templates/security-profiles/standard.json
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Security profile
+    template configures consumer hook adoption levels and is not a COS maintainer primitive.
+- path: templates/service-map.example.yaml
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/verification-commands.example.yaml
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+patterns:
+- pattern: scripts/**
+  status: so-local-only
+  rationale: Scripts are SO-local by default unless exact rows or projection manifests
+    classify them as consumer surfaces.
+- pattern: hooks/_lib/**
+  status: so-local-only
+  rationale: Hook libraries are support files projected with hooks, not standalone
+    consumer capabilities.
+- pattern: hooks/*.sh
+  status: so-local-only
+  rationale: Unprojected hooks are local optional/runtime surfaces unless cos_init
+    projection proves them.
+- pattern: rules/*.md
+  status: so-local-only
+  rationale: Unprojected rules are doctrine/context surfaces unless default/full projection
+    proves them.
+- pattern: skills/**/SKILL.md
+  status: so-local-only
+  rationale: Unprojected repo skills are repo-only or maintainer surfaces unless default/full
+    projection proves them.
+- pattern: .codex/skills/**/SKILL.md
+  status: so-local-only
+  rationale: Codex workspace skills are local authoring aids, not consumer-project
+    projection surfaces.

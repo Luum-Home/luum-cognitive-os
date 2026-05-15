@@ -55,6 +55,18 @@ def test_scope_classification_governance_has_lifecycle_and_dedicated_adr() -> No
     assert "tests/contracts/test_primitive_scope_governance.py" in "\n".join(row["evidence_commands"])
 
 
+def test_consumer_availability_exact_paths_are_not_nested_under_patterns() -> None:
+    manifest = yaml.safe_load((REPO / "manifests" / "primitive-consumer-availability.yaml").read_text(encoding="utf-8"))
+    items = manifest.get("items", [])
+    patterns = manifest.get("patterns", [])
+
+    misplaced_paths = [row["path"] for row in patterns if isinstance(row, dict) and row.get("path")]
+    misplaced_patterns = [row["pattern"] for row in items if isinstance(row, dict) and row.get("pattern")]
+
+    assert not misplaced_paths, "exact consumer-availability rows must live under items, not patterns:\n" + "\n".join(misplaced_paths)
+    assert not misplaced_patterns, "pattern consumer-availability rows must live under patterns, not items:\n" + "\n".join(misplaced_patterns)
+
+
 @pytest.mark.timeout(180)
 def test_every_family_has_regenerable_or_contract_classification_surface() -> None:
     manifest = yaml.safe_load((REPO / "manifests" / "primitive-scope-classification.yaml").read_text(encoding="utf-8"))
