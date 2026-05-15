@@ -743,7 +743,7 @@ def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capabilit
     claim_status, claim_capabilities, claim_findings = load_proof_drill_claim_map(root, evidence_by_id)
     capabilities.extend(claim_capabilities)
     findings.extend(claim_findings)
-    adapter_summary = {"rows": len(rows), "status_counts": dict(sorted(status_counts.items()))}
+    adapter_summary: dict[str, Any] = {"rows": len(rows), "status_counts": dict(sorted(status_counts.items()))}
     if claim_status.status == "ok":
         adapter_summary["claim_map"] = claim_status.summary
     else:

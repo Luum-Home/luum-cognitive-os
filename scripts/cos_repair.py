@@ -26,7 +26,8 @@ def _run_cleanup(repo: Path, backup_root: Path, apply: bool) -> dict[str, Any]:
         stderr=subprocess.PIPE,
         check=False,
     )
-    payload = json.loads(proc.stdout) if proc.stdout.strip().startswith("{") else {"stdout": proc.stdout}
+    raw_payload = json.loads(proc.stdout) if proc.stdout.strip().startswith("{") else {"stdout": proc.stdout}
+    payload: dict[str, Any] = raw_payload if isinstance(raw_payload, dict) else {"payload": raw_payload}
     payload["returncode"] = proc.returncode
     payload["stderr"] = proc.stderr
     return payload

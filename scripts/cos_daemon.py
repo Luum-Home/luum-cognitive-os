@@ -182,7 +182,7 @@ def make_handler(project_dir: Path, *, token: str | None = None, transport: str 
     class CosdHandler(BaseHTTPRequestHandler):
         server_version = "cosd-local-api/1"
 
-        def log_message(self, fmt: str, *args: Any) -> None:
+        def log_message(self, format: str, *args: Any) -> None:
             return
 
         def _send(self, code: int, payload: dict[str, Any]) -> None:

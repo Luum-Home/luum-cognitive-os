@@ -68,7 +68,7 @@ def compare_reports(paths: list[Path], *, baseline: str = "current-local") -> di
                 "fixed_fixtures": fixed_fixtures,
                 "regressed_fixtures": regressed_fixtures,
                 "score": score,
-                "path": display_path(Path(report.get("_path"))),
+                "path": display_path(Path(str(report.get("_path") or ""))),
             }
         )
     candidates = [row for row in rows if row["strategy"] != baseline]

@@ -36,7 +36,7 @@ class ToolLoadingPlan:
     token_delta: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        payload = {
+        payload: dict[str, Any] = {
             "schema_version": self.schema_version,
             "status": self.status,
             "visible_tools": self.visible_tools,

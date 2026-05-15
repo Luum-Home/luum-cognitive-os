@@ -373,7 +373,7 @@ class EngramCrystallizer:
             return []
 
         try:
-            recent = self._http.get_recent(limit=500, project=project)
+            recent = self._http.get_recent(limit=500, project=project or "")
             if isinstance(recent, list) and recent:
                 return recent
         except Exception:

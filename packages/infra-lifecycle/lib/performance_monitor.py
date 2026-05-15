@@ -576,7 +576,7 @@ class PerformanceMonitor:
             if parent:
                 os.makedirs(parent, exist_ok=True)
 
-            record = {
+            record: dict[str, Any] = {
                 "component": metric.component,
                 "operation": metric.operation,
                 "duration_ms": metric.duration_ms,

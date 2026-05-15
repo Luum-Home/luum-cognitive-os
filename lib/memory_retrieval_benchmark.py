@@ -363,7 +363,9 @@ def run_benchmark(manifest_path: Path, *, candidate_results_path: Path | None = 
         else:
             result = evaluate_fixture(fixture, candidate, top_k=top)
         results.append(result)
-        findings.extend(result["findings"])
+        result_findings = result.get("findings", [])
+        if isinstance(result_findings, list):
+            findings.extend(result_findings)
 
     latency_values = sorted(result["latency_ms"] for result in results)
     p95_latency_ms = latency_values[-1] if len(latency_values) < 2 else statistics.quantiles(latency_values, n=20, method="inclusive")[18]

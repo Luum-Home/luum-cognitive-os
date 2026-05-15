@@ -74,7 +74,9 @@ def main() -> int:
     if args.json:
         print(json.dumps(payload, sort_keys=True))
     else:
-        print(f"legacy_events={payload['legacy_events']} migrated={payload['migrated']} sessions={len(payload['sessions'])}")
+        sessions = payload.get("sessions", [])
+        session_count = len(sessions) if isinstance(sessions, list) else 0
+        print(f"legacy_events={payload['legacy_events']} migrated={payload['migrated']} sessions={session_count}")
     return 0
 
 

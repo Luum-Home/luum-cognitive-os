@@ -300,6 +300,8 @@ def _live_mode(path: Path):
             stderr=subprocess.DEVNULL,
             text=True,
         )
+        if proc.stdout is None:
+            return
         for line in proc.stdout:
             line = line.strip()
             if not line:

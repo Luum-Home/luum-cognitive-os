@@ -139,7 +139,7 @@ def _seconds_since(ts: str) -> float:
 
 def _is_stale(lock: dict[str, Any]) -> bool:
     """Return True if the lock's heartbeat is older than ttl + grace."""
-    heartbeat_at = lock.get("heartbeat_at", lock.get("acquired_at", ""))
+    heartbeat_at = str(lock.get("heartbeat_at", lock.get("acquired_at", "")) or "")
     ttl = int(lock.get("ttl_seconds", 300))
     return _seconds_since(heartbeat_at) > (ttl + GRACE_SECONDS)
 

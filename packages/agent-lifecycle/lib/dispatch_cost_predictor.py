@@ -72,7 +72,9 @@ def predict_call_cost(provider: str, *, model_hint: str | None = None, input_tok
             module = importlib.import_module(module_name)
             estimator = getattr(module, "estimate_cost", None)
             if callable(estimator):
-                return CostPrediction(provider, model, ti, to, float(estimator(model, ti, to)), module_name)
+                raw_estimate = estimator(model, ti, to)
+                estimate = float(raw_estimate) if isinstance(raw_estimate, (int, float, str)) else 0.0
+                return CostPrediction(provider, model, ti, to, estimate, module_name)
         except Exception:  # noqa: BLE001
             continue
 

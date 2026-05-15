@@ -207,7 +207,10 @@ def summarize(rows: list[DocsExecutionRow]) -> dict[str, object]:
 def write_markdown(rows: list[DocsExecutionRow], path: Path) -> None:
     summary = summarize(rows)
     lines = ["# Documentation Execution Audit — Latest", "", "## Summary", "", f"Total items: {summary['items']}"]
-    for status, count in summary["statuses"].items():
+    statuses = summary.get("statuses", {})
+    if not isinstance(statuses, dict):
+        statuses = {}
+    for status, count in statuses.items():
         lines.append(f"- {status}: {count}")
     lines += ["", "## Items Needing Attention", "", "| File | Line | Declared | Inferred | Confidence | Item | Evidence | Next action |", "|---|---:|---|---|---:|---|---|---|"]
     for row in rows:

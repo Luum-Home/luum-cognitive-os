@@ -110,7 +110,8 @@ def validate_contract(contract: dict[str, Any], schema: dict[str, Any]) -> list[
     success_condition = require_mapping(findings, contract, "success_condition")
     if success_condition:
         for field in ("description", "verifier"):
-            if not isinstance(success_condition.get(field), str) or not success_condition.get(field).strip():
+            value = success_condition.get(field)
+            if not isinstance(value, str) or not value.strip():
                 findings.append(Finding(f"success_condition.{field}", "must be a non-empty string"))
         evidence_required = success_condition.get("evidence_required")
         if not isinstance(evidence_required, dict):

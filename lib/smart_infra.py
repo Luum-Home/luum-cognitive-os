@@ -204,9 +204,8 @@ class SmartInfra:
 
             with open(config_path, "r") as fh:
                 data = yaml.safe_load(fh) or {}
-            self._config = (
-                data.get("resources", {}).get("infrastructure", {})
-            )
+            config = data.get("resources", {}).get("infrastructure", {})
+            self._config = config if isinstance(config, dict) else {}
         except FileNotFoundError:
             logger.debug("cognitive-os.yaml not found at %s", config_path)
             self._config = {}

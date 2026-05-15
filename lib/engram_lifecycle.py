@@ -559,9 +559,8 @@ class EngramLifecycle:
         reranked: list[dict[str, Any]] = []
         for obs in results:
             sid = str(obs.get("sync_id", ""))
-            base_score = float(
-                obs.get("final_score", obs.get("adjusted_score", obs.get("score", 1.0)))
-            )
+            raw_score = obs.get("final_score", obs.get("adjusted_score", obs.get("score", 1.0)))
+            base_score = float(raw_score) if isinstance(raw_score, (int, float, str)) else 1.0
             status = temporal.get(sid, {})
             temporal_delta = 0.0
             if self._observation_is_temporally_current(obs, status):

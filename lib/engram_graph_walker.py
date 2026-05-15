@@ -205,7 +205,8 @@ class EngramGraphWalker:
         for obs in base_results:
             sid = obs.get("sync_id", "")
             base_sync_ids.add(sid)
-            original = float(obs.get("adjusted_score", obs.get("score", 1.0)))
+            raw_score = obs.get("adjusted_score", obs.get("score", 1.0))
+            original = float(raw_score) if isinstance(raw_score, (int, float, str)) else 1.0
             final = original * (1.0 - alpha_graph) + graph_boost * alpha_graph
             enriched.append({**obs, "final_score": final})
 

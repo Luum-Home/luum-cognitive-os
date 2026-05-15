@@ -451,6 +451,8 @@ class EmbeddingsIndex:
         # np.save auto-appends ".npy" when the path doesn't end with it; pass
         # allow_pickle=False and use a stem with ".tmp" suffix so the resulting
         # file is {stem}.tmp.npy, then rename over the final path.
+        if self._embeddings is None:
+            self._embeddings = np.empty((0, 0), dtype=np.float32)
         tmp_npy = self.embeddings_path.with_suffix(".npy.tmp.npy")
         np.save(str(tmp_npy), self._embeddings, allow_pickle=False)
         tmp_npy.replace(self.embeddings_path)

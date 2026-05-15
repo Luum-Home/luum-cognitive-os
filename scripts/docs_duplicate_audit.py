@@ -231,7 +231,8 @@ def main() -> int:
     if args.json or not args.markdown:
         print(json.dumps(data, indent=2, sort_keys=True))
 
-    return 1 if args.fail_new and int(data["new_duplicate_pairs"]) > 0 else 0
+    new_duplicate_pairs = data.get("new_duplicate_pairs", 0)
+    return 1 if args.fail_new and isinstance(new_duplicate_pairs, int) and new_duplicate_pairs > 0 else 0
 
 
 if __name__ == "__main__":

@@ -118,8 +118,9 @@ def classify_action(payload: Mapping[str, Any] | None) -> TrifectaDecision:
     """Classify a Claude/Codex hook payload or direct action dictionary."""
     payload = payload or {}
     tool_name = str(payload.get("tool_name") or payload.get("tool") or "")
-    tool_input = payload.get("tool_input") if isinstance(payload.get("tool_input"), Mapping) else {}
-    merged = {**payload, **dict(tool_input)}
+    raw_tool_input = payload.get("tool_input")
+    tool_input = dict(raw_tool_input) if isinstance(raw_tool_input, Mapping) else {}
+    merged = {**payload, **tool_input}
     text = _flatten(merged)
     tags = {str(tag).lower() for tag in merged.get("risk_tags", []) or []}
 

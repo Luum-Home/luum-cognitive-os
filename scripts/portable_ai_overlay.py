@@ -223,7 +223,6 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
         if source in seen or contract_id in seen:
             continue
         family = str(contract.get("family") or "unknown")
-        portable_contract = _derived_portable_contract(primitive_id, family, item, contract)
         portable_contract = _derived_portable_contract(source, family, {}, contract)
         row = {
             "schema_version": PRIMITIVE_SCHEMA_VERSION,

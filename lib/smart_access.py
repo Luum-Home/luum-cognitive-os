@@ -120,6 +120,8 @@ class SmartAccess:
                 return None
             if depth == len(keys) - 1:
                 return key_val or None
+            if key_ind is None:
+                return None
             # Descend: detect child indent from next non-empty line
             child_ind = key_ind + 2
             for ln in scope[found_i + 1:]:

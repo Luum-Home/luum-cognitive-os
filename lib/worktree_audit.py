@@ -171,7 +171,7 @@ def audit(project_dir: Path, *, against: str | None = None) -> dict[str, Any]:
             continue
         ahead, behind = counts
         dirty = dirty_paths(path)
-        ref_changed = changed_paths(project, branch, reference) if behind else set()
+        ref_changed: set[str] = {str(p) for p in changed_paths(project, branch, reference)} if behind else set()
         overlap = dirty & ref_changed
         item.update(
             {

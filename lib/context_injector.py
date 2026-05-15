@@ -186,7 +186,7 @@ def _search_code_embeddings(
             embeddings_path=project_root / ".cognitive-os" / "reinvention-index.embeddings.npy",
             meta_path=project_root / ".cognitive-os" / "reinvention-index.embeddings.json",
         )
-        idx.load_index()
+        idx.load(project_root)
         results = idx.find_similar(task, top_k=top_k)
         return [
             {
