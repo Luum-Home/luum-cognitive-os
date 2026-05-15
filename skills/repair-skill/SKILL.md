@@ -83,6 +83,23 @@ else:
 | `investigate` | Open `skills/{skill_name}/SKILL.md` (if it exists) and the last 3 entries from `skill-feedback.jsonl` for `{skill_name}`. Report findings. Ask the user if they want to regenerate or deprecate. |
 | `deprecate` | Confirm with the user. If confirmed, move `skills/{skill_name}/` to `skills/_archived/{skill_name}-deprecated-YYYY-MM-DD/`. |
 
+### Step 2.5 — Regeneration classification gate
+
+If the action regenerates or replaces a skill, the regenerated artifact must pass
+`/primitive-authoring` and the exact-path classifier gate before the queue item is
+marked done:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths skills/{skill_name}/SKILL.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+Update consumer availability, behavior evidence, and paired portability proof if
+the repair changes runtime surface or `SCOPE: both` semantics.
+
 ### Step 3 — Mark the entry as processed
 
 After taking action, update the queue entry's `status` from `"pending"` to

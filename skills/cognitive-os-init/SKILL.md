@@ -82,7 +82,20 @@ Invoke the `scaffold-project` skill. It will:
 - Create `.claude/hooks/block-prod-urls.sh`
 - Update `.cognitive-os/workflows/config/services.yaml`
 
-### Step 4: Report
+### Step 4: Projection and primitive gate
+
+After `/scaffold-project`, verify generated project hooks/settings resolve in the
+filtered install surface:
+
+```bash
+scripts/cos-install-projection-audit --json
+```
+
+If any generated project-local artifact is promoted into COS as a reusable
+primitive, run `/primitive-authoring`, add consumer/behavior evidence, and run
+`primitive_scope_classifier.py --paths <promoted-primitive> --fail-contradictions --fail-low-confidence` before committing it.
+
+### Step 5: Report
 
 After all three skills complete, output the combined summary:
 

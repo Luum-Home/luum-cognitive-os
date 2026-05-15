@@ -35,8 +35,11 @@ jobs:
       - name: Syntax check scope tools
         run: |
           python -m py_compile \
+            scripts/cos_install_projection_audit.py \
             scripts/cos-scope-both-portability-audit \
-            scripts/cos-scope-projection-audit
+            scripts/cos-scope-projection-audit \
+            scripts/primitive_scope_classifier.py \
+            scripts/primitive_scope_random_audit.py
           bash -n scripts/cos-status.sh scripts/cos-ci-local.sh .githooks/pre-commit
 
       - name: Run targeted scope portability tests
@@ -44,9 +47,36 @@ jobs:
           python -m pytest \
             tests/unit/test_scope_both_portability_audit.py \
             tests/unit/test_scope_projection_audit.py \
+            tests/unit/test_primitive_scope_classifier.py \
+            tests/unit/test_primitive_scope_random_audit.py \
+            tests/contracts/test_primitive_scope_governance.py \
+            tests/integration/test_install_projection_audit.py \
             tests/behavior/test_scope_portability_precommit.py \
             tests/behavior/test_cos_status.py \
             -q
+
+      - name: Run strict primitive scope classifier
+        run: |
+          python scripts/primitive_scope_classifier.py \
+            --project-dir . \
+            --fail-contradictions \
+            --fail-low-confidence \
+            --json-out .cognitive-os/reports/primitive-scope-classifier-ci.json
+
+      - name: Run strict scope projection audits
+        run: |
+          scripts/cos-scope-both-portability-audit \
+            --repo-root . \
+            --strict \
+            --json \
+            --no-write
+          scripts/cos-scope-projection-audit \
+            --repo-root . \
+            --run-install-smoke \
+            --strict \
+            --json \
+            --no-write
+          scripts/cos-install-projection-audit --json
 
       - name: Run scope portability status
         run: scripts/cos status --portability --json

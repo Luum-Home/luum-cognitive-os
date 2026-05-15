@@ -229,9 +229,19 @@ def validation_plan_for(decision: str, candidate: str, primitive_type: str | Non
     test_name = candidate.replace("-", "_")
     artifacts = [existing.path] if decision == IMPROVE_EXISTING and existing else _primary_artifacts_for(candidate, primitive_type or "skill-and-script")
     proofs = _portability_proofs_for(artifacts)
-    commands = [f"python3 -m pytest tests/behavior/test_{test_name}.py -q"]
+    paths_arg = " ".join(artifacts)
+    commands = [
+        "python3 scripts/primitive_scope_classifier.py "
+        f"--project-dir . --paths {paths_arg} --fail-contradictions --fail-low-confidence",
+        f"python3 -m pytest tests/behavior/test_{test_name}.py -q",
+    ]
     commands.extend(f"python3 -m pytest {proof} -q" for proof in proofs[:2])
-    commands.append("python3 scripts/cos_work_inventory.py --all --strict --json")
+    commands.extend([
+        "scripts/cos-scope-both-portability-audit --strict --no-write",
+        "scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write",
+        "scripts/cos-install-projection-audit --json",
+        "python3 scripts/cos_work_inventory.py --all --strict --json",
+    ])
     return commands
 
 

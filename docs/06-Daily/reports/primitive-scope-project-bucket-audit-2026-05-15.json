@@ -1,0 +1,1021 @@
+{
+  "classifier_summary": {
+    "by_confidence": {
+      "high": 986,
+      "medium": 223
+    },
+    "by_effective_scope": {
+      "both": 531,
+      "os-only": 623,
+      "project": 55
+    },
+    "by_suggested_scope": {
+      "both": 531,
+      "os-only": 623,
+      "project": 55
+    },
+    "contradictions": 0,
+    "low_confidence": 0,
+    "safe_fallback_os_only_from_unknown": 0,
+    "total": 1209
+  },
+  "rows": [
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "shell-ci-candidate",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/check_mcp_servers.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/domain_model.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/minimal/cognitive-os.yaml.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_rules_export.py",
+      "path": "scripts/rules_export.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/typescript/cognitive-os.yaml.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "shell-ci-candidate",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/docs_execution_audit.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/external-tools-overlay.yaml",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/settings.json.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/python/cognitive-os.yaml.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=advisory; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_domain_model.py",
+      "path": "skills/domain-model/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_detect_stack.py",
+      "path": "skills/detect-stack/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/verification-commands.example.yaml",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/go-service-context.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/security-profiles/paranoid.json",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/ops_runbook.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/python/README.md.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/blocked-strings.example.txt",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/go/main.go.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/go/gitignore.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/typescript/README.md.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/jupyter-sandbox.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_risk_register.py",
+      "path": "scripts/risk_register.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/CLAUDE.md.template",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/python/pyproject.toml.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/llm_status.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_security_audit_writer.py",
+      "path": "scripts/security_audit_writer.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=advisory; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_install_recommended.py",
+      "path": "skills/install-recommended/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/adoption-tiers.md.j2",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/security-profiles/minimal.json",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/python/gitignore.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/architecture-compliance.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/go/cognitive-os.yaml.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "shell-ci-candidate",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/cos",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/typescript/gitignore.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/minimal/README.md.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/go/go.mod.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "shell-ci-candidate",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/project_scaffold.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=advisory; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_ops_runbook.py",
+      "path": "skills/ops-runbook/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/minimal/gitignore.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_generate_config.py",
+      "path": "skills/generate-config/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/sprint-test-summary.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/dry-run-preview.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/document_feature_append.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=advisory; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_rules_export.py",
+      "path": "skills/rules-export/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_scaffold_project.py",
+      "path": "skills/scaffold-project/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "skills/project-scaffold/SKILL.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/infra-intent-detector.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/service-map.example.yaml",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/typescript/package.json.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=lab; state=advisory; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_risk_register.py",
+      "path": "skills/risk-register/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/security-profiles/standard.json",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/typescript/tsconfig.json.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/fintech-gates.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/radar_merge.py",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/go/README.md.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    }
+  ],
+  "sample_summary": {
+    "by_confidence": {
+      "high": 21,
+      "medium": 34
+    },
+    "by_effective_scope": {
+      "project": 55
+    },
+    "total": 55
+  },
+  "schema_version": "primitive-scope-random-audit/v1",
+  "seed": 20260515,
+  "selection": {
+    "confidences": [],
+    "per_scope": 0,
+    "scopes": [
+      "project"
+    ],
+    "total": 55
+  }
+}

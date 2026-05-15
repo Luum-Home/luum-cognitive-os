@@ -166,6 +166,24 @@ scripts/cos-install-projection-audit --json
 The audit proves projected harness settings only reference hooks copied by the
 same filtered install and allowed by that install scope.
 
+### Primitive authoring gate
+
+Before landing the rule or any hook-backed/generated projection, run the shared
+primitive-authoring workflow and classifier gate:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths rules/{rule-name}.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+If the rule is consumer-visible, add or update
+`manifests/primitive-consumer-availability.yaml`. If it is `SCOPE: both`, add a
+paired portability proof and behavior evidence before changing the marker. Do
+not use harness-specific projection as proof that the policy itself is portable.
+
 ## Output: Rule File and Updated Index
 
 - `rules/{rule-name}.md` — the new rule file
