@@ -1737,6 +1737,66 @@ items:
 - path: hooks/_lib/tuning.sh
   status: maintainer-only
   rationale: 'Manual scope calibration iteration 022: reads COS hook tuning events from .cognitive-os/metrics/hook-tuning.jsonl.'
+- path: hooks/aci-observation-capture.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: normalizes tool output into COS ACI observations and trajectory rows under .cognitive-os artifacts/metrics.'
+- path: hooks/adoption-freeze-gate.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: enforces the COS external-tool adoption freeze manifest during git commit operations.'
+- path: hooks/adr-section-validator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: validates COS ADR file section contracts under docs/02-Decisions/adrs.'
+- path: hooks/aspirational-audit-weekly.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: runs the COS aspirational audit cadence and reports dormant/aspirational primitive ratios.'
+- path: hooks/attribution-completeness-validator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: enforces COS research annex attribution completeness for clean-room governance.'
+- path: hooks/auto-skill-generator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: generates COS local auto-generated skills from complex agent completions under .cognitive-os/skills.'
+- path: hooks/codebase-itinerary-capture.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: captures COS privacy-preserving codebase itinerary metrics for agent inspection flow.'
+- path: hooks/completeness-check.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: compatibility entrypoint for COS level-5 completeness gating.'
+- path: hooks/cos-executor-daemon-launcher.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: launches the COS executor daemon and writes COS orchestrator runtime mode.'
+- path: hooks/cos-session-start-projector.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: delegates SessionStart projection to the COS session-start projector script.'
+- path: hooks/decision-depth-gate.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: enforces COS decision-depth governance against COS rule wiring.'
+- path: hooks/dependency-license-classifier.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: scans staged dependency manifest diffs against the COS license policy gate.'
+- path: hooks/dequeue-notify.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: notifies the COS orchestrator when agent slots free after delegated tasks complete.'
+- path: hooks/dispatch-gate.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: controls COS agent launch concurrency and workload scheduling.'
+- path: hooks/docker-drift-detector.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: detects stale cognitive-os Docker containers versus the pinned compose digest.'
+- path: hooks/external-cache-content-leak.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: detects verbatim leaks from the COS external-source cache during research adoption.'
+- path: hooks/external-pattern-cleanroom-gate.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: enforces COS clean-room gates for external pattern adoptions.'
+- path: hooks/history-rewrite-documented.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: warns COS operators about history-rewrite bundles not registered in the COS ledger.'
+- path: hooks/hook-header-validator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: validates COS hook header contracts for hook primitive governance.'
+- path: hooks/infra-health.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 023: checks COS Docker/service infrastructure health at session start.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
