@@ -161,8 +161,8 @@ architecture.
 
 ### Slice B — projection-driver truth source
 
-- [ ] Introduce a machine-readable harness registry generated from or shared by
-      `cos_init.py` and `manifests/harness-projection.yaml`.
+- [x] Introduce a machine-readable harness registry generated from
+      `manifests/harness-projection.yaml` and consumed by Go/Python projection UX.
 - [ ] Make `install.sh --help` render the list from that registry.
 - [ ] Make helper scripts resolve `settings_driver` from `.cognitive-os/install-meta.json`
       for every harness.
@@ -195,8 +195,8 @@ architecture.
 
 ### Slice E — simple health/stats UX
 
-- [ ] Add `cos doctor harness` or top-level installer post-check hints that wrap
-      existing audits.
+- [x] Add `cos doctor harness` for proof level, projection paths, receipts, backups,
+      and runtime-smoke status summaries.
 - [ ] Add `cos primitive stats --harness <id>` to report native/enforced/advisory
       primitive counts.
 - [ ] Link counts back to `manifests/harness-projection.yaml` proof levels.
@@ -251,8 +251,35 @@ projection targets, not source of truth.
 
 Remaining hardening after this slice:
 
-- move Go harness/proof maps to a generated registry shared with `cos_init.py`;
+- keep moving remaining shell/bootstrap harness strings onto the shared registry where safe;
 - merge JSON settings structurally instead of backing up then allowing the
   projector to rewrite them;
 - add a human-facing `cos doctor harness` summary over projection receipts and
   harness proof levels.
+
+## 2026-05-15 hardening: shared registry, JSON merge, and doctor UX
+
+The next hardening slice replaces duplicated Go/Python harness maps with a
+checked-in generated registry:
+
+- Source manifest: `manifests/harness-projection.yaml`.
+- Generator: `scripts/generate_harness_projection_registry.py`.
+- Runtime registry: `manifests/harness-projection-registry.json`.
+- Consumers: `scripts/cos_init.py` and `cmd/cos/internal/cli/harness_projection.go`.
+
+The registry carries implemented harness order, status, primary settings path,
+all settings paths, proof level, and optional runtime-smoke command. `install.sh`
+still keeps a small shell string for first-run parsing, but integration tests now
+prove that shell list equals the shared registry and that `cos_init.py` imports
+the same order.
+
+Projection apply mode also now captures existing JSON settings before running the
+projector, lets `cos_init.py` emit the COS shape, then merges existing JSON back
+in structurally. Object keys are merged recursively and arrays are unioned with
+stable identity, preserving user settings while adding COS settings. JSONC files
+are backed up but not parsed until a comment-preserving parser is introduced.
+
+A new `cos doctor harness` command reports the active or selected harness,
+projection path, proof level, settings paths, projection receipt counts, backup
+counts, runtime-smoke status counts, and next action. Use `--json` for machine
+readable output.
