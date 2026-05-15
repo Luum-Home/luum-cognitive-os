@@ -46,13 +46,13 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 | # | Feature | Status | What It Does |
 |---|---------|--------|--------------|
 | 1 | Persistent Memory | REAL | Your AI remembers decisions, bugs, and conventions between sessions |
-| 2 | Spec-Driven Development | REAL | 10-phase workflow for complex changes |
+| 2 | Spec-Driven Development | REAL | 8 core phases plus optional init/bootstrap and fast paths for complex changes |
 | 3 | Quality Control | REAL | Immutable gates + configurable rules |
 | 4 | Self-Improvement | DORMANT | Captures errors, detects patterns, **proposes** skill and routing updates for human review (autonomous mutation is gated by ADR-201/204/206) |
 | 5 | Multi-Agent Orchestration | REAL | 12+ simultaneous coordinated agents |
 | 6 | Security | REAL | Guardrails, dangerous command blocking, audit trails |
 | 7 | Observability and Costs | REAL | Traces, metrics, budget caps |
-| 8 | Multi-IDE Portability | REAL | Works with 7+ tools via open standards |
+| 8 | Multi-IDE Portability | REAL | Claude/Codex native lifecycle plus structural projections; proof level differs by harness |
 | 9 | Industry Presets | REAL | Pre-loaded best practices for fintech, healthcare, e-commerce |
 | 10 | Open-Source Core | REAL | FSL-1.1-MIT (source-available, converts to MIT after 2 years), extensible via plugins |
 
@@ -77,7 +77,7 @@ A 170-endpoint monolith was decomposed into 14+ microservices in ~24 hours using
 
 3. **Telemetry-guided improvement** — The system records errors, patterns, and skill outcomes so maintainers can review proposed improvements; autonomous mutation remains gated by explicit experiments and human approval.
 
-4. **Portability** — Not tied to any IDE or AI provider. Rules (markdown), skills (markdown), and integrations (MCP) are format-agnostic.
+4. **Portability** — Not tied to any IDE or AI provider. Rules, skills, integrations, and manifests are projected by proof level: native lifecycle, governed wrapper, structural projection, planned, or unsupported.
 
 ## Getting Started
 

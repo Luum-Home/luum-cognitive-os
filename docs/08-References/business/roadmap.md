@@ -11,15 +11,15 @@ The Cognitive OS core is fully operational as a development framework:
 
 | Category | Count | Status |
 |---|---|---|
-| Infrastructure services | 13 | All operational |
-| Skills (project + global) | 42+ | Production-ready |
-| Hooks | 30+ | Production-ready |
-| Rules | 22+ | Production-ready |
+| Infrastructure services | Profile-dependent | Core local services are operational; optional services remain opt-in |
+| Skills | 176 `SKILL.md` files | Mixed project/maintainer/package/experimental inventory; default projection is profile-filtered |
+| Hooks | 244 scripts; minimal profile requires 3 | Runtime projection is profile- and harness-dependent |
+| Rules | 120 files | Rule packs are projected/loaded by profile and task context |
 | Agent personas | 16+ | Production-ready |
-| ADRs (architecture decisions) | 230+ | Tracked, audit-ready |
+| ADRs (architecture decisions) | 326 | Tracked, audit-ready via generated ADR index |
 | Manifests (schema-versioned) | 20+ canonical YAMLs | Active enforcement |
 | MCP servers | Native COS server (8 tools) + Engram + Context7 | Running |
-| External services | 4 (Langfuse, LiteLLM, NeMo, E2B mock) | Running |
+| External services | Optional | JSONL/OTel/MCP are the core path; dashboards, proxies, guardrails, and sandboxes are opt-in |
 | Case study | 1 (fintech platform) | ~300x acceleration proven |
 | Documentation | 70+ documents | Complete |
 
@@ -28,13 +28,13 @@ The Cognitive OS core is fully operational as a development framework:
 - Multi-agent orchestration with cycle deduplication and worktree isolation (closes the 41–87% multi-agent failure mode the MAST 2025 paper documents)
 - Replay timeline + restore-by-checkpoint via shadow-git substrate (Devin-parity governance differentiation, no hypervisor)
 - Sync cost + retry gate (eliminates the runaway-loop class behind the November 2025 industry $47K incident)
-- Self-improvement feedback loop (error learning → skill adaptation → KPI measurement)
-- Quality enforcement via 30+ hooks + 22+ rules + 7 constitutional gates
+- Self-improvement feedback loop is DORMANT/propose-only: error learning and KPI signals can draft improvements for human review
+- Quality enforcement via profile-projected hooks/rules, claim verification, and security gates
 - Cost tracking and model routing with per-session budget enforcement
-- SRE self-healing
-- Native MCP server exposing core primitives to every MCP-aware tool (Cursor, Windsurf, Cline, Codex, Claude Code) — no per-harness adapters needed
-- Manifest-driven governance: every primitive declares a schema-versioned YAML; `cos <domain> audit --json [--strict]` is the canonical contract
-- Spec-Driven Development workflow (10 phases)
+- SRE repair guardrails are DORMANT/advisory unless a project wires health checks, remediation hooks, and approval policy
+- Native MCP server exposes selected core primitives to MCP-aware tools; lifecycle enforcement still depends on harness proof level
+- Manifest-driven governance: schema-versioned ledgers and audits cover promoted surfaces; primitive coverage is ratcheted and not claimed universal until audits prove it
+- Spec-Driven Development workflow (8 core phases plus optional init/bootstrap and fast paths)
 
 ---
 
@@ -171,7 +171,7 @@ The Cognitive OS core is fully operational as a development framework:
 
 | Risk | Severity | Mitigation |
 |---|---|---|
-| AI assistant market consolidation | High | Portability (7+ IDE support) reduces single-vendor dependency |
+| AI assistant market consolidation | High | Proof-level-specific portability across native lifecycle, governed wrapper, and structural projections reduces single-vendor dependency |
 | Competitor launches similar product | Medium | Integration depth (13 integrated primitives) and real case study are hard to replicate quickly |
 | Open-source sustainability | Medium | SaaS revenue model proven by GitLab, Supabase, PostHog |
 | Community adoption slower than projected | Low | The product works standalone (no community needed for individual value) |

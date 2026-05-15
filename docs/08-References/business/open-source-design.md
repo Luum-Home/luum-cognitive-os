@@ -25,7 +25,7 @@ cognitive-os/
 |   |   +-- persistence-contract.md
 |   |
 |   +-- workflow/
-|   |   +-- sdd/                  # Spec-Driven Development (10 phases)
+|   |   +-- sdd/                  # Spec-Driven Development (8 core phases + optional init)
 |   |   |   +-- sdd-explore/SKILL.md
 |   |   |   +-- sdd-propose/SKILL.md
 |   |   |   +-- sdd-spec/SKILL.md

@@ -72,7 +72,7 @@ Seven safety boundaries are always enforced. Circuit breaker OPEN events always 
 
 ### What is SDD?
 
-Spec-Driven Development: an 8-phase pipeline that transforms an idea into verified, archived code. Every phase produces a persistent artifact stored in Engram. Every decision is traceable. Every phase has acceptance criteria. If verification fails, the system retries up to 3 times before escalating to a human. It is the antidote to "the agent wrote something, I hope it works."
+Spec-Driven Development: an 8-core-phase pipeline, with optional init/bootstrap helpers, that transforms an idea into verified, archived code. Every phase produces a persistent artifact stored in Engram. Every decision is traceable. Every phase has acceptance criteria. If verification fails, the system retries up to 3 times before escalating to a human. It is the antidote to "the agent wrote something, I hope it works."
 
 ### What are the eight phases?
 
@@ -320,7 +320,7 @@ Start with `/sdd-new add-user-authentication`. This runs explore (analyzes your 
 
 ### What prerequisites do I need?
 
-Claude Code (latest), Python 3.9+, Git 2.30+, and `gh` CLI for GitHub integration. Go 1.21+ only if you want the `cos-test` TUI binary. Docker 24+ for integration tests and optional infrastructure services. `uv` recommended for Python package management. Optional: `devbox` for reproducible environments. The core system (hooks, rules, skills, Engram) works without Docker -- the 18 services add observability, cost control, and compute capabilities.
+Claude Code (latest), Python 3.9+, Git 2.30+, and `gh` CLI for GitHub integration. Go 1.21+ only if you want the `cos-test` TUI binary. Docker 24+ for integration tests and optional infrastructure services. `uv` recommended for Python package management. Optional: `devbox` for reproducible environments. The core system (hooks, rules, skills, Engram protocol, local JSONL metrics, and budget gates) works without Docker; optional infrastructure services add dashboards, external observability backends, guardrails, or compute isolation when a project explicitly needs them.
 
 ### How do I verify everything works?
 
