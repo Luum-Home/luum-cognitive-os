@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit hook projection parity across harness settings drivers.
 
 The goal is not byte-for-byte equality. Claude and Codex expose different hook

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Record machine-readable proof-drill evidence rows for ACC."""
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T17:12:33+00:00'
+generated_at: '2026-05-15T17:15:26+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -4779,6 +4779,16 @@ primitives:
   projection_targets:
   - scripts/active_primitive_index.py
   sha256: 01618cc8684414ea9dc0e0c6344a288283c70bd9a28df68c6172c32c3534d8f4
+- id: scripts/adr_implementation_ledger.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/adr_implementation_ledger.py
+  sha256: 17fefdced306f1cbfbf4c06056aaae46e1792cab858652fd4a71d42a29f0abee
 - id: scripts/adr_tombstone.py
   kind: script
   owner_adr: ADR-171
@@ -4831,6 +4841,16 @@ primitives:
   projection_targets:
   - scripts/aspirational_audit.py
   sha256: 8fc73feb4af1f67d85c952277e105d29378cdb842e0f1d16b1b3c984bb733785
+- id: scripts/check_absolute_paths.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/check_absolute_paths.py
+  sha256: 95c25879e3ecf3627e76174e48b566997b8a1ea5c5c19b01aef60892c77d23d3
 - id: scripts/check_catalog_sync.py
   kind: script
   owner_adr: ADR-146
@@ -4881,6 +4901,16 @@ primitives:
   projection_targets:
   - scripts/check_test_quality.py
   sha256: 87ca8d1629e1a29c06aa45b9e80ceb9d4c6d37d0df7aab4cbca034c3899992ef
+- id: scripts/check_test_ratchet.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/check_test_ratchet.py
+  sha256: b9733b5bc4cf81da83cecf7dd5b18ee284e3f341293e25611b14ad3b49e54b8e
 - id: scripts/claim_task.py
   kind: script
   owner_adr: ADR-146
@@ -5149,6 +5179,16 @@ primitives:
   - scripts/cos-core-skills-check.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   sha256: 6ae86d80714c7f192eb97d14bda8a34bf0ea45a8f162f9afa262ed421aca29f4
+- id: scripts/cos-coverage
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-coverage
+  sha256: 666550d9f34ca0e3744b24d7bcaa50472eb7d1e38828afa3505f8ce207cda57b
 - id: scripts/cos-credential-safe-run
   kind: script
   owner_adr: ADR-164
@@ -5285,6 +5325,26 @@ primitives:
   - lib/doctrine_proposer.py
   - docs/02-Decisions/adrs/ADR-135-self-evolving-doctrine-proposals.md
   sha256: f17dda9d774aabab0f94fdb764098479e0c2424c6fc3701a683b64cb5ded0e61
+- id: scripts/cos-document-ingest
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-document-ingest
+  sha256: b150c2f5beb9b300e4c9feaab8586a0586ebf0e7b2c3e9bcbcb868f28f267e1e
+- id: scripts/cos-dspy-pilot
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-dspy-pilot
+  sha256: 7a00e2b735cb02e6c6a9679432e406302f38a4869e347cba31f35a2f7338b7ce
 - id: scripts/cos-engram-bundle
   kind: script
   owner_adr: ADR-136
@@ -5335,6 +5395,16 @@ primitives:
   - lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
   sha256: 655a642b267e3b1dea230b383d91b7458cfbb77b8207a2b51e4385bc3632d06c
+- id: scripts/cos-export-consumer-improvement-proposals
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-export-consumer-improvement-proposals
+  sha256: 6f9944ef1f978f7673a08e103bd4506670ea5894137fbd6ede885312dc74af0a
 - id: scripts/cos-federation-trigger-audit
   kind: script
   owner_adr: ADR-136
@@ -5348,6 +5418,16 @@ primitives:
   - lib/cross_instance_learning.py
   - manifests/federation-triggers.yaml
   sha256: d7fcec9d8752be217e27b07f6b80081cad7f6d823fa1f5930a477971430017f0
+- id: scripts/cos-fingerprint.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-fingerprint.sh
+  sha256: 192d665136a8290aa1a3d7e7652e4c167214956216b80cc2596da0e16399b03d
 - id: scripts/cos-flow-register.sh
   kind: script
   owner_adr: ADR-138
@@ -5362,6 +5442,16 @@ primitives:
   - skills/vuln-remediation-flow/flow_contract.yaml
   - docs/02-Decisions/adrs/ADR-138-flow-contract-schema.md
   sha256: 5c1bf2c1060ab0077567b307a4cd3b7afee045094cd1d20071d8fb2f04edbeed
+- id: scripts/cos-gate-stack.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-gate-stack.sh
+  sha256: 0382b266fa13e6167612e91a5df5111861f973b60e5f300325a8688616ad25ca
 - id: scripts/cos-git-sync.sh
   kind: script
   owner_adr: ADR-146
@@ -5372,6 +5462,16 @@ primitives:
   projection_targets:
   - scripts/cos-git-sync.sh
   sha256: 4dd263af9525fc4af19c4899b4cacd4017dd482d935fa2f6f2be3792cbade593
+- id: scripts/cos-governance-roi
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-governance-roi
+  sha256: e98482b49d9a42b9440dffe22dc2a57ec96f84fdf73479f2829b2431b4f1f231
 - id: scripts/cos-governed-agent.sh
   kind: script
   owner_adr: ADR-314
@@ -5392,6 +5492,46 @@ primitives:
   projection_targets:
   - scripts/cos-governed-edit.sh
   sha256: 2d7422d55d80f00df5c06235ce8f8cac1205d51462af1bcc18c7b5568b6543d5
+- id: scripts/cos-headless-pipeline
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-headless-pipeline
+  sha256: 04781f5db14b481d3ab99f76f4cfd447c7a0e64904c835cf66573d5db4637c9a
+- id: scripts/cos-headless-publication
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-headless-publication
+  sha256: 76303fa7e776cabb280a305280a8a915e8eb8ce648e605036eb3c597cdc245fa
+- id: scripts/cos-headless-runtime-contract
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-headless-runtime-contract
+  sha256: 3bab44dcd2e9d57692fe6b7320c5b464da325b3229bbe1d3bb05dad75551b290
+- id: scripts/cos-headless-safe-mode
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-headless-safe-mode
+  sha256: 0ef0e4d2fe0d401c2ccae6ab58a03c751109a1e204aa20370da9d58d6eb59628
 - id: scripts/cos-headless-service-drill
   kind: script
   owner_adr: ADR-162
@@ -5427,6 +5567,16 @@ primitives:
   - lib/cross_instance_learning.py
   - manifests/external-adoption-evidence.yaml
   sha256: e2e8535cadb5df441bb49ebcb02722fa3fd2b8f3476e95b0cabdbb345ee0bec9
+- id: scripts/cos-import-consumer-improvement-proposals
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-import-consumer-improvement-proposals
+  sha256: 4c0d9e84acd56dd52f3f29784e6dc7f81748eab4727d671b50e5c483095b9147
 - id: scripts/cos-init.sh
   kind: script
   owner_adr: ADR-146
@@ -5438,6 +5588,16 @@ primitives:
   - scripts/cos-init.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   sha256: a90951d506b58be1d785edec5b525e6ac13f5d1e1686725d696f1c3e4854f306
+- id: scripts/cos-integration-shard-plan
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-integration-shard-plan
+  sha256: 70624c09784244419e2f43e8ec38a29ec02d9494788fd04cedb95e8a201d5aff
 - id: scripts/cos-key-learnings-capture
   kind: script
   owner_adr: ADR-071
@@ -5484,6 +5644,16 @@ primitives:
   - manifests/primitive-lifecycle.yaml
   - docs/02-Decisions/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
   sha256: 2c06c869fe60b79339dd4a83716a03b201e17224938c61d83aec4b502595dd96
+- id: scripts/cos-mcp-registration-plan
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-mcp-registration-plan
+  sha256: 10a73e910b9628beb17e60fabc312c8730a3d8d85d4c61ce217f4c4e2e7bf91d
 - id: scripts/cos-merge-queue-bench.sh
   kind: script
   owner_adr: ADR-146
@@ -5544,6 +5714,16 @@ primitives:
   projection_targets:
   - scripts/cos-operational-guide-audit.py
   sha256: f6522ce2ba1f0824ed7a3fda46f953621a4b69b6bccdd51af455871ef97e2076
+- id: scripts/cos-orphan-process-audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-orphan-process-audit.py
+  sha256: 871bd5f1dc76282e85a8350c65730837d673e68cbf4e5d05806dcc0a336884a7
 - id: scripts/cos-pending-truth-aggregator
   kind: script
   owner_adr: ADR-273
@@ -5574,6 +5754,16 @@ primitives:
   projection_targets:
   - scripts/cos-pending-truth-verify
   sha256: e2a6eae9a6a771a54a0d8f4707a1c1fc84f9ca5b22184140c96f166650b247b9
+- id: scripts/cos-policy-settings-projection
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-policy-settings-projection
+  sha256: 96bc636dddd7676e26e9bfa8f862bc1be77de1fca1ba524ad9a9959116e4c315
 - id: scripts/cos-portability-proof-scaffold
   kind: script
   owner_adr: ADR-311
@@ -5584,6 +5774,26 @@ primitives:
   projection_targets:
   - scripts/cos-portability-proof-scaffold
   sha256: 097c4469050841d0404bb27c1c312005d8188c316b9606e59239dcbb547f129d
+- id: scripts/cos-portable-ai-consumer-impact
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-portable-ai-consumer-impact
+  sha256: 621903fe27e9a3d3d2f5845941ab1656b1dbbfa37d29bb7dbd26af031a2a649f
+- id: scripts/cos-portable-ai-consumer-package-smoke
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-portable-ai-consumer-package-smoke
+  sha256: e0febe390cca0c8fef8abd565cfa0284de0432e67810c53afca04a071c90a354
 - id: scripts/cos-portable-ai-consumer-smoke
   kind: script
   owner_adr: ADR-314
@@ -5636,6 +5846,16 @@ primitives:
   projection_targets:
   - scripts/cos-primitive-fitness
   sha256: 51b76bdcb34f5b05d5104232d0773337663dea2223f498566db6a67ac8bc1a75
+- id: scripts/cos-primitive-projection-fidelity
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-primitive-projection-fidelity
+  sha256: f14401131683741ca4c6d3d11292a1bc09ea944dae0b98706d64096a86a0f171
 - id: scripts/cos-product-answer
   kind: script
   owner_adr: ADR-280
@@ -5656,6 +5876,16 @@ primitives:
   projection_targets:
   - scripts/cos-product-answer-refresh
   sha256: 06fd3076801302b11de4e4deb1ee08f7e509801568c82bbf969ec8a11ec8622d
+- id: scripts/cos-provider-call
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-provider-call
+  sha256: 0a61abdf09bb8c59e464c7ecc874bb3b2352c63f216c7d9101e88fe840ec39f8
 - id: scripts/cos-public-claim-gate
   kind: script
   owner_adr: ADR-206
@@ -5731,6 +5961,26 @@ primitives:
   projection_targets:
   - scripts/cos-remote-branch-triage
   sha256: 3f20da972ab4df343d49f7b489fc3f3c9d985211ba049f8d92b045241950acd0
+- id: scripts/cos-repair
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-repair
+  sha256: befe21b016e429147d44c872790e9b8c1ebd49cf6093df03a1fb8b36792f11f5
+- id: scripts/cos-repo-map
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-repo-map
+  sha256: bd9b09918016ba4a28ec11ade503c4c5dba92a42897047d8a58d40dc0e7f8b7b
 - id: scripts/cos-run-task
   kind: script
   owner_adr: ADR-146
@@ -5979,6 +6229,16 @@ primitives:
   projection_targets:
   - scripts/cos-usage-report.sh
   sha256: e15d6c6b769769b097a3154fe96c6ab233d67dc92b56ecab44c6d9a8d27c0b3a
+- id: scripts/cos-validate
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-validate
+  sha256: 23c56d4651b3c8ea651da0955319e106d4a6f3d13b0b79024277b2818c865663
 - id: scripts/cos-validation-break.sh
   kind: script
   owner_adr: ADR-146
@@ -5989,6 +6249,16 @@ primitives:
   projection_targets:
   - scripts/cos-validation-break.sh
   sha256: 7c2b1fff3b963c3183887ae7ec911b1677a8d43fb2961d1bf9c665cdc73f00ce
+- id: scripts/cos-validation-capsule.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-validation-capsule.sh
+  sha256: 09a3628e80507a2bd9426cd0f07261bd838527cc7deb9015a5a72789cd1c8fd6
 - id: scripts/cos-validation-status.sh
   kind: script
   owner_adr: ADR-146
@@ -6010,6 +6280,16 @@ primitives:
   - scripts/cos-weekly-config-audit.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   sha256: d032e6c540ddb2f261b9aec29b90f492f472a1579d801ed226546455e12cf1d5
+- id: scripts/cos-wiki-ingest
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-wiki-ingest
+  sha256: c14ac53212201e16361b2e74230653d9e8e2ef73a99844e4b40ac448f2cfcc3c
 - id: scripts/cos-wip-safety-score
   kind: script
   owner_adr: ADR-117
@@ -6134,6 +6414,16 @@ primitives:
   projection_targets:
   - scripts/cos_concurrent_status.py
   sha256: fb0b8aedebd85884e8ca451db63f9fc2f8b7a584c3d406f5e17c36236a67e794
+- id: scripts/cos_consumer_improvement_proposals.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_consumer_improvement_proposals.py
+  sha256: c16f9cdebd1bd4c631e2f026136c311a8d25c1b9e646b9cb573cd7ec1b429284
 - id: scripts/cos_context_budget_report.py
   kind: script
   owner_adr: ADR-146
@@ -6154,6 +6444,26 @@ primitives:
   projection_targets:
   - scripts/cos_coordination_status.py
   sha256: a905a6049e0b5748465d4be4c3437b5daf1ef6b62ac4d1f3a1f4536915603ca5
+- id: scripts/cos_coverage.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_coverage.py
+  sha256: 99192578309b92d30e74781557a4824ae7772e5b772d26418f500f4282137832
+- id: scripts/cos_cross_instance_learning.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_cross_instance_learning.py
+  sha256: 3c3078067ebf25d585538770cfb7ec4d9612a49671d77efa61989d1f6317e9eb
 - id: scripts/cos_default_visible_reducer.py
   kind: script
   owner_adr: ADR-146
@@ -6227,6 +6537,16 @@ primitives:
   - manifests/cos-instance-profiles.yaml
   - .cognitive-os/plans/architecture/cos-instance-installer-implementation-plan.md
   sha256: 8d52f0f9e9331d6d463c7add86c6c3acc8fcbf2f9a8e2669771484e0b54dd16f
+- id: scripts/cos_key_learnings_capture.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_key_learnings_capture.py
+  sha256: ed770222bbf4f1b227e064956dc1624940883ae955d0f887621b1b2447c0fc02
 - id: scripts/cos_new_adr.py
   kind: script
   owner_adr: ADR-148
@@ -6237,6 +6557,16 @@ primitives:
   projection_targets:
   - scripts/cos_new_adr.py
   sha256: 8543af3ce22668e27f3d950dc33aa24f84047c8d105beea95281b47084e530e0
+- id: scripts/cos_preamble_budget.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_preamble_budget.py
+  sha256: 19b427b9c2a3d3eb4631aedfc9dd3bd1a0af7cffa659e554e9e539d2a09f0889
 - id: scripts/cos_primitive_fitness.py
   kind: script
   owner_adr: ADR-146
@@ -6348,6 +6678,16 @@ primitives:
   projection_targets:
   - scripts/cos_task_claims.py
   sha256: 5dd11207e43bb3a004335d9775b6aeb09e9a60dfd5e548e0a672b1c5b58b497e
+- id: scripts/cos_test_quality_audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_test_quality_audit.py
+  sha256: 42d0860561a4ab268e6931c3a1495adc21f98e9da049d323940e374d8bd01fac
 - id: scripts/cos_tier_claim_audit.py
   kind: script
   owner_adr: ADR-146
@@ -6613,6 +6953,26 @@ primitives:
   projection_targets:
   - scripts/generate_compact_catalog.py
   sha256: f31016bc525b4c1f35286b520aac770b49c59d37702c52f1711f83f06b1a5ef3
+- id: scripts/harness-parity-audit
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/harness-parity-audit
+  sha256: 92f88d03d1524a7a72d8f59d3098c13ef34074ecde4219bb15f434d4b4358fa2
+- id: scripts/harness_parity_audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/harness_parity_audit.py
+  sha256: 0cbffb64040db8f06e7ef899b5d828b4721b07382d1c06ca43c9427bf278803d
 - id: scripts/hook-stream-statusline.sh
   kind: script
   owner_adr: ADR-146
@@ -6643,6 +7003,16 @@ primitives:
   projection_targets:
   - scripts/hook_timing_report.py
   sha256: 0c5cd8364020fc17abdd6f14b48ad6f0eac85ddc11b67e440ae6a2e2be58c66c
+- id: scripts/ide-bridge.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/ide-bridge.sh
+  sha256: 46cdc6e1a7d6bb9df4298faf24d33561bae2d89fbced0427a8e0cb401257c6ab
 - id: scripts/install-garak.sh
   kind: script
   owner_adr: ADR-146
@@ -6654,6 +7024,16 @@ primitives:
   - scripts/install-garak.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   sha256: d2c7aaeaba7c2175497cfc5cc263a9314eac2918773f00d243fac4f94d16cedc
+- id: scripts/install-obsidian-local.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/install-obsidian-local.sh
+  sha256: e265bc38ea5e8debe55f5bc79a8130b547d95417c48bf5c85f0d0bcb25fa39b4
 - id: scripts/install-promptfoo.sh
   kind: script
   owner_adr: ADR-146
@@ -6727,6 +7107,16 @@ primitives:
   - packages/agent-coordination/lib/agent_bus.py
   - lib/agent_bus_metrics.py
   sha256: c50a348c336a181e07e8357b96520e3bed14a8e7ba377f3b2b0996ef9bdac5af
+- id: scripts/orchestrator_claim_gate.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/orchestrator_claim_gate.py
+  sha256: 93cc4b62c7fcb186cf5fb8f3e7cc07ffc0680acbaa7ee577a93ad73e47701463
 - id: scripts/orphan_overwrite_detector.py
   kind: script
   owner_adr: ADR-146
@@ -6737,6 +7127,16 @@ primitives:
   projection_targets:
   - scripts/orphan_overwrite_detector.py
   sha256: 16b5510dfd0091ec759e954b73ac51aff381c5020ef8384b9edfd8105ba41f42
+- id: scripts/parity_harness.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/parity_harness.py
+  sha256: 095ee3b898f7249de60c0b96ef61b8f8300512ebf970d7cee9e25959cd88bfdc
 - id: scripts/portable_ai_consumer_impact.py
   kind: script
   owner_adr: ADR-314
@@ -6747,6 +7147,16 @@ primitives:
   projection_targets:
   - docs/06-Daily/reports/portable-ai-consumer-impact-latest.json
   sha256: eb7e2c94629595e3accf3c2db35ffcf294c3ccc409d6ce33630d9ef1bcd04857
+- id: scripts/portable_ai_consumer_package.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/portable_ai_consumer_package.py
+  sha256: 4c198ae0ac8c0912462b7c6c5a2bb666007b70edbd6cad0837deed8335937b09
 - id: scripts/portable_ai_consumer_smoke.py
   kind: script
   owner_adr: ADR-314
@@ -6767,6 +7177,16 @@ primitives:
   projection_targets:
   - scripts/portable_ai_overlay.py
   sha256: 3f7c394396462e3d0f9ed1055ee2978141ada79b776e4e7ce8b5391c018f27cb
+- id: scripts/precommit_content_hash.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/precommit_content_hash.py
+  sha256: 89440a4c0c35c96598e97f5b6cc564a10064c9aace06bcc53b757fc83661ae61
 - id: scripts/primitive_authority_audit.py
   kind: script
   owner_adr: ADR-314
@@ -6888,6 +7308,16 @@ primitives:
   projection_targets:
   - scripts/promote_lifecycle_primitives_to_contracts.py
   sha256: dc4a73815fd3d05fcac4522c5e1882aa6bf08b333d5b33bd9a0bf5979a1e307e
+- id: scripts/proof-drill-evidence-record
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/proof-drill-evidence-record
+  sha256: 47ca3e2bb58bb39248c87e074cf2346a9eea517e149709fb8b8031dca2cef4a0
 - id: scripts/proof-drill-select
   kind: script
   owner_adr: ADR-166
@@ -6900,6 +7330,16 @@ primitives:
   - scripts/proof_drill_select.py
   - manifests/proof-drill-registry.yaml
   sha256: 25df99988b511897d78171aed528bb2bc9d38cbbe980536f98d9df53c2aaab6e
+- id: scripts/proof_drill_evidence_record.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/proof_drill_evidence_record.py
+  sha256: c057df0fcb0a3acbcb9246dfa4b85038ebedfa1ca60fadb1fbedd87b9ffad386
 - id: scripts/push_collision_detect.py
   kind: script
   owner_adr: ADR-146
@@ -6920,6 +7360,26 @@ primitives:
   projection_targets:
   - scripts/pytest-with-summary.sh
   sha256: 59b2bcbacaa7a741d8ede89a6ffa7103aab80d3c26664a1144fde0a13445b224
+- id: scripts/python_stdin_antipattern_audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/python_stdin_antipattern_audit.py
+  sha256: 9ffd16e717633620176cf0d1ac9c2123dc3199e610821e85a2948e15445b4b5d
+- id: scripts/queue_throughput_bench.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/queue_throughput_bench.py
+  sha256: 6748f7ded51f259a277a4c83ac13841c4549a1c9127879aca2b4bf5b54543ace
 - id: scripts/radar_merge.py
   kind: script
   owner_adr: ADR-146
@@ -7278,6 +7738,16 @@ primitives:
   - manifests/test-skip-registry.yaml
   - scripts/pytest-with-summary.sh
   sha256: d5904f95fc89cd40103a3a9fa60cfd966dcf394f2bcf708e02e5c1f8c2a93bbf
+- id: scripts/topology-discover.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/topology-discover.sh
+  sha256: 8846b24c8dc96857e1e30104e593d09b58a78e9d98be64189b7c9cb8fcf591d7
 - id: scripts/uninstall.sh
   kind: script
   owner_adr: ADR-146

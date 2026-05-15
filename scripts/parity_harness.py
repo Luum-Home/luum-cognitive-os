@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Parity harness — Claude Agent() vs Qwen agent loop (ADR-051 Phase 4).
 
 Runs each task in a YAML task-set through BOTH providers and emits:
@@ -33,14 +33,13 @@ import csv
 import hashlib
 import io
 import json
-import os
 import subprocess
 import sys
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:

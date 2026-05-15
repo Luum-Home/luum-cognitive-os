@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # install-obsidian-local.sh — Install or validate local Obsidian on macOS.
 #
 # Uses Homebrew Cask because the official Obsidian download is a macOS app and
