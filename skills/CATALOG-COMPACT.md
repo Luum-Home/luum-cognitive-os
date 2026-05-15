@@ -31,7 +31,7 @@ Total skills: 178
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, |
 | vuln-remediation-flow | 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud |
 
-## os-dev (42)
+## os-dev (41)
 
 | Skill | Description |
 |-------|-------------|
@@ -57,7 +57,6 @@ Total skills: 178
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting. |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive |
-| pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
 | primitive-classifier | Classify a new agentic primitive (skill, hook, rule, lib) as CORE or |
 | primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |
@@ -78,7 +77,7 @@ Total skills: 178
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (38)
+## both (39)
 
 | Skill | Description |
 |-------|-------------|
@@ -100,6 +99,7 @@ Total skills: 178
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with |
 | llm-status | Inspect LLM dispatch state — provider inventory, kill-switches, cascade |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
+| pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity |
 | preserved-wip-cleanup | Backup preserved WIP, remove temporary blockers, and prove the inventory |
 | primitive-authoring | 'Use when building a new skill/rule/hook/script/workflow, converting |
 | primitive-harness-coverage | Generate the primitive surface coverage report and inspect IDE/CLI/UI/report |
@@ -115,7 +115,7 @@ Total skills: 178
 | session-pending-close | Atomic close of pending-truth task and/or ADR-decision items with audit |
 | session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, |
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
-| stash-quarantine | Safely isolate, inspect, restore, or discard temporary Git stash quarantine entries without relying… |
+| stash-quarantine | Safely isolate, inspect, restore, or discard temporary Git stash quarantine entries without positional stash refs. |
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, |
 | wiki-ingest | Use when raw URLs, files, or pasted text need to be ingested into the |
@@ -177,14 +177,14 @@ Total skills: 178
 | run-tests | 'Use when you need this Cognitive OS skill: Auto-detect project test |
 | sandbox-sample | Classify, sample, sandbox-verify, then scale changes across large file |
 | scout | Quick pre-implementation codebase reconnaissance with 3 depth levels. |
-| sdd-apply | Implement SDD tasks against requirements and EAS acceptance rows. |
+| sdd-apply | Use when implementing SDD tasks against requirements and EAS acceptance rows. |
 | sdd-compound | "Extract learnings and compound knowledge after completing an SDD change. |
 | sdd-continue | 'Use when you need this Cognitive OS skill: Enhanced SDD continuation |
 | sdd-explore | Explore and investigate ideas before committing to a change — deep feasibility… |
 | sdd-resume | Resume an SDD pipeline from its last completed phase with timing and |
-| sdd-spec | Create or update the SDD specification and emit an Executable Acceptance Specification when request… |
-| sdd-tasks | Convert SDD spec/design/EAS evidence into implementation tasks. |
-| sdd-verify | Verify SDD implementation, including EAS coverage, detractor disposition, and executable evidence. |
+| sdd-spec | Use when creating or updating the SDD specification and emitting an Executable Acceptance Specifica… |
+| sdd-tasks | Use when converting SDD spec/design/EAS evidence into implementation tasks. |
+| sdd-verify | Use when verifying SDD implementation, including EAS coverage, detractor disposition, and executabl… |
 | secret-audit | Scan all services for env var usage, cross-reference with definitions, |
 | self-review | Lightweight 4-question post-implementation checklist for non-SDD work. |
 | semgrep-scan | Run Semgrep SAST security scanning on a path or changed files. |
