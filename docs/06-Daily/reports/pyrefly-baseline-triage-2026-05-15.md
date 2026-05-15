@@ -502,3 +502,27 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 2: **268 → 201** non-import Pyrefly errors.
+
+### Remediation pass 3 — impact-analysis and timestamp narrowing
+
+| Files | Finding class | Change | Pyrefly effect |
+|---|---|---|---:|
+| `lib/impact_analysis.py` (`packages/sdd-compound/lib/impact_analysis.py`) | `RiskLevel` dunder override signatures + `LiteralString` list inference | Matched `str` comparison override signatures, kept semantic risk ordering through rank coercion, and annotated report lines as `List[str]`. | Removed the 27-error impact-analysis cluster. |
+| `lib/agent_bus_metrics.py` | `float(object)` in `_as_float(...)` helper | Narrowed acceptable scalar types before conversion. | Removed the remaining timestamp helper finding. |
+
+Validation:
+
+```bash
+uv run pytest \
+  tests/unit/test_impact_analysis.py \
+  tests/behavior/test_safety_mesh_2.py \
+  tests/red_team/portability/test_impact_analysis.py \
+  tests/unit/test_agent_bus.py \
+  tests/integration/test_native_agent_heartbeat.py -q
+# 146 passed in 13.29s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=173 elapsed_seconds=2 ...
+```
+
+Running baseline after pass 3: **268 → 173** non-import Pyrefly errors.

@@ -27,18 +27,31 @@ class RiskLevel(str, Enum):
     HIGH = "high"
     CRITICAL = "critical"
 
-    def __lt__(self, other: "RiskLevel") -> bool:
+    def _rank(self) -> int:
         _order = [RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH, RiskLevel.CRITICAL]
-        return _order.index(self) < _order.index(other)
+        return _order.index(self)
 
-    def __le__(self, other: "RiskLevel") -> bool:
-        return self == other or self < other
+    def _coerce_other_rank(self, value: str) -> int | None:
+        try:
+            return RiskLevel(value)._rank()
+        except ValueError:
+            return None
 
-    def __gt__(self, other: "RiskLevel") -> bool:
-        return not self <= other
+    def __lt__(self, value: str, /) -> bool:
+        other_rank = self._coerce_other_rank(value)
+        return str.__lt__(self, value) if other_rank is None else self._rank() < other_rank
 
-    def __ge__(self, other: "RiskLevel") -> bool:
-        return not self < other
+    def __le__(self, value: str, /) -> bool:
+        other_rank = self._coerce_other_rank(value)
+        return str.__le__(self, value) if other_rank is None else self._rank() <= other_rank
+
+    def __gt__(self, value: str, /) -> bool:
+        other_rank = self._coerce_other_rank(value)
+        return str.__gt__(self, value) if other_rank is None else self._rank() > other_rank
+
+    def __ge__(self, value: str, /) -> bool:
+        other_rank = self._coerce_other_rank(value)
+        return str.__ge__(self, value) if other_rank is None else self._rank() >= other_rank
 
 
 @dataclass
@@ -511,7 +524,7 @@ def analyze_impact(
 
 def format_impact_report(report: ImpactReport) -> str:
     """Format an ImpactReport as a human-readable string."""
-    lines = []
+    lines: List[str] = []
     lines.append("=" * 60)
     lines.append("CHANGE IMPACT ANALYSIS REPORT")
     lines.append("=" * 60)

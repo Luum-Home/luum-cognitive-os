@@ -48,6 +48,8 @@ _DEFAULT_METRICS_PATH = ".cognitive-os/metrics/agent-heartbeat.jsonl"
 
 
 def _as_float(value: object, default: float = 0.0) -> float:
+    if not isinstance(value, int | float | str | bytes | bytearray):
+        return default
     try:
         return float(value)
     except (TypeError, ValueError):
