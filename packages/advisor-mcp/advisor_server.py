@@ -6,14 +6,13 @@ Any AI coding agent (Claude Code, Cursor, Windsurf, etc.) can call the
 mid-task, without writing code themselves.
 
 Inspired by Anthropic's Advisor Strategy, but vendor-agnostic: works with
-local Ollama, LiteLLM proxy, OpenAI, Google, or explicitly enabled Anthropic API.
+local Ollama, OpenAI, Google, or explicitly enabled Anthropic API.
 
 Requirements:
     pip install fastmcp
     pip install anthropic        # for provider="anthropic" (explicit policy-gated)
     pip install openai           # for provider="openai"
     pip install google-generativeai  # for provider="google"
-    pip install litellm          # for provider="litellm"
     pip install httpx            # for provider="local" (Ollama)
 
 Usage:
@@ -28,8 +27,6 @@ Configure in .claude/settings.json:
                 "env": {
                     "OPENAI_API_KEY": "${OPENAI_API_KEY}",
                     "GOOGLE_API_KEY": "${GOOGLE_API_KEY}",
-                    "LITELLM_API_BASE": "${LITELLM_API_BASE}",
-                    "LITELLM_MODEL": "${LITELLM_MODEL}"
                 }
             }
         }
@@ -113,13 +110,11 @@ _DEFAULT_MODELS: dict[str, str] = {
     "anthropic": "claude-opus-4-6",
     "openai": "gpt-4o",
     "google": "gemini-2.5-pro",
-    "litellm": "gpt-4o",
     "local": "llama3",
 }
 
 _AUTO_PROVIDER_ORDER: tuple[str, ...] = (
     "local",
-    "litellm",
     "openai",
     "google",
     "anthropic",
@@ -289,34 +284,6 @@ async def _call_google(
     return reply, input_tokens, output_tokens
 
 
-async def _call_litellm(
-    context: str, question: str, model: str, max_tokens: int
-) -> tuple[str, int, int]:
-    """Call via LiteLLM proxy (routes to any model). Returns (reply, input_tokens, output_tokens)."""
-    try:
-        import litellm
-    except ImportError:
-        return (
-            "ERROR: 'litellm' not installed. Run: pip install litellm",
-            0,
-            0,
-        )
-
-    user_content = f"Context:\n{context}\n\nQuestion:\n{question}"
-    response = await litellm.acompletion(
-        model=model,
-        max_tokens=max_tokens,
-        messages=[
-            {"role": "system", "content": ADVISOR_SYSTEM_PROMPT},
-            {"role": "user", "content": user_content},
-        ],
-    )
-    reply = response.choices[0].message.content or ""
-    input_tokens = response.usage.prompt_tokens if response.usage else 0
-    output_tokens = response.usage.completion_tokens if response.usage else 0
-    return reply, input_tokens, output_tokens
-
-
 async def _call_local(
     context: str, question: str, model: str, max_tokens: int
 ) -> tuple[str, int, int]:
@@ -401,16 +368,6 @@ def _google_provider_available() -> bool:
     )
 
 
-def _litellm_provider_available() -> bool:
-    """Return True when LiteLLM is installed and explicitly configured."""
-    return _module_available("litellm") and _env_present(
-        "LITELLM_API_BASE",
-        "LITELLM_BASE_URL",
-        "LITELLM_PROXY_URL",
-        "LITELLM_MODEL",
-    )
-
-
 async def _local_provider_available(model: str = "") -> bool:
     """Return True when a local Ollama service and target model are reachable."""
     if not _module_available("httpx"):
@@ -441,7 +398,6 @@ async def _provider_available(provider: str, model: str = "") -> bool:
         "anthropic": _anthropic_provider_available,
         "openai": _openai_provider_available,
         "google": _google_provider_available,
-        "litellm": _litellm_provider_available,
     }
     if provider == "local":
         return await _local_provider_available(model)
@@ -457,18 +413,16 @@ def _provider_candidates_for_model(model: str) -> tuple[str, ...]:
     if normalized.startswith("claude"):
         return ("anthropic",)
     if normalized.startswith(("gpt", "o1", "o3", "o4")):
-        return ("openai", "litellm")
+        return ("openai",)
     if normalized.startswith(("gemini", "models/gemini")):
-        return ("google", "litellm")
+        return ("google",)
     if "/" in normalized:
-        return ("litellm", "local")
+        return ("local",)
     return _AUTO_PROVIDER_ORDER
 
 
 def _default_model_for_provider(provider: str) -> str:
     """Return the provider default model, honoring explicit gateway config."""
-    if provider == "litellm" and os.getenv("LITELLM_MODEL", "").strip():
-        return os.environ["LITELLM_MODEL"].strip()
     return _DEFAULT_MODELS.get(provider, "")
 
 
@@ -483,8 +437,8 @@ async def _resolve_auto_provider(model: str = "") -> tuple[str, str]:
     checked = ", ".join(unavailable)
     return "", (
         "ERROR: No advisor provider available for provider=auto. "
-        f"Checked: {checked}. Start Ollama for provider=local, configure LiteLLM, "
-        "or set a provider explicitly with its SDK and credentials. Anthropic is "
+        f"Checked: {checked}. Start Ollama for provider=local, "
+        "or set openai/google credentials. Anthropic is "
         "eligible only when llm_providers.claude_sdk.enabled: true and "
         "the direct Anthropic API credential is set."
     )
@@ -494,7 +448,6 @@ _PROVIDERS = {
     "anthropic": _call_anthropic,
     "openai": _call_openai,
     "google": _call_google,
-    "litellm": _call_litellm,
     "local": _call_local,
 }
 
@@ -522,7 +475,7 @@ async def consult_advisor(
         context: What the executor has learned so far (files seen, errors hit,
                  constraints discovered, work completed).
         question: Specific strategic question for the advisor.
-        provider: AI provider to use. One of: local, litellm, openai, google,
+        provider: AI provider to use. One of: local, openai, google,
                   anthropic, auto. Default: auto. Auto prefers local and explicitly
                   configured non-Anthropic providers; the anthropic provider requires
                   llm_providers.claude_sdk.enabled: true.

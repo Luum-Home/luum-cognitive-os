@@ -10,7 +10,7 @@ except ModuleNotFoundError:  # pragma: no cover
 
 ROOT = Path(__file__).resolve().parents[2]
 HEAVY_LANES = {
-    "llm": {"litellm", "redis"},
+    "llm": {"redis"},
     "observability": {"arize-phoenix", "arize-phoenix-otel", "mlflow-skinny"},
     "memory": {"cognee"},
     "guardrails": {"nemoguardrails"},

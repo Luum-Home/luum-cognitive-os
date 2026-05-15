@@ -138,13 +138,12 @@ class TestProviderRouting:
             ))
         assert result == "Prefer event sourcing."
 
-    def test_routes_to_litellm(self, advisor):
-        mock_reply = ("Use circuit breaker.", 60, 12)
-        with patch.object(advisor, "_call_litellm", new=AsyncMock(return_value=mock_reply)):
-            result = _run(advisor.consult_advisor(
-                context="ctx", question="q?", provider="litellm"
-            ))
-        assert result == "Use circuit breaker."
+    def test_litellm_provider_is_removed_by_dependency_policy(self, advisor):
+        result = _run(advisor.consult_advisor(
+            context="ctx", question="q?", provider="litellm"
+        ))
+        assert result.startswith("ERROR: Unknown provider 'litellm'")
+        assert "litellm" not in result.removeprefix("ERROR: Unknown provider 'litellm'. Supported: ")
 
     def test_routes_to_local(self, advisor):
         mock_reply = ("Apply bulkhead isolation.", 50, 10)
@@ -274,10 +273,6 @@ class TestAutoProviderRouting:
             "OPENAI_API_KEY",
             "GOOGLE_API_KEY",
             "GEMINI_API_KEY",
-            "LITELLM_API_BASE",
-            "LITELLM_BASE_URL",
-            "LITELLM_PROXY_URL",
-            "LITELLM_MODEL",
         ):
             monkeypatch.delenv(name, raising=False)
 
@@ -302,12 +297,9 @@ class TestAutoProviderRouting:
 
     def test_auto_model_hint_limits_candidates(self, advisor):
         assert advisor._provider_candidates_for_model("claude-opus-4-6") == ("anthropic",)
-        assert advisor._provider_candidates_for_model("gpt-4o") == ("openai", "litellm")
-        assert advisor._provider_candidates_for_model("gemini-2.5-pro") == ("google", "litellm")
-
-    def test_litellm_default_model_honors_env(self, advisor, monkeypatch):
-        monkeypatch.setenv("LITELLM_MODEL", "openrouter/some-model")
-        assert advisor._default_model_for_provider("litellm") == "openrouter/some-model"
+        assert advisor._provider_candidates_for_model("gpt-4o") == ("openai",)
+        assert advisor._provider_candidates_for_model("gemini-2.5-pro") == ("google",)
+        assert advisor._provider_candidates_for_model("openrouter/some-model") == ("local",)
 
     def test_local_provider_available_requires_target_model(self, advisor):
         class FakeResponse:
