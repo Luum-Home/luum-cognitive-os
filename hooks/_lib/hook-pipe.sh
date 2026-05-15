@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # hook-pipe.sh — Inter-hook data sharing within an event chain
 #
 # Usage:

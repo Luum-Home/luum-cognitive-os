@@ -335,11 +335,16 @@ check_scope_portability_contract() {
     return 0
   }
   if [ -x "$REPO_ROOT/scripts/cos-scope-both-portability-audit" ] && \
-     [ -x "$REPO_ROOT/scripts/cos-scope-projection-audit" ]; then
+     [ -x "$REPO_ROOT/scripts/cos-scope-projection-audit" ] && \
+     [ -x "$REPO_ROOT/scripts/cos-install-projection-audit" ]; then
+    python3 "$REPO_ROOT/scripts/primitive_scope_classifier.py" \
+      --project-dir "$REPO_ROOT" --fail-contradictions --fail-low-confidence \
+      --json-out .cognitive-os/reports/primitive-scope-classifier-ci-local.json >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-both-portability-audit" \
       --repo-root "$REPO_ROOT" --strict --json --no-write >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-projection-audit" \
-      --repo-root "$REPO_ROOT" --run-install-smoke --strict --json --no-write >/dev/null
+      --repo-root "$REPO_ROOT" --run-install-smoke --strict --json --no-write >/dev/null && \
+    "$REPO_ROOT/scripts/cos-install-projection-audit" --json >/dev/null
   else
     _skip "scope portability contract" "scope audit scripts not found"
     return 0

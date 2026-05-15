@@ -303,9 +303,16 @@ class DynamicToolCreator:
             if not os.path.exists(skill_md):
                 ext = "bash" if tool_type == "bash" else "python"
                 content = textwrap.dedent(f"""\
+                    <!-- SCOPE: project -->
                     ---
                     name: {slug}
                     version: 0.1.0
+                    description: "{entry['description']}"
+                    triggers:
+                      - {slug}
+                    audience: project
+                    platforms:
+                      - generic-cli
                     auto-generated: true
                     promoted-from: dynamic-tool
                     ---
@@ -329,6 +336,18 @@ class DynamicToolCreator:
 
                     1. Execute `{filename}` with appropriate arguments.
                     2. Verify the output matches expectations.
+
+                    ## Primitive Classification Gate
+
+                    Before this promoted tool is committed or shared, run `/primitive-authoring`, add consumer availability and behavior evidence, and validate the exact path:
+
+                    ```bash
+                    python3 scripts/primitive_scope_classifier.py \
+                      --project-dir . \
+                      --paths skills/auto-generated/{slug}/SKILL.md \
+                      --fail-contradictions \
+                      --fail-low-confidence
+                    ```
                 """)
                 with open(skill_md, "w") as f:
                     f.write(content)

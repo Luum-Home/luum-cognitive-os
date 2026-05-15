@@ -121,6 +121,23 @@ git add skills/<name>/
 git commit -m "feat(skills): promote experimental skill <name> (ADR-095)"
 ```
 
+### Step 4.5 — Primitive promotion gate
+
+Before accepting or committing a promoted draft, run `/primitive-authoring` and
+classify the promoted skill path:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths skills/<name>/SKILL.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+Promotion must also add consumer availability and behavior evidence. A promoted
+`SCOPE: both` skill needs paired portability proof; otherwise keep it
+experimental or demote the marker.
+
 ### Step 5 — On-demand synthesis trigger
 
 If the operator wants to force a scan without waiting for the Stop event:

@@ -1,0 +1,268 @@
+{
+  "classifier_summary": {
+    "by_confidence": {
+      "high": 986,
+      "medium": 223
+    },
+    "by_effective_scope": {
+      "both": 531,
+      "os-only": 623,
+      "project": 55
+    },
+    "by_suggested_scope": {
+      "both": 531,
+      "os-only": 623,
+      "project": 55
+    },
+    "contradictions": 0,
+    "low_confidence": 0,
+    "safe_fallback_os_only_from_unknown": 0,
+    "total": 1209
+  },
+  "rows": [
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle+semantic-pattern",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface",
+        "distribution=maintainer; state=blocking; consumer_accessibility=lifecycle-declared-shared-surface",
+        "shared-agent-control-plane-safety"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle",
+        "semantic-pattern"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_protected-config-write-guard.py",
+      "path": "hooks/protected-config-write-guard.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_topology-discover.py",
+      "path": "scripts/topology-discover.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle+semantic-pattern",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface",
+        "distribution=lab; state=sandbox; consumer_accessibility=lifecycle-declared-shared-surface",
+        "shared-runtime-health"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle",
+        "semantic-pattern"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_host-tool-doctor.py",
+      "path": "hooks/host-tool-doctor.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface",
+        "distribution=core; state=advisory; consumer_accessibility=lifecycle-declared-shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_package_skills.py",
+      "path": "packages/verification-audit/skills/verification-before-completion/SKILL.md",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "scope-override+consumer-availability+lifecycle",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "Legacy shell scripts are maintainer-only unless header or exact override says otherwise.",
+        "maintainer-only",
+        "distribution=maintainer; state=candidate; consumer_accessibility=maintainer-only"
+      ],
+      "evidence_sources": [
+        "scope-override",
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_cos-record-onboarding.py",
+      "path": "scripts/cos-record-onboarding.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "scope-override",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "Legacy shell scripts are maintainer-only unless header or exact override says otherwise."
+      ],
+      "evidence_sources": [
+        "scope-override"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/install-goreleaser.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "scope-override",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "Legacy extensionless scripts are maintainer-only unless header or exact override says otherwise."
+      ],
+      "evidence_sources": [
+        "scope-override"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/cos-tool-inventory",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "scope-override",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "Legacy extensionless scripts are maintainer-only unless header or exact override says otherwise."
+      ],
+      "evidence_sources": [
+        "scope-override"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_cos-portable-ai-real-consumer-smoke.py",
+      "path": "scripts/cos-portable-ai-real-consumer-smoke",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "shell-ci-candidate",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/cos",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/jupyter-sandbox.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "high",
+      "contradiction": "",
+      "decision_source": "consumer-availability+lifecycle",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface",
+        "distribution=team; state=candidate; consumer_accessibility=lifecycle-declared-consumer-candidate"
+      ],
+      "evidence_sources": [
+        "consumer-availability",
+        "lifecycle"
+      ],
+      "paired_portability_test": null,
+      "path": "scripts/sprint-test-summary.sh",
+      "review_prompt": "Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/security-profiles/paranoid.json",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    }
+  ],
+  "sample_summary": {
+    "by_confidence": {
+      "high": 10,
+      "medium": 2
+    },
+    "by_effective_scope": {
+      "both": 4,
+      "os-only": 4,
+      "project": 4
+    },
+    "total": 12
+  },
+  "schema_version": "primitive-scope-random-audit/v1",
+  "seed": 20260515,
+  "selection": {
+    "confidences": [],
+    "per_scope": 4,
+    "scopes": [],
+    "total": 12
+  }
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # Archive-first filesystem reaper for .cognitive-os/sessions.
 set -uo pipefail
 

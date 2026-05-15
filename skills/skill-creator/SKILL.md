@@ -119,6 +119,24 @@ mem_save(
 )
 ```
 
+### Phase 4: Primitive classification and portability gate
+
+Before committing a new or regenerated skill, run the shared
+`/primitive-authoring` workflow and validate the exact artifact:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths skills/{skill-name}/SKILL.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+For consumer-visible skills, add `primitive-consumer-availability.yaml` and
+behavior evidence. For `SCOPE: both`, add paired red-team portability proof
+before accepting the marker. If the skill generates hooks, scripts, rules, or
+templates, classify those generated primitives too.
+
 ## Success Criteria
 
 - [ ] `skills/{skill-name}/SKILL.md` exists and follows the standard format

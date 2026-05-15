@@ -255,13 +255,11 @@ items:
   rationale: Maintainer memory/export utility for local knowledge workflows; consumer
     projection requires an explicit memory/export package.
 - path: hooks/_lib/agent-context.sh
-  status: maintainer-only
-  rationale: 'Manual scope review iteration 028: hook support library for COS agent-context
-    detection; not a standalone shared primitive.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/task-event.sh
-  status: maintainer-only
-  rationale: 'Manual scope review iteration 028: hook support library for COS task-event
-    JSONL metrics; not a standalone shared primitive.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: scripts/check_mcp_servers.py
   status: shell-ci-candidate
   rationale: Candidate consumer doctor command; needs shell/CI projection proof.
@@ -558,13 +556,11 @@ items:
   rationale: Manual scope calibration iteration 010 confirmed Claude native task-panel
     adapter hook mirrors COS task state and is SO runtime integration.
 - path: hooks/_lib/task_panel_adapter.py
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed adapter is Claude native
-    UI bridge over COS task state, not consumer-project primitive.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/recap_adapter.py
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed adapter exposes COS
-    session state to Claude /recap UI and is SO runtime integration.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: packages/skill-governance/skills/self-improve/SKILL.md
   status: maintainer-only
   rationale: Manual scope calibration iteration 010 confirmed META self-improvement
@@ -1182,25 +1178,20 @@ items:
     for COS source work and adopter projects; aggregate package skill portability
     proof covers structural projection.
 - path: hooks/_lib/bypass-resolver.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/killswitch_check.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/primitive-intervention.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/safe-worktree-remove.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/validation-lock.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/agent-quota-redirect.sh
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
@@ -1734,53 +1725,41 @@ items:
   rationale: 'Manual scope calibration iteration 019: git worktree/branch triage is
     repository-agnostic for COS and adopter project worktrees.'
 - path: hooks/_lib/artifact-status.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: loads COS persisted test/coverage
-    artifacts for governance hooks.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/cache.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: stores hook scan cache under
-    .cognitive-os/cache for COS hook execution.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/circuit-breaker.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: implements COS auto-repair circuit
-    breaker state under .cognitive-os metrics.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/common.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: shared runtime resolver for
-    Cognitive OS hooks and COS config/session paths.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/context_budget_lib.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: accounts ADR-186 context budget
-    for COS hook additionalContext output.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/dispatch_gate_check.py
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: single-pass implementation for
-    COS dispatch-gate hook and COS agent/task limits.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/execute-repair.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: executes COS remediation/repair
-    hook workflow.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/file_checker.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: shared file-check helper for
-    COS hooks.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/hook-pipe.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: stores cross-hook values in
-    .cognitive-os hook-pipe runtime state.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/normalize-stdin.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: normalizes coding-harness hook
-    JSON for COS hook runtime adapters.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/portable.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: portable shell helper sourced
-    by COS hook/runtime scripts, not a standalone project primitive.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/push-collision-check.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: push collision detector library
-    invoked by COS hook gates.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: skills/agent-control/SKILL.md
   status: maintainer-only
   rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality
@@ -1792,59 +1771,44 @@ items:
     fix: measures COS primitive implementation coverage across harness surfaces so
     maintainers do not confuse SCOPE with parity.'
 - path: hooks/_lib/register-bg.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: registers COS background PIDs
-    in lib/process_registry so the COS reaper can distinguish managed processes from
-    orphans.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/remediation.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: operates the COS auto-repair
-    remediation registry and failure metrics under .cognitive-os.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/resolve-main-worktree.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: resolves main/master worktrees
-    for COS hook workflows and branch-safety coordination.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/safe-jsonl.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: writes COS hook metrics and
-    health heartbeats safely to .cognitive-os/metrics.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/semantic-search.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: searches the COS remediation
-    registry via scripts/semantic-lookup.mjs for auto-repair matching.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/session-fs-reap.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: archives and removes stale COS
-    session filesystem state under .cognitive-os/sessions.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/session_init_helper.py
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: consolidates COS session-init
-    runtime reads of self-improve flags, Engram user model, project profile, and work
-    queue.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/singularity-suggestion.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: emits COS session-init advisory
-    singularity suggestions from .cognitive-os metrics.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/stash-lock.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: coordinates COS hook git stash
-    mutations with .cognitive-os/runtime/stash.lock.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/task-identity.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: derives canonical COS task ids
-    for cross-session claim coordination.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/task_bridge.py
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: correlates COS task_id with
-    Claude Code tool_use_id and .cognitive-os task state.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/timing.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: records COS hook execution time
-    for performance monitoring.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/tuning.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: reads COS hook tuning events
-    from .cognitive-os/metrics/hook-tuning.jsonl.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/aci-observation-capture.sh
   status: maintainer-only
   rationale: 'Manual scope calibration iteration 023: normalizes tool output into
