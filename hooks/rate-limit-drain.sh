@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # CONCERNS: rate-limiting, retry, queue-drain, non-blocking
 # Rate Limit Drainer (D45 wiring) — PostToolUse:Bash, NEVER blocks.
 #

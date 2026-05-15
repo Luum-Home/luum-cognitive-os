@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # @on-demand: invoked via /semgrep-scan skill; not a global default hook
 # PostToolUse hook: Semgrep SAST Scanner
 # Fires on "Agent" tool use — runs Semgrep on changed files after sdd-apply

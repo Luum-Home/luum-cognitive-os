@@ -9,7 +9,7 @@
 # stderr migration notice. See docs/02-Decisions/adrs/ADR-093-simplify-profiles.md.
 set -euo pipefail
 
-REPO_URL="https://github.com/luum-home/luum-cognitive-os.git"
+REPO_URL="${COGNITIVE_OS_REPO_URL:-https://github.com/luum-home/luum-cognitive-os.git}"
 VERSION="${COGNITIVE_OS_VERSION:-main}"
 TARGET_DIR=".cognitive-os"
 FORCE="${COGNITIVE_OS_FORCE:-false}"
@@ -21,6 +21,29 @@ PROFILE_SOURCE=""      # flag | env | auto
 SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
 INSTALL_DEPS=false
 HARNESS="${COGNITIVE_OS_HARNESS:-}"
+FALLBACK_SUPPORTED_HARNESSES="claude codex agents-md opencode vscode-copilot cursor qwen-code kimi-code gemini-cli warp amp-code jetbrains-junie qoder factory-droid cline continue-dev kilo-code zed-ai augment-code goose aider shell-ci"
+
+load_supported_harnesses() {
+  local script_dir registry
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  registry="$script_dir/manifests/harness-projection-registry.json"
+  if [[ -f "$registry" ]] && command -v python3 >/dev/null 2>&1; then
+    python3 - "$registry" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as fh:
+    data = json.load(fh)
+print(" ".join(data["implemented_order"]))
+PY
+    return
+  fi
+  echo "$FALLBACK_SUPPORTED_HARNESSES"
+}
+
+SUPPORTED_HARNESSES="$(load_supported_harnesses)"
+if [[ "${COGNITIVE_OS_PRINT_HARNESSES:-false}" == "true" ]]; then
+  echo "$SUPPORTED_HARNESSES"
+  exit 0
+fi
 # INSTALL_SCOPE controls which SCOPE-tagged files are copied.
 # Values: project (SCOPE:project + SCOPE:both), both (backward-compatible
 #         alias for project; not a separate installed surface), all
@@ -57,8 +80,13 @@ Options:
   --full                 Install everything (see above).
   --profile=NAME         Explicit profile: 'default' or 'full'. Legacy values
                          ('lean', 'standard') are accepted and remapped.
-  --harness=NAME         Settings projection target: 'claude' or 'codex'
-                         (default: claude).
+  --harness=NAME         Settings/instruction projection target
+                         (default: claude). Supported:
+                         claude, codex, agents-md, opencode, vscode-copilot,
+                         cursor, qwen-code, kimi-code, gemini-cli, warp,
+                         amp-code, jetbrains-junie, qoder, factory-droid,
+                         cline, continue-dev, kilo-code, zed-ai, augment-code,
+                         goose, aider, shell-ci.
   --from PATH            Use a local Cognitive OS repo instead of cloning.
   --force                Overwrite existing installation without prompting.
   --skip-manifest-check  Skip the post-install dependency report.
@@ -76,9 +104,12 @@ Options:
 
 Environment variables:
   COGNITIVE_OS_VERSION              Git branch/tag to install (default: main)
+  COGNITIVE_OS_REPO_URL             Git remote to clone when not using --from
+                                    (default: https://github.com/luum-home/luum-cognitive-os.git)
   COGNITIVE_OS_FORCE                Set to "true" to overwrite without prompting
   COGNITIVE_OS_SKIP_MANIFEST_CHECK  Set to "true" to skip the dependency report
-  COGNITIVE_OS_HARNESS              Settings projection target: 'claude' or 'codex'
+  COGNITIVE_OS_HARNESS              Settings/instruction projection target.
+                                    See --harness for supported values.
   COS_PROFILE                       Override profile: 'default' or 'full'.
                                     Legacy values ('lean', 'standard') remapped.
   COS_INSTALL_SCOPE                 Override scope filter: project|both|all.
@@ -90,6 +121,9 @@ Examples:
 
   # Codex driver install
   /path/to/luum-agent-os/install.sh --harness=codex
+
+  # Structural IDE projection (example: Cursor project rules + MCP placeholder)
+  /path/to/luum-agent-os/install.sh --harness=cursor
 
   # Full install (everything)
   /path/to/luum-agent-os/install.sh --full
@@ -131,16 +165,16 @@ normalize_profile() {
 
 normalize_harness() {
   local raw="$1"
-  case "$raw" in
-    claude|codex)
+  local valid
+  for valid in $SUPPORTED_HARNESSES; do
+    if [ "$raw" = "$valid" ]; then
       HARNESS="$raw"
-      ;;
-    *)
-      echo "Error: unsupported harness '$raw'." >&2
-      echo "       Valid harnesses: claude, codex." >&2
-      exit 1
-      ;;
-  esac
+      return
+    fi
+  done
+  echo "Error: unsupported harness '$raw'." >&2
+  echo "       Valid harnesses: $SUPPORTED_HARNESSES." >&2
+  exit 1
 }
 
 while [[ $# -gt 0 ]]; do
@@ -237,7 +271,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "Unknown option: $1" >&2
-      echo "Valid: --full, --profile=NAME, --harness=NAME, --from PATH, --force, --skip-manifest-check, --install-deps, --help" >&2
+      echo "Valid: --full, --profile=NAME, --harness=NAME, --from PATH, --force, --skip-manifest-check, --install-deps, --scope=SCOPE, --help" >&2
       echo "Legacy (remapped): --lean, --standard" >&2
       echo "Run 'install.sh --help' for full usage." >&2
       exit 1
@@ -266,7 +300,15 @@ else
 fi
 
 # ── Source detection ──────────────────────────────────────────────────
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_SOURCE="${BASH_SOURCE[0]-${0-}}"
+if [ -n "$SCRIPT_SOURCE" ] && [ -e "$SCRIPT_SOURCE" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" && pwd)"
+else
+  # curl-pipe / bash -s execution has no on-disk script path. In that mode the
+  # installer must not infer the current project as the COS source, so remote
+  # clone remains the source of truth.
+  SCRIPT_DIR=""
+fi
 
 if [ -n "$FROM_FLAG" ]; then
   # Explicit --from flag
@@ -322,7 +364,7 @@ fi
 
 if ! command -v jq >/dev/null 2>&1; then
   echo "Warning: jq is not installed. Settings merge requires jq."
-  echo "         Install jq for safe merge with existing .claude/settings.json"
+  echo "         Install jq for safest merge with existing harness settings."
   HAS_JQ=false
 else
   HAS_JQ=true
@@ -433,8 +475,8 @@ prepare_source() {
 prepare_source
 
 # ── Delegate to cos-init.sh ──────────────────────────────────────────
-# cos-init.sh handles: rules, hooks, skills, templates, settings.json,
-# cognitive-os.yaml, CLAUDE.md template, and registry registration.
+# cos-init.sh handles: rules, hooks, skills, templates, settings driver,
+# cognitive-os.yaml, and registry registration.
 # It uses generate-project-settings.sh for correct hook paths and
 # installs to namespaced cos/ subdirectories.
 COS_INIT="$TEMP_DIR/scripts/cos-init.sh"
@@ -455,22 +497,29 @@ COS_INIT_FLAG="--$PROFILE"
 # SCOPE-tagged files during copy.
 COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" COS_INSTALL_SCOPE="$INSTALL_SCOPE" COGNITIVE_OS_HARNESS="$HARNESS" bash "$COS_INIT" "$COS_INIT_FLAG"
 
-# ── Install CLAUDE.md template if not present ─────────────────────────
-if [ ! -f ".claude/CLAUDE.md" ]; then
-  TEMPLATE="$TEMP_DIR/templates/CLAUDE.md.template"
-  if [ -f "$TEMPLATE" ]; then
-    mkdir -p ".claude"
-    cp "$TEMPLATE" ".claude/CLAUDE.md"
-    echo "Created .claude/CLAUDE.md from template."
+# ── Install Claude project instructions only for Claude harness ────────
+if [ "$HARNESS" = "claude" ]; then
+  if [ ! -f ".claude/CLAUDE.md" ]; then
+    TEMPLATE="$TEMP_DIR/templates/CLAUDE.md.template"
+    if [ -f "$TEMPLATE" ]; then
+      mkdir -p ".claude"
+      cp "$TEMPLATE" ".claude/CLAUDE.md"
+      echo "Created .claude/CLAUDE.md from template."
+    fi
+  else
+    echo "Existing .claude/CLAUDE.md preserved (not overwritten)."
   fi
-else
-  echo "Existing .claude/CLAUDE.md preserved (not overwritten)."
 fi
 
 # ── Post-install summary (UX1) ────────────────────────────────────────
-# Count what actually landed under .claude/skills/ - currently the skill
-# projection surface for Claude Code and the compatibility fallback for other
-# harnesses until canonical-first skill projection is complete.
+# Count what actually landed under the canonical skill surface and, for Claude,
+# the driver projection surface.
+skills_available=0
+if [ -d ".cognitive-os/skills/cos" ]; then
+  for d in .cognitive-os/skills/cos/*/; do
+    [ -d "$d" ] && skills_available=$((skills_available + 1))
+  done
+fi
 skills_exposed=0
 if [ -d ".claude/skills" ]; then
   for d in .claude/skills/*/; do
@@ -486,24 +535,46 @@ echo "Harness:        $HARNESS"
 case "$HARNESS" in
   claude)
     settings_driver=".claude/settings.json"
+    skills_line="Skills exposed: $skills_exposed (under .claude/skills/ Claude projection)"
     ;;
   codex)
     settings_driver=".codex/hooks.json"
+    skills_line="Skills available: $skills_available (under .cognitive-os/skills/cos/ canonical surface)"
+    ;;
+  *)
+    if [ -f ".cognitive-os/install-meta.json" ]; then
+      settings_driver="$(python3 - <<'PY'
+import json
+from pathlib import Path
+
+meta = json.loads(Path(".cognitive-os/install-meta.json").read_text())
+print(meta.get("settings_driver") or meta.get("settings_path") or "see .cognitive-os/install-meta.json")
+PY
+)"
+    else
+      settings_driver="see .cognitive-os/install-meta.json"
+    fi
+    skills_line="Skills available: $skills_available (under .cognitive-os/skills/cos/ canonical surface; this harness receives references unless a native skill projection is signed)"
     ;;
 esac
 echo "Settings:       $settings_driver"
-echo "Skills exposed: $skills_exposed (under .claude/skills/ compatibility projection)"
+echo "$skills_line"
 echo ""
 echo "Project structure:"
 echo "  .cognitive-os/hooks/cos/     - COS hooks (namespaced)"
 echo "  .cognitive-os/skills/cos/    - COS skills (kernel path, namespaced)"
 echo "  .cognitive-os/templates/cos/ - COS templates (namespaced)"
 echo "  $settings_driver        - Active harness settings driver"
-echo "  .claude/skills/              - Compatibility skill projection (ADR-001)"
-echo "  .claude/rules/cos/           - Claude-compatible rule projection"
+if [ "$HARNESS" = "claude" ]; then
+  echo "  .claude/skills/              - Claude skill projection (ADR-001)"
+  echo "  .claude/rules/cos/           - Claude-compatible rule projection"
+elif [ "$HARNESS" != "codex" ]; then
+  echo "  Note: $HARNESS is a structural or harness-specific projection unless"
+  echo "        manifests/harness-projection.yaml records a stronger proof_level."
+fi
 echo ""
 
-if [ "$skills_exposed" -eq 0 ]; then
+if [ "$HARNESS" = "claude" ] && [ "$skills_exposed" -eq 0 ]; then
   echo "WARNING: 0 skills are exposed to the harness under .claude/skills/." >&2
   echo "         This is likely a bug — run 'bash hooks/self-install.sh' or" >&2
   echo "         re-run this installer with --force to repair." >&2
@@ -514,8 +585,11 @@ echo "Next checks:"
 echo "  COGNITIVE_OS_PROJECT_DIR=\"\$PWD\" bash <cos-source>/scripts/cos-status.sh"
 if [ "$HARNESS" = "claude" ]; then
   echo "  claude  # then run /cognitive-os-init when you want project-specific generation"
-else
+elif [ "$HARNESS" = "codex" ]; then
   echo "  Open Codex in this project; hooks are projected in .codex/hooks.json."
+else
+  echo "  Open $HARNESS in this project; projection is written to $settings_driver."
+  echo "  Check manifests/harness-projection.yaml before claiming runtime enforcement."
 fi
 echo ""
 echo "Existing harness configuration is preserved and merged where supported."

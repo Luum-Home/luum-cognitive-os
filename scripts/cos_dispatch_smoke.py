@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Exercise the LLM dispatch and task-history metrics paths offline.
 
 This does not call external providers. It invokes the real dispatch() control

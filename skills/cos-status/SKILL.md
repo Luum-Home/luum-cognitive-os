@@ -7,7 +7,7 @@ triggers:
 - /cos-status
 - /status
 - cos status
-audience: os-only
+audience: both
 version: 1.0.0
 summary_line: Display current Cognitive OS state — active profile, skills exposed,
   hooks…

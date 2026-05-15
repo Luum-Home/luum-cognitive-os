@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Build the active agentic primitive index from the lifecycle manifest."""
 from __future__ import annotations
 

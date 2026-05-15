@@ -46,14 +46,14 @@ import sys
 import tempfile
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 # Use "fork" on POSIX to avoid pickle constraints on locally-defined functions.
 # This is safe for test/bench environments (no pre-fork thread issues).
-_MP_CTX = multiprocessing.get_context("fork" if sys.platform != "win32" else "spawn")
+_MP_CTX: Any = multiprocessing.get_context("fork" if sys.platform != "win32" else "spawn")
 
 
 # ---------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Generate, inspect, or wipe the local Cognitive OS project profile draft."""
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Smoke the native OpenCode COS primitive guard plugin without model calls.
 
 The smoke verifies the installed OpenCode binary version, loads the project-level
@@ -164,12 +164,15 @@ def build_report() -> dict[str, Any]:
     binary, version = _opencode_version()
     with tempfile.TemporaryDirectory(prefix="cos-opencode-plugin-smoke-") as td:
         node = _run_node_smoke(Path(td)) if binary else {"ledger_rows": [], "ledger_row_count": 0, "outcomes": {}, "signed": [], "content_free": False, "node_returncode": None}
-    rows = node.get("ledger_rows", [])
-    outcomes = node.get("outcomes", {}) if isinstance(node.get("outcomes"), dict) else {}
-    signed = [str(item) for item in node.get("signed", []) if item]
+    raw_rows = node.get("ledger_rows", [])
+    rows = [row for row in raw_rows if isinstance(row, dict)] if isinstance(raw_rows, list) else []
+    raw_outcomes = node.get("outcomes", {})
+    outcomes: dict[str, Any] = raw_outcomes if isinstance(raw_outcomes, dict) else {}
+    raw_signed = node.get("signed", [])
+    signed = [str(item) for item in raw_signed if item] if isinstance(raw_signed, list) else []
     by_id = {str(row.get("primitive_id")) for row in rows}
     missing_rows = sorted(set(signed) - by_id)
-    failed_outcomes = sorted(key for key in signed if not outcomes.get(key))
+    failed_outcomes = sorted(key for key in signed if not bool(outcomes.get(key)))
     status = "pass" if binary and node.get("node_returncode") == 0 and signed and not missing_rows and not failed_outcomes and node.get("content_free") else "fail"
     return {
         "schema_version": "opencode-primitive-adapter-smoke.v1",

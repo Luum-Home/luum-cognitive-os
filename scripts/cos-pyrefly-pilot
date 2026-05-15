@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# PURPOSE: Run the Pyrefly pilot type-check lane and record advisory performance receipts.
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$($SCRIPT_DIR/cos-root project)"
+REPORT_DIR="$REPO_ROOT/.cognitive-os/reports/pyrefly"
+ENFORCE="${COS_PYREFLY_ENFORCE:-0}"
+STRICT_IMPORTS="${COS_PYREFLY_STRICT_IMPORTS:-0}"
+PRINT_REPORT="${COS_PYREFLY_PRINT_REPORT:-1}"
+EXTRA_ARGS=()
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --enforce) ENFORCE=1 ;;
+    --advisory) ENFORCE=0 ;;
+    --strict-imports) STRICT_IMPORTS=1 ;;
+    --summary-only) PRINT_REPORT=0 ;;
+    --) shift; EXTRA_ARGS+=("$@"); break ;;
+    *) EXTRA_ARGS+=("$1") ;;
+  esac
+  shift
+done
+
+mkdir -p "$REPORT_DIR"
+cd "$REPO_ROOT" || exit 2
+
+if command -v pyrefly >/dev/null 2>&1; then
+  PYREFLY=(pyrefly)
+elif command -v uvx >/dev/null 2>&1; then
+  PYREFLY=(uvx pyrefly)
+else
+  echo "PYREFLY_PILOT_SKIPPED: pyrefly/uvx not found" >&2
+  if [ "$ENFORCE" = "1" ]; then exit 2; fi
+  exit 0
+fi
+
+check_args=(check)
+if [ "$STRICT_IMPORTS" = "1" ]; then
+  check_args+=(--error missing-import)
+fi
+check_args+=("${EXTRA_ARGS[@]}")
+
+start_epoch="$(date +%s)"
+version_output="$(${PYREFLY[@]} --version 2>&1)"
+report_tmp="$REPORT_DIR/latest.txt.tmp"
+json_tmp="$REPORT_DIR/latest.json.tmp"
+
+{
+  echo "# Pyrefly pilot report"
+  echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "repo: $REPO_ROOT"
+  echo "mode: $([ "$ENFORCE" = "1" ] && echo enforce || echo advisory)"
+  echo "strict_imports: $STRICT_IMPORTS"
+  echo "version: $version_output"
+  echo
+  "${PYREFLY[@]}" "${check_args[@]}" 2>&1
+  status=$?
+  echo
+  echo "pyrefly_exit_code: $status"
+} > "$report_tmp"
+status="$(grep '^pyrefly_exit_code:' "$report_tmp" | awk '{print $2}' | tail -1)"
+status="${status:-1}"
+end_epoch="$(date +%s)"
+elapsed_seconds=$((end_epoch - start_epoch))
+error_count="$(grep -c '^ERROR ' "$report_tmp" || true)"
+
+python3 - "$json_tmp" "$status" "$error_count" "$elapsed_seconds" "$ENFORCE" "$STRICT_IMPORTS" "$version_output" <<'PY'
+from __future__ import annotations
+import json, sys
+path, status, errors, elapsed, enforce, strict_imports, version = sys.argv[1:]
+payload = {
+    "tool": "pyrefly",
+    "mode": "enforce" if enforce == "1" else "advisory",
+    "strict_imports": strict_imports == "1",
+    "pyrefly_exit_code": int(status),
+    "error_count": int(errors),
+    "elapsed_seconds": int(elapsed),
+    "version": version.strip(),
+}
+with open(path, "w", encoding="utf-8") as fh:
+    json.dump(payload, fh, indent=2, sort_keys=True)
+    fh.write("\n")
+PY
+
+mv "$report_tmp" "$REPORT_DIR/latest.txt"
+mv "$json_tmp" "$REPORT_DIR/latest.json"
+
+if [ "$PRINT_REPORT" = "1" ]; then
+  cat "$REPORT_DIR/latest.txt"
+fi
+echo "PYREFLY_PILOT_SUMMARY: errors=$error_count elapsed_seconds=$elapsed_seconds report=$REPORT_DIR/latest.txt json=$REPORT_DIR/latest.json" >&2
+
+if [ "$ENFORCE" = "1" ] && [ "$status" -ne 0 ]; then
+  exit "$status"
+fi
+exit 0

@@ -60,7 +60,8 @@ evidence:
   - tests/contracts/test_aci_observation_capture_hook.py
   - tests/contracts/test_promotion_propose_only.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/adr-relevance-suggest.sh
   harnesses:
   - claude
@@ -76,7 +77,8 @@ evidence:
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/agent-bash-cwd-enforcer.sh
   harnesses:
   - claude
@@ -108,7 +110,8 @@ evidence:
   - codex
   tests:
   - tests/hooks/test_aspirational_audit_weekly.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/audit-id-enricher.sh
   harnesses:
   - claude
@@ -124,7 +127,8 @@ evidence:
   - tests/behavior/test_hooks_batch2.py
   - tests/unit/test_auto_skill_generator_routing.py
   - tests/unit/test_capability_level5.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/branch-ownership-lock.sh
   harnesses:
   - claude
@@ -140,7 +144,8 @@ evidence:
   - tests/contracts/test_orchestrator_verify.py
   - tests/hooks/test_hook_basics.py
   - tests/hooks/test_hook_graceful_degradation.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/context-budget-meter.sh
   harnesses:
   - claude
@@ -156,7 +161,8 @@ evidence:
   - codex
   tests:
   - tests/contracts/test_self_install_no_container_spawn.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/crash-recovery.sh
   harnesses:
   - claude
@@ -192,17 +198,20 @@ evidence:
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_registered_hook_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/destructive-rm-blocker.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/chaos/test_destructive_rm_blocker.py
   - tests/chaos/test_safety_drill.py
   - tests/contracts/test_killswitch.py
   - tests/contracts/test_p95_hook_latency.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/direct-main-guard.sh
   harnesses:
   - claude
@@ -221,14 +230,16 @@ evidence:
   - tests/behavior/test_agent_resilience.py
   - tests/behavior/test_hook_architecture.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/docker-drift-detector.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_docker_drift_detector.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/edit-lock-process-negotiations.sh
   harnesses:
   - claude
@@ -295,10 +306,12 @@ evidence:
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/audit/test_adr_140_cos_worker_compose.py
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/git-context-capture.sh
   harnesses:
   - claude
@@ -315,7 +328,8 @@ evidence:
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/host-tool-doctor.sh
   harnesses:
   - claude
@@ -342,22 +356,26 @@ evidence:
   - codex
   tests:
   - tests/behavior/test_self_improvement.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/lethal-trifecta-gate.sh
   harnesses:
   - claude
   tests:
   - tests/contracts/test_lethal_trifecta_gate.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/mcp-scan.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/behavior/test_security_integrations.py
   - tests/hooks/test_hook_graceful_degradation.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/memory-prefetch.sh
   harnesses:
   - claude
@@ -371,7 +389,8 @@ evidence:
   tests:
   - tests/integration/test_native_agent_heartbeat.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/network-egress-guard.sh
   harnesses:
   - claude
@@ -394,7 +413,8 @@ evidence:
   - tests/integration/test_post_agent_snapshot_restore.py
   - tests/integration/test_stash_lock_hook_wiring.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/profile-drift-autoapply.sh
   harnesses:
   - claude
@@ -411,35 +431,42 @@ evidence:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_orchestrator_fallback.py
   - tests/unit/test_rate_limit_detector.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/rate-limit-drain.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/integration/test_rate_limit_drainer_executes.py
   - tests/integration/test_rate_limiter_hook_retry_flow.py
   - tests/unit/test_rate_limiter_edge_matrix.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/rate-limit-precheck.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/e2e/test_cos_smoke.py
   - tests/integration/test_query_tailored_context.py
   - tests/integration/test_rate_limit_precheck_lift.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/rate-limiter.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/audit/test_hook_disable_env.py
   - tests/behavior/test_hook_architecture.py
   - tests/behavior/test_pentest_self.py
   - tests/hooks/conftest.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/reaper-daemon-launcher.sh
   harnesses:
   - claude
@@ -449,17 +476,20 @@ evidence:
   - tests/contracts/test_self_install_no_container_spawn.py
   - tests/unit/test_cos_config_audit.py
   - tests/unit/test_primitive_duplication_audit.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/release-guard.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/chaos/test_release_guard_exercised.py
   - tests/integration/test_project_settings_generation.py
   - tests/unit/test_chaos_template.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/result-truncator.sh
   harnesses:
   - claude
@@ -474,20 +504,23 @@ evidence:
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/rule-frontmatter-validator.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/rule-md-routing-validator.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_rule_md_routing_validator_hook.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/rule-router-prompt-suggest.sh
   harnesses:
   - claude
@@ -504,14 +537,16 @@ evidence:
   - tests/audit/test_hook_enforced_exclusions.py
   - tests/audit/test_install_scripts.py
   - tests/audit/test_rules_enforcement.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/self-knowledge-refresh.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/integration/test_self_knowledge_refresh.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/session-changelog.sh
   harnesses:
   - claude
@@ -521,7 +556,8 @@ evidence:
   - tests/behavior/test_session_changelog.py
   - tests/chaos/test_session_changelog_exercised.py
   - tests/contracts/test_developer_confidence_docs.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/session-cleanup.sh
   harnesses:
   - claude
@@ -539,7 +575,8 @@ evidence:
   tests:
   - tests/chaos/test_session_end_reap_exercised.py
   - tests/unit/test_coverage_classifier.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/session-heartbeat.sh
   harnesses:
   - claude
@@ -569,7 +606,8 @@ evidence:
   - tests/behavior/test_cos_doctor_tools.py
   - tests/behavior/test_hooks_batch2.py
   - tests/contracts/test_developer_confidence_docs.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/session-sanity.sh
   harnesses:
   - claude
@@ -615,7 +653,8 @@ evidence:
   - tests/contracts/test_self_install_no_container_spawn.py
   - tests/e2e/test_session_startup_smoke.py
   - tests/unit/test_session_watchdog_launcher.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/session-wrapup-trigger.sh
   harnesses:
   - claude
@@ -630,27 +669,31 @@ evidence:
   - codex
   tests:
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/skill-feedback-tracker.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/skill-invocation-logger.sh
   harnesses:
   - claude
   tests:
   - tests/integration/test_auto_trigger_honoured.py
   - tests/unit/test_skill_lifecycle_promoter.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/skill-md-routing-validator.sh
   harnesses:
   - claude
   tests:
   - tests/contracts/test_validator_promotion_trigger.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/skill-router-bash-gate.sh
   harnesses:
   - claude
@@ -673,27 +716,31 @@ evidence:
   - codex
   tests:
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/skill-tracker.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/behavior/test_hooks_batch1.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/skill-usage-tracker.sh
   harnesses:
   - claude
   tests:
   - tests/behavior/test_efficiency_profiles.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/stash-budget-warn.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/integration/test_stash_budget_warn.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/state-heartbeat.sh
   harnesses:
   - claude
@@ -702,14 +749,16 @@ evidence:
   - tests/behavior/test_state_heartbeat.py
   - tests/chaos/test_state_heartbeat_exercised.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/tool-sequence-capture.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_tool_sequence_capture.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/untracked-work-preservation-guard.sh
   harnesses:
   - claude
@@ -735,14 +784,16 @@ evidence:
   - tests/behavior/test_efficiency_profiles.py
   - tests/unit/test_session_start_budget.py
   - tests/unit/test_validation_capsule.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/work-queue-sync.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_work_queue_sync.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/branch-ownership-release.sh
   harnesses:
   - claude
@@ -769,68 +820,113 @@ evidence:
   - claude
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/validator-soak-weekly.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
 - primitive: hooks/architecture-compliance.sh
   tests:
   - tests/behavior/test_hooks_batch1.py
+  - tests/red_team/portability/test_project_scope_family.py
+  harnesses:
+  - shell-ci
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
 - primitive: scripts/cos-cloud-worker-bootstrap.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/cos-postgres-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_local_service_scripts.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/cos-valkey-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_local_service_scripts.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/dependency-lane.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/deps-update.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/document_feature_append.py
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/install-aguara.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-garak.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-mcp-scan.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-promptfoo.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/install-tob-skills.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_shared_tool_installers.py
+  harnesses:
+  - shell-ci
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
 - primitive: scripts/setup-git-hooks.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/sprint-test-summary.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+  harnesses:
+  - shell-ci
 - primitive: scripts/cos-tui
   tests:
   - tests/contracts/test_cos_tui_operable_surface_contract.py
@@ -904,6 +1000,2952 @@ evidence:
   tests:
   - tests/hooks/test_hook_graceful_degradation.py
   rationale: Explicit behavior proof for the session-end cleanup hook graceful-degradation contract; it must exit cleanly when cleanup tooling is unavailable.
+- primitive: hooks/aguara-scan.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/ai-provider-identity-guard.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/code-review-on-commit.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/confidentiality-enforcer.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/content-policy.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/doc-sync-detector.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/global-verify.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/guardrails-validator.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/parry-scan.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/pre-commit-gate.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/predev-completeness-check.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/private-mode-gate.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/private-mode-metrics-gate.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/reinvention-check.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/semgrep-scan.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/valkey-ensure.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/worktree-submodule-fix.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: scripts/credibility-audit.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: scripts/doctor.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: scripts/install-credibility-tools.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_tool_installers.py
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
+- primitive: scripts/install-syft-grype.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_tool_installers.py
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
+- primitive: scripts/install-trivy.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_tool_installers.py
+  rationale: Manual scope review iteration 044 confirmed shared optional/runtime tool surface with family-specific portability proof; batch proof is no longer the only falsification evidence.
+- primitive: scripts/license-audit-syft-grype.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: scripts/license-audit-trivy.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
+- primitive: hooks/dry-run-preview.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: hooks/infra-intent-detector.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: hooks/jupyter-sandbox.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/check_mcp_servers.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/cos
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/docs_execution_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/domain_model.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/llm_status.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/ops_runbook.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/project_scaffold.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: scripts/radar_merge.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: skills/project-scaffold/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/CLAUDE.md.template
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/adoption-tiers.md.j2
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/blocked-strings.example.txt
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/external-tools-overlay.yaml
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/fintech-gates.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/go-service-context.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/go.mod.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/go/main.go.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/minimal/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/minimal/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/python/pyproject.toml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/settings.json.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/README.md.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/gitignore.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/package.json.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/project-templates/typescript/tsconfig.json.tmpl
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/security-profiles/minimal.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/security-profiles/paranoid.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/security-profiles/standard.json
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/service-map.example.yaml
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: templates/verification-commands.example.yaml
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_project_scope_family.py
+  rationale: Project-scope family proof verifies explicit project projection metadata and portable content for consumer-facing primitives.
+- primitive: hooks/adoption-freeze-gate.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/adversarial-review-gate.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/agent-quota-redirect.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/agnix-lint.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/attribution-completeness-validator.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/clean-room-ast-similarity-gate.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/codebase-itinerary-capture.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/cognitive-os-health.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/conversation-capture.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/cos-executor-heartbeat.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/cosd-intent-submit.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/dependency-license-classifier.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/ecosystem-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/engram-auto-import.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/engram-auto-sync.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/external-cache-content-leak.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/external-pattern-cleanroom-gate.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/history-rewrite-documented.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/idle-service-cleanup.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/legal-review-required-on-runtime-import.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/lib-symlink-divergence-detector.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/memu-sync.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/metrics-calibrator-trigger.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/metrics-rotation.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/mlflow-sync.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/package-sync.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/pattern-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/pre-cleanup-snapshot.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/pyrefly-typecheck-advisory.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/reaper-heartbeat.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/recap-sync.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/registration-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/research-to-runtime-firewall.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/session-hygiene.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/session-knowledge-extractor.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/session-start-stack-recommend.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/session-state-save.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/singularity-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/skill-drift-detector.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/spdx-header-required.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/sync-to-repo.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/task-bridge-notify.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/telemetry-budget-violator-detect.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/tool-discovery-trigger.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: hooks/usage-health-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/ROADMAP.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/capability-protection.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/clean-room-detection-limits.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/lane-taxonomy.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/pre-dev-readiness-gate.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/reinvention-prevention.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: rules/research-first-protocol.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/adr100_live_headroom_check.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/adr_reserve.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/agent-orchestration-benchmark.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/agent-orchestration-boundary-audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/agentic-tool-license-matrix.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/agentic_mastery_summary.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/agentic_tool_license_matrix.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/ai-provider-identity-guard
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/align_skill_frontmatter.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/apply-efficiency-profile.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/aspirational_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/audit-consumer-dependence.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/audit_adrs.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/audit_engram_topic_keys.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/auto-tune-routing
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/auto-update-projects.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/auto_tune_routing.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/backfill_session_decisions.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/benchmark-hooks.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/benchmark-providers
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/benchmark_providers.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/chaos/snapshot-concurrent-race.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/chaos/snapshot-crash-rollback.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/chaos/snapshot-vanishing-untracked.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/check-upstream-changes.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/check_entrypoint_adr_links.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/check_lazy_catalog_health.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/ci-setup.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/ci-smoke-linux.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/claim_enforcer.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/claim_proof_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cleanup-snapshots.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/commit_provenance.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/component-lint.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-active-primitive-index
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-adoption-profile
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-adoption-unfreeze
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-adr-close
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-adr-partial-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-adr-partial-ledger
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-adr-resolve
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-agent-message
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-agent-spawn-benchmark
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-agent-worktree-prepare
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-auth-probe
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-bootstrap.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-boring-reliability
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-branch-lease
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-branch-lock
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-branch-release
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-branch-task-check
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-capability-matrix
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-ci-local.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-claim-signature-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-cleanup.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-closure-discipline-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-context-budget-report
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-control-plane-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-core-skills-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-counsel-outreach-draft
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-counsel-packet
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-credential-safe-run
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-cross-stack-adoption-truth
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-cross-stack-license-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-cross-stack-secret-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-default-visible-reducer
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-deferred-tool-plan
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-demotion-proposer
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-dependency-adoption-gate
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-deps-coverage-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-deps-install.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-deps-maintain
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-deps-profile-ratchet
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-deps-triage
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-dispatch-smoke
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-doc-path-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-doctor-memory-lifecycle.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-doctor-tools.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-documentation-truth-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-engram-cloud-docker-smoke
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-engram-command-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-engram-wave2-schema-migrate
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-external-source-fetch
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-false-positive-ledger
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-falsification-benchmark
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-feature-tool-scan
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-feature-vs-tool-benchmark
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-filter-repo-wrap.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-fleet-confidence-export
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-flow-register.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-friction-report
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-generate-notices.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-ghost-skills.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-headless-service-drill
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-history-rewrite-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-history-sanitization
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-history-sanitization-smoke.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-imported-pattern-closure-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-init-global.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-install-projection-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-install-scope-dev-smoke
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-instance-init
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-language-dependence-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-legal-approve
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-maintainer-agent
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-memory-benchmark
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-memory-benchmark-compare
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-operational-status
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-performance-ledger
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-policy-eval
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-postmortem-regression-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-pr-review.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-pre-public-risk-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-preamble-budget
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-primitive-fitness-ledger
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-private-content-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-product-answer
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-product-answer-refresh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-profile-explain
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-project-registry-prune.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-promote-from-telemetry
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-promotion-proposer
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-public-claim-gate
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-pyrefly-pilot
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-pytest-serial-repair
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-python-stdin-antipattern-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-queue-drain
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-recovery-drill
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-registry.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-release-external-readiness
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-release-freeze
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-reward-signal-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-rollback
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-routing-benchmark
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-run-trace
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-runtime-hook-reality
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-rust-transpiler-eval
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-sandbox-run
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-scope-projection-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-script-exposure-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-self-programming-pattern-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-session-coordination
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-session-spawn.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-session-start-budget
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-sessions.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-silent-failure-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-skill-description-enrich
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-skill-performance-ledger
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-startup-recover.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-task-submit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-telemetry-aggregate
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-test-efficiency-plan
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-test-repair-loop
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-tool-adoption-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-tool-discovery-preuse
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-tool-inventory
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-tool-radar-render
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-tool-research-check
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-update.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-uspto-patent-search
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-uspto-trademark-search
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-validation-break.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-validation-status.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-vs-ai-slop-two-repo-smoke
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-weekly-config-audit.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-weekly-primitive-gap.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-weekly-public-metrics.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-wip-safety-score
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-worker-run-once
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-worktree-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos-worktree-sweeper.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_auth_probe.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_branch_lease.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_build_self_knowledge.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_chaos_template.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_classify_coverage.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_clean_room_ast_similarity.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_closure_discipline_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_codex_guard.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_consumer_fleet_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_credential_safe_run.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_daemon.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_demotion_proposer.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_deps_install.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_doc_path_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_engram_command_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_evolve_tick.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_executor.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_falsification_benchmark.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_flow_register.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_friction_report.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_governed_runner.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_headless_safe_mode.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_install_projection_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_install_scope_dev_smoke.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_instance_init.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_lib_symlink_invariant_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_operational_status.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_profile_explain.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_promotion_proposer.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_repair.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_rust_transpiler_eval.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_service_control_plane.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_sprint.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_test_artifact_status.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_validate.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_verbatim_copy_detector.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_vs_ai_slop_two_repo_smoke.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_watch.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cos_work_queue.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/cosd
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/create-release.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/dangerous_env_flag_detector.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/demo-consumer-sdd-lane.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/demo-first-run-onboarding.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/demo-governance.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/demo-portability-proof.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/detect_runner_capacity.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/docs_duplicate_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/dogfood_score.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/generate-project-settings.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/generate_adr_index.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/generate_adversarial_scenario.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/generate_harness_projection_registry.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/git-coop.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/hook_quality_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-cos.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-git-filter-repo.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-git-hooks.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-goreleaser.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-launchd-jobs.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-pre-commit.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/install-timing-test.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/lint-shell.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/manifest-check.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/mcp_tofu_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/measure_expansion.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/measure_harness_profiles.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/merge-settings.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/metrics_tamper_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/migrate-to-cognitive-os.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/migrate_event_log_to_v2.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/migrate_skill_archive_to_store.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/migrate_skill_descriptions_use_when.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/network_egress_guard.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/network_sandbox_run.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/plan-lock.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/postinstall.js
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/prelaunch-apply-rewrite
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/prelaunch-history-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/prelaunch-message-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/prelaunch-rewrite-plan
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-behavior-audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-coherence-audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-balance-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-dependency-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-false-both-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-generic-os-only-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-health
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-plane-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-proof-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive-scope-random-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_backend_benchmark.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_coverage.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_duplication_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_family_readiness_ledger.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_gap_snapshot.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_lifecycle.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_parse_inventory.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_readiness_ledger.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_row_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_scope_classifier.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_scope_dependency_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_scope_health.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_scope_random_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_scope_unknown_triage.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_structure_standardizer.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_surface_reduce.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_usage_map.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/private_content_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/provider_spoof_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/reduction_backlog.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/regen_catalog_bullets.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/register-mcps.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/render_adoption_tiers.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/reserve_adr_slot.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/review_pending_sweeper.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/run-adversarial-generalization.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/run-runtime-benchmark.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/run_skill_efficacy_smoke.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/runtime_benchmark_report.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/scope_tag_backfill.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/security_red_team.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/self_programming_pattern_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/semantic-lookup.mjs
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/session-leak-diagnostic.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/set-security-profile.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/skill-router-benchmark.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/skill-router-retrieval-audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/skill_efficacy_report.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/smoke-agent-quota-redirect.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/so_session_watchdog.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/so_vs_vanilla_benchmark.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/subagent_launch_preflight.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/test-agent-teams-hooks.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/test-cognitive-os.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/test-mcp-server.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/test_run_inventory.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/test_skip_registry.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/uninstall.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/update_readme_badges.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/upgrade.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/validate_substrate_consumers.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/validate_tier_filter.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/version.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/weekly-aspirational-audit.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/write_context_marker.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/__contracts__/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/__contracts__/canonical-event-emitter/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/adr-tombstone/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/architecture-map-answer/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/audit-integrity/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/browser-task/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/bump-version/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/cognitive-os-init/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/cognitive-os-status/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/cognitive-os-test/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/component-reality-check/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/coordination-status/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/cos-install-operations/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/cos-maintainer-operations/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/deps-update/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/docs-execution-audit/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/dogfood-score/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/experimental/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/generate-changelog/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/hook-timing/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/memory-scan/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/primitive-surface-reduction/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/primitive-usage-map/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/product-answer/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/push-release/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/pyrefly-typecheck/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/radar-update/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/release-os/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/repair-skill/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/so-vs-vanilla/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/synthesize-skill/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/tag-release/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/test-contract-repair/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/validate-release/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/vuln-remediation-flow/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/agent-mandatory-rules.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/agent-preamble.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/counsel-outreach/clean-room-permission.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/counsel-outreach/license-clarification.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/counsel-outreach/review-request.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/edit-conflict-response.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/hook-template.sh
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/project-gotchas.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/rebranding-checklist.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/rule-template.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: templates/skill-template.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: scripts/primitive_behavior_depth_audit.py
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_primitive_behavior_depth_audit.py
+  rationale: Primitive behavior-depth audit proof verifies depth classification, strict repository execution, and wrapper dispatch.
+- primitive: scripts/primitive-behavior-depth-audit
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_primitive_behavior_depth_audit.py
+  rationale: Primitive behavior-depth audit proof verifies depth classification, strict repository execution, and wrapper dispatch.
 patterns:
 - pattern: tests/**
   behavior_proven: true

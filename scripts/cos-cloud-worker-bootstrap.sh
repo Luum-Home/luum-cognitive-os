@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: os-only
 # @manual-trigger: launch the ADR-140 COS worker Compose surface
 set -euo pipefail
 

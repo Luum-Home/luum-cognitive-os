@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # @manual-trigger: invoked manually after worktree operations; not a global default
 # worktree-submodule-fix.sh — SessionStart hook
 #

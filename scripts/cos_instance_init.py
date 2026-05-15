@@ -133,12 +133,15 @@ def build_plan(profile: dict[str, Any], project_dir: Path, *, run_smoke: bool = 
         "blocked_behaviors": load_manifest().get("blocked_behaviors", []),
         "notes": [],
     }
+    file_checks: list[dict[str, str]] = []
     if planned:
         plan["notes"].append("Profile is planned; write is intentionally disabled until proof is implemented.")
     if profile["id"] == "docker-headless":
         for rel in ["docker/cos-worker/docker-compose.yml", "scripts/cos-headless-service-drill"]:
             exists = (project_dir / rel).exists()
-            plan.setdefault("file_checks", []).append({"path": rel, "status": "present" if exists else "missing"})
+            file_checks.append({"path": rel, "status": "present" if exists else "missing"})
+    if file_checks:
+        plan["file_checks"] = file_checks
     if doctor:
         plan["doctor_commands"] = [row["command"] for row in plan["proof_drills"] if row.get("command") and not row.get("opt_in_required")]
         if not plan["doctor_commands"]:

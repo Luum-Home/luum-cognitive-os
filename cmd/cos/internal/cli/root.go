@@ -34,6 +34,8 @@ Commands:
   validate    Validate cos-package.yaml in the current directory
   add         Search and install skills in one step (search + install)
   install     Install a cos package from local path, GitHub, or URL
+  doctor      Run Cognitive OS diagnostics
+  project     Apply project-local harness projection
   remove      Remove an installed package
   list        List installed packages
   info        Show detailed information about a package
@@ -49,6 +51,7 @@ Commands:
   release     Create a new release
   status      Show release status of all packages
   run-task    Run a headless task in an isolated workspace
+  sdd         Run local consumer SDD lane
   release-all Release all packages with unreleased changes`,
 }
 

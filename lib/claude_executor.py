@@ -833,7 +833,7 @@ class ClaudeExecutor:
             if system_prompt:
                 kwargs["system"] = system_prompt
 
-            response = client.beta.messages.create(**kwargs)
+            response: Any = client.beta.messages.create(**kwargs)
 
             duration = time.monotonic() - start_time
 

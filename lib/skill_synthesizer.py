@@ -278,13 +278,20 @@ def propose_skill_draft(
 
         ## Promotion
 
-        To promote this experimental skill to active status:
+        To promote this experimental skill to active status, first run `/primitive-authoring` and the exact-path classifier gate after moving it:
 
         ```bash
         mv skills/experimental/{name}/ skills/{name}/
+        python3 scripts/primitive_scope_classifier.py \
+          --project-dir . \
+          --paths skills/{name}/SKILL.md \
+          --fail-contradictions \
+          --fail-low-confidence
         git add skills/{name}/
         git commit -m "feat(skills): promote experimental skill {name}"
         ```
+
+        Add consumer availability, behavior evidence, and paired portability proof before claiming `SCOPE: both`.
 
         To reject (delete) this draft:
 

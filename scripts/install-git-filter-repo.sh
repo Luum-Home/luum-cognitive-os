@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: os-only
 # install-git-filter-repo.sh — Install git-filter-repo for ADR-218 history sanitization
 #
 # git-filter-repo (MIT) is the modern replacement for the deprecated

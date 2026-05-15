@@ -36,6 +36,24 @@ Use `/compose-prompt` skill for automated template selection and assembly. For s
 3. Add to this table
 4. Update `/compose-prompt` skill's auto-select table
 
+## Adding reusable templates: primitive gate
+
+Templates that remain project-local under `.cognitive-os/templates/` are
+`SCOPE: project`. If a template is promoted into COS `templates/` or shared with
+multiple repositories, run `/primitive-authoring`, add consumer availability and
+behavior evidence, and validate it with:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths templates/{name}.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+A template may be `SCOPE: both` only with positive projection/portability proof;
+COS-internal template context stays `os-only`.
+
 ## Contextual Trigger
 
 - When work relates to Prompt Composition Rule.

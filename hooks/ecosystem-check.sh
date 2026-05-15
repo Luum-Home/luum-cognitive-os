@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: os-only
 # SessionStart: weekly ecosystem re-evaluation
 # Checks plugin submodules for new commits and evaluated tools for staleness.
 # Runs at most once every 7 days. Graceful — never blocks session start.

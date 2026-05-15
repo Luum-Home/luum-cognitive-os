@@ -84,12 +84,46 @@ enforcement = [
     "pytest-cov>=6.0",
     "diff-cover>=9.0",
 ]
+# Pyrefly pilot lane (ADR/radar 2026-05-15): fast Python type checking for
+# agentic loops. Kept outside dev/default so the SO can measure signal before
+# promoting it to a blocking gate. Run with: make typecheck-pyrefly
+typecheck = [
+    "pyrefly>=1.0,<1.1",
+]
 dev = [
     # Dependency lane split: dev stays lightweight and first-party focused.
     # Heavy optional lanes live under requirements/dependency-lanes/ so their
     # upstream pins cannot block core dependency hygiene.
     "luum-cognitive-os[web,direct_providers,testing,enforcement]",
 ]
+
+
+[tool.pyrefly]
+# Pilot scope: first-party Python runtime and scripts only. Tests remain covered
+# by pytest lanes; optional heavy integrations stay import-lazy and are measured
+# separately before this lane becomes blocking.
+project-includes = [
+    "lib/**/*.py",
+    "scripts/**/*.py",
+    "packages/agent-service/src/**/*.py",
+]
+project-excludes = [
+    "**/__pycache__",
+    "**/.pytest_cache",
+    "**/.ruff_cache",
+    "**/.venv",
+    "**/node_modules",
+    "docs/**",
+    "dist/**",
+]
+search-path = [".", "lib", "scripts", "packages/agent-service/src"]
+python-version = "3.11"
+
+[tool.pyrefly.errors]
+# Missing imports are noisy in this repo because many integrations are opt-in
+# extras. Keep API/type-shape diagnostics on by default; run strict-import
+# probes manually before promotion to blocking CI.
+missing-import = false
 
 [tool.ruff]
 target-version = "py311"

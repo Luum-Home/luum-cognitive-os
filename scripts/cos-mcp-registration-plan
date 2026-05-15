@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Emit ADR-231 MCP registration plans for supported hosts."""
 from __future__ import annotations
 

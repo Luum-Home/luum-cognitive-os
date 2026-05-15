@@ -210,7 +210,7 @@ def resolve_runtime_execution_profile(
         profile = LONG_CONTEXT_ANALYSIS
     else:
         tier = req.get("tier")
-        profile = SKILL_TIER_PROFILES.get(tier, resolve_execution_profile(task_type))
+        profile = SKILL_TIER_PROFILES.get(tier, resolve_execution_profile(task_type)) if isinstance(tier, str) else resolve_execution_profile(task_type)
 
     if prefer_local:
         return replace(

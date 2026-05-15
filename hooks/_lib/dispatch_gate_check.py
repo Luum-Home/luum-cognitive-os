@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: os-only
+# SCOPE: both
 """Single-pass dispatch gate check — consolidates all python3 invocations from dispatch-gate.sh.
 
 Reads stdin JSON once, performs all checks, and emits a single JSON result.

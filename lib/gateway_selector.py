@@ -102,7 +102,7 @@ def _check_litellm_health() -> GatewayConfig:
     )
     import os
 
-    base_url = os.environ.get("LITELLM_URL", DEFAULT_LITELLM_URL)
+    base_url = os.environ.get("LITELLM_URL", DEFAULT_LITELLM_URL) or ""
 
     if not is_litellm_enabled():
         config = GatewayConfig(

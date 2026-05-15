@@ -182,13 +182,18 @@ items:
     projection surface.
 - path: skills/proof-drill/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope review iteration 032: proof drills explicitly support COS self-build and consumer-project validation modes without polluting default lanes.'
+  rationale: 'Manual scope review iteration 032: proof drills explicitly support COS
+    self-build and consumer-project validation modes without polluting default lanes.'
 - path: skills/session-pending-brief/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope review iteration 032: session pending brief orients COS and adopter project sessions over pending work through projected session-start/pending ledgers.'
+  rationale: 'Manual scope review iteration 032: session pending brief orients COS
+    and adopter project sessions over pending work through projected session-start/pending
+    ledgers.'
 - path: skills/session-pending-close/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope review iteration 032: pending close provides audited closure of task/ADR/pending ledgers for COS and adopter project sessions with bilateral proof.'
+  rationale: 'Manual scope review iteration 032: pending close provides audited closure
+    of task/ADR/pending ledgers for COS and adopter project sessions with bilateral
+    proof.'
 - path: scripts/proof-drill-select
   status: maintainer-only
   rationale: Proof-drill selector wrapper for governed opt-in validation; not a default
@@ -250,11 +255,11 @@ items:
   rationale: Maintainer memory/export utility for local knowledge workflows; consumer
     projection requires an explicit memory/export package.
 - path: hooks/_lib/agent-context.sh
-  status: maintainer-only
-  rationale: 'Manual scope review iteration 028: hook support library for COS agent-context detection; not a standalone shared primitive.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/task-event.sh
-  status: maintainer-only
-  rationale: 'Manual scope review iteration 028: hook support library for COS task-event JSONL metrics; not a standalone shared primitive.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: scripts/check_mcp_servers.py
   status: shell-ci-candidate
   rationale: Candidate consumer doctor command; needs shell/CI projection proof.
@@ -306,7 +311,8 @@ items:
     proof.
 - path: hooks/dangerous-env-flag-detector.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 028: detects dangerous COS override flags, which are COS runtime/operator controls rather than generic repo guidance.'
+  rationale: 'Manual scope review iteration 028: detects dangerous COS override flags,
+    which are COS runtime/operator controls rather than generic repo guidance.'
 - path: scripts/dangerous_env_flag_detector.py
   status: so-local-only
   rationale: Python analyzer behind the local dangerous-env hook; not a standalone
@@ -325,13 +331,17 @@ items:
     capability.
 - path: hooks/engram-obsidian-export-on-stop.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 028: optional Engram-to-Obsidian operator export hook tied to COS memory/export scripts and operator vault configuration.'
+  rationale: 'Manual scope review iteration 028: optional Engram-to-Obsidian operator
+    export hook tied to COS memory/export scripts and operator vault configuration.'
 - path: hooks/network-egress-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 028: exfiltration-shaped network command blocking is generic repository security for COS and adopter projects when projected with policy.'
+  rationale: 'Manual scope review iteration 028: exfiltration-shaped network command
+    blocking is generic repository security for COS and adopter projects when projected
+    with policy.'
 - path: hooks/protected-config-write-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 028: protected agent control-plane config write blocking applies to COS and adopter projects with projected agent primitives.'
+  rationale: 'Manual scope review iteration 028: protected agent control-plane config
+    write blocking applies to COS and adopter projects with projected agent primitives.'
 - path: scripts/network_egress_guard.py
   status: so-local-only
   rationale: Python analyzer behind the local network-egress PreToolUse guard; not
@@ -524,61 +534,85 @@ items:
     primitive.
 - path: hooks/agent-bus-monitor.sh
   status: shared-surface
-  rationale: Manual scope calibration iteration 010 confirmed package-backed symlink hook is portable for COS adopters when Valkey/file-fallback agent bus is enabled; keep paired portability proof.
+  rationale: Manual scope calibration iteration 010 confirmed package-backed symlink
+    hook is portable for COS adopters when Valkey/file-fallback agent bus is enabled;
+    keep paired portability proof.
 - path: hooks/contextual-rule-loader.sh
   status: shared-surface
-  rationale: Manual scope calibration iteration 010 confirmed package-backed symlink hook is portable for COS adopters as contextual rule projection surface; keep paired portability proof.
+  rationale: Manual scope calibration iteration 010 confirmed package-backed symlink
+    hook is portable for COS adopters as contextual rule projection surface; keep
+    paired portability proof.
 - path: hooks/agent-quota-advisor.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed Claude Agent quota advisory reads COS metrics and recommends COS orchestrator routing; this is SO runtime governance, not generic project primitive.
+  rationale: Manual scope calibration iteration 010 confirmed Claude Agent quota advisory
+    reads COS metrics and recommends COS orchestrator routing; this is SO runtime
+    governance, not generic project primitive.
 - path: hooks/notify.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed PostToolUse SDD notification hook is COS/Claude lifecycle integration and not a generic repository guideline.
+  rationale: Manual scope calibration iteration 010 confirmed PostToolUse SDD notification
+    hook is COS/Claude lifecycle integration and not a generic repository guideline.
 - path: hooks/task-panel-sync.sh
   status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed Claude native task-panel adapter hook mirrors COS task state and is SO runtime integration.
+  rationale: Manual scope calibration iteration 010 confirmed Claude native task-panel
+    adapter hook mirrors COS task state and is SO runtime integration.
 - path: hooks/_lib/task_panel_adapter.py
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed adapter is Claude native UI bridge over COS task state, not consumer-project primitive.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/recap_adapter.py
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed adapter exposes COS session state to Claude /recap UI and is SO runtime integration.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: packages/skill-governance/skills/self-improve/SKILL.md
   status: maintainer-only
-  rationale: Manual scope calibration iteration 010 confirmed META self-improvement skill orchestrates COS skills/hooks/config and applies to OS evolution, not project-only or generic repo construction.
+  rationale: Manual scope calibration iteration 010 confirmed META self-improvement
+    skill orchestrates COS skills/hooks/config and applies to OS evolution, not project-only
+    or generic repo construction.
 - path: scripts/cos-portable-ai-consumer-smoke
   status: maintainer-only
-  rationale: Manual scope calibration iteration 011 confirmed this is a COS maintainer smoke for generated `.ai` overlay projection into a disposable fixture; it validates consumer packaging but is not shipped as a project primitive.
+  rationale: Manual scope calibration iteration 011 confirmed this is a COS maintainer
+    smoke for generated `.ai` overlay projection into a disposable fixture; it validates
+    consumer packaging but is not shipped as a project primitive.
 - path: scripts/portable_ai_consumer_impact.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 011 confirmed this writes ADR-258 impact reports from COS source and consumer-fleet audits; it is maintainer analysis, not project-local behavior.
+  rationale: Manual scope calibration iteration 011 confirmed this writes ADR-258
+    impact reports from COS source and consumer-fleet audits; it is maintainer analysis,
+    not project-local behavior.
 - path: scripts/portable_ai_consumer_smoke.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 011 confirmed this is a COS maintainer smoke for generated `.ai` overlay projection and report writing.
+  rationale: Manual scope calibration iteration 011 confirmed this is a COS maintainer
+    smoke for generated `.ai` overlay projection and report writing.
 - path: scripts/primitive_authority_audit.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 011 confirmed this audits COS primitive authority manifests and generated reports; consumer projects consume results, not the maintainer audit primitive.
+  rationale: Manual scope calibration iteration 011 confirmed this audits COS primitive
+    authority manifests and generated reports; consumer projects consume results,
+    not the maintainer audit primitive.
 - path: scripts/primitive_harness_partials.py
   status: maintainer-only
-  rationale: Manual scope calibration iteration 011 confirmed this reports unresolved COS harness/projection coverage partials and is not a project primitive.
+  rationale: Manual scope calibration iteration 011 confirmed this reports unresolved
+    COS harness/projection coverage partials and is not a project primitive.
 - path: skills/domain-model/SKILL.md
   status: projected-consumer-surface
-  rationale: Manual scope calibration iteration 011 confirmed this scaffolds DDD domain model docs inside adopting projects and is project-only.
+  rationale: Manual scope calibration iteration 011 confirmed this scaffolds DDD domain
+    model docs inside adopting projects and is project-only.
 - path: skills/ops-runbook/SKILL.md
   status: projected-consumer-surface
-  rationale: Manual scope calibration iteration 011 confirmed this scaffolds operations/admin/monitoring runbooks inside adopting projects and is project-only.
+  rationale: Manual scope calibration iteration 011 confirmed this scaffolds operations/admin/monitoring
+    runbooks inside adopting projects and is project-only.
 - path: skills/risk-register/SKILL.md
   status: projected-consumer-surface
-  rationale: Manual scope calibration iteration 011 confirmed this scaffolds STRIDE risk register docs inside adopting projects and is project-only.
+  rationale: Manual scope calibration iteration 011 confirmed this scaffolds STRIDE
+    risk register docs inside adopting projects and is project-only.
 - path: skills/rules-export/SKILL.md
   status: projected-consumer-surface
-  rationale: Manual scope calibration iteration 011 confirmed this exports SO rules snapshots into adopting projects; it affects project documentation, not SO construction.
+  rationale: Manual scope calibration iteration 011 confirmed this exports SO rules
+    snapshots into adopting projects; it affects project documentation, not SO construction.
 - path: skills/primitive-authoring/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 011 confirmed this governs primitive creation in both COS source and consumer-project overlays.
+  rationale: Manual scope calibration iteration 011 confirmed this governs primitive
+    creation in both COS source and consumer-project overlays.
 - path: skills/session-backlog/SKILL.md
   status: shared-surface
-  rationale: Manual scope calibration iteration 011 confirmed this has explicit source-repo and consumer-project execution paths and shared backlog ledgers.
+  rationale: Manual scope calibration iteration 011 confirmed this has explicit source-repo
+    and consumer-project execution paths and shared backlog ledgers.
 - path: rules/acceptance-criteria.md
   status: shared-surface
   rationale: 'Manual scope calibration iteration 012: Rule defines acceptance criteria
@@ -1144,25 +1178,20 @@ items:
     for COS source work and adopter projects; aggregate package skill portability
     proof covers structural projection.
 - path: hooks/_lib/bypass-resolver.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/killswitch_check.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/primitive-intervention.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/safe-worktree-remove.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/validation-lock.sh
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
-    from os-only semantic hints.
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/agent-quota-redirect.sh
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
@@ -1396,9 +1425,9 @@ items:
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
     declaration; no consumer-project surface evidence.
 - path: skills/pattern-audit/SKILL.md
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  status: shared-surface
+  rationale: Manual scope health review 2026-05-15 confirmed this is a repo-agnostic
+    grep/regex sampling protocol usable by COS and consumer projects.
 - path: skills/phoenix-trace-ui/SKILL.md
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
@@ -1528,763 +1557,2410 @@ items:
     Generic quality gate template applies to COS development and adopter project development.'
 - path: skills/add-rule/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 016: skill authors new Cognitive OS rule files, updates COS rule indexes/symlinks, and is only required by COS maintainers.'
+  rationale: 'Manual scope calibration iteration 016: skill authors new Cognitive
+    OS rule files, updates COS rule indexes/symlinks, and is only required by COS
+    maintainers.'
 - path: skills/agent-dashboard/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 016: skill inspects Claude/COS background-agent runtime internals via local task directories and COS monitoring library.'
+  rationale: 'Manual scope calibration iteration 016: skill inspects Claude/COS background-agent
+    runtime internals via local task directories and COS monitoring library.'
 - path: skills/analyze-improvements/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: read-only improvement analysis applies to COS metrics and adopter project COS metrics / project-local skill feedback.'
+  rationale: 'Manual scope calibration iteration 016: read-only improvement analysis
+    applies to COS metrics and adopter project COS metrics / project-local skill feedback.'
 - path: skills/apply-improvements/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: approved self-improvement application can update COS rules/skills/templates and adopter project overlays under a human gate.'
+  rationale: 'Manual scope calibration iteration 016: approved self-improvement application
+    can update COS rules/skills/templates and adopter project overlays under a human
+    gate.'
 - path: skills/branch-worktree-closure/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: git branch/worktree closure protocol is repository-agnostic for COS and adopter project agent worktrees.'
+  rationale: 'Manual scope calibration iteration 016: git branch/worktree closure
+    protocol is repository-agnostic for COS and adopter project agent worktrees.'
 - path: skills/catalog-full/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: full skill catalog lookup is useful for COS source catalogs and installed/project skill catalogs.'
+  rationale: 'Manual scope calibration iteration 016: full skill catalog lookup is
+    useful for COS source catalogs and installed/project skill catalogs.'
 - path: skills/caveman-compress/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: natural-language memory compression is reusable for COS memory files and adopter project memory/preferences files.'
+  rationale: 'Manual scope calibration iteration 016: natural-language memory compression
+    is reusable for COS memory files and adopter project memory/preferences files.'
 - path: skills/caveman-es/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: Spanish concise communication mode is repo-agnostic agent behavior for COS and adopter projects.'
+  rationale: 'Manual scope calibration iteration 016: Spanish concise communication
+    mode is repo-agnostic agent behavior for COS and adopter projects.'
 - path: skills/caveman/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: concise communication mode is repo-agnostic agent behavior for COS and adopter projects.'
+  rationale: 'Manual scope calibration iteration 016: concise communication mode is
+    repo-agnostic agent behavior for COS and adopter projects.'
 - path: skills/compat-test/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: model/COS compatibility smoke test applies to COS development and installed COS behavior inside adopter projects.'
+  rationale: 'Manual scope calibration iteration 016: model/COS compatibility smoke
+    test applies to COS development and installed COS behavior inside adopter projects.'
 - path: skills/component-classifier/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 017: classifies primitives as COS kernel vs package and is required for COS maintainer architecture, not adopter project behavior.'
+  rationale: 'Manual scope calibration iteration 017: classifies primitives as COS
+    kernel vs package and is required for COS maintainer architecture, not adopter
+    project behavior.'
 - path: skills/cost-predictor/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 017: task cost prediction uses COS metrics but applies to COS maintenance and adopter project work.'
+  rationale: 'Manual scope calibration iteration 017: task cost prediction uses COS
+    metrics but applies to COS maintenance and adopter project work.'
 - path: skills/deep-tool-research/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 017: canonical external-tool evaluation is reusable for COS tool adoption and adopter project tool adoption; COS paths are comparison anchors, not exclusive runtime requirements.'
+  rationale: 'Manual scope calibration iteration 017: canonical external-tool evaluation
+    is reusable for COS tool adoption and adopter project tool adoption; COS paths
+    are comparison anchors, not exclusive runtime requirements.'
 - path: skills/detect-patterns/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 017: detects rot in the Cognitive OS primitive/codebase mesh and calls COS pattern detector internals.'
+  rationale: 'Manual scope calibration iteration 017: detects rot in the Cognitive
+    OS primitive/codebase mesh and calls COS pattern detector internals.'
 - path: skills/detect-stack/SKILL.md
   status: projected-consumer-surface
-  rationale: 'Manual scope calibration iteration 017: scans an adopter project root and writes detected-stack.json for project initialization; COS source construction does not require it.'
+  rationale: 'Manual scope calibration iteration 017: scans an adopter project root
+    and writes detected-stack.json for project initialization; COS source construction
+    does not require it.'
 - path: skills/doc-review-personas/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 017: multi-persona documentation review is domain-agnostic and applies to COS docs and adopter project docs.'
+  rationale: 'Manual scope calibration iteration 017: multi-persona documentation
+    review is domain-agnostic and applies to COS docs and adopter project docs.'
 - path: skills/eval-repo/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 017: deprecated repo-scout alias preserves a repository evaluation workflow usable by COS and adopter projects.'
+  rationale: 'Manual scope calibration iteration 017: deprecated repo-scout alias
+    preserves a repository evaluation workflow usable by COS and adopter projects.'
 - path: skills/generate-config/SKILL.md
   status: projected-consumer-surface
-  rationale: 'Manual scope calibration iteration 017: generates cognitive-os.yaml from detected stack for adopter project initialization; COS source construction does not require it.'
+  rationale: 'Manual scope calibration iteration 017: generates cognitive-os.yaml
+    from detected stack for adopter project initialization; COS source construction
+    does not require it.'
 - path: skills/invariant-check/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 017: ADR/lib invariant checks apply to COS architecture/code and any adopter project with design docs plus implementation constants.'
+  rationale: 'Manual scope calibration iteration 017: ADR/lib invariant checks apply
+    to COS architecture/code and any adopter project with design docs plus implementation
+    constants.'
 - path: skills/llm-status/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 017: LLM dispatch transparency applies to the current COS install in COS maintenance and adopter projects.'
+  rationale: 'Manual scope calibration iteration 017: LLM dispatch transparency applies
+    to the current COS install in COS maintenance and adopter projects.'
 - path: skills/peer-card/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: curated personal/user memory via Engram is usable while maintaining COS and while working in adopter projects.'
+  rationale: 'Manual scope calibration iteration 018: curated personal/user memory
+    via Engram is usable while maintaining COS and while working in adopter projects.'
 - path: skills/preserved-wip-cleanup/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: archive-first git stash/worktree cleanup is repository-agnostic for COS and adopter project worktrees.'
+  rationale: 'Manual scope calibration iteration 018: archive-first git stash/worktree
+    cleanup is repository-agnostic for COS and adopter project worktrees.'
 - path: skills/primitive-harvester/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: conversation-to-primitive harvesting governs reusable workflows in COS source and adopter project overlays.'
+  rationale: 'Manual scope calibration iteration 018: conversation-to-primitive harvesting
+    governs reusable workflows in COS source and adopter project overlays.'
 - path: skills/queue-drain/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 018: drains COS agent dispatch queues and health checks via COS queue libraries, not a generic project primitive.'
+  rationale: 'Manual scope calibration iteration 018: drains COS agent dispatch queues
+    and health checks via COS queue libraries, not a generic project primitive.'
 - path: skills/red-team/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: prompt injection/jailbreak testing applies to COS prompts and adopter project agent prompts.'
+  rationale: 'Manual scope calibration iteration 018: prompt injection/jailbreak testing
+    applies to COS prompts and adopter project agent prompts.'
 - path: skills/redteam-harness/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 018: runs COS red-team scenarios against agent OS false-done/unwired-constant failure modes and COS test fixtures.'
+  rationale: 'Manual scope calibration iteration 018: runs COS red-team scenarios
+    against agent OS false-done/unwired-constant failure modes and COS test fixtures.'
 - path: skills/resource-governor/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: resource and budget optimization reads COS metrics but applies to COS maintenance and adopter project work.'
+  rationale: 'Manual scope calibration iteration 018: resource and budget optimization
+    reads COS metrics but applies to COS maintenance and adopter project work.'
 - path: skills/run-tests/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: test runner has COS-specific fast path and generic project framework fallback, so it is shared.'
+  rationale: 'Manual scope calibration iteration 018: test runner has COS-specific
+    fast path and generic project framework fallback, so it is shared.'
 - path: skills/scaffold-project/SKILL.md
   status: projected-consumer-surface
-  rationale: 'Manual scope calibration iteration 018: scaffolds project-local .claude rules/skills/hooks from detected-stack for adopter projects; COS source construction does not require it.'
+  rationale: 'Manual scope calibration iteration 018: scaffolds project-local .claude
+    rules/skills/hooks from detected-stack for adopter projects; COS source construction
+    does not require it.'
 - path: skills/sdd-continue/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 018: SDD continuation/state inspection is used for COS changes and adopter project changes.'
+  rationale: 'Manual scope calibration iteration 018: SDD continuation/state inspection
+    is used for COS changes and adopter project changes.'
 - path: skills/sdd-resume/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: SDD pipeline resume/state inspection applies to COS changes and adopter project changes.'
+  rationale: 'Manual scope calibration iteration 019: SDD pipeline resume/state inspection
+    applies to COS changes and adopter project changes.'
 - path: skills/security-red-team/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 019: unified security red-team inventories and scores Cognitive OS primitive surfaces, manifests, hooks, rules, skills, and COS tests.'
+  rationale: 'Manual scope calibration iteration 019: unified security red-team inventories
+    and scores Cognitive OS primitive surfaces, manifests, hooks, rules, skills, and
+    COS tests.'
 - path: skills/session-manager/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: Cognitive OS session list/inspect/cleanup applies to COS source sessions and installed COS sessions in adopter projects.'
+  rationale: 'Manual scope calibration iteration 019: Cognitive OS session list/inspect/cleanup
+    applies to COS source sessions and installed COS sessions in adopter projects.'
 - path: skills/session-report-executive/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: executive session reporting translates COS metrics for COS work and adopter project work.'
+  rationale: 'Manual scope calibration iteration 019: executive session reporting
+    translates COS metrics for COS work and adopter project work.'
 - path: skills/session-wrapup/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: end-of-session backlog, Engram, and summary routine applies to COS maintenance and adopter project sessions.'
+  rationale: 'Manual scope calibration iteration 019: end-of-session backlog, Engram,
+    and summary routine applies to COS maintenance and adopter project sessions.'
 - path: skills/skill-creator/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: skill authoring and package scaffolding can create COS source skills and adopter project/package skills.'
+  rationale: 'Manual scope calibration iteration 019: skill authoring and package
+    scaffolding can create COS source skills and adopter project/package skills.'
 - path: skills/validate-config/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: validates Cognitive OS configuration in COS source and installed/project overlays.'
+  rationale: 'Manual scope calibration iteration 019: validates Cognitive OS configuration
+    in COS source and installed/project overlays.'
 - path: skills/vulnerability-scan/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: Garak LLM vulnerability scanning applies to COS LLM endpoints and adopter project LLM endpoints.'
+  rationale: 'Manual scope calibration iteration 019: Garak LLM vulnerability scanning
+    applies to COS LLM endpoints and adopter project LLM endpoints.'
 - path: skills/wiki-ingest/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: raw-source to docs-vault ingestion is reusable for COS knowledge docs and adopter project documentation vaults.'
+  rationale: 'Manual scope calibration iteration 019: raw-source to docs-vault ingestion
+    is reusable for COS knowledge docs and adopter project documentation vaults.'
 - path: skills/worktree-triage/SKILL.md
   status: shared-surface
-  rationale: 'Manual scope calibration iteration 019: git worktree/branch triage is repository-agnostic for COS and adopter project worktrees.'
+  rationale: 'Manual scope calibration iteration 019: git worktree/branch triage is
+    repository-agnostic for COS and adopter project worktrees.'
 - path: hooks/_lib/artifact-status.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: loads COS persisted test/coverage artifacts for governance hooks.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/cache.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: stores hook scan cache under .cognitive-os/cache for COS hook execution.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/circuit-breaker.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: implements COS auto-repair circuit breaker state under .cognitive-os metrics.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/common.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: shared runtime resolver for Cognitive OS hooks and COS config/session paths.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/context_budget_lib.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: accounts ADR-186 context budget for COS hook additionalContext output.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/dispatch_gate_check.py
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: single-pass implementation for COS dispatch-gate hook and COS agent/task limits.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/execute-repair.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: executes COS remediation/repair hook workflow.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/file_checker.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: shared file-check helper for COS hooks.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/hook-pipe.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: stores cross-hook values in .cognitive-os hook-pipe runtime state.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/normalize-stdin.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: normalizes coding-harness hook JSON for COS hook runtime adapters.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/portable.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: portable shell helper sourced by COS hook/runtime scripts, not a standalone project primitive.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/push-collision-check.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 020: push collision detector library invoked by COS hook gates.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: skills/agent-control/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: governed bidirectional control of live COS agents via orchestrator.py, .cognitive-os/agent-bus, Valkey, and COS hook inbound guards.'
+  rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality
+    fix: governed bidirectional control of live COS agents via orchestrator.py, .cognitive-os/agent-bus,
+    Valkey, and COS hook inbound guards.'
 - path: skills/primitive-harness-coverage/SKILL.md
   status: maintainer-only
-  rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: measures COS primitive implementation coverage across harness surfaces so maintainers do not confuse SCOPE with parity.'
+  rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality
+    fix: measures COS primitive implementation coverage across harness surfaces so
+    maintainers do not confuse SCOPE with parity.'
 - path: hooks/_lib/register-bg.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: registers COS background PIDs in lib/process_registry so the COS reaper can distinguish managed processes from orphans.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/remediation.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: operates the COS auto-repair remediation registry and failure metrics under .cognitive-os.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/resolve-main-worktree.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: resolves main/master worktrees for COS hook workflows and branch-safety coordination.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/safe-jsonl.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: writes COS hook metrics and health heartbeats safely to .cognitive-os/metrics.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/semantic-search.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: searches the COS remediation registry via scripts/semantic-lookup.mjs for auto-repair matching.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/session-fs-reap.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: archives and removes stale COS session filesystem state under .cognitive-os/sessions.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/session_init_helper.py
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: consolidates COS session-init runtime reads of self-improve flags, Engram user model, project profile, and work queue.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/singularity-suggestion.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: emits COS session-init advisory singularity suggestions from .cognitive-os metrics.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/stash-lock.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: coordinates COS hook git stash mutations with .cognitive-os/runtime/stash.lock.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/task-identity.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: derives canonical COS task ids for cross-session claim coordination.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/task_bridge.py
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: correlates COS task_id with Claude Code tool_use_id and .cognitive-os task state.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/timing.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: records COS hook execution time for performance monitoring.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/_lib/tuning.sh
-  status: maintainer-only
-  rationale: 'Manual scope calibration iteration 022: reads COS hook tuning events from .cognitive-os/metrics/hook-tuning.jsonl.'
+  status: shared-surface
+  rationale: Projection audit iteration 043; copied into consumer installs as a transitive runtime dependency of projected hooks, so this is a shared support primitive rather than maintainer-only.
 - path: hooks/aci-observation-capture.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: normalizes tool output into COS ACI observations and trajectory rows under .cognitive-os artifacts/metrics.'
+  rationale: 'Manual scope calibration iteration 023: normalizes tool output into
+    COS ACI observations and trajectory rows under .cognitive-os artifacts/metrics.'
 - path: hooks/adoption-freeze-gate.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: enforces the COS external-tool adoption freeze manifest during git commit operations.'
+  rationale: 'Manual scope calibration iteration 023: enforces the COS external-tool
+    adoption freeze manifest during git commit operations.'
 - path: hooks/adr-section-validator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: validates COS ADR file section contracts under docs/02-Decisions/adrs.'
+  rationale: 'Manual scope calibration iteration 023: validates COS ADR file section
+    contracts under docs/02-Decisions/adrs.'
 - path: hooks/aspirational-audit-weekly.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: runs the COS aspirational audit cadence and reports dormant/aspirational primitive ratios.'
+  rationale: 'Manual scope calibration iteration 023: runs the COS aspirational audit
+    cadence and reports dormant/aspirational primitive ratios.'
 - path: hooks/attribution-completeness-validator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: enforces COS research annex attribution completeness for clean-room governance.'
+  rationale: 'Manual scope calibration iteration 023: enforces COS research annex
+    attribution completeness for clean-room governance.'
 - path: hooks/auto-skill-generator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: generates COS local auto-generated skills from complex agent completions under .cognitive-os/skills.'
+  rationale: 'Manual scope calibration iteration 023: generates COS local auto-generated
+    skills from complex agent completions under .cognitive-os/skills.'
 - path: hooks/codebase-itinerary-capture.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: captures COS privacy-preserving codebase itinerary metrics for agent inspection flow.'
+  rationale: 'Manual scope calibration iteration 023: captures COS privacy-preserving
+    codebase itinerary metrics for agent inspection flow.'
 - path: hooks/completeness-check.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: compatibility entrypoint for COS level-5 completeness gating.'
+  rationale: 'Manual scope calibration iteration 023: compatibility entrypoint for
+    COS level-5 completeness gating.'
 - path: hooks/cos-executor-daemon-launcher.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: launches the COS executor daemon and writes COS orchestrator runtime mode.'
+  rationale: 'Manual scope calibration iteration 023: launches the COS executor daemon
+    and writes COS orchestrator runtime mode.'
 - path: hooks/cos-session-start-projector.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: delegates SessionStart projection to the COS session-start projector script.'
+  rationale: 'Manual scope calibration iteration 023: delegates SessionStart projection
+    to the COS session-start projector script.'
 - path: hooks/decision-depth-gate.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: enforces COS decision-depth governance against COS rule wiring.'
+  rationale: 'Manual scope calibration iteration 023: enforces COS decision-depth
+    governance against COS rule wiring.'
 - path: hooks/dependency-license-classifier.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: scans staged dependency manifest diffs against the COS license policy gate.'
+  rationale: 'Manual scope calibration iteration 023: scans staged dependency manifest
+    diffs against the COS license policy gate.'
 - path: hooks/dequeue-notify.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: notifies the COS orchestrator when agent slots free after delegated tasks complete.'
+  rationale: 'Manual scope calibration iteration 023: notifies the COS orchestrator
+    when agent slots free after delegated tasks complete.'
 - path: hooks/dispatch-gate.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: controls COS agent launch concurrency and workload scheduling.'
+  rationale: 'Manual scope calibration iteration 023: controls COS agent launch concurrency
+    and workload scheduling.'
 - path: hooks/docker-drift-detector.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: detects stale cognitive-os Docker containers versus the pinned compose digest.'
+  rationale: 'Manual scope calibration iteration 023: detects stale cognitive-os Docker
+    containers versus the pinned compose digest.'
 - path: hooks/external-cache-content-leak.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: detects verbatim leaks from the COS external-source cache during research adoption.'
+  rationale: 'Manual scope calibration iteration 023: detects verbatim leaks from
+    the COS external-source cache during research adoption.'
 - path: hooks/external-pattern-cleanroom-gate.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: enforces COS clean-room gates for external pattern adoptions.'
+  rationale: 'Manual scope calibration iteration 023: enforces COS clean-room gates
+    for external pattern adoptions.'
 - path: hooks/history-rewrite-documented.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: warns COS operators about history-rewrite bundles not registered in the COS ledger.'
+  rationale: 'Manual scope calibration iteration 023: warns COS operators about history-rewrite
+    bundles not registered in the COS ledger.'
 - path: hooks/hook-header-validator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: validates COS hook header contracts for hook primitive governance.'
+  rationale: 'Manual scope calibration iteration 023: validates COS hook header contracts
+    for hook primitive governance.'
 - path: hooks/infra-health.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 023: checks COS Docker/service infrastructure health at session start.'
+  rationale: 'Manual scope calibration iteration 023: checks COS Docker/service infrastructure
+    health at session start.'
 - path: hooks/kpi-trigger.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: reads COS KPI metrics, logs KPI history, and flags self-improvement for COS sessions.'
+  rationale: 'Manual scope calibration iteration 024: reads COS KPI metrics, logs
+    KPI history, and flags self-improvement for COS sessions.'
 - path: hooks/legal-review-required-on-runtime-import.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: enforces the COS legal-review ledger before runtime imports are committed.'
+  rationale: 'Manual scope calibration iteration 024: enforces the COS legal-review
+    ledger before runtime imports are committed.'
 - path: hooks/lethal-trifecta-gate.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: records and gates COS lethal-trifecta safety observations in session metrics.'
+  rationale: 'Manual scope calibration iteration 024: records and gates COS lethal-trifecta
+    safety observations in session metrics.'
 - path: hooks/lib-symlink-divergence-detector.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: protects COS lib/package symlink invariants from silent divergence.'
+  rationale: 'Manual scope calibration iteration 024: protects COS lib/package symlink
+    invariants from silent divergence.'
 - path: hooks/native-agent-heartbeat.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: bridges Claude Agent hook payloads into the COS harness-agnostic event-capture layer.'
+  rationale: 'Manual scope calibration iteration 024: bridges Claude Agent hook payloads
+    into the COS harness-agnostic event-capture layer.'
 - path: hooks/post-agent-snapshot-restore.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: restores COS pre-agent stash/snapshot runtime markers after Agent completion.'
+  rationale: 'Manual scope calibration iteration 024: restores COS pre-agent stash/snapshot
+    runtime markers after Agent completion.'
 - path: hooks/promotion-proposer-weekly.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: runs the COS primitive promotion proposer cadence from SessionStart.'
+  rationale: 'Manual scope calibration iteration 024: runs the COS primitive promotion
+    proposer cadence from SessionStart.'
 - path: hooks/rate-limit-detector.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: detects Claude Code subscription rate-limit output and suggests COS overflow-provider fallback.'
+  rationale: 'Manual scope calibration iteration 024: detects Claude Code subscription
+    rate-limit output and suggests COS overflow-provider fallback.'
 - path: hooks/reaper-daemon-launcher.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: starts the COS process reaper daemon and tracks it under .cognitive-os/runtime.'
+  rationale: 'Manual scope calibration iteration 024: starts the COS process reaper
+    daemon and tracks it under .cognitive-os/runtime.'
 - path: hooks/research-to-runtime-firewall.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: blocks COS external-source-cache research artifacts from leaking into runtime paths.'
+  rationale: 'Manual scope calibration iteration 024: blocks COS external-source-cache
+    research artifacts from leaking into runtime paths.'
 - path: hooks/review-spawner.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: dispatches COS stochastic review agents after sub-agent completion.'
+  rationale: 'Manual scope calibration iteration 024: dispatches COS stochastic review
+    agents after sub-agent completion.'
 - path: hooks/rule-frontmatter-validator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: validates COS rule frontmatter contracts on rule writes.'
+  rationale: 'Manual scope calibration iteration 024: validates COS rule frontmatter
+    contracts on rule writes.'
 - path: hooks/rule-md-routing-validator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: validates COS rule routing metadata and hook linkage.'
+  rationale: 'Manual scope calibration iteration 024: validates COS rule routing metadata
+    and hook linkage.'
 - path: hooks/self-install.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: auto-syncs the COS framework while running inside the luum-agent-os repo.'
+  rationale: 'Manual scope calibration iteration 024: auto-syncs the COS framework
+    while running inside the luum-agent-os repo.'
 - path: hooks/self-knowledge-refresh.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: refreshes the COS self-knowledge index from COS source/runtime paths.'
+  rationale: 'Manual scope calibration iteration 024: refreshes the COS self-knowledge
+    index from COS source/runtime paths.'
 - path: hooks/session-changelog.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: writes COS session changelog artifacts under .cognitive-os/changelogs.'
+  rationale: 'Manual scope calibration iteration 024: writes COS session changelog
+    artifacts under .cognitive-os/changelogs.'
 - path: hooks/session-end-reap.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: invokes the COS process reaper at Stop/session end.'
+  rationale: 'Manual scope calibration iteration 024: invokes the COS process reaper
+    at Stop/session end.'
 - path: hooks/session-resume.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: detects incomplete COS tasks from .cognitive-os/tasks on SessionStart.'
+  rationale: 'Manual scope calibration iteration 024: detects incomplete COS tasks
+    from .cognitive-os/tasks on SessionStart.'
 - path: hooks/session-start-stack-recommend.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: writes COS stack-aware skill recommendations under .cognitive-os/state.'
+  rationale: 'Manual scope calibration iteration 024: writes COS stack-aware skill
+    recommendations under .cognitive-os/state.'
 - path: hooks/session-watchdog-launcher.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: starts the COS session lifecycle watchdog daemon under .cognitive-os/runtime.'
+  rationale: 'Manual scope calibration iteration 024: starts the COS session lifecycle
+    watchdog daemon under .cognitive-os/runtime.'
 - path: hooks/skill-drift-detector.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: checks COS skill registry lock hashes against on-disk skills at SessionStart.'
+  rationale: 'Manual scope calibration iteration 024: checks COS skill registry lock
+    hashes against on-disk skills at SessionStart.'
 - path: hooks/skill-failure-monitor.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: reads COS skill feedback metrics and emits repair queue signals.'
+  rationale: 'Manual scope calibration iteration 024: reads COS skill feedback metrics
+    and emits repair queue signals.'
 - path: hooks/skill-feedback-tracker.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: tracks COS skill success/failure telemetry after Agent completions.'
+  rationale: 'Manual scope calibration iteration 024: tracks COS skill success/failure
+    telemetry after Agent completions.'
 - path: hooks/skill-invocation-logger.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: logs COS Skill tool invocations to .cognitive-os metrics.'
+  rationale: 'Manual scope calibration iteration 024: logs COS Skill tool invocations
+    to .cognitive-os metrics.'
 - path: hooks/skill-md-routing-validator.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: validates COS SKILL.md routing metadata during writes.'
+  rationale: 'Manual scope calibration iteration 024: validates COS SKILL.md routing
+    metadata during writes.'
 - path: hooks/skill-synthesis-scanner.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: scans COS session telemetry for recurring sequences and proposes skill drafts.'
+  rationale: 'Manual scope calibration iteration 024: scans COS session telemetry
+    for recurring sequences and proposes skill drafts.'
 - path: hooks/skill-tracker.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: combines COS skill feedback and metrics tracking for Agent/Skill events.'
+  rationale: 'Manual scope calibration iteration 024: combines COS skill feedback
+    and metrics tracking for Agent/Skill events.'
 - path: hooks/skill-usage-tracker.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: captures COS skill usage telemetry for observability aggregation.'
+  rationale: 'Manual scope calibration iteration 024: captures COS skill usage telemetry
+    for observability aggregation.'
 - path: hooks/spdx-header-required.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: enforces COS SPDX header policy for new runtime source files.'
+  rationale: 'Manual scope calibration iteration 024: enforces COS SPDX header policy
+    for new runtime source files.'
 - path: hooks/stash-budget-warn.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: warns COS operators when auto-checkpoint stash usage exceeds budget.'
+  rationale: 'Manual scope calibration iteration 024: warns COS operators when auto-checkpoint
+    stash usage exceeds budget.'
 - path: hooks/state-heartbeat.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: persists COS session state snapshots under .cognitive-os/sessions.'
+  rationale: 'Manual scope calibration iteration 024: persists COS session state snapshots
+    under .cognitive-os/sessions.'
 - path: hooks/tool-sequence-capture.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: captures COS tool invocation sequences to .cognitive-os metrics.'
+  rationale: 'Manual scope calibration iteration 024: captures COS tool invocation
+    sequences to .cognitive-os metrics.'
 - path: hooks/validation-lock-cleanup.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: cleans stale COS validation locks from .cognitive-os/runtime.'
+  rationale: 'Manual scope calibration iteration 024: cleans stale COS validation
+    locks from .cognitive-os/runtime.'
 - path: hooks/validator-soak-weekly.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: runs COS validator soak evaluation and promotion proposal cadence.'
+  rationale: 'Manual scope calibration iteration 024: runs COS validator soak evaluation
+    and promotion proposal cadence.'
 - path: hooks/work-queue-sync.sh
   status: maintainer-only
-  rationale: 'Manual scope calibration iteration 024: captures COS todo and agent completion events in the canonical work queue log.'
+  rationale: 'Manual scope calibration iteration 024: captures COS todo and agent
+    completion events in the canonical work queue log.'
 - path: hooks/adaptive-bypass.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: task-complexity classification and workflow recommendation applies to COS maintenance and adopter project tasks without COS-source-specific paths.'
+  rationale: 'Manual scope review iteration 025: task-complexity classification and
+    workflow recommendation applies to COS maintenance and adopter project tasks without
+    COS-source-specific paths.'
 - path: hooks/assumption-tracker.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: detecting assumption-heavy agent outputs is repo-agnostic quality governance for COS and adopter projects.'
+  rationale: 'Manual scope review iteration 025: detecting assumption-heavy agent
+    outputs is repo-agnostic quality governance for COS and adopter projects.'
 - path: hooks/auto-verify.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: extracting and running acceptance criteria is generic verification behavior for any repo using the runtime.'
+  rationale: 'Manual scope review iteration 025: extracting and running acceptance
+    criteria is generic verification behavior for any repo using the runtime.'
 - path: hooks/blast-radius.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: estimating task impact scope is repo-agnostic safety guidance for COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 025: estimating task impact scope is repo-agnostic
+    safety guidance for COS and adopter repositories.'
 - path: hooks/claim-validator.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: checking agent file claims against filesystem reality applies equally to COS and project work.'
+  rationale: 'Manual scope review iteration 025: checking agent file claims against
+    filesystem reality applies equally to COS and project work.'
 - path: hooks/clarification-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: blocking vague agent prompts is generic quality control for any repository task.'
+  rationale: 'Manual scope review iteration 025: blocking vague agent prompts is generic
+    quality control for any repository task.'
 - path: hooks/completeness-check-llm.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: LLM-evaluated prompt completeness is generic task-quality governance.'
+  rationale: 'Manual scope review iteration 025: LLM-evaluated prompt completeness
+    is generic task-quality governance.'
 - path: hooks/concurrent-write-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: file-level write serialization protects any multi-agent repository, not only COS source.'
+  rationale: 'Manual scope review iteration 025: file-level write serialization protects
+    any multi-agent repository, not only COS source.'
 - path: hooks/confidence-gate-llm.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: LLM-evaluated Trust Report presence is generic output-quality governance.'
+  rationale: 'Manual scope review iteration 025: LLM-evaluated Trust Report presence
+    is generic output-quality governance.'
 - path: hooks/confidence-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: Trust Report threshold enforcement is generic completion-quality governance.'
+  rationale: 'Manual scope review iteration 025: Trust Report threshold enforcement
+    is generic completion-quality governance.'
 - path: hooks/context-budget-meter.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: context budget metering is generic agent-session hygiene for COS and adopter projects.'
+  rationale: 'Manual scope review iteration 025: context budget metering is generic
+    agent-session hygiene for COS and adopter projects.'
 - path: hooks/context-diet.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: task-aware context minimization is generic agent workflow guidance.'
+  rationale: 'Manual scope review iteration 025: task-aware context minimization is
+    generic agent workflow guidance.'
 - path: hooks/context-watchdog.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: context usage warnings and checkpoint advice apply to any long-running repository session.'
+  rationale: 'Manual scope review iteration 025: context usage warnings and checkpoint
+    advice apply to any long-running repository session.'
 - path: hooks/destructive-git-blocker.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: blocking destructive git operations is generic repository safety.'
+  rationale: 'Manual scope review iteration 025: blocking destructive git operations
+    is generic repository safety.'
 - path: hooks/direct-main-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: main/master branch isolation is generic repository safety for COS and adopter projects.'
+  rationale: 'Manual scope review iteration 025: main/master branch isolation is generic
+    repository safety for COS and adopter projects.'
 - path: hooks/dod-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: Definition of Done checks by task complexity are generic delivery-quality governance.'
+  rationale: 'Manual scope review iteration 025: Definition of Done checks by task
+    complexity are generic delivery-quality governance.'
 - path: hooks/large-file-advisor.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: large file read advice is generic context-safety guidance for any repo.'
+  rationale: 'Manual scope review iteration 025: large file read advice is generic
+    context-safety guidance for any repo.'
 - path: hooks/prompt-quality-llm.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: LLM-evaluated prompt quality is generic pre-agent quality governance.'
+  rationale: 'Manual scope review iteration 025: LLM-evaluated prompt quality is generic
+    pre-agent quality governance.'
 - path: hooks/resource-check.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: budget/resource checks before agent launches apply to COS and adopter project sessions.'
+  rationale: 'Manual scope review iteration 025: budget/resource checks before agent
+    launches apply to COS and adopter project sessions.'
 - path: hooks/scope-creep-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: detecting edits outside approved task scope is generic repository safety.'
+  rationale: 'Manual scope review iteration 025: detecting edits outside approved
+    task scope is generic repository safety.'
 - path: hooks/scope-proportionality.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: checking response proportionality to task scope is generic quality governance.'
+  rationale: 'Manual scope review iteration 025: checking response proportionality
+    to task scope is generic quality governance.'
 - path: hooks/secret-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: secret detection before/after tool use is generic repository security.'
+  rationale: 'Manual scope review iteration 025: secret detection before/after tool
+    use is generic repository security.'
 - path: hooks/token-budget-monitor.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: token budget monitoring before agent launches is generic runtime budget protection.'
+  rationale: 'Manual scope review iteration 025: token budget monitoring before agent
+    launches is generic runtime budget protection.'
 - path: hooks/tool-loop-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: detecting repetitive tool loops is generic agent-session safety.'
+  rationale: 'Manual scope review iteration 025: detecting repetitive tool loops is
+    generic agent-session safety.'
 - path: hooks/trust-score-validator.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 025: validating/logging Trust Reports is generic output-quality governance.'
+  rationale: 'Manual scope review iteration 025: validating/logging Trust Reports
+    is generic output-quality governance.'
 - path: hooks/control-plane-audit.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 027: runtime control-plane audit executes COS manifest-declared primitive coherence checks and blocks COS control-plane findings.'
+  rationale: 'Manual scope review iteration 027: runtime control-plane audit executes
+    COS manifest-declared primitive coherence checks and blocks COS control-plane
+    findings.'
 - path: hooks/control-plane-audit-hourly.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 027: cooldown wrapper runs COS control-plane audit sweeps for primitive/coherence drift.'
+  rationale: 'Manual scope review iteration 027: cooldown wrapper runs COS control-plane
+    audit sweeps for primitive/coherence drift.'
 - path: hooks/profile-drift-autoapply.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 027: re-applies COS efficiency profile when COS hook projection script changes and writes harness settings.'
+  rationale: 'Manual scope review iteration 027: re-applies COS efficiency profile
+    when COS hook projection script changes and writes harness settings.'
 - path: hooks/skill-post-execution-analysis.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 027: records COS SkillStore execution data and propose-only skill evolution artifacts under COS reports.'
+  rationale: 'Manual scope review iteration 027: records COS SkillStore execution
+    data and propose-only skill evolution artifacts under COS reports.'
 - path: hooks/auto-checkpoint.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: periodic repository/session checkpoints are generic crash-recovery safety for COS and adopter project agent sessions.'
+  rationale: 'Manual scope review iteration 029: periodic repository/session checkpoints
+    are generic crash-recovery safety for COS and adopter project agent sessions.'
 - path: hooks/auto-rollback-trigger.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: human-approved rollback-plan triggering after retry exhaustion is generic repository safety.'
+  rationale: 'Manual scope review iteration 029: human-approved rollback-plan triggering
+    after retry exhaustion is generic repository safety.'
 - path: hooks/branch-ownership-lock.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: per-branch single-writer locking is generic multi-agent git safety.'
+  rationale: 'Manual scope review iteration 029: per-branch single-writer locking
+    is generic multi-agent git safety.'
 - path: hooks/branch-ownership-release.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: releasing branch ownership locks on Stop is generic multi-agent git safety.'
+  rationale: 'Manual scope review iteration 029: releasing branch ownership locks
+    on Stop is generic multi-agent git safety.'
 - path: hooks/crash-recovery.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: unclean shutdown detection and recovery guidance is generic agent-session safety.'
+  rationale: 'Manual scope review iteration 029: unclean shutdown detection and recovery
+    guidance is generic agent-session safety.'
 - path: hooks/edit-lock-drain-parked.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: parked edit-lock drain notification is generic concurrent-edit safety.'
+  rationale: 'Manual scope review iteration 029: parked edit-lock drain notification
+    is generic concurrent-edit safety.'
 - path: hooks/edit-lock-pre-tool.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: Edit/Write file lock negotiation is generic concurrent-edit safety.'
+  rationale: 'Manual scope review iteration 029: Edit/Write file lock negotiation
+    is generic concurrent-edit safety.'
 - path: hooks/edit-lock-process-negotiations.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: incoming edit-lock negotiation surfacing is generic concurrent-edit safety.'
+  rationale: 'Manual scope review iteration 029: incoming edit-lock negotiation surfacing
+    is generic concurrent-edit safety.'
 - path: hooks/edit-lock-session-end.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: releasing edit locks on Stop is generic concurrent-edit safety.'
+  rationale: 'Manual scope review iteration 029: releasing edit locks on Stop is generic
+    concurrent-edit safety.'
 - path: hooks/post-agent-verify.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: verifying an agent stayed inside declared TOUCH scope is generic subagent safety.'
+  rationale: 'Manual scope review iteration 029: verifying an agent stayed inside
+    declared TOUCH scope is generic subagent safety.'
 - path: hooks/post-git-orphan-notifier.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: detecting orphan commits after git history operations is generic repository safety.'
+  rationale: 'Manual scope review iteration 029: detecting orphan commits after git
+    history operations is generic repository safety.'
 - path: hooks/pre-agent-snapshot.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: creating a working-tree snapshot before subagent launch is generic multi-agent safety.'
+  rationale: 'Manual scope review iteration 029: creating a working-tree snapshot
+    before subagent launch is generic multi-agent safety.'
 - path: hooks/pre-commit-content-hash-dedupe.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: preventing duplicate staged diffs already present upstream is generic git safety.'
+  rationale: 'Manual scope review iteration 029: preventing duplicate staged diffs
+    already present upstream is generic git safety.'
 - path: hooks/session-start-stash-reapply.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: reapplying session-owned stashes at startup is generic work-preservation safety.'
+  rationale: 'Manual scope review iteration 029: reapplying session-owned stashes
+    at startup is generic work-preservation safety.'
 - path: hooks/session-start-worktree-nudge.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: warning when launched inside a non-main worktree is generic git/worktree safety.'
+  rationale: 'Manual scope review iteration 029: warning when launched inside a non-main
+    worktree is generic git/worktree safety.'
 - path: hooks/symlink-mutation-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: blocking hazardous symlink mutations is generic repository integrity safety.'
+  rationale: 'Manual scope review iteration 029: blocking hazardous symlink mutations
+    is generic repository integrity safety.'
 - path: hooks/untracked-work-preservation-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 029: blocking destructive deletes of untracked work is generic repository safety.'
+  rationale: 'Manual scope review iteration 029: blocking destructive deletes of untracked
+    work is generic repository safety.'
 - path: hooks/agent-bash-cwd-enforcer.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: subagent git cwd enforcement prevents wrong-worktree commits in COS and adopter repos.'
+  rationale: 'Manual scope review iteration 030: subagent git cwd enforcement prevents
+    wrong-worktree commits in COS and adopter repos.'
 - path: hooks/agent-checkpoint.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: tracking subagent task completion in active task state is shared multi-agent runtime behavior.'
+  rationale: 'Manual scope review iteration 030: tracking subagent task completion
+    in active task state is shared multi-agent runtime behavior.'
 - path: hooks/agent-control-inbound-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: agent bus stop/pause enforcement is shared multi-agent control-plane behavior when projected.'
+  rationale: 'Manual scope review iteration 030: agent bus stop/pause enforcement
+    is shared multi-agent control-plane behavior when projected.'
 - path: hooks/agent-launch-confirmed.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: committing snapshot plans after agent launch gates pass is shared subagent lifecycle safety.'
+  rationale: 'Manual scope review iteration 030: committing snapshot plans after agent
+    launch gates pass is shared subagent lifecycle safety.'
 - path: hooks/agent-message-inbox-context.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: directed agent message context injection is shared multi-agent coordination behavior.'
+  rationale: 'Manual scope review iteration 030: directed agent message context injection
+    is shared multi-agent coordination behavior.'
 - path: hooks/agent-message-inbox-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: blocking risky git boundaries when directed agent messages are unacknowledged is shared coordination safety.'
+  rationale: 'Manual scope review iteration 030: blocking risky git boundaries when
+    directed agent messages are unacknowledged is shared coordination safety.'
 - path: hooks/agent-output-verifier.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: verifying agent file-output claims against filesystem reality is shared multi-agent quality control.'
+  rationale: 'Manual scope review iteration 030: verifying agent file-output claims
+    against filesystem reality is shared multi-agent quality control.'
 - path: hooks/agent-prelaunch.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: registering subagent tasks before launch is shared multi-agent runtime behavior.'
+  rationale: 'Manual scope review iteration 030: registering subagent tasks before
+    launch is shared multi-agent runtime behavior.'
 - path: hooks/agent-qwen-bridge.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: provider fallback bridge is shared runtime routing behavior for opted-in mechanical skills.'
+  rationale: 'Manual scope review iteration 030: provider fallback bridge is shared
+    runtime routing behavior for opted-in mechanical skills.'
 - path: hooks/agent-working-dir-inject.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: injecting correct working directory context into subagents is shared repository safety.'
+  rationale: 'Manual scope review iteration 030: injecting correct working directory
+    context into subagents is shared repository safety.'
 - path: hooks/orchestrator-claim-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: blocking high-stakes closure claims without repo evidence is shared orchestrator safety.'
+  rationale: 'Manual scope review iteration 030: blocking high-stakes closure claims
+    without repo evidence is shared orchestrator safety.'
 - path: hooks/orchestrator-decision-trace.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: tracing whether orchestrator followed skill suggestions is shared observability.'
+  rationale: 'Manual scope review iteration 030: tracing whether orchestrator followed
+    skill suggestions is shared observability.'
 - path: hooks/orchestrator-mode-detect.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: detecting connected versus fire-and-forget orchestrator mode is shared runtime diagnostics.'
+  rationale: 'Manual scope review iteration 030: detecting connected versus fire-and-forget
+    orchestrator mode is shared runtime diagnostics.'
 - path: hooks/orchestrator-skill-invocation-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: enforcing high-confidence skill-router suggestions is shared orchestration governance.'
+  rationale: 'Manual scope review iteration 030: enforcing high-confidence skill-router
+    suggestions is shared orchestration governance.'
 - path: hooks/subagent-capability-preflight.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: blocking subagent launches that cannot satisfy requested artifacts is shared launch safety.'
+  rationale: 'Manual scope review iteration 030: blocking subagent launches that cannot
+    satisfy requested artifacts is shared launch safety.'
 - path: hooks/subagent-context-injector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: injecting consistent subagent preamble and memory sidecar is shared subagent runtime behavior.'
+  rationale: 'Manual scope review iteration 030: injecting consistent subagent preamble
+    and memory sidecar is shared subagent runtime behavior.'
 - path: hooks/task-completed.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: validating shared task completion criteria is shared team-agent governance.'
+  rationale: 'Manual scope review iteration 030: validating shared task completion
+    criteria is shared team-agent governance.'
 - path: hooks/task-created.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: validating shared task quality at creation is shared team-agent governance.'
+  rationale: 'Manual scope review iteration 030: validating shared task quality at
+    creation is shared team-agent governance.'
 - path: hooks/teammate-idle.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 030: suggesting unclaimed tasks before a teammate goes idle is shared team-agent coordination.'
+  rationale: 'Manual scope review iteration 030: suggesting unclaimed tasks before
+    a teammate goes idle is shared team-agent coordination.'
 - path: hooks/audit-id-enricher.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: audit-id enrichment is generic cross-cutting observability for COS and adopter sessions.'
+  rationale: 'Manual scope review iteration 031: audit-id enrichment is generic cross-cutting
+    observability for COS and adopter sessions.'
 - path: hooks/auto-refine.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: failure-marker driven retry/refinement advice is generic agent quality recovery.'
+  rationale: 'Manual scope review iteration 031: failure-marker driven retry/refinement
+    advice is generic agent quality recovery.'
 - path: hooks/auto-repair-dispatcher.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: known-fix repair dispatch for repeated errors is generic agent recovery behavior.'
+  rationale: 'Manual scope review iteration 031: known-fix repair dispatch for repeated
+    errors is generic agent recovery behavior.'
 - path: hooks/clarification-interceptor.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: NEEDS_CLARIFICATION interception is generic agent workflow control.'
+  rationale: 'Manual scope review iteration 031: NEEDS_CLARIFICATION interception
+    is generic agent workflow control.'
 - path: hooks/completion-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: single-pass completion/verification/refinement processing is generic delivery quality.'
+  rationale: 'Manual scope review iteration 031: single-pass completion/verification/refinement
+    processing is generic delivery quality.'
 - path: hooks/consequence-evaluator.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: post-completion consequence/OKR evaluation is generic governance.'
+  rationale: 'Manual scope review iteration 031: post-completion consequence/OKR evaluation
+    is generic governance.'
 - path: hooks/cosd-auth-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: remote API auth/explicit opt-in guarding is shared runtime security when cosd is projected.'
+  rationale: 'Manual scope review iteration 031: remote API auth/explicit opt-in guarding
+    is shared runtime security when cosd is projected.'
 - path: hooks/cross-session-coordination-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: shared coordination ledger guarding is generic multi-session safety.'
+  rationale: 'Manual scope review iteration 031: shared coordination ledger guarding
+    is generic multi-session safety.'
 - path: hooks/cross-session-event-emit.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: standardized cross-session events are generic multi-session coordination.'
+  rationale: 'Manual scope review iteration 031: standardized cross-session events
+    are generic multi-session coordination.'
 - path: hooks/cross-session-peer-context.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: peer session awareness injection is generic multi-session coordination.'
+  rationale: 'Manual scope review iteration 031: peer session awareness injection
+    is generic multi-session coordination.'
 - path: hooks/document-ingest-guard.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: routing direct PDF/document reads through an ingest path is generic document safety.'
+  rationale: 'Manual scope review iteration 031: routing direct PDF/document reads
+    through an ingest path is generic document safety.'
 - path: hooks/epic-task-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: detecting tasks that may affect many files is generic launch safety.'
+  rationale: 'Manual scope review iteration 031: detecting tasks that may affect many
+    files is generic launch safety.'
 - path: hooks/error-learning.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: capturing Bash/tool failures for learning is generic agent recovery.'
+  rationale: 'Manual scope review iteration 031: capturing Bash/tool failures for
+    learning is generic agent recovery.'
 - path: hooks/error-pattern-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: detecting repeated error patterns before launches is generic agent recovery.'
+  rationale: 'Manual scope review iteration 031: detecting repeated error patterns
+    before launches is generic agent recovery.'
 - path: hooks/error-pipeline.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: single-pass error detection/logging/repair dispatch is generic agent recovery.'
+  rationale: 'Manual scope review iteration 031: single-pass error detection/logging/repair
+    dispatch is generic agent recovery.'
 - path: hooks/git-context-capture.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: capturing branch/commit/diff context at session end is generic repository audit.'
+  rationale: 'Manual scope review iteration 031: capturing branch/commit/diff context
+    at session end is generic repository audit.'
 - path: hooks/host-tool-doctor.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: cached host tooling diagnostics are generic runtime health checks.'
+  rationale: 'Manual scope review iteration 031: cached host tooling diagnostics are
+    generic runtime health checks.'
 - path: hooks/inject-phase-context.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: injecting configured project phase context is generic project/runtime guidance.'
+  rationale: 'Manual scope review iteration 031: injecting configured project phase
+    context is generic project/runtime guidance.'
 - path: hooks/memory-prefetch.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: prefetching memory context from the user prompt is generic memory-assisted agent workflow.'
+  rationale: 'Manual scope review iteration 031: prefetching memory context from the
+    user prompt is generic memory-assisted agent workflow.'
 - path: hooks/pending-truth-drift-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: detecting plan/ledger drift after edits is generic anti-stale-planning governance.'
+  rationale: 'Manual scope review iteration 031: detecting plan/ledger drift after
+    edits is generic anti-stale-planning governance.'
 - path: hooks/pending-truth-staleness-gate.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: warning on stale pending-truth ledgers before commits is generic planning governance.'
+  rationale: 'Manual scope review iteration 031: warning on stale pending-truth ledgers
+    before commits is generic planning governance.'
 - path: hooks/pending-truth-verify-weekly.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: weekly pending-truth verification is generic anti-stale-planning governance.'
+  rationale: 'Manual scope review iteration 031: weekly pending-truth verification
+    is generic anti-stale-planning governance.'
 - path: hooks/plan-claim-validator.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: requiring evidence for plan checkbox completion is generic planning truth governance.'
+  rationale: 'Manual scope review iteration 031: requiring evidence for plan checkbox
+    completion is generic planning truth governance.'
 - path: hooks/pre-compaction-flush.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: reminding agents to save durable memory before compaction is generic memory hygiene.'
+  rationale: 'Manual scope review iteration 031: reminding agents to save durable
+    memory before compaction is generic memory hygiene.'
 - path: hooks/project-docs-convention.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: project documentation convention checks apply to COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 031: project documentation convention
+    checks apply to COS and adopter repositories.'
 - path: hooks/query-tailored-context-inject.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: injecting query-relevant context into subagents is generic context quality.'
+  rationale: 'Manual scope review iteration 031: injecting query-relevant context
+    into subagents is generic context quality.'
 - path: hooks/rate-limit-protection.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: backward-compatible rate-limit protection shim is shared runtime budget safety.'
+  rationale: 'Manual scope review iteration 031: backward-compatible rate-limit protection
+    shim is shared runtime budget safety.'
 - path: hooks/research-quality-validator.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: scoring research reports on evidence dimensions is generic research quality governance.'
+  rationale: 'Manual scope review iteration 031: scoring research reports on evidence
+    dimensions is generic research quality governance.'
 - path: hooks/result-truncator.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: truncating large tool outputs to protect context is generic session hygiene.'
+  rationale: 'Manual scope review iteration 031: truncating large tool outputs to
+    protect context is generic session hygiene.'
 - path: hooks/session-cleanup.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: session active-state cleanup at Stop is generic runtime lifecycle hygiene.'
+  rationale: 'Manual scope review iteration 031: session active-state cleanup at Stop
+    is generic runtime lifecycle hygiene.'
 - path: hooks/session-end-cleanup.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: tiered cleanup at session end is generic runtime lifecycle hygiene.'
+  rationale: 'Manual scope review iteration 031: tiered cleanup at session end is
+    generic runtime lifecycle hygiene.'
 - path: hooks/session-heartbeat.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: session liveness heartbeats are generic runtime lifecycle signals.'
+  rationale: 'Manual scope review iteration 031: session liveness heartbeats are generic
+    runtime lifecycle signals.'
 - path: hooks/session-init.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: session isolation and registration is generic runtime lifecycle setup.'
+  rationale: 'Manual scope review iteration 031: session isolation and registration
+    is generic runtime lifecycle setup.'
 - path: hooks/session-learning.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: summarizing session failures/learnings is generic continuous improvement.'
+  rationale: 'Manual scope review iteration 031: summarizing session failures/learnings
+    is generic continuous improvement.'
 - path: hooks/session-sanity.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: session-state sanity diagnostics are generic runtime troubleshooting.'
+  rationale: 'Manual scope review iteration 031: session-state sanity diagnostics
+    are generic runtime troubleshooting.'
 - path: hooks/session-startup-protocol.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: startup protocol reminders are generic session governance.'
+  rationale: 'Manual scope review iteration 031: startup protocol reminders are generic
+    session governance.'
 - path: hooks/session-summary-reminder.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: ensuring durable session summaries before stop is generic memory hygiene.'
+  rationale: 'Manual scope review iteration 031: ensuring durable session summaries
+    before stop is generic memory hygiene.'
 - path: hooks/session-wrapup-trigger.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: auto-suggesting wrapup on closure prompts is generic session lifecycle guidance.'
+  rationale: 'Manual scope review iteration 031: auto-suggesting wrapup on closure
+    prompts is generic session lifecycle guidance.'
 - path: hooks/state-retention-audit.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: read-only retention drift monitoring is generic runtime state hygiene.'
+  rationale: 'Manual scope review iteration 031: read-only retention drift monitoring
+    is generic runtime state hygiene.'
 - path: hooks/surface-fix-detector.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: detecting prose-only surface fixes is generic decision-depth quality governance.'
+  rationale: 'Manual scope review iteration 031: detecting prose-only surface fixes
+    is generic decision-depth quality governance.'
 - path: hooks/task-recorder.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: recording completed task cost/model/duration metadata is generic team-agent observability.'
+  rationale: 'Manual scope review iteration 031: recording completed task cost/model/duration
+    metadata is generic team-agent observability.'
 - path: hooks/user-prompt-capture.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 031: capturing user prompts to memory for session context is generic memory-assisted workflow.'
+  rationale: 'Manual scope review iteration 031: capturing user prompts to memory
+    for session context is generic memory-assisted workflow.'
 - path: hooks/scope-marker-portability-gate.sh
   status: maintainer-only
-  rationale: 'Manual scope review iteration 031: gates COS primitive SCOPE marker changes and KD6 portability proof; this is primitive-taxonomy governance for COS maintainers.'
+  rationale: 'Manual scope review iteration 031: gates COS primitive SCOPE marker
+    changes and KD6 portability proof; this is primitive-taxonomy governance for COS
+    maintainers.'
 - path: rules/eas-evidence-artifact.md
   status: shared-surface
-  rationale: 'ADR-317: EAS evidence-artifact rule governs executable acceptance documentation for COS source work and adopter projects.'
+  rationale: 'ADR-317: EAS evidence-artifact rule governs executable acceptance documentation
+    for COS source work and adopter projects.'
 - path: templates/eas.md
   status: shared-surface
-  rationale: 'ADR-317: EAS template is a reusable documentation artifact for COS SDD changes and adopter-project app changes.'
+  rationale: 'ADR-317: EAS template is a reusable documentation artifact for COS SDD
+    changes and adopter-project app changes.'
 - path: scripts/eas_validate.py
   status: shared-surface
-  rationale: 'ADR-317: EAS validator checks generic Markdown evidence artifacts and is not specific to COS source internals.'
+  rationale: 'ADR-317: EAS validator checks generic Markdown evidence artifacts and
+    is not specific to COS source internals.'
 - path: skills/sdd-spec/SKILL.md
   status: shared-surface
-  rationale: 'ADR-317: sdd-spec emits EAS requirements and acceptance rows for both COS and adopter-project changes.'
+  rationale: 'ADR-317: sdd-spec emits EAS requirements and acceptance rows for both
+    COS and adopter-project changes.'
 - path: skills/sdd-tasks/SKILL.md
   status: shared-surface
-  rationale: 'ADR-317: sdd-tasks consumes EAS gap matrices and acceptance rows for both COS and adopter-project changes.'
+  rationale: 'ADR-317: sdd-tasks consumes EAS gap matrices and acceptance rows for
+    both COS and adopter-project changes.'
 - path: skills/sdd-apply/SKILL.md
   status: shared-surface
-  rationale: 'ADR-317: sdd-apply implements against EAS acceptance rows for both COS and adopter-project changes.'
+  rationale: 'ADR-317: sdd-apply implements against EAS acceptance rows for both COS
+    and adopter-project changes.'
 - path: skills/sdd-verify/SKILL.md
   status: shared-surface
-  rationale: 'ADR-317: sdd-verify validates EAS coverage and detractor disposition for both COS and adopter-project changes.'
+  rationale: 'ADR-317: sdd-verify validates EAS coverage and detractor disposition
+    for both COS and adopter-project changes.'
 - path: rules/stash-quarantine.md
   status: shared-surface
-  rationale: 'ADR-318: stash quarantine rule is generic WIP/recovery guidance for COS maintenance and adopter projects.'
+  rationale: 'ADR-318: stash quarantine rule is generic WIP/recovery guidance for
+    COS maintenance and adopter projects.'
 - path: skills/stash-quarantine/SKILL.md
   status: shared-surface
-  rationale: 'ADR-318: stash quarantine skill guides safe work-front isolation and stash recovery in COS and adopter repositories.'
+  rationale: 'ADR-318: stash quarantine skill guides safe work-front isolation and
+    stash recovery in COS and adopter repositories.'
 - path: scripts/stash_quarantine_audit.py
   status: shared-surface
-  rationale: 'ADR-318: stash quarantine audit checks generic docs/code for unsafe stash instructions and can run in COS or adopter repositories.'
-
+  rationale: 'ADR-318: stash quarantine audit checks generic docs/code for unsafe
+    stash instructions and can run in COS or adopter repositories.'
 - path: scripts/cos-doctor-concurrency.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 034: read-only concurrent-agent safety diagnostics are projectable for COS maintenance and adopter repositories.'
+  rationale: 'Manual scope review iteration 034: read-only concurrent-agent safety
+    diagnostics are projectable for COS maintenance and adopter repositories.'
 - path: scripts/cos-doctor-harness.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 034: active harness readiness diagnostics validate projected adapters in COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 034: active harness readiness diagnostics
+    validate projected adapters in COS and adopter repositories.'
 - path: scripts/cos-doctor-preserve.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 034: preserve-branch governance is generic work-preservation diagnostics for COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 034: preserve-branch governance is generic
+    work-preservation diagnostics for COS and adopter repositories.'
 - path: scripts/cos-doctor-work-inventory.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 034: branch/worktree/stash/dirty-WIP inventory is generic multi-agent workspace hygiene.'
-
+  rationale: 'Manual scope review iteration 034: branch/worktree/stash/dirty-WIP inventory
+    is generic multi-agent workspace hygiene.'
 - path: scripts/cos-engram-bundle
   status: shared-surface
-  rationale: 'Manual scope review iteration 035: project-scoped Engram bundle export is portable memory federation for COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 035: project-scoped Engram bundle export
+    is portable memory federation for COS and adopter repositories.'
 - path: scripts/cos-engram-import-propose
   status: shared-surface
-  rationale: 'Manual scope review iteration 035: propose-only Engram bundle import is safe project-scoped memory review for COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 035: propose-only Engram bundle import
+    is safe project-scoped memory review for COS and adopter repositories.'
 - path: scripts/engram-sync.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 035: project-scoped Engram sync/export is cross-device memory portability for COS and adopter repositories.'
-
+  rationale: 'Manual scope review iteration 035: project-scoped Engram sync/export
+    is cross-device memory portability for COS and adopter repositories.'
 - path: scripts/compose_agent_prompt.py
   status: maintainer-only
-  rationale: 'Manual scope review iteration 036: prompt trap composer embeds COS repository gotchas such as generated settings, lib symlink invariants, and .cognitive-os internals.'
+  rationale: 'Manual scope review iteration 036: prompt trap composer embeds COS repository
+    gotchas such as generated settings, lib symlink invariants, and .cognitive-os
+    internals.'
 - path: scripts/cos-agent-daemon
   status: shared-surface
-  rationale: 'Manual scope review iteration 036: detached agent daemon is local-first agent runtime infrastructure for COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 036: detached agent daemon is local-first
+    agent runtime infrastructure for COS and adopter repositories.'
 - path: scripts/cos-governed-agent.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 036: governed agent launcher enforces generic task claims, work inventory, and branch writer leases across COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 036: governed agent launcher enforces
+    generic task claims, work inventory, and branch writer leases across COS and adopter
+    repositories.'
 - path: scripts/cos_agent_message.py
   status: shared-surface
-  rationale: 'Manual scope review iteration 036: directed agent message bus coordinates auditor/operator sessions in COS and adopter repositories.'
+  rationale: 'Manual scope review iteration 036: directed agent message bus coordinates
+    auditor/operator sessions in COS and adopter repositories.'
 - path: scripts/extract-agent-output.sh
   status: shared-surface
-  rationale: 'Manual scope review iteration 036: agent JSONL output extraction is a generic operator utility for COS and Claude-based adopter repositories.'
+  rationale: 'Manual scope review iteration 036: agent JSONL output extraction is
+    a generic operator utility for COS and Claude-based adopter repositories.'
+- path: rules/RULES-COMPACT.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: COS Rules Index is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/adaptive-bypass.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Adaptive Bypass — Smart Orchestration
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/agent-audit-before-commit.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Audit Before Commit is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-escalation.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Escalation Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-identity.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Identity Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-kpis.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent KPI Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/agent-output-reading.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Output Reading Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/agent-security.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Agent Security — Least Privilege
+    Protocol is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/aguara-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Aguara -- AI Agent Security
+    Scanner is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/ai-provider-identity.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: AI Provider Identity Guard is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/anti-hallucination.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Anti-Hallucination Rule is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/assumption-tracking.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Assumption Tracking is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/audit-trail.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Audit Trail — Automated Work
+    Tracking is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/auto-rollback.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Rollback Planning Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/auto-skill-generation.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Auto-Skill Generation Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/bash-naming.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Bash Script Naming — Kebab-Case
+    Required is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/blast-radius.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Blast Radius Estimation is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/capability-levels.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Capability Levels — Auto-Disable
+    Components is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/clarification-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Mandatory Clarification Gate
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/closed-loop-prompts.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Closed-Loop Prompts — Self-Correcting
+    Agent Execution is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/cognitive-load.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Cognitive Load Monitoring is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/confidence-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Confidence Gate Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/confidentiality-protection.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Confidentiality Protection —
+    IP Leak Prevention is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/consequence-system.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Consequence System — OKR-Driven
+    Feedback Loop is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/content-policy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Content Policy — Automated Enforcement
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/context-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Context Window Management —
+    Proactive Summarization Protocol is repository governance guidance usable by COS
+    maintainers and adopter-project agents.'
+- path: rules/context-optimization.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Context Optimization Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/context7-auto-trigger.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Context7 Auto-Trigger — Library
+    Documentation Lookup is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/cost-prediction.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Cost Prediction Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/crash-recovery.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Crash Recovery Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/credential-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Credential Management is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/decision-depth-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Decision Depth Gate is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/definition-of-done.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Definition of Done (DoD) by
+    Task Complexity is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/doc-sync.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Doc Sync Rule is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/dry-run.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Dry-Run Preview Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/dynamic-tool-creation.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Dynamic Tool Creation -- Mid-Task
+    Tool Generation is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/e2b-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: E2B Sandbox -- Secure Agent
+    Code Execution is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/engram-api-safety.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Engram API Safety — Never Mutate
+    Production Daemon for Discovery is repository governance guidance usable by COS
+    maintainers and adopter-project agents.'
+- path: rules/engram-organization.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Engram Organization — Path Segregation
+    (BMAD v6 Pattern 8) is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/estimation-calibration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Estimation Calibration Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/hcom-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Hcom -- Cross-Terminal Agent
+    Communication is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/license-policy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: License Policy is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/llm-dispatch.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: LLM Dispatch Policy (ADR-049
+    Option B) is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/memory-governance.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Memory Governance v2 — Typed
+    Memory Policies is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/model-compatibility.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Model Compatibility — Baseline
+    Expectations is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/model-directive.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Model Directive Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/non-blocking-retry.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Non-Blocking Retry Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/observability.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Observability — MLflow Integration
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/orchestrator-mode.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Orchestrator Mode — Subprocess-Based
+    Delegation is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/parry-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Parry -- Prompt Injection Scanner
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/performance-monitoring.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Performance Monitoring Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/phase-aware-agents.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Phase-Aware Agent Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/prompt-composition.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Prompt Composition Rule is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/prompt-quality.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Prompt Quality Scoring is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/queue-advisor.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Queue Advisor — Dynamic Dispatch
+    Prioritization is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/queue-drain.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Queue Drain Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/rate-limit-protection.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Token Budget Monitor (formerly
+    Rate Limit Protection) is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/rate-limiting.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Rate Limiting Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/recommendation-grounding.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Purpose is repository governance
+    guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/repomix-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Repomix Integration — Repository
+    Context Packing is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/resource-governance.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Resource Governance Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/responsiveness.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Responsiveness Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/result-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Result Management — Large Output
+    Prevention is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/retry-contract.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Retry Contract is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/scope-creep-detection.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Scope Creep Detection is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/scope-proportionality.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Scope Proportionality Check
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/security-scanning.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Security Scanning — Semgrep
+    SAST Integration is repository governance guidance usable by COS maintainers and
+    adopter-project agents.'
+- path: rules/self-improvement-protocol.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Self-Improvement Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/session-close-doc-truth.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Session-Close Documentation-Truth
+    Discipline (ADR-277 + ADR-275) is repository governance guidance usable by COS
+    maintainers and adopter-project agents.'
+- path: rules/session-concurrency.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Session Concurrency is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/singularity.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Singularity Rule — Autonomous
+    MAPE-K Control Loop is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/skill-invocation-mandatory.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Skill Invocation Mandatory at
+    High Router Confidence (ADR-188) is repository governance guidance usable by COS
+    maintainers and adopter-project agents.'
+- path: rules/skill-rewrite.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Skill Rewrite Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/so-slo.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: SO SLO Catalogue — Source of
+    Truth (ADR-028 D5) is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/split-and-resume.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Split-and-Resume Pattern is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/startup-protocol.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Session Startup Protocol is
+    repository governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/step-files.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Step-File Architecture for Long
+    Phases (BMAD v6 Pattern 5) is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/supply-chain-defense.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Supply Chain Defense Protocol
+    is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/task-dag.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Task DAG — Dependency-Aware
+    Agent Orchestration is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/tero-integration.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Tero -- HTTP Testing with Chaos
+    Engineering is repository governance guidance usable by COS maintainers and adopter-project
+    agents.'
+- path: rules/token-economy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Token Economy — Cost Transparency
+    and Waste Prevention is repository governance guidance usable by COS maintainers
+    and adopter-project agents.'
+- path: rules/trust-score.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Trust Score Protocol is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: rules/workload-scheduling.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 037: Workload Scheduling is repository
+    governance guidance usable by COS maintainers and adopter-project agents.'
+- path: scripts/cos-adapter-compile
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 038: adapter compiler is shared because
+    COS uses it to produce governed adapter outputs and adopter projects consume the
+    generated native IDE files.'
+- path: scripts/documentation_truth_audit.py
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 038: documentation truth auditing
+    is shared repository-governance for COS docs and adopter-project docs with declared
+    truth manifests.'
+- path: scripts/cos-governed-edit.sh
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 038: governed edit wrapper is shared
+    runtime-safety for COS maintenance and adopter projects lacking native Edit/Write
+    hook parity.'
+- path: scripts/adr_implementation_ledger.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Portable ADR
+    implementation ledger over project docs/02-Decisions/adrs and project runtime
+    outputs.
+- path: scripts/adr_tombstone.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Creates neutral
+    ADR tombstones for any project-level decision ledger.
+- path: scripts/check_absolute_paths.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Detects developer-specific
+    absolute-path leaks in any repository.
+- path: scripts/check_test_ratchet.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Generic test-count
+    ratchet for any repository using the COS metrics directory.
+- path: scripts/cos-adapters
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Consumer UX for
+    compiling portable adapter surfaces from COS primitives into target project harnesses.
+- path: scripts/cos-adr-tombstone
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Project-dir wrapper
+    around the portable ADR tombstone primitive.
+- path: scripts/cos-document-ingest
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Converts context-heavy
+    documents into Markdown under a project-scoped ingest directory.
+- path: scripts/cos-fingerprint.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Work-identity
+    fingerprint primitive for git/agent work in any repository.
+- path: scripts/cos-gate-stack.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Composable gate
+    stack for validating agent branches in any repository.
+- path: scripts/cos-headless-pipeline
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Runs standalone
+    headless validation from an install path or project checkout.
+- path: scripts/cos-headless-safe-mode
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Headless task-admission
+    safe mode for COS and consumer project runtimes.
+- path: scripts/cos-orphan-process-audit.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Audits orphan
+    processes from a project runtime and records project metrics.
+- path: scripts/cos-policy-settings-projection
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Projects YAML
+    policies into host settings hook plans for COS and consumer projects.
+- path: scripts/cos-portable-ai-consumer-impact
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Assesses consumer
+    impact of portable .ai package surfaces.
+- path: scripts/cos-portable-ai-consumer-package-smoke
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Smokes the portable
+    .ai consumer package against disposable fixtures.
+- path: scripts/cos-portable-ai-overlay
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Generates portable
+    .ai overlay surfaces from governed primitives.
+- path: scripts/cos-provider-call
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Out-of-process
+    provider-call isolation primitive usable by any agentic repo.
+- path: scripts/cos-remote-branch-triage
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Remote branch
+    triage wrapper for git repositories with agent branches.
+- path: scripts/cos-repair
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Repair CLI entrypoint
+    for COS-installed project runtimes.
+- path: scripts/cos-repo-map
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Builds compact
+    project repo-map context packets.
+- path: scripts/cos-validate
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Validation CLI
+    entrypoint for COS-installed project repositories.
+- path: scripts/cos-validation-capsule.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Runs validation
+    in isolated worktrees to protect any operator checkout.
+- path: scripts/cos-wiki-ingest
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Ingests wiki/raw
+    sources into a project docs vault.
+- path: scripts/cos_key_learnings_capture.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Captures Key
+    Learnings into project-scoped improvement evidence.
+- path: scripts/cos_preamble_budget.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Estimates prompt/preamble
+    budget for adoption profiles used by COS and consumers.
+- path: scripts/cos_test_quality_audit.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Classifies test
+    quality in any tests/**/*.py repository tree.
+- path: scripts/ide-bridge.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Generates IDE-specific
+    configs from COS rules for consumer projects and SO dogfooding.
+- path: scripts/orchestrator_claim_gate.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Harness-agnostic
+    high-stakes claim gate for orchestrators in any repository.
+- path: scripts/portable_ai_consumer_package.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Builds and smokes
+    human-readable consumer .ai package views.
+- path: scripts/portable_ai_overlay.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Generates portable
+    .ai overlay from COS primitives for project consumption.
+- path: scripts/precommit_content_hash.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Pre-commit content-hash
+    deduplication for git repositories.
+- path: scripts/python_stdin_antipattern_audit.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Audits shell
+    snippets for Python stdin anti-patterns in any repository.
+- path: scripts/queue_throughput_bench.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Benchmarks file-based
+    merge queue throughput for repository coordination.
+- path: scripts/topology-discover.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 040 classified both. Discovers symlink
+    topology in any project before agents mutate paths.
+- path: scripts/cos-config-audit.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Audits Cognitive
+    OS configuration promises against this SO codebase implementation.
+- path: scripts/cos-consumer-fleet-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Maintainer
+    audit for fleets of COS consumer installs; not projected into individual projects.
+- path: scripts/cos-coverage
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. ACC observability
+    dashboard over COS coverage metrics and reports.
+- path: scripts/cos-cross-instance-drill
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. COS cross-instance
+    learning drill.
+- path: scripts/cos-doctrine-proposer
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. COS doctrine
+    proposal workflow for SO governance.
+- path: scripts/cos-dspy-pilot
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Optional DSPy
+    pilot for COS structured-skill experiments.
+- path: scripts/cos-export-consumer-evidence
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Exports sanitized
+    consumer evidence for SO cross-instance learning.
+- path: scripts/cos-export-consumer-improvement-proposals
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Exports consumer
+    improvement proposals for SO maintainers.
+- path: scripts/cos-governance-roi
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. COS governance
+    ROI analysis.
+- path: scripts/cos-headless-publication
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Protected-publication
+    checker for headless COS workers.
+- path: scripts/cos-headless-runtime-contract
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Static contract
+    check for COS headless runtime manifests under infra/cosd.
+- path: scripts/cos-import-consumer-evidence
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Imports sanitized
+    consumer evidence into SO cross-instance learning.
+- path: scripts/cos-import-consumer-improvement-proposals
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Imports consumer
+    improvement proposals into SO maintainer workflow.
+- path: scripts/cos-integration-shard-plan
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Plans COS
+    integration test shards.
+- path: scripts/cos-lab-first-gate
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. COS lab-first
+    promotion gate.
+- path: scripts/cos-mcp-registration-plan
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Emits COS
+    ADR-231 MCP registration plans for supported hosts.
+- path: scripts/cos-primitive-projection-fidelity
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Wrapper for
+    COS primitive projection fidelity reports.
+- path: scripts/cos-record-onboarding.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Drives Cognitive
+    OS onboarding walkthrough recording.
+- path: scripts/cos_consumer_improvement_proposals.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Maintainer
+    import/export channel for sanitized consumer primitive improvement proposals.
+- path: scripts/cos_coverage.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. ACC metric
+    CLI composed from COS metrics and proof reports.
+- path: scripts/cos_cross_instance_learning.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. COS cross-instance
+    learning runway commands.
+- path: scripts/harness-parity-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Wrapper for
+    COS harness projection parity audit.
+- path: scripts/harness_parity_audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Audits COS
+    hook projection parity across harness settings drivers.
+- path: scripts/install-obsidian-local.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Local maintainer
+    setup helper for Obsidian, not a project governance primitive.
+- path: scripts/parity_harness.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. COS provider
+    parity benchmark harness tied to ADR-051/052 experiments.
+- path: scripts/proof-drill-evidence-record
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Records ACC
+    proof-drill evidence rows for COS reports.
+- path: scripts/proof_drill_evidence_record.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 040 classified os-only. Writes machine-readable
+    ACC proof-drill evidence under COS docs reports.
+- path: scripts/agent_work_ledger.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Append-only work ledger scoped by project runtime; useful for COS maintenance
+    and consumer repos with concurrent agents.
+- path: scripts/approval_ledger.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Approval ledger scoped by project runtime; records high-risk agent actions
+    for COS and consumer repos.
+- path: scripts/claim_task.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Task-claim CLI over project-dir state; prevents multi-agent file/task
+    collisions in COS and consumer repos.
+- path: scripts/cos-action-receipt
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Harness action receipt wrapper; records agent actions independently
+    of repository domain.
+- path: scripts/cos-git-sync.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Safe no-rebase git synchronization policy for any git repository managed
+    by agents.
+- path: scripts/cos-merge-queue-bench.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Merge-queue throughput benchmark for repository coordination; applies
+    to COS and consumer repos adopting the queue.
+- path: scripts/cos-merge-queue.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. File-based merge queue CLI for multi-agent repository coordination in
+    COS and consumer repos.
+- path: scripts/cos-remote-branch-triage
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Remote branch triage wrapper for shared git hygiene in COS and consumer
+    repos.
+- path: scripts/cos-run-task
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Task runner wrapper for agent work execution in COS and consumer project
+    worktrees.
+- path: scripts/cos-safe-clean
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Dry-run-first cleanup primitive for untracked/generated work in any
+    project repository.
+- path: scripts/cos-session-branch.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Per-session branch isolation primitive for multi-agent work in any git
+    repository.
+- path: scripts/cos-team
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Team coordination CLI surface for agent workflows in COS and consumer
+    repos.
+- path: scripts/cos_branch_lock.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Branch ownership locks for concurrent agents; scoped to a project repository.
+- path: scripts/cos_cleanup_preserved_wip.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Preserved-WIP cleanup helper for project worktrees after concurrent-agent
+    recovery.
+- path: scripts/cos_concurrent_status.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Concurrent-agent status reporter over project runtime state.
+- path: scripts/cos_coordination_status.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Coordination status reporter for claims/locks/session state in a project
+    repository.
+- path: scripts/cos_remote_branch_triage.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Remote branch triage implementation for git repositories with agent
+    branches.
+- path: scripts/cos_run_task.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Task runner implementation for project-scoped agent work execution.
+- path: scripts/cos_session_coordination.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Cross-session coordination CLI for claims, ownership, and worktree intake.
+- path: scripts/cos_task_claims.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Task-claims CLI for project-scoped multi-agent coordination.
+- path: scripts/cos_wip_safety_score.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. WIP safety scoring for local project repositories before risky operations.
+- path: scripts/cos_worktree_sweeper.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Worktree sweeper for stale multi-agent worktrees in COS and consumer
+    repos.
+- path: scripts/cross_session_reconciler.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Cross-session reconciliation of agent work state in project runtime.
+- path: scripts/orphan_overwrite_detector.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Detects unreachable commits and overwritten tracked changes in any git
+    repo.
+- path: scripts/push_collision_detect.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Push-time subject/patch collision detector for git repositories.
+- path: scripts/resource_lease.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Project-scoped cooperative resource lease primitive for concurrent agents.
+- path: scripts/session_event_bus.py
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Project-scoped inter-session event bus for concurrent agents.
+- path: scripts/stash-leak-alarm.sh
+  status: shared-surface
+  rationale: Manual scope calibration iteration 038 confirmed shared coordination/concurrency/git-safety
+    behavior. Detects hidden auto-pre-agent stashes in project repositories before
+    work is lost.
+- path: scripts/active_primitive_index.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Builds active
+    primitive indexes from COS lifecycle manifests; this governs SO primitive inventory,
+    not a consumer-project tool.
+- path: scripts/check_catalog_sync.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Validates
+    COS skill catalog/install sync; tied to skills/CATALOG.md and installed SO skill
+    surfaces.
+- path: scripts/check_hook_registration.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Validates
+    COS hook registration/projection against hooks manifests and harness settings.
+- path: scripts/check_lib_wiring.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits internal
+    lib/*.py wiring for the Cognitive OS repository.
+- path: scripts/cos-architecture-readiness
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Architecture-readiness
+    gate for COS reconstruction governance and ADR evidence.
+- path: scripts/cos-closure-trust-signal.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. COS closure-trail
+    trust signal over pending truth/self-improvement governance.
+- path: scripts/cos-demotion-loop-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    primitive demotion loop behavior and default-surface claims.
+- path: scripts/cos-doc-cross-reference-audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    docs for primitive cross-reference coverage.
+- path: scripts/cos-federation-trigger-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    federation trigger configuration and evidence.
+- path: scripts/cos-homebrew-local-canary
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Local canary
+    for the Cognitive OS Homebrew formula; release/maintainer only.
+- path: scripts/cos-manifest-tier-claim-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    manifest tier claims against primitive lifecycle/profile contracts.
+- path: scripts/cos-observe-primitives
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Reports COS
+    primitive self-use from COS trace streams.
+- path: scripts/cos-operational-guide-audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits ADR
+    operational-guide sections in COS decision docs.
+- path: scripts/cos-pending-truth-aggregator
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Aggregates
+    COS pending-truth surfaces for self-improvement governance.
+- path: scripts/cos-pending-truth-close
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Closes COS
+    pending-truth items with bilateral proof.
+- path: scripts/cos-pending-truth-verify
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Verifies COS
+    pending-truth ledger items.
+- path: scripts/cos-primitive-authority-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    primitive authority and ownership metadata.
+- path: scripts/cos-primitive-fitness
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Compares COS
+    candidate primitive fitness against lifecycle baselines.
+- path: scripts/cos-registry-lock
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Maintains
+    the COS agentic primitive and skill registry lockfiles.
+- path: scripts/cos-self-improvement-discipline-gate
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Gates COS
+    self-improvement against governance discipline rules.
+- path: scripts/cos-self-improvement-loop
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Runs governed
+    COS self-improvement loop, not consumer project delivery.
+- path: scripts/cos-service-readiness-gate
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Service-mode
+    readiness gate for COS runtime/service contracts.
+- path: scripts/cos-session-start-projector
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Projects COS
+    session-start pending-truth/audit state.
+- path: scripts/cos-tier-claim-audit
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    tier/profile claims for evidence-backed purity.
+- path: scripts/cos-tui
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Terminal dashboard
+    for COS primitive coverage reports.
+- path: scripts/cos_adoption_profile.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Reports adoptable
+    COS profiles from primitive lifecycle metadata.
+- path: scripts/cos_context_budget_report.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Reports COS
+    context-budget calibration from .cognitive-os metrics.
+- path: scripts/cos_default_visible_reducer.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Recommends
+    COS default-visible primitive demotions.
+- path: scripts/cos_dispatch_smoke.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Offline smoke
+    for COS LLM dispatch and task-history metrics paths.
+- path: scripts/cos_false_positive_ledger.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Summarizes
+    COS hook false-positive metrics.
+- path: scripts/cos_governed_self_improvement.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. CLI for governed
+    COS self-improvement loop.
+- path: scripts/cos_headless_publication.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Protected-publication
+    checker for headless COS workers.
+- path: scripts/cos_primitive_fitness.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Fitness comparison
+    for COS candidate primitives.
+- path: scripts/cos_profile_bootstrap.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Bootstraps
+    local COS project profile drafts.
+- path: scripts/cos_tier_claim_audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits COS
+    ADR tier claims for evidence-backed profile purity.
+- path: scripts/opencode_primitive_adapter_smoke.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Smokes native
+    OpenCode COS primitive guard plugin.
+- path: scripts/primitive_harness_coverage.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Reports per-harness
+    implementation coverage for COS primitives.
+- path: scripts/primitive_projection_fidelity.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Generates
+    COS primitive projection fidelity reports.
+- path: scripts/primitive_service_headless_smoke.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Smokes portable
+    COS primitive enforcement outside IDE lifecycle.
+- path: scripts/promote_lifecycle_primitives_to_contracts.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Promotes COS
+    lifecycle-derived primitives into ADR-256 contracts.
+- path: scripts/run_skill_lifecycle_promotion_smoke.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Isolated smoke
+    for COS skill lifecycle promotion ladder.
+- path: scripts/self_improvement_discipline_gate.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Gates COS
+    headless self-improvement against default-surface inflation.
+- path: scripts/session_start_budget.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Reports/enforces
+    COS SessionStart hook budget by adoption profile.
+- path: scripts/silent_failure_audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits intentional
+    shell error swallowing in COS hooks.
+- path: scripts/smoke-agent-quota-advisor.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Live smoke
+    for COS agent-quota-advisor hook.
+- path: scripts/so-emergency-stop.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. SO runtime
+    emergency-stop kill switch.
+- path: scripts/so-vitals.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Unified SO
+    runtime dashboard.
+- path: scripts/state_retention_audit.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. Audits/reaps
+    bounded COS state surfaces.
+- path: scripts/statusline-coverage.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 039 classified os-only. COS observability/statusline
+    coverage report.
+- path: skills/project-scaffold/SKILL.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Skill scaffolds adopter-
+    project documentation trees and is not required for COS self-construction.
+- path: templates/CLAUDE.md.template
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/adoption-tiers.md.j2
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/blocked-strings.example.txt
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/external-tools-overlay.yaml
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/fintech-gates.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/go-service-context.md
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/project-gotchas.md
+  status: maintainer-only
+  rationale: Random scope audit iteration 042 reclassified os-only. The template is COS
+    maintainer trap context for symlinks, generated settings, hooks, packages, and
+    .cognitive-os internals rather than adopter-project generic gotchas.
+- path: templates/project-templates/go/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/go.mod.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/go/main.go.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/minimal/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/minimal/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/minimal/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/python/pyproject.toml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/settings.json.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/README.md.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/cognitive-os.yaml.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/gitignore.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/package.json.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/project-templates/typescript/tsconfig.json.tmpl
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is emitted by
+    consumer project scaffolding and represents adopter project files, not COS source
+    governance.
+- path: templates/security-profiles/minimal.json
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Security profile
+    template configures consumer hook adoption levels and is not a COS maintainer primitive.
+- path: templates/security-profiles/paranoid.json
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Security profile
+    template configures consumer hook adoption levels and is not a COS maintainer primitive.
+- path: templates/security-profiles/standard.json
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Security profile
+    template configures consumer hook adoption levels and is not a COS maintainer primitive.
+- path: templates/service-map.example.yaml
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: templates/verification-commands.example.yaml
+  status: projected-consumer-surface
+  rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
+    adapted into consumer projects as project-local configuration/context, not used to build
+    COS itself.
+- path: hooks/aguara-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/ai-provider-identity-guard.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/code-review-on-commit.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/confidentiality-enforcer.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/content-policy.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/destructive-rm-blocker.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/doc-sync-detector.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/git-commit-scope-guard.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/global-verify.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/guardrails-validator.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/mcp-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/parry-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/pre-commit-gate.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/predev-completeness-check.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/private-mode-gate.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/private-mode-metrics-gate.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/rate-limit-drain.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/rate-limit-precheck.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/rate-limiter.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/reinvention-check.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/release-guard.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/semgrep-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/valkey-ensure.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/worktree-submodule-fix.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/cos-postgres-local.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/cos-valkey-local.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/credibility-audit.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/doctor.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-aguara.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-credibility-tools.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-garak.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-mcp-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-promptfoo.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-syft-grype.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-tob-skills.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-trivy.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/license-audit-syft-grype.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/license-audit-trivy.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/architecture-compliance.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/dry-run-preview.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/infra-intent-detector.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/jupyter-sandbox.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/ecosystem-check.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: hooks/pre-cleanup-snapshot.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/cos-cloud-worker-bootstrap.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/dependency-lane.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/deps-update.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/install-git-filter-repo.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/setup-git-hooks.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: hooks/pyrefly-typecheck-advisory.sh
+  status: maintainer-only
+  rationale: Scope health review 2026-05-15 classified this Stop hook as COS-only;
+    it runs scripts/cos-pyrefly-pilot against COS first-party Python paths and writes
+    COS Pyrefly receipts.
+- path: skills/pyrefly-typecheck/SKILL.md
+  status: maintainer-only
+  rationale: Scope health review 2026-05-15 classified this skill as COS-only;
+    it invokes the COS Pyrefly pilot and interprets .cognitive-os Pyrefly reports.
+
 patterns:
 - pattern: scripts/**
   status: so-local-only

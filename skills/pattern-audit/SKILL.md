@@ -12,7 +12,7 @@ last-updated: 2026-04-21
 license: MIT
 metadata:
   author: luum
-audience: os-dev
+audience: both
 summary_line: Grep/regex audit with mandatory sampling — forbids unverified severity
   counts.
 triggers:
@@ -32,15 +32,14 @@ routing_patterns:
 - pattern: \baudit\s+patterns?\b
   confidence: 0.85
 ---
-<!-- SCOPE: os-only -->
+<!-- SCOPE: both -->
 ## Purpose
 
 When asked to audit a codebase for a pattern (fragile tests, TODOs, hardcoded
 values, deprecated APIs, etc.), **raw regex hit counts are not evidence**.
 A regex can match unintended syntactic forms and produce alarmist numbers.
 
-This skill codifies a rule the orchestrator (and agents) have repeatedly
-violated: **never publish "N occurrences of problem X" without sampling
+This skill codifies a rule that agents in any codebase can violate: **never publish "N occurrences of problem X" without sampling
 first**. It forces a 3-step protocol that turns grep into real findings.
 
 ## Invocation

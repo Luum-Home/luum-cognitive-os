@@ -18,6 +18,10 @@ DEFAULT_SETTINGS = REPO_ROOT / ".claude" / "settings.json"
 DEFAULT_MANIFEST = REPO_ROOT / "manifests" / "primitive-lifecycle.yaml"
 DEFAULT_REGISTRATION_CLASSIFICATION = REPO_ROOT / "manifests" / "hook-registration-classification.yaml"
 HOOK_PATH_RE = re.compile(r"hooks/[A-Za-z0-9_.-]+\.sh")
+RUNTIME_PATH_RE = re.compile(
+    r"(?:(?:\$PWD|\$\{PWD\}|\$CLAUDE_PROJECT_DIR|\$\{CLAUDE_PROJECT_DIR\}|\$CODEX_PROJECT_DIR|\$\{CODEX_PROJECT_DIR\}|\$COGNITIVE_OS_PROJECT_DIR|\$\{COGNITIVE_OS_PROJECT_DIR(?::-[^}]*)?\})/)?"
+    r"(?P<path>(?:\.cognitive-os/(?:hooks|scripts)/cos|hooks|scripts)/[A-Za-z0-9_./-]+\.(?:sh|py))"
+)
 EXIT_2_RE = re.compile(r"(?:^|[;&|({\s])(?:exit|return)\s+(?:2|\$\?)(?:\s|[;&|)}]|$)")
 METRICS_RE = re.compile(
     r"(safe-jsonl|\.jsonl\b|/metrics/|\.cognitive-os/metrics|record[_-]?metric|emit[_-]?metric|metrics)",
@@ -81,6 +85,27 @@ class ClassifiedHook:
     reasons: list[str] = field(default_factory=list)
 
 
+@dataclass(frozen=True)
+class HookCommand:
+    event: str
+    command: str
+    async_projected: bool = False
+
+
+@dataclass(frozen=True)
+class RuntimeDependencyReference:
+    reference: str
+    resolved_path: str
+    source: str
+    event: str
+    command: str
+    exists: bool
+    scope: str | None
+    allowed_by_scope: bool
+    required: bool
+    reason: str
+
+
 def _load_json(path: Path) -> dict[str, Any]:
     try:
         loaded = json.loads(path.read_text(encoding="utf-8"))
@@ -133,11 +158,232 @@ def _string_tuple(value: Any) -> tuple[str, ...]:
     return tuple(item for item in value if isinstance(item, str))
 
 
+def _hooks_mapping_from_settings(settings: dict[str, Any]) -> dict[str, Any]:
+    hooks_by_event = settings.get("hooks")
+    if isinstance(hooks_by_event, dict):
+        return hooks_by_event
+    # Codex hooks.json uses lifecycle events at the top level.
+    return {key: value for key, value in settings.items() if isinstance(value, list)}
+
+
+def iter_hook_commands(settings_path: Path) -> list[HookCommand]:
+    """Return all hook commands from Claude settings.json or Codex hooks.json."""
+    settings = _load_json(settings_path)
+    hooks_by_event = _hooks_mapping_from_settings(settings)
+    if not isinstance(hooks_by_event, dict):
+        raise RuntimeHookRealityError("settings driver must contain hook event mappings")
+
+    commands: list[HookCommand] = []
+    for event_name in sorted(hooks_by_event):
+        matchers = hooks_by_event[event_name]
+        if not isinstance(matchers, list):
+            continue
+        for matcher in matchers:
+            if not isinstance(matcher, dict):
+                continue
+            hook_defs = matcher.get("hooks")
+            if not isinstance(hook_defs, list):
+                continue
+            for hook_def in hook_defs:
+                if not isinstance(hook_def, dict):
+                    continue
+                command = hook_def.get("command")
+                if isinstance(command, str):
+                    commands.append(HookCommand(str(event_name), command, bool(hook_def.get("async"))))
+    return commands
+
+
+def _scope_from_header(path: Path) -> str | None:
+    try:
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()[:3]
+    except OSError:
+        return None
+    for line in lines:
+        match = re.search(r"(?:# SCOPE:|<!-- SCOPE:)\s+([A-Za-z_/-]+)", line)
+        if match:
+            return match.group(1).strip()
+    return None
+
+
+def _scope_allowed(scope: str | None, install_scope: str) -> bool:
+    if install_scope == "all":
+        return True
+    if scope == "os-only":
+        return False
+    return True
+
+
+def extract_runtime_paths(text: str) -> list[str]:
+    """Extract project-relative runtime executable paths from text."""
+    paths: list[str] = []
+    for match in RUNTIME_PATH_RE.finditer(text):
+        candidate = match.group("path").rstrip('"\'`),;')
+        if candidate not in paths:
+            paths.append(candidate)
+    return paths
+
+
+def _line_reference_required(line: str) -> bool:
+    stripped = line.strip()
+    if not stripped or stripped.startswith("#"):
+        return False
+    if re.match(r"^(echo|printf|jq)\b", stripped):
+        return False
+    if "additionalContext" in stripped or "hookSpecificOutput" in stripped:
+        return False
+    if re.match(r"^[A-Z0-9_]+\s*=", stripped):
+        return False
+    if "[ -x" in stripped or "[ -f" in stripped or "test -x" in stripped or "test -f" in stripped:
+        return False
+    if "|| true" in stripped or "2>/dev/null" in stripped or "&" == stripped[-1:]:
+        return False
+    return True
+
+
+def iter_runtime_path_mentions(text: str) -> list[tuple[str, bool]]:
+    mentions: list[tuple[str, bool]] = []
+    for line in text.splitlines():
+        required = _line_reference_required(line)
+        for reference in extract_runtime_paths(line):
+            item = (reference, required)
+            if item not in mentions:
+                mentions.append(item)
+    return mentions
+
+
+def _resolve_runtime_path(project_root: Path, reference: str) -> Path:
+    return (project_root / reference).resolve()
+
+
+def _dependency_reference(
+    project_root: Path,
+    *,
+    reference: str,
+    source: str,
+    event: str,
+    command: str,
+    install_scope: str,
+    required: bool = True,
+) -> RuntimeDependencyReference:
+    resolved = _resolve_runtime_path(project_root, reference)
+    exists = resolved.exists()
+    scope = _scope_from_header(resolved) if exists else None
+    allowed = exists and _scope_allowed(scope, install_scope)
+    optional_prefix = "optional " if not required else ""
+    if not exists:
+        reason = f"{optional_prefix}referenced runtime path is not installed"
+    elif not allowed:
+        reason = f"{optional_prefix}referenced runtime path has SCOPE {scope!r}, disallowed for install scope {install_scope!r}"
+    else:
+        reason = f"{optional_prefix}referenced runtime path exists and is scope-allowed"
+    return RuntimeDependencyReference(
+        reference=reference,
+        resolved_path=str(resolved),
+        source=source,
+        event=event,
+        command=command,
+        exists=exists,
+        scope=scope,
+        allowed_by_scope=allowed,
+        required=required,
+        reason=reason,
+    )
+
+
+def build_dependency_closure_report(
+    *,
+    project_root: Path,
+    settings_path: Path,
+    install_scope: str = "project",
+) -> dict[str, Any]:
+    """Audit runtime path closure for generated hook drivers.
+
+    This intentionally does not require the COS source manifest: it can run
+    against a consumer project install and verifies that every project-relative
+    path referenced by the active hook driver exists and is allowed by the
+    requested install scope. Hook bodies are scanned one level deeper for
+    project scripts they invoke at runtime.
+    """
+    root = project_root.resolve()
+    references: dict[tuple[str, str], RuntimeDependencyReference] = {}
+    for hook_command in iter_hook_commands(settings_path):
+        for reference in extract_runtime_paths(hook_command.command):
+            ref = _dependency_reference(
+                root,
+                reference=reference,
+                source="driver",
+                event=hook_command.event,
+                command=hook_command.command,
+                install_scope=install_scope,
+            )
+            references[(ref.source, ref.reference)] = ref
+            resolved = Path(ref.resolved_path)
+            if ref.exists and reference.endswith(".sh") and ("/hooks/" in f"/{reference}" or reference.startswith("hooks/")):
+                try:
+                    body = resolved.read_text(encoding="utf-8", errors="ignore")
+                except OSError:
+                    body = ""
+                for nested, required in iter_runtime_path_mentions(_strip_shell_comments(body)):
+                    # Hook-local libraries are covered by the copied _lib directory
+                    # and usually appear as $HOOK_DIR/_lib, not project-root paths.
+                    nested_ref = _dependency_reference(
+                        root,
+                        reference=nested,
+                        source=reference,
+                        event=hook_command.event,
+                        command=hook_command.command,
+                        install_scope=install_scope,
+                        required=required,
+                    )
+                    references[(nested_ref.source, nested_ref.reference)] = nested_ref
+
+    rows = [asdict(ref) for ref in sorted(references.values(), key=lambda item: (item.source, item.reference))]
+    findings: list[dict[str, Any]] = []
+    for ref in references.values():
+        if not ref.required:
+            continue
+        if not ref.exists:
+            findings.append({
+                "id": "runtime-reference-missing",
+                "severity": "fail",
+                "reference": ref.reference,
+                "source": ref.source,
+                "event": ref.event,
+                "required": ref.required,
+                "reason": ref.reason,
+            })
+        elif not ref.allowed_by_scope:
+            findings.append({
+                "id": "runtime-reference-scope-disallowed",
+                "severity": "fail",
+                "reference": ref.reference,
+                "source": ref.source,
+                "event": ref.event,
+                "required": ref.required,
+                "scope": ref.scope,
+                "reason": ref.reason,
+            })
+
+    return {
+        "schema_version": "runtime-dependency-closure.v1",
+        "sources": {"settings": str(settings_path), "project_root": str(root)},
+        "summary": {
+            "status": "fail" if any(item["severity"] == "fail" for item in findings) else "pass",
+            "install_scope": install_scope,
+            "runtime_references": len(rows),
+            "optional_runtime_references": sum(1 for ref in references.values() if not ref.required),
+            "findings": len(findings),
+        },
+        "findings": sorted(findings, key=lambda item: (item["id"], item["source"], item["reference"])),
+        "references": rows,
+    }
+
+
 def load_projected_hooks(settings_path: Path) -> dict[str, ProjectedHook]:
     settings = _load_json(settings_path)
-    hooks_by_event = settings.get("hooks")
+    hooks_by_event = _hooks_mapping_from_settings(settings)
     if not isinstance(hooks_by_event, dict):
-        raise RuntimeHookRealityError("Claude settings must contain a hooks mapping")
+        raise RuntimeHookRealityError("settings driver must contain hook event mappings")
 
     events_by_path: dict[str, set[str]] = {}
     commands_by_path: dict[str, set[str]] = {}
@@ -384,11 +630,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--project-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--settings", type=Path, default=DEFAULT_SETTINGS)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    parser.add_argument("--dependency-closure", action="store_true", help="audit hook driver runtime path closure instead of lifecycle reality")
+    parser.add_argument("--install-scope", choices=("project", "both", "all"), default="project", help="scope filter expected for dependency closure")
     parser.add_argument("--fail-on-findings", action="store_true", help="exit 1 when audit findings are present")
     args = parser.parse_args(argv)
 
     try:
-        report = build_report(project_root=args.project_root, settings_path=args.settings, manifest_path=args.manifest)
+        if args.dependency_closure:
+            report = build_dependency_closure_report(
+                project_root=args.project_root,
+                settings_path=args.settings,
+                install_scope=args.install_scope,
+            )
+        else:
+            report = build_report(project_root=args.project_root, settings_path=args.settings, manifest_path=args.manifest)
     except RuntimeHookRealityError as exc:
         print(f"runtime-hook-reality: {exc}", file=sys.stderr)
         return 2

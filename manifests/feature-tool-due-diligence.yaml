@@ -130,3 +130,30 @@ features:
         deepwiki_url: https://deepwiki.com/grpc/grpc
         license: Apache-2.0
         reason_not_build_replacement: Lower web/mobile client adoption; requires proto codegen pipeline; rejected in ADR-291 alternatives.
+  - capability_id: python-typecheck-agentic-loop
+    feature_label: Python type checking for agentic loops
+    owner_adr: radar-pyrefly-2026-05-15
+    decision: TRIAL
+    rationale: COS has Ruff and pytest but no first-class Python static type/API-shape gate. Pyrefly is fast, MIT-licensed, stable, and has upstream guidance for agentic loops. The first SO run produced useful signal but a large baseline, so it starts advisory.
+    maintenance_cost: low
+    benchmark: docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md
+    candidates:
+      - tool_id: pyrefly
+        verdict: TRIAL
+        source_links: [https://github.com/facebook/pyrefly, https://pyrefly.org/blog/pyrefly-agentic-loop/]
+        deepwiki_url: https://deepwiki.com/facebook/pyrefly
+        license: MIT
+        reason_not_build_replacement: Python type checking is commodity developer tooling; COS should own policy, receipts, and ratchets rather than build a type checker.
+      - tool_id: mypy
+        verdict: ASSESS
+        source_links: [https://github.com/python/mypy]
+        deepwiki_url: https://deepwiki.com/python/mypy
+        license: MIT
+        reason_not_build_replacement: Mature checker but not selected for this pilot because Pyrefly has current agentic-loop guidance and faster initial local runs.
+      - tool_id: pyright
+        verdict: ASSESS
+        source_links: [https://github.com/microsoft/pyright]
+        deepwiki_url: https://deepwiki.com/microsoft/pyright
+        license: MIT
+        reason_not_build_replacement: Mature checker; keep as comparison candidate after Pyrefly baseline triage.
+

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit and safely reap bounded Cognitive OS state surfaces."""
 from __future__ import annotations
 

@@ -26,6 +26,61 @@ allowed_scopes:
       - consumer-project projection proof
       - paired portability or falsification test
       - no hard dependency on the source Cognitive OS repository path
+
+allowed_planes:
+  control-plane:
+    meaning: Maintains, audits, classifies, publishes, migrates, or governs Cognitive OS itself.
+    typical_scope: os-only
+  user-plane:
+    meaning: Helps ordinary repository work such as review, tests, security, documentation, delivery, and quality.
+    typical_scope: both|project
+  factory-plane:
+    meaning: Creates, repairs, scaffolds, harvests, or promotes primitives or project overlays.
+    typical_scope: os-only|project|both
+  runtime-plane:
+    meaning: Participates in hook/runtime execution, local services, projection drivers, or runtime support libraries.
+    typical_scope: both|os-only
+consumer_surfaces:
+  projected: Generated or installed into a consumer project.
+  shared: Used by both COS and consumer projects.
+  maintainer-only: Used only by COS maintainers or self-construction.
+  project-generated: Generated as project-local content, not required for COS self-construction.
+proof_levels:
+  none: No portability/runtime proof.
+  batch: Covered only by a batch or migration proof.
+  family: Covered by a family-specific proof that checks a coherent primitive group.
+  primitive-specific: Covered by a dedicated proof for this exact primitive.
+expected_scope_distribution:
+  hooks:
+    os-only_max_warning: 60
+    both_min_warning: 25
+  skills:
+    os-only_max_warning: 70
+    both_min_warning: 15
+    project_min_warning: 4.5
+  scripts:
+    os-only_expected_high: true
+  templates:
+    project_expected_high: true
+review_exemptions: {}
+review_exemption_policy:
+  min_rationale_chars: 40
+  max_active_by_code:
+    os-only-generic-candidate: 0
+    both-needs-specific-proof: 0
+proof_level_budgets:
+  none_by_scope:
+    both: 0
+    project: 0
+    os-only: 0
+behavior_depth_policy:
+  minimum_by_scope:
+    both: structural
+    project: structural
+    os-only: structural
+  max_by_depth:
+    none: 0
+    structural: 471
 families:
   hooks:
     marker: '# SCOPE: <scope>'

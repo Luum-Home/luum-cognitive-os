@@ -12,6 +12,7 @@ import json
 import os
 import shlex
 import subprocess
+from collections.abc import Collection, Mapping
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Iterable
@@ -175,7 +176,7 @@ def _shlex(segment: str) -> list[str]:
         return []
 
 
-def _strip_options(tokens: list[str], *, options_with_values: set[str] = frozenset()) -> list[str]:
+def _strip_options(tokens: list[str], *, options_with_values: Collection[str] = frozenset()) -> list[str]:
     out: list[str] = []
     skip = False
     for token in tokens:
@@ -255,11 +256,11 @@ def classify_targets(root: Path, raw_paths: Iterable[str]) -> list[DeleteTarget]
     return rows
 
 
-def approval_from_env(env: dict[str, str] | None = None) -> tuple[bool, str | None, str | None]:
-    env = env or os.environ
-    approved = any(env.get(name) == "1" for name in APPROVAL_ENVS)
-    classification = env.get("COS_DELETE_CLASSIFICATION")
-    reason = env.get("COS_DELETE_REASON") or env.get("COS_BYPASS_REASON")
+def approval_from_env(env: Mapping[str, str] | None = None) -> tuple[bool, str | None, str | None]:
+    source: Mapping[str, str] = os.environ if env is None else env
+    approved = any(source.get(name) == "1" for name in APPROVAL_ENVS)
+    classification = source.get("COS_DELETE_CLASSIFICATION")
+    reason = source.get("COS_DELETE_REASON") or source.get("COS_BYPASS_REASON")
     return approved, classification, reason
 
 

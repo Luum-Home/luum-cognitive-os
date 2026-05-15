@@ -35,6 +35,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
 
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
@@ -44,34 +45,36 @@ if str(COS_SOURCE_DIR) not in sys.path:
 from lib.script_io import write_json as _write_json_if_changed
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "agents-md", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"agents-md", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"}
-SHELL_CI_HARNESSES = {"shell-ci"}
+def _load_harness_projection_registry() -> dict[str, object]:
+    registry_path = COS_SOURCE_DIR / "manifests" / "harness-projection-registry.json"
+    try:
+        return json.loads(registry_path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise SystemExit(f"Missing shared harness registry: {registry_path}. Run scripts/generate_harness_projection_registry.py") from exc
 
-HARNESS_SETTINGS = {
-    "claude": (".claude/settings.json", ".claude/settings.json"),
-    "codex": (".codex/hooks.json", ".codex/hooks.json"),
-    "agents-md": ("AGENTS.md", "AGENTS.md"),
-    "opencode": ("opencode.json", "opencode.json"),
-    "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
-    "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
-    "qwen-code": (".qwen/settings.json", ".qwen/settings.json"),
-    "kimi-code": ("AGENTS.md", "AGENTS.md"),
-    "gemini-cli": (".gemini/settings.json", ".gemini/settings.json"),
-    "warp": ("AGENTS.md", "AGENTS.md"),
-    "amp-code": ("AGENTS.md", "AGENTS.md"),
-    "jetbrains-junie": (".junie/AGENTS.md", ".junie/AGENTS.md"),
-    "qoder": ("AGENTS.md", "AGENTS.md"),
-    "factory-droid": ("AGENTS.md", "AGENTS.md"),
-    "cline": (".clinerules/cognitive-os.md", ".clinerules/cognitive-os.md"),
-    "continue-dev": (".continue/rules/cognitive-os.md", ".continue/rules/cognitive-os.md"),
-    "kilo-code": (".kilocode/rules/cognitive-os.md", ".kilocode/rules/cognitive-os.md"),
-    "zed-ai": (".rules", ".rules"),
-    "augment-code": (".augment/rules/cognitive-os.md", ".augment/rules/cognitive-os.md"),
-    "goose": (".goosehints", ".goosehints"),
-    "aider": ("CONVENTIONS.md", "CONVENTIONS.md"),
-    "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
+
+def _registry_harnesses() -> list[dict[str, object]]:
+    rows = _load_harness_projection_registry().get("harnesses", [])
+    return [row for row in rows if isinstance(row, dict)]
+
+
+def _implemented_registry_harnesses() -> list[dict[str, object]]:
+    return [row for row in _registry_harnesses() if row.get("status") == "implemented"]
+
+
+_SUPPORTED_HARNESS_ROWS = _implemented_registry_harnesses()
+SUPPORTED_HARNESSES = tuple(str(row["id"]) for row in _SUPPORTED_HARNESS_ROWS)
+STRUCTURAL_INSTRUCTION_HARNESSES = {
+    str(row["id"])
+    for row in _SUPPORTED_HARNESS_ROWS
+    if row.get("id") not in {"claude", "codex", "shell-ci"}
 }
+SHELL_CI_HARNESSES = {str(row["id"]) for row in _SUPPORTED_HARNESS_ROWS if row.get("id") == "shell-ci"}
+HARNESS_SETTINGS = {
+    str(row["id"]): (str(row.get("primary_settings_path") or ".cognitive-os/install-meta.json"), str(row.get("primary_settings_path") or ".cognitive-os/install-meta.json"))
+    for row in _SUPPORTED_HARNESS_ROWS
+}
+
 
 # ── ADR-093 canonical mode constants ─────────────────────────────────
 DEFAULT_RULES = (
@@ -148,7 +151,7 @@ def detect_harness(project_root: str = ".") -> str:
         except (OSError, json.JSONDecodeError):
             meta_harness = None
         if meta_harness in SUPPORTED_HARNESSES:
-            return meta_harness
+            return str(meta_harness)
 
     codex_hooks = root / ".codex" / "hooks.json"
     claude_settings = root / ".claude" / "settings.json"
@@ -411,7 +414,7 @@ def install_skill_dir(
 
 # ── Internal-call dispatcher ──────────────────────────────────────────
 
-_INTERNAL_DISPATCH: dict[str, object] = {
+_INTERNAL_DISPATCH: dict[str, Callable[..., object]] = {
     "detect_harness": detect_harness,
     "scope_allows": scope_allows,
     "skill_scope_allows": skill_scope_allows,
@@ -971,11 +974,27 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
 
     common_body = (
         "# Cognitive OS\n\n"
-        "This project has Cognitive OS installed under `.cognitive-os/`. "
-        "Use `.cognitive-os/rules/cos/RULES-COMPACT.md` as the compact governance entrypoint, "
-        "consult `.cognitive-os/skills/cos/` for reusable SKILL.md procedures, and preserve "
-        "the repository `AGENTS.md` contract when present. Do not claim Claude/Codex hook parity "
-        "unless the active harness exposes equivalent lifecycle events.\n"
+        "This project has Cognitive OS installed under `.cognitive-os/`.\n\n"
+        "## Portable Cognitive OS Contract\n\n"
+        "- Read `cognitive-os.yaml` when present for phase and project configuration.\n"
+        "- Use `.cognitive-os/rules/cos/RULES-COMPACT.md` as the compact governance entrypoint; "
+        "load full rules from `.cognitive-os/rules/cos/` only when their contextual triggers match.\n"
+        "- Use `.cognitive-os/skills/cos/` for reusable SKILL.md procedures. If this harness supports "
+        "slash commands, invoke the matching `/skill-name`; otherwise open the matching `SKILL.md` and follow it.\n"
+        "- State or infer acceptance criteria before implementation, then verify them with concrete commands "
+        "before claiming completion.\n"
+        "- For medium or larger feature work, prefer the local consumer SDD lane: `cos sdd next --feature <slug>`, "
+        "review generated requirements/design/tasks, run `cos sdd approve <slug>` before implementation, "
+        "then complete traceability and run `cos sdd review <slug>`. If the `cos` binary is unavailable, "
+        "use the same `.cognitive-os/workflows/sdd/` artifact layout manually.\n"
+        "- Use Engram when available: search memory before repeating past work, save decisions/bugfixes/"
+        "discoveries/configuration changes, and write a session summary before ending substantial work.\n"
+        "- If `.cognitive-os/seed-memory.md` exists and its Inherited Knowledge section still has only the "
+        "placeholder, do the one-time Engram retrieval described there and avoid duplicating entries.\n"
+        "- Structural projection boundary: this file provides project instructions, rule/skill references, "
+        "and proof-level guardrails. Do not claim Claude/Codex native lifecycle hook parity unless this "
+        "harness exposes equivalent lifecycle events and the mapping has been runtime-smoked.\n"
+        "- Preserve the repository `AGENTS.md` contract when present.\n"
     )
 
     if harness == "agents-md":
@@ -990,6 +1009,13 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
         return
 
     if harness == "opencode":
+        _upsert_agents_md_block(
+            project_dir,
+            "opencode",
+            "Cognitive OS for opencode",
+            common_body,
+            "opencode loads this through `opencode.json` alongside the canonical COS rule and skill paths.\n",
+        )
         _write_json_if_changed(
             project_dir / "opencode.json",
             {

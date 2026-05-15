@@ -397,13 +397,16 @@ def merge_into_doc(
     for ev in evaluations:
         entry, match_type = find_entry(entries, ev)
 
-        if match_type == "exact":
+        if match_type == "exact" and entry is not None:
             # Rewrite frontmatter; preserve body
-            old_chunk = entry["chunk"]
-            prev_class = entry["fm_fields"].get("classification")
-            prev_license = entry["fm_fields"].get("license")
+            old_chunk = str(entry["chunk"])
+            fm_fields = entry["fm_fields"] if isinstance(entry["fm_fields"], dict) else {}
+            prev_class = fm_fields.get("classification")
+            prev_license = fm_fields.get("license")
             new_chunk = rewrite_frontmatter_in_chunk(old_chunk, ev)
-            result = result[: entry["start"]] + new_chunk + result[entry["end"]:]
+            start = int(entry["start"])
+            end = int(entry["end"])
+            result = result[:start] + new_chunk + result[end:]
             # Re-parse so offsets stay valid for subsequent updates
             entries = parse_doc_entries(result)
 

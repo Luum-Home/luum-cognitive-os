@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # CONCERNS: git-coordination, multi-session, adr-089-layer-1
 # git-commit-scope-guard.sh — PreToolUse Bash hook
 #

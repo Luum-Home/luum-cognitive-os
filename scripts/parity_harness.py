@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Parity harness — Claude Agent() vs Qwen agent loop (ADR-051 Phase 4).
 
 Runs each task in a YAML task-set through BOTH providers and emits:
@@ -33,14 +33,13 @@ import csv
 import hashlib
 import io
 import json
-import os
 import subprocess
 import sys
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
@@ -388,29 +387,25 @@ def run_task(
     the real provider call — used by tests to avoid real API calls.
     """
     q_fn = qwen_fn or run_via_qwen
-    c_fn = claude_fn or run_via_claude
+    c_fn = claude_fn
     results: List[ParityResult] = []
 
     if only_provider in (None, "qwen"):
         results.append(q_fn(task, project_root, verbose=verbose))
     if only_provider in (None, "claude"):
-        if c_fn is run_via_claude and claude_executor is None:
+        if c_fn is None and claude_executor is None:
             results.append(ParityResult(
                 task_id=task.id, provider="claude",
                 error="no claude_executor provided — skipping claude leg",
             ))
+        elif c_fn is None:
+            results.append(run_via_claude(
+                task, project_root,
+                claude_executor=claude_executor,
+                verbose=verbose,
+            ))
         else:
-            # Signature for the default run_via_claude includes claude_executor;
-            # test-injected claude_fn may use a reduced signature.
-            try:
-                results.append(c_fn(
-                    task, project_root,
-                    claude_executor=claude_executor,
-                    verbose=verbose,
-                ))
-            except TypeError:
-                # Injected stub with simpler signature
-                results.append(c_fn(task, project_root, verbose=verbose))
+            results.append(c_fn(task, project_root, verbose=verbose))
 
     return results
 

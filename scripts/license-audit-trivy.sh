@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # license-audit-trivy.sh — Run Trivy license scan and produce structured output
 #
 # Outputs:

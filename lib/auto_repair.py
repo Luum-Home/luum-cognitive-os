@@ -30,7 +30,7 @@ import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 # ---------------------------------------------------------------------------
 # Safety blocklist — paths that must NEVER be auto-repaired
@@ -98,12 +98,13 @@ class Remediation:
     fix_command: str    # bash command (may contain {placeholders})
     description: str
     safe: bool = True   # True = auto-apply, False = suggest only
-    _compiled: re.Pattern = field(default=None, init=False, repr=False)
+    _compiled: re.Pattern[str] | None = field(default=None, init=False, repr=False)
 
     def __post_init__(self):
         self._compiled = re.compile(self.error_pattern, re.IGNORECASE)
 
     def matches(self, message: str) -> Optional[re.Match]:
+        assert self._compiled is not None
         return self._compiled.search(message)
 
 
@@ -611,7 +612,7 @@ def apply_remediation(
             if f"{{{key}}}" in command and len(groups) > 0:
                 command = command.replace(f"{{{key}}}", groups[0])
 
-    result = {
+    result: dict[str, Any] = {
         "action": "suggest" if (dry_run or not remediation.safe) else "applied",
         "command": command,
         "description": remediation.description,

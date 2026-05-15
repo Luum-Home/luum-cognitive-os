@@ -335,11 +335,45 @@ check_scope_portability_contract() {
     return 0
   }
   if [ -x "$REPO_ROOT/scripts/cos-scope-both-portability-audit" ] && \
-     [ -x "$REPO_ROOT/scripts/cos-scope-projection-audit" ]; then
+     [ -x "$REPO_ROOT/scripts/cos-scope-projection-audit" ] && \
+     [ -x "$REPO_ROOT/scripts/cos-install-projection-audit" ]; then
+    python3 "$REPO_ROOT/scripts/primitive_scope_classifier.py" \
+      --project-dir "$REPO_ROOT" --fail-contradictions --fail-low-confidence --fail-medium-confidence \
+      --json-out .cognitive-os/reports/primitive-scope-classifier-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-dependency-audit" \
+      --project-dir "$REPO_ROOT" --strict \
+      --json-out .cognitive-os/reports/primitive-scope-dependency-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-plane-audit" \
+      --project-dir "$REPO_ROOT" --strict \
+      --json-out .cognitive-os/reports/primitive-scope-plane-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-balance-audit" \
+      --project-dir "$REPO_ROOT" \
+      --strict \
+      --json-out .cognitive-os/reports/primitive-scope-balance-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-generic-os-only-audit" \
+      --project-dir "$REPO_ROOT" \
+      --strict \
+      --json-out .cognitive-os/reports/primitive-scope-generic-os-only-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-false-both-audit" \
+      --project-dir "$REPO_ROOT" \
+      --strict \
+      --json-out .cognitive-os/reports/primitive-scope-false-both-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-proof-audit" \
+      --project-dir "$REPO_ROOT" \
+      --strict \
+      --json-out .cognitive-os/reports/primitive-scope-proof-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-behavior-depth-audit" \
+      --project-dir "$REPO_ROOT" \
+      --strict \
+      --json-out .cognitive-os/reports/primitive-behavior-depth-audit-ci-local.json >/dev/null && \
+    "$REPO_ROOT/scripts/primitive-scope-health" \
+      --project-dir "$REPO_ROOT" \
+      --json-out .cognitive-os/reports/primitive-scope-health-ci-local.json >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-both-portability-audit" \
       --repo-root "$REPO_ROOT" --strict --json --no-write >/dev/null && \
     python3 "$REPO_ROOT/scripts/cos-scope-projection-audit" \
-      --repo-root "$REPO_ROOT" --run-install-smoke --strict --json --no-write >/dev/null
+      --repo-root "$REPO_ROOT" --run-install-smoke --strict --json --no-write >/dev/null && \
+    "$REPO_ROOT/scripts/cos-install-projection-audit" --json >/dev/null
   else
     _skip "scope portability contract" "scope audit scripts not found"
     return 0

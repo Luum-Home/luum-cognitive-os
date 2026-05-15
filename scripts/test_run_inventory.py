@@ -37,6 +37,46 @@ class TestItem:
     heuristic_tags: list[str] = field(default_factory=list)
 
 
+def _with_heuristic_tags(item: TestItem) -> TestItem:
+    return TestItem(
+        nodeid=item.nodeid,
+        outcome=item.outcome,
+        file=item.file,
+        test=item.test,
+        duration_seconds=item.duration_seconds,
+        message=item.message,
+        details=item.details,
+        heuristic_tags=_heuristic_tags(item),
+    )
+
+
+def _string_counter(value: object) -> Counter[str]:
+    if isinstance(value, dict):
+        return Counter({str(key): int(count) for key, count in value.items() if isinstance(count, int | float)})
+    return Counter()
+
+
+def _test_items(value: object) -> list[TestItem]:
+    if not isinstance(value, list):
+        return []
+    items: list[TestItem] = []
+    for item in value:
+        if isinstance(item, dict):
+            items.append(
+                TestItem(
+                    nodeid=str(item.get("nodeid", "")),
+                    outcome=str(item.get("outcome", "")),
+                    file=str(item.get("file", "")),
+                    test=str(item.get("test", "")),
+                    duration_seconds=float(item.get("duration_seconds", 0.0) or 0.0),
+                    message=str(item.get("message", "")),
+                    details=str(item.get("details", "")),
+                    heuristic_tags=[str(tag) for tag in item.get("heuristic_tags", []) if isinstance(tag, str)],
+                )
+            )
+    return items
+
+
 def _resolve_run_dir(path: Path) -> Path:
     return path.resolve()
 
@@ -124,11 +164,7 @@ def parse_junit(junit_path: Path) -> list[TestItem]:
             message=message,
             details=details,
         )
-        items.append(
-            TestItem(
-                **{**asdict(item), "heuristic_tags": _heuristic_tags(item)}
-            )
-        )
+        items.append(_with_heuristic_tags(item))
     return items
 
 
@@ -173,7 +209,7 @@ def parse_timeout_fallback(full_output: str) -> list[TestItem]:
         message=message,
         details=details,
     )
-    return [TestItem(**{**asdict(item), "heuristic_tags": _heuristic_tags(item)})]
+    return [_with_heuristic_tags(item)]
 
 
 def _read(path: Path) -> str:
@@ -255,14 +291,13 @@ def _short(text: str, limit: int = 180) -> str:
 
 
 def render_markdown(inventory: dict[str, object]) -> str:
-    counts = Counter(inventory.get("counts", {}))
-    tag_counts = Counter(inventory.get("heuristic_tag_counts", {}))
+    counts = _string_counter(inventory.get("counts", {}))
+    tag_counts = _string_counter(inventory.get("heuristic_tag_counts", {}))
     metadata = inventory.get("metadata", {})
     if not isinstance(metadata, dict):
         metadata = {}
-    items = [TestItem(**item) for item in inventory.get("items", [])]  # type: ignore[arg-type]
-    interesting = [TestItem(**item) for item in inventory.get("interesting", [])]  # type: ignore[arg-type]
-    slowest = [TestItem(**item) for item in inventory.get("slowest", [])]  # type: ignore[arg-type]
+    interesting = _test_items(inventory.get("interesting", []))
+    slowest = _test_items(inventory.get("slowest", []))
 
     lines = [
         "# Test Run Inventory",

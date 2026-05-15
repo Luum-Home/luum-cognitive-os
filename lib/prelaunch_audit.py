@@ -161,13 +161,14 @@ def history_patch_text(repo: Path, *, timeout: float) -> tuple[str, str | None]:
     return proc.stdout, None
 
 
-def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tuple[list[str], list[str], list[dict[str, str]]]:
+def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tuple[list[str], list[str], list[dict[str, object]]]:
     pattern = rule.compiled()
     commits: list[str] = []
     risky_commits: list[str] = []
-    samples: list[dict[str, str]] = []
+    samples: list[dict[str, object]] = []
     current_sha = ""
-    current_lines: list[str] = []
+    current_lines: list[tuple[str, str]] = []
+    current_file = ""
 
     def flush() -> None:
         if not current_sha:
@@ -186,7 +187,7 @@ def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tup
             ((line, file_path) for line, file_path in matching_lines if not fixture_like_line(line, file_path) and not reviewed_context_line(line)),
             matching_lines[0],
         )
-        sample = {
+        sample: dict[str, object] = {
             "commit": current_sha,
             "sample": compact_sample(sample_line),
             "fixture_like": fixture_like_line(sample_line, sample_file),
@@ -273,7 +274,8 @@ def audit_history(repo: Path, *, max_samples_per_rule: int = 5, timeout: float |
         commits, risky_commits, samples = scan_history_text(history, rule, max_samples=max_samples_per_rule) if history else ([], [], [])
         rule_hits.append({"rule_id": rule.id, "kind": rule.kind, "severity": rule.severity, "commit_count": len(commits), "risky_commit_count": len(risky_commits), "fixture_like_commit_count": max(0, len(commits) - len(risky_commits)), "samples": samples, "rationale": rule.rationale})
         if commits and rule.severity in {"block", "warn"}:
-            first = samples[0]["sample"] if samples else None
+            first_value = samples[0].get("sample") if samples else None
+            first = first_value if isinstance(first_value, str) else None
             effective_severity = rule.severity
             qualifier = ""
             if not risky_commits:

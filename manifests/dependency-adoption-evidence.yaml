@@ -79,3 +79,13 @@ adoptions:
 # (root pyproject.toml [web-automation] extra + packages/agent-service/pyproject.toml).
 # Endpoint count corrected to 26 ops / 25 distinct paths after csrf-token removal
 # in the security pass (see ADR-291 §Security).
+  - package: pyrefly
+    version_constraint: ">=1.0,<1.1"
+    consumer: pyproject.toml ([typecheck] extra)
+    owner_adr: radar-pyrefly-2026-05-15
+    due_diligence_id: python-typecheck-agentic-loop
+    license: MIT
+    integration_pattern: advisory CLI gate via scripts/cos-pyrefly-pilot and make typecheck-pyrefly; no runtime import
+    rationale: Fast static Python type/API-shape checker for agentic loops; COS owns advisory/enforcement policy and receipts while Pyrefly supplies commodity type analysis.
+    audit_link: docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md
+

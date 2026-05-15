@@ -66,6 +66,10 @@ class ShellHookDefinition(HookDefinition):
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "ShellHookDefinition":
+        raw_timeout = data.get("timeout_ms")
+        if raw_timeout is None:
+            raw_timeout_seconds = data.get("timeout_seconds", 5)
+            raw_timeout = (raw_timeout_seconds if isinstance(raw_timeout_seconds, (int, float)) else 5) * 1000
         return cls(
             command=data.get("command", ""),
             timeout_seconds=int(data.get("timeout_seconds", 30)),
@@ -130,11 +134,15 @@ class HttpHookDefinition(HookDefinition):
         raw_status = data.get("expected_status", [200, 201, 202, 204])
         if isinstance(raw_status, int):
             raw_status = [raw_status]
+        raw_timeout = data.get("timeout_ms")
+        if raw_timeout is None:
+            raw_timeout_seconds = data.get("timeout_seconds", 5)
+            raw_timeout = (raw_timeout_seconds if isinstance(raw_timeout_seconds, (int, float)) else 5) * 1000
         return cls(
             url=data.get("url", ""),
             method=str(data.get("method", "POST")).upper(),
             headers=dict(data.get("headers", {})),
-            timeout_ms=int(data.get("timeout_ms", data.get("timeout_seconds", 5) * 1000)),
+            timeout_ms=int(raw_timeout) if isinstance(raw_timeout, (int, float, str)) else 5000,
             body_template=str(data.get("body_template", "$payload")),
             expected_status=frozenset(int(s) for s in raw_status),
             block_on_failure=bool(data.get("block_on_failure", False)),

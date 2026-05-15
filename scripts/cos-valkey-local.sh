@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # cos-valkey-local.sh — Start/stop a local Valkey/Redis daemon for the Agent Bus.
 #
 # Prefers `valkey-server` if installed; falls back to `redis-server` (Redis is

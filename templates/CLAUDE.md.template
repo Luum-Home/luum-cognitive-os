@@ -10,7 +10,7 @@ You have Engram, a persistent memory system across sessions.
 - Discoveries (gotchas, edge cases)
 - Completed features (non-obvious approach)
 
-Format: `mem_save(title: "Verb + what", type: bugfix|decision|discovery|pattern, scope: project, topic_key: "category/topic", content: "What/Why/Where/Learned")`
+Format: `mem_save(title: "Verb + what", type: bugfix|decision|architecture|discovery|pattern|config|preference, scope: project, topic_key: "category/topic", content: "What/Why/Where/Learned")`
 
 Topic keys use prefixes: `planning/`, `implementation/`, `docs/`, `architecture/`, `config/`, `bugfix/`. Different topics MUST NOT share keys. Same topic evolving -> same topic_key (upsert).
 
@@ -31,25 +31,36 @@ Call `mem_session_summary` with: Goal, Discoveries, Accomplished, Next Steps, Re
 
 ## Cognitive OS Behavior
 
-- Read `cognitive-os.yaml` for project phase and configuration
+- Read `cognitive-os.yaml` if present for project phase and configuration
 - Phase determines governance: reconstruction=speed, production=safety
-- Rules loaded from `.claude/rules/` -- RULES-COMPACT.md is the index
+- Load rules from the installed Cognitive OS rule surface. Prefer `.cognitive-os/rules/cos/RULES-COMPACT.md`; use harness-specific projections such as `.claude/rules/cos/` only when the active harness exposes them.
 - Full rule details loaded on-demand when context triggers match
-- Skills available in `.cognitive-os/skills/` -- invoke with `/skill-name`
-- Cross-harness authoring lives in `.cognitive-os/templates/cos/cross-harness-authoring.md`
+- Skills are available in `.cognitive-os/skills/cos/`. If slash commands are supported, invoke `/skill-name`; otherwise open the matching `SKILL.md` and follow the procedure.
+- Cross-harness authoring guidance lives in `.cognitive-os/templates/cos/cross-harness-authoring.md` when installed.
 - Author behavior once, then project it through harness-specific drivers
 
 ## Adaptive Workflow
 
-Classify task complexity BEFORE choosing workflow:
+State or infer acceptance criteria, then classify task complexity BEFORE choosing workflow:
 - **Trivial** (<3 files, obvious fix): work directly
 - **Small** (1-3 files): plan briefly, implement
-- **Medium** (multi-file, new feature): plan first with `/plan-feature`
-- **Large+** (multi-service, integration): use SDD pipeline (`/sdd-new`)
+- **Medium** (multi-file, new feature): plan first with `/plan-feature` when slash commands are supported; otherwise follow `.cognitive-os/skills/cos/plan-feature/SKILL.md`
+- **Large+** (multi-service, integration): use SDD pipeline (`/sdd-new`) when available; otherwise follow the SDD skill/procedure files in `.cognitive-os/skills/cos/`
 
 ## SDD Pipeline (for substantial changes)
 
-Commands: `/sdd-new <change>`, `/sdd-ff <change>` (fast-forward all phases), `/sdd-apply`, `/sdd-verify`
+For consumer-project feature work, prefer the local durable lane first:
+
+```bash
+cos sdd next --feature <slug> --title "<human title>"
+cos sdd approve <slug>
+cos sdd apply <slug>
+cos sdd review <slug>
+```
+
+This writes `.cognitive-os/workflows/sdd/<slug>/{requirements.md,design.md,tasks.md,traceability.md,review.md}` plus `progress/current.md` and `progress/history.md`. Do not implement medium+ SDD work before human approval, and do not claim done until every `R<n>` maps to a test or accepted proof.
+
+Commands when supported: `/sdd-new <change>`, `/sdd-ff <change>` (fast-forward all phases), `/sdd-apply`, `/sdd-verify`
 
 Dependency chain: `propose -> spec -> design -> tasks -> apply <-> verify -> archive`
 
@@ -64,11 +75,11 @@ Use Engram for artifact storage. Each phase reads dependencies from previous pha
 
 ## First Session Protocol
 
-On the FIRST session in a new project (when `.cognitive-os/seed-memory.md` exists but has no inherited knowledge yet):
+On the FIRST session in a new project (when `.cognitive-os/seed-memory.md` exists and its "Inherited Knowledge" section has only the placeholder):
 1. Read `.cognitive-os/seed-memory.md` to get the detected stack keywords
 2. Search Engram for patterns relevant to this project's stack: `mem_search(query: "{detected stack keywords}")`
-3. If relevant patterns found (architecture decisions, conventions, gotchas), append key learnings to seed-memory.md under "Inherited Knowledge"
-4. This is a ONE-TIME action — subsequent sessions use normal Engram retrieval
+3. If relevant patterns found (architecture decisions, conventions, gotchas), replace the placeholder with concise key learnings under "Inherited Knowledge"
+4. This is a ONE-TIME action — do not duplicate entries; subsequent sessions use normal Engram retrieval
 5. After populating, save a project-init observation to Engram: `mem_save(title: "Project initialized with seed memory", topic_key: "config/{project}/seed-memory", type: "config")`
 
 ## Git Rules

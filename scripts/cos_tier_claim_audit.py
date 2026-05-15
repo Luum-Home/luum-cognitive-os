@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit ADR tier claims for evidence-backed profile purity.
 
 ADR-132/ADR-133 discipline: an ADR claiming `tier: core` or `tier: team`
@@ -131,7 +131,10 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
         print(f"tier-claim-audit: {report['status']}")
-        for finding in report["findings"]:
+        findings = report.get("findings", [])
+        if not isinstance(findings, list):
+            findings = []
+        for finding in findings:
             print(f"- {finding['path']} ({finding['tier']}): {finding['message']}")
     return 0 if report["status"] == "pass" else 1
 

@@ -411,6 +411,7 @@ cc_driver_emit() {
     "hooks/engram-obsidian-export-on-stop.sh" "true" \
     "hooks/control-plane-audit-hourly.sh"    "false" \
     "hooks/pending-truth-verify-weekly.sh"   "true"  \
+    "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
   )
 
   local teammate_idle

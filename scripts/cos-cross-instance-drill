@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 set -euo pipefail
 python3 "$(dirname "$0")/cos_cross_instance_drill.py" "$@"

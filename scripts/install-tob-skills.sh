@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # @manual-trigger: run once to install Trail of Bits skills plugin; deferred until ToB security workflow is active
 # install-tob-skills.sh — Install Trail of Bits security skills
 set -euo pipefail

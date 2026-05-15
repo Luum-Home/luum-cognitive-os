@@ -22,6 +22,7 @@ class MLflowBridge:
         """Initialize. Graceful if mlflow not installed."""
         self._tracking_uri = tracking_uri
         self._client: Any = None
+        self._mlflow: Any = None
         if self.is_available():
             try:
                 import mlflow  # noqa: PLC0415
@@ -29,8 +30,6 @@ class MLflowBridge:
                 self._mlflow = mlflow
             except Exception:
                 self._mlflow = None
-        else:
-            self._mlflow = None
 
     @staticmethod
     def is_available() -> bool:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """cos-coverage — Agent Capability Coverage (ACC) metric CLI.
 
 Composes data from:

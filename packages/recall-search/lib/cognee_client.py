@@ -183,7 +183,7 @@ class CogneeClient:
         result = self._request("POST", "/api/v1/add", body=body)
 
         if isinstance(result, dict):
-            return result.get("id", result.get("status", "ok"))
+            return str(result.get("id", result.get("status", "ok")) or "ok")
         return str(result)
 
     def search(
@@ -218,7 +218,8 @@ class CogneeClient:
         if isinstance(result, list):
             return result
         if isinstance(result, dict):
-            return result.get("results", result.get("data", []))
+            rows = result.get("results", result.get("data", []))
+            return rows if isinstance(rows, list) else []
         return []
 
     def cognify(

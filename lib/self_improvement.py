@@ -66,7 +66,7 @@ def analyze_kpi_history(metrics_dir: str = ".cognitive-os/metrics") -> Dict[str,
     # Error type distribution
     error_types: Dict[str, int] = {}
     for e in error_entries:
-        etype = e.get("error_type", e.get("type", "unknown"))
+        etype = str(e.get("error_type", e.get("type", "unknown")) or "unknown")
         error_types[etype] = error_types.get(etype, 0) + 1
 
     # Error recurrence (same type+service 3+ times)

@@ -180,7 +180,28 @@ Mark the hook as executable: `chmod +x .claude/hooks/block-prod-urls.sh`
 
 Write or update `.cognitive-os/workflows/config/services.yaml` with detected services.
 
-### Step 10: Report
+### Step 10: Validate generated primitive classification
+
+For any generated `.claude/rules`, `.claude/skills`, `.claude/hooks`, or reusable
+template that is promoted back into COS, run `/primitive-authoring` and the
+classifier before promotion. Generated project-local files are `SCOPE: project`
+unless they are explicitly generalized and backed by portability proof.
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths <promoted-primitive> \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+Also run the install projection audit whenever generated hooks/settings change:
+
+```bash
+scripts/cos-install-projection-audit --json
+```
+
+### Step 11: Report
 
 ```
 == Scaffold Project Complete ==

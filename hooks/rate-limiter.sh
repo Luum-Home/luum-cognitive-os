@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # CONCERNS: security, rate-limiting, resource-protection
 # Rate Limiter — prevents token flooding and excessive tool usage.
 # PreToolUse hook on Bash, Agent, Edit, Write.

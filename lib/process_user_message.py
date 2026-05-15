@@ -10,7 +10,7 @@ from lib.user_model import UserModel
 from lib.prompt_classifier import classify_prompt
 
 def process(message):
-    results = {}
+    results: dict[str, object] = {}
 
     # 1. Detect feedback
     try:

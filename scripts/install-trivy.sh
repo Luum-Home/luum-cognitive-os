@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # install-trivy.sh — Install Trivy multi-stack license + vuln scanner
 #
 # Trivy (Aqua Security, Apache 2.0) is the recommended cross-stack license

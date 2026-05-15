@@ -230,8 +230,8 @@ def decide_verdict(task: dict, report: TaskReport) -> None:
     # Signal-based verdict is authoritative when present.
     v_sig = check_signal(task.get("success_signal"), v)
     so_sig = check_signal(task.get("success_signal"), so)
-    report.vanilla.signal_matched = v_sig
-    report.so.signal_matched = so_sig
+    v.signal_matched = v_sig
+    so.signal_matched = so_sig
 
     # SO wins if: SO matched signal AND vanilla did not (or failed)
     if so_sig is True and v_sig is False:

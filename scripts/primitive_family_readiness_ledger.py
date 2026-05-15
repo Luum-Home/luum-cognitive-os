@@ -144,7 +144,7 @@ def references(text: str, target: str) -> bool:
     parent = Path(target).parent.name
     if name == "SKILL.md":
         return target in text or f"{parent}/SKILL.md" in text or (len(parent) > 4 and parent in text)
-    return target in text or (name and name in text) or (stem and len(stem) > 4 and stem in text)
+    return bool(target in text or (name and name in text) or (stem and len(stem) > 4 and stem in text))
 
 
 def usage_map(root: Path, targets: list[Path]) -> dict[str, list[Consumer]]:

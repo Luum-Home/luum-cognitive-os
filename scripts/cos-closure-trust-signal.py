@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-275 §10 Phase 3 — closure-trail trust signal.
 
 Quantifies "unaudited closures": ledger items whose status is

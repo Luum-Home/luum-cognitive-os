@@ -78,13 +78,13 @@ def _compute_trust_score_kpis(
             "self_awareness_rate": 0.0,
         }
 
-    scores = [float(e.get("score", e.get("trust_score", 0))) for e in trust_scores]
+    scores = [float(e.get("score", e.get("trust_score", 0)) or 0) for e in trust_scores]
     avg = sum(scores) / len(scores) if scores else 0.0
 
     # Self-awareness: entries that declare uncertainties
     awareness_count = sum(
         1 for e in trust_scores
-        if int(e.get("uncertainties_count", e.get("uncertainties", 0))) > 0
+        if int(e.get("uncertainties_count", e.get("uncertainties", 0)) or 0) > 0
     )
     awareness_rate = (awareness_count / len(trust_scores) * 100) if trust_scores else 0.0
 

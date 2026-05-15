@@ -12,6 +12,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 
 ## Recent tech-radar governance additions
+- [External Tools Radar Pyrefly Addendum — 2026-05-15](reports/external-tools-radar-pyrefly-addendum-2026-05-15.md) — targeted TRIAL/advisory Python type-check gate for agentic loops, with local pilot receipts.
 
 - [External Tools Radar Index](reports/external-tools-radar-INDEX.md) — chronological entry point for the tech-radar corpus and adoption pipeline.
 - [External Tools Radar Full Reassessment — 2026-05-08](reports/external-tools-radar-full-reassessment-2026-05-08.md) — full-corpus reassessment of 1762 third-party-tool mentions into a 184-item deduplicated scope with ADOPT/INTEGRATE/KEEP/MONITOR/DEFER/REJECT/REMOVE decisions.
@@ -31,6 +32,10 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Skill Description “Use when” Migration](skills/skill-description-use-when-migration.md) — Superpowers-style skill trigger migration plan.
 
 ## Key Documents
+
+- [SDD Harness Consumer Workflow Audit](../../08-References/business/sdd-harness-consumer-workflow-audit.md) — comparison against `betta-tech/harness-sdd`, preserving the consumer SDD lane diagnosis and recommended workflow contract.
+- [Consumer SDD Lane Surgical Review Plan](../../08-References/business/consumer-sdd-lane-surgical-review-plan.md) — phased audit and implementation plan for turning the SDD diagnosis into a local-first, cross-harness consumer workflow lane.
+- [Install Harness UX Gap Review — 2026-05-15](architecture/install-harness-ux-gap-2026-05-15.md) — deep review and first correction for exposing multi-IDE projection through top-level install UX.
 
 - [Primitive Scope Classification](../../04-Concepts/architecture/primitive-scope-classification.md)
 - [ADR-320: Install Scope Surface Debt and Protected Config Boundary](adrs/ADR-320-install-scope-surface-debt.md) — records that `project` and `both` install scopes are aliases today, `all` is the maintainer superset, and `.env` is outside protected-config policy.
@@ -904,6 +909,7 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [External Tools Adoption Manifest](../manifests/external-tools-adoption.yaml) — machine-readable COS tool adoption ledger used by ADR-254 audits.
 - [ADR-254 External Tool Intelligence Plane](adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) — COS central radar plus lightweight project overlay decision.
 - [ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement](adrs/ADR-311-primitive-closure-ratchets-and-subagent-budget-enforcement.md) — accepted closure layer for projection/runtime proof ratchets and subagent 50-call enforcement
+- [ADR-321: Primitive Scope Plane Balance and Proof Ratchets](../../02-Decisions/adrs/ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) — plane/scope/proof-level health audits for avoiding over-internalization and false shared-surface claims.
 
 ## Work Preservation / Stash Quarantine
 

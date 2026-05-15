@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # stash-lock.sh — Flock coordinator library for git stash operations.
 #
 # PROBLEM: Multiple OS hooks (auto-checkpoint, pre-agent-snapshot,

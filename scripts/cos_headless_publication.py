@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Protected-publication policy checker for headless Cognitive OS workers.
 
 This is a Phase 1 proof path for ADR-091. It does not push, create pull

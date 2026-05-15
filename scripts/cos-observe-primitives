@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Report observable primitive self-use from joined COS trace streams."""
 from __future__ import annotations
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Compare candidate primitive fitness against a baseline."""
 from __future__ import annotations
 

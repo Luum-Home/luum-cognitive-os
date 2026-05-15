@@ -141,7 +141,7 @@ def _action_breakdown(events: List[dict]) -> Dict[str, float]:
     """Compute cost breakdown by action/agent type."""
     breakdown: Dict[str, float] = {}
     for ev in events:
-        action = ev.get("agent", ev.get("action", "unknown"))
+        action = str(ev.get("agent", ev.get("action", "unknown")) or "unknown")
         cost = _compute_event_cost(ev)
         breakdown[action] = breakdown.get(action, 0.0) + cost
     return breakdown

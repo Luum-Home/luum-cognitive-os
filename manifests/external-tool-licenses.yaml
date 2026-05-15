@@ -142,3 +142,19 @@ entries:
       Distribution status under review. Upstream URL and compliance details available
       in internal compliance dossier only — do NOT include private repository paths
       in this manifest. Treat as HOLD until legal review closes.
+  - name: "Pyrefly"
+    upstream_url: "https://github.com/facebook/pyrefly"
+    spdx: "MIT"
+    status: "ALLOWED"
+    copyright: "Copyright (c) Meta Platforms, Inc. and affiliates"
+    attribution: "Pyrefly © Meta Platforms, Inc. and affiliates (MIT); invoked as optional CLI tooling only."
+    cos_files:
+      - "pyproject.toml"
+      - "scripts/cos-pyrefly-pilot"
+    annex_f: "docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md"
+    notes: >
+      TRIAL advisory CLI gate. No source vendored and no runtime import; optional
+      installation through the typecheck extra or uvx. Verify exact LICENSE
+      copyright line before any vendoring, though current adoption is subprocess
+      tooling only.
+

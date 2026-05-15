@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -11,6 +13,28 @@ pytestmark = pytest.mark.behavior
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
+
+STRUCTURAL_INSTRUCTION_FILES = {
+    "agents-md": "AGENTS.md",
+    "opencode": "AGENTS.md",
+    "vscode-copilot": ".github/copilot-instructions.md",
+    "cursor": ".cursor/rules/cognitive-os.mdc",
+    "qwen-code": "QWEN.md",
+    "kimi-code": "AGENTS.md",
+    "gemini-cli": "GEMINI.md",
+    "warp": "AGENTS.md",
+    "amp-code": "AGENTS.md",
+    "jetbrains-junie": ".junie/AGENTS.md",
+    "qoder": "AGENTS.md",
+    "factory-droid": "AGENTS.md",
+    "cline": ".clinerules/cognitive-os.md",
+    "continue-dev": ".continue/rules/cognitive-os.md",
+    "kilo-code": ".kilocode/rules/cognitive-os.md",
+    "zed-ai": ".rules",
+    "augment-code": ".augment/rules/cognitive-os.md",
+    "goose": ".goosehints",
+    "aider": "CONVENTIONS.md",
+}
 
 
 @pytest.mark.parametrize(
@@ -66,6 +90,7 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         opencode = json.loads((tmp_path / "opencode.json").read_text())
         assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in opencode["instructions"]
         assert opencode["permission"]["bash"] == "ask"
+        assert "COGNITIVE_OS_OPENCODE_START" in (tmp_path / "AGENTS.md").read_text()
     if harness == "vscode-copilot":
         assert "Cognitive OS" in (tmp_path / ".github/copilot-instructions.md").read_text()
         assert json.loads((tmp_path / ".vscode/mcp.json").read_text()) == {"servers": {}}
@@ -152,6 +177,213 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert shell_meta["commands_projected"] == 15
         assert (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").is_file()
         assert (tmp_path / "scripts/cos-status.sh").is_symlink()
+    if harness in STRUCTURAL_INSTRUCTION_FILES:
+        instruction_text = (tmp_path / STRUCTURAL_INSTRUCTION_FILES[harness]).read_text()
+        assert "Portable Cognitive OS Contract" in instruction_text
+        assert "acceptance criteria" in instruction_text
+        assert "Engram" in instruction_text
+        assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in instruction_text
+        assert ".cognitive-os/skills/cos/" in instruction_text
+        assert "Structural projection boundary" in instruction_text
+        assert "cos sdd next --feature <slug>" in instruction_text
+        assert ".cognitive-os/workflows/sdd/" in instruction_text
+        assert "Do not claim Claude/Codex native lifecycle hook parity" in instruction_text
     assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
     assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md").exists()
     assert (tmp_path / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").exists()
+
+
+def test_codex_project_install_has_closed_hook_runtime_dependencies(tmp_path: Path) -> None:
+    """Smoke: generated Codex project hooks must only reference installed, scope-allowed runtime paths."""
+    install = subprocess.run(
+        [sys.executable, str(COS_INIT), "--default", "--harness", "codex"],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+
+    assert install.returncode == 0, install.stderr + install.stdout
+
+    audit = subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "runtime_hook_reality.py"),
+            "--project-root",
+            str(tmp_path),
+            "--settings",
+            str(tmp_path / ".codex" / "hooks.json"),
+            "--dependency-closure",
+            "--install-scope",
+            "project",
+            "--fail-on-findings",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+
+    assert audit.returncode == 0, audit.stderr + audit.stdout
+    payload = json.loads(audit.stdout)
+    assert payload["summary"]["status"] == "pass"
+    assert payload["findings"] == []
+
+
+@pytest.mark.parametrize(
+    ("harness", "settings_file"),
+    [
+        ("claude", ".claude/settings.json"),
+        ("codex", ".codex/hooks.json"),
+        *[(harness, settings_file) for harness, settings_file in [
+            ("agents-md", "AGENTS.md"),
+            ("opencode", "opencode.json"),
+            ("vscode-copilot", ".github/copilot-instructions.md"),
+            ("cursor", ".cursor/rules/cognitive-os.mdc"),
+            ("qwen-code", ".qwen/settings.json"),
+            ("kimi-code", "AGENTS.md"),
+            ("gemini-cli", ".gemini/settings.json"),
+            ("warp", "AGENTS.md"),
+            ("amp-code", "AGENTS.md"),
+            ("jetbrains-junie", ".junie/AGENTS.md"),
+            ("qoder", "AGENTS.md"),
+            ("factory-droid", "AGENTS.md"),
+            ("cline", ".clinerules/cognitive-os.md"),
+            ("continue-dev", ".continue/rules/cognitive-os.md"),
+            ("kilo-code", ".kilocode/rules/cognitive-os.md"),
+            ("zed-ai", ".rules"),
+            ("augment-code", ".augment/rules/cognitive-os.md"),
+            ("goose", ".goosehints"),
+            ("aider", "CONVENTIONS.md"),
+            ("shell-ci", ".cognitive-os/shell-ci-projection.json"),
+        ]],
+    ],
+)
+def test_full_install_projects_core_primitives_into_consumer_project(tmp_path: Path, harness: str, settings_file: str) -> None:
+    """All harnesses support the --full projection path, not only Claude/Codex."""
+    result = subprocess.run(
+        [sys.executable, str(COS_INIT), "--full", "--harness", harness],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    install_meta = json.loads((tmp_path / ".cognitive-os" / "install-meta.json").read_text())
+    assert install_meta["harness"] == harness
+    assert install_meta["mode"] == "full"
+    assert install_meta["rules_installed"] >= 13
+    assert install_meta["hooks_installed"] >= 37
+    assert install_meta["skills_installed"] >= 8
+    assert (tmp_path / settings_file).exists()
+    assert (tmp_path / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").exists()
+    if harness in STRUCTURAL_INSTRUCTION_FILES:
+        instruction_text = (tmp_path / STRUCTURAL_INSTRUCTION_FILES[harness]).read_text()
+        assert "Portable Cognitive OS Contract" in instruction_text
+        assert "Structural projection boundary" in instruction_text
+        assert "Do not claim Claude/Codex native lifecycle hook parity" in instruction_text
+
+
+@pytest.mark.parametrize("harness", ["claude", "codex", *STRUCTURAL_INSTRUCTION_FILES.keys(), "shell-ci"])
+@pytest.mark.parametrize("scope", ["project", "both", "all"])
+def test_cos_init_scope_matrix_for_all_harnesses(tmp_path: Path, harness: str, scope: str) -> None:
+    """COS_INSTALL_SCOPE must compose with every harness projection."""
+    env = os.environ.copy()
+    env["COS_INSTALL_SCOPE"] = scope
+    project_root = tmp_path / f"{harness}-{scope}"
+    project_root.mkdir()
+
+    result = subprocess.run(
+        [sys.executable, str(COS_INIT), "--default", "--harness", harness],
+        cwd=project_root,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    install_meta = json.loads((project_root / ".cognitive-os" / "install-meta.json").read_text())
+    assert install_meta["harness"] == harness
+    assert (project_root / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
+    if harness in STRUCTURAL_INSTRUCTION_FILES:
+        assert (project_root / STRUCTURAL_INSTRUCTION_FILES[harness]).exists()
+
+
+def test_generated_instruction_files_reject_unbounded_parity_claims(tmp_path: Path) -> None:
+    """Generated instruction files must bound structural projections and avoid false lifecycle parity."""
+    forbidden_claims = [
+        "same lifecycle hooks as Claude",
+        "same lifecycle hooks as Codex",
+        "full Claude parity",
+        "full Codex parity",
+        "native Claude/Codex hook parity",
+        "Claude/Codex hook parity is guaranteed",
+    ]
+
+    for harness, instruction_file in STRUCTURAL_INSTRUCTION_FILES.items():
+        project_root = tmp_path / harness
+        project_root.mkdir()
+        result = subprocess.run(
+            [sys.executable, str(COS_INIT), "--default", "--harness", harness],
+            cwd=project_root,
+            text=True,
+            capture_output=True,
+            check=False,
+            timeout=60,
+        )
+        assert result.returncode == 0, result.stderr + result.stdout
+        generated_texts = [
+            path.read_text(errors="ignore")
+            for path in project_root.rglob("*")
+            if path.is_file() and path.suffix.lower() in {".md", ".mdc", ".rules", ".yml", ".yaml", ".json", ".jsonc", ""}
+        ]
+        combined = "\n".join(generated_texts)
+        assert "Structural projection boundary" in combined
+        assert "Do not claim Claude/Codex native lifecycle hook parity" in combined
+        for claim in forbidden_claims:
+            assert claim not in combined
+
+
+EXTERNAL_HARNESS_RUNTIME_COMMANDS = {
+    "cursor": ("cursor", "--version"),
+    "qwen-code": ("qwen", "--version"),
+    "gemini-cli": ("gemini", "--version"),
+    "opencode": ("opencode", "--version"),
+}
+
+
+@pytest.mark.parametrize("harness", sorted(EXTERNAL_HARNESS_RUNTIME_COMMANDS))
+def test_optional_external_harness_runtime_smoke(tmp_path: Path, harness: str) -> None:
+    """Optional smoke for real external harness binaries when installed on the test machine."""
+    command = EXTERNAL_HARNESS_RUNTIME_COMMANDS[harness]
+    if shutil.which(command[0]) is None:
+        pytest.skip(f"{command[0]} binary is not installed")
+
+    project_root = tmp_path / harness
+    project_root.mkdir()
+    result = subprocess.run(
+        [sys.executable, str(COS_INIT), "--default", "--harness", harness],
+        cwd=project_root,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+
+    runtime = subprocess.run(
+        command,
+        cwd=project_root,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+    if runtime.returncode != 0:
+        pytest.skip(f"{command[0]} binary is present but not usable: {(runtime.stderr or runtime.stdout).strip()}")
+    assert runtime.returncode == 0, runtime.stderr + runtime.stdout

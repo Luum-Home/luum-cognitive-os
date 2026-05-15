@@ -33,9 +33,12 @@
 - [x] Product positioning is documented in [Product Messaging](product-messaging.md).
 - [x] Product and commercial answers are now evidence-backed through [ADR-280](../adrs/ADR-280-product-question-to-evidence-primitive.md), [Product Answer Playbook](product-answer-playbook.md), `manifests/product-question-bank.yaml`, `manifests/product-claim-evidence.yaml`, and `scripts/cos-product-answer`.
 - [ ] Align install-scope product copy with [Install Scope Anti-Slop Audit — 2026-05-15](install-scope-anti-slop-audit-2026-05-15.md): `project`/`both` are aliases today, `all` is maintainer/full until outcome evidence justifies developer default use, and protected-config claims must not imply `.env` blocking unless policy/tests are added.
+- [ ] Close the top-level multi-IDE install UX gap from [Install Harness UX Gap Review — 2026-05-15](../architecture/install-harness-ux-gap-2026-05-15.md): shared harness registry, settings-driver helper parity for structural harnesses, granular primitive catalog commands, conflict-safe projection receipts, and simple harness health/stats UX.
 - [x] Product promises, partial compliance, overclaims, and the missing agentic literacy boundary are documented in [Promise Compliance Audit — 2026-05-15](promise-compliance-audit-2026-05-15.md).
 - [x] Agentic literacy before OS abstraction is accepted in [ADR-316](../adrs/ADR-316-agentic-literacy-before-os-abstraction.md).
 - [x] Executable Acceptance Specification (EAS) doctrine is operationalized as an optional SDD evidence artifact through [ADR-317](../adrs/ADR-317-executable-acceptance-specification-eas.md), [ADR-319](../adrs/ADR-319-detractor-review-modes.md), [EAS methodology](../../05-Methodology/root/executable-acceptance-specification.md), `templates/eas.md`, `rules/eas-evidence-artifact.md`, `scripts/eas_validate.py`, SDD phase skills, manifests, and focused tests.
+- [x] The consumer SDD workflow gap is documented in [SDD Harness Consumer Workflow Audit](sdd-harness-consumer-workflow-audit.md), contrasting Cognitive OS with `betta-tech/harness-sdd` and defining the recommended spec/design/tasks/traceability/review lane.
+- [x] The consumer SDD workflow gap has a surgical review plan in [Consumer SDD Lane Surgical Review Plan](consumer-sdd-lane-surgical-review-plan.md), including center-of-gravity, happy-path, proportionality, task-state, traceability, reviewer, projection, and demo workstreams.
 - [x] COS-vs-slop falsification doctrine is documented in [Cognitive OS vs AI Slop Falsification Protocol](cos-vs-ai-slop-falsification.md), [COS vs AI Slop Falsification Manual Test](../../09-Quality/manual-tests/cos-vs-ai-slop-falsification.md), and [ADR-317](../adrs/ADR-317-cos-falsification-before-promotion.md).
 - [ ] Run the A/B/C falsification benchmark on at least three task classes before promoting any broad full-mesh product claim.
 - [ ] Close the SSR developer primitive-enablement gaps in [SSR Developer Primitive Enablement Gap Backlog](../architecture/ssr-agentic-primitive-enablement-gaps.md): add a question-to-primitive router, developer guide, task-centric skill index, harvester/session trigger, primitive gap report, and populated primitive-fitness cadence.
@@ -372,3 +375,7 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 ## Work Preservation Hardening
 
 - [x] ADR-318 copy-only checkpoints and stash quarantine primitives added; stash positional refs are not durable SO identity.
+
+## Type-Check Gate Pilots
+
+- [x] **Pyrefly TRIAL gate** — `scripts/cos-pyrefly-pilot`, `make typecheck-pyrefly`, `[tool.pyrefly]`, and radar addendum added as an advisory Python type-check lane; promotion blocked on baseline triage.

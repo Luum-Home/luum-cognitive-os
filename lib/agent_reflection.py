@@ -73,13 +73,15 @@ class AgentReflector:
         """
         assert self._config.llm_call is not None  # validated in __init__
         cfg = self._config
+        llm_call = cfg.llm_call
+        assert llm_call is not None
         trajectory: list[ReflectionResult] = []
 
         for i in range(1, cfg.max_reflect + 1):
             prompt = cfg.reflection_prompt_template.format(
                 response=response, **cfg.extra_context
             )
-            reflection_text, verdict = cfg.llm_call(prompt)
+            reflection_text, verdict = llm_call(prompt)
             if verdict not in ("yes", "no"):
                 raise ValueError(
                     f"llm_call returned non-canonical verdict: {verdict!r}"

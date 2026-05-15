@@ -116,7 +116,7 @@ class FileSummary:
     estimated_tokens: int
     is_binary: bool
     extension: str
-    sections: List[Dict[str, int]] = field(default_factory=list)
+    sections: List[Dict[str, int | str]] = field(default_factory=list)
     exceeds_limit: bool = False
 
     def to_dict(self) -> Dict:
@@ -274,6 +274,7 @@ class SmartReader:
 
         # Find the target line
         target_line = None
+        compiled: re.Pattern[str] | None = None
         try:
             compiled = re.compile(pattern)
             use_regex = True
@@ -281,7 +282,7 @@ class SmartReader:
             use_regex = False
 
         for i, line in enumerate(lines):
-            if use_regex:
+            if use_regex and compiled is not None:
                 if compiled.search(line):
                     target_line = i
                     break
@@ -377,7 +378,7 @@ class SmartReader:
         est_tokens = max(1, size // _CHARS_PER_TOKEN) if size > 0 else 0
 
         line_count = 0
-        sections: List[Dict[str, int]] = []
+        sections: List[Dict[str, int | str]] = []
 
         if not is_binary:
             try:

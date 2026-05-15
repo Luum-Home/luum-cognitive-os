@@ -204,3 +204,160 @@ def test_cli_emits_stable_json(tmp_path: Path, capsys: pytest.CaptureFixture[str
     assert exit_code == 0
     assert loaded["summary"]["counts"]["real_advisory"] == 1
     assert list(loaded["summary"]["counts"]) == sorted(audit.CATEGORIES)
+
+
+def write_codex_hooks(root: Path, hooks: list[tuple[str, str]]) -> Path:
+    hooks_path = root / ".codex" / "hooks.json"
+    hooks_path.parent.mkdir(parents=True, exist_ok=True)
+    by_event: dict[str, list[dict[str, object]]] = {}
+    for event, command in hooks:
+        by_event.setdefault(event, [{"matcher": "startup", "hooks": []}])[0]["hooks"].append(  # type: ignore[index, union-attr]
+            {"type": "command", "command": command}
+        )
+    hooks_path.write_text(json.dumps(by_event, sort_keys=True), encoding="utf-8")
+    return hooks_path
+
+
+def test_dependency_closure_passes_for_installed_codex_hook_paths(tmp_path: Path) -> None:
+    hook = tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh"
+    hook.parent.mkdir(parents=True, exist_ok=True)
+    hook.write_text("#!/usr/bin/env bash\n# SCOPE: both\necho ok\n", encoding="utf-8")
+    settings = write_codex_hooks(
+        tmp_path,
+        [("SessionStart", 'bash "$PWD/.cognitive-os/hooks/cos/session-init.sh"')],
+    )
+
+    report = audit.build_dependency_closure_report(
+        project_root=tmp_path,
+        settings_path=settings,
+        install_scope="project",
+    )
+
+    assert report["summary"]["status"] == "pass"
+    assert report["findings"] == []
+    assert report["summary"]["runtime_references"] == 1
+
+
+def test_dependency_closure_flags_missing_guarded_hook_reference(tmp_path: Path) -> None:
+    settings = write_codex_hooks(
+        tmp_path,
+        [
+            (
+                "Stop",
+                'if [ -x "$PWD/hooks/engram-obsidian-export-on-stop.sh" ]; then bash "$PWD/hooks/engram-obsidian-export-on-stop.sh"; fi',
+            )
+        ],
+    )
+
+    report = audit.build_dependency_closure_report(
+        project_root=tmp_path,
+        settings_path=settings,
+        install_scope="project",
+    )
+
+    assert report["summary"]["status"] == "fail"
+    assert report["findings"] == [
+        {
+            "id": "runtime-reference-missing",
+            "severity": "fail",
+            "reference": "hooks/engram-obsidian-export-on-stop.sh",
+            "source": "driver",
+            "event": "Stop",
+            "required": True,
+            "reason": "referenced runtime path is not installed",
+        }
+    ]
+
+
+def test_dependency_closure_flags_scope_disallowed_installed_hook(tmp_path: Path) -> None:
+    hook = tmp_path / ".cognitive-os" / "hooks" / "cos" / "os-only.sh"
+    hook.parent.mkdir(parents=True, exist_ok=True)
+    hook.write_text("#!/usr/bin/env bash\n# SCOPE: os-only\necho no\n", encoding="utf-8")
+    settings = write_codex_hooks(
+        tmp_path,
+        [("SessionStart", 'bash "$PWD/.cognitive-os/hooks/cos/os-only.sh"')],
+    )
+
+    report = audit.build_dependency_closure_report(
+        project_root=tmp_path,
+        settings_path=settings,
+        install_scope="project",
+    )
+
+    assert report["summary"]["status"] == "fail"
+    assert report["findings"][0]["id"] == "runtime-reference-scope-disallowed"
+    assert report["findings"][0]["scope"] == "os-only"
+
+
+def test_dependency_closure_scans_hook_body_for_project_script_dependencies(tmp_path: Path) -> None:
+    hook = tmp_path / ".cognitive-os" / "hooks" / "cos" / "delegates.sh"
+    hook.parent.mkdir(parents=True, exist_ok=True)
+    hook.write_text(
+        '#!/usr/bin/env bash\n# SCOPE: both\nbash "$COGNITIVE_OS_PROJECT_DIR/scripts/required-helper.sh"\n',
+        encoding="utf-8",
+    )
+    settings = write_codex_hooks(
+        tmp_path,
+        [("PostToolUse", 'bash "$PWD/.cognitive-os/hooks/cos/delegates.sh"')],
+    )
+
+    report = audit.build_dependency_closure_report(
+        project_root=tmp_path,
+        settings_path=settings,
+        install_scope="project",
+    )
+
+    assert report["summary"]["status"] == "fail"
+    assert any(
+        finding["id"] == "runtime-reference-missing"
+        and finding["reference"] == "scripts/required-helper.sh"
+        and finding["source"] == ".cognitive-os/hooks/cos/delegates.sh"
+        for finding in report["findings"]
+    )
+
+
+def test_dependency_closure_reports_optional_body_references_without_failing(tmp_path: Path) -> None:
+    hook = tmp_path / ".cognitive-os" / "hooks" / "cos" / "optional.sh"
+    hook.parent.mkdir(parents=True, exist_ok=True)
+    hook.write_text(
+        '#!/usr/bin/env bash\n# SCOPE: both\nif [ -x "$PWD/scripts/optional-helper.sh" ]; then "$PWD/scripts/optional-helper.sh"; fi\n',
+        encoding="utf-8",
+    )
+    settings = write_codex_hooks(
+        tmp_path,
+        [("Stop", 'bash "$PWD/.cognitive-os/hooks/cos/optional.sh"')],
+    )
+
+    report = audit.build_dependency_closure_report(
+        project_root=tmp_path,
+        settings_path=settings,
+        install_scope="project",
+    )
+
+    assert report["summary"]["status"] == "pass"
+    assert report["findings"] == []
+    assert report["summary"]["optional_runtime_references"] == 1
+    assert any(
+        reference["reference"] == "scripts/optional-helper.sh" and reference["required"] is False
+        for reference in report["references"]
+    )
+
+
+def test_dependency_closure_cli_fails_on_findings(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    settings = write_codex_hooks(tmp_path, [("Stop", 'bash "$PWD/hooks/missing.sh"')])
+
+    exit_code = audit.main(
+        [
+            "--project-root",
+            str(tmp_path),
+            "--settings",
+            str(settings),
+            "--dependency-closure",
+            "--fail-on-findings",
+        ]
+    )
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+
+    assert exit_code == 1
+    assert payload["summary"]["status"] == "fail"

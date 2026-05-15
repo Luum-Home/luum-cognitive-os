@@ -113,6 +113,23 @@ skill_path = creator.promote_to_skill("validate-json-schema")
 # Tool is now at skills/auto-generated/validate-json-schema/SKILL.md
 ```
 
+### Promoting a Tool: primitive gate
+
+Promotion is not just a file copy. Before `promote_to_skill()` output is kept as
+a persistent primitive, run `/primitive-authoring`, add consumer availability and
+behavior evidence, and validate the exact promoted path:
+
+```bash
+python3 scripts/primitive_scope_classifier.py \
+  --project-dir . \
+  --paths skills/auto-generated/{name}/SKILL.md \
+  --fail-contradictions \
+  --fail-low-confidence
+```
+
+If the promoted skill claims `SCOPE: both`, add paired red-team portability proof
+first; otherwise keep it project/session-local until the proof exists.
+
 ## Safety Boundaries
 
 Dynamic tools MUST NOT:

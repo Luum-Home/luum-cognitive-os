@@ -377,4 +377,15 @@ tools:
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [.cognitive-os/metrics/primitive-interventions.jsonl], tests: [tests/contracts/test_primitive_intervention_ledger.py]}
     status: monitor_research_only
-
+  - id: pyrefly
+    name: Pyrefly
+    domain: developer-quality
+    verdict: TRIAL
+    adoption_kind: advisory-cli-gate
+    license: MIT
+    package_names: [pyrefly]
+    source_of_truth: {radar_report: docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md}
+    allowed_surfaces: {os_repo: optional, consumer_projects: false, service_mode: false, docker_runtime: optional}
+    consumer_contract: {required_adapter: false, public_claim_allowed: partial}
+    evidence: {consumers: [scripts/cos-pyrefly-pilot, pyproject.toml], tests: [tests/contracts/test_pyrefly_pilot_radar.py]}
+    status: trial_advisory

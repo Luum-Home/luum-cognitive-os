@@ -6,6 +6,7 @@ and compare the result to a direct bash invocation of cos_detect_harness from se
 from __future__ import annotations
 
 import subprocess
+import os
 from pathlib import Path
 
 import pytest
@@ -101,3 +102,32 @@ class TestParityDetectHarness:
         py = _py_detect(tmp_path)
         bash = _bash_detect(tmp_path)
         assert py == bash, f"Parity failure: Python={py!r} Bash={bash!r}"
+
+    def test_parity_structural_install_metadata(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Python and bash preserve structural harness install metadata."""
+        _clean_env(monkeypatch)
+        (tmp_path / ".cognitive-os").mkdir()
+        (tmp_path / ".cognitive-os" / "install-meta.json").write_text(
+            '{"harness": "cursor", "settings_driver": ".cursor/rules/cognitive-os.mdc"}'
+        )
+        env = os.environ.copy()
+        py = _py_detect(tmp_path, env=env)
+        bash = _bash_detect(tmp_path, env=env)
+        assert py == bash, f"Parity failure: Python={py!r} Bash={bash!r}"
+        assert py == "cursor"
+
+    def test_settings_driver_path_for_structural_harness(self, tmp_path: Path) -> None:
+        """Shell settings-driver helpers map structural harnesses to their real projection paths."""
+        script = (
+            f"source {SETTINGS_DRIVER} && "
+            f"cos_settings_driver_path {tmp_path} cursor"
+        )
+        result = subprocess.run(
+            ["bash", "-c", script],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, result.stderr
+        assert result.stdout.strip() == str(tmp_path / ".cursor/rules/cognitive-os.mdc")

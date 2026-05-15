@@ -68,9 +68,11 @@ def build():
  for g,(profile,mode) in GROUPS.items():
   p=root/f'{g}-{profile}'; p.mkdir(); fixture(p); installs[g]=install(p,mode); rows += tasks(p,g,profile)
  fastest={}
- for r in rows: fastest[r['task_id']]=min(fastest.get(r['task_id'],r['duration_ms']),r['duration_ms'])
  for r in rows:
-  f=fastest[r['task_id']]; r['speed_score']=2 if r['duration_ms']<=f*1.5+5 else (1 if r['duration_ms']<=f*4+10 else 0); r['total_score']=r['total_without_speed']+r['speed_score']
+  task_id=str(r['task_id']); duration=float(r['duration_ms'])
+  fastest[task_id]=min(float(fastest.get(task_id,duration)),duration)
+ for r in rows:
+  f=fastest[str(r['task_id'])]; duration=float(r['duration_ms']); r['speed_score']=2 if duration<=f*1.5+5 else (1 if duration<=f*4+10 else 0); r['total_score']=r['total_without_speed']+r['speed_score']
  summary={}
  for g,(profile,_) in GROUPS.items():
   gr=[r for r in rows if r['group']==g]; summary[g]={'profile':profile,'total_score':sum(r['total_score'] for r in gr),'pass_count':sum(r['result']=='pass' for r in gr),'task_count':len(gr),'duration_ms':sum(r['duration_ms'] for r in gr)}

@@ -16,6 +16,7 @@
 # ── ACTIVE in maintainer profile (ADR-273 Slice C + ADR-275 projector) ─────
 # pending-truth-drift-detector.sh — PostToolUse Edit/Write; advisory drift nudge
 # pending-truth-verify-weekly.sh  — Stop async; fires cos-pending-truth-verify if ledger >7d stale
+# pyrefly-typecheck-advisory.sh — Stop async; advisory Pyrefly receipt after first-party Python changes
 # pending-truth-staleness-gate.sh — PreToolUse Bash; advisory on git commit if ledger >30d
 # cos-session-start-projector.sh  — SessionStart wrapper; emits ADR-275 projection summary
 # All four are registered in cognitive-os.yaml > harness.hooks and projected

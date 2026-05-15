@@ -10,18 +10,14 @@ pytestmark = pytest.mark.contract
 
 REPO = Path(__file__).resolve().parents[2]
 PROJECTABLE_SCRIPT_SURFACES = [
-    "scripts/cos-cloud-worker-bootstrap.sh",
     "scripts/cos-postgres-local.sh",
     "scripts/cos-valkey-local.sh",
-    "scripts/dependency-lane.sh",
-    "scripts/deps-update.sh",
     "scripts/document_feature_append.py",
     "scripts/install-aguara.sh",
     "scripts/install-garak.sh",
     "scripts/install-mcp-scan.sh",
     "scripts/install-promptfoo.sh",
     "scripts/install-tob-skills.sh",
-    "scripts/setup-git-hooks.sh",
     "scripts/sprint-test-summary.sh",
 ]
 

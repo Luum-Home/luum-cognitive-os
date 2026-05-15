@@ -659,8 +659,11 @@ def log_risk_recommendation(
         return None
 
     if metrics_path is None:
+        root = project_root()
+        if root is None:
+            return None
         metrics_path = (
-            project_root() / ".cognitive-os" / "metrics" / "model-recommendations.jsonl"
+            root / ".cognitive-os" / "metrics" / "model-recommendations.jsonl"
         )
     metrics_path.parent.mkdir(parents=True, exist_ok=True)
     record = {

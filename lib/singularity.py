@@ -392,7 +392,7 @@ def _monitor_skill_failures(project_root: str) -> List[SingularityEvent]:
         # Group by skill name, check last N entries
         by_skill: Dict[str, List[Dict[str, Any]]] = {}
         for entry in entries:
-            skill = entry.get("skill", entry.get("name", "unknown"))
+            skill = str(entry.get("skill", entry.get("name", "unknown")) or "unknown")
             by_skill.setdefault(skill, []).append(entry)
 
         for skill, runs in by_skill.items():

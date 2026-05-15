@@ -12,7 +12,7 @@
 |---|---|
 | [§1 Top-level research](#1-top-level-research) | Tool/topic-level research (9 files) |
 | [§2 Orchestration line](#2-orchestration-line-2026-05-06-07) | 79-source prior-art + 11 gap reports + synthesis + checklist |
-| [§3 Repo-scout](#3-repo-scout-129-files) | External tools landscape (clusters + deep dives + monitor follow-up) |
+| [§3 Repo-scout](#3-repo-scout-130-files) | External tools landscape (clusters + deep dives + monitor follow-up) |
 | [§4 Operational reports](#4-operational-reports-138-files) | Audits, forensics, postmortems, gap reports |
 | [§5 Architecture research](#5-architecture-research-10-files) | Backend evaluations, benchmarks, control-plane research |
 | [§6 Business research](#6-business-research-4-files) | Reality audits, competitive re-assessments |
@@ -64,7 +64,7 @@
 
 ---
 
-## 3. Repo-scout (129 files)
+## 3. Repo-scout (130 files)
 
 `docs/03-PoCs/research/repo-scout/` — external tools landscape. Three sub-levels:
 
@@ -112,7 +112,8 @@
 [musistudio__claude-code-router](repo-scout/deep/musistudio__claude-code-router-2026-05-06.md) ·
 [openclaw__openclaw](repo-scout/deep/openclaw__openclaw-2026-05-06.md) ·
 [praetorian-inc__augustus](repo-scout/deep/praetorian-inc__augustus-2026-05-06.md) ·
-[VRSEN__OpenSwarm](repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md)
+[VRSEN__OpenSwarm](repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md) ·
+[davila7__claude-code-templates](repo-scout/deep/davila7__claude-code-templates-2026-05-15.md)
 
 **Memory & RAG (6)**:
 [DEEP-PolyU__Awesome-GraphMemory](repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md) ·

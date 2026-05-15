@@ -268,6 +268,14 @@ def _load_consumer_availability(root: Path) -> dict[str, dict[str, Any]]:
     if not path.exists():
         return {}
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    misplaced = [str(item.get("path")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("path")]
+    if misplaced:
+        joined = ", ".join(sorted(misplaced)[:10])
+        suffix = "..." if len(misplaced) > 10 else ""
+        raise ValueError(
+            "primitive-consumer-availability.yaml has exact path rows under patterns; "
+            f"move them to items: {joined}{suffix}"
+        )
     return {str(item["path"]): item for item in data.get("items", []) if isinstance(item, dict) and item.get("path")}
 
 
@@ -295,12 +303,43 @@ def _load_shell_ci_projection(root: Path) -> dict[str, dict[str, Any]]:
     return {str(item["path"]): item for item in data.get("commands", []) if isinstance(item, dict) and item.get("path")}
 
 
-def _paired_test(root: Path, rel: str) -> str | None:
+def _load_behavior_evidence(root: Path) -> dict[str, dict[str, Any]]:
+    path = root / "manifests" / "primitive-behavior-evidence.yaml"
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    misplaced = [str(item.get("primitive")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("primitive")]
+    if misplaced:
+        joined = ", ".join(sorted(misplaced)[:10])
+        suffix = "..." if len(misplaced) > 10 else ""
+        raise ValueError(
+            "primitive-behavior-evidence.yaml has exact primitive rows under patterns; "
+            f"move them to evidence: {joined}{suffix}"
+        )
+    return {str(item["primitive"]): item for item in data.get("evidence", []) if isinstance(item, dict) and item.get("primitive")}
+
+
+def _paired_test(root: Path, rel: str, behavior_evidence: dict[str, dict[str, Any]] | None = None) -> str | None:
     for candidate in paired_candidates(rel):
+        if (root / candidate).exists():
+            return candidate
+    evidence = (behavior_evidence or {}).get(rel) or {}
+    for candidate in evidence.get("tests", []) or []:
+        if not isinstance(candidate, str):
+            continue
+        if not candidate.startswith("tests/red_team/portability/"):
+            continue
         if (root / candidate).exists():
             return candidate
     return None
 
+
+
+def _is_batch_portability_proof(path: str | None) -> bool:
+    if not path:
+        return False
+    name = Path(path).name
+    return name in {"test_low_confidence_scope_batch.py"} or "batch" in name and "scope" in name
 
 
 def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> list[Evidence]:
@@ -315,6 +354,20 @@ def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> li
         skill_name = Path(rel).parent.name.lower()
         if declared == "both" and skill_name in SHARED_SKILL_NAME_PATTERNS:
             return [Evidence("semantic-pattern", "both", 65, SHARED_SKILL_NAME_PATTERNS[skill_name])]
+        return []
+
+    if rel.startswith("templates/"):
+        path = root / rel
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore").lower()[:12000]
+        except OSError:
+            text = ""
+        if (
+            "working on cos internals" in text
+            or "cognitive os internals" in text
+            or ("hooks/ → packages" in text and ".cognitive-os/" in text)
+        ):
+            return [Evidence("semantic-pattern", "os-only", 70, "cos-internal-template-context")]
         return []
 
     if not rel.startswith("hooks/"):
@@ -371,7 +424,10 @@ def _evidence_for(
         # optional-tool, and audit surfaces remain governed but not automatically
         # projectable.
         if surface in BOTH_INSTALL_SURFACES:
-            evidence.append(Evidence("protected-install-surface", "both", 90, surface))
+            if declared == "os-only":
+                evidence.append(Evidence("protected-install-surface", "os-only", 90, surface))
+            else:
+                evidence.append(Evidence("protected-install-surface", "both", 90, surface))
 
     item = availability.get(rel)
     if item:
@@ -474,6 +530,11 @@ def _decide(rel: str, declared: str | None, evidence: list[Evidence], paired: st
             confidence = "high" if winning >= 90 and winning - second >= 30 else "medium" if winning >= 65 and winning > second else "low"
             if suggested == "project" and winning < 65:
                 confidence = "low"
+            # A batch portability file is acceptable proof that prevents a `both` contradiction,
+            # but it is intentionally weaker than a primitive-specific falsification test.
+            # Keep such rows out of high confidence until a dedicated or family-specific proof exists.
+            if suggested == "both" and confidence == "high" and _is_batch_portability_proof(paired):
+                confidence = "medium"
             source = "+".join(item.source for item in evidence if item.scope == suggested)
     else:
         suggested = "unknown"
@@ -488,6 +549,8 @@ def _decide(rel: str, declared: str | None, evidence: list[Evidence], paired: st
 
     if suggested == "both" and not paired:
         next_action = f"add paired portability/falsification test, e.g. {suggested_test_path(rel)}"
+    elif suggested == "both" and _is_batch_portability_proof(paired):
+        next_action = f"batch portability proof is acceptable but weak; add primitive-specific proof, e.g. {suggested_test_path(rel)}"
     elif suggested == "project" and source == "declared-project-pending-proof":
         next_action = "add positive consumer-project-only projection evidence or reclassify if this is not project-only"
     elif source == "conflicting-distribution-evidence":
@@ -530,6 +593,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
     availability = _load_consumer_availability(root)
     protected = _load_protected_install_surfaces(root)
     shell_ci_projection = _load_shell_ci_projection(root)
+    behavior_evidence = _load_behavior_evidence(root)
     lifecycle = load_lifecycle(root)
     rows: list[ScopeRow] = []
     changed = _changed_paths(root) if changed_only else set()
@@ -543,7 +607,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
         if only_paths is not None and rel not in only_paths:
             continue
         declared = contract.scope_marker
-        paired = _paired_test(root, rel)
+        paired = _paired_test(root, rel, behavior_evidence)
         evidence = _evidence_for(root, rel, declared, override_rules, availability, protected, shell_ci_projection, lifecycle)
         suggested, confidence, source, contradiction, next_action = _decide(rel, declared, evidence, paired)
         effective = suggested if suggested != "unknown" else "os-only"
@@ -602,6 +666,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--paths", nargs="*", help="Explicit repo-relative primitive paths to classify")
     parser.add_argument("--fail-contradictions", action="store_true")
     parser.add_argument("--fail-low-confidence", action="store_true")
+    parser.add_argument("--fail-medium-confidence", action="store_true", help="Exit non-zero if any primitive remains at medium confidence")
     return parser.parse_args()
 
 
@@ -617,6 +682,8 @@ def main() -> int:
     if args.fail_contradictions and summary["contradictions"]:
         return 1
     if args.fail_low_confidence and summary["low_confidence"]:
+        return 1
+    if args.fail_medium_confidence and summary["by_confidence"].get("medium", 0):
         return 1
     return 0
 

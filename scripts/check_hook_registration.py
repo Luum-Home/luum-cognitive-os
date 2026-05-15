@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Validate that all hooks in hooks/*.sh have an effective projection path.
 
 A hook is considered registered when it is directly named by a projection

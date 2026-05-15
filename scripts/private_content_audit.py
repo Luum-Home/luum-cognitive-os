@@ -334,6 +334,16 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _payload_map(value: object) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _payload_list(value: object) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -371,18 +381,19 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
         if payload.get("schema_version") == "private-content-projection/v1":
-            item = payload["classification"]
-            print(f"private-content projection: {payload['status']} {item['path']} -> {payload['destination']} ({item['class']})")
+            item = _payload_map(payload.get("classification", {}))
+            print(f"private-content projection: {payload['status']} {item.get('path', '')} -> {payload['destination']} ({item.get('class', '')})")
             if payload["status"] == "block":
                 print("Reasons: " + ", ".join(payload.get("reasons", [])), file=sys.stderr)
         elif "classification" in payload:
-            item = payload["classification"]
-            print(f"{item['path']}: {item['class']} ({item.get('surface_id') or 'default'})")
+            item = _payload_map(payload.get("classification", {}))
+            print(f"{item.get('path', '')}: {item.get('class', '')} ({item.get('surface_id') or 'default'})")
         else:
-            summary = payload.get("summary", {})
+            summary = _payload_map(payload.get("summary", {}))
             print(f"private-content audit: block={summary.get('block', 0)} warn={summary.get('warn', 0)} info={summary.get('info', 0)}")
-            for finding in payload.get("findings", [])[:20]:
-                print(f"{finding['severity'].upper()} {finding['code']} {finding['path']}: {finding['message']}", file=sys.stderr)
+            for finding in _payload_list(payload.get("findings", []))[:20]:
+                severity = str(finding.get("severity", "")).upper()
+                print(f"{severity} {finding.get('code', '')} {finding.get('path', '')}: {finding.get('message', '')}", file=sys.stderr)
     return exit_code
 
 

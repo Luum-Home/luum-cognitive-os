@@ -1,0 +1,725 @@
+{
+  "classifier_summary": {
+    "by_confidence": {
+      "high": 986,
+      "medium": 223
+    },
+    "by_effective_scope": {
+      "both": 531,
+      "os-only": 623,
+      "project": 55
+    },
+    "by_suggested_scope": {
+      "both": 531,
+      "os-only": 623,
+      "project": 55
+    },
+    "contradictions": 0,
+    "low_confidence": 0,
+    "safe_fallback_os_only_from_unknown": 0,
+    "total": 1209
+  },
+  "rows": [
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/dependency-license-classifier.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/singularity-check.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/post-agent-snapshot-restore.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "hooks/global-verify.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/tool-discovery-trigger.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/pattern-check.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/session-changelog.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "scripts/install-garak.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "hooks/guardrails-validator.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_skill_agent_stress_test.py",
+      "path": "skills/agent-stress-test/SKILL.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "scripts/install-syft-grype.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/session-watchdog-launcher.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_cross-harness-authoring.py",
+      "path": "rules/cross-harness-authoring.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "rules/capability-protection.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_background-agent-reminder.py",
+      "path": "hooks/background-agent-reminder.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/idle-service-cleanup.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "scripts/install-aguara.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/ecosystem-check.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/hook-header-validator.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "hooks/semgrep-scan.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/project-templates/python/cognitive-os.yaml.tmpl",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/rule-template.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "hooks/ai-provider-identity-guard.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/external-pattern-cleanroom-gate.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/work-queue-sync.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "scripts/license-audit-syft-grype.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/mlflow-sync.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "scripts/license-audit-trivy.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/reaper-daemon-launcher.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/engram-auto-sync.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_package_skills.py",
+      "path": "packages/skill-governance/skills/self-improve/SKILL.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "skills/deps-update/SKILL.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "hooks/parry-scan.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/counsel-outreach/review-request.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/agent-preamble.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "both",
+      "effective_scope": "both",
+      "evidence_details": [
+        "shared-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_low_confidence_scope_batch.py",
+      "path": "hooks/git-commit-scope-guard.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "both"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "skills/memory-scan/SKILL.md",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": "tests/red_team/portability/test_task-panel-sync.py",
+      "path": "hooks/task-panel-sync.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "os-only",
+      "effective_scope": "os-only",
+      "evidence_details": [
+        "maintainer-only"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "hooks/lib-symlink-divergence-detector.sh",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "os-only"
+    },
+    {
+      "confidence": "medium",
+      "contradiction": "",
+      "decision_source": "consumer-availability",
+      "declared_scope": "project",
+      "effective_scope": "project",
+      "evidence_details": [
+        "projected-consumer-surface"
+      ],
+      "evidence_sources": [
+        "consumer-availability"
+      ],
+      "paired_portability_test": null,
+      "path": "templates/CLAUDE.md.template",
+      "review_prompt": "MEDIUM/LOW confidence: Verify that the declared/effective scope matches real runtime surface, consumer projection, and content semantics. If wrong, update metadata/tests/classifier before marker changes.",
+      "suggested_scope": "project"
+    }
+  ],
+  "sample_summary": {
+    "by_confidence": {
+      "medium": 40
+    },
+    "by_effective_scope": {
+      "both": 11,
+      "os-only": 27,
+      "project": 2
+    },
+    "total": 40
+  },
+  "schema_version": "primitive-scope-random-audit/v1",
+  "seed": 20260515,
+  "selection": {
+    "confidences": [
+      "medium"
+    ],
+    "per_scope": 0,
+    "scopes": [],
+    "total": 40
+  }
+}

@@ -95,8 +95,8 @@ def calculate_relevance(result: Dict, query: str) -> float:
     if not query_tokens:
         return 0.0
 
-    title = result.get("title", "")
-    content = result.get("content", result.get("snippet", ""))
+    title = str(result.get("title", "") or "")
+    content = str(result.get("content", result.get("snippet", "")) or "")
 
     title_tokens = _tokenize(title)
     content_tokens = _tokenize(content)

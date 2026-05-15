@@ -14,7 +14,7 @@ import shutil
 import subprocess
 import time
 import uuid
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -374,7 +374,7 @@ class AgentDaemon:
         path.write_text(json.dumps(task.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     def _replace_task(self, task: DetachedAgentTask, *, status: str) -> DetachedAgentTask:
-        updated = DetachedAgentTask(**{**task.to_dict(), "status": status, "updated_at": time.time()})
+        updated = replace(task, status=status, updated_at=time.time())
         self._write_state(updated)
         return updated
 

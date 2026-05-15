@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # cos-postgres-local.sh — Manage a local PostgreSQL cluster for Cognitive OS.
 #
 # Uses pg_ctl to manage a local cluster in .cognitive-os/runtime/postgres-data/.

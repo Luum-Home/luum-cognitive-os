@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Opt-in real local Homebrew install canary for the Cognitive OS formula.
 set -euo pipefail
 

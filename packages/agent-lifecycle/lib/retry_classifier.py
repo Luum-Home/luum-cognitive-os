@@ -3,17 +3,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-try:
-    from enum import StrEnum
-except ImportError:  # Python 3.9 compatibility
-    from enum import Enum
-
-    class StrEnum(str, Enum):
-        pass
+from enum import Enum
 from typing import Any
 
 
-class FailureClass(StrEnum):
+class FailureClass(str, Enum):
     CONNECTION_LAYER = "connection_layer"
     RATE_LIMIT = "rate_limit"
     PROVIDER_5XX = "provider_5xx"
