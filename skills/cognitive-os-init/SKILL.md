@@ -84,7 +84,7 @@ Invoke the `scaffold-project` skill. It will:
 
 ### Step 4: Projection and primitive gate
 
-After `/scaffold-project`, verify generated project hooks/settings resolve in the
+After `/scaffold-project`, verify generated project hook settings resolve in the
 filtered install surface:
 
 ```bash

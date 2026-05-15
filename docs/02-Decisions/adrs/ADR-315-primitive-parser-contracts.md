@@ -185,9 +185,20 @@ A template parser must identify prompt/config artifacts under `templates/` and e
 - Some legacy primitives will show structural debt even when their scope marker is currently correct.
 - Semantic hints remain heuristic and need manual calibration before they influence any gate.
 
+## Verification
+
+```bash
+.venv/bin/python -m pytest tests/unit/test_primitive_parser.py tests/unit/test_primitive_scope_classifier.py tests/unit/test_primitive_scope_unknown_triage.py -q
+```
+
 ## Acceptance criteria
 
 ```bash
 .venv/bin/python -m pytest tests/unit/test_primitive_parser.py tests/unit/test_primitive_scope_classifier.py tests/unit/test_primitive_scope_unknown_triage.py -q
 .venv/bin/python -m py_compile lib/primitive_parser.py scripts/primitive_parse_inventory.py scripts/primitive_scope_classifier.py scripts/primitive_scope_unknown_triage.py
 ```
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.

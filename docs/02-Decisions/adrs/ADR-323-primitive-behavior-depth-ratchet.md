@@ -27,6 +27,10 @@ tags:
 
 # ADR-323 — Primitive Behavior Depth Ratchet
 
+## Status
+
+Accepted.
+
 ## Context
 
 ADR-321 closed classification debt: all primitives have scope, plane, consumer
@@ -93,3 +97,15 @@ family/surface proofs with smoke, functional, or adversarial proofs.
   tests.
 - The next maturity frontier is reducing the `structural` budget and increasing
   smoke/functional/adversarial coverage by primitive family.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
+
+## Verification
+
+```bash
+.venv/bin/python -m pytest tests/unit/test_primitive_behavior_depth_audit.py tests/red_team/portability/test_primitive_behavior_depth_audit.py -q
+scripts/primitive-behavior-depth-audit --project-dir . --json
+```

@@ -205,6 +205,10 @@ entries:
   status: git_or_manual
   rationale: Git pre-commit gate is installed through git hooks, not Claude settings.
   next_action: Keep out of Claude settings.
+- path: hooks/pyrefly-typecheck-advisory.sh
+  status: projected_elsewhere
+  rationale: Codex-only advisory typecheck hook projected through .codex/hooks.json; intentionally absent from Claude settings until cross-harness latency and dependency behavior are proven.
+  next_action: Keep Codex projection and revisit after pyrefly dependency drift is resolved.
 - path: hooks/rate-limit-protection.sh
   status: deprecated
   rationale: Backward-compat shim for token-budget-monitor.

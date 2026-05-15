@@ -1,7 +1,7 @@
 ---
 name: sdd-tasks
 command: /sdd-tasks
-description: Convert SDD spec/design/EAS evidence into implementation tasks.
+description: Use when converting SDD spec/design/EAS evidence into implementation tasks.
 trigger: Orchestrator needs to break a spec, design, or EAS into concrete tasks before implementation.
 inputs:
 - change-name: Stable SDD change name.

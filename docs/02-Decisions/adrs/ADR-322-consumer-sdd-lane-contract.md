@@ -26,6 +26,10 @@ tags:
 
 # ADR-322 — Consumer SDD Lane Contract
 
+## Status
+
+Accepted.
+
 ## Context
 
 The comparison with `betta-tech/harness-sdd` exposed a product/workflow gap in
@@ -146,6 +150,11 @@ Tradeoffs:
 - The first implementation is intentionally local-only.
 - External adapters remain design/contract work until local behavior proves stable.
 - One-active-feature is conservative and may need adapter-specific relaxation later.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
 
 ## Verification
 

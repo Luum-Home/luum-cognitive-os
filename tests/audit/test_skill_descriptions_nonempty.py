@@ -56,16 +56,31 @@ def test_every_skill_has_valid_audience():
     assert not failures, f"Skills with invalid audience: {failures}"
 
 
+def _first_contract_line_after_optional_frontmatter(text: str) -> str:
+    lines = text.splitlines()
+    if not lines:
+        return ""
+    if lines[0].strip() == "---":
+        for idx, line in enumerate(lines[1:], start=1):
+            if line.strip() == "---":
+                for candidate in lines[idx + 1:]:
+                    if candidate.strip():
+                        return candidate
+                return ""
+    return lines[0]
+
+
 @pytest.mark.audit
 def test_every_skill_has_scope_html_comment():
     valid = {"os-only", "project", "both"}
     failures = []
     for skill_md in sorted((REPO / "skills").glob("*/SKILL.md")):
         text = skill_md.read_text(encoding="utf-8")
-        first = text.splitlines()[0] if text.strip() else ""
-        m = re.match(r"^\s*<!--\s*SCOPE:\s*([a-z-]+)\s*-->\s*$", first)
+        contract_line = _first_contract_line_after_optional_frontmatter(text)
+        m = re.match(r"^\s*<!--\s*SCOPE:\s*([a-z-]+)\s*-->\s*$", contract_line)
         if not m or m.group(1) not in valid:
-            failures.append((skill_md.parent.name, first[:80]))
+            failures.append((skill_md.parent.name, contract_line[:80]))
     assert not failures, (
-        f"Skills missing/invalid <!-- SCOPE --> at line 1 ({len(failures)} total): {failures}"
+        "Skills missing/invalid <!-- SCOPE --> immediately after optional "
+        f"YAML frontmatter ({len(failures)} total): {failures}"
     )

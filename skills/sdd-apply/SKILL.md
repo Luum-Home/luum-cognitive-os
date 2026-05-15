@@ -1,7 +1,7 @@
 ---
 name: sdd-apply
 command: /sdd-apply
-description: Implement SDD tasks against requirements and EAS acceptance rows.
+description: Use when implementing SDD tasks against requirements and EAS acceptance rows.
 trigger: Orchestrator has approved tasks and needs implementation.
 inputs:
 - change-name: Stable SDD change name.

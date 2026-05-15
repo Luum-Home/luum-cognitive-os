@@ -84,6 +84,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md",  # vaulted ADR artifact
     "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # ADR title contains plane, not active plan inventory
     "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # vaulted ADR artifact
+    "docs/02-Decisions/adrs/ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md",  # ADR title contains plane, not active plan inventory
     "docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # ADR title includes control-plane, not active plan
     "docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # vaulted ADR artifact
     "docs/02-Decisions/adrs/ADR-082-plan-location-convention.md",  # ADR defines the plan convention; not an active plan

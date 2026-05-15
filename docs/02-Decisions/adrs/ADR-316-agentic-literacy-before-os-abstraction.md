@@ -132,3 +132,20 @@ Docs must not collapse these into a single “supported” or “REAL” label.
 - First-contact docs link to the audit or this ADR.
 - Future feature claims use proof-level vocabulary for harness support.
 - Default profile changes prefer teaching, verification, and risk reduction over abstraction volume.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
+
+## Evidence
+
+- Command: `scripts/cos-boring-reliability --profile core --json`
+- Output: `docs/06-Daily/reports/boring-reliability-audit-2026-05-03.md`
+
+## Verification
+
+```bash
+.venv/bin/python -m pytest tests/contracts/test_harness_engineering_docs.py tests/contracts/test_product_zones.py -q
+scripts/cos-public-claim-gate --json
+```

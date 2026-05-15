@@ -72,8 +72,7 @@ The coding-agent layer adds a richer extension harness:
   by extensions.
 
 Provider/auth strength is also real: `packages/ai` has OAuth flows for Anthropic,
-OpenAI Codex, GitHub Copilot, token refresh, and `ANTHROPIC_OAUTH_TOKEN` /
-`ANTHROPIC_API_KEY` handling.
+OpenAI Codex, GitHub Copilot, token refresh, and `ANTHROPIC_OAUTH_TOKEN` and Anthropic API-key environment handling.
 
 ### COS mapping
 

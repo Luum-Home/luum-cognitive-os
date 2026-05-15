@@ -1,7 +1,7 @@
 ---
 name: sdd-spec
 command: /sdd-spec
-description: Create or update the SDD specification and emit an Executable Acceptance Specification with EARS-style functional requirements when requested or risk warrants it.
+description: Use when creating or updating the SDD specification and emitting an Executable Acceptance Specification with EARS-style functional requirements when requested or risk warrants it.
 trigger: Orchestrator needs a requirements/specification phase for a medium, large, critical, EARS-requested, or EAS-requested change.
 inputs:
 - change-name: Stable SDD change name.

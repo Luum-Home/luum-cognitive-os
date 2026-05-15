@@ -27,6 +27,10 @@ tags:
 
 # ADR-318 — Copy-Only Checkpoints and Stash Quarantine
 
+## Status
+
+Accepted.
+
 ## Context
 
 `git stash` is useful as a human emergency tool, but it is a poor default
@@ -109,6 +113,11 @@ The tests must prove default auto-checkpoint mode leaves the stash stack
 unchanged, writes copied file metadata, and keeps legacy stash behavior behind an
 explicit opt-in.
 
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
+
 ## Verification
 
 Implemented on 2026-05-15:
@@ -119,3 +128,8 @@ Implemented on 2026-05-15:
 - Operator-facing messages in crash recovery, stash budget warning,
   stash-leak alarm, and checkpoint recovery instructions now require a reviewed
   stash target instead of implicit `stash@{0}`/bare apply/pop/drop.
+
+```bash
+.venv/bin/python -m pytest tests/integration/test_auto_checkpoint_named_stash.py tests/unit/test_stash_quarantine_audit.py -q
+python3 scripts/stash_quarantine_audit.py --strict
+```

@@ -1,5 +1,5 @@
 ---
-adr: 317
+adr: 324
 title: Executable Acceptance Specification (EAS) Evidence Artifact
 status: accepted
 implementation_status: partial
@@ -21,7 +21,11 @@ partial_remaining: EAS validation and skill guidance exist, but there is no auto
 remaining_in_scope: true
 ---
 
-# ADR-317: Executable Acceptance Specification (EAS) Evidence Artifact
+# ADR-324: Executable Acceptance Specification (EAS) Evidence Artifact
+
+## Status
+
+Accepted.
 
 ## Context
 
@@ -87,6 +91,11 @@ For mode selection, EAS follows ADR-319: `Detractor` is the slot, while Tenth Ma
 Positive: SDD gains a single evidence artifact that can bridge documentation, ATDD, and TDD; acceptance criteria become traceable from requirement to test/evidence; existing formats remain usable; and adversarial review becomes part of the specification, not only a late verify step.
 
 Tradeoffs: EAS adds ceremony when used on trivial or small changes. Runtime validation now exists, but automatic enforcement still depends on whether the orchestrator or project policy invokes EAS for a given change.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
 
 ## Verification
 

@@ -85,7 +85,7 @@ Observed Pi surfaces relevant to COS:
 - Resources can be discovered through extension-provided `skillPaths`,
   `promptPaths`, and `themePaths`.
 - The provider layer can use API keys and OAuth/subscription logins. For
-  Anthropic, Pi supports `ANTHROPIC_API_KEY` and an OAuth login flow for Claude
+  Anthropic, Pi supports an Anthropic API-key environment slot and an OAuth login flow for Claude
   Pro/Max. It does not need to shell out to the Claude Code CLI to run, but its
   Anthropic OAuth path includes Claude Code compatibility headers/tool naming.
 

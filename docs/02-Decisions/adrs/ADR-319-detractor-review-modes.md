@@ -27,6 +27,10 @@ remaining_in_scope: true
 
 # ADR-319: Detractor Review Modes for Planning and Verification
 
+## Status
+
+Accepted.
+
 ## Context
 
 Cognitive OS already had adversarial review and EAS detractor objections, but the skeptical role was underspecified. It could catch zero-finding reviews, yet it did not name when the agent should challenge consensus, run a pre-mortem, use a Black Hat risk lens, or escalate to formal red-team thinking.
@@ -77,6 +81,11 @@ Tradeoffs: this adds ceremony for significant work and requires careful use so t
 - CIA Center for the Study of Intelligence, `Instituting Devil's Advocacy in IC Analysis after the Arab-Israeli War of October 1973`, for formal alternative analysis, red cells, and devil's advocacy.
 - de Bono Group, `Six Thinking Hats`, for the Black Hat risk lens.
 - Mollick & Mollick, `Assigning AI: Seven Approaches for Students, with Prompts`, and Microsoft's `prompts-for-edu` Devil's Advocate prompt, for the AI-teammate framing.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
 
 ## Verification
 

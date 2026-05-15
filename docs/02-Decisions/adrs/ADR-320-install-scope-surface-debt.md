@@ -34,6 +34,10 @@ tags:
 
 # ADR-320 — Install Scope Surface Debt and Protected Config Boundary
 
+## Status
+
+Accepted.
+
 ## Context
 
 Primitive SCOPE classification has three semantic values:
@@ -200,3 +204,15 @@ A future ADR may choose one of these paths:
 3. **Add secret write protection** by extending policy to `.env`/`.env*` and
    documenting migration risks for projects that intentionally edit env files via
    agents.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
+
+## Verification
+
+```bash
+.venv/bin/python -m pytest tests/behavior/test_cos_init_parity_2_2.py tests/behavior/test_consumer_project_projection.py tests/integration/test_install_projection_audit.py tests/integration/test_project_settings_generation.py tests/red_team/portability/test_protected-config-write-guard.py tests/unit/test_runtime_hook_reality.py -q
+scripts/cos-install-projection-audit --project-dir . --json
+```

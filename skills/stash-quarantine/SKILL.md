@@ -1,7 +1,7 @@
 ---
 name: stash-quarantine
 command: /stash-quarantine
-description: Safely isolate, inspect, restore, or discard temporary Git stash quarantine entries without relying on positional refs.
+description: Use when safely isolating, inspecting, restoring, or discarding temporary Git stash quarantine entries without relying on positional refs.
 trigger: User or agent needs to isolate work fronts, inspect stashes, restore WIP, or explain stash/checkpoint safety.
 version: 1.0.0
 audience: both

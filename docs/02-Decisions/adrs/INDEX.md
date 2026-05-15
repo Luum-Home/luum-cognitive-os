@@ -291,7 +291,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [278](ADR-278-subprocess-run-timeout-discipline.md) | subprocess.run Timeout Discipline | accepted | partial | 2026-05-12 | Accepted — audit + allowlist + test-default shipped 2026-05-12. Per-call |
 | [289](ADR-289-three-layer-knowledge-architecture.md) | Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram | accepted | partial | 2026-05-13 | Accepted — 2026-05-13. |
 | [291](ADR-291-agent-runtime-web-service.md) | Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients | accepted | partial | 2026-05-13 | **Date:** 2026-05-13 |
-| [317](ADR-317-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Cognitive OS already had distributed evidence practices: mandatory acceptance criteria, verification commands, SDD phases, adversarial review with zero-finding  |
+| [317](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Cognitive OS already had distributed evidence practices: mandatory acceptance criteria, verification commands, SDD phases, adversarial review with zero-finding  |
 | [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Cognitive OS already had adversarial review and EAS detractor objections, but the skeptical role was underspecified. It could catch zero-finding reviews, yet it |
 
 ### Active / Partial / Blocked (1)

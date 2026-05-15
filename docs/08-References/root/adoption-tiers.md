@@ -49,11 +49,11 @@ Answer these questions in order. Stop when you reach a tier.
 |---|---|---|---|
 | Target team size | 1 developer | 2-5 developers | 5+ or enterprise, including a solo maintainer operating a multi-IDE swarm |
 | Concurrent sessions | 1 | occasional parallel | 5+ simultaneous, or multiple harnesses/projects controlled by one operator |
-| Hooks wired | ~107 (minimal profile) | ~143 (standard profile) | ~159 (paranoid profile) |
+| Hooks wired | ~108 (minimal profile) | ~144 (standard profile) | ~160 (paranoid profile) |
 | Setup time | 15-30 min | 45-90 min | 2-4 hours |
 | Primary ADRs | ADR-105, ADR-121 §4 | + ADR-116, ADR-119, ADR-122 | + ADR-116 full, ADR-121 all |
 | Kill problems | Silent WIP loss, agent commits to main | + duplicate claims, stale sessions, orphaned commits | + multi-agent races, merge collisions, chaos-level failures |
-| Primary cost | ~107 hook fires/turn | ~143 hook fires/turn | ~159 hook fires/turn + engram I/O |
+| Primary cost | ~108 hook fires/turn | ~144 hook fires/turn | ~160 hook fires/turn + engram I/O |
 
 ---
 
@@ -93,7 +93,7 @@ or a Strict-derived maintainer profile.
 ### Hook list (lean / minimal security profile)
 
 These are the hooks present in `templates/security-profiles/minimal.json`
-(`_hook_count: 107`). Enable by copying that profile into `.claude/settings.json`
+(`_hook_count: 108`). Enable by copying that profile into `.claude/settings.json`
 or running the installer.
 
 **SessionStart** (fires once per session open):
@@ -202,7 +202,7 @@ python3 scripts/cos_work_inventory.py --json | \
 
 ### Overhead at lean tier
 
-- ~107 hook fires per agent turn
+- ~108 hook fires per agent turn
 - `session-init.sh` + `crash-recovery.sh` add ~200ms to session open
 - `destructive-git-blocker.sh` adds ~50ms per Bash call (checks command string)
 - `secret-detector.sh` adds ~100ms per Edit/Write call (regex scan)
@@ -252,7 +252,7 @@ choreographing who owns what.
 
 ### Hook list (standard security profile)
 
-`templates/security-profiles/standard.json` (`_hook_count: 143`).
+`templates/security-profiles/standard.json` (`_hook_count: 144`).
 
 Inherits all lean hooks plus the following additions.
 
@@ -348,7 +348,7 @@ python3 -m pytest tests/audit/test_adr_contracts.py -q
 
 ### Overhead at standard tier
 
-- ~143 hook fires per turn
+- ~144 hook fires per turn
 - `agent-prelaunch.sh` adds ~400ms per sub-agent dispatch (preflight inventory)
 - `pre-agent-snapshot.sh` adds ~200ms + disk per agent call
 - `engram-daemon-launcher.sh` starts one background process per session
@@ -409,7 +409,7 @@ serialized landing path to main.
 
 ### Hook list (strict / paranoid security profile)
 
-`templates/security-profiles/paranoid.json` (`_hook_count: 159`).
+`templates/security-profiles/paranoid.json` (`_hook_count: 160`).
 
 Inherits all standard hooks plus the following additions.
 
@@ -517,7 +517,7 @@ python3 -m pytest tests/chaos/ -q
 
 ### Overhead at strict tier
 
-- ~159 hook fires per turn
+- ~160 hook fires per turn
 - `agent-prelaunch.sh --strict` adds ~600ms per sub-agent dispatch
 - `merge-to-main.sh` acquires a flock before every main landing; adds 1-5s
   per landing
@@ -597,7 +597,7 @@ migrations, no schema changes.
 
 ### 1. Single developer, single agent, prototyping speed matters more than safety
 
-The OS fires hooks on every tool call. At lean tier that is ~107 fires; even
+The OS fires hooks on every tool call. At lean tier that is ~108 fires; even
 async hooks add latency. If you are in a tight creative loop — generating
 scaffolds, discarding them, regenerating — the per-call overhead trains you to
 work around the guards rather than with them.
@@ -648,7 +648,7 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 | Dimension | Lean | Standard | Strict |
 |---|---|---|---|
 | Security profile file | `minimal.json` | `standard.json` | `paranoid.json` |
-| Hook count | 107 | 143 | 159 |
+| Hook count | 108 | 144 | 160 |
 | ADR-116 primitives active | None (P2.1 warn-only for agents) | P1.1, P1.3, P3.3, P4.3, P5.1 | All 12 (P1.1-P5.2) |
 | ADR-121 invariants covered | §4 guard maturity (observe/warn only) | + §3 WIP ownership | All 6 invariants |
 | ADR-122 preflight refinements | Not applicable (no sub-agent preflight) | Active with ephemeral filter and read-only exemption | Active with `COS_PREFLIGHT_STRICT=1` |
@@ -659,7 +659,7 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 | Chaos validation | No | No | Yes (`tests/chaos/`) |
 | Setup time | 15-30 min | 45-90 min | 2-4 hours |
 | Kill problems prevented | WIP loss, bad commits, secrets | + duplicate claims, orphaned commits, stale sessions | + merge collisions, fingerprint dupes, swarm races |
-| Hook fires per turn | ~107, 0 daemons | ~143, 1 daemon (Engram) | ~159, Engram hot-path |
+| Hook fires per turn | ~108, 0 daemons | ~144, 1 daemon (Engram) | ~160, Engram hot-path |
 | Rollback cost | Swap `settings.json` | Swap `settings.json` + flip 5 flags | Swap `settings.json` + flip 16 flags |
 
 ---
@@ -678,4 +678,4 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 
 ---
 
-<!-- Generated from fe9a40ba on 2026-05-13T13:06:53Z. Do not edit directly. Run `python3 scripts/render_adoption_tiers.py` to regenerate. -->
+<!-- Generated from c1f4b385 on 2026-05-15T23:17:12Z. Do not edit directly. Run `python3 scripts/render_adoption_tiers.py` to regenerate. -->

@@ -5,7 +5,7 @@ ROOT = Path(__file__).resolve().parents[2]
 EAS_DOC = ROOT / "docs/05-Methodology/root/executable-acceptance-specification.md"
 EAS_TEMPLATE = ROOT / "templates/eas.md"
 EAS_RULE = ROOT / "rules/eas-evidence-artifact.md"
-EAS_ADR = ROOT / "docs/02-Decisions/adrs/ADR-317-executable-acceptance-specification-eas.md"
+EAS_ADR = ROOT / "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md"
 DETRACTOR_ADR = ROOT / "docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md"
 EAS_VALIDATOR = ROOT / "scripts/eas_validate.py"
 

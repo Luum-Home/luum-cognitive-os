@@ -135,7 +135,7 @@ An EAS is complete enough to use when every requirement has at least one accepta
 
 ## Related Artifacts
 
-- ADR-317: `docs/02-Decisions/adrs/ADR-317-executable-acceptance-specification-eas.md`
+- ADR-317: `docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md`
 - ADR-319: `docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md`
 - Template: `templates/eas.md`
 - Rule: `rules/eas-evidence-artifact.md`

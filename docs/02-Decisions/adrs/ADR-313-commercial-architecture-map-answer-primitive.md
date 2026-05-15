@@ -158,6 +158,11 @@ claim-safety boundaries, cache cards, and strict-mode behavior in one place.
 - If product positioning changes, the question bank and claim evidence need an
   explicit update.
 
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
+
 ## Verification
 
 ```bash

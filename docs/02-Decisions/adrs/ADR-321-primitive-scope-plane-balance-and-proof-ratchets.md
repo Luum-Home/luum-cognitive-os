@@ -32,6 +32,10 @@ tags:
 
 # ADR-321 — Primitive Scope Plane Balance and Proof Ratchets
 
+## Status
+
+Accepted.
+
 ## Context
 
 `SCOPE` answers where a primitive may live or be installed:
@@ -214,3 +218,16 @@ proof_level_budgets:
   level before they can be considered high-confidence.
 - Scope health is judged by evidence + plane + expected family distribution, not
   by raw scope counts.
+
+## Alternatives rejected
+
+- Leave the decision implicit in conversation history: rejected because ADR-gated governance needs a durable, reviewable record with explicit trade-offs.
+- Treat this as an unversioned implementation note: rejected because the behavior affects operator-facing contracts and must survive refactors.
+
+## Verification
+
+```bash
+.venv/bin/python -m pytest tests/unit/test_primitive_scope_health.py -q
+scripts/primitive-scope-health --project-dir . --json
+scripts/primitive-scope-proof-audit --project-dir . --json
+```

@@ -1,7 +1,7 @@
 ---
 name: sdd-verify
 command: /sdd-verify
-description: Verify SDD implementation, including EAS coverage, detractor disposition, and executable evidence.
+description: Use when verifying SDD implementation, including EAS coverage, detractor disposition, and executable evidence.
 trigger: Implementation is complete and needs independent verification.
 inputs:
 - change-name: Stable SDD change name.
