@@ -155,3 +155,41 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
     assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
     assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md").exists()
     assert (tmp_path / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").exists()
+
+
+def test_codex_project_install_has_closed_hook_runtime_dependencies(tmp_path: Path) -> None:
+    """Smoke: generated Codex project hooks must only reference installed, scope-allowed runtime paths."""
+    install = subprocess.run(
+        [sys.executable, str(COS_INIT), "--default", "--harness", "codex"],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+
+    assert install.returncode == 0, install.stderr + install.stdout
+
+    audit = subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "runtime_hook_reality.py"),
+            "--project-root",
+            str(tmp_path),
+            "--settings",
+            str(tmp_path / ".codex" / "hooks.json"),
+            "--dependency-closure",
+            "--install-scope",
+            "project",
+            "--fail-on-findings",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+
+    assert audit.returncode == 0, audit.stderr + audit.stdout
+    payload = json.loads(audit.stdout)
+    assert payload["summary"]["status"] == "pass"
+    assert payload["findings"] == []
