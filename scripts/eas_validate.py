@@ -18,6 +18,7 @@ REQUIRED_SECTIONS = (
     "Executable Acceptance Criteria",
     "Gap Matrix",
     "Adversarial Personas",
+    "Detractor Mode",
     "Detractor Objection Log",
     "Verification Commands",
     "Residual Risks",
@@ -30,6 +31,10 @@ _OBJ_RE = re.compile(r"\bOBJ-[A-Za-z0-9._-]+\b")
 _UNCOVERED_RE = re.compile(r"\b(gap|uncovered|missing|none|partial)\b", re.IGNORECASE)
 _RESOLVED_RE = re.compile(r"\b(resolved|covered|task|residual risk|accepted risk|mitigated)\b", re.IGNORECASE)
 _NONE_RISK_RE = re.compile(r"\b(no residual risks?|none)\b", re.IGNORECASE)
+_DETRACTOR_MODE_RE = re.compile(
+    r"\b(Tenth Man Rule|Tenth Man|Devil'?s Advocate|Pre-mortem|Premortem|Black Hat|Red Team)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -113,6 +118,7 @@ def validate_eas_text(markdown: str, path: str = "<memory>") -> EASValidationRes
     acceptance = sections.get("executable acceptance criteria", "")
     gap_matrix = sections.get("gap matrix", "")
     personas = sections.get("adversarial personas", "")
+    detractor_mode = sections.get("detractor mode", "")
     objections = sections.get("detractor objection log", "")
     commands = sections.get("verification commands", "")
     residual = sections.get("residual risks", "")
@@ -166,6 +172,11 @@ def validate_eas_text(markdown: str, path: str = "<memory>") -> EASValidationRes
 
     if "detractor" not in personas.lower():
         errors.append("adversarial personas must include a Detractor persona")
+
+    if not _DETRACTOR_MODE_RE.search(detractor_mode):
+        errors.append(
+            "detractor mode must name at least one mode: Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, or Red Team"
+        )
 
     if not _ids(_OBJ_RE, [objections]):
         errors.append("detractor objection log must define at least one OBJ-* id")

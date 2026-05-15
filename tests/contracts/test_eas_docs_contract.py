@@ -6,6 +6,7 @@ EAS_DOC = ROOT / "docs/05-Methodology/root/executable-acceptance-specification.m
 EAS_TEMPLATE = ROOT / "templates/eas.md"
 EAS_RULE = ROOT / "rules/eas-evidence-artifact.md"
 EAS_ADR = ROOT / "docs/02-Decisions/adrs/ADR-317-executable-acceptance-specification-eas.md"
+DETRACTOR_ADR = ROOT / "docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md"
 EAS_VALIDATOR = ROOT / "scripts/eas_validate.py"
 
 
@@ -16,6 +17,7 @@ REQUIRED_SECTIONS = [
     "Executable Acceptance Criteria",
     "Gap Matrix",
     "Adversarial Personas",
+    "Detractor Mode",
     "Detractor Objection Log",
     "Verification Commands",
     "Residual Risks",
@@ -31,6 +33,7 @@ def test_eas_artifacts_exist() -> None:
     assert EAS_TEMPLATE.is_file()
     assert EAS_RULE.is_file()
     assert EAS_ADR.is_file()
+    assert DETRACTOR_ADR.is_file()
     assert EAS_VALIDATOR.is_file()
 
 
@@ -44,6 +47,22 @@ def test_eas_template_contains_required_sections() -> None:
     text = _read(EAS_TEMPLATE)
     for section in REQUIRED_SECTIONS:
         assert f"## {section}" in text
+
+
+def test_eas_detractor_role_names_selectable_modes_sources_and_adr() -> None:
+    doc = _read(EAS_DOC)
+    template = _read(EAS_TEMPLATE)
+    rule = _read(EAS_RULE)
+    adr = _read(EAS_ADR) + "\n" + _read(DETRACTOR_ADR)
+    corpus = "\n".join([doc, template, rule, adr])
+
+    for mode in ["Tenth Man Rule", "Devil's Advocate", "Pre-mortem", "Black Hat", "Red Team"]:
+        assert mode in corpus
+
+    for source in ["Brookings", "CIA", "de Bono", "Mollick", "Microsoft"]:
+        assert source in corpus
+
+    assert "ADR-319" in doc
 
 
 def test_eas_rule_points_to_template_validator_and_sdd_integration() -> None:

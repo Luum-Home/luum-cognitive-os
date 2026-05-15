@@ -59,6 +59,15 @@ Ship a safe sample behavior.
 | Product/user | User outcome | Does valid input map to user value? |
 | Detractor | Argues the EAS will fail | The test may not cover invalid input. |
 
+## Detractor Mode
+
+| Field | Value |
+|---|---|
+| Selected mode | Devil's Advocate |
+| Why this mode fits | Medium-risk sample needs skeptical questioning. |
+| Contrary thesis | The happy-path plan may hide invalid-input failure. |
+| Disconfirming evidence required | Invalid-input test evidence. |
+
 ## Detractor Objection Log
 
 | ID | Objection | Risk | Required evidence | Disposition |
@@ -89,6 +98,13 @@ def test_missing_detractor_fails() -> None:
     result = validate_eas_text(text, "missing-detractor.md")
     assert not result.ok
     assert any("Detractor" in error for error in result.errors)
+
+
+def test_missing_detractor_mode_fails() -> None:
+    text = VALID_EAS.replace("## Detractor Mode", "## Detractor Lens")
+    result = validate_eas_text(text, "missing-detractor-mode.md")
+    assert not result.ok
+    assert any("Detractor Mode" in error for error in result.errors)
 
 
 def test_uncovered_gap_fails() -> None:

@@ -73,9 +73,13 @@ explore -> propose -> spec/design -> EAS -> tasks -> apply -> verify -> archive
 - `sdd-apply` implements against EAS acceptance rows, not only prose requirements.
 - `sdd-verify` runs `scripts/eas_validate.py` and checks that every EAS requirement has evidence, every unresolved gap is explicit, and every detractor objection is either addressed or carried as residual risk.
 
+The Detractor mode taxonomy itself is owned by ADR-319. ADR-317 owns the EAS artifact and its validator-backed implementation surface.
+
 ## Adversarial Review Requirement
 
 EAS introduces a stronger adversarial shape than generic review: adversarial personas review from distinct stakeholder lenses; a named **Detractor** argues that the implementation will fail to satisfy the artifact; objections are logged before implementation or before final verification; and every objection is resolved by evidence, converted into a task, or accepted as residual risk.
+
+For mode selection, EAS follows ADR-319: `Detractor` is the slot, while Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, and Red Team are selectable modes.
 
 ## Consequences
 

@@ -16,6 +16,7 @@ def test_eas_template_is_shared_and_contains_required_sections() -> None:
         "## Executable Acceptance Criteria",
         "## Gap Matrix",
         "## Adversarial Personas",
+        "## Detractor Mode",
         "## Detractor Objection Log",
         "## Verification Commands",
         "## Residual Risks",
