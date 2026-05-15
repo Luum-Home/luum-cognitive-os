@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 # cos-events.sh — CLI wrapper for the inter-session event bus (P1.3 / ADR-116).
 #

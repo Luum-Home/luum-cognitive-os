@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 <!-- TIER: 2 -->
 # Agent Communication Bus Protocol
 

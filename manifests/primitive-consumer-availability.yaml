@@ -1153,6 +1153,350 @@ items:
     `verification-audit/verification-before-completion` is a modular portable surface
     for COS source work and adopter projects; aggregate package skill portability
     proof covers structural projection.
+- path: hooks/_lib/bypass-resolver.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/_lib/killswitch_check.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/_lib/primitive-intervention.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/_lib/safe-worktree-remove.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/_lib/validation-lock.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/agent-quota-redirect.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/agnix-lint.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/background-agent-reminder.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/clean-room-ast-similarity-gate.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/concurrent-write-guard-codex-proxy.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: hooks/conversation-capture.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/engram-auto-import.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/engram-auto-sync.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/idle-service-cleanup.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/memu-sync.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/metrics-rotation.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/mlflow-sync.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/package-sync.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/pattern-check.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/registration-check.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/singularity-check.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: hooks/tool-discovery-trigger.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: packages/verification-audit/skills/harness-audit/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: rules/agent-communication.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: rules/agent-customization.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: rules/capability-protection.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: rules/clean-room-detection-limits.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: rules/cosd-secure-api.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: rules/cross-harness-authoring.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: rules/infra-health.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: rules/infra-intent.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: rules/lane-taxonomy.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: rules/orchestrator-prompt-compose.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: rules/pre-dev-readiness-gate.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: rules/reinvention-prevention.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: scripts/primitive_fitness_ledger.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: scripts/runtime_hook_reality.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: scripts/so-reaper.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: scripts/startup-benchmark.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: scripts/verify_plan_claims.py
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: skills/__contracts__/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/__contracts__/canonical-event-emitter/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/adr-tombstone/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/architecture-map-answer/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/audit-integrity/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/browser-task/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/bump-version/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/cognitive-os-init/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/cognitive-os-status/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/cognitive-os-test/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/component-reality-check/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/coordination-status/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/cos-maintainer-operations/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/cos-status/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: skills/decision-triage/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: skills/deps-update/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/docs-execution-audit/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/dogfood-score/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/experimental/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/generate-changelog/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/memory-scan/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/pattern-audit/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/phoenix-trace-ui/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
+    from os-only semantic hints.
+- path: skills/primitive-surface-reduction/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/primitive-usage-map/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/product-answer/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/push-release/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/radar-update/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/release-os/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/so-vs-vanilla/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/tag-release/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/test-contract-repair/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/validate-release/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: skills/vuln-remediation-flow/SKILL.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/agent-mandatory-rules.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/agent-preamble.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/counsel-outreach/clean-room-permission.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/counsel-outreach/license-clarification.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/counsel-outreach/review-request.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/edit-conflict-response.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/hook-template.sh
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/rebranding-checklist.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/rule-template.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
+- path: templates/skill-template.md
+  status: maintainer-only
+  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
+    declaration; no consumer-project surface evidence.
 patterns:
 - pattern: scripts/**
   status: so-local-only

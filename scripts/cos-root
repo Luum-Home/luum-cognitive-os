@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Resolve Cognitive OS project/install roots without requiring a Git checkout.
 set -euo pipefail
 

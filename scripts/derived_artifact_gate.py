@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Gate derived Cognitive OS artifacts before commit or merge.
 
 The gate keeps the canonical hook registry in cognitive-os.yaml synchronized

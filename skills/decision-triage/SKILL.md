@@ -5,7 +5,7 @@ description: 'Use when you need this Cognitive OS skill: Surface all pending ope
   decisions instead of tasks. Read-only inventory.; do not use when a narrower skill
   directly matches the task.'
 command: /decision-triage
-audience: both
+audience: os-only
 version: 0.1.0
 last-updated: 2026-04-25
 summary_line: Surface pending operator decisions across research reports + ADR open
@@ -34,7 +34,7 @@ triggers:
 - Surface pending operator decisions across research reports + ADR open questions
   in unified urgency-sorted view
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Decision Triage
 
 ## Purpose

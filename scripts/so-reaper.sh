@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # so-reaper.sh — ADR-028 D1.B reaper
 #
 # Runs cleanup_expired() + detect_orphans() via the Python process registry.

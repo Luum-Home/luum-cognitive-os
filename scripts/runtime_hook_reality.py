@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit projected Claude hooks against lifecycle metadata and observable runtime behavior."""
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 <!-- TIER: 1 -->
 # cosd Secure API
 

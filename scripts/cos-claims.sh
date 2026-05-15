@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # cos-claims.sh — CLI for engram-backed task claims (P5.1 / ADR-116).
 #
 # Usage:

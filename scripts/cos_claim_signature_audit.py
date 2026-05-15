@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit whether COS product claims are signed by mechanical evidence.
 
 This is intentionally stricter than marketing language. A claim is signed only

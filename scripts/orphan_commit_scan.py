@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """orphan_commit_scan.py — Scan git reflog for commits now unreachable from any ref.
 
 Implements ADR-116 P3.1: orphan-commit notifier. After a rebase/pull/reset,

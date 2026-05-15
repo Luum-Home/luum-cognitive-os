@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:14:45+00:00'
+generated_at: '2026-05-15T11:18:58+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -93,13 +93,13 @@ skills:
 - path: skills/cos-maintainer-operations/SKILL.md
   sha256: 5cca78bf40e5917a775d715854faeb90f9afd5da1cea7e83c62b7f901c297278
 - path: skills/cos-status/SKILL.md
-  sha256: 5843f60f2caf9731b5c7bd93905600a31cf279a0fecc0837e2b3f51378d8a883
+  sha256: f9869d06588944a5d0be3324e3357a8d252dcb9aa0539b492ae7537b8266b05e
 - path: skills/cost-predictor/SKILL.md
   sha256: ec83c03789c5185dab230ed774daf289b7ce066a6dd84089c217ecd446f64a10
 - path: skills/coverage-enforcement/SKILL.md
   sha256: 7550301ae5c7cce8a821bdcc69312114075eeb757337ef590db618bd6ee6d742
 - path: skills/decision-triage/SKILL.md
-  sha256: b0b2533a909280c2656f9bd5dcd26c659869c1a6ede8f1955fbed55fa7ec0bdc
+  sha256: 9ec7dc5ead4fe1c47c45e8588539506e30411d1e2c107a77ed603ef94d941303
 - path: skills/deep-research/SKILL.md
   sha256: 1999adc8b37396b45243280d831d9c25d2ce191615b29f2c21fda66fd98382b0
 - path: skills/deep-tool-research/SKILL.md
@@ -183,7 +183,7 @@ skills:
 - path: skills/persistent-agent/SKILL.md
   sha256: 0ace0cfc1812ff150a0875220dfd74071d151929727d6a5a4d704d136c7bf134
 - path: skills/phoenix-trace-ui/SKILL.md
-  sha256: e74140c2efde6a4f730065b92efd06614d957067059bbb9d7992407fdbb67b72
+  sha256: f4f8ceab3e4f231f5a494a567ace6e2bad8094159c65a7bcbcfdae83bad23cc8
 - path: skills/plan-bug/SKILL.md
   sha256: b7860d629ab427f08e64c95597f9af5987ba85fc6521aa54e3f9ac76fb5bdb7b
 - path: skills/plan-feature/SKILL.md

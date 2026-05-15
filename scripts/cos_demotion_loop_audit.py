@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit whether ADR-126 demotion has become a loop, not a one-off proof.
 
 The first demotion can be a semantic proof. The second demotion, especially one

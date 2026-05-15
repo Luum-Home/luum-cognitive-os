@@ -7,27 +7,24 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 ```json
 {
   "by_bucket": {
-    "insufficient-metadata": 344,
-    "os-only-semantic-candidate": 41
+    "insufficient-metadata": 279
   },
   "by_declared_scope": {
-    "both": 320,
-    "os-only": 65
+    "both": 279
   },
   "by_gap": {
-    "missing-consumer-availability-row": 385,
-    "missing-lifecycle-row": 385,
-    "no-distribution-evidence": 385
+    "missing-consumer-availability-row": 279,
+    "missing-lifecycle-row": 279,
+    "no-distribution-evidence": 279
   },
   "by_prefix": {
-    "hooks": 58,
-    "packages": 2,
-    "rules": 92,
-    "scripts": 140,
-    "skills": 75,
-    "templates": 18
+    "hooks": 36,
+    "rules": 80,
+    "scripts": 115,
+    "skills": 40,
+    "templates": 8
   },
-  "total_unknown": 385
+  "total_unknown": 279
 }
 ```
 
@@ -44,7 +41,7 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `os-only-semantic-candidate` | Text looks SO-internal. | Add os-only lifecycle/consumer metadata if confirmed. |
 | `insufficient-metadata` | No clear deterministic semantic direction. | Needs manual or AI-assisted adjudication. |
 
-## insufficient-metadata (344)
+## insufficient-metadata (279)
 
 | Path | Declared | Hints | Gaps | Structure | Summary |
 |---|---|---|---|---|---|
@@ -74,75 +71,29 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `hooks/_lib/timing.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | timing.sh — Hook timing wrapper for Cognitive OS performance monitoring |
 | `hooks/_lib/tuning.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | tuning.sh — Shared helper for hooks with tunable thresholds. |
 | `hooks/adr-detector.sh` | both | os=3; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | CONCERNS: architecture, governance, documentation |
-| `hooks/agent-quota-redirect.sh` | os-only | os=3; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | agent-quota-redirect.sh — PreToolUse:Agent hook (ADR-056 Level 2) |
 | `hooks/agent-qwen-bridge.sh` | both | os=2; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse:Agent hook — ADR-056 Level 3: transparent Qwen bridge (per-skill opt-in) |
-| `hooks/agnix-lint.sh` | os-only | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | agnix-lint.sh — PostToolUse hook on Edit\|Write |
-| `hooks/clean-room-ast-similarity-gate.sh` | os-only | os=4; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | clean-room-ast-similarity-gate.sh — ADR-271 Hook #8. |
 | `hooks/completeness-check-llm.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook: Completeness Check (LLM-evaluated, ADR-022) |
 | `hooks/confidence-gate-llm.sh` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PostToolUse hook: Confidence Gate (LLM-evaluated, ADR-022) |
 | `hooks/context-diet.sh` | both | os=3; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook: Context Diet — Task-aware rule selection advisory |
-| `hooks/conversation-capture.sh` | os-only | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | conversation-capture.sh — Capture session transcript for conversation memory |
-| `hooks/engram-auto-import.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Hook: Engram Auto-Import (SessionStart) |
-| `hooks/engram-auto-sync.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Hook: Engram Auto-Sync (Stop/SessionEnd) |
-| `hooks/idle-service-cleanup.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | @manual-trigger: run by cron or operator on demand; not a default Claude event hook |
-| `hooks/memu-sync.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | memu-sync.sh — Sync session context to memU proactive memory |
-| `hooks/metrics-rotation.sh` | os-only | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | metrics-rotation.sh — Rotate JSONL metrics files to prevent unbounded growth |
-| `hooks/mlflow-sync.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set. |
 | `hooks/orchestrator-mode-detect.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | @on-demand: sourced library helper — not registered independently, sourced by other hooks |
-| `hooks/package-sync.sh` | os-only | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | @manual-trigger: CI or developer-triggered; not a Claude event hook default |
-| `hooks/pattern-check.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Pattern check — lightweight session-start scan for critical issues. |
 | `hooks/rate-limit-protection.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set. |
-| `hooks/registration-check.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | registration-check.sh — PreToolUse hook on Agent (advisory) |
 | `hooks/session-end-cleanup.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | session-end-cleanup.sh — runs `cos-cleanup --tier=1 --apply` quietly. |
-| `hooks/singularity-check.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | SessionStart hook: Quick singularity status check |
 | `hooks/state-retention-audit.sh` | both | os=1; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | state-retention-audit.sh — ADR-199 retention drift monitor. |
 | `hooks/task-recorder.sh` | both | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Stop hook: Record completed task info to task-history.jsonl |
-| `hooks/tool-discovery-trigger.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | tool-discovery-trigger.sh — Check if tool discovery scan is due |
-| … | … | … | … | … | 294 more rows in JSON report. |
-
-## os-only-semantic-candidate (41)
-
-| Path | Declared | Hints | Gaps | Structure | Summary |
-|---|---|---|---|---|---|
-| `hooks/_lib/bypass-resolver.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | ADR-241 shared bypass resolver. |
-| `hooks/_lib/killswitch_check.sh` | both | os=3; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | killswitch_check.sh — ADR-028 D5 |
-| `hooks/_lib/primitive-intervention.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | primitive-intervention.sh — ADR-256 Phase 2 best-effort runtime evidence ledger |
-| `hooks/_lib/safe-worktree-remove.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | safe-worktree-remove.sh — shared helper for safe git worktree removal. |
-| `hooks/_lib/validation-lock.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | validation-lock.sh — shared validation capsule lock helpers. |
-| `hooks/background-agent-reminder.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | background-agent-reminder.sh — UserPromptSubmit hook |
-| `hooks/concurrent-write-guard-codex-proxy.sh` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | concurrent-write-guard-codex-proxy.sh — UserPromptSubmit (prompt) Codex |
-| `rules/agent-communication.md` | both | os=3; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Communication Bus Protocol |
-| `rules/agent-customization.md` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Customization via Override Files (BMAD v6 Pattern 9) |
-| `rules/cosd-secure-api.md` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | cosd Secure API |
-| `rules/infra-health.md` | both | os=3; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Infrastructure Health Check |
-| `rules/infra-intent.md` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Infrastructure Intent Detection Rules |
-| `rules/orchestrator-prompt-compose.md` | both | os=3; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Orchestrator Prompt Compose — Trap Preview Before Agent Launch |
-| `scripts/backfill_cost_events.py` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Backfill cost-events.jsonl to MetricEvent schema (ADR-028 D1.A.1). |
-| `scripts/cos-adr-implementation-audit.py` | both | os=4; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | ADR-281 — ADR implementation reality audit. |
-| `scripts/cos-audit-archive` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PURPOSE: Copy old audit rows into compressed archive files without truncating source evidence. |
-| `scripts/cos-claims.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | cos-claims.sh — CLI for engram-backed task claims (P5.1 / ADR-116). |
-| `scripts/cos-engram-cloud-enroll` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PURPOSE: Enroll a project-scoped Engram Cloud sync target without leaking tokens. |
-| `scripts/cos-events.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | scope: both |
-| `scripts/cos-locks.sh` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | cos-locks.sh — CLI for engram-backed cross-session advisory locks (P5.2 / ADR-116). |
-| `scripts/cos-portable-ai-real-consumer-smoke` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Smoke the generated `.ai` overlay against registered consumer shadows. |
-| `scripts/cos-root` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PURPOSE: Resolve Cognitive OS project/install roots without requiring a Git checkout. |
-| `scripts/cos_claim_signature_audit.py` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit whether COS product claims are signed by mechanical evidence. |
-| `scripts/cos_cross_instance_drill.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Manual drills for cross-instance learning without mutating real evidence. |
-| `scripts/cos_demotion_loop_audit.py` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit whether ADR-126 demotion has become a loop, not a one-off proof. |
-| `scripts/cos_doctrine_proposer.py` | both | os=3; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Generate proposed doctrine amendments from control-plane evidence. |
-| `scripts/cos_governance_roi.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Governance ROI/friction dashboard for Cognitive OS. |
-| `scripts/cos_manifest_tier_claim_audit.py` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit primitive lifecycle manifest tier claims for ADR-132/133 portability. |
-| `scripts/cos_self_improvement_loop.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Headless propose-only self-improvement loop for Cognitive OS. |
-| `scripts/derived_artifact_gate.py` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Gate derived Cognitive OS artifacts before commit or merge. |
-| `scripts/lab_first_promotion_gate.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | ADR-133 lab-first promotion gate for agentic primitives. |
-| `scripts/orphan_commit_scan.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | orphan_commit_scan.py — Scan git reflog for commits now unreachable from any ref. |
-| `scripts/portable_ai_real_consumer_smoke.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Smoke the generated `.ai` overlay against registered consumer shadows. |
-| `scripts/primitive_fitness_ledger.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Aggregate primitive fitness reports by agentic primitive family. |
-| `scripts/runtime_hook_reality.py` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit projected Claude hooks against lifecycle metadata and observable runtime behavior. |
-| `scripts/so-reaper.sh` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | so-reaper.sh — ADR-028 D1.B reaper |
-| `scripts/startup-benchmark.sh` | both | os=3; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | startup-benchmark.sh — ADR-028 D-stream: session startup latency + payload benchmark |
-| `scripts/verify_plan_claims.py` | both | os=2; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Verify high-stakes plan checkbox claims. |
-| `skills/cos-status/SKILL.md` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: cos-status |
-| `skills/decision-triage/SKILL.md` | both | os=4; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: decision-triage |
-| `skills/phoenix-trace-ui/SKILL.md` | both | os=2; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | name: phoenix-trace-ui |
+| `hooks/tool-loop-detector.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | CONCERNS: safety, quality, observability |
+| `rules/RULES-COMPACT.md` | both | os=4; generic=8; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | COS Rules Index |
+| `rules/adaptive-bypass.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Adaptive Bypass — Smart Orchestration |
+| `rules/agent-audit-before-commit.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Audit Before Commit |
+| `rules/agent-escalation.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Escalation Protocol |
+| `rules/agent-identity.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Identity Protocol |
+| `rules/agent-kpis.md` | both | os=2; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent KPI Protocol |
+| `rules/agent-output-reading.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Output Reading Protocol |
+| `rules/agent-security.md` | both | os=1; generic=4; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Agent Security — Least Privilege Protocol |
+| `rules/aguara-integration.md` | both | os=2; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Aguara -- AI Agent Security Scanner |
+| `rules/ai-provider-identity.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | AI Provider Identity Guard |
+| `rules/anti-hallucination.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Anti-Hallucination Rule |
+| `rules/assumption-tracking.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Assumption Tracking |
+| `rules/audit-trail.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit Trail — Automated Work Tracking |
+| `rules/auto-rollback.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Rollback Planning Protocol |
+| … | … | … | … | … | 229 more rows in JSON report. |
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Generate proposed doctrine amendments from control-plane evidence.
 
 ADR-180: every run emits one event to

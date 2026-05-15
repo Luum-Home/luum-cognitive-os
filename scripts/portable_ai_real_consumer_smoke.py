@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Smoke the generated `.ai` overlay against registered consumer shadows.
 
 This proof is intentionally read-only for real consumer repositories. It reads the
