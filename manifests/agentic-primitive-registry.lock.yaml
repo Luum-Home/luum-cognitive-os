@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T13:19:55+00:00'
+generated_at: '2026-05-15T14:26:33+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -3669,6 +3669,16 @@ primitives:
   projection_targets:
   - rules/decomposition.md
   sha256: fafd4a90fd27529560a9c4b917f72774828272f68232e7f1d616419afef2fd3c
+- id: rules/eas-evidence-artifact.md
+  kind: rule
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/eas-evidence-artifact.md
+  sha256: b2de6e7cc0c432d6fa8dde761f6efbbc154545fab0304fb65aa46b0c6f19756c
 - id: rules/error-learning.md
   kind: rule
   owner_adr: ADR-314
@@ -5265,6 +5275,16 @@ primitives:
   projection_targets:
   - scripts/domain_model.py
   sha256: 92a2e17191f1516d1a922e6c6e818b7438abf09dba64bb3bac94a31ef4dffaf6
+- id: scripts/eas_validate.py
+  kind: script
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - scripts/eas_validate.py
+  sha256: a1bb3a3eca4da4275c8aa3c349f43668217307c167f8c65493e8f1c9f8f2784d
 - id: scripts/edit-coop.sh
   kind: script
   owner_adr: ADR-146
@@ -6656,6 +6676,16 @@ primitives:
   projection_targets:
   - skills/scout/SKILL.md
   sha256: a55b22a7c4f1d6ba0029861c491be5a07591f8fca7f64a1cc90175d1a10f0ec9
+- id: skills/sdd-apply/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/sdd-apply/SKILL.md
+  sha256: 4ae750d6c7b211a82a9abd1ca55129d1d5403ebbda123766a5cf9886e8a4b221
 - id: skills/sdd-continue/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6686,6 +6716,36 @@ primitives:
   projection_targets:
   - skills/sdd-resume/SKILL.md
   sha256: 5dd82365f113e8316b79ff31f71ecffbb910b5a270236c1b2e923f032c040a46
+- id: skills/sdd-spec/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/sdd-spec/SKILL.md
+  sha256: 648a0ec2a760b104973773cc4df6c3a4876af00cc6acf14414f87701744b5778
+- id: skills/sdd-tasks/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/sdd-tasks/SKILL.md
+  sha256: 0c125a9139b670ed76e9ac8afb6133794aa3009e6ee57a298d012f27c055bbeb
+- id: skills/sdd-verify/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/sdd-verify/SKILL.md
+  sha256: a77ed761913aa60d54f379534fe96a1aed1b1c11230f3bb4d71532455eb535eb
 - id: skills/security-red-team/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6946,6 +7006,16 @@ primitives:
   projection_targets:
   - templates/cross-harness-authoring.md
   sha256: 5de7e9cc685485e8c5a3fd124971b54efb771dca3efeeef8d96c3b8cf3cf235d
+- id: templates/eas.md
+  kind: template
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/eas.md
+  sha256: c844c00b10f37a7bcb5c2bcb8dcbe1ce9aa2f22f7faebb463b26dbfed182f88b
 - id: templates/edit-conflict-response.md
   kind: template
   owner_adr: ADR-314

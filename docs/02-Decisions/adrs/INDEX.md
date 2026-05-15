@@ -165,7 +165,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [315](ADR-315-primitive-parser-contracts.md) | Primitive Parser Contracts Before Scope Classification | accepted | implemented | 2026-05-14 | Accepted and implemented — 2026-05-14. |
 | [316](ADR-316-agentic-literacy-before-os-abstraction.md) | Agentic Literacy Before OS Abstraction | accepted | implemented | 2026-05-15 | Accepted and implemented as documentation doctrine — 2026-05-15. |
 
-### Active / Partial (118)
+### Active / Partial (119)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -287,6 +287,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [275](ADR-275-closure-and-projection-primitives.md) | Closure & Projection Primitives (Pending-Truth Read/Write Symmetry) | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (projector + close primitive + tests). Hook |
 | [278](ADR-278-subprocess-run-timeout-discipline.md) | subprocess.run Timeout Discipline | accepted | partial | 2026-05-12 | Accepted — audit + allowlist + test-default shipped 2026-05-12. Per-call |
 | [289](ADR-289-three-layer-knowledge-architecture.md) | Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram | accepted | partial | 2026-05-13 | Accepted — 2026-05-13. |
+| [317](ADR-317-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Accepted with doctrine, template, validator, manifests, and SDD skill wiring; automatic policy enforcement remains opt-in. |
 
 ### Active / Partial / Blocked (1)
 

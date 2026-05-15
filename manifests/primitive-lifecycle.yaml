@@ -17028,6 +17028,160 @@ primitives:
   exit_behavior: sourced-library
   metrics_file: none
   consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: rules/eas-evidence-artifact.md
+  kind: rule
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: agent-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/eas-evidence-artifact.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: EAS primitive is shared between COS maintenance and adopter projects; focused tests verify docs, manifests, SDD wiring, and validator behavior.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: templates/eas.md
+  kind: template
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: documentation-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/eas.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: EAS template is shared between COS maintenance and adopter projects.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/eas_validate.py
+  kind: script
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: quality-validator
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/eas_validate.py
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: EAS validator checks generic Markdown evidence artifacts.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: blocking-on-invocation
+  metrics_file: .cognitive-os/metrics/eas-validation.jsonl
+- id: skills/sdd-spec/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: sdd-eas
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/sdd-spec/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: sdd-spec emits EAS requirements and acceptance rows when requested or risk warrants it.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/sdd-tasks/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: sdd-eas
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/sdd-tasks/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: sdd-tasks consumes EAS gap matrices and acceptance rows.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/sdd-apply/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: sdd-eas
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/sdd-apply/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: sdd-apply implements against EAS acceptance rows and evidence IDs.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/sdd-verify/SKILL.md
+  kind: skill
+  owner_adr: ADR-317
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: sdd-eas
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/sdd-verify/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'ADR-317: sdd-verify runs EAS validation and checks detractor/residual-risk disposition.'
+  evidence_commands:
+  - .venv/bin/python -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
 - id: hooks/_lib/cache.sh
   kind: script-lib
   owner_adr: ADR-314

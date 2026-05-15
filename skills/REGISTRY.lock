@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T13:19:55+00:00'
+generated_at: '2026-05-15T14:26:33+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -268,6 +268,8 @@ skills:
   sha256: 0aed7d900531e8887e7d5067c298a8b87af39cdd1b95f016b4bb3b9392cef1a2
 - path: skills/scout/SKILL.md
   sha256: 376d2e34778ace919dd2b88d8ac04c3f0a2bcd5e368446de7a6590a3b2c3971b
+- path: skills/sdd-apply/SKILL.md
+  sha256: 9f405e347f1fa177dac480d4f2a8af1f8a3702d6542b528b828efcb943aad264
 - path: skills/sdd-compound/SKILL.md
   sha256: 8808dd7d5b7f3849d27911d62930b4fa168e0de84f4b161e56c19fbaaf5c1966
 - path: skills/sdd-continue/SKILL.md
@@ -276,6 +278,12 @@ skills:
   sha256: ba6b4238bc900c636c687881ae55df2bb2bce34c85a3882aa3722d2d7e12dedb
 - path: skills/sdd-resume/SKILL.md
   sha256: cc026f3b02e0bd0edaa48a7ed877190be4f85e80c283058768653f1b54e5e813
+- path: skills/sdd-spec/SKILL.md
+  sha256: e6eb32a119fad84da40ae93b9c0edcd6ca45b076250abc50b809d163c194cccb
+- path: skills/sdd-tasks/SKILL.md
+  sha256: 919682c64c0c08b0221942c347efdeccb09c4b1d35074433ff1d86e52a1c7575
+- path: skills/sdd-verify/SKILL.md
+  sha256: 676ea4ff7ff8ce29b53971df41bb398204b346f9a8ebfa0b97709719c4e7ebaf
 - path: skills/secret-audit/SKILL.md
   sha256: 4a5e340231f7ee6d84c48cdac3b556d32952e763a02bdf63dbd4e7e61eca5c26
 - path: skills/security-audit/SKILL.md

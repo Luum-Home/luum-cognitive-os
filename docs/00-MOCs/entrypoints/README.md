@@ -868,6 +868,7 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
 - [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
 - [Promise Compliance Audit — 2026-05-15](business/promise-compliance-audit-2026-05-15.md) — Current audit of product promises, fulfilled evidence, partial compliance, overclaims, and the agentic literacy boundary
+- [Executable Acceptance Specification (EAS)](../../05-Methodology/root/executable-acceptance-specification.md) — optional evidence artifact bridging SDD, existing documentation formats, ATDD/TDD mapping, gap coverage, and detractor review.
 - [ADR-316: Agentic Literacy Before OS Abstraction](adrs/ADR-316-agentic-literacy-before-os-abstraction.md) — Decision that COS must teach and expose underlying harness discipline instead of hiding it
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
 - [ADR-201: Maintainer Agent and Telemetry Promotion Loop](adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md) — proposed owner-backed loop for converting COS telemetry into governed improvement proposals

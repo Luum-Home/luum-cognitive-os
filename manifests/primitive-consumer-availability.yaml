@@ -2216,6 +2216,27 @@ items:
 - path: hooks/scope-marker-portability-gate.sh
   status: maintainer-only
   rationale: 'Manual scope review iteration 031: gates COS primitive SCOPE marker changes and KD6 portability proof; this is primitive-taxonomy governance for COS maintainers.'
+- path: rules/eas-evidence-artifact.md
+  status: shared-surface
+  rationale: 'ADR-317: EAS evidence-artifact rule governs executable acceptance documentation for COS source work and adopter projects.'
+- path: templates/eas.md
+  status: shared-surface
+  rationale: 'ADR-317: EAS template is a reusable documentation artifact for COS SDD changes and adopter-project app changes.'
+- path: scripts/eas_validate.py
+  status: shared-surface
+  rationale: 'ADR-317: EAS validator checks generic Markdown evidence artifacts and is not specific to COS source internals.'
+- path: skills/sdd-spec/SKILL.md
+  status: shared-surface
+  rationale: 'ADR-317: sdd-spec emits EAS requirements and acceptance rows for both COS and adopter-project changes.'
+- path: skills/sdd-tasks/SKILL.md
+  status: shared-surface
+  rationale: 'ADR-317: sdd-tasks consumes EAS gap matrices and acceptance rows for both COS and adopter-project changes.'
+- path: skills/sdd-apply/SKILL.md
+  status: shared-surface
+  rationale: 'ADR-317: sdd-apply implements against EAS acceptance rows for both COS and adopter-project changes.'
+- path: skills/sdd-verify/SKILL.md
+  status: shared-surface
+  rationale: 'ADR-317: sdd-verify validates EAS coverage and detractor disposition for both COS and adopter-project changes.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
