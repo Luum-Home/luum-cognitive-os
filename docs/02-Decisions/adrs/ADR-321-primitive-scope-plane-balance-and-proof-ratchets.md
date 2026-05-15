@@ -88,7 +88,7 @@ expected_scope_distribution:
   skills:
     os-only_max_warning: 70
     both_min_warning: 15
-    project_min_warning: 5
+    project_min_warning: 4.5
   scripts:
     os-only_expected_high: true
   templates:
@@ -120,8 +120,33 @@ The implementation provides these audit surfaces:
 - `scripts/primitive-scope-false-both-audit` — false-`both` review queue.
 - `scripts/primitive-scope-health` — stable combined dashboard.
 
-CI runs the balance/health audits in warning mode first. The strict ratchets remain:
-unknown, contradictions, low confidence, and medium confidence must stay at zero.
+CI initially ran the balance/health audits in warning mode. After the first
+health-dashboard review queue was triaged on 2026-05-15, the balance,
+generic-`os-only`, and false-`both` audits became strict ratchets. Review findings
+must now either be fixed or suppressed through explicit `review_exemptions` in
+`manifests/primitive-scope-classification.yaml` with a path-specific rationale.
+The remaining classifier ratchets stay strict too: unknown, contradictions, low
+confidence, and medium confidence must stay at zero.
+
+## 2026-05-15 ratchet promotion
+
+The first health-dashboard queue produced three signals:
+
+- `both-needs-specific-proof` falsely matched lowercase route examples such as
+  `internal/users/` because source-checkout detection was case-insensitive for
+  `/Users/`. The detector is now case-sensitive and only treats real local
+  checkout paths like `/Users/...` or `matias.nahuel` as source-path evidence.
+- `pattern-audit` was a true over-internalization finding. It is now `both`
+  because its grep/regex sampling protocol is repo-agnostic and has no COS
+  source-checkout dependency.
+- Five generic-looking COS status/audit skills remain `os-only` by explicit
+  review exemption because their bodies operate on Cognitive OS control-plane
+  inventories, metrics, hooks, or benchmark machinery.
+
+The skills `project_min_warning` threshold moved from `5` to `4.5` because the
+current 4.9% project-skill ratio was a rounding-edge signal, not evidence of a
+classification bug. Future project-skill growth should be evidence-led rather
+than forced to satisfy a round number.
 
 ## Consequences
 

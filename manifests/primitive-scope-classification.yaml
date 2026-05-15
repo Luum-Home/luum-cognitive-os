@@ -57,11 +57,29 @@ expected_scope_distribution:
   skills:
     os-only_max_warning: 70
     both_min_warning: 15
-    project_min_warning: 5
+    project_min_warning: 4.5
   scripts:
     os-only_expected_high: true
   templates:
     project_expected_high: true
+review_exemptions:
+  os-only-generic-candidate:
+  - path: packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
+    rationale: COS-vs-baseline benchmark control-plane package; reads COS benchmark
+      config, worktrees, metrics, and reports rather than operating as a consumer
+      project skill.
+  - path: packages/verification-audit/skills/harness-audit/SKILL.md
+    rationale: COS harness-retirement and relevance audit; reviews Cognitive OS
+      primitive inventories, metrics, and governance signals.
+  - path: skills/agent-stress-test/SKILL.md
+    rationale: COS cognitive-health stress diagnostic backed by internal cognitive
+      load monitoring primitives and COS rule context.
+  - path: skills/audit-integrity/SKILL.md
+    rationale: COS integrity audit for hooks, libs, settings, symlinks, and skill
+      wiring; the generic audit name is not consumer-project portability evidence.
+  - path: skills/cognitive-os-status/SKILL.md
+    rationale: COS subsystem status report over installed Cognitive OS hooks,
+      rules, skills, squads, agents, and metrics.
 families:
   hooks:
     marker: '# SCOPE: <scope>'

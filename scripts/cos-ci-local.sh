@@ -348,12 +348,15 @@ check_scope_portability_contract() {
       --json-out .cognitive-os/reports/primitive-scope-plane-audit-ci-local.json >/dev/null && \
     "$REPO_ROOT/scripts/primitive-scope-balance-audit" \
       --project-dir "$REPO_ROOT" \
+      --strict \
       --json-out .cognitive-os/reports/primitive-scope-balance-audit-ci-local.json >/dev/null && \
     "$REPO_ROOT/scripts/primitive-scope-generic-os-only-audit" \
       --project-dir "$REPO_ROOT" \
+      --strict \
       --json-out .cognitive-os/reports/primitive-scope-generic-os-only-audit-ci-local.json >/dev/null && \
     "$REPO_ROOT/scripts/primitive-scope-false-both-audit" \
       --project-dir "$REPO_ROOT" \
+      --strict \
       --json-out .cognitive-os/reports/primitive-scope-false-both-audit-ci-local.json >/dev/null && \
     "$REPO_ROOT/scripts/primitive-scope-health" \
       --project-dir "$REPO_ROOT" \
