@@ -41,6 +41,56 @@ BOTH_INSTALL_SURFACES = {"bootstrap", "settings-projection", "profile-applicatio
 PROJECT_LIFECYCLE_ACCESSIBILITY = {"lifecycle-declared-consumer-candidate"}
 SHARED_LIFECYCLE_ACCESSIBILITY = {"lifecycle-declared-shared-surface"}
 
+SHARED_HOOK_NAME_PATTERNS = {
+    "adaptive-bypass": "shared-agent-workflow-quality",
+    "assumption-tracker": "shared-agent-quality",
+    "auto-verify": "shared-verification",
+    "blast-radius": "shared-repository-safety",
+    "claim-validator": "shared-claim-verification",
+    "clarification-gate": "shared-agent-quality",
+    "completeness-check": "shared-agent-quality",
+    "concurrent-write-guard": "shared-repository-safety",
+    "confidence-gate": "shared-agent-quality",
+    "context-budget": "shared-context-hygiene",
+    "context-diet": "shared-context-hygiene",
+    "context-watchdog": "shared-context-hygiene",
+    "destructive-git-blocker": "shared-repository-safety",
+    "direct-main-guard": "shared-git-safety",
+    "dod-gate": "shared-delivery-quality",
+    "large-file-advisor": "shared-context-hygiene",
+    "prompt-quality": "shared-agent-quality",
+    "resource-check": "shared-runtime-budget",
+    "scope-creep": "shared-scope-governance",
+    "scope-proportionality": "shared-scope-governance",
+    "secret-detector": "shared-repository-security",
+    "token-budget": "shared-runtime-budget",
+    "tool-loop": "shared-agent-safety",
+    "trust-score": "shared-agent-quality",
+}
+
+COS_MAINTAINER_HOOK_NAME_PATTERNS = {
+    "adr-": "cos-adr-governance",
+    "control-plane": "cos-control-plane",
+    "cosd-": "cos-daemon-control",
+    "engram-": "cos-memory-lifecycle",
+    "pending-truth": "cos-planning-ledger",
+    "primitive-": "cos-primitive-governance",
+    "profile-drift": "cos-profile-governance",
+    "rule-": "cos-rule-governance",
+    "self-install": "cos-self-maintenance",
+    "self-knowledge": "cos-self-maintenance",
+    "skill-": "cos-skill-governance",
+}
+
+COS_INTERNAL_CORE_TOKENS = (
+    ".cognitive-os/",
+    "docs/02-decisions/",
+    "manifests/",
+    "cognitive os",
+    "cognitive-os",
+    "luum-agent-os",
+)
+
 
 @dataclass(frozen=True)
 class Evidence:
@@ -146,6 +196,42 @@ def _paired_test(root: Path, rel: str) -> str | None:
     return None
 
 
+
+def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> list[Evidence]:
+    """Return conservative semantic evidence learned from repeated manual review.
+
+    These patterns are intentionally explainable and lower priority than durable
+    manifests. They prevent repeated manual review of common hook families while
+    avoiding distribution-tier inference. A semantic pattern is not portability
+    proof; declared `both` rows still need paired proof or explicit metadata.
+    """
+    if not rel.startswith("hooks/"):
+        return []
+    stem = Path(rel).stem.lower()
+    path = root / rel
+    try:
+        text = path.read_text(encoding="utf-8", errors="ignore").lower()[:12000]
+    except OSError:
+        text = ""
+
+    # COS governance hooks whose value proposition is bound to COS internals are
+    # maintainer-only unless explicit consumer metadata says otherwise.
+    for prefix, reason in COS_MAINTAINER_HOOK_NAME_PATTERNS.items():
+        if stem.startswith(prefix) and any(token in text for token in COS_INTERNAL_CORE_TOKENS):
+            return [Evidence("semantic-pattern", "os-only", 65, reason)]
+
+    # Shared hook families from manual calibration: repo safety, task quality,
+    # context/resource hygiene, and generic agent-session governance. These are
+    # useful in COS and adopter repos when projected, independent of COS source
+    # paths used for metrics/registration. Require a matching declared marker so
+    # this does not promote an explicitly os-only hook by name alone.
+    if declared == "both":
+        for fragment, reason in SHARED_HOOK_NAME_PATTERNS.items():
+            if stem == fragment or stem.startswith(f"{fragment}-"):
+                return [Evidence("semantic-pattern", "both", 65, reason)]
+
+    return []
+
 def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: list[dict[str, str]], availability: dict[str, dict[str, Any]], protected: dict[str, dict[str, Any]], lifecycle: dict[str, dict[str, Any]]) -> list[Evidence]:
     evidence: list[Evidence] = []
     override = _override_for(rel, override_rules)
@@ -228,6 +314,8 @@ def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: li
     # project bucket visible for future project-only evidence modeling.
     if declared == "project" and not evidence:
         evidence.append(Evidence("declared-project-pending-proof", "project", 55, "explicit SCOPE marker without distribution metadata"))
+
+    evidence.extend(_semantic_pattern_evidence(root, rel, declared))
 
     # A paired portability proof is necessary for `both`, but not sufficient to
     # infer distribution. Keep it out of the weighted scope decision and use it

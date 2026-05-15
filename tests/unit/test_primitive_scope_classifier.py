@@ -342,3 +342,63 @@ def test_lab_distribution_with_shared_accessibility_remains_both(tmp_path: Path)
     assert row.suggested_scope == "both"
     assert row.effective_scope == "both"
     assert any(item.source == "lifecycle" and item.scope == "both" for item in row.evidence)
+
+
+def test_semantic_pattern_promotes_declared_shared_safety_hook_with_proof(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "secret-detector.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Secret Detector — dual-mode hook for generic repo security.\necho ok\n"
+    )
+    proof = root / "tests" / "red_team" / "portability"
+    (proof / "test_secret-detector.py").write_text("def test_secret_detector(): pass\n")
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["hooks/secret-detector.sh"]
+
+    assert row.suggested_scope == "both"
+    assert row.effective_scope == "both"
+    assert row.confidence == "medium"
+    assert row.decision_source == "semantic-pattern"
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-repository-security" for item in row.evidence)
+    assert not row.contradiction
+
+
+def test_semantic_pattern_flags_cos_governance_hook_as_os_only(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "adr-detector.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Generates draft ADRs under docs/02-Decisions/adrs/ for Cognitive OS governance.\necho ok\n"
+    )
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["hooks/adr-detector.sh"]
+
+    assert row.suggested_scope == "os-only"
+    assert row.effective_scope == "os-only"
+    assert row.confidence == "medium"
+    assert row.decision_source == "semantic-pattern"
+    assert "declared both conflicts" in row.contradiction
+    assert any(item.source == "semantic-pattern" and item.detail == "cos-adr-governance" for item in row.evidence)
+
+
+def test_semantic_patterns_do_not_use_distribution_tier_as_scope_evidence(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "random-lab-hook.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Reusable but no learned semantic pattern.\necho ok\n"
+    )
+    lifecycle_path = root / "manifests" / "primitive-lifecycle.yaml"
+    lifecycle = yaml.safe_load(lifecycle_path.read_text())
+    lifecycle["primitives"].append(
+        {
+            "id": "hooks/random-lab-hook.sh",
+            "kind": "hook",
+            "distribution": "lab",
+            "lifecycle_state": "candidate",
+        }
+    )
+    lifecycle_path.write_text(yaml.safe_dump(lifecycle))
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["hooks/random-lab-hook.sh"]
+
+    assert row.suggested_scope == "unknown"
+    assert not row.evidence

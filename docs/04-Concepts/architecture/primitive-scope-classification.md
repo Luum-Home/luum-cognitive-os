@@ -34,6 +34,13 @@ Use `scripts/primitive_scope_classifier.py` when creating or changing primitives
 
 The classifier is intentionally conservative. A new primitive with no export/projection evidence is reported as `unknown` with safe `effective_scope=os-only` and low confidence and a next action to add lifecycle/projection/consumer-availability metadata before relying on the classification.
 
+Manual review findings must feed back into the classifier as explainable semantic patterns when the same pattern can recur. These patterns are lower-priority evidence than manifests and do not replace portability proof. Current learned hook patterns cover:
+
+- shared-surface hooks: generic repository safety, git/secret safety, prompt/task quality gates, Trust Report validation, context/resource hygiene, scope/claim governance, and tool-loop detection;
+- maintainer-only hooks: COS ADR/rule/skill/control-plane/profile/Engram governance when the hook body is bound to COS internals such as `.cognitive-os/`, `docs/02-Decisions/`, or `manifests/`.
+
+This feedback loop prevents repeated manual rediscovery while preserving the root rule: semantic patterns are evidence, not distribution-tier shortcuts.
+
 `distribution: core | team | maintainer | lab` is orthogonal metadata. It says
 which adoption/profile tier should receive the primitive by default. It must not
 be used as scope evidence by itself:
