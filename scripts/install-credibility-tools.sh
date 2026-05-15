@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # install-credibility-tools.sh — Install optional credibility-audit scanners
 #
 # These tools enhance scripts/credibility-audit.sh when installed:

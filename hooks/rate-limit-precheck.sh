@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # CONCERNS: rate-limiting, retry, sidecar-lookup, non-blocking
 # Rate Limit Pre-Check (D45 gap B) — PreToolUse:Bash, NEVER blocks.
 #

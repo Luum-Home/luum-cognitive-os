@@ -303,8 +303,32 @@ def _load_shell_ci_projection(root: Path) -> dict[str, dict[str, Any]]:
     return {str(item["path"]): item for item in data.get("commands", []) if isinstance(item, dict) and item.get("path")}
 
 
-def _paired_test(root: Path, rel: str) -> str | None:
+def _load_behavior_evidence(root: Path) -> dict[str, dict[str, Any]]:
+    path = root / "manifests" / "primitive-behavior-evidence.yaml"
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    misplaced = [str(item.get("primitive")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("primitive")]
+    if misplaced:
+        joined = ", ".join(sorted(misplaced)[:10])
+        suffix = "..." if len(misplaced) > 10 else ""
+        raise ValueError(
+            "primitive-behavior-evidence.yaml has exact primitive rows under patterns; "
+            f"move them to evidence: {joined}{suffix}"
+        )
+    return {str(item["primitive"]): item for item in data.get("evidence", []) if isinstance(item, dict) and item.get("primitive")}
+
+
+def _paired_test(root: Path, rel: str, behavior_evidence: dict[str, dict[str, Any]] | None = None) -> str | None:
     for candidate in paired_candidates(rel):
+        if (root / candidate).exists():
+            return candidate
+    evidence = (behavior_evidence or {}).get(rel) or {}
+    for candidate in evidence.get("tests", []) or []:
+        if not isinstance(candidate, str):
+            continue
+        if not candidate.startswith("tests/red_team/portability/"):
+            continue
         if (root / candidate).exists():
             return candidate
     return None
@@ -541,6 +565,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
     availability = _load_consumer_availability(root)
     protected = _load_protected_install_surfaces(root)
     shell_ci_projection = _load_shell_ci_projection(root)
+    behavior_evidence = _load_behavior_evidence(root)
     lifecycle = load_lifecycle(root)
     rows: list[ScopeRow] = []
     changed = _changed_paths(root) if changed_only else set()
@@ -554,7 +579,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
         if only_paths is not None and rel not in only_paths:
             continue
         declared = contract.scope_marker
-        paired = _paired_test(root, rel)
+        paired = _paired_test(root, rel, behavior_evidence)
         evidence = _evidence_for(root, rel, declared, override_rules, availability, protected, shell_ci_projection, lifecycle)
         suggested, confidence, source, contradiction, next_action = _decide(rel, declared, evidence, paired)
         effective = suggested if suggested != "unknown" else "os-only"

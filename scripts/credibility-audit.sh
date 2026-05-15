@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # credibility-audit.sh — Pre-launch scan for credibility/transparency risks
 #
 # Detects content that could damage reader trust at first contact:

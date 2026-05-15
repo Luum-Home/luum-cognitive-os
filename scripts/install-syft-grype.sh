@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # install-syft-grype.sh — Install Syft (SBOM generator) + Grype (vuln/license scanner)
 #
 # Anchore tools (Apache 2.0) used as OPTIONAL cross-validation against Trivy.

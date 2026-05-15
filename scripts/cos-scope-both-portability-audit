@@ -17,6 +17,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_IMPORT_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_IMPORT_ROOT))
@@ -90,8 +92,32 @@ def _paired_candidates(rel: str) -> list[str]:
 def _suggested_test_path(rel: str) -> str:
     return suggested_test_path(rel)
 
-def _find_paired_test(repo: Path, rel: str) -> str | None:
+def _load_behavior_evidence(repo: Path) -> dict[str, dict[str, Any]]:
+    path = repo / "manifests" / "primitive-behavior-evidence.yaml"
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    misplaced = [str(item.get("primitive")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("primitive")]
+    if misplaced:
+        joined = ", ".join(sorted(misplaced)[:10])
+        suffix = "..." if len(misplaced) > 10 else ""
+        raise ValueError(
+            "primitive-behavior-evidence.yaml has exact primitive rows under patterns; "
+            f"move them to evidence: {joined}{suffix}"
+        )
+    return {str(item["primitive"]): item for item in data.get("evidence", []) if isinstance(item, dict) and item.get("primitive")}
+
+
+def _find_paired_test(repo: Path, rel: str, behavior_evidence: dict[str, dict[str, Any]] | None = None) -> str | None:
     for cand in _paired_candidates(rel):
+        if (repo / cand).exists():
+            return cand
+    evidence = (behavior_evidence or {}).get(rel) or {}
+    for cand in evidence.get("tests", []) or []:
+        if not isinstance(cand, str):
+            continue
+        if not cand.startswith(f"{PORTABILITY_DIR}/"):
+            continue
         if (repo / cand).exists():
             return cand
     return None
@@ -184,6 +210,7 @@ def _priority(rel: str, kind: str, wiring: dict[str, Any] | None) -> str:
 def build_inventory(repo: Path) -> tuple[list[InventoryRow], dict[str, Any]]:
     wiring = _settings_wiring(repo)
     last_commits = _last_commit_map(repo)
+    behavior_evidence = _load_behavior_evidence(repo)
     rows: list[InventoryRow] = []
     for root_name in SCAN_ROOTS:
         root = repo / root_name
@@ -194,7 +221,7 @@ def build_inventory(repo: Path) -> tuple[list[InventoryRow], dict[str, Any]]:
                 continue
             rel = path.relative_to(repo).as_posix()
             kind = _kind(rel)
-            paired = _find_paired_test(repo, rel)
+            paired = _find_paired_test(repo, rel, behavior_evidence)
             status = "covered" if paired else "missing"
             row_wiring = wiring.get(rel)
             rows.append(

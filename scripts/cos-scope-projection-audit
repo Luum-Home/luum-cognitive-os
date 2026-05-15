@@ -21,6 +21,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 REPO_IMPORT_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_IMPORT_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_IMPORT_ROOT))
@@ -64,7 +66,39 @@ def _header_scope(path: Path) -> str | None:
     return match.group(1) if match else None
 
 
+def _load_behavior_evidence(repo: Path) -> dict[str, dict[str, Any]]:
+    path = repo / "manifests" / "primitive-behavior-evidence.yaml"
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    misplaced = [str(item.get("primitive")) for item in data.get("patterns", []) if isinstance(item, dict) and item.get("primitive")]
+    if misplaced:
+        joined = ", ".join(sorted(misplaced)[:10])
+        suffix = "..." if len(misplaced) > 10 else ""
+        raise ValueError(
+            "primitive-behavior-evidence.yaml has exact primitive rows under patterns; "
+            f"move them to evidence: {joined}{suffix}"
+        )
+    return {str(item["primitive"]): item for item in data.get("evidence", []) if isinstance(item, dict) and item.get("primitive")}
+
+
+def _paired_portability_test(repo: Path, rel: str, behavior_evidence: dict[str, dict[str, Any]]) -> str | None:
+    for cand in paired_candidates(rel):
+        if (repo / cand).exists():
+            return cand
+    evidence = behavior_evidence.get(rel) or {}
+    for cand in evidence.get("tests", []) or []:
+        if not isinstance(cand, str):
+            continue
+        if not cand.startswith("tests/red_team/portability/"):
+            continue
+        if (repo / cand).exists():
+            return cand
+    return None
+
+
 def _source_inventory(repo: Path) -> list[dict[str, Any]]:
+    behavior_evidence = _load_behavior_evidence(repo)
     rows: list[dict[str, Any]] = []
     for root_name in SOURCE_ROOTS:
         root = repo / root_name
@@ -79,10 +113,7 @@ def _source_inventory(repo: Path) -> list[dict[str, Any]]:
             rel = path.relative_to(repo).as_posix()
             paired = None
             if scope == "both":
-                for cand in paired_candidates(rel):
-                    if (repo / cand).exists():
-                        paired = cand
-                        break
+                paired = _paired_portability_test(repo, rel, behavior_evidence)
             rows.append(
                 {
                     "artifact": rel,

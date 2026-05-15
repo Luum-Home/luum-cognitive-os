@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # content-policy.sh — PostToolUse hook on Edit|Write
 # CONCERNS: compliance, content-policy, quality
 #

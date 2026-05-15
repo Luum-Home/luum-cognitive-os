@@ -81,3 +81,27 @@ Important: `both` rows should not be flipped mechanically. The classifier curren
 ## Guardrail
 
 Do not use `script-exposure-dispositions.yaml` as automatic truth for SCOPE. It is useful evidence, but its `operator_workflow` and `documented_route` labels mix routing/exposure with semantic scope. The classifier should keep SCOPE, projection, distribution, and exposure as separate dimensions.
+
+## Implementation — iteration 041
+
+Implemented after this review:
+
+- The 7 clear `os-only` primitives were reclassified with maintainer-only evidence.
+- The 4 true `project` hooks kept `SCOPE: project` and gained `projected-consumer-surface` evidence.
+- The 38 shared primitives were reclassified to `SCOPE: both` only after adding paired portability evidence through `tests/red_team/portability/test_low_confidence_scope_batch.py` and `manifests/primitive-behavior-evidence.yaml`.
+- The classifier now accepts paired portability proof from explicit behavior-evidence rows when the referenced test lives under `tests/red_team/portability/`.
+- The classifier and contract tests now reject exact behavior-evidence rows accidentally nested under `patterns:`, mirroring the earlier consumer-availability guardrail.
+
+Validation after implementation:
+
+```bash
+python3 scripts/primitive_scope_classifier.py --project-dir . --fail-contradictions --fail-low-confidence
+python3 scripts/primitive_parse_inventory.py --project-dir . --output /tmp/primitive-inventory-041.json
+.venv/bin/python -m pytest tests/red_team/portability/test_low_confidence_scope_batch.py tests/contracts/test_primitive_scope_governance.py::test_consumer_availability_exact_paths_are_not_nested_under_patterns tests/contracts/test_primitive_scope_governance.py::test_behavior_evidence_exact_primitives_are_not_nested_under_patterns tests/contracts/test_projectable_script_surface_evidence.py tests/contracts/test_primitive_scope_classification.py tests/behavior/test_consumer_project_projection.py::test_codex_project_install_has_closed_hook_runtime_dependencies -q
+```
+
+Result:
+
+- `low_confidence`: 0
+- `contradictions`: 0
+- `structural_findings`: `{}`

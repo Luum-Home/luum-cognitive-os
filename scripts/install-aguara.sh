@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # install-aguara.sh — Install aguara AI agent security scanner and mcp-aguara MCP server
 #
 # Driver status: Claude Code only for hook/MCP wiring examples. The binaries

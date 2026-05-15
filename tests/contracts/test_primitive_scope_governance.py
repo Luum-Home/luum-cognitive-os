@@ -67,6 +67,18 @@ def test_consumer_availability_exact_paths_are_not_nested_under_patterns() -> No
     assert not misplaced_patterns, "pattern consumer-availability rows must live under patterns, not items:\n" + "\n".join(misplaced_patterns)
 
 
+def test_behavior_evidence_exact_primitives_are_not_nested_under_patterns() -> None:
+    manifest = yaml.safe_load((REPO / "manifests" / "primitive-behavior-evidence.yaml").read_text(encoding="utf-8"))
+    evidence = manifest.get("evidence", [])
+    patterns = manifest.get("patterns", [])
+
+    misplaced_primitives = [row["primitive"] for row in patterns if isinstance(row, dict) and row.get("primitive")]
+    misplaced_patterns = [row["pattern"] for row in evidence if isinstance(row, dict) and row.get("pattern")]
+
+    assert not misplaced_primitives, "exact behavior-evidence rows must live under evidence, not patterns:\n" + "\n".join(misplaced_primitives)
+    assert not misplaced_patterns, "pattern behavior-evidence rows must live under patterns, not evidence:\n" + "\n".join(misplaced_patterns)
+
+
 @pytest.mark.timeout(180)
 def test_every_family_has_regenerable_or_contract_classification_surface() -> None:
     manifest = yaml.safe_load((REPO / "manifests" / "primitive-scope-classification.yaml").read_text(encoding="utf-8"))

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # ai-provider-identity-guard.sh — PostToolUse guard for invented AI-provider emails.
 # CONCERNS: provenance, credibility, public-history-safety
 set -uo pipefail

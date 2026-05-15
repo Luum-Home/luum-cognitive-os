@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # CONCERNS: safety, file-ops, adr-003-mechanism-c-r2
 # Destructive File Op Blocker — PreToolUse Bash
 #

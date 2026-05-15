@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # Cognitive OS Doctor — Health check for all dependencies
 # Usage: bash scripts/doctor.sh [--quiet]
 #

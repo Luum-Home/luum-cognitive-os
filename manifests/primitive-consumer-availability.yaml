@@ -3708,6 +3708,286 @@ items:
   rationale: Manual scope calibration iteration 040 classified project-only. Template is copied or
     adapted into consumer projects as project-local configuration/context, not used to build
     COS itself.
+- path: hooks/aguara-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/ai-provider-identity-guard.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/code-review-on-commit.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/confidentiality-enforcer.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/content-policy.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/destructive-rm-blocker.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/doc-sync-detector.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/git-commit-scope-guard.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/global-verify.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/guardrails-validator.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/mcp-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/parry-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/pre-commit-gate.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/predev-completeness-check.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/private-mode-gate.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/private-mode-metrics-gate.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/rate-limit-drain.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/rate-limit-precheck.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/rate-limiter.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/reinvention-check.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/release-guard.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/semgrep-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/valkey-ensure.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/worktree-submodule-fix.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/cos-postgres-local.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/cos-valkey-local.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/credibility-audit.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/doctor.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-aguara.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-credibility-tools.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-garak.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-mcp-scan.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-promptfoo.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-syft-grype.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-tob-skills.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/install-trivy.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/license-audit-syft-grype.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: scripts/license-audit-trivy.sh
+  status: shared-surface
+  rationale: Manual scope implementation iteration 041 classified both after surgical review. Generic
+    repo/agent governance or portable operator tooling useful in COS and adopter
+    repositories when projected; paired proof is
+    tests/red_team/portability/test_low_confidence_scope_batch.py.
+- path: hooks/architecture-compliance.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/dry-run-preview.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/infra-intent-detector.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/jupyter-sandbox.sh
+  status: projected-consumer-surface
+  rationale: Manual scope implementation iteration 041 classified project-only after surgical review.
+    Consumer project workflow/control that COS does not need for its own construction.
+- path: hooks/ecosystem-check.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: hooks/pre-cleanup-snapshot.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/cos-cloud-worker-bootstrap.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/dependency-lane.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/deps-update.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/install-git-filter-repo.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+- path: scripts/setup-git-hooks.sh
+  status: maintainer-only
+  rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
+    to Cognitive OS construction, local maintainer operation, or source-repo automation
+    rather than consumer-project governance.
+
 patterns:
 - pattern: scripts/**
   status: so-local-only

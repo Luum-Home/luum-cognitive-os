@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: os-only
 # @manual-trigger: manage optional heavy dependency lanes after ADR-145
 # dependency-lane.sh — list, inspect, and install optional heavy dependency lanes
 set -euo pipefail

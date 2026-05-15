@@ -197,11 +197,13 @@ evidence:
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/chaos/test_destructive_rm_blocker.py
   - tests/chaos/test_safety_drill.py
   - tests/contracts/test_killswitch.py
   - tests/contracts/test_p95_hook_latency.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/direct-main-guard.sh
   harnesses:
@@ -295,9 +297,11 @@ evidence:
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/audit/test_adr_140_cos_worker_compose.py
   - tests/unit/test_projected_hook_gap_behaviors.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/git-context-capture.sh
   harnesses:
@@ -354,9 +358,11 @@ evidence:
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/behavior/test_security_integrations.py
   - tests/hooks/test_hook_graceful_degradation.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/memory-prefetch.sh
   harnesses:
@@ -416,29 +422,35 @@ evidence:
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/integration/test_rate_limit_drainer_executes.py
   - tests/integration/test_rate_limiter_hook_retry_flow.py
   - tests/unit/test_rate_limiter_edge_matrix.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rate-limit-precheck.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/e2e/test_cos_smoke.py
   - tests/integration/test_query_tailored_context.py
   - tests/integration/test_rate_limit_precheck_lift.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rate-limiter.sh
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/audit/test_hook_disable_env.py
   - tests/behavior/test_hook_architecture.py
   - tests/behavior/test_pentest_self.py
   - tests/hooks/conftest.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/reaper-daemon-launcher.sh
   harnesses:
@@ -454,11 +466,13 @@ evidence:
   harnesses:
   - claude
   - codex
+  - shell-ci
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/chaos/test_release_guard_exercised.py
   - tests/integration/test_project_settings_generation.py
   - tests/unit/test_chaos_template.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
   rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/result-truncator.sh
   harnesses:
@@ -786,10 +800,16 @@ evidence:
 - primitive: scripts/cos-postgres-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/cos-valkey-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/dependency-lane.sh
   tests:
@@ -806,22 +826,37 @@ evidence:
 - primitive: scripts/install-aguara.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-garak.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-mcp-scan.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-promptfoo.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-tob-skills.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  harnesses:
+  - shell-ci
   rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/setup-git-hooks.sh
   tests:
@@ -904,6 +939,198 @@ evidence:
   tests:
   - tests/hooks/test_hook_graceful_degradation.py
   rationale: Explicit behavior proof for the session-end cleanup hook graceful-degradation contract; it must exit cleanly when cleanup tooling is unavailable.
+- primitive: hooks/aguara-scan.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/ai-provider-identity-guard.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/code-review-on-commit.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/confidentiality-enforcer.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/content-policy.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/doc-sync-detector.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/global-verify.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/guardrails-validator.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/parry-scan.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/pre-commit-gate.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/predev-completeness-check.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/private-mode-gate.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/private-mode-metrics-gate.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/reinvention-check.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/semgrep-scan.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/valkey-ensure.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: hooks/worktree-submodule-fix.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/credibility-audit.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/doctor.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/install-credibility-tools.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/install-syft-grype.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/install-trivy.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/license-audit-syft-grype.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+- primitive: scripts/license-audit-trivy.sh
+  harnesses:
+  - claude
+  - codex
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_low_confidence_scope_batch.py
+  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
 patterns:
 - pattern: tests/**
   behavior_proven: true

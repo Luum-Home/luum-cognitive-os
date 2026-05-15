@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # install-mcp-scan.sh — Install MCP-Scan (Invariant Labs) MCP server configuration scanner
 #
 # Driver status: Claude Code only for hook wiring examples. The scanner itself

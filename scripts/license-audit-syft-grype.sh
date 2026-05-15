@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # license-audit-syft-grype.sh — Primary ADR-212 cross-stack SBOM + vulnerability/license audit
 set -euo pipefail
 
