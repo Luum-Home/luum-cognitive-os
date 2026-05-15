@@ -1626,6 +1626,36 @@ items:
 - path: skills/sdd-continue/SKILL.md
   status: shared-surface
   rationale: 'Manual scope calibration iteration 018: SDD continuation/state inspection is used for COS changes and adopter project changes.'
+- path: skills/sdd-resume/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: SDD pipeline resume/state inspection applies to COS changes and adopter project changes.'
+- path: skills/security-red-team/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 019: unified security red-team inventories and scores Cognitive OS primitive surfaces, manifests, hooks, rules, skills, and COS tests.'
+- path: skills/session-manager/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: Cognitive OS session list/inspect/cleanup applies to COS source sessions and installed COS sessions in adopter projects.'
+- path: skills/session-report-executive/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: executive session reporting translates COS metrics for COS work and adopter project work.'
+- path: skills/session-wrapup/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: end-of-session backlog, Engram, and summary routine applies to COS maintenance and adopter project sessions.'
+- path: skills/skill-creator/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: skill authoring and package scaffolding can create COS source skills and adopter project/package skills.'
+- path: skills/validate-config/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: validates Cognitive OS configuration in COS source and installed/project overlays.'
+- path: skills/vulnerability-scan/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: Garak LLM vulnerability scanning applies to COS LLM endpoints and adopter project LLM endpoints.'
+- path: skills/wiki-ingest/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: raw-source to docs-vault ingestion is reusable for COS knowledge docs and adopter project documentation vaults.'
+- path: skills/worktree-triage/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 019: git worktree/branch triage is repository-agnostic for COS and adopter project worktrees.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
