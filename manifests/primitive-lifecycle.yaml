@@ -16851,3 +16851,279 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
+- id: hooks/_lib/artifact-status.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/artifact-status.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: loads COS persisted test/coverage artifacts for governance hooks.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/artifact-status.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/cache.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/cache.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: stores hook scan cache under .cognitive-os/cache for COS hook execution.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/cache.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/circuit-breaker.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/circuit-breaker.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: implements COS auto-repair circuit breaker state under .cognitive-os metrics.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/circuit-breaker.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/common.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/common.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: shared runtime resolver for Cognitive OS hooks and COS config/session paths.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/common.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/context_budget_lib.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/context_budget_lib.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: accounts ADR-186 context budget for COS hook additionalContext output.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/context_budget_lib.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/dispatch_gate_check.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/dispatch_gate_check.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: single-pass implementation for COS dispatch-gate hook and COS agent/task limits.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/dispatch_gate_check.py
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/execute-repair.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/execute-repair.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: executes COS remediation/repair hook workflow.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/execute-repair.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/file_checker.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/file_checker.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: shared file-check helper for COS hooks.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/file_checker.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/hook-pipe.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/hook-pipe.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: stores cross-hook values in .cognitive-os hook-pipe runtime state.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/hook-pipe.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/normalize-stdin.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/normalize-stdin.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: normalizes coding-harness hook JSON for COS hook runtime adapters.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/normalize-stdin.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/portable.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/portable.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: portable shell helper sourced by COS hook/runtime scripts, not a standalone project primitive.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/portable.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/push-collision-check.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/push-collision-check.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 020: push collision detector library invoked by COS hook gates.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/push-collision-check.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.

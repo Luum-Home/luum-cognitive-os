@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # portable.sh — Cross-platform shell helpers for macOS (BSD userland, bash 3.2)
 #               and Linux (GNU userland, bash 4+) and WSL.
 #

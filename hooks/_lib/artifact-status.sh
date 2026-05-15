@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Shared artifact status loaders for governance hooks.
 #
 # Contract:

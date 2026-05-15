@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # push-collision-check.sh — ADR-116 P4.2: subject collision detection at push time.
 #
 # Library: sourced by orchestrator-claim-gate.sh (or called directly as a hook).

@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:45:15+00:00'
+generated_at: '2026-05-15T11:49:04+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -12,6 +12,16 @@ primitives:
   projection_targets:
   - hooks/_lib/agent-context.sh
   sha256: 32e1186699cf8be2caf8ff3d5d599becbce32c5c66c4664574ffd053fd4f8a43
+- id: hooks/_lib/artifact-status.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/artifact-status.sh
+  sha256: a1381868cad7978175805c5370fb726c19d5ba8ad96586bf5d4b2a68b39c5604
 - id: hooks/_lib/bypass-resolver.sh
   kind: hook
   owner_adr: ADR-314
@@ -22,6 +32,86 @@ primitives:
   projection_targets:
   - hooks/_lib/bypass-resolver.sh
   sha256: ecd1e7af0b58f94f8df7c081e0c417c40b5a452192033e37e36a76853d750e5e
+- id: hooks/_lib/cache.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/cache.sh
+  sha256: 1e1a6be0ea8b24e5179a81ab7d9706cd03612d14f6d00cb7204b91aae77ceb3a
+- id: hooks/_lib/circuit-breaker.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/circuit-breaker.sh
+  sha256: e066d5aa894c4b91fafb52c7c6ad75cb4a4537b20de194ecedd95c45a49ff006
+- id: hooks/_lib/common.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/common.sh
+  sha256: d7f3aacc3ea8637f057b465d1959b069c31cbd622631e49721759315ca439918
+- id: hooks/_lib/context_budget_lib.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/context_budget_lib.sh
+  sha256: 9ee6cad0ca855f34a8f16ddcb2c1469144dfdb00c262c3e0346b510054a2966b
+- id: hooks/_lib/dispatch_gate_check.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/dispatch_gate_check.py
+  sha256: 4e563e915c15ca8df86c58fcfa3024c53351c9cd2a7b3ac3429bdbc8c6213e3e
+- id: hooks/_lib/execute-repair.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/execute-repair.sh
+  sha256: 41efd399c2695c5002b83324ef4fed65742adebea81e5fe29931a4ecb7ab0c86
+- id: hooks/_lib/file_checker.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/file_checker.sh
+  sha256: f03ba26573764d487275209cd45f4a79093391118559dd66091144ab74d79a0b
+- id: hooks/_lib/hook-pipe.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/hook-pipe.sh
+  sha256: db2b0ebbd8bceb9e2e960969dedccca57f712e0c0f6a2d9c942ceaf0af7fe991
 - id: hooks/_lib/killswitch_check.sh
   kind: hook
   owner_adr: ADR-314
@@ -32,6 +122,26 @@ primitives:
   projection_targets:
   - hooks/_lib/killswitch_check.sh
   sha256: acbabafd4a19c85b37a64e42091f72b86bbfe31319973686d66686f727bbe0db
+- id: hooks/_lib/normalize-stdin.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/normalize-stdin.sh
+  sha256: 95876d83ffb3426e6e4a587bec7c1b236c2880b44e7db366fad151b4c87a047c
+- id: hooks/_lib/portable.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/portable.sh
+  sha256: 6fb2d86baa81f667f0560607af188e9cc6de18330b9404a769d991a6ca8c9602
 - id: hooks/_lib/primitive-intervention.sh
   kind: hook
   owner_adr: ADR-314
@@ -42,6 +152,16 @@ primitives:
   projection_targets:
   - hooks/_lib/primitive-intervention.sh
   sha256: 53b6ee5086bee0bf467cbf41534da4f806a362d672abac85a8c8a24e23e84ce6
+- id: hooks/_lib/push-collision-check.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/push-collision-check.sh
+  sha256: 24cc6b566c722ed3d80ec555f110fceae6449fb596ea90712dfc32bf99714b09
 - id: hooks/_lib/recap_adapter.py
   kind: hook
   owner_adr: ADR-314

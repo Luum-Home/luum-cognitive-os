@@ -7,22 +7,22 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 ```json
 {
   "by_bucket": {
-    "insufficient-metadata": 231
+    "insufficient-metadata": 219
   },
   "by_declared_scope": {
-    "both": 231
+    "both": 219
   },
   "by_gap": {
-    "missing-consumer-availability-row": 231,
-    "missing-lifecycle-row": 231,
-    "no-distribution-evidence": 231
+    "missing-consumer-availability-row": 219,
+    "missing-lifecycle-row": 219,
+    "no-distribution-evidence": 219
   },
   "by_prefix": {
-    "hooks": 36,
+    "hooks": 24,
     "rules": 80,
     "scripts": 115
   },
-  "total_unknown": 231
+  "total_unknown": 219
 }
 ```
 
@@ -39,22 +39,10 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `os-only-semantic-candidate` | Text looks SO-internal. | Add os-only lifecycle/consumer metadata if confirmed. |
 | `insufficient-metadata` | No clear deterministic semantic direction. | Needs manual or AI-assisted adjudication. |
 
-## insufficient-metadata (231)
+## insufficient-metadata (219)
 
 | Path | Declared | Hints | Gaps | Structure | Summary |
 |---|---|---|---|---|---|
-| `hooks/_lib/artifact-status.sh` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Shared artifact status loaders for governance hooks. |
-| `hooks/_lib/cache.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | cache.sh — SHA-256 file cache for hook scans |
-| `hooks/_lib/circuit-breaker.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | circuit-breaker.sh — Per-error-type circuit breaker for auto-repair |
-| `hooks/_lib/common.sh` | both | os=2; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | common.sh — Shared utility functions for Cognitive OS hooks |
-| `hooks/_lib/context_budget_lib.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Shared ADR-186 context-budget accountant for hooks that emit additionalContext. |
-| `hooks/_lib/dispatch_gate_check.py` | both | os=2; generic=1; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Single-pass dispatch gate check — consolidates all python3 invocations from dispatch-gate.sh. |
-| `hooks/_lib/execute-repair.sh` | both | os=1; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | execute-repair.sh — Core execution engine for auto-repair system |
-| `hooks/_lib/file_checker.sh` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Symlink-aware file existence checker. |
-| `hooks/_lib/hook-pipe.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | hook-pipe.sh — Inter-hook data sharing within an event chain |
-| `hooks/_lib/normalize-stdin.sh` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | normalize-stdin.sh — Stdin normalization layer for Cognitive OS hooks |
-| `hooks/_lib/portable.sh` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | portable.sh — Cross-platform shell helpers for macOS (BSD userland, bash 3.2) |
-| `hooks/_lib/push-collision-check.sh` | both | os=1; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | push-collision-check.sh — ADR-116 P4.2: subject collision detection at push time. |
 | `hooks/_lib/register-bg.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | register-bg.sh — ADR-028 D1.B  Process Registry helper |
 | `hooks/_lib/remediation.sh` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | remediation.sh — Shared library for remediation registry operations |
 | `hooks/_lib/resolve-main-worktree.sh` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | resolve-main-worktree.sh — Shared library: resolve the main worktree path. |
@@ -93,5 +81,17 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `rules/assumption-tracking.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Assumption Tracking |
 | `rules/audit-trail.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Audit Trail — Automated Work Tracking |
 | `rules/auto-rollback.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Rollback Planning Protocol |
-| … | … | … | … | … | 181 more rows in JSON report. |
+| `rules/auto-skill-generation.md` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Auto-Skill Generation Protocol |
+| `rules/bash-naming.md` | both | os=2; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Bash Script Naming — Kebab-Case Required |
+| `rules/blast-radius.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Blast Radius Estimation |
+| `rules/capability-levels.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Capability Levels — Auto-Disable Components |
+| `rules/clarification-gate.md` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Mandatory Clarification Gate |
+| `rules/closed-loop-prompts.md` | both | os=1; generic=6; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Closed-Loop Prompts — Self-Correcting Agent Execution |
+| `rules/cognitive-load.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Cognitive Load Monitoring |
+| `rules/confidence-gate.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Confidence Gate Protocol |
+| `rules/confidentiality-protection.md` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Confidentiality Protection — IP Leak Prevention |
+| `rules/consequence-system.md` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Consequence System — OKR-Driven Feedback Loop |
+| `rules/content-policy.md` | both | os=1; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Content Policy — Automated Enforcement |
+| `rules/context-management.md` | both | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Context Window Management — Proactive Summarization Protocol |
+| … | … | … | … | … | 169 more rows in JSON report. |
 

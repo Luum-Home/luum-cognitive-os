@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # cache.sh — SHA-256 file cache for hook scans
 #
 # Skips re-scanning files that have not changed since last scan.

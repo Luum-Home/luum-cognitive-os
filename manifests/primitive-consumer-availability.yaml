@@ -1656,6 +1656,42 @@ items:
 - path: skills/worktree-triage/SKILL.md
   status: shared-surface
   rationale: 'Manual scope calibration iteration 019: git worktree/branch triage is repository-agnostic for COS and adopter project worktrees.'
+- path: hooks/_lib/artifact-status.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: loads COS persisted test/coverage artifacts for governance hooks.'
+- path: hooks/_lib/cache.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: stores hook scan cache under .cognitive-os/cache for COS hook execution.'
+- path: hooks/_lib/circuit-breaker.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: implements COS auto-repair circuit breaker state under .cognitive-os metrics.'
+- path: hooks/_lib/common.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: shared runtime resolver for Cognitive OS hooks and COS config/session paths.'
+- path: hooks/_lib/context_budget_lib.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: accounts ADR-186 context budget for COS hook additionalContext output.'
+- path: hooks/_lib/dispatch_gate_check.py
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: single-pass implementation for COS dispatch-gate hook and COS agent/task limits.'
+- path: hooks/_lib/execute-repair.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: executes COS remediation/repair hook workflow.'
+- path: hooks/_lib/file_checker.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: shared file-check helper for COS hooks.'
+- path: hooks/_lib/hook-pipe.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: stores cross-hook values in .cognitive-os hook-pipe runtime state.'
+- path: hooks/_lib/normalize-stdin.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: normalizes coding-harness hook JSON for COS hook runtime adapters.'
+- path: hooks/_lib/portable.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: portable shell helper sourced by COS hook/runtime scripts, not a standalone project primitive.'
+- path: hooks/_lib/push-collision-check.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 020: push collision detector library invoked by COS hook gates.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
