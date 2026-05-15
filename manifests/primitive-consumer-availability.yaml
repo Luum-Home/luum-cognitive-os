@@ -2269,6 +2269,22 @@ items:
 - path: scripts/engram-sync.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 035: project-scoped Engram sync/export is cross-device memory portability for COS and adopter repositories.'
+
+- path: scripts/compose_agent_prompt.py
+  status: maintainer-only
+  rationale: 'Manual scope review iteration 036: prompt trap composer embeds COS repository gotchas such as generated settings, lib symlink invariants, and .cognitive-os internals.'
+- path: scripts/cos-agent-daemon
+  status: shared-surface
+  rationale: 'Manual scope review iteration 036: detached agent daemon is local-first agent runtime infrastructure for COS and adopter repositories.'
+- path: scripts/cos-governed-agent.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 036: governed agent launcher enforces generic task claims, work inventory, and branch writer leases across COS and adopter repositories.'
+- path: scripts/cos_agent_message.py
+  status: shared-surface
+  rationale: 'Manual scope review iteration 036: directed agent message bus coordinates auditor/operator sessions in COS and adopter repositories.'
+- path: scripts/extract-agent-output.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 036: agent JSONL output extraction is a generic operator utility for COS and Claude-based adopter repositories.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

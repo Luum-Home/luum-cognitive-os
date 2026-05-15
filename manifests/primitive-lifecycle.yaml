@@ -10449,6 +10449,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
@@ -10472,9 +10473,6 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-team
-  consumer_access_next_action: Keep paired portability proof current before claiming
-    broad consumer availability.
 - id: scripts/cos-governed-edit.sh
   kind: script
   owner_adr: ADR-314
@@ -17945,3 +17943,96 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: advisory
   metrics_file: .cognitive-os/runtime/agent-audit-trail.jsonl
+
+- id: scripts/compose_agent_prompt.py
+  kind: script
+  owner_adr: ADR-032
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: maintainer-prompt-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/compose_agent_prompt.py
+  - templates/project-gotchas.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 036: script warns about COS-specific repository traps rather than generic adopter-project behavior.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_compose_agent_prompt.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/cos-agent-daemon
+  kind: script
+  owner_adr: ADR-235
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: detached-agent-runtime
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-agent-daemon
+  - lib/agent_daemon.py
+  - lib/agent_lifecycle.py
+  - lib/agent_team.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 036: local-first detached agent daemon accepts explicit project/root dirs and exposes generic enqueue/list/run/reap operations.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_cos-agent-daemon.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: .cognitive-os/metrics/agent-daemon.jsonl
+- id: scripts/cos_agent_message.py
+  kind: script
+  owner_adr: ADR-185
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: agent-message-bus
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos_agent_message.py
+  - lib/agent_message_bus.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 036: directed message CLI uses explicit project-dir/environment and coordinates generic cross-session agent workflows.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_cos_agent_message.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: .cognitive-os/metrics/agent-messages.jsonl
+- id: scripts/extract-agent-output.sh
+  kind: script
+  owner_adr: ADR-047
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: agent-output-operator-tool
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - scripts/extract-agent-output.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 036: extracts assistant text/summary from agent JSONL output files without COS source-tree dependencies.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_extract-agent-output.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: none

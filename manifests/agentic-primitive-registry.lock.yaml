@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T15:57:46+00:00'
+generated_at: '2026-05-15T16:00:16+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -4021,6 +4021,17 @@ primitives:
   projection_targets:
   - scripts/check_test_quality.py
   sha256: 87ca8d1629e1a29c06aa45b9e80ceb9d4c6d37d0df7aab4cbca034c3899992ef
+- id: scripts/compose_agent_prompt.py
+  kind: script
+  owner_adr: ADR-032
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/compose_agent_prompt.py
+  - templates/project-gotchas.md
+  sha256: 9563ef8962f60a1fcda65875d285c14abba9e949a08372605e9495fd74cf77bd
 - id: scripts/cos
   kind: script
   owner_adr: ADR-146
@@ -4107,6 +4118,19 @@ primitives:
   - skills/adr-tombstone/SKILL.md
   - scripts/cos-adr-tombstone
   sha256: e9ad2cc95252936202214bde229b75189132210034b78b0fb244159d00e0b4e9
+- id: scripts/cos-agent-daemon
+  kind: script
+  owner_adr: ADR-235
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-agent-daemon
+  - lib/agent_daemon.py
+  - lib/agent_lifecycle.py
+  - lib/agent_team.py
+  sha256: 3b69ec1501a0f6f3849dad3f659cda1109ee57e69762c1eb37df1b617e05b721
 - id: scripts/cos-agent-message
   kind: script
   owner_adr: ADR-185
@@ -5029,6 +5053,17 @@ primitives:
   projection_targets:
   - scripts/cos-worktree-triage.sh
   sha256: 9c56d0f53cb980698d21b91f98b84014dfc88616241215ac7587f7992fbcd6f6
+- id: scripts/cos_agent_message.py
+  kind: script
+  owner_adr: ADR-185
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos_agent_message.py
+  - lib/agent_message_bus.py
+  sha256: abb27ab61e46c814b693b6c8823595746b9275e8a27baaafac863adf76c2f61f
 - id: scripts/cos_architecture_readiness.py
   kind: script
   owner_adr: ADR-146
@@ -5347,6 +5382,16 @@ primitives:
   projection_targets:
   - scripts/engram-sync.sh
   sha256: 7a10b8041f13b3f3f4817dea08e07ae81b328123d964fbea0d0fbd01301b5373
+- id: scripts/extract-agent-output.sh
+  kind: script
+  owner_adr: ADR-047
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/extract-agent-output.sh
+  sha256: 2fd49019691a4c10e9cac7cdf0873c0ac5c1261cbf42206b8b854736cc737dde
 - id: scripts/generate-project-settings.sh
   kind: script
   owner_adr: ADR-146

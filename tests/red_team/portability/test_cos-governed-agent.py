@@ -23,3 +23,25 @@ def test_cos_governed_agent_runs_from_arbitrary_project_root(tmp_path: Path) -> 
     )
     assert result.returncode == 0, result.stderr or result.stdout
     assert "Usage" in (result.stdout + result.stderr) or "[1/4]" in (result.stdout + result.stderr)
+
+
+def test_cos_governed_agent_has_passing_scope_contract() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/primitive_scope_classifier.py",
+            "--project-dir",
+            ".",
+            "--paths",
+            "scripts/cos-governed-agent.sh",
+            "--fail-contradictions",
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert '"by_effective_scope": {"both": 1}' in result.stdout

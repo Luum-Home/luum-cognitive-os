@@ -23,3 +23,25 @@ def test_cos_agent_daemon_runs_from_arbitrary_project_root(tmp_path: Path) -> No
     )
     assert result.returncode == 0, result.stderr or result.stdout
     assert "usage:" in (result.stdout + result.stderr).lower()
+
+
+def test_cos_agent_daemon_has_passing_scope_contract() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/primitive_scope_classifier.py",
+            "--project-dir",
+            ".",
+            "--paths",
+            "scripts/cos-agent-daemon",
+            "--fail-contradictions",
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert '"by_effective_scope": {"both": 1}' in result.stdout

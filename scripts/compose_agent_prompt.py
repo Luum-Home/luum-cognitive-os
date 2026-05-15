@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 # @on-demand: pipe agent prompt draft through before Agent calls touching settings.json/lib/*.py (ADR-032 orchestrator-prompt-compose)
 """
 compose_agent_prompt.py — Prepend trap warnings to an agent prompt before launch.

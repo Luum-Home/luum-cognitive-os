@@ -24,3 +24,25 @@ def test_compose_agent_prompt_runs_from_arbitrary_project_root(tmp_path: Path) -
     )
     assert result.returncode == 0, result.stderr
     assert "ordinary prompt" in result.stdout
+
+
+def test_compose_agent_prompt_has_passing_scope_contract() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/primitive_scope_classifier.py",
+            "--project-dir",
+            ".",
+            "--paths",
+            "scripts/compose_agent_prompt.py",
+            "--fail-contradictions",
+        ],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert '"by_effective_scope": {"os-only": 1}' in result.stdout
