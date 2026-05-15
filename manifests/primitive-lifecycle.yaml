@@ -5427,7 +5427,8 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: maintainer
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: delivery-structure
   risk_class: advisory
   supported_harnesses:
@@ -5441,6 +5442,7 @@ primitives:
   evidence_commands:
   - bash -n scripts/cos-doctor-harness.sh
   - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  - python3 -m pytest tests/red_team/portability/test_cos-doctor-harness.py -q
   rollback_or_repair_command: Remove or update the scripts/cos-doctor-harness.sh lifecycle
     row only after profile projection/install-path review, then regenerate primitive
     readiness ledgers.
@@ -5490,7 +5492,8 @@ primitives:
   owner_adr: ADR-116
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -5505,6 +5508,7 @@ primitives:
   evidence_commands:
   - bash scripts/cos-doctor-preserve.sh --help >/dev/null
   - python3 -m pytest tests/behavior/test_cos_doctor_preserve.py -q
+  - python3 -m pytest tests/red_team/portability/test_cos-doctor-preserve.py -q
   rollback_or_repair_command: Disable preserve-branch doctor invocation from the active
     profile and keep preservation branches untouched for manual triage.
   sunset_criteria: Archive when preserve-branch lifecycle is enforced by the protected
@@ -17847,3 +17851,48 @@ primitives:
   exit_behavior: sourced-library
   metrics_file: none
   consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+
+- id: scripts/cos-doctor-concurrency.sh
+  kind: script
+  owner_adr: ADR-108
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: concurrent-agent-safety-doctor
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-doctor-concurrency.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 034: read-only doctor checks generic concurrent-agent safety proofs and can run in COS or adopter repositories.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_cos-doctor-concurrency.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/cos-doctor-work-inventory.sh
+  kind: script
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: work-inventory-doctor
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-doctor-work-inventory.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 034: projectable inventory reports branches, worktrees, stashes, claims, and dirty WIP for any repository.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_cos-doctor-work-inventory.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: none
