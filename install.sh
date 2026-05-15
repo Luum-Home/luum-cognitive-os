@@ -278,7 +278,15 @@ else
 fi
 
 # ── Source detection ──────────────────────────────────────────────────
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_SOURCE="${BASH_SOURCE[0]-${0-}}"
+if [ -n "$SCRIPT_SOURCE" ] && [ -e "$SCRIPT_SOURCE" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" && pwd)"
+else
+  # curl-pipe / bash -s execution has no on-disk script path. In that mode the
+  # installer must not infer the current project as the COS source, so remote
+  # clone remains the source of truth.
+  SCRIPT_DIR=""
+fi
 
 if [ -n "$FROM_FLAG" ]; then
   # Explicit --from flag

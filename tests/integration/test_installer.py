@@ -470,6 +470,30 @@ class TestFreshInstall:
         assert (project / ".codex" / "hooks.json").is_file()
         assert not (project / ".claude" / "CLAUDE.md").exists()
 
+    def test_optional_github_remote_install_without_from(self, tmp_path):
+        """Optional live GitHub smoke for the default no---from install path."""
+        if os.environ.get("COS_RUN_GITHUB_REMOTE_INSTALL_SMOKE") != "1":
+            pytest.skip("set COS_RUN_GITHUB_REMOTE_INSTALL_SMOKE=1 to run live GitHub install smoke")
+
+        project = tmp_path / "github-remote-install-app"
+        _init_git_project(project, {"README.md": "# GitHub Remote Install\n"})
+
+        result = subprocess.run(
+            ["bash", "-s", "--", "--force", "--harness=codex"],
+            cwd=project,
+            input=INSTALLER.read_text(),
+            capture_output=True,
+            text=True,
+            timeout=240,
+            env=os.environ.copy(),
+        )
+
+        assert result.returncode == 0, f"GitHub remote installer failed:\n{result.stderr}\n{result.stdout}"
+        assert "Downloading Cognitive OS" in result.stdout
+        assert "Harness:        codex" in result.stdout
+        assert (project / ".codex" / "hooks.json").is_file()
+        assert not (project / ".claude" / "CLAUDE.md").exists()
+
     def test_codex_reinstall_preserves_existing_claude_settings_without_claude_md(self, tmp_path, cos_source):
         """Upgrade: Codex install must not synthesize Claude instructions in a legitimate .claude/ dir."""
         project = tmp_path / "codex-with-existing-claude-settings"
