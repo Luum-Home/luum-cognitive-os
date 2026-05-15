@@ -21,7 +21,7 @@ triggers:
 - Agentic Primitive Classifier
 - Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Agentic Primitive Classifier
 
 ## When to Use
