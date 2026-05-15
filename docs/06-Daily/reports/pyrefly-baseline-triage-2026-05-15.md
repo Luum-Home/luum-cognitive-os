@@ -526,3 +526,23 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 3: **268 → 173** non-import Pyrefly errors.
+
+### Remediation pass 2b — webhook trigger residual narrowing
+
+Follow-up on `packages/ecosystem-tools/lib/webhook_trigger.py` after the first API-drift fix:
+
+- Replaced stale `ClaudeResult.stderr` access with current `error_message`/`result_text` fields.
+- Added explicit optional-dependency assertions before constructing/running FastAPI/uvicorn.
+- Typed the request handler parameter as `Any` so FastAPI can provide the runtime request object while the optional import fallback stays importable.
+
+Validation:
+
+```bash
+uv run pytest tests/unit/test_webhook_trigger.py tests/red_team/portability/test_webhook_trigger.py -q
+# 44 passed in 0.19s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=165 elapsed_seconds=2 ...
+```
+
+Running baseline after pass 2b/3: **268 → 165** non-import Pyrefly errors.
