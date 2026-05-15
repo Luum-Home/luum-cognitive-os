@@ -1902,6 +1902,81 @@ items:
 - path: hooks/work-queue-sync.sh
   status: maintainer-only
   rationale: 'Manual scope calibration iteration 024: captures COS todo and agent completion events in the canonical work queue log.'
+- path: hooks/adaptive-bypass.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: task-complexity classification and workflow recommendation applies to COS maintenance and adopter project tasks without COS-source-specific paths.'
+- path: hooks/assumption-tracker.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: detecting assumption-heavy agent outputs is repo-agnostic quality governance for COS and adopter projects.'
+- path: hooks/auto-verify.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: extracting and running acceptance criteria is generic verification behavior for any repo using the runtime.'
+- path: hooks/blast-radius.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: estimating task impact scope is repo-agnostic safety guidance for COS and adopter repositories.'
+- path: hooks/claim-validator.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: checking agent file claims against filesystem reality applies equally to COS and project work.'
+- path: hooks/clarification-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: blocking vague agent prompts is generic quality control for any repository task.'
+- path: hooks/completeness-check-llm.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: LLM-evaluated prompt completeness is generic task-quality governance.'
+- path: hooks/concurrent-write-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: file-level write serialization protects any multi-agent repository, not only COS source.'
+- path: hooks/confidence-gate-llm.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: LLM-evaluated Trust Report presence is generic output-quality governance.'
+- path: hooks/confidence-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: Trust Report threshold enforcement is generic completion-quality governance.'
+- path: hooks/context-budget-meter.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: context budget metering is generic agent-session hygiene for COS and adopter projects.'
+- path: hooks/context-diet.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: task-aware context minimization is generic agent workflow guidance.'
+- path: hooks/context-watchdog.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: context usage warnings and checkpoint advice apply to any long-running repository session.'
+- path: hooks/destructive-git-blocker.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: blocking destructive git operations is generic repository safety.'
+- path: hooks/direct-main-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: main/master branch isolation is generic repository safety for COS and adopter projects.'
+- path: hooks/dod-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: Definition of Done checks by task complexity are generic delivery-quality governance.'
+- path: hooks/large-file-advisor.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: large file read advice is generic context-safety guidance for any repo.'
+- path: hooks/prompt-quality-llm.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: LLM-evaluated prompt quality is generic pre-agent quality governance.'
+- path: hooks/resource-check.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: budget/resource checks before agent launches apply to COS and adopter project sessions.'
+- path: hooks/scope-creep-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: detecting edits outside approved task scope is generic repository safety.'
+- path: hooks/scope-proportionality.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: checking response proportionality to task scope is generic quality governance.'
+- path: hooks/secret-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: secret detection before/after tool use is generic repository security.'
+- path: hooks/token-budget-monitor.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: token budget monitoring before agent launches is generic runtime budget protection.'
+- path: hooks/tool-loop-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: detecting repetitive tool loops is generic agent-session safety.'
+- path: hooks/trust-score-validator.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 025: validating/logging Trust Reports is generic output-quality governance.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
