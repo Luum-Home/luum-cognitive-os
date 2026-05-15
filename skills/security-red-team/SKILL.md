@@ -28,7 +28,7 @@ routing_patterns:
 - pattern: \bred[- ]?team\s+security\b
   confidence: 0.85
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /security-red-team
 
 > Run a unified local red-team pass against Cognitive OS agentic primitives and

@@ -16630,3 +16630,224 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
+- id: skills/sdd-resume/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/sdd-resume/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: SDD pipeline resume/state inspection applies to COS changes and adopter project changes.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/sdd-resume/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/security-red-team/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/security-red-team/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: unified security red-team inventories and scores Cognitive OS primitive surfaces, manifests, hooks, rules, skills, and COS tests.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/security-red-team/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/session-manager/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/session-manager/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: Cognitive OS session list/inspect/cleanup applies to COS source sessions and installed COS sessions in adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/session-manager/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/session-report-executive/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/session-report-executive/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: executive session reporting translates COS metrics for COS work and adopter project work.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/session-report-executive/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/session-wrapup/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/session-wrapup/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: end-of-session backlog, Engram, and summary routine applies to COS maintenance and adopter project sessions.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/session-wrapup/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/skill-creator/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/skill-creator/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: skill authoring and package scaffolding can create COS source skills and adopter project/package skills.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/skill-creator/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/validate-config/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/validate-config/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: validates Cognitive OS configuration in COS source and installed/project overlays.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/validate-config/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/vulnerability-scan/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/vulnerability-scan/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: Garak LLM vulnerability scanning applies to COS LLM endpoints and adopter project LLM endpoints.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/vulnerability-scan/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/wiki-ingest/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/wiki-ingest/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: raw-source to docs-vault ingestion is reusable for COS knowledge docs and adopter project documentation vaults.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/wiki-ingest/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/worktree-triage/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/worktree-triage/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 019: git worktree/branch triage is repository-agnostic for COS and adopter project worktrees.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/worktree-triage/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
