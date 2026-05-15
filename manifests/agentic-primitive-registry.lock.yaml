@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T15:36:21+00:00'
+generated_at: '2026-05-15T15:53:10+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -4304,17 +4304,27 @@ primitives:
   projection_targets:
   - scripts/cos-doc-cross-reference-audit.py
   sha256: d09dcadcc8c0a53a58df8542c5e87d53c3259942d43996274a7031b601515f1c
+- id: scripts/cos-doctor-concurrency.sh
+  kind: script
+  owner_adr: ADR-108
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-doctor-concurrency.sh
+  sha256: a08478e8bb61aad3bcf564f56ed7e55b5ccaf76f500efe3e2335425258ca038a
 - id: scripts/cos-doctor-harness.sh
   kind: script
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: maintainer
+  distribution: core
   runtime_projection: false
   projection_targets:
   - scripts/cos-doctor-harness.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
-  sha256: 7f81e54244fa2c125d471a6de41a30ba46a0a5bd248c2e6b3c016dd689691a05
+  sha256: cfc05f3ad31542b6fd331be29d67eb8256dba0eebdb704b9a8df946e8ee4cbf5
 - id: scripts/cos-doctor-memory-lifecycle.sh
   kind: script
   owner_adr: ADR-146
@@ -4331,12 +4341,12 @@ primitives:
   owner_adr: ADR-116
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: core
   runtime_projection: false
   projection_targets:
   - scripts/cos-doctor-preserve.sh
   - docs/04-Concepts/architecture/preserve-branch-lifecycle.md
-  sha256: 7d4ae6c0090f1c3d3ebcae0f8863184aa23a961a3958b7427524ce1d31e635ab
+  sha256: 0c52534b8ae2f90b1bf2d6616b98888e1fa0a9e73c7e83e78f9b357d83b36815
 - id: scripts/cos-doctor-tools.sh
   kind: script
   owner_adr: ADR-146
@@ -4348,6 +4358,16 @@ primitives:
   - scripts/cos-doctor-tools.sh
   - manifests/primitive-readiness-protected-install-surfaces.yaml
   sha256: 300abfdaff207f749c8561079e939b5c87b1cbdcfdaafb1c9c7525cc7dc123c5
+- id: scripts/cos-doctor-work-inventory.sh
+  kind: script
+  owner_adr: ADR-318
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-doctor-work-inventory.sh
+  sha256: d4e8aff98fa4d778f387f46a1d127380bfbedcbeb2fbb86becf1fdfddce948bb
 - id: scripts/cos-doctrine-proposer
   kind: script
   owner_adr: ADR-135

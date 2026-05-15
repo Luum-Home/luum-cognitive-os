@@ -2246,6 +2246,19 @@ items:
 - path: scripts/stash_quarantine_audit.py
   status: shared-surface
   rationale: 'ADR-318: stash quarantine audit checks generic docs/code for unsafe stash instructions and can run in COS or adopter repositories.'
+
+- path: scripts/cos-doctor-concurrency.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 034: read-only concurrent-agent safety diagnostics are projectable for COS maintenance and adopter repositories.'
+- path: scripts/cos-doctor-harness.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 034: active harness readiness diagnostics validate projected adapters in COS and adopter repositories.'
+- path: scripts/cos-doctor-preserve.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 034: preserve-branch governance is generic work-preservation diagnostics for COS and adopter repositories.'
+- path: scripts/cos-doctor-work-inventory.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 034: branch/worktree/stash/dirty-WIP inventory is generic multi-agent workspace hygiene.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
