@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Enroll a project-scoped Engram Cloud sync target without leaking tokens.
 set -euo pipefail
 

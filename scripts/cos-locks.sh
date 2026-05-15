@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # cos-locks.sh — CLI for engram-backed cross-session advisory locks (P5.2 / ADR-116).
 #
 # Usage:

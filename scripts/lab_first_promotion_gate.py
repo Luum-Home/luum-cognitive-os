@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-133 lab-first promotion gate for agentic primitives.
 
 The gate is intentionally delta-based: existing primitives are grandfathered by

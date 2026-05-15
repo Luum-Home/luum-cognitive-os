@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Headless propose-only self-improvement loop for Cognitive OS."""
 
 from __future__ import annotations

@@ -13884,3 +13884,1895 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
+- id: hooks/_lib/bypass-resolver.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/bypass-resolver.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/bypass-resolver.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/_lib/killswitch_check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/killswitch_check.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/killswitch_check.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/_lib/primitive-intervention.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/primitive-intervention.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/primitive-intervention.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/_lib/safe-worktree-remove.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/safe-worktree-remove.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/safe-worktree-remove.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/_lib/validation-lock.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/validation-lock.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/validation-lock.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/agent-quota-redirect.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/agent-quota-redirect.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/agent-quota-redirect.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/agnix-lint.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/agnix-lint.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/agnix-lint.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/background-agent-reminder.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/background-agent-reminder.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/background-agent-reminder.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/clean-room-ast-similarity-gate.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/clean-room-ast-similarity-gate.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/clean-room-ast-similarity-gate.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/concurrent-write-guard-codex-proxy.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/concurrent-write-guard-codex-proxy.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/concurrent-write-guard-codex-proxy.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/conversation-capture.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/conversation-capture.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/conversation-capture.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/engram-auto-import.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/engram-auto-import.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/engram-auto-import.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/engram-auto-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/engram-auto-sync.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/engram-auto-sync.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/idle-service-cleanup.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/idle-service-cleanup.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/idle-service-cleanup.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/memu-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/memu-sync.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/memu-sync.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/metrics-rotation.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/metrics-rotation.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/metrics-rotation.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/mlflow-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/mlflow-sync.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/mlflow-sync.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/package-sync.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/package-sync.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/package-sync.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/pattern-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/pattern-check.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/pattern-check.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/registration-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/registration-check.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/registration-check.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/singularity-check.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/singularity-check.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/singularity-check.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: hooks/tool-discovery-trigger.sh
+  kind: hook
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/tool-discovery-trigger.sh
+  runtime_projection: true
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/tool-discovery-trigger.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: package-skill-os-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: packages/verification-audit/skills/harness-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: package-skill-os-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/verification-audit/skills/harness-audit/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/verification-audit/skills/harness-audit/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: rules/agent-communication.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/agent-communication.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/agent-communication.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/agent-customization.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/agent-customization.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/agent-customization.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/capability-protection.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/capability-protection.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/capability-protection.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/clean-room-detection-limits.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/clean-room-detection-limits.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/clean-room-detection-limits.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/cosd-secure-api.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/cosd-secure-api.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/cosd-secure-api.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/cross-harness-authoring.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/cross-harness-authoring.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/cross-harness-authoring.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/infra-health.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/infra-health.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/infra-health.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/infra-intent.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/infra-intent.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/infra-intent.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/lane-taxonomy.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/lane-taxonomy.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/lane-taxonomy.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/orchestrator-prompt-compose.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/orchestrator-prompt-compose.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/orchestrator-prompt-compose.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/pre-dev-readiness-gate.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/pre-dev-readiness-gate.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/pre-dev-readiness-gate.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: rules/reinvention-prevention.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/reinvention-prevention.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths rules/reinvention-prevention.md
+  docs_claim_level: advisory
+  exit_behavior: contextual
+  metrics_file: none
+- id: scripts/primitive_fitness_ledger.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: maintainer-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/primitive_fitness_ledger.py
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/primitive_fitness_ledger.py
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/runtime_hook_reality.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: maintainer-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/runtime_hook_reality.py
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/runtime_hook_reality.py
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/so-reaper.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: maintainer-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/so-reaper.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/so-reaper.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/startup-benchmark.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: maintainer-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/startup-benchmark.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/startup-benchmark.sh
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: scripts/verify_plan_claims.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: maintainer-tooling
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/verify_plan_claims.py
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/verify_plan_claims.py
+  docs_claim_level: advisory
+  exit_behavior: exit_0_or_1
+  metrics_file: none
+- id: skills/__contracts__/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/__contracts__/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/__contracts__/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/__contracts__/canonical-event-emitter/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/__contracts__/canonical-event-emitter/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/__contracts__/canonical-event-emitter/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/adr-tombstone/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/adr-tombstone/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/adr-tombstone/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/architecture-map-answer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/architecture-map-answer/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/architecture-map-answer/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/audit-integrity/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/audit-integrity/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/audit-integrity/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/browser-task/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/browser-task/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/browser-task/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/bump-version/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/bump-version/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/bump-version/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/cognitive-os-init/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/cognitive-os-init/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/cognitive-os-init/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/cognitive-os-status/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/cognitive-os-status/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/cognitive-os-status/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/cognitive-os-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/cognitive-os-test/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/cognitive-os-test/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/component-reality-check/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/component-reality-check/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/component-reality-check/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/coordination-status/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/coordination-status/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/coordination-status/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/cos-maintainer-operations/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/cos-maintainer-operations/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/cos-maintainer-operations/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/cos-status/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/cos-status/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/cos-status/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/decision-triage/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/decision-triage/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/decision-triage/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/deps-update/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/deps-update/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/deps-update/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/docs-execution-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/docs-execution-audit/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/docs-execution-audit/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/dogfood-score/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/dogfood-score/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/dogfood-score/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/experimental/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/experimental/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/experimental/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/generate-changelog/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/generate-changelog/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/generate-changelog/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/memory-scan/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/memory-scan/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/memory-scan/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/pattern-audit/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/pattern-audit/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/pattern-audit/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/phoenix-trace-ui/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/phoenix-trace-ui/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; demoted from stale both
+    marker based on COS-internal semantic evidence.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/phoenix-trace-ui/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/primitive-surface-reduction/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/primitive-surface-reduction/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/primitive-surface-reduction/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/primitive-usage-map/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/primitive-usage-map/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/primitive-usage-map/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/product-answer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/product-answer/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/product-answer/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/push-release/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/push-release/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/push-release/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/radar-update/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/radar-update/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/radar-update/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/release-os/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/release-os/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/release-os/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/so-vs-vanilla/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/so-vs-vanilla/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/so-vs-vanilla/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/tag-release/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/tag-release/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/tag-release/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/test-contract-repair/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/test-contract-repair/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/test-contract-repair/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/validate-release/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/validate-release/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/validate-release/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/vuln-remediation-flow/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/vuln-remediation-flow/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/vuln-remediation-flow/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: templates/agent-mandatory-rules.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/agent-mandatory-rules.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/agent-mandatory-rules.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/agent-preamble.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/agent-preamble.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/agent-preamble.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/counsel-outreach/clean-room-permission.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/counsel-outreach/clean-room-permission.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/counsel-outreach/clean-room-permission.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/counsel-outreach/license-clarification.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/counsel-outreach/license-clarification.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/counsel-outreach/license-clarification.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/counsel-outreach/review-request.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/counsel-outreach/review-request.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/counsel-outreach/review-request.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/edit-conflict-response.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/edit-conflict-response.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/edit-conflict-response.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/hook-template.sh
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/hook-template.sh
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/hook-template.sh
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/rebranding-checklist.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/rebranding-checklist.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/rebranding-checklist.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/rule-template.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/rule-template.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/rule-template.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/skill-template.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: os-template
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/skill-template.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
+    made durable with lifecycle metadata.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/skill-template.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none

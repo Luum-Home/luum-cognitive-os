@@ -26,7 +26,7 @@ routing_intents:
     no Docker).
   confidence: 0.85
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /phoenix-trace-ui
 
 > Boot the Phoenix UI (http://localhost:6006) to inspect OTel spans emitted

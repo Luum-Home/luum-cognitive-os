@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-281 — ADR implementation reality audit.
 
 Cross-validates `implementation_status: implemented` ADR claims against

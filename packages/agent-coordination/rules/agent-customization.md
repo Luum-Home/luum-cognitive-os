@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 <!-- TIER: 1 -->
 # Agent Customization via Override Files (BMAD v6 Pattern 9)
 

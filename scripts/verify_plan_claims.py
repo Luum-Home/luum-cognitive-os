@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Verify high-stakes plan checkbox claims.
 
 This is the first executable slice of ADR-105/ADR-108. It intentionally focuses

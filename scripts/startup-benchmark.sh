@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # startup-benchmark.sh — ADR-028 D-stream: session startup latency + payload benchmark
 #
 # Measures:

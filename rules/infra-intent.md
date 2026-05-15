@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 <!-- TIER: 2 -->
 # Infrastructure Intent Detection Rules
 

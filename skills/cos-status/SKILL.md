@@ -7,7 +7,7 @@ triggers:
 - /cos-status
 - /status
 - cos status
-audience: both
+audience: os-only
 version: 1.0.0
 summary_line: Display current Cognitive OS state — active profile, skills exposed,
   hooks…
@@ -27,7 +27,7 @@ routing_intents:
     active profile, exposed skills, wired hooks, loaded rules, or troubleshooting.
   confidence: 0.86
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /cos-status — Cognitive OS State Transparency
 
 Show the current state of the Cognitive OS installation: what is active, what is wired, what is healthy.

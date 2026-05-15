@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # PURPOSE: Copy old audit rows into compressed archive files without truncating source evidence.
 set -euo pipefail
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit primitive lifecycle manifest tier claims for ADR-132/133 portability.
 
 This complements scripts/cos-tier-claim-audit, which audits ADR metadata. This

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Aggregate primitive fitness reports by agentic primitive family.
 
 The ledger is a visibility surface for ACC/readiness consumers. It does not run

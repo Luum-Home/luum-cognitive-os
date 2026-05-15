@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Manual drills for cross-instance learning without mutating real evidence."""
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # primitive-intervention.sh — ADR-256 Phase 2 best-effort runtime evidence ledger
 #
 # Emits canonical, content-free primitive intervention rows to:

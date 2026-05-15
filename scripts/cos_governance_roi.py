@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Governance ROI/friction dashboard for Cognitive OS.
 
 This is intentionally heuristic. It does not claim exact productivity, but it
