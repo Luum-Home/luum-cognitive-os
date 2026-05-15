@@ -87,6 +87,10 @@ jobs:
             --project-dir . \
             --strict \
             --json-out .cognitive-os/reports/primitive-scope-false-both-audit-ci.json
+          scripts/primitive-scope-proof-audit \
+            --project-dir . \
+            --strict \
+            --json-out .cognitive-os/reports/primitive-scope-proof-audit-ci.json
           scripts/primitive-scope-health \
             --project-dir . \
             --json-out .cognitive-os/reports/primitive-scope-health-ci.json

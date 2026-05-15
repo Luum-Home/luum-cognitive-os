@@ -15,6 +15,7 @@ implementation_files:
 - scripts/primitive-scope-generic-os-only-audit
 - scripts/primitive-scope-false-both-audit
 - scripts/primitive-scope-health
+- scripts/primitive-scope-proof-audit
 - .github/workflows/scope-portability.yml
 - scripts/cos-ci-local.sh
 - tests/unit/test_primitive_scope_health.py
@@ -119,6 +120,7 @@ The implementation provides these audit surfaces:
 - `scripts/primitive-scope-generic-os-only-audit` — over-internalization review queue.
 - `scripts/primitive-scope-false-both-audit` — false-`both` review queue.
 - `scripts/primitive-scope-health` — stable combined dashboard.
+- `scripts/primitive-scope-proof-audit` — proof-level budget ratchet for `proof_level: none`.
 
 CI initially ran the balance/health audits in warning mode. After the first
 health-dashboard review queue was triaged on 2026-05-15, the balance,
@@ -127,6 +129,19 @@ must now either be fixed or suppressed through explicit `review_exemptions` in
 `manifests/primitive-scope-classification.yaml` with a path-specific rationale.
 The remaining classifier ratchets stay strict too: unknown, contradictions, low
 confidence, and medium confidence must stay at zero.
+
+## Exemption and proof budgets
+
+`review_exemptions` are allowed only as small, explicit review suppressions. They
+are not a hidden allowlist: each entry must point at an existing primitive, carry
+a path-specific rationale, still suppress an active review signal, and stay under
+the per-code budget in `review_exemption_policy`. If a detector stops producing
+the underlying signal, the exemption becomes stale and must be removed.
+
+`proof_level: none` is now budgeted. Shared `both` primitives have a zero budget;
+project and `os-only` primitives may retain the current baseline only as a
+ratchet. New primitives should either add paired proof or explicitly spend down
+that budget rather than increasing it.
 
 ## 2026-05-15 ratchet promotion
 
