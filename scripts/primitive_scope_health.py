@@ -36,7 +36,7 @@ _SPEC.loader.exec_module(primitive_scope_classifier)
 VALID_PLANES = {"control-plane", "user-plane", "factory-plane", "runtime-plane"}
 GENERIC_NAME_RE = re.compile(r"(review|test|security|secret|docs?|architecture|health|license|audit|status|browser|quality|verify|validation|coverage|lint)", re.I)
 INTERNAL_RE = re.compile(r"(docs/02-Decisions|docs/06-Daily|manifests/|primitive-lifecycle|primitive-readiness|ADR-\d+|\.cognitive-os/(reports|strategy|sessions)|source Cognitive OS|COS maintainer)", re.I)
-SOURCE_PATH_RE = re.compile('(' + '/' + 'Users' + '/|matias' + r'\.nahuel)', re.I)
+SOURCE_PATH_RE = re.compile("(" + "/" + "Users" + "/|matias" + r"\.nahuel)")
 BATCH_PROOF_RE = re.compile(r"test_low_confidence_scope_batch\.py|batch", re.I)
 
 
@@ -94,6 +94,41 @@ def _load_scope_policy(root: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def _review_exemptions(root: Path) -> dict[tuple[str, str], str]:
+    policy = _load_scope_policy(root)
+    exemptions: dict[tuple[str, str], str] = {}
+    for code, entries in (policy.get("review_exemptions") or {}).items():
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            path = str(entry.get("path") or "")
+            rationale = str(entry.get("rationale") or "")
+            if path and rationale:
+                exemptions[(str(code), path)] = rationale
+    return exemptions
+
+
+def _apply_review_exemptions(root: Path, findings: list[Finding]) -> tuple[list[Finding], list[dict[str, str]]]:
+    exemptions = _review_exemptions(root)
+    active: list[Finding] = []
+    suppressed: list[dict[str, str]] = []
+    for finding in findings:
+        rationale = exemptions.get((finding.code, finding.path))
+        if rationale:
+            suppressed.append(
+                {
+                    "path": finding.path,
+                    "code": finding.code,
+                    "rationale": rationale,
+                }
+            )
+            continue
+        active.append(finding)
+    return active, suppressed
 
 
 def _text(root: Path, rel: str, limit: int = 30000) -> str:
@@ -260,12 +295,14 @@ def build_payload(root: Path, mode: str) -> dict[str, Any]:
             for row in rows
             if row.plane not in VALID_PLANES
         )
+    findings, suppressed = _apply_review_exemptions(root, findings)
     return {
         "schema_version": f"primitive-scope-{mode}-audit/v1",
         "mode": mode,
         "summary": summarize(rows, findings),
         "rows": [asdict(row) for row in rows],
         "findings": [asdict(finding) for finding in findings],
+        "suppressed_findings": suppressed,
     }
 
 

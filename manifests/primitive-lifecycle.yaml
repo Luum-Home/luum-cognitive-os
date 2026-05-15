@@ -15811,12 +15811,12 @@ primitives:
   metrics_file: none
 - id: skills/pattern-audit/SKILL.md
   kind: skill
-  owner_adr: ADR-314
+  owner_adr: ADR-321
   lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
-  consumer_accessibility: lifecycle-declared-maintainer
-  governance_class: os-skill
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-skill
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -15825,10 +15825,12 @@ primitives:
   projection_targets:
   - skills/pattern-audit/SKILL.md
   runtime_projection: false
-  behavior_evidence: Manual scope calibration iteration 014; existing os-only marker
-    made durable with lifecycle metadata.
+  behavior_evidence: Manual scope health review 2026-05-15; skill is a repo-agnostic
+    grep/regex sampling protocol with no COS source-checkout dependency, so the previous
+    os-only classification was over-internalized.
   evidence_commands:
   - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/pattern-audit/SKILL.md
+  - python3 -m pytest tests/red_team/portability/test_skill_pattern_audit.py -q
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
@@ -25372,3 +25374,52 @@ primitives:
   docs_claim_level: observe
   exit_behavior: advisory
   metrics_file: none
+- id: hooks/pyrefly-typecheck-advisory.sh
+  kind: hook
+  owner_adr: ADR-321
+  lifecycle_state: advisory
+  maturity: trial
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: os-runtime-advisory
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - hooks/pyrefly-typecheck-advisory.sh
+  runtime_projection: false
+  behavior_evidence: Scope health review 2026-05-15; Stop hook runs the COS Pyrefly
+    pilot against COS first-party Python paths and .cognitive-os reports, so it is
+    maintainer-only while the Pyrefly lane is in trial.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/pyrefly-typecheck-advisory.sh --fail-contradictions --fail-low-confidence
+  - python3 -m pytest tests/contracts/test_pyrefly_pilot_radar.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: .cognitive-os/reports/pyrefly/latest.json
+- id: skills/pyrefly-typecheck/SKILL.md
+  kind: skill
+  owner_adr: ADR-321
+  lifecycle_state: advisory
+  maturity: trial
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: os-skill
+  risk_class: advisory
+  supported_harnesses:
+  - codex
+  - claude
+  - shell
+  projection_targets:
+  - skills/pyrefly-typecheck/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Scope health review 2026-05-15; skill invokes the COS Pyrefly
+    pilot, reads .cognitive-os Pyrefly receipts, and targets COS maintainer paths.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/pyrefly-typecheck/SKILL.md --fail-contradictions --fail-low-confidence
+  - python3 -m pytest tests/contracts/test_pyrefly_pilot_radar.py -q
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/reports/pyrefly/latest.json

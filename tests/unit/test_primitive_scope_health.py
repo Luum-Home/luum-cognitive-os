@@ -46,6 +46,29 @@ def test_false_both_requires_source_path_or_weak_proof_with_internal_markers(tmp
     assert findings[0].code == "both-needs-specific-proof"
 
 
+def test_false_both_source_path_detector_does_not_flag_lowercase_route_segments(tmp_path: Path) -> None:
+    (tmp_path / "rules").mkdir()
+    (tmp_path / "rules" / "scope.md").write_text(
+        '<!-- SCOPE: both -->\nExample approved scope: "internal/users/handler.go"\n'
+    )
+    rows = [
+        HealthRow(
+            path="rules/scope.md",
+            kind="rules",
+            scope="both",
+            declared_scope="both",
+            confidence="high",
+            plane="user-plane",
+            consumer_surface="shared",
+            proof_level="primitive-specific",
+            decision_source="fixture",
+            paired_portability_test="tests/red_team/portability/test_scope.py",
+        )
+    ]
+
+    assert primitive_scope_health.false_both_findings(tmp_path, rows) == []
+
+
 def test_generic_os_only_detector_finds_repo_facing_internalization_candidate(tmp_path: Path) -> None:
     (tmp_path / "skills" / "browser-task").mkdir(parents=True)
     (tmp_path / "skills" / "browser-task" / "SKILL.md").write_text(
@@ -67,6 +90,39 @@ def test_generic_os_only_detector_finds_repo_facing_internalization_candidate(tm
     ]
     findings = primitive_scope_health.generic_os_only_findings(tmp_path, rows)
     assert findings and findings[0].code == "os-only-generic-candidate"
+
+
+def test_review_exemptions_suppress_documented_findings(tmp_path: Path) -> None:
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "manifests" / "primitive-scope-classification.yaml").write_text(
+        "review_exemptions:\n"
+        "  os-only-generic-candidate:\n"
+        "  - path: skills/cos-status/SKILL.md\n"
+        "    rationale: COS-only control-plane status surface.\n",
+        encoding="utf-8",
+    )
+    findings = [
+        primitive_scope_health.Finding(
+            "skills/cos-status/SKILL.md",
+            "skills",
+            "os-only",
+            "control-plane",
+            "review",
+            "os-only-generic-candidate",
+            "generic name",
+        )
+    ]
+
+    active, suppressed = primitive_scope_health._apply_review_exemptions(tmp_path, findings)
+
+    assert active == []
+    assert suppressed == [
+        {
+            "path": "skills/cos-status/SKILL.md",
+            "code": "os-only-generic-candidate",
+            "rationale": "COS-only control-plane status surface.",
+        }
+    ]
 
 
 def test_balance_finding_uses_expected_scope_distribution(tmp_path: Path) -> None:

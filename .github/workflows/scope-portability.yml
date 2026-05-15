@@ -77,12 +77,15 @@ jobs:
             --json-out .cognitive-os/reports/primitive-scope-plane-audit-ci.json
           scripts/primitive-scope-balance-audit \
             --project-dir . \
+            --strict \
             --json-out .cognitive-os/reports/primitive-scope-balance-audit-ci.json
           scripts/primitive-scope-generic-os-only-audit \
             --project-dir . \
+            --strict \
             --json-out .cognitive-os/reports/primitive-scope-generic-os-only-audit-ci.json
           scripts/primitive-scope-false-both-audit \
             --project-dir . \
+            --strict \
             --json-out .cognitive-os/reports/primitive-scope-false-both-audit-ci.json
           scripts/primitive-scope-health \
             --project-dir . \

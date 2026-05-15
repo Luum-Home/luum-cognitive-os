@@ -1425,9 +1425,9 @@ items:
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
     declaration; no consumer-project surface evidence.
 - path: skills/pattern-audit/SKILL.md
-  status: maintainer-only
-  rationale: Manual scope calibration iteration 014 added metadata for existing os-only
-    declaration; no consumer-project surface evidence.
+  status: shared-surface
+  rationale: Manual scope health review 2026-05-15 confirmed this is a repo-agnostic
+    grep/regex sampling protocol usable by COS and consumer projects.
 - path: skills/phoenix-trace-ui/SKILL.md
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 confirmed COS/internal-only surface
@@ -3951,6 +3951,15 @@ items:
   rationale: Manual scope implementation iteration 041 classified os-only after surgical review. Tied
     to Cognitive OS construction, local maintainer operation, or source-repo automation
     rather than consumer-project governance.
+- path: hooks/pyrefly-typecheck-advisory.sh
+  status: maintainer-only
+  rationale: Scope health review 2026-05-15 classified this Stop hook as COS-only;
+    it runs scripts/cos-pyrefly-pilot against COS first-party Python paths and writes
+    COS Pyrefly receipts.
+- path: skills/pyrefly-typecheck/SKILL.md
+  status: maintainer-only
+  rationale: Scope health review 2026-05-15 classified this skill as COS-only;
+    it invokes the COS Pyrefly pilot and interprets .cognitive-os Pyrefly reports.
 
 patterns:
 - pattern: scripts/**

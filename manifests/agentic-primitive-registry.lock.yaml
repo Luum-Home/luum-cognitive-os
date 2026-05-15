@@ -8355,14 +8355,14 @@ primitives:
   sha256: 73b4ac5ea39336f159e7ce106e3ee201756b4d8ae1799f26425fef94ed4422c7
 - id: skills/pattern-audit/SKILL.md
   kind: skill
-  owner_adr: ADR-314
+  owner_adr: ADR-321
   lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
+  distribution: team
   runtime_projection: false
   projection_targets:
   - skills/pattern-audit/SKILL.md
-  sha256: 8bb74a9758ca76776f5d95a74cf091095e99db12ad20f6b27c61c98ba6192839
+  sha256: 69df0b4c379b42242d6ef530b630a60fa96f16ad82201f3d04e0b09c0cf66c28
 - id: skills/peer-card/SKILL.md
   kind: skill
   owner_adr: ADR-314
