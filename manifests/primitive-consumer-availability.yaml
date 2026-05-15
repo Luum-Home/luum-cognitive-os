@@ -1596,6 +1596,36 @@ items:
 - path: skills/llm-status/SKILL.md
   status: shared-surface
   rationale: 'Manual scope calibration iteration 017: LLM dispatch transparency applies to the current COS install in COS maintenance and adopter projects.'
+- path: skills/peer-card/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: curated personal/user memory via Engram is usable while maintaining COS and while working in adopter projects.'
+- path: skills/preserved-wip-cleanup/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: archive-first git stash/worktree cleanup is repository-agnostic for COS and adopter project worktrees.'
+- path: skills/primitive-harvester/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: conversation-to-primitive harvesting governs reusable workflows in COS source and adopter project overlays.'
+- path: skills/queue-drain/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 018: drains COS agent dispatch queues and health checks via COS queue libraries, not a generic project primitive.'
+- path: skills/red-team/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: prompt injection/jailbreak testing applies to COS prompts and adopter project agent prompts.'
+- path: skills/redteam-harness/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 018: runs COS red-team scenarios against agent OS false-done/unwired-constant failure modes and COS test fixtures.'
+- path: skills/resource-governor/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: resource and budget optimization reads COS metrics but applies to COS maintenance and adopter project work.'
+- path: skills/run-tests/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: test runner has COS-specific fast path and generic project framework fallback, so it is shared.'
+- path: skills/scaffold-project/SKILL.md
+  status: projected-consumer-surface
+  rationale: 'Manual scope calibration iteration 018: scaffolds project-local .claude rules/skills/hooks from detected-stack for adopter projects; COS source construction does not require it.'
+- path: skills/sdd-continue/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 018: SDD continuation/state inspection is used for COS changes and adopter project changes.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

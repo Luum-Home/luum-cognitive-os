@@ -27,7 +27,7 @@ triggers:
 - Scaffold Project
 - 'Create the '
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # Scaffold Project
 
 Create or update the `.claude/` directory structure for a project. Generates project-specific rules, skills, and hooks based on `.cognitive-os/detected-stack.json`.

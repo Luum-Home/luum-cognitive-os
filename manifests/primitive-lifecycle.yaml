@@ -16407,3 +16407,226 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
+- id: skills/peer-card/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/peer-card/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: curated personal/user memory via Engram is usable while maintaining COS and while working in adopter projects.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/peer-card/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/preserved-wip-cleanup/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/preserved-wip-cleanup/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: archive-first git stash/worktree cleanup is repository-agnostic for COS and adopter project worktrees.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/preserved-wip-cleanup/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/primitive-harvester/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/primitive-harvester/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: conversation-to-primitive harvesting governs reusable workflows in COS source and adopter project overlays.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/primitive-harvester/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/queue-drain/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/queue-drain/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: drains COS agent dispatch queues and health checks via COS queue libraries, not a generic project primitive.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/queue-drain/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/red-team/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/red-team/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: prompt injection/jailbreak testing applies to COS prompts and adopter project agent prompts.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/red-team/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/redteam-harness/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/redteam-harness/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: runs COS red-team scenarios against agent OS false-done/unwired-constant failure modes and COS test fixtures.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/redteam-harness/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/resource-governor/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/resource-governor/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: resource and budget optimization reads COS metrics but applies to COS maintenance and adopter project work.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/resource-governor/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/run-tests/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/run-tests/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: test runner has COS-specific fast path and generic project framework fallback, so it is shared.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/run-tests/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+- id: skills/scaffold-project/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: skill-consumer-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/scaffold-project/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: scaffolds project-local .claude rules/skills/hooks from detected-stack for adopter projects; COS source construction does not require it.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/scaffold-project/SKILL.md
+  docs_claim_level: observe
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep as downstream project surface; add projection proof as needed.
+- id: skills/sdd-continue/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: active
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: skill-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/sdd-continue/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 018: SDD continuation/state inspection is used for COS changes and adopter project changes.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/sdd-continue/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none

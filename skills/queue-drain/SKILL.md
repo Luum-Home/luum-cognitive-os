@@ -27,7 +27,7 @@ triggers:
 - Queue Drain
 - Periodic agent queue drain and health check
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Queue Drain
 
 Checks the agent dispatch queue for ready agents, launches them, and reports

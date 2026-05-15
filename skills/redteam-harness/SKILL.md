@@ -32,7 +32,7 @@ routing_patterns:
 - pattern: \bfalse[- ]?done\s+detection\b
   confidence: 0.75
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # /redteam-harness
 
 > Execute red-team scenarios to detect false-done, unwired constants, and
