@@ -1,35 +1,91 @@
 {
   "findings": {
+    "all_default_justified": false,
     "all_extra_hooks_pass_when_present": false,
     "all_is_superset_by_count": true,
     "all_scope_includes_os_only_primitives": true,
+    "all_score_delta_vs_best_filtered": -5,
     "dev_like_surface_passes": true,
     "filtered_scopes_exclude_os_only": true,
     "filtered_scopes_include_os_only_support_files": true,
+    "product_verdict": "two-effective-tiers-project-both-alias-all-maintainer",
     "project_vs_both_equivalent": true,
+    "protected_config_guard_gap": false,
     "recommendation": "Do not claim three distinct project-install tiers until project and both have separate semantics, tests, and user-facing docs. Today the evidence supports two tiers: filtered consumer install and all/maintainer install.",
-    "status": "fail",
+    "scope_summary": {
+      "all": {
+        "install_ms": 0,
+        "passes": 1,
+        "runs": 1,
+        "score": 40,
+        "signatures": [
+          "4f889601906b27be720c154200a82f251f815935803e378a808de33eb384b286"
+        ],
+        "total_files": 614,
+        "total_primitives": 116
+      },
+      "both": {
+        "install_ms": 0,
+        "passes": 1,
+        "runs": 1,
+        "score": 45,
+        "signatures": [
+          "38d2919fcd2a05a5a9a77ee7f2ebf64f37c3da9872b5b9580822bbe2044747f9"
+        ],
+        "total_files": 427,
+        "total_primitives": 0
+      },
+      "project": {
+        "install_ms": 0,
+        "passes": 1,
+        "runs": 1,
+        "score": 45,
+        "signatures": [
+          "38d2919fcd2a05a5a9a77ee7f2ebf64f37c3da9872b5b9580822bbe2044747f9"
+        ],
+        "total_files": 427,
+        "total_primitives": 0
+      }
+    },
+    "status": "pass-with-product-warning",
     "summary": "Three names currently collapse into two effective primitive surfaces: project and both are equivalent; all is the maintainer/full superset."
   },
+  "limitations": [
+    "Synthetic fixtures are not a human productivity benchmark.",
+    "Scores compare smoke outcomes and safety probes, not long-horizon quality.",
+    "Node and Go stack fixtures still need implementation before this can be called exhaustive."
+  ],
   "repo_root": "<repo-root>",
+  "requested_stacks": [
+    "python"
+  ],
   "results": [
     {
       "counts": {
         "hooks": 189,
-        "rules": 107,
-        "skills": 119,
+        "rules": 108,
+        "skills": 120,
         "templates": 10
       },
       "dev_like_checks": {
+        "baseline_tests_pass": true,
         "cos_status_json_available": true,
         "destructive_git_blocked": true,
         "destructive_git_hook_present": true,
+        "eas_or_skill_contract_valid": true,
+        "fixed_tests_pass": true,
+        "intentional_bug_failed": true,
         "lethal_trifecta_blocked_when_present": true,
         "lethal_trifecta_present": false,
         "normal_project_tests_pass": true,
+        "protected_config_control_plane_blocked": true,
+        "protected_config_guard_present": true,
+        "safe_git_not_blocked": true,
         "secret_detector_present": true,
-        "secret_probe_nonfatal_or_blocked": true
+        "secret_probe_nonfatal_or_blocked": true,
+        "task_failed_then_fixed": true
       },
+      "friction_steps": 5,
       "install": {
         "cmd": [
           "/opt/homebrew/opt/python@3.14/bin/python3.14",
@@ -38,10 +94,10 @@
           "--harness",
           "codex"
         ],
-        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
         "returncode": 0,
         "stderr_tail": "",
-        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: project\n\nProject: fixture-project\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  107 installed\n  Hooks:  148 registered\n  Skills: 112 available\n\nNext: start coding! The AI knows what to do.\n\n"
+        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: project\nScope surface: consumer-filtered (project and both are equivalent; ADR-320)\n\nProject: fixture-project\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  108 installed\n  Hooks:  148 registered\n  Skills: 113 available\n\nNext: start coding! The AI knows what to do.\n\n"
       },
       "install_ok": true,
       "os_only_counts": {
@@ -77,8 +133,21 @@
         "skills": [],
         "templates": []
       },
-      "primitive_signature": "97c6251d442572cb29047b2c1031c7adb8cd209fc4aa84320491aee3466d937b",
+      "primitive_signature": "38d2919fcd2a05a5a9a77ee7f2ebf64f37c3da9872b5b9580822bbe2044747f9",
       "probe_details": {
+        "baseline_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
+        },
         "destructive_git": {
           "blocked": true,
           "present": true,
@@ -86,11 +155,62 @@
           "stderr_tail": "\n=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===\nBLOCKED: destructive git op 'git reset' is blocked by default (ADR-055b, r5-stash-residue).\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nCommand: git reset --hard HEAD~1\n\nTo proceed, use ONE of:\n  1. Inline flag:   append --allow-destructive to the command\n                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')\n  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)\n\nReference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md\n\n",
           "stdout_tail": ""
         },
+        "eas": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "<repo-root>/scripts/eas_validate.py",
+            "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project/EAS.md"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "EAS validation passed: /var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project/EAS.md\n"
+        },
+        "fixed_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "..                                                                       [100%]\n2 passed in 0.01s\n"
+        },
+        "intentional_bug_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
+          "returncode": 1,
+          "stderr_tail": "",
+          "stdout_tail": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n___________________________________ test_sub ___________________________________\n\n    def test_sub():\n>       assert sub(5, 3) == 2\nE       assert 8 == 2\nE        +  where 8 = sub(5, 3)\n\ntests/test_calculator.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_calculator.py::test_sub - assert 8 == 2\n1 failed, 1 passed in 0.01s\n"
+        },
         "lethal_trifecta": {
           "blocked": false,
           "present": false,
           "returncode": null,
           "stderr_tail": ""
+        },
+        "protected_config": {
+          "blocked": true,
+          "present": true,
+          "returncode": 2,
+          "stderr_tail": "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===\nProtected control-plane path(s): .claude/settings.json\nSet COS_ALLOW_PROTECTED_CONFIG_WRITE=1 only after explicit human review.\n",
+          "stdout_tail": ""
+        },
+        "safe_git": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ""
         },
         "secret_detector": {
           "blocked": false,
@@ -105,10 +225,10 @@
             "<repo-root>/scripts/cos-status.sh",
             "--json"
           ],
-          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
           "returncode": 0,
           "stderr_tail": "",
-          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (113 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 9,\n      \"Stop\": 9,\n      \"UserPromptSubmit\": 11\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 37\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project/.claude/rules\",\n    \"source_count\": 106,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project/.claude/skills\",\n    \"kernel_installed\": 113,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (114 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 9,\n      \"Stop\": 9,\n      \"UserPromptSubmit\": 11\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 37\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project/.claude/rules\",\n    \"source_count\": 107,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project/.claude/skills\",\n    \"kernel_installed\": 114,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
         },
         "tests": {
           "cmd": [
@@ -118,15 +238,18 @@
             "tests/test_calculator.py",
             "-q"
           ],
-          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
           "returncode": 0,
           "stderr_tail": "",
           "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
         }
       },
-      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-project",
       "scope": "project",
-      "signature": "fdf4c88e63d2573fae97c32d4d46a63d83b901c73022564b82fec66e04a14d9a",
+      "score": 45,
+      "signature": "2e97aeff63967c54af9aa3ca7953a2d20e5c0c4682bf403c781dc87c37f5f7af",
+      "skipped": false,
+      "stack": "python",
       "support_os_only_counts": {
         "hooks": 34,
         "rules": 0,
@@ -148,25 +271,34 @@
         "skills": [],
         "templates": []
       },
-      "total_files": 425
+      "total_files": 427
     },
     {
       "counts": {
         "hooks": 189,
-        "rules": 107,
-        "skills": 119,
+        "rules": 108,
+        "skills": 120,
         "templates": 10
       },
       "dev_like_checks": {
+        "baseline_tests_pass": true,
         "cos_status_json_available": true,
         "destructive_git_blocked": true,
         "destructive_git_hook_present": true,
+        "eas_or_skill_contract_valid": true,
+        "fixed_tests_pass": true,
+        "intentional_bug_failed": true,
         "lethal_trifecta_blocked_when_present": true,
         "lethal_trifecta_present": false,
         "normal_project_tests_pass": true,
+        "protected_config_control_plane_blocked": true,
+        "protected_config_guard_present": true,
+        "safe_git_not_blocked": true,
         "secret_detector_present": true,
-        "secret_probe_nonfatal_or_blocked": true
+        "secret_probe_nonfatal_or_blocked": true,
+        "task_failed_then_fixed": true
       },
+      "friction_steps": 5,
       "install": {
         "cmd": [
           "/opt/homebrew/opt/python@3.14/bin/python3.14",
@@ -175,10 +307,10 @@
           "--harness",
           "codex"
         ],
-        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
         "returncode": 0,
         "stderr_tail": "",
-        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: both\n\nProject: fixture-both\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  107 installed\n  Hooks:  148 registered\n  Skills: 112 available\n\nNext: start coding! The AI knows what to do.\n\n"
+        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: both\nScope surface: consumer-filtered (project and both are equivalent; ADR-320)\n\nProject: fixture-both\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  108 installed\n  Hooks:  148 registered\n  Skills: 113 available\n\nNext: start coding! The AI knows what to do.\n\n"
       },
       "install_ok": true,
       "os_only_counts": {
@@ -214,8 +346,21 @@
         "skills": [],
         "templates": []
       },
-      "primitive_signature": "97c6251d442572cb29047b2c1031c7adb8cd209fc4aa84320491aee3466d937b",
+      "primitive_signature": "38d2919fcd2a05a5a9a77ee7f2ebf64f37c3da9872b5b9580822bbe2044747f9",
       "probe_details": {
+        "baseline_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
+        },
         "destructive_git": {
           "blocked": true,
           "present": true,
@@ -223,11 +368,62 @@
           "stderr_tail": "\n=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===\nBLOCKED: destructive git op 'git reset' is blocked by default (ADR-055b, r5-stash-residue).\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nCommand: git reset --hard HEAD~1\n\nTo proceed, use ONE of:\n  1. Inline flag:   append --allow-destructive to the command\n                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')\n  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)\n\nReference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md\n\n",
           "stdout_tail": ""
         },
+        "eas": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "<repo-root>/scripts/eas_validate.py",
+            "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both/EAS.md"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "EAS validation passed: /var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both/EAS.md\n"
+        },
+        "fixed_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "..                                                                       [100%]\n2 passed in 0.01s\n"
+        },
+        "intentional_bug_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
+          "returncode": 1,
+          "stderr_tail": "",
+          "stdout_tail": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n___________________________________ test_sub ___________________________________\n\n    def test_sub():\n>       assert sub(5, 3) == 2\nE       assert 8 == 2\nE        +  where 8 = sub(5, 3)\n\ntests/test_calculator.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_calculator.py::test_sub - assert 8 == 2\n1 failed, 1 passed in 0.01s\n"
+        },
         "lethal_trifecta": {
           "blocked": false,
           "present": false,
           "returncode": null,
           "stderr_tail": ""
+        },
+        "protected_config": {
+          "blocked": true,
+          "present": true,
+          "returncode": 2,
+          "stderr_tail": "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===\nProtected control-plane path(s): .claude/settings.json\nSet COS_ALLOW_PROTECTED_CONFIG_WRITE=1 only after explicit human review.\n",
+          "stdout_tail": ""
+        },
+        "safe_git": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ""
         },
         "secret_detector": {
           "blocked": false,
@@ -242,10 +438,10 @@
             "<repo-root>/scripts/cos-status.sh",
             "--json"
           ],
-          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
           "returncode": 0,
           "stderr_tail": "",
-          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (113 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 9,\n      \"Stop\": 9,\n      \"UserPromptSubmit\": 11\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 37\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both/.claude/rules\",\n    \"source_count\": 106,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both/.claude/skills\",\n    \"kernel_installed\": 113,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (114 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 9,\n      \"Stop\": 9,\n      \"UserPromptSubmit\": 11\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 37\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both/.claude/rules\",\n    \"source_count\": 107,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both/.claude/skills\",\n    \"kernel_installed\": 114,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
         },
         "tests": {
           "cmd": [
@@ -255,15 +451,18 @@
             "tests/test_calculator.py",
             "-q"
           ],
-          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
           "returncode": 0,
           "stderr_tail": "",
           "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
         }
       },
-      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-both",
       "scope": "both",
-      "signature": "fdf4c88e63d2573fae97c32d4d46a63d83b901c73022564b82fec66e04a14d9a",
+      "score": 45,
+      "signature": "2e97aeff63967c54af9aa3ca7953a2d20e5c0c4682bf403c781dc87c37f5f7af",
+      "skipped": false,
+      "stack": "python",
       "support_os_only_counts": {
         "hooks": 34,
         "rules": 0,
@@ -285,25 +484,34 @@
         "skills": [],
         "templates": []
       },
-      "total_files": 425
+      "total_files": 427
     },
     {
       "counts": {
         "hooks": 285,
-        "rules": 121,
-        "skills": 190,
+        "rules": 122,
+        "skills": 191,
         "templates": 16
       },
       "dev_like_checks": {
+        "baseline_tests_pass": true,
         "cos_status_json_available": true,
         "destructive_git_blocked": true,
         "destructive_git_hook_present": true,
+        "eas_or_skill_contract_valid": true,
+        "fixed_tests_pass": true,
+        "intentional_bug_failed": true,
         "lethal_trifecta_blocked_when_present": false,
         "lethal_trifecta_present": true,
         "normal_project_tests_pass": true,
+        "protected_config_control_plane_blocked": true,
+        "protected_config_guard_present": true,
+        "safe_git_not_blocked": true,
         "secret_detector_present": true,
-        "secret_probe_nonfatal_or_blocked": true
+        "secret_probe_nonfatal_or_blocked": true,
+        "task_failed_then_fixed": true
       },
+      "friction_steps": 5,
       "install": {
         "cmd": [
           "/opt/homebrew/opt/python@3.14/bin/python3.14",
@@ -312,10 +520,10 @@
           "--harness",
           "codex"
         ],
-        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
         "returncode": 0,
         "stderr_tail": "",
-        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: all\n\nProject: fixture-all\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  121 installed\n  Hooks:  244 registered\n  Skills: 179 available\n\nNext: start coding! The AI knows what to do.\n\n"
+        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: all\nScope surface: maintainer/self-hosting (includes os-only primitives; ADR-320)\n\nProject: fixture-all\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  122 installed\n  Hooks:  244 registered\n  Skills: 180 available\n\nNext: start coding! The AI knows what to do.\n\n"
       },
       "install_ok": true,
       "os_only_counts": {
@@ -392,8 +600,21 @@
           ".cognitive-os/templates/cos/skill-template.md"
         ]
       },
-      "primitive_signature": "74f2307a7d7840ffdd40ec900451f2199eb88a27d74bd173d65d07010ea0c1a5",
+      "primitive_signature": "4f889601906b27be720c154200a82f251f815935803e378a808de33eb384b286",
       "probe_details": {
+        "baseline_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
+        },
         "destructive_git": {
           "blocked": true,
           "present": true,
@@ -401,11 +622,62 @@
           "stderr_tail": "\n=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===\nBLOCKED: destructive git op 'git reset' is blocked by default (ADR-055b, r5-stash-residue).\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nCommand: git reset --hard HEAD~1\n\nTo proceed, use ONE of:\n  1. Inline flag:   append --allow-destructive to the command\n                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')\n  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)\n\nReference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md\n\n",
           "stdout_tail": ""
         },
+        "eas": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "<repo-root>/scripts/eas_validate.py",
+            "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all/EAS.md"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "EAS validation passed: /var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all/EAS.md\n"
+        },
+        "fixed_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "..                                                                       [100%]\n2 passed in 0.01s\n"
+        },
+        "intentional_bug_tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
+          "returncode": 1,
+          "stderr_tail": "",
+          "stdout_tail": ".F                                                                       [100%]\n=================================== FAILURES ===================================\n___________________________________ test_sub ___________________________________\n\n    def test_sub():\n>       assert sub(5, 3) == 2\nE       assert 8 == 2\nE        +  where 8 = sub(5, 3)\n\ntests/test_calculator.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_calculator.py::test_sub - assert 8 == 2\n1 failed, 1 passed in 0.01s\n"
+        },
         "lethal_trifecta": {
           "blocked": false,
           "present": true,
           "returncode": 0,
           "stderr_tail": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nModuleNotFoundError: No module named 'lib'\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; print(json.loads(sys.argv[1]).get(\"decision\", \"allow\"))\n                           ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; print(json.loads(sys.argv[1]).get(\"score\", 0))\n                           ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; print(\", \".join(json.loads(sys.argv[1]).get(\"reasons\", [])))\n                                     ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n",
+          "stdout_tail": ""
+        },
+        "protected_config": {
+          "blocked": true,
+          "present": true,
+          "returncode": 2,
+          "stderr_tail": "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===\nProtected control-plane path(s): .claude/settings.json\nSet COS_ALLOW_PROTECTED_CONFIG_WRITE=1 only after explicit human review.\n",
+          "stdout_tail": ""
+        },
+        "safe_git": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "",
           "stdout_tail": ""
         },
         "secret_detector": {
@@ -421,10 +693,10 @@
             "<repo-root>/scripts/cos-status.sh",
             "--json"
           ],
-          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
           "returncode": 0,
           "stderr_tail": "",
-          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (180 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 26,\n      \"Stop\": 16,\n      \"UserPromptSubmit\": 12\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 62\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all/.claude/rules\",\n    \"source_count\": 120,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all/.claude/skills\",\n    \"kernel_installed\": 180,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (181 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 26,\n      \"Stop\": 16,\n      \"UserPromptSubmit\": 12\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 62\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all/.claude/rules\",\n    \"source_count\": 121,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all/.claude/skills\",\n    \"kernel_installed\": 181,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
         },
         "tests": {
           "cmd": [
@@ -434,15 +706,18 @@
             "tests/test_calculator.py",
             "-q"
           ],
-          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
           "returncode": 0,
           "stderr_tail": "",
           "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
         }
       },
-      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-xk1qf9qp/fixture-all",
       "scope": "all",
-      "signature": "0b9a60d25ccfb562aaf1fe13949c7c8d228565ea0e1b590e45121799e24d9b92",
+      "score": 40,
+      "signature": "83fcaf8d607418f44d90ca097ff9693b2948e51a1f8ba89a951ce1f6ce21ef8b",
+      "skipped": false,
+      "stack": "python",
       "support_os_only_counts": {
         "hooks": 34,
         "rules": 0,
@@ -464,7 +739,43 @@
         "skills": [],
         "templates": []
       },
-      "total_files": 612
+      "total_files": 614
     }
-  ]
+  ],
+  "schema_version": "cos-install-scope-dev-smoke/v2",
+  "scope_summary": {
+    "all": {
+      "install_ms": 0,
+      "passes": 1,
+      "runs": 1,
+      "score": 40,
+      "signatures": [
+        "4f889601906b27be720c154200a82f251f815935803e378a808de33eb384b286"
+      ],
+      "total_files": 614,
+      "total_primitives": 116
+    },
+    "both": {
+      "install_ms": 0,
+      "passes": 1,
+      "runs": 1,
+      "score": 45,
+      "signatures": [
+        "38d2919fcd2a05a5a9a77ee7f2ebf64f37c3da9872b5b9580822bbe2044747f9"
+      ],
+      "total_files": 427,
+      "total_primitives": 0
+    },
+    "project": {
+      "install_ms": 0,
+      "passes": 1,
+      "runs": 1,
+      "score": 45,
+      "signatures": [
+        "38d2919fcd2a05a5a9a77ee7f2ebf64f37c3da9872b5b9580822bbe2044747f9"
+      ],
+      "total_files": 427,
+      "total_primitives": 0
+    }
+  }
 }

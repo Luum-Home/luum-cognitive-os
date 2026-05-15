@@ -2,7 +2,7 @@
 
 This smoke simulates a normal developer initializing a small Python repository with each `COS_INSTALL_SCOPE` value, then running project tests, `cos-status`, and representative hook probes.
 
-**Status:** `fail`
+**Status:** `pass-with-product-warning`
 
 **Finding:** Three names currently collapse into two effective primitive surfaces: project and both are equivalent; all is the maintainer/full superset.
 
@@ -10,9 +10,9 @@ This smoke simulates a normal developer initializing a small Python repository w
 
 | scope | install ok | total files | hooks | rules | skills | templates | os-only primitives | os-only support | tests pass | status JSON | destructive git blocked | secret probe ok | lethal present | lethal blocks |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| project | ✅ | 425 | 189 | 107 | 119 | 10 | 0 | 34 | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| both | ✅ | 425 | 189 | 107 | 119 | 10 | 0 | 34 | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| all | ✅ | 612 | 285 | 121 | 190 | 16 | 116 | 34 | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| project | ✅ | 427 | 189 | 108 | 120 | 10 | 0 | 34 | ✅ | ✅ | ✅ | ✅ | — | ✅ |
+| both | ✅ | 427 | 189 | 108 | 120 | 10 | 0 | 34 | ✅ | ✅ | ✅ | ✅ | — | ✅ |
+| all | ✅ | 614 | 285 | 122 | 191 | 16 | 116 | 34 | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 
 ## Interpretation
 
