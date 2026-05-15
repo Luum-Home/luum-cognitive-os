@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Shared JSONL task-event metric helper.
 
 cos_log_task_event() {

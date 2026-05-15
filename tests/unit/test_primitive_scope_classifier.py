@@ -422,3 +422,43 @@ def test_semantic_patterns_do_not_use_distribution_tier_as_scope_evidence(tmp_pa
 
     assert row.suggested_scope == "unknown"
     assert not row.evidence
+
+
+def test_network_and_protected_config_guards_are_shared_security_patterns(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "network-egress-guard.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Blocks exfiltration-shaped external network shell commands.\necho ok\n"
+    )
+    (root / "hooks" / "protected-config-write-guard.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Blocks writes to protected agent control-plane config.\necho ok\n"
+    )
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    network = rows["hooks/network-egress-guard.sh"]
+    protected = rows["hooks/protected-config-write-guard.sh"]
+    assert network.suggested_scope == "both"
+    assert protected.suggested_scope == "both"
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-repository-security" for item in network.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-agent-control-plane-safety" for item in protected.evidence)
+
+
+def test_dangerous_env_and_obsidian_export_are_narrow_cos_operator_patterns(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "dangerous-env-flag-detector.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Detects dangerous COS env flags under .cognitive-os runtime.\necho ok\n"
+    )
+    (root / "hooks" / "engram-obsidian-export-on-stop.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Exports Engram observations from .cognitive-os metrics to an operator vault.\necho ok\n"
+    )
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    dangerous = rows["hooks/dangerous-env-flag-detector.sh"]
+    obsidian = rows["hooks/engram-obsidian-export-on-stop.sh"]
+    assert dangerous.suggested_scope == "os-only"
+    assert obsidian.suggested_scope == "os-only"
+    assert any(item.source == "semantic-pattern" and item.detail == "cos-dangerous-env-overrides" for item in dangerous.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "cos-memory-export-operator" for item in obsidian.evidence)
