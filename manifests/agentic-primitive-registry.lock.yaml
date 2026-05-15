@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T12:06:50+00:00'
+generated_at: '2026-05-15T12:11:01+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -172,6 +172,46 @@ primitives:
   projection_targets:
   - hooks/_lib/recap_adapter.py
   sha256: 7f9bb9e711cb273389c80c32bc35b8a787ae71ed961a387b1b4984ea348e3ba0
+- id: hooks/_lib/register-bg.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/register-bg.sh
+  sha256: 20ff25a33b1e77a58bb624a41ba66344dee4ad157ed1d415db6844b8430411c2
+- id: hooks/_lib/remediation.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/remediation.sh
+  sha256: a540439edc6103a5a59cb899aa1a4f0b0b4565be6c1291a9328d87c3937adad5
+- id: hooks/_lib/resolve-main-worktree.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/resolve-main-worktree.sh
+  sha256: 273957583f1caa31dd638ed159ae75dd2fb68f725734163b7d2461ff17a2607a
+- id: hooks/_lib/safe-jsonl.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/safe-jsonl.sh
+  sha256: ba4fb90f6302f431696f525198fe22382518af67e053afc10e93f33300a1d1ca
 - id: hooks/_lib/safe-worktree-remove.sh
   kind: hook
   owner_adr: ADR-314
@@ -182,6 +222,56 @@ primitives:
   projection_targets:
   - hooks/_lib/safe-worktree-remove.sh
   sha256: 84a5c6896df810f44756b5f5457d34d348f848c2aba6cfddade22f1dceeb4eb9
+- id: hooks/_lib/semantic-search.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/semantic-search.sh
+  sha256: a9af29c25eb36bcb6b8745b6d3987ba31c7aaf9eb367580117a2117fa71325ad
+- id: hooks/_lib/session-fs-reap.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/session-fs-reap.sh
+  sha256: 5dc4a8f68a2d4e7d7dbb903e808f7a04bdd6611f164992253e096a596cbec9a5
+- id: hooks/_lib/session_init_helper.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/session_init_helper.py
+  sha256: 1de67892feca911c5ace2bf44f08b5203b666d25ba7111a721ba504463ef987d
+- id: hooks/_lib/singularity-suggestion.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/singularity-suggestion.sh
+  sha256: bf5c98ec5832267863ccb7384a6822c0d8de1d6411e08e75bd6999ac03a6fc78
+- id: hooks/_lib/stash-lock.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/stash-lock.sh
+  sha256: 9193c3b242a8a4688e53e8e71c84a577b9e8c1910cdbf054bfcd8c490921abc0
 - id: hooks/_lib/task-event.sh
   kind: hook
   owner_adr: ADR-149
@@ -192,6 +282,26 @@ primitives:
   projection_targets:
   - hooks/_lib/task-event.sh
   sha256: d0782d18825b8e60362ce3dd0a541801eafd93879297294fb43b9400d37f12a0
+- id: hooks/_lib/task-identity.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/task-identity.sh
+  sha256: e00f8377fd83b57298f5a3477d627782a365b041ebaea661cc9e51f4b22ec905
+- id: hooks/_lib/task_bridge.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/task_bridge.py
+  sha256: d5d7d125d7023b68bc4f94d8f7d1cf321d67980988d80ba6747f4cad45559635
 - id: hooks/_lib/task_panel_adapter.py
   kind: hook
   owner_adr: ADR-314
@@ -202,6 +312,26 @@ primitives:
   projection_targets:
   - hooks/_lib/task_panel_adapter.py
   sha256: c1c8546db7dbd36179e86884683feb6611149ca6175f3052aa6eb21c48077853
+- id: hooks/_lib/timing.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/timing.sh
+  sha256: b06c45eb7cd42976133c7024602cc64a9c46b89062d59ebb52e5299398ae7128
+- id: hooks/_lib/tuning.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - hooks/_lib/tuning.sh
+  sha256: 5142e791bdc9203ab2d1b5792670c691817ba99ea95800cb511ff832fa74bc52
 - id: hooks/_lib/validation-lock.sh
   kind: hook
   owner_adr: ADR-314

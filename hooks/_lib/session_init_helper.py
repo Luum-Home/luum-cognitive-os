@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Consolidated helper for session-init.sh.
 
 Replaces 3 separate python3 cold starts with a single invocation:

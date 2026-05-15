@@ -17173,3 +17173,302 @@ primitives:
   exit_behavior: skill-procedure
   metrics_file: none
   consumer_access_next_action: Keep out of default consumer-project projection.
+- id: hooks/_lib/register-bg.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/register-bg.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: registers COS background PIDs in lib/process_registry so the COS reaper can distinguish managed processes from orphans.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/register-bg.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/remediation.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/remediation.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: operates the COS auto-repair remediation registry and failure metrics under .cognitive-os.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/remediation.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/resolve-main-worktree.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/resolve-main-worktree.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: resolves main/master worktrees for COS hook workflows and branch-safety coordination.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/resolve-main-worktree.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/safe-jsonl.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/safe-jsonl.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: writes COS hook metrics and health heartbeats safely to .cognitive-os/metrics.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/safe-jsonl.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/semantic-search.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/semantic-search.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: searches the COS remediation registry via scripts/semantic-lookup.mjs for auto-repair matching.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/semantic-search.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/session-fs-reap.sh
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/session-fs-reap.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: archives and removes stale COS session filesystem state under .cognitive-os/sessions.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/session-fs-reap.sh
+  docs_claim_level: advisory
+  exit_behavior: manual-script
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/session_init_helper.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/session_init_helper.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: consolidates COS session-init runtime reads of self-improve flags, Engram user model, project profile, and work queue.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/session_init_helper.py
+  docs_claim_level: advisory
+  exit_behavior: helper-script
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/singularity-suggestion.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/singularity-suggestion.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: emits COS session-init advisory singularity suggestions from .cognitive-os metrics.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/singularity-suggestion.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/stash-lock.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/stash-lock.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: coordinates COS hook git stash mutations with .cognitive-os/runtime/stash.lock.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/stash-lock.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/task-identity.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/task-identity.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: derives canonical COS task ids for cross-session claim coordination.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/task-identity.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/task_bridge.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/task_bridge.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: correlates COS task_id with Claude Code tool_use_id and .cognitive-os task state.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/task_bridge.py
+  docs_claim_level: advisory
+  exit_behavior: helper-script
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/timing.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/timing.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: records COS hook execution time for performance monitoring.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/timing.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: hooks/_lib/tuning.sh
+  kind: script-lib
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: hook-runtime-support
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - hooks/_lib/tuning.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope calibration iteration 022: reads COS hook tuning events from .cognitive-os/metrics/hook-tuning.jsonl.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/tuning.sh
+  docs_claim_level: advisory
+  exit_behavior: sourced-library
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.

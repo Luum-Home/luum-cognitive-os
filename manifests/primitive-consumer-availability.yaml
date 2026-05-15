@@ -1698,6 +1698,45 @@ items:
 - path: skills/primitive-harness-coverage/SKILL.md
   status: maintainer-only
   rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: measures COS primitive implementation coverage across harness surfaces so maintainers do not confuse SCOPE with parity.'
+- path: hooks/_lib/register-bg.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: registers COS background PIDs in lib/process_registry so the COS reaper can distinguish managed processes from orphans.'
+- path: hooks/_lib/remediation.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: operates the COS auto-repair remediation registry and failure metrics under .cognitive-os.'
+- path: hooks/_lib/resolve-main-worktree.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: resolves main/master worktrees for COS hook workflows and branch-safety coordination.'
+- path: hooks/_lib/safe-jsonl.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: writes COS hook metrics and health heartbeats safely to .cognitive-os/metrics.'
+- path: hooks/_lib/semantic-search.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: searches the COS remediation registry via scripts/semantic-lookup.mjs for auto-repair matching.'
+- path: hooks/_lib/session-fs-reap.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: archives and removes stale COS session filesystem state under .cognitive-os/sessions.'
+- path: hooks/_lib/session_init_helper.py
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: consolidates COS session-init runtime reads of self-improve flags, Engram user model, project profile, and work queue.'
+- path: hooks/_lib/singularity-suggestion.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: emits COS session-init advisory singularity suggestions from .cognitive-os metrics.'
+- path: hooks/_lib/stash-lock.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: coordinates COS hook git stash mutations with .cognitive-os/runtime/stash.lock.'
+- path: hooks/_lib/task-identity.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: derives canonical COS task ids for cross-session claim coordination.'
+- path: hooks/_lib/task_bridge.py
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: correlates COS task_id with Claude Code tool_use_id and .cognitive-os task state.'
+- path: hooks/_lib/timing.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: records COS hook execution time for performance monitoring.'
+- path: hooks/_lib/tuning.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 022: reads COS hook tuning events from .cognitive-os/metrics/hook-tuning.jsonl.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # register-bg.sh — ADR-028 D1.B  Process Registry helper
 #
 # Usage:

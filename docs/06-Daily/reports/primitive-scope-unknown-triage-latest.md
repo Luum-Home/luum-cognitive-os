@@ -8,26 +8,26 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 {
   "by_bucket": {
     "conflicting-metadata": 4,
-    "insufficient-metadata": 335,
+    "insufficient-metadata": 322,
     "os-only-semantic-candidate": 83,
     "project-only-semantic-candidate": 4
   },
   "by_declared_scope": {
-    "both": 367,
+    "both": 354,
     "os-only": 59
   },
   "by_gap": {
     "conflicting-distribution-evidence": 4,
-    "missing-consumer-availability-row": 426,
-    "missing-lifecycle-row": 426,
-    "no-distribution-evidence": 422
+    "missing-consumer-availability-row": 413,
+    "missing-lifecycle-row": 413,
+    "no-distribution-evidence": 409
   },
   "by_prefix": {
-    "hooks": 185,
+    "hooks": 172,
     "rules": 83,
     "scripts": 158
   },
-  "total_unknown": 426
+  "total_unknown": 413
 }
 ```
 
@@ -44,23 +44,10 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `os-only-semantic-candidate` | Text looks SO-internal. | Add os-only lifecycle/consumer metadata if confirmed. |
 | `insufficient-metadata` | No clear deterministic semantic direction. | Needs manual or AI-assisted adjudication. |
 
-## insufficient-metadata (335)
+## insufficient-metadata (322)
 
 | Path | Declared | Hints | Gaps | Structure | Summary |
 |---|---|---|---|---|---|
-| `hooks/_lib/register-bg.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | register-bg.sh — ADR-028 D1.B  Process Registry helper |
-| `hooks/_lib/remediation.sh` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | remediation.sh — Shared library for remediation registry operations |
-| `hooks/_lib/resolve-main-worktree.sh` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | resolve-main-worktree.sh — Shared library: resolve the main worktree path. |
-| `hooks/_lib/safe-jsonl.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | safe-jsonl.sh — Shared library for safe JSONL writes + hook health heartbeats |
-| `hooks/_lib/semantic-search.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | semantic-search.sh — Fuzzy error matching via vector similarity |
-| `hooks/_lib/session-fs-reap.sh` | both | os=1; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Archive-first filesystem reaper for .cognitive-os/sessions. |
-| `hooks/_lib/session_init_helper.py` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Consolidated helper for session-init.sh. |
-| `hooks/_lib/singularity-suggestion.sh` | both | os=2; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | _singularity_suggestion — Advisory singularity run suggestion. |
-| `hooks/_lib/stash-lock.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | stash-lock.sh — Flock coordinator library for git stash operations. |
-| `hooks/_lib/task-identity.sh` | both | os=0; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Resolve one canonical task id for cross-session claim coordination. |
-| `hooks/_lib/task_bridge.py` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Task Bridge — correlates COS task_id with Claude Code tool_use_id. |
-| `hooks/_lib/timing.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | timing.sh — Hook timing wrapper for Cognitive OS performance monitoring |
-| `hooks/_lib/tuning.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | tuning.sh — Shared helper for hooks with tunable thresholds. |
 | `hooks/aci-observation-capture.sh` | os-only | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PostToolUse hook: normalize tool output into ACI observations and trajectory rows. |
 | `hooks/adaptive-bypass.sh` | both | os=1; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook: Adaptive Bypass — Automatic Complexity Classification |
 | `hooks/adoption-freeze-gate.sh` | os-only | os=4; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | adoption-freeze-gate.sh — ADR-267 Hook #3 (Layer 1 — kill-switch). |
@@ -98,7 +85,20 @@ This report groups `suggested_scope=unknown` rows by missing evidence and determ
 | `hooks/engram-crystallize-on-session-end.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PURPOSE: Crystallise over-represented topic_keys at session end |
 | `hooks/engram-reinforce-on-access.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PURPOSE: Reinforce engram observations on mem_search and mem_get_observation access |
 | `hooks/epic-task-detector.sh` | both | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook: Epic Task Detector |
-| … | … | … | … | … | 285 more rows in JSON report. |
+| `hooks/error-learning.sh` | both | os=1; generic=3; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PostToolUse hook: Error Learning |
+| `hooks/error-pattern-detector.sh` | both | os=2; generic=2; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Error Pattern Detector — PreToolUse for Agent |
+| `hooks/error-pipeline.sh` | both | os=3; generic=3; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | CONCERNS: observability, recovery, logging |
+| `hooks/inject-phase-context.sh` | both | os=4; generic=4; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook on Agent — injects phase context from cognitive-os.yaml into agent prompts. |
+| `hooks/kpi-trigger.sh` | os-only | os=3; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | KPI Trigger Hook — Stop hook (runs at session end) |
+| `hooks/lethal-trifecta-gate.sh` | os-only | os=0; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook: blocks private data + untrusted content + external communication. |
+| `hooks/memory-prefetch.sh` | both | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | Memory Prefetch — UserPromptSubmit hook |
+| `hooks/orchestrator-claim-gate.sh` | both | os=1; generic=0; project=1 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | orchestrator-claim-gate.sh — Cross-IDE PreToolUse gate for high-stakes closure claims. |
+| `hooks/orchestrator-decision-trace.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PostToolUse hook: Orchestrator Decision Trace |
+| `hooks/orchestrator-mode-detect.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | @on-demand: sourced library helper — not registered independently, sourced by other hooks |
+| `hooks/plan-claim-validator.sh` | both | os=2; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | plan-claim-validator.sh — PreToolUse hook for Edit/Write/MultiEdit on plan files. |
+| `hooks/pre-compaction-flush.sh` | both | os=1; generic=0; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreCompact hook: Reminds the agent to save durable memories to Engram |
+| `hooks/prompt-quality-llm.sh` | both | os=1; generic=1; project=0 | no-distribution-evidence, missing-lifecycle-row, missing-consumer-availability-row |  | PreToolUse hook: Prompt Quality (LLM-evaluated, ADR-022) |
+| … | … | … | … | … | 272 more rows in JSON report. |
 
 ## os-only-semantic-candidate (83)
 
