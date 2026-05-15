@@ -10,33 +10,37 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bSDD Evidence Artifact\b
   confidence: 0.9
+- pattern: \bEARS\b
+  confidence: 0.9
+- pattern: \bEasy Approach to Requirements Syntax\b
+  confidence: 0.9
 - pattern: \bdetractor objection log\b
   confidence: 0.9
 - pattern: \b(Tenth Man|Devil'?s Advocate|Pre-mortem|Black Hat|Red Team)\b
   confidence: 0.82
 - pattern: \bgap matrix\b
   confidence: 0.78
-summary_line: Use EAS when significant work needs executable acceptance evidence, gap coverage, and Tenth-Man / Devil's-Advocate detractor review.
+summary_line: Use EAS when significant work needs executable acceptance evidence; use EARS syntax for functional requirements inside it.
 routing_intents:
 - intent: eas_artifact_request
-  description: User asks for EAS, an SDD evidence artifact, executable acceptance documentation, gap matrix coverage, named detractor modes, or detractor objections.
+  description: User asks for EAS, EARS, an SDD evidence artifact, executable acceptance documentation, gap matrix coverage, named detractor modes, or detractor objections.
   confidence: 0.9
 ---
 # Executable Acceptance Specification (EAS) Rule
 
 ## Purpose
 
-EAS is an optional evidence artifact for significant SDD work. It converts intent and documentation into executable acceptance evidence.
+EAS is an optional evidence artifact for significant SDD work. It converts intent and documentation into executable acceptance evidence. EARS is not the same acronym: EARS means Easy Approach to Requirements Syntax and is the preferred syntax for functional requirement statements inside EAS.
 
 ## When To Use
 
-Use EAS when the user asks for EAS or an SDD evidence artifact; the change is large, critical, cross-service, security-sensitive, or migration-related; acceptance criteria need to map to ATDD/TDD tests; multiple documentation formats need one evidence bridge; or a gap matrix, Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, Red Team, or detractor review is required.
+Use EAS when the user asks for EAS, EARS-backed requirements, or an SDD evidence artifact; the change is large, critical, cross-service, security-sensitive, or migration-related; acceptance criteria need to map to ATDD/TDD tests; multiple documentation formats need one evidence bridge; or a gap matrix, Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, Red Team, or detractor review is required.
 
 Do not force EAS onto trivial or small changes unless the user explicitly asks.
 
 ## Required Sections
 
-An EAS artifact must include Intent, Requirements, Non-goals, Executable acceptance criteria, Gap matrix, Adversarial personas, Detractor mode, Detractor objection log, Verification commands, and Residual risks.
+An EAS artifact must include Intent, Requirements, Non-goals, Executable acceptance criteria, Gap matrix, Adversarial personas, Detractor mode, Detractor objection log, Verification commands, and Residual risks. Functional requirement rows should follow EARS patterns when possible: `WHEN ... THE SYSTEM SHALL ...`, `IF ... THEN THE SYSTEM SHALL ...`, `WHILE ... THE SYSTEM SHALL ...`, `WHERE ... THE SYSTEM SHALL ...`, or `THE SYSTEM SHALL ...`.
 
 Use `templates/eas.md` as the canonical starter template.
 
@@ -44,7 +48,7 @@ Use `templates/eas.md` as the canonical starter template.
 
 An EAS review is incomplete unless every requirement maps to evidence, every acceptance criterion has a verification method, the detractor mode is selected, the detractor log contains at least one substantive objection, each detractor objection is resolved or explicitly carried as residual risk, and residual risks are explicit and bounded.
 
-Run `python3 scripts/eas_validate.py <eas.md>` before accepting an EAS artifact as complete.
+Run `python3 scripts/eas_validate.py <eas.md>` before accepting an EAS artifact as complete. Run `python3 scripts/eas_validate.py --require-ears <eas.md>` when EARS syntax is required by the user or project policy.
 
 ## Detractor Role
 
@@ -71,7 +75,9 @@ The role is not a veto by default. Every detractor objection must become evidenc
 - Pattern: `\bEAS\b`
 - Pattern: `\bExecutable Acceptance Specification\b`
 - Pattern: `\bSDD Evidence Artifact\b`
+- Pattern: `\bEARS\b`
+- Pattern: `\bEasy Approach to Requirements Syntax\b`
 - Pattern: `\bdetractor objection log\b`
 - Pattern: `\b(Tenth Man|Devil'?s Advocate|Pre-mortem|Black Hat|Red Team)\b`
 - Pattern: `\bgap matrix\b`
-- User asks for executable acceptance documentation, EAS, ATDD/TDD mapping, gap coverage, or detractor review.
+- User asks for executable acceptance documentation, EAS, EARS, ATDD/TDD mapping, gap coverage, or detractor review.

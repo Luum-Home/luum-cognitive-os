@@ -17,7 +17,7 @@ Harden login behavior for consumer repository users.
 ## Requirements
 | ID | Requirement | Type | Source | Priority |
 |---|---|---|---|---|
-| REQ-1 | Reject invalid passwords with a stable error. | functional | PRD | must |
+| REQ-1 | IF the password is invalid THEN THE SYSTEM SHALL return a stable authentication error. | functional | PRD | must |
 
 ## Non-goals
 - This does not change account recovery.
@@ -37,6 +37,14 @@ Harden login behavior for consumer repository users.
 |---|---|---|
 | Detractor | Argues the EAS will fail | Missing legacy client coverage? |
 
+## Detractor Mode
+| Field | Value |
+|---|---|
+| Selected mode | Devil's Advocate |
+| Why this mode fits | Login hardening needs skeptical compatibility review. |
+| Contrary thesis | Stable errors may still break legacy clients. |
+| Disconfirming evidence required | Compatibility test evidence. |
+
 ## Detractor Objection Log
 | ID | Objection | Risk | Required evidence | Disposition |
 |---|---|---|---|---|
@@ -54,7 +62,7 @@ No residual risks remain after AC-1 passes.
     )
 
     result = subprocess.run(
-        ["python3", "scripts/eas_validate.py", str(eas)],
+        ["python3", "scripts/eas_validate.py", "--require-ears", str(eas)],
         cwd=ROOT,
         text=True,
         capture_output=True,

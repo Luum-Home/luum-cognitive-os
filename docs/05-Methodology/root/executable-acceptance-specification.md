@@ -12,11 +12,12 @@ ATDD/TDD = execution and verification style
 
 - **SDD** decides when the agent should explore, propose, specify, design, task, apply, verify, and archive.
 - **EAS** records what must be true and how that truth will be proven.
+- **EARS** is the preferred syntax for functional requirements inside EAS. It means Easy Approach to Requirements Syntax.
 - **ATDD/TDD** turns EAS acceptance rows into behavior tests, unit tests, contract tests, and regression checks.
 
 ## Why EAS Exists
 
-Cognitive OS already requires acceptance criteria and verification commands, but significant work needs a stronger bridge between prose requirements and tests. EAS provides that bridge by requiring explicit intent, requirements and non-goals, executable acceptance criteria, a gap matrix, adversarial personas, a detractor objection log, verification commands, and residual risks.
+Cognitive OS already requires acceptance criteria and verification commands, but significant work needs a stronger bridge between prose requirements and tests. EAS provides that bridge by requiring explicit intent, EARS-friendly requirements and non-goals, executable acceptance criteria, a gap matrix, adversarial personas, a detractor objection log, verification commands, and residual risks.
 
 ## Required Sections
 
@@ -26,7 +27,7 @@ State the problem, desired outcome, affected users or operators, and why the cha
 
 ### 2. Requirements
 
-List functional, non-functional, operational, security, and compatibility requirements. Requirements should be stable enough to map to evidence.
+List functional, non-functional, operational, security, and compatibility requirements. Requirements should be stable enough to map to evidence. Functional requirements should use EARS when possible: event-driven `WHEN <event> THE SYSTEM SHALL <response>`, conditional `IF <condition> THEN THE SYSTEM SHALL <response>`, continuous `WHILE <state> THE SYSTEM SHALL <response>`, optional/feature-scoped `WHERE <feature/context> THE SYSTEM SHALL <response>`, or ubiquitous `THE SYSTEM SHALL <response>`.
 
 ### 3. Non-goals
 
@@ -93,6 +94,7 @@ EAS should reference or embed existing formats rather than replace them.
 
 | Format | EAS use |
 |---|---|
+| EARS | Preferred structure for functional requirement rows; use EAS to map those rows to acceptance criteria, evidence, detractor objections, and residual risk. |
 | PRD | Intent, users, goals, non-goals, product acceptance. |
 | RFC | Alternatives, tradeoffs, unresolved questions. |
 | ADR | Durable decisions and consequences. |
@@ -118,13 +120,14 @@ EAS is intentionally friendly to both ATDD and TDD. The ATDD path writes user-fa
 
 ## Validator
 
-Run the validator before treating an EAS artifact as complete:
+Run the validator before treating an EAS artifact as complete. Use `--require-ears` when project policy requires functional requirements to follow EARS syntax:
 
 ```bash
 python3 scripts/eas_validate.py path/to/eas.md
+python3 scripts/eas_validate.py --require-ears path/to/eas.md
 ```
 
-The validator fails if required sections are absent, requirements lack acceptance/evidence coverage, the Detractor is missing, objection disposition is unresolved, verification commands are absent, or residual risks are not explicit.
+The validator fails if required sections are absent, requirements lack acceptance/evidence coverage, the Detractor is missing, objection disposition is unresolved, verification commands are absent, or residual risks are not explicit. By default it warns when functional requirements are not EARS-like; with `--require-ears`, those warnings become blocking errors.
 
 ## Minimum Bar
 

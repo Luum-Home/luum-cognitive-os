@@ -33,10 +33,11 @@ Independently verify implementation against SDD requirements and EAS executable 
 
 ## EAS Verification Rule
 
-When EAS exists, verification must run:
+When EAS exists, verification must run. If the user or project policy requested EARS, include `--require-ears`:
 
 ```bash
 python3 scripts/eas_validate.py <eas.md>
+python3 scripts/eas_validate.py --require-ears <eas.md>
 ```
 
 Verification fails if the validator fails, unless the user explicitly accepts a partial EAS and the verify report records each residual risk.
@@ -45,7 +46,7 @@ Verification fails if the validator fails, unless the user explicitly accepts a 
 
 1. Read apply-progress and EAS.
 2. Apply `rules/adversarial-review.md`: produce at least one finding and classify severity.
-3. Run `python3 scripts/eas_validate.py <eas.md>` when EAS exists.
+3. Run `python3 scripts/eas_validate.py <eas.md>` when EAS exists; use `--require-ears` when EARS syntax is required by the user or project policy.
 4. Execute verification commands listed in EAS or mark manual checks with evidence.
 5. Confirm every `REQ-*` is covered by `AC-*` and evidence.
 6. Confirm at least one detractor mode is named when EAS exists: Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, or Red Team.

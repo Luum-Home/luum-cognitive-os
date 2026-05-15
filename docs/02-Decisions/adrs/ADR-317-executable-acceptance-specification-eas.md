@@ -41,7 +41,7 @@ EAS = artifact / documentation format
 ATDD/TDD = execution and verification style
 ```
 
-EAS must be able to represent or reference other known formats while preserving executable acceptance as the invariant. Its canonical sections are: Intent, Requirements, Non-goals, Executable acceptance criteria, Gap matrix, Adversarial personas, Detractor objection log, Verification commands, and Residual risks.
+EAS must be able to represent or reference other known formats while preserving executable acceptance as the invariant. Its canonical sections are: Intent, Requirements, Non-goals, Executable acceptance criteria, Gap matrix, Adversarial personas, Detractor objection log, Verification commands, and Residual risks. Functional requirements inside EAS should use EARS (Easy Approach to Requirements Syntax) patterns when the behavior can be stated that way.
 
 EAS is mandatory only when a caller, skill, or project policy asks for it. Otherwise it is recommended for large or critical SDD work and optional for smaller changes.
 
@@ -54,6 +54,7 @@ EAS is an adapter layer, not a competing methodology.
 | PRD | Product intent, users, goals, non-goals, and success measures. |
 | RFC | Alternatives, tradeoffs, open questions, and proposed approach. |
 | ADR | Durable decisions and consequences. |
+| EARS | Preferred syntax for functional requirement statements inside the Requirements section. EARS means Easy Approach to Requirements Syntax and uses patterns such as `WHEN ... THE SYSTEM SHALL ...`, `IF ... THEN THE SYSTEM SHALL ...`, `WHILE ... THE SYSTEM SHALL ...`, and `WHERE ... THE SYSTEM SHALL ...`. |
 | Gherkin | Executable behavior scenarios for ATDD. |
 | OpenAPI / AsyncAPI | External API contracts and contract tests. |
 | Test plan | Manual, unit, integration, contract, and regression checks. |
@@ -73,7 +74,7 @@ explore -> propose -> spec/design -> EAS -> tasks -> apply -> verify -> archive
 - `sdd-apply` implements against EAS acceptance rows, not only prose requirements.
 - `sdd-verify` runs `scripts/eas_validate.py` and checks that every EAS requirement has evidence, every unresolved gap is explicit, and every detractor objection is either addressed or carried as residual risk.
 
-The Detractor mode taxonomy itself is owned by ADR-319. ADR-317 owns the EAS artifact and its validator-backed implementation surface.
+The Detractor mode taxonomy itself is owned by ADR-319. ADR-317 owns the EAS artifact and its validator-backed implementation surface. EARS is deliberately not renamed to EAS: EARS is the requirement syntax; EAS is the evidence artifact that can contain EARS-formatted requirements.
 
 ## Adversarial Review Requirement
 
