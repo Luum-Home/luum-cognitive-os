@@ -49,15 +49,31 @@ The gap matrix is the anti-theater section. Every requirement must map to at lea
 
 Select personas that can expose different failure modes. A typical set is product/user representative, maintainer, security reviewer, operator/SRE, QA/test reviewer, architecture reviewer, and detractor. The exact count is not mandatory; at least one persona must be structurally skeptical rather than supportive.
 
-### 7. Detractor Objection Log
+### 7. Detractor Mode
 
-The detractor argues that the artifact or implementation will fail. Each objection must be resolved by evidence, turned into a task, or carried as residual risk.
+The detractor is a **Tenth-Man / Devil's-Advocate-inspired reviewer**: before implementation or final verification, it must argue that the EAS, plan, or implementation will fail. The role is mandatory for EAS and portable to adopter projects because every project can suffer consensus traps, optimistic plans, and late discovery of missing evidence.
+
+Use the lightest mode that matches the risk:
+
+| Mode | Use when | Expected output |
+|---|---|---|
+| Tenth Man Rule | The team or agent chain has converged on one plan too quickly. | A contrary thesis that assumes the consensus is wrong and names disconfirming evidence. |
+| Devil's Advocate | Any medium or larger plan needs skeptical questioning. | Alternatives, drawbacks, weak evidence, and hidden assumptions. |
+| Pre-mortem | Rollout, migration, release, or architecture work could fail after approval. | A failure narrative and the most likely causes to prevent. |
+| Black Hat | A Six Thinking Hats style review is useful. | Risks, difficulties, and reasons the proposal may not work. |
+| Red Team | Security, abuse, prompt-injection, or adversarial misuse is in scope. | Attack paths, exploit hypotheses, and required mitigations. |
+
+The detractor is not a veto by default; it is a structured obligation to make the contrary case before the system claims confidence.
+
+### 8. Detractor Objection Log
+
+Each objection must be resolved by evidence, turned into a task, or carried as residual risk.
 
 | Objection | Risk | Required evidence | Disposition |
 |---|---|---|---|
 | The migration misses legacy callers. | Partial rollout failure. | Caller count and regression test. | Converted to AC-3. |
 
-### 8. Verification Commands
+### 9. Verification Commands
 
 List the exact commands or manual checks that prove the EAS. Commands must include expected outcomes.
 
@@ -67,7 +83,7 @@ python3 -m pytest tests/behavior/test_example_flow.py -q
 grep -R "old_term" src/ | wc -l  # expected: 0
 ```
 
-### 9. Residual Risks
+### 10. Residual Risks
 
 List what remains uncertain after verification. A residual risk is acceptable only when it is explicit, owned, and bounded. If no residual risk remains, state that explicitly with the evidence basis.
 
@@ -117,8 +133,18 @@ An EAS is complete enough to use when every requirement has at least one accepta
 ## Related Artifacts
 
 - ADR-317: `docs/02-Decisions/adrs/ADR-317-executable-acceptance-specification-eas.md`
+- ADR-319: `docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md`
 - Template: `templates/eas.md`
 - Rule: `rules/eas-evidence-artifact.md`
 - Validator: `scripts/eas_validate.py`
 - Existing acceptance rule: `rules/acceptance-criteria.md`
 - Existing adversarial review rule: `rules/adversarial-review.md`
+
+
+## External References
+
+- Brookings: [Lessons from Israel's Intelligence Reforms](https://www.brookings.edu/articles/lessons-from-israels-intelligence-reforms/)
+- CIA Center for the Study of Intelligence: [Instituting Devil's Advocacy in IC Analysis after the Arab-Israeli War of October 1973](https://www.cia.gov/resources/csi/static/610d592f509c5ad03f5a999827dd9bdb/Article-Instituting-Devils-Advocacy-in-IC-Analysis-after-October-1973-War.pdf)
+- de Bono Group: [Six Thinking Hats](https://www.debonogroup.com/services/core-programs/six-thinking-hats/)
+- Mollick & Mollick: [Assigning AI: Seven Approaches for Students, with Prompts](https://arxiv.org/abs/2306.10052)
+- Microsoft prompts-for-edu: [Devil's Advocate prompt](https://github.com/microsoft/prompts-for-edu/blob/main/Students/Prompts/Devils%20Advocate.MD)

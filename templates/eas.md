@@ -52,7 +52,16 @@ Describe the problem, desired outcome, affected users/operators, and why this ch
 | Operator/SRE | Rollout, rollback, observability | <finding/question> |
 | QA/test | Coverage and reproducibility | <finding/question> |
 | Architecture | Boundaries and dependency direction | <finding/question> |
-| Detractor | Argues the EAS will fail | <objection> |
+| Detractor | Tenth-Man / Devil's-Advocate reviewer that argues the EAS will fail | <objection> |
+
+## Detractor Mode
+
+| Field | Value |
+|---|---|
+| Selected mode | Tenth Man Rule / Devil's Advocate / Pre-mortem / Black Hat / Red Team |
+| Why this mode fits | <consensus risk, planning risk, rollout risk, critical-thinking lens, or adversarial threat> |
+| Contrary thesis | <assume the plan is wrong; state how it fails> |
+| Disconfirming evidence required | <evidence that would falsify or weaken the objection> |
 
 ## Detractor Objection Log
 
