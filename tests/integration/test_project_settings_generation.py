@@ -124,6 +124,12 @@ class TestGenerateProjectSettings:
         filenames = extract_hook_filenames(run_generator("--default"))
         assert "host-tool-doctor.sh" in filenames
 
+    def test_default_project_scope_does_not_register_os_only_hooks(self):
+        filenames = extract_hook_filenames(
+            run_generator("--default", harness="codex", env_extra={"COS_INSTALL_SCOPE": "project"})
+        )
+        assert "engram-obsidian-export-on-stop.sh" not in filenames
+
     def test_codex_projection_includes_host_tool_doctor(self):
         settings = run_generator("--default", harness="codex")
         filenames = extract_hook_filenames(settings)
@@ -260,6 +266,22 @@ class TestCosInitSettingsGeneration:
         # Verify it's re-parseable
         settings_path = tmp_path / ".claude" / "settings.json"
         json.loads(settings_path.read_text())
+
+    def test_default_project_scope_has_no_missing_installed_codex_hook_commands(self, tmp_path):
+        settings, result = self._run_cos_init(
+            tmp_path, "--default", harness="codex", env_overrides={"COS_INSTALL_SCOPE": "project"}
+        )
+        assert result.returncode == 0, result.stderr
+        assert settings is not None
+
+        filenames = extract_hook_filenames(settings)
+        missing = []
+        for filename in filenames:
+            if filename.endswith(".sh") and not (tmp_path / ".cognitive-os" / "hooks" / "cos" / filename).exists():
+                missing.append(filename)
+
+        assert "engram-obsidian-export-on-stop.sh" not in filenames
+        assert missing == []
 
     def test_codex_harness_writes_hooks_json(self, tmp_path):
         settings, result = self._run_cos_init(tmp_path, "--standard", harness="codex")

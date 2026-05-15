@@ -121,6 +121,14 @@ project_scoped_hooks() {
   done
 }
 
+filter_hook_list_by_scope() {
+  local hook_name
+  for hook_name in $1; do
+    scope_allows "$COS_SOURCE_DIR/hooks/$hook_name" || continue
+    printf '%s\n' "$hook_name"
+  done
+}
+
 # ADR-093 default tier hook set (~29 hooks). Includes the regression guards:
 # auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
 DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cleanup.sh result-truncator.sh
@@ -209,7 +217,10 @@ build_jq_filter() {
 # ── Step 3: Apply mode filter ───────────────────────────────────────
 case "$MODE" in
   --default)
-    result=$(build_jq_filter "$DEFAULT_HOOKS")
+    # Default is still an external-project install surface: curated hooks must
+    # pass the same SCOPE filter as full installs so generated settings never
+    # reference hooks that were intentionally not copied.
+    result=$(build_jq_filter "$(filter_hook_list_by_scope "$DEFAULT_HOOKS")")
     ;;
   --full)
     # Full: include every hook installable under the active scope, then remove
