@@ -1497,6 +1497,45 @@ items:
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
     declaration; no consumer-project surface evidence.
+- path: templates/adr-template.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Generic ADR decision template usable for COS decisions and adopter project architecture
+    decisions.'
+- path: templates/agent-research-only.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Research-only agent prompt template applies to COS research tasks and adopter
+    project research phases.'
+- path: templates/contracts/test_redteam_baseline.template.py
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Consumer-customizable red-team baseline template is designed for adopter projects
+    while mirroring COS red-team contracts.'
+- path: templates/cross-harness-authoring.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Cross-harness authoring template governs portable primitive authoring in COS source
+    and project overlays.'
+- path: templates/error-recovery.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Generic error recovery template applies to any agentic coding task in COS or adopter
+    repos.'
+- path: templates/prompt-hooks/assumption-tracker-prompt.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Prompt hook template for assumption counting is repo-agnostic and reusable by
+    COS and project prompts.'
+- path: templates/prompt-hooks/scope-creep-prompt.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Prompt hook template for scope checking is repo-agnostic and reusable by COS and
+    project prompts.'
+- path: templates/quality-gates.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 015 confirmed template shared-surface:
+    Generic quality gate template applies to COS development and adopter project development.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
