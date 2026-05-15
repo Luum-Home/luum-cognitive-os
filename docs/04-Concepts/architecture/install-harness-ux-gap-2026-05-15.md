@@ -180,17 +180,18 @@ architecture.
 - [x] Define `cos project --harness <id>` as a project projection plan command.
 - [x] Every primitive/profile/project plan says the target path and proof summary
       (`native-lifecycle`, `governed-wrapper-enforced`, or `structural-advisory`).
-- [ ] Promote the plan commands to mutation commands only after projection
-      receipts, conflict-safe writes, and profile registry entries are signed.
+- [x] Promote the plan commands to first mutation commands with projection
+      receipts, target backups, and opt-in runtime smoke. Profile registry
+      signing remains a follow-up hardening item.
 - [ ] Replace the hardcoded Go harness/proof maps with a generated registry from
       `manifests/harness-projection.yaml` and `manifests/primitive-projection-profiles.yaml`.
 
 ### Slice D — conflict-safe projection writes
 
-- [ ] Add backups for existing non-COS-owned project instruction/settings files.
+- [x] Add first-slice backups for existing primitive targets and harness projection files.
 - [ ] Preserve bounded COS blocks idempotently.
 - [ ] Merge JSON settings where supported and refuse unsafe overwrites.
-- [ ] Emit a projection receipt under `.cognitive-os/reports/projection/`.
+- [x] Emit a projection receipt under `.cognitive-os/receipts/`.
 
 ### Slice E — simple health/stats UX
 
@@ -213,12 +214,45 @@ architecture.
    projection with a harness-specific proof-level summary.
 5. [x] Windsurf stays absent from supported first-run harnesses until projection
    files and tests exist, despite being in the planned manifest.
-6. [ ] Mutation/apply mode for granular primitive/profile commands remains gated
-   on conflict-safe writes and receipts.
+6. [x] Mutation/apply mode for granular primitive/profile commands writes
+   backups and receipts, with deeper structured merge still tracked as follow-up.
 
 ## Bottom line
 
 The architecture remains correct: `.cognitive-os/` is canonical, `.claude/` is a
 projection target, and each harness carries an explicit proof boundary. The
-install UX is now partially corrected, but the product-quality close requires a
-shared harness registry, helper-path parity, and a granular primitive catalog CLI.
+install UX now has first-slice apply mode, but the product-quality close still
+requires shared generated harness maps, deeper structured merge semantics, and
+a simple doctor/stats wrapper over receipts.
+
+## 2026-05-15 follow-up: apply-mode projection slice
+
+The granular UX has moved beyond plan-only for the first safe slice:
+
+- `cos install primitive <family/name> --harness <id>` now writes the selected
+  primitive into `.cognitive-os/{skills,hooks,rules}/cos/`, backs up any existing
+  target plus the harness projection file, and emits a JSON receipt under
+  `.cognitive-os/receipts/`.
+- `cos install profile default|full --harness <id>` and `cos project --harness
+  <id> --profile default|full` now delegate to `scripts/cos_init.py`, back up the
+  selected harness projection path first, and emit the same receipt shape.
+- All three commands keep `--dry-run` for the previous plan output.
+- `--runtime-smoke` is opt-in and runs real installed harness binaries only for
+  mapped command-line harnesses (`cursor`, `qwen-code`, `gemini-cli`,
+  `opencode`). Missing binaries are recorded as skipped rather than treated as a
+  product proof.
+- `windsurf` is explicitly recognized as planned-but-unsupported, so operators
+  get an honest error instead of a generic unknown-harness message.
+
+The canonical primitive catalog now has a generated lockfile at
+`manifests/agentic-primitive-registry.lock.yaml`. The lockfile is the
+canonical generated/locked primitive catalog; harness directories remain
+projection targets, not source of truth.
+
+Remaining hardening after this slice:
+
+- move Go harness/proof maps to a generated registry shared with `cos_init.py`;
+- merge JSON settings structurally instead of backing up then allowing the
+  projector to rewrite them;
+- add a human-facing `cos doctor harness` summary over projection receipts and
+  harness proof levels.
