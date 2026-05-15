@@ -32,6 +32,7 @@ hooks:
     - tests/unit/test_boring_reliability_tools.py
     - tests/unit/test_context_diet.py
     - tests/unit/test_cos_init_py.py
+    - tests/unit/test_primitive_parser.py
     - tests/unit/test_prompt_integration.py
     - tests/unit/test_ref_key_loader.py
     bypass_policy: not_required_observe_only
@@ -69,6 +70,7 @@ hooks:
     - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_adr_relevance_hook.py
     - tests/unit/test_adr_router.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_warning_only
     criticality: quality
     event: UserPromptSubmit
@@ -539,6 +541,7 @@ hooks:
   branch-ownership-lock:
     behavior_tests:
     - tests/contracts/test_branch_ownership_lock.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_warning_only
     criticality: coordination
     event: PreToolUse
@@ -863,6 +866,7 @@ hooks:
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
     - tests/unit/test_control_plane_hook_wiring.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_release_freeze_control_plane.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -883,6 +887,7 @@ hooks:
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
     - tests/unit/test_control_plane_hook_wiring.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_release_freeze_control_plane.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -903,6 +908,7 @@ hooks:
     - tests/unit/test_control_plane_audit.py
     - tests/unit/test_control_plane_hook_triggers.py
     - tests/unit/test_control_plane_hook_wiring.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_release_freeze_control_plane.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -1111,6 +1117,7 @@ hooks:
   dangerous-env-flag-detector:
     behavior_tests:
     - tests/unit/test_behavior_evidence_remaining_hooks.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -1371,6 +1378,7 @@ hooks:
   edit-lock-pre-tool:
     behavior_tests:
     - tests/unit/test_codex_guard_layer.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_projected_hook_gap_behaviors.py
     bypass_policy: not_required_warning_only
     criticality: coordination
@@ -1458,6 +1466,7 @@ hooks:
   engram-obsidian-export-on-stop:
     behavior_tests:
     - tests/behavior/test_engram_obsidian_export_hook.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     criticality: lifecycle
     event: Stop
@@ -1564,6 +1573,7 @@ hooks:
     - tests/unit/test_cross_platform_discipline.py
     - tests/unit/test_hook_behavioral.py
     - tests/unit/test_malformed_hook_input.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_system_graph.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -1839,6 +1849,7 @@ hooks:
     script: hooks/mcp-scan.sh
   memory-prefetch:
     behavior_tests:
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_registered_hook_behaviors.py
     bypass_policy: not_required_observe_only
     criticality: lifecycle
@@ -1888,6 +1899,7 @@ hooks:
   network-egress-guard:
     behavior_tests:
     - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -1907,6 +1919,7 @@ hooks:
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_gate_runner.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_warning_only
     criticality: quality
     event: PreToolUse
@@ -2100,6 +2113,7 @@ hooks:
     - tests/unit/test_cos_governance_roi.py
     - tests/unit/test_pre_agent_two_phase.py
     - tests/unit/test_primitive_coherence_audit.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_validation_capsule.py
     bypass_policy: not_required_warning_only
     criticality: coordination
@@ -2274,6 +2288,7 @@ hooks:
   protected-config-write-guard:
     behavior_tests:
     - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -2579,6 +2594,7 @@ hooks:
     - tests/contracts/test_redteam_portability_coverage.py
     - tests/unit/test_bash_hot_path_dispatcher_projection.py
     - tests/unit/test_gate_runner.py
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -2625,6 +2641,7 @@ hooks:
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_cos_governance_roi.py
     - tests/unit/test_coverage_classifier.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_secret_detector_registration.py
     - tests/unit/test_secret_detector_updated_input.py
     bypass_policy: not_required_warning_only
@@ -2797,6 +2814,7 @@ hooks:
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_cross_platform_discipline.py
     - tests/unit/test_primitive_harness_coverage.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_session_lifecycle.py
     - tests/unit/test_session_start_budget.py
     - tests/unit/test_singularity_suggestion.py
@@ -3118,6 +3136,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
     - tests/unit/test_context_budget_monitor.py
+    - tests/unit/test_primitive_scope_classifier.py
     - tests/unit/test_skill_router_prompt_suggest_hook.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -3315,7 +3334,8 @@ hooks:
     scope: os-only
     script: hooks/task-completed.sh
   task-created:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_primitive_scope_classifier.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: TaskCreated
