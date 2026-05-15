@@ -18,7 +18,6 @@ implementation_files:
   - hooks/cross-session-event-emit.sh
   - hooks/cross-session-peer-context.sh
   - tests/unit/test_cross_session_events.py
-  - .cognitive-os/sessions/events.jsonl     # existing runtime artifact
 tier: maintainer
 tags: [concurrency, observability, governance, postmortem-2026-05-05]
 ---

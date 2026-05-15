@@ -12,7 +12,6 @@ implementation_files:
   - hooks/branch-ownership-lock.sh
   - lib/branch_lock.py
   - tests/contracts/test_branch_ownership_lock.py
-  - .cognitive-os/runtime/branch-locks/
   - lib/session_coordination.py              # worktree intake companion
   - lib/agent_message_bus.py                 # auditor-to-operator companion
 tier: maintainer
