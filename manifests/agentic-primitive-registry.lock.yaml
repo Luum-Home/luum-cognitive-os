@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-14T22:12:27+00:00'
+generated_at: '2026-05-15T11:04:15+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -2349,6 +2349,166 @@ primitives:
   projection_targets:
   - rules/ROADMAP.md
   sha256: 8d08d15b82bd7c3bf1e517f1d1a98ba0a3c05a9319c4daad9a7e60f0f2712ca2
+- id: rules/acceptance-criteria.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/acceptance-criteria.md
+  sha256: 5564ec6f7ca1aee059532fb072e00ee3a4c9c9b5e9318bc9c6b99bdacca707ee
+- id: rules/adversarial-review.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/adversarial-review.md
+  sha256: 987ac349bf7b9de8368265731401d7c38d80c59455580518880f3c07488cf11a
+- id: rules/agent-quality.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/agent-quality.md
+  sha256: 31a89e913339e6a3a613646747a8c42c6a7a2da9bd2aef076d2cc4dffdfcb685
+- id: rules/agent-sidecars.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/agent-sidecars.md
+  sha256: ee5d57d1fa6021251bdc00ecb73bc98d689aeb2ffe479ac13f2b889909a219b4
+- id: rules/auto-repair.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/auto-repair.md
+  sha256: 71cd6e39b4a583d87f08a4782ae7030230a2d1995263f5087c345def626a9f9c
+- id: rules/broken-window-policy.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/broken-window-policy.md
+  sha256: e62176c3373fe7193ea5f1500e76d4bcabbdcf527907968d99b7699be65f033e
+- id: rules/decomposition.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/decomposition.md
+  sha256: fafd4a90fd27529560a9c4b917f72774828272f68232e7f1d616419afef2fd3c
+- id: rules/error-learning.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/error-learning.md
+  sha256: b7d21eaea95472f385fa67c348bfcaf9e1c50195842b0adef1ca5b85d4fb9aa1
+- id: rules/fault-tolerance.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/fault-tolerance.md
+  sha256: 05cdaf11e47745abda0856c43c5c9f3f09ee04d9f9b62e8a23b99ce25ff66086
+- id: rules/hook-security-profiles.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/hook-security-profiles.md
+  sha256: 56f321af73a771e11c4eb0e6c72dbb9c3f67f3acc98ec3f170d87a6235175021
+- id: rules/impact-analysis.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/impact-analysis.md
+  sha256: 3aeb7284c544b93156fda83bc9797d9374e34522a87e2cc4ce9dad157e8b98eb
+- id: rules/model-routing.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/model-routing.md
+  sha256: a83ad06a1dc60bfa666142678a9a9248ca0aaa00223370f31cd00a8389743b93
+- id: rules/pentesting-readiness.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/pentesting-readiness.md
+  sha256: f8d7508084ab22ae4e9eedbca73fa2bbe5e6fdbfc33c56848c1a6b606047cd6a
+- id: rules/pre-commit-gate.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/pre-commit-gate.md
+  sha256: 0df9dfbf0f73d84005cd50df107b0c2bca0b958badc20760e8b84ffefeaca109
+- id: rules/private-mode.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/private-mode.md
+  sha256: ecbdf645fd2693290a78a8cbbb344319f1904dd2875e78dbd18dd188a3fdfb82
+- id: rules/python-naming.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/python-naming.md
+  sha256: 22aab58be79c1e6b39a35cd313e14468478eb003482a3dc461986756f1fb425e
 - id: rules/recommendation-grounding.md
   kind: rule
   owner_adr: ADR-314
@@ -2369,6 +2529,36 @@ primitives:
   projection_targets:
   - rules/research-first-protocol.md
   sha256: 2e6ab2355afb6f3a08a8107a2e9d6c1d1f015a9d1eefea5a600b2f90c974df14
+- id: rules/response-compression.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/response-compression.md
+  sha256: fc7212e90b91436f1ca598dd4c1a04fd977b8fae0fd9c21231869ff4b0bf2276
+- id: rules/sandbox-sampling.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/sandbox-sampling.md
+  sha256: 5306564c806cc7b1ff42a1185a543ef18b5e542ac43f2bae540b1a3b0006a34f
+- id: rules/scout-pattern.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/scout-pattern.md
+  sha256: aac1e57378a31c306cb0193bbe8471fce130b5a09c084ee33196fd73760ec352
 - id: rules/self-improvement-protocol.md
   kind: rule
   owner_adr: ADR-083
@@ -2379,6 +2569,36 @@ primitives:
   projection_targets:
   - rules/self-improvement-protocol.md
   sha256: 3a7c3250865fedcee525f98a9094cb3547e2f99c077b6dfe919258e4bd412d61
+- id: rules/skill-management.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/skill-management.md
+  sha256: 45b15c62e3d41f883c9358b20be5d7e8e000ef94646875ec498330164b51c1db
+- id: rules/squad-protocol.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/squad-protocol.md
+  sha256: 32052e28a7737cc0e714d207621f1fdcbd90ea7c9ba3b743fa303c959c255ad7
+- id: rules/trailofbits-skills.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/trailofbits-skills.md
+  sha256: 37402192992dae477fd1723196354a842c2abbef08b9347fdd5bfb58902915fb
 - id: rules/trust-score.md
   kind: rule
   owner_adr: ADR-314
@@ -2389,6 +2609,16 @@ primitives:
   projection_targets:
   - rules/trust-score.md
   sha256: 7047d56ae84f9d951c0fe59fdb9567afa6197f2b408c57595c5bd657bfb2ad54
+- id: rules/user-prompt-capture.md
+  kind: rule
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - rules/user-prompt-capture.md
+  sha256: 75e70ba085857ca4225e5d136aad3f7e78ec5722ec8c82bfff2f93ba5bfdab86
 - id: scripts/_lib/session-id.sh
   kind: script
   owner_adr: ADR-149
@@ -2451,6 +2681,16 @@ primitives:
   projection_targets:
   - scripts/check_mcp_servers.py
   sha256: d88f71c367d0980877105f942c87c49036e00e1df064659c337ded0c7f06d669
+- id: scripts/check_test_quality.py
+  kind: script
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - scripts/check_test_quality.py
+  sha256: 87ca8d1629e1a29c06aa45b9e80ceb9d4c6d37d0df7aab4cbca034c3899992ef
 - id: scripts/cos
   kind: script
   owner_adr: ADR-146
@@ -4243,6 +4483,16 @@ primitives:
   projection_targets:
   - skills/add-hook/SKILL.md
   sha256: f6a1d94722eb5121bed09f28b8e433dc6f35ca2d1359fb552070cb2e59ba44da
+- id: skills/add-mcp/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/add-mcp/SKILL.md
+  sha256: 232a3fef7a737943154089200a1ed0b13eb62f266f4cef0a9dad884fa5c413f2
 - id: skills/add-skill/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -4274,6 +4524,26 @@ primitives:
   projection_targets:
   - skills/agent-kpis/SKILL.md
   sha256: b9c4577867ea3d9bbe877f4fd81c2a6d31a524067205754de7a4938d1956ead1
+- id: skills/agent-stress-test/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/agent-stress-test/SKILL.md
+  sha256: 7cfb5a8674f43b5dd039ddfe8c7e23292be3b6c2ae1938aff124361c3c54c972
+- id: skills/code-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/code-review/SKILL.md
+  sha256: fe63895c28d44ddf2dd5ca65c7ffeeea201d4d00acb6a88095f4cf9f91ae74e3
 - id: skills/cos-install-operations/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -4304,6 +4574,16 @@ primitives:
   projection_targets:
   - skills/hook-timing/SKILL.md
   sha256: 709be73b58c2d0e302bd9f73a5514cbbb427626204ec5b1757ced0d28fc5be6b
+- id: skills/install-recommended/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/install-recommended/SKILL.md
+  sha256: b11b269c12366f3b22679034d546cb987fb58358e112daa694fb7c101e1c7c23
 - id: skills/ops-runbook/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -4316,6 +4596,16 @@ primitives:
   - docs/06-backoffice/admin-processes.md
   - docs/06-backoffice/monitoring.md
   sha256: 7663942be6cbeb6dc7ef63678b6dbc6742012f30f2f8f056435d6ab1d595264c
+- id: skills/pr-review/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/pr-review/SKILL.md
+  sha256: 7f7d47a18c5c5c423017064e0ccf4a12103a33045ffa5fca1a749e2dff3ba963
 - id: skills/primitive-authoring/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -4346,6 +4636,26 @@ primitives:
   projection_targets:
   - skills/repair-skill/SKILL.md
   sha256: 3ec67babb5831fee5d97ef145ef2bdd7011e06e8b6b653370b7151dcbde5538d
+- id: skills/repo-forensics/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/repo-forensics/SKILL.md
+  sha256: 423002ee6bf7c2910b453a3bac0817bc648263a7e9b0ac88ad57c2d4c59664f7
+- id: skills/reverse-engineer/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/reverse-engineer/SKILL.md
+  sha256: 52c4f4dfb37d4f99802cd68b6cc86c1d2bbfc839ebcbd8f7035a2d7c5a31e39f
 - id: skills/risk-register/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -4366,6 +4676,26 @@ primitives:
   projection_targets:
   - docs/08-estandares/rules-snapshot-*.md
   sha256: d808679eec5e1ea96879d361135eed90536c9a41e4362f258ed6cb37cdef0078
+- id: skills/scout/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/scout/SKILL.md
+  sha256: a55b22a7c4f1d6ba0029861c491be5a07591f8fca7f64a1cc90175d1a10f0ec9
+- id: skills/sdd-explore/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - skills/sdd-explore/SKILL.md
+  sha256: da9590b386c3b4c95b7118bcf8e41c724388027dacb41e26c282ef90ffef3987
 - id: skills/self-improve/SKILL.md
   kind: skill
   owner_adr: ADR-083
@@ -4396,3 +4726,33 @@ primitives:
   projection_targets:
   - skills/synthesize-skill/SKILL.md
   sha256: d614c9fea53d096ffc0147fa284c8444fba9dfa9cbb06bb5e0f98b06b6243bc4
+- id: templates/generator-validator-pair.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/generator-validator-pair.md
+  sha256: b8a39889ee1152634eb3421428b46b09527c3e02df5840a8a7c8481b521b74af
+- id: templates/prompt-hooks/clarification-gate-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/prompt-hooks/clarification-gate-prompt.md
+  sha256: 319bbb0e7a999d76022a2013bc6dbd9fdfa7b7265325157ccac9dc0408d447c9
+- id: templates/prompt-hooks/prompt-quality-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/prompt-hooks/prompt-quality-prompt.md
+  sha256: bbd3881c18f49c99df22895cab270706fe584c6f17167a6830c86aa0c87679b6

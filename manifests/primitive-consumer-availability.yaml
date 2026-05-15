@@ -589,6 +589,150 @@ items:
 - path: skills/session-backlog/SKILL.md
   status: shared-surface
   rationale: Manual scope calibration iteration 011 confirmed this has explicit source-repo and consumer-project execution paths and shared backlog ledgers.
+- path: rules/acceptance-criteria.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines acceptance criteria
+    discipline for any repository and for COS itself.'
+- path: rules/adversarial-review.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines adversarial review
+    expectations for any codebase and COS changes.'
+- path: rules/agent-quality.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines agent output quality
+    standards independent of repository stack.'
+- path: rules/agent-sidecars.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines reusable Engram
+    sidecar continuity for project agents and COS agents.'
+- path: rules/auto-repair.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines shared agentic
+    auto-repair behavior for COS and adopter projects using the runtime.'
+- path: rules/broken-window-policy.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule is a generic repository
+    maintenance policy used by COS and adopter projects.'
+- path: rules/decomposition.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule is generic cost-aware work
+    decomposition for any repo task.'
+- path: rules/error-learning.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines reusable error
+    capture/learning loop for builds, tests, and lint in COS or adopter repos.'
+- path: rules/fault-tolerance.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines reusable agent/session
+    resilience patterns for COS and consumer-project agents.'
+- path: rules/hook-security-profiles.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines portable hook security
+    profile tradeoffs for adopter hook meshes and COS.'
+- path: rules/impact-analysis.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule is generic change impact
+    analysis for any repository.'
+- path: rules/model-routing.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines model routing behavior
+    for agent tasks in COS and adopter projects.'
+- path: rules/pentesting-readiness.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic security-readiness
+    expectations for repositories.'
+- path: rules/pre-commit-gate.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic pre-commit
+    test/coverage gating for code repositories.'
+- path: rules/private-mode.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines privacy constraints
+    that apply to COS and project work.'
+- path: rules/python-naming.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic Python
+    naming conventions for repository scripts.'
+- path: rules/response-compression.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines agent response
+    compression discipline independent of repository stack.'
+- path: rules/sandbox-sampling.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic sandbox-before-scaling
+    validation discipline.'
+- path: rules/scout-pattern.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines generic pre-implementation
+    reconnaissance discipline.'
+- path: rules/skill-management.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines skill management/routing
+    for COS and project-local skill sets.'
+- path: rules/squad-protocol.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines portable squad/agent
+    coordination semantics for COS and adopting organizations.'
+- path: rules/trailofbits-skills.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines optional security
+    skill usage for COS and adopter project audits.'
+- path: rules/user-prompt-capture.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Rule defines portable user-intent
+    capture for any agentic project session.'
+- path: scripts/check_test_quality.py
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Script checks explicit test
+    file lists and is safe as shared repo quality gate.'
+- path: skills/add-mcp/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 012: Skill is written as a Cognitive
+    OS integration procedure and updates COS ecosystem docs/config.'
+- path: skills/agent-stress-test/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 012: Skill depends on COS cognitive-load
+    monitoring internals and measures COS agent runtime health.'
+- path: skills/code-review/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Skill reviews changed files
+    in any repository and also reviews COS changes.'
+- path: skills/install-recommended/SKILL.md
+  status: projected-consumer-surface
+  rationale: 'Manual scope calibration iteration 012: Skill detects an adopter project''s
+    stack and recommends project skills; COS construction does not require it.'
+- path: skills/pr-review/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Skill reviews pull requests
+    in any repository and also COS PRs.'
+- path: skills/repo-forensics/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Skill performs repository forensics
+    for arbitrary repos and COS comparisons.'
+- path: skills/reverse-engineer/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Skill reverse-engineers dependencies
+    or repos independent of COS internals.'
+- path: skills/scout/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Skill maps codebase terrain
+    before implementation in any repository.'
+- path: skills/sdd-explore/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Skill explores feature feasibility
+    in any repository and in COS.'
+- path: templates/generator-validator-pair.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Template is a generic generator/validator
+    pattern for any repo artifact.'
+- path: templates/prompt-hooks/clarification-gate-prompt.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Template scores agent prompt
+    ambiguity independent of repository.'
+- path: templates/prompt-hooks/prompt-quality-prompt.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 012: Template scores prompt quality
+    independent of repository.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
