@@ -489,6 +489,17 @@ def derive_findings(results: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def scrub_paths(value: Any) -> Any:
+    """Remove developer-machine absolute checkout paths from persisted reports."""
+    if isinstance(value, str):
+        return value.replace(str(REPO_ROOT), "<repo-root>")
+    if isinstance(value, list):
+        return [scrub_paths(item) for item in value]
+    if isinstance(value, dict):
+        return {key: scrub_paths(item) for key, item in value.items()}
+    return value
+
+
 def markdown_report(payload: dict[str, Any]) -> str:
     findings = payload["findings"]
     lines = [
@@ -578,6 +589,7 @@ def main() -> int:
             "Node and Go stack fixtures still need implementation before this can be called exhaustive.",
         ],
     }
+    payload = scrub_paths(payload)
 
     if args.write_report:
         REPORT_JSON.parent.mkdir(parents=True, exist_ok=True)
