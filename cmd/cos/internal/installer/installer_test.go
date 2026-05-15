@@ -714,6 +714,31 @@ func TestResolveSettingsDriver_PrefersExistingCodexFile(t *testing.T) {
 	}
 }
 
+func TestResolveSettingsDriver_PreservesStructuralInstallMetadata(t *testing.T) {
+	projectRoot := t.TempDir()
+	t.Setenv("COGNITIVE_OS_HARNESS", "")
+	t.Setenv("CODEX_HOME", "")
+	metaDir := filepath.Join(projectRoot, ".cognitive-os")
+	if err := os.MkdirAll(metaDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(
+		filepath.Join(metaDir, "install-meta.json"),
+		[]byte(`{"harness":"cursor","settings_driver":".cursor/rules/cognitive-os.mdc"}`),
+		0644,
+	); err != nil {
+		t.Fatal(err)
+	}
+
+	driver := ResolveSettingsDriver(projectRoot)
+	if driver.Harness != "cursor" {
+		t.Fatalf("expected cursor driver, got %q", driver.Harness)
+	}
+	if driver.DisplayPath != ".cursor/rules/cognitive-os.mdc" {
+		t.Fatalf("expected cursor settings path, got %q", driver.DisplayPath)
+	}
+}
+
 func TestRegisterHooksWithCodexDriver(t *testing.T) {
 	projectRoot := t.TempDir()
 	settingsPath := filepath.Join(projectRoot, ".codex", "hooks.json")

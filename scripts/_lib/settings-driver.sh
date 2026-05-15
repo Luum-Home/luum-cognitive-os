@@ -19,7 +19,7 @@ cos_detect_harness() {
     local meta_harness
     meta_harness="$(jq -r '.harness // empty' "$meta_file" 2>/dev/null || true)"
     case "$meta_harness" in
-      claude|codex)
+      claude|codex|agents-md|opencode|vscode-copilot|cursor|qwen-code|kimi-code|gemini-cli|warp|amp-code|jetbrains-junie|qoder|factory-droid|cline|continue-dev|kilo-code|zed-ai|augment-code|goose|aider|shell-ci)
         printf '%s\n' "$meta_harness"
         return
         ;;
@@ -47,7 +47,28 @@ cos_detect_harness() {
 cos_settings_driver_relpath() {
   local harness="${1:-claude}"
   case "$harness" in
+    claude) printf '%s\n' ".claude/settings.json" ;;
     codex) printf '%s\n' ".codex/hooks.json" ;;
+    agents-md) printf '%s\n' "AGENTS.md" ;;
+    opencode) printf '%s\n' "opencode.json" ;;
+    vscode-copilot) printf '%s\n' ".github/copilot-instructions.md" ;;
+    cursor) printf '%s\n' ".cursor/rules/cognitive-os.mdc" ;;
+    qwen-code) printf '%s\n' ".qwen/settings.json" ;;
+    kimi-code) printf '%s\n' "AGENTS.md" ;;
+    gemini-cli) printf '%s\n' ".gemini/settings.json" ;;
+    warp) printf '%s\n' "AGENTS.md" ;;
+    amp-code) printf '%s\n' "AGENTS.md" ;;
+    jetbrains-junie) printf '%s\n' ".junie/AGENTS.md" ;;
+    qoder) printf '%s\n' "AGENTS.md" ;;
+    factory-droid) printf '%s\n' "AGENTS.md" ;;
+    cline) printf '%s\n' ".clinerules/cognitive-os.md" ;;
+    continue-dev) printf '%s\n' ".continue/rules/cognitive-os.md" ;;
+    kilo-code) printf '%s\n' ".kilocode/rules/cognitive-os.md" ;;
+    zed-ai) printf '%s\n' ".rules" ;;
+    augment-code) printf '%s\n' ".augment/rules/cognitive-os.md" ;;
+    goose) printf '%s\n' ".goosehints" ;;
+    aider) printf '%s\n' "CONVENTIONS.md" ;;
+    shell-ci) printf '%s\n' ".cognitive-os/shell-ci-projection.json" ;;
     *) printf '%s\n' ".claude/settings.json" ;;
   esac
 }
