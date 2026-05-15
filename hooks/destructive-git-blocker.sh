@@ -565,7 +565,7 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
     if [ "$STASH_RC" -eq 0 ]; then
       STASH_REF=$(git -C "$PROJECT_DIR" stash list --format='%gd' 2>/dev/null | head -1)
       echo "Stash created: $STASH_REF  (msg: $STASH_MSG)" >&2
-      echo "To restore: git stash pop  OR  git stash apply $STASH_REF" >&2
+      echo "To restore: inspect first, then git stash apply $STASH_REF; drop only after verifying restore." >&2
       echo "" >&2
       BYPASS_ENTRY=$(printf \
         '{"timestamp":"%s","event":"wip_guard_auto_stash","op":"%s","command":"%s","stash_ref":"%s","stash_msg":"%s","agent_id":"%s"}' \
@@ -596,12 +596,12 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
   echo "$WIP_FILES" >&2
   echo "" >&2
   echo "Recovery options:" >&2
-  echo "  a) Stash first:   git stash push -u -m 'pre-sync-wip' && $COMMAND" >&2
+  echo "  a) Stash first:   git stash push -u -m 'pre-sync-wip-<reason>' && inspect the named stash before restore && $COMMAND" >&2
   echo "  b) Commit first:  git add -p && git commit -m 'wip: checkpoint' && $COMMAND" >&2
   echo "  c) Allow bypass:  COS_ALLOW_RESET_OVER_WIP=1 $COMMAND" >&2
   echo "     (bypass is logged with the WIP file list to .cognitive-os/metrics/destructive-git-bypass.jsonl)" >&2
   echo "  d) Auto-stash:    COS_AUTO_STASH_BEFORE_RESET=1 $COMMAND" >&2
-  echo "     (stashes WIP automatically before the op; restore with git stash pop)" >&2
+  echo "     (legacy opt-in; inspect the named stash and restore with explicit git stash apply <ref>)" >&2
   echo "" >&2
   echo "Reference: ADR-116 §P3.2, docs/06-Daily/reports/bug2-reset-cascade-forensics-2026-04-20.md" >&2
   echo "" >&2

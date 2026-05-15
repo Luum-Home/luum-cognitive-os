@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 326 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 327 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (152)
+### Active / Implemented (153)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -164,6 +164,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [314](ADR-314-primitive-scope-taxonomy-calibration-loop.md) | Primitive Scope Taxonomy Calibration Loop | accepted | implemented | 2026-05-14 | Accepted and implemented — 2026-05-14. |
 | [315](ADR-315-primitive-parser-contracts.md) | Primitive Parser Contracts Before Scope Classification | accepted | implemented | 2026-05-14 | Accepted and implemented — 2026-05-14. |
 | [316](ADR-316-agentic-literacy-before-os-abstraction.md) | Agentic Literacy Before OS Abstraction | accepted | implemented | 2026-05-15 | Accepted and implemented as documentation doctrine — 2026-05-15. |
+| [318](ADR-318-copy-only-checkpoints-and-stash-quarantine.md) | Copy-Only Checkpoints and Stash Quarantine | accepted | implemented | 2026-05-15 | Checkpoints are copy-only by default; stash is quarantined compatibility, never positional source of truth. |
 
 ### Active / Partial (119)
 

@@ -56,6 +56,8 @@ def test_auto_pre_agent_stash_above_ttl_writes_alarm(repo_with_auto_stash: Path)
     assert payload["file_count"] == 1
     assert payload["blocking"] is False
     assert any("git stash show" in item for item in payload["remediation"])
+    assert any("git stash apply" in item for item in payload["remediation"])
+    assert not any("git stash pop" in item for item in payload["remediation"])
 
 
 @pytest.mark.behavior
@@ -63,7 +65,8 @@ def test_auto_pre_agent_stash_blocks_when_block_ttl_exceeded(repo_with_auto_stas
     result = run_detector(repo_with_auto_stash, ttl=0, block_ttl=0)
     assert result.returncode == 2
     assert "BLOCK auto-pre-agent stash leak" in result.stdout
-    assert "git stash pop" in result.stdout
+    assert "git stash apply" in result.stdout
+    assert "after confirming ownership" in result.stdout
 
     alarm = repo_with_auto_stash / ".cognitive-os" / "runtime" / "stash-leak-alarm.json"
     payload = json.loads(alarm.read_text(encoding="utf-8"))

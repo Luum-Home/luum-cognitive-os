@@ -113,8 +113,8 @@ fi
   echo "║"
   echo "║  Suggested actions:"
   echo "║    bin/cos validation status"
-  echo "║    git stash list | grep -E 'auto-pre-agent-|auto-checkpoint-'"
-  echo "║    git stash drop stash@{N}   # drop individual stash"
+  echo "║    git stash list | grep -E 'auto-pre-agent-|auto-checkpoint-'  # choose by name, not position"
+  echo "║    git stash show --name-status <reviewed-stash-ref>  # inspect before apply/drop"
   echo "╚══════════════════════════════════════════════════════════╝"
   echo ""
 } >&2

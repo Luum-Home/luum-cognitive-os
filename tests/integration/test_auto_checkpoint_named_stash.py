@@ -1,13 +1,8 @@
-"""Integration tests for R2: auto-checkpoint.sh named stash.
+"""Integration tests for auto-checkpoint.sh worktree safety.
 
-Verifies that auto-checkpoint.sh uses UUID-named stashes and resolves them by
-name (not positional index), preventing stash@{0} shift races with concurrent
-hooks (pre-agent-snapshot, post-agent-snapshot-restore).
-
-Each test spins up a fresh temporary git repository and runs the hook via
-subprocess so the shell logic executes exactly as it would in production.
-
-ADR-055b: stash ops require COS_ALLOW_DESTRUCTIVE_GIT=1 in the hook's env.
+Default checkpointing is copy-only: it must create recovery evidence without
+hiding operator WIP through a stash push/apply round-trip. The historical named
+stash lookup tests remain as falsification coverage for the opt-in legacy path.
 """
 
 import json
@@ -151,18 +146,18 @@ def _stash_list_formatted(repo: Path) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Test 1 — Happy path: push named → apply named → drop named
+# Test 1 — Happy path: copy dirty files without mutating git stash
 # ---------------------------------------------------------------------------
 
 
 class TestHappyPathNamedStash:
     def test_stash_push_apply_drop_cycle(self, tmp_path):
-        """Hook creates a named stash, restores the working tree, and removes the stash.
+        """Hook copies dirty files, preserves the working tree, and leaves stash count unchanged.
 
         After a successful run:
-        - No stash entries remain (stash was applied then dropped)
+        - No stash entries are created
         - Marker file is updated
-        - Checkpoint JSON was written with stash_name field
+        - Checkpoint JSON records copied file evidence
         """
         _make_git_repo(tmp_path)
         _initial_commit(tmp_path)
@@ -186,17 +181,17 @@ class TestHappyPathNamedStash:
         # Marker updated
         assert _marker(tmp_path).exists(), "Checkpoint marker not created"
 
-        # Checkpoint JSON written with stash_name field
+        # Checkpoint JSON written as copy-only metadata.
         chk_files = list(_checkpoint_dir(tmp_path).glob("cos-*.json"))
         assert chk_files, "No checkpoint JSON found"
         meta = json.loads(chk_files[0].read_text())
-        assert "stash_name" in meta, f"stash_name missing from metadata: {meta}"
-        assert meta["stash_name"].startswith("auto-checkpoint-"), (
-            f"stash_name has unexpected prefix: {meta['stash_name']}"
-        )
+        assert meta["mode"] == "copy"
+        assert meta["stash_name"] == "copy-only"
+        assert "dirty.txt" in meta["copied_files"]
+        assert (tmp_path / meta["checkpoint_files_dir"] / "dirty.txt").exists()
 
     def test_dirty_file_preserved_after_hook(self, tmp_path):
-        """Working-tree changes must survive the stash-apply cycle."""
+        """Working-tree changes must survive checkpoint creation."""
         _make_git_repo(tmp_path)
         _initial_commit(tmp_path)
         _expire_marker(tmp_path)
@@ -210,6 +205,31 @@ class TestHappyPathNamedStash:
         assert dirty.exists(), "Dirty file was lost after auto-checkpoint"
         assert dirty.read_text() == "must-survive"
 
+
+
+
+def test_copy_only_checkpoint_does_not_remove_untracked_when_apply_would_conflict(tmp_path):
+    """Root guard: default auto-checkpoint must not hide WIP through stash round-trips."""
+    _make_git_repo(tmp_path)
+    _initial_commit(tmp_path)
+    _expire_marker(tmp_path)
+    dirty = _make_dirty(tmp_path, "eas.md", "must remain visible")
+
+    before_stashes = _stash_count(tmp_path)
+    result = _run_hook(tmp_path, extra_env={"COS_ALLOW_DESTRUCTIVE_GIT": "1"})
+
+    assert result.returncode == 0, result.stderr
+    assert dirty.exists(), "copy-only checkpoint must not remove untracked WIP"
+    assert dirty.read_text() == "must remain visible"
+    assert _stash_count(tmp_path) == before_stashes
+
+    chk_files = list(_checkpoint_dir(tmp_path).glob("cos-*.json"))
+    assert chk_files
+    meta = json.loads(chk_files[0].read_text())
+    assert meta["mode"] == "copy"
+    assert meta["stash_name"] == "copy-only"
+    assert "eas.md" in meta["copied_files"]
+    assert (tmp_path / meta["checkpoint_files_dir"] / "eas.md").read_text() == "must remain visible"
 
 # ---------------------------------------------------------------------------
 # Test 2 — Race scenario: pre-agent-snapshot creates stash@{0} BEFORE pop
@@ -375,14 +395,14 @@ class TestMarkerFilePersistence:
         chk_files = list(_checkpoint_dir(tmp_path).glob("cos-*.json"))
         assert chk_files, "No checkpoint JSON"
         meta = json.loads(chk_files[0].read_text())
-        stash_name = meta.get("stash_name", "")
-        assert stash_name.startswith("auto-checkpoint-"), f"Bad stash_name: {stash_name}"
-        # UUID part should be at least 8 chars
-        uuid_part = stash_name[len("auto-checkpoint-"):]
-        assert len(uuid_part) >= 8, f"UUID part too short: {uuid_part!r}"
+        assert meta.get("mode") == "copy", meta
+        assert meta.get("stash_name") == "copy-only", meta
+        assert "dirty.txt" in meta.get("copied_files", []), meta
+        copied = tmp_path / meta["checkpoint_files_dir"] / "dirty.txt"
+        assert copied.exists(), f"checkpoint copy missing: {copied}"
 
-    def test_runtime_dir_created_when_stash_runs(self, tmp_path):
-        """The hook must create .cognitive-os/runtime/ as part of the stash flow."""
+    def test_runtime_dir_created_when_checkpoint_runs(self, tmp_path):
+        """The hook must create .cognitive-os/runtime/ without requiring a stash flow."""
         _make_git_repo(tmp_path)
         _initial_commit(tmp_path)
         _expire_marker(tmp_path)
@@ -391,7 +411,7 @@ class TestMarkerFilePersistence:
         runtime = _runtime_dir(tmp_path)
         assert not runtime.exists(), "Pre-condition: runtime dir must not exist"
 
-        # Run hook with dirty files + allow_destructive to trigger stash path
+        # Run hook with dirty files; default checkpointing is copy-only.
         result = _run_hook(tmp_path, extra_env={"COS_ALLOW_DESTRUCTIVE_GIT": "1"})
         assert result.returncode == 0, f"exit={result.returncode}\nstderr={result.stderr}"
 

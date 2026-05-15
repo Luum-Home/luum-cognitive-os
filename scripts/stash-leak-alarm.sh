@@ -58,8 +58,8 @@ payload = {
     "blocking": blocking == "true",
     "remediation": [
         f"git stash show --name-status {ref}",
-        f"git stash pop {ref}",
-        f"git stash drop {ref}",
+        f"git stash apply {ref}  # after inspection; drop only after verifying restore",
+        f"git stash drop {ref}   # only after confirming it is obsolete",
         "rm -f .cognitive-os/runtime/stash-leak-alarm.json",
     ],
 }
@@ -71,7 +71,7 @@ PY
 if [ "$blocking" = true ]; then
   echo "BLOCK auto-pre-agent stash leak: $stash_ref age=${age_seconds}s files=$file_count"
   echo "Inspect with: git stash show --name-status $stash_ref"
-  echo "Resolve with: git stash pop $stash_ref OR git stash drop $stash_ref; then rm -f .cognitive-os/runtime/stash-leak-alarm.json"
+  echo "Resolve with: inspect $stash_ref, then git stash apply $stash_ref or git stash drop $stash_ref only after confirming ownership; then rm -f .cognitive-os/runtime/stash-leak-alarm.json"
   exit 2
 fi
 

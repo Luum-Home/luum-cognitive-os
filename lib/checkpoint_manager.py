@@ -165,15 +165,15 @@ class CheckpointManager:
 
         Steps:
         1. git status -> list dirty files
-        2. If dirty: git stash push -m "cos-checkpoint-{id}"
-                     then git stash pop (keep changes, but stash is saved)
+        2. If dirty: copy dirty file bytes to checkpoints/{id}/files by default.
+           Legacy stash round-trips are quarantined compatibility only.
         3. Save checkpoint metadata to checkpoints/{id}.json
         4. Save session state snapshot
         5. Return checkpoint object
 
-        NOTE: git stash push + pop means the stash exists as a backup
-        but working directory is unchanged. If crash happens, the stash
-        survives because it is in .git/refs/stash.
+        NOTE: Copy-only checkpoints are the default recovery primitive. Legacy
+        stash entries, when explicitly enabled, must be inspected and restored
+        by a reviewed ref/SHA rather than by positional stash@{N}.
         """
         os.makedirs(self.checkpoint_dir, exist_ok=True)
 
@@ -436,9 +436,10 @@ class CheckpointManager:
 
         stashes = recovery_info.get("stashes", [])
         if stashes:
-            lines.append("  1. Restore stashed files: git stash apply")
-            lines.append("  2. Resume tasks: /resume-tasks")
-            lines.append("  3. Discard and start fresh: git stash drop")
+            lines.append("  1. Inspect named stash/checkpoint before restore: git stash show --name-status <reviewed-stash-ref>")
+            lines.append("  2. Restore only the reviewed entry: git stash apply <reviewed-stash-ref>")
+            lines.append("  3. Resume tasks: /resume-tasks")
+            lines.append("  4. Drop only after verification: git stash drop <reviewed-stash-ref>")
         else:
             lines.append("  1. Resume tasks: /resume-tasks")
 

@@ -172,13 +172,14 @@ except Exception:
 fi
 
 echo "" >&2
-echo "  To restore: git stash apply (picks most recent)" >&2
-echo "  To discard: git stash drop" >&2
-echo "  To list all: git stash list | grep -E '(cos-|auto-pre-agent-)'" >&2
+echo "  New checkpoints are copy-only under .cognitive-os/checkpoints/ (no git stash mutation)." >&2
+echo "  Legacy stash recovery, if present, must be reviewed by name/SHA before apply/drop." >&2
+echo "  To list legacy COS stashes: git stash list | grep -E '(cos-|auto-pre-agent-|auto-checkpoint-)'" >&2
+echo "  To inspect one: git stash show --name-status <reviewed-stash-ref>" >&2
+echo "  To restore one: git stash apply <reviewed-stash-ref>  # never rely on implicit stash@{0}" >&2
 echo "" >&2
-echo "  NOTE: cos-* stashes were created by the legacy pre-agent-snapshot path." >&2
-echo "  To inspect: git stash show -p <stash@{N}>" >&2
-echo "  These coexist with new-style snapshots in .cognitive-os/snapshots/ (ADR-099)." >&2
+echo "  NOTE: cos-* stashes were created by legacy or explicit opt-in stash paths." >&2
+echo "  These coexist with copy snapshots/checkpoints in .cognitive-os/ (ADR-099/ADR-318)." >&2
 echo "" >&2
 
 exit 0

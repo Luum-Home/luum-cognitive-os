@@ -9,11 +9,10 @@
 # This hook persists session-level state (WS13). D1.C writes per-agent liveness
 # files under .cognitive-os/tasks/. Both are required; neither replaces the other.
 #
-# R2 (revert-investigation-2026-05-02): stash ops now use NAMED stashes with a
-# UUID per invocation. `git stash pop` replaced by find-by-name → apply → drop
-# to prevent stash@{0} index shift races with concurrent hooks (pre/post-agent-snapshot).
-#
-# ADR-055b: stash ops require COS_ALLOW_DESTRUCTIVE_GIT=1 in hook env.
+# Root fix (2026-05-15): checkpoints are copy-only by default. The old stash
+# round-trip path can hide WIP if apply conflicts or a hook is interrupted, so
+# stash mutation now requires explicit COS_AUTO_CHECKPOINT_USE_STASH=1 plus
+# COS_ALLOW_DESTRUCTIVE_GIT=1.
 #
 # Author: luum
 set -uo pipefail
@@ -72,83 +71,176 @@ mkdir -p "$RUNTIME_DIR"
 CHECKPOINT_ID="cos-$(date +%Y%m%d-%H%M%S)"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-# ── R2: UUID-named stash to prevent stash@{0} index shift race ─────────────
-# Each invocation gets its own UUID so concurrent hooks cannot grab the wrong entry.
-if command -v uuidgen >/dev/null 2>&1; then
-    _UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
-else
-    _UUID=$(python3 -c "import uuid; print(uuid.uuid4())" 2>/dev/null \
-            || echo "$$-$(date +%s)-$RANDOM")
-fi
-STASH_NAME="auto-checkpoint-${_UUID}"
+# ── Copy-only checkpoint (root fix) ─────────────────────────────────────────
+# Previous revisions used `git stash push --include-untracked` followed by
+# `git stash apply` as a checkpoint side effect. That makes a PostToolUse Bash
+# hook capable of hiding files from the operator worktree when apply conflicts,
+# is interrupted, or races with another stash-mutating hook. Checkpointing must
+# be observational by default: copy dirty file bytes into .cognitive-os without
+# mutating git state.
+CHECKPOINT_PATH="$CHECKPOINT_DIR/$CHECKPOINT_ID"
+CHECKPOINT_FILES_DIR="$CHECKPOINT_PATH/files"
+CHECKPOINT_META="$CHECKPOINT_DIR/$CHECKPOINT_ID.json"
+STASH_NAME="copy-only"
+COPY_STATUS="ok"
+COPY_SUMMARY='{"copied_files":[],"deleted_files":[],"skipped_files":[],"copied_bytes":0}'
+mkdir -p "$CHECKPOINT_FILES_DIR" 2>/dev/null || COPY_STATUS="mkdir_failed"
 
-# ADR-055b: stash ops gated on COS_ALLOW_DESTRUCTIVE_GIT=1
-# Exclude .cognitive-os/ so the runtime dir is not swallowed by --include-untracked.
-STASH_RC=0
-if [ "${COS_ALLOW_DESTRUCTIVE_GIT:-0}" = "1" ]; then
+if [ "$COPY_STATUS" = "ok" ]; then
+    COPY_SUMMARY=$(python3 - "$PROJECT_DIR" "$CHECKPOINT_FILES_DIR" <<'PYEOF' 2>/dev/null
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+repo = Path(sys.argv[1]).resolve()
+dest = Path(sys.argv[2]).resolve()
+
+def git(args):
+    result = subprocess.run(["git", *args], cwd=str(repo), capture_output=True)
+    if result.returncode != 0:
+        return []
+    return [p.decode("utf-8", "replace") for p in result.stdout.split(b"\0") if p]
+
+# `git diff --name-only HEAD` includes staged and unstaged tracked changes.
+# Fall back gracefully for unborn repositories.
+head_exists = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=str(repo), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
+tracked = git(["diff", "--name-only", "-z", "HEAD", "--"]) if head_exists else git(["ls-files", "-z"])
+untracked = git(["ls-files", "--others", "--exclude-standard", "-z"])
+paths = []
+for rel in [*tracked, *untracked]:
+    if not rel or rel.startswith(".cognitive-os/"):
+        continue
+    if rel not in paths:
+        paths.append(rel)
+
+copied = []
+deleted = []
+skipped = []
+copied_bytes = 0
+for rel in paths:
+    src = repo / rel
+    if not src.exists():
+        deleted.append(rel)
+        continue
+    if not src.is_file():
+        skipped.append({"path": rel, "reason": "not_regular_file"})
+        continue
+    target = dest / rel
+    try:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, target)
+        copied.append(rel)
+        copied_bytes += src.stat().st_size
+    except Exception as exc:
+        skipped.append({"path": rel, "reason": f"copy_failed: {exc}"})
+
+print(json.dumps({
+    "copied_files": copied,
+    "deleted_files": deleted,
+    "skipped_files": skipped,
+    "copied_bytes": copied_bytes,
+}, separators=(",", ":")))
+PYEOF
+)
+    if [ -z "$COPY_SUMMARY" ]; then
+        COPY_STATUS="copy_failed"
+        COPY_SUMMARY='{"copied_files":[],"deleted_files":[],"skipped_files":[{"path":"<checkpoint>","reason":"python_failed"}],"copied_bytes":0}'
+    fi
+fi
+
+# Emergency compatibility path only. It is intentionally opt-in because stash
+# round-trips are destructive to the visible worktree and caused hidden WIP.
+if [ "${COS_AUTO_CHECKPOINT_USE_STASH:-0}" = "1" ] && [ "${COS_ALLOW_DESTRUCTIVE_GIT:-0}" = "1" ]; then
+    if command -v uuidgen >/dev/null 2>&1; then
+        _UUID=$(uuidgen | tr '[:upper:]' '[:lower:]')
+    else
+        _UUID=$(python3 -c "import uuid; print(uuid.uuid4())" 2>/dev/null \
+                || echo "$$-$(date +%s)-$RANDOM")
+    fi
+    STASH_NAME="auto-checkpoint-${_UUID}"
     if command -v cos_stash_lock_acquire >/dev/null 2>&1; then
-        cos_stash_lock_acquire "auto-checkpoint" || exit 0
+        cos_stash_lock_acquire "auto-checkpoint" || STASH_NAME="copy-only-lock-failed"
         trap 'cos_stash_lock_release' EXIT INT TERM
     fi
-
-    git -C "$PROJECT_DIR" stash push -m "$STASH_NAME" --include-untracked \
-        -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' . \
-        >/dev/null 2>&1
-    STASH_RC=$?
-fi
-
-if [ "$STASH_RC" -eq 0 ] && [ "${COS_ALLOW_DESTRUCTIVE_GIT:-0}" = "1" ]; then
-    # Re-create runtime dir in case stash swept it (safety belt)
-    mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
-
-    # Persist stash name to runtime marker BEFORE apply (survives crashes)
-    MARKER_FILE="$RUNTIME_DIR/auto-checkpoint-$$.json"
-    printf '{"stash_name":"%s","checkpoint_id":"%s","pid":%s,"timestamp":"%s"}\n' \
-        "$STASH_NAME" "$CHECKPOINT_ID" "$$" "$TIMESTAMP" \
-        > "$MARKER_FILE" 2>/dev/null || true
-
-    # ── Find stash by name, NOT by positional index ─────────────────────────
-    # `git stash list --format='%gd %s'` output:
-    #   stash@{0} On main: auto-checkpoint-<UUID>
-    STASH_REF=""
-    while IFS= read -r _line; do
-        _ref="${_line%% *}"
-        _msg="${_line#* }"
-        if [[ "$_msg" == *"$STASH_NAME"* ]]; then
-            STASH_REF="$_ref"
-            break
-        fi
-    done < <(git -C "$PROJECT_DIR" stash list --format='%gd %s' 2>/dev/null || true)
-
-    if [ -n "$STASH_REF" ]; then
-        # apply (not pop): stash is preserved on conflict so it can be inspected
-        git -C "$PROJECT_DIR" stash apply "$STASH_REF" >/dev/null 2>&1
-        _APPLY_RC=$?
-        if [ "$_APPLY_RC" -eq 0 ]; then
-            # Drop only after successful apply
-            git -C "$PROJECT_DIR" stash drop "$STASH_REF" >/dev/null 2>&1 || true
+    if [[ "$STASH_NAME" == auto-checkpoint-* ]]; then
+        git -C "$PROJECT_DIR" stash push -m "$STASH_NAME" --include-untracked \
+            -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' . \
+            >/dev/null 2>&1
+        STASH_RC=$?
+        if [ "$STASH_RC" -eq 0 ]; then
+            STASH_REF=""
+            while IFS= read -r _line; do
+                _ref="${_line%% *}"
+                _msg="${_line#* }"
+                if [[ "$_msg" == *"$STASH_NAME"* ]]; then
+                    STASH_REF="$_ref"
+                    break
+                fi
+            done < <(git -C "$PROJECT_DIR" stash list --format='%gd %s' 2>/dev/null || true)
+            if [ -n "$STASH_REF" ]; then
+                git -C "$PROJECT_DIR" stash apply "$STASH_REF" >/dev/null 2>&1
+                _APPLY_RC=$?
+                if [ "$_APPLY_RC" -eq 0 ]; then
+                    git -C "$PROJECT_DIR" stash drop "$STASH_REF" >/dev/null 2>&1 || true
+                else
+                    COPY_STATUS="stash_apply_failed_preserved"
+                fi
+            fi
+        else
+            COPY_STATUS="stash_push_failed"
         fi
     fi
-
-    # Remove PID marker (best-effort; harmless if it lingers)
-    rm -f "$MARKER_FILE" 2>/dev/null || true
+    if command -v cos_stash_lock_release >/dev/null 2>&1; then
+        cos_stash_lock_release
+        trap - EXIT INT TERM
+    fi
 fi
 
-if command -v cos_stash_lock_release >/dev/null 2>&1; then
-    cos_stash_lock_release
-    trap - EXIT INT TERM
-fi
+# Save checkpoint metadata. Compose with Python so copied path lists stay valid
+# JSON even when filenames contain spaces, quotes, or newlines.
+python3 - "$CHECKPOINT_META" "$CHECKPOINT_ID" "$TIMESTAMP" "$DIRTY" "$STASH_NAME" "$COPY_STATUS" "$COPY_SUMMARY" <<'PYEOF' 2>/dev/null
+import json
+import sys
+from pathlib import Path
 
-# Save checkpoint metadata
-cat > "$CHECKPOINT_DIR/$CHECKPOINT_ID.json" <<CHECKPOINT_EOF
+meta_path = Path(sys.argv[1])
+checkpoint_id, timestamp, dirty, stash_name, status, summary_raw = sys.argv[2:]
+try:
+    summary = json.loads(summary_raw)
+except Exception:
+    summary = {"copied_files": [], "deleted_files": [], "skipped_files": [{"path": "<summary>", "reason": "invalid_json"}], "copied_bytes": 0}
+meta = {
+    "checkpoint_id": checkpoint_id,
+    "timestamp": timestamp,
+    "dirty_files": int(dirty),
+    "stash_name": stash_name,
+    "mode": "copy" if stash_name == "copy-only" else "legacy_stash_opt_in",
+    "status": status,
+    "copied_files": summary.get("copied_files", []),
+    "deleted_files": summary.get("deleted_files", []),
+    "skipped_files": summary.get("skipped_files", []),
+    "copied_bytes": summary.get("copied_bytes", 0),
+    "checkpoint_files_dir": str(meta_path.with_suffix("") / "files"),
+    "note": "periodic",
+}
+meta_path.write_text(json.dumps(meta, indent=2) + "\n")
+PYEOF
+_META_RC=$?
+if [ "$_META_RC" -ne 0 ]; then
+cat > "$CHECKPOINT_META" <<CHECKPOINT_EOF
 {
   "checkpoint_id": "$CHECKPOINT_ID",
   "timestamp": "$TIMESTAMP",
   "dirty_files": $DIRTY,
   "stash_name": "$STASH_NAME",
+  "mode": "copy",
+  "status": "metadata_fallback",
   "note": "periodic"
 }
 CHECKPOINT_EOF
+fi
 
 # Update timestamp marker
 date +%s > "$CHECKPOINT_MARKER"
