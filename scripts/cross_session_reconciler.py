@@ -4,7 +4,7 @@
 from __future__ import annotations
 import argparse, json, subprocess, sys
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -25,10 +25,15 @@ def preserve_summary(project: Path) -> dict[str, Any]:
     if not script.exists() or not (project / ".git").exists():
         return {"available": False, "reason": "not-a-git-project-or-script-missing"}
     proc = subprocess.run(["bash", str(script), "--project-dir", str(project), "--json"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-    try: payload = json.loads(proc.stdout)
-    except json.JSONDecodeError: payload = {"raw_stdout": proc.stdout, "raw_stderr": proc.stderr}
-    if not isinstance(payload, dict):
-        payload = {"raw_payload": payload}
+    try:
+        parsed_payload = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        parsed_payload = {"raw_stdout": proc.stdout, "raw_stderr": proc.stderr}
+    payload: dict[str, Any]
+    if isinstance(parsed_payload, dict):
+        payload = cast(dict[str, Any], parsed_payload)
+    else:
+        payload = {"raw_payload": parsed_payload}
     payload["available"] = True; payload["exit_code"] = proc.returncode; return payload
 
 def reconcile(args: argparse.Namespace) -> int:

@@ -244,6 +244,8 @@ def grant_adr_number(project_dir: str | Path, intent: Intent) -> ArbitrationResu
 def decide_tombstone(project_dir: str | Path, intent: Intent) -> ArbitrationResult:
     raw_number = intent.context.get("adr_number")
     try:
+        if not isinstance(raw_number, (int, str)):
+            raise ValueError("invalid adr_number")
         number = int(raw_number)
     except Exception:
         return ArbitrationResult(

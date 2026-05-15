@@ -25,7 +25,7 @@ import sre_parse  # type: ignore[deprecated]
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterable, Sequence
+from typing import Any, Iterable, Sequence, cast
 
 try:
     import yaml  # type: ignore[import]
@@ -213,7 +213,7 @@ def _iter_regex_literals(parsed: Iterable[tuple[Any, Any]]) -> Iterable[str]:
 def extract_regex_literals(pattern: str) -> tuple[str, ...]:
     """Extract literal word-like fragments from a regex without keyword lists."""
     try:
-        parsed = sre_parse.parse(pattern)
+        parsed = cast(Iterable[tuple[Any, Any]], sre_parse.parse(pattern))
         raw_literals = list(_iter_regex_literals(parsed))
     except Exception:
         raw_literals = re.findall(r"[^\\\[\]().|?+*{}^$\s]+", pattern)

@@ -7,6 +7,7 @@ import argparse
 import json
 import subprocess
 from pathlib import Path
+from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCENARIOS = {
@@ -21,9 +22,9 @@ def run(cmd: list[str], root: Path) -> dict[str, object]:
     return {"command": cmd, "returncode": proc.returncode, "stdout_tail": proc.stdout[-1000:], "stderr_tail": proc.stderr[-1000:]}
 
 
-def build_report(scenario: str, root: Path = REPO_ROOT) -> dict[str, object]:
+def build_report(scenario: str, root: Path = REPO_ROOT) -> dict[str, Any]:
     scenarios = list(SCENARIOS) if scenario == "all" else [scenario]
-    results = []
+    results: list[dict[str, Any]] = []
     for name in scenarios:
         if name not in SCENARIOS:
             results.append({"scenario": name, "returncode": 2, "stderr_tail": "unknown scenario"})

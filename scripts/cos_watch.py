@@ -32,7 +32,7 @@ import time
 from collections import deque
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Deque, Dict, Iterable, List, Optional
+from typing import Any, Callable, Deque, Dict, Iterable, List, Optional
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -118,7 +118,7 @@ class AgentView:
 # ---------------------------------------------------------------------------
 
 
-def _iter_valkey(stop: Optional[callable] = None) -> Iterable[Dict[str, Any]]:
+def _iter_valkey(stop: Optional[Callable[[], bool]] = None) -> Iterable[Dict[str, Any]]:
     try:
         import redis  # type: ignore
     except ImportError:
@@ -151,7 +151,7 @@ def _iter_valkey(stop: Optional[callable] = None) -> Iterable[Dict[str, Any]]:
 
 
 def _iter_file(path: Path, follow: bool = True,
-               stop: Optional[callable] = None) -> Iterable[Dict[str, Any]]:
+               stop: Optional[Callable[[], bool]] = None) -> Iterable[Dict[str, Any]]:
     if not path.exists() and not follow:
         return
     offset = 0

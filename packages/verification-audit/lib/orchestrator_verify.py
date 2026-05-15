@@ -130,7 +130,7 @@ def extract_high_stakes_claims(agent_output: str) -> List[HighStakesClaim]:
     seen: set = set()
 
     # ── Pass 1: filter ground_truth general claims ──────────────────────────
-    general_claims: List[Claim] = extract_claims(agent_output)
+    general_claims = extract_claims(agent_output)
     for claim in general_claims:
         # Check if the claim text or target contains a high-stakes verb
         matched_verb = _detect_verb_in_text(claim.text + " " + claim.target)

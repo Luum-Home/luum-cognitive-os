@@ -715,3 +715,27 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 10: **268 → 57** non-import Pyrefly errors.
+
+### Remediation pass 11 — final advisory baseline clearance
+
+The last remediation batch cleared the remaining Pyrefly advisory findings by adding explicit narrowings rather than relaxing the checker:
+
+- Converted dynamic JSON and report payloads to `dict[str, Any]` at mutation boundaries.
+- Guarded optional project roots, timestamps, stdout streams, timeout values, and nullable benchmark run records before use.
+- Replaced stale API calls with current local APIs such as `EmbeddingsIndex.load(...)`.
+- Normalized mixed scalar payloads before `int(...)`, `float(...)`, `Path(...)`, sorting, and list extension operations.
+- Typed callable stop hooks and provider injection paths explicitly so Pyrefly does not infer `callable`/identity checks as runtime objects.
+- Preserved advisory mode; this pass changes baseline correctness only and does not promote Pyrefly to a blocking gate.
+
+Validation:
+
+```bash
+python3 -m py_compile lib/claude_executor.py lib/context_injector.py lib/dispatch_model_advisor.py lib/engram_crystallizer.py lib/engram_graph_walker.py lib/engram_lifecycle.py lib/execution_profile.py lib/hook_types.py lib/intent_arbiter.py lib/language_dependence_audit.py lib/lethal_trifecta.py lib/maintainer_proposals.py lib/memory_retrieval_benchmark.py lib/memory_retrieval_compare.py lib/mlflow_bridge.py lib/reinvention_semantic.py lib/singularity.py lib/smart_access.py lib/smart_infra.py lib/smart_reader.py lib/worktree_audit.py packages/agent-coordination/lib/engram_locks.py packages/agent-lifecycle/lib/deferred_tool_loading.py packages/agent-lifecycle/lib/dispatch_cost_predictor.py packages/agent-lifecycle/lib/retry_classifier.py packages/infra-lifecycle/lib/performance_monitor.py packages/verification-audit/lib/orchestrator_verify.py packages/verification-audit/lib/research_scoring.py scripts/acc_pipeline.py scripts/claim_enforcer.py scripts/cos_daemon.py scripts/cos_demotion_loop_audit.py scripts/cos_flow_register.py scripts/cos_instance_init.py scripts/cos_recovery_drill.py scripts/cos_repair.py scripts/cos_tier_claim_audit.py scripts/cos_watch.py scripts/cross_session_reconciler.py scripts/docs_duplicate_audit.py scripts/docs_execution_audit.py scripts/hook_timing_report.py scripts/migrate_event_log_to_v2.py scripts/opencode_primitive_adapter_smoke.py scripts/parity_harness.py scripts/portable_ai_overlay.py scripts/queue_throughput_bench.py scripts/security_red_team.py scripts/so_vs_vanilla_benchmark.py
+# exits 0
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=0 elapsed_seconds=1 ...
+```
+
+Running baseline after pass 11: **268 → 0** non-import Pyrefly errors.
+

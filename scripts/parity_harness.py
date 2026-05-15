@@ -387,29 +387,25 @@ def run_task(
     the real provider call — used by tests to avoid real API calls.
     """
     q_fn = qwen_fn or run_via_qwen
-    c_fn = claude_fn or run_via_claude
+    c_fn = claude_fn
     results: List[ParityResult] = []
 
     if only_provider in (None, "qwen"):
         results.append(q_fn(task, project_root, verbose=verbose))
     if only_provider in (None, "claude"):
-        if c_fn is run_via_claude and claude_executor is None:
+        if c_fn is None and claude_executor is None:
             results.append(ParityResult(
                 task_id=task.id, provider="claude",
                 error="no claude_executor provided — skipping claude leg",
             ))
+        elif c_fn is None:
+            results.append(run_via_claude(
+                task, project_root,
+                claude_executor=claude_executor,
+                verbose=verbose,
+            ))
         else:
-            # Signature for the default run_via_claude includes claude_executor;
-            # test-injected claude_fn may use a reduced signature.
-            try:
-                results.append(c_fn(
-                    task, project_root,
-                    claude_executor=claude_executor,
-                    verbose=verbose,
-                ))
-            except TypeError:
-                # Injected stub with simpler signature
-                results.append(c_fn(task, project_root, verbose=verbose))
+            results.append(c_fn(task, project_root, verbose=verbose))
 
     return results
 

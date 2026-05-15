@@ -63,7 +63,8 @@ def validate_proposal_schema(proposal: dict) -> None:
         raise ValueError("unsupported maintainer proposal schema_version")
     if proposal.get("severity") not in {"P0", "P1", "P2", "P3"}:
         raise ValueError("maintainer proposal severity must be P0/P1/P2/P3")
-    confidence = float(proposal.get("self_confidence"))
+    raw_confidence = proposal.get("self_confidence")
+    confidence = float(raw_confidence) if isinstance(raw_confidence, (int, float, str)) else -1.0
     if confidence < 0 or confidence > 1:
         raise ValueError("maintainer proposal self_confidence must be between 0 and 1")
     if not isinstance(proposal.get("experiment_design"), dict):

@@ -121,6 +121,7 @@ def build_report(manifest_path: Path = MANIFEST, *, today: date | None = None) -
         )
     has_failures = any(finding.severity == "fail" for finding in findings)
     status = "fail" if has_failures else ("pass" if not findings else "warn")
+    second_demotion = _second_demotion_date(records)
     return {
         "status": status,
         "manifest": str(manifest_path),
@@ -131,7 +132,7 @@ def build_report(manifest_path: Path = MANIFEST, *, today: date | None = None) -
         "finding_count": len(findings),
         "findings": [asdict(finding) for finding in findings],
         "roi_warning_budget_days": ROI_WARNING_BUDGET_DAYS,
-        "roi_warning_open_since": _second_demotion_date(records).isoformat() if _second_demotion_date(records) else None,
+        "roi_warning_open_since": second_demotion.isoformat() if second_demotion else None,
         "roi_warning_age_days": (
             (today - second).days if (second := _second_demotion_date(records)) is not None and not roi_signed else None
         ),

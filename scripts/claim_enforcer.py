@@ -18,7 +18,7 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Sequence
+from typing import Any, Sequence
 
 SCHEMA_VERSION = "claim-enforcer/v1"
 TRIGGERS = [
@@ -34,10 +34,10 @@ class EnforcementFinding:
     severity: str
     code: str
     message: str
-    details: dict | None = None
+    details: dict[str, Any] | None = None
 
-    def to_dict(self) -> dict:
-        payload = {"severity": self.severity, "code": self.code, "message": self.message}
+    def to_dict(self) -> dict[str, Any]:
+        payload: dict[str, Any] = {"severity": self.severity, "code": self.code, "message": self.message}
         if self.details:
             payload["details"] = self.details
         return payload
