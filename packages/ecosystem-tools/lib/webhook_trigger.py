@@ -25,8 +25,16 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 
 try:
-    from fastapi import FastAPI, HTTPException, Request, Response
-    import uvicorn
+    from fastapi import FastAPI as _FastAPI
+    from fastapi import HTTPException as _HTTPException
+    from fastapi import Request as _Request
+    from fastapi import Response as _Response
+    import uvicorn as _uvicorn
+    FastAPI: Any = _FastAPI
+    HTTPException: Any = _HTTPException
+    Request: Any = _Request
+    Response: Any = _Response
+    uvicorn: Any = _uvicorn
     FASTAPI_AVAILABLE = True
 except ImportError:
     import logging as _logging
@@ -35,11 +43,11 @@ except ImportError:
         "Server cannot start. Install with: pip install fastapi uvicorn"
     )
     FASTAPI_AVAILABLE = False
-    FastAPI = None  # type: ignore[assignment,misc]
-    HTTPException = None  # type: ignore[assignment,misc]
-    Request = None  # type: ignore[assignment]
-    Response = None  # type: ignore[assignment]
-    uvicorn = None  # type: ignore[assignment]
+    FastAPI = None
+    HTTPException = None
+    Request = None
+    Response = None
+    uvicorn = None
 
 # ---------------------------------------------------------------------------
 # Local imports
@@ -245,9 +253,9 @@ def _run_pipeline(
         phases = ["explore", "propose", "spec", "design", "tasks", "apply", "verify"]
 
     executor = ClaudeExecutor(
-        project_dir=PROJECT_DIR,
-        claude_bin=CLAUDE_BIN,
-        timeout_seconds=CLAUDE_TIMEOUT,
+        working_dir=PROJECT_DIR,
+        claude_path=CLAUDE_BIN,
+        default_timeout=CLAUDE_TIMEOUT,
     )
 
     _gh_comment(
@@ -267,7 +275,7 @@ def _run_pipeline(
         phase_start = time.time()
         logger.info("Running phase %s for %s", phase, change_name)
 
-        result = executor.run_phase(phase, change_name)
+        result = _run_phase(executor, phase, change_name)
         results.append(result)
         elapsed = time.time() - phase_start
 
@@ -314,6 +322,15 @@ def _run_pipeline(
 # ---------------------------------------------------------------------------
 # FastAPI application (only constructed when fastapi is available)
 # ---------------------------------------------------------------------------
+
+app: Any = None
+
+
+def _run_phase(executor: ClaudeExecutor, phase: str, change_name: str) -> ClaudeResult:
+    """Run one SDD phase through the current ClaudeExecutor API."""
+    command = f"/sdd-{phase} {change_name}"
+    return executor.run(command, timeout=CLAUDE_TIMEOUT)
+
 
 if FASTAPI_AVAILABLE:
     app = FastAPI(

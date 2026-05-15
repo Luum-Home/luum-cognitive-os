@@ -480,3 +480,25 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 1b: **268 → 205** non-import Pyrefly errors.
+
+### Remediation pass 2 — webhook trigger API drift
+
+Targeted the P0 API-drift cluster in `lib/webhook_trigger.py` (symlinked to `packages/ecosystem-tools/lib/webhook_trigger.py`).
+
+| Finding class | Change | Pyrefly effect |
+|---|---|---:|
+| `ClaudeExecutor` constructor drift | Replaced stale `project_dir`/`claude_bin`/`timeout_seconds` kwargs with current `working_dir`/`claude_path`/`default_timeout`. | Removed constructor-signature findings. |
+| Missing `run_phase` method | Added local `_run_phase(...)` adapter that invokes the current `ClaudeExecutor.run(...)` API with `/sdd-{phase} {change_name}`. | Removed missing-method finding. |
+| Optional FastAPI/uvicorn fallback typing | Bound optional imports through `Any` aliases and initialized `app`. | Removed callable/attribute fallback findings that were type-noise around optional dependencies. |
+
+Validation:
+
+```bash
+uv run pytest tests/unit/test_webhook_trigger.py tests/red_team/portability/test_webhook_trigger.py -q
+# 44 passed in 0.19s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=201 elapsed_seconds=1 ...
+```
+
+Running baseline after pass 2: **268 → 201** non-import Pyrefly errors.
