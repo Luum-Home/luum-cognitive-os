@@ -12,6 +12,28 @@ pytestmark = pytest.mark.behavior
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
 
+STRUCTURAL_INSTRUCTION_FILES = {
+    "agents-md": "AGENTS.md",
+    "opencode": "AGENTS.md",
+    "vscode-copilot": ".github/copilot-instructions.md",
+    "cursor": ".cursor/rules/cognitive-os.mdc",
+    "qwen-code": "QWEN.md",
+    "kimi-code": "AGENTS.md",
+    "gemini-cli": "GEMINI.md",
+    "warp": "AGENTS.md",
+    "amp-code": "AGENTS.md",
+    "jetbrains-junie": ".junie/AGENTS.md",
+    "qoder": "AGENTS.md",
+    "factory-droid": "AGENTS.md",
+    "cline": ".clinerules/cognitive-os.md",
+    "continue-dev": ".continue/rules/cognitive-os.md",
+    "kilo-code": ".kilocode/rules/cognitive-os.md",
+    "zed-ai": ".rules",
+    "augment-code": ".augment/rules/cognitive-os.md",
+    "goose": ".goosehints",
+    "aider": "CONVENTIONS.md",
+}
+
 
 @pytest.mark.parametrize(
     ("harness", "settings_file"),
@@ -66,6 +88,7 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         opencode = json.loads((tmp_path / "opencode.json").read_text())
         assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in opencode["instructions"]
         assert opencode["permission"]["bash"] == "ask"
+        assert "COGNITIVE_OS_OPENCODE_START" in (tmp_path / "AGENTS.md").read_text()
     if harness == "vscode-copilot":
         assert "Cognitive OS" in (tmp_path / ".github/copilot-instructions.md").read_text()
         assert json.loads((tmp_path / ".vscode/mcp.json").read_text()) == {"servers": {}}
@@ -152,6 +175,15 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert shell_meta["commands_projected"] == 15
         assert (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").is_file()
         assert (tmp_path / "scripts/cos-status.sh").is_symlink()
+    if harness in STRUCTURAL_INSTRUCTION_FILES:
+        instruction_text = (tmp_path / STRUCTURAL_INSTRUCTION_FILES[harness]).read_text()
+        assert "Portable Cognitive OS Contract" in instruction_text
+        assert "acceptance criteria" in instruction_text
+        assert "Engram" in instruction_text
+        assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in instruction_text
+        assert ".cognitive-os/skills/cos/" in instruction_text
+        assert "Structural projection boundary" in instruction_text
+        assert "Do not claim Claude/Codex native lifecycle hook parity" in instruction_text
     assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
     assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md").exists()
     assert (tmp_path / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").exists()

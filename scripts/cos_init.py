@@ -971,11 +971,23 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
 
     common_body = (
         "# Cognitive OS\n\n"
-        "This project has Cognitive OS installed under `.cognitive-os/`. "
-        "Use `.cognitive-os/rules/cos/RULES-COMPACT.md` as the compact governance entrypoint, "
-        "consult `.cognitive-os/skills/cos/` for reusable SKILL.md procedures, and preserve "
-        "the repository `AGENTS.md` contract when present. Do not claim Claude/Codex hook parity "
-        "unless the active harness exposes equivalent lifecycle events.\n"
+        "This project has Cognitive OS installed under `.cognitive-os/`.\n\n"
+        "## Portable Cognitive OS Contract\n\n"
+        "- Read `cognitive-os.yaml` when present for phase and project configuration.\n"
+        "- Use `.cognitive-os/rules/cos/RULES-COMPACT.md` as the compact governance entrypoint; "
+        "load full rules from `.cognitive-os/rules/cos/` only when their contextual triggers match.\n"
+        "- Use `.cognitive-os/skills/cos/` for reusable SKILL.md procedures. If this harness supports "
+        "slash commands, invoke the matching `/skill-name`; otherwise open the matching `SKILL.md` and follow it.\n"
+        "- State or infer acceptance criteria before implementation, then verify them with concrete commands "
+        "before claiming completion.\n"
+        "- Use Engram when available: search memory before repeating past work, save decisions/bugfixes/"
+        "discoveries/configuration changes, and write a session summary before ending substantial work.\n"
+        "- If `.cognitive-os/seed-memory.md` exists and its Inherited Knowledge section still has only the "
+        "placeholder, do the one-time Engram retrieval described there and avoid duplicating entries.\n"
+        "- Structural projection boundary: this file provides project instructions, rule/skill references, "
+        "and proof-level guardrails. Do not claim Claude/Codex native lifecycle hook parity unless this "
+        "harness exposes equivalent lifecycle events and the mapping has been runtime-smoked.\n"
+        "- Preserve the repository `AGENTS.md` contract when present.\n"
     )
 
     if harness == "agents-md":
@@ -990,6 +1002,13 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
         return
 
     if harness == "opencode":
+        _upsert_agents_md_block(
+            project_dir,
+            "opencode",
+            "Cognitive OS for opencode",
+            common_body,
+            "opencode loads this through `opencode.json` alongside the canonical COS rule and skill paths.\n",
+        )
         _write_json_if_changed(
             project_dir / "opencode.json",
             {
