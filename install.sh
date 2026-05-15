@@ -21,7 +21,29 @@ PROFILE_SOURCE=""      # flag | env | auto
 SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
 INSTALL_DEPS=false
 HARNESS="${COGNITIVE_OS_HARNESS:-}"
-SUPPORTED_HARNESSES="claude codex agents-md opencode vscode-copilot cursor qwen-code kimi-code gemini-cli warp amp-code jetbrains-junie qoder factory-droid cline continue-dev kilo-code zed-ai augment-code goose aider shell-ci"
+FALLBACK_SUPPORTED_HARNESSES="claude codex agents-md opencode vscode-copilot cursor qwen-code kimi-code gemini-cli warp amp-code jetbrains-junie qoder factory-droid cline continue-dev kilo-code zed-ai augment-code goose aider shell-ci"
+
+load_supported_harnesses() {
+  local script_dir registry
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  registry="$script_dir/manifests/harness-projection-registry.json"
+  if [[ -f "$registry" ]] && command -v python3 >/dev/null 2>&1; then
+    python3 - "$registry" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as fh:
+    data = json.load(fh)
+print(" ".join(data["implemented_order"]))
+PY
+    return
+  fi
+  echo "$FALLBACK_SUPPORTED_HARNESSES"
+}
+
+SUPPORTED_HARNESSES="$(load_supported_harnesses)"
+if [[ "${COGNITIVE_OS_PRINT_HARNESSES:-false}" == "true" ]]; then
+  echo "$SUPPORTED_HARNESSES"
+  exit 0
+fi
 # INSTALL_SCOPE controls which SCOPE-tagged files are copied.
 # Values: project (SCOPE:project + SCOPE:both), both (backward-compatible
 #         alias for project; not a separate installed surface), all
