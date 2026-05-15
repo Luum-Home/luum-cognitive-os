@@ -74,7 +74,9 @@ def existing_adr_numbers(adrs_dir: Path) -> set[int]:
 
 def active_reservations(data: dict[str, object], now: datetime) -> list[dict[str, object]]:
     active: list[dict[str, object]] = []
-    for item in data.get("reservations", []):
+    reservations = data.get("reservations", [])
+    reservation_items = reservations if isinstance(reservations, list) else []
+    for item in reservation_items:
         if not isinstance(item, dict):
             continue
         expires = parse_iso(str(item.get("expires_at", "")))
@@ -112,7 +114,8 @@ def reserve(
         for item in active:
             number = item.get("number")
             try:
-                used.add(int(number))
+                if isinstance(number, int | float | str | bytes | bytearray):
+                    used.add(int(number))
             except Exception:
                 continue
         number = next_number(used)
@@ -178,7 +181,9 @@ def list_reservations(*, project_dir: Path, reservations_path: Path | None = Non
     data = load_json(reservations_path)
     now = utc_now()
     rows: list[dict[str, object]] = []
-    for item in data.get("reservations", []):
+    reservations = data.get("reservations", [])
+    reservation_items = reservations if isinstance(reservations, list) else []
+    for item in reservation_items:
         if not isinstance(item, dict):
             continue
         row = dict(item)
@@ -200,7 +205,9 @@ def cleanup_expired(*, project_dir: Path, reservations_path: Path | None = None)
         kept: list[dict[str, object]] = []
         removed: list[dict[str, object]] = []
         now = utc_now()
-        for item in data.get("reservations", []):
+        reservations = data.get("reservations", [])
+        reservation_items = reservations if isinstance(reservations, list) else []
+        for item in reservation_items:
             if not isinstance(item, dict):
                 continue
             status = reservation_status(item, project_dir=project_dir, now=now)

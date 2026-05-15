@@ -147,7 +147,7 @@ def _count_total_calls(nodes: list[ast.AST]) -> int:
 
 def _get_assertions(nodes: list[ast.AST]) -> list[ast.AST]:
     """Return all assert statements, assertX() call nodes, and pytest.raises uses."""
-    result = []
+    result: list[ast.AST] = []
     for node in nodes:
         if isinstance(node, ast.Assert):
             result.append(node)
@@ -479,7 +479,8 @@ def quality_summary(records: list[TestRecord]) -> dict[str, object]:
 def render_summary(records: list[TestRecord]) -> str:
     summary = quality_summary(records)
     tier_counts = summary["tiers"]
-    total = int(summary["total"])
+    total_value = summary["total"]
+    total = int(total_value) if isinstance(total_value, int | float | str | bytes | bytearray) else 0
     lines: list[str] = []
 
     tiers = [TIER_BEHAVIORAL, TIER_STRUCTURAL, TIER_TRIVIAL, TIER_MOCK_HEAVY]
