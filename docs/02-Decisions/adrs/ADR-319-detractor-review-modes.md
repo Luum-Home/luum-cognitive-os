@@ -15,7 +15,12 @@ implementation_files:
 - skills/sdd-spec/SKILL.md
 - skills/sdd-verify/SKILL.md
 tier: product
-classification_basis: accepted doctrine, EAS integration, SDD skill wiring, and adversarial-review hook recognition for named modes; PR/code/doc review surfaces remain doctrine-guided rather than fully mode-validated
+tags:
+  - adversarial-review
+  - detractor
+  - eas
+  - sdd
+classification_basis: accepted doctrine, EAS integration, SDD skill wiring, and adversarial-review hook recognition for named modes; remaining work is generic PR/code/doc review surfaces staying doctrine-guided rather than fully mode-validated
 partial_remaining: Generic code, PR, and documentation review surfaces consume Detractor modes through rule guidance and the generic adversarial-review gate; only EAS has a dedicated artifact/validator path.
 remaining_in_scope: true
 ---
