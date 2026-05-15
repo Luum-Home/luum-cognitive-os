@@ -1797,6 +1797,111 @@ items:
 - path: hooks/infra-health.sh
   status: maintainer-only
   rationale: 'Manual scope calibration iteration 023: checks COS Docker/service infrastructure health at session start.'
+- path: hooks/kpi-trigger.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: reads COS KPI metrics, logs KPI history, and flags self-improvement for COS sessions.'
+- path: hooks/legal-review-required-on-runtime-import.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: enforces the COS legal-review ledger before runtime imports are committed.'
+- path: hooks/lethal-trifecta-gate.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: records and gates COS lethal-trifecta safety observations in session metrics.'
+- path: hooks/lib-symlink-divergence-detector.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: protects COS lib/package symlink invariants from silent divergence.'
+- path: hooks/native-agent-heartbeat.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: bridges Claude Agent hook payloads into the COS harness-agnostic event-capture layer.'
+- path: hooks/post-agent-snapshot-restore.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: restores COS pre-agent stash/snapshot runtime markers after Agent completion.'
+- path: hooks/promotion-proposer-weekly.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: runs the COS primitive promotion proposer cadence from SessionStart.'
+- path: hooks/rate-limit-detector.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: detects Claude Code subscription rate-limit output and suggests COS overflow-provider fallback.'
+- path: hooks/reaper-daemon-launcher.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: starts the COS process reaper daemon and tracks it under .cognitive-os/runtime.'
+- path: hooks/research-to-runtime-firewall.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: blocks COS external-source-cache research artifacts from leaking into runtime paths.'
+- path: hooks/review-spawner.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: dispatches COS stochastic review agents after sub-agent completion.'
+- path: hooks/rule-frontmatter-validator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: validates COS rule frontmatter contracts on rule writes.'
+- path: hooks/rule-md-routing-validator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: validates COS rule routing metadata and hook linkage.'
+- path: hooks/self-install.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: auto-syncs the COS framework while running inside the luum-agent-os repo.'
+- path: hooks/self-knowledge-refresh.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: refreshes the COS self-knowledge index from COS source/runtime paths.'
+- path: hooks/session-changelog.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: writes COS session changelog artifacts under .cognitive-os/changelogs.'
+- path: hooks/session-end-reap.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: invokes the COS process reaper at Stop/session end.'
+- path: hooks/session-resume.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: detects incomplete COS tasks from .cognitive-os/tasks on SessionStart.'
+- path: hooks/session-start-stack-recommend.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: writes COS stack-aware skill recommendations under .cognitive-os/state.'
+- path: hooks/session-watchdog-launcher.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: starts the COS session lifecycle watchdog daemon under .cognitive-os/runtime.'
+- path: hooks/skill-drift-detector.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: checks COS skill registry lock hashes against on-disk skills at SessionStart.'
+- path: hooks/skill-failure-monitor.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: reads COS skill feedback metrics and emits repair queue signals.'
+- path: hooks/skill-feedback-tracker.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: tracks COS skill success/failure telemetry after Agent completions.'
+- path: hooks/skill-invocation-logger.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: logs COS Skill tool invocations to .cognitive-os metrics.'
+- path: hooks/skill-md-routing-validator.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: validates COS SKILL.md routing metadata during writes.'
+- path: hooks/skill-synthesis-scanner.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: scans COS session telemetry for recurring sequences and proposes skill drafts.'
+- path: hooks/skill-tracker.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: combines COS skill feedback and metrics tracking for Agent/Skill events.'
+- path: hooks/skill-usage-tracker.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: captures COS skill usage telemetry for observability aggregation.'
+- path: hooks/spdx-header-required.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: enforces COS SPDX header policy for new runtime source files.'
+- path: hooks/stash-budget-warn.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: warns COS operators when auto-checkpoint stash usage exceeds budget.'
+- path: hooks/state-heartbeat.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: persists COS session state snapshots under .cognitive-os/sessions.'
+- path: hooks/tool-sequence-capture.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: captures COS tool invocation sequences to .cognitive-os metrics.'
+- path: hooks/validation-lock-cleanup.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: cleans stale COS validation locks from .cognitive-os/runtime.'
+- path: hooks/validator-soak-weekly.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: runs COS validator soak evaluation and promotion proposal cadence.'
+- path: hooks/work-queue-sync.sh
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 024: captures COS todo and agent completion events in the canonical work queue log.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
