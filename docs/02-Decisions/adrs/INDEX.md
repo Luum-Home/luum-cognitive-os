@@ -168,7 +168,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [318](ADR-318-copy-only-checkpoints-and-stash-quarantine.md) | Copy-Only Checkpoints and Stash Quarantine | accepted | implemented | 2026-05-15 | `git stash` is useful as a human emergency tool, but it is a poor default |
 | [320](ADR-320-install-scope-surface-debt.md) | Install Scope Surface Debt and Protected Config Boundary | accepted | implemented | 2026-05-15 | Primitive SCOPE classification has three semantic values: |
 
-### Active / Partial (120)
+### Active / Partial (121)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -290,6 +290,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [275](ADR-275-closure-and-projection-primitives.md) | Closure & Projection Primitives (Pending-Truth Read/Write Symmetry) | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (projector + close primitive + tests). Hook |
 | [278](ADR-278-subprocess-run-timeout-discipline.md) | subprocess.run Timeout Discipline | accepted | partial | 2026-05-12 | Accepted — audit + allowlist + test-default shipped 2026-05-12. Per-call |
 | [289](ADR-289-three-layer-knowledge-architecture.md) | Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram | accepted | partial | 2026-05-13 | Accepted — 2026-05-13. |
+| [291](ADR-291-agent-runtime-web-service.md) | Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients | accepted | partial | 2026-05-13 | **Date:** 2026-05-13 |
 | [317](ADR-317-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Cognitive OS already had distributed evidence practices: mandatory acceptance criteria, verification commands, SDD phases, adversarial review with zero-finding  |
 | [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Cognitive OS already had adversarial review and EAS detractor objections, but the skeptical role was underspecified. It could catch zero-finding reviews, yet it |
 
@@ -375,7 +376,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [084](ADR-084-headless-clustered-runtime-shape.md) | Headless and Clustered Runtime Shape | superseded | not-applicable | 2026-04-30 | **Author**: Maintainer |
 | [170](ADR-170-operator-cli-as-primary-ui-surface.md) | Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists | superseded | not-applicable | 2026-05-05 | Superseded by [ADR-172](ADR-172-multi-surface-ui-architecture.md) (2026-05-05). |
 | [187](ADR-187-surface-5-adoption-proof-contract.md) | Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI | superseded | not-applicable | 2026-05-06 | **Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather |
-| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | superseded | implemented | 2026-05-13 | **Status: superseded — 2026-05-13.** Split into four standalone ADRs because this |
+| [290](ADR-290-five-agent-quality-patterns.md) | Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop | superseded | resolved | 2026-05-13 | **Status: superseded — 2026-05-13.** Split into four standalone ADRs because this |
 
 </details>
 
