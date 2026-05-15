@@ -30,7 +30,7 @@ routing_patterns:
 - pattern: scope.*both.*IDE
   confidence: 0.85
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Primitive Surface Coverage
 
 Use this skill when a user asks whether a primitive works the same across Claude Code, Codex, CLI commands, Shell-CI, dashboard/UI, reports, or other IDE/harness projections.

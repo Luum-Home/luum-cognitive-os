@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:49:04+00:00'
+generated_at: '2026-05-15T12:06:50+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -5784,6 +5784,16 @@ primitives:
   - skills/agent-control/SKILL.md
   - scripts/orchestrator.py
   sha256: ca0bae4013c58ba90c9c10116306abafabd078aa5800a969e85b4a8f5983634a
+- id: skills/agent-control/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/agent-control/SKILL.md
+  sha256: 26ae7ddfcbf221db48e40a793b5cc8cbb23788dce40580e90f9b24db4958c4e0
 - id: skills/agent-dashboard/SKILL.md
   kind: skill
   owner_adr: ADR-314
@@ -6316,6 +6326,16 @@ primitives:
   projection_targets:
   - skills/primitive-harness-coverage/SKILL.md
   sha256: 6bb538ca89ce45e5774ac95f0169f1e3a9379a824748a28565833cd41b826d98
+- id: skills/primitive-harness-coverage/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - skills/primitive-harness-coverage/SKILL.md
+  sha256: f25830c162f45679ad7970a38f908c23bb0bf635b34d48ca3df4c8f86203ab47
 - id: skills/primitive-harvester/SKILL.md
   kind: skill
   owner_adr: ADR-314
