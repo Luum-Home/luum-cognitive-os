@@ -125,6 +125,64 @@ def test_review_exemptions_suppress_documented_findings(tmp_path: Path) -> None:
     ]
 
 
+def test_review_exemption_hygiene_enforces_budget_and_staleness(tmp_path: Path) -> None:
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "skills" / "a").mkdir(parents=True)
+    (tmp_path / "skills" / "a" / "SKILL.md").write_text("x", encoding="utf-8")
+    (tmp_path / "skills" / "b").mkdir(parents=True)
+    (tmp_path / "skills" / "b" / "SKILL.md").write_text("x", encoding="utf-8")
+    (tmp_path / "manifests" / "primitive-scope-classification.yaml").write_text(
+        "review_exemption_policy:\n"
+        "  min_rationale_chars: 10\n"
+        "  max_active_by_code:\n"
+        "    os-only-generic-candidate: 1\n"
+        "review_exemptions:\n"
+        "  os-only-generic-candidate:\n"
+        "  - path: skills/a/SKILL.md\n"
+        "    rationale: long enough rationale\n"
+        "  - path: skills/b/SKILL.md\n"
+        "    rationale: long enough rationale\n",
+        encoding="utf-8",
+    )
+    raw = [
+        primitive_scope_health.Finding(
+            "skills/a/SKILL.md",
+            "skills",
+            "os-only",
+            "control-plane",
+            "review",
+            "os-only-generic-candidate",
+            "generic name",
+        )
+    ]
+
+    codes = {finding.code for finding in primitive_scope_health.review_exemption_hygiene_findings(tmp_path, raw)}
+
+    assert "review-exemptions-over-budget" in codes
+    assert "stale-review-exemption" in codes
+
+
+def test_proof_budget_findings_ratchet_none_by_scope(tmp_path: Path) -> None:
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "manifests" / "primitive-scope-classification.yaml").write_text(
+        "proof_level_budgets:\n"
+        "  none_by_scope:\n"
+        "    both: 0\n"
+        "    project: 1\n",
+        encoding="utf-8",
+    )
+    rows = [
+        HealthRow("rules/a.md", "rules", "both", "both", "high", "user-plane", "shared", "none", "fixture", None),
+        HealthRow("templates/a.md", "templates", "project", "project", "high", "user-plane", "projected", "none", "fixture", None),
+        HealthRow("templates/b.md", "templates", "project", "project", "high", "user-plane", "projected", "none", "fixture", None),
+    ]
+
+    codes = {finding.code for finding in primitive_scope_health.proof_budget_findings(tmp_path, rows)}
+
+    assert "proof-none-budget-exceeded" in codes
+    assert "proof-none-zero-budget-violated" in codes
+
+
 def test_balance_finding_uses_expected_scope_distribution(tmp_path: Path) -> None:
     (tmp_path / "manifests").mkdir()
     (tmp_path / "manifests" / "primitive-scope-classification.yaml").write_text(

@@ -80,6 +80,16 @@ review_exemptions:
   - path: skills/cognitive-os-status/SKILL.md
     rationale: COS subsystem status report over installed Cognitive OS hooks,
       rules, skills, squads, agents, and metrics.
+review_exemption_policy:
+  min_rationale_chars: 40
+  max_active_by_code:
+    os-only-generic-candidate: 5
+    both-needs-specific-proof: 0
+proof_level_budgets:
+  none_by_scope:
+    both: 0
+    project: 44
+    os-only: 459
 families:
   hooks:
     marker: '# SCOPE: <scope>'

@@ -96,19 +96,29 @@ def _load_scope_policy(root: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-def _review_exemptions(root: Path) -> dict[tuple[str, str], str]:
+def _review_exemption_entries(root: Path) -> list[dict[str, str]]:
     policy = _load_scope_policy(root)
-    exemptions: dict[tuple[str, str], str] = {}
-    for code, entries in (policy.get("review_exemptions") or {}).items():
-        if not isinstance(entries, list):
+    parsed: list[dict[str, str]] = []
+    for code, raw_entries in (policy.get("review_exemptions") or {}).items():
+        if not isinstance(raw_entries, list):
             continue
-        for entry in entries:
+        for entry in raw_entries:
             if not isinstance(entry, dict):
                 continue
             path = str(entry.get("path") or "")
             rationale = str(entry.get("rationale") or "")
-            if path and rationale:
-                exemptions[(str(code), path)] = rationale
+            if path or rationale:
+                parsed.append({"code": str(code), "path": path, "rationale": rationale})
+    return parsed
+
+
+def _review_exemptions(root: Path) -> dict[tuple[str, str], str]:
+    exemptions: dict[tuple[str, str], str] = {}
+    for entry in _review_exemption_entries(root):
+        path = entry["path"]
+        rationale = entry["rationale"]
+        if path and rationale:
+            exemptions[(entry["code"], path)] = rationale
     return exemptions
 
 
@@ -129,6 +139,50 @@ def _apply_review_exemptions(root: Path, findings: list[Finding]) -> tuple[list[
             continue
         active.append(finding)
     return active, suppressed
+
+
+def review_exemption_hygiene_findings(root: Path, raw_findings: list[Finding]) -> list[Finding]:
+    policy = _load_scope_policy(root)
+    cfg = policy.get("review_exemption_policy") or {}
+    max_active_by_code = cfg.get("max_active_by_code") or {}
+    min_rationale_chars = int(cfg.get("min_rationale_chars") or 40)
+    entries = _review_exemption_entries(root)
+    findings: list[Finding] = []
+    raw_keys = {(finding.code, finding.path) for finding in raw_findings}
+    seen: set[tuple[str, str]] = set()
+    counts = Counter(entry["code"] for entry in entries)
+    for code, count in sorted(counts.items()):
+        max_allowed = max_active_by_code.get(code)
+        if max_allowed is not None and count > int(max_allowed):
+            findings.append(
+                Finding(
+                    "manifests/primitive-scope-classification.yaml",
+                    "manifest",
+                    "mixed",
+                    "control-plane",
+                    "review",
+                    "review-exemptions-over-budget",
+                    f"{code} has {count} review exemptions, above budget {max_allowed}",
+                )
+            )
+    for entry in entries:
+        code = entry["code"]
+        path = entry["path"]
+        rationale = entry["rationale"]
+        key = (code, path)
+        if key in seen:
+            findings.append(Finding(path or "<missing>", "manifest", "mixed", "control-plane", "review", "duplicate-review-exemption", f"duplicate exemption for {code}"))
+        seen.add(key)
+        if not path or not rationale:
+            findings.append(Finding(path or "<missing>", "manifest", "mixed", "control-plane", "review", "malformed-review-exemption", "review exemption requires path and rationale"))
+            continue
+        if len(rationale.strip()) < min_rationale_chars:
+            findings.append(Finding(path, _kind(path), "mixed", "control-plane", "review", "thin-review-exemption-rationale", f"rationale shorter than {min_rationale_chars} characters"))
+        if not (root / path).exists():
+            findings.append(Finding(path, _kind(path), "mixed", "control-plane", "review", "missing-review-exemption-path", "review exemption path does not exist"))
+        if key not in raw_keys:
+            findings.append(Finding(path, _kind(path), "mixed", "control-plane", "review", "stale-review-exemption", "exemption no longer suppresses an active review finding"))
+    return findings
 
 
 def _text(root: Path, rel: str, limit: int = 30000) -> str:
@@ -268,6 +322,40 @@ def false_both_findings(root: Path, rows: list[HealthRow]) -> list[Finding]:
     return findings
 
 
+def proof_budget_findings(root: Path, rows: list[HealthRow]) -> list[Finding]:
+    budgets = (_load_scope_policy(root).get("proof_level_budgets") or {}).get("none_by_scope") or {}
+    findings: list[Finding] = []
+    counts = Counter(row.scope for row in rows if row.proof_level == "none")
+    for scope, count in sorted(counts.items()):
+        max_allowed = budgets.get(scope)
+        if max_allowed is not None and count > int(max_allowed):
+            findings.append(
+                Finding(
+                    f"proof_level:none/{scope}",
+                    "mixed",
+                    scope,
+                    "user-plane" if scope in {"both", "project"} else "control-plane",
+                    "review",
+                    "proof-none-budget-exceeded",
+                    f"{scope} has {count} proof_level:none primitives, above budget {max_allowed}",
+                )
+            )
+    for scope, max_allowed in sorted(budgets.items()):
+        if int(max_allowed) == 0 and counts.get(scope, 0) > 0:
+            findings.append(
+                Finding(
+                    f"proof_level:none/{scope}",
+                    "mixed",
+                    scope,
+                    "user-plane",
+                    "block",
+                    "proof-none-zero-budget-violated",
+                    f"{scope} must have zero proof_level:none primitives",
+                )
+            )
+    return findings
+
+
 def summarize(rows: list[HealthRow], findings: list[Finding]) -> dict[str, Any]:
     return {
         "total": len(rows),
@@ -283,12 +371,18 @@ def summarize(rows: list[HealthRow], findings: list[Finding]) -> dict[str, Any]:
 def build_payload(root: Path, mode: str) -> dict[str, Any]:
     rows = build_rows(root)
     findings: list[Finding] = []
+    raw_review_findings: list[Finding] = []
     if mode in {"balance", "health"}:
         findings.extend(balance_findings(root, rows))
     if mode in {"generic-os-only", "health"}:
-        findings.extend(generic_os_only_findings(root, rows))
+        raw_review_findings.extend(generic_os_only_findings(root, rows))
     if mode in {"false-both", "health"}:
-        findings.extend(false_both_findings(root, rows))
+        raw_review_findings.extend(false_both_findings(root, rows))
+    findings.extend(raw_review_findings)
+    if mode in {"proof", "health"}:
+        findings.extend(proof_budget_findings(root, rows))
+    if mode in {"generic-os-only", "health"}:
+        findings.extend(review_exemption_hygiene_findings(root, raw_review_findings))
     if mode == "plane":
         findings.extend(
             Finding(row.path, row.kind, row.scope, row.plane, "block", "invalid-plane", "plane could not be derived")
@@ -316,13 +410,15 @@ def mode_from_argv(argv0: str) -> str:
         return "generic-os-only"
     if "false-both" in name:
         return "false-both"
+    if "proof" in name:
+        return "proof"
     return "health"
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=Path("."))
-    parser.add_argument("--mode", choices=["balance", "plane", "generic-os-only", "false-both", "health"], default=None)
+    parser.add_argument("--mode", choices=["balance", "plane", "generic-os-only", "false-both", "proof", "health"], default=None)
     parser.add_argument("--json-out", type=Path, default=None)
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero for block findings, and for all findings in non-health modes")
