@@ -101,6 +101,24 @@ python3 -m pytest \
   tests/unit/test_skill_routing.py -q
 ```
 
+## Claim: Consumer SDD Happy Path
+
+Promise: a consumer project can move one feature from task intent to reviewed evidence through a local durable workflow before adopting external task systems.
+
+Evidence:
+
+- local CLI lane: `cos sdd next|approve|apply|review|status`
+- executable demo: `scripts/demo-consumer-sdd-lane.sh`
+- manual proof: `docs/09-Quality/manual-tests/consumer-sdd-lane.md`
+- implementation tests: `cmd/cos/internal/cli/sdd_test.go`
+
+Verification:
+
+```bash
+bash scripts/demo-consumer-sdd-lane.sh
+cd cmd/cos && go test ./internal/cli -run 'TestE2E_SDD' -count=1
+```
+
 ## Claim: Simple Outside, Rigorous Inside
 
 Promise: first-contact docs stay focused, while advanced systems remain available as extensions or experiments.
