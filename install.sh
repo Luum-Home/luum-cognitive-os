@@ -433,8 +433,8 @@ prepare_source() {
 prepare_source
 
 # ── Delegate to cos-init.sh ──────────────────────────────────────────
-# cos-init.sh handles: rules, hooks, skills, templates, settings.json,
-# cognitive-os.yaml, CLAUDE.md template, and registry registration.
+# cos-init.sh handles: rules, hooks, skills, templates, settings driver,
+# cognitive-os.yaml, and registry registration.
 # It uses generate-project-settings.sh for correct hook paths and
 # installs to namespaced cos/ subdirectories.
 COS_INIT="$TEMP_DIR/scripts/cos-init.sh"
@@ -455,22 +455,29 @@ COS_INIT_FLAG="--$PROFILE"
 # SCOPE-tagged files during copy.
 COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" COS_INSTALL_SCOPE="$INSTALL_SCOPE" COGNITIVE_OS_HARNESS="$HARNESS" bash "$COS_INIT" "$COS_INIT_FLAG"
 
-# ── Install CLAUDE.md template if not present ─────────────────────────
-if [ ! -f ".claude/CLAUDE.md" ]; then
-  TEMPLATE="$TEMP_DIR/templates/CLAUDE.md.template"
-  if [ -f "$TEMPLATE" ]; then
-    mkdir -p ".claude"
-    cp "$TEMPLATE" ".claude/CLAUDE.md"
-    echo "Created .claude/CLAUDE.md from template."
+# ── Install Claude project instructions only for Claude harness ────────
+if [ "$HARNESS" = "claude" ]; then
+  if [ ! -f ".claude/CLAUDE.md" ]; then
+    TEMPLATE="$TEMP_DIR/templates/CLAUDE.md.template"
+    if [ -f "$TEMPLATE" ]; then
+      mkdir -p ".claude"
+      cp "$TEMPLATE" ".claude/CLAUDE.md"
+      echo "Created .claude/CLAUDE.md from template."
+    fi
+  else
+    echo "Existing .claude/CLAUDE.md preserved (not overwritten)."
   fi
-else
-  echo "Existing .claude/CLAUDE.md preserved (not overwritten)."
 fi
 
 # ── Post-install summary (UX1) ────────────────────────────────────────
-# Count what actually landed under .claude/skills/ - currently the skill
-# projection surface for Claude Code and the compatibility fallback for other
-# harnesses until canonical-first skill projection is complete.
+# Count what actually landed under the canonical skill surface and, for Claude,
+# the driver projection surface.
+skills_available=0
+if [ -d ".cognitive-os/skills/cos" ]; then
+  for d in .cognitive-os/skills/cos/*/; do
+    [ -d "$d" ] && skills_available=$((skills_available + 1))
+  done
+fi
 skills_exposed=0
 if [ -d ".claude/skills" ]; then
   for d in .claude/skills/*/; do
@@ -486,24 +493,28 @@ echo "Harness:        $HARNESS"
 case "$HARNESS" in
   claude)
     settings_driver=".claude/settings.json"
+    skills_line="Skills exposed: $skills_exposed (under .claude/skills/ Claude projection)"
     ;;
   codex)
     settings_driver=".codex/hooks.json"
+    skills_line="Skills available: $skills_available (under .cognitive-os/skills/cos/ canonical surface)"
     ;;
 esac
 echo "Settings:       $settings_driver"
-echo "Skills exposed: $skills_exposed (under .claude/skills/ compatibility projection)"
+echo "$skills_line"
 echo ""
 echo "Project structure:"
 echo "  .cognitive-os/hooks/cos/     - COS hooks (namespaced)"
 echo "  .cognitive-os/skills/cos/    - COS skills (kernel path, namespaced)"
 echo "  .cognitive-os/templates/cos/ - COS templates (namespaced)"
 echo "  $settings_driver        - Active harness settings driver"
-echo "  .claude/skills/              - Compatibility skill projection (ADR-001)"
-echo "  .claude/rules/cos/           - Claude-compatible rule projection"
+if [ "$HARNESS" = "claude" ]; then
+  echo "  .claude/skills/              - Claude skill projection (ADR-001)"
+  echo "  .claude/rules/cos/           - Claude-compatible rule projection"
+fi
 echo ""
 
-if [ "$skills_exposed" -eq 0 ]; then
+if [ "$HARNESS" = "claude" ] && [ "$skills_exposed" -eq 0 ]; then
   echo "WARNING: 0 skills are exposed to the harness under .claude/skills/." >&2
   echo "         This is likely a bug — run 'bash hooks/self-install.sh' or" >&2
   echo "         re-run this installer with --force to repair." >&2
