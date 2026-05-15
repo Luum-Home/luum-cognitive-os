@@ -37,6 +37,7 @@ Translate proposal context into requirements, non-goals, and executable acceptan
 Emit EAS when any condition is true:
 
 - the user asks for EAS, Executable Acceptance Specification, SDD Evidence Artifact, gap matrix, or detractor log;
+- the user asks for Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, Red Team, or a required contrary thesis;
 - the change is large, critical, security-sensitive, migration-related, or cross-service;
 - acceptance criteria need ATDD/TDD mapping;
 - multiple documentation sources must be reconciled.
@@ -50,9 +51,10 @@ Emit EAS when any condition is true:
 5. Create the EAS artifact using `templates/eas.md` when the EAS emission rule applies.
 6. Populate the initial gap matrix. Rows may start as uncovered only before implementation; do not mark an EAS complete while uncovered rows remain.
 7. Add adversarial personas, including `Detractor`.
-8. Add at least one substantive `OBJ-*` detractor objection and required evidence.
-9. Add verification commands or manual checks that `sdd-verify` can execute or inspect.
-10. Save the spec and EAS path in the phase output.
+8. Select one or more detractor modes: Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, or Red Team.
+9. Add at least one substantive `OBJ-*` detractor objection, contrary thesis, and required evidence.
+10. Add verification commands or manual checks that `sdd-verify` can execute or inspect.
+11. Save the spec and EAS path in the phase output.
 
 ## Output Contract
 
@@ -66,6 +68,7 @@ Requirements: <count>
 Acceptance criteria: <count>
 Open gaps: <count>
 Detractor objections: <count>
+Detractor modes: <modes>
 Verification commands: <count>
 ```
 

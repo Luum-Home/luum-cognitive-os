@@ -33,7 +33,7 @@ fi
 
 COMBINED_HAYSTACK="${TOOL_INPUT} ${AGENT_OUTPUT}"
 IS_REVIEW=false
-if echo "$COMBINED_HAYSTACK" | grep -qiE '(\breview\b|\baudit\b|\bverify\b|\bcritique\b|sdd-verify|code review|adversarial|self-review|pr-review)'; then
+if echo "$COMBINED_HAYSTACK" | grep -qiE '(\breview\b|\baudit\b|\bverify\b|\bcritique\b|sdd-verify|code review|adversarial|self-review|pr-review|detractor|tenth man|devil.?s advocate|pre-mortem|premortem|black hat|red team)'; then
   IS_REVIEW=true
 fi
 
@@ -42,7 +42,7 @@ if [[ "$IS_REVIEW" == "false" ]]; then
 fi
 
 HAS_FINDING=false
-if echo "$AGENT_OUTPUT" | grep -qiE '(\bCRITICAL\b|\bHIGH\b|\bMEDIUM\b|\bLOW\b|severity:|finding:|issue:|problem:|concern:|\brisk:|\bbug:|\bgap:)'; then
+if echo "$AGENT_OUTPUT" | grep -qiE '(\bS[1-4]\b|\bBLOCKER\b|\bCONCERN\b|\bSUGGESTION\b|\bQUESTION\b|\bCRITICAL\b|\bHIGH\b|\bMEDIUM\b|\bLOW\b|severity:|finding:|issue:|problem:|concern:|\brisk:|\bbug:|\bgap:|objection:|contrary thesis:)'; then
   HAS_FINDING=true
 fi
 
@@ -58,7 +58,7 @@ if [[ "$HAS_FINDING" == "false" ]]; then
   if [[ "$HAS_PROHIBITED_PHRASE" == "true" ]]; then
     echo ""
     echo "WARNING [adversarial-review-gate]: Review closed with prohibited phrase ('looks good' / 'no issues found') and ZERO findings."
-    echo "Rule: rules/adversarial-review.md — every review MUST produce at least one finding (CRITICAL/HIGH/MEDIUM/LOW)."
+    echo "Rule: rules/adversarial-review.md — every review MUST produce at least one finding (S1/S2/S3/S4 or BLOCKER/CONCERN/SUGGESTION/QUESTION)."
     echo "Re-run with adversarial framing: assume the code IS broken, then prove it is not."
     echo ""
     SEVERITY="prohibited_phrase_no_findings"
