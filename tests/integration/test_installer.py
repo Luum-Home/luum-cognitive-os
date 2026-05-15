@@ -11,7 +11,6 @@ Validates:
 
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -1010,10 +1009,14 @@ class TestHelpFlag:
 
     def test_installer_harness_list_matches_shared_registry(self):
         """install.sh, cos_init.py, and Go CLI must use the shared first-run harness registry."""
-        install_text = INSTALLER.read_text()
-        match = re.search(r'^SUPPORTED_HARNESSES="([^"]+)"', install_text, re.MULTILINE)
-        assert match, "install.sh missing SUPPORTED_HARNESSES"
-        install_harnesses = match.group(1).split()
+        result = subprocess.run(
+            [str(INSTALLER)],
+            env={**os.environ, "COGNITIVE_OS_PRINT_HARNESSES": "true"},
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        install_harnesses = result.stdout.strip().split()
 
         registry = json.loads((INSTALLER.parent / "manifests" / "harness-projection-registry.json").read_text())
         registry_harnesses = registry["implemented_order"]
