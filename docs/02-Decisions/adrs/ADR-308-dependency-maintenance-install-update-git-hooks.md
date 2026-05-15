@@ -3,11 +3,28 @@ status: Accepted
 date: 2026-05-14
 deciders: Cognitive OS maintainers
 tags:
-  - dependencies
-  - installer
-  - git-hooks
-  - maintenance
+- dependencies
+- installer
+- git-hooks
+- maintenance
 implementation_status: Implemented
+adr: 308
+title: Dependency Maintenance in Install, Update, and Git Hooks
+implementation_files:
+- scripts/cos-deps-maintain
+- lib/dependency_maintenance.py
+- scripts/setup.sh
+- scripts/cos-update.sh
+- scripts/auto-update-projects.sh
+- scripts/setup-git-hooks.sh
+- .githooks/pre-push
+- .githooks/post-merge
+- .githooks/post-rewrite
+- tests/unit/test_dependency_maintenance.py
+- tests/audit/test_dependency_maintenance_integration.py
+tier: maintainer
+classification_basis: dependency maintenance command, install/update/git-hook advisory
+  integrations, and tests are implemented; no remaining in-scope work for this ADR
 ---
 
 # ADR-308: Dependency Maintenance Across Install, Update, and Git Hooks

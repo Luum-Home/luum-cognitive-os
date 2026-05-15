@@ -4,24 +4,27 @@ title: 'Agent Reflection Loop Primitive: Bounded Iterative Critique with Min/Max
 status: accepted
 implementation_status: implemented
 date: '2026-05-13'
-supersedes: [ADR-290]
+supersedes:
+- ADR-290
 superseded_by: null
 implementation_files:
-  - lib/agent_reflection.py
+- lib/agent_reflection.py
 tier: maintainer
 tags:
-  - agents
-  - reflection
-  - runtime
-classification_basis: leaf primitive that implements bounded iterative reflection with no caller coupling; deliberately scoped to the primitive only — runtime wiring is reserved for ADR-296 (follow-up)
+- agents
+- reflection
+- runtime
+classification_basis: leaf primitive that implements bounded iterative reflection
+  with no caller coupling; no remaining in-scope work for this ADR, and runtime wiring
+  is separate/out-of-scope follow-up reserved for ADR-296
 verification:
   level: strong
   commands:
-    - python3 -m pytest tests/unit/test_agent_reflection.py -q
+  - python3 -m pytest tests/unit/test_agent_reflection.py -q
   proves:
-    - reflection_loop_respects_min_and_max
-    - reflection_exits_early_on_yes_after_min_reflect
-    - llm_call_none_raises_at_construction_time
+  - reflection_loop_respects_min_and_max
+  - reflection_exits_early_on_yes_after_min_reflect
+  - llm_call_none_raises_at_construction_time
 ---
 
 # ADR-295 — Agent Reflection Loop Primitive

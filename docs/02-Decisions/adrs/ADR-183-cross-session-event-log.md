@@ -1,5 +1,4 @@
 ---
-
 adr: 183
 title: Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators
 status: accepted
@@ -9,17 +8,21 @@ supersedes: []
 superseded_by: null
 extends: []
 implementation_files:
-  - lib/session_bus.py                      # existing append-only session event bus
-  - scripts/session_event_bus.py            # existing event bus CLI
-  - lib/session_coordination.py             # cross-session claims/intake events
-  - lib/agent_message_bus.py                # directed message events
-  - scripts/cos-session-coordination        # coordination CLI
-  - scripts/cos-agent-message               # directed message CLI
-  - hooks/cross-session-event-emit.sh
-  - hooks/cross-session-peer-context.sh
-  - tests/unit/test_cross_session_events.py
+- lib/session_bus.py
+- scripts/session_event_bus.py
+- lib/session_coordination.py
+- lib/agent_message_bus.py
+- scripts/cos-session-coordination
+- scripts/cos-agent-message
+- hooks/cross-session-event-emit.sh
+- hooks/cross-session-peer-context.sh
+- tests/unit/test_cross_session_events.py
 tier: maintainer
-tags: [concurrency, observability, governance, postmortem-2026-05-05]
+tags:
+- concurrency
+- observability
+- governance
+- postmortem-2026-05-05
 ---
 # ADR-183: Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators
 

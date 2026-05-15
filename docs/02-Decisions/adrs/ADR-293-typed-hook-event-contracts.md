@@ -4,25 +4,28 @@ title: 'Typed Hook Event Contracts: Frozen Dataclasses for Claude Code Hook Payl
 status: accepted
 implementation_status: implemented
 date: '2026-05-13'
-supersedes: [ADR-290]
+supersedes:
+- ADR-290
 superseded_by: null
 implementation_files:
-  - lib/hook_event_types.py
+- lib/hook_event_types.py
 tier: maintainer
 tags:
-  - hooks
-  - contracts
-  - schema
-  - reliability
-classification_basis: canonical schema module with per-event-type dataclasses, dispatcher, and roundtrip parse tests; existing hooks remain on untyped dicts until the staged migration plan completes
+- hooks
+- contracts
+- schema
+- reliability
+classification_basis: canonical schema module with per-event-type dataclasses, dispatcher,
+  and roundtrip parse tests; no remaining in-scope work for this ADR, and staged hook-by-hook
+  migration is separate/out-of-scope follow-up
 verification:
   level: strong
   commands:
-    - python3 -m pytest tests/unit/test_hook_event_types.py -q
+  - python3 -m pytest tests/unit/test_hook_event_types.py -q
   proves:
-    - hook_event_payload_parses_to_typed_dataclass
-    - missing_required_field_raises_hookpayloaderror
-    - unknown_hook_event_name_raises_clear_error
+  - hook_event_payload_parses_to_typed_dataclass
+  - missing_required_field_raises_hookpayloaderror
+  - unknown_hook_event_name_raises_clear_error
 ---
 
 # ADR-293 — Typed Hook Event Contracts

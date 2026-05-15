@@ -7,25 +7,24 @@ date: '2026-05-13'
 supersedes: []
 superseded_by: null
 extends:
-  - ADR-298
-  - ADR-300
+- ADR-298
+- ADR-300
 implementation_files:
-  - lib/routing_benchmark.py
-  - manifests/routing-benchmark-models.yaml
-  - tests/unit/test_routing_benchmark_onnx_adapter.py
-  - docs/06-Daily/reports/routing-benchmark-2026-05-13.md
+- lib/routing_benchmark.py
+- manifests/routing-benchmark-models.yaml
+- tests/unit/test_routing_benchmark_onnx_adapter.py
+- docs/06-Daily/reports/routing-benchmark-2026-05-13.md
 tier: core
 tags:
-  - skill-router
-  - benchmark
-  - onnx
-  - adapter
-  - model-selection
+- skill-router
+- benchmark
+- onnx
+- adapter
+- model-selection
 verification_level: medium
-classification_basis: |
-  Adapter ships with unit tests (protocol conformance, license gate, lazy-load,
-  revision-aware cache, graceful HF 404). End-to-end smoke validated by running
-  the harness against BAAI/bge-m3 and updating the comparison report.
+classification_basis: ONNX direct routing adapter implemented with optional-runtime
+  graceful degradation, CLI inspection, and unit tests; no remaining in-scope work
+  for this ADR, and future adapter expansion is separate/out-of-scope follow-up
 ---
 
 # ADR-301: ONNX-Direct Routing Adapter

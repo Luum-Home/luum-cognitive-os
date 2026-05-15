@@ -7,24 +7,23 @@ date: '2026-05-13'
 supersedes: []
 superseded_by: null
 extends:
-  - ADR-296
-  - ADR-297
-  - ADR-298
+- ADR-296
+- ADR-297
+- ADR-298
 implementation_files:
-  - lib/semantic_skill_matcher.py
-  - manifests/routing-benchmark-models.yaml
-  - docs/06-Daily/reports/routing-benchmark-2026-05-13.md
+- lib/semantic_skill_matcher.py
+- manifests/routing-benchmark-models.yaml
+- docs/06-Daily/reports/routing-benchmark-2026-05-13.md
 tier: core
 tags:
-  - skill-router
-  - benchmark
-  - model-selection
-  - operator-config
+- skill-router
+- benchmark
+- model-selection
+- operator-config
 verification_level: medium
-classification_basis: |
-  Phase 1 implementation: operator swap env var + benchmark-winner identification.
-  Phase 2 (recalibration to adopt e5-large) tracked in §Migration but not landed
-  in this ADR because the test surface needs coordinated threshold tuning.
+classification_basis: semantic routing model selection implemented with deterministic
+  manifest, runtime loader, CLI, and tests; no remaining in-scope work for this ADR,
+  and future model/provider expansion is separate/out-of-scope follow-up
 ---
 
 # ADR-300: Semantic Routing Model Selection — Phase 1

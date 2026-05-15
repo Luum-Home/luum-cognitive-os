@@ -15,7 +15,14 @@ implementation_files:
 - tests/unit/test_stash_quarantine_audit.py
 - docs/06-Daily/reports/stash-reference-incident-postmortem-2026-05-15.md
 tier: maintainer
-classification_basis: copy-only checkpoint implementation, regression tests, and postmortem from the stash-reference incident
+classification_basis: copy-only checkpoint implementation, regression tests, and postmortem
+  from the stash-reference incident; no remaining in-scope work for this ADR, and
+  any future stash tooling is separate/out-of-scope follow-up
+tags:
+- stash-quarantine
+- checkpoints
+- session-safety
+- governance
 ---
 
 # ADR-318 — Copy-Only Checkpoints and Stash Quarantine

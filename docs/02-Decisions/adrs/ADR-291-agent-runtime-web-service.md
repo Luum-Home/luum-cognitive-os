@@ -2,40 +2,42 @@
 adr: 291
 title: 'Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients'
 status: accepted
-implementation_status: phase-1-skeleton
+implementation_status: partial
 date: '2026-05-13'
 supersedes: []
 superseded_by: null
 implementation_files:
-  - packages/agent-service/src/agent_service/app.py
-  - packages/agent-service/src/agent_service/auth.py
-  - packages/agent-service/src/agent_service/config.py
-  - packages/agent-service/src/agent_service/sse.py
-  - packages/agent-service/src/agent_service/routers/health.py
-  - packages/agent-service/src/agent_service/routers/agent_config.py
-  - packages/agent-service/src/agent_service/routers/oneshot.py
-  - packages/agent-service/src/agent_service/routers/sessions.py
-  - packages/agent-service/src/agent_service/routers/workspace.py
+- packages/agent-service/src/agent_service/app.py
+- packages/agent-service/src/agent_service/auth.py
+- packages/agent-service/src/agent_service/config.py
+- packages/agent-service/src/agent_service/sse.py
+- packages/agent-service/src/agent_service/routers/health.py
+- packages/agent-service/src/agent_service/routers/agent_config.py
+- packages/agent-service/src/agent_service/routers/oneshot.py
+- packages/agent-service/src/agent_service/routers/sessions.py
+- packages/agent-service/src/agent_service/routers/workspace.py
 tier: core
 tags:
-  - service
-  - http
-  - sse
-  - runtime
-classification_basis: phase-1 contract skeleton with 26 operations (25 distinct path strings), 3 functional (health/version/agent options), 23 returning 501 with typed schemas, full contract test suite. The /csrf-token endpoint was removed in the security pass — it was token-shaped string theater without server-side store; real CSRF defense ships with Phase 2.
+- service
+- http
+- sse
+- runtime
+classification_basis: phase-1 contract skeleton with 26 operations (25 distinct path
+  strings), 3 functional (health/version/agent options), 23 returning 501 with typed
+  schemas, full contract test suite. The /csrf-token endpoint was removed in the security
+  pass — it was token-shaped string theater without server-side store; real CSRF defense
+  ships with Phase 2.
 verification:
-  level: medium  # Phase 1 tests assert status codes + schema. They do NOT exercise the
-                 # agent runner (23/26 endpoints return 501 by design). Promote to `strong`
-                 # when Phase 2 wires the in-process runner and behavior tests cover it.
+  level: medium
   commands:
-    - python3 -m pytest packages/agent-service/tests -q
+  - python3 -m pytest packages/agent-service/tests -q
   proves:
-    - all_26_endpoints_registered
-    - bearer_token_enforced_on_protected_routes
-    - kill_switch_blocks_startup
-    - functional_endpoints_return_200
-    - stub_endpoints_return_501_with_valid_schema
-    - sse_handlers_emit_well_formed_events
+  - all_26_endpoints_registered
+  - bearer_token_enforced_on_protected_routes
+  - kill_switch_blocks_startup
+  - functional_endpoints_return_200
+  - stub_endpoints_return_501_with_valid_schema
+  - sse_handlers_emit_well_formed_events
 ---
 
 # ADR-291 — Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients

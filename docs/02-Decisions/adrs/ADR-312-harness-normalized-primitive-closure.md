@@ -4,6 +4,21 @@ title: Harness-Normalized Primitive Closure
 status: accepted
 implementation_status: implemented
 date: 2026-05-14
+implementation_files:
+- manifests/harness-projection.yaml
+- manifests/harness-driver-capabilities.yaml
+- manifests/primitive-contracts.yaml
+- manifests/primitive-closure-ratchet.yaml
+- scripts/primitive_closure_ratchet.py
+- tests/contracts/test_primitive_closure_ratchet.py
+tier: maintainer
+tags:
+- primitive-closure
+- harnesses
+- projection
+- governance
+classification_basis: harness-normalized primitive closure manifest, ratchet implementation,
+  and contract tests are implemented; no remaining in-scope work for this ADR
 ---
 # ADR-312: Harness-Normalized Primitive Closure
 

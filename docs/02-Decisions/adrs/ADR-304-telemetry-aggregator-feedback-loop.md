@@ -4,9 +4,37 @@ title: Telemetry Aggregator + Feedback Loop
 status: accepted
 implementation_status: implemented
 date: 2026-05-13
-extends: [ADR-028, ADR-031, ADR-247, ADR-275]
-related: [ADR-049, ADR-297, ADR-303]
-tags: [observability, telemetry, slo, control-plane, feedback-loop]
+extends:
+- ADR-028
+- ADR-031
+- ADR-247
+- ADR-275
+related:
+- ADR-049
+- ADR-297
+- ADR-303
+tags:
+- observability
+- telemetry
+- slo
+- control-plane
+- feedback-loop
+adr: 304
+implementation_files:
+- manifests/observability-slo.yaml
+- lib/telemetry_aggregator.py
+- scripts/cos-telemetry-aggregate
+- hooks/telemetry-budget-violator-detect.sh
+- manifests/control-plane-audits.yaml
+- lib/telemetry_banner.py
+- hooks/session-init.sh
+- tests/unit/test_telemetry_aggregator.py
+- tests/unit/test_session_start_banner_telemetry.py
+- tests/unit/test_telemetry_self_tuning_proposer.py
+tier: maintainer
+classification_basis: telemetry aggregation, control-plane audit registration, session
+  banner rendering, self-tuning proposal, and unit tests are implemented; no remaining
+  in-scope work for this ADR
 ---
 
 # ADR-304 — Telemetry Aggregator + Feedback Loop

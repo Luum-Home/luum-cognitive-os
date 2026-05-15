@@ -3,12 +3,26 @@ status: Accepted
 date: 2026-05-14
 deciders: Cognitive OS maintainers
 tags:
-  - dependencies
-  - installer
-  - portability
-  - headless
-  - standalone
+- dependencies
+- installer
+- portability
+- headless
+- standalone
 implementation_status: Implemented
+adr: 310
+title: Cross-Platform and Headless Dependency Bootstrap
+implementation_files:
+- manifests/dependencies.yaml
+- scripts/setup.sh
+- scripts/cos-update.sh
+- scripts/cos-deps-install.sh
+- scripts/cos_deps_install.py
+- tests/contracts/test_cross_device_dependencies.py
+- tests/unit/test_manifest_loader.py
+tier: maintainer
+classification_basis: cross-platform dependency manifest, install/update bootstrap
+  commands, headless profile planning, and tests are implemented; no remaining in-scope
+  work for this ADR
 ---
 
 # ADR-310: Cross-Platform and Headless Dependency Bootstrap

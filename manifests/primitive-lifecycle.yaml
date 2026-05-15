@@ -8581,7 +8581,10 @@ primitives:
   owner_adr: ADR-042
   lifecycle_state: candidate
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: runtime-safety
   risk_class: mutating
   supported_harnesses:
@@ -8616,7 +8619,10 @@ primitives:
   owner_adr: ADR-189
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -10224,7 +10230,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: team
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: quality
   risk_class: advisory
   supported_harnesses:
@@ -10257,7 +10266,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: team
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: quality
   risk_class: advisory
   supported_harnesses:
@@ -11334,7 +11346,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: project-scaffolding
   risk_class: advisory
@@ -11356,7 +11371,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: project-scaffolding
   risk_class: advisory
@@ -11380,7 +11398,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: project-scaffolding
   risk_class: advisory
@@ -11402,7 +11423,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: project-documentation-export
   risk_class: advisory
@@ -11424,7 +11448,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: primitive-authoring
   risk_class: advisory
@@ -11447,7 +11474,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: session-backlog
   risk_class: advisory
@@ -11470,7 +11500,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11493,7 +11526,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11516,7 +11552,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11539,7 +11578,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11562,7 +11604,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11585,7 +11630,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11608,7 +11656,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11631,7 +11682,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11654,7 +11708,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11677,7 +11734,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11700,7 +11760,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11723,7 +11786,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11746,7 +11812,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11769,7 +11838,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11792,7 +11864,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11815,7 +11890,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11838,7 +11916,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11861,7 +11942,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11884,7 +11968,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11907,7 +11994,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11930,7 +12020,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11953,7 +12046,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -11976,7 +12072,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-governance
   risk_class: advisory
   supported_harnesses:
@@ -12066,7 +12165,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12089,7 +12191,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12113,7 +12218,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12136,7 +12244,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12159,7 +12270,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12182,7 +12296,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12205,7 +12322,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12228,7 +12348,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: prompt-template
   risk_class: advisory
   supported_harnesses:
@@ -12251,7 +12374,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: prompt-template
   risk_class: advisory
   supported_harnesses:
@@ -12274,7 +12400,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   governance_class: prompt-template
   risk_class: advisory
   supported_harnesses:
@@ -15939,7 +16068,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -15962,7 +16094,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -15985,7 +16120,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -16009,7 +16147,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -16032,7 +16173,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -16055,7 +16199,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -16078,7 +16225,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -16101,7 +16251,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: template is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: template-shared-surface
   risk_class: advisory
@@ -16170,7 +16323,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16192,7 +16348,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16214,7 +16373,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16236,7 +16398,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16258,7 +16423,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16280,7 +16448,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16302,7 +16473,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16324,7 +16498,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16369,7 +16546,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16391,7 +16571,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16436,7 +16619,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: skill-consumer-surface
   risk_class: advisory
@@ -16459,7 +16645,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16481,7 +16670,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16503,7 +16695,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: skill-consumer-surface
   risk_class: advisory
@@ -16526,7 +16721,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16548,7 +16746,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16570,7 +16771,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16592,7 +16796,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16614,7 +16821,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16659,7 +16869,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16704,7 +16917,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16726,7 +16942,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16748,7 +16967,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-consumer-candidate
   governance_class: skill-consumer-surface
   risk_class: advisory
@@ -16771,7 +16993,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16793,7 +17018,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16838,7 +17066,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16860,7 +17091,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16882,7 +17116,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16904,7 +17141,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16926,7 +17166,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16948,7 +17191,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16970,7 +17216,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory
@@ -16992,7 +17241,10 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: active
   maturity: advisory
-  distribution: core
+  distribution: lab
+  demotion_evidence:
+    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but not a runtime-safety blocker; lab distribution preserves opt-in availability without a core/team product claim.'
+    audit_command: scripts/cos-manifest-tier-claim-audit --json
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: skill-shared-surface
   risk_class: advisory

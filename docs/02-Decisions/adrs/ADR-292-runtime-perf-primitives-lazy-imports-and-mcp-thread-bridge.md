@@ -4,24 +4,28 @@ title: 'Runtime Performance Primitives: Lazy Imports and MCP Sync↔Async Thread
 status: accepted
 implementation_status: implemented
 date: '2026-05-13'
-supersedes: [ADR-290]
+supersedes:
+- ADR-290
 superseded_by: null
 implementation_files:
-  - lib/lazy_imports.py
-  - lib/mcp_thread_bridge.py
+- lib/lazy_imports.py
+- lib/mcp_thread_bridge.py
 tier: maintainer
 tags:
-  - performance
-  - concurrency
-  - runtime
-classification_basis: two runtime performance primitives delivered as leaf modules with thread-safe unit tests; no remaining in-scope work for this ADR, and future caller adoption is separate/out-of-scope follow-up
+- performance
+- concurrency
+- runtime
+classification_basis: two runtime performance primitives delivered as leaf modules
+  with thread-safe unit tests; no remaining in-scope work for this ADR, and future
+  caller adoption is separate/out-of-scope follow-up
 verification:
   level: strong
   commands:
-    - python3 -m pytest tests/unit/test_lazy_imports.py tests/unit/test_mcp_thread_bridge.py -q
+  - python3 -m pytest tests/unit/test_lazy_imports.py tests/unit/test_mcp_thread_bridge.py
+    -q
   proves:
-    - lazy_import_thread_safe_single_factory_call
-    - mcp_thread_bridge_propagates_results_and_exceptions
+  - lazy_import_thread_safe_single_factory_call
+  - mcp_thread_bridge_propagates_results_and_exceptions
 ---
 
 # ADR-292 — Runtime Performance Primitives

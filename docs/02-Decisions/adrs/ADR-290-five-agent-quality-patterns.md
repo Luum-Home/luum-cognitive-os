@@ -1,35 +1,43 @@
 ---
 adr: 290
-title: 'Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop'
+title: 'Five Agent Quality-of-Life Patterns: Lazy Imports, Typed Hook Events, MCP
+  Sync↔Async Bridge, Memory Quality Scoring, Reflection Loop'
 status: superseded
-implementation_status: implemented
+implementation_status: resolved
 date: '2026-05-13'
 supersedes: []
-superseded_by: [ADR-292, ADR-293, ADR-294, ADR-295]
+superseded_by:
+- ADR-292
+- ADR-293
+- ADR-294
+- ADR-295
 implementation_files:
-  - lib/lazy_imports.py
-  - lib/hook_event_types.py
-  - lib/mcp_thread_bridge.py
-  - lib/engram_wave3_schema.py
-  - lib/agent_reflection.py
+- lib/lazy_imports.py
+- lib/hook_event_types.py
+- lib/mcp_thread_bridge.py
+- lib/engram_wave3_schema.py
+- lib/agent_reflection.py
 tier: maintainer
 tags:
-  - agents
-  - reliability
-  - memory
-  - reflection
-  - performance
-classification_basis: five independent agent-runtime patterns implemented as reusable modules with unit tests; quality scoring extends ADR-287 schema additively
+- agents
+- reliability
+- memory
+- reflection
+- performance
+classification_basis: five independent agent-runtime patterns implemented as reusable
+  modules with unit tests; quality scoring extends ADR-287 schema additively
 verification:
   level: strong
   commands:
-    - python3 -m pytest tests/unit/test_lazy_imports.py tests/unit/test_hook_event_types.py tests/unit/test_mcp_thread_bridge.py tests/unit/test_engram_quality_scoring.py tests/unit/test_agent_reflection.py -q
+  - python3 -m pytest tests/unit/test_lazy_imports.py tests/unit/test_hook_event_types.py
+    tests/unit/test_mcp_thread_bridge.py tests/unit/test_engram_quality_scoring.py
+    tests/unit/test_agent_reflection.py -q
   proves:
-    - lazy_import_thread_safe_single_factory_call
-    - hook_event_payload_parses_to_typed_dataclass
-    - mcp_thread_bridge_propagates_results_and_exceptions
-    - quality_score_weights_and_filter_deterministic
-    - reflection_loop_respects_min_and_max
+  - lazy_import_thread_safe_single_factory_call
+  - hook_event_payload_parses_to_typed_dataclass
+  - mcp_thread_bridge_propagates_results_and_exceptions
+  - quality_score_weights_and_filter_deterministic
+  - reflection_loop_respects_min_and_max
 ---
 
 # ADR-290 — Five Agent Quality-of-Life Patterns
