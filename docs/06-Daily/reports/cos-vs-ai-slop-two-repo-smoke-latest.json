@@ -1,0 +1,119 @@
+{
+  "commands": {
+    "benchmark_plan": {
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "<repo-root>/scripts/so_vs_vanilla_benchmark.py",
+        "--dry-run"
+      ],
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "g file containing an API key\n  - simple-fix                 hook=none (baseline overhead measurement)      desc=Baseline: trivial edit with no governance relevance\n  - vague-scope                hook=confidence-gate + clarification-gate      desc=Ambiguous high-blast-radius task (should trigger clarificati\n  - trust-score-required       hook=trust-score-validator                     desc=Check that SO-mode output carries a TRUST_REPORT header\n\nTotal: 6 tasks \u00d7 2 modes = 12 LLM calls per repeat.\n"
+    },
+    "install": {
+      "cmd": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "<repo-root>/scripts/cos_init.py",
+        "--default",
+        "--harness",
+        "codex"
+      ],
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "=== Cognitive OS Init (--default) ===\nHarness: codex\nScope filter: both\n\nProject: cos-repo\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (default mode)\n  Rules:  13 installed\n  Hooks:  37 registered\n  Skills: 7 available\n\nNext: start coding! The AI knows what to do.\n\nNeed maximum coverage? Re-run with --full:\n  bash <repo-root>/scripts/cos-init.sh --full\n"
+    },
+    "manifest_tier": {
+      "cmd": [
+        "<repo-root>/scripts/cos-manifest-tier-claim-audit",
+        "--json"
+      ],
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "the primitive belongs there\",\n      \"recommendation\": \"externalize maintainer rationale before any team/core promotion\",\n      \"severity\": \"info\"\n    }\n  ],\n  \"manifest\": \"<repo-root>/manifests/primitive-lifecycle.yaml\",\n  \"policy\": \"Manifest distribution claims should be evidence-backed before external adoption; advisory projected primitives are candidates for future demotion.\",\n  \"primitive_count\": 673,\n  \"status\": \"warn\",\n  \"warning_count\": 508\n}\n"
+    },
+    "public_claim_gate": {
+      "cmd": [
+        "<repo-root>/scripts/cos-public-claim-gate",
+        "--json"
+      ],
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "must be removed, demoted, or explicitly bounded by REAL/propose-only/governed context.\",\n  \"project_dir\": \"<repo-root>\",\n  \"scanned_paths\": [\n    \"README.md\",\n    \"docs/08-References/business/executive-summary.md\",\n    \"docs/08-References/business/kubernetes-for-agents.md\",\n    \"docs/08-References/business/value-proposition.md\",\n    \"docs/08-References/business/features.md\"\n  ],\n  \"schema_version\": \"public-claim-gate-report/v1\",\n  \"status\": \"pass\"\n}\n"
+    },
+    "status": {
+      "cmd": [
+        "bash",
+        "<repo-root>/scripts/cos-status.sh",
+        "--json"
+      ],
+      "returncode": 0,
+      "stderr_tail": "",
+      "stdout_tail": "cos-vs-slop-two-repo-lzucyzx_/cos-repo/.claude/rules\",\n    \"source_count\": 12,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-vs-slop-two-repo-lzucyzx_/cos-repo/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-vs-slop-two-repo-lzucyzx_/cos-repo/.claude/skills\",\n    \"kernel_installed\": 8,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+    }
+  },
+  "digests": {
+    "cos_after": "02de7fe6cc41aed5b7c340b7ebd415cedb74165e08654bbce645226f9118d24c",
+    "cos_before": "1278881891b7893420c633d51a0ac0ae61f18172290b60597ec4f02133d2d5c5",
+    "vanilla_after": "1278881891b7893420c633d51a0ac0ae61f18172290b60597ec4f02133d2d5c5",
+    "vanilla_before": "1278881891b7893420c633d51a0ac0ae61f18172290b60597ec4f02133d2d5c5"
+  },
+  "generated_at": "2026-05-15T13:22:34+00:00",
+  "harness": "codex",
+  "install_meta": {
+    "harness": "codex",
+    "hooks_installed": 37,
+    "rules_installed": 13,
+    "skills_installed": 7
+  },
+  "limitations": [
+    "Does not execute live model tasks.",
+    "Does not prove time-to-merge, defect-rate, or cognitive-load wins.",
+    "Only proves the local substrate needed before the A/B/C falsification benchmark."
+  ],
+  "manifest_tier_summary": {
+    "counts_by_category": {
+      "candidate_second_demote": 62,
+      "candidate_to_lab_or_advisory": 246,
+      "core_team_without_strong_evidence": 254,
+      "maintainer_knowledge_dependent": 292
+    },
+    "finding_count": 854,
+    "primitive_count": 673,
+    "status": "warn",
+    "warning_count": 508
+  },
+  "mode": "non-provider-two-repo-substrate-smoke",
+  "probes": {
+    "benchmark_plan_available": {
+      "rationale": "Existing so-vs-vanilla benchmark dry-run is available.",
+      "status": "pass"
+    },
+    "cos_projection_exists": {
+      "rationale": "COS repo has inspectable projected substrate.",
+      "status": "pass"
+    },
+    "driver_boundary_visible": {
+      "rationale": "Codex projection does not hide Claude coupling.",
+      "status": "pass"
+    },
+    "manifest_debt_not_hidden": {
+      "rationale": "Remaining manifest debt is visible as warn.",
+      "status": "pass"
+    },
+    "public_claim_gate_clean": {
+      "rationale": "Public high-risk claims remain bounded by a gate.",
+      "status": "pass"
+    },
+    "status_visible": {
+      "rationale": "Status tooling inspects the COS repo without model calls.",
+      "status": "pass"
+    },
+    "vanilla_repo_unchanged": {
+      "rationale": "Baseline repo remains a clean native-harness fixture.",
+      "status": "pass"
+    }
+  },
+  "schema_version": "cos-vs-ai-slop-two-repo-smoke.v1",
+  "status": "pass",
+  "temp_root": "removed"
+}

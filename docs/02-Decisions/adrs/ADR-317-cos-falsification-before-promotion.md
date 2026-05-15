@@ -1,0 +1,43 @@
+---
+adr: 317
+title: COS Falsification Before Promotion
+status: accepted
+implementation_status: implemented
+date: '2026-05-15'
+extends:
+  - ADR-316
+  - ADR-314
+supersedes: []
+superseded_by: null
+implementation_files:
+  - docs/08-References/business/cos-vs-ai-slop-falsification.md
+  - docs/09-Quality/manual-tests/cos-vs-ai-slop-falsification.md
+  - scripts/cos-falsification-benchmark
+  - scripts/cos_falsification_benchmark.py
+tier: core
+tags:
+  - product-boundary
+  - falsification
+  - anti-slop
+classification_basis: COS profiles and primitives should be promoted by falsifiable outcome evidence, not by taxonomy size.
+verification:
+  level: medium
+  commands:
+    - scripts/cos-falsification-benchmark --json --write-report
+    - scripts/cos-public-claim-gate --json
+  proves:
+    - deterministic A/B/C benchmark produces an explicit product verdict
+    - public high-risk claims remain bounded
+---
+
+# ADR-317 — COS Falsification Before Promotion
+
+## Status
+
+Accepted and implemented as product-governance doctrine — 2026-05-15.
+
+<!-- SCOPE: both -->
+
+## Decision
+
+Promote COS primitives and profiles only when they improve measurable outcomes over a harness-literate baseline, or when they preserve a documented safety/recovery property that the baseline lacks. If minimal COS ties full COS, minimal COS wins the default because the smaller surface has lower cognitive and operational cost.

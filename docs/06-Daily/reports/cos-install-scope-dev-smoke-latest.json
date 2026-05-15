@@ -1,0 +1,470 @@
+{
+  "findings": {
+    "all_extra_hooks_pass_when_present": false,
+    "all_is_superset_by_count": true,
+    "all_scope_includes_os_only_primitives": true,
+    "dev_like_surface_passes": true,
+    "filtered_scopes_exclude_os_only": true,
+    "filtered_scopes_include_os_only_support_files": true,
+    "project_vs_both_equivalent": true,
+    "recommendation": "Do not claim three distinct project-install tiers until project and both have separate semantics, tests, and user-facing docs. Today the evidence supports two tiers: filtered consumer install and all/maintainer install.",
+    "status": "fail",
+    "summary": "Three names currently collapse into two effective primitive surfaces: project and both are equivalent; all is the maintainer/full superset."
+  },
+  "repo_root": "<repo-root>",
+  "results": [
+    {
+      "counts": {
+        "hooks": 189,
+        "rules": 107,
+        "skills": 119,
+        "templates": 10
+      },
+      "dev_like_checks": {
+        "cos_status_json_available": true,
+        "destructive_git_blocked": true,
+        "destructive_git_hook_present": true,
+        "lethal_trifecta_blocked_when_present": true,
+        "lethal_trifecta_present": false,
+        "normal_project_tests_pass": true,
+        "secret_detector_present": true,
+        "secret_probe_nonfatal_or_blocked": true
+      },
+      "install": {
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "<repo-root>/scripts/cos_init.py",
+          "--full",
+          "--harness",
+          "codex"
+        ],
+        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: project\n\nProject: fixture-project\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  107 installed\n  Hooks:  148 registered\n  Skills: 112 available\n\nNext: start coding! The AI knows what to do.\n\n"
+      },
+      "install_ok": true,
+      "os_only_counts": {
+        "hooks": 34,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/_lib/agent-context.sh",
+          ".cognitive-os/hooks/cos/_lib/artifact-status.sh",
+          ".cognitive-os/hooks/cos/_lib/bypass-resolver.sh",
+          ".cognitive-os/hooks/cos/_lib/cache.sh",
+          ".cognitive-os/hooks/cos/_lib/circuit-breaker.sh",
+          ".cognitive-os/hooks/cos/_lib/common.sh",
+          ".cognitive-os/hooks/cos/_lib/context_budget_lib.sh",
+          ".cognitive-os/hooks/cos/_lib/dispatch_gate_check.py"
+        ],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "primitive_os_only_counts": {
+        "hooks": 0,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "primitive_os_only_examples": {
+        "hooks": [],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "primitive_signature": "97c6251d442572cb29047b2c1031c7adb8cd209fc4aa84320491aee3466d937b",
+      "probe_details": {
+        "destructive_git": {
+          "blocked": true,
+          "present": true,
+          "returncode": 2,
+          "stderr_tail": "\n=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===\nBLOCKED: destructive git op 'git reset' is blocked by default (ADR-055b, r5-stash-residue).\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nCommand: git reset --hard HEAD~1\n\nTo proceed, use ONE of:\n  1. Inline flag:   append --allow-destructive to the command\n                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')\n  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)\n\nReference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md\n\n",
+          "stdout_tail": ""
+        },
+        "lethal_trifecta": {
+          "blocked": false,
+          "present": false,
+          "returncode": null,
+          "stderr_tail": ""
+        },
+        "secret_detector": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"allow\",\"updatedInput\":{\"command\":\"echo [REDACTED]\"}},\"additionalContext\":\"Secrets redacted before execution: ghp_1234\u2026. Replace literal credentials with environment variables (e.g. $AWS_ACCESS_KEY_ID, $GITHUB_TOKEN) so they are not echoed into shell history or written to disk.\"}\n"
+        },
+        "status": {
+          "cmd": [
+            "bash",
+            "<repo-root>/scripts/cos-status.sh",
+            "--json"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (113 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 9,\n      \"Stop\": 9,\n      \"UserPromptSubmit\": 11\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 37\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project/.claude/rules\",\n    \"source_count\": 106,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project/.claude/skills\",\n    \"kernel_installed\": 113,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+        },
+        "tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
+        }
+      },
+      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-project",
+      "scope": "project",
+      "signature": "fdf4c88e63d2573fae97c32d4d46a63d83b901c73022564b82fec66e04a14d9a",
+      "support_os_only_counts": {
+        "hooks": 34,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "support_os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/_lib/agent-context.sh",
+          ".cognitive-os/hooks/cos/_lib/artifact-status.sh",
+          ".cognitive-os/hooks/cos/_lib/bypass-resolver.sh",
+          ".cognitive-os/hooks/cos/_lib/cache.sh",
+          ".cognitive-os/hooks/cos/_lib/circuit-breaker.sh",
+          ".cognitive-os/hooks/cos/_lib/common.sh",
+          ".cognitive-os/hooks/cos/_lib/context_budget_lib.sh",
+          ".cognitive-os/hooks/cos/_lib/dispatch_gate_check.py"
+        ],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "total_files": 425
+    },
+    {
+      "counts": {
+        "hooks": 189,
+        "rules": 107,
+        "skills": 119,
+        "templates": 10
+      },
+      "dev_like_checks": {
+        "cos_status_json_available": true,
+        "destructive_git_blocked": true,
+        "destructive_git_hook_present": true,
+        "lethal_trifecta_blocked_when_present": true,
+        "lethal_trifecta_present": false,
+        "normal_project_tests_pass": true,
+        "secret_detector_present": true,
+        "secret_probe_nonfatal_or_blocked": true
+      },
+      "install": {
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "<repo-root>/scripts/cos_init.py",
+          "--full",
+          "--harness",
+          "codex"
+        ],
+        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: both\n\nProject: fixture-both\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  107 installed\n  Hooks:  148 registered\n  Skills: 112 available\n\nNext: start coding! The AI knows what to do.\n\n"
+      },
+      "install_ok": true,
+      "os_only_counts": {
+        "hooks": 34,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/_lib/agent-context.sh",
+          ".cognitive-os/hooks/cos/_lib/artifact-status.sh",
+          ".cognitive-os/hooks/cos/_lib/bypass-resolver.sh",
+          ".cognitive-os/hooks/cos/_lib/cache.sh",
+          ".cognitive-os/hooks/cos/_lib/circuit-breaker.sh",
+          ".cognitive-os/hooks/cos/_lib/common.sh",
+          ".cognitive-os/hooks/cos/_lib/context_budget_lib.sh",
+          ".cognitive-os/hooks/cos/_lib/dispatch_gate_check.py"
+        ],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "primitive_os_only_counts": {
+        "hooks": 0,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "primitive_os_only_examples": {
+        "hooks": [],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "primitive_signature": "97c6251d442572cb29047b2c1031c7adb8cd209fc4aa84320491aee3466d937b",
+      "probe_details": {
+        "destructive_git": {
+          "blocked": true,
+          "present": true,
+          "returncode": 2,
+          "stderr_tail": "\n=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===\nBLOCKED: destructive git op 'git reset' is blocked by default (ADR-055b, r5-stash-residue).\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nCommand: git reset --hard HEAD~1\n\nTo proceed, use ONE of:\n  1. Inline flag:   append --allow-destructive to the command\n                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')\n  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)\n\nReference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md\n\n",
+          "stdout_tail": ""
+        },
+        "lethal_trifecta": {
+          "blocked": false,
+          "present": false,
+          "returncode": null,
+          "stderr_tail": ""
+        },
+        "secret_detector": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"allow\",\"updatedInput\":{\"command\":\"echo [REDACTED]\"}},\"additionalContext\":\"Secrets redacted before execution: ghp_1234\u2026. Replace literal credentials with environment variables (e.g. $AWS_ACCESS_KEY_ID, $GITHUB_TOKEN) so they are not echoed into shell history or written to disk.\"}\n"
+        },
+        "status": {
+          "cmd": [
+            "bash",
+            "<repo-root>/scripts/cos-status.sh",
+            "--json"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (113 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 9,\n      \"Stop\": 9,\n      \"UserPromptSubmit\": 11\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 37\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both/.claude/rules\",\n    \"source_count\": 106,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both/.claude/skills\",\n    \"kernel_installed\": 113,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+        },
+        "tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
+        }
+      },
+      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-both",
+      "scope": "both",
+      "signature": "fdf4c88e63d2573fae97c32d4d46a63d83b901c73022564b82fec66e04a14d9a",
+      "support_os_only_counts": {
+        "hooks": 34,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "support_os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/_lib/agent-context.sh",
+          ".cognitive-os/hooks/cos/_lib/artifact-status.sh",
+          ".cognitive-os/hooks/cos/_lib/bypass-resolver.sh",
+          ".cognitive-os/hooks/cos/_lib/cache.sh",
+          ".cognitive-os/hooks/cos/_lib/circuit-breaker.sh",
+          ".cognitive-os/hooks/cos/_lib/common.sh",
+          ".cognitive-os/hooks/cos/_lib/context_budget_lib.sh",
+          ".cognitive-os/hooks/cos/_lib/dispatch_gate_check.py"
+        ],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "total_files": 425
+    },
+    {
+      "counts": {
+        "hooks": 285,
+        "rules": 121,
+        "skills": 190,
+        "templates": 16
+      },
+      "dev_like_checks": {
+        "cos_status_json_available": true,
+        "destructive_git_blocked": true,
+        "destructive_git_hook_present": true,
+        "lethal_trifecta_blocked_when_present": false,
+        "lethal_trifecta_present": true,
+        "normal_project_tests_pass": true,
+        "secret_detector_present": true,
+        "secret_probe_nonfatal_or_blocked": true
+      },
+      "install": {
+        "cmd": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "<repo-root>/scripts/cos_init.py",
+          "--full",
+          "--harness",
+          "codex"
+        ],
+        "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+        "returncode": 0,
+        "stderr_tail": "",
+        "stdout_tail": "=== Cognitive OS Init (--full) ===\nHarness: codex\nScope filter: all\n\nProject: fixture-all\nStack:   python\n\nCreated cognitive-os.yaml\nCreated .codex/hooks.json with project-appropriate hook paths\n\nCognitive OS initialized (full mode)\n  Rules:  121 installed\n  Hooks:  244 registered\n  Skills: 179 available\n\nNext: start coding! The AI knows what to do.\n\n"
+      },
+      "install_ok": true,
+      "os_only_counts": {
+        "hooks": 130,
+        "rules": 14,
+        "skills": 0,
+        "templates": 6
+      },
+      "os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/_lib/agent-context.sh",
+          ".cognitive-os/hooks/cos/_lib/artifact-status.sh",
+          ".cognitive-os/hooks/cos/_lib/bypass-resolver.sh",
+          ".cognitive-os/hooks/cos/_lib/cache.sh",
+          ".cognitive-os/hooks/cos/_lib/circuit-breaker.sh",
+          ".cognitive-os/hooks/cos/_lib/common.sh",
+          ".cognitive-os/hooks/cos/_lib/context_budget_lib.sh",
+          ".cognitive-os/hooks/cos/_lib/dispatch_gate_check.py"
+        ],
+        "rules": [
+          ".cognitive-os/rules/cos/ROADMAP.md",
+          ".cognitive-os/rules/cos/agent-communication.md",
+          ".cognitive-os/rules/cos/agent-customization.md",
+          ".cognitive-os/rules/cos/capability-protection.md",
+          ".cognitive-os/rules/cos/clean-room-detection-limits.md",
+          ".cognitive-os/rules/cos/cosd-secure-api.md",
+          ".cognitive-os/rules/cos/cross-harness-authoring.md",
+          ".cognitive-os/rules/cos/infra-health.md"
+        ],
+        "skills": [],
+        "templates": [
+          ".cognitive-os/templates/cos/agent-mandatory-rules.md",
+          ".cognitive-os/templates/cos/agent-preamble.md",
+          ".cognitive-os/templates/cos/edit-conflict-response.md",
+          ".cognitive-os/templates/cos/rebranding-checklist.md",
+          ".cognitive-os/templates/cos/rule-template.md",
+          ".cognitive-os/templates/cos/skill-template.md"
+        ]
+      },
+      "primitive_os_only_counts": {
+        "hooks": 96,
+        "rules": 14,
+        "skills": 0,
+        "templates": 6
+      },
+      "primitive_os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/aci-observation-capture.sh",
+          ".cognitive-os/hooks/cos/adoption-freeze-gate.sh",
+          ".cognitive-os/hooks/cos/adr-section-validator.sh",
+          ".cognitive-os/hooks/cos/adversarial-review-gate.sh",
+          ".cognitive-os/hooks/cos/agent-quota-advisor.sh",
+          ".cognitive-os/hooks/cos/agent-quota-redirect.sh",
+          ".cognitive-os/hooks/cos/agnix-lint.sh",
+          ".cognitive-os/hooks/cos/aspirational-audit-weekly.sh"
+        ],
+        "rules": [
+          ".cognitive-os/rules/cos/ROADMAP.md",
+          ".cognitive-os/rules/cos/agent-communication.md",
+          ".cognitive-os/rules/cos/agent-customization.md",
+          ".cognitive-os/rules/cos/capability-protection.md",
+          ".cognitive-os/rules/cos/clean-room-detection-limits.md",
+          ".cognitive-os/rules/cos/cosd-secure-api.md",
+          ".cognitive-os/rules/cos/cross-harness-authoring.md",
+          ".cognitive-os/rules/cos/infra-health.md"
+        ],
+        "skills": [],
+        "templates": [
+          ".cognitive-os/templates/cos/agent-mandatory-rules.md",
+          ".cognitive-os/templates/cos/agent-preamble.md",
+          ".cognitive-os/templates/cos/edit-conflict-response.md",
+          ".cognitive-os/templates/cos/rebranding-checklist.md",
+          ".cognitive-os/templates/cos/rule-template.md",
+          ".cognitive-os/templates/cos/skill-template.md"
+        ]
+      },
+      "primitive_signature": "74f2307a7d7840ffdd40ec900451f2199eb88a27d74bd173d65d07010ea0c1a5",
+      "probe_details": {
+        "destructive_git": {
+          "blocked": true,
+          "present": true,
+          "returncode": 2,
+          "stderr_tail": "\n=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===\nBLOCKED: destructive git op 'git reset' is blocked by default (ADR-055b, r5-stash-residue).\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nCommand: git reset --hard HEAD~1\n\nTo proceed, use ONE of:\n  1. Inline flag:   append --allow-destructive to the command\n                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')\n  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)\n\nReference: docs/02-Decisions/adrs/ADR-055b-destructive-git-block.md\n\n",
+          "stdout_tail": ""
+        },
+        "lethal_trifecta": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\nModuleNotFoundError: No module named 'lib'\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; print(json.loads(sys.argv[1]).get(\"decision\", \"allow\"))\n                           ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; print(json.loads(sys.argv[1]).get(\"score\", 0))\n                           ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import json,sys; print(\", \".join(json.loads(sys.argv[1]).get(\"reasons\", [])))\n                                     ~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py\", line 363, in raw_decode\n    raise JSONDecodeError(\"Expecting value\", s, err.value) from None\njson.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)\n",
+          "stdout_tail": ""
+        },
+        "secret_detector": {
+          "blocked": false,
+          "present": true,
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"allow\",\"updatedInput\":{\"command\":\"echo [REDACTED]\"}},\"additionalContext\":\"Secrets redacted before execution: ghp_1234\u2026. Replace literal credentials with environment variables (e.g. $AWS_ACCESS_KEY_ID, $GITHUB_TOKEN) so they are not echoed into shell history or written to disk.\"}\n"
+        },
+        "status": {
+          "cmd": [
+            "bash",
+            "<repo-root>/scripts/cos-status.sh",
+            "--json"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": "{\n  \"health\": {\n    \"checks\": [\n      {\n        \"hint\": \"\",\n        \"message\": \".cognitive-os/skills/cos/ canonical (180 entries)\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \".codex/hooks.json is valid JSON\",\n        \"status\": \"OK\"\n      },\n      {\n        \"hint\": \"\",\n        \"message\": \"all wired hooks exist on disk\",\n        \"status\": \"OK\"\n      }\n    ],\n    \"failures\": 0\n  },\n  \"hooks\": {\n    \"by_event\": {\n      \"PostToolUse\": 7,\n      \"PreToolUse\": 1,\n      \"SessionStart\": 26,\n      \"Stop\": 16,\n      \"UserPromptSubmit\": 12\n    },\n    \"driver_path\": \".codex/hooks.json\",\n    \"total\": 62\n  },\n  \"install\": {\n    \"source\": \"unknown\"\n  },\n  \"packages\": {\n    \"count\": 0\n  },\n  \"profile\": \"unknown\",\n  \"rules\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all/.claude/rules\",\n    \"source_count\": 120,\n    \"source_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all/.cognitive-os/rules/cos\"\n  },\n  \"session\": {\n    \"last_end\": \"\"\n  },\n  \"skills\": {\n    \"driver_exposed\": 0,\n    \"driver_path\": \"/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all/.claude/skills\",\n    \"kernel_installed\": 180,\n    \"kernel_path\": \".cognitive-os/skills/cos/\"\n  }\n}\n"
+        },
+        "tests": {
+          "cmd": [
+            "/opt/homebrew/opt/python@3.14/bin/python3.14",
+            "-m",
+            "pytest",
+            "tests/test_calculator.py",
+            "-q"
+          ],
+          "cwd": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+          "returncode": 0,
+          "stderr_tail": "",
+          "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s\n"
+        }
+      },
+      "project_dir": "/var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-install-scope-dev-smoke-7fl86fon/fixture-all",
+      "scope": "all",
+      "signature": "0b9a60d25ccfb562aaf1fe13949c7c8d228565ea0e1b590e45121799e24d9b92",
+      "support_os_only_counts": {
+        "hooks": 34,
+        "rules": 0,
+        "skills": 0,
+        "templates": 0
+      },
+      "support_os_only_examples": {
+        "hooks": [
+          ".cognitive-os/hooks/cos/_lib/agent-context.sh",
+          ".cognitive-os/hooks/cos/_lib/artifact-status.sh",
+          ".cognitive-os/hooks/cos/_lib/bypass-resolver.sh",
+          ".cognitive-os/hooks/cos/_lib/cache.sh",
+          ".cognitive-os/hooks/cos/_lib/circuit-breaker.sh",
+          ".cognitive-os/hooks/cos/_lib/common.sh",
+          ".cognitive-os/hooks/cos/_lib/context_budget_lib.sh",
+          ".cognitive-os/hooks/cos/_lib/dispatch_gate_check.py"
+        ],
+        "rules": [],
+        "skills": [],
+        "templates": []
+      },
+      "total_files": 612
+    }
+  ]
+}
