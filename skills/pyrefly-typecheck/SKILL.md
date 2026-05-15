@@ -11,11 +11,11 @@ triggers:
   - static type check
   - changed Python files
 routing_patterns:
-  - pattern: pyrefly
+  - pattern: \bpyrefly\b
     confidence: 0.98
-  - pattern: type[- ]?check
+  - pattern: \btype[- ]?check\b
     confidence: 0.82
-  - pattern: python\s+(static\s+)?type\s+check
+  - pattern: \bpython\s+(static\s+)?type\s+check\b
     confidence: 0.9
 ---
 <!-- SCOPE: os-only -->

@@ -8,6 +8,11 @@ audience: both
 platforms:
 - claude-code
 - codex
+summary_line: Safely isolate, inspect, restore, or discard temporary Git stash quarantine entries without positional stash refs.
+routing_intents:
+- intent: stash_quarantine_request
+  description: User needs to inspect, isolate, restore, apply, pop, or drop Git stash entries safely without relying on positional refs.
+  confidence: 0.9
 routing_patterns:
 - pattern: \bstash@\{\d+\}
   confidence: 0.96

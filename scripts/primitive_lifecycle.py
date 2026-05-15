@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -15,7 +16,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = REPO_ROOT / "manifests" / "primitive-lifecycle.yaml"
 
-REQUIRED_FIELDS = {
+BASE_REQUIRED_FIELDS = {
     "id",
     "kind",
     "owner_adr",
@@ -30,16 +31,22 @@ REQUIRED_FIELDS = {
     "exit_behavior",
     "metrics_file",
     "docs_claim_level",
+}
+
+RUNTIME_REQUIRED_FIELDS = {
     "rollback_or_repair_command",
     "sunset_criteria",
 }
 
+SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
+
 ENUMS = {
-    "kind": {"hook", "skill", "rule", "script", "library", "doctor", "test", "template", "manifest"},
+    "kind": {"hook", "skill", "rule", "script", "script-lib", "library", "doctor", "test", "template", "manifest", "rule-index"},
     "lifecycle_state": {
         "candidate",
         "sandbox",
         "advisory",
+        "active",
         "blocking",
         "default-on",
         "pending-sunset",
@@ -47,11 +54,10 @@ ENUMS = {
         "archived",
         "deleted",
     },
-    "maturity": {"observe", "advisory", "blocking"},
-    "exit_behavior": {"exit_0", "exit_2", "mixed", "manual"},
+    "maturity": {"observe", "advisory", "blocking", "trial"},
     "docs_claim_level": {"observe", "advisory", "blocking"},
     "distribution": {"core", "team", "maintainer", "lab"},
-    "governance_class": {"runtime-safety", "delivery-structure", "meta-governance"},
+
     "risk_class": {"advisory", "blocking", "mutating", "destructive"},
 }
 
@@ -59,7 +65,7 @@ RUNTIME_KINDS = {"hook", "doctor"}
 BLOCKING_STATES = {"blocking", "default-on"}
 BLOCKING_RISKS = {"blocking", "mutating", "destructive"}
 INACTIVE_STATES = {"demoted", "archived", "deleted"}
-SUPPORTED_HARNESSES = {"claude", "codex", "shell", "github-actions"}
+SUPPORTED_HARNESSES = {"claude", "codex", "shell", "shell-ci", "github-actions", "generic-cli", "generic-doc"}
 
 
 @dataclass(frozen=True)
@@ -101,7 +107,12 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
             findings.append(Finding(primitive_id, "primitive", "must be a mapping"))
             continue
 
-        missing = sorted(field for field in REQUIRED_FIELDS if field not in primitive)
+        required_fields = set(BASE_REQUIRED_FIELDS)
+        is_runtime_projected = primitive.get("runtime_projection") is True and primitive.get("kind") in RUNTIME_KINDS
+        is_blocking_declared = primitive.get("lifecycle_state") in BLOCKING_STATES or primitive.get("risk_class") in BLOCKING_RISKS or primitive.get("maturity") == "blocking"
+        if is_runtime_projected or is_blocking_declared:
+            required_fields.update(RUNTIME_REQUIRED_FIELDS)
+        missing = sorted(field for field in required_fields if field not in primitive)
         for field in missing:
             findings.append(Finding(primitive_id, field, "required field is missing"))
 
@@ -122,6 +133,11 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
                         f"invalid value {value!r}; expected one of {sorted(allowed_values)}",
                     )
                 )
+
+        for slug_field in ("governance_class", "exit_behavior"):
+            value = primitive.get(slug_field)
+            if slug_field in primitive and (not isinstance(value, str) or not SLUG_RE.match(value)):
+                findings.append(Finding(primitive_id, slug_field, "must be a non-empty lowercase slug"))
 
         for field in ("owner_adr", "rollback_or_repair_command", "sunset_criteria", "metrics_file"):
             if field in primitive and not _is_non_empty_string(primitive.get(field)):

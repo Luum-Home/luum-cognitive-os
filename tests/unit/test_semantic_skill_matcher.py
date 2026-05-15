@@ -305,7 +305,7 @@ def test_language_dependence_audit_does_not_regress():
         pytest.skip("language-dependence-audit script not present")
 
     proc = subprocess.run(
-        [str(script), "--json", "--min-severity", "low"],
+        [str(script), "--json", "--min-severity", "medium"],
         capture_output=True,
         text=True,
         cwd=str(repo),
@@ -314,16 +314,13 @@ def test_language_dependence_audit_does_not_regress():
     _ = sys  # quiet F401 — module retained for future env injection if needed
     assert proc.returncode == 0, f"audit failed: {proc.stderr[:400]}"
     data = json.loads(proc.stdout)
-    total = int(data.get("total_finding_count") or data.get("finding_count") or 0)
+    actionable = int(data.get("finding_count") or 0)
 
-    # Baseline captured 2026-05-13 immediately before ADR-296 lands.
-    # Cap = baseline + 10 for in-flight new skills. Tighten this number
-    # as routing_patterns are removed in favour of the semantic path.
-    BASELINE = 326
-    CAP = BASELINE + 10
-    assert total <= CAP, (
-        f"cos-language-dependence-audit regressed: {total} findings "
-        f"(cap {CAP}, pre-ADR-296 baseline {BASELINE}). "
-        f"Either remove the new language-dependent regex (prefer ADR-296 "
-        f"semantic path) or bump the cap with a justification."
+    # ADR-302 made low-severity compatibility regexes inventory, not blocking debt.
+    # This regression gate therefore caps actionable medium/high findings only.
+    CAP = 0
+    assert actionable <= CAP, (
+        f"cos-language-dependence-audit regressed: {actionable} actionable findings "
+        f"(cap {CAP}). Prefer ADR-296 semantic routing or add routing_intents/"
+        f"summary_line evidence before adding natural-language regexes."
     )
