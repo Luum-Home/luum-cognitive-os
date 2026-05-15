@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Report per-harness implementation coverage for Cognitive OS primitives.
 
 Scope classification (`os-only`, `project`, `both`) declares intended audience.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Smoke portable primitive enforcement outside an IDE lifecycle."""
 from __future__ import annotations
 

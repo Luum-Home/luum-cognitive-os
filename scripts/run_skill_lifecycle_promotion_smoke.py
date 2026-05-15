@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Run an isolated smoke test for the skill lifecycle promotion ladder.
 
 The smoke simulates a real sandbox skill that crosses the promotion threshold,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Summarize hook false-positive signals from metrics."""
 from __future__ import annotations
 

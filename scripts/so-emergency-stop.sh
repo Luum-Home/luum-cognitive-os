@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # so-emergency-stop.sh — ADR-028 D5 kill-switch
 #
 # Disables all non-critical hooks, kills registry-tracked expired processes,

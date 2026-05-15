@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Report ADR-186 context-budget calibration from .cognitive-os metrics."""
 from __future__ import annotations
 

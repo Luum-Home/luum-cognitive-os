@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-273 Slice A — Aggregate pending-work items from 5 source surfaces.
 
 Read-only walk of plan checkboxes, ADR proposed/draft, radar tracker

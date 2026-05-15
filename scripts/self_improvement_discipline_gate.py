@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Gate the headless self-improvement loop against default-surface inflation."""
 
 from __future__ import annotations

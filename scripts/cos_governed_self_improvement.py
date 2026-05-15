@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """CLI for the governed Cognitive OS self-improvement loop."""
 
 from __future__ import annotations

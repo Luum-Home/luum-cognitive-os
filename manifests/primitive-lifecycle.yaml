@@ -19185,3 +19185,694 @@ primitives:
   exit_behavior: manual
   metrics_file: none
   consumer_access_next_action: Add stronger paired portability proof if promoted beyond candidate.
+
+- id: scripts/active_primitive_index.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/active_primitive_index.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Builds active primitive indexes from COS lifecycle manifests; this governs SO primitive inventory, not a consumer-project tool."
+  evidence_commands:
+  - python3 -m py_compile scripts/active_primitive_index.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/active_primitive_index.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/active_primitive_index.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/check_catalog_sync.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/check_catalog_sync.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Validates COS skill catalog/install sync; tied to skills/CATALOG.md and installed SO skill surfaces."
+  evidence_commands:
+  - python3 -m py_compile scripts/check_catalog_sync.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/check_catalog_sync.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/check_catalog_sync.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/check_hook_registration.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/check_hook_registration.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Validates COS hook registration/projection against hooks manifests and harness settings."
+  evidence_commands:
+  - python3 -m py_compile scripts/check_hook_registration.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/check_hook_registration.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/check_hook_registration.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/check_lib_wiring.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/check_lib_wiring.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Audits internal lib/*.py wiring for the Cognitive OS repository."
+  evidence_commands:
+  - python3 -m py_compile scripts/check_lib_wiring.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/check_lib_wiring.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/check_lib_wiring.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos-homebrew-local-canary
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-homebrew-local-canary
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Local canary for the Cognitive OS Homebrew formula; release/maintainer only."
+  evidence_commands:
+  - bash -n scripts/cos-homebrew-local-canary
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-homebrew-local-canary --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos-homebrew-local-canary lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos-primitive-authority-audit
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-primitive-authority-audit
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Audits COS primitive authority and ownership metadata."
+  evidence_commands:
+  - bash -n scripts/cos-primitive-authority-audit
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-primitive-authority-audit --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos-primitive-authority-audit lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos-primitive-fitness
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-primitive-fitness
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Compares COS candidate primitive fitness against lifecycle baselines."
+  evidence_commands:
+  - bash -n scripts/cos-primitive-fitness
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-primitive-fitness --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos-primitive-fitness lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos-tui
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-tui
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Terminal dashboard for COS primitive coverage reports."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos-tui
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-tui --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos-tui lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_adoption_profile.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_adoption_profile.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Reports adoptable COS profiles from primitive lifecycle metadata."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_adoption_profile.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_adoption_profile.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_adoption_profile.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_context_budget_report.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_context_budget_report.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Reports COS context-budget calibration from .cognitive-os metrics."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_context_budget_report.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_context_budget_report.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_context_budget_report.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_default_visible_reducer.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_default_visible_reducer.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Recommends COS default-visible primitive demotions."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_default_visible_reducer.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_default_visible_reducer.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_default_visible_reducer.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_dispatch_smoke.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_dispatch_smoke.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Offline smoke for COS LLM dispatch and task-history metrics paths."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_dispatch_smoke.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_dispatch_smoke.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_dispatch_smoke.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_false_positive_ledger.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_false_positive_ledger.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Summarizes COS hook false-positive metrics."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_false_positive_ledger.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_false_positive_ledger.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_false_positive_ledger.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_governed_self_improvement.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_governed_self_improvement.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. CLI for governed COS self-improvement loop."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_governed_self_improvement.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_governed_self_improvement.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_governed_self_improvement.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_headless_publication.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_headless_publication.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Protected-publication checker for headless COS workers."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_headless_publication.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_headless_publication.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_headless_publication.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_primitive_fitness.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_primitive_fitness.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Fitness comparison for COS candidate primitives."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_primitive_fitness.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_primitive_fitness.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_primitive_fitness.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_profile_bootstrap.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_profile_bootstrap.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Bootstraps local COS project profile drafts."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_profile_bootstrap.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_profile_bootstrap.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_profile_bootstrap.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_tier_claim_audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_tier_claim_audit.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Audits COS ADR tier claims for evidence-backed profile purity."
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_tier_claim_audit.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos_tier_claim_audit.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/cos_tier_claim_audit.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/opencode_primitive_adapter_smoke.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/opencode_primitive_adapter_smoke.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Smokes native OpenCode COS primitive guard plugin."
+  evidence_commands:
+  - python3 -m py_compile scripts/opencode_primitive_adapter_smoke.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/opencode_primitive_adapter_smoke.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/opencode_primitive_adapter_smoke.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/primitive_projection_fidelity.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/primitive_projection_fidelity.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Generates COS primitive projection fidelity reports."
+  evidence_commands:
+  - python3 -m py_compile scripts/primitive_projection_fidelity.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/primitive_projection_fidelity.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/primitive_projection_fidelity.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/primitive_service_headless_smoke.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/primitive_service_headless_smoke.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Smokes portable COS primitive enforcement outside IDE lifecycle."
+  evidence_commands:
+  - python3 -m py_compile scripts/primitive_service_headless_smoke.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/primitive_service_headless_smoke.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/primitive_service_headless_smoke.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/run_skill_lifecycle_promotion_smoke.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/run_skill_lifecycle_promotion_smoke.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Isolated smoke for COS skill lifecycle promotion ladder."
+  evidence_commands:
+  - python3 -m py_compile scripts/run_skill_lifecycle_promotion_smoke.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/run_skill_lifecycle_promotion_smoke.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/run_skill_lifecycle_promotion_smoke.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/self_improvement_discipline_gate.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/self_improvement_discipline_gate.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Gates COS headless self-improvement against default-surface inflation."
+  evidence_commands:
+  - python3 -m py_compile scripts/self_improvement_discipline_gate.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/self_improvement_discipline_gate.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/self_improvement_discipline_gate.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/session_start_budget.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/session_start_budget.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Reports/enforces COS SessionStart hook budget by adoption profile."
+  evidence_commands:
+  - python3 -m py_compile scripts/session_start_budget.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/session_start_budget.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/session_start_budget.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/silent_failure_audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/silent_failure_audit.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Audits intentional shell error swallowing in COS hooks."
+  evidence_commands:
+  - python3 -m py_compile scripts/silent_failure_audit.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/silent_failure_audit.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/silent_failure_audit.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/smoke-agent-quota-advisor.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/smoke-agent-quota-advisor.sh
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Live smoke for COS agent-quota-advisor hook."
+  evidence_commands:
+  - bash -n scripts/smoke-agent-quota-advisor.sh
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/smoke-agent-quota-advisor.sh --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/smoke-agent-quota-advisor.sh lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/so-emergency-stop.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/so-emergency-stop.sh
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. SO runtime emergency-stop kill switch."
+  evidence_commands:
+  - bash -n scripts/so-emergency-stop.sh
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/so-emergency-stop.sh --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/so-emergency-stop.sh lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/so-vitals.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/so-vitals.sh
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Unified SO runtime dashboard."
+  evidence_commands:
+  - bash -n scripts/so-vitals.sh
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/so-vitals.sh --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/so-vitals.sh lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/state_retention_audit.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/state_retention_audit.py
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. Audits/reaps bounded COS state surfaces."
+  evidence_commands:
+  - python3 -m py_compile scripts/state_retention_audit.py
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/state_retention_audit.py --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/state_retention_audit.py lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/statusline-coverage.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: maintainer-only
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/statusline-coverage.sh
+  runtime_projection: false
+  behavior_evidence: "Manual scope calibration iteration 039 classified os-only. COS observability/statusline coverage report."
+  evidence_commands:
+  - bash -n scripts/statusline-coverage.sh
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/statusline-coverage.sh --fail-contradictions
+  rollback_or_repair_command: Remove or update the scripts/statusline-coverage.sh lifecycle row, then rerun primitive scope classifier.
+  sunset_criteria: Reclassify only if a consumer-project projection contract and paired portability proof are added.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none

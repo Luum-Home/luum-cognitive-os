@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Smoke the native OpenCode COS primitive guard plugin without model calls.
 
 The smoke verifies the installed OpenCode binary version, loads the project-level

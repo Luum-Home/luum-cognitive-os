@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Live smoke test for ADR-056 L1 — agent-quota-advisor hook.
 #
 # Seeds fake llm-dispatch.jsonl + cost-events.jsonl data in a temp project

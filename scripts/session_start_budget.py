@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Report and enforce SessionStart hook budget by adoption profile."""
 from __future__ import annotations
 

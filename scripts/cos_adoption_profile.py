@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Report adoptable Cognitive OS profiles from primitive lifecycle metadata."""
 from __future__ import annotations
 

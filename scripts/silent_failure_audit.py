@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit intentional shell error swallowing in hooks.
 
 This is a control-plane gate for the `|| true`, `|| :`, and `2>/dev/null`

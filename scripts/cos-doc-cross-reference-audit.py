@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Doc cross-reference audit — fails if known primitives are not surfaced
 where cold readers expect to find them.
 

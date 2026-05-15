@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Audit ADR tier claims for evidence-backed profile purity.
 
 ADR-132/ADR-133 discipline: an ADR claiming `tier: core` or `tier: team`
