@@ -9,7 +9,6 @@ Validates:
 - .gitignore covers all runtime paths
 """
 
-import ast
 import json
 import os
 import re
@@ -1009,24 +1008,28 @@ class TestHelpFlag:
         assert "shell-ci" in result.stdout
         assert "default: claude" in result.stdout
 
-    def test_installer_harness_list_matches_cos_init(self):
-        """install.sh and cos_init.py must not drift on first-run harness names."""
+    def test_installer_harness_list_matches_shared_registry(self):
+        """install.sh, cos_init.py, and Go CLI must use the shared first-run harness registry."""
         install_text = INSTALLER.read_text()
         match = re.search(r'^SUPPORTED_HARNESSES="([^"]+)"', install_text, re.MULTILINE)
         assert match, "install.sh missing SUPPORTED_HARNESSES"
-        install_harnesses = set(match.group(1).split())
+        install_harnesses = match.group(1).split()
 
-        module = ast.parse(COS_INIT.read_text())
-        cos_harnesses = None
-        for node in module.body:
-            if not isinstance(node, ast.Assign):
-                continue
-            for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "SUPPORTED_HARNESSES":
-                    cos_harnesses = set(ast.literal_eval(node.value))
-                    break
-        assert cos_harnesses is not None, "cos_init.py missing SUPPORTED_HARNESSES"
-        assert install_harnesses == cos_harnesses
+        registry = json.loads((INSTALLER.parent / "manifests" / "harness-projection-registry.json").read_text())
+        registry_harnesses = registry["implemented_order"]
+        implemented = {row["id"] for row in registry["harnesses"] if row["status"] == "implemented"}
+        assert set(registry_harnesses) == implemented
+        assert install_harnesses == registry_harnesses
+
+        code = """import scripts.cos_init as c; print(' '.join(c.SUPPORTED_HARNESSES))"""
+        result = subprocess.run(
+            [sys.executable, "-c", code],
+            cwd=INSTALLER.parent,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        assert result.stdout.strip().split() == registry_harnesses
 
     def test_help_explains_from_flag(self):
         """--help should explain when --from is needed."""

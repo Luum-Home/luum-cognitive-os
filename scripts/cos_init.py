@@ -45,34 +45,36 @@ if str(COS_SOURCE_DIR) not in sys.path:
 from lib.script_io import write_json as _write_json_if_changed
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "agents-md", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"agents-md", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"}
-SHELL_CI_HARNESSES = {"shell-ci"}
+def _load_harness_projection_registry() -> dict[str, object]:
+    registry_path = COS_SOURCE_DIR / "manifests" / "harness-projection-registry.json"
+    try:
+        return json.loads(registry_path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise SystemExit(f"Missing shared harness registry: {registry_path}. Run scripts/generate_harness_projection_registry.py") from exc
 
-HARNESS_SETTINGS = {
-    "claude": (".claude/settings.json", ".claude/settings.json"),
-    "codex": (".codex/hooks.json", ".codex/hooks.json"),
-    "agents-md": ("AGENTS.md", "AGENTS.md"),
-    "opencode": ("opencode.json", "opencode.json"),
-    "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
-    "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
-    "qwen-code": (".qwen/settings.json", ".qwen/settings.json"),
-    "kimi-code": ("AGENTS.md", "AGENTS.md"),
-    "gemini-cli": (".gemini/settings.json", ".gemini/settings.json"),
-    "warp": ("AGENTS.md", "AGENTS.md"),
-    "amp-code": ("AGENTS.md", "AGENTS.md"),
-    "jetbrains-junie": (".junie/AGENTS.md", ".junie/AGENTS.md"),
-    "qoder": ("AGENTS.md", "AGENTS.md"),
-    "factory-droid": ("AGENTS.md", "AGENTS.md"),
-    "cline": (".clinerules/cognitive-os.md", ".clinerules/cognitive-os.md"),
-    "continue-dev": (".continue/rules/cognitive-os.md", ".continue/rules/cognitive-os.md"),
-    "kilo-code": (".kilocode/rules/cognitive-os.md", ".kilocode/rules/cognitive-os.md"),
-    "zed-ai": (".rules", ".rules"),
-    "augment-code": (".augment/rules/cognitive-os.md", ".augment/rules/cognitive-os.md"),
-    "goose": (".goosehints", ".goosehints"),
-    "aider": ("CONVENTIONS.md", "CONVENTIONS.md"),
-    "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
+
+def _registry_harnesses() -> list[dict[str, object]]:
+    rows = _load_harness_projection_registry().get("harnesses", [])
+    return [row for row in rows if isinstance(row, dict)]
+
+
+def _implemented_registry_harnesses() -> list[dict[str, object]]:
+    return [row for row in _registry_harnesses() if row.get("status") == "implemented"]
+
+
+_SUPPORTED_HARNESS_ROWS = _implemented_registry_harnesses()
+SUPPORTED_HARNESSES = tuple(str(row["id"]) for row in _SUPPORTED_HARNESS_ROWS)
+STRUCTURAL_INSTRUCTION_HARNESSES = {
+    str(row["id"])
+    for row in _SUPPORTED_HARNESS_ROWS
+    if row.get("id") not in {"claude", "codex", "shell-ci"}
 }
+SHELL_CI_HARNESSES = {str(row["id"]) for row in _SUPPORTED_HARNESS_ROWS if row.get("id") == "shell-ci"}
+HARNESS_SETTINGS = {
+    str(row["id"]): (str(row.get("primary_settings_path") or ".cognitive-os/install-meta.json"), str(row.get("primary_settings_path") or ".cognitive-os/install-meta.json"))
+    for row in _SUPPORTED_HARNESS_ROWS
+}
+
 
 # ── ADR-093 canonical mode constants ─────────────────────────────────
 DEFAULT_RULES = (

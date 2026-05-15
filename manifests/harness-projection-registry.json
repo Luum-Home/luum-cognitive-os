@@ -1,0 +1,413 @@
+{
+  "schema_version": "harness-projection-registry.v1",
+  "source": "manifests/harness-projection.yaml",
+  "implemented_order": [
+    "claude",
+    "codex",
+    "agents-md",
+    "opencode",
+    "vscode-copilot",
+    "cursor",
+    "qwen-code",
+    "kimi-code",
+    "gemini-cli",
+    "warp",
+    "amp-code",
+    "jetbrains-junie",
+    "qoder",
+    "factory-droid",
+    "cline",
+    "continue-dev",
+    "kilo-code",
+    "zed-ai",
+    "augment-code",
+    "goose",
+    "aider",
+    "shell-ci"
+  ],
+  "harnesses": [
+    {
+      "id": "claude",
+      "display_name": "Claude Code",
+      "status": "implemented",
+      "projection_mode": "native-settings",
+      "proof_level": "native-lifecycle",
+      "settings_paths": [
+        ".claude/settings.json"
+      ],
+      "primary_settings_path": ".claude/settings.json",
+      "runtime_smoke_command": [],
+      "next_action": "Keep default/full projection tests current and add promotion proof for candidate primitives."
+    },
+    {
+      "id": "codex",
+      "display_name": "OpenAI Codex",
+      "status": "implemented",
+      "projection_mode": "settings-file",
+      "proof_level": "native-lifecycle",
+      "settings_paths": [
+        ".codex/hooks.json"
+      ],
+      "primary_settings_path": ".codex/hooks.json",
+      "runtime_smoke_command": [],
+      "next_action": "Expand Codex runtime parity proof and full-profile projection proof."
+    },
+    {
+      "id": "agents-md",
+      "display_name": "AGENTS.md",
+      "status": "implemented",
+      "projection_mode": "universal-markdown",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Keep the bounded AGENTS.md block concise and prove idempotent replacement through the consumer projection tests."
+    },
+    {
+      "id": "opencode",
+      "display_name": "OpenCode",
+      "status": "implemented",
+      "projection_mode": "opencode-json-instructions-mcp-plugin-capable",
+      "proof_level": "governed-wrapper-enforced",
+      "settings_paths": [
+        "opencode.json"
+      ],
+      "primary_settings_path": "opencode.json",
+      "runtime_smoke_command": [
+        "opencode",
+        "--version"
+      ],
+      "next_action": "Extend the signed OpenCode plugin smoke from the starter slice to additional representative blocking and advisory primitives."
+    },
+    {
+      "id": "vscode-copilot",
+      "display_name": "VS Code Copilot",
+      "status": "implemented",
+      "projection_mode": "copilot-instructions-and-workspace-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".github/copilot-instructions.md",
+        ".vscode/mcp.json"
+      ],
+      "primary_settings_path": ".github/copilot-instructions.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional VS Code smoke with installed Copilot extension when an account-backed test host exists."
+    },
+    {
+      "id": "cursor",
+      "display_name": "Cursor",
+      "status": "implemented",
+      "projection_mode": "cursor-project-rules-and-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".cursor/rules/cognitive-os.mdc",
+        ".cursor/mcp.json"
+      ],
+      "primary_settings_path": ".cursor/rules/cognitive-os.mdc",
+      "runtime_smoke_command": [
+        "cursor",
+        "--version"
+      ],
+      "next_action": "Add optional Cursor runtime smoke once a licensed/manual test host is available."
+    },
+    {
+      "id": "qwen-code",
+      "display_name": "Qwen Code",
+      "status": "implemented",
+      "projection_mode": "qwen-project-settings-context-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".qwen/settings.json",
+        "QWEN.md"
+      ],
+      "primary_settings_path": ".qwen/settings.json",
+      "runtime_smoke_command": [
+        "qwen",
+        "--version"
+      ],
+      "next_action": "Add optional Qwen Code CLI/runtime smoke when qwen authentication and CLI are available."
+    },
+    {
+      "id": "kimi-code",
+      "display_name": "Kimi Code",
+      "status": "implemented",
+      "projection_mode": "kimi-cli-agents-md-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md",
+        ".kimi/mcp.json",
+        ".kimi/README.md"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Kimi CLI runtime smoke with kimi --work-dir . --mcp-config-file .kimi/mcp.json when Kimi CLI credentials are available."
+    },
+    {
+      "id": "gemini-cli",
+      "display_name": "Gemini CLI",
+      "status": "implemented",
+      "projection_mode": "gemini-project-settings-context-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".gemini/settings.json",
+        "GEMINI.md"
+      ],
+      "primary_settings_path": ".gemini/settings.json",
+      "runtime_smoke_command": [
+        "gemini",
+        "--version"
+      ],
+      "next_action": "Add optional Gemini CLI runtime smoke when Gemini CLI credentials are available."
+    },
+    {
+      "id": "warp",
+      "display_name": "Warp Agent",
+      "status": "implemented",
+      "projection_mode": "agents-md-project-rules",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md",
+        ".warp/README.md"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Warp runtime smoke when a Warp account-backed host is available."
+    },
+    {
+      "id": "amp-code",
+      "display_name": "Amp Code",
+      "status": "implemented",
+      "projection_mode": "agents-md-workspace-settings-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md",
+        ".amp/settings.json"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Amp runtime smoke when Amp credentials are available."
+    },
+    {
+      "id": "jetbrains-junie",
+      "display_name": "JetBrains Junie",
+      "status": "implemented",
+      "projection_mode": "junie-agents-md",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".junie/AGENTS.md",
+        ".junie/README.md"
+      ],
+      "primary_settings_path": ".junie/AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Junie runtime smoke when JetBrains IDE account/license is available."
+    },
+    {
+      "id": "qoder",
+      "display_name": "Qoder CLI",
+      "status": "implemented",
+      "projection_mode": "agents-md-project-mcp-settings",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md",
+        ".mcp.json",
+        ".qoder/settings.json"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Qoder CLI runtime smoke when Qoder authentication is available."
+    },
+    {
+      "id": "factory-droid",
+      "display_name": "Factory Droid",
+      "status": "implemented",
+      "projection_mode": "agents-md-factory-skills-mcp-hooks",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md",
+        ".factory/mcp.json",
+        ".factory/settings.json",
+        ".factory/skills/cognitive-os/SKILL.md"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Investigate Factory hook event mapping as a possible future native-lifecycle adapter."
+    },
+    {
+      "id": "cline",
+      "display_name": "Cline",
+      "status": "implemented",
+      "projection_mode": "cline-workspace-rules",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".clinerules/cognitive-os.md",
+        ".cline/README.md"
+      ],
+      "primary_settings_path": ".clinerules/cognitive-os.md",
+      "runtime_smoke_command": [],
+      "next_action": "Investigate Cline hook/MCP project-local adapter after structural projection is stable."
+    },
+    {
+      "id": "continue-dev",
+      "display_name": "Continue.dev",
+      "status": "implemented",
+      "projection_mode": "continue-rules-mcpservers",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".continue/rules/cognitive-os.md",
+        ".continue/mcpServers/cognitive-os.json"
+      ],
+      "primary_settings_path": ".continue/rules/cognitive-os.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Continue runtime smoke when IDE account/runtime is available."
+    },
+    {
+      "id": "kilo-code",
+      "display_name": "Kilo Code",
+      "status": "implemented",
+      "projection_mode": "kilo-rules-agents-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        "AGENTS.md",
+        ".kilocode/rules/cognitive-os.md",
+        ".kilo/kilo.jsonc"
+      ],
+      "primary_settings_path": "AGENTS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Kilo runtime smoke and verify current project config syntax; keep MCP placeholder inside .kilo/kilo.jsonc per official docs."
+    },
+    {
+      "id": "zed-ai",
+      "display_name": "Zed AI",
+      "status": "implemented",
+      "projection_mode": "zed-project-rules-context-servers",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".rules",
+        ".zed/settings.json"
+      ],
+      "primary_settings_path": ".rules",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Zed runtime smoke with installed Zed and model provider credentials."
+    },
+    {
+      "id": "augment-code",
+      "display_name": "Augment / Auggie",
+      "status": "implemented",
+      "projection_mode": "augment-cli-flags-rules-mcp",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".augment/rules/cognitive-os.md",
+        ".augment/mcp.json",
+        ".augment/README.md"
+      ],
+      "primary_settings_path": ".augment/rules/cognitive-os.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Augment/Auggie runtime smoke using auggie --rules .augment/rules/cognitive-os.md --mcp-config .augment/mcp.json when credentials are available."
+    },
+    {
+      "id": "goose",
+      "display_name": "Goose",
+      "status": "implemented",
+      "projection_mode": "goosehints-project-context",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".goosehints"
+      ],
+      "primary_settings_path": ".goosehints",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Goose CLI runtime smoke when provider credentials are available; add MCP only through official Goose extension/config path."
+    },
+    {
+      "id": "aider",
+      "display_name": "Aider",
+      "status": "implemented",
+      "projection_mode": "aider-conventions-config",
+      "proof_level": "structural",
+      "settings_paths": [
+        "CONVENTIONS.md",
+        ".aider.conf.yml"
+      ],
+      "primary_settings_path": "CONVENTIONS.md",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional Aider dry-run/model smoke when API credentials are available."
+    },
+    {
+      "id": "shell-ci",
+      "display_name": "Shell / CI",
+      "status": "implemented",
+      "projection_mode": "cli-and-workflows",
+      "proof_level": "structural",
+      "settings_paths": [
+        ".cognitive-os/shell-ci-projection.json",
+        ".github/workflows/cognitive-os-shell-ci.yml",
+        "scripts"
+      ],
+      "primary_settings_path": ".cognitive-os/shell-ci-projection.json",
+      "runtime_smoke_command": [],
+      "next_action": "Add optional runtime smoke for projected commands against representative consumer project stacks."
+    },
+    {
+      "id": "deepseek-provider",
+      "display_name": "DeepSeek provider integrations",
+      "status": "planned",
+      "projection_mode": "provider-via-existing-harness",
+      "proof_level": "none",
+      "settings_paths": [],
+      "primary_settings_path": ".cognitive-os/install-meta.json",
+      "runtime_smoke_command": [],
+      "next_action": "Track DeepSeek as provider compatibility unless a first-party coding harness with project config emerges."
+    },
+    {
+      "id": "google-antigravity",
+      "display_name": "Google Antigravity",
+      "status": "planned",
+      "projection_mode": "unknown",
+      "proof_level": "none",
+      "settings_paths": [],
+      "primary_settings_path": ".cognitive-os/install-meta.json",
+      "runtime_smoke_command": [],
+      "next_action": "Research supported projection surface, then add explicit driver and proof."
+    },
+    {
+      "id": "kiro",
+      "display_name": "Kiro",
+      "status": "planned",
+      "projection_mode": "kiro-steering-hooks-mcp-investigation",
+      "proof_level": "none",
+      "settings_paths": [
+        ".kiro/steering",
+        "agent configuration file (exact project path under investigation)"
+      ],
+      "primary_settings_path": ".kiro/steering",
+      "runtime_smoke_command": [],
+      "next_action": "Design Kiro hook adapter mapping before any native-lifecycle promotion."
+    },
+    {
+      "id": "minimax-maxclaw",
+      "display_name": "MiniMax MaxClaw / MiniMax Agent",
+      "status": "planned",
+      "projection_mode": "hosted-agent-or-openclaw-compatible",
+      "proof_level": "none",
+      "settings_paths": [],
+      "primary_settings_path": ".cognitive-os/install-meta.json",
+      "runtime_smoke_command": [],
+      "next_action": "Decide whether MaxClaw is a harness target, hosted deployment target, or provider behind OpenClaw before adding projection proof."
+    },
+    {
+      "id": "windsurf",
+      "display_name": "Windsurf",
+      "status": "planned",
+      "projection_mode": "ide-rules-or-wrapper",
+      "proof_level": "none",
+      "settings_paths": [
+        ".windsurf/rules",
+        ".windsurf/mcp.json"
+      ],
+      "primary_settings_path": ".windsurf/rules",
+      "runtime_smoke_command": [],
+      "next_action": "Define Windsurf settings/rules/MCP projection driver and temp-project proof."
+    }
+  ]
+}

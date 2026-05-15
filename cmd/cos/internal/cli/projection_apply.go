@@ -56,7 +56,12 @@ func applyProfileProjection(projectRoot, harness, profile string, smoke bool) (*
 	}
 	projectionPath := harnessProjectionPath(harness)
 	stamp := receiptStamp()
-	backups, err := backupExistingProjectionPaths(projectRoot, stamp, []string{projectionPath})
+	projectionPaths := harnessProjectionPaths(harness)
+	jsonSnapshots, err := captureJSONSettings(projectRoot, projectionPaths)
+	if err != nil {
+		return nil, "", err
+	}
+	backups, err := backupExistingProjectionPaths(projectRoot, stamp, projectionPaths)
 	if err != nil {
 		return nil, "", err
 	}
@@ -70,6 +75,9 @@ func applyProfileProjection(projectRoot, harness, profile string, smoke bool) (*
 	proc.Stderr = &output
 	if err := proc.Run(); err != nil {
 		return nil, output.String(), fmt.Errorf("projection command failed: %w\n%s", err, output.String())
+	}
+	if err := mergeCapturedJSONSettings(projectRoot, jsonSnapshots); err != nil {
+		return nil, output.String(), err
 	}
 
 	smokeResult := runOptionalHarnessRuntimeSmoke(harness, smoke)
@@ -103,7 +111,8 @@ func applyPrimitiveProjection(projectRoot, spec, family, name, canonical, harnes
 		return nil, err
 	}
 	stamp := receiptStamp()
-	backups, err := backupExistingProjectionPaths(projectRoot, stamp, []string{targetRel, harnessProjectionPath(harness)})
+	paths := append([]string{targetRel}, harnessProjectionPaths(harness)...)
+	backups, err := backupExistingProjectionPaths(projectRoot, stamp, paths)
 	if err != nil {
 		return nil, err
 	}
@@ -129,6 +138,128 @@ func applyPrimitiveProjection(projectRoot, spec, family, name, canonical, harnes
 		return nil, err
 	}
 	return receipt, nil
+}
+
+func harnessProjectionPaths(harness string) []string {
+	row, ok, err := findHarness(harness)
+	if err != nil || !ok || len(row.SettingsPaths) == 0 {
+		return []string{harnessProjectionPath(harness)}
+	}
+	return append([]string{}, row.SettingsPaths...)
+}
+
+type jsonSettingsSnapshot struct {
+	RelPath string
+	Data    any
+}
+
+func captureJSONSettings(projectRoot string, relPaths []string) ([]jsonSettingsSnapshot, error) {
+	snapshots := []jsonSettingsSnapshot{}
+	seen := map[string]struct{}{}
+	for _, rel := range relPaths {
+		if _, ok := seen[rel]; ok || !isJSONSettingsPath(rel) {
+			continue
+		}
+		seen[rel] = struct{}{}
+		abs := filepath.Join(projectRoot, rel)
+		data, err := os.ReadFile(abs)
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return nil, err
+		}
+		var decoded any
+		if err := json.Unmarshal(data, &decoded); err != nil {
+			return nil, fmt.Errorf("parse existing JSON settings %s before projection: %w", rel, err)
+		}
+		snapshots = append(snapshots, jsonSettingsSnapshot{RelPath: rel, Data: decoded})
+	}
+	return snapshots, nil
+}
+
+func mergeCapturedJSONSettings(projectRoot string, snapshots []jsonSettingsSnapshot) error {
+	for _, snapshot := range snapshots {
+		abs := filepath.Join(projectRoot, snapshot.RelPath)
+		data, err := os.ReadFile(abs)
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return err
+		}
+		var generated any
+		if err := json.Unmarshal(data, &generated); err != nil {
+			return fmt.Errorf("parse generated JSON settings %s after projection: %w", snapshot.RelPath, err)
+		}
+		merged := mergeJSONValues(snapshot.Data, generated)
+		encoded, err := json.MarshalIndent(merged, "", "  ")
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(abs, append(encoded, '\n'), 0644); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func mergeJSONValues(existing any, generated any) any {
+	existingMap, existingIsMap := existing.(map[string]any)
+	generatedMap, generatedIsMap := generated.(map[string]any)
+	if existingIsMap && generatedIsMap {
+		out := map[string]any{}
+		for key, value := range generatedMap {
+			out[key] = value
+		}
+		for key, existingValue := range existingMap {
+			if generatedValue, ok := out[key]; ok {
+				out[key] = mergeJSONValues(existingValue, generatedValue)
+			} else {
+				out[key] = existingValue
+			}
+		}
+		return out
+	}
+	existingSlice, existingIsSlice := existing.([]any)
+	generatedSlice, generatedIsSlice := generated.([]any)
+	if existingIsSlice && generatedIsSlice {
+		return mergeJSONSlices(existingSlice, generatedSlice)
+	}
+	if existing != nil {
+		return existing
+	}
+	return generated
+}
+
+func mergeJSONSlices(existing []any, generated []any) []any {
+	out := append([]any{}, existing...)
+	seen := map[string]struct{}{}
+	for _, item := range out {
+		seen[jsonIdentity(item)] = struct{}{}
+	}
+	for _, item := range generated {
+		identity := jsonIdentity(item)
+		if _, ok := seen[identity]; ok {
+			continue
+		}
+		seen[identity] = struct{}{}
+		out = append(out, item)
+	}
+	return out
+}
+
+func jsonIdentity(value any) string {
+	data, err := json.Marshal(value)
+	if err != nil {
+		return fmt.Sprintf("%v", value)
+	}
+	return string(data)
+}
+
+func isJSONSettingsPath(rel string) bool {
+	lower := strings.ToLower(rel)
+	return strings.HasSuffix(lower, ".json")
 }
 
 func primitiveTargetPath(family, name string) (string, error) {
@@ -199,19 +330,12 @@ func receiptStamp() string {
 	return time.Now().UTC().Format("20060102T150405.000000000Z")
 }
 
-var harnessRuntimeSmokeCommands = map[string][]string{
-	"cursor":     {"cursor", "--version"},
-	"qwen-code":  {"qwen", "--version"},
-	"gemini-cli": {"gemini", "--version"},
-	"opencode":   {"opencode", "--version"},
-}
-
 func runOptionalHarnessRuntimeSmoke(harness string, enabled bool) map[string]string {
 	if !enabled {
 		return map[string]string{"status": "not_requested"}
 	}
-	command, ok := harnessRuntimeSmokeCommands[harness]
-	if !ok {
+	command := harnessRuntimeSmokeCommand(harness)
+	if len(command) == 0 {
 		return map[string]string{"status": "not_available_for_harness"}
 	}
 	if _, err := exec.LookPath(command[0]); err != nil {
