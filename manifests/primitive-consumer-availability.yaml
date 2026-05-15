@@ -1977,6 +1977,18 @@ items:
 - path: hooks/trust-score-validator.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 025: validating/logging Trust Reports is generic output-quality governance.'
+- path: hooks/control-plane-audit.sh
+  status: maintainer-only
+  rationale: 'Manual scope review iteration 027: runtime control-plane audit executes COS manifest-declared primitive coherence checks and blocks COS control-plane findings.'
+- path: hooks/control-plane-audit-hourly.sh
+  status: maintainer-only
+  rationale: 'Manual scope review iteration 027: cooldown wrapper runs COS control-plane audit sweeps for primitive/coherence drift.'
+- path: hooks/profile-drift-autoapply.sh
+  status: maintainer-only
+  rationale: 'Manual scope review iteration 027: re-applies COS efficiency profile when COS hook projection script changes and writes harness settings.'
+- path: hooks/skill-post-execution-analysis.sh
+  status: maintainer-only
+  rationale: 'Manual scope review iteration 027: records COS SkillStore execution data and propose-only skill evolution artifacts under COS reports.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
