@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T11:18:58+00:00'
+generated_at: '2026-05-15T11:21:57+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -6186,6 +6186,16 @@ primitives:
   projection_targets:
   - skills/vuln-remediation-flow/SKILL.md
   sha256: b02c7134beaba6fe4253436cfa962ed5272b6bc58598d9eca6801f83b37f2119
+- id: templates/adr-template.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/adr-template.md
+  sha256: a667190a32ede706f41ffaf0419e4c276f58afba29dbe40d4e7dea62e376cd67
 - id: templates/agent-mandatory-rules.md
   kind: template
   owner_adr: ADR-314
@@ -6206,6 +6216,26 @@ primitives:
   projection_targets:
   - templates/agent-preamble.md
   sha256: 7e892bfe0bff17bce49b911a60079566f0d4d61df2729c3049a9c2b6d3e1d58e
+- id: templates/agent-research-only.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/agent-research-only.md
+  sha256: a7bda1cb1599dc7116c84db1b1601c02e1b94999b817eb808871ad822421c377
+- id: templates/contracts/test_redteam_baseline.template.py
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/contracts/test_redteam_baseline.template.py
+  sha256: 0f11938cce4967f3cf6d882a9a2fea7a18e65c44fae304a2ba8bafbeb3cf7ad8
 - id: templates/counsel-outreach/clean-room-permission.md
   kind: template
   owner_adr: ADR-314
@@ -6236,6 +6266,16 @@ primitives:
   projection_targets:
   - templates/counsel-outreach/review-request.md
   sha256: ba65fd511cc4446be2edd4464b650675317f09902cb239278450070007814a8a
+- id: templates/cross-harness-authoring.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/cross-harness-authoring.md
+  sha256: 5de7e9cc685485e8c5a3fd124971b54efb771dca3efeeef8d96c3b8cf3cf235d
 - id: templates/edit-conflict-response.md
   kind: template
   owner_adr: ADR-314
@@ -6246,6 +6286,16 @@ primitives:
   projection_targets:
   - templates/edit-conflict-response.md
   sha256: c690c0f6d68600d7a90b6fb580d676bdb215aa1408807ab980708211a4b15c98
+- id: templates/error-recovery.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/error-recovery.md
+  sha256: 4bea097cbb0654c21c8f23f07d26f96c783873ed2aafe0299ce6fc86c78d4592
 - id: templates/generator-validator-pair.md
   kind: template
   owner_adr: ADR-314
@@ -6266,6 +6316,16 @@ primitives:
   projection_targets:
   - templates/hook-template.sh
   sha256: ea90d0eb78e343ad8d6b2117027b3b9b5869f5bd17eccb16ff058cd8f0159746
+- id: templates/prompt-hooks/assumption-tracker-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/prompt-hooks/assumption-tracker-prompt.md
+  sha256: d419c192020cf06838eb6c364b905fb362066ad48f55a1f512fdbf56c4b9d208
 - id: templates/prompt-hooks/clarification-gate-prompt.md
   kind: template
   owner_adr: ADR-314
@@ -6286,6 +6346,26 @@ primitives:
   projection_targets:
   - templates/prompt-hooks/prompt-quality-prompt.md
   sha256: bbd3881c18f49c99df22895cab270706fe584c6f17167a6830c86aa0c87679b6
+- id: templates/prompt-hooks/scope-creep-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/prompt-hooks/scope-creep-prompt.md
+  sha256: 135a67a438067b98c0f5c92dc41568650e4f9f2589ce9b132b0538996e5757a5
+- id: templates/quality-gates.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: false
+  projection_targets:
+  - templates/quality-gates.md
+  sha256: 603957e99943127931ce8cd7b6104860807465a4704cf5de0ad657c32348a7d9
 - id: templates/rebranding-checklist.md
   kind: template
   owner_adr: ADR-314

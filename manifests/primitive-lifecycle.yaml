@@ -15776,3 +15776,188 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: template
   metrics_file: none
+- id: templates/adr-template.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/adr-template.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Generic ADR decision
+    template usable for COS decisions and adopter project architecture decisions.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/adr-template.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/agent-research-only.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/agent-research-only.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Research-only agent prompt
+    template applies to COS research tasks and adopter project research phases.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/agent-research-only.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/contracts/test_redteam_baseline.template.py
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/contracts/test_redteam_baseline.template.py
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Consumer-customizable
+    red-team baseline template is designed for adopter projects while mirroring COS
+    red-team contracts.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/contracts/test_redteam_baseline.template.py
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/cross-harness-authoring.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/cross-harness-authoring.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Cross-harness authoring
+    template governs portable primitive authoring in COS source and project overlays.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/cross-harness-authoring.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/error-recovery.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/error-recovery.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Generic error recovery
+    template applies to any agentic coding task in COS or adopter repos.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/error-recovery.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/prompt-hooks/assumption-tracker-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/prompt-hooks/assumption-tracker-prompt.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Prompt hook template
+    for assumption counting is repo-agnostic and reusable by COS and project prompts.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/prompt-hooks/assumption-tracker-prompt.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/prompt-hooks/scope-creep-prompt.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/prompt-hooks/scope-creep-prompt.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Prompt hook template
+    for scope checking is repo-agnostic and reusable by COS and project prompts.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/prompt-hooks/scope-creep-prompt.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
+- id: templates/quality-gates.md
+  kind: template
+  owner_adr: ADR-314
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: template-shared-surface
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - templates/quality-gates.md
+  runtime_projection: false
+  behavior_evidence: Manual scope calibration iteration 015; Generic quality gate
+    template applies to COS development and adopter project development.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/quality-gates.md
+  docs_claim_level: advisory
+  exit_behavior: template
+  metrics_file: none
