@@ -139,6 +139,14 @@ if printf '%s
       echo "Run: python3 scripts/cos-adr-partial-ledger" >&2
       exit 1
     fi
+    if printf '%s
+' "$staged_files_for_adr_gate" | grep -qE '^(docs/00-MOCs/entrypoints/.*\.md|docs/02-Decisions/adrs/ADR-|docs/02-Decisions/adrs/INDEX\.md)'; then
+      if ! python3 "$ROOT_DIR/scripts/check_entrypoint_adr_links.py" --project-dir "$ROOT_DIR" >/dev/null; then
+        echo "COMMIT BLOCKED: entrypoint ADR links reference missing files." >&2
+        echo "Run: python3 scripts/check_entrypoint_adr_links.py --project-dir ." >&2
+        exit 1
+      fi
+    fi
   fi
 fi
 
