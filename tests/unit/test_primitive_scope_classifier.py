@@ -178,6 +178,7 @@ def test_unknown_keeps_safe_effective_scope_separate_from_suggestion(tmp_path: P
 
     assert summary["by_suggested_scope"]["unknown"] >= 1
     assert summary["by_effective_scope"]["os-only"] >= summary["by_suggested_scope"]["unknown"]
+    assert summary["safe_fallback_os_only_from_unknown"] == summary["by_suggested_scope"]["unknown"]
 
 
 def test_classifier_includes_packaged_skills_from_commit_scope(tmp_path: Path) -> None:

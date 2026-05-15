@@ -341,6 +341,7 @@ def summarize(rows: list[ScopeRow]) -> dict[str, Any]:
         "by_confidence": {},
         "contradictions": sum(1 for row in rows if row.contradiction),
         "low_confidence": sum(1 for row in rows if row.confidence == "low"),
+        "safe_fallback_os_only_from_unknown": sum(1 for row in rows if row.suggested_scope == "unknown" and row.effective_scope == "os-only"),
     }
     for row in rows:
         summary["by_suggested_scope"][row.suggested_scope] = summary["by_suggested_scope"].get(row.suggested_scope, 0) + 1
