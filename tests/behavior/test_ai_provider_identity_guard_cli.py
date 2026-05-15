@@ -44,6 +44,23 @@ def test_staged_guard_blocks_provider_like_email(tmp_path: Path) -> None:
     assert "ai-provider" in proc.stdout
 
 
+def test_staged_guard_skips_binary_files(tmp_path: Path) -> None:
+    repo = tmp_path / "repo-binary"
+    repo.mkdir()
+    _run(["git", "init", "--initial-branch=main"], repo)
+    _run(["git", "config", "user.name", "Tester"], repo)
+    _run(["git", "config", "user.email", "tester@example.com"], repo)
+    _install_guard_fixture(repo)
+
+    (repo / "archive.tar.gz").write_bytes(b"\x1f\x8b\x08\x00binary-staged-content")
+    _run(["git", "add", "archive.tar.gz"], repo)
+
+    proc = _run(["python3", "scripts/ai-provider-identity-guard", "--staged"], repo)
+
+    assert proc.returncode == 0
+    assert "ai-provider" not in proc.stdout
+
+
 def test_commit_msg_hook_blocks_provider_coauthor(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
     repo.mkdir()

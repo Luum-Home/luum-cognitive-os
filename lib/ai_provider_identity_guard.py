@@ -99,6 +99,10 @@ def _git(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[str]
     return subprocess.run(["git", "-C", str(project_dir), *args], text=True, capture_output=True, check=False)
 
 
+def _git_bytes(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(["git", "-C", str(project_dir), *args], text=False, capture_output=True, check=False)
+
+
 def staged_paths(project_dir: Path) -> list[str]:
     proc = _git(project_dir, ["diff", "--cached", "--name-only", "--diff-filter=ACMR"])
     if proc.returncode != 0:
@@ -107,12 +111,15 @@ def staged_paths(project_dir: Path) -> list[str]:
 
 
 def staged_text(project_dir: Path, path: str) -> str | None:
-    proc = _git(project_dir, ["show", f":{path}"])
+    proc = _git_bytes(project_dir, ["show", f":{path}"])
     if proc.returncode != 0:
         return None
-    if "\x00" in proc.stdout:
+    if b"\x00" in proc.stdout:
         return None
-    return proc.stdout
+    try:
+        return proc.stdout.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def tracked_paths(project_dir: Path) -> list[str]:
