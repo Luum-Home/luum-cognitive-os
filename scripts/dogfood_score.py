@@ -44,7 +44,7 @@ def _fmt_cell(v, width):
 
 
 def render_pretty(score, last_record=None, trend_path=None):
-    lines = []
+    lines: list[str] = []
     lines.append("=" * 72)
     lines.append("Dogfood Maturity Score")
     lines.append("=" * 72)

@@ -23,6 +23,16 @@ if str(ROOT) not in sys.path:
 
 from lib.script_io import read_text as read_text
 
+
+def _as_int(value: object, default: int = 0) -> int:
+    if not isinstance(value, int | float | str | bytes | bytearray):
+        return default
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def _load_script_module(name: str):
     path = Path(__file__).resolve().with_name(f"{name}.py")
     spec = importlib.util.spec_from_file_location(name, path)
@@ -353,12 +363,12 @@ def compare_regressions(
         if SEVERITY_RANK.get(current_severity, 0) > SEVERITY_RANK.get(previous_severity, 0):
             regressions.append(f"{family_name}: severity worsened {previous_severity} -> {current_severity}")
 
-        previous_total = int(previous_family.get("total", 0) or 0)
-        current_total = int(current_family.get("total", 0) or 0)
-        previous_proven = int(previous_family.get("proven_signal", 0) or 0)
-        current_proven = int(current_family.get("proven_signal", 0) or 0)
-        previous_aspirational = int(previous_family.get("aspirational_signal", 0) or 0)
-        current_aspirational = int(current_family.get("aspirational_signal", 0) or 0)
+        previous_total = _as_int(previous_family.get("total", 0))
+        current_total = _as_int(current_family.get("total", 0))
+        previous_proven = _as_int(previous_family.get("proven_signal", 0))
+        current_proven = _as_int(current_family.get("proven_signal", 0))
+        previous_aspirational = _as_int(previous_family.get("aspirational_signal", 0))
+        current_aspirational = _as_int(current_family.get("aspirational_signal", 0))
 
         if current_proven < previous_proven:
             regressions.append(f"{family_name}: proven signal decreased {previous_proven} -> {current_proven}")
