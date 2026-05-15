@@ -12,6 +12,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 
 ## Recent tech-radar governance additions
+- [External Tools Radar Pyrefly Addendum — 2026-05-15](reports/external-tools-radar-pyrefly-addendum-2026-05-15.md) — targeted TRIAL/advisory Python type-check gate for agentic loops, with local pilot receipts.
 
 - [External Tools Radar Index](reports/external-tools-radar-INDEX.md) — chronological entry point for the tech-radar corpus and adoption pipeline.
 - [External Tools Radar Full Reassessment — 2026-05-08](reports/external-tools-radar-full-reassessment-2026-05-08.md) — full-corpus reassessment of 1762 third-party-tool mentions into a 184-item deduplicated scope with ADOPT/INTEGRATE/KEEP/MONITOR/DEFER/REJECT/REMOVE decisions.

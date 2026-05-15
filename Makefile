@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test-agentic-mastery test test-local-fast test-laptop test-laptop-direct test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
+.PHONY: help test-agentic-mastery test test-local-fast test-laptop test-laptop-direct test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed typecheck-pyrefly smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -150,6 +150,9 @@ test-changed:
 	@files=$$(git diff --name-only HEAD | grep -E '\.py$$' || true); \
 	if [ -z "$$files" ]; then echo "No changed .py files"; exit 0; fi; \
 	$(PYTEST) $$(echo $$files | tr ' ' '\n' | grep -E 'tests/' || echo tests/) --tb=short
+
+typecheck-pyrefly:
+	@bash scripts/cos-pyrefly-pilot
 
 smoke:
 	bash scripts/cos-smoke.sh -v

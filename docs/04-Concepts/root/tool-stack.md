@@ -458,3 +458,19 @@ Actionable patterns identified from deep analysis of WATCH repos.
 - agnix is the only linter purpose-built for Claude Code configuration files.
 - parry fills a gap in our prompt injection defenses with a dedicated ML-based scanner.
 - Trail of Bits Skills bring professional security audit expertise as reusable skills.
+---
+
+## 15. Developer Quality Gates
+
+Static and dynamic checks that improve agent-produced code before broader test
+lanes run.
+
+| Tool | Stars | License | Self-Host | Maturity | Description |
+|------|-------|---------|-----------|----------|-------------|
+| **Pyrefly** | 5.9k | MIT | Yes | Stable | Fast Python type checker and language server. **TRIAL** as an advisory CLI gate via `make typecheck-pyrefly`; first COS run found 268 non-import type/API-shape findings in about two seconds after cache warm-up. |
+
+### Notes
+- Pyrefly complements Ruff and pytest rather than replacing either.
+- Keep it advisory until the historical baseline is triaged and a ratchet target
+  exists for newly introduced findings.
+

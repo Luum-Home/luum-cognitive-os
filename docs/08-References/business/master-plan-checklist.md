@@ -372,3 +372,7 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 ## Work Preservation Hardening
 
 - [x] ADR-318 copy-only checkpoints and stash quarantine primitives added; stash positional refs are not durable SO identity.
+
+## Type-Check Gate Pilots
+
+- [x] **Pyrefly TRIAL gate** — `scripts/cos-pyrefly-pilot`, `make typecheck-pyrefly`, `[tool.pyrefly]`, and radar addendum added as an advisory Python type-check lane; promotion blocked on baseline triage.

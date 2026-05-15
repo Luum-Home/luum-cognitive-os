@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
   "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 107,
+  "_hook_count": 108,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -568,6 +568,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-verify-weekly.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/pyrefly-typecheck-advisory.sh\""
           }
         ]
       },

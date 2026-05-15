@@ -54,6 +54,41 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Metrics**: Findings logged to `.cognitive-os/metrics/agnix-findings.jsonl`
 
+
+### Pyrefly — Python Type Checker for Agentic Loops (TRIAL)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Fast Python type/API-shape checking for agent-produced code before completion |
+| Config | `pyproject.toml` `[tool.pyrefly]` pilot scope |
+| Command | `make typecheck-pyrefly` or `bash scripts/cos-pyrefly-pilot` |
+| Required | No — advisory pilot; explicit enforcement only with `--enforce` or `COS_PYREFLY_ENFORCE=1` |
+| Scope | First-party Python under `lib/`, `scripts/`, and `packages/agent-service/src/` |
+| GitHub | [facebook/pyrefly](https://github.com/facebook/pyrefly) |
+| License | MIT |
+| Status | **TRIAL** — advisory runner implemented; baseline triage required before blocking CI/Stop hooks |
+
+**Usage examples**:
+
+```bash
+make typecheck-pyrefly
+bash scripts/cos-pyrefly-pilot --strict-imports
+COS_PYREFLY_ENFORCE=1 bash scripts/cos-pyrefly-pilot
+```
+
+**Integration with Cognitive OS**: `scripts/cos-pyrefly-pilot` records
+`.cognitive-os/reports/pyrefly/latest.txt` and `latest.json`, exits 0 in
+advisory mode, and exits with Pyrefly's status only in explicit enforcement
+mode. Missing-import diagnostics are disabled in the default pilot config
+because many COS integrations are optional dependency lanes; strict import
+probes remain available on demand.
+
+**Evaluation Notes**: The first local advisory run on 2026-05-15 used Pyrefly
+1.0.0, completed in about two seconds after `uvx` cache warm-up, and reported
+268 non-import errors. The signal is useful but too large for immediate
+blocking adoption. Full addendum:
+`docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md`.
+
 ### semgrep — Static Application Security Testing
 
 | Property | Value |

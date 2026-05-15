@@ -2058,6 +2058,12 @@ harness:
       async: true
       scope: both
 
+    pyrefly-typecheck-advisory:
+      script: hooks/pyrefly-typecheck-advisory.sh
+      event: Stop
+      async: true
+      scope: os-only
+
     pending-truth-staleness-gate:
       script: hooks/pending-truth-staleness-gate.sh
       event: PreToolUse

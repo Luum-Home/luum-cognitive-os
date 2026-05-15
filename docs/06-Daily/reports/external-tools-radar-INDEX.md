@@ -376,3 +376,20 @@ git log --diff-filter=A --format="%ad %h %s" --date=short -- \
   "manifests/postmortem-regression-audit.yaml" \
   "docs/05-Methodology/runbooks/postmortem-regression-audit.md"
 ```
+
+## Phase 5 — Type-check gate pilot (2026-05-15)
+
+Targeted post-reassessment addition for Python static analysis in the agentic
+loop. This phase adds Pyrefly as a TRIAL/advisory gate because the first run
+produced actionable type/API-shape findings but also a non-zero historical
+baseline that should not block all Python work yet.
+
+| Path | Role |
+|---|---|
+| [`docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md`](external-tools-radar-pyrefly-addendum-2026-05-15.md) | Radar addendum: Pyrefly as TRIAL / advisory CLI gate for Python type checking in agentic loops |
+| `scripts/cos-pyrefly-pilot` | Advisory runner that records `.cognitive-os/reports/pyrefly/latest.{txt,json}` and only fails under explicit enforcement |
+| `pyproject.toml` | Pilot `[tool.pyrefly]` config and optional `typecheck` extra |
+
+**Outcome:** `make typecheck-pyrefly` gives maintainers a repeatable Pyrefly
+receipt before any Stop-hook or CI promotion.
+
