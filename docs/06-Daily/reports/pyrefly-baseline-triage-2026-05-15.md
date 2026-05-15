@@ -546,3 +546,27 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 2b/3: **268 → 165** non-import Pyrefly errors.
+
+### Remediation pass 4 — script payload normalization
+
+| Files | Finding class | Change | Pyrefly effect |
+|---|---|---|---:|
+| `scripts/opencode_primitive_adapter_smoke.py` | Unknown JSON payload lists/dicts before iteration | Narrowed ledger rows and signed primitive ids before set/list processing. | Removed 7 adapter-smoke findings. |
+| `scripts/dogfood_score.py` | `LiteralString` list inference in pretty renderer | Annotated renderer lines as `list[str]`. | Removed 6 pretty-render findings. |
+| `scripts/primitive_gap_snapshot.py` | `int(object)` over historical JSON payloads | Added `_as_int(...)` scalar helper before regression comparisons. | Removed 6 primitive-gap findings. |
+
+Validation:
+
+```bash
+uv run pytest \
+  tests/unit/test_dogfood_scorer.py \
+  tests/unit/test_primitive_gap_snapshot.py \
+  tests/unit/test_primitive_gap_workflow.py \
+  tests/red_team/portability/test_opencode_primitive_adapter_smoke.py -q
+# 27 passed in 0.63s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=147 elapsed_seconds=2 ...
+```
+
+Running baseline after pass 4: **268 → 147** non-import Pyrefly errors.
