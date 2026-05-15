@@ -27,8 +27,8 @@ Source of truth: `rules/RULES-COMPACT.md`, weekly aspirational audit at
 | # | Feature | Status | What It Does | Impact |
 |---|---------|--------|--------------|--------|
 | 1 | Persistent Memory | REAL | Cross-session knowledge retention | AI never forgets decisions, bugs, or conventions |
-| 2 | Spec-Driven Development | REAL | Structured 10-phase workflow for complex changes | Features are planned, specified, and verified — not just coded |
-| 3 | Quality Control | REAL | 7 immutable gates + configurable rules | Quality guaranteed by infrastructure, not by willpower |
+| 2 | Spec-Driven Development | REAL | 8-phase core workflow with optional init/bootstrap and fast paths | Complex changes are planned, specified, and verified without forcing ceremony on trivial work |
+| 3 | Quality Control | REAL | Example constitutional gates, configurable rules, and profile-projected hooks | Quality is backed by evidence gates instead of willpower |
 | 4 | Self-Improvement Loop | DORMANT | Captures errors, detects patterns, proposes skill/routing updates for human review | Closed-loop autonomous mutation is gated by ADR-201/204/206; the propose-only slice is implemented |
 | 5 | Multi-Agent Orchestration | REAL | 12+ simultaneous agents with cycle-deduplication and worktree isolation | Closes the #1 multi-agent production failure mode (MAST 2025) |
 | 6 | Replay Timeline & Restore-by-Checkpoint | REAL | Shadow-git substrate; every governance event carries a `file_tree_sha` | Devin-parity rewind without VM snapshots; governance-as-restore-point |
@@ -36,14 +36,14 @@ Source of truth: `rules/RULES-COMPACT.md`, weekly aspirational audit at
 | 8 | Agent-to-Agent Handoff Protocol | REAL | Typed `HandoffEnvelope` with call-chain dedup and permission intersection | Addresses cycle-driven multi-agent failure modes |
 | 9 | Security and Compliance | REAL | Hook-enforced credential blocking, secret detector, content policy; NeMo Guardrails available as opt-in | Defense-in-depth, hook-enforced |
 | 10 | Observability and Cost Control | REAL | Per-session JSONL streams, OpenTelemetry MCP semconv, budget caps | Know exactly how much your AI costs |
-| 11 | Developer Experience | REAL | 27+ skills, 30+ hooks, 22+ rules, 16+ agent personas | Specialized expertise for every task |
-| 12 | Multi-IDE Portability + MCP Server | REAL | 7+ IDE adapters PLUS native MCP server exposing core primitives | Your investment moves with you; every MCP-aware tool gets governance access |
+| 11 | Developer Experience | REAL | Profile-aware skills, hooks, rules, and diagnostics | Minimal/core users see a small surface; maintainer-scale inventory stays opt-in |
+| 12 | Multi-IDE Portability + MCP Server | REAL | Claude/Codex native lifecycle plus structural projections and MCP surfaces | Portability is proof-level-specific: native/runtime/wrapper/structural/planned are not equivalent |
 | 13 | Sandbox Adapter Tiers | REAL | Bubblewrap (Linux) / Seatbelt (macOS) OS-native default; E2B/microVM opt-in | 80% of accidental-destruction threat closed at zero new dep cost |
 | 14 | Detached Agent Daemon | REAL | Local-first long-running agents via tmux + worktree + file-sentinel | "Fire and forget" UX without going cloud |
 | 15 | SRE and Self-Healing | DORMANT | Advisory monitoring + remediation registry with governed (human-approved) execution | MAPE-K-inspired loop is documented and partially wired; no autonomous production mutation. RULES marks `singularity` as `(inactive)` and `MAPE-K(inactive)` |
 | 16 | Industry Presets | REAL | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
-| 17 | Automation Workflows | DORMANT | End-to-end pipelines from ticket to deployed code | Pipeline templates exist; "ticket-to-prod" turnkey path is operator-assembled, not pre-wired |
-| 18 | Manifest-Driven Governance | REAL | Every primitive declares a schema-versioned YAML | Auditable, machine-readable, no policy hidden in shell scripts |
+| 17 | Automation Workflows | DORMANT | Pipeline templates for ticket-to-code, bugfix, migration, deploy, and service scaffolding | Turnkey ticket-to-prod automation is operator-assembled, not pre-wired |
+| 18 | Manifest-Driven Governance | REAL | Schema-versioned manifests and audits cover the promoted governance surface | Primitive-level coverage is ratcheted; "every primitive" is not claimed until audits prove it |
 | 19 | Open-Source Core | REAL | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
 
 ---
@@ -73,11 +73,11 @@ Your AI assistant forgets everything when the session ends. Cognitive OS solves 
 
 Complex features need planning, not just code.
 
-**10 phases with dependency tracking:**
+**8 core phases with optional bootstrap/init:**
 ```
-init --> explore --> propose --> spec --+--> tasks --> apply --> verify --> archive
-                                       |
-                                       +--> design
+optional init --> explore --> propose --> spec --+--> tasks --> apply --> verify --> archive
+                                            |
+                                            +--> design
 ```
 
 **Adaptive intelligence:**
@@ -91,7 +91,7 @@ init --> explore --> propose --> spec --+--> tasks --> apply --> verify --> arch
 | Critical | Security, auth, payments | Full SDD with mandatory verification |
 
 **What exists today:**
-- 9 SDD phase skills
+- 8 core SDD phase skills plus optional init/bootstrap/orchestration helpers
 - OpenSpec alternative (4 skills for lighter change tracking)
 - Engram-backed artifact persistence
 - Orchestrator protocol for multi-agent SDD execution
@@ -114,12 +114,12 @@ Quality gates enforced by infrastructure, not by hope.
 **Additional enforcement proof paths:**
 - Control manifest: forbidden zones, performance constraints, security constraints
 - License policy: automatically blocks AGPL, SSPL, BSL, ELv2 dependencies
-- 21 hooks that fire at runtime (SessionStart, PreToolUse, PostToolUse)
+- Profile-specific hook projections: minimal currently requires 3 hooks; full maintainer projections are much larger and measured by `scripts/measure_harness_profiles.py`
 - Configurable coverage thresholds per industry (80% fintech, 90% healthcare, 50% startup MVP)
 
 **What exists today:**
-- 19 rule files covering architecture, security, testing, licensing, fault tolerance, and more
-- 21 hook scripts enforcing rules at runtime
+- Rule packs covering architecture, security, testing, licensing, fault tolerance, and more; default exposure depends on profile
+- Hook scripts enforcing rules at runtime when projected for the active profile/harness
 - Security hook family: see `hooks/secret-detector.sh`, `hooks/destructive-git-blocker.sh`, and `hooks/destructive-rm-blocker.sh`
 - Coverage gate hook with configurable thresholds
 
@@ -276,50 +276,47 @@ Enterprise-grade security built into the infrastructure.
 Know exactly what your AI is doing and how much it costs.
 
 **Observability:**
-- **Langfuse** (MIT): LLM engineering platform — traces, prompts, evaluations, cost tracking
+- **Per-session JSONL streams**: local append-only traces for hook, cost, claim, and runtime events
 - **Skill metrics**: Per-skill tracking of tokens, time, cost, and model used
 - **Agent KPIs**: 20 metrics across 5 OKRs with configurable alert thresholds
 
 **Cost control:**
-- **LiteLLM** (MIT): OpenAI-compatible proxy for 100+ LLM providers — budget caps, virtual keys, rate limiting
-- **Model routing**: Automatic selection of the right model per task
+- **Synchronous session budget gate**: pre-call budget checks through `lib/session_budget.py` and `lib/dispatch_gate.py`
+- **Capability-centric routing**: model/provider selection follows task capability and budget policy
 - **Budget alerts**: Configurable warnings and caps
 
 ---
 
 ## 8. Developer Experience
 
-A rich ecosystem of specialized capabilities available out of the box.
+A rich ecosystem of specialized capabilities exists, but the default user experience is profile-aware. New users should start with minimal/core surfaces; maintainer-scale hooks, rules, and skills are opt-in.
 
 | Primitive | Count | Examples |
 |---|---|---|
-| Skills (project) | 27 | /sdd-new, /coverage-report, /sre-agent, /error-analyzer, /model-optimizer |
-| Skills (global) | 15+ | SDD phases (9), skill-creator, skill-registry, go-testing, webapp-testing |
-| Hooks | 21 | auto-test-on-edit, error-learning, block-dangerous, coverage-gate |
-| Rules | 19 | constitutional-gates, license-policy, sre-protocol, model-routing |
-| Agent personas | 16+ | security-engineer, code-reviewer, software-architect, DBA, SRE |
+| Skills | 176 `SKILL.md` files in this repo | Includes project, maintainer, package, and experimental skills; not all are default adoption surface |
+| Hooks | 244 hook scripts; minimal profile requires 3 | Full Claude projection currently has 153 hook commands; full Codex projection has 64 |
+| Rules | 120 rule files | Rule packs are loaded/projected by profile and task context |
+| Scripts | 561 script files | Maintainer/developer tooling, not all runtime primitives |
+| Agent/persona patterns | Maintainer/team-oriented | Use only when the task needs explicit specialization or coordination |
 
 **Progressive skill loading:**
-1. **Always loaded**: Rules (19) — active constraints
+1. **Always loaded**: compact rules and project instructions only
 2. **On demand**: Skills — loaded when invoked by name
-3. **Auto-detected**: Stack-specific skills generated based on detected technologies
+3. **Profile-gated**: hooks/rules/skills projected according to minimal, core/team/maintainer, or lab intent
 
 ---
 
 ## 9. Multi-IDE Portability
 
-Your investment in rules, skills, and memory is not tied to any single tool.
+Your investment in rules, skills, and memory is not tied to a single tool, but support levels differ by harness. Structural projection is not runtime enforcement.
 
-| Tool | Rules | Skills | Hooks | MCP/Memory |
-|---|---|---|---|---|
-| Claude Code | Full | Full | Full | Full |
-| Cursor | Via ai-rulez | Native | Adapter | MCP config |
-| VS Code Copilot | Via .github/ | Native | Adapter | MCP config |
-| Gemini CLI | Via GEMINI.md | Native | Adapter | MCP config |
-| OpenCode | Via AGENTS.md | Native | Adapter | MCP config |
-| Kiro | Via .kiro/ | Native | Adapter | MCP config |
-| Windsurf | Via .windsurf/ | Native | Adapter | MCP config |
-| Codex | Via AGENTS.md | Native | Experimental | -- |
+| Harness | Current proof level | What is claimed |
+|---|---|---|
+| Claude Code | `native-lifecycle` | Native settings projection for hooks/rules/skills in the supported profile. |
+| Codex | `native-lifecycle` with tool-coverage limits | Native lifecycle projection where Codex supports events; governed runner covers known gaps. |
+| OpenCode | `governed-wrapper-enforced` starter slice plus structural projection | `opencode.json` structural projection; selected primitives have signed `cos-primitive-guard.js` smoke evidence. |
+| Cursor / VS Code Copilot / Gemini CLI / Goose / Aider / Cline / Continue / Kilo / Zed / Qwen / Kimi and similar | `structural` | Project files, instructions, MCP placeholders, or config are generated; runtime enforcement is not claimed. |
+| Kiro / Windsurf / Google Antigravity and other planned hosts | `planned` | Product direction exists; no runtime support claim. |
 
 ---
 
@@ -352,7 +349,7 @@ Pre-loaded best practices through a plugin architecture.
 
 ## 12. Automation Workflows
 
-End-to-end pipelines from ticket to deployed code.
+**Status: DORMANT.** Cognitive OS ships pipeline templates and SDD/OpenSpec procedures, but it does not ship a turnkey ticket-to-production automation path by default.
 
 **5 pipeline types:**
 1. Feature pipeline: ticket --> explore --> propose --> spec --> design --> tasks --> apply --> verify
@@ -367,23 +364,16 @@ End-to-end pipelines from ticket to deployed code.
 
 Transparent, extensible, and community-driven.
 
-**Architecture:**
-```
-cognitive-os/
-  core/           # Universal (Apache 2.0) -- works on any project
-    memory/       # Engram protocol, persistence contracts
-    workflow/     # SDD (10 phases), OpenSpec (4 phases)
-    fault-tolerance/  # Task tracking, recovery, checkpointing
-    discipline/   # Systematic debugging, TDD, verification
-    safety/       # Dangerous command blocking, env protection
-    skill-system/ # Auto-loader, registry, adaptation, feedback
-    orchestrator/ # Delegation rules, sub-agent context protocol
-  plugins/        # Domain-specific (optional)
-    fintech/      # Constitutional gates, compliance agents
-    ecommerce/    # Inventory, payments, PII
-    saas/         # Multi-tenancy, metering, SLA
-  generators/     # Auto-generate project configs from templates
-```
+**Repository/product zones:**
+
+| Zone | Current roots | Status |
+|---|---|---|
+| Core runtime | `hooks/`, `lib/`, `scripts/`, `cmd/cos/`, `pkg/` | Protected runtime and validation surfaces. |
+| Compatibility | `internal/`, harness adapters, provider drivers, settings projection | Absorbs vendor and IDE churn. |
+| Extensions | `skills/`, `rules/`, `templates/`, `packages/`, `dashboard/`, `workflows/` | Useful capabilities, but not all default adoption surface. |
+| Experimental | `squads/`, `agents/`, roadmap/control-plane surfaces | Future architecture until proof paths promote them. |
+
+The machine-readable boundary lives in `manifests/product-zones.yaml` and is checked by `tests/contracts/test_product_zones.py`.
 
 **Quick setup:**
 ```bash
@@ -402,12 +392,12 @@ claude
 | Feature | Cognitive OS | OpenClaw | BMAD | Spec Kit | superpowers |
 |---------|----------|----------|------|----------|-------------|
 | Persistent memory | Engram (FTS5, cross-session, team sync) | File-based | Git only | No | No |
-| Spec workflow | 10 phases + OpenSpec | No | PRD-based | 5 phases | No |
-| Quality gates | 7 constitutional + 19 rules + 21 hooks | No | Manifest checklist | Constitution | TDD only |
-| Self-improvement | Full loop (errors -> patterns -> skills -> KPIs -> routing) | Partial | No | No | No |
+| Spec workflow | 8 core SDD phases + optional init + OpenSpec | No | PRD-based | 5 phases | No |
+| Quality gates | Profile-projected rules/hooks + claim verification | No | Manifest checklist | Constitution | TDD only |
+| Self-improvement | DORMANT propose-only loop (errors -> patterns -> proposed skills/routing -> human review) | Partial | No | No | No |
 | Multi-agent | 12+ parallel, fault-tolerant | Yes | Party mode | No | No |
-| Cost control | LiteLLM + budget caps + model routing | /usage command | No | No | No |
-| IDE portability | 7+ tools via standards | Many | Yes | Yes | Yes |
+| Cost control | Sync budget gate + retry classifier + capability routing | /usage command | No | No | No |
+| IDE portability | Proof-level-specific native, wrapper, and structural projections | Many | Yes | Yes | Yes |
 | Proven at scale | 300x on real fintech | Open-source projects | No | No | No |
 
 ---

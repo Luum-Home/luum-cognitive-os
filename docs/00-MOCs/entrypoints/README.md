@@ -629,8 +629,8 @@ All gaps are now filled. The dev-time Cognitive OS is fully operational.
 | 5 | Identity | 6-layer identity stack documented (AIM, OneCLI, Cerbos, A2A, Agent Passport, SPIFFE) | -- |
 | 6 | Memory | Engram | Port 7437 |
 | 7 | Tool System | MCP + Skills + Hooks | -- |
-| 8 | Observability | Langfuse + skill-metrics | Port 3100 |
-| 9 | Cost Control | LiteLLM + model-optimizer | Port 4000 |
+| 8 | Observability | JSONL streams + OTel/MCP semantics; dashboards optional | -- |
+| 9 | Cost Control | Sync budget gate + retry classifier + capability routing | -- |
 | 10 | Security | NeMo Guardrails + constitutional gates | Port 8088 |
 | 11 | Fault Tolerance | Hooks + active-tasks.json + /resume-tasks | -- |
 | 12 | Self-Improvement | Error learning + KPIs + model routing | -- |
@@ -733,23 +733,23 @@ KPIs suben -> loop cerrado
 | Target state | Tool marketplace with per-agent permissions and usage tracking |
 | Implementation | MCP (already operational) — extend with registry and permissions |
 
-### 8. Observability — Langfuse + skill-metrics
+### 8. Observability — JSONL + OTel/MCP + optional dashboards
 
 | Aspect | Detail |
 |--------|--------|
 | What it does | Traces, metrics, and logs for all agent activity |
-| Current state | Langfuse on port 3100 + skill-metrics-tracker.sh capturing per-execution data |
+| Current state | Per-session JSONL streams and skill metrics capture local execution data; external dashboards are optional |
 | Target state | Full OpenTelemetry integration with dashboards, alerting, cost attribution |
-| Implementation | Langfuse + skill-metrics.jsonl + /agent-kpis for KPI dashboards |
+| Implementation | JSONL metrics, OTel/MCP semantics, skill-metrics.jsonl, and /agent-kpis; Phoenix or other dashboards are optional |
 
-### 9. Cost Control — LiteLLM + Model Optimizer
+### 9. Cost Control — Sync Budget Gate + Capability Routing
 
 | Aspect | Detail |
 |--------|--------|
 | What it does | Prevents runaway costs, routes to optimal model per task |
-| Current state | LiteLLM proxy on port 4000 + model-routing.md rule + /model-optimizer skill |
+| Current state | Synchronous session budget gate, retry classifier, capability-centric routing, and /model-optimizer skill |
 | Target state | Automatic model routing based on task complexity, per-agent budget caps, cost dashboards |
-| Implementation | LiteLLM proxy + model-routing rule + /model-optimizer skill |
+| Implementation | `lib/session_budget.py`, `lib/dispatch_gate.py`, retry contracts, routing rules, and /model-optimizer skill |
 
 ### 10. Security — NeMo Guardrails + Constitutional Gates
 
@@ -783,7 +783,7 @@ KPIs suben -> loop cerrado
 | Aspect | Detail |
 |--------|--------|
 | What it does | Structured multi-phase workflows for substantial changes |
-| Current state | SDD (7 phases) + OpenSpec file-based artifacts + AI workflows |
+| Current state | SDD (8 core phases plus optional init/bootstrap) + OpenSpec file-based artifacts + AI workflows |
 | Target state | Visual workflow editor with drag-and-drop phase composition |
 | Implementation | SDD skills + OpenSpec convention + Engram persistence |
 
@@ -796,15 +796,15 @@ KPIs suben -> loop cerrado
 What exists today as the Cognitive OS ecosystem (all 13 components operational):
 
 - Engram persistent memory (port 7437)
-- SDD (Spec-Driven Development) workflow with 7 phases
+- SDD (Spec-Driven Development) workflow with 8 core phases plus optional init/bootstrap
 - Skills system with auto-detection, auto-improvement, and 13+ skills
 - 41 hooks: stack-detector, session-resume, block-prod-urls, error-pattern-detector, agent-prelaunch, auto-test-on-edit, skill-feedback-tracker, skill-metrics-tracker, error-learning, agent-checkpoint, auto-repair-dispatcher, metrics-rotation, metrics-calibrator-trigger, tool-discovery-trigger, conversation-capture, session-knowledge-extractor, and more
 - 44 rules: constitutional-gates, control-manifest, license-policy, skill-adaptation, skill-auto-loader, skill-registry, model-routing, error-learning, fault-tolerance, agent-kpis, services-config, auto-repair, metrics-calibration, and more
 - Agent Teams Lite (orchestrator + sub-agents)
 - Self-improvement loop: error learning -> pattern detection -> skill updates -> model optimization -> KPI measurement
 - Fault tolerance: task registration, checkpointing, automatic recovery
-- Observability: Langfuse (port 3100) + skill-metrics.jsonl
-- Cost control: LiteLLM (port 4000) + model-routing rule + /model-optimizer skill
+- Observability: JSONL streams + skill-metrics.jsonl + optional dashboards
+- Cost control: sync budget gate + retry classifier + capability routing + /model-optimizer skill
 - Security: NeMo Guardrails (port 8088) + constitutional gates
 - Workflow engine: SDD + OpenSpec + AI workflows
 
@@ -813,8 +813,8 @@ What exists today as the Cognitive OS ecosystem (all 13 components operational):
 Extending from dev-time to production-capable (partially done):
 
 - E2B sandboxes for isolated code execution (cloud SDK + local mock on port 8086)
-- Langfuse for observability (port 3100) + skill-metrics for per-execution tracking
-- LiteLLM for cost control (port 4000) + model-routing for optimal model selection
+- JSONL/OTel/MCP observability with optional dashboard backends
+- synchronous budget gates, retry classifier, and capability-centric routing for cost control
 - Agent identity (Phase 1 rules + 6-layer stack designed — see [identity-stack.md](identity-stack.md))
 - Persistent agent state via fault-tolerance hooks + active-tasks.json
 
@@ -867,6 +867,8 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Tool Stack](tool-stack.md) — Evaluated tools and integration posture
 - [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
 - [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
+- [Promise Compliance Audit — 2026-05-15](business/promise-compliance-audit-2026-05-15.md) — Current audit of product promises, fulfilled evidence, partial compliance, overclaims, and the agentic literacy boundary
+- [ADR-316: Agentic Literacy Before OS Abstraction](adrs/ADR-316-agentic-literacy-before-os-abstraction.md) — Decision that COS must teach and expose underlying harness discipline instead of hiding it
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
 - [ADR-201: Maintainer Agent and Telemetry Promotion Loop](adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md) — proposed owner-backed loop for converting COS telemetry into governed improvement proposals
 - [ADR-202: Private Content Cross-Harness Portability Boundary](adrs/ADR-202-private-content-cross-harness-portability-boundary.md) — proposed policy for private content classes, projection, redaction, and service/cloud retention

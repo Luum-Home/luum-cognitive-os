@@ -14,6 +14,8 @@ proof_levels:
     COS primitives on that host.
   native-lifecycle: Native lifecycle hooks/events are projected and tested for the
     harness.
+  governed-wrapper-enforced: COS owns a wrapper/plugin bridge that enforces a signed
+    runtime slice through the host lifecycle, but full native parity is not claimed.
   planned: Harness is in product scope but native projection proof is not implemented
     yet.
   unsupported: Harness is intentionally out of scope for now.
@@ -184,20 +186,18 @@ harnesses:
   - plugins
   - tool.execute.before
   - tool.execute.after
-  proof: temp-consumer-project-structural
-  proof_level: structural
+  proof: opencode-primitive-adapter-smoke-latest
+  proof_level: governed-wrapper-enforced
   limitations:
-  - Current COS projection proof writes and verifies structural opencode.json only;
-    no account-backed OpenCode runtime invocation is in automated tests yet.
-  - OpenCode's official plugin API exposes tool.execute.before/tool.execute.after
-    and permission surfaces that can enforce some COS primitives. Do not model
-    OpenCode as documented-only or structural-advisory once a COS OpenCode plugin
-    adapter is implemented and smoke-tested.
-  - No COS OpenCode plugin adapter has been signed yet, so ACC must not claim
-    runtime enforcement from the existing opencode.json structural projection.
-  next_action: Implement a COS OpenCode plugin adapter for primitive interventions
-    and add account-backed or local CLI runtime smoke for representative blocking
-    and advisory primitives.
+  - The signed runtime slice is model-free and plugin-wrapper based; it does not
+    prove a paid/account-backed OpenCode LLM session.
+  - Structural opencode.json projection alone is not runtime enforcement. Runtime
+    claims apply only to primitives covered by the signed cos-primitive-guard.js
+    smoke.
+  - Remaining registry-backed primitives stay structural-advisory until their own
+    smoke evidence is signed.
+  next_action: Extend the signed OpenCode plugin smoke from the starter slice to
+    additional representative blocking and advisory primitives.
   default_command:
   - python3
   - scripts/cos_init.py
