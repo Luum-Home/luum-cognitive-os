@@ -38,7 +38,9 @@ func TestE2E_SDDLocalLaneHappyPath(t *testing.T) {
 		t.Fatalf("expected apply to pass, got %d\n%s", exitCode, out)
 	}
 
+	writeTestFileE2E(t, projectDir, ".cognitive-os/workflows/sdd/cli_recent/design.md", "# Design\n\n## Files To Touch\n\n- src/cli.py\n\n## Boundaries Not To Touch\n\n- secrets/\n")
 	writeTestFileE2E(t, projectDir, ".cognitive-os/workflows/sdd/cli_recent/tasks.md", "# Tasks\n\n- [x] Implement R1.\n- [x] Add evidence for R2.\n")
+	writeTestFileE2E(t, projectDir, ".cognitive-os/workflows/sdd/cli_recent/traceability.md", "# Traceability\n\n| Requirement | Evidence | Status | Notes |\n|---|---|---|---|\n| R1 | tests/test_cli.py::test_recent_limit | PASS | behavior test |\n| R2 | MANUAL-PROOF: reviewer checked command output | ACCEPTED | evidence captured |\n")
 	out, exitCode = runCos(t, projectDir, "sdd", "review", "cli_recent")
 	if exitCode != 0 {
 		t.Fatalf("expected review to pass, got %d\n%s", exitCode, out)
@@ -67,6 +69,7 @@ func TestE2E_SDDReviewFailsMissingTraceability(t *testing.T) {
 	if out, exitCode := runCos(t, projectDir, "sdd", "apply", "missing_trace"); exitCode != 0 {
 		t.Fatalf("apply failed: %d\n%s", exitCode, out)
 	}
+	writeTestFileE2E(t, projectDir, ".cognitive-os/workflows/sdd/missing_trace/design.md", "# Design\n\n## Files To Touch\n\n- src/cli.py\n")
 	writeTestFileE2E(t, projectDir, ".cognitive-os/workflows/sdd/missing_trace/tasks.md", "# Tasks\n\n- [x] Implement R1.\n- [x] Add evidence for R2.\n")
 	writeTestFileE2E(t, projectDir, ".cognitive-os/workflows/sdd/missing_trace/traceability.md", "# Traceability\n\n| Requirement | Evidence | Status | Notes |\n|---|---|---|---|\n| R1 | tests/test_cli.py::test_recent | PASS | ok |\n")
 

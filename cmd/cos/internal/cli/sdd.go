@@ -391,6 +391,10 @@ func reviewSDDArtifacts(feature string) (sddReviewResult, error) {
 	if err != nil {
 		return sddReviewResult{}, fmt.Errorf("reading traceability: %w", err)
 	}
+	designText, err := os.ReadFile(filepath.Join(featureDir, "design.md"))
+	if err != nil {
+		return sddReviewResult{}, fmt.Errorf("reading design: %w", err)
+	}
 	reqs := extractRequirementIDs(string(requirementsText))
 	mapped := extractMappedRequirementIDs(string(traceText))
 	mappedSet := map[string]bool{}
@@ -408,6 +412,12 @@ func reviewSDDArtifacts(feature string) (sddReviewResult, error) {
 	}
 	if hasUncheckedTask(string(tasksText)) {
 		findings = append(findings, sddReviewFinding{Severity: "MEDIUM", Message: "tasks.md still contains unchecked tasks"})
+	}
+	if containsSDDPlaceholder(string(traceText)) {
+		findings = append(findings, sddReviewFinding{Severity: "HIGH", Message: "traceability.md still contains placeholder evidence"})
+	}
+	if containsSDDPlaceholder(string(designText)) {
+		findings = append(findings, sddReviewFinding{Severity: "MEDIUM", Message: "design.md still contains placeholder implementation boundaries"})
 	}
 	verdict := "PASS"
 	if len(findings) > 0 {
@@ -447,6 +457,20 @@ func uniqueSubmatches(matches [][]string) []string {
 
 func hasUncheckedTask(text string) bool {
 	return regexp.MustCompile(`(?m)^\s*- \[ \]`).MatchString(text)
+}
+
+func containsSDDPlaceholder(text string) bool {
+	placeholders := []string{
+		"tests/path::test_name",
+		"Replace with real",
+		"Record expected files before implementation",
+	}
+	for _, placeholder := range placeholders {
+		if strings.Contains(text, placeholder) {
+			return true
+		}
+	}
+	return false
 }
 
 func validateWorkClass(workClass string) error {
