@@ -98,10 +98,23 @@ the highest severity when two personas independently flag the same issue. This
 is the canonical implementation when the subject under review is docs, not
 code — for code-level adversarial review, use `skills/code-review`.
 
+## Detractor Mode
+
+For planning, EAS, architecture, rollout, and final verification work, the adversarial reviewer SHOULD be named `Detractor` and framed as a Tenth-Man / Devil's-Advocate-inspired reviewer. The slot is portable across adopter projects; the selected mode varies by risk:
+
+- Tenth Man Rule: argue the consensus is wrong and name disconfirming evidence.
+- Devil's Advocate: ask for alternatives, drawbacks, supporting evidence, and assumptions.
+- Pre-mortem: assume the plan failed after approval and identify likely causes.
+- Black Hat: identify risks, difficulties, and reasons the proposal may not work.
+- Red Team: attack security, abuse, prompt-injection, or adversarial misuse paths.
+
+Multiple modes may be applied when a plan is both consensus-heavy and high-risk. Do not use the role as theater: every detractor finding must map to evidence, a task, or an explicit residual risk.
+
 ## Contextual Trigger
 
 - Pattern: `\b(review|audit|critique)\b`
 - Pattern: `\blooks good\b`
 - Pattern: `\b(no issues found|nothing to flag)\b`
 - Pattern: `\badversarial\b`
+- Pattern: `\b(Tenth Man|Devil'?s Advocate|Pre-mortem|Black Hat|Red Team|detractor)\b`
 - User asks for review, audit, critique, adversarial review, or tries to accept a zero-finding review.

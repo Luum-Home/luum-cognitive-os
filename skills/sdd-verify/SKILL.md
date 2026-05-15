@@ -48,9 +48,10 @@ Verification fails if the validator fails, unless the user explicitly accepts a 
 3. Run `python3 scripts/eas_validate.py <eas.md>` when EAS exists.
 4. Execute verification commands listed in EAS or mark manual checks with evidence.
 5. Confirm every `REQ-*` is covered by `AC-*` and evidence.
-6. Confirm every `OBJ-*` detractor objection is resolved, converted into a task, or carried as residual risk.
-7. Confirm residual risks are explicit, bounded, and acceptable for the current project phase.
-8. Return PASS only when validation and verification evidence support it.
+6. Confirm at least one detractor mode is named when EAS exists: Tenth Man Rule, Devil's Advocate, Pre-mortem, Black Hat, or Red Team.
+7. Confirm every `OBJ-*` detractor objection is resolved, converted into a task, or carried as residual risk.
+8. Confirm residual risks are explicit, bounded, and acceptable for the current project phase.
+9. Return PASS only when validation and verification evidence support it.
 
 ## Output Contract
 

@@ -43,6 +43,12 @@ assert_contains "ARG: prohibited-phrase severity message" "$OUT" "prohibited phr
 OUT=$(echo '{"tool_name":"Agent","tool_input":{"prompt":"review this code"},"tool_result":"Review complete. CRITICAL: race condition at line 42."}' | bash "$HOOK_ARG" 2>&1)
 assert_not_contains "ARG: review + CRITICAL finding -> silent pass" "$OUT" "WARNING"
 
+OUT=$(echo '{"tool_name":"Agent","tool_input":{"prompt":"run a Tenth Man detractor pass on this plan"},"tool_result":"Detractor mode: Tenth Man Rule. S2 CONCERN: consensus hides rollback risk."}' | bash "$HOOK_ARG" 2>&1)
+assert_not_contains "ARG: detractor + S2 concern -> silent pass" "$OUT" "WARNING"
+
+OUT=$(echo '{"tool_name":"Agent","tool_input":{"prompt":"run a Devil'\''s Advocate review"},"tool_result":"Looks good, no issues found."}' | bash "$HOOK_ARG" 2>&1)
+assert_contains "ARG: devil advocate + prohibited phrase -> WARNING" "$OUT" "WARNING \[adversarial-review-gate\]"
+
 OUT=$(echo '{"tool_name":"Agent","tool_input":{"prompt":"implement feature X"},"tool_result":"Implemented function foo."}' | bash "$HOOK_ARG" 2>&1)
 assert_not_contains "ARG: non-review context -> silent pass" "$OUT" "WARNING"
 
