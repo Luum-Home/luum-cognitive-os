@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # Shared agent-context detection for destructive-operation blockers.
 
 cos_is_agent_context() {

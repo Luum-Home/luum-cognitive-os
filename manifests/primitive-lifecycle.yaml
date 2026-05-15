@@ -13,6 +13,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
@@ -35,12 +36,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: mixed
   metrics_file: none
+
 - id: hooks/_lib/task-event.sh
   kind: hook
   owner_adr: ADR-149
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -63,6 +66,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/task-created.jsonl
+
 - id: hooks/aci-observation-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -1220,6 +1224,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
@@ -1244,6 +1249,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/dequeue-notify.sh
   kind: hook
   owner_adr: ADR-126
@@ -1685,6 +1691,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1705,6 +1712,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/*/obsidian-export.jsonl
+
 - id: hooks/engram-reinforce-on-access.sh
   kind: hook
   owner_adr: ADR-126
@@ -2141,6 +2149,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2178,6 +2187,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: none
+
 - id: hooks/orchestrator-claim-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -2670,6 +2680,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2704,6 +2715,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: none
+
 - id: hooks/query-tailored-context-inject.sh
   kind: hook
   owner_adr: ADR-126

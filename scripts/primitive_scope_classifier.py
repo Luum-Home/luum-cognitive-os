@@ -63,7 +63,9 @@ SHARED_HOOK_NAME_PATTERNS = {
     "engram-reinforce-on-access": "shared-memory-lifecycle",
     "dod-gate": "shared-delivery-quality",
     "large-file-advisor": "shared-context-hygiene",
+    "network-egress-guard": "shared-repository-security",
     "prompt-quality": "shared-agent-quality",
+    "protected-config-write-guard": "shared-agent-control-plane-safety",
     "resource-check": "shared-runtime-budget",
     "rule-router-prompt-suggest": "shared-rule-routing",
     "scope-creep": "shared-scope-governance",
@@ -79,6 +81,8 @@ SHARED_HOOK_NAME_PATTERNS = {
 
 COS_MAINTAINER_HOOK_NAME_PATTERNS = {
     "control-plane-audit": "cos-control-plane",
+    "dangerous-env-flag-detector": "cos-dangerous-env-overrides",
+    "engram-obsidian-export-on-stop": "cos-memory-export-operator",
     "cosd-": "cos-daemon-control",
     "pending-truth": "cos-planning-ledger",
     "primitive-": "cos-primitive-governance",
