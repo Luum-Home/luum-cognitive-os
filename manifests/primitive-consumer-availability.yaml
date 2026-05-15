@@ -2091,6 +2091,135 @@ items:
 - path: hooks/teammate-idle.sh
   status: shared-surface
   rationale: 'Manual scope review iteration 030: suggesting unclaimed tasks before a teammate goes idle is shared team-agent coordination.'
+- path: hooks/audit-id-enricher.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: audit-id enrichment is generic cross-cutting observability for COS and adopter sessions.'
+- path: hooks/auto-refine.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: failure-marker driven retry/refinement advice is generic agent quality recovery.'
+- path: hooks/auto-repair-dispatcher.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: known-fix repair dispatch for repeated errors is generic agent recovery behavior.'
+- path: hooks/clarification-interceptor.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: NEEDS_CLARIFICATION interception is generic agent workflow control.'
+- path: hooks/completion-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: single-pass completion/verification/refinement processing is generic delivery quality.'
+- path: hooks/consequence-evaluator.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: post-completion consequence/OKR evaluation is generic governance.'
+- path: hooks/cosd-auth-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: remote API auth/explicit opt-in guarding is shared runtime security when cosd is projected.'
+- path: hooks/cross-session-coordination-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: shared coordination ledger guarding is generic multi-session safety.'
+- path: hooks/cross-session-event-emit.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: standardized cross-session events are generic multi-session coordination.'
+- path: hooks/cross-session-peer-context.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: peer session awareness injection is generic multi-session coordination.'
+- path: hooks/document-ingest-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: routing direct PDF/document reads through an ingest path is generic document safety.'
+- path: hooks/epic-task-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: detecting tasks that may affect many files is generic launch safety.'
+- path: hooks/error-learning.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: capturing Bash/tool failures for learning is generic agent recovery.'
+- path: hooks/error-pattern-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: detecting repeated error patterns before launches is generic agent recovery.'
+- path: hooks/error-pipeline.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: single-pass error detection/logging/repair dispatch is generic agent recovery.'
+- path: hooks/git-context-capture.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: capturing branch/commit/diff context at session end is generic repository audit.'
+- path: hooks/host-tool-doctor.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: cached host tooling diagnostics are generic runtime health checks.'
+- path: hooks/inject-phase-context.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: injecting configured project phase context is generic project/runtime guidance.'
+- path: hooks/memory-prefetch.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: prefetching memory context from the user prompt is generic memory-assisted agent workflow.'
+- path: hooks/pending-truth-drift-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: detecting plan/ledger drift after edits is generic anti-stale-planning governance.'
+- path: hooks/pending-truth-staleness-gate.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: warning on stale pending-truth ledgers before commits is generic planning governance.'
+- path: hooks/pending-truth-verify-weekly.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: weekly pending-truth verification is generic anti-stale-planning governance.'
+- path: hooks/plan-claim-validator.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: requiring evidence for plan checkbox completion is generic planning truth governance.'
+- path: hooks/pre-compaction-flush.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: reminding agents to save durable memory before compaction is generic memory hygiene.'
+- path: hooks/project-docs-convention.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: project documentation convention checks apply to COS and adopter repositories.'
+- path: hooks/query-tailored-context-inject.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: injecting query-relevant context into subagents is generic context quality.'
+- path: hooks/rate-limit-protection.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: backward-compatible rate-limit protection shim is shared runtime budget safety.'
+- path: hooks/research-quality-validator.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: scoring research reports on evidence dimensions is generic research quality governance.'
+- path: hooks/result-truncator.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: truncating large tool outputs to protect context is generic session hygiene.'
+- path: hooks/session-cleanup.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: session active-state cleanup at Stop is generic runtime lifecycle hygiene.'
+- path: hooks/session-end-cleanup.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: tiered cleanup at session end is generic runtime lifecycle hygiene.'
+- path: hooks/session-heartbeat.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: session liveness heartbeats are generic runtime lifecycle signals.'
+- path: hooks/session-init.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: session isolation and registration is generic runtime lifecycle setup.'
+- path: hooks/session-learning.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: summarizing session failures/learnings is generic continuous improvement.'
+- path: hooks/session-sanity.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: session-state sanity diagnostics are generic runtime troubleshooting.'
+- path: hooks/session-startup-protocol.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: startup protocol reminders are generic session governance.'
+- path: hooks/session-summary-reminder.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: ensuring durable session summaries before stop is generic memory hygiene.'
+- path: hooks/session-wrapup-trigger.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: auto-suggesting wrapup on closure prompts is generic session lifecycle guidance.'
+- path: hooks/state-retention-audit.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: read-only retention drift monitoring is generic runtime state hygiene.'
+- path: hooks/surface-fix-detector.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: detecting prose-only surface fixes is generic decision-depth quality governance.'
+- path: hooks/task-recorder.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: recording completed task cost/model/duration metadata is generic team-agent observability.'
+- path: hooks/user-prompt-capture.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 031: capturing user prompts to memory for session context is generic memory-assisted workflow.'
+- path: hooks/scope-marker-portability-gate.sh
+  status: maintainer-only
+  rationale: 'Manual scope review iteration 031: gates COS primitive SCOPE marker changes and KD6 portability proof; this is primitive-taxonomy governance for COS maintainers.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

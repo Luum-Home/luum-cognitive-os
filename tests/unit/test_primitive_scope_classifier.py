@@ -508,3 +508,25 @@ def test_agent_orchestrator_and_team_hooks_are_shared_patterns(tmp_path: Path) -
     assert rows["hooks/orchestrator-claim-gate.sh"].suggested_scope == "both"
     assert rows["hooks/subagent-capability-preflight.sh"].suggested_scope == "both"
     assert rows["hooks/task-created.sh"].suggested_scope == "both"
+
+
+def test_quality_session_and_memory_hooks_are_shared_or_narrow_taxonomy_patterns(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    samples = {
+        "error-pipeline.sh": "# Detects, logs, and dispatches repair for tool errors.\n",
+        "session-init.sh": "# Initializes isolated session runtime state.\n",
+        "memory-prefetch.sh": "# Prefetches memory context from the user prompt.\n",
+        "scope-marker-portability-gate.sh": "# Gates COS primitive SCOPE marker changes under .cognitive-os manifests.\n",
+    }
+    for name, body in samples.items():
+        (root / "hooks" / name).write_text(f"#!/usr/bin/env bash\n# SCOPE: both\n{body}echo ok\n")
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    assert rows["hooks/error-pipeline.sh"].suggested_scope == "both"
+    assert rows["hooks/session-init.sh"].suggested_scope == "both"
+    assert rows["hooks/memory-prefetch.sh"].suggested_scope == "both"
+    taxonomy = rows["hooks/scope-marker-portability-gate.sh"]
+    assert taxonomy.suggested_scope == "os-only"
+    assert any(item.source == "semantic-pattern" and item.detail == "cos-scope-taxonomy-governance" for item in taxonomy.evidence)

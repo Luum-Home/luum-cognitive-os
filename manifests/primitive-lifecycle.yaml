@@ -478,6 +478,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -498,6 +499,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/cost-events.jsonl
+
 - id: hooks/auto-checkpoint.sh
   kind: hook
   owner_adr: ADR-126
@@ -532,6 +534,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -552,12 +555,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
+
 - id: hooks/auto-repair-dispatcher.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -578,6 +583,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
+
 - id: hooks/auto-rollback-trigger.sh
   kind: hook
   owner_adr: ADR-126
@@ -840,6 +846,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -860,6 +867,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-verify.jsonl
+
 - id: hooks/concurrent-write-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -962,6 +970,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -983,6 +992,7 @@ primitives:
     and regenerate settings, or restore the excluded rule to startup context.
   sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed
     projection compiler with equivalent tests.
+
 - id: hooks/content-policy.sh
   kind: hook
   owner_adr: ADR-126
@@ -1131,7 +1141,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/cosd-auth-guard.jsonl
-  consumer_accessibility: lifecycle-declared-core
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep as core runtime-safety guard while cosd supports
     local HTTP and remote bind modes.
 - id: hooks/crash-recovery.sh
@@ -1168,6 +1178,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1192,12 +1203,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/sessions/events.jsonl
+
 - id: hooks/cross-session-event-emit.sh
   kind: hook
   owner_adr: ADR-183
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1217,12 +1230,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/sessions/events.jsonl
+
 - id: hooks/cross-session-peer-context.sh
   kind: hook
   owner_adr: ADR-183
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1242,6 +1257,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/sessions/events.jsonl
+
 - id: hooks/dangerous-env-flag-detector.sh
   kind: hook
   owner_adr: ADR-164
@@ -1498,6 +1514,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1522,6 +1539,7 @@ primitives:
   false_positive_tests:
   - tests/hooks/test_document_ingest_guard.py
   - tests/unit/test_document_ingest.py
+
 - id: hooks/dod-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1777,6 +1795,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1797,12 +1816,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
+
 - id: hooks/error-pattern-detector.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1823,12 +1844,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
+
 - id: hooks/error-pipeline.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1849,6 +1872,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
+
 - id: hooks/git-commit-scope-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -1885,6 +1909,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1905,6 +1930,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/session-audit.jsonl
+
 - id: hooks/hook-header-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1943,6 +1969,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1963,6 +1990,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/infra-health.sh
   kind: hook
   owner_adr: ADR-126
@@ -1995,6 +2023,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2015,6 +2044,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/kpi-trigger.sh
   kind: hook
   owner_adr: ADR-126
@@ -2130,6 +2160,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2149,6 +2180,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/native-agent-heartbeat.sh
   kind: hook
   owner_adr: ADR-126
@@ -2329,6 +2361,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2355,6 +2388,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/plan-claim-validator.jsonl
+
 - id: hooks/post-agent-snapshot-restore.sh
   kind: hook
   owner_adr: ADR-126
@@ -2504,6 +2538,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2524,6 +2559,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/predev-completeness-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -2642,6 +2678,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2668,6 +2705,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: none
+
 - id: hooks/promotion-proposer-weekly.sh
   kind: hook
   owner_adr: ADR-180
@@ -2768,6 +2806,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2788,6 +2827,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/rate-limit-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -2996,6 +3036,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3015,12 +3056,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/research-quality.jsonl
+
 - id: hooks/result-truncator.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3041,6 +3084,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/truncation-events.jsonl
+
 - id: hooks/review-spawner.sh
   kind: hook
   owner_adr: ADR-126
@@ -3182,6 +3226,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: core
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -3208,6 +3253,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/scope-marker-portability-gate.jsonl
+
 - id: hooks/scope-proportionality.sh
   kind: hook
   owner_adr: ADR-144
@@ -3350,6 +3396,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3370,6 +3417,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
+
 - id: hooks/session-end-reap.sh
   kind: hook
   owner_adr: ADR-126
@@ -3402,6 +3450,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3422,12 +3471,14 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/session-init.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3448,12 +3499,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
+
 - id: hooks/session-learning.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3474,6 +3527,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/session-learnings.jsonl
+
 - id: hooks/session-resume.sh
   kind: hook
   owner_adr: ADR-126
@@ -3506,6 +3560,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3524,6 +3579,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/session-start-stash-reapply.sh
   kind: hook
   owner_adr: ADR-126
@@ -3586,6 +3642,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3605,12 +3662,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
+
 - id: hooks/session-summary-reminder.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3630,6 +3689,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/session-summary-fallback.jsonl
+
 - id: hooks/session-watchdog-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -3662,6 +3722,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3682,6 +3743,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-trigger-events.jsonl
+
 - id: hooks/skill-failure-monitor.sh
   kind: hook
   owner_adr: ADR-126
@@ -4066,6 +4128,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4086,6 +4149,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/surface-fix-detector.jsonl
+
 - id: hooks/symlink-mutation-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -4351,6 +4415,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4371,6 +4436,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/prompt-captures.jsonl
+
 - id: hooks/validation-lock-cleanup.sh
   kind: hook
   owner_adr: ADR-126
@@ -9112,6 +9178,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9132,12 +9199,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/pending-truth-staleness-gate.sh
   kind: hook
   owner_adr: ADR-273
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9158,12 +9227,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/pending-truth-verify-weekly.sh
   kind: hook
   owner_adr: ADR-273
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9184,6 +9255,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/research-to-runtime-firewall.sh
   kind: hook
   owner_adr: ADR-267
@@ -10267,7 +10339,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: .cognitive-os/metrics/*.jsonl
-  consumer_accessibility: lifecycle-declared-team
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming
     broad consumer availability.
 - id: hooks/epic-task-detector.sh
@@ -10299,7 +10371,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: .cognitive-os/metrics/*.jsonl
-  consumer_accessibility: lifecycle-declared-team
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming
     broad consumer availability.
 - id: hooks/resource-check.sh
