@@ -33,6 +33,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [SDD Harness Consumer Workflow Audit](../../08-References/business/sdd-harness-consumer-workflow-audit.md) — comparison against `betta-tech/harness-sdd`, preserving the consumer SDD lane diagnosis and recommended workflow contract.
+- [Consumer SDD Lane Surgical Review Plan](../../08-References/business/consumer-sdd-lane-surgical-review-plan.md) — phased audit and implementation plan for turning the SDD diagnosis into a local-first, cross-harness consumer workflow lane.
 - [Primitive Scope Classification](../../04-Concepts/architecture/primitive-scope-classification.md)
 - [ADR-320: Install Scope Surface Debt and Protected Config Boundary](adrs/ADR-320-install-scope-surface-debt.md) — records that `project` and `both` install scopes are aliases today, `all` is the maintainer superset, and `.env` is outside protected-config policy.
 - [Primitive Parser Contracts](../../04-Concepts/architecture/primitive-parser-contracts.md) — normalized parser contracts for skills, rules, hooks, scripts, templates, and package skills before scope classification.
