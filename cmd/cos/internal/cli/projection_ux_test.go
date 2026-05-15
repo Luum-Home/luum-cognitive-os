@@ -161,6 +161,55 @@ func TestDoctorHarnessReportsReceiptsAndProofLevel(t *testing.T) {
 	}
 }
 
+func TestProjectApplyForKiloCodePreservesJSONCComments(t *testing.T) {
+	dir := createTestProject(t)
+	writeTestFileE2E(t, dir, ".kilo/kilo.jsonc", `// keep this operator note
+{
+  "existing": true,
+  "instructions": ["CUSTOM.md"]
+}
+`)
+
+	out, code := runCos(t, dir, "project", "--harness", "kilo-code")
+	if code != 0 {
+		t.Fatalf("expected exit 0, got %d\n%s", code, out)
+	}
+	data, err := os.ReadFile(filepath.Join(dir, ".kilo", "kilo.jsonc"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	for _, want := range []string{"// keep this operator note", `"existing": true`, "CUSTOM.md", ".kilocode/rules/cognitive-os.md"} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("expected JSONC merge to preserve %q in:\n%s", want, text)
+		}
+	}
+}
+
+func TestPrimitiveStatsReportsInstalledCounts(t *testing.T) {
+	dir := createTestProject(t)
+	out, code := runCos(t, dir, "project", "--harness", "cursor")
+	if code != 0 {
+		t.Fatalf("expected projection apply to pass, got %d\n%s", code, out)
+	}
+
+	out, code = runCos(t, dir, "primitive", "stats", "--harness", "cursor", "--json")
+	if code != 0 {
+		t.Fatalf("expected primitive stats to pass, got %d\n%s", code, out)
+	}
+	var payload map[string]any
+	if err := json.Unmarshal([]byte(out), &payload); err != nil {
+		t.Fatal(err)
+	}
+	if payload["harness"] != "cursor" || payload["proof_level"] != "structural" {
+		t.Fatalf("unexpected stats payload: %s", out)
+	}
+	installed := payload["installed"].(map[string]any)
+	if installed["skills"].(float64) < 1 || installed["hooks"].(float64) < 1 || installed["rules"].(float64) < 1 {
+		t.Fatalf("expected installed primitive counts: %s", out)
+	}
+}
+
 func assertProjectionReceipt(t *testing.T, dir, kind, harness string) {
 	t.Helper()
 	receipts, err := filepath.Glob(filepath.Join(dir, ".cognitive-os", "receipts", "projection-*.json"))
