@@ -12,18 +12,31 @@ Command:
 scripts/cos-manifest-tier-claim-audit --json
 ```
 
-Baseline captured during the promise-compliance remediation pass:
+Baseline captured during the promise-compliance remediation pass, then ratcheted by the first skill-distribution pass:
 
-| Metric | Count |
-|---|---:|
-| Primitive rows audited | 607 |
-| Findings | 790 |
-| Warnings | 474 |
-| Info findings | 316 |
-| `core_team_without_strong_evidence` | 237 |
-| `candidate_to_lab_or_advisory` | 229 |
-| `maintainer_knowledge_dependent` | 262 |
-| `candidate_second_demote` | 62 |
+| Metric | Baseline | After skill-distribution pass | Delta |
+|---|---:|---:|---:|
+| Primitive rows audited | 607 | 646 | +39 |
+| Findings | 790 | 731 | -59 |
+| Warnings | 474 | 412 | -62 |
+| Info findings | 316 | 319 | +3 |
+| `core_team_without_strong_evidence` | 237 | 206 | -31 |
+| `candidate_to_lab_or_advisory` | 229 | 198 | -31 |
+| `maintainer_knowledge_dependent` | 262 | 265 | +3 |
+| `candidate_second_demote` | 62 | 62 | 0 |
+
+## Remediation Log
+
+### Skill distribution pass — 2026-05-15
+
+Changed 48 skill lifecycle rows from `core`/`team` distribution to `lab` because they are reusable/advisory skills, not proven runtime-safety blockers. This preserves opt-in availability while removing broad product-surface claims. Each changed row carries `demotion_evidence` with the audit command.
+
+Validation result after the pass:
+
+```text
+scripts/cos-manifest-tier-claim-audit --json
+status=warn primitive_count=646 finding_count=731 warning_count=412
+```
 
 ## Interpretation
 

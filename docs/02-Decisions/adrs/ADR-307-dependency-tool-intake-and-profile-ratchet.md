@@ -4,20 +4,33 @@ title: Dependency Tool Intake and Profile Ratchet
 status: accepted
 implementation_status: implemented
 date: 2026-05-14
-extends: [ADR-145, ADR-168, ADR-208, ADR-305]
+extends:
+- ADR-145
+- ADR-168
+- ADR-208
+- ADR-305
 related:
-  - docs/02-Decisions/adrs/ADR-305-dependency-coverage-reconciliation-audit.md
-  - docs/06-Daily/reports/dependency-management-surface-review-2026-05-14.md
-tags: [dependencies, installation, audit, ratchet, primitive-governance]
+- docs/02-Decisions/adrs/ADR-305-dependency-coverage-reconciliation-audit.md
+- docs/06-Daily/reports/dependency-management-surface-review-2026-05-14.md
+tags:
+- dependencies
+- installation
+- audit
+- ratchet
+- primitive-governance
 implementation_files:
-  - lib/dependency_tool_intake.py
-  - lib/dependency_profile_ratchet.py
-  - scripts/cos-deps-triage
-  - scripts/cos-deps-profile-ratchet
-  - scripts/dependency-lane.sh
-  - scripts/cos-doctor-tools.sh
-  - scripts/cos-dependency-adoption-gate
-  - tests/unit/test_dependency_tool_intake.py
+- lib/dependency_tool_intake.py
+- lib/dependency_profile_ratchet.py
+- scripts/cos-deps-triage
+- scripts/cos-deps-profile-ratchet
+- scripts/dependency-lane.sh
+- scripts/cos-doctor-tools.sh
+- scripts/cos-dependency-adoption-gate
+- tests/unit/test_dependency_tool_intake.py
+adr: 307
+tier: maintainer
+classification_basis: dependency tool intake, profile ratchet, CLIs, lane wiring,
+  adoption gate, and tests are implemented; no remaining in-scope work for this ADR
 ---
 
 # ADR-307 — Dependency Tool Intake and Profile Ratchet

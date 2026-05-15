@@ -3,11 +3,22 @@ status: Accepted
 date: 2026-05-14
 deciders: Cognitive OS maintainers
 tags:
-  - observability
-  - telemetry
-  - slo
-  - subagents
+- observability
+- telemetry
+- slo
+- subagents
 implementation_status: Implemented
+adr: 309
+title: Current-Window Subagent Spawn SLOs
+implementation_files:
+- manifests/observability-slo.yaml
+- lib/telemetry_aggregator.py
+- tests/unit/test_telemetry_aggregator.py
+- tests/unit/test_agent_spawn_budget.py
+- tests/unit/test_startup_budget.py
+tier: maintainer
+classification_basis: current-window telemetry SLO evaluation and subagent/startup
+  budget tests are implemented; no remaining in-scope work for this ADR
 ---
 
 # ADR-309: Current-Window Subagent Spawn SLOs with Historical Tail Diagnostics

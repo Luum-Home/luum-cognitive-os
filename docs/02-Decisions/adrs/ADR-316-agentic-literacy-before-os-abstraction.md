@@ -5,36 +5,39 @@ status: accepted
 implementation_status: implemented
 date: '2026-05-15'
 extends:
-  - ADR-057
-  - ADR-064
-  - ADR-123
-  - ADR-258
-  - ADR-312
+- ADR-057
+- ADR-064
+- ADR-123
+- ADR-258
+- ADR-312
 supersedes: []
 superseded_by: null
 implementation_files:
-  - docs/08-References/business/promise-compliance-audit-2026-05-15.md
-  - docs/04-Concepts/architecture/harness-engineering.md
-  - docs/08-References/business/developer-confidence.md
-  - docs/03-PoCs/research/minimal-context-principle.md
+- docs/08-References/business/promise-compliance-audit-2026-05-15.md
+- docs/04-Concepts/architecture/harness-engineering.md
+- docs/08-References/business/developer-confidence.md
+- docs/03-PoCs/research/minimal-context-principle.md
 tier: core
 tags:
-  - product-boundary
-  - developer-experience
-  - harness-engineering
-  - portability
-  - education
-classification_basis: accepted product and architecture boundary; Cognitive OS must teach and preserve operational discipline without hiding the underlying harnesses, security model, or SDD workflow from developers.
+- product-boundary
+- developer-experience
+- harness-engineering
+- portability
+- education
+classification_basis: accepted product and architecture boundary implemented as documentation
+  doctrine; no remaining in-scope work for this ADR, and future education or harness
+  material is separate/out-of-scope follow-up.
 verification:
   level: medium
   commands:
-    - .venv/bin/python -m pytest tests/contracts/test_harness_engineering_docs.py tests/contracts/test_product_zones.py -q
-    - scripts/cos-public-claim-gate --json
-    - bash scripts/cos measure harness-profiles --json
+  - .venv/bin/python -m pytest tests/contracts/test_harness_engineering_docs.py tests/contracts/test_product_zones.py
+    -q
+  - scripts/cos-public-claim-gate --json
+  - bash scripts/cos measure harness-profiles --json
   proves:
-    - harness doctrine and product zones remain linked and executable
-    - public autonomous/self-improvement claims remain bounded
-    - minimal and full harness surfaces remain measurable
+  - harness doctrine and product zones remain linked and executable
+  - public autonomous/self-improvement claims remain bounded
+  - minimal and full harness surfaces remain measurable
 ---
 
 # ADR-316 — Agentic Literacy Before OS Abstraction

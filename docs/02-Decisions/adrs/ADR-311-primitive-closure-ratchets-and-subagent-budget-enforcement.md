@@ -4,6 +4,22 @@ title: Primitive Closure Ratchets and Subagent Budget Enforcement
 status: accepted
 implementation_status: implemented
 date: 2026-05-14
+implementation_files:
+- hooks/subagent-budget-enforcer.sh
+- scripts/primitive_closure_ratchet.py
+- scripts/cos-primitive-closure-ratchet
+- manifests/primitive-closure-ratchet.yaml
+- tests/contracts/test_subagent_budget_enforcer.py
+- tests/contracts/test_primitive_closure_ratchet.py
+tier: maintainer
+tags:
+- primitive-closure
+- subagents
+- governance
+- ratchet
+classification_basis: subagent budget enforcer, primitive closure ratchet, manifest
+  wiring, and contract tests are implemented; no remaining in-scope work for this
+  ADR
 ---
 # ADR-311: Primitive Closure Ratchets and Subagent Budget Enforcement
 

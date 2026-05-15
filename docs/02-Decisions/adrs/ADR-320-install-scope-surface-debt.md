@@ -18,8 +18,15 @@ implementation_files:
 - tests/red_team/portability/test_protected-config-write-guard.py
 - docs/06-Daily/reports/cos-install-scope-dev-smoke-latest.md
 tier: project
-authority: install-scope smoke, installer source, protected-config policy, and manual hook probe
-classification_basis: project and both install scopes are aliases; all is a maintainer superset; protected-config guard protects control-plane files, not .env secrets
+authority: install-scope smoke, installer source, protected-config policy, and manual
+  hook probe
+classification_basis: project and both install scopes are aliases; all is a maintainer
+  superset; protected-config guard protects control-plane files, not .env secrets
+tags:
+- install-scope
+- projection
+- protected-config
+- portability
 ---
 
 # ADR-320 — Install Scope Surface Debt and Protected Config Boundary

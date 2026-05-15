@@ -1,32 +1,44 @@
 ---
 adr: 289
-title: 'Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram'
+title: 'Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational
+  Engram'
 status: accepted
 implementation_status: partial
-classification_basis: 'Layer 2 (vault) and Layer 3 (engram) are implemented; Layer 1 (raw sources) canonical location and ingest pipeline are not yet formalized.'
+classification_basis: Layer 2 (vault) and Layer 3 (engram) are implemented; remaining
+  work is Layer 1 (raw sources) canonical location and ingest pipeline plus raw-to-vault
+  retrieval pipeline formalization.
 date: '2026-05-13'
 supersedes: []
 superseded_by: null
-extends: [ADR-284, ADR-287, ADR-285, ADR-286, ADR-256]
+extends:
+- ADR-284
+- ADR-287
+- ADR-285
+- ADR-286
+- ADR-256
 implementation_files:
-  - docs/
-  - lib/engram_wave3_schema.py
-  - lib/engram_obsidian_exporter.py
-  - lib/engram_crystallizer.py
-  - lib/engram_bundle_exporter.py
-  - manifests/capability-coverage.yaml
+- docs/
+- lib/engram_wave3_schema.py
+- lib/engram_obsidian_exporter.py
+- lib/engram_crystallizer.py
+- lib/engram_bundle_exporter.py
+- manifests/capability-coverage.yaml
 tier: maintainer
 tags:
-  - knowledge-architecture
-  - documentation
-  - engram
-  - vault
-  - raw-sources
-  - traceability
-partial_remaining: |
-  Layer 1 (raw sources) has no canonical on-disk location and no ingest
+- knowledge-architecture
+- documentation
+- engram
+- vault
+- raw-sources
+- traceability
+partial_remaining: 'Layer 1 (raw sources) has no canonical on-disk location and no
+  ingest
+
   pipeline from raw to vault; vault->engram retrieve pipeline is also not
+
   implemented. Both are tracked as known gaps.
+
+  '
 partial_remaining_basis: specific classification_basis
 ---
 

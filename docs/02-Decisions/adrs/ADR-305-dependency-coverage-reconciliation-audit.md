@@ -4,15 +4,30 @@ title: Dependency Coverage Reconciliation Audit
 status: accepted
 implementation_status: implemented
 date: 2026-05-14
-extends: [ADR-145, ADR-168, ADR-208, ADR-212, ADR-217, ADR-254]
+extends:
+- ADR-145
+- ADR-168
+- ADR-208
+- ADR-212
+- ADR-217
+- ADR-254
 related:
-  - docs/06-Daily/reports/dependency-management-surface-review-2026-05-14.md
-  - docs/06-Daily/reports/dependency-installer-coverage-gap-postmortem-2026-05-14.md
-tags: [dependencies, installation, audit, manifests, tooling]
+- docs/06-Daily/reports/dependency-management-surface-review-2026-05-14.md
+- docs/06-Daily/reports/dependency-installer-coverage-gap-postmortem-2026-05-14.md
+tags:
+- dependencies
+- installation
+- audit
+- manifests
+- tooling
 implementation_files:
-  - lib/dependency_coverage_audit.py
-  - scripts/cos-deps-coverage-audit
-  - tests/unit/test_dependency_coverage_audit.py
+- lib/dependency_coverage_audit.py
+- scripts/cos-deps-coverage-audit
+- tests/unit/test_dependency_coverage_audit.py
+adr: 305
+tier: maintainer
+classification_basis: dependency coverage audit library, CLI, and unit tests are implemented;
+  no remaining in-scope work for this ADR
 ---
 
 # ADR-305 — Dependency Coverage Reconciliation Audit

@@ -4,9 +4,32 @@ title: Scope Projection Runtime Audit
 status: accepted
 implementation_status: implemented
 date: 2026-05-14
-extends: [ADR-019, ADR-256, ADR-258, ADR-302]
-related: [ADR-304]
-tags: [portability, projection, scope, consumer-install, primitive-governance]
+extends:
+- ADR-019
+- ADR-256
+- ADR-258
+- ADR-302
+related:
+- ADR-304
+tags:
+- portability
+- projection
+- scope
+- consumer-install
+- primitive-governance
+adr: 306
+implementation_files:
+- scripts/cos-scope-projection-audit
+- scripts/cos-scope-both-portability-audit
+- scripts/cos-status.sh
+- scripts/cos-ci-local.sh
+- scripts/cos_init.py
+- tests/unit/test_scope_projection_audit.py
+- tests/unit/test_cos_init_py.py
+- tests/behavior/test_cos_init_parity_2_2.py
+tier: maintainer
+classification_basis: scope projection audit, portability status surface, install
+  filtering, and tests are implemented; no remaining in-scope work for this ADR
 ---
 
 # ADR-306 — Scope Projection Runtime Audit

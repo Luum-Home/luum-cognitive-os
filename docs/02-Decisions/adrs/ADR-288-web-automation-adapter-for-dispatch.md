@@ -7,18 +7,21 @@ date: '2026-05-13'
 supersedes: []
 superseded_by: null
 implementation_files:
-  - pyproject.toml
-  - lib/browser_use_adapter.py
-  - lib/web_automation_router.py
-  - skills/browser-task/SKILL.md
-  - tests/unit/test_browser_use_adapter.py
-  - tests/integration/test_dispatch_web_automation_routing.py
+- pyproject.toml
+- lib/browser_use_adapter.py
+- lib/web_automation_router.py
+- skills/browser-task/SKILL.md
+- tests/unit/test_browser_use_adapter.py
+- tests/integration/test_dispatch_web_automation_routing.py
 tier: maintainer
 tags:
-  - web-automation
-  - dispatch
-  - browser-use
-classification_basis: optional browser-use dependency, adapter, router, skill, and dispatch-routing tests implemented as the accepted Slice A integration; no remaining in-scope work for this ADR, and dispatch.py caller expansion is separate/out-of-scope follow-up
+- web-automation
+- dispatch
+- browser-use
+classification_basis: optional browser-use dependency, adapter, router, skill, and
+  dispatch-routing tests implemented as the accepted Slice A integration; no remaining
+  in-scope work for this ADR, and dispatch.py caller expansion is separate/out-of-scope
+  follow-up
 ---
 
 # ADR-288: Web-Automation Adapter for Dispatch (browser-use)
