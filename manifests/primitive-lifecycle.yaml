@@ -5581,6 +5581,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -5594,6 +5595,7 @@ primitives:
   behavior_evidence: portable Engram bundle export/import-propose covered by tests
   evidence_commands:
   - python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+  - python3 -m pytest tests/red_team/portability/test_cos-engram-bundle.py tests/red_team/portability/test_cos-engram-import-propose.py -q
   exit_behavior: exit_0
   metrics_file: none
   docs_claim_level: advisory
@@ -17896,3 +17898,50 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: advisory
   metrics_file: none
+
+- id: scripts/cos-engram-import-propose
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: memory-federation-review
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/cos-engram-import-propose
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 035: propose-only import reviews project-scoped Engram bundle evidence without mutating memory stores.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_cos-engram-import-propose.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/engram-sync.sh
+  kind: script
+  owner_adr: ADR-141
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: memory-sync
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/engram-sync.sh
+  runtime_projection: false
+  behavior_evidence: 'Manual scope review iteration 035: exports/imports or cloud-syncs project-scoped Engram observations for any configured repository.'
+  evidence_commands:
+  - python3 -m pytest tests/red_team/portability/test_engram-sync.py -q
+  docs_claim_level: advisory
+  exit_behavior: advisory
+  metrics_file: .cognitive-os/runtime/agent-audit-trail.jsonl

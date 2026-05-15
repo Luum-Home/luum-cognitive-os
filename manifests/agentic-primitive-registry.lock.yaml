@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-15T15:53:10+00:00'
+generated_at: '2026-05-15T15:57:46+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -4406,6 +4406,18 @@ primitives:
   - scripts/engram-sync.sh
   - docker/cos-worker/docker-compose.yml
   sha256: 1219037795e89a33c4cbdd08a481b0e440eca8d90065be78e43a9bbb585284d8
+- id: scripts/cos-engram-import-propose
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-engram-import-propose
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  sha256: f70d8c2911609c030e00a637b35bd60a0058f918a5e26f89902a06adcf972fe1
 - id: scripts/cos-export-consumer-evidence
   kind: script
   owner_adr: ADR-136
@@ -5325,6 +5337,16 @@ primitives:
   projection_targets:
   - scripts/edit-coop.sh
   sha256: 4b4d7d3d367e8df4423e50397ee33896e565debbcee49dd12ffcae4778c847c1
+- id: scripts/engram-sync.sh
+  kind: script
+  owner_adr: ADR-141
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/engram-sync.sh
+  sha256: 7a10b8041f13b3f3f4817dea08e07ae81b328123d964fbea0d0fbd01301b5373
 - id: scripts/generate-project-settings.sh
   kind: script
   owner_adr: ADR-146
