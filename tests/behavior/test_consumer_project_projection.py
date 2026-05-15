@@ -183,6 +183,8 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in instruction_text
         assert ".cognitive-os/skills/cos/" in instruction_text
         assert "Structural projection boundary" in instruction_text
+        assert "cos sdd next --feature <slug>" in instruction_text
+        assert ".cognitive-os/workflows/sdd/" in instruction_text
         assert "Do not claim Claude/Codex native lifecycle hook parity" in instruction_text
     assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
     assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md").exists()
