@@ -286,7 +286,7 @@ def _run_pipeline(
                 f"**Phase `{phase}` completed** ({elapsed:.0f}s)",
             )
         else:
-            stderr_snippet = (result.stderr or "")[:500]
+            stderr_snippet = (result.error_message or result.result_text or "")[:500]
             _gh_comment(
                 repo,
                 issue_number,
@@ -333,6 +333,9 @@ def _run_phase(executor: ClaudeExecutor, phase: str, change_name: str) -> Claude
 
 
 if FASTAPI_AVAILABLE:
+    assert FastAPI is not None
+    assert HTTPException is not None
+    assert uvicorn is not None
     app = FastAPI(
         title="Luum Webhook Trigger",
         description="GitHub webhook receiver for Cognitive OS SDD pipeline",
@@ -349,7 +352,7 @@ if FASTAPI_AVAILABLE:
         }
 
     @app.post("/gh-webhook")
-    async def github_webhook(request: Request) -> Dict[str, Any]:
+    async def github_webhook(request: Any) -> Dict[str, Any]:
         """Receive and process GitHub webhook events.
 
         Supported events:
@@ -453,4 +456,5 @@ if __name__ == "__main__":
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     )
     logger.info("Starting webhook trigger on port %d", PORT)
+    assert uvicorn is not None
     uvicorn.run(app, host="0.0.0.0", port=PORT)
