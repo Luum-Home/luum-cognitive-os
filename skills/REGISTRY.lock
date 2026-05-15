@@ -1,17 +1,17 @@
 schema_version: 1
-generated_at: '2026-05-15T16:00:16+00:00'
+generated_at: '2026-05-15T16:26:56+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
   sha256: 630bdbd4f5c8246c80a0ba2dafb81f49a7c8bf4409b94290a8701d7338ff3d7e
 - path: skills/add-hook/SKILL.md
-  sha256: bb7e0ac2a6fac07d8004bae16d0f04750f71543c252da18e59f10619f39ed514
+  sha256: e52c8d3e99663cb9ce53dd1e890d71cb2af0a4e8a23ec03bb8e42a10c9c21419
 - path: skills/add-mcp/SKILL.md
   sha256: 7ab37ed33d6efa7a6ed56d479a06f5836e96d2875253467d8924d424a7e920cd
 - path: skills/add-rule/SKILL.md
-  sha256: 9dcaa933e3da506c92d4bfefdf2456118e55418cd6234b08288ee7c31e3c1d73
+  sha256: 29bec08c4361de70bfc0d81e60bc7db09b7f7eef18c5f651705ecea15377f53f
 - path: skills/add-skill/SKILL.md
-  sha256: 160e919f550977a05395aee090046ebfc935790a1703f53dcac5faaaa672fc7d
+  sha256: 754a2a55116912a6a2b18d02bade90f67b6f40be009110c48bc3d01356644d78
 - path: skills/adr-tombstone/SKILL.md
   sha256: 77c40612e4b70c1671a8c3017cea07f7fbf0449a06c5ef7419b6785a7ce971cb
 - path: skills/agent-control/SKILL.md
@@ -195,11 +195,11 @@ skills:
 - path: skills/preserved-wip-cleanup/SKILL.md
   sha256: 7af6946bc2badd87106d8b77d5f7f353e88a48e0fc3cb1642c893b0602ead06c
 - path: skills/primitive-authoring/SKILL.md
-  sha256: 413ebb3e0dbe31ebdd058e339ec9876c6a449bffb3c6e09080248cb7e1223386
+  sha256: c28b35f5c4b32b26379072e95d021f1afc4458edbd396ac58d8fadaee491b780
 - path: skills/primitive-harness-coverage/SKILL.md
   sha256: fff379985355e914aeeaed4b3a6d8e5018e18c005797bf6b94eefc91ed33082e
 - path: skills/primitive-harvester/SKILL.md
-  sha256: 39a5c01b0557c9379cd96a8830e8e38165996a870aff88d6b13a4ebf87da269a
+  sha256: 980c4b49d075520775338b40b93efdc6b52652f10f5bc97335981d4070be05ba
 - path: skills/primitive-surface-reduction/SKILL.md
   sha256: bca6bf516b3ef7eb9cb74ff670a2f411bfd4470bdd6d612bd74761412e8b4f5c
 - path: skills/primitive-usage-map/SKILL.md

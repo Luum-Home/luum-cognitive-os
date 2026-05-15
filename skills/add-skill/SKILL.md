@@ -237,7 +237,13 @@ If the skill can be installed into consumer projects, also run the install smoke
 
 ```bash
 scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write
+scripts/cos-install-projection-audit --json
 ```
+
+Run `scripts/cos-install-projection-audit --json` whenever the skill changes
+generated settings, install profiles, hook routing, or any projected consumer
+surface. It catches dangling hook registrations and SCOPE-excluded hook
+projection after the actual filtered install runs.
 
 ## Operational Skills (command-style frontmatter)
 
@@ -268,4 +274,5 @@ This is used for skills like `daily-health-check` that have a direct invocation 
 - [ ] Harness-specific assumptions are either absent or explicitly documented
 - [ ] Scope checks pass: `scripts/cos-scope-both-portability-audit --strict --no-write` and `scripts/cos-scope-projection-audit --strict --no-write`
 - [ ] Consumer-visible skills pass install projection smoke: `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write`
+- [ ] Generated install/projected settings remain consistent: `scripts/cos-install-projection-audit --json`
 - [ ] Skill loads without error: `cat skills/{skill-name}/SKILL.md | head -10`

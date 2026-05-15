@@ -129,18 +129,18 @@ filter_hook_list_by_scope() {
   done
 }
 
-# ADR-093 default tier hook set (~29 hooks). Includes the regression guards:
-# auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
-DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cleanup.sh result-truncator.sh
+# ADR-093 default tier hook set. This must stay aligned with
+# scripts/cos_init.py::DEFAULT_HOOKS because default installs only copy these hooks.
+# Scope controls eligibility; this list controls projection surface.
+DEFAULT_HOOKS="error-learning.sh error-pipeline.sh result-truncator.sh session-init.sh host-tool-doctor.sh session-cleanup.sh
   user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
-  pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh ai-provider-identity-guard.sh
-  confidentiality-enforcer.sh
-  doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh direct-main-guard.sh orchestrator-claim-gate.sh plan-claim-validator.sh completion-gate.sh
-  clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh
-  session-learning.sh engram-obsidian-export-on-stop.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
+  pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh
+  doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh completion-gate.sh
+  clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh confidentiality-enforcer.sh
+  session-learning.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
 
 # ── Step 1: Transform paths ─────────────────────────────────────────
 # $CLAUDE_PROJECT_DIR/hooks/X.sh -> ${driver_project_expr}/.cognitive-os/hooks/cos/X.sh

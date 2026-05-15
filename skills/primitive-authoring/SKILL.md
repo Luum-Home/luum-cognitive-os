@@ -194,8 +194,14 @@ the runtime projection smoke as the authoritative check:
 
 ```bash
 scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write
+scripts/cos-install-projection-audit --json
 scripts/cos status --portability
 ```
+
+`scripts/cos-install-projection-audit` is the hard install guard: it creates
+filtered Codex and Claude fixture installs and proves every generated hook
+registration points to a hook file actually copied by that same install scope
+and mode. Do not treat a SCOPE classifier pass as enough for install safety.
 
 ## 4. Projection fidelity
 
@@ -234,6 +240,7 @@ If the primitive changes install, update, projection, generated settings, defaul
 profiles, or consumer-visible files, run or plan:
 
 ```bash
+scripts/cos-install-projection-audit --json
 scripts/cos-consumer-fleet-audit --json
 ```
 

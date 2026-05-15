@@ -2,14 +2,19 @@
 adr: 320
 title: Install Scope Surface Debt and Protected Config Boundary
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-05-15'
 supersedes: []
 superseded_by: null
 implementation_files:
 - install.sh
 - scripts/cos_init.py
+- scripts/generate-project-settings.sh
+- scripts/cos_install_projection_audit.py
+- scripts/cos-install-projection-audit
 - tests/behavior/test_cos_init_parity_2_2.py
+- tests/integration/test_install_projection_audit.py
+- tests/integration/test_project_settings_generation.py
 - tests/red_team/portability/test_protected-config-write-guard.py
 - docs/06-Daily/reports/cos-install-scope-dev-smoke-latest.md
 tier: project
@@ -71,6 +76,27 @@ not claim that `protected-config-write-guard` blocks `.env` writes unless a late
 ADR adds `.env`/`.env*` to `manifests/protected-config-write-policy.yaml` and
 adds passing tests for that policy.
 
+
+## Projection Consistency Guardrail
+
+SCOPE filtering is necessary but not sufficient. A generated harness projection is
+valid only when every registered hook command points at a hook file that the same
+filtered install actually copied into the target project. The invariant is:
+
+> settings hook reference ⊆ installed hook files ∩ SCOPE-allowed hook files
+
+`scripts/cos-install-projection-audit` enforces this invariant by creating
+temporary fixture projects across install scope, harness, and install mode, then
+reading the generated `.codex/hooks.json` or `.claude/settings.json`. It fails on
+source-layout hook paths, registered hooks that are missing from
+`.cognitive-os/hooks/cos/`, or hooks whose source `SCOPE` is excluded by the
+current install scope.
+
+Default-mode projection must also stay aligned with
+`scripts/cos_init.py::DEFAULT_HOOKS`; `all` broadens SCOPE eligibility but does
+not mean default installs copy every hook. Full mode may project the larger
+maintainer surface because it also installs that larger surface.
+
 ## Non-Goals
 
 - Do not remove the semantic `project`/`both` distinction from primitive
@@ -108,6 +134,8 @@ adds passing tests for that policy.
 .venv/bin/python -m pytest tests/behavior/test_cos_init_parity_2_2.py tests/red_team/portability/test_protected-config-write-guard.py -q
 python3 scripts/primitive_scope_classifier.py --project-dir . --fail-contradictions
 python3 scripts/primitive_parse_inventory.py --project-dir . --output /tmp/primitive_inventory.json
+scripts/cos-install-projection-audit --json
+.venv/bin/python -m pytest tests/integration/test_install_projection_audit.py -q
 ```
 
 The tests must prove that:
@@ -118,6 +146,10 @@ The tests must prove that:
   metadata.
 - `protected-config-write-guard` blocks `.claude/settings.json`.
 - `protected-config-write-guard` does not block `.env` under the current policy.
+- Generated Codex and Claude hook settings never reference hooks missing from the
+  filtered install output.
+- Generated hook settings never register `SCOPE: os-only` hooks under consumer
+  `project`/`both` installs.
 
 ## Future Options
 

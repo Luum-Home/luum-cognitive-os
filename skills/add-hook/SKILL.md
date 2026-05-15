@@ -165,6 +165,19 @@ scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh
 Keep the generated `test_runs_from_arbitrary_project_root` falsification probe
 and specialize it for the hook payload, matcher, and degradation contract.
 
+### 5c. Prove install projection consistency
+
+If the hook can be installed or registered in a generated project harness, run
+the install projection audit before commit:
+
+```bash
+scripts/cos-install-projection-audit --json
+```
+
+This proves generated `.codex/hooks.json` and `.claude/settings.json` do not
+reference a hook that the same filtered install failed to copy, and do not
+register `SCOPE: os-only` hooks under consumer `project`/`both` installs.
+
 ## Available Trigger Reference
 
 | Trigger | When it fires | Input available | Can block? |
@@ -200,5 +213,6 @@ and specialize it for the hook payload, matcher, and degradation contract.
 - [ ] `scripts/cos-portability-proof-scaffold --artifact hooks/{hook-name}.sh` was used for `SCOPE: both` hooks
 - [ ] `scripts/cos-scope-both-portability-audit --strict --no-write` passes after adding the proof
 - [ ] `scripts/cos-scope-projection-audit --run-install-smoke --strict --no-write` passes before commit when the hook can project to projects
+- [ ] `scripts/cos-install-projection-audit --json` passes when generated harness hook settings are affected
 - [ ] Hook fires correctly: `echo '{"tool_name":"X","tool_input":{}}' | bash hooks/{hook-name}.sh`
 - [ ] Any harness-specific assumptions are isolated or explicitly documented

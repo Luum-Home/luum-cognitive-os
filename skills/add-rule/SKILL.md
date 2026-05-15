@@ -154,6 +154,18 @@ cat rules/{rule-name}.md | head -5  # should show frontmatter-free content
 ```
 ```
 
+### 6. Validate generated install projection when enforcement changes
+
+If the rule adds or changes hook-backed enforcement, generated settings, install
+profiles, or any consumer-visible projection, run:
+
+```bash
+scripts/cos-install-projection-audit --json
+```
+
+The audit proves projected harness settings only reference hooks copied by the
+same filtered install and allowed by that install scope.
+
 ## Output: Rule File and Updated Index
 
 - `rules/{rule-name}.md` — the new rule file
@@ -168,3 +180,4 @@ cat rules/{rule-name}.md | head -5  # should show frontmatter-free content
 - [ ] If always-active: rule has no "Contextual Trigger" requirement that would prevent loading
 - [ ] Rule uses imperative language (MUST/NEVER/SHOULD), not descriptive language
 - [ ] Harness-specific enforcement details do not replace the policy definition
+- [ ] Hook-backed/generated projection changes pass `scripts/cos-install-projection-audit --json`
