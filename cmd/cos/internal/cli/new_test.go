@@ -227,7 +227,7 @@ func TestEachTemplateHasCognitiveOsYaml(t *testing.T) {
 
 func TestGettingStartedDocExists(t *testing.T) {
 	repoRoot := findRepoRoot(t)
-	doc := filepath.Join(repoRoot, "docs", "getting-started-quick.md")
+	doc := filepath.Join(repoRoot, "docs", "00-MOCs", "entrypoints", "getting-started-quick.md")
 	if _, err := os.Stat(doc); os.IsNotExist(err) {
 		t.Fatal("docs/00-MOCs/entrypoints/getting-started-quick.md does not exist")
 	}
