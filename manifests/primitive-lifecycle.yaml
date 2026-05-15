@@ -72,7 +72,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
@@ -125,7 +126,8 @@ primitives:
   owner_adr: ADR-181
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -151,6 +153,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -418,7 +421,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -605,7 +609,8 @@ primitives:
   owner_adr: ADR-144
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -805,7 +810,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -922,7 +928,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -982,7 +989,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1069,7 +1077,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1274,7 +1283,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1332,7 +1342,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1409,7 +1420,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1441,7 +1453,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1467,7 +1480,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1662,7 +1676,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1688,7 +1703,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: advisory
   maturity: observe
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1741,7 +1757,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1848,7 +1865,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1905,7 +1923,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1964,7 +1983,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2017,7 +2037,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2068,7 +2089,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2100,7 +2122,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2152,7 +2175,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2355,7 +2379,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2521,7 +2546,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2553,7 +2579,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2579,7 +2606,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2666,6 +2694,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2785,7 +2814,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2811,7 +2841,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2837,7 +2868,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2863,7 +2895,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2895,7 +2928,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2921,7 +2955,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2947,7 +2982,8 @@ primitives:
   owner_adr: ADR-041
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -3040,7 +3076,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3066,7 +3103,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -3099,6 +3137,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3123,7 +3162,8 @@ primitives:
   owner_adr: ADR-179
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3318,7 +3358,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3371,7 +3412,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3479,6 +3521,7 @@ primitives:
   lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3635,7 +3678,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3688,7 +3732,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3713,7 +3758,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3739,7 +3785,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -3771,7 +3818,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3797,6 +3845,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3847,7 +3896,8 @@ primitives:
   owner_adr: ADR-144
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3877,7 +3927,8 @@ primitives:
   owner_adr: ADR-174
   lifecycle_state: advisory
   maturity: advisory
-  distribution: core
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3910,7 +3961,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3935,7 +3987,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3961,7 +4014,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3986,7 +4040,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4011,7 +4066,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4259,7 +4315,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4373,6 +4430,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4398,6 +4456,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -4422,7 +4481,8 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -8633,6 +8693,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -8952,6 +9013,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -8978,6 +9040,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9004,6 +9067,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9030,6 +9094,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9056,6 +9121,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9082,6 +9148,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9108,6 +9175,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9134,6 +9202,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9160,6 +9229,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9267,6 +9337,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9294,6 +9365,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9850,7 +9922,8 @@ primitives:
   owner_adr: ADR-083
   lifecycle_state: advisory
   maturity: advisory
-  distribution: maintainer
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9950,6 +10023,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -9976,6 +10050,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -10004,6 +10079,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -10031,6 +10107,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -10237,7 +10314,7 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: lab
+  distribution: team
   demotion_evidence:
     rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance
       guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability
@@ -10267,7 +10344,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-team
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming
     broad consumer availability.
 - id: rules/trust-score.md
@@ -10275,7 +10352,7 @@ primitives:
   owner_adr: ADR-314
   lifecycle_state: advisory
   maturity: advisory
-  distribution: lab
+  distribution: team
   demotion_evidence:
     rationale: 'Manifest-tier remediation 2026-05-15: rule is reusable governance
       guidance, not a runtime-safety blocker; lab distribution preserves opt-in availability
@@ -10304,7 +10381,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
-  consumer_accessibility: lifecycle-declared-team
+  consumer_accessibility: lifecycle-declared-shared-surface
   consumer_access_next_action: Keep paired portability proof current before claiming
     broad consumer availability.
 - id: hooks/agent-output-verifier.sh
@@ -11151,6 +11228,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -11171,6 +11249,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: notification
   risk_class: advisory
   supported_harnesses:
@@ -11191,6 +11270,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-ui-adapter
   risk_class: advisory
   supported_harnesses:
@@ -11255,6 +11335,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: self-improvement
   risk_class: advisory
   supported_harnesses:
@@ -12208,6 +12289,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -12230,6 +12312,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: agent-skill
   risk_class: advisory
   supported_harnesses:
@@ -14403,6 +14486,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14425,6 +14509,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14447,6 +14532,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14469,6 +14555,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14491,6 +14578,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14513,6 +14601,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14535,6 +14624,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14557,6 +14647,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14579,6 +14670,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14601,6 +14693,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14623,6 +14716,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14645,6 +14739,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14667,6 +14762,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14689,6 +14785,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14711,6 +14808,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14733,6 +14831,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14755,6 +14854,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: runtime-governance
   risk_class: advisory
   supported_harnesses:
@@ -14777,6 +14877,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: package-skill-os-only
   risk_class: advisory
   supported_harnesses:
@@ -14799,6 +14900,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: package-skill-os-only
   risk_class: advisory
   supported_harnesses:
@@ -14821,6 +14923,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14843,6 +14946,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14865,6 +14969,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14887,6 +14992,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14909,6 +15015,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14931,6 +15038,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14953,6 +15061,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14975,6 +15084,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -14997,6 +15107,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -15019,6 +15130,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -15041,6 +15153,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -15063,6 +15176,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-governance
   risk_class: advisory
   supported_harnesses:
@@ -15195,6 +15309,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15217,6 +15332,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15239,6 +15355,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15261,6 +15378,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15283,6 +15401,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15305,6 +15424,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15327,6 +15447,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15349,6 +15470,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15371,6 +15493,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15393,6 +15516,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15415,6 +15539,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15437,6 +15562,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15459,6 +15585,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15481,6 +15608,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15503,6 +15631,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15525,6 +15654,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15547,6 +15677,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15569,6 +15700,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15591,6 +15723,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15613,6 +15746,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15635,6 +15769,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15657,6 +15792,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15679,6 +15815,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15701,6 +15838,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15723,6 +15861,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15745,6 +15884,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15767,6 +15907,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15789,6 +15930,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15811,6 +15953,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15833,6 +15976,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15855,6 +15999,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15877,6 +16022,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15899,6 +16045,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15921,6 +16068,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15943,6 +16091,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-skill
   risk_class: advisory
   supported_harnesses:
@@ -15965,6 +16114,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -15987,6 +16137,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16009,6 +16160,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16031,6 +16183,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16053,6 +16206,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16075,6 +16229,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16097,6 +16252,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16119,6 +16275,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16141,6 +16298,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -16163,6 +16321,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
   governance_class: os-template
   risk_class: advisory
   supported_harnesses:
@@ -24706,4 +24865,510 @@ primitives:
   sunset_criteria: Promote only if generated scaffold tests prove ongoing project consumer use.
   docs_claim_level: observe
   exit_behavior: data-only
+  metrics_file: none
+- id: hooks/adr-detector.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/adr-detector.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/adr-detector.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/aguara-scan.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/aguara-scan.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/aguara-scan.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/ai-provider-identity-guard.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/ai-provider-identity-guard.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/ai-provider-identity-guard.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/architecture-compliance.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-consumer-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/architecture-compliance.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/architecture-compliance.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/code-review-on-commit.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/code-review-on-commit.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/code-review-on-commit.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/dry-run-preview.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-consumer-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/dry-run-preview.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/dry-run-preview.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/ecosystem-check.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: maintainer-control-plane
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/ecosystem-check.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; maintainer-only primitive belongs to COS construction/control-plane and is not projected as consumer runtime.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/ecosystem-check.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/global-verify.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/global-verify.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/global-verify.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/guardrails-validator.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/guardrails-validator.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/guardrails-validator.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/infra-intent-detector.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-consumer-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/infra-intent-detector.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/infra-intent-detector.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/jupyter-sandbox.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-consumer-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/jupyter-sandbox.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/jupyter-sandbox.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/parry-scan.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/parry-scan.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/parry-scan.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/pre-cleanup-snapshot.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: maintainer-control-plane
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/pre-cleanup-snapshot.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; maintainer-only primitive belongs to COS construction/control-plane and is not projected as consumer runtime.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/pre-cleanup-snapshot.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/pre-commit-gate.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/pre-commit-gate.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/pre-commit-gate.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/semgrep-scan.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/semgrep-scan.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/semgrep-scan.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/valkey-ensure.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/valkey-ensure.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/valkey-ensure.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: hooks/worktree-submodule-fix.sh
+  kind: hook
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - hooks/worktree-submodule-fix.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/worktree-submodule-fix.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/cos-doctor-preserve.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/cos-doctor-preserve.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-doctor-preserve.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/credibility-audit.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/credibility-audit.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/credibility-audit.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/doctor.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/doctor.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/doctor.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/license-audit-syft-grype.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/license-audit-syft-grype.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/license-audit-syft-grype.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: scripts/license-audit-trivy.sh
+  kind: script
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: shared-runtime-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - scripts/license-audit-trivy.sh
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; shared primitive has consumer availability plus dedicated/family portability proof or semantic shared pattern.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/license-audit-trivy.sh --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
+  metrics_file: none
+- id: skills/project-scaffold/SKILL.md
+  kind: skill
+  owner_adr: ADR-019
+  lifecycle_state: advisory
+  maturity: observe
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  governance_class: project-consumer-surface
+  risk_class: advisory
+  supported_harnesses:
+  - shell-ci
+  projection_targets:
+  - skills/project-scaffold/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/project-scaffold/SKILL.md --fail-contradictions --fail-low-confidence
+  rollback_or_repair_command: Reclassify or update lifecycle row if projection/runtime evidence changes.
+  sunset_criteria: Revisit when consumer availability or runtime projection policy changes.
+  docs_claim_level: observe
+  exit_behavior: advisory
   metrics_file: none
