@@ -18,7 +18,7 @@ tags:
   - web-automation
   - dispatch
   - browser-use
-classification_basis: optional browser-use dependency, adapter, router, skill, and dispatch-routing tests implemented as the accepted Slice A integration
+classification_basis: optional browser-use dependency, adapter, router, skill, and dispatch-routing tests implemented as the accepted Slice A integration; no remaining in-scope work for this ADR, and dispatch.py caller expansion is separate/out-of-scope follow-up
 ---
 
 # ADR-288: Web-Automation Adapter for Dispatch (browser-use)

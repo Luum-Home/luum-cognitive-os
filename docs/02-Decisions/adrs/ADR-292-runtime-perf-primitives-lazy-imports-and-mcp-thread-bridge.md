@@ -14,7 +14,7 @@ tags:
   - performance
   - concurrency
   - runtime
-classification_basis: two runtime performance primitives delivered as leaf modules with thread-safe unit tests; both shift cost away from hot paths without coupling to any specific caller
+classification_basis: two runtime performance primitives delivered as leaf modules with thread-safe unit tests; no remaining in-scope work for this ADR, and future caller adoption is separate/out-of-scope follow-up
 verification:
   level: strong
   commands:
