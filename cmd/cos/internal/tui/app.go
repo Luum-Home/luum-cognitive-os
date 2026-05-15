@@ -247,6 +247,10 @@ func (s *Snapshot) loadCoverage(root string) {
 	coveragePath := filepath.Join(root, "docs", "reports", "primitive-harness-coverage-latest.json")
 	payload := readJSONMap(coveragePath)
 	if payload == nil {
+		coveragePath = filepath.Join(root, "docs", "06-Daily", "reports", "primitive-harness-coverage-latest.json")
+		payload = readJSONMap(coveragePath)
+	}
+	if payload == nil {
 		s.Warnings = append(s.Warnings, "primitive coverage report missing")
 		return
 	}
