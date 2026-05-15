@@ -49,6 +49,17 @@ State or infer acceptance criteria, then classify task complexity BEFORE choosin
 
 ## SDD Pipeline (for substantial changes)
 
+For consumer-project feature work, prefer the local durable lane first:
+
+```bash
+cos sdd next --feature <slug> --title "<human title>"
+cos sdd approve <slug>
+cos sdd apply <slug>
+cos sdd review <slug>
+```
+
+This writes `.cognitive-os/workflows/sdd/<slug>/{requirements.md,design.md,tasks.md,traceability.md,review.md}` plus `progress/current.md` and `progress/history.md`. Do not implement medium+ SDD work before human approval, and do not claim done until every `R<n>` maps to a test or accepted proof.
+
 Commands when supported: `/sdd-new <change>`, `/sdd-ff <change>` (fast-forward all phases), `/sdd-apply`, `/sdd-verify`
 
 Dependency chain: `propose -> spec -> design -> tasks -> apply <-> verify -> archive`
