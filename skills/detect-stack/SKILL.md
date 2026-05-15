@@ -32,7 +32,7 @@ triggers:
 - Detect Stack
 - Scan a project root and produce detected-stack
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # Detect Stack
 
 Scan the current project directory for stack indicators and write a machine-readable `detected-stack.json` to `.cognitive-os/`.

@@ -1566,6 +1566,36 @@ items:
 - path: skills/compat-test/SKILL.md
   status: shared-surface
   rationale: 'Manual scope calibration iteration 016: model/COS compatibility smoke test applies to COS development and installed COS behavior inside adopter projects.'
+- path: skills/component-classifier/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 017: classifies primitives as COS kernel vs package and is required for COS maintainer architecture, not adopter project behavior.'
+- path: skills/cost-predictor/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 017: task cost prediction uses COS metrics but applies to COS maintenance and adopter project work.'
+- path: skills/deep-tool-research/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 017: canonical external-tool evaluation is reusable for COS tool adoption and adopter project tool adoption; COS paths are comparison anchors, not exclusive runtime requirements.'
+- path: skills/detect-patterns/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope calibration iteration 017: detects rot in the Cognitive OS primitive/codebase mesh and calls COS pattern detector internals.'
+- path: skills/detect-stack/SKILL.md
+  status: projected-consumer-surface
+  rationale: 'Manual scope calibration iteration 017: scans an adopter project root and writes detected-stack.json for project initialization; COS source construction does not require it.'
+- path: skills/doc-review-personas/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 017: multi-persona documentation review is domain-agnostic and applies to COS docs and adopter project docs.'
+- path: skills/eval-repo/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 017: deprecated repo-scout alias preserves a repository evaluation workflow usable by COS and adopter projects.'
+- path: skills/generate-config/SKILL.md
+  status: projected-consumer-surface
+  rationale: 'Manual scope calibration iteration 017: generates cognitive-os.yaml from detected stack for adopter project initialization; COS source construction does not require it.'
+- path: skills/invariant-check/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 017: ADR/lib invariant checks apply to COS architecture/code and any adopter project with design docs plus implementation constants.'
+- path: skills/llm-status/SKILL.md
+  status: shared-surface
+  rationale: 'Manual scope calibration iteration 017: LLM dispatch transparency applies to the current COS install in COS maintenance and adopter projects.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

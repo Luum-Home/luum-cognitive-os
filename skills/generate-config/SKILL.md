@@ -28,7 +28,7 @@ triggers:
 - Generate Config
 - Read detected-stack
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: project -->
 # Generate Config
 
 Read `.cognitive-os/detected-stack.json` (produced by `/detect-stack`) and generate or update `cognitive-os.yaml` for the current project.

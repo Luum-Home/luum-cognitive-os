@@ -28,7 +28,7 @@ triggers:
 - Run all detectors or a specific one
 - 'Detect systemic problems in the Cognitive OS codebase: dead metadata, broken…'
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 ## Purpose
 
 Systematically finds code-level rot that accumulates over time. Detects four categories of systemic problems:
