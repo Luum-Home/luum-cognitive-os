@@ -490,6 +490,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -510,6 +511,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/auto-refine.sh
   kind: hook
   owner_adr: ADR-126
@@ -568,6 +570,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -588,6 +591,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-rollback.jsonl
+
 - id: hooks/auto-skill-generator.sh
   kind: hook
   owner_adr: ADR-144
@@ -673,6 +677,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -697,12 +702,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/coordination/branch-locks.jsonl
+
 - id: hooks/branch-ownership-release.sh
   kind: hook
   owner_adr: ADR-182
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -722,6 +729,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/coordination/branch-locks.jsonl
+
 - id: hooks/claim-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1118,6 +1126,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1138,6 +1147,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/cross-session-coordination-guard.sh
   kind: hook
   owner_adr: ADR-183
@@ -1530,6 +1540,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1550,12 +1561,14 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/edit-lock-pre-tool.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
   distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1582,12 +1595,14 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: none
+
 - id: hooks/edit-lock-process-negotiations.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1607,12 +1622,14 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/edit-lock-session-end.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: observe
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -1633,6 +1650,7 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+
 - id: hooks/engram-crystallize-on-session-end.sh
   kind: hook
   owner_adr: ADR-126
@@ -2349,6 +2367,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2368,12 +2387,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-violations.jsonl
+
 - id: hooks/post-git-orphan-notifier.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2394,12 +2415,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/orphan-notifier.jsonl
+
 - id: hooks/pre-agent-snapshot.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2420,12 +2443,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
+
 - id: hooks/pre-commit-content-hash-dedupe.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2452,6 +2477,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/events.jsonl
+
 - id: hooks/pre-compaction-flush.sh
   kind: hook
   owner_adr: ADR-126
@@ -3484,6 +3510,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3504,12 +3531,14 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/stash-provenance.jsonl
+
 - id: hooks/session-start-worktree-nudge.sh
   kind: hook
   owner_adr: ADR-126
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3530,6 +3559,7 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/worktree-nudges.jsonl
+
 - id: hooks/session-startup-protocol.sh
   kind: hook
   owner_adr: ADR-126
@@ -4040,6 +4070,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: core
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -4064,6 +4095,7 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: none
+
 - id: hooks/task-completed.sh
   kind: hook
   owner_adr: ADR-126
@@ -4256,6 +4288,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: team
+  consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -4283,6 +4316,7 @@ primitives:
     <path> --dry-run and obtain explicit operator approval before deleting.
   false_positive_tests:
   - tests/unit/test_delete_intent.py
+
 - id: hooks/user-prompt-capture.sh
   kind: hook
   owner_adr: ADR-126

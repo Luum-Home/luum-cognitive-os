@@ -462,3 +462,29 @@ def test_dangerous_env_and_obsidian_export_are_narrow_cos_operator_patterns(tmp_
     assert obsidian.suggested_scope == "os-only"
     assert any(item.source == "semantic-pattern" and item.detail == "cos-dangerous-env-overrides" for item in dangerous.evidence)
     assert any(item.source == "semantic-pattern" and item.detail == "cos-memory-export-operator" for item in obsidian.evidence)
+
+
+def test_recovery_and_git_safety_hooks_are_shared_patterns(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "hooks").mkdir(exist_ok=True)
+    (root / "hooks" / "branch-ownership-lock.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Acquire per-branch single-writer locks.\necho ok\n"
+    )
+    (root / "hooks" / "edit-lock-pre-tool.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Enforce Edit/Write locks for concurrent sessions.\necho ok\n"
+    )
+    (root / "hooks" / "pre-agent-snapshot.sh").write_text(
+        "#!/usr/bin/env bash\n# SCOPE: both\n# Snapshot the worktree before subagent launch.\necho ok\n"
+    )
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    branch = rows["hooks/branch-ownership-lock.sh"]
+    edit = rows["hooks/edit-lock-pre-tool.sh"]
+    snapshot = rows["hooks/pre-agent-snapshot.sh"]
+    assert branch.suggested_scope == "both"
+    assert edit.suggested_scope == "both"
+    assert snapshot.suggested_scope == "both"
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-git-safety" for item in branch.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-concurrent-edit-safety" for item in edit.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-subagent-safety" for item in snapshot.evidence)

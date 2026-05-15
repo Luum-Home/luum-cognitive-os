@@ -1983,6 +1983,57 @@ items:
 - path: hooks/skill-post-execution-analysis.sh
   status: maintainer-only
   rationale: 'Manual scope review iteration 027: records COS SkillStore execution data and propose-only skill evolution artifacts under COS reports.'
+- path: hooks/auto-checkpoint.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: periodic repository/session checkpoints are generic crash-recovery safety for COS and adopter project agent sessions.'
+- path: hooks/auto-rollback-trigger.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: human-approved rollback-plan triggering after retry exhaustion is generic repository safety.'
+- path: hooks/branch-ownership-lock.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: per-branch single-writer locking is generic multi-agent git safety.'
+- path: hooks/branch-ownership-release.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: releasing branch ownership locks on Stop is generic multi-agent git safety.'
+- path: hooks/crash-recovery.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: unclean shutdown detection and recovery guidance is generic agent-session safety.'
+- path: hooks/edit-lock-drain-parked.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: parked edit-lock drain notification is generic concurrent-edit safety.'
+- path: hooks/edit-lock-pre-tool.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: Edit/Write file lock negotiation is generic concurrent-edit safety.'
+- path: hooks/edit-lock-process-negotiations.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: incoming edit-lock negotiation surfacing is generic concurrent-edit safety.'
+- path: hooks/edit-lock-session-end.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: releasing edit locks on Stop is generic concurrent-edit safety.'
+- path: hooks/post-agent-verify.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: verifying an agent stayed inside declared TOUCH scope is generic subagent safety.'
+- path: hooks/post-git-orphan-notifier.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: detecting orphan commits after git history operations is generic repository safety.'
+- path: hooks/pre-agent-snapshot.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: creating a working-tree snapshot before subagent launch is generic multi-agent safety.'
+- path: hooks/pre-commit-content-hash-dedupe.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: preventing duplicate staged diffs already present upstream is generic git safety.'
+- path: hooks/session-start-stash-reapply.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: reapplying session-owned stashes at startup is generic work-preservation safety.'
+- path: hooks/session-start-worktree-nudge.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: warning when launched inside a non-main worktree is generic git/worktree safety.'
+- path: hooks/symlink-mutation-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: blocking hazardous symlink mutations is generic repository integrity safety.'
+- path: hooks/untracked-work-preservation-guard.sh
+  status: shared-surface
+  rationale: 'Manual scope review iteration 029: blocking destructive deletes of untracked work is generic repository safety.'
 patterns:
 - pattern: scripts/**
   status: so-local-only
