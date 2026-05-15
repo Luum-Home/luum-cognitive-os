@@ -203,8 +203,8 @@ evidence:
   - tests/chaos/test_safety_drill.py
   - tests/contracts/test_killswitch.py
   - tests/contracts/test_p95_hook_latency.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/direct-main-guard.sh
   harnesses:
   - claude
@@ -301,8 +301,8 @@ evidence:
   tests:
   - tests/audit/test_adr_140_cos_worker_compose.py
   - tests/unit/test_projected_hook_gap_behaviors.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/git-context-capture.sh
   harnesses:
   - claude
@@ -362,8 +362,8 @@ evidence:
   tests:
   - tests/behavior/test_security_integrations.py
   - tests/hooks/test_hook_graceful_degradation.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/memory-prefetch.sh
   harnesses:
   - claude
@@ -427,8 +427,8 @@ evidence:
   - tests/integration/test_rate_limit_drainer_executes.py
   - tests/integration/test_rate_limiter_hook_retry_flow.py
   - tests/unit/test_rate_limiter_edge_matrix.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/rate-limit-precheck.sh
   harnesses:
   - claude
@@ -438,8 +438,8 @@ evidence:
   - tests/e2e/test_cos_smoke.py
   - tests/integration/test_query_tailored_context.py
   - tests/integration/test_rate_limit_precheck_lift.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/rate-limiter.sh
   harnesses:
   - claude
@@ -450,8 +450,8 @@ evidence:
   - tests/behavior/test_hook_architecture.py
   - tests/behavior/test_pentest_self.py
   - tests/hooks/conftest.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/reaper-daemon-launcher.sh
   harnesses:
   - claude
@@ -472,8 +472,8 @@ evidence:
   - tests/chaos/test_release_guard_exercised.py
   - tests/integration/test_project_settings_generation.py
   - tests/unit/test_chaos_template.py
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/result-truncator.sh
   harnesses:
   - claude
@@ -945,32 +945,32 @@ evidence:
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/ai-provider-identity-guard.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/code-review-on-commit.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/confidentiality-enforcer.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/content-policy.sh
   harnesses:
   - claude
@@ -985,32 +985,32 @@ evidence:
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/global-verify.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/guardrails-validator.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/parry-scan.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/pre-commit-gate.sh
   harnesses:
   - claude
@@ -1025,72 +1025,72 @@ evidence:
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/private-mode-gate.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/private-mode-metrics-gate.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/reinvention-check.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/semgrep-scan.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/valkey-ensure.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: hooks/worktree-submodule-fix.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_hook_surfaces.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: scripts/credibility-audit.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: scripts/doctor.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: scripts/install-credibility-tools.sh
   harnesses:
   - claude
@@ -1121,16 +1121,16 @@ evidence:
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 - primitive: scripts/license-audit-trivy.sh
   harnesses:
   - claude
   - codex
   - shell-ci
   tests:
-  - tests/red_team/portability/test_low_confidence_scope_batch.py
-  rationale: Manual scope implementation iteration 041 paired portability proof for previously low-confidence shared surface.
+  - tests/red_team/portability/test_shared_audit_scripts.py
+  rationale: Manual medium-confidence closure iteration 045 added family-specific portability proof; batch proof is no longer the only evidence.
 patterns:
 - pattern: tests/**
   behavior_proven: true
