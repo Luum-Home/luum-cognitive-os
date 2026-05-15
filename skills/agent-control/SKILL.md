@@ -37,7 +37,7 @@ routing_intents:
     signals between the orchestrator and live agents.
   confidence: 0.85
 ---
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Agent Control
 
 Use this skill when an operator asks to stop, pause, resume, answer, inspect, or kill a live agent. The governed entrypoint is `scripts/orchestrator.py`; it uses Valkey pub/sub when `AGENT_BUS_ENABLED=true` and writes filesystem fallback artifacts under `.cognitive-os/agent-bus/{agent_id}/` otherwise.

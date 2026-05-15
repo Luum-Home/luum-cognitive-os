@@ -1692,6 +1692,12 @@ items:
 - path: hooks/_lib/push-collision-check.sh
   status: maintainer-only
   rationale: 'Manual scope calibration iteration 020: push collision detector library invoked by COS hook gates.'
+- path: skills/agent-control/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: governed bidirectional control of live COS agents via orchestrator.py, .cognitive-os/agent-bus, Valkey, and COS hook inbound guards.'
+- path: skills/primitive-harness-coverage/SKILL.md
+  status: maintainer-only
+  rationale: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: measures COS primitive implementation coverage across harness surfaces so maintainers do not confuse SCOPE with parity.'
 patterns:
 - pattern: scripts/**
   status: so-local-only

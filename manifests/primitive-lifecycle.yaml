@@ -17127,3 +17127,49 @@ primitives:
   exit_behavior: sourced-library
   metrics_file: none
   consumer_access_next_action: Keep out of default consumer-project projection except as support for projected COS hooks.
+- id: skills/agent-control/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/agent-control/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: governed bidirectional control of live COS agents via orchestrator.py, .cognitive-os/agent-bus, Valkey, and COS hook inbound guards.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/agent-control/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
+- id: skills/primitive-harness-coverage/SKILL.md
+  kind: skill
+  owner_adr: ADR-314
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: skill-maintainer-only
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - generic-cli
+  projection_targets:
+  - skills/primitive-harness-coverage/SKILL.md
+  runtime_projection: false
+  behavior_evidence: 'Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: measures COS primitive implementation coverage across harness surfaces so maintainers do not confuse SCOPE with parity.'
+  evidence_commands:
+  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/primitive-harness-coverage/SKILL.md
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
+  consumer_access_next_action: Keep out of default consumer-project projection.
