@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Architecture readiness report for Cognitive OS governance.
 
 This command converts external architecture review findings into a concrete gate report. It is not a

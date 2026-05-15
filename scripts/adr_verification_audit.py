@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Classify ADR verification evidence and block grep-only theater.
 
 ADR-067 requires ADRs to include a ``## Verification`` section with a fenced

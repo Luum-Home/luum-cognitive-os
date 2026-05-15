@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Single boring-reliability dashboard for Cognitive OS."""
 from __future__ import annotations
 

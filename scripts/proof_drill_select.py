@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Select proof-drill and smoke opt-in commands from the governed registry."""
 from __future__ import annotations
 

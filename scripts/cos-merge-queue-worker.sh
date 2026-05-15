@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # scope: both
 # cos-merge-queue-worker.sh — Single-writer merge-queue worker (ADR-116 P2.2).
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Create contract-compliant ADR drafts from the canonical COS template."""
 
 from __future__ import annotations

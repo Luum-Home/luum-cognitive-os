@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-278 — subprocess.run timeout discipline audit.
 
 Background: the 2026-05-12 verification surfaced pytest contracts+audit

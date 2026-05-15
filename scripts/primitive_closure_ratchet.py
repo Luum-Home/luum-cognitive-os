@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """ADR-311 primitive closure ratchet.
 
 Checks that high-risk governance primitives have a closed loop:
@@ -13,7 +13,6 @@ import fnmatch
 import json
 import re
 import subprocess
-import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any

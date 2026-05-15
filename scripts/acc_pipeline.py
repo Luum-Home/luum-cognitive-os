@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Unified Agent Capability Coverage (ACC) pipeline.
 
 The pipeline composes existing Cognitive OS readiness ledgers and coverage tools

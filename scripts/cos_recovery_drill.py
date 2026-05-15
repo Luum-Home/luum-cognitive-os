@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: both
+# SCOPE: os-only
 """Run non-destructive recovery drills for WIP/snapshot safety."""
 from __future__ import annotations
 

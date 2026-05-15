@@ -289,6 +289,70 @@ def test_lifecycle_consumer_candidate_is_project_not_both(tmp_path: Path) -> Non
     assert any(item.source == "lifecycle" and item.scope == "project" for item in row.evidence)
 
 
+def test_shell_ci_projection_promotes_candidate_script_to_both(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "scripts" / "cos-status.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho status\n")
+
+    consumer_path = root / "manifests" / "primitive-consumer-availability.yaml"
+    consumer = yaml.safe_load(consumer_path.read_text())
+    consumer["items"].append({"path": "scripts/cos-status.sh", "status": "shell-ci-candidate", "rationale": "projected command"})
+    consumer_path.write_text(yaml.safe_dump(consumer))
+
+    lifecycle_path = root / "manifests" / "primitive-lifecycle.yaml"
+    lifecycle = yaml.safe_load(lifecycle_path.read_text())
+    lifecycle["primitives"].append(
+        {
+            "id": "scripts/cos-status.sh",
+            "kind": "script",
+            "distribution": "team",
+            "lifecycle_state": "candidate",
+            "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+        }
+    )
+    lifecycle_path.write_text(yaml.safe_dump(lifecycle))
+
+    (root / "manifests" / "shell-ci-projection.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "shell-ci-projection.v1",
+                "commands": [{"path": "scripts/cos-status.sh", "class": "shell-ci-command", "executable": True}],
+            }
+        )
+    )
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["scripts/cos-status.sh"]
+
+    assert row.suggested_scope == "both"
+    assert row.effective_scope == "both"
+    assert any(item.source == "consumer-availability+shell-ci-projection" and item.scope == "both" for item in row.evidence)
+    assert any(item.source == "lifecycle+shell-ci-projection" and item.scope == "both" for item in row.evidence)
+
+
+def test_shell_ci_projection_preserves_declared_project_only_script(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    (root / "scripts" / "project_scaffold.py").write_text("#!/usr/bin/env python3\n# SCOPE: project\nprint('scaffold')\n")
+
+    consumer_path = root / "manifests" / "primitive-consumer-availability.yaml"
+    consumer = yaml.safe_load(consumer_path.read_text())
+    consumer["items"].append({"path": "scripts/project_scaffold.py", "status": "shell-ci-candidate", "rationale": "consumer project scaffold"})
+    consumer_path.write_text(yaml.safe_dump(consumer))
+
+    (root / "manifests" / "shell-ci-projection.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "shell-ci-projection.v1",
+                "commands": [{"path": "scripts/project_scaffold.py", "class": "shell-ci-command", "executable": True}],
+            }
+        )
+    )
+
+    row = {row.path: row for row in primitive_scope_classifier.build_rows(root)}["scripts/project_scaffold.py"]
+
+    assert row.suggested_scope == "project"
+    assert row.effective_scope == "project"
+    assert any(item.source == "consumer-availability" and item.scope == "project" for item in row.evidence)
+
+
 def test_lifecycle_distribution_tier_is_not_scope_evidence(tmp_path: Path) -> None:
     root = make_repo(tmp_path)
     (root / "skills" / "lab-tool").mkdir(parents=True)

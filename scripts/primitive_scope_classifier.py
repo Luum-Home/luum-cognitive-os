@@ -279,6 +279,22 @@ def _load_protected_install_surfaces(root: Path) -> dict[str, dict[str, Any]]:
     return {str(item["path"]): item for item in data.get("scripts", []) if isinstance(item, dict) and item.get("path")}
 
 
+def _load_shell_ci_projection(root: Path) -> dict[str, dict[str, Any]]:
+    """Load projected shell/CI commands.
+
+    `shell-ci-candidate` in consumer availability means "project-facing, needs
+    proof" until a matching row exists in this manifest. Once present here, the
+    script has durable consumer projection evidence; if it is also a source
+    primitive in this repository, its scope evidence is `both`, not merely
+    `project`.
+    """
+    path = root / "manifests" / "shell-ci-projection.yaml"
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    return {str(item["path"]): item for item in data.get("commands", []) if isinstance(item, dict) and item.get("path")}
+
+
 def _paired_test(root: Path, rel: str) -> str | None:
     for candidate in paired_candidates(rel):
         if (root / candidate).exists():
@@ -328,7 +344,16 @@ def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> li
 
     return []
 
-def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: list[dict[str, str]], availability: dict[str, dict[str, Any]], protected: dict[str, dict[str, Any]], lifecycle: dict[str, dict[str, Any]]) -> list[Evidence]:
+def _evidence_for(
+    root: Path,
+    rel: str,
+    declared: str | None,
+    override_rules: list[dict[str, str]],
+    availability: dict[str, dict[str, Any]],
+    protected: dict[str, dict[str, Any]],
+    shell_ci_projection: dict[str, dict[str, Any]],
+    lifecycle: dict[str, dict[str, Any]],
+) -> list[Evidence]:
     evidence: list[Evidence] = []
     override = _override_for(rel, override_rules)
     # Scope overrides are fallback metadata for legacy surfaces that predate
@@ -355,6 +380,8 @@ def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: li
             evidence.append(Evidence("consumer-availability", "os-only", 80, status))
         elif status in SHARED_STATUSES:
             evidence.append(Evidence("consumer-availability", "both", 80, status))
+        elif status == "shell-ci-candidate" and rel in shell_ci_projection and declared == "both":
+            evidence.append(Evidence("consumer-availability+shell-ci-projection", "both", 85, status))
         elif status in PROJECTABLE_STATUSES:
             # Consumer-availability proves project-facing distribution, not
             # automatically `both`. A primitive becomes confirmed `both` only
@@ -388,6 +415,15 @@ def _evidence_for(root: Path, rel: str, declared: str | None, override_rules: li
                     "lifecycle",
                     "both",
                     65,
+                    f"distribution={distribution}; state={state}; consumer_accessibility={consumer_accessibility}",
+                )
+            )
+        elif consumer_accessibility in PROJECT_LIFECYCLE_ACCESSIBILITY and rel in shell_ci_projection and declared == "both":
+            evidence.append(
+                Evidence(
+                    "lifecycle+shell-ci-projection",
+                    "both",
+                    75,
                     f"distribution={distribution}; state={state}; consumer_accessibility={consumer_accessibility}",
                 )
             )
@@ -493,6 +529,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
     override_rules = _load_scope_overrides(root)
     availability = _load_consumer_availability(root)
     protected = _load_protected_install_surfaces(root)
+    shell_ci_projection = _load_shell_ci_projection(root)
     lifecycle = load_lifecycle(root)
     rows: list[ScopeRow] = []
     changed = _changed_paths(root) if changed_only else set()
@@ -507,7 +544,7 @@ def build_rows(root: Path, changed_only: bool = False, only_paths: set[str] | No
             continue
         declared = contract.scope_marker
         paired = _paired_test(root, rel)
-        evidence = _evidence_for(root, rel, declared, override_rules, availability, protected, lifecycle)
+        evidence = _evidence_for(root, rel, declared, override_rules, availability, protected, shell_ci_projection, lifecycle)
         suggested, confidence, source, contradiction, next_action = _decide(rel, declared, evidence, paired)
         effective = suggested if suggested != "unknown" else "os-only"
         rows.append(

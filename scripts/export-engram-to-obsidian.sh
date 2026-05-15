@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: both
+# SCOPE: os-only
 # export-engram-to-obsidian.sh — one-way Engram → Obsidian Markdown export.
 #
 # Dry-run is the default. Pass --write to create/update files in the vault.
