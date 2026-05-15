@@ -181,18 +181,14 @@ items:
   rationale: Operational COS instance installer implementation; not a default consumer
     projection surface.
 - path: skills/proof-drill/SKILL.md
-  status: maintainer-only
-  rationale: Opt-in proof-drill selector for SO validation and explicit consumer boundary
-    checks; not loaded by default lanes.
+  status: shared-surface
+  rationale: 'Manual scope review iteration 032: proof drills explicitly support COS self-build and consumer-project validation modes without polluting default lanes.'
 - path: skills/session-pending-brief/SKILL.md
-  status: maintainer-only
-  rationale: Session-start projector skill over SO ADR/pending-truth ledgers; consumer
-    projects should not receive it unless a session-governance package explicitly
-    projects those ledgers.
+  status: shared-surface
+  rationale: 'Manual scope review iteration 032: session pending brief orients COS and adopter project sessions over pending work through projected session-start/pending ledgers.'
 - path: skills/session-pending-close/SKILL.md
-  status: maintainer-only
-  rationale: Audited closure skill for SO pending-truth and ADR lifecycle ledgers;
-    not a default consumer-project primitive.
+  status: shared-surface
+  rationale: 'Manual scope review iteration 032: pending close provides audited closure of task/ADR/pending ledgers for COS and adopter project sessions with bilateral proof.'
 - path: scripts/proof-drill-select
   status: maintainer-only
   rationale: Proof-drill selector wrapper for governed opt-in validation; not a default

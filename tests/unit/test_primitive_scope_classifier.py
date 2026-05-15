@@ -530,3 +530,22 @@ def test_quality_session_and_memory_hooks_are_shared_or_narrow_taxonomy_patterns
     taxonomy = rows["hooks/scope-marker-portability-gate.sh"]
     assert taxonomy.suggested_scope == "os-only"
     assert any(item.source == "semantic-pattern" and item.detail == "cos-scope-taxonomy-governance" for item in taxonomy.evidence)
+
+
+def test_shared_skill_semantic_patterns_for_proof_and_pending_workflows(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    for name in ["proof-drill", "session-pending-brief"]:
+        d = root / "skills" / name
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "SKILL.md").write_text(
+            f"<!-- SCOPE: both -->\n---\nname: {name}\naudience: both\n---\nShared COS and adopter project workflow.\n"
+        )
+
+    rows = {row.path: row for row in primitive_scope_classifier.build_rows(root)}
+
+    proof = rows["skills/proof-drill/SKILL.md"]
+    brief = rows["skills/session-pending-brief/SKILL.md"]
+    assert proof.suggested_scope == "both"
+    assert brief.suggested_scope == "both"
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-proof-drill" for item in proof.evidence)
+    assert any(item.source == "semantic-pattern" and item.detail == "shared-session-pending-workflow" for item in brief.evidence)

@@ -175,6 +175,12 @@ COS_INTERNAL_CORE_TOKENS = (
     "luum-agent-os",
 )
 
+SHARED_SKILL_NAME_PATTERNS = {
+    "proof-drill": "shared-proof-drill",
+    "session-pending-brief": "shared-session-pending-workflow",
+    "session-pending-close": "shared-session-pending-workflow",
+}
+
 
 @dataclass(frozen=True)
 class Evidence:
@@ -289,6 +295,12 @@ def _semantic_pattern_evidence(root: Path, rel: str, declared: str | None) -> li
     avoiding distribution-tier inference. A semantic pattern is not portability
     proof; declared `both` rows still need paired proof or explicit metadata.
     """
+    if rel.startswith("skills/") and rel.endswith("/SKILL.md"):
+        skill_name = Path(rel).parent.name.lower()
+        if declared == "both" and skill_name in SHARED_SKILL_NAME_PATTERNS:
+            return [Evidence("semantic-pattern", "both", 65, SHARED_SKILL_NAME_PATTERNS[skill_name])]
+        return []
+
     if not rel.startswith("hooks/"):
         return []
     stem = Path(rel).stem.lower()
