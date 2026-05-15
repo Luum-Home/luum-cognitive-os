@@ -9,8 +9,10 @@ Validates:
 - .gitignore covers all runtime paths
 """
 
+import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -22,6 +24,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.timeout(180)]
 # ---------------------------------------------------------------------------
 
 INSTALLER = Path(__file__).resolve().parent.parent.parent / "install.sh"
+RUNTIME_HOOK_REALITY = INSTALLER.parent / "scripts" / "runtime_hook_reality.py"
 
 
 @pytest.fixture
@@ -107,6 +110,8 @@ class TestFreshInstall:
         assert "CODEX_PROJECT_DIR" in content, "Codex hooks.json missing Codex project expression"
         assert "Harness:        codex" in result.stdout
         assert "Settings:       .codex/hooks.json" in result.stdout
+        assert not (install_dir / ".claude" / "CLAUDE.md").exists()
+        assert "Skills available:" in result.stdout
 
     def test_creates_cognitive_os_yaml(self, install_dir, cos_source):
         """install.sh creates cognitive-os.yaml config."""
@@ -156,6 +161,93 @@ class TestFreshInstall:
         assert "Harness:        claude" in result.stdout
         assert "Settings:       .claude/settings.json" in result.stdout
         assert "Next checks:" in result.stdout
+
+    def test_new_codex_repo_local_source_install_smoke(self, tmp_path, cos_source):
+        """Smoke: a brand-new repo can install COS for Codex with closed portable surfaces."""
+        project = tmp_path / "new-codex-app"
+        project.mkdir()
+        subprocess.run(["git", "init"], cwd=project, capture_output=True, check=False)
+        (project / "package.json").write_text('{"name": "new-codex-app"}\n')
+        (project / "README.md").write_text("# New Codex App\n")
+
+        result = subprocess.run(
+            [str(INSTALLER), "--from", str(cos_source), "--force", "--harness=codex"],
+            cwd=project,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        assert "Cognitive OS installed successfully." in result.stdout
+        assert "Harness:        codex" in result.stdout
+        assert "Skills available:" in result.stdout
+
+        install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())
+        assert install_meta["harness"] == "codex"
+        assert (project / "cognitive-os.yaml").is_file()
+        assert (project / ".codex" / "hooks.json").is_file()
+        assert not (project / ".claude" / "CLAUDE.md").exists()
+        assert (project / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").is_file()
+        assert not (project / ".claude" / "skills").exists()
+
+        hooks_json = (project / ".codex" / "hooks.json").read_text()
+        assert "CODEX_PROJECT_DIR" in hooks_json
+        assert "CLAUDE_PROJECT_DIR" not in hooks_json
+
+        audit = subprocess.run(
+            [
+                sys.executable,
+                str(RUNTIME_HOOK_REALITY),
+                "--project-root",
+                str(project),
+                "--settings",
+                str(project / ".codex" / "hooks.json"),
+                "--dependency-closure",
+                "--install-scope",
+                "project",
+                "--fail-on-findings",
+            ],
+            cwd=project,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        assert audit.returncode == 0, audit.stderr + audit.stdout
+
+    def test_new_claude_repo_local_source_install_smoke(self, tmp_path, cos_source):
+        """Smoke: a brand-new repo can install COS for Claude with portable instructions."""
+        project = tmp_path / "new-claude-app"
+        project.mkdir()
+        subprocess.run(["git", "init"], cwd=project, capture_output=True, check=False)
+        (project / "go.mod").write_text("module example.com/new-claude-app\n\ngo 1.22\n")
+
+        result = subprocess.run(
+            [str(INSTALLER), "--from", str(cos_source), "--force", "--harness=claude"],
+            cwd=project,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        assert "Cognitive OS installed successfully." in result.stdout
+        assert "Harness:        claude" in result.stdout
+        assert "Skills exposed:" in result.stdout
+
+        claude_md = project / ".claude" / "CLAUDE.md"
+        assert claude_md.is_file()
+        instructions = claude_md.read_text()
+        assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in instructions
+        assert ".cognitive-os/skills/cos/" in instructions
+        assert "slash commands are supported" in instructions
+        assert "acceptance criteria" in instructions
+        assert "bugfix|decision|architecture|discovery|pattern|config|preference" in instructions
+
+        install_meta = json.loads((project / ".cognitive-os" / "install-meta.json").read_text())
+        assert install_meta["harness"] == "claude"
+        assert (project / ".claude" / "settings.json").is_file()
+        assert (project / ".claude" / "skills" / "cos-status").exists()
 
 
 # ---------------------------------------------------------------------------
