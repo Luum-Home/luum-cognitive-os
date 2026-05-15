@@ -35,6 +35,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
 
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
@@ -148,7 +149,7 @@ def detect_harness(project_root: str = ".") -> str:
         except (OSError, json.JSONDecodeError):
             meta_harness = None
         if meta_harness in SUPPORTED_HARNESSES:
-            return meta_harness
+            return str(meta_harness)
 
     codex_hooks = root / ".codex" / "hooks.json"
     claude_settings = root / ".claude" / "settings.json"
@@ -411,7 +412,7 @@ def install_skill_dir(
 
 # ── Internal-call dispatcher ──────────────────────────────────────────
 
-_INTERNAL_DISPATCH: dict[str, object] = {
+_INTERNAL_DISPATCH: dict[str, Callable[..., object]] = {
     "detect_harness": detect_harness,
     "scope_allows": scope_allows,
     "skill_scope_allows": skill_scope_allows,

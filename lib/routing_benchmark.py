@@ -273,6 +273,7 @@ class FastembedBiEncoderAdapter:
     ) -> List[Tuple[str, float]]:
         if self._model is None:
             self.load()
+        assert self._model is not None
         self._ensure_catalog(candidates)
         import numpy as np  # type: ignore
 
@@ -381,6 +382,8 @@ class OnnxDirectBiEncoderAdapter:
 
         # Required: ONNX weights file.
         onnx_path = _fetch(self.onnx_subpath, required=True)
+        if onnx_path is None:
+            raise RuntimeError(f"no ONNX model found for {self.model_name}@{self.revision}")
         # External-data sidecar (e.g. BGE-M3's model.onnx_data). Optional.
         _fetch(self.onnx_subpath + "_data", required=False)
 

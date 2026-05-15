@@ -552,6 +552,7 @@ def _enrich_one(
     entry.cost_usd = cost
     entry.latency_ms = latency_ms
     entry.provider_used = str(resp.get("provider_used") or "")
+    error_text = str(resp.get("error") or "")
 
     audit_emit(
         {
@@ -563,15 +564,15 @@ def _enrich_one(
             "provider": entry.provider_used,
             "cost_usd": cost,
             "latency_ms": latency_ms,
-            "error": (resp.get("error") or "")[:200],
+            "error": error_text[:200],
         }
     )
 
     if not resp.get("success"):
-        entry.skipped_reason = f"dispatch_failed: {(resp.get('error') or '')[:120]}"
+        entry.skipped_reason = f"dispatch_failed: {error_text[:120]}"
         return entry
 
-    parsed = parse_llm_response(resp.get("text") or "", languages, intents_per_lang)
+    parsed = parse_llm_response(str(resp.get("text") or ""), languages, intents_per_lang)
     if parsed is None:
         entry.skipped_reason = "invalid_llm_response"
         return entry

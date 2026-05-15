@@ -653,3 +653,28 @@ COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
 ```
 
 Running baseline after pass 7: **268 → 107** non-import Pyrefly errors.
+
+### Remediation pass 8 — dispatcher and benchmark scalar guards
+
+| Files | Finding class | Change | Pyrefly effect |
+|---|---|---|---:|
+| `scripts/cos_init.py` | Installed harness metadata and internal dispatch function table not narrowed | Coerced metadata harness to `str` and typed dispatch table as `Callable[..., object]`. | Removed 4 cos-init findings. |
+| `lib/cost_predictor.py` | Real-price payload includes `source` string alongside numeric rates | Widened learned price payload value type to `Any` for mixed metadata. | Removed 3 cost predictor findings. |
+| `lib/queue_advisor.py` | Queue item descriptions may be absent/non-string before slicing/length | Coerced descriptions/prompts to strings before token estimate and display slicing. | Removed 3 queue advisor findings. |
+| `lib/routing_benchmark.py` | Optional embedding/model artifact not narrowed after load/fetch | Added explicit model and ONNX path guards. | Removed 3 routing findings. |
+| `lib/skill_description_enricher.py` | Dispatch response fields may be bool/non-string before slicing/parsing | Normalized error/text fields to strings. | Removed 3 enrichment findings. |
+| `scripts/cos_falsification_benchmark.py` | Historical row durations not narrowed before min/speed math | Coerced task ids/durations before benchmark scoring. | Removed 3 benchmark findings. |
+
+Validation:
+
+```bash
+uv run pytest tests/unit/test_cos_init_py.py tests/unit/test_dispatch_cost_predictor.py -q
+# 59 passed in 0.20s
+
+COS_PYREFLY_PRINT_REPORT=0 bash scripts/cos-pyrefly-pilot --summary-only
+# PYREFLY_PILOT_SUMMARY: errors=88 elapsed_seconds=1 ...
+```
+
+Note: `tests/unit/test_routing_benchmark_onnx_adapter.py` attempted a Hugging Face/Xet model download and timed out in this local run; this is an external/network fixture issue, not a local assertion failure from the narrowing patch.
+
+Running baseline after pass 8: **268 → 88** non-import Pyrefly errors.

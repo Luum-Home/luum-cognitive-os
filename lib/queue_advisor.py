@@ -162,7 +162,7 @@ def _minutes_since(iso_timestamp: str) -> float:
 
 def _estimate_tokens(item: Dict[str, Any]) -> int:
     """Rough token estimate from description length."""
-    description = item.get("description", item.get("prompt", ""))
+    description = str(item.get("description", item.get("prompt", "")) or "")
     return max(100, int(len(description) * _TOKENS_PER_CHAR * 100))
 
 
@@ -705,7 +705,7 @@ class QueueAdvisor:
 
         lines: List[str] = []
         first = reordered[0]
-        first_desc = first.get("description", first.get("prompt", "?"))[:60]
+        first_desc = str(first.get("description", first.get("prompt", "?")) or "?")[:60]
         first_score = first.get("advisor_score", 0)
         first_reason = first.get("advisor_reason", "standard priority")
 
@@ -717,7 +717,7 @@ class QueueAdvisor:
         if len(reordered) > 1:
             queue_parts = []
             for item in reordered:
-                desc = item.get("description", item.get("prompt", "?"))[:30]
+                desc = str(item.get("description", item.get("prompt", "?")) or "?")[:30]
                 score = item.get("advisor_score", 0)
                 queue_parts.append(f"{desc} ({score:.0f})")
             lines.append(f"Queue order: [{', '.join(queue_parts)}]")
