@@ -24,7 +24,7 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bengram[- ]?(integrated\s+)?code[- ]?review\b
   confidence: 0.95
-- pattern: \b(review|revis[áa]\w*)\s+(my\s+|el\s+|la\s+|this\s+)?code\b
+- pattern: \breview\s+(my\s+|this\s+)?code\b
   confidence: 0.88
 routing_intents:
 - intent: code_review_request

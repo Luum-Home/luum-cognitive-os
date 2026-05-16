@@ -23,8 +23,8 @@ platforms:
 prerequisites: []
 routing_patterns:
 - pattern: \bpending[- ]?close\b
-- pattern: \bcerr(ar|á)\b.{0,30}(item|tarea|adr|ledger)
-  confidence: 0.86
+- pattern: /session-pending-close\b
+  confidence: 0.95
 - pattern: \bclose\b.{0,30}(item|task|adr|ledger|pending)
   confidence: 0.84
 routing_intents:

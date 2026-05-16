@@ -153,7 +153,7 @@
 | Skill | Description | Invoke | Audience |
 |-------|-------------|--------|----------|
 | caveman | Ultra-compressed communication mode (~75% token reduction). Intensity levels: lite/full/ultra | `/caveman [lite\|full\|ultra]` | both |
-| caveman-es | Spanish caveman mode. Same compression, native Spanish support | `/caveman-es [lite\|full\|ultra]` | both |
+| caveman-es | Deprecated compatibility alias; prefer `/caveman` | `/caveman-es` | both |
 | caveman-compress | Compress natural language memory files (CLAUDE.md, todos) into caveman format | `/caveman:compress <filepath>` | both |
 
 ## External Skills — Trail of Bits [submodule]
@@ -214,7 +214,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **capability-snapshot** — Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors
 - **catalog-full** — Use when the compact Level-1 catalog does not have enough detail. Purpose: Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns.
 - **caveman** — Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman. Also auto-triggers when token efficiency is requested. Purpose: Ultr...
-- **caveman-es** — Use when you need this Cognitive OS skill: Spanish caveman mode. Cuts ~75% of tokens using technical caveman style. Same precision, less verbosity. Levels: lite, full (defau...
+- **caveman-es** — Deprecated compatibility alias for `/caveman`; no language-specific behavior.
 - **code-review** — Use when you need this Cognitive OS skill: Engram-integrated code review with adversarial protocol. Reviews
 - **cognee-integration** — Configure and use Cognee for knowledge graph memory. Provides structured knowledge extraction, graph-based retrieval, and MCP server integration.
 - **cognee-search** — Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrieval

@@ -88,7 +88,7 @@ Total skills: 178
 | browser-task | Use when an agent or operator needs to drive a real web browser - navigate |
 | catalog-full | Load and display the full skills catalog (skills/CATALOG.md) with invocations… |
 | caveman | Ultra-compressed communication mode. |
-| caveman-es | Spanish caveman mode. |
+| caveman-es | Deprecated compatibility alias for `/caveman`. |
 | cognitive-os-init | META skill — initialize Cognitive OS for a project by chaining detect-stack |
 | cognitive-os-status | 'Use when you need this Cognitive OS skill: Full health check of all |
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) |

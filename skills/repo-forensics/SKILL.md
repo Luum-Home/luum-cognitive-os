@@ -25,7 +25,7 @@ routing_patterns:
   confidence: 0.96
 - pattern: \bdeep\s+(repo|repository|source)\s+analysis\b
   confidence: 0.88
-- pattern: \binvestig[áa]\w*\s+(this|the|ese?|este?)?\s*repo\b
+- pattern: \b(investigate|analyze)\s+(this|the)?\s*repo\b
   confidence: 0.9
 - pattern: \banalyze\s+all\s+(code|dependencies|configs)\b
   confidence: 0.82
