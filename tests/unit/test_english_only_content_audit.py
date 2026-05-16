@@ -67,8 +67,12 @@ def test_first_forbidden_script_letter_allows_latin_diacritic() -> None:
     assert first_forbidden_script_letter("Mat" + chr(0x00ED) + "as") is None
 
 
-def test_first_forbidden_script_letter_allows_greek_technical() -> None:
-    assert first_forbidden_script_letter("score = " + chr(0x03B1)) is None
+def test_first_forbidden_script_letter_flags_greek_letter() -> None:
+    assert first_forbidden_script_letter("score = " + chr(0x03B1)) == chr(0x03B1)
+
+
+def test_first_forbidden_script_letter_allows_micro_sign() -> None:
+    assert first_forbidden_script_letter("limit = 5" + chr(0x00B5) + "s") is None
 
 
 def test_audit_non_latin_script_flagged(tmp_path: Path) -> None:

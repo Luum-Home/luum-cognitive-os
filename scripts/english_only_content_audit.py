@@ -222,18 +222,32 @@ def _has_allow_block_marker(block_text: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Non-Latin script / forbidden-punctuation pre-pass (fast, kept from v1)
+# Non-Latin script / forbidden-punctuation pre-pass (fast)
 # ---------------------------------------------------------------------------
 
+ALLOWED_NON_ASCII_SYMBOLS = {chr(0x00B5)}  # MICRO SIGN: technical unit prefix.
+
+
 def first_forbidden_script_letter(line: str) -> str | None:
+    """Return the first alphabetic character from a disallowed script.
+
+    This is intentionally a script guard, not a language detector: Latin
+    letters with diacritics are left for the paragraph-level detector so names
+    and loanwords do not fail solely because of one character. Non-Latin
+    alphabetic scripts, including Greek letters, are blocked unless a nearby
+    allow marker documents an intentional fixture or notation example.
+    """
     for char in line:
-        if not char.isalpha() or ord(char) < 128:
+        if ord(char) < 128 or char in ALLOWED_NON_ASCII_SYMBOLS:
+            continue
+        category = unicodedata.category(char)
+        if not category.startswith("L"):
             continue
         try:
             name = unicodedata.name(char)
         except ValueError:
             return char
-        if "LATIN" in name or "GREEK" in name or name == "MICRO SIGN":
+        if "LATIN" in name:
             continue
         return char
     return None
@@ -250,7 +264,7 @@ def _fast_prepass_finding(
             file=rel_path,
             line=line_no,
             evidence=script_match,
-            message="Non-Latin/non-Greek script character found.",
+            message="Non-Latin script character found.",
         )
     punct = FORBIDDEN_PUNCTUATION_RE.search(line)
     if punct:
@@ -527,7 +541,7 @@ def scan_file(
     lines = text.splitlines()
     findings: list[Finding] = []
 
-    # Fast pre-pass: non-Latin scripts and ¡¿ punctuation (line-level).
+    # Fast pre-pass: non-Latin scripts and inverted punctuation (line-level).
     for line_no, line in enumerate(lines, 1):
         f = _fast_prepass_finding(rel_path, line_no, line)
         if f is not None:
