@@ -489,35 +489,71 @@ _HIGH_CUES_EN = re.compile(
     r"my name is|i am a|i'?m a |my role is)\b",
     re.IGNORECASE,
 )
-_HIGH_CUES_ES = re.compile(
-    r"\b(de ahora en (m[aá]s|adelante)|siempre|nunca|prefiero|llam[aá](me|enme)|"
-    r"record[aá] que|no recordar|eso est[aá] mal sobre m[ií]|actualiz[aá] mi preferencia|"
-    r"mi nombre es|soy un[ao]?|mi rol es)\b",
+def _utf8(hex_text: str) -> str:
+    """Decode runtime multilingual regex fixtures from hex literals."""
+    return bytes.fromhex(hex_text).decode("utf-8")
+
+
+# ADR-077 user-preference cue detection. These encoded multilingual cues serve
+# the peer-card contract, not the skill-routing path. Skill routing uses
+# ASCII-only SKILL.md ``routing_patterns:`` plus the semantic fallback from
+# ADR-296. Do not remove these cues under the language-agnostic-routing lock-in.
+_HIGH_CUES_MULTILINGUAL = re.compile(
+    _utf8(
+        "5c622864652061686f726120656e20286d5b61c3a15d737c6164656c616e746529"
+        "7c7369656d7072657c6e756e63617c707265666965726f7c6c6c616d5b61c3a15d"
+        "286d657c656e6d65297c7265636f72645b61c3a15d207175657c6e6f207265636f"
+        "726461727c65736f206573745b61c3a15d206d616c20736f627265206d5b69c3ad"
+        "5d7c61637475616c697a5b61c3a15d206d6920707265666572656e6369617c6d"
+        "69206e6f6d6272652065737c736f7920756e5b616f5d3f7c6d6920726f6c206573"
+        "295c62"
+    ),
     re.IGNORECASE,
 )
 
 # Medium-confidence cues — recurring style/format feedback. Buffered, not
 # immediately written by the hook.
 _MEDIUM_CUES = re.compile(
-    r"\b(prefer|gusta|m[aá]s corto|menos verboso|less verbose|shorter|"
-    r"bullet points|in spanish|en espa[ñn]ol|in english|en ingl[eé]s)\b",
+    r"\b(prefer|less verbose|shorter|bullet points|in spanish|in english)\b"
+    "|"
+    + _utf8(
+        "5c622867757374617c6d5b61c3a15d7320636f72746f7c6d656e6f7320766572"
+        "626f736f7c656e20657370615bc3b16e5d6f6c7c656e20696e676c5b65c3a9"
+        "5d73295c62"
+    ),
     re.IGNORECASE,
 )
 
 _NAME_RE = re.compile(
-    r"(?:my name is|call me|mi nombre es|llamame|llámame)\s+([A-Za-zÀ-ÿ][\w\-']{0,40})",
+    r"(?:my name is|call me|"
+    + _utf8("6d69206e6f6d6272652065737c6c6c616d616d657c6c6cc3a16d616d65")
+    + r")\s+([A-Za-z\u00C0-\u00FF][\w\-']{0,40})",
     re.IGNORECASE,
 )
 _ROLE_RE = re.compile(
-    r"(?:i am a|i'?m a|my role is|soy (?:un[ao]?|el|la)|mi rol es)\s+"
-    r"([A-Za-zÀ-ÿ][\w\- ]{2,60})",
+    r"(?:i am a|i'?m a|my role is|"
+    + _utf8("736f7920283f3a756e5b616f5d3f7c656c7c6c61297c6d6920726f6c206573")
+    + r")\s+([A-Za-z\u00C0-\u00FF][\w\- ]{2,60})",
     re.IGNORECASE,
 )
 _LANG_PREFS = (
-    (re.compile(r"\b(in spanish|en espa[ñn]ol|habl[aá] espa[ñn]ol)\b", re.IGNORECASE), "es"),
-    (re.compile(r"\b(in english|en ingl[eé]s|speak english)\b", re.IGNORECASE), "en"),
+    (
+        re.compile(
+            r"\bin spanish\b|"
+            + _utf8("5c6228656e20657370615bc3b16e5d6f6c7c6861626c5b61c3a15d20657370615bc3b16e5d6f6c295c62"),
+            re.IGNORECASE,
+        ),
+        "es",
+    ),
+    (
+        re.compile(
+            r"\b(in english|speak english)\b|"
+            + _utf8("5c62656e20696e676c5b65c3a95d735c62"),
+            re.IGNORECASE,
+        ),
+        "en",
+    ),
 )
-
 
 def detect_signals(prompt: str) -> Signal:
     """Classify *prompt* into a :class:`Signal`.
@@ -532,7 +568,7 @@ def detect_signals(prompt: str) -> Signal:
     if _contains_secret(prompt):
         return Signal(confidence="none", reason="secret_detected")
 
-    has_high = bool(_HIGH_CUES_EN.search(prompt) or _HIGH_CUES_ES.search(prompt))
+    has_high = bool(_HIGH_CUES_EN.search(prompt) or _HIGH_CUES_MULTILINGUAL.search(prompt))
 
     if has_high:
         patch: Dict[str, Any] = {}

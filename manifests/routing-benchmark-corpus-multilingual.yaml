@@ -1,0 +1,38 @@
+# english-only-content-audit: allow
+# Intentional runtime multilingual fixture for ADR-296 routing validation.
+schema_version: routing-benchmark-corpus/v1
+skills:
+  add-hook:
+    description: |
+      Step-by-step guide for adding a new hook to the Cognitive OS.
+    prompts:
+      es:
+        - "agregame un hook nuevo"
+        - "necesito crear un hook"
+  add-rule:
+    description: |
+      Step-by-step guide for adding a new rule to the Cognitive OS.
+    prompts:
+      fr:
+        - "ajoute une nouvelle règle au système"
+  code-review:
+    description: |
+      Engram-integrated code review with adversarial protocol.
+    prompts:
+      es:
+        - "revisá mi código por favor"
+        - "hacé un code review de los cambios"
+  repo-forensics:
+    description: |
+      Deep forensic analysis of git repositories.
+    prompts:
+      pt:
+        - "faça uma análise forense deste repositório"
+  run-tests:
+    description: |
+      Auto-detect project test framework and run tests with structured reporting.
+    prompts:
+      de:
+        - "führe die Tests aus"
+      es:
+        - "corré los tests"
