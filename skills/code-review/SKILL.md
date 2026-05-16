@@ -31,6 +31,11 @@ routing_intents:
   description: User asks for a review of code, changes, a pull request, or implementation
     quality, including security, conventions, or test coverage concerns.
   confidence: 0.88
+- intent: review_my_code
+  description: User asks to review their code or changed source files for bugs,
+    quality issues, unsafe patterns, or missing tests; not a request to synchronize
+    documentation.
+  confidence: 0.9
 triggers:
 - code-review
 - /code-review

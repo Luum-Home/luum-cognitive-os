@@ -313,8 +313,34 @@ def test_full_catalog_candidates_adds_distractors(
     candidates = harness._build_candidates(corpus)
     names = {name for name, _description in candidates}
     assert names == {"product-answer", "security-audit", "unrelated-distractor"}
-    # Corpus descriptions remain authoritative for expected skills.
-    assert dict(candidates)["product-answer"].startswith("Answer product")
+    # Catalog text is authoritative when present because it mirrors runtime
+    # semantic-router input more closely than the small benchmark corpus.
+    assert dict(candidates)["product-answer"].startswith("Catalog product")
+
+
+def test_skill_catalog_includes_routing_intents(tmp_path: Path) -> None:
+    skill_dir = tmp_path / "skills" / "route-rich"
+    skill_dir.mkdir(parents=True, exist_ok=True)
+    (skill_dir / "SKILL.md").write_text(
+        "---\n"
+        "name: route-rich\n"
+        "description: Plain description\n"
+        "summary_line: Compact summary\n"
+        "routing_intents:\n"
+        "- intent: rich_intent\n"
+        "  description: Rich routing signal\n"
+        "  confidence: 0.9\n"
+        "---\n",
+        encoding="utf-8",
+    )
+    catalog = rb.load_skill_catalog(
+        tmp_path / "skills",
+        tmp_path / "packages",
+    )
+    text = catalog["route-rich"]
+    assert "rich_intent: Rich routing signal" in text
+    assert "Plain description" in text
+    assert "Compact summary" in text
 
 
 def test_report_exposes_candidate_universe_size(

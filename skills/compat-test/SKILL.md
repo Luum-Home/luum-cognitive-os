@@ -27,6 +27,10 @@ routing_intents:
     with the current AI model. Checks skill triggers, rule compliance, phase awareness,
     memory, progressive loading, templates, budget awareness, and error handling.
   confidence: 0.85
+- intent: model_compatibility_validation
+  description: User asks to validate Cognitive OS compatibility after a model upgrade
+    or structural OS change; not a generic request to run the project test suite.
+  confidence: 0.88
 triggers:
 - compat-test
 - /compat-test

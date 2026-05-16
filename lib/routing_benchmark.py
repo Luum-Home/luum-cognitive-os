@@ -53,7 +53,11 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Protocol, Tuple
 
 # ADR-296 runtime fallback — imported for SemanticFallbackAdapter (CLR-1).
-from lib.semantic_skill_matcher import SemanticSkillMatcher, _SkillIndex
+from lib.semantic_skill_matcher import (
+    SemanticSkillMatcher,
+    _SkillIndex,
+    load_skill_metadata,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -205,10 +209,12 @@ def load_skill_catalog(
     skills_root: Path = Path("skills"),
     package_skills_root: Path = Path("packages"),
 ) -> Dict[str, str]:
-    """Load the on-disk SKILL.md catalog as ``{skill_name: description}``.
+    """Load the on-disk SKILL.md catalog as ``{skill_name: routing text}``.
 
     This is used by full-catalog routing benchmarks so a small multilingual
-    prompt corpus can still be ranked against the complete skill surface.
+    prompt corpus can still be ranked against the complete skill surface. The
+    text combines routing intents, description, and summary line to approximate
+    the runtime semantic-router corpus more closely than description alone.
     """
     skill_md_paths: Dict[str, Path] = {}
     for root in (skills_root, package_skills_root):
@@ -218,11 +224,20 @@ def load_skill_catalog(
             name = p.parent.name
             skill_md_paths.setdefault(name, p)
 
+    metadata = load_skill_metadata(skill_md_paths)
     out: Dict[str, str] = {}
-    for name, path in sorted(skill_md_paths.items()):
-        desc = _parse_description(path)
-        if desc:
-            out[name] = desc
+    for name in sorted(skill_md_paths):
+        meta = metadata.get(name, {})
+        parts: List[str] = []
+        intents = meta.get("routing_intents") or []
+        if isinstance(intents, list):
+            parts.extend(str(x).strip() for x in intents if str(x).strip())
+        for key in ("description", "summary_line"):
+            value = str(meta.get(key) or "").strip()
+            if value:
+                parts.append(value)
+        if parts:
+            out[name] = "\n".join(dict.fromkeys(parts))
     return out
 
 
@@ -879,10 +894,12 @@ class BenchmarkHarness:
         if self.full_catalog_candidates:
             catalog = load_skill_catalog(self.skills_root, self.package_skills_root)
             candidates.update(catalog)
-            # Corpus descriptions are benchmark ground truth for expected
-            # skills, so they override catalog text when both exist.
+            # Corpus descriptions are fallback ground truth for expected skills
+            # that are absent from the on-disk catalog. When a skill exists in
+            # the catalog, keep its richer SKILL.md routing text because that is
+            # the runtime semantic-router signal.
             for skill, entry in corpus.items():
-                candidates[skill] = entry["description"]
+                candidates.setdefault(skill, entry["description"])
         return sorted(candidates.items())
 
     # ------------------------------------------------- per-model benchmark

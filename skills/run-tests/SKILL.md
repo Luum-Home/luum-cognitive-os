@@ -31,6 +31,11 @@ routing_intents:
   description: User asks to run, execute, detect, or report the project's test suite
     or test framework.
   confidence: 0.9
+- intent: generic_test_execution
+  description: User asks to run the tests, execute unit tests, run pytest, or verify
+    that the project test suite passes, without smoke-test or end-to-end system
+    validation qualifiers.
+  confidence: 0.9
 ---
 <!-- SCOPE: both -->
 # /run-tests

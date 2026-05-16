@@ -13,6 +13,12 @@ triggers:
 - /doc-sync
 - Doc Sync — Stale Documentation Updater
 - Synchronize documentation that became stale after code changes
+routing_intents:
+- intent: documentation_sync
+  description: User asks to update, synchronize, or repair stale documentation after
+    source-code changes; not a request to review code quality or implementation
+    correctness.
+  confidence: 0.88
 ---
 <!-- SCOPE: both -->
 # Doc Sync — Stale Documentation Updater

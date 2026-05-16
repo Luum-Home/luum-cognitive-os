@@ -12,6 +12,12 @@ audience: os-dev
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: smoke_system_validation
+  description: User asks to run smoke tests, end-to-end system checks, health checks,
+    or Cognitive OS integration validation across hooks, config, CLI, and runtime
+    wiring; not a generic project unit-test request.
+  confidence: 0.88
 ---
 <!-- SCOPE: both -->
 # Smoke Test
