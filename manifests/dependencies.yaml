@@ -76,6 +76,8 @@ python:
     - memu-ai
     security-python:
     - mcp-scan
+    typecheck:
+    - pyrefly>=1.0,<1.1
 tools:
 - name: jq
   criticality: required
