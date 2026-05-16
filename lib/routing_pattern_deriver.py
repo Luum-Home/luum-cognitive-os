@@ -51,28 +51,27 @@ _GENERIC_WORDS: frozenset[str] = frozenset(
     }
 )
 
-# Spanish action verbs that indicate the description is bilingual or Spanish-heavy.
-_SPANISH_ACTION_VERBS: tuple[str, ...] = (
-    "crear",
-    "generar",
+# English action verbs that indicate a useful verb + skill-name routing anchor.
+_ACTION_VERBS: tuple[str, ...] = (
+    "create",
+    "generate",
     "fix",
-    "corregir",
-    "ejecutar",
+    "correct",
+    "execute",
     "add",
-    "añadir",
-    "construir",
-    "actualizar",
-    "verificar",
-    "revisar",
-    "analizar",
-    "implementar",
-    "configurar",
-    "depurar",
-    "optimizar",
-    "refactorizar",
-    "migrar",
-    "desplegar",
-    "probar",
+    "build",
+    "update",
+    "verify",
+    "review",
+    "analyze",
+    "implement",
+    "configure",
+    "debug",
+    "optimize",
+    "refactor",
+    "migrate",
+    "deploy",
+    "test",
 )
 
 
@@ -103,7 +102,7 @@ class RoutingPatternDeriver:
         1. Skill name as \\b<name>\\b  → confidence 0.95
         2. Hyphen-collapsed variant (hyphens replaced by spaces) → 0.85
            (skipped if identical to rule 1 result after normalisation)
-        3. Spanish trigger if description contains a known Spanish action verb → 0.80
+        3. Action trigger if description contains a known English action verb → 0.80
         4. 2-word keyword combo extracted from description → 0.75
            (skipped if both keywords are generic)
         """
@@ -137,20 +136,20 @@ class RoutingPatternDeriver:
                     )
                 )
 
-        # --- Rule 3: Spanish trigger ---
+        # --- Rule 3: English action trigger ---
         desc_lower = description.lower()
-        matched_es_verb = next(
-            (v for v in _SPANISH_ACTION_VERBS if re.search(rf"\b{v}\b", desc_lower)),
+        matched_action_verb = next(
+            (v for v in _ACTION_VERBS if re.search(rf"\b{v}\b", desc_lower)),
             None,
         )
-        if matched_es_verb:
-            es_pattern = rf"\b{re.escape(matched_es_verb)}\b.*\b{re.escape(collapsed if collapsed != clean_name else clean_name)}\b"
-            # Simpler alternative: just the verb + name combo as a looser anchor
+        if matched_action_verb:
+            action_pattern = rf"\b{re.escape(matched_action_verb)}\b.*\b{re.escape(collapsed if collapsed != clean_name else clean_name)}\b"
+            # Verb + name combo as a looser anchor.
             patterns.append(
                 RoutingPattern(
-                    pattern=es_pattern,
+                    pattern=action_pattern,
                     confidence=0.80,
-                    source="spanish-action-verb",
+                    source="english-action-verb",
                 )
             )
 

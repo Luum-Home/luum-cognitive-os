@@ -137,7 +137,7 @@ class TestIntegration:
             ("Use PostgreSQL for the database", True),
             ("What's left?", False),
             ("The deadline is Friday", True),
-            ("dale", False),
+            ("ack", False),
             ("Show me the handler file", False),
             ("Don't use huma, switch to ginext", True),
         ]

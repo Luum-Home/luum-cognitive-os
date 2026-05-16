@@ -1,7 +1,7 @@
 """Unit tests for lib/prompt_classifier.py
 
 Validates prompt classification across categories, capture decisions,
-confidence scoring, bilingual support, and edge cases.
+confidence scoring and edge cases.
 """
 
 import pytest
@@ -154,13 +154,13 @@ class TestFeedback:
         assert result.category == PromptCategory.FEEDBACK
         assert result.should_capture is True
 
-    def test_spanish_no_hagas(self):
-        result = classify_prompt("No hagas eso, esta mal")
+    def test_negative_no_this(self):
+        result = classify_prompt("No, this is not what I wanted")
         assert result.category == PromptCategory.FEEDBACK
         assert result.should_capture is True
 
-    def test_spanish_perfecto(self):
-        result = classify_prompt("Perfecto, segui asi con ese enfoque")
+    def test_positive_exactly(self):
+        result = classify_prompt("Exactly, keep doing this approach")
         assert result.category == PromptCategory.FEEDBACK
         assert result.should_capture is True
 
@@ -193,8 +193,8 @@ class TestContext:
         assert result.category == PromptCategory.CONTEXT
         assert result.should_capture is True
 
-    def test_spanish_trabajando(self):
-        result = classify_prompt("Estamos trabajando en el servicio de pagos")
+    def test_keep_in_mind_context(self):
+        result = classify_prompt("Keep in mind that the payments service is being migrated")
         assert result.category == PromptCategory.CONTEXT
         assert result.should_capture is True
 
@@ -219,12 +219,12 @@ class TestStatusQuery:
         result = classify_prompt("How's the progress on the migration?")
         assert result.should_capture is False
 
-    def test_spanish_que_falta(self):
-        result = classify_prompt("Que falta?")
+    def test_what_remains(self):
+        result = classify_prompt("What remains?")
         assert result.should_capture is False
 
-    def test_spanish_como_va(self):
-        result = classify_prompt("Como va el progreso?")
+    def test_where_are_we(self):
+        result = classify_prompt("Where are we on progress?")
         assert result.should_capture is False
 
 
@@ -274,25 +274,25 @@ class TestAcknowledgment:
         result = classify_prompt("got it")
         assert result.should_capture is False
 
-    def test_dale(self):
-        result = classify_prompt("dale")
+    def test_ack(self):
+        result = classify_prompt("ack")
         assert result.category == PromptCategory.ACKNOWLEDGMENT
         assert result.should_capture is False
 
-    def test_si(self):
-        result = classify_prompt("si")
+    def test_roger(self):
+        result = classify_prompt("roger")
         assert result.should_capture is False
 
     def test_go_ahead(self):
         result = classify_prompt("go ahead")
         assert result.should_capture is False
 
-    def test_listo(self):
-        result = classify_prompt("listo")
+    def test_copy(self):
+        result = classify_prompt("copy")
         assert result.should_capture is False
 
-    def test_bueno(self):
-        result = classify_prompt("bueno")
+    def test_alright(self):
+        result = classify_prompt("alright")
         assert result.should_capture is False
 
     def test_continue(self):
