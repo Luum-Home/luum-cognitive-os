@@ -74,28 +74,24 @@ class TestKnownSkills:
 
 
 # ---------------------------------------------------------------------------
-# Spanish action verb detection
+# English action verb detection
 # ---------------------------------------------------------------------------
 
 
-class TestSpanishTrigger:
-    def test_spanish_verb_creates_pattern(self, deriver: RoutingPatternDeriver) -> None:
+class TestEnglishActionTrigger:
+    def test_action_verb_creates_pattern(self, deriver: RoutingPatternDeriver) -> None:
         result = deriver.derive(
             "plan-feature",
-            "Generar un plan detallado para implementar una nueva funcionalidad",
+            "Generate a detailed plan to implement a new feature",
         )
         patterns = [p["pattern"] for p in result]
-        # Should have a Spanish-triggered pattern containing a Spanish verb
-        assert any("generar" in pat or "implementar" in pat for pat in patterns)
+        # Should have an action-triggered pattern containing an English verb.
+        assert any("generate" in pat or "implement" in pat for pat in patterns)
 
-    def test_english_only_description_no_spanish_pattern(self, deriver: RoutingPatternDeriver) -> None:
+    def test_action_source_is_english(self, deriver: RoutingPatternDeriver) -> None:
         result = deriver.derive("plan-feature", "Generate a plan for a new feature")
         patterns = [p["pattern"] for p in result]
-        # None of the Spanish verbs should appear
-        spanish_verbs = ["crear", "generar", "fix", "implementar"]
-        assert not any(
-            any(sv in pat for sv in spanish_verbs) for pat in patterns
-        )
+        assert any("generate" in pat for pat in patterns)
 
 
 # ---------------------------------------------------------------------------
