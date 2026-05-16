@@ -53,20 +53,10 @@ VALID_CORPUS_YAML = textwrap.dedent(
         description: "Answer product questions from cached cards."
         prompts:
           en: ["what is our differentiator"]
-          es: ["what is our differentiator?"]
-          pt: ["qual é o nosso diferenciador?"]
-          de: ["was ist unser Differenzierungsmerkmal?"]
-          fr: ["quel est notre facteur différenciant?"]
-          it: ["qual è il nostro differenziatore?"]
       security-audit:
         description: "Run a security audit of recent changes."
         prompts:
           en: ["run a security audit"]
-          es: ["haz una auditoría de seguridad"]
-          pt: ["faça uma auditoria de segurança"]
-          de: ["führe ein Security-Audit aus"]
-          fr: ["fais un audit de sécurité"]
-          it: ["esegui un audit di sicurezza"]
     """
 )
 
@@ -193,8 +183,8 @@ def test_corpus_loader_parses_seed(corpus_path: Path):
     assert set(corpus.keys()) == {"product-answer", "security-audit"}
     pa = corpus["product-answer"]
     assert pa["description"].startswith("Answer product")
-    for lang in ("en", "es", "pt", "de", "fr", "it"):
-        assert pa["prompts"][lang], f"missing prompts for {lang}"
+    assert pa["prompts"]["en"], "missing English prompts"
+    assert set(pa["prompts"].keys()) == set(rb.LANGUAGES)
 
 
 def test_corpus_loader_rejects_wrong_schema(tmp_path: Path):
@@ -277,7 +267,7 @@ def test_benchmark_runs_with_stub_factory(models_path: Path, corpus_path: Path):
         assert m.warm_p95_ms >= 0
         assert m.license_ok
         assert m.load_error is None
-        # 6 languages should all be represented.
+        # Supported benchmark languages should all be represented.
         assert {pl.language for pl in m.per_language} == set(rb.LANGUAGES)
 
 

@@ -26,9 +26,9 @@ tags:
 verification_level: medium
 classification_basis: |
   Lands a benchmark harness (lib/routing_benchmark.py) plus seed manifests
-  for candidate models and a 10-skill multilingual corpus. The harness
+  for candidate models and a 10-skill English-only corpus. The harness
   gates every model on the project license policy (MIT/BSD/Apache) before
-  any download, measures precision@1/@5/MRR per language plus
+  any download, measures precision@1/@5/MRR for supported prompt language plus
   latency/memory/size, and writes a versioned Markdown+JSON report.
   Tests run unconditionally against an injected stub adapter; a separate
   @pytest.mark.benchmark test exercises the real fastembed model.
@@ -42,8 +42,7 @@ Accepted — 2026-05-13.
 
 ## Context
 
-ADR-296 introduced a multilingual bi-encoder (FastEmbed +
-`paraphrase-multilingual-MiniLM-L12-v2`) behind the regex skill router.
+ADR-296 introduced a semantic bi-encoder behind the regex skill router.
 ADR-297 added an LLM tie-breaker for ambiguous cases. Both shipped with
 tests, but the **choice of model was driven by a survey of upstream
 benchmarks**, not by measurements on this project's corpus.
@@ -51,7 +50,7 @@ benchmarks**, not by measurements on this project's corpus.
 The operator correctly pointed out: "you can't choose models without
 local benchmarks on my corpus." A model that scores 78%/82% on MIRACL
 can underperform on a project whose skills are short, terse, and
-heavily multilingual in ways the upstream eval set does not represent.
+project-specific in ways the upstream eval set does not represent.
 
 We need a single, reproducible artifact that any future model-selection
 ADR can cite. Without one, model swaps become opinion fights.
@@ -71,8 +70,8 @@ output) or in a dedicated evidence section.
 
 - `manifests/routing-benchmark-models.yaml` — candidate manifest;
   each entry declares `adapter`, `model_name`, `license`, `role`.
-- `manifests/routing-benchmark-corpus.yaml` — multilingual seed
-  corpus (10 skills × 6 languages × ~5 prompts each). Operators
+- `manifests/routing-benchmark-corpus.yaml` — English-only seed
+  corpus (10 skills × ~5 prompts each). Operators
   regenerate the full 385-skill corpus on demand via
   `scripts/cos-routing-benchmark --regenerate-corpus`, which uses
   ADR-049 LLM dispatch.
@@ -81,7 +80,7 @@ output) or in a dedicated evidence section.
 
 ### Metrics
 
-Per model: precision@1, precision@5, MRR (with per-language
+Per model: precision@1, precision@5, MRR (with supported-language
 breakdown); cold-start, warm p50/p95/p99; peak RSS; on-disk size;
 license-gate pass/fail; failure count. Output: Markdown table +
 recommendation block + JSON twin (schema-versioned).
@@ -117,7 +116,7 @@ without modifying the harness core.
 **Positive**
 
 - Every model swap is grounded in numbers measured on *our* skills,
-  *our* languages, *our* machine.
+  *our* approved prompt language, *our* machine.
 - The license gate prevents accidentally adopting AGPL/SSPL weights
   during exploratory work.
 - The cache makes routine "did the corpus change?" checks fast.

@@ -1,10 +1,10 @@
 # SCOPE: os-only
 """Reproducible model-evaluation harness for the COS skill router (ADR-298).
 
-The COS skill router (`lib/skill_router.py`) routes user prompts in EN/ES/PT/DE/
-FR/IT to one of ~385 skills. Two recent ADRs introduced model-driven layers:
+The COS skill router (`lib/skill_router.py`) routes English user prompts to one
+of ~385 skills. Two recent ADRs introduced model-driven layers:
 
-* ADR-296 — bi-encoder semantic matcher (FastEmbed + multilingual MiniLM)
+* ADR-296 — bi-encoder semantic matcher (FastEmbed + MiniLM)
 * ADR-297 — LLM tie-breaker for ambiguous regex/embedding results
 
 This harness is the artifact that backs every future model-selection ADR.
@@ -76,7 +76,7 @@ CORPUS_SCHEMA_VERSION = "routing-benchmark-corpus/v1"
 MODELS_SCHEMA_VERSION = "routing-benchmark-models/v1"
 
 CACHE_DIR_DEFAULT = Path(".cognitive-os/cache/routing-benchmark")
-LANGUAGES = ("en", "es", "pt", "de", "fr", "it")
+LANGUAGES = ("en",)
 WARM_QUERY_COUNT = 200
 
 # Exit codes
@@ -678,11 +678,11 @@ def _flatten_queries(
     out: List[_Query] = []
     skills_sorted = sorted(corpus.keys())
     if quick:
-        # Sample up to 20 skills × 2 languages (en + es) for fast iteration.
+        # Sample up to 20 skills for fast iteration.
         skills_sorted = skills_sorted[:20]
     for skill in skills_sorted:
         prompts_by_lang = corpus[skill]["prompts"]
-        langs = ("en", "es") if quick else LANGUAGES
+        langs = LANGUAGES
         for lang in langs:
             for prompt in prompts_by_lang.get(lang, []):
                 out.append(_Query(prompt=prompt, expected_skill=skill, language=lang))
@@ -1129,7 +1129,7 @@ def regenerate_corpus(
     dispatch_fn: Optional[Callable[..., Any]] = None,
     max_skills: Optional[int] = None,
 ) -> int:
-    """Walk SKILL.md files, ask the LLM dispatcher to draft 6×lang prompts.
+    """Walk SKILL.md files, ask the LLM dispatcher to draft English prompts.
 
     Returns the number of skills written. ``dispatch_fn`` is injected for
     tests; defaults to ``lib.dispatch.dispatch``. Output is deterministic:
@@ -1167,10 +1167,9 @@ def regenerate_corpus(
         if not desc:
             continue
         prompt_template = (
-            "Generate 6 short user prompts (one per language: en, es, pt, "
-            "de, fr, it) that a user would write to invoke a skill "
-            f"described as: '{desc}'. Return strict YAML with keys en, es, "
-            "pt, de, fr, it; each value is a list of one string. No prose."
+            "Generate 3 short English user prompts that a user would write "
+            f"to invoke a skill described as: '{desc}'. Return strict YAML "
+            "with key en; its value is a list of strings. No prose."
         )
         try:
             result = dispatch_fn(prompt=prompt_template, task_type="general")
@@ -1263,7 +1262,7 @@ def _parse_args(argv: List[str]) -> argparse.Namespace:
     p.add_argument(
         "--quick",
         action="store_true",
-        help="Sample 20 skills × 2 languages for fast iteration",
+        help="Sample 20 skills for fast iteration",
     )
     p.add_argument(
         "--strict",
