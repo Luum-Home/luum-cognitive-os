@@ -25,10 +25,14 @@ prerequisites:
 routing_patterns:
 - pattern: \bprimitive[- ]?harvester\b
   confidence: 0.95
-- pattern: \bclassify\s+conversation\s+(as\s+)?primitive\b
-  confidence: 0.8
-- pattern: \bharvest\s+primitive\b
-  confidence: 0.75
+- pattern: /primitive-harvester\b
+  confidence: 0.95
+routing_intents:
+- intent: primitive_harvesting_request
+  description: User asks to classify a conversation, workflow, or repeated process
+    as a candidate reusable primitive, existing primitive improvement,
+    documentation-only record, or discard.
+  confidence: 0.88
 triggers:
 - primitive-harvester
 - /primitive-harvester
@@ -100,6 +104,6 @@ instead of creating a duplicate.
 
 ## Contextual Trigger
 
-Keywords: convert conversation to primitive, this should be automatic,
-crear skill, crear primitiva, no receta manual, harvester, classify primitive,
-descartar conversación, mejorar skill existente, usar primitiva existente.
+Keywords: primitive-harvester, /primitive-harvester, classify primitive candidate,
+convert repeated workflow into a primitive, improve existing primitive, use existing
+primitive, document only, discard primitive candidate.

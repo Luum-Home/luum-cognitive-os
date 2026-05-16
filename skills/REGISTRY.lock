@@ -197,7 +197,7 @@ skills:
 - path: skills/primitive-harness-coverage/SKILL.md
   sha256: fff379985355e914aeeaed4b3a6d8e5018e18c005797bf6b94eefc91ed33082e
 - path: skills/primitive-harvester/SKILL.md
-  sha256: 980c4b49d075520775338b40b93efdc6b52652f10f5bc97335981d4070be05ba
+  sha256: cbfdf11b76577a92daecc711f7e047b1e2b0277a05f365d59e99dffe0c1ee555
 - path: skills/primitive-surface-reduction/SKILL.md
   sha256: bca6bf516b3ef7eb9cb74ff670a2f411bfd4470bdd6d612bd74761412e8b4f5c
 - path: skills/primitive-usage-map/SKILL.md
