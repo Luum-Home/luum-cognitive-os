@@ -33,9 +33,9 @@
         "surface": "generated Cursor rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "structural-advisory",
-        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
       },
       "shell-ci": {
         "claims_runtime_enforcement": false,
@@ -129,9 +129,9 @@
         "surface": "generated Cursor rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "structural-advisory",
-        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
       },
       "shell-ci": {
         "claims_runtime_enforcement": false,

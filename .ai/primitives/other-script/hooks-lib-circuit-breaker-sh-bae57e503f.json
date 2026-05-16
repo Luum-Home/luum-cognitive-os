@@ -1,0 +1,100 @@
+{
+  "canonical_source": "hooks/_lib/circuit-breaker.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Projection audit iteration 043; shared hook support library copied into consumer installs as a required transitive dependency of projected hooks. circuit breaker state under .cognitive-os metrics.'",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Projection audit iteration 043; shared hook support library copied into consumer installs as a required transitive dependency of projected hooks. circuit breaker state under .cognitive-os metrics.'",
+    "evidence_commands": [
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/circuit-breaker.sh",
+      "scripts/cos-scope-projection-audit --repo-root . --run-install-smoke --strict --json --no-write"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script-lib",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "observe",
+    "exit_behavior": "sourced-library",
+    "governance_class": "hook-runtime-support",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-314",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Projection audit iteration 043; shared hook support library copied into consumer installs as a required transitive dependency of projected hooks. circuit breaker state under .cognitive-os metrics.'",
+      "evidence_commands": [
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/_lib/circuit-breaker.sh",
+        "scripts/cos-scope-projection-audit --repo-root . --run-install-smoke --strict --json --no-write"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Projection audit iteration 043; shared hook support library copied into consumer installs as a required transitive dependency of projected hooks. circuit breaker state under .cognitive-os metrics.'",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        "hooks/_lib/circuit-breaker.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/_lib/circuit-breaker.sh",
+  "projection_targets": [
+    "hooks/_lib/circuit-breaker.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/_lib/circuit-breaker.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

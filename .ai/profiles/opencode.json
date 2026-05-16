@@ -316,10 +316,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "direct-main-guard",
-      "fidelity": "structural-advisory",
-      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -472,10 +472,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "network-egress-guard",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -544,10 +544,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "private-mode-gate",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -574,16 +574,16 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "prompt-quality-llm",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "protected-config-write-guard",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -634,10 +634,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "result-truncator",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -664,10 +664,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "scope-creep-detector",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -682,10 +682,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "secret-detector",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -892,10 +892,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "token-budget-monitor",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -904,10 +904,10 @@
       "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
     },
     {
-      "claims_runtime_enforcement": false,
+      "claims_runtime_enforcement": true,
       "contract_id": "trust-score-validator",
-      "fidelity": "structural-advisory",
-      "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
     },
     {
       "claims_runtime_enforcement": false,
@@ -2049,9 +2049,9 @@
   "harness": "opencode",
   "lifecycle_primitives_supporting_harness": 0,
   "limitations": [
-    "Current COS projection proof writes and verifies structural opencode.json only; no account-backed OpenCode runtime invocation is in automated tests yet.",
-    "OpenCode's official plugin API exposes tool.execute.before/tool.execute.after and permission surfaces that can enforce some COS primitives. Do not model OpenCode as documented-only or structural-advisory once a COS OpenCode plugin adapter is implemented and smoke-tested.",
-    "No COS OpenCode plugin adapter has been signed yet, so ACC must not claim runtime enforcement from the existing opencode.json structural projection."
+    "The signed runtime slice is model-free and plugin-wrapper based; it does not prove a paid/account-backed OpenCode LLM session.",
+    "Structural opencode.json projection alone is not runtime enforcement. Runtime claims apply only to primitives covered by the signed cos-primitive-guard.js smoke.",
+    "Remaining registry-backed primitives stay structural-advisory until their own smoke evidence is signed."
   ],
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
@@ -2062,7 +2062,7 @@
     "mcp-placeholder"
   ],
   "projection_mode": "opencode-json-instructions-mcp-plugin-capable",
-  "proof_level": "structural",
+  "proof_level": "governed-wrapper-enforced",
   "schema_version": "portable-ai-profile.v1",
   "settings_paths": [
     "opencode.json"

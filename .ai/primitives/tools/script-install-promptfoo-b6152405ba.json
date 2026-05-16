@@ -63,16 +63,17 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "protected install/profile surface; surface=optional-tool-install; primitive-readiness-ledger priority=protected",
+    "behavior_evidence": "Manual scope review iteration 044; shared optional tool installer usable by COS and consumer projects without source checkout paths. primitive-readiness-ledger priority=protected",
     "evidence_commands": [
       "bash -n scripts/install-promptfoo.sh",
-      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
+      "python3 -m pytest tests/red_team/portability/test_shared_tool_installers.py -q"
     ],
     "metrics_file": "none"
   },
   "family": "script",
   "lifecycle": {
-    "distribution": "maintainer",
+    "distribution": "team",
     "docs_claim_level": "observe",
     "exit_behavior": "manual",
     "governance_class": "meta-governance",

@@ -23,6 +23,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.project_paths import relpath
+from lib.primitive_parser import parse_primitive_file
 from lib.script_io import read_text
 
 VALID_SCOPES = {"os-only", "project", "both"}
@@ -172,7 +173,13 @@ def _ignored(root: Path, path: Path) -> bool:
 
 
 def _scope(path: Path) -> str | None:
-    header = "\n".join(read_text(path).splitlines()[:8])
+    try:
+        parsed = parse_primitive_file(path, ROOT)
+    except Exception:
+        parsed = None
+    if parsed and parsed.scope_marker in VALID_SCOPES:
+        return parsed.scope_marker
+    header = "\n".join(read_text(path).splitlines()[:80])
     match = re.search(r"\bSCOPE:\s*([A-Za-z0-9_-]+)", header)
     return match.group(1) if match else None
 

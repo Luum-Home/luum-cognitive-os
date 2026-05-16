@@ -165,6 +165,17 @@ def test_opencode_enforcement_claims_are_limited_to_signed_plugin_smoke_slice() 
         "cosd-auth-guard",
         "dispatch-gate",
         "doc-sync-detector",
+        # Additional primitives promoted to the signed OpenCode plugin smoke slice.
+        "direct-main-guard",
+        "secret-detector",
+        "protected-config-write-guard",
+        "network-egress-guard",
+        "token-budget-monitor",
+        "prompt-quality-llm",
+        "scope-creep-detector",
+        "result-truncator",
+        "private-mode-gate",
+        "trust-score-validator",
     }
     for contract in _contracts():
         fidelity = contract["projection"]["opencode"]["fidelity"]

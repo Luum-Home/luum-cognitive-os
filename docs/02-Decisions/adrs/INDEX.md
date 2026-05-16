@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 332 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 335 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (155)
+### Active / Implemented (157)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -165,10 +165,12 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [315](ADR-315-primitive-parser-contracts.md) | Primitive Parser Contracts Before Scope Classification | accepted | implemented | 2026-05-14 | Accepted and implemented — 2026-05-14. |
 | [316](ADR-316-agentic-literacy-before-os-abstraction.md) | Agentic Literacy Before OS Abstraction | accepted | implemented | 2026-05-15 | Accepted and implemented as documentation doctrine — 2026-05-15. |
 | [317](ADR-317-cos-falsification-before-promotion.md) | COS Falsification Before Promotion | accepted | implemented | 2026-05-15 | Accepted and implemented as product-governance doctrine — 2026-05-15. |
-| [318](ADR-318-copy-only-checkpoints-and-stash-quarantine.md) | Copy-Only Checkpoints and Stash Quarantine | accepted | implemented | 2026-05-15 | `git stash` is useful as a human emergency tool, but it is a poor default |
-| [320](ADR-320-install-scope-surface-debt.md) | Install Scope Surface Debt and Protected Config Boundary | accepted | implemented | 2026-05-15 | Primitive SCOPE classification has three semantic values: |
+| [318](ADR-318-copy-only-checkpoints-and-stash-quarantine.md) | Copy-Only Checkpoints and Stash Quarantine | accepted | implemented | 2026-05-15 | Accepted. |
+| [320](ADR-320-install-scope-surface-debt.md) | Install Scope Surface Debt and Protected Config Boundary | accepted | implemented | 2026-05-15 | Accepted. |
+| [321](ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) | Primitive Scope Plane Balance and Proof Ratchets | accepted | implemented | 2026-05-15 | Accepted. |
+| [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Accepted. |
 
-### Active / Partial (121)
+### Active / Partial (123)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -291,8 +293,10 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [278](ADR-278-subprocess-run-timeout-discipline.md) | subprocess.run Timeout Discipline | accepted | partial | 2026-05-12 | Accepted — audit + allowlist + test-default shipped 2026-05-12. Per-call |
 | [289](ADR-289-three-layer-knowledge-architecture.md) | Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram | accepted | partial | 2026-05-13 | Accepted — 2026-05-13. |
 | [291](ADR-291-agent-runtime-web-service.md) | Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients | accepted | partial | 2026-05-13 | **Date:** 2026-05-13 |
-| [317](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Cognitive OS already had distributed evidence practices: mandatory acceptance criteria, verification commands, SDD phases, adversarial review with zero-finding  |
-| [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Cognitive OS already had adversarial review and EAS detractor objections, but the skeptical role was underspecified. It could catch zero-finding reviews, yet it |
+| [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Accepted. |
+| [322](ADR-322-consumer-sdd-lane-contract.md) | Consumer SDD Lane Contract | accepted | partial | 2026-05-15 | Accepted. |
+| [324](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Accepted. |
+| [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Runtime hook enforcement and provider-specific a |
 
 ### Active / Partial / Blocked (1)
 
@@ -400,6 +404,3 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [253](ADR-253-tombstone-squads.md) | Tombstone — squads orchestration superseded by ADR-251 | tombstone | not-applicable | 2026-05-08 | The `packages/squads/` orchestration package (multi-agent team coordination |
 
 </details>
-| [321](ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) | Primitive Scope Plane Balance and Proof Ratchets | accepted | implemented | 2026-05-15 | Scope answers install surface; plane answers why the primitive exists; proof level answers evidence strength. |
-| [322](ADR-322-consumer-sdd-lane-contract.md) | Consumer SDD Lane Contract | accepted | partial | 2026-05-15 | Local-first consumer SDD workflow with durable specs, approval, traceability review, and planned external task-state adapters. |
-| [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Separate proof presence from proof depth; ratchet structural-only primitive evidence. |

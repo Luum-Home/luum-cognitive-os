@@ -1,0 +1,98 @@
+{
+  "canonical_source": "hooks/concurrent-write-guard-codex-proxy.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual scope calibration iteration 014; demoted from stale both marker based on COS-internal semantic evidence.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual scope calibration iteration 014; demoted from stale both marker based on COS-internal semantic evidence.",
+    "evidence_commands": [
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/concurrent-write-guard-codex-proxy.sh"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "runtime-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-314",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual scope calibration iteration 014; demoted from stale both marker based on COS-internal semantic evidence.",
+      "evidence_commands": [
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/concurrent-write-guard-codex-proxy.sh"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Manual scope calibration iteration 014; demoted from stale both marker based on COS-internal semantic evidence.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        "hooks/concurrent-write-guard-codex-proxy.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/concurrent-write-guard-codex-proxy.sh",
+  "projection_targets": [
+    "hooks/concurrent-write-guard-codex-proxy.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/concurrent-write-guard-codex-proxy.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

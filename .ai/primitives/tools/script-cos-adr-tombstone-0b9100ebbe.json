@@ -63,9 +63,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified both. Project-dir wrapper around the portable ADR tombstone primitive.",
     "evidence_commands": [
-      "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q"
+      "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q",
+      "bash -n scripts/cos-adr-tombstone",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-adr-tombstone --fail-contradictions"
     ],
     "metrics_file": ".cognitive-os/metrics/adr-tombstone.jsonl"
   },

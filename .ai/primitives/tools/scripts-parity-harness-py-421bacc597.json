@@ -1,0 +1,88 @@
+{
+  "canonical_source": "scripts/parity_harness.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual scope calibration iteration 040 classified os-only. COS provider parity benchmark harness tied to ADR-051/052 experiments.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. COS provider parity benchmark harness tied to ADR-051/052 experiments.",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/parity_harness.py",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/parity_harness.py --fail-contradictions"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-146",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. COS provider parity benchmark harness tied to ADR-051/052 experiments.",
+      "evidence_commands": [
+        "python3 -m py_compile scripts/parity_harness.py",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/parity_harness.py --fail-contradictions"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Manual scope calibration iteration 040 classified os-only. COS provider parity benchmark harness tied to ADR-051/052 experiments.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/parity_harness.py"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/parity_harness.py",
+  "projection_targets": [
+    "scripts/parity_harness.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/parity_harness.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

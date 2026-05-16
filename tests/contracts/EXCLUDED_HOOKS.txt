@@ -127,6 +127,7 @@ release-guard.sh | FUTURE: guards release operations; planned for PreToolUse Bas
 # hooks/global-verify.sh (ADR-027 Phase 1).
 token-budget-monitor.sh | FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired
 global-verify.sh | MANUAL_TRIGGER: wired conditionally by apply-efficiency-profile.sh; not a global default — registered only when a profile is active — @on-demand
+pyrefly-typecheck-advisory.sh | CONDITIONAL: Codex-only pyrefly advisory hook projected through Codex settings when the optional pyrefly lane is enabled; not a Claude lifecycle hook.
 
 # ── Hooks discovered during initial audit run (not in earlier survey) ────────
 adr-detector.sh | FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired

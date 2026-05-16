@@ -1,128 +1,131 @@
 # Primitive Readiness Ledger — Rules
 
-Total rows: 120
-Rows without lifecycle metadata: 119
-Consumer accessibility: lifecycle-declared-maintainer:1, so-local-only:119
+Total rows: 123
+Rows without lifecycle metadata: 1
+Consumer accessibility: lifecycle-declared-maintainer:117, projected-consumer-surface:5, so-local-only:1
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
-| `rules/ROADMAP.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/RULES-COMPACT.md` | lab | heuristic:path | medium | so-local-only |  | 163 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/acceptance-criteria.md` | driver-specific | heuristic:text | medium | so-local-only |  | 68 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/adaptive-bypass.md` | driver-specific | heuristic:text | medium | so-local-only |  | 62 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/adversarial-review.md` | driver-specific | heuristic:text | medium | so-local-only |  | 48 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-audit-before-commit.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-communication.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-customization.md` | driver-specific | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-escalation.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-identity.md` | driver-specific | heuristic:text | medium | so-local-only |  | 21 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-kpis.md` | driver-specific | heuristic:text | medium | so-local-only |  | 52 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-output-reading.md` | driver-specific | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-quality.md` | lab | heuristic:path | medium | so-local-only |  | 60 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-security.md` | driver-specific | heuristic:text | medium | so-local-only |  | 30 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/agent-sidecars.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/aguara-integration.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/ai-provider-identity.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/anti-hallucination.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/assumption-tracking.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/audit-trail.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 51 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/auto-repair.md` | context-only | default | medium | so-local-only |  | 88 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/auto-rollback.md` | driver-specific | heuristic:text | medium | so-local-only |  | 80 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/auto-skill-generation.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 24 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/bash-naming.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/blast-radius.md` | lab | heuristic:path | medium | so-local-only |  | 129 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/broken-window-policy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/capability-levels.md` | driver-specific | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/capability-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/clarification-gate.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 96 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/clean-room-detection-limits.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/closed-loop-prompts.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 55 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/cognitive-load.md` | driver-specific | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/confidence-gate.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 73 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/confidentiality-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/consequence-system.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/content-policy.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 104 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/context-management.md` | driver-specific | heuristic:text | medium | so-local-only |  | 38 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/context-optimization.md` | doctrine | heuristic:text | medium | so-local-only |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/context7-auto-trigger.md` | context-only | default | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/cosd-secure-api.md` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/cost-prediction.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/crash-recovery.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 65 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/credential-management.md` | driver-specific | heuristic:text | medium | so-local-only |  | 44 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/cross-harness-authoring.md` | driver-specific | heuristic:text | medium | so-local-only |  | 26 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/decision-depth-gate.md` | driver-specific | heuristic:text | medium | so-local-only |  | 18 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/decomposition.md` | doctrine | heuristic:text | medium | so-local-only |  | 29 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/definition-of-done.md` | driver-specific | heuristic:text | medium | so-local-only |  | 48 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/doc-sync.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 61 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/dry-run.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 247 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/dynamic-tool-creation.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/e2b-integration.md` | lab | heuristic:path | medium | so-local-only |  | 18 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/engram-api-safety.md` | lab | heuristic:path | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/engram-organization.md` | lab | heuristic:path | medium | so-local-only |  | 21 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/error-learning.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 155 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/estimation-calibration.md` | driver-specific | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/fault-tolerance.md` | driver-specific | heuristic:text | medium | so-local-only |  | 32 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/hcom-integration.md` | driver-specific | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/hook-security-profiles.md` | driver-specific | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/impact-analysis.md` | driver-specific | heuristic:text | medium | so-local-only |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/infra-health.md` | lab | heuristic:path | medium | so-local-only |  | 40 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/infra-intent.md` | context-only | default | medium | so-local-only |  | 31 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/lane-taxonomy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/license-policy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 63 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/llm-dispatch.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 62 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/memory-governance.md` | driver-specific | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/model-compatibility.md` | driver-specific | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/model-directive.md` | driver-specific | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/model-routing.md` | driver-specific | heuristic:text | medium | so-local-only |  | 63 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/non-blocking-retry.md` | driver-specific | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 187 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/orchestrator-mode.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/orchestrator-prompt-compose.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/parry-integration.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/pentesting-readiness.md` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/performance-monitoring.md` | context-only | default | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/phase-aware-agents.md` | driver-specific | heuristic:text | medium | so-local-only |  | 39 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/pre-commit-gate.md` | driver-specific | heuristic:text | medium | so-local-only |  | 48 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/pre-dev-readiness-gate.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/private-mode.md` | driver-specific | heuristic:text | medium | so-local-only |  | 57 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/prompt-composition.md` | driver-specific | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/prompt-quality.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 49 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/python-naming.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/queue-advisor.md` | driver-specific | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/queue-drain.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 33 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/rate-limit-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 25 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/rate-limiting.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/recommendation-grounding.md` | driver-specific | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/reinvention-prevention.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/repomix-integration.md` | driver-specific | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/research-first-protocol.md` | driver-specific | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/resource-governance.md` | doctrine | heuristic:text | medium | so-local-only |  | 44 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/response-compression.md` | doctrine | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/responsiveness.md` | driver-specific | heuristic:text | medium | so-local-only |  | 29 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/result-management.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/retry-contract.md` | driver-specific | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/sandbox-sampling.md` | lab | heuristic:path | medium | so-local-only |  | 21 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/scope-creep-detection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/scope-proportionality.md` | lab | heuristic:path | medium | so-local-only |  | 55 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/scout-pattern.md` | lab | heuristic:path | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/security-scanning.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/self-improvement-protocol.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
-| `rules/session-close-doc-truth.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/session-concurrency.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/singularity.md` | driver-specific | heuristic:text | medium | so-local-only |  | 63 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/skill-invocation-mandatory.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/skill-management.md` | lab | heuristic:path | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/skill-rewrite.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/so-slo.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/split-and-resume.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/squad-protocol.md` | driver-specific | heuristic:text | medium | so-local-only |  | 18 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/startup-protocol.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 30 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/step-files.md` | driver-specific | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/supply-chain-defense.md` | context-only | default | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/task-dag.md` | context-only | default | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/tero-integration.md` | driver-specific | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/token-economy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 36 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/trailofbits-skills.md` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/trust-score.md` | driver-specific | heuristic:text | medium | so-local-only |  | 156 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/user-prompt-capture.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 51 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/workload-scheduling.md` | driver-specific | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/ROADMAP.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 29 | keep maintainer-only or add explicit export path |
+| `rules/RULES-COMPACT.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 171 | keep maintainer-only or add explicit export path |
+| `rules/acceptance-criteria.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 72 | keep maintainer-only or add explicit export path |
+| `rules/adaptive-bypass.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 65 | keep maintainer-only or add explicit export path |
+| `rules/adversarial-review.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 55 | keep maintainer-only or add explicit export path |
+| `rules/agent-audit-before-commit.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
+| `rules/agent-communication.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
+| `rules/agent-customization.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
+| `rules/agent-escalation.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
+| `rules/agent-identity.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
+| `rules/agent-kpis.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
+| `rules/agent-output-reading.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 11 | keep maintainer-only or add explicit export path |
+| `rules/agent-quality.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 64 | keep maintainer-only or add explicit export path |
+| `rules/agent-security.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 33 | keep maintainer-only or add explicit export path |
+| `rules/agent-sidecars.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
+| `rules/aguara-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
+| `rules/ai-provider-identity.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
+| `rules/anti-hallucination.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 26 | keep maintainer-only or add explicit export path |
+| `rules/assumption-tracking.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 25 | keep maintainer-only or add explicit export path |
+| `rules/audit-trail.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
+| `rules/auto-repair.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 92 | keep maintainer-only or add explicit export path |
+| `rules/auto-rollback.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 82 | keep maintainer-only or add explicit export path |
+| `rules/auto-skill-generation.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 27 | keep maintainer-only or add explicit export path |
+| `rules/bash-naming.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
+| `rules/blast-radius.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 131 | keep maintainer-only or add explicit export path |
+| `rules/broken-window-policy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
+| `rules/capability-levels.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
+| `rules/capability-protection.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
+| `rules/clarification-gate.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 98 | keep maintainer-only or add explicit export path |
+| `rules/clean-room-detection-limits.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
+| `rules/closed-loop-prompts.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 58 | keep maintainer-only or add explicit export path |
+| `rules/cognitive-load.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
+| `rules/confidence-gate.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 75 | keep maintainer-only or add explicit export path |
+| `rules/confidentiality-protection.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
+| `rules/consequence-system.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
+| `rules/content-policy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 107 | keep maintainer-only or add explicit export path |
+| `rules/context-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 41 | keep maintainer-only or add explicit export path |
+| `rules/context-optimization.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 31 | keep maintainer-only or add explicit export path |
+| `rules/context7-auto-trigger.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/cosd-secure-api.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
+| `rules/cost-prediction.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
+| `rules/crash-recovery.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 68 | keep maintainer-only or add explicit export path |
+| `rules/credential-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 47 | keep maintainer-only or add explicit export path |
+| `rules/cross-harness-authoring.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 30 | keep maintainer-only or add explicit export path |
+| `rules/decision-depth-gate.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
+| `rules/decomposition.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 32 | keep maintainer-only or add explicit export path |
+| `rules/definition-of-done.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 51 | keep maintainer-only or add explicit export path |
+| `rules/doc-sync.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 64 | keep maintainer-only or add explicit export path |
+| `rules/dry-run.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 254 | keep maintainer-only or add explicit export path |
+| `rules/dynamic-tool-creation.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
+| `rules/e2b-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
+| `rules/eas-evidence-artifact.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 11 | keep lifecycle, tests, and harness proof current |
+| `rules/engram-api-safety.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 11 | keep maintainer-only or add explicit export path |
+| `rules/engram-organization.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
+| `rules/error-learning.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 157 | keep maintainer-only or add explicit export path |
+| `rules/estimation-calibration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
+| `rules/fault-tolerance.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 34 | keep maintainer-only or add explicit export path |
+| `rules/hcom-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
+| `rules/hook-security-profiles.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
+| `rules/impact-analysis.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 23 | keep maintainer-only or add explicit export path |
+| `rules/infra-health.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 41 | keep maintainer-only or add explicit export path |
+| `rules/infra-intent.md` | context-only | default | medium | lifecycle-declared-maintainer | advisory | 36 | keep maintainer-only or add explicit export path |
+| `rules/lane-taxonomy.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
+| `rules/language-token-economy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/license-policy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 64 | keep maintainer-only or add explicit export path |
+| `rules/llm-dispatch.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 63 | keep maintainer-only or add explicit export path |
+| `rules/memory-governance.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
+| `rules/model-compatibility.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/model-directive.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/model-routing.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 65 | keep maintainer-only or add explicit export path |
+| `rules/non-blocking-retry.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/observability.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 192 | keep maintainer-only or add explicit export path |
+| `rules/orchestrator-mode.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 31 | keep maintainer-only or add explicit export path |
+| `rules/orchestrator-prompt-compose.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 10 | keep maintainer-only or add explicit export path |
+| `rules/parry-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
+| `rules/pentesting-readiness.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
+| `rules/performance-monitoring.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/phase-aware-agents.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 42 | keep maintainer-only or add explicit export path |
+| `rules/pre-commit-gate.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
+| `rules/pre-dev-readiness-gate.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
+| `rules/private-mode.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 61 | keep maintainer-only or add explicit export path |
+| `rules/prompt-composition.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
+| `rules/prompt-quality.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 51 | keep maintainer-only or add explicit export path |
+| `rules/python-naming.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
+| `rules/queue-advisor.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |
+| `rules/queue-drain.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 35 | keep maintainer-only or add explicit export path |
+| `rules/rate-limit-protection.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 28 | keep maintainer-only or add explicit export path |
+| `rules/rate-limiting.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 31 | keep maintainer-only or add explicit export path |
+| `rules/recommendation-grounding.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 10 | keep lifecycle, tests, and harness proof current |
+| `rules/reinvention-prevention.md` | hook-enforced | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
+| `rules/repomix-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
+| `rules/research-first-protocol.md` | driver-specific | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
+| `rules/resource-governance.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 47 | keep maintainer-only or add explicit export path |
+| `rules/response-compression.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 12 | keep maintainer-only or add explicit export path |
+| `rules/responsiveness.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 32 | keep maintainer-only or add explicit export path |
+| `rules/result-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 25 | keep maintainer-only or add explicit export path |
+| `rules/retry-contract.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
+| `rules/sandbox-sampling.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 24 | keep maintainer-only or add explicit export path |
+| `rules/scope-creep-detection.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
+| `rules/scope-proportionality.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 56 | keep maintainer-only or add explicit export path |
+| `rules/scout-pattern.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/security-scanning.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
+| `rules/self-improvement-protocol.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 25 | keep lifecycle, tests, and harness proof current |
+| `rules/session-close-doc-truth.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 8 | keep maintainer-only or add explicit export path |
+| `rules/session-concurrency.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
+| `rules/singularity.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 68 | keep maintainer-only or add explicit export path |
+| `rules/skill-invocation-mandatory.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 9 | keep maintainer-only or add explicit export path |
+| `rules/skill-management.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
+| `rules/skill-rewrite.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
+| `rules/so-slo.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 20 | keep maintainer-only or add explicit export path |
+| `rules/split-and-resume.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 14 | keep maintainer-only or add explicit export path |
+| `rules/squad-protocol.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 21 | keep maintainer-only or add explicit export path |
+| `rules/startup-protocol.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 33 | keep maintainer-only or add explicit export path |
+| `rules/stash-quarantine.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 11 | keep lifecycle, tests, and harness proof current |
+| `rules/step-files.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
+| `rules/supply-chain-defense.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
+| `rules/task-dag.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/tero-integration.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 13 | keep maintainer-only or add explicit export path |
+| `rules/token-economy.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 45 | keep maintainer-only or add explicit export path |
+| `rules/trailofbits-skills.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 19 | keep maintainer-only or add explicit export path |
+| `rules/trust-score.md` | driver-specific | heuristic:text | medium | projected-consumer-surface | advisory | 158 | keep lifecycle, tests, and harness proof current |
+| `rules/user-prompt-capture.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 53 | keep maintainer-only or add explicit export path |
+| `rules/workload-scheduling.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |

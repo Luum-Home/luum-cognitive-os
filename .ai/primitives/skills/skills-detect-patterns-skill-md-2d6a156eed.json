@@ -1,0 +1,98 @@
+{
+  "canonical_source": "skills/detect-patterns/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual scope calibration iteration 017: detects rot in the Cognitive OS primitive/codebase mesh and calls COS pattern detector internals.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual scope calibration iteration 017: detects rot in the Cognitive OS primitive/codebase mesh and calls COS pattern detector internals.",
+    "evidence_commands": [
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/detect-patterns/SKILL.md"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "skill-procedure",
+    "governance_class": "skill-maintainer-only",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-314",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual scope calibration iteration 017: detects rot in the Cognitive OS primitive/codebase mesh and calls COS pattern detector internals.",
+      "evidence_commands": [
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/detect-patterns/SKILL.md"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Manual scope calibration iteration 017: detects rot in the Cognitive OS primitive/codebase mesh and calls COS pattern detector internals.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "generic-cli": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/detect-patterns/SKILL.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "skills/detect-patterns/SKILL.md",
+  "projection_targets": [
+    "skills/detect-patterns/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "skills/detect-patterns/SKILL.md",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "generic-cli"
+  ]
+}

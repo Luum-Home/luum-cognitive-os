@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# SCOPE: os-only
+# SCOPE: both
 # @manual-trigger: invoke to aggregate per-scenario red-team JSON results; part of red-team harness suite
 # redteam_aggregate.py — Aggregates per-scenario JSON results into a baseline.
 #

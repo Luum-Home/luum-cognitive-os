@@ -62,21 +62,21 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "agent-facing procedure for invoking primitive harness coverage instead of inferring parity from SCOPE markers",
+    "behavior_evidence": "Manual scope recalibration iteration 021 after distribution/scope orthogonality fix: measures COS primitive implementation coverage across harness surfaces so maintainers do not confuse SCOPE with parity.",
     "evidence_commands": [
-      "python3 -m pytest tests/contracts/test_primitive_harness_coverage_contract.py -q"
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/primitive-harness-coverage/SKILL.md"
     ],
     "metrics_file": "none"
   },
   "family": "skill",
   "lifecycle": {
-    "distribution": "team",
+    "distribution": "maintainer",
     "docs_claim_level": "observe",
-    "exit_behavior": "exit_0",
-    "governance_class": "meta-governance",
+    "exit_behavior": "skill-procedure",
+    "governance_class": "skill-maintainer-only",
     "lifecycle_state": "candidate",
     "maturity": "observe",
-    "owner_adr": "ADR-189",
+    "owner_adr": "ADR-314",
     "risk_class": "advisory",
     "runtime_projection": false
   },
@@ -163,6 +163,6 @@
   "supported_harnesses": [
     "claude",
     "codex",
-    "shell"
+    "generic-cli"
   ]
 }

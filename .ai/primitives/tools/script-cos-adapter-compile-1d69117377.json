@@ -65,10 +65,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Compile COS primitive contracts and harness projection profiles into native consumer-project IDE files through governed projection drivers while preserving declared fidelity.",
+    "behavior_evidence": "Manual scope calibration iteration 038: adapter compiler is shared because COS uses it to produce governed adapter outputs and adopter projects consume the generated native IDE files.",
     "evidence_commands": [
       "python3 -m py_compile lib/adapter_compile.py scripts/cos-adapter-compile scripts/cos-adapters",
-      "python3 -m pytest tests/contracts/test_adapter_compile.py tests/behavior/test_consumer_project_projection.py -q"
+      "python3 -m pytest tests/contracts/test_adapter_compile.py tests/behavior/test_consumer_project_projection.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-adapter-compile --fail-contradictions"
     ],
     "metrics_file": "none"
   },

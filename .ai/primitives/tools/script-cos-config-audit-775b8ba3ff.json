@@ -63,10 +63,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "protected install/profile surface; surface=profile-audit; primitive-readiness-ledger priority=protected",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. Audits Cognitive OS configuration promises against this SO codebase implementation.",
     "evidence_commands": [
       "bash -n scripts/cos-config-audit.sh",
-      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-config-audit.sh --fail-contradictions"
     ],
     "metrics_file": "none"
   },

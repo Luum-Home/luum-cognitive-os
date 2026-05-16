@@ -5,14 +5,14 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+    "intent": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+    "behavior_evidence": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "evidence_commands": [
       "bash -n hooks/bash-hot-path-dispatcher.sh",
       "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
@@ -43,7 +43,7 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+      "behavior_evidence": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
       "evidence_commands": [
         "bash -n hooks/bash-hot-path-dispatcher.sh",
         "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
@@ -56,7 +56,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "Default Bash hot-path dispatcher fans out command-scoped P0/P1 gates while keeping harness settings small.",
+    "intent": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

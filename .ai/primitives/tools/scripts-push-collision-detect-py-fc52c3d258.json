@@ -1,0 +1,88 @@
+{
+  "canonical_source": "scripts/push_collision_detect.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Push-time subject/patch collision detector for git repositories.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Push-time subject/patch collision detector for git repositories.",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/push_collision_detect.py",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/push_collision_detect.py --fail-contradictions"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-146",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Push-time subject/patch collision detector for git repositories.",
+      "evidence_commands": [
+        "python3 -m py_compile scripts/push_collision_detect.py",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/push_collision_detect.py --fail-contradictions"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Push-time subject/patch collision detector for git repositories.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/push_collision_detect.py"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/push_collision_detect.py",
+  "projection_targets": [
+    "scripts/push_collision_detect.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/push_collision_detect.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

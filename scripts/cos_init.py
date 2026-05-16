@@ -87,7 +87,7 @@ DEFAULT_RULES = (
 DEFAULT_HOOKS = (
     "error-learning error-pipeline result-truncator session-init host-tool-doctor session-cleanup "
     "user-prompt-capture session-wrapup-trigger session-heartbeat memory-prefetch "
-    "clarification-gate blast-radius scope-proportionality "
+    "clarification-gate blast-radius scope-proportionality bash-hot-path-dispatcher orchestrator-claim-gate "
     "error-pattern-detector auto-refine auto-verify dod-gate "
     "trust-score-validator skill-metrics-tracker inject-phase-context stack-detector "
     "pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy "

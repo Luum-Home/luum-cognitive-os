@@ -33,9 +33,9 @@
         "surface": "generated Cursor rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "structural-advisory",
-        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
       },
       "shell-ci": {
         "claims_runtime_enforcement": false,
@@ -72,7 +72,7 @@
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "lab",
+    "distribution": "team",
     "docs_claim_level": "observe",
     "exit_behavior": "exit_0",
     "governance_class": "meta-governance",
@@ -129,9 +129,9 @@
         "surface": "generated Cursor rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "structural-advisory",
-        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
       },
       "shell-ci": {
         "claims_runtime_enforcement": false,

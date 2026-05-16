@@ -62,10 +62,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Wrapper CLI and library generating the portable maintainer .ai overlay from COS canonical primitive contracts.",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified both. Generates portable .ai overlay from COS primitives for project consumption.",
     "evidence_commands": [
       "python3 -m py_compile scripts/portable_ai_overlay.py",
-      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/portable_ai_overlay.py --fail-contradictions"
     ],
     "metrics_file": "none"
   },

@@ -1,0 +1,102 @@
+{
+  "canonical_source": "hooks/pyrefly-typecheck-advisory.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Scope health review 2026-05-15; Stop hook runs the COS Pyrefly pilot against COS first-party Python paths and .cognitive-os reports, so it is maintainer-only while the Pyrefly lane is in trial.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Scope health review 2026-05-15; Stop hook runs the COS Pyrefly pilot against COS first-party Python paths and .cognitive-os reports, so it is maintainer-only while the Pyrefly lane is in trial.",
+    "evidence_commands": [
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/pyrefly-typecheck-advisory.sh --fail-contradictions --fail-low-confidence",
+      "python3 -m pytest tests/contracts/test_pyrefly_pilot_radar.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/pyrefly/latest.json"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "exit_0",
+    "governance_class": "os-runtime-advisory",
+    "lifecycle_state": "advisory",
+    "maturity": "observe",
+    "owner_adr": "ADR-321",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Scope health review 2026-05-15; Stop hook runs the COS Pyrefly pilot against COS first-party Python paths and .cognitive-os reports, so it is maintainer-only while the Pyrefly lane is in trial.",
+      "evidence_commands": [
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/pyrefly-typecheck-advisory.sh --fail-contradictions --fail-low-confidence",
+        "python3 -m pytest tests/contracts/test_pyrefly_pilot_radar.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/reports/pyrefly/latest.json"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Scope health review 2026-05-15; Stop hook runs the COS Pyrefly pilot against COS first-party Python paths and .cognitive-os reports, so it is maintainer-only while the Pyrefly lane is in trial.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "hooks/pyrefly-typecheck-advisory.sh"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "hooks/pyrefly-typecheck-advisory.sh",
+  "projection_targets": [
+    "hooks/pyrefly-typecheck-advisory.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/pyrefly-typecheck-advisory.sh",
+  "supported_harnesses": [
+    "codex",
+    "claude",
+    "shell"
+  ]
+}

@@ -64,10 +64,12 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "delta-based lifecycle manifest promotion gate with contract tests",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. COS lab-first promotion gate.",
     "evidence_commands": [
       "python3 -m pytest tests/contracts/test_lab_first_promotion_gate.py -q",
-      "scripts/cos-lab-first-gate --json"
+      "scripts/cos-lab-first-gate --json",
+      "bash -n scripts/cos-lab-first-gate",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-lab-first-gate --fail-contradictions"
     ],
     "metrics_file": "none"
   },

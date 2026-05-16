@@ -2613,8 +2613,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -4075,8 +4076,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -4752,8 +4754,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5032,8 +5035,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5087,8 +5091,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5592,8 +5597,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5872,8 +5878,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -6042,8 +6049,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -8000,8 +8008,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -8113,8 +8122,9 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      fidelity: governed-wrapper-enforced
+      surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before/after
+        smoke
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -16873,7 +16883,8 @@ contracts:
   source: hooks/adoption-freeze-gate.sh
   lifecycle_ref: hooks/adoption-freeze-gate.sh
   generated_from_lifecycle: true
-  intent: Pre-commit kill-switch gate blocking commits when external-tool-adoption-freeze.yaml has frozen:true and a gated path is staged.
+  intent: Pre-commit kill-switch gate blocking commits when external-tool-adoption-freeze.yaml
+    has frozen:true and a gated path is staged.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -16927,7 +16938,8 @@ contracts:
   source: hooks/attribution-completeness-validator.sh
   lifecycle_ref: hooks/attribution-completeness-validator.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate requiring docs/03-PoCs/research annex files to carry Source-Pattern, License, and Clean-Room-Protocol attribution headers.
+  intent: Pre-commit gate requiring docs/03-PoCs/research annex files to carry Source-Pattern,
+    License, and Clean-Room-Protocol attribution headers.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -16981,7 +16993,8 @@ contracts:
   source: hooks/cos-session-start-projector.sh
   lifecycle_ref: hooks/cos-session-start-projector.sh
   generated_from_lifecycle: true
-  intent: SessionStart hook wrapper invoking scripts/cos-session-start-projector non-blocking; projector exits 0 always.
+  intent: SessionStart hook wrapper invoking scripts/cos-session-start-projector non-blocking;
+    projector exits 0 always.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17035,7 +17048,8 @@ contracts:
   source: hooks/dependency-license-classifier.sh
   lifecycle_ref: hooks/dependency-license-classifier.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate scanning staged dependency manifest diffs for BLOCKER license strings per license-policy.md.
+  intent: Pre-commit gate scanning staged dependency manifest diffs for BLOCKER license
+    strings per license-policy.md.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17089,7 +17103,8 @@ contracts:
   source: hooks/external-cache-content-leak.sh
   lifecycle_ref: hooks/external-cache-content-leak.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate using SHA-256 fingerprinting to detect verbatim content from external-source-cache being staged into production files.
+  intent: Pre-commit gate using SHA-256 fingerprinting to detect verbatim content
+    from external-source-cache being staged into production files.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17143,7 +17158,8 @@ contracts:
   source: hooks/external-pattern-cleanroom-gate.sh
   lifecycle_ref: hooks/external-pattern-cleanroom-gate.sh
   generated_from_lifecycle: true
-  intent: Pre-commit clean-room gate verifying staged files contain no literal strings from upstream external-pattern sources per ADR-259.
+  intent: Pre-commit clean-room gate verifying staged files contain no literal strings
+    from upstream external-pattern sources per ADR-259.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17197,7 +17213,8 @@ contracts:
   source: hooks/history-rewrite-documented.sh
   lifecycle_ref: hooks/history-rewrite-documented.sh
   generated_from_lifecycle: true
-  intent: SessionStart hook warning operators about history-rewrite bundles not registered in the ledger; non-blocking, emits WARN to stderr.
+  intent: SessionStart hook warning operators about history-rewrite bundles not registered
+    in the ledger; non-blocking, emits WARN to stderr.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17251,7 +17268,8 @@ contracts:
   source: hooks/legal-review-required-on-runtime-import.sh
   lifecycle_ref: hooks/legal-review-required-on-runtime-import.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate blocking commits when staged runtime files carry attribution headers for tools not approved in legal-review-ledger.yaml.
+  intent: Pre-commit gate blocking commits when staged runtime files carry attribution
+    headers for tools not approved in legal-review-ledger.yaml.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17305,7 +17323,8 @@ contracts:
   source: hooks/lib-symlink-divergence-detector.sh
   lifecycle_ref: hooks/lib-symlink-divergence-detector.sh
   generated_from_lifecycle: true
-  intent: PreToolUse hook detecting when lib/ symlinks are silently replaced by real files via git-add staging patterns.
+  intent: PreToolUse hook detecting when lib/ symlinks are silently replaced by real
+    files via git-add staging patterns.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17359,7 +17378,8 @@ contracts:
   source: hooks/pending-truth-drift-detector.sh
   lifecycle_ref: hooks/pending-truth-drift-detector.sh
   generated_from_lifecycle: true
-  intent: PostToolUse Edit/Write hook emitting additionalContext when landed code may close a pending-truth ledger item.
+  intent: PostToolUse Edit/Write hook emitting additionalContext when landed code
+    may close a pending-truth ledger item.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17413,7 +17433,8 @@ contracts:
   source: hooks/pending-truth-staleness-gate.sh
   lifecycle_ref: hooks/pending-truth-staleness-gate.sh
   generated_from_lifecycle: true
-  intent: PreToolUse Bash hook on git commit warning (not blocking) if pending-truth ledger is stale more than 30 days.
+  intent: PreToolUse Bash hook on git commit warning (not blocking) if pending-truth
+    ledger is stale more than 30 days.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17467,7 +17488,8 @@ contracts:
   source: hooks/pending-truth-verify-weekly.sh
   lifecycle_ref: hooks/pending-truth-verify-weekly.sh
   generated_from_lifecycle: true
-  intent: Stop hook asynchronously triggering pending-truth verification when the ledger is stale more than 7 days.
+  intent: Stop hook asynchronously triggering pending-truth verification when the
+    ledger is stale more than 7 days.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17521,7 +17543,8 @@ contracts:
   source: hooks/research-to-runtime-firewall.sh
   lifecycle_ref: hooks/research-to-runtime-firewall.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate blocking staged runtime files that import from .cognitive-os/external-source-cache/, closing the research-to-runtime leak path.
+  intent: Pre-commit gate blocking staged runtime files that import from .cognitive-os/external-source-cache/,
+    closing the research-to-runtime leak path.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17575,7 +17598,8 @@ contracts:
   source: hooks/spdx-header-required.sh
   lifecycle_ref: hooks/spdx-header-required.sh
   generated_from_lifecycle: true
-  intent: Pre-commit gate requiring new source files under lib/, packages/*/lib/, scripts/ to carry an SPDX-License-Identifier header within the first 10 lines.
+  intent: Pre-commit gate requiring new source files under lib/, packages/*/lib/,
+    scripts/ to carry an SPDX-License-Identifier header within the first 10 lines.
   trigger:
     kind: lifecycle_declared_tool_event
     runtime_projection: true
@@ -17629,7 +17653,8 @@ contracts:
   source: scripts/documentation_truth_audit.py
   lifecycle_ref: scripts/documentation_truth_audit.py
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive auditing documentation truth claims across the repo.
+  intent: Skill-facing agentic primitive auditing documentation truth claims across
+    the repo.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17652,7 +17677,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - python3 -m py_compile scripts/documentation_truth_audit.py
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -17682,7 +17708,8 @@ contracts:
   source: scripts/cos-closure-trust-signal.py
   lifecycle_ref: scripts/cos-closure-trust-signal.py
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive emitting closure trust signals for session verification.
+  intent: Skill-facing agentic primitive emitting closure trust signals for session
+    verification.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17705,7 +17732,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - python3 -m py_compile scripts/cos-closure-trust-signal.py
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -17735,7 +17763,8 @@ contracts:
   source: scripts/cos-session-start-projector
   lifecycle_ref: scripts/cos-session-start-projector
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive providing session-start projection logic invoked by hooks/cos-session-start-projector.sh.
+  intent: Skill-facing agentic primitive providing session-start projection logic
+    invoked by hooks/cos-session-start-projector.sh.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17758,7 +17787,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - python3 -m py_compile scripts/cos-session-start-projector
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -17788,7 +17818,8 @@ contracts:
   source: scripts/cos-pending-truth-verify
   lifecycle_ref: scripts/cos-pending-truth-verify
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive verifying pending-truth ledger items and updating staleness timestamps.
+  intent: Skill-facing agentic primitive verifying pending-truth ledger items and
+    updating staleness timestamps.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17811,7 +17842,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - bash -n scripts/cos-pending-truth-verify
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -17841,7 +17873,8 @@ contracts:
   source: scripts/cos-adr-close
   lifecycle_ref: scripts/cos-adr-close
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive for closing ADRs with evidence and documentation cross-references.
+  intent: Skill-facing agentic primitive for closing ADRs with evidence and documentation
+    cross-references.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17864,7 +17897,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - bash -n scripts/cos-adr-close
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -17894,7 +17928,8 @@ contracts:
   source: scripts/cos-pending-truth-aggregator
   lifecycle_ref: scripts/cos-pending-truth-aggregator
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive aggregating pending-truth items from multiple ledger sources.
+  intent: Skill-facing agentic primitive aggregating pending-truth items from multiple
+    ledger sources.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17917,7 +17952,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - bash -n scripts/cos-pending-truth-aggregator
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -17947,7 +17983,8 @@ contracts:
   source: scripts/cos-pending-truth-close
   lifecycle_ref: scripts/cos-pending-truth-close
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive for closing pending-truth ledger items with evidence.
+  intent: Skill-facing agentic primitive for closing pending-truth ledger items with
+    evidence.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -17970,7 +18007,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - bash -n scripts/cos-pending-truth-close
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -18000,7 +18038,8 @@ contracts:
   source: scripts/cos-adr-partial-ledger
   lifecycle_ref: scripts/cos-adr-partial-ledger
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive reporting partial ADR ledger state and coverage gaps.
+  intent: Skill-facing agentic primitive reporting partial ADR ledger state and coverage
+    gaps.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18023,7 +18062,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - bash -n scripts/cos-adr-partial-ledger
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -18053,7 +18093,8 @@ contracts:
   source: scripts/cos-operational-guide-audit.py
   lifecycle_ref: scripts/cos-operational-guide-audit.py
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive auditing operational guide documents for completeness and accuracy.
+  intent: Skill-facing agentic primitive auditing operational guide documents for
+    completeness and accuracy.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18076,7 +18117,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - python3 -m py_compile scripts/cos-operational-guide-audit.py
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -18106,7 +18148,8 @@ contracts:
   source: scripts/cos-doc-cross-reference-audit.py
   lifecycle_ref: scripts/cos-doc-cross-reference-audit.py
   generated_from_lifecycle: true
-  intent: Skill-facing agentic primitive auditing cross-references between documentation files.
+  intent: Skill-facing agentic primitive auditing cross-references between documentation
+    files.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18129,7 +18172,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - python3 -m py_compile scripts/cos-doc-cross-reference-audit.py
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -18159,7 +18203,8 @@ contracts:
   source: scripts/portable_ai_overlay.py
   lifecycle_ref: scripts/portable_ai_overlay.py
   generated_from_lifecycle: true
-  intent: Wrapper CLI and library generating the portable maintainer .ai overlay from COS canonical primitive contracts.
+  intent: Wrapper CLI and library generating the portable maintainer .ai overlay from
+    COS canonical primitive contracts.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18182,7 +18227,8 @@ contracts:
     - tests/contracts/test_primitive_readiness_ledger_contract.py
     evidence_commands:
     - python3 -m py_compile scripts/portable_ai_overlay.py
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py
+      -q
   projection:
     claude:
       fidelity: documented-only
@@ -18212,7 +18258,8 @@ contracts:
   source: skills/self-improve/SKILL.md
   lifecycle_ref: skills/self-improve/SKILL.md
   generated_from_lifecycle: true
-  intent: Meta skill orchestrating analyze-improvements and apply-improvements with a mandatory human gate.
+  intent: Meta skill orchestrating analyze-improvements and apply-improvements with
+    a mandatory human gate.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18242,10 +18289,12 @@ contracts:
       surface: contract/documentation only
     codex:
       fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper
+        is separately signed
     opencode:
       fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement
+        claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -18263,7 +18312,8 @@ contracts:
   source: skills/agent-kpis/SKILL.md
   lifecycle_ref: skills/agent-kpis/SKILL.md
   generated_from_lifecycle: true
-  intent: Skill-facing KPI dashboard over skill metrics, error learning, task state, and Engram feedback.
+  intent: Skill-facing KPI dashboard over skill metrics, error learning, task state,
+    and Engram feedback.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18294,10 +18344,12 @@ contracts:
       surface: contract/documentation only
     codex:
       fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper
+        is separately signed
     opencode:
       fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement
+        claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -18315,7 +18367,8 @@ contracts:
   source: rules/self-improvement-protocol.md
   lifecycle_ref: rules/self-improvement-protocol.md
   generated_from_lifecycle: true
-  intent: Governance rule separating auto-applicable improvements from human-approval-required primitive rewrites.
+  intent: Governance rule separating auto-applicable improvements from human-approval-required
+    primitive rewrites.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18345,10 +18398,12 @@ contracts:
       surface: contract/documentation only
     codex:
       fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper
+        is separately signed
     opencode:
       fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement
+        claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -18366,7 +18421,8 @@ contracts:
   source: scripts/cos-product-answer
   lifecycle_ref: scripts/cos-product-answer
   generated_from_lifecycle: true
-  intent: Skill-facing CLI for ADR-280/281 product question-to-evidence answers; queries the product question bank and claim-evidence manifests.
+  intent: Skill-facing CLI for ADR-280/281 product question-to-evidence answers; queries
+    the product question bank and claim-evidence manifests.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18395,10 +18451,12 @@ contracts:
       surface: contract/documentation only
     codex:
       fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper
+        is separately signed
     opencode:
       fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement
+        claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -18416,7 +18474,8 @@ contracts:
   source: scripts/cos-product-answer-refresh
   lifecycle_ref: scripts/cos-product-answer-refresh
   generated_from_lifecycle: true
-  intent: Skill-facing CLI to regenerate ADR-282 product answer cards and routing index from the product question bank.
+  intent: Skill-facing CLI to regenerate ADR-282 product answer cards and routing
+    index from the product question bank.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18445,10 +18504,12 @@ contracts:
       surface: contract/documentation only
     codex:
       fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper
+        is separately signed
     opencode:
       fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement
+        claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -18466,7 +18527,8 @@ contracts:
   source: scripts/cos-public-claim-gate
   lifecycle_ref: scripts/cos-public-claim-gate
   generated_from_lifecycle: true
-  intent: Skill-facing CLI for ADR-206 public claim decommission gate; scans for disallowed public-facing claim patterns.
+  intent: Skill-facing CLI for ADR-206 public claim decommission gate; scans for disallowed
+    public-facing claim patterns.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -18495,10 +18557,12 @@ contracts:
       surface: contract/documentation only
     codex:
       fidelity: structural-advisory
-      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper
+        is separately signed
     opencode:
       fidelity: structural-advisory
-      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement
+        claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only

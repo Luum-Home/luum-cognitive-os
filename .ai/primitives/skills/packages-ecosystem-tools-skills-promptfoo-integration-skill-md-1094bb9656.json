@@ -1,0 +1,100 @@
+{
+  "canonical_source": "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual scope calibration iteration 013; package-backed skill `ecosystem-tools/promptfoo-integration` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual scope calibration iteration 013; package-backed skill `ecosystem-tools/promptfoo-integration` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+    "evidence_commands": [
+      "python3 -m pytest tests/red_team/portability/test_package_skills.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "package-skill-ecosystem-tools",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-314",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual scope calibration iteration 013; package-backed skill `ecosystem-tools/promptfoo-integration` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+      "evidence_commands": [
+        "python3 -m pytest tests/red_team/portability/test_package_skills.py -q",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Manual scope calibration iteration 013; package-backed skill `ecosystem-tools/promptfoo-integration` remains shared between COS and adopter projects and is covered by aggregate package skill portability proof.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md",
+  "projection_targets": [
+    "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

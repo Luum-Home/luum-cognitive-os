@@ -65,10 +65,12 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "read-only fleet panel joining install registry, install metadata, registry-lock audit, claim-signature audit, and targeted validation lanes",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. Maintainer audit for fleets of COS consumer installs; not projected into individual projects.",
     "evidence_commands": [
       "scripts/cos-consumer-fleet-audit --json",
-      "python3 -m pytest tests/unit/test_consumer_fleet_audit.py -q"
+      "python3 -m pytest tests/unit/test_consumer_fleet_audit.py -q",
+      "bash -n scripts/cos-consumer-fleet-audit",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-consumer-fleet-audit --fail-contradictions"
     ],
     "metrics_file": "none"
   },

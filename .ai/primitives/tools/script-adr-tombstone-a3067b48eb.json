@@ -63,9 +63,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "unit-tested tombstone writer refuses active ADR replacement by default",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified both. Creates neutral ADR tombstones for any project-level decision ledger.",
     "evidence_commands": [
-      "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q"
+      "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q",
+      "python3 -m py_compile scripts/adr_tombstone.py",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/adr_tombstone.py --fail-contradictions"
     ],
     "metrics_file": ".cognitive-os/metrics/adr-tombstone.jsonl"
   },

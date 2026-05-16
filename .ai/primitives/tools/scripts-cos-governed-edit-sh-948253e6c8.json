@@ -1,0 +1,102 @@
+{
+  "canonical_source": "scripts/cos-governed-edit.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual scope calibration iteration 038: governed edit wrapper is shared runtime-safety for COS maintenance and adopter projects lacking native Edit/Write hook parity.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual scope calibration iteration 038: governed edit wrapper is shared runtime-safety for COS maintenance and adopter projects lacking native Edit/Write hook parity.",
+    "evidence_commands": [
+      "python3 -m pytest tests/red_team/portability/test_cos-governed-edit.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-governed-edit.sh --fail-contradictions",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-governed-edit.sh --fail-contradictions"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-314",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual scope calibration iteration 038: governed edit wrapper is shared runtime-safety for COS maintenance and adopter projects lacking native Edit/Write hook parity.",
+      "evidence_commands": [
+        "python3 -m pytest tests/red_team/portability/test_cos-governed-edit.py -q",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-governed-edit.sh --fail-contradictions",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-governed-edit.sh --fail-contradictions"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Manual scope calibration iteration 038: governed edit wrapper is shared runtime-safety for COS maintenance and adopter projects lacking native Edit/Write hook parity.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-governed-edit.sh"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "scripts/cos-governed-edit.sh",
+  "projection_targets": [
+    "scripts/cos-governed-edit.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-governed-edit.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

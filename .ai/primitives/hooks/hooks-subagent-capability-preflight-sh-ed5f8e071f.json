@@ -1,0 +1,102 @@
+{
+  "canonical_source": "hooks/subagent-capability-preflight.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Subagent capability preflight is portable artifact-contract safety for COS-managed projects; current hook has arbitrary-project-root proof.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Subagent capability preflight is portable artifact-contract safety for COS-managed projects; current hook has arbitrary-project-root proof.",
+    "evidence_commands": [
+      "python3 -m pytest tests/red_team/portability/test_subagent-capability-preflight.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/subagent-capability-preflight.sh --fail-contradictions"
+    ],
+    "metrics_file": ".cognitive-os/metrics/*.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-314",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Subagent capability preflight is portable artifact-contract safety for COS-managed projects; current hook has arbitrary-project-root proof.",
+      "evidence_commands": [
+        "python3 -m pytest tests/red_team/portability/test_subagent-capability-preflight.py -q",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/subagent-capability-preflight.sh --fail-contradictions"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/*.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Subagent capability preflight is portable artifact-contract safety for COS-managed projects; current hook has arbitrary-project-root proof.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        "hooks/subagent-capability-preflight.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/subagent-capability-preflight.sh",
+  "projection_targets": [
+    "hooks/subagent-capability-preflight.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/subagent-capability-preflight.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

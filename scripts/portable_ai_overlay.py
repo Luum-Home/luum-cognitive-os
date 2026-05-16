@@ -324,6 +324,7 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
         dirname = ADAPTER_DIR_NAMES.get(harness, harness)
         hp = harnesses.get(harness, {})
         projected = []
+        projected_ids: set[str] = set()
         projection_fallback = hp.get("contract_projection_fallback") if isinstance(hp, dict) else None
         for rel, row in primitive_rows:
             projection = ((row.get("portable_contract") or {}).get("projection_fidelity") or {}).get(harness)
@@ -336,8 +337,12 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
                 }
                 derived_from_harness = "harness-projection.yaml:contract_projection_fallback"
             if projection:
+                portable_id = str(row.get("portable_id"))
+                if portable_id in projected_ids:
+                    continue
+                projected_ids.add(portable_id)
                 item = {
-                    "portable_id": row.get("portable_id"),
+                    "portable_id": portable_id,
                     "primitive_file": rel,
                     "fidelity": projection.get("fidelity"),
                     "surface": projection.get("surface"),
@@ -417,7 +422,9 @@ def build_overlay(root: Path) -> dict[str, str]:
         summary_by_family[row["family"]] = summary_by_family.get(row["family"], 0) + 1
         files[rel] = json.dumps(row, indent=2, sort_keys=True) + "\n"
 
-    skill_source_count = len(list((root / "skills").glob("*/SKILL.md")))
+    skill_sources = set((root / "skills").glob("**/SKILL.md"))
+    skill_sources.update((root / "packages").glob("*/skills/*/SKILL.md"))
+    skill_source_count = len(skill_sources)
     skill_overlay_count = summary_by_family.get("skill", 0)
     skill_overlay_excluded_count = max(skill_source_count - skill_overlay_count, 0)
 

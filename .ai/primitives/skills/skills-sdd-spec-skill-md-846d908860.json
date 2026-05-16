@@ -1,0 +1,98 @@
+{
+  "canonical_source": "skills/sdd-spec/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "ADR-317: sdd-spec emits EAS requirements and acceptance rows when requested or risk warrants it.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "ADR-317: sdd-spec emits EAS requirements and acceptance rows when requested or risk warrants it.",
+    "evidence_commands": [
+      "python3 -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "sdd-eas",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-317",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "ADR-317: sdd-spec emits EAS requirements and acceptance rows when requested or risk warrants it.",
+      "evidence_commands": [
+        "python3 -m pytest tests/contracts/test_eas_docs_contract.py tests/contracts/test_eas_manifest_and_sdd_wiring.py tests/unit/test_eas_validate.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "ADR-317: sdd-spec emits EAS requirements and acceptance rows when requested or risk warrants it.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/sdd-spec/SKILL.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "skills/sdd-spec/SKILL.md",
+  "projection_targets": [
+    "skills/sdd-spec/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "skills/sdd-spec/SKILL.md",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

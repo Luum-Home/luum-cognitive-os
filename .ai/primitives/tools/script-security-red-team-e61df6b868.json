@@ -65,7 +65,7 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring, and mitigation backlog generation.",
+    "behavior_evidence": "Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog behavior.",
     "evidence_commands": [
       "bash -n scripts/security-red-team",
       "python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py -q"
@@ -74,7 +74,7 @@
   },
   "family": "script",
   "lifecycle": {
-    "distribution": "team",
+    "distribution": "maintainer",
     "docs_claim_level": "advisory",
     "exit_behavior": "manual",
     "governance_class": "runtime-safety",

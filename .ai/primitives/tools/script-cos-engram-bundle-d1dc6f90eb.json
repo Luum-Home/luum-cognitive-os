@@ -67,7 +67,8 @@
   "evidence": {
     "behavior_evidence": "portable Engram bundle export/import-propose covered by tests",
     "evidence_commands": [
-      "python3 -m pytest tests/unit/test_cross_instance_learning.py -q"
+      "python3 -m pytest tests/unit/test_cross_instance_learning.py -q",
+      "python3 -m pytest tests/red_team/portability/test_cos-engram-bundle.py tests/red_team/portability/test_cos-engram-import-propose.py -q"
     ],
     "metrics_file": "none"
   },

@@ -63,7 +63,7 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Opt-in key-learnings capture helper for turning session learnings into improvement signals.",
+    "behavior_evidence": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "evidence_commands": [
       "bash -n scripts/cos-key-learnings-capture",
       "python3 -m py_compile scripts/cos_key_learnings_capture.py"

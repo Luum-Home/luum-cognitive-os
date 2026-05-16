@@ -65,9 +65,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "consumer evidence export covered by cross-instance runway tests",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. Exports sanitized consumer evidence for SO cross-instance learning.",
     "evidence_commands": [
-      "python3 -m pytest tests/unit/test_cross_instance_learning.py -q"
+      "python3 -m pytest tests/unit/test_cross_instance_learning.py -q",
+      "bash -n scripts/cos-export-consumer-evidence",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-export-consumer-evidence --fail-contradictions"
     ],
     "metrics_file": "none"
   },

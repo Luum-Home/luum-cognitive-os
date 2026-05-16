@@ -5,14 +5,14 @@
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "PostToolUse Agent budget enforcer blocks or escalates subagents beyond the tool-call budget.",
+    "intent": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "PostToolUse Agent budget enforcer blocks or escalates subagents beyond the tool-call budget.",
+    "behavior_evidence": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "evidence_commands": [
       "bash -n hooks/subagent-budget-enforcer.sh",
       "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
@@ -43,7 +43,7 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "PostToolUse Agent budget enforcer blocks or escalates subagents beyond the tool-call budget.",
+      "behavior_evidence": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
       "evidence_commands": [
         "bash -n hooks/subagent-budget-enforcer.sh",
         "python3 -m pytest tests/unit/test_runtime_hook_reality.py -q"
@@ -56,7 +56,7 @@
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "PostToolUse Agent budget enforcer blocks or escalates subagents beyond the tool-call budget.",
+    "intent": "Manual scope calibration batch 002 confirmed shared COS/consumer-project behavior.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

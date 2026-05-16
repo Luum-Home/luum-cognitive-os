@@ -62,7 +62,7 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=10",
+    "behavior_evidence": "Manual scope calibration batch 002 confirmed maintainer-only COS internal/smoke/catalog behavior.",
     "evidence_commands": [
       "python3 -m py_compile scripts/decision_triage.py",
       "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
@@ -71,7 +71,7 @@
   },
   "family": "script",
   "lifecycle": {
-    "distribution": "team",
+    "distribution": "maintainer",
     "docs_claim_level": "observe",
     "exit_behavior": "manual",
     "governance_class": "meta-governance",

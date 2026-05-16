@@ -65,10 +65,12 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "self-evolving doctrine proposal generator with unit tests",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. COS doctrine proposal workflow for SO governance.",
     "evidence_commands": [
       "scripts/cos-doctrine-proposer --profile core --json",
-      "python3 -m pytest tests/unit/test_doctrine_proposer.py -q"
+      "python3 -m pytest tests/unit/test_doctrine_proposer.py -q",
+      "bash -n scripts/cos-doctrine-proposer",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-doctrine-proposer --fail-contradictions"
     ],
     "metrics_file": "none"
   },

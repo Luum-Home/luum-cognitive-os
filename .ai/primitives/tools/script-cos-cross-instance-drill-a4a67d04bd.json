@@ -65,10 +65,12 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "temporary-state manual drills for cross-instance runway scenarios",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. COS cross-instance learning drill.",
     "evidence_commands": [
       "scripts/cos-cross-instance-drill --scenario all",
-      "python3 -m pytest tests/unit/test_cross_instance_drill.py -q"
+      "python3 -m pytest tests/unit/test_cross_instance_drill.py -q",
+      "bash -n scripts/cos-cross-instance-drill",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-cross-instance-drill --fail-contradictions"
     ],
     "metrics_file": "none"
   },

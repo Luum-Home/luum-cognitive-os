@@ -73,7 +73,7 @@
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "core",
+    "distribution": "team",
     "docs_claim_level": "advisory",
     "exit_behavior": "exit_0",
     "governance_class": "meta-governance",

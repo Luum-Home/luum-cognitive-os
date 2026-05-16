@@ -72,7 +72,7 @@
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "maintainer",
+    "distribution": "team",
     "docs_claim_level": "blocking",
     "exit_behavior": "exit_2",
     "governance_class": "runtime-safety",

@@ -2132,7 +2132,7 @@
     },
     {
       "adr": "ADR-289",
-      "classification_basis": "Layer 2 (vault) and Layer 3 (engram) are implemented; Layer 1 (raw sources) canonical location and ingest pipeline are not yet formalized.",
+      "classification_basis": "Layer 2 (vault) and Layer 3 (engram) are implemented; remaining work is Layer 1 (raw sources) canonical location and ingest pipeline plus raw-to-vault retrieval pipeline formalization.",
       "date": "2026-05-13",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -2153,16 +2153,149 @@
       "remaining": "Layer 1 (raw sources) has no canonical on-disk location and no ingest\npipeline from raw to vault; vault->engram retrieve pipeline is also not\nimplemented. Both are tracked as known gaps.\n",
       "remaining_in_scope": null,
       "title": "Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram"
+    },
+    {
+      "adr": "ADR-291",
+      "classification_basis": "phase-1 contract skeleton with 26 operations (25 distinct path strings), 3 functional (health/version/agent options), 23 returning 501 with typed schemas, full contract test suite. The /csrf-token endpoint was removed in the security pass \u2014 it was token-shaped string theater without server-side store; real CSRF defense ships with Phase 2.",
+      "date": "2026-05-13",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "packages/agent-service/src/agent_service/app.py",
+        "packages/agent-service/src/agent_service/auth.py",
+        "packages/agent-service/src/agent_service/config.py",
+        "packages/agent-service/src/agent_service/sse.py",
+        "packages/agent-service/src/agent_service/routers/health.py",
+        "packages/agent-service/src/agent_service/routers/agent_config.py",
+        "packages/agent-service/src/agent_service/routers/oneshot.py",
+        "packages/agent-service/src/agent_service/routers/sessions.py",
+        "packages/agent-service/src/agent_service/routers/workspace.py"
+      ],
+      "implementation_status": "partial",
+      "number": "291",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-291-agent-runtime-web-service.md",
+      "remaining": "phase-1 contract skeleton with 26 operations (25 distinct path strings), 3 functional (health/version/agent options), 23 returning 501 with typed schemas, full contract test suite. The /csrf-token endpoint was removed in the security pass \u2014 it was token-shaped string theater without server-side store; real CSRF defense ships with Phase 2.",
+      "remaining_in_scope": null,
+      "title": "Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients"
+    },
+    {
+      "adr": "ADR-319",
+      "classification_basis": "accepted doctrine, EAS integration, SDD skill wiring, and adversarial-review hook recognition for named modes; remaining work is generic PR/code/doc review surfaces staying doctrine-guided rather than fully mode-validated",
+      "date": "2026-05-15",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "rules/adversarial-review.md",
+        "rules/eas-evidence-artifact.md",
+        "docs/05-Methodology/root/executable-acceptance-specification.md",
+        "templates/eas.md",
+        "scripts/eas_validate.py",
+        "skills/sdd-spec/SKILL.md",
+        "skills/sdd-verify/SKILL.md"
+      ],
+      "implementation_status": "partial",
+      "number": "319",
+      "owner": "",
+      "partial_remaining": "Generic code, PR, and documentation review surfaces consume Detractor modes through rule guidance and the generic adversarial-review gate; only EAS has a dedicated artifact/validator path.",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-319-detractor-review-modes.md",
+      "remaining": "Generic code, PR, and documentation review surfaces consume Detractor modes through rule guidance and the generic adversarial-review gate; only EAS has a dedicated artifact/validator path.",
+      "remaining_in_scope": true,
+      "title": "Detractor Review Modes for Planning and Verification"
+    },
+    {
+      "adr": "ADR-322",
+      "classification_basis": "",
+      "date": "2026-05-15",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "cmd/cos/internal/cli/sdd.go",
+        "cmd/cos/internal/cli/sdd_test.go",
+        "scripts/demo-consumer-sdd-lane.sh",
+        "docs/09-Quality/manual-tests/consumer-sdd-lane.md",
+        "docs/08-References/business/sdd-harness-consumer-workflow-audit.md",
+        "docs/08-References/business/consumer-sdd-lane-surgical-review-plan.md",
+        "docs/04-Concepts/architecture/consumer-sdd-task-state-adapters.md"
+      ],
+      "implementation_status": "partial",
+      "number": "322",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-322-consumer-sdd-lane-contract.md",
+      "remaining": "",
+      "remaining_in_scope": null,
+      "title": "Consumer SDD Lane Contract"
+    },
+    {
+      "adr": "ADR-324",
+      "classification_basis": "accepted doctrine, template, rule, validator, and SDD skill wiring; runtime orchestration still depends on harness/skill invocation",
+      "date": "2026-05-15",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "docs/05-Methodology/root/executable-acceptance-specification.md",
+        "templates/eas.md",
+        "rules/eas-evidence-artifact.md",
+        "scripts/eas_validate.py",
+        "skills/sdd-spec/SKILL.md",
+        "skills/sdd-tasks/SKILL.md",
+        "skills/sdd-apply/SKILL.md",
+        "skills/sdd-verify/SKILL.md"
+      ],
+      "implementation_status": "partial",
+      "number": "324",
+      "owner": "",
+      "partial_remaining": "EAS validation and skill guidance exist, but there is no automatic hook that forces every SDD run to create EAS unless the user or project policy requests it.",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-324-executable-acceptance-specification-eas.md",
+      "remaining": "EAS validation and skill guidance exist, but there is no automatic hook that forces every SDD run to create EAS unless the user or project policy requests it.",
+      "remaining_in_scope": true,
+      "title": "Executable Acceptance Specification (EAS) Evidence Artifact"
+    },
+    {
+      "adr": "ADR-325",
+      "classification_basis": "resource scarcity, model rate limits, language token overhead, public history hygiene, and repeated validation loops require explicit budget ledgers, preflight estimates, local fallback, and degradation rules instead of relying on agent discipline.",
+      "date": "2026-05-15",
+      "decision_status": "accepted",
+      "follow_up_adr": "",
+      "implementation_files": [
+        "manifests/ai-resource-economy.yaml",
+        "scripts/ai_resource_economy_audit.py",
+        "scripts/ai-resource-economy-audit",
+        "scripts/ai_budget_preflight.py",
+        "scripts/ai-budget-preflight",
+        "rules/language-token-economy.md",
+        "tests/unit/test_ai_resource_economy.py",
+        "tests/red_team/portability/test_ai_budget_preflight.py",
+        "tests/red_team/portability/test_ai-budget-preflight.py",
+        "tests/red_team/portability/test_ai_resource_economy_audit.py",
+        "tests/red_team/portability/test_ai-resource-economy-audit.py",
+        "tests/red_team/portability/test_language-token-economy.py"
+      ],
+      "implementation_status": "partial",
+      "number": "325",
+      "owner": "",
+      "partial_remaining": "",
+      "partial_remaining_basis": "",
+      "path": "docs/02-Decisions/adrs/ADR-325-ai-resource-economy-and-degradation.md",
+      "remaining": "resource scarcity, model rate limits, language token overhead, public history hygiene, and repeated validation loops require explicit budget ledgers, preflight estimates, local fallback, and degradation rules instead of relying on agent discipline.",
+      "remaining_in_scope": null,
+      "title": "AI Resource Economy, Budget Preflight, and Graceful Degradation"
     }
   ],
   "schema_version": "adr-partial-backlog/v1",
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 118,
+      "partial": 123,
       "partial-blocked": 1
     },
-    "missing_partial_remaining": 1,
-    "total": 120
+    "missing_partial_remaining": 4,
+    "total": 125
   }
 }

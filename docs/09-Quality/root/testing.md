@@ -411,6 +411,7 @@ COS_RUN_COGNEE_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integrat
 COS_RUN_SMART_INFRA_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_smart_infra_containers.py -q -ra
 COS_RUN_ENGRAM_CLOUD_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_engram_cloud_docker.py -q -ra
 COS_RUN_HEADLESS_SERVICE_DOCKER=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_headless_service_drill.py -q -ra
+COS_RUN_GITHUB_REMOTE_INSTALL_SMOKE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_installer.py -q -ra
 ```
 
 For the stronger Engram Cloud proof that starts the Compose profile and performs

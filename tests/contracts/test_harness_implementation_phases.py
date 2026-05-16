@@ -43,7 +43,6 @@ def test_structural_harnesses_do_not_claim_runtime_support() -> None:
     manifest = yaml.safe_load(HARNESS.read_text())
     structural_ids = {
         "cursor",
-        "opencode",
         "vscode-copilot",
         "qwen-code",
         "kimi-code",
@@ -79,17 +78,19 @@ def test_structural_harnesses_do_not_claim_runtime_support() -> None:
         ), harness_id
 
 
-def test_opencode_runtime_capability_is_not_counted_as_signed_enforcement() -> None:
+def test_opencode_runtime_capability_is_limited_to_signed_wrapper_slice() -> None:
     manifest = yaml.safe_load(HARNESS.read_text())
     by_id = {item["id"]: item for item in manifest["harnesses"]}
 
     opencode = by_id["opencode"]
-    assert opencode["proof_level"] == "structural"
-    assert "plugins" in opencode.get("runtime_capable_surfaces", [])
-    assert "tool.execute.before" in opencode.get("runtime_capable_surfaces", [])
+    assert opencode["proof_level"] == "governed-wrapper-enforced"
+    assert opencode["proof"] == "opencode-primitive-adapter-smoke-latest"
+    surfaces = set(opencode.get("runtime_capable_surfaces", []))
+    assert {"plugins", "tool.execute.before", "tool.execute.after"} <= surfaces
     limitation_text = " ".join(opencode.get("limitations", [])).lower()
-    assert "no cos opencode plugin adapter has been signed yet" in limitation_text
-    assert "must not claim runtime enforcement" in limitation_text
+    assert "signed runtime slice" in limitation_text
+    assert "structural opencode.json projection alone is not runtime enforcement" in limitation_text
+    assert "native cos lifecycle" not in opencode["proof_level"]
 
 
 def test_native_lifecycle_harnesses_are_explicitly_labeled() -> None:

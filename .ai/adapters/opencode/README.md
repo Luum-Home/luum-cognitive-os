@@ -10,7 +10,7 @@ It is declarative: native IDE file emission is delegated to governed harness pro
 
 - harness id: `opencode`
 - status: `implemented`
-- proof level: `structural`
+- proof level: `governed-wrapper-enforced`
 - projection mode: `opencode-json-instructions-mcp-plugin-capable`
 
 ## Settings paths

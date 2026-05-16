@@ -1,0 +1,86 @@
+{
+  "canonical_source": "templates/blocked-strings.example.txt",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.",
+    "evidence_commands": [
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/blocked-strings.example.txt --fail-contradictions --fail-low-confidence"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "template",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "observe",
+    "exit_behavior": "data-only",
+    "governance_class": "project-scaffold-surface",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-019",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.",
+      "evidence_commands": [
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths templates/blocked-strings.example.txt --fail-contradictions --fail-low-confidence"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Manual scope review iteration 044; project-only template emitted or adapted into consumer repositories, not required for COS self-construction.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "templates/blocked-strings.example.txt"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "templates/blocked-strings.example.txt",
+  "projection_targets": [
+    "templates/blocked-strings.example.txt"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "templates/blocked-strings.example.txt",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 344,
+  "projected_primitive_count": 721,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -592,6 +592,34 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "hooks/agent-output-verifier.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-output-verifier-sh-347dfd1fc6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-quota-redirect.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-quota-redirect-sh-5b72da6e1a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agnix-lint.sh",
+      "primitive_file": "primitives/hooks/hooks-agnix-lint-sh-71462e5e14.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/background-agent-reminder.sh",
+      "primitive_file": "primitives/hooks/hooks-background-agent-reminder-sh-0b30722658.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "hooks/bash-hot-path-dispatcher.sh",
       "primitive_file": "primitives/hooks/hooks-bash-hot-path-dispatcher-sh-cf58f59273.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -599,8 +627,162 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "hooks/clarification-interceptor.sh",
+      "primitive_file": "primitives/hooks/hooks-clarification-interceptor-sh-663ca6a8fd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/clean-room-ast-similarity-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-clean-room-ast-similarity-gate-sh-8c49824e4e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/concurrent-write-guard-codex-proxy.sh",
+      "primitive_file": "primitives/hooks/hooks-concurrent-write-guard-codex-proxy-sh-58c12dea6f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/conversation-capture.sh",
+      "primitive_file": "primitives/hooks/hooks-conversation-capture-sh-de49a0e415.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/engram-auto-import.sh",
+      "primitive_file": "primitives/hooks/hooks-engram-auto-import-sh-30346d2607.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/engram-auto-sync.sh",
+      "primitive_file": "primitives/hooks/hooks-engram-auto-sync-sh-122144d9f6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/epic-task-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-epic-task-detector-sh-e56952c598.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/idle-service-cleanup.sh",
+      "primitive_file": "primitives/hooks/hooks-idle-service-cleanup-sh-5482421c0a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/bypass-resolver.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-bypass-resolver-sh-ec33455003.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/killswitch_check.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-killswitch-check-sh-4997f8e306.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/primitive-intervention.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-primitive-intervention-sh-96beab5e9d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/safe-worktree-remove.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-safe-worktree-remove-sh-43f848bda1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/validation-lock.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-validation-lock-sh-55aa2a8641.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/memu-sync.sh",
+      "primitive_file": "primitives/hooks/hooks-memu-sync-sh-4af6f08714.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/metrics-rotation.sh",
+      "primitive_file": "primitives/hooks/hooks-metrics-rotation-sh-1cd1dfe651.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/mlflow-sync.sh",
+      "primitive_file": "primitives/hooks/hooks-mlflow-sync-sh-c87718a88c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/package-sync.sh",
+      "primitive_file": "primitives/hooks/hooks-package-sync-sh-de498f3f7b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/pattern-check.sh",
+      "primitive_file": "primitives/hooks/hooks-pattern-check-sh-eeb35d39ed.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/pyrefly-typecheck-advisory.sh",
+      "primitive_file": "primitives/hooks/hooks-pyrefly-typecheck-advisory-sh-c8ec9e74e5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/registration-check.sh",
+      "primitive_file": "primitives/hooks/hooks-registration-check-sh-6869a81385.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/resource-check.sh",
+      "primitive_file": "primitives/hooks/hooks-resource-check-sh-a2186a58db.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "hooks/session-start-stack-recommend.sh",
       "primitive_file": "primitives/hooks/hooks-session-start-stack-recommend-sh-6916846e79.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/singularity-check.sh",
+      "primitive_file": "primitives/hooks/hooks-singularity-check-sh-4b55b83197.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -615,6 +797,20 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/subagent-budget-enforcer.sh",
       "primitive_file": "primitives/hooks/hooks-subagent-budget-enforcer-sh-4b672bc9f4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/subagent-capability-preflight.sh",
+      "primitive_file": "primitives/hooks/hooks-subagent-capability-preflight-sh-ed5f8e071f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/tool-discovery-trigger.sh",
+      "primitive_file": "primitives/hooks/hooks-tool-discovery-trigger-sh-ce762298e9.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -1305,6 +1501,314 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/RULES-COMPACT.md",
+      "primitive_file": "primitives/other-rule/rules-rules-compact-md-6f2e8cca5d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/artifact-status.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-artifact-status-sh-f068df06b7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/cache.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-cache-sh-240fb7d42a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/circuit-breaker.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-circuit-breaker-sh-bae57e503f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/common.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-common-sh-7755086129.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/context_budget_lib.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-context-budget-lib-sh-241b0c5278.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/execute-repair.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-execute-repair-sh-aeac1a07e0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/file_checker.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-file-checker-sh-2290646106.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/hook-pipe.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-hook-pipe-sh-65be93908c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/normalize-stdin.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-normalize-stdin-sh-00cf6f77e1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/portable.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-portable-sh-34be40d998.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/push-collision-check.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-push-collision-check-sh-fc866d6914.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/register-bg.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-register-bg-sh-0b8380674a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/remediation.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-remediation-sh-1cbd07be25.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/resolve-main-worktree.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-resolve-main-worktree-sh-b0f987cd22.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/safe-jsonl.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-safe-jsonl-sh-29a902e718.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/semantic-search.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-semantic-search-sh-a5888ed14d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/singularity-suggestion.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-singularity-suggestion-sh-9f25f1b9fd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/stash-lock.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-stash-lock-sh-e549299f32.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/task-identity.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-task-identity-sh-695d4a30b9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/timing.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-timing-sh-33b16f4f6c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/tuning.sh",
+      "primitive_file": "primitives/other-script/hooks-lib-tuning-sh-6d8f681c90.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/adr-template.md",
+      "primitive_file": "primitives/other-template/templates-adr-template-md-a6c5e7f862.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/agent-mandatory-rules.md",
+      "primitive_file": "primitives/other-template/templates-agent-mandatory-rules-md-ec3c62b4db.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/agent-preamble.md",
+      "primitive_file": "primitives/other-template/templates-agent-preamble-md-f9b8d09e86.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/agent-research-only.md",
+      "primitive_file": "primitives/other-template/templates-agent-research-only-md-b4dfbaa1b6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/contracts/test_redteam_baseline.template.py",
+      "primitive_file": "primitives/other-template/templates-contracts-test-redteam-baseline-template-py-1374b3bbbc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/counsel-outreach/clean-room-permission.md",
+      "primitive_file": "primitives/other-template/templates-counsel-outreach-clean-room-permission-md-3362ee39a1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/counsel-outreach/license-clarification.md",
+      "primitive_file": "primitives/other-template/templates-counsel-outreach-license-clarification-md-0a0ee60099.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/counsel-outreach/review-request.md",
+      "primitive_file": "primitives/other-template/templates-counsel-outreach-review-request-md-6c59ab58d5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/cross-harness-authoring.md",
+      "primitive_file": "primitives/other-template/templates-cross-harness-authoring-md-6323bafa81.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/eas.md",
+      "primitive_file": "primitives/other-template/templates-eas-md-a00df7208d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/edit-conflict-response.md",
+      "primitive_file": "primitives/other-template/templates-edit-conflict-response-md-8f160c1d32.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/error-recovery.md",
+      "primitive_file": "primitives/other-template/templates-error-recovery-md-28cd1d9b24.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/generator-validator-pair.md",
+      "primitive_file": "primitives/other-template/templates-generator-validator-pair-md-a47313b141.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/hook-template.sh",
+      "primitive_file": "primitives/other-template/templates-hook-template-sh-f57c4d63f1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/prompt-hooks/assumption-tracker-prompt.md",
+      "primitive_file": "primitives/other-template/templates-prompt-hooks-assumption-tracker-prompt-md-7932ef718b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/prompt-hooks/clarification-gate-prompt.md",
+      "primitive_file": "primitives/other-template/templates-prompt-hooks-clarification-gate-prompt-md-0f92ab56fb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/prompt-hooks/prompt-quality-prompt.md",
+      "primitive_file": "primitives/other-template/templates-prompt-hooks-prompt-quality-prompt-md-3f6c0e7b3a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/prompt-hooks/scope-creep-prompt.md",
+      "primitive_file": "primitives/other-template/templates-prompt-hooks-scope-creep-prompt-md-7eaca713cd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/quality-gates.md",
+      "primitive_file": "primitives/other-template/templates-quality-gates-md-aaf79c75e9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/rebranding-checklist.md",
+      "primitive_file": "primitives/other-template/templates-rebranding-checklist-md-2e101feea3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/rule-template.md",
+      "primitive_file": "primitives/other-template/templates-rule-template-md-48dcd69c15.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "templates/skill-template.md",
+      "primitive_file": "primitives/other-template/templates-skill-template-md-5b74443462.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
       "portable_id": "rule-self-improvement-protocol",
       "primitive_file": "primitives/rules/rule-self-improvement-protocol-dfcc3f0e51.json",
@@ -1312,10 +1816,1340 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/acceptance-criteria.md",
+      "primitive_file": "primitives/rules/rules-acceptance-criteria-md-21b53a1cae.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/adaptive-bypass.md",
+      "primitive_file": "primitives/rules/rules-adaptive-bypass-md-f2a32bce09.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/adversarial-review.md",
+      "primitive_file": "primitives/rules/rules-adversarial-review-md-cffa0c2803.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-audit-before-commit.md",
+      "primitive_file": "primitives/rules/rules-agent-audit-before-commit-md-d9c0e03b80.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-communication.md",
+      "primitive_file": "primitives/rules/rules-agent-communication-md-4f55b961d7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-customization.md",
+      "primitive_file": "primitives/rules/rules-agent-customization-md-7c648f49a3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-escalation.md",
+      "primitive_file": "primitives/rules/rules-agent-escalation-md-138a2ded7b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-identity.md",
+      "primitive_file": "primitives/rules/rules-agent-identity-md-ae44c84166.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-kpis.md",
+      "primitive_file": "primitives/rules/rules-agent-kpis-md-d890c2d299.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-output-reading.md",
+      "primitive_file": "primitives/rules/rules-agent-output-reading-md-09386e9c49.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-quality.md",
+      "primitive_file": "primitives/rules/rules-agent-quality-md-337a8a7680.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-security.md",
+      "primitive_file": "primitives/rules/rules-agent-security-md-f174b5f062.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/agent-sidecars.md",
+      "primitive_file": "primitives/rules/rules-agent-sidecars-md-468ec2188e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/aguara-integration.md",
+      "primitive_file": "primitives/rules/rules-aguara-integration-md-f4842ca31a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/ai-provider-identity.md",
+      "primitive_file": "primitives/rules/rules-ai-provider-identity-md-402f6a4683.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/anti-hallucination.md",
+      "primitive_file": "primitives/rules/rules-anti-hallucination-md-cdaef29b21.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/assumption-tracking.md",
+      "primitive_file": "primitives/rules/rules-assumption-tracking-md-008712ab62.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/audit-trail.md",
+      "primitive_file": "primitives/rules/rules-audit-trail-md-8f227786ca.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/auto-repair.md",
+      "primitive_file": "primitives/rules/rules-auto-repair-md-50da2f7ffe.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/auto-rollback.md",
+      "primitive_file": "primitives/rules/rules-auto-rollback-md-4841b3e887.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/auto-skill-generation.md",
+      "primitive_file": "primitives/rules/rules-auto-skill-generation-md-1f1908b904.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/bash-naming.md",
+      "primitive_file": "primitives/rules/rules-bash-naming-md-3dd0097bca.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/blast-radius.md",
+      "primitive_file": "primitives/rules/rules-blast-radius-md-a9ee1be763.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/broken-window-policy.md",
+      "primitive_file": "primitives/rules/rules-broken-window-policy-md-e9d9e7163a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/capability-levels.md",
+      "primitive_file": "primitives/rules/rules-capability-levels-md-921ff66f6f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/capability-protection.md",
+      "primitive_file": "primitives/rules/rules-capability-protection-md-cf6e060e42.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/clarification-gate.md",
+      "primitive_file": "primitives/rules/rules-clarification-gate-md-c71a1410d6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/clean-room-detection-limits.md",
+      "primitive_file": "primitives/rules/rules-clean-room-detection-limits-md-5a05fb2ca8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/closed-loop-prompts.md",
+      "primitive_file": "primitives/rules/rules-closed-loop-prompts-md-04b3d29083.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/cognitive-load.md",
+      "primitive_file": "primitives/rules/rules-cognitive-load-md-50bcae636b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/confidence-gate.md",
+      "primitive_file": "primitives/rules/rules-confidence-gate-md-7c0e8cf2b8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/confidentiality-protection.md",
+      "primitive_file": "primitives/rules/rules-confidentiality-protection-md-3e790bd658.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/consequence-system.md",
+      "primitive_file": "primitives/rules/rules-consequence-system-md-d6b9831b50.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/content-policy.md",
+      "primitive_file": "primitives/rules/rules-content-policy-md-2d9b5877e1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/context-management.md",
+      "primitive_file": "primitives/rules/rules-context-management-md-bb25128860.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/context-optimization.md",
+      "primitive_file": "primitives/rules/rules-context-optimization-md-2fa840135e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/context7-auto-trigger.md",
+      "primitive_file": "primitives/rules/rules-context7-auto-trigger-md-868ce37625.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/cosd-secure-api.md",
+      "primitive_file": "primitives/rules/rules-cosd-secure-api-md-82d5e0f56a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/cost-prediction.md",
+      "primitive_file": "primitives/rules/rules-cost-prediction-md-b593ff43c6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/crash-recovery.md",
+      "primitive_file": "primitives/rules/rules-crash-recovery-md-2e92e5fa79.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/credential-management.md",
+      "primitive_file": "primitives/rules/rules-credential-management-md-29ae450043.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/cross-harness-authoring.md",
+      "primitive_file": "primitives/rules/rules-cross-harness-authoring-md-8f795b159e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/decision-depth-gate.md",
+      "primitive_file": "primitives/rules/rules-decision-depth-gate-md-6f6059cce9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/decomposition.md",
+      "primitive_file": "primitives/rules/rules-decomposition-md-8fa49440b1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/definition-of-done.md",
+      "primitive_file": "primitives/rules/rules-definition-of-done-md-23e6e33137.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/doc-sync.md",
+      "primitive_file": "primitives/rules/rules-doc-sync-md-c1b47b3ec7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/dry-run.md",
+      "primitive_file": "primitives/rules/rules-dry-run-md-346e8873dc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/dynamic-tool-creation.md",
+      "primitive_file": "primitives/rules/rules-dynamic-tool-creation-md-56cbbbef06.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/e2b-integration.md",
+      "primitive_file": "primitives/rules/rules-e2b-integration-md-8dc29957b8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/eas-evidence-artifact.md",
+      "primitive_file": "primitives/rules/rules-eas-evidence-artifact-md-0dc6f3031f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/engram-api-safety.md",
+      "primitive_file": "primitives/rules/rules-engram-api-safety-md-432d2cc4be.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/engram-organization.md",
+      "primitive_file": "primitives/rules/rules-engram-organization-md-c56d40a416.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/error-learning.md",
+      "primitive_file": "primitives/rules/rules-error-learning-md-d013c7a977.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/estimation-calibration.md",
+      "primitive_file": "primitives/rules/rules-estimation-calibration-md-d57b3e6bb7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/fault-tolerance.md",
+      "primitive_file": "primitives/rules/rules-fault-tolerance-md-0c21b18f71.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/hcom-integration.md",
+      "primitive_file": "primitives/rules/rules-hcom-integration-md-4e7a4709ff.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/hook-security-profiles.md",
+      "primitive_file": "primitives/rules/rules-hook-security-profiles-md-e07ae34128.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/impact-analysis.md",
+      "primitive_file": "primitives/rules/rules-impact-analysis-md-bda00c7400.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/infra-health.md",
+      "primitive_file": "primitives/rules/rules-infra-health-md-7f1825b4c6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/infra-intent.md",
+      "primitive_file": "primitives/rules/rules-infra-intent-md-5dbb806867.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/lane-taxonomy.md",
+      "primitive_file": "primitives/rules/rules-lane-taxonomy-md-0a61b2aaaf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/license-policy.md",
+      "primitive_file": "primitives/rules/rules-license-policy-md-22eac0b038.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/llm-dispatch.md",
+      "primitive_file": "primitives/rules/rules-llm-dispatch-md-c4c6c18dd6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/memory-governance.md",
+      "primitive_file": "primitives/rules/rules-memory-governance-md-b01d3e1663.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/model-compatibility.md",
+      "primitive_file": "primitives/rules/rules-model-compatibility-md-3abb80dae0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/model-directive.md",
+      "primitive_file": "primitives/rules/rules-model-directive-md-5ec38bee6c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/model-routing.md",
+      "primitive_file": "primitives/rules/rules-model-routing-md-30905656d2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/non-blocking-retry.md",
+      "primitive_file": "primitives/rules/rules-non-blocking-retry-md-4ddf488d58.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/observability.md",
+      "primitive_file": "primitives/rules/rules-observability-md-2124a022e4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/orchestrator-mode.md",
+      "primitive_file": "primitives/rules/rules-orchestrator-mode-md-b5f221f400.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/orchestrator-prompt-compose.md",
+      "primitive_file": "primitives/rules/rules-orchestrator-prompt-compose-md-7c2a3e8c8e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/parry-integration.md",
+      "primitive_file": "primitives/rules/rules-parry-integration-md-fc3559227f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/pentesting-readiness.md",
+      "primitive_file": "primitives/rules/rules-pentesting-readiness-md-b03315fd45.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/performance-monitoring.md",
+      "primitive_file": "primitives/rules/rules-performance-monitoring-md-aae052de77.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/phase-aware-agents.md",
+      "primitive_file": "primitives/rules/rules-phase-aware-agents-md-f7f5726605.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/pre-commit-gate.md",
+      "primitive_file": "primitives/rules/rules-pre-commit-gate-md-e4272d22c7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/pre-dev-readiness-gate.md",
+      "primitive_file": "primitives/rules/rules-pre-dev-readiness-gate-md-6886504165.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/private-mode.md",
+      "primitive_file": "primitives/rules/rules-private-mode-md-eff7caf33f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/prompt-composition.md",
+      "primitive_file": "primitives/rules/rules-prompt-composition-md-e7ec2983f8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/prompt-quality.md",
+      "primitive_file": "primitives/rules/rules-prompt-quality-md-8623d059fe.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/python-naming.md",
+      "primitive_file": "primitives/rules/rules-python-naming-md-3f9bf71c88.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/queue-advisor.md",
+      "primitive_file": "primitives/rules/rules-queue-advisor-md-684eacea18.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/queue-drain.md",
+      "primitive_file": "primitives/rules/rules-queue-drain-md-a6a712249a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/rate-limit-protection.md",
+      "primitive_file": "primitives/rules/rules-rate-limit-protection-md-74a7f83719.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/rate-limiting.md",
+      "primitive_file": "primitives/rules/rules-rate-limiting-md-ee70324288.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/recommendation-grounding.md",
+      "primitive_file": "primitives/rules/rules-recommendation-grounding-md-bab236a32e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/reinvention-prevention.md",
+      "primitive_file": "primitives/rules/rules-reinvention-prevention-md-7a0d26c1db.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/repomix-integration.md",
+      "primitive_file": "primitives/rules/rules-repomix-integration-md-9a40def9ea.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/resource-governance.md",
+      "primitive_file": "primitives/rules/rules-resource-governance-md-704375c4a3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/response-compression.md",
+      "primitive_file": "primitives/rules/rules-response-compression-md-29f4cd3fbc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/responsiveness.md",
+      "primitive_file": "primitives/rules/rules-responsiveness-md-99f25af579.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/result-management.md",
+      "primitive_file": "primitives/rules/rules-result-management-md-da514a58cb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/retry-contract.md",
+      "primitive_file": "primitives/rules/rules-retry-contract-md-0829af380c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/sandbox-sampling.md",
+      "primitive_file": "primitives/rules/rules-sandbox-sampling-md-48cf08eb8a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/scope-creep-detection.md",
+      "primitive_file": "primitives/rules/rules-scope-creep-detection-md-56c7498dce.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/scope-proportionality.md",
+      "primitive_file": "primitives/rules/rules-scope-proportionality-md-949b462052.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/scout-pattern.md",
+      "primitive_file": "primitives/rules/rules-scout-pattern-md-c8e6fd8331.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/security-scanning.md",
+      "primitive_file": "primitives/rules/rules-security-scanning-md-4099291c2d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/session-close-doc-truth.md",
+      "primitive_file": "primitives/rules/rules-session-close-doc-truth-md-1c03d27666.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/session-concurrency.md",
+      "primitive_file": "primitives/rules/rules-session-concurrency-md-9bba2093fb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/singularity.md",
+      "primitive_file": "primitives/rules/rules-singularity-md-17bf6ccd90.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/skill-invocation-mandatory.md",
+      "primitive_file": "primitives/rules/rules-skill-invocation-mandatory-md-217917613b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/skill-management.md",
+      "primitive_file": "primitives/rules/rules-skill-management-md-bc0e28be5f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/skill-rewrite.md",
+      "primitive_file": "primitives/rules/rules-skill-rewrite-md-79e5c4b5b9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/so-slo.md",
+      "primitive_file": "primitives/rules/rules-so-slo-md-ee4c2aa11c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/split-and-resume.md",
+      "primitive_file": "primitives/rules/rules-split-and-resume-md-09fa0ee669.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/squad-protocol.md",
+      "primitive_file": "primitives/rules/rules-squad-protocol-md-e568b36870.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/startup-protocol.md",
+      "primitive_file": "primitives/rules/rules-startup-protocol-md-0585fe91e9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/stash-quarantine.md",
+      "primitive_file": "primitives/rules/rules-stash-quarantine-md-d6e5d1e064.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/step-files.md",
+      "primitive_file": "primitives/rules/rules-step-files-md-e6cd83c132.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/supply-chain-defense.md",
+      "primitive_file": "primitives/rules/rules-supply-chain-defense-md-b763257884.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/task-dag.md",
+      "primitive_file": "primitives/rules/rules-task-dag-md-b9544ff996.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/tero-integration.md",
+      "primitive_file": "primitives/rules/rules-tero-integration-md-6fac2deda3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/token-economy.md",
+      "primitive_file": "primitives/rules/rules-token-economy-md-736a0e699e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/trailofbits-skills.md",
+      "primitive_file": "primitives/rules/rules-trailofbits-skills-md-7cfebc71c6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/trust-score.md",
+      "primitive_file": "primitives/rules/rules-trust-score-md-28d54d7f52.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/user-prompt-capture.md",
+      "primitive_file": "primitives/rules/rules-user-prompt-capture-md-5b98654e0d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "rules/workload-scheduling.md",
+      "primitive_file": "primitives/rules/rules-workload-scheduling-md-4feb014752.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
       "portable_id": "agent-control-skill",
       "primitive_file": "primitives/skills/agent-control-skill-c237b68918.json",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/adaptive-workflow/skills/self-review/SKILL.md",
+      "primitive_file": "primitives/skills/packages-adaptive-workflow-skills-self-review-skill-md-954d5beed6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-coordination/skills/retrospective/SKILL.md",
+      "primitive_file": "primitives/skills/packages-agent-coordination-skills-retrospective-skill-md-4c530cc6a5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-coordination/skills/squad-manager/SKILL.md",
+      "primitive_file": "primitives/skills/packages-agent-coordination-skills-squad-manager-skill-md-92821489ca.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-lifecycle/skills/persistent-agent/SKILL.md",
+      "primitive_file": "primitives/skills/packages-agent-lifecycle-skills-persistent-agent-skill-md-89c8a17a6b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-lifecycle/skills/resume-tasks/SKILL.md",
+      "primitive_file": "primitives/skills/packages-agent-lifecycle-skills-resume-tasks-skill-md-afc6cb9621.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/auto-repair-rollback/skills/auto-rollback/SKILL.md",
+      "primitive_file": "primitives/skills/packages-auto-repair-rollback-skills-auto-rollback-skill-md-6f56160c08.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/context-optimization/skills/compose-prompt/SKILL.md",
+      "primitive_file": "primitives/skills/packages-context-optimization-skills-compose-prompt-skill-md-ecb89e460e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/context-optimization/skills/exhaustive-prompt/SKILL.md",
+      "primitive_file": "primitives/skills/packages-context-optimization-skills-exhaustive-prompt-skill-md-7442c825cd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/document-sync/skills/doc-sync/SKILL.md",
+      "primitive_file": "primitives/skills/packages-document-sync-skills-doc-sync-skill-md-dbb1c4e76a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/document-sync/skills/document-feature/SKILL.md",
+      "primitive_file": "primitives/skills/packages-document-sync-skills-document-feature-skill-md-eac0507491.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/dry-run-simulation/skills/arena/SKILL.md",
+      "primitive_file": "primitives/skills/packages-dry-run-simulation-skills-arena-skill-md-0560290928.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/dry-run-simulation/skills/simulation-arena/SKILL.md",
+      "primitive_file": "primitives/skills/packages-dry-run-simulation-skills-simulation-arena-skill-md-e9f2576108.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/audit-website/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-audit-website-skill-md-349d3dddb9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/automaker-bridge/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-automaker-bridge-skill-md-999c030b47.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/cognee-integration/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-cognee-integration-skill-md-44a4bb3eb9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/cognee-search/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-cognee-search-skill-md-3203d12fd3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/deepeval-integration/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-deepeval-integration-skill-md-c2802358bd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/jupyter-execute/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-jupyter-execute-skill-md-f34afc4fe4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-promptfoo-integration-skill-md-1094bb9656.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/ragas-integration/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-ragas-integration-skill-md-1b72883edc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/recommend-library/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-recommend-library-skill-md-bbb9ef9da9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/secret-audit/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-secret-audit-skill-md-9e1ce33ab8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/semgrep-scan/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-semgrep-scan-skill-md-97d6420851.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-strands-evals-integration-skill-md-ddc90f7079.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/tool-discovery/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-tool-discovery-skill-md-8b9bdb4eff.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/ecosystem-tools/skills/web-crawler/SKILL.md",
+      "primitive_file": "primitives/skills/packages-ecosystem-tools-skills-web-crawler-skill-md-59930b63cb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/infra-lifecycle/skills/devbox-checkpoint/SKILL.md",
+      "primitive_file": "primitives/skills/packages-infra-lifecycle-skills-devbox-checkpoint-skill-md-fe8e444f7e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md",
+      "primitive_file": "primitives/skills/packages-infra-lifecycle-skills-gpu-sandbox-skill-md-d5372ee906.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/infra-lifecycle/skills/repair-status/SKILL.md",
+      "primitive_file": "primitives/skills/packages-infra-lifecycle-skills-repair-status-skill-md-fcefc22f2d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/infra-lifecycle/skills/sre-agent/SKILL.md",
+      "primitive_file": "primitives/skills/packages-infra-lifecycle-skills-sre-agent-skill-md-ef18393fd6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/privacy-mode/skills/private-mode/SKILL.md",
+      "primitive_file": "primitives/skills/packages-privacy-mode-skills-private-mode-skill-md-f096ae13a6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/confidence-check/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-confidence-check-skill-md-db32048771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/dod-check/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-dod-check-skill-md-dc0f6be0ec.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/nemo-guardrails/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-nemo-guardrails-skill-md-986a696c34.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/pentest-self/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-pentest-self-skill-md-c7356395fe.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/readiness-check/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-readiness-check-skill-md-e3525ab317.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/resolve-blockers/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-resolve-blockers-skill-md-26ee191bdf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/quality-gates/skills/security-audit/SKILL.md",
+      "primitive_file": "primitives/skills/packages-quality-gates-skills-security-audit-skill-md-d5071e9dd3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/recall-search/skills/conversation-memory/SKILL.md",
+      "primitive_file": "primitives/skills/packages-recall-search-skills-conversation-memory-skill-md-bc20e1b217.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/recall-search/skills/memu-context/SKILL.md",
+      "primitive_file": "primitives/skills/packages-recall-search-skills-memu-context-skill-md-246e1b6b4c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/recall-search/skills/recall-search/SKILL.md",
+      "primitive_file": "primitives/skills/packages-recall-search-skills-recall-search-skill-md-e14363fba8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/scope-governance/skills/contract-drift/SKILL.md",
+      "primitive_file": "primitives/skills/packages-scope-governance-skills-contract-drift-skill-md-fe196ec1c5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/scope-governance/skills/deep-research/SKILL.md",
+      "primitive_file": "primitives/skills/packages-scope-governance-skills-deep-research-skill-md-27d0918e4d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/scope-governance/skills/planning-poker/SKILL.md",
+      "primitive_file": "primitives/skills/packages-scope-governance-skills-planning-poker-skill-md-465c4550b6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/scope-governance/skills/repo-scout/SKILL.md",
+      "primitive_file": "primitives/skills/packages-scope-governance-skills-repo-scout-skill-md-d653b4ea6c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/scope-governance/skills/research-protocol/SKILL.md",
+      "primitive_file": "primitives/skills/packages-scope-governance-skills-research-protocol-skill-md-b3d01b1557.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/scope-governance/skills/sandbox-sample/SKILL.md",
+      "primitive_file": "primitives/skills/packages-scope-governance-skills-sandbox-sample-skill-md-f9a80de4b7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/auto-refine/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-auto-refine-skill-md-1352512fcb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/batch-runner/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-batch-runner-skill-md-dc9863b10b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/evaluate-plan/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-evaluate-plan-skill-md-918e6632ac.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/impact-analysis/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-impact-analysis-skill-md-689134cf98.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/issue-pipeline/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-issue-pipeline-skill-md-61f94d2130.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/plan-bug/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-plan-bug-skill-md-0fb513cb65.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/plan-feature/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-plan-feature-skill-md-5cc9745a60.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/sdd-compound/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-sdd-compound-skill-md-1d07b4690a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/singularity/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-singularity-skill-md-e9dbfce247.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/sdd-compound/skills/webhook-trigger/SKILL.md",
+      "primitive_file": "primitives/skills/packages-sdd-compound-skills-webhook-trigger-skill-md-cce209c346.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/skill-governance/skills/error-analyzer/SKILL.md",
+      "primitive_file": "primitives/skills/packages-skill-governance-skills-error-analyzer-skill-md-693b8cd56e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/skill-governance/skills/metrics-calibrator/SKILL.md",
+      "primitive_file": "primitives/skills/packages-skill-governance-skills-metrics-calibrator-skill-md-7b4c6e355f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/skill-governance/skills/model-optimizer/SKILL.md",
+      "primitive_file": "primitives/skills/packages-skill-governance-skills-model-optimizer-skill-md-716b4ecf62.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/skill-governance/skills/optimize-skill/SKILL.md",
+      "primitive_file": "primitives/skills/packages-skill-governance-skills-optimize-skill-skill-md-3c5f455896.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/task-management/skills/agent-kpis/SKILL.md",
+      "primitive_file": "primitives/skills/packages-task-management-skills-agent-kpis-skill-md-2ed2c23262.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/task-management/skills/capability-snapshot/SKILL.md",
+      "primitive_file": "primitives/skills/packages-task-management-skills-capability-snapshot-skill-md-5a6b993101.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/task-management/skills/sprint/SKILL.md",
+      "primitive_file": "primitives/skills/packages-task-management-skills-sprint-skill-md-a17a5768da.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-cognitive-os-benchmark-skill-md-dca1cd19e8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/coverage-enforcement/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-coverage-enforcement-skill-md-2bd0d0957a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/harness-audit/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-harness-audit-skill-md-350a1ea0db.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/smoke-test/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-smoke-test-skill-md-64d9dbd662.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/systematic-debugging/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-systematic-debugging-skill-md-386b364081.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/test-driven-development/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-test-driven-development-skill-md-08d3b543af.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/trust-audit/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-trust-audit-skill-md-35a37adf69.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/verification-audit/skills/verification-before-completion/SKILL.md",
+      "primitive_file": "primitives/skills/packages-verification-audit-skills-verification-before-completion-skill-md-50e811d428.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,
@@ -1337,6 +3171,692 @@
       "portable_id": "skill-self-improve",
       "primitive_file": "primitives/skills/skill-self-improve-8c955b1c36.json",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/add-hook/SKILL.md",
+      "primitive_file": "primitives/skills/skills-add-hook-skill-md-e04daf86b4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/add-mcp/SKILL.md",
+      "primitive_file": "primitives/skills/skills-add-mcp-skill-md-739d9df91c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/add-rule/SKILL.md",
+      "primitive_file": "primitives/skills/skills-add-rule-skill-md-b6bfba4687.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/add-skill/SKILL.md",
+      "primitive_file": "primitives/skills/skills-add-skill-skill-md-a807bc6af9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/adr-tombstone/SKILL.md",
+      "primitive_file": "primitives/skills/skills-adr-tombstone-skill-md-9bcf6a3793.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/agent-dashboard/SKILL.md",
+      "primitive_file": "primitives/skills/skills-agent-dashboard-skill-md-a048b49d20.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/agent-stress-test/SKILL.md",
+      "primitive_file": "primitives/skills/skills-agent-stress-test-skill-md-6c46437068.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/analyze-improvements/SKILL.md",
+      "primitive_file": "primitives/skills/skills-analyze-improvements-skill-md-d2d21ab0f9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/apply-improvements/SKILL.md",
+      "primitive_file": "primitives/skills/skills-apply-improvements-skill-md-76b953f7eb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/architecture-map-answer/SKILL.md",
+      "primitive_file": "primitives/skills/skills-architecture-map-answer-skill-md-70f04a4b3d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/audit-integrity/SKILL.md",
+      "primitive_file": "primitives/skills/skills-audit-integrity-skill-md-95e19da33e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/branch-worktree-closure/SKILL.md",
+      "primitive_file": "primitives/skills/skills-branch-worktree-closure-skill-md-c3132ec6e5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/browser-task/SKILL.md",
+      "primitive_file": "primitives/skills/skills-browser-task-skill-md-3ac6f12e4f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/bump-version/SKILL.md",
+      "primitive_file": "primitives/skills/skills-bump-version-skill-md-4c5e3403ec.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/catalog-full/SKILL.md",
+      "primitive_file": "primitives/skills/skills-catalog-full-skill-md-958a50caa0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/caveman-compress/SKILL.md",
+      "primitive_file": "primitives/skills/skills-caveman-compress-skill-md-59e1bf5e71.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/caveman-es/SKILL.md",
+      "primitive_file": "primitives/skills/skills-caveman-es-skill-md-c87e7b329e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/caveman/SKILL.md",
+      "primitive_file": "primitives/skills/skills-caveman-skill-md-f8a994f83d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/code-review/SKILL.md",
+      "primitive_file": "primitives/skills/skills-code-review-skill-md-85d14c6ae1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/cognitive-os-init/SKILL.md",
+      "primitive_file": "primitives/skills/skills-cognitive-os-init-skill-md-c61d26fcdc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/cognitive-os-status/SKILL.md",
+      "primitive_file": "primitives/skills/skills-cognitive-os-status-skill-md-ca9b9cc3d2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/cognitive-os-test/SKILL.md",
+      "primitive_file": "primitives/skills/skills-cognitive-os-test-skill-md-854f2422c5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/compat-test/SKILL.md",
+      "primitive_file": "primitives/skills/skills-compat-test-skill-md-973debb0a7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/component-classifier/SKILL.md",
+      "primitive_file": "primitives/skills/skills-component-classifier-skill-md-1245c1b5d5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/component-reality-check/SKILL.md",
+      "primitive_file": "primitives/skills/skills-component-reality-check-skill-md-643ccb9816.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/__contracts__/canonical-event-emitter/SKILL.md",
+      "primitive_file": "primitives/skills/skills-contracts-canonical-event-emitter-skill-md-e7cb905dcd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/__contracts__/SKILL.md",
+      "primitive_file": "primitives/skills/skills-contracts-skill-md-9a85b274ed.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/coordination-status/SKILL.md",
+      "primitive_file": "primitives/skills/skills-coordination-status-skill-md-105d523d33.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/cos-maintainer-operations/SKILL.md",
+      "primitive_file": "primitives/skills/skills-cos-maintainer-operations-skill-md-ddb8abfeec.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/cos-status/SKILL.md",
+      "primitive_file": "primitives/skills/skills-cos-status-skill-md-5937cf0a6f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/cost-predictor/SKILL.md",
+      "primitive_file": "primitives/skills/skills-cost-predictor-skill-md-3113de2795.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/decision-triage/SKILL.md",
+      "primitive_file": "primitives/skills/skills-decision-triage-skill-md-59c5ee708c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/deep-tool-research/SKILL.md",
+      "primitive_file": "primitives/skills/skills-deep-tool-research-skill-md-3137c8fbc4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/deps-update/SKILL.md",
+      "primitive_file": "primitives/skills/skills-deps-update-skill-md-fd6466e73d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/detect-patterns/SKILL.md",
+      "primitive_file": "primitives/skills/skills-detect-patterns-skill-md-2d6a156eed.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/detect-stack/SKILL.md",
+      "primitive_file": "primitives/skills/skills-detect-stack-skill-md-3693e6761d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/doc-review-personas/SKILL.md",
+      "primitive_file": "primitives/skills/skills-doc-review-personas-skill-md-68d73277b2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/docs-execution-audit/SKILL.md",
+      "primitive_file": "primitives/skills/skills-docs-execution-audit-skill-md-7c66d50690.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/dogfood-score/SKILL.md",
+      "primitive_file": "primitives/skills/skills-dogfood-score-skill-md-7651fadae3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/eval-repo/SKILL.md",
+      "primitive_file": "primitives/skills/skills-eval-repo-skill-md-c8d7b4bb12.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/experimental/auto-bash-agent-bash-9c6b89/SKILL.md",
+      "primitive_file": "primitives/skills/skills-experimental-auto-bash-agent-bash-9c6b89-skill-md-1aa4d01a89.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/experimental/SKILL.md",
+      "primitive_file": "primitives/skills/skills-experimental-skill-md-f891156823.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/generate-changelog/SKILL.md",
+      "primitive_file": "primitives/skills/skills-generate-changelog-skill-md-6609b2f5be.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/generate-config/SKILL.md",
+      "primitive_file": "primitives/skills/skills-generate-config-skill-md-4c16e5137c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/install-recommended/SKILL.md",
+      "primitive_file": "primitives/skills/skills-install-recommended-skill-md-544b84434f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/invariant-check/SKILL.md",
+      "primitive_file": "primitives/skills/skills-invariant-check-skill-md-5177cf9a9b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/llm-status/SKILL.md",
+      "primitive_file": "primitives/skills/skills-llm-status-skill-md-ca2bb23c58.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/memory-scan/SKILL.md",
+      "primitive_file": "primitives/skills/skills-memory-scan-skill-md-753589e25d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/pattern-audit/SKILL.md",
+      "primitive_file": "primitives/skills/skills-pattern-audit-skill-md-2cb91ef074.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/peer-card/SKILL.md",
+      "primitive_file": "primitives/skills/skills-peer-card-skill-md-a5134a7a91.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/phoenix-trace-ui/SKILL.md",
+      "primitive_file": "primitives/skills/skills-phoenix-trace-ui-skill-md-15283bb5a7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/pr-review/SKILL.md",
+      "primitive_file": "primitives/skills/skills-pr-review-skill-md-c45cd719fe.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/preserved-wip-cleanup/SKILL.md",
+      "primitive_file": "primitives/skills/skills-preserved-wip-cleanup-skill-md-e4bc8d0013.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/primitive-authoring/SKILL.md",
+      "primitive_file": "primitives/skills/skills-primitive-authoring-skill-md-d5c90d3764.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/primitive-harvester/SKILL.md",
+      "primitive_file": "primitives/skills/skills-primitive-harvester-skill-md-d41b382e32.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/primitive-surface-reduction/SKILL.md",
+      "primitive_file": "primitives/skills/skills-primitive-surface-reduction-skill-md-bb16fc072f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/primitive-usage-map/SKILL.md",
+      "primitive_file": "primitives/skills/skills-primitive-usage-map-skill-md-650455ea06.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/product-answer/SKILL.md",
+      "primitive_file": "primitives/skills/skills-product-answer-skill-md-15b0363273.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/push-release/SKILL.md",
+      "primitive_file": "primitives/skills/skills-push-release-skill-md-af0025cd16.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/pyrefly-typecheck/SKILL.md",
+      "primitive_file": "primitives/skills/skills-pyrefly-typecheck-skill-md-4c3eedb899.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/queue-drain/SKILL.md",
+      "primitive_file": "primitives/skills/skills-queue-drain-skill-md-de71002a5e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/radar-update/SKILL.md",
+      "primitive_file": "primitives/skills/skills-radar-update-skill-md-26ee1f149a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/red-team/SKILL.md",
+      "primitive_file": "primitives/skills/skills-red-team-skill-md-06cf1bcbca.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/redteam-harness/SKILL.md",
+      "primitive_file": "primitives/skills/skills-redteam-harness-skill-md-9cbbca8ff7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/release-os/SKILL.md",
+      "primitive_file": "primitives/skills/skills-release-os-skill-md-a38fee4be3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/repo-forensics/SKILL.md",
+      "primitive_file": "primitives/skills/skills-repo-forensics-skill-md-dd38f3e43e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/resource-governor/SKILL.md",
+      "primitive_file": "primitives/skills/skills-resource-governor-skill-md-5422eccc31.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/reverse-engineer/SKILL.md",
+      "primitive_file": "primitives/skills/skills-reverse-engineer-skill-md-deeaf79813.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/run-tests/SKILL.md",
+      "primitive_file": "primitives/skills/skills-run-tests-skill-md-740556d960.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/scaffold-project/SKILL.md",
+      "primitive_file": "primitives/skills/skills-scaffold-project-skill-md-501c09c086.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/scout/SKILL.md",
+      "primitive_file": "primitives/skills/skills-scout-skill-md-e4363fd3db.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-apply/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-apply-skill-md-8a83522c97.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-continue/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-continue-skill-md-ebbe3b2cd3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-explore/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-explore-skill-md-31db673a07.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-resume/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-resume-skill-md-d1d01be873.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-spec/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-spec-skill-md-846d908860.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-tasks/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-tasks-skill-md-49de2caef6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/sdd-verify/SKILL.md",
+      "primitive_file": "primitives/skills/skills-sdd-verify-skill-md-d0ee3d381e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/security-red-team/SKILL.md",
+      "primitive_file": "primitives/skills/skills-security-red-team-skill-md-24e55a3b24.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/session-backlog/SKILL.md",
+      "primitive_file": "primitives/skills/skills-session-backlog-skill-md-61a4c6d21b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/session-manager/SKILL.md",
+      "primitive_file": "primitives/skills/skills-session-manager-skill-md-dd48d02c50.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/session-report-executive/SKILL.md",
+      "primitive_file": "primitives/skills/skills-session-report-executive-skill-md-1526a861a8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/session-wrapup/SKILL.md",
+      "primitive_file": "primitives/skills/skills-session-wrapup-skill-md-3f720307b6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/skill-creator/SKILL.md",
+      "primitive_file": "primitives/skills/skills-skill-creator-skill-md-be30425771.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/so-vs-vanilla/SKILL.md",
+      "primitive_file": "primitives/skills/skills-so-vs-vanilla-skill-md-a876766f6e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/stash-quarantine/SKILL.md",
+      "primitive_file": "primitives/skills/skills-stash-quarantine-skill-md-0ba05bd350.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/tag-release/SKILL.md",
+      "primitive_file": "primitives/skills/skills-tag-release-skill-md-7c8137c2ce.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/test-contract-repair/SKILL.md",
+      "primitive_file": "primitives/skills/skills-test-contract-repair-skill-md-bbf6df3376.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/validate-config/SKILL.md",
+      "primitive_file": "primitives/skills/skills-validate-config-skill-md-45ebfbb8a2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/validate-release/SKILL.md",
+      "primitive_file": "primitives/skills/skills-validate-release-skill-md-784538b718.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/vuln-remediation-flow/SKILL.md",
+      "primitive_file": "primitives/skills/skills-vuln-remediation-flow-skill-md-b589fcca21.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/vulnerability-scan/SKILL.md",
+      "primitive_file": "primitives/skills/skills-vulnerability-scan-skill-md-fae953df59.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/wiki-ingest/SKILL.md",
+      "primitive_file": "primitives/skills/skills-wiki-ingest-skill-md-5405faa5c1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/worktree-triage/SKILL.md",
+      "primitive_file": "primitives/skills/skills-worktree-triage-skill-md-946db226b3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/dispatch_gate_check.py",
+      "primitive_file": "primitives/tools/hooks-lib-dispatch-gate-check-py-445850be43.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/session-fs-reap.sh",
+      "primitive_file": "primitives/tools/hooks-lib-session-fs-reap-sh-00ecdeed53.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/session_init_helper.py",
+      "primitive_file": "primitives/tools/hooks-lib-session-init-helper-py-e55f0320d4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/task_bridge.py",
+      "primitive_file": "primitives/tools/hooks-lib-task-bridge-py-d33abd5a3d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
       "claims_runtime_enforcement": false,
@@ -2415,6 +4935,125 @@
       "portable_id": "script-weekly-aspirational-audit",
       "primitive_file": "primitives/tools/script-weekly-aspirational-audit-70a8646427.json",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/check_test_quality.py",
+      "primitive_file": "primitives/tools/scripts-check-test-quality-py-03a2d90a47.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/compose_agent_prompt.py",
+      "primitive_file": "primitives/tools/scripts-compose-agent-prompt-py-0f28b3515b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-agent-daemon",
+      "primitive_file": "primitives/tools/scripts-cos-agent-daemon-12ede02661.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos_agent_message.py",
+      "primitive_file": "primitives/tools/scripts-cos-agent-message-py-5501c97218.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-doctor-concurrency.sh",
+      "primitive_file": "primitives/tools/scripts-cos-doctor-concurrency-sh-6f6f3533a8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-doctor-work-inventory.sh",
+      "primitive_file": "primitives/tools/scripts-cos-doctor-work-inventory-sh-cee61503a5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-engram-import-propose",
+      "primitive_file": "primitives/tools/scripts-cos-engram-import-propose-677769dda1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-governed-agent.sh",
+      "primitive_file": "primitives/tools/scripts-cos-governed-agent-sh-792baeb0ce.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-governed-edit.sh",
+      "primitive_file": "primitives/tools/scripts-cos-governed-edit-sh-948253e6c8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/eas_validate.py",
+      "primitive_file": "primitives/tools/scripts-eas-validate-py-037502c561.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/engram-sync.sh",
+      "primitive_file": "primitives/tools/scripts-engram-sync-sh-476e91626d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/primitive_fitness_ledger.py",
+      "primitive_file": "primitives/tools/scripts-primitive-fitness-ledger-py-6af0975c8f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/runtime_hook_reality.py",
+      "primitive_file": "primitives/tools/scripts-runtime-hook-reality-py-d92a527d28.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/so-reaper.sh",
+      "primitive_file": "primitives/tools/scripts-so-reaper-sh-aedaad77ab.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/startup-benchmark.sh",
+      "primitive_file": "primitives/tools/scripts-startup-benchmark-sh-4612692e4a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/stash_quarantine_audit.py",
+      "primitive_file": "primitives/tools/scripts-stash-quarantine-audit-py-27299c087b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/verify_plan_claims.py",
+      "primitive_file": "primitives/tools/scripts-verify-plan-claims-py-9210eea35b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     }
   ],
   "projection_mode": "settings-file",

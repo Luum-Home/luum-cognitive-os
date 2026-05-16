@@ -62,16 +62,17 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "transitive runtime dependency for destructive-operation blockers",
+    "behavior_evidence": "Projection audit iteration 043; shared hook support library copied into consumer installs as a required transitive dependency of projected hooks.",
     "evidence_commands": [
       "bash -n hooks/_lib/agent-context.sh hooks/destructive-git-blocker.sh hooks/destructive-rm-blocker.sh",
-      "python3 -m pytest tests/behavior/test_hooks_batch1.py -q"
+      "python3 -m pytest tests/behavior/test_hooks_batch1.py -q",
+      "scripts/cos-scope-projection-audit --repo-root . --run-install-smoke --strict --json --no-write"
     ],
     "metrics_file": "none"
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "maintainer",
+    "distribution": "core",
     "docs_claim_level": "advisory",
     "exit_behavior": "mixed",
     "governance_class": "runtime-safety",
@@ -79,7 +80,7 @@
     "maturity": "advisory",
     "owner_adr": "ADR-149",
     "risk_class": "advisory",
-    "runtime_projection": false
+    "runtime_projection": true
   },
   "overlay_role": "generated-reference",
   "portable_contract": {

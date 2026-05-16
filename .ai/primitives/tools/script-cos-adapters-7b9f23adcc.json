@@ -62,10 +62,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Consumer UX for listing and verifying declarative portable .ai adapter manifests; native IDE file emission remains delegated to harness projection drivers or a future fidelity-preserving adapter compiler.",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified both. Consumer UX for compiling portable adapter surfaces from COS primitives into target project harnesses.",
     "evidence_commands": [
       "python3 -m py_compile scripts/cos-adapters",
-      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-adapters --fail-contradictions"
     ],
     "metrics_file": "none"
   },

@@ -62,10 +62,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Maintainer onboarding recording helper for reproducible fresh-clone walkthroughs.",
+    "behavior_evidence": "Manual scope calibration iteration 040 classified os-only. Drives Cognitive OS onboarding walkthrough recording.",
     "evidence_commands": [
       "bash -n scripts/cos-record-onboarding.sh",
-      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/cos-record-onboarding.sh --fail-contradictions"
     ],
     "metrics_file": "none"
   },

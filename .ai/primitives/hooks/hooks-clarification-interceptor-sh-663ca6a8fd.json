@@ -1,0 +1,102 @@
+{
+  "canonical_source": "hooks/clarification-interceptor.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Clarification interception is portable agent-orchestration behavior; current hook degrades safely from arbitrary project roots.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Clarification interception is portable agent-orchestration behavior; current hook degrades safely from arbitrary project roots.",
+    "evidence_commands": [
+      "python3 -m pytest tests/red_team/portability/test_clarification-interceptor.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/clarification-interceptor.sh --fail-contradictions"
+    ],
+    "metrics_file": ".cognitive-os/metrics/*.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "quality",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-314",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Clarification interception is portable agent-orchestration behavior; current hook degrades safely from arbitrary project roots.",
+      "evidence_commands": [
+        "python3 -m pytest tests/red_team/portability/test_clarification-interceptor.py -q",
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/clarification-interceptor.sh --fail-contradictions"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/*.jsonl"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Clarification interception is portable agent-orchestration behavior; current hook degrades safely from arbitrary project roots.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        "hooks/clarification-interceptor.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/clarification-interceptor.sh",
+  "projection_targets": [
+    "hooks/clarification-interceptor.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/clarification-interceptor.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

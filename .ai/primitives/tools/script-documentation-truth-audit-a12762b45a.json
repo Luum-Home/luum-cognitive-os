@@ -62,10 +62,11 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Skill-facing agentic primitive auditing documentation truth claims across the repo.",
+    "behavior_evidence": "Manual scope calibration iteration 038: documentation truth auditing is shared repository-governance for COS docs and adopter-project docs with declared truth manifests.",
     "evidence_commands": [
       "python3 -m py_compile scripts/documentation_truth_audit.py",
-      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q",
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths scripts/documentation_truth_audit.py --fail-contradictions"
     ],
     "metrics_file": "none"
   },

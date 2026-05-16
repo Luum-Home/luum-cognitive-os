@@ -71,7 +71,7 @@
   },
   "family": "rule",
   "lifecycle": {
-    "distribution": "maintainer",
+    "distribution": "team",
     "docs_claim_level": "advisory",
     "exit_behavior": "manual",
     "governance_class": "meta-governance",

@@ -1,0 +1,86 @@
+{
+  "canonical_source": "hooks/dry-run-preview.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.",
+    "evidence_commands": [
+      "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/dry-run-preview.sh --fail-contradictions --fail-low-confidence"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "observe",
+    "exit_behavior": "exit_0",
+    "governance_class": "project-consumer-surface",
+    "lifecycle_state": "advisory",
+    "maturity": "observe",
+    "owner_adr": "ADR-019",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.",
+      "evidence_commands": [
+        "python3 scripts/primitive_scope_classifier.py --project-dir . --paths hooks/dry-run-preview.sh --fail-contradictions --fail-low-confidence"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Manual medium-confidence closure iteration 045; project-only primitive is projected/adapted for consumer repositories and not required for COS self-construction.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "hooks/dry-run-preview.sh"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "hooks/dry-run-preview.sh",
+  "projection_targets": [
+    "hooks/dry-run-preview.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/dry-run-preview.sh",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

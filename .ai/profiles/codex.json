@@ -2047,7 +2047,7 @@
   "display_name": "OpenAI Codex",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "codex",
-  "lifecycle_primitives_supporting_harness": 31,
+  "lifecycle_primitives_supporting_harness": 408,
   "limitations": [
     "Runtime parity depends on Codex-supported hook/settings semantics.",
     "Proof currently covers default profile, not full profile."
