@@ -42,7 +42,7 @@ _and 1 more items not shown_
 | **AC3**: `cos-test focused` completes in <30s for a typical 1–3 file diff (measured on changes touching `lib/decision_triage.py`). | plans | 9/10 tasks done; file=.cognitive-os/plans/features/test-runner-ergonomics-proposal.md | 1 session |
 | `cos governance readiness --json` includes token/context tax estimate or | plans | 1/23 tasks done; file=.cognitive-os/plans/architecture/dx-tax-reduction-plan.md | 1 session |
 | `cos governance readiness` warns when discovery overload exists. | plans | 1/23 tasks done; file=.cognitive-os/plans/architecture/dx-tax-reduction-plan.md | 1 session |
-| `dormant_aspirational_ratio < 0.25` (hard). | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existsntial-validation-2026-04-24.md | 1 session |
+| `dormant_aspirational_ratio < 0.25` (hard). | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existential-validation-2026-04-24.md | 1 session |
 | A new operator can identify the active safety layer without reading ADRs. | plans | 1/23 tasks done; file=.cognitive-os/plans/architecture/dx-tax-reduction-plan.md | 1 session |
 | Add `session-resume.sh` to standard (currently only in paranoid) | plans | 22/36 tasks done; file=.cognitive-os/plans/features/hook-architecture-v2.md | 1 session |
 | Add a scheduled propose-only runner. | plans | 19/23 tasks done; file=.cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md | 1 session |
@@ -53,8 +53,8 @@ _and 1 more items not shown_
 | Add new behavior tests: execution order, new events in profile JSONs, script vs JSON parity | plans | 22/36 tasks done; file=.cognitive-os/plans/features/hook-architecture-v2.md | 1 session |
 | Add skill performance lifecycle states and demotion/archive receipts. | plans | 24/32 tasks done; file=.cognitive-os/plans/architecture/adr-200-plus-closure-plan.md | 1 session |
 | Add TeammateIdle, TaskCreated, TaskCompleted sections (standard + paranoid) — lower priority | plans | 22/36 tasks done; file=.cognitive-os/plans/features/hook-architecture-v2.md | 1 session |
-| Commit archival batch once DORMANT test/marker work reduces ratio sufficiently. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existsntial-validation-2026-04-24.md | 1 session |
-| Daily snapshot: `scripts/aspirational-audit.py --persist` to `.cognitive-os/metrics/aspirational-audit.jsonl`. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existsntial-validation-2026-04-24.md | 1 session |
+| Commit archival batch once DORMANT test/marker work reduces ratio sufficiently. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existential-validation-2026-04-24.md | 1 session |
+| Daily snapshot: `scripts/aspirational-audit.py --persist` to `.cognitive-os/metrics/aspirational-audit.jsonl`. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existential-validation-2026-04-24.md | 1 session |
 | Default `core` report contains no meta-governance primitives. | plans | 4/35 tasks done; file=.cognitive-os/plans/architecture/governance-tools-consolidation.md | 1 session |
 | Direct-main bypass requires explicit environment and records metrics. | plans | 5/17 tasks done; file=.cognitive-os/plans/architecture/foundation-hardening-program.md | 1 session |
 | Discovery overload warning disappears for Lean/Standard reports. | plans | 10/18 tasks done; file=.cognitive-os/plans/architecture/external-review-readiness-plan.md | 1 session |
