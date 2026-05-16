@@ -1,8 +1,8 @@
 """Unit tests for lib/skill_router.py
 
 Validates skill auto-selection from conversation context, including
-English-only pattern matching, GitHub URL detection, confidence
-scoring, fallback handling, and routing table integrity.
+English regex matching, language-agnostic semantic fallback, GitHub URL
+detection, confidence scoring, fallback handling, and routing table integrity.
 """
 
 import pytest
@@ -10,6 +10,11 @@ import pytest
 from lib.skill_router import SkillRouter
 
 pytestmark = pytest.mark.unit
+
+
+def _utf8(hex_text: str) -> str:
+    """Decode runtime multilingual fixtures while keeping source English-only."""
+    return bytes.fromhex(hex_text).decode("utf-8")
 
 
 # ---------------------------------------------------------------------------
@@ -187,7 +192,7 @@ class TestNoMatchCases:
     """Greetings and ambiguous messages should return None."""
 
     def test_no_match_for_greeting(self, router: SkillRouter):
-        match = router.best_match("hola")
+        match = router.best_match(_utf8("686f6c61"))
         assert match is None
 
     def test_no_match_for_thanks(self, router: SkillRouter):
@@ -425,7 +430,7 @@ class TestSpecificSkills:
         assert match.invoke_command == "/resume-tasks"
 
     def test_adr_tombstone(self, router: SkillRouter):
-        match = router.best_match("ADR numbering has a hueco, create a tombstone")
+        match = router.best_match("ADR numbering has a gap, create a tombstone")
         assert match is not None
         assert match.skill_name == "adr-tombstone"
         assert match.invoke_command == "/adr-tombstone"
@@ -559,7 +564,7 @@ class TestSemanticRoutingProductAnswer:
     example phrases.
 
     Prompts here intentionally avoid literal regex keywords (moat,
-    diferenciador, ICP, pricing, etc.) so the regex layer cannot match —
+    differentiator, ICP, pricing, etc.) so the regex layer cannot match —
     success proves the semantic fallback operates on description/summary_line.
     """
 
@@ -581,13 +586,13 @@ class TestSemanticRoutingProductAnswer:
         if matches:
             assert "product-answer" in names or top is None or top.confidence < 0.75
 
-    def test_experience_question_routes_or_stays_low_confidence(self, router: SkillRouter):
-        matches = router.match("could it help a developer without experience?")
+    def test_portuguese_phrasing_routes_or_stays_low_confidence(self, router: SkillRouter):
+        matches = router.match(_utf8("706f646520616a7564617220756d206465762073656d20657870657269c3aa6e6369613f"))
         names = [m.skill_name for m in matches]
         if matches:
             assert "product-answer" in names or all(m.confidence < 0.75 for m in matches)
 
-    def test_plain_english_phrasing_without_regex_keywords(self, router: SkillRouter):
+    def test_plain_phrasing_without_regex_keywords(self, router: SkillRouter):
         # Avoids direct aliases such as "moat", "ICP", "pricing", etc.
         matches = router.match(
             "can it help someone without architecture knowledge?"
