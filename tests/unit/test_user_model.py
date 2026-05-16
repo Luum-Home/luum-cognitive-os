@@ -11,29 +11,29 @@ from lib.user_model import UserModel, UserPreference
 class TestRecordPreference:
     def test_new_preference(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         pref = model.get_preference("communication", "language")
         assert pref is not None
-        assert pref.value == "Spanish"
+        assert pref.value == "Plain English"
 
     def test_update_higher_confidence(self):
         model = UserModel()
         model.record_preference("communication", "language", "English", 0.5)
-        model.record_preference("communication", "language", "Spanish", 0.8)
-        assert model.get_preference("communication", "language").value == "Spanish"
+        model.record_preference("communication", "language", "Plain English", 0.8)
+        assert model.get_preference("communication", "language").value == "Plain English"
 
     def test_update_equal_confidence(self):
         # confidence >= existing means equal confidence also updates
         model = UserModel()
         model.record_preference("communication", "language", "English", 0.5)
-        model.record_preference("communication", "language", "Spanish", 0.5)
-        assert model.get_preference("communication", "language").value == "Spanish"
+        model.record_preference("communication", "language", "Plain English", 0.5)
+        assert model.get_preference("communication", "language").value == "Plain English"
 
     def test_skip_lower_confidence(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.9)
+        model.record_preference("communication", "language", "Plain English", 0.9)
         model.record_preference("communication", "language", "English", 0.3)
-        assert model.get_preference("communication", "language").value == "Spanish"
+        assert model.get_preference("communication", "language").value == "Plain English"
 
     def test_missing_returns_none(self):
         model = UserModel()
@@ -41,15 +41,15 @@ class TestRecordPreference:
 
     def test_different_keys_stored_separately(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         model.record_preference("communication", "verbosity", "terse", 0.5)
-        assert model.get_preference("communication", "language").value == "Spanish"
+        assert model.get_preference("communication", "language").value == "Plain English"
         assert model.get_preference("communication", "verbosity").value == "terse"
         assert len(model.preferences) == 2
 
     def test_default_source_is_inferred(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         pref = model.get_preference("communication", "language")
         assert pref.source == "inferred"
 
@@ -61,7 +61,7 @@ class TestRecordPreference:
 
     def test_confidence_stored_correctly(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.75)
+        model.record_preference("communication", "language", "Plain English", 0.75)
         pref = model.get_preference("communication", "language")
         assert pref.confidence == 0.75
 
@@ -94,9 +94,9 @@ class TestProfileSummary:
 
     def test_with_preferences(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         summary = model.get_profile_summary()
-        assert "Spanish" in summary
+        assert "Plain English" in summary
 
     def test_with_technical_context(self):
         model = UserModel()
@@ -106,7 +106,7 @@ class TestProfileSummary:
 
     def test_summary_contains_headers(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         model.record_technical_context("stack", "Go")
         summary = model.get_profile_summary()
         assert "USER PREFERENCES:" in summary
@@ -114,15 +114,15 @@ class TestProfileSummary:
 
     def test_higher_confidence_first(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         model.record_preference("communication", "verbosity", "terse", 0.3)
         summary = model.get_profile_summary()
         # Additional English variants (0.8) should appear before terse (0.3)
-        assert summary.index("Spanish") < summary.index("terse")
+        assert summary.index("Plain English") < summary.index("terse")
 
     def test_only_preferences_section_when_no_context(self):
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.8)
+        model.record_preference("communication", "language", "Plain English", 0.8)
         summary = model.get_profile_summary()
         assert "USER PREFERENCES:" in summary
         assert "TECHNICAL CONTEXT:" not in summary
@@ -148,13 +148,12 @@ class TestInference:
         pref = model.get_preference("communication", "language")
         assert pref is None
 
-    def test_no_spanish_for_plain_english_message(self):
+    def test_no_language_preference_for_plain_english_message(self):
         model = UserModel()
-        # A long English message (>9 words) with no Spanish indicators
+        # A long English message (>9 words) with no language-preference indicators
         model.infer_from_message("please fix the handler function and make sure the tests still pass")
         pref = model.get_preference("communication", "language")
-        if pref is not None:
-            assert "Spanish" not in pref.value
+        assert pref is None
 
     def test_infer_go_tech_stack(self):
         model = UserModel()
@@ -247,12 +246,12 @@ class TestInferFromFeedback:
 class TestSerialization:
     def test_roundtrip_with_preferences(self):
         model = UserModel()
-        model.record_preference("comm", "lang", "ES", 0.9, "explicit")
+        model.record_preference("comm", "lang", "EN", 0.9, "explicit")
         data = model.to_dict()
         restored = UserModel.from_dict(data)
         pref = restored.get_preference("comm", "lang")
         assert pref is not None
-        assert pref.value == "ES"
+        assert pref.value == "EN"
         assert pref.confidence == 0.9
         assert pref.source == "explicit"
 
@@ -280,7 +279,7 @@ class TestSerialization:
 
     def test_to_dict_structure(self):
         model = UserModel()
-        model.record_preference("comm", "lang", "ES", 0.9)
+        model.record_preference("comm", "lang", "EN", 0.9)
         model.record_technical_context("stack", "go")
         model.interaction_count = 5
         data = model.to_dict()
@@ -301,13 +300,13 @@ class TestSerialization:
         pref = UserPreference(
             category="comm",
             key="lang",
-            value="Spanish",
+            value="Plain English",
             confidence=0.8,
             source="inferred",
         )
         assert pref.category == "comm"
         assert pref.key == "lang"
-        assert pref.value == "Spanish"
+        assert pref.value == "Plain English"
         assert pref.confidence == 0.8
         assert pref.source == "inferred"
 
@@ -323,7 +322,7 @@ class TestEngramPersistence:
     def test_save_to_engram_calls_subprocess(self):
         """save_to_engram must invoke the engram binary via subprocess.run."""
         model = UserModel()
-        model.record_preference("communication", "language", "Spanish", 0.9)
+        model.record_preference("communication", "language", "Plain English", 0.9)
 
         mock_proc = MagicMock()
         mock_proc.returncode = 0
@@ -379,7 +378,7 @@ class TestEngramPersistence:
         Simulates the full round-trip: save → (restart) → load.
         """
         original = UserModel()
-        original.record_preference("communication", "language", "Spanish", 0.95)
+        original.record_preference("communication", "language", "Plain English", 0.95)
         original.record_technical_context("stack", "Go")
         original.interaction_count = 7
 
@@ -405,6 +404,6 @@ class TestEngramPersistence:
         assert isinstance(restored, UserModel)
         pref = restored.get_preference("communication", "language")
         assert pref is not None, "Language preference should survive the round-trip"
-        assert pref.value == "Spanish"
+        assert pref.value == "Plain English"
         assert restored.technical_context.get("stack") == "Go"
         assert restored.interaction_count == 7

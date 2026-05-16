@@ -7,7 +7,7 @@ Covers:
   - test_user_model_exception_does_not_block_classify
   - test_empty_string_does_not_crash
   - test_returns_should_capture_false_on_acknowledgment
-  - test_spanish_message_detected
+  - test_task_request_captured
 """
 
 from __future__ import annotations
@@ -73,12 +73,11 @@ class TestProcessUserMessage:
                 f"Expected should_capture=False for acknowledgment '{ack}', got {result}"
             )
 
-    def test_spanish_message_detected(self):
-        """Spanish task request should be classified and should_capture=True."""
-        result = process("construyamos el modulo de autenticacion con JWT")
-        # Spanish task requests should be captured
+    def test_english_task_message_detected(self):
+        """English task request should be classified and should_capture=True."""
+        result = process("build the authentication module with JWT")
         assert result.get("should_capture") is True, (
-            f"Expected should_capture=True for Spanish task, got {result}"
+            f"Expected should_capture=True for English task, got {result}"
         )
 
     def test_result_is_dict(self):

@@ -29,7 +29,7 @@ from typing import Dict, List, Optional
 class UserPreference:
     category: str      # "communication", "technical", "workflow", "explicit"
     key: str           # "language", "verbosity", "framework"
-    value: str         # "Spanish informal", "terse", "Go + acme-http"
+    value: str         # "plain English", "terse", "Go + acme-http"
     confidence: float  # 0.0 to 1.0
     source: str        # "explicit" or "inferred"
 
