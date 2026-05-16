@@ -15,8 +15,8 @@ prerequisites: []
 routing_patterns:
 - pattern: \badd[- ]?hook\b
   confidence: 0.95
-- pattern: \b(add?|a[ñn]adir|crear)\s+(un\s+)?hook\b
-  confidence: 0.8
+- pattern: /add-hook\b
+  confidence: 0.95
 - pattern: \bnew\s+hook\b
   confidence: 0.75
 summary_line: Step-by-step guide for adding a new hook to the Cognitive OS.

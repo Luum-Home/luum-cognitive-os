@@ -15,9 +15,9 @@ prerequisites: []
 routing_patterns:
 - pattern: \badd[- ]?skill\b
   confidence: 0.95
-- pattern: \b(add|add?)\s+(a\s+|un[ao]?\s+)?skill\b
-  confidence: 0.86
-- pattern: \bnuev[ao]?\s+skill\b
+- pattern: /add-skill\b
+  confidence: 0.95
+- pattern: \bnew[- ]?skill\b
   confidence: 0.8
 summary_line: Step-by-step guide for adding a new skill to the Cognitive OS.
 triggers:

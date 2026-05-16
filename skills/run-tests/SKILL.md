@@ -24,7 +24,7 @@ routing_patterns:
   confidence: 0.82
 - pattern: \bauto[- ]?detect\s+(project\s+)?test\s+framework\b
   confidence: 0.9
-- pattern: \b(run|corr[eé]\w*|ejecut[áa]\w*)\s+(the|los|las|all)?\s*test
+- pattern: \brun\s+(the\s+|all\s+)?tests?\b
   confidence: 0.95
 routing_intents:
 - intent: run_project_tests

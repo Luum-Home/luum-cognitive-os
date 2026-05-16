@@ -25,7 +25,7 @@ routing_patterns:
   confidence: 0.95
 - pattern: \b(tombstone|neutraliz\w*)\s+(an?\s+)?ADR\b
   confidence: 0.9
-- pattern: \bADR\s*(gap|hole|hueco|numeraci[oó]n|numbering)\b
+- pattern: \bADR\s*(gap|hole|numbering)\b
   confidence: 0.85
 routing_intents:
 - intent: adr_tombstone_request
