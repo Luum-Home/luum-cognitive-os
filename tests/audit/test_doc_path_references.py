@@ -53,6 +53,36 @@ def test_doc_path_audit_detects_missing_legacy_and_allowed_references(tmp_path: 
 
 
 @pytest.mark.audit
+def test_doc_path_audit_classifies_adr054_project_template_paths(tmp_path: Path) -> None:
+    primitive = tmp_path / ".ai" / "primitives" / "skills" / "rules-export.json"
+    primitive.parent.mkdir(parents=True)
+    primitive.write_text(
+        '{"projection_targets": ["docs/08-standards/rules-snapshot-*.md"]}\n',
+        encoding="utf-8",
+    )
+    skill = tmp_path / "skills" / "rules-export" / "SKILL.md"
+    skill.parent.mkdir(parents=True)
+    skill.write_text(
+        "Writes a snapshot into `<project>/docs/08-standards/`.\n"
+        "Validation: `ls /tmp/project/docs/08-standards/`.\n",
+        encoding="utf-8",
+    )
+
+    payload = cos_doc_path_audit.audit(
+        tmp_path,
+        tracked_files=[
+            ".ai/primitives/skills/rules-export.json",
+            "skills/rules-export/SKILL.md",
+        ],
+    )
+
+    assert payload["counts"]["missing_glob"] == 0
+    assert payload["counts"]["missing_exact"] == 0
+    assert payload["counts"]["project_template"] == 3
+    assert {finding["code"] for finding in payload["findings"]} == {"project-template"}
+
+
+@pytest.mark.audit
 def test_current_repo_doc_path_references_pass_strict_gate() -> None:
     proc = subprocess.run(
         [

@@ -28,6 +28,24 @@ DOC_REF_RE = re.compile(
 TRAILING_CHARS = ".,;:!?)]}\"'"
 GLOB_CHARS = set("*?[")
 
+# ADR-054 project-documentation convention paths. These are output/template
+# paths for adopting projects, not documentation directories that must exist in
+# this repository checkout. Without a separate class, generated primitive
+# metadata such as `.ai/primitives/.../rules-export...json` looks like a broken
+# internal docs link even though it is a valid projection target.
+PROJECT_TEMPLATE_DOC_PREFIXES = {
+    "docs/01-context",
+    "docs/02-architecture",
+    "docs/03-domain-risk",
+    "docs/04-security",
+    "docs/05-features",
+    "docs/06-backoffice",
+    "docs/07-research",
+    "docs/08-standards",
+    "docs/09-execution-plan",
+    "docs/10-summaries",
+}
+
 SURFACE_PREFIXES: list[tuple[str, str]] = [
     ("P0", "hooks/"),
     ("P0", "scripts/"),
@@ -166,6 +184,16 @@ def historical_file_allowed(rel_file: str) -> bool:
     return rel_file.startswith(HISTORICAL_FILE_PREFIXES)
 
 
+def project_template_doc_path(path: str) -> bool:
+    """Return True for ADR-054 adopting-project documentation outputs."""
+    return any(
+        path == prefix
+        or path.startswith(prefix + "/")
+        or path.startswith(prefix + "*")
+        for prefix in PROJECT_TEMPLATE_DOC_PREFIXES
+    )
+
+
 def historical_finding(surface: str, rel_file: str, line_no: int, ref: str, normalized: str, message: str) -> Finding:
     return Finding(
         code="historical-allowed",
@@ -224,6 +252,22 @@ def classify_reference(root: Path, rel_file: str, line_no: int, line: str, previ
     broad_docs_scan = any(ch in first_doc_segment for ch in "*?[") or normalized in {"docs/*", "docs/**", "docs/**/*.md", "docs/*.md"}
     legacy = (not DOC_BUCKET_RE.match(normalized)) and not broad_docs_scan
     target = root / normalized
+
+    if project_template_doc_path(normalized):
+        return Finding(
+            code="project-template",
+            severity="info",
+            surface=surface,
+            file=rel_file,
+            line=line_no,
+            reference=ref,
+            normalized=normalized,
+            message=(
+                "Reference is an ADR-054 adopting-project documentation template/output path, "
+                "not a repository documentation path that must exist in this checkout."
+            ),
+        )
+
     if is_glob_reference(normalized):
         try:
             matches = list(root.glob(normalized))
@@ -362,6 +406,7 @@ def audit(root: Path, tracked_files: Sequence[str] | None = None) -> dict[str, o
         "legacy_reference": sum(1 for f in findings if f.code == "legacy-reference"),
         "legacy_runtime": sum(1 for f in findings if f.code == "legacy-reference" and f.surface in {"P0", "P2"}),
         "historical_allowed": sum(1 for f in findings if f.code == "historical-allowed"),
+        "project_template": sum(1 for f in findings if f.code == "project-template"),
         "ambiguous": sum(1 for f in findings if f.code == "ambiguous"),
     }
     status = "fail" if counts["missing_exact"] or counts["missing_glob"] or counts["legacy_runtime"] else "pass"
