@@ -19,7 +19,7 @@ triggers:
 - what did the OS do
 - what the OS did
 - audit report
-- reporte ejecutivo
+- executive session report
 summary_line: Generate an executive-level session report translating technical metrics
   into…
 platforms:

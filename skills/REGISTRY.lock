@@ -303,7 +303,7 @@ skills:
 - path: skills/session-pending-close/SKILL.md
   sha256: 36840b6583a3ba01322ed15afdccf0e01ebf46286d8da14435d54c4ce60a5aa9
 - path: skills/session-report-executive/SKILL.md
-  sha256: bc4fc5bc099330c7cb04ef9eeb1c1fa2bd1eef035eddb377ed49d5be59c1c63e
+  sha256: 8651f92b8be973ff5c04c4167d0d45d4002ed1f0322bee427f8cc9c0ef2e4c6c
 - path: skills/session-wrapup/SKILL.md
   sha256: b98541d985c4a59bc5f91309cafb6b7c21119dccd35b5027480fe1ff0c9d0270
 - path: skills/simulation-arena/SKILL.md
