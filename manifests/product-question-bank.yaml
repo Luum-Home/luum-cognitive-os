@@ -6,19 +6,15 @@ questions:
   differentiator:
     category: positioning
     aliases:
-    - diferenciador
-    - factor diferenciador
-    - cual es nuestro diferenciador
-    - what is our differentiator
+    - differentiator
+    - differentiating factor
     - what is our differentiator
     - product wedge
     - moat
     keywords:
-    - diferenciador
     - differentiator
     - wedge
     - moat
-    - posicionamiento
     - positioning
     approved_sources:
     - docs/08-References/business/product-messaging.md
@@ -57,16 +53,13 @@ questions:
   non_differentiators:
     category: positioning-boundary
     aliases:
-    - que no es diferenciador
     - what is not a differentiator
     - what is not unique
     - commodity claims
     keywords:
     - commodity
-    - unico
     - unique
     - not unique
-    - no es diferenciador
     - tracing
     approved_sources:
     - docs/08-References/business/feature-reality-audit.md
@@ -91,14 +84,11 @@ questions:
   existing_primitives:
     category: primitive-map
     aliases:
-    - que primitivas existen
     - what primitives exist
     - existing primitives
     - primitives that answer this
     keywords:
-    - primitivas
     - primitives
-    - existente
     - existing
     - answer
     approved_sources:
@@ -131,18 +121,13 @@ questions:
   automation_gap:
     category: automation
     aliases:
-    - que automatizacion falta
     - what automation is missing
     - can this be automated
-    - se puede automatizar
-    - automatizar preguntas comerciales
+    - automate commercial questions
     keywords:
-    - automatizar
     - automate
     - automation
-    - preguntas
     - questions
-    - comercial
     - commercial
     approved_sources:
     - docs/02-Decisions/adrs/ADR-280-product-question-to-evidence-primitive.md
@@ -170,15 +155,15 @@ questions:
     category: messaging
     aliases:
     - landing pitch
-    - frase landing
-    - pitch comercial
+    - landing phrase
+    - commercial pitch
     - tagline
     keywords:
     - landing
     - pitch
     - tagline
     - slogan
-    - frase
+    - phrase
     approved_sources:
     - docs/08-References/business/product-messaging.md
     - docs/08-References/business/value-proposition.md
@@ -201,15 +186,13 @@ questions:
     aliases:
     - icp
     - buyer
-    - comprador
-    - cliente ideal
+    - ideal customer
     - vp eng
     - head of platform
     keywords:
     - icp
     - buyer
-    - comprador
-    - cliente
+    - customer
     - vp eng
     - platform
     - go-to-market
@@ -238,14 +221,14 @@ questions:
     category: go-to-market
     aliases:
     - pricing
-    - precio
-    - precios
+    - price
+    - prices
     - packaging
     - tiers
     keywords:
     - pricing
-    - precio
-    - precios
+    - price
+    - prices
     - packaging
     - tier
     - cloud
@@ -324,13 +307,10 @@ questions:
     category: adoption-boundary
     aliases:
     - vanilla
-    - configuracion vanilla
-    - configuración vanilla
-    - cuando uso vanilla
-    - cuándo uso vanilla
-    - cuando no uso cognitive os
-    - cuándo no uso cognitive os
-    - cuando uso claude code sin cos
+    - vanilla configuration
+    - when to use vanilla
+    - when not to use cognitive os
+    - when to use claude code without cos
     - when should i use vanilla
     - when not to use cognitive os
     keywords:
@@ -363,14 +343,14 @@ questions:
   runtime_surfaces:
     category: product-surface
     aliases:
-    - tiene cli
-    - tiene ui
-    - tiene dashboard
-    - puede correr como servicio
-    - puede correr headless
-    - corre fuera del ide
-    - aothers del ide
-    - ademas del ide
+    - has cli
+    - has ui
+    - has dashboard
+    - can run as a service
+    - can run headless
+    - runs outside the ide
+    - outside the ide
+    - beyond the ide
     - service mode
     - headless service
     - cosd
@@ -379,7 +359,6 @@ questions:
     - cli
     - ui
     - dashboard
-    - servicio
     - service
     - headless
     - cosd
@@ -413,15 +392,14 @@ questions:
   alternatives_choice:
     category: competitive-choice
     aliases:
-    - por que no uso hermes
     - why not use hermes
-    - por que no agent zero
+    - why not use agent zero
     - why not agent zero
-    - por que no openclaw
+    - why not use openclaw
     - why not openclaw
-    - hermes en su lugar
-    - agent zero en su lugar
-    - openclaw en su lugar
+    - use hermes instead
+    - use agent zero instead
+    - use openclaw instead
     - why not hermes
     - why not agent zero
     - why not openclaw
@@ -431,7 +409,7 @@ questions:
     - openclaw
     - alternative
     - alternatives
-    - en su lugar
+    - instead
     approved_sources:
     - docs/08-References/root/vs-alternatives.md
     - docs/04-Concepts/root/component-sources.md
@@ -463,24 +441,20 @@ questions:
   ssr_primitive_enablement:
     category: developer-enablement
     aliases:
-    - dev ssr primitivas
+    - dev ssr primitives
     - SSR developer primitives
-    - me ayuda como dev ssr
-    - arquitectura gobernanza agentes primitivas
+    - helps me as an ssr developer
+    - architecture governance agents primitives
     - create primitives as a developer
-    - mejorar primitivas desde chat
-    - agent zero openclaw hermes primitivas
+    - improve primitives from chat
+    - agent zero openclaw hermes primitives
     - how the OS handles primitives
-    - como maneja primitivas el so
+    - how the os handles primitives
     keywords:
     - ssr
     - developer
-    - developer
-    - primitivas
     - primitives
-    - gobernanza
     - governance
-    - arquitectura
     - architecture
     - agent zero
     - openclaw
@@ -535,7 +509,7 @@ questions:
     - what does this OS do
     - what is cognitive os
     - what is this for
-    - para que sirve
+    - what is it for
     - what it is for
     - what the OS does
     - wat doet dit OS
@@ -543,8 +517,8 @@ questions:
     keywords:
     - what does
     - what is
-    - para que
-    - sirve
+    - what for
+    - useful
     approved_sources:
     - AGENTS.md
     - docs/04-Concepts/architecture/agentic-kernel-philosophy.md
@@ -572,16 +546,16 @@ questions:
     - can a junior use this
     - does it help someone who doesn't know best practices
     - useful for someone without experience
-    - puede ayudar a un dev sin conocimiento
-    - utile pour un developpeur sans experience
-    - nutzlich fur einen entwickler ohne erfahrung
+    - can help a developer without prior knowledge
+    - useful for a developer without experience
+    - useful for a developer without prior knowledge
     keywords:
     - junior
     - beginner
     - no experience
-    - sin experiencia
+    - no prior experience
     - without knowledge
-    - gaps de conocimiento
+    - knowledge gaps
     approved_sources:
     - skills/security-red-team/SKILL.md
     - skills/run-tests/SKILL.md
@@ -651,22 +625,18 @@ questions:
   architecture_map:
     category: architecture-positioning
     aliases:
-    - mapa del SO
-    - mapa reducido del SO
-    - mapa de arquitectura
-    - arquitectura comercial
+    - os map
+    - reduced os map
+    - architecture map
     - commercial architecture
     - architecture map
     - agent OS map
     - cognitive os map
-    - explicame la arquitectura del SO
+    - explain the os architecture
     - how to explain Cognitive OS
     keywords:
-    - arquitectura
     - architecture
-    - mapa
     - map
-    - comercial
     - commercial
     - SO
     - OS
@@ -696,15 +666,15 @@ questions:
       graph TD
         A["Engineering team"] --> B["Coding agents"]
 
-        B --> C["Cognitive OS<br/>Capa de gobernanza y evidencia"]
+        B --> C["Cognitive OS<br/>Governance and evidence layer"]
 
-        C --> D["Guardrails en tiempo real<br/>Previenen acciones riesgosas"]
-        C --> E["Políticas operativas<br/>Alinean comportamiento del agente"]
-        C --> F["Playbooks reutilizables<br/>Guían tareas complejas"]
-        C --> G["Memoria persistente<br/>Conserva decisiones y aprendizajes"]
+        C --> D["Real-time guardrails<br/>Prevent risky actions"]
+        C --> E["Operating policies<br/>Align agent behavior"]
+        C --> F["Reusable playbooks<br/>Guide complex tasks"]
+        C --> G["Persistent memory<br/>Preserves decisions and learnings"]
         C --> H["Auditable evidence<br/>Records what happened and what was verified"]
 
-        D --> I["Confianza operativa"]
+        D --> I["Operational trust"]
         E --> I
         F --> I
         G --> I
@@ -713,11 +683,11 @@ questions:
         I --> J["Result<br/>Safer, verifiable, scalable agents"]
 
         C --> K["Adapters<br/>Projects onto existing tools"]
-        C --> L["Superficie de servicio<br/>Para UI, automatización y operación externa"]
+        C --> L["Service surface<br/>For UI, automation, and external operations"]
       ```
 
       The important commercial move is to describe stable value categories, not
-      volatile implementation details. As the SO grows, update the evidence and
+      volatile implementation details. As the OS grows, update the evidence and
       maturity behind each category; keep the public map focused on the value
       chain from opaque agent work to governed, auditable operation.
     recommended_pitch: Cognitive OS turns fast but opaque coding agents into a governed, evidence-backed engineering operation.
@@ -737,16 +707,16 @@ questions:
     - how much code does it have
     - how big is the codebase
     - how many commits
-    - cuanto codigo tiene
+    - how much code does it contain
     - how much code it has
-    - wie viel code hat es
-    - combien de code
+    - code volume
+    - code size
     keywords:
     - lines of code
     - commits
     - codebase size
     - how big
-    - cuanto codigo
+    - code amount
     approved_sources:
     - AGENTS.md
     - docs/00-MOCs/entrypoints/README.md
@@ -784,17 +754,17 @@ questions:
     - how to use this
     - getting started
     - first steps
-    - como empiezo
     - how do I start
-    - comment commencer
-    - wie fange ich an
+    - how do I get started
+    - how to begin
+    - how to start using it
     keywords:
     - start
     - install
     - getting started
     - onboarding
     - first steps
-    - empezar
+    - begin
     approved_sources:
     - AGENTS.md
     - skills/cognitive-os-init/SKILL.md

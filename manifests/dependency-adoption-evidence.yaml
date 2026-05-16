@@ -89,3 +89,66 @@ adoptions:
     rationale: Fast static Python type/API-shape checker for agentic loops; COS owns advisory/enforcement policy and receipts while Pyrefly supplies commodity type analysis.
     audit_link: docs/06-Daily/reports/external-tools-radar-pyrefly-addendum-2026-05-15.md
 
+  - package: lingua-language-detector
+    version_constraint: ">=2.0"
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: Apache-2.0
+    integration_pattern: scripts/english_only_content_audit.py uses lazy paragraph-level language detection for Markdown, YAML, JSON, and other prose files.
+    rationale: Static keyword scanning missed mixed-language repository prose; lingua provides deterministic local language detection without network calls.
+    audit_link: tests/unit/test_english_only_content_audit.py
+  - package: tree-sitter
+    version_constraint: ">=0.23"
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: MIT
+    integration_pattern: scripts/english_only_content_audit.py parses source files so comments and string literals can be checked without treating identifiers as prose.
+    rationale: Source-aware scanning avoids both missed non-English comments and false positives from identifier names.
+    audit_link: tests/unit/test_english_only_content_audit.py
+  - package: tree-sitter-python
+    version_constraint: any compatible release
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: MIT
+    integration_pattern: Python grammar for scripts/english_only_content_audit.py source extraction.
+    rationale: Required for Python comment/string scanning in the English-only audit.
+    audit_link: tests/unit/test_english_only_content_audit.py
+  - package: tree-sitter-typescript
+    version_constraint: any compatible release
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: MIT
+    integration_pattern: TypeScript and TSX grammars for scripts/english_only_content_audit.py source extraction.
+    rationale: Required for TypeScript/TSX comment/string scanning in the English-only audit.
+    audit_link: tests/unit/test_english_only_content_audit.py
+  - package: tree-sitter-javascript
+    version_constraint: any compatible release
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: MIT
+    integration_pattern: JavaScript and JSX grammar for scripts/english_only_content_audit.py source extraction.
+    rationale: Required for JavaScript/JSX comment/string scanning in the English-only audit.
+    audit_link: tests/unit/test_english_only_content_audit.py
+  - package: tree-sitter-go
+    version_constraint: any compatible release
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: MIT
+    integration_pattern: Go grammar for scripts/english_only_content_audit.py source extraction.
+    rationale: Required for Go comment/string scanning in the English-only audit.
+    audit_link: tests/unit/test_english_only_content_audit.py
+  - package: tree-sitter-bash
+    version_constraint: any compatible release
+    consumer: pyproject.toml ([audit] extra)
+    owner_adr: English-only repository policy
+    due_diligence_id: english-only-content-audit-v2
+    license: MIT
+    integration_pattern: Bash grammar for scripts/english_only_content_audit.py source extraction.
+    rationale: Required for shell hook comment/string scanning in the English-only audit.
+    audit_link: tests/unit/test_english_only_content_audit.py
