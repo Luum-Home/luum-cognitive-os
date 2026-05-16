@@ -29,6 +29,11 @@ triggers:
 - Canonical Event Emitter — Reference Contract Skill
 - Reference contract skill — emits deterministic canonical event sequence for harness
   parity verification
+routing_intents:
+  - "implement a canonical event emitter contract"
+  - "review harness agnostic event emission requirements"
+  - "validate event payload contract for skills"
+  - "standardize canonical event emission behavior across harness adapters"
 ---
 <!-- SCOPE: os-only -->
 <!-- TIER: 0 -->

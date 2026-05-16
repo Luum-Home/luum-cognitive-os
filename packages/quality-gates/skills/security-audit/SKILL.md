@@ -29,6 +29,17 @@ routing:
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "run a comprehensive Cognitive OS security audit"
+- "audit secrets hooks permissions and configuration"
+- "report security findings with severity levels"
+- "check infrastructure and permission risks in OS configuration"
+- "produce a security audit report for the OS"
+- "audit this codebase for security vulnerabilities"
+- "audit code for security vulnerabilities in this codebase"
+- "security vulnerability audit for this codebase"
+- "scan codebase for security vulnerabilities before release"
+
 triggers:
 - security-audit
 - /security-audit

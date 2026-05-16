@@ -27,6 +27,13 @@ summary_line: Automatically resolve blockers reported by readiness-check.
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "resolve blockers from a failed readiness check"
+- "fix failed readiness gate findings before implementation"
+- "dispatch agents to clear implementation blockers"
+- "re-run readiness checks after blocker fixes"
+- "escalate unresolved SDD blockers with diagnosis evidence"
+
 triggers:
 - resolve-blockers
 - /resolve-blockers

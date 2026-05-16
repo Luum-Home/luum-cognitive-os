@@ -17,6 +17,12 @@ summary_line: Lightweight 4-question post-implementation checklist for non-SDD w
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- review my implementation before marking it done
+- run a self review checklist on this change
+- check whether this task is actually complete
+- verify my work before I claim completion
+- do a lightweight post implementation review
 triggers:
 - self-review
 - /self-review

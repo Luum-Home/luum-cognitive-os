@@ -2,6 +2,12 @@
 name: auto-rollback
 description: Prepare a human-approved rollback plan when SDD verify-apply exceeds
   max retries
+routing_intents:
+- prepare a rollback plan after failed verification
+- create rollback evidence for a broken change
+- build a human approved rollback package
+- plan how to revert after repeated apply failures
+- document rollback steps for a failed SDD loop
 triggers:
 - /auto-rollback
 - Verify-apply loop exceeded 3 retries

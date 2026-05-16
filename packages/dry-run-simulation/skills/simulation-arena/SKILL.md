@@ -8,6 +8,13 @@ version: 1.0.0
 last-updated: 2026-03-27
 auto-generated: false
 tech: python
+routing_intents:
+- "run an end-to-end agent workflow simulation"
+- "simulate a Cognitive OS safety mesh scenario"
+- "regression test hooks rules and skills with a simulation"
+- "measure OS evolution with scripted scenarios"
+- "validate agent workflow behavior in the arena"
+
 triggers:
 - simulation
 - arena

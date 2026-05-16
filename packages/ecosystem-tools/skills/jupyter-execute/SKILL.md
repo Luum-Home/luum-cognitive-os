@@ -26,6 +26,11 @@ triggers:
 - /jupyter-execute
 - Jupyter Execute — Sandboxed Code Execution
 - Execute code in a Jupyter kernel sandbox for data analysis, Python snippets…
+routing_intents:
+  - "run Python code in a Jupyter kernel"
+  - "execute notebook style data analysis in an isolated kernel"
+  - "test a Python snippet in Jupyter"
+  - "use a Jupyter sandbox for calculations"
 ---
 <!-- SCOPE: both -->
 # Jupyter Execute — Sandboxed Code Execution

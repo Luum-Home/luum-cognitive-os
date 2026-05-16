@@ -9,6 +9,12 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- discover open source tools for this capability
+- find new developer tools to evaluate
+- scan the ecosystem for useful agent tooling
+- research tools that could improve Cognitive OS
+- build a tool radar for open source options
 triggers:
 - tool-discovery
 - /tool-discovery

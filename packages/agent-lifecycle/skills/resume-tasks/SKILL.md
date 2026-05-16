@@ -11,6 +11,12 @@ summary_line: Check for incomplete tasks from previous sessions and offer to res
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- resume incomplete work from the previous session
+- check for unfinished tasks after a crash
+- recover pending tasks from prior session state
+- continue the tasks that were left open
+- find previous work that still needs completion
 triggers:
 - resume-tasks
 - /resume-tasks

@@ -21,6 +21,11 @@ triggers:
 - contract-drift
 - /contract-drift
 - Detect drift between HTTP calls in source code and OpenAPI/Swagger contract…
+routing_intents:
+  - "detect API contract drift between code and specifications"
+  - "compare source HTTP calls to OpenAPI specs"
+  - "audit endpoints against Swagger contracts for mismatches"
+  - "find mismatches between code and API schema"
 ---
 <!-- SCOPE: both -->
 ## Purpose

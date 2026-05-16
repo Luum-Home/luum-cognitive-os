@@ -22,6 +22,11 @@ triggers:
 - /evaluate-plan
 - Evaluate Plan
 - Evaluate any existing plan file with a 0-50 scoring system
+routing_intents:
+  - "score an implementation plan against quality criteria"
+  - "evaluate a plan before applying it"
+  - "identify risks in a proposed plan"
+  - "recommend improvements to a plan file"
 ---
 <!-- SCOPE: both -->
 # Evaluate Plan

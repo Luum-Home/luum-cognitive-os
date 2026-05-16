@@ -31,6 +31,11 @@ triggers:
 - /ragas-integration
 - Configure evaluation LLM
 - Configure and use RAGAS for memory quality testing, retrieval evaluation, and…
+routing_intents:
+  - "evaluate RAG retrieval quality with RAGAS"
+  - "configure RAGAS for memory retrieval quality testing"
+  - "score answer faithfulness using RAGAS evaluation metrics"
+  - "measure retrieval context precision with RAGAS datasets"
 ---
 <!-- SCOPE: both -->
 ## Purpose

@@ -27,6 +27,7 @@ routing_patterns:
 - pattern: \brun\s+(the\s+|all\s+)?tests?\b
   confidence: 0.95
 routing_intents:
+- run the tests
 - intent: run_project_tests
   description: User asks to run, execute, detect, or report the project's test suite
     or test framework.
@@ -36,6 +37,17 @@ routing_intents:
     that the project test suite passes, without smoke-test or end-to-end system
     validation qualifiers.
   confidence: 0.9
+- intent: execute_project_test_suite
+  description: User asks to execute the project test suite now, run all tests, run
+    unit tests, or report test failures from the configured test framework.
+  confidence: 0.93
+- intent: run_tests_without_tdd_or_smoke_scope
+  description: User wants test execution only, not test-driven development planning,
+    not smoke validation, and not compatibility testing.
+  confidence: 0.93
+- execute tests now for the configured project test suite
+- run the project's tests and report pass or fail results
+- execute unit tests without creating new test cases
 ---
 <!-- SCOPE: both -->
 # /run-tests

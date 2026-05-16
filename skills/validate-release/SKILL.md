@@ -4,6 +4,12 @@ command: /validate-release
 description: 'Use when you need this Cognitive OS skill: Pre-release readiness check
   — validates working tree, branch, changelog, and VERSION file; do not use when a
   narrower skill directly matches the task.'
+routing_intents:
+  - "Check release readiness before tagging a Cognitive OS version"
+  - "Validate working tree branch VERSION and CHANGELOG before release"
+  - "Run the pre-release checklist and report blocking release issues"
+  - "Confirm release metadata is consistent before creating a tag"
+  - "Inspect dependency freshness and repository state for release approval"
 version: 0.1.0
 audience: os
 tags:
@@ -22,6 +28,7 @@ triggers:
 - /validate-release
 - Validate Release
 - Pre-release readiness check — validates working tree, branch, changelog, and…
+
 ---
 <!-- SCOPE: os-only -->
 # Validate Release

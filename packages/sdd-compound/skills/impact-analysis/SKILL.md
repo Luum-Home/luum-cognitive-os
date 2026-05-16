@@ -1,16 +1,19 @@
 ---
 name: impact-analysis
-description: 'Analyze change impact: imports, tests, configs, services, and SDD artifacts
-  affected'
+description: 'Analyze downstream blast radius: imports, tests, configs, services, and SDD artifacts affected'
 triggers:
 - /impact-analysis
 audience: project
-summary_line: '"Analyze change impact: imports, tests, configs, services, and SDD
-  artifacts…'
+summary_line: '"Analyze downstream blast radius: imports, tests, configs, services, and SDD artifacts…'
 version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+  - "analyze downstream blast radius of a proposed modification"
+  - "map tests affected by a proposed implementation modification"
+  - "inspect imports and configs for blast radius"
+  - "estimate downstream blast radius before editing connected files"
 ---
 <!-- SCOPE: both -->
 # /impact-analysis

@@ -14,6 +14,11 @@ triggers:
 - /repair-status
 - Repair Status
 - Report on auto-repair system health and statistics
+routing_intents:
+  - "report auto repair system health with recent metrics"
+  - "summarize recent repair attempts and remaining failures"
+  - "inspect SRE repair statistics for service reliability trends"
+  - "check whether auto repair is working"
 ---
 <!-- SCOPE: both -->
 # Repair Status

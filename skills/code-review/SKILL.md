@@ -36,6 +36,32 @@ routing_intents:
     quality issues, unsafe patterns, or missing tests; not a request to synchronize
     documentation.
   confidence: 0.9
+- intent: adversarial_code_review
+  description: User asks for an adversarial review of recent code changes, pull
+    request diffs, implementation quality, or merge readiness with concrete findings.
+  confidence: 0.9
+- intent: inspect_changed_files_for_bugs
+  description: User wants changed source files inspected for defects, regressions,
+    unsafe patterns, missing tests, or convention violations before accepting work.
+  confidence: 0.9
+- intent: review_changes_before_merge
+  description: User asks to perform a code review of recent changes, changed files,
+    or implementation diffs before merge or acceptance.
+  confidence: 0.92
+- intent: code_review_changed_implementation
+  description: User wants changed implementation reviewed for correctness, bugs,
+    maintainability, test coverage, security, and repository conventions.
+  confidence: 0.92
+- intent: code_review_the_changes
+  description: User says code review the changes, review my changes, review this
+    diff, inspect changed code, or check changed files for review findings.
+  confidence: 0.94
+- intent: code_quality_reuse_review
+  description: User asks for a code review focused on quality, reuse, changed code,
+    implementation maintainability, and concrete review findings.
+  confidence: 0.93
+- "code review focused on quality and reuse"
+- "code quality and reuse review for changed implementation"
 triggers:
 - code-review
 - /code-review

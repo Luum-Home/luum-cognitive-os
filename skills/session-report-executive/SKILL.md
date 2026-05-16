@@ -4,6 +4,12 @@ description: 'Use when you need this Cognitive OS skill: Generate an executive-l
   session report translating technical metrics into business language. For non-technical
   leaders who need to know what the Cognitive OS did during a session.; do not use
   when a narrower skill directly matches the task.'
+routing_intents:
+  - "Generate an executive summary of what happened during the agent session"
+  - "Translate session metrics into business-readable outcomes and risks"
+  - "Produce a leadership report covering cost trust errors and accomplishments"
+  - "Summarize Cognitive OS session activity for non-technical stakeholders"
+  - "Prepare an audit-style session report with decisions and next steps"
 user-invocable: true
 version: 0.1.0
 last-updated: 2026-04-09
@@ -32,6 +38,7 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bbusiness\s+language\s+report\b
   confidence: 0.75
+
 ---
 <!-- SCOPE: both -->
 # Session Report — Executive View

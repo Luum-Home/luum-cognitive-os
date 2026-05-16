@@ -20,6 +20,11 @@ triggers:
 - /self-improve
 - Self-Improve Skill (META)
 - META skill — orchestrates analyze-improvements → (human reviews) →…
+routing_intents:
+  - "orchestrate self improvement workflow with human review gates"
+  - "analyze and apply improvement proposals for Cognitive OS"
+  - "coordinate human reviewed skill upgrades after analysis"
+  - "run the Cognitive OS self improvement loop"
 ---
 <!-- SCOPE: os-only -->
 # Self-Improve Skill (META)

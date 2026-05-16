@@ -30,6 +30,11 @@ triggers:
 - /deepeval-integration
 - Set your LLM provider for evaluation. Prefer a non-Anthropic provider unless
 - Configure and use DeepEval for LLM unit testing, agent trajectory evaluation…
+routing_intents:
+  - "configure DeepEval for LLM evaluation in this repository"
+  - "write DeepEval tests for agent outputs"
+  - "run DeepEval trajectory evaluation for agent behavior traces"
+  - "measure prompt quality with DeepEval regression checks"
 ---
 <!-- SCOPE: both -->
 ## Purpose

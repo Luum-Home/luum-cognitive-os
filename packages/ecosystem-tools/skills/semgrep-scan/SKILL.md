@@ -21,6 +21,12 @@ summary_line: Run Semgrep SAST security scanning on a path or changed files.
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- run semgrep security scan on changed files
+- scan this path with Semgrep rules
+- perform SAST analysis with Semgrep security rules
+- check code for security findings using Semgrep
+- run static analysis security review on changed source files
 triggers:
 - semgrep-scan
 - /semgrep-scan

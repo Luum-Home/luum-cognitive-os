@@ -17,6 +17,12 @@ summary_line: Create persistent agents that maintain their own state across sess
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- create a persistent agent profile with durable task state
+- set up an agent with long term state
+- generate a stateful agent skill directory
+- create an agent that remembers prior sessions
+- initialize a persistent autonomous agent for long running work
 triggers:
 - persistent-agent
 - /persistent-agent

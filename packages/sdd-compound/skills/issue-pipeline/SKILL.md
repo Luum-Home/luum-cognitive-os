@@ -16,6 +16,11 @@ triggers:
 - /issue-pipeline
 - Issue-to-PR Pipeline
 - Fetch a GitHub issue, run the SDD pipeline, and open a pull request
+routing_intents:
+  - "turn a GitHub issue into an SDD pipeline"
+  - "implement an issue through SDD stages"
+  - "open a pull request from an issue workflow"
+  - "process issue requirements into code changes"
 ---
 <!-- SCOPE: both -->
 # Issue-to-PR Pipeline

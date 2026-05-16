@@ -11,6 +11,12 @@ summary_line: Scan all services for env var usage, cross-reference with definiti
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- audit environment variable usage across services
+- find missing secret definitions across environment templates
+- cross check env vars against configured secrets
+- scan for secret configuration gaps before deployment
+- report inconsistent environment variable references across services
 triggers:
 - secret-audit
 - /secret-audit

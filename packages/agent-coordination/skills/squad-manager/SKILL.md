@@ -15,6 +15,12 @@ routing_patterns:
   confidence: 0.85
 - pattern: \breconfigur\w+\s+squad\b
   confidence: 0.75
+routing_intents:
+- evaluate current squad performance across active agent assignments
+- recommend squad reconfiguration options from workload evidence
+- generate a squad status report for active coordination work
+- analyze which agents should be reassigned
+- review squad composition and workload balance
 triggers:
 - squad-manager
 - /squad-manager

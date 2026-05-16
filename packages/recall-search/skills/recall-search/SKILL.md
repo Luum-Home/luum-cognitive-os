@@ -24,6 +24,11 @@ triggers:
 - /recall-search
 - Recall Search
 - '"Search past Claude Code conversations using full-text search'
+routing_intents:
+  - "search past Claude Code conversations by task topic"
+  - "find previous discussion by keyword in session history"
+  - "recover historical task context for current repository work"
+  - "look up old session notes before making decisions"
 ---
 <!-- SCOPE: both -->
 # Recall Search

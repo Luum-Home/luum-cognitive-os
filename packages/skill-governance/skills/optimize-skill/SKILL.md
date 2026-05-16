@@ -16,6 +16,11 @@ triggers:
 - /optimize-skill
 - /optimize-skill — Karpathy Loop for Claude Code Skills
 - iteratively optimize a Claude Code skill with evaluations
+routing_intents:
+  - "optimize a skill with evaluations and measured scores"
+  - "refine skill instructions using score feedback"
+  - "measure prompt changes for a skill"
+  - "improve a Claude Code skill iteratively"
 ---
 <!-- SCOPE: both -->
 # /optimize-skill — Karpathy Loop for Claude Code Skills

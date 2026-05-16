@@ -21,6 +21,11 @@ triggers:
 - /memu-context
 - memU Context Loader
 - Query memU proactive memory for relevant context before starting work
+routing_intents:
+  - "query memU for relevant context before starting work"
+  - "load proactive memory before work on a repository task"
+  - "retrieve memU project background for implementation context"
+  - "use memU context for task preparation"
 ---
 <!-- SCOPE: both -->
 # memU Context Loader

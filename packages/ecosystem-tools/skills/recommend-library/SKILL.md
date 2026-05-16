@@ -9,6 +9,12 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- recommend a library for this use case
+- compare package options before adding a dependency
+- find maintained libraries with safe licenses
+- rank open source packages for this feature
+- choose the best dependency for this problem
 triggers:
 - recommend-library
 - /recommend-library

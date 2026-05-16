@@ -17,6 +17,11 @@ triggers:
 - /sre-agent
 - SRE Auto-Repair Agent
 - SRE auto-repair agent
+routing_intents:
+  - "launch SRE auto repair monitoring for project services"
+  - "diagnose service errors automatically using repair runbooks"
+  - "repair failing project services through SRE automation"
+  - "monitor runtime health and recover failures"
 ---
 <!-- SCOPE: both -->
 # SRE Auto-Repair Agent

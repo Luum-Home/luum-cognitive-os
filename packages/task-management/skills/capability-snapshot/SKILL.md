@@ -11,6 +11,11 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+  - "snapshot Cognitive OS capabilities for regression detection"
+  - "diff capability state across repository versions"
+  - "restore a previous capability snapshot after regression"
+  - "detect feature drift in the OS"
 ---
 <!-- SCOPE: both -->
 # /capability-snapshot

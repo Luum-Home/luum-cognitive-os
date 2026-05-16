@@ -15,6 +15,11 @@ triggers:
 - /private-mode
 - Private Mode
 - Toggle private conversation mode
+routing_intents:
+  - "enable private conversation mode for sensitive repository work"
+  - "disable memory capture for sensitive work"
+  - "turn off persistent session logging for confidential tasks"
+  - "work without saving conversation context to memory systems"
 ---
 <!-- SCOPE: both -->
 # Private Mode

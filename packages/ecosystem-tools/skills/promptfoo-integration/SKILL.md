@@ -31,6 +31,11 @@ triggers:
 - /promptfoo-integration
 - Initialize config
 - Configure Promptfoo for prompt regression testing and red teaming of skills in…
+routing_intents:
+  - "configure Promptfoo regression tests for prompt behavior changes"
+  - "run prompt evaluations with Promptfoo against saved cases"
+  - "red team prompts using Promptfoo adversarial scenarios"
+  - "compare prompt variants in Promptfoo before adopting changes"
 ---
 <!-- SCOPE: both -->
 ## Purpose

@@ -6,6 +6,12 @@ description: 'Use when you need this Cognitive OS skill: Unified red-team primit
   for Cognitive OS: inventories attack surface, models threats, runs deterministic
   abuse probes, scores security controls per primitive, and emits a mitigation backlog.;
   do not use when a narrower skill directly matches the task.'
+routing_intents:
+  - "Run a Cognitive OS security red-team review across agentic primitives"
+  - "Inventory attack surfaces and abuse cases for hooks rules and skills"
+  - "Probe security controls and produce a mitigation backlog"
+  - "Assess prompt injection data exfiltration and unsafe tool execution risks"
+  - "Score security posture for the operating system before release"
 triggers:
 - /security-red-team
 - /security-redteam
@@ -27,6 +33,7 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bred[- ]?team\s+security\b
   confidence: 0.85
+
 ---
 <!-- SCOPE: os-only -->
 # /security-red-team

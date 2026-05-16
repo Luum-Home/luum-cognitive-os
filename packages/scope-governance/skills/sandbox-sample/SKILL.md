@@ -24,6 +24,11 @@ triggers:
 - /sandbox-sample
 - Sandbox Sampling
 - Classify, sample, sandbox-verify, then scale changes across large file sets
+routing_intents:
+  - "sample files before scaling a change"
+  - "sandbox verify a broad refactor pattern"
+  - "classify targets for bulk edits before applying changes"
+  - "prove a change on examples before rollout"
 ---
 <!-- SCOPE: both -->
 # Sandbox Sampling

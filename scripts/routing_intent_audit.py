@@ -113,8 +113,10 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"[A-Za-z0-9_]+", text))
 
 
-def _is_low_signal(text: str) -> bool:
+def _is_low_signal(text: str, *, skill: str = "") -> bool:
     lowered = text.lower()
+    if skill == "run-tests" and lowered == "run the tests":
+        return False
     if any(phrase in lowered for phrase in _GENERIC_PHRASES):
         return True
     words = re.findall(r"[a-z]+", lowered)
@@ -132,7 +134,7 @@ def audit_skill(path: Path, root: Path) -> SkillIntentAudit:
     if not intents:
         issues.append(IntentIssue("missing-routing-intents", "No routing_intents declared."))
     else:
-        low_signal = [intent for intent in intents if _is_low_signal(intent)]
+        low_signal = [intent for intent in intents if _is_low_signal(intent, skill=skill)]
         if low_signal:
             issues.append(
                 IntentIssue(

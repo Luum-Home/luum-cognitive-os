@@ -16,6 +16,13 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "check definition of done for a completed task"
+- "verify task completion criteria before declaring work finished"
+- "run a done check before claiming completion"
+- "assess whether implementation work is finished"
+- "report missing items against the definition of done"
+
 triggers:
 - dod-check
 - /dod-check

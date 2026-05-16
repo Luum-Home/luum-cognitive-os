@@ -22,6 +22,13 @@ routing_patterns:
   confidence: 0.95
 - pattern: \baudit\s+harness\b
   confidence: 0.85
+routing_intents:
+- "audit harness agentic primitives for relevance"
+- "review hooks rules and skills for simplification"
+- "identify obsolete harness primitives for possible removal"
+- "evaluate whether OS primitives should be retired"
+- "assess harness complexity as models improve"
+
 triggers:
 - harness-audit
 - /harness-audit

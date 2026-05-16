@@ -12,6 +12,13 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "audit trust scores across agents for risky work"
+- "analyze agent task trust patterns from completion evidence"
+- "identify low trust work that needs review"
+- "generate a trust audit report with review recommendations"
+- "recommend reviews based on trust metrics"
+
 triggers:
 - trust-audit
 - /trust-audit

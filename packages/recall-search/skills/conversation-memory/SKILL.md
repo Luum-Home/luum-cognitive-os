@@ -15,6 +15,11 @@ triggers:
 - /conversation-memory
 - Conversation Memory
 - Search and learn from past Cognitive OS sessions — the system's long-term memory
+routing_intents:
+  - "search long term conversation memory for prior decisions"
+  - "recall previous Cognitive OS sessions relevant to the task"
+  - "learn from past agent work before changing code"
+  - "retrieve remembered project decisions before architecture changes"
 ---
 <!-- SCOPE: both -->
 # Conversation Memory

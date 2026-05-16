@@ -23,6 +23,11 @@ triggers:
 - /deep-research
 - 'Research Report: {topic}'
 - Multi-hop research skill for deep investigation of topics
+routing_intents:
+  - "perform multi hop technical research with cited evidence"
+  - "investigate a complex topic deeply before design decisions"
+  - "synthesize research from multiple sources into findings"
+  - "run an evidence grounded research workflow"
 ---
 <!-- SCOPE: both -->
 ## Purpose

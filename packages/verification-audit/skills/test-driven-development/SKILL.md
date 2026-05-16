@@ -10,6 +10,13 @@ audience: project
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "write a failing specification before implementation"
+- "use red green refactor development for a feature"
+- "implement a bugfix with red green refactor"
+- "define expected behavior before changing production code"
+- "apply red green refactor discipline to a coding task"
+
 triggers:
 - test-driven-development
 - /test-driven-development
