@@ -20,6 +20,8 @@ class GateThresholds:
     min_precision_at_1: float = 0.80
     min_precision_at_5: float = 0.90
     max_failures: int = 0
+    min_top_2_margin: float = 0.0
+    max_low_margin_hits: int | None = None
     allow_top1_misses: bool = True
 
 
@@ -67,6 +69,8 @@ def evaluate_report(report: dict[str, Any], thresholds: GateThresholds) -> GateR
         p1 = float(model.get("precision_at_1") or 0.0)
         p5 = float(model.get("precision_at_5") or 0.0)
         misses = model.get("top1_misses") or []
+        min_margin = float(model.get("min_top_2_margin") or 0.0)
+        low_margin_hits = int(model.get("low_margin_hit_count") or len(model.get("low_margin_hits") or []))
         if failures > thresholds.max_failures:
             ok = False
             messages.append(f"{model_id}: failures {failures} > {thresholds.max_failures}")
@@ -80,11 +84,26 @@ def evaluate_report(report: dict[str, Any], thresholds: GateThresholds) -> GateR
             messages.append(
                 f"{model_id}: precision_at_5 {p5:.3f} < {thresholds.min_precision_at_5:.3f}"
             )
+        if min_margin < thresholds.min_top_2_margin:
+            ok = False
+            messages.append(
+                f"{model_id}: min_top_2_margin {min_margin:.4f} < {thresholds.min_top_2_margin:.4f}"
+            )
+        if (
+            thresholds.max_low_margin_hits is not None
+            and low_margin_hits > thresholds.max_low_margin_hits
+        ):
+            ok = False
+            messages.append(
+                f"{model_id}: low_margin_hit_count {low_margin_hits} > {thresholds.max_low_margin_hits}"
+            )
         if misses and not thresholds.allow_top1_misses:
             ok = False
             messages.append(f"{model_id}: top1_misses present ({len(misses)})")
         messages.append(
-            f"{model_id}: p1={p1:.3f} p5={p5:.3f} failures={failures} top1_misses={len(misses)}"
+            f"{model_id}: p1={p1:.3f} p5={p5:.3f} failures={failures} "
+            f"top1_misses={len(misses)} min_top_2_margin={min_margin:.4f} "
+            f"low_margin_hits={low_margin_hits}"
         )
     messages.append(
         f"candidate_skills={candidate_skills} corpus_prompts={corpus_prompts} "
@@ -111,6 +130,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--min-precision-at-1", type=float, default=0.80)
     parser.add_argument("--min-precision-at-5", type=float, default=0.90)
     parser.add_argument("--max-failures", type=int, default=0)
+    parser.add_argument("--min-top-2-margin", type=float, default=0.0)
+    parser.add_argument("--max-low-margin-hits", type=int, default=None)
     parser.add_argument("--fail-on-top1-misses", action="store_true")
     return parser.parse_args(argv)
 
@@ -164,6 +185,8 @@ def main(argv: list[str] | None = None) -> int:
             min_precision_at_1=args.min_precision_at_1,
             min_precision_at_5=args.min_precision_at_5,
             max_failures=args.max_failures,
+            min_top_2_margin=args.min_top_2_margin,
+            max_low_margin_hits=args.max_low_margin_hits,
             allow_top1_misses=not args.fail_on_top1_misses,
         )
         result = evaluate_report(report, thresholds)

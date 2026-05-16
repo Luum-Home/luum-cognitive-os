@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# Maximal local routing gate for multilingual/full-catalog skill routing.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+OUTPUT="${1:-/tmp/cos-routing-max-gate}"
+cd "$REPO_ROOT"
+
+"$SCRIPT_DIR/audit-routing-intents" --fail-on-issues
+"$SCRIPT_DIR/cos-routing-corpus-audit" \
+  --min-skills "${COS_ROUTING_MIN_CORPUS_SKILLS:-5}" \
+  --min-prompts "${COS_ROUTING_MIN_CORPUS_PROMPTS:-8}" \
+  --min-languages "${COS_ROUTING_MIN_LANGUAGES:-4}" \
+  --fail-on-issues
+
+cmd=(
+  "$SCRIPT_DIR/cos-routing-quality-gate"
+  --output "$OUTPUT"
+  --fail-on-top1-misses
+  --min-candidate-skills "${COS_ROUTING_MIN_CANDIDATE_SKILLS:-100}"
+  --min-corpus-prompts "${COS_ROUTING_MIN_CORPUS_PROMPTS:-8}"
+  --min-precision-at-1 "${COS_ROUTING_MIN_P1:-0.80}"
+  --min-precision-at-5 "${COS_ROUTING_MIN_P5:-0.90}"
+  --min-top-2-margin "${COS_ROUTING_MIN_TOP2_MARGIN:-0.0}"
+)
+if [[ -n "${COS_ROUTING_MAX_LOW_MARGIN_HITS:-}" ]]; then
+  cmd+=(--max-low-margin-hits "$COS_ROUTING_MAX_LOW_MARGIN_HITS")
+fi
+"${cmd[@]}"
