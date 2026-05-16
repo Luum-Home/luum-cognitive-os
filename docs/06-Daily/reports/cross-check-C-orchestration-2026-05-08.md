@@ -4,16 +4,16 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 
 ## 🔍3 Squad coordination
 
-**Veredicto:** **MEJOR_NUESTRO (post-archival realism)** vs. *competing externals*; **REGRESIÓN intencional, formalizada** vs. *internal historical claim*.
+**Verdict:** **OURS_BETTER (post-archival realism)** vs. *competing externals*; **REGRESSION intencional, formalizada** vs. *internal historical claim*.
 
-**Estado actual:**
+**Current state:**
 - `packages/_archived/squads/` exists with explicit README dating archival to **Sprint 2A, 2026-04-16**, citing the Capa-3 functional audit (`docs/04-Concepts/architecture/functional-audit/scorecard-packages-squads-agents.md` F5–F8).
 - Audit findings are unambiguous: 5/5 squad YAMLs were "0% runtime integration" — no Python/Go loader, broken `skills: [testing-patterns]` refs (skill does not exist), broken `agentRef:` refs (`backend-architect`, `security-engineer`, `sre-agent`, `devops-agent`, `engineering-manager-agent` have no `agents/*.md`).
 - One survivor: `squads/organization.yaml` kept at root *as a user-init template only*, still with no runtime loader.
 - `rules/squad-protocol.md` and `skills/squad-manager/` remain as governance/skill surface but are decoupled from the dead YAML wiring.
 - Live multi-agent surface lives in `lib/agent_team.py` (ADR-233 file-IPC, schema `agent-team-file-ipc/v1`, advisory locks, inbox/task primitives), `lib/agent_bus.py`, `lib/agent_message_bus.py`, `lib/agent_lifecycle.py`, `lib/handoff_envelope.py` (ADR-230), `lib/session_coordination.py`, `packages/agent-coordination/` and `packages/agent-lifecycle/` (these are the *integrated* packages — symlinked into `lib/` per the audit's F1).
 
-**ADR-251 status:** `Accepted — Slice A implemented` (frontmatter `status: accepted`, body §Status). Slice A artefacts present: `manifests/agent-orchestration-adapters.yaml`, `scripts/agent-orchestration-boundary-audit.py`, `scripts/agent-orchestration-benchmark.py`, `tests/unit/test_agent_orchestration_boundary_audit.py`, `tests/unit/test_agent_orchestration_benchmark.py` (all listed in `implementation_files:`). The "research/ADR-251 lo marca pending" framing in the prompt is **stale** — ADR-251 has moved past pending. What remains pending is the *adoption of external orchestration adapters* (LangGraph / AutoGen / CrewAI / OpenAI Agents SDK) behind that boundary, not Slice A itself.
+**ADR-251 status:** `Accepted — Slice A implemented` (frontmatter `status: accepted`, body §Status). Slice A artefacts present: `manifests/agent-orchestration-adapters.yaml`, `scripts/agent-orchestration-boundary-audit.py`, `scripts/agent-orchestration-benchmark.py`, `tests/unit/test_agent_orchestration_boundary_audit.py`, `tests/unit/test_agent_orchestration_benchmark.py` (all listed in `implementation_files:`). The "research/ADR-251 marks it pending" framing in the prompt is **stale** — ADR-251 has moved past pending. What remains pending is the *adoption of external orchestration adapters* (LangGraph / AutoGen / CrewAI / OpenAI Agents SDK) behind that boundary, not Slice A itself.
 
 **External anchor:** `docs/03-PoCs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md` deep-evaluated `awslabs/agent-squad` (Apache-2.0, ~7.6k★) at `MONITOR_CONFIRMED` — explicitly noted overlap with `skill_router.best_match` and "would compete with existing skill_router". This is the correct verdict: the *concept* is mature externally, but adopting awslabs/agent-squad would re-introduce the same kind of routing bespoke we just archived.
 
@@ -29,9 +29,9 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 
 ## 🔍6 Hermes / Cline shadow-git (ADR-227)
 
-**Veredicto:** **IGUAL (parity on substrate)** + **MEJOR_NUESTRO on atomicity guarantees** vs. Cline; claim "Slices A–F implemented" is **CONFIRMED**, not aspirational.
+**Verdict:** **EQUIVALENT (parity on substrate)** + **OURS_BETTER on atomicity guarantees** vs. Cline; claim "Slices A–F implemented" is **CONFIRMED**, not aspirational.
 
-**Nuestra implementación (concrete files):**
+**Local implementation (concrete files):**
 - `lib/shadow_git.py` (canonical substrate). Implements `snapshot()` via `git init --bare` + `GIT_INDEX_FILE=<temp>` + `git hash-object -w` + `git update-index --add --cacheinfo` + `git write-tree`. The user's `.git/index` is provably untouched (the index is a sibling of the bare repo at `repo.parent / "shadow.index"`).
 - `manifests/shadow-git.yaml` (declarative manifest matching ADR-227 §"Manifest declaration").
 - `hooks/auto-checkpoint.sh`, `hooks/pre-agent-snapshot.sh`, `hooks/post-agent-snapshot-restore.sh`, `hooks/pre-cleanup-snapshot.sh` (lifecycle wiring).
@@ -50,10 +50,10 @@ Cline's shadow-git is documented at <https://github.com/cline/cline> (`src/integ
 4. **`.gitignore` honoured.** Cline: yes. COS: hardcoded exclusions (the manifest enumerates them). Slightly weaker than Cline's full gitignore parser; acceptable for the listed exclusions.
 5. **Restore as `git checkout-index --prefix=`.** Cline: yes. COS: yes (`files_only` mode in ADR-227 §"Restore operation").
 
-**Where COS goes further than Cline (MEJOR_NUESTRO):**
+**Where COS goes further than Cline (OURS_BETTER):**
 - **Atomic file+conversation restore (ADR-227 §"Atomic restore semantics").** COS ties file restore to ADR-226 event-bus `truncate_session(target_seq)` under a session-scoped `flock`. ADR-227 explicitly calls out that *Claude Code SDK `rewindFiles()` does NOT do this* and Cline solves it for files only. COS solves it for files + conversation atomically — with `RESTORE_FAILED` rollback semantics, diff-tree preview written *before* mutation, and `--yes`/interactive confirmation gating.
 - **Governance-as-restore-point.** ADR-227 §Context: every policy-check / blast-radius / audit-finding event carries `file_tree_sha`. Cline does not have this — it is the explicit defensible differentiator the gap research called out.
-- **Schema versioning** (`shadow-git/v1`) and **CLI refusals** (refuses-without-preview, refuses-under-dirty-workspace). Stronger guarantees than Cline's UX.
+- **Schema versioning** (`shadow-git/v1`) and **CLI refusesls** (refuses-without-preview, refuses-under-dirty-workspace). Stronger guarantees than Cline's UX.
 
 **Is there an aspirational claim?:** **NO.** I verified the file exists, contains real `subprocess.run(["git", "init", "--bare", ...])` and `git write-tree` calls, real `GIT_INDEX_FILE` isolation, and real session-scoped `flock`. The "Slices A–F implemented" frontmatter is backed by code. The pattern *was* imported from Cline/Hermes/Kilo.ai/`git-shadow` (ADR-227 §"Source"), per `[reinvention-prevention]` — pattern adoption, not code adoption.
 
@@ -63,9 +63,9 @@ Cline's shadow-git is documented at <https://github.com/cline/cline> (`src/integ
 
 ## 🔍10 agentapi (coder/agentapi, MIT)
 
-**Veredicto:** **NO_COMPARABLE en el strict sense** + **MEJOR_NUESTRO** for the slice both touch, *but* **MEJOR_EXTERNO en testdata corpus** — agentapi should be vendored.
+**Verdict:** **NOT_COMPARABLE in the strict sense** + **OURS_BETTER** for the slice both touch, *but* **EXTERNAL_BETTER in testdata corpus** — agentapi should be vendored.
 
-**Nuestra implementación:** `lib/harness_adapter/` is real (ABC + canonical event schema per ADR-033):
+**Local implementation:** `lib/harness_adapter/` is real (ABC + canonical event schema per ADR-033):
 - `lib/harness_adapter/base.py`: `HarnessAdapter` ABC + `CanonicalEvent` dataclass registry (`SessionStart`, `AgentStart`, `AgentEnd`, `ToolUse`, `TokenUsage`, `HeartbeatTick`). Subclass registry pattern with `__init_subclass__`, JSONL roundtrip, version-tolerant `from_dict`.
 - `lib/harness_adapter/claude_code.py`, `codex.py`, `aider.py`, `aider_streaming.py`, `bare_cli.py`, `dispatch.py`, `tool_use_correlation.py`. Six adapters present.
 - `HarnessName` enum lists 8 harness slots: `claude_code`, `codex`, `bare_cli`, `opencode`, `aider`, `cursor`, `continue`, `unknown`. Three of the eight (`opencode`, `cursor`, `continue`) are slots without adapter files yet — this matches ADR-033's "passive POC for Aider, additive expansion later".
@@ -82,8 +82,8 @@ Cline's shadow-git is documented at <https://github.com/cline/cline> (`src/integ
 | **Coupling** | External Go binary as sidecar | In-process Python, zero deps |
 
 These overlap *only* on "harness fingerprinting" — the question of "is this output Aider's `<<thinking>>` block or Claude Code's tool call?". For that slice:
-- **MEJOR_EXTERNO:** agentapi's `lib/msgfmt/testdata/{format,initialization}/{aider,amazonq,amp,auggie,claude,codex,copilot,cursor,gemini,goose,opencode}/` is the most comprehensive harness-format corpus in the public radar (11 harnesses, golden fixtures for `first_message`, `multi-line-input`, `second_message`, `thinking`, `confirmation_box`, `auto-accept-edits`, `remove-task-tool-call`). COS has nothing equivalent.
-- **MEJOR_NUESTRO** for the canonical-event surface (ADR-033's typed dataclasses + `_registry` are cleaner than parsing free-form HTTP messages; AgentBusMetrics / cost dashboards can consume our schema directly).
+- **EXTERNAL_BETTER:** agentapi's `lib/msgfmt/testdata/{format,initialization}/{aider,amazonq,amp,auggie,claude,codex,copilot,cursor,gemini,goose,opencode}/` is the most comprehensive harness-format corpus in the public radar (11 harnesses, golden fixtures for `first_message`, `multi-line-input`, `second_message`, `thinking`, `confirmation_box`, `auto-accept-edits`, `remove-task-tool-call`). COS has nothing equivalent.
+- **OURS_BETTER** for the canonical-event surface (ADR-033's typed dataclasses + `_registry` are cleaner than parsing free-form HTTP messages; AgentBusMetrics / cost dashboards can consume our schema directly).
 
 **Same cases?:** **No.** agentapi normalises *interactive I/O*; `lib/harness_adapter/` normalises *observability events*. agentapi is closer in spirit to ADR-161 (remote control plane / provider adapter boundary) and ADR-196 (cosd task API) than to ADR-033.
 
@@ -93,11 +93,11 @@ These overlap *only* on "harness fingerprinting" — the question of "is this ou
 
 ## Resumen ejecutivo
 
-| # | Item | Veredicto | Nota |
+| # | Item | Verdict | Nota |
 |---|---|---|---|
-| 3 | Squad coordination | MEJOR_NUESTRO (vs externals) / Intentional dormancy formalized | ADR-251 redesign live; squad-tombstone ADR would close documentation loop |
-| 6 | Hermes/Cline shadow-git (ADR-227) | IGUAL on substrate, MEJOR_NUESTRO on atomicity + governance receipts | Claim "Slices A–F" is real; T6/T9 still ⬜ |
-| 10 | agentapi vs harness_adapter | NO_COMPARABLE (different problem) / MEJOR_EXTERNO on testdata corpus | Vendor `lib/msgfmt/testdata/` into `lib/harness_adapter/testdata/` |
+| 3 | Squad coordination | OURS_BETTER (vs externals) / Intentional dormancy formalized | ADR-251 redesign live; squad-tombstone ADR would close documentation loop |
+| 6 | Hermes/Cline shadow-git (ADR-227) | EQUIVALENT on substrate, OURS_BETTER on atomicity + governance receipts | Claim "Slices A–F" is real; T6/T9 still ⬜ |
+| 10 | agentapi vs harness_adapter | NOT_COMPARABLE (different problem) / EXTERNAL_BETTER on testdata corpus | Vendor `lib/msgfmt/testdata/` into `lib/harness_adapter/testdata/` |
 
 **Single biggest signal:** ADR-251 + the archived squads + `lib/shadow_git.py` together demonstrate the *governance vs. mechanism* boundary that is the project's strongest architectural posture. None of the three items are aspirational — each is backed by code or by a deliberate, dated archival decision. The two follow-ups worth scheduling:
 

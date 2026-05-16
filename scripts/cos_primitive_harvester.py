@@ -31,44 +31,44 @@ DOCUMENT_ONLY = "DOCUMENT_ONLY"
 DISCARD = "DISCARD"
 
 CONVERSION_PATTERNS = [
-    r"\bautom[aá]tic[oa]s?\b",
-    r"\bprimitiv[ao]s?\b",
+    r"\bautomatic\b",
+    r"\bautomated\b",
+    r"\bprimitives?\b",
     r"\bskills?\b",
     r"\bscript\b",
-    r"\breutilizable\b",
-    r"\bno (?:deber[ií]a|debe) quedar como receta manual\b",
-    r"\bque quede\b",
-    r"\bimplement[eé]moslo\b",
-    r"\btests? automatizados?\b",
+    r"\breusable\b",
+    r"\bshould not remain (?:a )?manual recipe\b",
+    r"\bmake it persistent\b",
+    r"\bimplement it\b",
+    r"\bautomated tests?\b",
 ]
 
 IMPROVEMENT_PATTERNS = [
-    r"\bmejor(ar|a|emos)\b",
-    r"\bextender\b",
-    r"\bagrega(?:r)?\b",
+    r"\bimprove\b",
+    r"\bextend\b",
+    r"\badd\b",
     r"\bedge cases?\b",
-    r"\bcasos?\b",
-    r"\bno ten(?:ido|er) en cuenta\b",
+    r"\bcases?\b",
+    r"\bnot accounted for\b",
 ]
 
-DOC_PATTERNS = [r"\bADR\b", r"\bdocumentaci[oó]n\b", r"\bdocumentar\b", r"\bdecisi[oó]n\b"]
-RISK_PATTERNS = [r"\bstash", r"\bworktrees?\b", r"\bcleanup\b", r"\bborrar\b", r"\bdrop\b", r"\bpush\b", r"\bcommit\b", r"\brollback\b", r"\bsecrets?\b", r"\bcredenciales\b", r"\bconcurrenc", r"\bagentes?\b"]
-VERIFY_PATTERNS = [r"\btest", r"\bvalidar\b", r"\bverificar\b", r"\bchecklist\b", r"\bdoctor\b", r"\binventory\b", r"\bacceptance\b"]
+DOC_PATTERNS = [r"\bADR\b", r"\bdocumentation\b", r"\bdocument\b", r"\bdecision\b"]
+RISK_PATTERNS = [r"\bstash", r"\bworktrees?\b", r"\bcleanup\b", r"\bdelete\b", r"\bdrop\b", r"\bpush\b", r"\bcommit\b", r"\brollback\b", r"\bsecrets?\b", r"\bcredentials?\b", r"\bconcurrenc", r"\bagents?\b", r"\brisky\b"]
+VERIFY_PATTERNS = [r"\btest", r"\bvalidate\b", r"\bverify\b", r"\bchecklist\b", r"\bdoctor\b", r"\binventory\b", r"\bacceptance\b"]
 COMMAND_PATTERN = re.compile(r"^\s*(?:git|python3?|bash|pytest|make|scripts/|\.\/scripts/|for\s+\w+\s+in\s+)\b", re.MULTILINE)
 
 STOPWORDS = {
     "this", "that", "for", "as", "all", "do", "does",
-    "tiene", "tienen", "puede", "pueden", "que", "con", "los", "las", "una", "unos", "unas",
     "the", "and", "for", "with", "should", "could", "would", "from", "into", "when", "then",
-    "run", "test", "tests", "script", "python", "python3", "automatizado", "automatizados", "automática", "automatico", "automatic",
+    "run", "test", "tests", "script", "python", "python3", "automatic", "automated",
 }
 
 DOMAIN_HINTS = [
-    ("preserved-wip-cleanup", ["stash", "stashes", "worktree", "cleanup", "preserve", "preservado", "bloqueadores", "blockers"]),
-    ("worktree-triage", ["worktree", "triage", "portar", "cherry-pick", "bb5a"]),
+    ("preserved-wip-cleanup", ["stash", "stashes", "worktree", "cleanup", "preserve", "preserved", "blockers"]),
+    ("worktree-triage", ["worktree", "triage", "unapplied", "cherry-pick", "bb5a"]),
     ("session-filesystem-reaper", ["reaper", "session", "filesystem", "archive", "zombie"]),
     ("staged-path-scan", ["staged", "gitlink", "submodule", "paths", "pre-commit", "rename", "symlink"]),
-    ("primitive-harvester", ["conversation", "conversaci", "clasificar", "descarta", "harvester"]),
+    ("primitive-harvester", ["conversation", "classify", "classifies", "discard", "discards", "harvester"]),
 ]
 
 
@@ -95,7 +95,7 @@ class HarvestResult:
 
 
 def normalize_tokens(text: str) -> list[str]:
-    raw = re.findall(r"[A-Za-zÁÉÍÓÚáéíóúÑñ0-9]+", text.lower())
+    raw = re.findall(r"[A-Za-z0-9]+", text.lower())
     return [token for token in raw if len(token) > 2 and token not in STOPWORDS]
 
 
@@ -249,13 +249,13 @@ def risk_labels(text: str) -> list[str]:
     labels: list[str] = []
     lower = text.lower()
     mapping = {
-        "git-state": ["stash", "worktree", "commit", "push", "branch"],
-        "data-loss": ["drop", "delete", "remove", "cleanup", "clean"],
-        "security": ["secret", "credencial", "token", "path absoluto"],
-        "concurrency": ["agente", "concurr", "multi-session", "ide"],
+        "git-state": [r"\bstash", r"\bworktree", r"\bcommit", r"\bpush", r"\bbranch"],
+        "data-loss": [r"\bdrop", r"\bdelete", r"\bremove", r"\bcleanup", r"\bclean"],
+        "security": [r"\bsecret", r"\bcredential", r"\btoken", r"\babsolute path"],
+        "concurrency": [r"\bagents?\b", r"\bconcurr", r"\bmulti-session\b", r"\bide\b"],
     }
-    for label, needles in mapping.items():
-        if any(needle in lower for needle in needles):
+    for label, patterns in mapping.items():
+        if any(re.search(pattern, lower) for pattern in patterns):
             labels.append(label)
     return labels
 
@@ -289,7 +289,7 @@ def harvest(text: str, repo: Path) -> HarvestResult:
         decision = DISCARD
         confidence = 0.84
         next_action = "discard; capture as ordinary conversation only"
-    elif docs and not commands and risks == 0 and conversion == 0:
+    elif docs and not commands and risks == 0 and verify == 0:
         decision = DOCUMENT_ONLY
         confidence = 0.78
         next_action = "write ADR/docs; do not create executable primitive"

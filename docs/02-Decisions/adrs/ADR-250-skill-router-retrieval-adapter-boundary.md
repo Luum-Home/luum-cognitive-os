@@ -111,7 +111,7 @@ confidence thresholds are changed. Slice A includes fixtures for:
 - false-positive mentions of `/auto-rollback`, `/deep-research`, `/auto-refine`,
   and `/self-improve`;
 - positive routing for repo forensics, security audit, and code review;
-- known gaps such as “crear una nueva skill” currently routing to `/sdd-new`
+- known gaps such as “create a new skill” currently routing to `/sdd-new`
   instead of `/add-skill`.
 
 Known gaps may be reported as warnings, but they must be explicit; they must not
@@ -157,7 +157,7 @@ After this ADR:
 - COS policy guards (dangerous-skill rejection, negative context, profile/harness
   scope, bypass rules, telemetry) remain first-party and are not delegated to any
   community retriever.
-- Known routing gaps (e.g., "crear una nueva skill" routed to `/sdd-new` instead
+- Known routing gaps (e.g., "create a new skill" routed to `/sdd-new` instead
   of `/add-skill`) must be declared as explicit warnings, not hidden.
 
 ### What this answers (and what it doesn't)

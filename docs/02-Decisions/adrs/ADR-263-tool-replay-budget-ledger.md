@@ -37,14 +37,14 @@ Accepted
 
 ## Context
 
-### Estado actual
+### Current state
 
-luum-agent-os implementa truncado de tool results mediante dos artefactos:
+luum-agent-os implements tool-result truncation through two artifacts:
 
-- `hooks/result-truncator.sh` — PostToolUse hook genérico sobre outputs Bash (184 líneas).
-- `lib/smart_truncator.py` — `smart_truncate(command, output, max_chars=5000)` con estrategia head/tail split (620 líneas).
+- `hooks/result-truncator.sh` — generic PostToolUse hook over Bash outputs (184 lines).
+- `lib/smart_truncator.py` — `smart_truncate(command, output, max_chars=5000)` with a head/tail split strategy (620 lines).
 
-La configuración relevante en `cognitive-os.yaml` (líneas 548–559):
+The relevant `cognitive-os.yaml` configuration (lines 548–559):
 
 ```yaml
 result_truncation:
@@ -59,15 +59,15 @@ A single global threshold of 5,000 chars controls all tool results, with no dist
 
 ### Gaps identificados
 
-La tabla de delta documentada en [private clean-room research dossier] §Tool-replay budget ledger identifica tres brechas críticas frente al patrón de referencia:
+The documented delta table in [private clean-room research dossier] §Tool-replay budget ledger identifies three critical gaps against the reference pattern:
 
 1. **No cross-tool accumulator.** Each tool call starts the budget from zero. If an SDD-apply session runs `grep giant`, then `find giant`, then `cat giant`, each contributes up to 5,000 truncated chars to the model context without any mechanism detecting cumulative saturation.
 
-2. **Sin TTL ni modo `reference_only`.** Una vez truncado, el payload original se descarta definitivamente. No existe spillover a disco ni puntero que permita al modelo recuperar el contenido completo cuando lo necesite.
+2. **No TTL or `reference_only`.** Once truncated, the original payload is permanently discarded. There is no disk spillover or pointer that lets the model recover the full content when needed.
 
-3. **Sin granularidad por tool.** Bash corto, archivo grande, búsqueda web y resultado de MCP comparten el mismo límite de 5 000 chars, aunque sus distribuciones de tamaño real son radicalmente distintas.
+3. **No per-tool granularity.** Short Bash output, large files, web search, and MCP results share the same 5,000-char limit, even though their real-size distributions are radically different.
 
-### Uso real: el problema del replay sin memoria
+### Real usage: the replay-without-memory problem
 
 In a typical 80-tool-call SDD session, roughly 25% are large reads (Read files over 200 lines, broad Grep calls, Bash with find/cat logs). Without a ledger, those 20 calls add about 25,000 payload tokens to accumulated context, more than the headroom needed for reasoning. The pattern documented in Annex B projects about 72% payload-replay savings with a calibrated session cap (about 18,000 tokens saved per session).
 
@@ -81,16 +81,16 @@ This ADR adopts the per-session ledger **pattern** described in [private clean-r
 
 ### 1. `lib/tool_replay_ledger.py` — Per-session ledger with local SQLite
 
-Un nuevo módulo Python con estado persistido en `.cognitive-os/sessions/<id>/replay-ledger.sqlite`.
+A new Python module with state persisted in `.cognitive-os/sessions/<id>/replay-ledger.sqlite`.
 
 ```python
 from enum import Enum
 from dataclasses import dataclass
 
 class Mode(Enum):
-    FRESH = "fresh"                   # primera aparición del (tool, target): full result
-    PREVIEW = "preview"               # repetición: truncar agresivo según catálogo
-    REFERENCE_ONLY = "reference_only" # repetición + budget exhausted: reemplazar con pointer
+    FRESH = "fresh"                   # first occurrence of (tool, target): full result
+    PREVIEW = "preview"               # repeat: aggressive truncation according to catalog
+    REFERENCE_ONLY = "reference_only" # repeat + exhausted budget: replace with pointer
 
 @dataclass
 class LedgerDecision:
@@ -105,35 +105,35 @@ class LedgerDecision:
 
 class ToolReplayLedger:
     def record(self, tool_name: str, target_hash: str, result_chars: int) -> LedgerDecision:
-        """Consume budget para este (tool_name, target_hash). Retorna modo."""
+        """Consumes budget for this (tool_name, target_hash). Returns mode."""
 
     def get_mode(self, tool_name: str, target_hash: str) -> Mode:
-        """Consulta modo sin modificar acumuladores."""
+        """Reads mode without modifying accumulators."""
 
     def stats(self) -> dict:
         """Returns session metrics: chars_saved, items_tracked, etc."""
 
     def prune_expired(self) -> int:
-        """Elimina entries con TTL vencido. Retorna count eliminado."""
+        """Deletes entries with expired TTL. Returns deleted count."""
 ```
 
-El `target_hash` se calcula como `sha256(tool_args_normalized)[:16]`. Para tools con outputs no-deterministas (timestamps, PIDs), la normalización extrae los argumentos estructurales (ruta de archivo, query pattern) antes del hash, evitando falsos misses.
+`target_hash` is computed as `sha256(tool_args_normalized)[:16]`. For tools with non-deterministic outputs (timestamps, PIDs), normalization extracts structural arguments (file path, query pattern) before hashing, avoiding false misses.
 
-El ledger se prune en cada `record()` cuando el count de entries supera el doble del `item_cap_per_session`. TTL aplicado: una entry expira `ttl_hours` después de su último `touchedAt`.
+The ledger is pruned on each `record()` when the entry count exceeds twice of the `item_cap_per_session`. TTL applied: an entry expires `ttl_hours` after its last `touchedAt`.
 
-### 2. `lib/tool_budget_catalog.py` — Catálogo per-tool con thresholds derivados de luum
+### 2. `lib/tool_budget_catalog.py` — Per-tool catalog with thresholds derived from luum
 
-Los thresholds se derivan de la distribución real de outputs en `truncation-events.jsonl` de luum, no copiados del patrón de referencia. La justificación: Read de archivos Python típicos de este repo tiene mediana de ~3 500 chars; Bash con grep/find suele rondar los 800–1 500 chars; WebFetch tiene alta varianza con cola larga.
+Thresholds are derived from the real output distribution in `truncation-events.jsonl` of luum, not copied from the reference pattern. The rationale: Read outputs for typical Python files in this repo have a median of ~3,500 chars; Bash with grep/find usually falls around 800–1,500 chars; WebFetch has high variance with a long tail.
 
 ```python
-# Thresholds calibrados desde truncation-events.jsonl de luum
-# (no copiados del catálogo de referencia)
+# Thresholds calibrated from truncation-events.jsonl of luum
+# (not copied from the reference catalog)
 
 CATALOG: dict[str, ToolBudgetEntry] = {
     "Bash": ToolBudgetEntry(
         preview_max_chars=1500,
         reference_max_chars=500,
-        trim_threshold_chars=2200,   # histéresis: corta en 1500 solo si output > 2200
+        trim_threshold_chars=2200,   # hysteresis: cut at 1500 only if output > 2200
     ),
     "Read": ToolBudgetEntry(
         preview_max_chars=3000,
@@ -158,41 +158,41 @@ CATALOG: dict[str, ToolBudgetEntry] = {
 }
 ```
 
-La doble cota (`preview_max_chars` + `trim_threshold_chars`) implementa histéresis: evita cortar payloads que apenas superan el límite, reduciendo el ruido de truncación.
+The double bound (`preview_max_chars` + `trim_threshold_chars`) implements hysteresis: avoids cutting payloads that barely exceed the limit, reducing truncation noise.
 
 ### 3. Per-session caps
 
-Derivados de la distribución de sesiones SDD en luum (no copiados literalmente del patrón de referencia):
+Derived from luum SDD session distribution (not literally copied from the reference pattern):
 
-| Parámetro | Valor | Derivación |
+| Parameter | Value | Derivation |
 |---|---|---|
-| `char_cap_per_session` | 20 000 chars | ~5 000 tokens; el p90 de sesiones largas en luum consume ~18 000 chars de replay. Cap en 20K permite absorber eso antes de saturar. |
-| `item_cap_per_session` | 10 distinct `(tool, target)` tuples | En sesiones SDD típicas, > 10 targets distintos con resultados grandes indica exploración divergente, no iteración. |
+| `char_cap_per_session` | 20 000 chars | ~5 000 tokens; the p90 of long luum sessions consumes ~18 000 chars of replay. A 20K cap absorbs that before saturation. |
+| `item_cap_per_session` | 10 distinct `(tool, target)` tuples | In typical SDD sessions, > 10 distinct targets with large results indicates divergent exploration, not iteration. |
 | `ttl_hours` | 4 h | luum sessions rarely exceed 3 h of continuous work. 4 h is more conservative than the reference pattern (6 h) and avoids stale data between same-day sessions. |
-| `max_tracked_ledgers` | 64 | `cognitive-os.yaml:sessions.max_concurrent` ≤ 10. 64 da headroom 6x sin presión de memoria. |
+| `max_tracked_ledgers` | 64 | `cognitive-os.yaml:sessions.max_concurrent` ≤ 10. 64 gives 6x headroom without memory pressure. |
 
 ### 4. Spillover: modo `REFERENCE_ONLY`
 
-Cuando el ledger decide `REFERENCE_ONLY`, el resultado completo se escribe en disco y el modelo recibe un puntero auto-descriptivo:
+When the ledger decides `REFERENCE_ONLY`, the full result is written to disk and the model receives a self-describing pointer:
 
 **Destino:** `.cognitive-os/sessions/<id>/spillover/<tool_name>-<target_hash_short>-<ts>.txt`
 
-**Pointer format inyectado en contexto:**
+**Pointer format injected into context:**
 
 ```
 [REF:tool=<tool_name> target=<target_hash_short> path=.cognitive-os/sessions/<id>/spillover/<filename>]
 ```
 
-El pointer incluye `tool_name` + `target_hash` truncado + path absoluto, de modo que el modelo pueda formular una llamada `Read` explícita si necesita el contenido completo. El path es auto-descriptivo — no requiere tabla de resolución externa.
+The pointer includes `tool_name` + truncated `target_hash` + absolute path, so the model can make an explicit `Read` call if it needs the full content. The path is self-describing and does not require an external resolution table.
 
-**Limpieza:** el session-end hook borra el directorio de spillover junto con el ledger SQLite (ver §8).
+**Cleanup:** the session-end hook deletes the spillover directory together with the SQLite ledger (see §8).
 
-### 5. Integración en `hooks/result-truncator.sh`
+### 5. Integration in `hooks/result-truncator.sh`
 
-El hook actual gana un lookup al ledger **antes** de truncar. Flujo modificado:
+The current hook gains a ledger lookup **antes** of truncar. Modified flow:
 
 ```bash
-# pseudocódigo del hook modificado
+# modified hook pseudocode
 mode=$(python3 -c "
 from lib.tool_replay_ledger import ToolReplayLedger
 ledger = ToolReplayLedger(session_id='$SESSION_ID')
@@ -209,7 +209,7 @@ case "$mode" in
     apply_catalog_threshold "$OUTPUT" "$TOOL_NAME"
     ;;
   fresh)
-    # comportamiento actual: aplicar smart_truncator.py como fallback
+    # current behavior: apply smart_truncator.py as fallback
     apply_smart_truncator "$OUTPUT"
     ;;
 esac
@@ -217,16 +217,16 @@ esac
 
 `SESSION_ID` comes from `$CLAUDE_SESSION_ID` (environment variable exposed by the harness). If unavailable, the ledger uses `"default"` as session_id, degrading to current behavior without an accumulator.
 
-### 6. `lib/smart_truncator.py` como fallback
+### 6. `lib/smart_truncator.py` as fallback
 
-`smart_truncator.py` queda como fallback cuando:
+`smart_truncator.py` remains fallback when:
 - The ledger is unavailable (SQLite error, session not initialized).
 - The tool is not registered in the catalog (uses `_default`).
-- El ledger returns `Mode.FRESH` sin entrada en catálogo.
+- The ledger returns `Mode.FRESH` with no catalog entry.
 
-No se modifica `smart_truncator.py` — el hook lo invoca como subproceso con los mismos parámetros actuales.
+No change to `smart_truncator.py` — the hook invokes it as a subprocess with the same current parameters.
 
-### 7. Configuración en `cognitive-os.yaml`
+### 7. Configuration in `cognitive-os.yaml`
 
 ```yaml
 tool_replay_ledger:
@@ -239,11 +239,11 @@ tool_replay_ledger:
   metric_log: .cognitive-os/metrics/tool-replay-ledger.jsonl
 ```
 
-El bloque `result_truncation` existente se mantiene sin cambios como fallback global. Los valores del ledger tienen precedencia cuando `tool_replay_ledger.enabled: true`.
+The block `result_truncation` existing block remains unchanged as the global fallback. Ledger values take precedence when `tool_replay_ledger.enabled: true`.
 
 ### 8. Session-end cleanup
 
-El session-end hook (`hooks/session-end.sh` o equivalente registrado en `scripts/setup-git-hooks.sh`) agrega:
+The session-end hook (`hooks/session-end.sh` or equivalent registered in `scripts/setup-git-hooks.sh`) adds:
 
 ```bash
 # cleanup tool-replay ledger + spillover
@@ -255,16 +255,16 @@ ToolReplayLedger(session_id='$SESSION_ID').cleanup()
 
 `cleanup()` deletes SQLite and the spillover directory for the current session.
 
-### 9. Identificadores — divergencia explícita
+### 9. Identifiers — explicit divergence
 
-| Patrón de referencia (Annex B) | Identificador luum | Rationale |
+| Reference pattern (Annex B) | luum identifier | Rationale |
 |---|---|---|
 | `ToolReplayBudgetDecision` | `LedgerDecision` | Shorter; "Decision" is the natural return type |
 | `consumeToolReplayBudget` | `ToolReplayLedger.record()` | Pythonic verb+noun; "consume" suggests destruction, "record" is more precise |
-| `mode: "preview" \| "reference_only"` | `Mode.PREVIEW` / `Mode.REFERENCE_ONLY` | Misma semántica, pero como `Enum` tipado (no string literal) |
-| `compact_envelope` | (no existe) | Concepto no adoptado; luum usa pointer format ad-hoc |
-| `DEFAULT_MAX_REPLAY_CHARS = 24_000` | `char_cap_per_session: 20000` | Derivado de datos luum, no copiado |
-| `DEFAULT_MAX_REPLAY_ITEMS = 8` | `item_cap_per_session: 10` | Derivado de distribución de sesiones luum |
+| `mode: "preview" \| "reference_only"` | `Mode.PREVIEW` / `Mode.REFERENCE_ONLY` | Same semantics, but typed as an `Enum` (not a string literal) |
+| `compact_envelope` | (does not exist) | Concept not adopted; luum uses an ad-hoc pointer format |
+| `DEFAULT_MAX_REPLAY_CHARS = 24_000` | `char_cap_per_session: 20000` | Derived from luum data, not copied |
+| `DEFAULT_MAX_REPLAY_ITEMS = 8` | `item_cap_per_session: 10` | Derived from luum session distribution |
 | `LEDGER_TTL_MS = 6h` | `ttl_hours: 4` | More conservative for the luum session pattern |
 
 ### 10. Observabilidad
@@ -293,37 +293,37 @@ The `chars_saved` field (result_chars - pointer_chars for REFERENCE_ONLY, result
 ## Acceptance Criteria
 
 ```
-[ ] lib/tool_replay_ledger.py existe, importable via
+[ ] lib/tool_replay_ledger.py exists, importable via
     python3 -c "from lib.tool_replay_ledger import ToolReplayLedger, Mode"
 
-[ ] lib/tool_budget_catalog.py existe, importable via
+[ ] lib/tool_budget_catalog.py exists, importable via
     python3 -c "from lib.tool_budget_catalog import CATALOG"
 
-[ ] pytest tests/unit/test_tool_replay_ledger.py cubre:
-    - Transición FRESH → PREVIEW → REFERENCE_ONLY en llamadas sucesivas al mismo target
-    - Enforcement del char_cap: después de N chars acumulados, mode = REFERENCE_ONLY
-    - Enforcement del item_cap: después de 10 targets distintos, mode = REFERENCE_ONLY en nuevo target
-    - TTL expiration: entry con touchedAt > ttl_hours returns FRESH (entrada nueva)
-    - Spillover write: cuando mode = REFERENCE_ONLY, archivo existe en spillover_dir
-    - Spillover read: pointer format incluye path correcto y archivo es legible
-    - Cleanup: después de cleanup(), ledger SQLite y spillover dir no existen
+[ ] pytest tests/unit/test_tool_replay_ledger.py covers:
+    - Transition FRESH → PREVIEW → REFERENCE_ONLY in successive calls to the same target
+    - Enforcement of the char_cap: after N accumulated chars, mode = REFERENCE_ONLY
+    - Enforcement of the item_cap: after 10 distinct targets, mode = REFERENCE_ONLY on a new target
+    - TTL expiration: entry with touchedAt > ttl_hours returns FRESH (new entry)
+    - Spillover write: when mode = REFERENCE_ONLY, file exists in spillover_dir
+    - Spillover read: pointer format includes the correct path and the file is readable
+    - Cleanup: after cleanup(), ledger SQLite and spillover dir do not exist
 
-[ ] hooks/result-truncator.sh consulta ledger antes de truncar;
-    si REFERENCE_ONLY devuelve el pointer [REF:...] en lugar del output truncado
+[ ] hooks/result-truncator.sh queries the ledger before truncating;
+    si REFERENCE_ONLY returns the pointer [REF:...] instead of truncated output
 
-[ ] Spillover funciona end-to-end: el archivo existe en el path referenciado por el pointer;
-    Read del path devuelve el contenido original completo
+[ ] Spillover works end-to-end: the file exists at the path referenced by the pointer;
+    Read of the path returns the full original content
 
 [ ] Metric appended to llm-dispatch.jsonl at session end:
-    campo chars_saved_per_session presente y > 0 en sesiones con replays
+    field chars_saved_per_session present and > 0 in sesiones with replays
 
-[ ] cognitive-os.yaml contiene bloque tool_replay_ledger con todos los campos del §7
+[ ] cognitive-os.yaml contains block tool_replay_ledger with all fields of the §7
 
 [ ] Compliance F§5:
     grep -rF "ToolReplayLedger" /tmp/holaOS-investigation 2>/dev/null || echo "0 matches"
-    # debe returnsr 0 matches (o "0 matches" si /tmp/holaOS-investigation ausente)
+    # must return 0 matches (or print "0 matches" when /tmp/holaOS-investigation is absent)
 
-[ ] Commit message usa template Annex F §6:
+[ ] Commit message uses template Annex F §6:
     Source-pattern: [private compliance dossier — see internal records] §Tool-replay budget ledger
 ```
 
@@ -335,15 +335,15 @@ The `chars_saved` field (result_chars - pointer_chars for REFERENCE_ONLY, result
 
 - **~18,000 tokens/session saved** in SDD-apply sessions with high replay (projection Annex B §3). At $0.003/Ktok Sonnet input: ~$0.054/session direct; the main benefit is **headroom** — fewer early compactions, lower out-of-context failure rate.
 - **Denser context.** The 18,000 freed tokens let the model keep more specs, more decision history, and more relevant code in the window, improving long-response coherence.
-- **Modo `REFERENCE_ONLY` auto-descriptivo.** El modelo recibe información suficiente para recuperar el contenido si lo necesita (`Read` del spillover path), sin perdida de acceso — solo de presencia inmediata en contexto.
-- **Granularidad per-tool.** Bash corto y archivo grande dejan de competir por el mismo límite. Read de archivos medianos (< 3 000 chars) pasa sin truncación; Bash ruidoso (find de 800 líneas) se recorta agresivo desde la primera llamada.
+- **Self-describing `REFERENCE_ONLY` mode.** The model receives enough information to recover the content if needed (`Read` of the spillover path), without loss of access — only loss of immediate presence in context.
+- **Per-tool granularity.** Short Bash output and large files stop competing for the same limit. Medium file reads (< 3 000 chars) passes without truncation; Noisy Bash (find of 800 lines) is aggressively trimmed from the first call.
 
 ### Negativo
 
 - **Per-session state.** The SQLite ledger and spillover directory must be cleaned at session-end. If the session-end hook does not run (kill -9, crash), files persist on disk until the next session cleans them.
 - **`REFERENCE_ONLY` can confuse the model.** If the pointer is not interpreted correctly, the model can assume the content is available when it is not in context. Mitigation: the pointer format is explicit (`[REF:tool=... target=... path=...]`) and acceptance tests verify that the path is readable.
-- **SQLite en subshell.** Bash hooks corren en subshells; cada invocación abre y cierra el SQLite. Para sesiones con > 50 tool-calls/minuto, el overhead de SQLite open/close puede ser perceptible. Mitigación: WAL mode + connection pool en `tool_replay_ledger.py`; evaluar degradar a JSON plano si el overhead es medible.
-- **Dependencia de `$CLAUDE_SESSION_ID`.** Si la harness no expone esta variable, el ledger agrupa todas las sesiones bajo `"default"`, degradando el aislamiento. Mitigación: fallback a PID + timestamp como session_id aproximado.
+- **SQLite in subshell.** Bash hooks run in subshells; each invocation opens and closes SQLite. For sessions with > 50 tool-calls/minute, the overhead of SQLite open/close can be noticeable. Mitigation: WAL mode + connection pool in `tool_replay_ledger.py`; evaluate degrading to plain JSON if overhead is measurable.
+- **Dependency on `$CLAUDE_SESSION_ID`.** If the harness does not expose this variable, the ledger groups all sessions under `"default"`, degrading isolation. Mitigation: fallback to PID + timestamp as approximate session_id.
 
 ---
 
@@ -351,31 +351,31 @@ The `chars_saved` field (result_chars - pointer_chars for REFERENCE_ONLY, result
 
 **D1 — Core: ledger + schema SQLite + unit tests**
 
-- Escribir `lib/tool_replay_ledger.py`: `ToolReplayLedger`, `LedgerDecision`, `Mode`, SQLite schema, `record()`, `get_mode()`, `stats()`, `prune_expired()`, `cleanup()`.
-- Escribir `tests/unit/test_tool_replay_ledger.py`: todas las transiciones de modo, TTL, spillover, cap enforcement.
-- Verificar: `python3 -m pytest tests/unit/test_tool_replay_ledger.py -q` verde.
+- Write `lib/tool_replay_ledger.py`: `ToolReplayLedger`, `LedgerDecision`, `Mode`, SQLite schema, `record()`, `get_mode()`, `stats()`, `prune_expired()`, `cleanup()`.
+- Write `tests/unit/test_tool_replay_ledger.py`: all mode transitions, TTL, spillover, cap enforcement.
+- Verify: `python3 -m pytest tests/unit/test_tool_replay_ledger.py -q` green.
 
-**D1.5 — Catálogo: thresholds derivados de logs luum**
+**D1.5 — Catalog: thresholds derived from luum logs**
 
-- Procesar `truncation-events.jsonl` para extraer distribución de tamaños por tool_name.
-- Derivar `preview_max_chars` / `trim_threshold_chars` / `reference_max_chars` para los 4 tools principales.
-- Escribir `lib/tool_budget_catalog.py` con `CATALOG` y `ToolBudgetEntry` dataclass.
-- Unit test: catálogo tiene entry para cada tool esperado + `_default`.
+- Process `truncation-events.jsonl` to extract size distribution por tool_name.
+- Derive `preview_max_chars` / `trim_threshold_chars` / `reference_max_chars` for the 4 main tools.
+- Write `lib/tool_budget_catalog.py` with `CATALOG` and `ToolBudgetEntry` dataclass.
+- Unit test: catalog has an entry for each expected tool + `_default`.
 
-**D2 — Integración: `hooks/result-truncator.sh` + spillover writer**
+**D2 — Integration: `hooks/result-truncator.sh` + spillover writer**
 
-- Modificar `hooks/result-truncator.sh`: lookup al ledger antes de truncar, branching FRESH/PREVIEW/REFERENCE_ONLY.
-- Implementar `write_spillover()` en el hook (Python one-liner o función bash delegando a Python).
-- Test end-to-end: simular PostToolUse con output grande, verificar pointer en stdout + archivo en spillover.
-- Degradación graceful: si SQLite falla, fallback a `smart_truncator.py` sin error del hook.
+- Modify `hooks/result-truncator.sh`: ledger lookup before truncating, branching FRESH/PREVIEW/REFERENCE_ONLY.
+- Implement `write_spillover()` in the hook (Python one-liner o Bash function delegating to Python).
+- Test end-to-end: simulate PostToolUse with large output, verify pointer in stdout + file in spillover.
+- Graceful degradation: if SQLite fails, fallback a `smart_truncator.py` without hook error.
 
 **D2.5 — Session-end cleanup + `cognitive-os.yaml` schema + observabilidad**
 
 - Add cleanup to the session-end hook.
-- Actualizar schema `cognitive-os.yaml` con bloque `tool_replay_ledger`.
+- Update schema `cognitive-os.yaml` with bloque `tool_replay_ledger`.
 - Add `chars_saved_per_session` to `llm-dispatch.jsonl` emission in `lib/dispatch.py`.
-- Ejecutar checklist compliance Annex F §5.
-- Guardar Engram observation bajo `compliance/holaos-adoption/tool-replay-ledger`.
+- Run checklist compliance Annex F §5.
+- Guardar Engram observation under `compliance/holaos-adoption/tool-replay-ledger`.
 
 ---
 
@@ -384,9 +384,9 @@ The `chars_saved` field (result_chars - pointer_chars for REFERENCE_ONLY, result
 | Alternative | Decision | Rationale |
 |---|---|---|
 | Scale the global threshold from 5,000 to 1,000 chars | Rejected | Does not solve the replay problem: it would still have no cross-tool accumulator. Also, 1,000 chars truncates useful medium-size files that currently pass whole. |
-| LRU cache en memoria en `smart_truncator.py` | Rejected | Los hooks corren en subshells separados — el estado in-memory no persiste entre llamadas. Un cache in-process requeriría un daemon auxiliar o IPC, añadiendo complejidad sin las garantías de SQLite. |
-| Embeddings para deduplicación semántica | Rejected | Overkill para el problema: no necesitamos detectar semejanza, sino identidad exacta `(tool, target)`. El overhead de embedding (~200ms/call) convertiría cada tool-call en una operación lenta. Revisitar si la tasa de false-positive de `sha256(args)` resulta problemática. |
-| Extender `lib/context_budget.py` (ADR-186) | Rejected | ADR-186 mide hook outputs en tokens estimados, no tool results en chars. La semántica es diferente — el budget de ADR-186 aplica a lo que el hook mismo produce, no a lo que el tool devuelve al modelo. Compartir el acumulador mezclaría dos dimensiones ortogonales. |
+| In-memory LRU cache in `smart_truncator.py` | Rejected | Hooks run in separate subshells, so in-memory state does not persist between calls. An in-process cache would require an auxiliary daemon or IPC, adding complexity without SQLite guarantees. |
+| Embeddings for semantic deduplication | Rejected | Overkill for the problem: we do not need to detect similarity, only exact `(tool, target)` identity. Embedding overhead (~200 ms/call) would turn each tool call into a slow operation. Revisit if the `sha256(args)` false-positive rate becomes problematic. |
+| Extend `lib/context_budget.py` (ADR-186) | Rejected | ADR-186 measures hook outputs in estimated tokens, not tool results in chars. The semantics differ: the ADR-186 budget applies to what the hook itself produces, not what the tool returns to the model. Sharing the accumulator would mix two orthogonal dimensions. |
 
 ---
 
@@ -400,15 +400,15 @@ holaos_files_read_by_research: []
 holaos_files_blocked_for_impl: ["ALL"]
 ```
 
-**Thresholds:** todos los valores numéricos (char_cap, item_cap, ttl, preview/reference_max_chars) son derivados de la distribución de uso real de luum, no copiados del catálogo de referencia. La metodología de derivación se documenta en el comentario de `lib/tool_budget_catalog.py`.
+**Thresholds:** all numeric values (char_cap, item_cap, ttl, preview/reference_max_chars) are derived from real usage distribution of luum, not copied from the reference catalog. The derivation methodology is documented in the comment of `lib/tool_budget_catalog.py`.
 
-**Identifiers:** `ToolReplayLedger`, `Mode.PREVIEW`, `Mode.REFERENCE_ONLY`, `LedgerDecision`, `record()` son propios de luum. Ver tabla §9.
+**Identifiers:** `ToolReplayLedger`, `Mode.PREVIEW`, `Mode.REFERENCE_ONLY`, `LedgerDecision`, `record()` are luum-specific. See table §9.
 
-**Spillover format:** el pointer `[REF:tool=... target=... path=...]` es diseño ad-hoc de luum. El patrón de referencia usa `full_state_path` como campo en un objeto JSON; luum usa un string inline auto-descriptivo.
+**Spillover format:** the pointer `[REF:tool=... target=... path=...]` is an ad-hoc luum design. The reference pattern uses `full_state_path` as a field in a JSON object; luum uses a self-describing inline string.
 
 **Implementer prohibition:** agents implementing this ADR are categorically prohibited from reading any path matching `/tmp/holaOS*`. Detecting any code fragment from the reference pattern in the prompt requires an immediate halt and emission of `NEEDS_CLARIFICATION:` before any other action.
 
-**Commit message template** (Annex F §6, requerido en todos los commits de implementación):
+**Commit message template** (Annex F §6, required in every implementation commit):
 
 ```
 <scope>: <change>
@@ -425,24 +425,24 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 1. **`target_hash` strategy for tools with non-deterministic outputs.** Is `sha256(tool_args_normalized)[:16]` sufficient for tools such as `Bash`, where the same command can produce different outputs (timestamps, PIDs)? For `Read` and `Grep`, the args hash is stable. For `Bash` with `date` or `ps`, the same script produces different outputs but the args hash is identical, which is correct: we want to detect "same command, same target", not "same output". (**UNSURE**: if the agent uses variants of the same command with different flags but the same intent, the hash will differ and both will be FRESH. Evaluate whether to add Bash flag normalization in D1.)
 
-2. **Cap 20K vs 15K: calibrar con 2 semanas de uso.** La projection de Annex B usa 24K chars del patrón de referencia; luum usa 20K como postura conservadora. Con los datos reales de `tool-replay-ledger.jsonl` post-deploy, la calibración a 15K podría aumentar el ahorro ~20% adicional con bajo impacto en sesiones cortas. (**UNSURE**: no confirmar hasta tener 2 semanas de datos reales.)
+2. **Cap 20K vs 15K: calibrate with 2 weeks of usage.** The projection of Annex B uses 24K chars of the reference pattern; luum uses 20K as a conservative posture. With real data of `tool-replay-ledger.jsonl` post-deploy, calibration to 15K could increase savings ~20% additional with low impact on short sessions. (**UNSURE**: do not confirm until there are 2 weeks of real data.)
 
-3. **Exponer stats al modelo via system prompt.** Inyectar `[LEDGER: session_chars=14300/20000, items=7/10]` en el system prompt del siguiente turno daría al modelo auto-awareness de su headroom de replay. Contra: meta-context overhead (~50 tokens/turno). A favor: el modelo podría anticipar `REFERENCE_ONLY` y consolidar lecturas. (**UNSURE**: evaluar en fase experimental con un cohort de sesiones, medir si cambia el comportamiento de tool-use del modelo antes de habilitar por defecto.)
+3. **Expose stats to the model via system prompt.** Injecting `[LEDGER: session_chars=14300/20000, items=7/10]` in the next turn system prompt would give the model auto-awareness of its replay headroom. Con: meta-context overhead (~50 tokens/turn). Pro: the model could anticipate `REFERENCE_ONLY` and consolidate reads. (**UNSURE**: evaluate in experimental phase with a session cohort, measure whether behavior changes of model tool use before enabling by default.)
 
 ---
 
 ## References
 
-- [private clean-room research dossier] §Tool-replay budget ledger — especificación abstracta del patrón adoptado
-- [private compliance dossier — see internal records] — protocolo clean-room y checklist de compliance
+- [private clean-room research dossier] §Tool-replay budget ledger — abstract specification of the adopted pattern
+- [private compliance dossier — see internal records] — clean-room protocol and compliance checklist
 - `docs/02-Decisions/adrs/ADR-259-external-pattern-adoption-posture.md` — ADR paraguas (postura patterns-only)
-- `docs/02-Decisions/adrs/ADR-016-context-diet.md` — ADR de Context Diet (relacionado: gestión de headroom)
-- `docs/02-Decisions/adrs/ADR-049-llm-dispatch.md` — LLM Dispatch (destino de la métrica `chars_saved_per_session`)
+- `docs/02-Decisions/adrs/ADR-016-context-diet.md` — Context Diet ADR (related: headroom management)
+- `docs/02-Decisions/adrs/ADR-049-llm-dispatch.md` — LLM Dispatch (metric destination `chars_saved_per_session`)
 - `docs/02-Decisions/adrs/ADR-186-budget-enforcement.md` — Budget Enforcement ADR-186 (complementario, no reemplazado)
-- `hooks/result-truncator.sh` — hook PostToolUse a modificar en D2
-- `lib/smart_truncator.py` — truncador actual, queda como fallback
-- `rules/result-management.md` — regla `result-management` (a actualizar para documentar modos PREVIEW y REFERENCE_ONLY)
-- `cognitive-os.yaml:548-559` — configuración `result_truncation` actual (a extender con bloque `tool_replay_ledger`)
+- `hooks/result-truncator.sh` — PostToolUse hook to modify in D2
+- `lib/smart_truncator.py` — current truncator, remains fallback
+- `rules/result-management.md` — rule `result-management` (to update to document modes PREVIEW and REFERENCE_ONLY)
+- `cognitive-os.yaml:548-559` — configuration `result_truncation` current (to extend with `tool_replay_ledger` block)
 
 ---
 *This ADR references a private clean-room research dossier whose specific

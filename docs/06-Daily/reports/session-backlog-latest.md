@@ -17,18 +17,18 @@
 | Resolve git working tree entry: ?? scripts/cos-integration-shard-plan | git | git status --porcelain | < 30min |
 | Resolve git working tree entry: ?? scripts/cos_integration_shard_plan.py | git | git status --porcelain | < 30min |
 | Resolve git working tree entry: ?? tests/unit/test_integration_shard_plan.py | git | git status --porcelain | < 30min |
-| Auditar fragilidad de los 6357 tests que pasan: patrones frágiles (snapshots literales, thresholds absolutos, counts hardcoded, env sin skipif) | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:31:51.169240+00:00 | 1 session |
+| Audit fragility of the 6,357 passing tests: fragile patterns (literal snapshots, absolute thresholds, hardcoded counts, env without skipif) | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:31:51.169240+00:00 | 1 session |
 | cos-bootstrap full profile recommendation + ADR harness-agnostic + root-cause 15 perf failures | user-requests | queue=.cognitive-os/sessions/1777064934-56737-19a08436/user-requests.jsonl; timestamp=2026-04-24T21:11:39.175691+00:00 | 1 session |
-| Decision #2: agent-escalation-capabilities vs ADR-036 — analizar en profundidad | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:17:36.707174+00:00 | 1 session |
-| Decision #3: anchored_summary.py — implementar si tiene sentido | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:17:36.707797+00:00 | 1 session |
-| Decision #4: extender 3 skills (sdd-design → 02-arquitectura, security-audit → 04-seguridad, rules-export → 08-estandares) para que escriban al docs/ convention | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:18:01.300313+00:00 | 1 session |
-| Decision #5: hook/rule enforcement del 10-category docs convention (a) Si rigido | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:18:30.904163+00:00 | 1 session |
-| Decision #7: CI deps opcionales — instalar flock + clonar Paperclip repo para desbloquear 10 tests skipped | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:20:02.260076+00:00 | 1 session |
+| Decision #2: agent-escalation-capabilities vs ADR-036 — analyze deeply | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:17:36.707174+00:00 | 1 session |
+| Decision #3: anchored_summary.py — implement if it makes sense | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:17:36.707797+00:00 | 1 session |
+| Decision #4: extend 3 skills (sdd-design → 02-architecture, security-audit → 04-security, rules-export → 08-standards) so they write to the docs/ convention | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:18:01.300313+00:00 | 1 session |
+| Decision #5: hook/rule enforcement for the 10-category docs convention (a) if rigid | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:18:30.904163+00:00 | 1 session |
+| Decision #7: CI deps optional — install flock + clone Paperclip repo to unblock 10 tests skipped | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:20:02.260076+00:00 | 1 session |
 | Decision #8: fix 5 test_reinvention_embeddings assertions (sentence-transformers now available) | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:21:04.546509+00:00 | 1 session |
-| Decision #9: B este session — ADR-047 B, WS9, ADR-050 ya en vuelo como agents | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:21:19.949401+00:00 | 1 session |
-| Depurar TODAS las tareas y planes — revisar meticulosamente lo ya resuelto vs lo pendiente. Clasificar cada item en DONE/PENDING/OBSOLETE con evidencia | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:56:21.129989+00:00 | 1 session |
-| Mapear componentes SO vs componentes para proyectos que lo implementan, por categoria: context/architecture/domain/risk/security/features/research/standards/execution-plan — para d | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:58:46.927743+00:00 | 1 session |
-| Revisar planes historicos de estabilización que causaron freeze de otros planes/tareas — estado actual | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:52:38.234868+00:00 | 1 session |
+| Decision #9: B this session — ADR-047 B, WS9, ADR-050 already in flight as agents | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T21:21:19.949401+00:00 | 1 session |
+| Clean up ALL tasks and plans — meticulously review what is already resolved vs pending. Classify each item as DONE/PENDING/OBSOLETE with evidence | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:56:21.129989+00:00 | 1 session |
+| Map OS components vs components for projects that implement it, by category: context/architecture/domain/risk/security/features/research/standards/execution-plan — for d | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:58:46.927743+00:00 | 1 session |
+| Review historical stabilization plans that caused freezes in other plans/tasks — current status | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:52:38.234868+00:00 | 1 session |
 | Run all OS tests + exhaustive manual E2E of today's work (ADR-049 dispatch, ADR-051 Phase 2 agent loop, skill mapping, kill-switches) at end of session | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:15:40.581503+00:00 | 1 session |
 | Tackle deferred: Phase 3 hooks/rules/skills injection in Qwen loop, Phase 4 parity harness, haiku→minimax-m2.5 live bug | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:27:49.315310+00:00 | 1 session |
 | All 131 skipped + 17 xfail tests must become PASSED — remove skips and fix causes | user-requests | queue=.cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl; timestamp=2026-04-21T20:52:38.234108+00:00 | 1 session |
@@ -42,7 +42,7 @@ _and 1 more items not shown_
 | **AC3**: `cos-test focused` completes in <30s for a typical 1–3 file diff (measured on changes touching `lib/decision_triage.py`). | plans | 9/10 tasks done; file=.cognitive-os/plans/features/test-runner-ergonomics-proposal.md | 1 session |
 | `cos governance readiness --json` includes token/context tax estimate or | plans | 1/23 tasks done; file=.cognitive-os/plans/architecture/dx-tax-reduction-plan.md | 1 session |
 | `cos governance readiness` warns when discovery overload exists. | plans | 1/23 tasks done; file=.cognitive-os/plans/architecture/dx-tax-reduction-plan.md | 1 session |
-| `dormant_aspirational_ratio < 0.25` (hard). | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existential-validation-2026-04-24.md | 1 session |
+| `dormant_aspirational_ratio < 0.25` (hard). | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existsntial-validation-2026-04-24.md | 1 session |
 | A new operator can identify the active safety layer without reading ADRs. | plans | 1/23 tasks done; file=.cognitive-os/plans/architecture/dx-tax-reduction-plan.md | 1 session |
 | Add `session-resume.sh` to standard (currently only in paranoid) | plans | 22/36 tasks done; file=.cognitive-os/plans/features/hook-architecture-v2.md | 1 session |
 | Add a scheduled propose-only runner. | plans | 19/23 tasks done; file=.cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md | 1 session |
@@ -53,8 +53,8 @@ _and 1 more items not shown_
 | Add new behavior tests: execution order, new events in profile JSONs, script vs JSON parity | plans | 22/36 tasks done; file=.cognitive-os/plans/features/hook-architecture-v2.md | 1 session |
 | Add skill performance lifecycle states and demotion/archive receipts. | plans | 24/32 tasks done; file=.cognitive-os/plans/architecture/adr-200-plus-closure-plan.md | 1 session |
 | Add TeammateIdle, TaskCreated, TaskCompleted sections (standard + paranoid) — lower priority | plans | 22/36 tasks done; file=.cognitive-os/plans/features/hook-architecture-v2.md | 1 session |
-| Commit archival batch once DORMANT test/marker work reduces ratio sufficiently. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existential-validation-2026-04-24.md | 1 session |
-| Daily snapshot: `scripts/aspirational-audit.py --persist` to `.cognitive-os/metrics/aspirational-audit.jsonl`. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existential-validation-2026-04-24.md | 1 session |
+| Commit archival batch once DORMANT test/marker work reduces ratio sufficiently. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existsntial-validation-2026-04-24.md | 1 session |
+| Daily snapshot: `scripts/aspirational-audit.py --persist` to `.cognitive-os/metrics/aspirational-audit.jsonl`. | plans | 15/54 tasks done; file=.cognitive-os/plans/features/so-existsntial-validation-2026-04-24.md | 1 session |
 | Default `core` report contains no meta-governance primitives. | plans | 4/35 tasks done; file=.cognitive-os/plans/architecture/governance-tools-consolidation.md | 1 session |
 | Direct-main bypass requires explicit environment and records metrics. | plans | 5/17 tasks done; file=.cognitive-os/plans/architecture/foundation-hardening-program.md | 1 session |
 | Discovery overload warning disappears for Lean/Standard reports. | plans | 10/18 tasks done; file=.cognitive-os/plans/architecture/external-review-readiness-plan.md | 1 session |
@@ -133,7 +133,7 @@ _and 88 more items not shown_
 | Subagent Capability Contract and Launch Preflight Plan | 9/12 tasks done | Feed mismatch rows into ADR-201 `PromoteFromTelemetry`. | 1 session |
 | Master Plan: Token Optimization — Orchestrator Efficiency | 0/4 tasks done | `wc -l .cognitive-os/plans/features/token-optimization-masterplan.md` < 300 | 2-3 sessions |
 | Plan: Agent Escalation Capabilities | 0/24 tasks done | `EscalationDetector.check_should_escalate()` returns all four new capability signal | 2-3 sessions |
-| Auto-Rollback Hardening Plan — 2026-05-02 | 5/5 tasks done | Complete | 0 |
+| Auto-Rolelback Hardening Plan — 2026-05-02 | 5/5 tasks done | Complete | 0 |
 | Component Scope Classification | 5/5 tasks done | Complete | 0 |
 | Docker → pip Migration Plan | 8/8 tasks done | Complete | 0 |
 _and 5 more plans not shown_

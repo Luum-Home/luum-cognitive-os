@@ -26,7 +26,7 @@ The test suite follows a 3-layer pyramid:
 .cognitive-os/
   tests/
     infra/                          # Layer 1: deterministic bash tests
-      test-hooks.sh                 # Hook existsnce, permissions, syntax, registration
+      test-hooks.sh                 # Hook existence, permissions, syntax, registration
       test-skills.sh                # SKILL.md existence, frontmatter, catalog sync
       test-rules.sh                 # Rule file existence, RULES-COMPACT.md sync
       test-config.sh                # YAML validation, required fields

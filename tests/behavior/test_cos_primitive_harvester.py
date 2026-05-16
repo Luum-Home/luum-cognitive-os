@@ -27,7 +27,7 @@ def test_create_primitive_for_repeatable_risky_verifiable_recipe() -> None:
     payload = run_harvester(
         "This should not remain a manual recipe. Build an automatic primitive "
         "to rotate and delete external benchmark snapshots, create backups, run "
-        "python3 scripts/cos_benchmark_snapshot_rotate.py --dry-run y validar con tests automatizados."
+        "python3 scripts/cos_benchmark_snapshot_rotate.py --dry-run, and validate with automated tests."
     )
 
     assert payload["decision"] == "CREATE_PRIMITIVE"
@@ -40,7 +40,7 @@ def test_create_primitive_for_repeatable_risky_verifiable_recipe() -> None:
 def test_improve_existing_when_matching_skill_exists_and_user_asks_edge_cases() -> None:
     payload = run_harvester(
         "Add more edge cases to preserved WIP cleanup: stashes with unusual names, "
-        "validation capsule dirty, tests automatizados y portabilidad."
+        "validation capsule dirty, automated tests, and portability."
     )
 
     assert payload["decision"] == "IMPROVE_EXISTING"
@@ -60,7 +60,7 @@ def test_use_existing_when_request_matches_existing_primitive_without_change() -
 
 def test_use_existing_even_when_user_says_create_but_primitive_exists() -> None:
     payload = run_harvester(
-        "Creá una skill automática para cleanup de stashes preservados y validation capsule worktrees."
+        "Create an automatic skill for preserved stash cleanup and validation capsule worktrees."
     )
 
     assert payload["decision"] == "USE_EXISTING"
@@ -70,7 +70,7 @@ def test_use_existing_even_when_user_says_create_but_primitive_exists() -> None:
 def test_document_only_for_architecture_decision_without_action_layer() -> None:
     payload = run_harvester(
         "Document an ADR about the decision to call this layer agentic primitives, "
-        "con alternativas y consecuencias."
+        "including alternatives and consequences."
     )
 
     assert payload["decision"] == "DOCUMENT_ONLY"
@@ -79,7 +79,7 @@ def test_document_only_for_architecture_decision_without_action_layer() -> None:
 
 
 def test_discard_small_non_repeatable_chat() -> None:
-    payload = run_harvester("gracias, después vemos")
+    payload = run_harvester("thanks, we can review this later")
 
     assert payload["decision"] == "DISCARD"
     assert payload["artifact_plan"] == []
@@ -94,9 +94,9 @@ def test_discard_ambiguous_preference_without_verifiable_workflow() -> None:
 
 def test_create_when_it_can_improve_skills_and_other_primitives() -> None:
     payload = run_harvester(
-        "Se puede crear una primitiva automática que revise conversaciones, clasifique si "
-        "debe mejorar skills existentes, hooks u otras primitivas, descarte duplicados y "
-        "genere tests automatizados? implementémoslo."
+        "Create an automatic primitive that reviews conversations, classifies whether it "
+        "must improve existing skills, hooks, or other primitives, discards duplicates, "
+        "and generates automated tests. Implement it."
     )
 
     assert payload["decision"] in {"CREATE_PRIMITIVE", "IMPROVE_EXISTING"}
@@ -122,7 +122,7 @@ def test_cli_accepts_conversation_file(tmp_path: Path) -> None:
 
 
 def test_no_duplicate_when_existing_worktree_triage_matches() -> None:
-    payload = run_harvester("Triagear worktree bb5a y port only unapplied work usando lo existente")
+    payload = run_harvester("Triage worktree bb5a and port only unapplied work using the existing flow")
 
     assert payload["decision"] == "USE_EXISTING"
     assert payload["existing_match"]["name"] == "worktree-triage"
@@ -130,7 +130,7 @@ def test_no_duplicate_when_existing_worktree_triage_matches() -> None:
 
 def test_artifact_plan_uses_canonical_portability_proof_path() -> None:
     payload = run_harvester(
-        "Creemos un hook de gate para bloquear commits riesgosos con tests automatizados y portabilidad."
+        "Create a gate hook to block risky commits with automated tests and portability."
     )
 
     assert payload["decision"] == "CREATE_PRIMITIVE"

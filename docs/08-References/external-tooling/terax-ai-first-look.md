@@ -1,5 +1,5 @@
 ---
-title: terax-ai — primer acercamiento (Tauri 2 + Rust + React 19)
+title: terax-ai — first pass (Tauri 2 + Rust + React 19)
 type: external-reference
 status: research
 date_captured: 2026-05-13
@@ -15,118 +15,118 @@ verdict: reference-only-not-base
 deep_audit_pending: research/terax-ai-audit (engram topic_key)
 ---
 
-# terax-ai — primer acercamiento
+# terax-ai — first pass
 
-Research motivated by the operational question: to build an owned UI
-del SO con stack `Tauri 2 + Rust + React 19`, what concrete references in the
-ecosistema existen hoy?
+Research motivated by the operational question: to build an owned UI for the OS
+with the `Tauri 2 + Rust + React 19` stack, what concrete ecosystem references
+exist today?
 
-This document captures the **first pass** (audit superficial via
-README, `package.json`, `Cargo.toml`, métricas GitHub). Un audit profundo
-(IPC patterns, code quality, governance, bus factor, anti-patterns) is
-delegado a un agente y se persistirá bajo el topic key `research/terax-ai-audit`
-en engram + actualización de esta página cuando vuelva.
+This document captures the **first pass**: a superficial audit through README,
+`package.json`, `Cargo.toml`, and GitHub metrics. A deeper audit covering IPC
+patterns, code quality, governance, bus factor, and anti-patterns should be
+delegated to an agent and persisted under the `research/terax-ai-audit` Engram
+topic key, then reflected back into this page.
 
 ## What it is
 
-- Emulador de terminal AI-native (ADE — AI Development Environment).
-- **NO es un agent OS** — comparte stack con lo que queremos, no propósito.
-- Tauri 2 + Rust + React 19.1 — 7 MB binary final (vs 100+ MB típicos de Electron).
-- Repo creado 21 abril 2026 — ~3 semanas de vida.
-- Última versión publicada: v0.6.3 (13 mayo 2026, mismo día del audit).
-- Most recent push: 24 h ago. Very active project.
+- AI-native terminal emulator (ADE — AI Development Environment).
+- **Not an agent OS**: it shares the stack we want, not the product purpose.
+- Tauri 2 + Rust + React 19.1; final binary is about 7 MB versus typical
+  100+ MB Electron binaries.
+- Repository created on April 21, 2026; about 3 weeks old at capture time.
+- Latest published version at capture time: v0.6.3 on May 13, 2026.
+- Most recent push at capture time: 24 h ago. Very active project.
 
-## Stack frontend (package.json)
+## Frontend stack (package.json)
 
-| Capa | Pieza |
+| Layer | Piece |
 |---|---|
 | Framework | React 19.1, TypeScript 5.8, Vite 7, pnpm |
 | Styling | Tailwind v4 + shadcn/ui + Radix UI |
 | State | **Zustand 5** (simpler than Jotai) |
-| Editor inline | CodeMirror 6 |
-| Terminal embebido | xterm.js + WebGL |
+| Inline editor | CodeMirror 6 |
+| Embedded terminal | xterm.js + WebGL |
 | LLM clients | Vercel AI SDK v6 (anthropic, openai, google, groq, cerebras, xai, openai-compatible) |
-| Otros | Motion (animations), Zod 4, Shiki (syntax highlight) |
+| Other | Motion (animations), Zod 4, Shiki (syntax highlight) |
 
-## Stack Rust (Cargo.toml)
+## Rust stack (Cargo.toml)
 
-| Crate | Rol |
+| Crate | Role |
 |---|---|
 | `tauri v2` + 8 plugins | store, autostart, updater, window-state, opener, log, os, process |
-| `reqwest 0.12` | HTTP client con `rustls-tls` + `stream` features |
-| `portable-pty 0.9` | PTY real (terminal nativa) |
-| `grep-regex` / `grep-searcher` / `globset` / `ignore` | Búsqueda en filesystem |
-| `keyring 3.6` | Credenciales OS-native (Keychain / Credential Manager) |
+| `reqwest 0.12` | HTTP client with `rustls-tls` + `stream` features |
+| `portable-pty 0.9` | Real PTY (native terminal) |
+| `grep-regex` / `grep-searcher` / `globset` / `ignore` | Filesystem search |
+| `keyring 3.6` | OS-native credentials (Keychain / Credential Manager) |
 
-**Ausencias notables** en el manifest Rust:
+**Notable absences** in the Rust manifest:
 
-- **No tokio** — async-await sin runtime explícito (probable `futures-util` directo).
-- **No MCP libraries** — tool calling vive en el frontend (Vercel AI SDK).
-- **No LLM client in Rust** — toda la lógica IA is en TS frontend.
+- **No tokio** — async-await without an explicit runtime; likely direct `futures-util`.
+- **No MCP libraries** — tool calling lives in the frontend through Vercel AI SDK.
+- **No Rust LLM client** — all AI logic is in the TypeScript frontend.
 
-## Veredicto: referencia, no base
+## Verdict: reference, not base
 
 **Not suitable as the owned UI base** because:
 
-1. Es un terminal emulator + asistente IA, no un cliente de agent management.
-2. Sin sessions, sin multi-agent UI, sin consumo de backend HTTP+SSE (que es lo
-   que ADR-291 va a exponer).
-3. Vercel AI SDK habla con APIs LLM directo — luum-ui necesita hablar con su
-   propio backend Python orquestador.
+1. It is a terminal emulator plus AI assistant, not an agent-management client.
+2. It has no sessions, no multi-agent UI, and no HTTP+SSE backend consumption,
+   which is what ADR-291 will expose.
+3. Vercel AI SDK talks directly to LLM APIs; luum-ui needs to talk to its own
+   Python orchestration backend.
 
-**Sí sirve como referencia concreta** de:
+**It is useful as a concrete reference** for:
 
-1. **Stack validado** en producción: Tauri 2 + Rust + React 19 + Tailwind v4 + shadcn corre como app de escritorio multiplataforma con binary de 7 MB.
+1. **Validated production stack**: Tauri 2 + Rust + React 19 + Tailwind v4 +
+   shadcn runs as a cross-platform desktop app with a 7 MB binary.
 2. **Rust↔React IPC patterns** via `@tauri-apps/api` (to audit deeply).
-3. **Componentes embeddable opcionales**: xterm.js (si quisiéramos terminal in-app), CodeMirror 6 (si quisiéramos editor inline).
-4. **Plugin architecture Tauri** ya integrada: `store`, `autostart`, `updater`, `window-state`, `keyring`. Patrón válido a copiar.
-5. **State management ligero**: Zustand 5 (preferible a Jotai en este contexto).
+3. **Optional embeddable components**: xterm.js for a future in-app terminal,
+   CodeMirror 6 for a future inline editor.
+4. **Integrated Tauri plugin architecture**: `store`, `autostart`, `updater`,
+   `window-state`, `keyring`. Valid pattern to copy.
+5. **Lightweight state management**: Zustand 5, preferable to Jotai in this context.
 
-## Lo que explícitamente NO copiamos
+## What we explicitly do not copy
 
-- **Vercel AI SDK como cliente directo**: nuestro cliente UI consume el backend
-  Python (ADR-291), no APIs de proveedores LLM. Reemplazo:
-  `@tanstack/react-query` + `fetch` / `EventSource` para HTTP + SSE.
-- **PTY / terminal embebido**: el SO no es un emulador de terminal.
-- **File explorer / web preview / shell integration**: out of scope para
-  cliente de agente.
+- **Vercel AI SDK as a direct client**: our UI client consumes the Python backend
+  from ADR-291, not provider LLM APIs. Replacement: `@tanstack/react-query` +
+  `fetch` / `EventSource` for HTTP + SSE.
+- **PTY / embedded terminal**: the OS is not a terminal emulator.
+- **File explorer / web preview / shell integration**: out of scope for the agent client.
 
-## Banderas amarillas
+## Yellow flags
 
-- **Repo de 3 semanas con 2.7k★** — crecimiento muy rápido; posible hype, no
-  necesariamente señal de calidad. Ratio `116 issues abiertos / 156 commits` es
-  alto.
-- **v0.6.3 es 0.x** — API / arquitectura pueden cambiar antes de 1.0.
-- **Bus factor 1** — single-author project (`crynta`). No team
-  formal.
-- **No se confirmó MCP support** — Vercel AI SDK soporta tool calling estilo
-  OpenAI, pero MCP nativo no is confirmado.
-- **Licencia Apache-2.0** — limpia, sin viralidad, permite uso comercial y fork.
+- **3-week-old repo with 2.7k stars** — very fast growth; possible hype, not
+  necessarily a quality signal. The `116 open issues / 156 commits` ratio is high.
+- **v0.6.3 is 0.x** — API and architecture may change before 1.0.
+- **Bus factor 1** — single-author project (`crynta`) with no formal team.
+- **MCP support not confirmed** — Vercel AI SDK supports OpenAI-style tool
+  calling, but native MCP support is not confirmed.
+- **Apache-2.0 license** — clean, non-viral, permits commercial use and forks.
 
 ## Position in owned UI research
 
-Esta página es la **primera entrada** del trabajo de selección de stack para el
-cliente UI del SO. Forma parte de una serie:
+This page is the **first entry** in stack-selection work for the owned OS UI
+client. It is part of a series:
 
-- `external-tooling/terax-ai-first-look.md` (este doc) — primer acercamiento
-  superficial.
-- `research/terax-ai-audit` (engram, pendiente) — audit profundo: IPC,
-  calidad, governance, anti-patterns.
-- ADR-292 (no creado todavia) — stack decision for the owned UI client,
-  alimentada por este audit + audit tarko + benchmarks propios.
+- `external-tooling/terax-ai-first-look.md` (this doc) — first superficial pass.
+- `research/terax-ai-audit` (Engram, pending) — deep audit: IPC, quality,
+  governance, anti-patterns.
+- ADR-292 (not created yet) — stack decision for the owned UI client, fed by
+  this audit + the tarko audit + local benchmarks.
 
-Decisiones aún no tomadas:
+Decisions not yet made:
 
 1. Tauri 2 confirmed, or are alternatives being evaluated (Electron, Wails, native)?
 2. Zustand or something simpler (Valtio / Signal-based)?
 3. `@tanstack/react-query` + `EventSource` or custom HTTP client?
-4. embedded xterm.js when terminal-in-app is needed, or never?
+4. Embedded xterm.js when terminal-in-app is needed, or never?
 
-## Próximos pasos
+## Next steps
 
-- Esperar audit profundo (`research/terax-ai-audit`).
-- Hacer el equivalente audit profundo de tarko (`research/tarko-separability-audit`
-  ya en engram, completado).
+- Wait for the deep audit (`research/terax-ai-audit`).
+- Run the equivalent deep audit for tarko (`research/tarko-separability-audit`,
+  already in Engram, completed).
 - Compare both patterns 1:1 for the ADR-292 stack decision.
-- Do not make the stack decision until both audits + binary-size benchmark exist
-  + benchmark startup time propios.
+- Do not make the stack decision until both audits, binary-size benchmark, and
+  local startup-time benchmark exist.

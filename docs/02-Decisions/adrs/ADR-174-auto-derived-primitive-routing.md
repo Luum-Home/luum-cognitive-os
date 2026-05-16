@@ -79,7 +79,7 @@ Skills declare their own routing patterns inline:
 routing_patterns:
   - pattern: "add (a )?new skill"      # regex, IGNORECASE
     confidence: 0.85
-  - pattern: "add (una )?skill"
+  - pattern: "add (a )?skill"
     confidence: 0.80
 ```
 

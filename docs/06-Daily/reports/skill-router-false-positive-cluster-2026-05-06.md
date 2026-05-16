@@ -19,12 +19,12 @@ The router repeatedly suggested high-confidence skills when the user or agent wa
 
 The router had only a narrow `/auto-rollback` meta-reference guard. Other skills still used positive regex matching against explicit command mentions such as `/phoenix-trace-ui`, `/auto-refine`, or `/self-improve` even when the surrounding context contained clear negative evidence:
 
-- `sugerencia del router` / `router suggestion`;
+- `router suggestion` / `router suggestion`;
 - `dogfood evidence`;
 - `ignoro` / `ignored`;
 - `mal calibrado` / `false positive`;
 - `why it triggered` / `what triggered`;
-- risk-analysis language such as `me preocupa` or `me asusta`.
+- risk-analysis language such as `I am concerned` or `I am afraid`.
 
 The missing abstraction was a router-level **negative evidence reject class**, not one-off filters per skill.
 
@@ -49,9 +49,9 @@ run self-improvement on the system             -> still routes
 But blocks critique/meta-discussion:
 
 ```text
-Ignoré la sugerencia del router /phoenix-trace-ui — dogfood evidence #11
+I ignored the router suggestion /phoenix-trace-ui — dogfood evidence #11
 What triggers /auto-rollback? I am afraid work could be lost
-Skill router /deep-research para escritura sigue mal calibrado
+Skill router /deep-research for writing remains miscalibrated
 ```
 
 ## Remaining work

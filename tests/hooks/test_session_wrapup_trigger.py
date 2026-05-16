@@ -56,7 +56,7 @@ def parse_output(result: subprocess.CompletedProcess) -> dict | None:
 class TestPositiveTriggers:
     """Hook should emit additionalContext containing AUTO-TRIGGER and /session-wrapup."""
 
-    def test_cerremos_sesion_triggers(self):
+    def test_close_session_minimal_triggers(self):
         result = run_trigger("close session")
         assert result.returncode == 0
         output = parse_output(result)
@@ -118,18 +118,18 @@ class TestNegativeTriggers:
     """Hook should produce NO output (empty stdout) for non-closure prompts."""
 
     def test_generic_greeting_silent(self):
-        result = run_trigger("hola, como iss?")
+        result = run_trigger("hello, how is it going?")
         assert result.returncode == 0
         assert result.stdout.strip() == "", (
             f"Unexpected output for generic greeting: {result.stdout!r}"
         )
 
-    def test_false_positive_cerrar_archivo(self):
-        """'cerremos este archivo' must NOT trigger — closes a file, not a session."""
-        result = run_trigger("cerremos este archivo por ahora")
+    def test_false_positive_close_file(self):
+        """'close this file' must NOT trigger — closes a file, not a session."""
+        result = run_trigger("close this file for now")
         assert result.returncode == 0
         assert result.stdout.strip() == "", (
-            f"False-positive triggered for 'cerremos este archivo': {result.stdout!r}"
+            f"False-positive triggered for 'close this file': {result.stdout!r}"
         )
 
     def test_unrelated_task_silent(self):
@@ -142,7 +142,7 @@ class TestNegativeTriggers:
         assert result.returncode == 0
         assert result.stdout.strip() == ""
 
-    def test_spanish_unrelated_silent(self):
+    def test_unrelated_analysis_prompt_silent(self):
         result = run_trigger("analyze the code and tell me what is failing")
         assert result.returncode == 0
         assert result.stdout.strip() == ""

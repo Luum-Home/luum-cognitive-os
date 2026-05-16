@@ -805,7 +805,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Skill management ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(create|crear?|generar?)\s+(a\s+|un\s+|una\s+)?skill\b", 0.95),
+                (r"\b(create|generate)\s+(a\s+)?skill\b", 0.95),
                 (r"\bskill[- ]?creator\b", 0.95),
                 (r"\b(new|nuev[oa])\s+skill\b", 0.90),
             ]),

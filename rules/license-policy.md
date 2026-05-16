@@ -23,8 +23,8 @@ Before integrating ANY tool open-source, verify its license.
 | Licencia | Veredicto | Condiciones |
 |----------|-----------|-------------|
 | LGPL v2.1/v3 | ⚠️ CAUTION | Solo como library dinamica. NO modificar el codigo LGPL. NO linkear estaticamente |
-| MPL 2.0 | ⚠️ CAUTION | Cambios al codigo MPL deben ser open-source, pero TU codigo puede ser cerrado |
-| Artistic 2.0 | ⚠️ CAUTION | Similar a MPL — cambios al original deben publicarse |
+| MPL 2.0 | ⚠️ CAUTION | Changes to MPL code must be open-source, but YOUR code can remain closed |
+| Artistic 2.0 | ⚠️ CAUTION | Similar to MPL — changes to the original must be published |
 
 ## Licencias BLOCKSDAS para SaaS
 

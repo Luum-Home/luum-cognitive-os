@@ -1,14 +1,12 @@
 ---
 name: optimize-skill
-description: Optimizar un skill de Claude Code iterativamente usando evals, midiendo
-  mejoras y refinando el prompt
+description: Iteratively optimize a Claude Code skill with evaluations, score measurement, and prompt refinement.
 user_invocable: true
 disable-model-invocation: true
 model: claude-opus-4-6
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 audience: project
-summary_line: Optimizar un skill de Claude Code iterativamente usando evals, midiendo
-  mejoras…
+summary_line: Iteratively optimize a Claude Code skill with evaluations, score measurement, and prompt refinement.
 version: 1.0.0
 platforms:
 - claude-code
@@ -16,119 +14,119 @@ prerequisites: []
 triggers:
 - optimize-skill
 - /optimize-skill
-- /optimize-skill — Karpathy Loop para Skills de Claude Code
-- Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras…
+- /optimize-skill — Karpathy Loop for Claude Code Skills
+- iteratively optimize a Claude Code skill with evaluations
 ---
 <!-- SCOPE: both -->
-# /optimize-skill — Karpathy Loop para Skills de Claude Code
+# /optimize-skill — Karpathy Loop for Claude Code Skills
 
-## Argumentos
+## Arguments
 
 ```
 /optimize-skill <skill-name> [iterations=3]
 ```
 
-- `skill-name`: nombre del skill a optimizar (check-health, start-stack, etc.)
-- `iterations`: cantidad de ciclos de optimizacion (default: 3)
+- `skill-name`: name of the skill to optimize (`check-health`, `start-stack`, etc.).
+- `iterations`: number of optimization cycles to run (default: 3).
 
-## Instrucciones
+## Instructions
 
-Sos un optimizador autonomo de skills, inspirado en autoresearch de Karpathy.
-Tu objetivo es mejorar el score compuesto de un skill sin romper lo que ya funciona.
+You are an autonomous skill optimizer inspired by Karpathy-style autoresearch.
+Your goal is to improve the composite score of a skill without breaking behavior that already works.
 
-### Paso 1: Leer estado actual
-
-```
-Leer:
-  .claude/skills/{skill-name}/SKILL.md          → el skill actual
-  .claude/skills/{skill-name}/evals/test-*.md    → los test cases
-  .claude/skills/{skill-name}/results/benchmark.tsv → historial (si existe)
-```
-
-### Paso 2: Ejecutar benchmark baseline
-
-Para cada eval en `evals/`:
-1. Leer el test case (input + expected behavior)
-2. Simular mentalmente la ejecucion del skill con ese input
-3. Evaluar contra los criterios definidos
-4. Calcular metricas:
-   - `pass_rate`: % de criterios que pasarian
-   - `token_estimate`: tokens estimados que usaria
-   - `tool_calls_estimate`: cantidad de tool calls
-   - `quality`: 0-1 basado en format y completitud esperada
-
-### Paso 3: Identificar areas de mejora
-
-Analizar los evals que tienen menor score y determinar POR QUE:
-- Instrucciones ambiguas en SKILL.md?
-- Pasos innecesarios que agregan tokens/tiempo?
-- Falta de ejemplos concretos?
-- Orden suboptimo de operaciones?
-- Description del skill no triggerea correctamente?
-
-### Paso 4: Proponer modificacion
-
-Aplicar UNA sola modificacion al SKILL.md por iteracion.
-Estrategias en orden de prioridad:
-1. Correct instrucciones que causan fallos en evals
-2. Add examples for failing criteria
-3. Eliminar pasos redundantes (reduce tokens)
-4. Reordenar para eficiencia
-5. Mejorar description/name para triggering
-6. Simplificar sin perder precision
-
-### Paso 5: Re-evaluar
-
-Repetir Paso 2 con el SKILL.md modificado.
-Comparar scores.
-
-### Paso 6: Decidir
+### Step 1: Read the current state
 
 ```
-SI nuevo_score > score_anterior:
-  → Keep cambio
-  → Add line to benchmark.tsv
-  → Continuar con siguiente iteracion
-
-SI nuevo_score <= score_anterior:
-  → Revertir SKILL.md al estado anterior
-  → Anotar en benchmark.tsv que se intento y fallo
-  → Intentar estrategia diferente
+Read:
+  .claude/skills/{skill-name}/SKILL.md              → current skill
+  .claude/skills/{skill-name}/evals/test-*.md       → test cases
+  .claude/skills/{skill-name}/results/benchmark.tsv → history, if present
 ```
 
-### Paso 7: Reporte final
+### Step 2: Run the baseline benchmark
 
-Al terminar las iteraciones, mostrar:
+For each evaluation in `evals/`:
+1. Read the test case (input + expected behavior).
+2. Mentally simulate executing the skill with that input.
+3. Evaluate the result against the defined criteria.
+4. Calculate metrics:
+   - `pass_rate`: percentage of criteria that would pass.
+   - `token_estimate`: estimated tokens used.
+   - `tool_calls_estimate`: number of tool calls.
+   - `quality`: 0-1 score based on expected format and completeness.
+
+### Step 3: Identify improvement areas
+
+Analyze the evaluations with the lowest scores and determine why:
+- Are the instructions in `SKILL.md` ambiguous?
+- Are there unnecessary steps that add tokens or time?
+- Are concrete examples missing?
+- Is the operation order suboptimal?
+- Does the skill description fail to trigger correctly?
+
+### Step 4: Propose one modification
+
+Apply ONE modification to `SKILL.md` per iteration.
+Use these strategies in priority order:
+1. Correct instructions that cause evaluation failures.
+2. Add examples for failing criteria.
+3. Remove redundant steps to reduce tokens.
+4. Reorder steps for efficiency.
+5. Improve the description or name for triggering.
+6. Simplify without losing precision.
+
+### Step 5: Re-evaluate
+
+Repeat Step 2 with the modified `SKILL.md`.
+Compare scores.
+
+### Step 6: Decide
+
+```
+IF new_score > previous_score:
+  → Keep the change
+  → Add a line to benchmark.tsv
+  → Continue with the next iteration
+
+IF new_score <= previous_score:
+  → Revert SKILL.md to the previous state
+  → Record in benchmark.tsv that the attempt failed
+  → Try a different strategy
+```
+
+### Step 7: Final report
+
+At the end of the iterations, show:
 
 ```
 === Skill Optimization Report: {skill-name} ===
 
-Iteraciones: {N}
-Score inicial: {score_i}
-Score final: {score_f}
-Mejora: {delta} ({porcentaje}%)
+Iterations: {N}
+Initial score: {score_i}
+Final score: {score_f}
+Improvement: {delta} ({percentage}%)
 
-Cambios aplicados:
-  1. {descripcion del cambio} → score: {x} → {y}
+Applied changes:
+  1. {change description} → score: {x} → {y}
   2. ...
 
-Cambios descartados:
-  1. {descripcion} → no mejoro (score: {x})
+Discarded changes:
+  1. {description} → did not improve (score: {x})
 
-Metricas finales:
+Final metrics:
   Pass rate: {%}
   Token efficiency: {%}
   Quality: {%}
 
-Proximos pasos sugeridos:
-  - {sugerencia 1}
-  - {sugerencia 2}
+Suggested next steps:
+  - {suggestion 1}
+  - {suggestion 2}
 ```
 
-## Reglas Criticas
+## Critical Rules
 
-- NUNCA modificar archivos en `evals/` — son el ground truth
-- SOLO modificar SKILL.md del skill objetivo
-- UNA modificacion por iteracion (para aislar el efecto)
-- Si despues de 3 intentos fallidos seguidos, PARAR e informar
-- Cada cambio exitoso debe ser explicable (no "magia")
+- NEVER modify files in `evals/`; they are the ground truth.
+- ONLY modify the target skill's `SKILL.md`.
+- Make ONE modification per iteration so the effect can be isolated.
+- After 3 consecutive failed attempts, STOP and report.
+- Each successful change must be explainable (no "magic").

@@ -359,7 +359,7 @@ python3 -m pytest tests/unit/test_record_completion.py -v
 ### Infrastructure tests (bash, fast)
 
 ```bash
-bash tests/infra/test-hooks.sh    # Hook existsnce, permissions, syntax
+bash tests/infra/test-hooks.sh    # Hook existence, permissions, syntax
 bash tests/infra/test-skills.sh   # Skill structure, catalog sync
 bash tests/infra/test-rules.sh    # Rule existence, RULES-COMPACT sync
 bash tests/infra/test-config.sh   # YAML validation

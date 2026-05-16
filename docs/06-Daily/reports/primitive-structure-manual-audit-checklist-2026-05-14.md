@@ -2,30 +2,30 @@
 
 ## Goal
 
-Depurar la estandarización estructural de primitivas después de la normalización automática, separando tres cosas:
+Clean up primitive structural standardization after automatic normalization, separating three concerns:
 
-1. estructura de archivo parseable;
-2. contrato comportamental/projection (`manifests/primitive-contracts.yaml`);
-3. taxonomía semántica `SCOPE` gobernada por ADR-314.
+1. parseable file structure;
+2. behavior/projection contract (`manifests/primitive-contracts.yaml`);
+3. semantic taxonomy `SCOPE` governed by ADR-314.
 
 ## Non-goals
 
-- No reclasificar `SCOPE` por grep.
-- No convertir `primitive-structure-scopes.yaml` en un segundo registry comportamental.
-- No editar contenido procedimental salvo que rompa estructura parseable.
+- Do not reclassify `SCOPE` by grep.
+- Do not turn `primitive-structure-scopes.yaml` into a second behavior registry.
+- Do not edit procedural content unless it breaks parseable structure.
 
 ## Acceptance criteria
 
 - [ ] Parser inventory: `missing_scope_marker = 0`.
 - [ ] Parser inventory: `structural_findings = {}`.
-- [ ] `primitive-contracts.yaml` sigue documentado como registry canónico de comportamiento/projection.
-- [ ] Skills: YAML empieza en byte 0; `SCOPE` aparece después del frontmatter; no hay pérdida de comentarios no-SCOPE relevantes.
-- [ ] Rules: reglas normales tienen `Contextual Trigger`; índices (`RULES-COMPACT`, `ROADMAP`) no son tratados como reglas normales.
-- [ ] Hooks: hooks reales tienen scope; archived/disabled/support no inflan deuda.
-- [ ] Scripts: scripts con scope añadido usan evidencia existente; support files no son primitivas.
-- [ ] Templates: no se corrompen artefactos renderizados con comentarios inline; templates comment-hostile usan metadata estructural.
-- [ ] Locks/registros pasan auditoría.
-- [ ] Tests focalizados pasan.
+- [ ] `primitive-contracts.yaml` remains documented as the canonical behavior/projection registry.
+- [ ] Skills: YAML starts at byte 0; `SCOPE` appears after frontmatter; there is no loss of relevant non-SCOPE comments.
+- [ ] Rules: normal rules have `Contextual Trigger`; indexes (`RULES-COMPACT`, `ROADMAP`) are not treated as normal rules.
+- [ ] Hooks: real hooks have scope; archived/disabled/support do not inflate debt.
+- [ ] Scripts: scripts with added scope use existing evidence; support files are not primitives.
+- [ ] Templates: rendered artifacts are not corrupted with inline comments; templates comment-hostile use structural metadata.
+- [ ] Locks/registries pass audit.
+- [ ] Focused tests pass.
 
 ## Manual review matrix
 

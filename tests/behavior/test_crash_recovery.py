@@ -21,7 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 # ---------------------------------------------------------------------------
-# Hook existsnce and validity
+# Hook existence and validity
 # ---------------------------------------------------------------------------
 
 

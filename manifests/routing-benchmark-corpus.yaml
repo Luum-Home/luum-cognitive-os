@@ -369,11 +369,11 @@ skills:
         - "scaffold a skill"
         - "I want to add a skill"
       es:
-        - "agrega una nueva skill"
-        - "crea una skill llamada foo"
-        - "registra una nueva skill"
-        - "scaffold de una skill"
-        - "quiero add una skill"
+        - "add a new skill"
+        - "create a skill named foo"
+        - "register a new skill"
+        - "scaffold a skill"
+        - "I want to add a skill"
       pt:
         - "adicione uma nova skill"
         - "crie uma skill chamada foo"
@@ -393,11 +393,11 @@ skills:
         - "scaffolde une skill"
         - "je veux ajouter une skill"
       it:
-        - "aggiungi una nuova skill"
-        - "crea una skill chiamata foo"
-        - "registra una nuova skill"
-        - "scaffolda una skill"
-        - "voglio aggiungere una skill"
+        - "add a new skill"
+        - "create a skill named foo"
+        - "register a new skill"
+        - "scaffold a skill"
+        - "I want to add a skill"
 
   sdd-init:
     description: |

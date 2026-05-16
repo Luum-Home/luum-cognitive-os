@@ -18,9 +18,9 @@ command -v jq >/dev/null 2>&1 || exit 0
 PROMPT=$(echo "$INPUT" | jq -r '.user_prompt // .prompt // empty' 2>/dev/null || true)
 [ -z "$PROMPT" ] && exit 0
 
-# Closure-intent regex (case-insensitive, whole-word where helpful)
-# Accented/unaccented variants + Spanish + English + common colloquial
-CLOSURE_RE='cerr(a|á|emos|emosla)[[:space:]]+(la[[:space:]]+)?sesi[oó]n|session[[:space:]]+(close|end|wrap[[:space:]]*up)|we are done|listo[,[:space:]]+(ce|cerr)|cerrar[[:space:]]+sesi[oó]n'
+# Closure-intent regex (case-insensitive).
+# English-only repository policy: match explicit session-close intent only.
+CLOSURE_RE='close[[:space:]]+(the[[:space:]]+)?session|end[[:space:]]+(the[[:space:]]+)?session|session[[:space:]]+(close|end|wrap[[:space:]]*up)|wrap[[:space:]]+up[[:space:]]+the[[:space:]]+session|we[[:space:]]+are[[:space:]]+done|done[[:space:]]+for[[:space:]]+(today|now)|finish[[:space:]]+(the[[:space:]]+)?session'
 
 if echo "$PROMPT" | grep -qiE "$CLOSURE_RE"; then
     # Emit additionalContext per ADR-023 pattern
