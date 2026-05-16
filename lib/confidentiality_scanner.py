@@ -59,8 +59,8 @@ class ProtectedTerms:
     Attributes:
         project_names: Internal project identifiers (e.g. ``"project-alpha"``).
         client_names:  Client identifiers (e.g. ``"acme-corp"``).
-        repo_urls:     Full repository slugs (e.g. ``"org/repo-privado"``).
-        org_names:     GitHub / GitLab organisation names (e.g. ``"luum"``).
+        repo_urls:     Full repository slugs (e.g. ``"org/repo-private"``).
+        org_names:     GitHub / GitLab organization names (e.g. ``"luum"``).
     """
 
     project_names: List[str] = field(default_factory=list)
@@ -89,15 +89,13 @@ _EN_ATTRIBUTION = (
     r"|extracted from|reused from|ported from)"
 )
 
-# Attribution phrases in Spanish.
-_ES_ATTRIBUTION = (
-    r"(?:based on|extracted from|model taken from"
-    r"|tomado de|tomada de|copiado de|copiada de|adaptado de|adaptada de"
-    r"|reutilizado de|reutilizada de|inspirado en|inspirada en)"
+# Additional English attribution phrases that may expose source-project lineage.
+_ADDITIONAL_ATTRIBUTION = (
+    r"(?:extracted from|model taken from)"
 )
 
 _ATTRIBUTION_RE = re.compile(
-    rf"(?:{_EN_ATTRIBUTION}|{_ES_ATTRIBUTION})",
+    rf"(?:{_EN_ATTRIBUTION}|{_ADDITIONAL_ATTRIBUTION})",
     re.IGNORECASE,
 )
 

@@ -32,15 +32,15 @@ def mac_project_path(user: str, project: str, *parts: str) -> str:
 def test_detects_external_project_path():
     """A path from a different project triggers an external_path violation."""
     text = (
-        f"The auth module at {mac_project_path('matias', 'otro-proyecto', 'src', 'auth.go')}"
+        f"The auth module at {mac_project_path('matias', 'other-project', 'src', 'auth.go')}"
         " was used as reference."
     )
-    current = mac_project_path("matias", "mi-proyecto")
+    current = mac_project_path("matias", "my-project")
     violations = scan_text(text, current_project_dir=current)
 
     ext = [v for v in violations if v.pattern_type == "external_path"]
     assert len(ext) == 1
-    assert "otro-proyecto" in ext[0].matched_text
+    assert "other-project" in ext[0].matched_text
 
 
 # ---------------------------------------------------------------------------
@@ -51,9 +51,9 @@ def test_detects_external_project_path():
 def test_ignores_same_project_path():
     """A path that belongs to the current project must not be flagged."""
     text = (
-        f"See {mac_project_path('matias', 'mi-proyecto', 'docs', 'README.md')} for details."
+        f"See {mac_project_path('matias', 'my-project', 'docs', 'README.md')} for details."
     )
-    current = mac_project_path("matias", "mi-proyecto")
+    current = mac_project_path("matias", "my-project")
     violations = scan_text(text, current_project_dir=current)
 
     ext = [v for v in violations if v.pattern_type == "external_path"]
@@ -67,7 +67,7 @@ def test_ignores_same_project_path():
 
 def test_detects_protected_repo_url():
     """A github.com URL whose org is in the protected list triggers a repo_url violation."""
-    text = "The code was adapted from github.com/luum/repo-privado implementation."
+    text = "The code was adapted from github.com/luum/repo-private implementation."
     terms = ProtectedTerms(org_names=["luum"])
     violations = scan_text(text, terms=terms)
 
@@ -77,13 +77,13 @@ def test_detects_protected_repo_url():
 
 
 # ---------------------------------------------------------------------------
-# B1 — Spanish attribution with protected project name
+# B1 — English attribution with protected project name
 # ---------------------------------------------------------------------------
 
 
-def test_detects_spanish_attribution_with_protected_term():
-    """A Spanish attribution phrase followed by a protected project name is caught."""
-    text = "El diseño is basado en el modelo de project-alpha para facilitar la integración."
+def test_detects_english_attribution_with_protected_term():
+    """An English attribution phrase followed by a protected project name is caught."""
+    text = "The design is based on the model from project-alpha to simplify integration."
     terms = ProtectedTerms(project_names=["project-alpha"])
     violations = scan_text(text, terms=terms)
 
@@ -99,7 +99,7 @@ def test_detects_spanish_attribution_with_protected_term():
 
 def test_detects_english_attribution_with_external_path():
     """An English attribution phrase followed by an external path is flagged."""
-    text = f"This handler was adapted from the auth module in {mac_project_path('matias', 'otro')}/."
+    text = f"This handler was adapted from the auth module in {mac_project_path('matias', 'other')}/."
     current = mac_project_path("matias", "mine")
     violations = scan_text(text, current_project_dir=current)
 
@@ -129,9 +129,9 @@ def test_no_violations_in_clean_text():
 def test_is_scannable_path():
     """Verify correct classification of scannable vs non-scannable paths."""
     # Scannable
-    assert is_scannable_path("docs/resumen-ejecutivo.md") is True
+    assert is_scannable_path("docs/executive-summary.md") is True
     assert is_scannable_path("README.md") is True
-    assert is_scannable_path("docs/01-contexto/brief.md") is True
+    assert is_scannable_path("docs/01-context/brief.md") is True
     assert is_scannable_path("CHANGELOG.md") is True
     assert is_scannable_path("README") is True
     # Path containing /docs/ but no .md extension
