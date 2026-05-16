@@ -36,7 +36,7 @@ Verdict breakdown:
 | openai/codex | monitor | **MONITOR_CONFIRMED** | Competitor harness; ADR-033 cross-harness-authoring already abstracts adapter concerns. | n/a (competitor harness — write adapter only if user demands) |
 | shanraisshan/claude-code-best-practice | monitor | **MONITOR_CONFIRMED** | Documentation; could mine for prompt-engineering patterns but COS rules already comprehensive. | small (extract prompt patterns if any are novel) |
 | DavidAnson/markdownlint-cli2 | monitor | **TRIAL** | Docs quality tool; could be wired into CI for ADR/RULES files. Not a skill, but a CI primitive. | small (add to .github/workflows) |
-| JuliusBrussee/caveman | monitor | **MONITOR_CONFIRMED** | Already lives in COS as caveman/caveman-es skills. | n/a (adopted) |
+| JuliusBrussee/caveman | monitor | **MONITOR_CONFIRMED** | Already lives in COS as the caveman skill. | n/a (adopted) |
 | junegunn/fzf | monitor | **MONITOR_CONFIRMED** | Shell utility; could power interactive prompts in COS scripts but not a skill primitive. | small (developer convenience) |
 | lycheeverse/lychee | monitor | **MONITOR_CONFIRMED** | Already adopted; deep audit only on need. | n/a (adopted) |
 | lycheeverse/lychee-action | monitor | **TRIAL** | Companion CI primitive; adopt-on-need if we wire link checking to PRs. | small (one workflow file) |

@@ -95,12 +95,6 @@ def test_caveman_skill_exists(project_root):
     assert skill_path.exists(), f"Missing: {skill_path}"
 
 
-def test_caveman_es_skill_exists(project_root):
-    """skills/caveman-es/SKILL.md must exist."""
-    skill_path = project_root / "skills" / "caveman-es" / "SKILL.md"
-    assert skill_path.exists(), f"Missing: {skill_path}"
-
-
 def test_caveman_compress_skill_exists(project_root):
     """skills/caveman-compress/SKILL.md must exist."""
     skill_path = project_root / "skills" / "caveman-compress" / "SKILL.md"
@@ -110,9 +104,10 @@ def test_caveman_compress_skill_exists(project_root):
 # --- Catalog tests ---
 
 def test_caveman_in_catalog(catalog_text):
-    """CATALOG.md must list all three caveman skills."""
+    """CATALOG.md must list active caveman skills."""
     assert "caveman" in catalog_text
-    assert "caveman-es" in catalog_text
+    removed_alias = "caveman" + "-" + "es"
+    assert removed_alias not in catalog_text
     assert "caveman-compress" in catalog_text or "compress" in catalog_text
 
 

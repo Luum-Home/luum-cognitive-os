@@ -335,7 +335,6 @@ Adding a scope tag to every component's frontmatter / header makes this filterab
 | skills/capability-snapshot | os-only | Snapshot OS capabilities before cleanup |
 | skills/caveman | both | Token compression useful everywhere |
 | skills/caveman-compress | both | Memory compression universal |
-| skills/caveman-es | both | Spanish caveman mode universal |
 | skills/code-review | both | Universal code review |
 | skills/cognee-integration | both | Knowledge graph useful in any project |
 | skills/cognee-search | both | Semantic search universal |

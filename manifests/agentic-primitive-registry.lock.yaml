@@ -8011,16 +8011,6 @@ primitives:
   projection_targets:
   - skills/caveman-compress/SKILL.md
   sha256: fda9cb5ac38c16f9a7cf4a0eedba5a425232c0cd27362f3fbb55a51e8e504af8
-- id: skills/caveman-es/SKILL.md
-  kind: skill
-  owner_adr: ADR-314
-  lifecycle_state: active
-  maturity: advisory
-  distribution: lab
-  runtime_projection: false
-  projection_targets:
-  - skills/caveman-es/SKILL.md
-  sha256: 3dec6674b113b0d49e7551d1df15af5cbb8e264da19fc2ed4a1f37ee67d8f331
 - id: skills/caveman/SKILL.md
   kind: skill
   owner_adr: ADR-314

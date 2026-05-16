@@ -59,7 +59,6 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 | 20 | vulnerability-scan | skills/ | ATOMIC | CLEAN | COMPOSABLE | Runs Garak probes; clear scope and output |
 | 21 | caveman | skills/ | ATOMIC | CLEAN | STANDALONE | Ultra-compressed communication mode — single behavioral toggle |
 | 22 | caveman-compress | skills/ | ATOMIC | CLEAN | COMPOSABLE | Compress memory files to caveman format |
-| 23 | caveman-es | skills/ | ATOMIC | CLEAN | STANDALONE | Spanish variant of caveman — nearly duplicate of caveman |
 | 24 | agent-stress-test | skills/ | COMPOSITE | CLEAN | STANDALONE | 4-phase cognitive load test — phases are tightly ordered |
 | 25 | code-review | skills/ | ATOMIC | CLEAN | STANDALONE | Adversarial code review with Engram integration |
 | 26 | pr-review | skills/ | COMPOSITE | CLEAN | STANDALONE | PR diff + review + test/coverage/lint — naturally ordered |
@@ -459,10 +458,10 @@ Added `project.architecture` config section to `cognitive-os.yaml` with:
 
 Each integration skill would reference the template for shared sections and only define its unique steps. Estimated savings: ~30 lines per skill (180 lines total across 6 skills).
 
-**Additional dedup candidate**: `caveman` and `caveman-es` are identical (55 lines each) except for language. Merge into one skill with a `language` parameter.
+**Resolved dedup candidate**: the locale-specific caveman alias was removed; use the single `caveman` skill.
 
 ### Next Steps
 
 - Phase 3 execution: Split `resource-governor` and `agent-kpis` first (highest independent-concern counts)
 - Phase 4 execution: Create `tool-integration-template` and refactor one integration skill as proof of concept
-- Merge `caveman` / `caveman-es` into parameterized single skill
+- Keep `caveman` as the single compressed-communication skill

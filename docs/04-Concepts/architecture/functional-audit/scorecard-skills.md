@@ -49,7 +49,7 @@ Each SKILL.md was evaluated against these rules in priority order:
 
 add-hook, add-mcp, add-rule, add-skill, agent-dashboard, agent-kpis, analyze-improvements,
 apply-improvements, audit-integrity, audit-website, automaker-bridge, batch-runner,
-bump-version, catalog-full, caveman, caveman-compress, caveman-es, code-review,
+bump-version, catalog-full, caveman, caveman-compress, code-review,
 cognee-integration, cognee-search, cognitive-os-benchmark, cognitive-os-init,
 cognitive-os-test, compat-test, component-classifier, compose-prompt, confidence-check,
 contract-drift, conversation-memory, deep-research, deepeval-integration, detect-patterns,

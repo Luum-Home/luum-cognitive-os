@@ -9,7 +9,7 @@ phase: 2
 
 ## Phase 1 (Shallow) Verdict
 - **Verdict:** monitor
-- **Rationale:** Already integrated as caveman + caveman-es skills.
+- **Rationale:** Already integrated as the caveman skill.
 
 ## Phase 2 (Light-Deep) Verification
 
@@ -27,7 +27,7 @@ phase: 2
 MIT, ~55k stars (signal anomalous). Token compression via caveman speech; already adopted.
 
 ### Peer Overlap with COS
-Already lives in COS as caveman/caveman-es skills.
+Already lives in COS as the caveman skill.
 
 ## Revised Verdict
 

@@ -135,4 +135,4 @@ backup directory. Do not restore blindly into `main`; use a session branch.
 
 Keywords: clean preserved WIP, cleanup stashes, drop stashes safely, validation
 capsule cleanup, zombie sessions, blockers zero, worktree stash count, no agents
-working, close session limpia, limpiar todo.
+working, clean session blockers, remove cleanup blockers.

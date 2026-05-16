@@ -1585,10 +1585,6 @@ items:
   status: shared-surface
   rationale: 'Manual scope calibration iteration 016: natural-language memory compression
     is reusable for COS memory files and adopter project memory/preferences files.'
-- path: skills/caveman-es/SKILL.md
-  status: shared-surface
-  rationale: 'Manual scope calibration iteration 016: Spanish concise communication
-    mode is repo-agnostic agent behavior for COS and adopter projects.'
 - path: skills/caveman/SKILL.md
   status: shared-surface
   rationale: 'Manual scope calibration iteration 016: concise communication mode is

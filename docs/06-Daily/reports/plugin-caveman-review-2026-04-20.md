@@ -13,7 +13,7 @@ Two distinct components:
 1. **caveman skill** (`skills/caveman/SKILL.md`) — switches agent output to ultra-compressed mode, cutting ~75% of output tokens with no technical accuracy loss. Supports intensity levels: `lite`, `full` (default), `ultra`.
 2. **caveman-compress** (`caveman-compress/`) — memory file compressor that rewrites `.claude/` memory and context files in caveman-speak, claiming ~45% reduction in input tokens each session.
 
-Additional locale variants: `caveman-cn` (Chinese), `caveman-es` (Spanish).
+Additional locale-specific variants were evaluated and are not retained.
 
 ## Integration Status
 

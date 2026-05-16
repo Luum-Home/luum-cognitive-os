@@ -2137,10 +2137,10 @@
         "config_consumers:3"
       ],
       "family": "skills",
-      "lifecycle_id": "skills/caveman-es/SKILL.md",
+      "lifecycle_id": "skills/caveman/SKILL.md",
       "lifecycle_state": "active",
       "next_action": "keep maintainer-only or add explicit export path",
-      "path": "skills/caveman-es/SKILL.md",
+      "path": "skills/caveman/SKILL.md",
       "role": "lab",
       "role_source": "lifecycle",
       "supported_harnesses": [
@@ -2228,7 +2228,7 @@
         },
         {
           "family": "skill",
-          "path": "skills/caveman-es/SKILL.md"
+          "path": "skills/caveman/SKILL.md"
         },
         {
           "family": "test",

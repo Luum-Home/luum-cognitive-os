@@ -96,7 +96,7 @@ Selective cleanup — review each pattern, delete the multilingual OR-chains, ke
 - `browser-task` (3)
 - `catalog-full` (3)
 - `caveman` (2)
-- `caveman-es` (2)
+- `caveman` (2)
 - `code-review` (3)
 - `cognee-integration` (3)
 - `cognee-search` (3)

@@ -56,8 +56,6 @@ skills:
   sha256: 292944c2d0a02accaa8dd132fc5c6743d5516c0b8cc9e38a1688fc49700efdaa
 - path: skills/caveman-compress/SKILL.md
   sha256: 30a0f6623ef9e162f607d307939aad013c24130b652579900e55064b91dbff7a
-- path: skills/caveman-es/SKILL.md
-  sha256: aa4a46278d8b57e141a56169c0d21f5e6e320ac4f60cccd0654ea0621fb9f22e
 - path: skills/code-review/SKILL.md
   sha256: 1b4425dee14d08a3ec8db8da10efabfed5165caeeb0027fb07a34cf7b231962d
 - path: skills/cognee-integration/SKILL.md

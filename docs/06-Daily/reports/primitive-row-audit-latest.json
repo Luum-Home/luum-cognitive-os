@@ -2858,9 +2858,9 @@
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=False; tested=True",
       "family": "skills",
-      "name": "caveman-es",
+      "name": "caveman",
       "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
-      "path": "skills/caveman-es/SKILL.md",
+      "path": "skills/caveman/SKILL.md",
       "severity": "medium",
       "status": "partial"
     },

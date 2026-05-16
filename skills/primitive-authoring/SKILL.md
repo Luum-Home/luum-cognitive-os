@@ -26,7 +26,7 @@ platforms:
 routing_patterns:
 - pattern: \bprimitive[- ]?authoring\b
   confidence: 0.96
-- pattern: \b(create|build|add|author|promote|modify)\s+(a\s+)?(new\s+)?(agentic\s+)?primitive\b
+- pattern: \bagentic[- ]?primitive[- ]?authoring\b
   confidence: 0.92
 - pattern: /primitive-authoring\b
   confidence: 0.96

@@ -912,7 +912,7 @@ Actionable gaps: 0
 | `skill:skills/bump-version/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:skills/catalog-full/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:skills/caveman-compress/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `skill:skills/caveman-es/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
+| `skill:skills/caveman/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:skills/caveman/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:skills/code-review/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:skills/cognitive-os-init/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |

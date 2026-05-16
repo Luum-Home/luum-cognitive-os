@@ -102,7 +102,7 @@ Targets without any consumer: 0
 | `skills/bump-version/SKILL.md` | 31 | 329 | config:1, doc:137, hook:10, rule:12, script:23, skill:31, test:115 |
 | `skills/catalog-full/SKILL.md` | 26 | 323 | config:1, doc:136, hook:10, rule:12, script:23, skill:26, test:115 |
 | `skills/caveman-compress/SKILL.md` | 26 | 322 | config:1, doc:135, hook:10, rule:12, script:23, skill:26, test:115 |
-| `skills/caveman-es/SKILL.md` | 27 | 325 | config:1, doc:137, hook:10, rule:12, script:23, skill:27, test:115 |
+| `skills/caveman/SKILL.md` | 27 | 325 | config:1, doc:137, hook:10, rule:12, script:23, skill:27, test:115 |
 | `skills/caveman/SKILL.md` | 27 | 330 | config:1, doc:139, hook:10, rule:12, script:23, skill:27, test:118 |
 | `skills/code-review/SKILL.md` | 28 | 332 | config:1, doc:140, hook:10, rule:13, script:23, skill:28, test:117 |
 | `skills/cognitive-os-init/SKILL.md` | 28 | 348 | config:2, doc:154, hook:10, rule:14, script:23, skill:28, test:117 |

@@ -26,7 +26,6 @@ Classification asks where the primitive is required for correct runtime / author
 | `skills/branch-worktree-closure/SKILL.md` | `both` | shared-surface metadata | Git branch/worktree closure protocol is repository-agnostic for COS and adopter project agent worktrees. |
 | `skills/catalog-full/SKILL.md` | `both` | shared-surface metadata | Full skill catalog lookup is useful for COS source catalogs and installed/project skill catalogs. |
 | `skills/caveman-compress/SKILL.md` | `both` | shared-surface metadata | Natural-language memory compression is reusable for COS memory files and adopter project memory/preferences files. |
-| `skills/caveman-es/SKILL.md` | `both` | shared-surface metadata | Spanish concise communication mode is repo-agnostic agent behavior for COS and adopter projects. |
 | `skills/caveman/SKILL.md` | `both` | shared-surface metadata | Concise communication mode is repo-agnostic agent behavior for COS and adopter projects. |
 | `skills/compat-test/SKILL.md` | `both` | shared-surface metadata | Model/COS compatibility smoke test applies to COS development and installed COS behavior inside adopter projects. |
 

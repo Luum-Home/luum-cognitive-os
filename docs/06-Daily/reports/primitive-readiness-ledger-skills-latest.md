@@ -30,7 +30,7 @@ Consumer accessibility: lifecycle-declared-maintainer:98, projected-consumer-sur
 | `skills/bump-version/SKILL.md` | so-maintainer | heuristic:text | medium | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `skills/catalog-full/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 12 | keep maintainer-only or add explicit export path |
 | `skills/caveman-compress/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 10 | keep maintainer-only or add explicit export path |
-| `skills/caveman-es/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 9 | keep maintainer-only or add explicit export path |
+| `skills/caveman/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 9 | keep maintainer-only or add explicit export path |
 | `skills/caveman/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | active | 26 | keep maintainer-only or add explicit export path |
 | `skills/code-review/SKILL.md` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 52 | keep maintainer-only or add explicit export path |
 | `skills/cognitive-os-init/SKILL.md` | compatibility-wrapper | usage:script-hook | high | lifecycle-declared-maintainer | advisory | 50 | keep maintainer-only or add explicit export path |

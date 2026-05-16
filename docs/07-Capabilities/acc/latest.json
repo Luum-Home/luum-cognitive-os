@@ -41640,21 +41640,21 @@
         "consumer_accessibility:lifecycle-declared-maintainer",
         "availability_override:shared-surface",
         "availability_match:exact",
-        "availability_rationale:Manual scope calibration iteration 016: Spanish concise communication mode is repo-agnostic agent behavior for COS and a",
+        "availability_rationale:Manual scope calibration iteration 016: concise communication mode is repo-agnostic agent behavior for COS and a",
         "projected_harnesses:agents-md,aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
         "projected_profiles:full"
       ],
-      "id": "skill:skills/caveman-es/SKILL.md",
+      "id": "skill:skills/caveman/SKILL.md",
       "kind": "skill",
       "lifecycle_status": "dormant",
       "mapping_status": "aligned",
       "represented_by": [
         {
           "consumer_accessibility": "projected-consumer-surface",
-          "id": "skills/caveman-es/SKILL.md",
+          "id": "skills/caveman/SKILL.md",
           "kind": "skill",
           "role": "lab",
-          "source": "skills/caveman-es/SKILL.md"
+          "source": "skills/caveman/SKILL.md"
         }
       ],
       "risk": "medium",
@@ -41669,7 +41669,7 @@
       },
       "source": {
         "family": "skills",
-        "path": "skills/caveman-es/SKILL.md"
+        "path": "skills/caveman/SKILL.md"
       },
       "weight": 2
     },
@@ -85951,16 +85951,16 @@
         "gap:projected/wired but no direct behavior proof reference detected",
         "gap_policy:structural-only-ok"
       ],
-      "id": "harness_coverage:skills/caveman-es/SKILL.md",
+      "id": "harness_coverage:skills/caveman/SKILL.md",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "id": "skills/caveman-es/SKILL.md",
+          "id": "skills/caveman/SKILL.md",
           "kind": "harness_coverage",
           "role": "harness-implementation",
-          "source": "skills/caveman-es/SKILL.md"
+          "source": "skills/caveman/SKILL.md"
         }
       ],
       "risk": "low",
@@ -85972,7 +85972,7 @@
       "source": {
         "family": "skills",
         "path": "docs/06-Daily/reports/primitive-harness-coverage-latest.json",
-        "primitive": "skills/caveman-es/SKILL.md"
+        "primitive": "skills/caveman/SKILL.md"
       },
       "weight": 1
     },
@@ -125873,7 +125873,7 @@
       ],
       "projection_class": "shared"
     },
-    "skills/caveman-es/SKILL.md": {
+    "skills/caveman/SKILL.md": {
       "harnesses": [
         "agents-md",
         "aider",
@@ -125899,7 +125899,7 @@
         "zed-ai"
       ],
       "paths": [
-        ".cognitive-os/skills/cos/caveman-es/SKILL.md"
+        ".cognitive-os/skills/cos/caveman/SKILL.md"
       ],
       "profiles": [
         "full"

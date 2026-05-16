@@ -32,7 +32,7 @@ reject: 8
 - Primary language: Python
 - Purpose: Token-compression skill for Claude Code (~65% token reduction via caveman speech).
 - Verdict: **monitor**
-- Rationale: Already integrated as `caveman` and `caveman-es` skills. Track upstream.
+- Rationale: Already integrated as `caveman` skill. Track upstream.
 
 ### 3. aimasteracc/tree-sitter-analyzer
 - URL: https://github.com/aimasteracc/tree-sitter-analyzer

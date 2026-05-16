@@ -10474,7 +10474,7 @@
         "skills/analyze-improvements/SKILL.md",
         "skills/audit-integrity/SKILL.md",
         "skills/caveman-compress/SKILL.md",
-        "skills/caveman-es/SKILL.md",
+        "skills/caveman/SKILL.md",
         "skills/caveman/SKILL.md",
         "skills/cognitive-os-init/SKILL.md",
         "skills/detect-patterns/SKILL.md",
@@ -84068,8 +84068,8 @@
           "status": "partial"
         }
       },
-      "path": "skills/caveman-es/SKILL.md",
-      "primitive_id": "skill:skills/caveman-es/SKILL.md",
+      "path": "skills/caveman/SKILL.md",
+      "primitive_id": "skill:skills/caveman/SKILL.md",
       "proof_links": [
         "tests/audit/shell_test_utils.py",
         "tests/audit/test_canonical_event_emitter_contract.py",
@@ -84337,7 +84337,7 @@
         "skills/audit-integrity/SKILL.md",
         "skills/catalog-full/SKILL.md",
         "skills/caveman-compress/SKILL.md",
-        "skills/caveman-es/SKILL.md",
+        "skills/caveman/SKILL.md",
         "skills/cognitive-os-init/SKILL.md",
         "skills/cognitive-os-status/SKILL.md",
         "skills/deps-update/SKILL.md",

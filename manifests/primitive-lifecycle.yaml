@@ -22305,34 +22305,6 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: skill-procedure
   metrics_file: none
-- id: skills/caveman-es/SKILL.md
-  kind: skill
-  owner_adr: ADR-314
-  lifecycle_state: active
-  maturity: advisory
-  distribution: lab
-  demotion_evidence:
-    rationale: 'Manifest-tier remediation 2026-05-15: skill is reusable/advisory but
-      not a runtime-safety blocker; lab distribution preserves opt-in availability
-      without a core/team product claim.'
-    audit_command: scripts/cos-manifest-tier-claim-audit --json
-  consumer_accessibility: lifecycle-declared-shared-surface
-  governance_class: skill-shared-surface
-  risk_class: advisory
-  supported_harnesses:
-  - claude
-  - codex
-  - generic-cli
-  projection_targets:
-  - skills/caveman-es/SKILL.md
-  runtime_projection: false
-  behavior_evidence: 'Manual scope calibration iteration 016: Spanish concise communication
-    mode is repo-agnostic agent behavior for COS and adopter projects.'
-  evidence_commands:
-  - python3 scripts/primitive_scope_classifier.py --project-dir . --paths skills/caveman-es/SKILL.md
-  docs_claim_level: advisory
-  exit_behavior: skill-procedure
-  metrics_file: none
 - id: skills/caveman/SKILL.md
   kind: skill
   owner_adr: ADR-314

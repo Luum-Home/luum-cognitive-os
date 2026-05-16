@@ -95,11 +95,11 @@ def test_audit_classifies_regex_with_intents_as_compatibility(tmp_path: Path, mo
     assert finding.has_summary_line is True
 
 
-def test_audit_classifies_intentionally_localized_skill(tmp_path: Path, monkeypatch) -> None:
+def test_audit_classifies_intentionally_locale_specific_skill(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setenv("COS_LANGUAGE_AUDIT_DISABLE_LINGUA", "1")
     _write_skill(
         tmp_path,
-        "caveman-es",
+        "localized-skill",
         [r"\b(review|fix|do).{0,40}\b(code)\b"],
     )
 
