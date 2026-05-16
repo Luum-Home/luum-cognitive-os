@@ -301,7 +301,7 @@ skills:
 - path: skills/session-pending-brief/SKILL.md
   sha256: 5bbbf1eee97956595630bac08f0cd42df954a978d3ffb9c99e44c51454383597
 - path: skills/session-pending-close/SKILL.md
-  sha256: 36840b6583a3ba01322ed15afdccf0e01ebf46286d8da14435d54c4ce60a5aa9
+  sha256: 97b807ea19ef4f2dc3c6477250f9c4c56f1f1a6793dfdbd163f2f74b8bb950a5
 - path: skills/session-report-executive/SKILL.md
   sha256: 8651f92b8be973ff5c04c4167d0d45d4002ed1f0322bee427f8cc9c0ef2e4c6c
 - path: skills/session-wrapup/SKILL.md

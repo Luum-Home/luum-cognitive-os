@@ -58,7 +58,7 @@ Both write to the closure-trail and refresh the aggregator.
 ## When to use
 
 - Agent finished work that closes a known ledger item.
-- Operator says "cerrá X" / "close Y" with a specific id or ADR.
+- Operator asks to close a specific item, task, ledger id, or ADR.
 - Multiple closures at once after a batch of work.
 
 ## When NOT to use
