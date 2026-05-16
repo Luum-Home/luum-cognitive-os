@@ -19,6 +19,13 @@ routing_patterns:
   confidence: 0.96
 - pattern: \bverify EAS\b
   confidence: 0.9
+routing_intents:
+- intent: verify_sdd_implementation
+  description: User wants independent verification that completed SDD implementation satisfies requirements and collected evidence.
+  confidence: 0.9
+- intent: check_eas_coverage_and_detractors
+  description: User asks to confirm Executable Acceptance Specification coverage and disposition detractors after implementation, not to make further changes.
+  confidence: 0.88
 triggers:
 - sdd-verify
 - /sdd-verify

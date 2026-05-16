@@ -11,6 +11,10 @@ summary_line: DEPRECATED alias for /repo-scout
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: deprecated_eval_repo_alias
+  description: User explicitly invokes the legacy eval-repo skill name and should be redirected to repo-scout while preserving backward compatibility.
+  confidence: 0.9
 routing_patterns:
 - pattern: \beval[- ]?repo\b
   confidence: 0.95

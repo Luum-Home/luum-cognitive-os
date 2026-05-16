@@ -21,6 +21,15 @@ routing_patterns:
   confidence: 0.8
 - pattern: \bdoc\s+evidence\s+audit\b
   confidence: 0.75
+routing_intents:
+- intent: audit_documentation_claims_against_repo
+  description: User wants documentation statements classified by repository evidence
+    as done, weak-proof, planned, proposed, stale, or unknown.
+  confidence: 0.88
+- intent: verify_docs_execution_status
+  description: User asks whether docs accurately reflect implemented work, distinct
+    from reviewing clarity, tone, or stakeholder usefulness.
+  confidence: 0.84
 triggers:
 - docs-execution-audit
 - /docs-execution-audit

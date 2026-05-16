@@ -17,6 +17,13 @@ summary_line: Push the release commit and tags to the remote — always requires
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: push_release_commit_and_tags
+  description: User wants to push an already prepared release commit and version tags to the remote after explicit confirmation.
+  confidence: 0.9
+- intent: publish_prepared_release_refs
+  description: User asks for the final git publication step only, distinct from building, validating, or orchestrating the release.
+  confidence: 0.86
 triggers:
 - push-release
 - /push-release

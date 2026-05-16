@@ -21,6 +21,13 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bproject\s+scaffold\b
   confidence: 0.8
+routing_intents:
+- intent: scaffold_claude_project_runtime
+  description: User wants to create the project .claude structure, linked rules, generated skills, and hooks from detected stack information.
+  confidence: 0.9
+- intent: generate_project_specific_agent_primitives
+  description: User asks to materialize Cognitive OS runtime files for a project, distinct from creating only documentation folders.
+  confidence: 0.86
 triggers:
 - scaffold-project
 - /scaffold-project

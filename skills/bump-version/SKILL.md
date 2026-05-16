@@ -16,6 +16,15 @@ effort: haiku
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: update_version_file
+  description: User wants the project VERSION file calculated and rewritten for a
+    release or version bump, without broader release note generation.
+  confidence: 0.86
+- intent: determine_next_project_version
+  description: User asks for the next Cognitive OS version value to be derived and
+    persisted, rather than only inspecting current version metadata.
+  confidence: 0.83
 triggers:
 - bump-version
 - /bump-version

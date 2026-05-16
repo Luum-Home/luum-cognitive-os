@@ -7,6 +7,10 @@ description: 'Use when you need this Cognitive OS skill: Structural namespace fo
 triggers: []
 user-invocable: false
 audience: os-dev
+routing_intents:
+- intent: experimental_skill_namespace
+  description: User is asking about the catalog namespace for unpromoted experimental skills, not requesting execution of a stable user-facing skill.
+  confidence: 0.84
 routing_patterns:
 - pattern: \bexperimental\b
   confidence: 0.95

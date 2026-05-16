@@ -17,6 +17,13 @@ routing_patterns:
     confidence: 0.82
   - pattern: \bpython\s+(static\s+)?type\s+check\b
     confidence: 0.9
+routing_intents:
+- intent: run_pyrefly_typecheck
+  description: User wants fast advisory Pyrefly checks for changed Python files before finishing implementation work.
+  confidence: 0.9
+- intent: inspect_python_api_shape
+  description: User asks for lightweight Python static type or API-shape feedback rather than full test-suite validation.
+  confidence: 0.86
 ---
 <!-- SCOPE: os-only -->
 # Pyrefly Typecheck

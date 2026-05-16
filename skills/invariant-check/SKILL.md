@@ -14,6 +14,13 @@ summary_line: Scans a target file pair (ADR + lib, or similar) for numeric-const
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: enforce_numeric_invariant
+  description: User needs pytest assertions that keep related numeric constants aligned across an ADR and implementation file.
+  confidence: 0.9
+- intent: investigate_drifting_constant_pair
+  description: User reports two values that appear inconsistent and wants an invariant derived, not a broad pattern audit or generic test repair.
+  confidence: 0.87
 routing_patterns:
 - pattern: \binvariant[- ]?check\b
   confidence: 0.95

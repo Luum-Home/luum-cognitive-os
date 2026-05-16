@@ -28,6 +28,13 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bscaffold\s+project\b
   confidence: 0.85
+routing_intents:
+- intent: scaffold_project_docs_tree
+  description: User wants to create the ADR-054 ten-category documentation tree in a project, not initialize Claude hooks or OS runtime files.
+  confidence: 0.9
+- intent: initialize_project_documentation_convention
+  description: User asks for idempotent starter documentation folders and seed files that establish the Cognitive OS project docs convention.
+  confidence: 0.86
 ---
 <!-- SCOPE: project -->
 ## Purpose

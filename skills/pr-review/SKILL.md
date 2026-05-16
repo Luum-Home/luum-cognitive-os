@@ -19,6 +19,13 @@ summary_line: Pull Request review skill.
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: structured_pull_request_review
+  description: User wants a PR diff reviewed against its base branch with tests, coverage, lint, file-level findings, and a pass or fail summary.
+  confidence: 0.9
+- intent: review_pr_with_memory_context
+  description: User asks for pull request feedback that incorporates Engram context, distinct from a local code review without PR metadata.
+  confidence: 0.86
 routing_patterns:
 - pattern: \bpr[- ]?review\b
   confidence: 0.95

@@ -18,6 +18,13 @@ tags:
 synthesis_signature: Bash->Agent->Bash
 synthesis_occurrences: 4
 synthesis_sessions: 4
+routing_intents:
+- intent: review_synthesized_bash_agent_skill
+  description: User needs to inspect or evaluate this sandboxed auto-synthesized Bash to Agent to Bash skill before promotion or deletion.
+  confidence: 0.86
+- intent: analyze_recurring_tool_sequence_skill
+  description: User asks whether a recurring shell and agent tool sequence should remain experimental rather than become a stable catalog skill.
+  confidence: 0.82
 triggers:
 - auto-bash-agent-bash-9c6b89
 - /auto-bash-agent-bash-9c6b89

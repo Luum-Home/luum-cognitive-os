@@ -8,6 +8,15 @@ version: 1.0.0
 last-updated: 2026-04-23
 auto-generated: false
 tech: python
+routing_intents:
+- intent: forecast_task_model_cost
+  description: User asks for an estimated cost of a planned task using Cognitive OS
+    history, phase routing, and model price data.
+  confidence: 0.87
+- intent: budget_before_running_work
+  description: User wants a pre-execution budget forecast or cost risk estimate,
+    not a retrospective accounting report.
+  confidence: 0.83
 triggers:
 - cost predict
 - predict cost

@@ -23,6 +23,13 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bexport\s+rules?\b
   confidence: 0.85
+routing_intents:
+- intent: export_os_rules_snapshot
+  description: User wants to copy Cognitive OS governance rules into an adopting project's standards documentation as a point-in-time snapshot.
+  confidence: 0.9
+- intent: seed_project_standards_from_rules
+  description: User asks to populate project standards docs from existing OS rules, distinct from creating new rules or scaffolding all docs.
+  confidence: 0.86
 triggers:
 - rules-export
 - /rules-export

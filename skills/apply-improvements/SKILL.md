@@ -20,6 +20,15 @@ summary_line: Apply approved self-improvement changes from an analyze-improvemen
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: apply_approved_self_improvements
+  description: User wants to apply a completed analyze-improvements report, executing
+    AUTO changes and pausing for explicit approval before HUMAN-APPROVAL changes.
+  confidence: 0.87
+- intent: implement_self_improvement_plan
+  description: User has already chosen or approved Cognitive OS self-improvement
+    changes and needs the repository updated, not another analysis-only report.
+  confidence: 0.84
 triggers:
 - apply-improvements
 - /apply-improvements

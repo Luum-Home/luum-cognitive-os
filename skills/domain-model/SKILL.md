@@ -21,6 +21,13 @@ model: haiku
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: scaffold_domain_model_document
+  description: User needs to create or refresh a DDD domain-model.md document with bounded contexts, entities, and ubiquitous language tables; not a general architecture ADR or operations runbook.
+  confidence: 0.88
+- intent: document_bounded_context_language
+  description: User asks to capture domain vocabulary and entity boundaries in the standard project documentation template rather than audit existing code patterns.
+  confidence: 0.84
 routing_patterns:
 - pattern: \bdomain[- ]?model\b
   confidence: 0.95

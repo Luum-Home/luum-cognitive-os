@@ -22,6 +22,15 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bpattern\s+detection\b
   confidence: 0.8
+routing_intents:
+- intent: detect_systemic_repository_problems
+  description: User wants detectors run for recurring Cognitive OS structure issues
+    such as dead metadata, broken chains, phantom entries, or structural test gaps.
+  confidence: 0.87
+- intent: audit_os_pattern_integrity
+  description: User asks for pattern-level health checks across OS metadata and
+    references, not application behavior debugging or prose review.
+  confidence: 0.83
 triggers:
 - detect-patterns
 - /detect-patterns

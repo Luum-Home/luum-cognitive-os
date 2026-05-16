@@ -15,6 +15,13 @@ summary_line: Read detected-stack.json and generate or update cognitive-os.yaml 
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: generate_cognitive_os_config
+  description: User needs cognitive-os.yaml created or updated from detected-stack.json with infrastructure, quality gate, and stack settings.
+  confidence: 0.9
+- intent: sync_detected_stack_to_config
+  description: User asks to translate stack detection results into the OS configuration file, not to install recommended skills or initialize the entire project.
+  confidence: 0.86
 routing_patterns:
 - pattern: \bgenerate[- ]?config\b
   confidence: 0.95

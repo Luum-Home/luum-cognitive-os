@@ -22,6 +22,15 @@ routing_patterns:
   confidence: 0.8
 - pattern: \bmulti[- ]?session\s+lock\b
   confidence: 0.75
+routing_intents:
+- intent: inspect_active_edit_locks
+  description: User wants a read-only view of concurrent session locks to see which
+    files other agents are editing.
+  confidence: 0.88
+- intent: resolve_multi_session_file_conflict
+  description: User needs to decide whether to wait, avoid, or proceed when a target
+    file may be held by another active agent session.
+  confidence: 0.84
 triggers:
 - coordination-status
 - /coordination-status

@@ -26,6 +26,13 @@ triggers:
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: verified_regex_pattern_audit
+  description: User wants counts or locations from grep or regex searches with mandatory sample verification before severity claims.
+  confidence: 0.9
+- intent: avoid_unverified_occurrence_conclusions
+  description: User asks whether a reported occurrence count is meaningful and needs evidence-based sampling, not an automatic code rewrite.
+  confidence: 0.86
 routing_patterns:
 - pattern: \bpattern[- ]?audit\b
   confidence: 0.95
