@@ -7,6 +7,13 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "generate an exhaustive implementation prompt with risks and acceptance criteria"
+- "write a detailed agent prompt with scope and acceptance criteria"
+- "enumerate task scope before delegating work"
+- "create a complete prompt for a coding agent"
+- "expand a brief request into a rigorous agent prompt"
+
 triggers:
 - exhaustive-prompt
 - /exhaustive-prompt

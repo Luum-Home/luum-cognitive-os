@@ -27,6 +27,13 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bintegrat\w*\s+nemo\b
   confidence: 0.8
+routing_intents:
+- "generate NeMo Guardrails rules from Cognitive OS policy"
+- "configure Colang rails for safety checks"
+- "convert OS rules into NeMo guardrail configuration"
+- "validate NeMo Guardrails can load the generated config"
+- "build input and output rails for agent safety"
+
 triggers:
 - nemo-guardrails
 - /nemo-guardrails

@@ -13,6 +13,11 @@ triggers:
 - /model-optimizer
 - Model Optimizer
 - Analyze skill execution metrics and recommend optimal model routing
+routing_intents:
+  - "optimize model routing for skills using execution metrics"
+  - "analyze skill execution metrics by model"
+  - "recommend cheaper or stronger model choices"
+  - "tune model selection from performance data"
 ---
 <!-- SCOPE: both -->
 # Model Optimizer

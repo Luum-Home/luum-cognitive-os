@@ -1,5 +1,14 @@
 # english-only-content-audit: allow
 # Intentional runtime multilingual fixture for ADR-296 routing validation.
+#
+# PRECEDENCE NOTE (F-010 resolution):
+# The `description:` field below is used ONLY as fallback ground-truth for
+# skills NOT present in the on-disk SKILL.md catalog. When the benchmark
+# runs against `--full-catalog-candidates` (default for --multilingual),
+# the rich SKILL.md text (routing_intents + description + summary_line)
+# OVERRIDES anything in this `description:` field. To influence routing
+# for a catalogued skill, edit the SKILL.md routing_intents — not this file.
+# See lib/routing_benchmark.py:_build_candidates() and ADR-296.
 schema_version: routing-benchmark-corpus/v1
 skills:
   add-hook:

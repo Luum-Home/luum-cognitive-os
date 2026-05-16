@@ -11,6 +11,12 @@ summary_line: Weekly analysis of all squads with trend analysis and auto-reconfi
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- analyze squad performance trends this week
+- run a team retrospective across agent squads
+- summarize squad outcomes and improvement areas
+- propose squad process improvements from recent work
+- review coordination patterns across all squads
 triggers:
 - retrospective
 - /retrospective

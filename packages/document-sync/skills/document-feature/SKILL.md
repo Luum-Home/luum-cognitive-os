@@ -7,6 +7,12 @@ description: 'Generate or update structured feature documentation using 3-layer 
 invocation: /document-feature [feature-name] [--project-dir <path>]
 user-invocable: true
 last-updated: 2026-03-26
+routing_intents:
+- document the feature from the current diff
+- generate structured feature documentation from implementation evidence
+- update the feature backlog entry after code changes
+- write docs for this implemented feature
+- sync feature documentation with the SDD spec
 triggers:
 - feature documentation
 - document feature

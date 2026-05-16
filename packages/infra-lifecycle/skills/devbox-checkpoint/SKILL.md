@@ -13,6 +13,11 @@ triggers:
 - /devbox-checkpoint
 - Devbox Checkpoint — State Snapshots
 - Save and restore environment state snapshots using devbox
+routing_intents:
+  - "save a devbox environment checkpoint before risky changes"
+  - "restore a devbox workspace snapshot after failed changes"
+  - "compare devbox state before and after dependency changes"
+  - "checkpoint dependencies before risky infrastructure work"
 ---
 <!-- SCOPE: both -->
 # Devbox Checkpoint — State Snapshots

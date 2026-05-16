@@ -15,6 +15,11 @@ triggers:
 - /plan-feature
 - Plan Feature
 - Create a feature implementation plan with evaluation scoring
+routing_intents:
+  - "create a feature implementation plan with acceptance criteria"
+  - "plan a new capability before coding"
+  - "score a feature design proposal before implementation"
+  - "break down feature work into steps"
 ---
 <!-- SCOPE: both -->
 # Plan Feature

@@ -15,6 +15,13 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "run implementation readiness checks before SDD apply"
+- "validate prerequisites before SDD apply execution begins"
+- "check blockers before coding starts on planned work"
+- "assess whether a change is ready for implementation"
+- "produce a readiness verdict for an SDD change"
+
 triggers:
 - readiness-check
 - /readiness-check

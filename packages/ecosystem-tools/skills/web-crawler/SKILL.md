@@ -20,6 +20,12 @@ summary_line: Fetch and convert web pages to LLM-ready markdown using Crawl4AI.
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- crawl a website into markdown for research ingestion
+- fetch this web page as LLM ready markdown
+- extract structured data from a web page
+- convert a URL into clean markdown content
+- run a multi page crawl for this site
 triggers:
 - web-crawler
 - /web-crawler

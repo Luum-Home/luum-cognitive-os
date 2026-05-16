@@ -205,6 +205,24 @@ def candidate_signature(candidates: List[Tuple[str, str]]) -> str:
     return hashlib.sha256(serialised.encode("utf-8")).hexdigest()[:16]
 
 
+def _normalise_routing_intents(raw: Any) -> List[str]:
+    """Return semantic routing text from string or structured intent entries."""
+    if not isinstance(raw, list):
+        return []
+    out: List[str] = []
+    for item in raw:
+        if isinstance(item, dict):
+            intent = str(item.get("intent") or "").strip()
+            desc = str(item.get("description") or "").strip()
+            if intent and desc:
+                out.append(f"{intent}: {desc}")
+            elif intent or desc:
+                out.append(intent or desc)
+        elif isinstance(item, str) and item.strip():
+            out.append(item.strip())
+    return out
+
+
 def load_skill_catalog(
     skills_root: Path = Path("skills"),
     package_skills_root: Path = Path("packages"),
@@ -229,9 +247,7 @@ def load_skill_catalog(
     for name in sorted(skill_md_paths):
         meta = metadata.get(name, {})
         parts: List[str] = []
-        intents = meta.get("routing_intents") or []
-        if isinstance(intents, list):
-            parts.extend(str(x).strip() for x in intents if str(x).strip())
+        parts.extend(_normalise_routing_intents(meta.get("routing_intents")))
         for key in ("description", "summary_line"):
             value = str(meta.get(key) or "").strip()
             if value:
@@ -575,16 +591,22 @@ class SemanticFallbackAdapter:
             json.dumps(candidates, sort_keys=True, ensure_ascii=False).encode("utf-8")
         ).hexdigest()
         if self._matcher is None or self._candidate_signature != candidate_signature:
-            indices = [
-                _SkillIndex(
-                    skill_name=name,
-                    invoke_command=f"/{name}",
-                    description=description or "",
-                    summary_line="",
-                    routing_intents=[],
+            indices = []
+            for name, description in candidates:
+                lines = [
+                    line.strip()
+                    for line in (description or "").splitlines()
+                    if line.strip()
+                ]
+                indices.append(
+                    _SkillIndex(
+                        skill_name=name,
+                        invoke_command=f"/{name}",
+                        description=description or "",
+                        summary_line="",
+                        routing_intents=lines,
+                    )
                 )
-                for name, description in candidates
-            ]
             try:
                 self._matcher = SemanticSkillMatcher(indices)
                 self._candidate_signature = candidate_signature
@@ -898,6 +920,17 @@ class BenchmarkHarness:
             # that are absent from the on-disk catalog. When a skill exists in
             # the catalog, keep its richer SKILL.md routing text because that is
             # the runtime semantic-router signal.
+            #
+            # WARNING (F-010): For any skill that IS present in the on-disk
+            # catalog, the corpus `description:` field is COMPLETELY IGNORED —
+            # `candidates.update(catalog)` above already wrote the SKILL.md text,
+            # and `setdefault` below is a no-op for existing keys. Authors who
+            # edit a corpus `description:` for a catalogued skill will see no
+            # effect at benchmark time. To influence routing for a catalogued
+            # skill, edit its SKILL.md `routing_intents` (and `description` /
+            # `summary_line`) — not the corpus YAML.
+            # See also the PRECEDENCE NOTE at the top of each corpus YAML file
+            # and ADR-296 for the rationale (benchmark === runtime fidelity).
             for skill, entry in corpus.items():
                 candidates.setdefault(skill, entry["description"])
         return sorted(candidates.items())

@@ -12,6 +12,11 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bskill\s+contracts?\b
   confidence: 0.75
+routing_intents:
+  - "inspect reserved skill contract namespace requirements for generated artifacts"
+  - "review structural contracts for generated skills"
+  - "validate generated skill contract organization before publishing changes"
+  - "understand reserved contract placeholders for generated skill scaffolding"
 ---
 <!-- SCOPE: os-only -->
 # Contracts Namespace

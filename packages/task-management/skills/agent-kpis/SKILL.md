@@ -16,6 +16,11 @@ triggers:
 - /agent-kpis
 - Agent KPI Dashboard
 - Calculate and report Cognitive OS KPIs and OKRs
+routing_intents:
+  - "calculate agent KPI metrics from runtime evidence"
+  - "report Cognitive OS OKRs with measurable status"
+  - "summarize agent health indicators from metrics data"
+  - "track productivity and reliability metrics across agent work"
 ---
 <!-- SCOPE: both -->
 # Agent KPI Dashboard

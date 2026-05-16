@@ -4,6 +4,13 @@ description: Run competitive benchmarks comparing Cognitive OS against other AI 
   tools
 invoke: /arena
 version: '1.0'
+routing_intents:
+- "run competitive coding agent benchmarks against external tools"
+- "compare Cognitive OS against other agent tools"
+- "benchmark an external AI coding competitor"
+- "generate arena benchmark results with reproducible comparison data"
+- "evaluate benchmark runs against competitor agent systems"
+
 triggers:
 - manual
 args:

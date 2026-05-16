@@ -3,6 +3,12 @@ name: add-rule
 description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding
   a new rule to the Cognitive OS; do not use when a narrower skill directly matches
   the task.'
+routing_intents:
+  - "Author a new Cognitive OS governance rule with rationale and trigger"
+  - "Create a behavioral policy file and add it to the rule index"
+  - "Define a reusable agent constraint for future sessions and workflows"
+  - "Add a contextual rule that loads for a specific operating condition"
+  - "Separate policy text from harness projection while adding a rule"
 version: 0.1.0
 audience: os
 tags:
@@ -20,16 +26,12 @@ routing_patterns:
 - pattern: \bnew\s+rule\b
   confidence: 0.75
 summary_line: Step-by-step guide for adding a new rule to the Cognitive OS.
-routing_intents:
-- intent: add_rule_request
-  description: User asks to step-by-step guide for adding a new rule to the Cognitive
-    OS.
-  confidence: 0.85
 triggers:
 - add-rule
 - /add-rule
 - Add Rule
 - Step-by-step guide for adding a new rule to the Cognitive OS
+
 ---
 <!-- SCOPE: os-only -->
 # Add Rule

@@ -3,6 +3,12 @@ name: add-hook
 description: 'Use when you need this Cognitive OS skill: Step-by-step guide for adding
   a new hook to the Cognitive OS; do not use when a narrower skill directly matches
   the task.'
+routing_intents:
+  - "Add a Claude Code lifecycle hook for Cognitive OS tool interception"
+  - "Create a new pre-tool or post-tool hook script and register it"
+  - "Wire a custom hook into the current harness driver configuration"
+  - "Implement a hook that validates tool usage before agent execution"
+  - "Scaffold a Cognitive OS hook with metrics and graceful degradation"
 version: 0.1.0
 audience: os
 tags:
@@ -25,11 +31,7 @@ triggers:
 - new hook
 - hook authoring
 - Cognitive OS hook
-routing_intents:
-- intent: add_hook_request
-  description: User asks to step-by-step guide for adding a new hook to the Cognitive
-    OS.
-  confidence: 0.85
+
 ---
 <!-- SCOPE: os-only -->
 # Add Hook

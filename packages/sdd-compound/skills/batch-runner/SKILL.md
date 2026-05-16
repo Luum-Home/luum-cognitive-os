@@ -20,6 +20,11 @@ summary_line: Execute multiple SDD changes sequentially with timing, reporting, 
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+  - "run multiple SDD changes sequentially with progress reporting"
+  - "execute a batch of implementation tasks"
+  - "track timing for SDD batch work"
+  - "produce a report for batched changes"
 ---
 <!-- SCOPE: both -->
 # Batch Runner

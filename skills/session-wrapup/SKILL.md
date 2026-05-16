@@ -4,6 +4,12 @@ description: 'Use when you need this Cognitive OS skill: End-of-session routine 
   run session-backlog inventory, save to engram, write session summary, and report
   what was accomplished and what comes next.; do not use when a narrower skill directly
   matches the task.'
+routing_intents:
+  - "Close the current agent session with backlog inventory and memory capture"
+  - "Run the end-of-session routine and record accomplishments and next steps"
+  - "Save session summary to Engram and refresh pending truth ledgers"
+  - "Wrap up work by collecting context commits validation evidence and remaining risks"
+  - "Prepare the final session handoff before stopping the agent thread"
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-04-10
@@ -33,6 +39,7 @@ triggers:
 - /session-wrapup
 - Session Wrapup — End-of-Session Routine
 - End-of-session routine — run session-backlog inventory, save to engram, write…
+
 ---
 <!-- SCOPE: both -->
 # Session Wrapup — End-of-Session Routine

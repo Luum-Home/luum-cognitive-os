@@ -17,6 +17,11 @@ triggers:
 - /sprint
 - Sprint Tracking (BMAD v6 Pattern 10)
 - Lightweight agent-managed sprint tracking — plan, status, retro, course-correct
+routing_intents:
+  - "plan an agent managed sprint with prioritized work"
+  - "update lightweight sprint status from current progress"
+  - "run a sprint retrospective with action items"
+  - "course correct active sprint work after status review"
 ---
 <!-- SCOPE: both -->
 # Sprint Tracking (BMAD v6 Pattern 10)

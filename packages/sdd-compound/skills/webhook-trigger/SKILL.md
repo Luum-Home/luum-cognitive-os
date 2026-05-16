@@ -17,6 +17,11 @@ triggers:
 - /webhook-trigger
 - Webhook Trigger
 - GitHub webhook server that receives issue events and launches SDD pipelines…
+routing_intents:
+  - "start SDD from a GitHub webhook"
+  - "handle issue event automation from GitHub webhooks"
+  - "launch a pipeline from webhook payloads"
+  - "configure webhook driven SDD execution for issue workflows"
 ---
 <!-- SCOPE: both -->
 # Webhook Trigger

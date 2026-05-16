@@ -17,6 +17,13 @@ summary_line: Run Go test coverage for all services, enforce thresholds from…
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "enforce test coverage thresholds for changed packages"
+- "run coverage report for Go services"
+- "check per-package coverage against configuration"
+- "fail the quality gate on low coverage"
+- "generate a project coverage enforcement report"
+
 triggers:
 - coverage-enforcement
 - /coverage-enforcement

@@ -15,6 +15,11 @@ triggers:
 - /error-analyzer
 - Error Analyzer Skill
 - Analyze accumulated errors from test/lint/build runs and propose skill…
+routing_intents:
+  - "analyze errors from test and build runs"
+  - "summarize recurring failure patterns from test output"
+  - "propose skill improvements from observed error patterns"
+  - "diagnose lint and test output trends"
 ---
 <!-- SCOPE: both -->
 # Error Analyzer Skill

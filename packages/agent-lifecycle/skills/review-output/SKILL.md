@@ -26,6 +26,12 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bmanual\s+output\s+review\b
   confidence: 0.8
+routing_intents:
+- review the last subagent output for actionable quality findings
+- audit a specific agent output against task acceptance criteria
+- manually trigger output review findings for a completed delegation
+- inspect recent subagent results for issues
+- review past agent work for quality problems
 triggers:
 - review-output
 - /review-output

@@ -9,6 +9,13 @@ summary_line: Compose a sub-agent prompt from reusable templates.
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "compose a subagent prompt from templates"
+- "build a reusable agent prompt from project templates"
+- "generate a consistent subagent instruction prompt"
+- "assemble prompt sections for a delegated task"
+- "create a standardized worker prompt with explicit ownership"
+
 triggers:
 - compose-prompt
 - /compose-prompt

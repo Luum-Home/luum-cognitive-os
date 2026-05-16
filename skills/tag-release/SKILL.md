@@ -5,6 +5,12 @@ command: /tag-release
 description: 'Use when you need this Cognitive OS skill: Create the release commit
   (VERSION + CHANGELOG) and annotated git tag; do not use when a narrower skill directly
   matches the task.'
+routing_intents:
+  - "Create a release commit for VERSION and CHANGELOG updates"
+  - "Make an annotated git tag for a Cognitive OS release version"
+  - "Finalize release metadata and tag the repository for publishing"
+  - "Stage release files and produce the official release tag"
+  - "Prepare versioned release history with changelog and annotated tag"
 version: 0.1.0
 audience: os
 tags:
@@ -22,6 +28,7 @@ triggers:
 - Tag Release
 - 'Use when you need this Cognitive OS skill: Create the release commit (VERSION +
   CHANGELOG) and annotated git tag; do not'
+
 ---
 <!-- SCOPE: os-only -->
 # Tag Release

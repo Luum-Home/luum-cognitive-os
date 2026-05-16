@@ -32,6 +32,11 @@ triggers:
 - /cognee-integration
 - Add source
 - Configure and use Cognee for knowledge graph memory
+routing_intents:
+  - "configure Cognee knowledge graph memory for repository context"
+  - "index project knowledge with Cognee for agent retrieval"
+  - "query structured memory through Cognee during implementation work"
+  - "integrate Cognee retrieval into Cognitive OS agent workflows"
 ---
 <!-- SCOPE: both -->
 ## Purpose

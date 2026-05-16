@@ -3,6 +3,12 @@ name: skill-creator
 description: 'Use when you need this Cognitive OS skill: Creates new AI agent skills
   following the Agent Skills spec, then generates cos package scaffolding for sharing.;
   do not use when a narrower skill directly matches the task.'
+routing_intents:
+  - "Design a new AI agent skill and package it for Cognitive OS sharing"
+  - "Create skill instructions plus cos package scaffolding for distribution"
+  - "Turn a reusable agent workflow into a documented installable skill"
+  - "Build a new SKILL.md from user requirements and usage examples"
+  - "Generate packaging metadata for a skill intended to be reused by agents"
 summary_line: Create new AI agent skills + cos package scaffolding.
 version: 1.1.0
 audience: both
@@ -23,6 +29,7 @@ triggers:
 - /skill-creator
 - Skill Creator with cos Packaging
 - Create new AI agent skills + cos package scaffolding
+
 ---
 <!-- SCOPE: both -->
 # Skill Creator with cos Packaging

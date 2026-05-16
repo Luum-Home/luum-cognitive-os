@@ -5,6 +5,12 @@ command: /vuln-remediation-flow
 description: 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud
   flow contract for sandboxed vulnerability remediation.; do not use when a narrower
   skill directly matches the task.'
+routing_intents:
+  - "Propose a sandboxed vulnerability remediation flow without applying cloud changes"
+  - "Plan vulnerability triage and remediation steps inside the lab contract"
+  - "Generate a safe remediation proposal for cloud security findings"
+  - "Map vulnerability evidence to proposed fixes with manual approval boundaries"
+  - "Coordinate a lab-stage security remediation workflow for agent execution"
 version: 0.1.0
 audience: os
 tags:
@@ -38,6 +44,7 @@ triggers:
 - Vulnerability Remediation Flow
 - 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract
   for sandboxed vulnerability remedi'
+
 ---
 <!-- SCOPE: os-only -->
 # Vulnerability Remediation Flow

@@ -3,6 +3,12 @@ name: synthesize-skill
 description: 'Use when you need this Cognitive OS skill: Review the skill synthesis
   queue, list proposed drafts, and accept/reject/defer promotion candidates; do not
   use when a narrower skill directly matches the task.'
+routing_intents:
+  - "Review the skill synthesis queue and decide which drafts to promote"
+  - "List proposed generated skills and accept reject or defer each candidate"
+  - "Evaluate synthesized skill drafts for readiness before promotion"
+  - "Process queued skill proposals and update their decision status"
+  - "Promote eligible skill drafts into governed Cognitive OS skill files"
 trigger: synthesize skill, synthesize-skill, skill synthesis, review synthesis queue,
   skill proposals, experimental skills
 model: sonnet
@@ -28,6 +34,7 @@ triggers:
 - Synthesize Skill
 - 'Use when you need this Cognitive OS skill: Review the skill synthesis queue, list
   proposed drafts, and accept/reject/def'
+
 ---
 <!-- SCOPE: os-only -->
 # Synthesize Skill

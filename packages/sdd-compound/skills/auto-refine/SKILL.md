@@ -23,6 +23,11 @@ triggers:
 - /auto-refine
 - Auto-Refine Skill
 - Analyze a failed agent's output, determine root cause, and re-launch with…
+routing_intents:
+  - "refine a failed agent output using root cause analysis"
+  - "diagnose why an agent attempt failed"
+  - "relaunch work with corrected instructions after failure analysis"
+  - "iterate on an unsuccessful implementation with scoped fixes"
 ---
 <!-- SCOPE: both -->
 # Auto-Refine Skill

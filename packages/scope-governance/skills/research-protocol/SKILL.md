@@ -27,6 +27,11 @@ triggers:
 - research-protocol
 - /research-protocol
 - Meta-skill that teaches agents HOW to investigate any source material…
+routing_intents:
+  - "define a research protocol for investigation"
+  - "teach agents how to inspect source material"
+  - "structure evidence gathering before making implementation decisions"
+  - "plan a rigorous investigation workflow with verification steps"
 ---
 <!-- SCOPE: both -->
 ## Purpose

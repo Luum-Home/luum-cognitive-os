@@ -17,6 +17,11 @@ audience: project
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+  - "estimate task complexity with planning poker"
+  - "run multi agent story point estimation"
+  - "triangulate implementation effort across independent estimates"
+  - "compare complexity estimates across agents before planning work"
 ---
 <!-- SCOPE: both -->
 # Planning Poker — Multi-Agent Complexity Estimation

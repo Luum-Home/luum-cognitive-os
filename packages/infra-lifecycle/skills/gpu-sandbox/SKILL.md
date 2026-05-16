@@ -16,6 +16,11 @@ triggers:
 - /gpu-sandbox
 - GPU Sandbox — Jupyter Compute Runtime
 - Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data…
+routing_intents:
+  - "run compute heavy Python in a GPU sandbox"
+  - "execute ML experiments in Jupyter runtime"
+  - "test data processing code with GPU access"
+  - "isolate expensive notebook computations in a sandbox runtime"
 ---
 <!-- SCOPE: both -->
 # GPU Sandbox — Jupyter Compute Runtime

@@ -15,6 +15,11 @@ triggers:
 - /plan-bug
 - Plan Bug Fix
 - Create a bug fix plan with root cause analysis and evaluation scoring
+routing_intents:
+  - "create a bug fix plan with root cause evidence"
+  - "analyze root cause for a defect"
+  - "plan remediation steps for a bug"
+  - "score a proposed bug fix approach"
 ---
 <!-- SCOPE: both -->
 # Plan Bug Fix

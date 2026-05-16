@@ -40,6 +40,13 @@ routing_intents:
   description: User asks about Cognitive OS positioning, ICP, buyer, pricing, competitors,
     pitch, landing page claims, moat, wedge, or safe product claims.
   confidence: 0.88
+- "can this system help a developer"
+- "help a developer without experience using this system"
+- "useful for developers without architecture experience"
+- "helps developers with limited experience adopt better practices"
+- "answer whether this OS helps developers"
+- "can this OS help developers with limited knowledge of best practices code architecture security tests documentation and agentic primitives"
+- "can help a developer with limitations in knowledge of best practices code clean architecture security test construction documentation and agent primitives"
 triggers:
 - product-answer
 - /product-answer

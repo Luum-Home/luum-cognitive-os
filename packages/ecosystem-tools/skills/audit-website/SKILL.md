@@ -18,6 +18,12 @@ summary_line: Perform a comprehensive 6-category website audit (SEO, Performance
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- audit this website for SEO and accessibility
+- run a comprehensive website quality audit
+- score a site for performance security and UX
+- generate a website audit report for this URL
+- check a web page against audit categories
 triggers:
 - audit-website
 - /audit-website

@@ -18,6 +18,13 @@ summary_line: Pre-implementation confidence assessment.
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "check implementation confidence before coding risky changes"
+- "assess readiness before writing code for a planned change"
+- "verify prior art and architecture before implementation"
+- "run the pre-implementation confidence gate"
+- "evaluate whether a fix is understood before coding"
+
 triggers:
 - confidence-check
 - /confidence-check

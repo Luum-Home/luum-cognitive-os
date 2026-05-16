@@ -13,6 +13,13 @@ summary_line: Use when encountering any bug, test failure, or unexpected behavio
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- "debug a failing test systematically from symptoms to cause"
+- "investigate unexpected behavior before fixing it"
+- "find the root cause of a bug"
+- "use a structured debugging workflow before patching code"
+- "diagnose a regression before proposing code changes"
+
 triggers:
 - systematic-debugging
 - /systematic-debugging

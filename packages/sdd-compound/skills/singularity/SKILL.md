@@ -20,6 +20,11 @@ summary_line: Codebase Singularity — autonomous MAPE-K control loop that monit
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+  - "run autonomous MAPE-K control loop"
+  - "monitor and improve the codebase continuously"
+  - "launch codebase singularity workflow for autonomous improvement"
+  - "coordinate autonomous repository optimization through control loops"
 ---
 <!-- SCOPE: both -->
 # Singularity — Autonomous MAPE-K Control Loop

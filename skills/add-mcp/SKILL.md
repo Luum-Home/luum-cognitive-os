@@ -3,6 +3,12 @@ name: add-mcp
 description: 'Use when you need this Cognitive OS skill: Step-by-step guide for integrating
   a new MCP server into the Cognitive OS; do not use when a narrower skill directly
   matches the task.'
+routing_intents:
+  - "Integrate a new Model Context Protocol server into Cognitive OS"
+  - "Register an external MCP capability in the Claude settings file"
+  - "Document and configure a new MCP server for agent tool access"
+  - "Add an MCP server package or binary with environment-based credentials"
+  - "Connect Claude to an external service through a governed MCP entry"
 version: 0.1.0
 audience: os
 tags:
@@ -22,16 +28,12 @@ routing_patterns:
   confidence: 0.75
 summary_line: Step-by-step guide for integrating a new MCP server into the Cognitive
   OS.
-routing_intents:
-- intent: add_mcp_request
-  description: User asks to step-by-step guide for integrating a new MCP server into
-    the Cognitive OS.
-  confidence: 0.85
 triggers:
 - add-mcp
 - /add-mcp
 - Add MCP Server
 - Step-by-step guide for integrating a new MCP server into the Cognitive OS
+
 ---
 <!-- SCOPE: os-only -->
 # Add MCP Server
