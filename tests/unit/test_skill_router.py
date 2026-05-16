@@ -1,7 +1,7 @@
 """Unit tests for lib/skill_router.py
 
 Validates skill auto-selection from conversation context, including
-English and Spanish pattern matching, GitHub URL detection, confidence
+English-only pattern matching, GitHub URL detection, confidence
 scoring, fallback handling, and routing table integrity.
 """
 
@@ -50,9 +50,9 @@ class TestGitHubUrlDetection:
         assert match is not None
         assert match.skill_name == "repo-forensics"
 
-    def test_github_url_in_spanish_context(self, router: SkillRouter):
+    def test_github_url_in_research_context(self, router: SkillRouter):
         match = router.best_match(
-            "research este repo https://github.com/luum/luum-agent-os"
+            "research this repo https://github.com/luum/luum-agent-os"
         )
         assert match is not None
         assert match.invoke_command == "/repo-forensics"
@@ -113,7 +113,7 @@ class TestFeatureRequestDetection:
         assert match is not None
         assert match.invoke_command == "/sdd-new"
 
-    def test_spanish_feature_request(self, router: SkillRouter):
+    def test_feature_request_with_service_context(self, router: SkillRouter):
         match = router.best_match("I need to add JWT authentication to the service")
         assert match is not None
         assert match.invoke_command == "/sdd-new"
@@ -123,8 +123,8 @@ class TestFeatureRequestDetection:
         assert match is not None
         assert match.invoke_command == "/sdd-new"
 
-    def test_construir_modulo(self, router: SkillRouter):
-        match = router.best_match("armemos un nuevo módulo de pagos")
+    def test_build_new_module(self, router: SkillRouter):
+        match = router.best_match("build a new payments module")
         assert match is not None
         assert match.invoke_command == "/sdd-new"
 
@@ -143,10 +143,9 @@ class TestRunTestsDetection:
         assert match.invoke_command == "/run-tests"
         assert match.confidence >= 0.50
 
-    def test_run_tests_spanish(self, router: SkillRouter):
-        matches = router.match("corré los tests")
-        if matches:
-            assert any(m.invoke_command == "/run-tests" for m in matches) or all(m.confidence < 0.75 for m in matches)
+    def test_run_tests_match_list_contains_run_tests(self, router: SkillRouter):
+        matches = router.match("run the tests")
+        assert any(m.invoke_command == "/run-tests" for m in matches)
 
     def test_pytest_mention(self, router: SkillRouter):
         match = router.best_match("run pytest on the unit tests")
@@ -168,8 +167,8 @@ class TestSecurityDetection:
         assert match.invoke_command == "/security-audit"
         assert match.confidence >= 0.85
 
-    def test_security_audit_spanish(self, router: SkillRouter):
-        match = router.best_match("review security del proyecto")
+    def test_security_audit_project_context(self, router: SkillRouter):
+        match = router.best_match("security review for the project")
         assert match is not None
         assert match.invoke_command == "/security-audit"
 
@@ -265,35 +264,35 @@ class TestFormatSuggestion:
 
 
 # ---------------------------------------------------------------------------
-# Spanish patterns
+# English patterns
 # ---------------------------------------------------------------------------
 
 
-class TestSpanishPatterns:
-    """Spanish language patterns should work correctly."""
+class TestEnglishPatterns:
+    """English language patterns should work correctly."""
 
-    def test_investiga(self, router: SkillRouter):
-        match = router.best_match("research este tema de performance")
+    def test_research_topic(self, router: SkillRouter):
+        match = router.best_match("research this performance topic")
         assert match is not None
         assert match.invoke_command == "/deep-research"
 
-    def test_arregla(self, router: SkillRouter):
-        match = router.best_match("fix the bug en el login")
+    def test_fix_login_bug(self, router: SkillRouter):
+        match = router.best_match("fix the login bug")
         assert match is not None
         assert match.invoke_command == "/plan-bug"
 
-    def test_necesito(self, router: SkillRouter):
+    def test_need_new_endpoint(self, router: SkillRouter):
         match = router.best_match("I need to add a new endpoint")
         assert match is not None
         assert match.invoke_command == "/sdd-new"
 
-    def test_corre_los_tests(self, router: SkillRouter):
-        matches = router.match("corré los tests de integración")
+    def test_run_integration_tests(self, router: SkillRouter):
+        matches = router.match("run the integration tests")
         if matches:
             assert any(m.invoke_command == "/run-tests" for m in matches) or all(m.confidence < 0.75 for m in matches)
 
-    def test_documenta(self, router: SkillRouter):
-        match = router.best_match("documentá la feature de autenticación")
+    def test_document_feature(self, router: SkillRouter):
+        match = router.best_match("document the feature")
         assert match is not None
         assert match.invoke_command == "/document-feature"
 
@@ -356,8 +355,8 @@ class TestRoutingTableIntegrity:
 class TestDebugging:
     """Debugging-related messages."""
 
-    def test_no_funciona(self, router: SkillRouter):
-        match = router.best_match("el endpoint de login no funciona")
+    def test_endpoint_not_working(self, router: SkillRouter):
+        match = router.best_match("the login endpoint is not working")
         assert match is not None
         assert match.invoke_command == "/systematic-debugging"
 
@@ -475,7 +474,7 @@ class TestSafetyRecoveryNegativeContext:
 
     def test_auto_rollback_router_critique_does_not_match(self, router: SkillRouter):
         message = (
-            "Ignoro la sugerencia de /auto-rollback del router — "
+            "I ignored the /auto-rollback router suggestion - "
             "dogfood evidence #5."
         )
         matches = router.match(message)
@@ -484,7 +483,7 @@ class TestSafetyRecoveryNegativeContext:
     def test_auto_rollback_risk_question_does_not_match(self, router: SkillRouter):
         message = (
             "What triggers /auto-rollback? I am afraid agents will do things "
-            "y se pierda trabajo."
+            "and lose work."
         )
         matches = router.match(message)
         assert all(m.invoke_command != "/auto-rollback" for m in matches)
@@ -493,7 +492,7 @@ class TestSafetyRecoveryNegativeContext:
         ("message", "blocked_command"),
         [
             (
-                "Skill router /systematic-debugging × 3 (0.80→0.85) sigue mal calibrado",
+                "Skill router /systematic-debugging x3 (0.80->0.85) remains miscalibrated",
                 "/systematic-debugging",
             ),
             (
@@ -501,11 +500,11 @@ class TestSafetyRecoveryNegativeContext:
                 "/auto-refine",
             ),
             (
-                "Skill router /self-improve 0.95 para Write batch — dogfood evidence",
+                "Skill router /self-improve 0.95 for Write batch - dogfood evidence",
                 "/self-improve",
             ),
             (
-                "Ignoré la sugerencia del router /phoenix-trace-ui (0.90) — dogfood evidence #11, sigue mal calibrado.",
+                "I ignored the router suggestion /phoenix-trace-ui (0.90) - dogfood evidence #11, remains miscalibrated.",
                 "/phoenix-trace-ui",
             ),
         ],
@@ -582,14 +581,14 @@ class TestSemanticRoutingProductAnswer:
         if matches:
             assert "product-answer" in names or top is None or top.confidence < 0.75
 
-    def test_portuguese_phrasing(self, router: SkillRouter):
-        matches = router.match("pode ajudar um dev sem experiência?")
+    def test_experience_question_routes_or_stays_low_confidence(self, router: SkillRouter):
+        matches = router.match("could it help a developer without experience?")
         names = [m.skill_name for m in matches]
         if matches:
             assert "product-answer" in names or all(m.confidence < 0.75 for m in matches)
 
-    def test_spanish_phrasing_without_regex_keywords(self, router: SkillRouter):
-        # Avoids "diferenciador", "moat", "ICP", "pricing", etc.
+    def test_plain_english_phrasing_without_regex_keywords(self, router: SkillRouter):
+        # Avoids direct aliases such as "moat", "ICP", "pricing", etc.
         matches = router.match(
             "can it help someone without architecture knowledge?"
         )
@@ -621,8 +620,7 @@ class TestSemanticMatcherUnit:
 
         The prior `test_overlap_path_returns_match_when_no_model` exercised
         the Jaccard token-overlap fallback. ADR-296 tombstoned that branch
-        because it collapsed to zero across languages (Spanish prompt vs
-        English corpus = empty intersection). The remaining contract is:
+        because it collapsed to zero for cross-language prompts against an English-only corpus. The remaining contract is:
         no embeddings → no semantic matches.
         """
         from lib import semantic_skill_matcher as ssm

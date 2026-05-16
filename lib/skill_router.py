@@ -3,7 +3,7 @@
 """Skill Router — Auto-select skills from conversation context.
 
 Matches user messages to the most appropriate Cognitive OS skill using
-pattern-based intent detection. Supports English and Spanish.
+pattern-based intent detection. Supports English prompts.
 
 The router reads CATALOG.md to know which skills exist and uses a routing
 table of (pattern, skill, confidence) tuples to score matches.
@@ -12,7 +12,7 @@ Usage:
     from lib.skill_router import SkillRouter
 
     router = SkillRouter()
-    match = router.best_match("research este repo")
+    match = router.best_match("research this repo")
     if match:
         print(match.invoke_command)  # "/repo-forensics"
 """
@@ -69,14 +69,14 @@ def _compile(patterns: List[Tuple[str, float]]) -> List[Tuple[re.Pattern, float]
 
 _AUTO_ROLLBACK_META_CONTEXT_RE = re.compile(
     r"("
-    r"(router|skill\s*router|agente|agent|suggest|sugiri[oó]|sugerencia|suggestion|hint)"
+    r"(router|skill\s*router|agent|suggest|suggestion|hint)"
     r".{0,80}(/?auto[- ]?rollback)"
     r"|(/?auto[- ]?rollback).{0,80}"
-    r"(router|skill\s*router|agente|agent|suggest|sugiri[oó]|sugerencia|suggestion|hint)"
+    r"(router|skill\s*router|agent|suggest|suggestion|hint)"
     r"|("
-    r"por\s+qu[eé]|why|qu[eé]\s+dispara|what\s+triggers|me\s+asusta|scary|preocupa|worr"
+    r"why|what\s+triggers|scary|worr"
     r").{0,120}(/?auto[- ]?rollback)"
-    r"|(ignoro|ignore|ignored|rechaz|reject).{0,80}(/?auto[- ]?rollback)"
+    r"|(ignore|ignored|reject).{0,80}(/?auto[- ]?rollback)"
     r")",
     re.IGNORECASE,
 )
@@ -89,12 +89,12 @@ def _is_auto_rollback_meta_reference(text: str) -> bool:
 
 _ROUTER_NEGATIVE_CONTEXT_RE = re.compile(
     r"("
-    r"router|skill\s*router|suggest(?:ed|ion)?|sugiri[oó]|sugerencia|hint|"
-    r"dogfood\s+evidence|evidence\s+#\d+|falso\s+positivo|false\s+positive|"
-    r"mal\s+calibrad[oa]|miscalibrat\w*|badly\s+calibrated|"
-    r"ignoro|ignored?|rechaz\w*|reject\w*|"
-    r"por\s+qu[eé]|why|qu[eé]\s+dispara|what\s+triggers|"
-    r"me\s+asusta|scary|me\s+preocupa|worr(?:y|ied|ies)"
+    r"router|skill\s*router|suggest(?:ed|ion)?|hint|"
+    r"dogfood\s+evidence|evidence\s+#\d+|false\s+positive|"
+    r"miscalibrat\w*|badly\s+calibrated|"
+    r"ignored?|reject\w*|"
+    r"why|what\s+triggers|"
+    r"scary|worr(?:y|ied|ies)"
     r")",
     re.IGNORECASE,
 )
@@ -133,7 +133,7 @@ def _is_router_negative_meta_prompt(text: str) -> bool:
     lowered = text.lower()
     if re.search(r"router|skill\s*router", lowered, re.IGNORECASE):
         return True
-    return bool(re.search(r"ignoro|ignored?|rechaz\w*|reject\w*|sugerencia\s+del\s+agente|agent\s+suggestion", lowered, re.IGNORECASE))
+    return bool(re.search(r"ignored?|reject\w*|agent\s+suggestion", lowered, re.IGNORECASE))
 
 
 # ---------------------------------------------------------------------------
@@ -559,8 +559,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"https?://github\.com/[\w.\-]+/[\w.\-]+", 0.95),
                 (r"\brepo[- ]?forensics\b", 0.95),
-                (r"\b(analiz[áa]\w*|analy[sz]e)\s+(this|the|ese?|este?)?\s*repo", 0.90),
-                (r"\binvestig[áa]\w*\s+(this|the|ese?|este?)?\s*repo", 0.90),
+                (r"\banaly[sz]e\s+(this|the)?\s*repo", 0.90),
+                (r"\binvestigate\s+(this|the)?\s*repo", 0.90),
                 (r"\bclone\s+and\s+(scan|analy)", 0.85),
             ]),
             skill_name="repo-forensics",
@@ -572,7 +572,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\beval[- ]?repo\b", 0.95),
                 (r"\brepo[- ]?scout\b", 0.95),
-                (r"\b(evalua[rt]\w*|evaluate)\s+(this|the|ese?|este?)?\s*repo", 0.85),
+                (r"\bevaluate\s+(this|the)?\s*repo", 0.85),
                 (r"\btech\s*radar\b", 0.80),
             ]),
             skill_name="repo-scout",
@@ -584,8 +584,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Bug fixing ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(fix|arregl[áa]\w*|repar[áa]\w*|corregir?)\s+.{0,30}\bbug\b", 0.90),
-                (r"\b(fix|arregl[áa]\w*|repar[áa]\w*)\s+(the|el|la|this|ese?|este?)?\s*(error|fallo|falla|issue|problema|broken)", 0.88),
+                (r"\bfix\s+.{0,30}\bbug\b", 0.90),
+                (r"\bfix\s+(the|this)?\s*(error|issue|broken)", 0.88),
                 (r"\bplan[- ]?bug\b", 0.95),
                 (r"\bbug\s+(fix|report|found)\b", 0.85),
                 (r"\b(there'?s|there is|found)\s+(a|an)?\s*(bug|error|issue)\b", 0.80),
@@ -600,10 +600,10 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bdebug\w*\b", 0.85),
-                (r"\b(no funciona|doesn'?t work|not working|broken)\b", 0.80),
+                (r"\b(doesn'?t work|not working|broken)\b", 0.80),
                 (r"\bsystematic[- ]?debug\b", 0.95),
-                (r"\b(por qu[ée]|why)\s+(falla|fails|doesn'?t|no)\b", 0.80),
-                (r"\b(root cause|causa ra[ií]z)\b", 0.85),
+                (r"\bwhy\s+(fails|doesn'?t|not)\b", 0.80),
+                (r"\broot cause\b", 0.85),
             ]),
             skill_name="systematic-debugging",
             invoke_command="/systematic-debugging",
@@ -614,12 +614,12 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- New feature / SDD ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(new feature|add feature|implement feature|nueva funcionalidad|add funcionalidad)\b", 0.88),
-                (r"\b(I need to|I want to)\s+(add|add|implement|create)\b", 0.85),
+                (r"\b(new feature|add feature|implement feature)\b", 0.88),
+                (r"\b(I need to|I want to)\s+(add|implement|create)\b", 0.85),
                 (r"\bsdd[- ]?new\b", 0.95),
-                (r"\b(design|dise[ñn][áa]\w*)\s+(a|an|un|una)?\s*(new|nuev[oa])\b", 0.80),
-                (r"\b(build|construir?|arm[áa]\w*|armemos)\s+(a|an|un|una)?\s*(new|nuev[oa])?\s*(service|module|endpoint|api|feature|m[oó]dulo|servicio)", 0.85),
-                (r"\b(build|construir?)\s+a\s+new\s+\w+\s+(service|module|endpoint)", 0.85),
+                (r"\bdesign\s+(a|an)?\s*new\b", 0.80),
+                (r"\bbuild\s+(a|an)?\s*(new)?\s*(service|module|endpoint|api|feature)", 0.85),
+                (r"\bbuild\s+a\s+new\s+\w+\s+(service|module|endpoint)", 0.85),
             ]),
             skill_name="sdd-new",
             invoke_command="/sdd-new",
@@ -629,7 +629,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bplan[- ]?feature\b", 0.95),
-                (r"\b(plan|planifiq\w*|planear)\s+(the|la|el)?\s*(feature|funcionalidad|implementaci[oó]n)", 0.85),
+                (r"\bplan\s+(the)?\s*(feature|implementation)", 0.85),
             ]),
             skill_name="plan-feature",
             invoke_command="/plan-feature",
@@ -640,7 +640,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Testing ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(run|corr[eé]\w*|ejecut[áa]\w*|lanz[áa]\w*)\s+(the|los|las|all)?\s*test", 0.95),
+                (r"\brun\s+(the|all)?\s*test", 0.95),
                 (r"\brun[- ]?tests?\b", 0.95),
                 (r"\b(test|tests)\s+(pass|fail|run|suite|result)", 0.80),
                 (r"\bpytest\b", 0.80),
@@ -653,7 +653,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         ),
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(write|escrib[ií]\w*|agreg[áa]\w*|add)\s+(the|los|las)?\s*tests?\b", 0.85),
+                (r"\b(write|add)\s+(the)?\s*tests?\b", 0.85),
                 (r"\btdd\b", 0.85),
                 (r"\btest[- ]?driven\b", 0.90),
                 (r"\bred[- ]?green[- ]?refactor\b", 0.95),
@@ -666,7 +666,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bcoverage\b", 0.80),
-                (r"\b(cobertura|coverage)\s+(report|reporte|check)\b", 0.90),
+                (r"\bcoverage\s+(report|check)\b", 0.90),
             ]),
             skill_name="coverage-enforcement",
             invoke_command="/coverage-report",
@@ -678,10 +678,10 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bsecurity[- ]?audit\b", 0.95),
-                (r"\b(audit[áa]\w*|revis[áa]\w*|revisar?)\s+(la\s+)?seguridad\b", 0.90),
-                (r"\b(security|seguridad)\s+(scan|check|review|audit|revisi[oó]n)\b", 0.90),
-                (r"\bseguridad\s+(del|de)\s+", 0.80),
-                (r"\b(vulnerabilit|vulnerabilidad)\w*\b", 0.80),
+                (r"\baudit\s+(the\s+)?security\b", 0.90),
+                (r"\bsecurity\s+(scan|check|review|audit)\b", 0.90),
+                (r"\bsecurity\s+(of|for)\s+", 0.80),
+                (r"\bvulnerabilit\w*\b", 0.80),
             ]),
             skill_name="security-audit",
             invoke_command="/security-audit",
@@ -735,7 +735,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bsecret[- ]?audit\b", 0.95),
-                (r"\b(scan|check|revisar?)\s+(for\s+)?(secrets?|credentials?|claves?|credenciales?)\b", 0.85),
+                (r"\b(scan|check)\s+(for\s+)?(secrets?|credentials?)\b", 0.85),
             ]),
             skill_name="secret-audit",
             invoke_command="/secret-audit",
@@ -748,9 +748,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bkpis?\b", 0.90),
                 (r"\bagent[- ]?kpis?\b", 0.95),
-                (r"\b(m[eé]tricas?|metrics?)\s+(de\s+)?(agent|agente)", 0.85),
-                (r"\b(health|salud)\s+(dashboard|check|report)\b", 0.80),
-                (r"\b(agent|agente)\s+(health|performance|rendimiento)\b", 0.85),
+                (r"\bmetrics?\s+(for\s+)?agent", 0.85),
+                (r"\bhealth\s+(dashboard|check|report)\b", 0.80),
+                (r"\bagent\s+(health|performance)\b", 0.85),
             ]),
             skill_name="agent-kpis",
             invoke_command="/agent-kpis",
@@ -760,7 +760,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bmodel[- ]?optimi[sz]\w*\b", 0.95),
-                (r"\b(optimi[sz]\w*|mejorar)\s+(the\s+)?model\s*routing\b", 0.85),
+                (r"\boptimi[sz]\w*\s+(the\s+)?model\s*routing\b", 0.85),
                 (r"\bmodel\s+routing\b", 0.80),
             ]),
             skill_name="model-optimizer",
@@ -781,8 +781,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Research ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(deep[- ]?research|investigaci[oó]n\s+profunda)\b", 0.95),
-                (r"\b(research|investigar?|investig[áa]\w*)\b", 0.80),
+                (r"\bdeep[- ]?research\b", 0.95),
+                (r"\bresearch\b", 0.80),
                 (r"\b(research)\s+(this|the|this|that)\b", 0.85),
             ]),
             skill_name="deep-research",
@@ -807,7 +807,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\b(create|generate)\s+(a\s+)?skill\b", 0.95),
                 (r"\bskill[- ]?creator\b", 0.95),
-                (r"\b(new|nuev[oa])\s+skill\b", 0.90),
+                (r"\bnew\s+skill\b", 0.90),
             ]),
             skill_name="skill-creator",
             invoke_command="/skill-creator",
@@ -816,7 +816,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         ),
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(optimize|optimizar?|mejorar)\s+(the\s+|la\s+|el\s+)?skill\b", 0.90),
+                (r"\boptimize\s+(the\s+)?skill\b", 0.90),
                 (r"\boptimize[- ]?skill\b", 0.95),
             ]),
             skill_name="optimize-skill",
@@ -828,9 +828,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Release ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(release|releas\w*|versi[oó]n|version)\b", 0.80),
+                (r"\b(release|releas\w*|version)\b", 0.80),
                 (r"\brelease[- ]?os\b", 0.95),
-                (r"\b(tag|bump|publicar?)\s+(a\s+|un\s+|una\s+)?(new\s+|nuev[oa]\s+)?(release|version|versi[oó]n)\b", 0.90),
+                (r"\b(tag|bump)\s+(a\s+)?(new\s+)?(release|version)\b", 0.90),
             ]),
             skill_name="release-os",
             invoke_command="/release-os",
@@ -842,9 +842,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bscout\b", 0.90),
-                (r"\b(explor[áa]\w*|explore)\s+(el\s+|the\s+)?(c[oó]digo|code|codebase)", 0.85),
+                (r"\bexplore\s+(the\s+)?(code|codebase)", 0.85),
                 (r"\breconnaissance\b", 0.85),
-                (r"\b(terrain|terreno)\s+(map|mapa)\b", 0.80),
+                (r"\bterrain\s+map\b", 0.80),
             ]),
             skill_name="scout",
             invoke_command="/scout",
@@ -866,9 +866,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\breverse[- ]?engineer\b", 0.95),
-                (r"\b(understand|comprehend|entender|comprender)\s+(the\s+|el\s+|la\s+)?(internal\s+)?((config|configuration)\s+schema|schema|structure|architecture|api|config|source|esquema|estructura|arquitectura|fuente)", 0.80),
-                (r"\b(how\s+does|c[oó]mo\s+funciona)\s+.{0,30}\s+(work|funciona)\b", 0.75),
-                (r"\b(internals?|source\s+code)\s+(of|del?|de\s+la)", 0.80),
+                (r"\b(understand|comprehend)\s+(the\s+)?(internal\s+)?((config|configuration)\s+schema|schema|structure|architecture|api|config|source)", 0.80),
+                (r"\bhow\s+does\s+.{0,30}\s+work\b", 0.75),
+                (r"\b(internals?|source\s+code)\s+of", 0.80),
                 (r"\bdecipher\b", 0.80),
             ]),
             skill_name="reverse-engineer",
@@ -880,9 +880,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Documentation ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(document[áa]\w*|documentar?|docs?)\s+(the|la|el|this|ese?|este?)?\s*(feature|funcionalidad|endpoint|api|module|m[oó]dulo)", 0.85),
+                (r"\b(document|docs?)\s+(the|this)?\s*(feature|endpoint|api|module)", 0.85),
                 (r"\bdocument[- ]?feature\b", 0.95),
-                (r"\b(write|generar?|create)\s+(the|la|el)?\s*(docs?|documentation|documentaci[oó]n)\b", 0.85),
+                (r"\b(write|create)\s+(the)?\s*(docs?|documentation)\b", 0.85),
             ]),
             skill_name="document-feature",
             invoke_command="/document-feature",
@@ -893,7 +893,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bdoc[- ]?sync\b", 0.95),
                 (r"\bstale\s+docs?\b", 0.85),
-                (r"\b(sync|actualizar?)\s+(the|la|el)?\s*(docs?|documentaci[oó]n)\b", 0.80),
+                (r"\bsync\s+(the)?\s*docs?\b", 0.80),
             ]),
             skill_name="doc-sync",
             invoke_command="/doc-sync",
@@ -904,7 +904,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- Code review ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(review|revis[áa]\w*|revisar)\s+(the|el|la|my|mi|this|ese?|este?)?\s*(code|c[oó]digo|changes?|cambios?|pr|pull\s*request)", 0.85),
+                (r"\breview\s+(the|my|this)?\s*(code|changes?|pr|pull\s*request)", 0.85),
                 (r"\bself[- ]?review\b", 0.95),
                 (r"\bcode\s+review\b", 0.85),
             ]),
@@ -919,7 +919,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bstress[- ]?test\b", 0.95),
                 (r"\bagent[- ]?stress\b", 0.90),
-                (r"\b(degradaci[oó]n|degradation)\b", 0.80),
+                (r"\bdegradation\b", 0.80),
                 (r"\bcognitive\s+load\s+test\b", 0.85),
             ]),
             skill_name="agent-stress-test",
@@ -932,8 +932,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\brecommend[- ]?librar\w*\b", 0.95),
-                (r"\b(qu[eé]\s+librer[ií]a|which\s+library|what\s+library)\b", 0.90),
-                (r"\b(suggest|recomendar?|suger\w*)\s+(a\s+|un\s+|una\s+)?(library|librer[ií]a|package|paquete)\b", 0.85),
+                (r"\b(which\s+library|what\s+library)\b", 0.90),
+                (r"\bsuggest\s+(a\s+)?(library|package)\b", 0.85),
             ]),
             skill_name="recommend-library",
             invoke_command="/recommend-library",
@@ -945,8 +945,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bplanning[- ]?poker\b", 0.95),
-                (r"\b(estimate|estimar?|estimaci[oó]n)\s+(the\s+|la\s+)?(cost|task|effort|costo|tarea|esfuerzo)", 0.85),
-                (r"\b(cu[áa]nto\s+(va\s+a\s+)?cost|how\s+much\s+will\s+(this|it)\s+cost)\b", 0.85),
+                (r"\bestimate\s+(the\s+)?(cost|task|effort)", 0.85),
+                (r"\bhow\s+much\s+will\s+(this|it)\s+cost\b", 0.85),
             ]),
             skill_name="planning-poker",
             invoke_command="/planning-poker",
@@ -958,8 +958,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bcognitive[- ]?os[- ]?status\b", 0.95),
                 (r"\b(cos|cognitive\s+os)\s+status\b", 0.90),
-                (r"\b(c[oó]mo\s+viene|how'?s?\s+(the\s+)?(system|os|cognitive))\b", 0.75),
-                (r"\b(health\s+check|estado\s+del\s+sistema)\b", 0.80),
+                (r"\bhow'?s?\s+(the\s+)?(system|os|cognitive)\b", 0.75),
+                (r"\bhealth\s+check\b", 0.80),
             ]),
             skill_name="cognitive-os-status",
             invoke_command="/cognitive-os-status",
@@ -983,8 +983,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bsre[- ]?agent\b", 0.95),
-                (r"\b(monitor|monitorear?)\s+(the\s+|los\s+)?(services?|servicios?|containers?|contenedores?)\b", 0.80),
-                (r"\b(docker|container|contenedor)\s+(is\s+)?(down|ca[ií]do|failing|fallando)\b", 0.85),
+                (r"\bmonitor\s+(the\s+)?(services?|containers?)\b", 0.80),
+                (r"\b(docker|container)\s+(is\s+)?(down|failing)\b", 0.85),
                 (r"\binfrastructure\s+(issue|problem|error)\b", 0.80),
             ]),
             skill_name="sre-agent",
@@ -997,7 +997,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\berror[- ]?analy[sz]\w*\b", 0.95),
-                (r"\b(analy[sz]e|analizar?)\s+(the\s+|los\s+)?(errors?|errores?|failures?|fallos?)\b", 0.85),
+                (r"\banaly[sz]e\s+(the\s+)?(errors?|failures?)\b", 0.85),
                 (r"\berror\s+patterns?\b", 0.80),
             ]),
             skill_name="error-analyzer",
@@ -1011,7 +1011,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bimpact[- ]?analysis\b", 0.95),
                 (r"\bblast\s+radius\b", 0.85),
-                (r"\b(what\s+will\s+break|qu[eé]\s+se\s+rompe)\b", 0.80),
+                (r"\bwhat\s+will\s+break\b", 0.80),
             ]),
             skill_name="impact-analysis",
             invoke_command="/impact-analysis",
@@ -1024,7 +1024,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bissue[- ]?to[- ]?pr\b", 0.95),
                 (r"\b(issue|github\s+issue)\s+#?\d+", 0.80),
-                (r"\b(take|grab|work\s+on|resolver)\s+(the\s+|el\s+)?(issue|ticket)\b", 0.80),
+                (r"\b(take|grab|work\s+on)\s+(the\s+)?(issue|ticket)\b", 0.80),
             ]),
             skill_name="issue-pipeline",
             invoke_command="/issue-to-pr",
@@ -1050,7 +1050,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bresource[- ]?governor\b", 0.95),
                 (r"\bbudget\s+(check|status|report|review)\b", 0.80),
-                (r"\b(cu[áa]nto\s+(gast[eé]|spent)|how\s+much\s+(did\s+we\s+)?spend)\b", 0.80),
+                (r"\bhow\s+much\s+(did\s+we\s+)?spend\b", 0.80),
             ]),
             skill_name="resource-governor",
             invoke_command="/resource-governor",
@@ -1062,7 +1062,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bself[- ]?improv\w*\b", 0.95),
-                (r"\b(improve|mejorar)\s+(the\s+|el\s+)?(system|sistema|cognitive\s*os|cos)\b", 0.80),
+                (r"\bimprove\s+(the\s+)?(system|cognitive\s*os|cos)\b", 0.80),
             ]),
             skill_name="self-improve",
             invoke_command="/self-improve",
@@ -1100,7 +1100,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\breadiness[- ]?check\b", 0.95),
-                (r"\b(ready|listo)\s+(to|para)\s+(implement|code|aplicar|apply)\b", 0.80),
+                (r"\bready\s+to\s+(implement|code|apply)\b", 0.80),
             ]),
             skill_name="readiness-check",
             invoke_command="/readiness-check",
@@ -1136,7 +1136,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bweb[- ]?crawl\w*\b", 0.95),
-                (r"\b(fetch|crawl|scrape)\s+(the\s+|la\s+)?(web\s*page|p[áa]gina|url|site|sitio)\b", 0.80),
+                (r"\b(fetch|crawl|scrape)\s+(the\s+)?(web\s*page|url|site)\b", 0.80),
             ]),
             skill_name="web-crawler",
             invoke_command="/web-crawler",
@@ -1149,7 +1149,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\baudit[- ]?website\b", 0.95),
                 (r"\b(seo|performance|accessibility)\s+audit\b", 0.80),
-                (r"\b(audit[áa]\w*|auditar?)\s+(the\s+|el\s+|la\s+)?(website|sitio|p[áa]gina)\b", 0.85),
+                (r"\baudit\s+(the\s+)?website\b", 0.85),
             ]),
             skill_name="audit-website",
             invoke_command="/audit-website",
@@ -1161,7 +1161,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bcognitive[- ]?os[- ]?init\b", 0.95),
-                (r"\b(init|initializ\w*|inicializar?)\s+(cognitive\s+os|cos)\b", 0.90),
+                (r"\b(init|initializ\w*)\s+(cognitive\s+os|cos)\b", 0.90),
             ]),
             skill_name="cognitive-os-init",
             invoke_command="/cognitive-os-init",
@@ -1173,7 +1173,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bcognitive[- ]?os[- ]?test\b", 0.95),
-                (r"\b(test|corr[eé]\w*)\s+(the\s+|el\s+)?(cognitive\s+os|cos)\b", 0.85),
+                (r"\btest\s+(the\s+)?(cognitive\s+os|cos)\b", 0.85),
             ]),
             skill_name="cognitive-os-test",
             invoke_command="/cognitive-os-test",
@@ -1185,7 +1185,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bbatch[- ]?run\b", 0.95),
-                (r"\b(run|ejecutar?)\s+(multiple|varios|batch)\s+(changes?|cambios?|sdd)\b", 0.80),
+                (r"\brun\s+(multiple|batch)\s+(changes?|sdd)\b", 0.80),
             ]),
             skill_name="batch-runner",
             invoke_command="/batch-run",
@@ -1197,7 +1197,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bsandbox[- ]?sample\b", 0.95),
-                (r"\b(sample|muestr\w*)\s+(before|antes)\s+(scal|applying|aplicar)\b", 0.80),
+                (r"\bsample\s+before\s+(scal|applying)\b", 0.80),
             ]),
             skill_name="sandbox-sample",
             invoke_command="/sandbox-sample",
@@ -1210,7 +1210,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bresume[- ]?tasks?\b", 0.95),
                 (r"\b(incomplete|pending)\s+tasks?\s+from\s+(last|previous)\b", 0.80),
-                (r"\b(qu[eé]\s+qued[oó]\s+pendiente|what\s+was\s+left)\b", 0.80),
+                (r"\bwhat\s+was\s+left\b", 0.80),
             ]),
             skill_name="resume-tasks",
             invoke_command="/resume-tasks",
@@ -1234,7 +1234,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bgpu[- ]?sandbox\b", 0.95),
                 (r"\bjupyter\b", 0.75),
-                (r"\b(run|ejecutar?)\s+(python|ml|data)\s+(in\s+)?(jupyter|notebook|sandbox)\b", 0.80),
+                (r"\brun\s+(python|ml|data)\s+(in\s+)?(jupyter|notebook|sandbox)\b", 0.80),
             ]),
             skill_name="gpu-sandbox",
             invoke_command="/gpu-sandbox",
@@ -1246,7 +1246,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bconversation[- ]?memory\b", 0.95),
-                (r"\b(search|buscar?)\s+(past|previous|anterior\w*)\s+(session|sesi[oó]n|conversation|conversaci[oó]n)\b", 0.85),
+                (r"\bsearch\s+(past|previous)\s+(session|conversation)\b", 0.85),
             ]),
             skill_name="conversation-memory",
             invoke_command="/conversation-memory",
@@ -1258,7 +1258,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bexhaustive[- ]?prompt\b", 0.95),
-                (r"\b(enumerate|enumerar?)\s+(the\s+|la\s+|el\s+)?scope\b", 0.80),
+                (r"\benumerate\s+(the\s+)?scope\b", 0.80),
             ]),
             skill_name="exhaustive-prompt",
             invoke_command="/exhaustive-prompt",
@@ -1281,7 +1281,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\brepair[- ]?status\b", 0.95),
-                (r"\bcircuit\s+breaker\s+(status|state|estado)\b", 0.80),
+                (r"\bcircuit\s+breaker\s+(status|state)\b", 0.80),
             ]),
             skill_name="repair-status",
             invoke_command="/repair-status",
@@ -1304,7 +1304,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bvalidate[- ]?config\b", 0.95),
-                (r"\b(validate|validar?)\s+(the\s+|la\s+|el\s+)?(config|configuraci[oó]n)\b", 0.80),
+                (r"\bvalidate\s+(the\s+)?(config|configuration)\b", 0.80),
             ]),
             skill_name="validate-config",
             invoke_command="/validate-config",
@@ -1351,7 +1351,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bauto[- ]?rollback\b", 0.95),
-                (r"\brollback\s+(the\s+|el\s+)?(failed|fallido)?\s*(change|cambio|apply)\b", 0.80),
+                (r"\brollback\s+(the\s+)?(failed)?\s*(change|apply)\b", 0.80),
             ]),
             skill_name="auto-rollback",
             invoke_command="/auto-rollback",
@@ -1387,7 +1387,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bsdd[- ]?continue\b", 0.95),
-                (r"\bcontinue\s+(the\s+|el\s+)?sdd\b", 0.85),
+                (r"\bcontinue\s+(the\s+)?sdd\b", 0.85),
             ]),
             skill_name="sdd-continue",
             invoke_command="/sdd-continue",
@@ -1397,7 +1397,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bsdd[- ]?resume\b", 0.95),
-                (r"\bresume\s+(the\s+|el\s+)?sdd\b", 0.85),
+                (r"\bresume\s+(the\s+)?sdd\b", 0.85),
             ]),
             skill_name="sdd-resume",
             invoke_command="/sdd-resume",
@@ -1421,7 +1421,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bresolve[- ]?blockers?\b", 0.95),
-                (r"\b(fix|resolver?)\s+(the\s+|los\s+)?blockers?\b", 0.85),
+                (r"\bfix\s+(the\s+)?blockers?\b", 0.85),
             ]),
             skill_name="resolve-blockers",
             invoke_command="/resolve-blockers",
@@ -1444,9 +1444,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bcontext[- ]?analysis\b", 0.95),
-                (r"\b(analiz[áa]\w*|analyze)\s+(the\s+|el\s+|la\s+)?(project\s+)?context\b", 0.85),
+                (r"\banalyze\s+(the\s+)?(project\s+)?context\b", 0.85),
                 (r"\b(new\s+project|project\s+brief|stakeholders|business\s+context)\b", 0.80),
-                (r"\b(brief|contexto)\s+(del\s+|de\s+)?(proyecto|project)\b", 0.80),
+                (r"\bbrief\s+(for\s+)?project\b", 0.80),
             ]),
             skill_name="context-analysis",
             invoke_command="/context-analysis",
@@ -1458,7 +1458,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
                 (r"\bthreat[- ]?model\b", 0.95),
                 (r"\bstride\b", 0.85),
                 (r"\b(security\s+assessment|risk\s+analysis|threat\s+identification)\b", 0.80),
-                (r"\b(modelo\s+de\s+amenazas?|an[áa]lisis\s+de\s+riesgo)\b", 0.85),
+                (r"\b(risk\s+analysis|threat\s+model)\b", 0.85),
             ]),
             skill_name="threat-model",
             invoke_command="/threat-model",
@@ -1469,9 +1469,9 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\bcompetitive[- ]?research\b", 0.95),
                 (r"\bbenchmarking\b", 0.80),
-                (r"\b(library|librer[ií]a)\s+evaluation\b", 0.80),
-                (r"\b(competitive|competencia)\s+(analysis|an[áa]lisis|landscape)\b", 0.85),
-                (r"\b(alternativas?|alternatives?)\s+(para|for|to)\b", 0.75),
+                (r"\blibrary\s+evaluation\b", 0.80),
+                (r"\bcompetitive\s+(analysis|landscape)\b", 0.85),
+                (r"\balternatives?\s+(for|to)\b", 0.75),
             ]),
             skill_name="competitive-research",
             invoke_command="/competitive-research",
@@ -1481,8 +1481,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\bexecution[- ]?plan\b", 0.95),
-                (r"\b(plan\s+de\s+ejecuci[oó]n|phased\s+(execution|plan))\b", 0.90),
-                (r"\b(budget\s+estimation|estimaci[oó]n\s+de\s+presupuesto)\b", 0.85),
+                (r"\bphased\s+(execution|plan)\b", 0.90),
+                (r"\bbudget\s+estimation\b", 0.85),
                 (r"\b(milestones?|timeline|phases?)\s+(plan|planning|breakdown)\b", 0.80),
             ]),
             skill_name="execution-plan",
@@ -1494,8 +1494,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\baudience[- ]?summar\w*\b", 0.95),
                 (r"\bexecutive\s+summary\b", 0.85),
-                (r"\bstakeholder\s+(report|summary|resumen)\b", 0.85),
-                (r"\b(res[uú]menes?\s+para\s+audiencias?|audience[- ]?targeted)\b", 0.85),
+                (r"\bstakeholder\s+(report|summary)\b", 0.85),
+                (r"\baudience[- ]?targeted\b", 0.85),
             ]),
             skill_name="audience-summaries",
             invoke_command="/audience-summaries",
@@ -1506,7 +1506,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\baudit[- ]?report\b", 0.95),
                 (r"\b(sprint\s+review|work\s+summary|progress\s+report)\b", 0.80),
-                (r"\b(informe\s+de\s+auditor[ií]a|reporte\s+de\s+sprint)\b", 0.85),
+                (r"\b(audit\s+report|sprint\s+report)\b", 0.85),
                 (r"\b(audit\s+report|comprehensive\s+audit)\b", 0.90),
             ]),
             skill_name="audit-report",
@@ -1518,7 +1518,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\btraceability[- ]?check\b", 0.95),
                 (r"\b(coverage\s+gaps?|requirement\s+tracking)\b", 0.80),
-                (r"\b(trazabilidad|rastreabilidad)\b", 0.85),
+                (r"\btraceability\b", 0.85),
                 (r"\b(requirement[- ]?to[- ]?test|req\s+coverage)\b", 0.85),
             ]),
             skill_name="traceability-check",
