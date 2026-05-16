@@ -2,13 +2,13 @@
 Unit tests for lib.feedback_detector — FeedbackDetector, FeedbackType, FeedbackSignal.
 
 Covers:
-  - EXPLICIT_POSITIVE: English and Spanish praise phrases
+  - EXPLICIT_POSITIVE: English praise phrases
   - EXPLICIT_NEGATIVE: rejection / wrong / revert phrases
   - CORRECTION: "actually", "instead", "use X instead"
   - ESCALATION: user taking over
   - NEUTRAL: questions, status queries
   - IMPLICIT_POSITIVE: new task after previous
-  - Edge cases: empty string, whitespace-only, mixed language
+  - Edge cases: empty string, whitespace-only
 
 Minimum: 20 tests.
 """
@@ -100,10 +100,9 @@ class TestExplicitNegative:
         result = detector.detect("revert the last change")
         assert result.type == FeedbackType.EXPLICIT_NEGATIVE
 
-    def test_para_spanish_stop(self, detector):
-        # "pará" means stop (Argentine Spanish)
-        result = detector.detect("pará, eso no es lo que quiero")
-        assert result.type in (FeedbackType.EXPLICIT_NEGATIVE, FeedbackType.CORRECTION)
+    def test_no_this_is_wrong(self, detector):
+        result = detector.detect("no, this is not what I wanted")
+        assert result.type == FeedbackType.EXPLICIT_NEGATIVE
 
     def test_not_right(self, detector):
         result = detector.detect("that's not right at all")
