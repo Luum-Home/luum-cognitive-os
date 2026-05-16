@@ -680,6 +680,22 @@ class QueryMiss:
     expected_skill: str
     top_skill: Optional[str]
     expected_rank: int
+    runner_up_skill: Optional[str] = None
+    top1_score: Optional[float] = None
+    runner_up_score: Optional[float] = None
+    expected_score: Optional[float] = None
+    top_2_margin: Optional[float] = None
+
+
+@dataclass
+class LowMarginHit:
+    language: str
+    prompt_digest: str
+    expected_skill: str
+    runner_up_skill: Optional[str]
+    top1_score: float
+    runner_up_score: float
+    top_2_margin: float
 
 
 @dataclass
@@ -697,6 +713,9 @@ class ModelMetric:
     precision_at_1: float
     precision_at_5: float
     mrr: float
+    min_top_2_margin: float
+    avg_top_2_margin: float
+    low_margin_hit_count: int
     cold_start_ms: float
     warm_p50_ms: float
     warm_p95_ms: float
@@ -705,6 +724,7 @@ class ModelMetric:
     model_size_mb: float
     per_language: List[PerLangMetric] = field(default_factory=list)
     top1_misses: List[QueryMiss] = field(default_factory=list)
+    low_margin_hits: List[LowMarginHit] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -969,6 +989,9 @@ class BenchmarkHarness:
                 precision_at_1=0.0,
                 precision_at_5=0.0,
                 mrr=0.0,
+                min_top_2_margin=0.0,
+                avg_top_2_margin=0.0,
+                low_margin_hit_count=0,
                 cold_start_ms=0.0,
                 warm_p50_ms=0.0,
                 warm_p95_ms=0.0,
@@ -1008,6 +1031,8 @@ class BenchmarkHarness:
         hits_at_5 = 0
         reciprocal_ranks: List[float] = []
         top1_misses: List[QueryMiss] = []
+        low_margin_hits: List[LowMarginHit] = []
+        top_2_margins: List[float] = []
         per_lang_counters: Dict[str, Dict[str, float]] = {
             lg: {"q": 0, "p1": 0, "p5": 0, "rr_sum": 0.0} for lg in LANGUAGES
         }
@@ -1027,29 +1052,54 @@ class BenchmarkHarness:
                 continue
             latencies_ms.append((time.perf_counter() - t0) * 1000)
             top_skill = ranked[0][0] if ranked else None
+            runner_up_skill = ranked[1][0] if len(ranked) > 1 else None
+            top1_score = float(ranked[0][1]) if ranked else 0.0
+            runner_up_score = float(ranked[1][1]) if len(ranked) > 1 else 0.0
+            top_2_margin = top1_score - runner_up_score if len(ranked) > 1 else top1_score
+            top_2_margins.append(top_2_margin)
             top_5 = {name for name, _ in ranked[:5]}
             rank = next(
                 (i + 1 for i, (name, _) in enumerate(ranked) if name == q.expected_skill),
                 0,
+            )
+            expected_score = next(
+                (float(score) for name, score in ranked if name == q.expected_skill),
+                None,
             )
             rr = (1.0 / rank) if rank > 0 else 0.0
             reciprocal_ranks.append(rr)
             lc = per_lang_counters[q.language]
             lc["q"] += 1
             lc["rr_sum"] += rr
+            digest = hashlib.sha256(q.prompt.encode("utf-8")).hexdigest()[:12]
             if top_skill == q.expected_skill:
                 hits_at_1 += 1
                 lc["p1"] += 1
+                if len(ranked) > 1 and top_2_margin < 0.02:
+                    low_margin_hits.append(
+                        LowMarginHit(
+                            language=q.language,
+                            prompt_digest=digest,
+                            expected_skill=q.expected_skill,
+                            runner_up_skill=runner_up_skill,
+                            top1_score=top1_score,
+                            runner_up_score=runner_up_score,
+                            top_2_margin=top_2_margin,
+                        )
+                    )
             else:
                 top1_misses.append(
                     QueryMiss(
                         language=q.language,
-                        prompt_digest=hashlib.sha256(
-                            q.prompt.encode("utf-8")
-                        ).hexdigest()[:12],
+                        prompt_digest=digest,
                         expected_skill=q.expected_skill,
                         top_skill=top_skill,
                         expected_rank=rank,
+                        runner_up_skill=runner_up_skill,
+                        top1_score=top1_score,
+                        runner_up_score=runner_up_score,
+                        expected_score=expected_score,
+                        top_2_margin=top_2_margin,
                     )
                 )
             if q.expected_skill in top_5:
@@ -1070,6 +1120,8 @@ class BenchmarkHarness:
         p1 = hits_at_1 / n
         p5 = hits_at_5 / n
         mrr = sum(reciprocal_ranks) / n if reciprocal_ranks else 0.0
+        min_top_2_margin = min(top_2_margins) if top_2_margins else 0.0
+        avg_top_2_margin = (sum(top_2_margins) / len(top_2_margins)) if top_2_margins else 0.0
         p50 = _percentile(latencies_ms, 50)
         p95 = _percentile(latencies_ms, 95)
         p99 = _percentile(latencies_ms, 99)
@@ -1103,6 +1155,9 @@ class BenchmarkHarness:
             precision_at_1=p1,
             precision_at_5=p5,
             mrr=mrr,
+            min_top_2_margin=min_top_2_margin,
+            avg_top_2_margin=avg_top_2_margin,
+            low_margin_hit_count=len(low_margin_hits),
             cold_start_ms=cold_start_ms,
             warm_p50_ms=p50,
             warm_p95_ms=p95,
@@ -1111,6 +1166,7 @@ class BenchmarkHarness:
             model_size_mb=size_mb,
             per_language=per_lang,
             top1_misses=top1_misses,
+            low_margin_hits=low_margin_hits,
         )
 
         # Persist cache.
@@ -1126,7 +1182,7 @@ class BenchmarkHarness:
         candidates: List[Tuple[str, str]],
     ) -> Path:
         h = hashlib.sha256()
-        h.update(b"routing-benchmark-cache/v2")
+        h.update(b"routing-benchmark-cache/v3")
         h.update(json.dumps(entry, sort_keys=True).encode())
         h.update(
             json.dumps(
@@ -1152,8 +1208,13 @@ class BenchmarkHarness:
             return None
         per_lang = [PerLangMetric(**pl) for pl in data.get("per_language", [])]
         top1_misses = [QueryMiss(**miss) for miss in data.get("top1_misses", [])]
+        low_margin_hits = [LowMarginHit(**hit) for hit in data.get("low_margin_hits", [])]
         data["per_language"] = per_lang
         data["top1_misses"] = top1_misses
+        data["low_margin_hits"] = low_margin_hits
+        data.setdefault("min_top_2_margin", 0.0)
+        data.setdefault("avg_top_2_margin", 0.0)
+        data.setdefault("low_margin_hit_count", len(low_margin_hits))
         try:
             return ModelMetric(**data)
         except TypeError:
@@ -1187,6 +1248,9 @@ class BenchmarkHarness:
             precision_at_1=0.0,
             precision_at_5=0.0,
             mrr=0.0,
+            min_top_2_margin=0.0,
+            avg_top_2_margin=0.0,
+            low_margin_hit_count=0,
             cold_start_ms=0.0,
             warm_p50_ms=0.0,
             warm_p95_ms=0.0,
@@ -1243,21 +1307,23 @@ def write_report_markdown(report: BenchmarkReport, path: Path) -> None:
     lines.append("## Comparison")
     lines.append("")
     lines.append(
-        "| model | role | precision@1 | precision@5 | MRR | warm p95 ms | "
-        "cold start ms | peak MB | size MB | license | loaded |"
+        "| model | role | precision@1 | precision@5 | MRR | min top-2 margin | "
+        "low-margin hits | warm p95 ms | cold start ms | peak MB | size MB | license | loaded |"
     )
     lines.append(
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |"
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |"
     )
     for m in report.models:
         lines.append(
             "| {id} | {role} | {p1:.3f} | {p5:.3f} | {mrr:.3f} | "
-            "{p95:.1f} | {cold:.1f} | {rss:.1f} | {size:.1f} | {lic} | {ok} |".format(
+            "{margin:.4f} | {low} | {p95:.1f} | {cold:.1f} | {rss:.1f} | {size:.1f} | {lic} | {ok} |".format(
                 id=m.model_id,
                 role=m.role,
                 p1=m.precision_at_1,
                 p5=m.precision_at_5,
                 mrr=m.mrr,
+                margin=m.min_top_2_margin,
+                low=m.low_margin_hit_count,
                 p95=m.warm_p95_ms,
                 cold=m.cold_start_ms,
                 rss=m.peak_rss_mb,
@@ -1297,14 +1363,30 @@ def write_report_markdown(report: BenchmarkReport, path: Path) -> None:
     lines.append("")
     lines.append("## Top-1 Misses")
     lines.append("")
-    lines.append("| model | language | prompt digest | expected | top-1 | expected rank |")
-    lines.append("| --- | --- | --- | --- | --- | ---: |")
+    lines.append("| model | language | prompt digest | expected | top-1 | runner-up | expected rank | top-2 margin | expected score |")
+    lines.append("| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: |")
     for m in report.models:
         for miss in m.top1_misses[:50]:
             top_skill = miss.top_skill or ""
+            runner_up = miss.runner_up_skill or ""
+            margin = miss.top_2_margin if miss.top_2_margin is not None else 0.0
+            expected_score = miss.expected_score if miss.expected_score is not None else 0.0
             lines.append(
                 f"| {m.model_id} | {miss.language} | `{miss.prompt_digest}` | "
-                f"{miss.expected_skill} | {top_skill} | {miss.expected_rank} |"
+                f"{miss.expected_skill} | {top_skill} | {runner_up} | {miss.expected_rank} | "
+                f"{margin:.4f} | {expected_score:.4f} |"
+            )
+    lines.append("")
+    lines.append("## Low-Margin Correct Hits")
+    lines.append("")
+    lines.append("| model | language | prompt digest | expected | runner-up | top-2 margin |")
+    lines.append("| --- | --- | --- | --- | --- | ---: |")
+    for m in report.models:
+        for hit in m.low_margin_hits[:50]:
+            runner_up = hit.runner_up_skill or ""
+            lines.append(
+                f"| {m.model_id} | {hit.language} | `{hit.prompt_digest}` | "
+                f"{hit.expected_skill} | {runner_up} | {hit.top_2_margin:.4f} |"
             )
     lines.append("")
     lines.append("## Recommendation Block")

@@ -13,24 +13,33 @@ the full on-disk skill catalog, not only the small prompt corpus.
 
 ## Contract
 
-Routing-quality changes must run:
+Routing-quality changes must run the maximal local gate before merge:
 
 ```bash
-scripts/cos-routing-quality-gate
+scripts/cos-routing-max-gate
 ```
 
-The gate performs three checks:
+The max gate chains three layers:
 
-1. `tests/audit/test_skill_routing_patterns_ascii.py` keeps `routing_patterns:`
-   as an ASCII-only fast path.
-2. `tests/audit/test_multilingual_corpus_schema.py` verifies the multilingual
-   benchmark fixture schema without loading FastEmbed.
-3. `lib.routing_benchmark --multilingual` ranks benchmark prompts against the
-   full SKILL.md catalog and enforces minimum candidate count and precision.
+1. `scripts/audit-routing-intents --fail-on-issues` verifies every `SKILL.md`
+   has non-generic semantic routing intent text.
+2. `scripts/cos-routing-corpus-audit` reports multilingual corpus coverage by
+   skill, language, and uncovered user-facing skill surface.
+3. `scripts/cos-routing-quality-gate --fail-on-top1-misses` runs the live
+   semantic benchmark against the full SKILL.md catalog.
 
-`routing_intents` quality is also reported by `scripts/audit-routing-intents`.
-It is advisory by default because many legacy skills still need richer intent
-metadata.
+For cheaper iteration while editing, run layers individually:
+
+```bash
+scripts/audit-routing-intents --fail-on-issues
+scripts/cos-routing-corpus-audit
+scripts/cos-routing-quality-gate --fail-on-top1-misses
+```
+
+`lib.routing_benchmark --multilingual` now reports `min_top_2_margin`,
+`avg_top_2_margin`, and low-margin correct hits. A pass with tiny top-2 margins
+is not strong evidence of worldwide routing; it means the current corpus passed
+but has near-neighbor risk that the corpus expansion SDD should cover.
 
 ## Defaults
 
@@ -39,8 +48,18 @@ metadata.
 - Minimum precision@1: 0.80
 - Minimum precision@5: 0.90
 - Maximum model failures: 0
+- Top-1 misses: allowed by `cos-routing-quality-gate`, forbidden by `cos-routing-max-gate`
+- Minimum top-2 margin: 0.0 until the corpus is expanded enough to calibrate a safe floor
 
 Raise these thresholds only after expanding the adversarial multilingual corpus.
+Use environment variables for stricter local runs, for example:
+
+```bash
+COS_ROUTING_MIN_CORPUS_PROMPTS=40 \
+COS_ROUTING_MIN_LANGUAGES=6 \
+COS_ROUTING_MAX_LOW_MARGIN_HITS=0 \
+scripts/cos-routing-max-gate /tmp/cos-routing-max-gate-strict
+```
 
 ## Contextual Trigger
 

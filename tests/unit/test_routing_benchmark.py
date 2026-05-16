@@ -536,3 +536,43 @@ def test_baseline_minilm_runs_quick_mode(tmp_path: Path):
     write_report_json(report, out_dir / "r.json")
     assert (out_dir / "r.md").exists()
     assert (out_dir / "r.json").exists()
+
+
+def test_report_includes_top2_margin_metrics(models_path: Path, corpus_path: Path, tmp_path: Path):
+    harness = BenchmarkHarness(
+        models_manifest_path=models_path,
+        corpus_path=corpus_path,
+        adapter_factory=_stub_factory,
+        warm_queries=5,
+        cache_dir=tmp_path / "cache",
+    )
+    report = harness.run()
+    metric = report.models[0]
+    assert metric.min_top_2_margin >= 0.0
+    assert metric.avg_top_2_margin >= 0.0
+    assert isinstance(metric.low_margin_hit_count, int)
+
+    js = tmp_path / "report.json"
+    write_report_json(report, js)
+    parsed = json.loads(js.read_text(encoding="utf-8"))
+    model = parsed["models"][0]
+    assert "min_top_2_margin" in model
+    assert "avg_top_2_margin" in model
+    assert "low_margin_hit_count" in model
+    assert "low_margin_hits" in model
+
+
+def test_markdown_report_exposes_top2_margin(models_path: Path, corpus_path: Path, tmp_path: Path):
+    harness = BenchmarkHarness(
+        models_manifest_path=models_path,
+        corpus_path=corpus_path,
+        adapter_factory=_stub_factory,
+        warm_queries=5,
+        cache_dir=tmp_path / "cache",
+    )
+    report = harness.run()
+    md = tmp_path / "report.md"
+    write_report_markdown(report, md)
+    text = md.read_text(encoding="utf-8")
+    assert "min top-2 margin" in text
+    assert "Low-Margin Correct Hits" in text
