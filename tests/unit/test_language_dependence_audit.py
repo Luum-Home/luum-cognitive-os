@@ -37,15 +37,15 @@ name: {name}
 
 
 def test_extract_regex_literals_ignores_technical_shapes() -> None:
-    literals = extract_regex_literals(r"https?://github\.com/[\w.\-]+/[\w.\-]+|\bproduct-answer\b|\bayudar\b")
+    literals = extract_regex_literals(r"https?://github\.com/[\w.\-]+/[\w.\-]+|\bproduct-answer\b|\bassist\b")
 
-    assert "ayudar" in literals
+    assert "assist" in literals
     assert "github" not in literals
     assert "product-answer" not in literals
 
 
 def test_structural_risk_scores_natural_language_intent_above_command_alias() -> None:
-    natural = r"\b(ayudar|help|puede|can).{0,40}\b(dev|developer)\b"
+    natural = r"\b(help|assist|can|could).{0,40}\b(dev|developer)\b"
     command = r"\bproduct-answer\b"
 
     assert structural_risk_score(natural, extract_regex_literals(natural)) >= 4
@@ -57,7 +57,7 @@ def test_audit_flags_natural_language_routing_and_suppresses_low_aliases(tmp_pat
     _write_skill(
         tmp_path,
         "product-answer",
-        [r"\bproduct-answer\b", r"\b(ayudar|help|puede|can).{0,40}\b(dev|developer)\b"],
+        [r"\bproduct-answer\b", r"\b(help|assist|can|could).{0,40}\b(dev|developer)\b"],
     )
 
     report = audit(tmp_path)
@@ -66,7 +66,7 @@ def test_audit_flags_natural_language_routing_and_suppresses_low_aliases(tmp_pat
     assert len(report.findings) == 1
     finding = report.findings[0]
     assert finding.primitive == "product-answer"
-    assert "ayudar" in finding.extracted_literals
+    assert "assist" in finding.extracted_literals
     assert finding.severity in {"medium", "high"}
     assert finding.category == "regex_without_intents"
     assert finding.has_routing_intents is False
@@ -77,7 +77,7 @@ def test_audit_classifies_regex_with_intents_as_compatibility(tmp_path: Path, mo
     _write_skill(
         tmp_path,
         "product-answer",
-        [r"\b(ayudar|help|puede|can).{0,40}\b(dev|developer)\b"],
+        [r"\b(help|assist|can|could).{0,40}\b(dev|developer)\b"],
         routing_intents=True,
         summary_line=True,
     )
