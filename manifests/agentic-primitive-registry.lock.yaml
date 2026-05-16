@@ -8229,7 +8229,7 @@ primitives:
   distribution: lab
   runtime_projection: false
   projection_targets:
-  - docs/03-dominio-riesgo/domain-model.md
+  - docs/03-domain-risk/domain-model.md
   sha256: ff3218d0b5e0ded97e74558bef15230365544c844b78ec3c530af8a57f290474
 - id: skills/eval-repo/SKILL.md
   kind: skill
@@ -8571,7 +8571,7 @@ primitives:
   distribution: lab
   runtime_projection: false
   projection_targets:
-  - docs/03-dominio-riesgo/risk-register.md
+  - docs/03-domain-risk/risk-register.md
   sha256: 829ca7238dcdeaf75b24b1cf16c593485b75c8b142e3ad7df09c437efae2709b
 - id: skills/rules-export/SKILL.md
   kind: skill
@@ -8581,7 +8581,7 @@ primitives:
   distribution: lab
   runtime_projection: false
   projection_targets:
-  - docs/08-estandares/rules-snapshot-*.md
+  - docs/08-standards/rules-snapshot-*.md
   sha256: 36a4916db86f14bd2dda7c480aee11f92865bdf0b35e98eb6d5126cab797ae69
 - id: skills/run-tests/SKILL.md
   kind: skill

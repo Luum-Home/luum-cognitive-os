@@ -18,6 +18,7 @@ related_docs:
 Add five missing or under-connected tool/spec families to the Cognitive OS tech
 radar for the portable primitive program:
 
+<!-- english-only-content-audit: allow -->
 1. **VERSA / dotAIslash** — `ASSESS / trial-overlay-standard`.
 2. **Agent Skills ecosystem** — `ASSESS / conformance-reference`.
 3. **Zed Agent Client Protocol (ACP)** — `ASSESS / adapter-runtime-transport`.

@@ -25,7 +25,7 @@ from lib.risk_register import RiskRegisterScaffolder  # noqa: E402
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="Scaffold docs/03-dominio-riesgo/risk-register.md (STRIDE)")
+    p = argparse.ArgumentParser(description="Scaffold docs/03-domain-risk/risk-register.md (STRIDE)")
     p.add_argument("--project-dir", required=True)
     p.add_argument("--assets", default="", help="Brief description of system assets.")
     p.add_argument("--project-name", default="")

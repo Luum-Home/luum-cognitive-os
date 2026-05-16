@@ -117,13 +117,13 @@ All four alternatives solve subsets of the problem that engram + lifecycle wrapp
 ## Phased path forward
 
 **Phase 1 — Confidence + decay (this sprint)**
-Implement `lib/engram_lifecycle.py` with trailer encoding, decay classes (architecture/decision/pattern/discovery/bugfix/manual with τ values 365/180/180/90/60/90 days), ranking formula, and reinforcement on access. Add `hooks/engram-reinforce-on-access.sh` to increment reinforcement count on `mem_search` and `mem_get_observation` events. Unit tests cover trailer round-trip, decay math, reinforcement, ranking bounds, missing-trailer fallback.
+Implement `lib/engram_lifecycle.py` with trailer encoding, decay classes (architecture/decision/pattern/discovery/bugfix/manual with tau values 365/180/180/90/60/90 days), ranking formula, and reinforcement on access. Add `hooks/engram-reinforce-on-access.sh` to increment reinforcement count on `mem_search` and `mem_get_observation` events. Unit tests cover trailer round-trip, decay math, reinforcement, ranking bounds, missing-trailer fallback.
 
 **Phase 2 — Crystallization pipeline**
 Implement automated observation promotion: when N≥5 observations share a `topic_key`, trigger digest synthesis via LLM and save as `type=pattern` with elevated confidence. Hook fires on session end. The `document-feature` skill feeds into this pipeline.
 
 **Phase 3 — Graph traversal in queries**
-Extend `lib/engram_lifecycle.py` search to walk `mem_judge` edges (2-hop max) and merge graph hits into ranked results with a graph contribution weight (default α\_graph = 0.2). Bounded traversal prevents combinatorial explosion.
+Extend `lib/engram_lifecycle.py` search to walk `mem_judge` edges (2-hop max) and merge graph hits into ranked results with a graph contribution weight (default alpha\_graph = 0.2). Bounded traversal prevents combinatorial explosion.
 
 **Phase 4 (deferred) — Obsidian export**
 Once Phases 1–3 are stable, implement an export hook that renders engram observations as Obsidian Markdown with wikilinks derived from `mem_judge` edges. Human-readable audit layer only; no writes flow back from Obsidian to engram.

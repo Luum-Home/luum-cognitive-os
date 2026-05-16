@@ -33,12 +33,7 @@ The hidden assumption in the current design is that every operator and every age
 remember to pass `-n auto`. Reality, demonstrated today: forgotten. Twelve minutes of wall
 clock burned for a single mistake that the wrapper could have prevented automatically.
 
-Operator framing (Spanish, verbatim):
-
-> "hay una forma de determinar segun la carga de la compu (cross-devices) si puede correr
-> en paralelo o secuencial y que ajuste los argumentos segun ese dato?"
->
-> "procede asi"
+Operator framing: determine from cross-device machine load whether tests should run in parallel or sequentially, and adjust runner arguments from that signal.
 
 The constraint set is broader than "always parallelize":
 

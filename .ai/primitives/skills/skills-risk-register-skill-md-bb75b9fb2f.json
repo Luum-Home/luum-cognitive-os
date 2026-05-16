@@ -74,14 +74,14 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/03-dominio-riesgo/risk-register.md"
+        "docs/03-domain-risk/risk-register.md"
       ],
       "runtime_projection": false
     }
   },
   "portable_id": "skills/risk-register/SKILL.md",
   "projection_targets": [
-    "docs/03-dominio-riesgo/risk-register.md"
+    "docs/03-domain-risk/risk-register.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "skills/risk-register/SKILL.md",

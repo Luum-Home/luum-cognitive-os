@@ -39,9 +39,9 @@ For each of 9 dimensions:
 | OpenSpace | `openspace/skill_engine/evolver.py` @ d1e367d, lines 1–1598 (single file, three triggers + apply-retry). Plus `analyzer.py` (36,871 b), `store.py` (57,602 b), `patch.py` (33,672 b). | 1,598 LOC for `evolver.py` alone; ~6,800 LOC `skill_engine/` total. |
 | COS | `lib/self_improvement_loop.py:1–307` (3 typed stages, frozen dataclasses), `lib/self_improvement.py:1–211`, `scripts/self_improvement_discipline_gate.py:1–228`, `scripts/cos_self_improvement_loop.py:1–53`, `lib/doctrine_proposer.py:1–262`. | **918 LOC total** (`wc -l` verified). |
 
-OpenSpace's three triggers (post-execution, tool degradation, metric monitor) are well-named and well-structured but the architecture is spread across 12 files. COS's loop is single-orchestrator with deterministic mapping. Sonnet audit said IGUAL with hedge ("complexity matches scope"); rebuttal said CORRECTED-toward-COS. Opus confirms: complexity does not match scope — OpenSpace's surface area is 7x larger than COS's, while COS's design is genuinely tighter (one entry point, frozen dataclasses, no hidden state).
+OpenSpace's three triggers (post-execution, tool degradation, metric monitor) are well-named and well-structured but the architecture is spread across 12 files. COS's loop is single-orchestrator with deterministic mapping. Sonnet audit said EQUIVALENT with hedge ("complexity matches scope"); rebuttal said CORRECTED-toward-COS. Opus confirms: complexity does not match scope — OpenSpace's surface area is 7x larger than COS's, while COS's design is genuinely tighter (one entry point, frozen dataclasses, no hidden state).
 
-### 2. Proposal generation — VERDICT: CONFIRMED (OpenSpace MEJOR on signal source)
+### 2. Proposal generation — VERDICT: CONFIRMED (OpenSpace BETTER on signal source)
 
 | Side | Evidence |
 |---|---|
@@ -50,7 +50,7 @@ OpenSpace's three triggers (post-execution, tool degradation, metric monitor) ar
 
 OpenSpace generates from live signal (post-task artifacts); COS generates from periodic audit outputs. OpenSpace wins on signal richness; COS wins on determinism/zero-cost. Both verdicts in prior audits stand.
 
-### 3. Safety contract — VERDICT: CONFIRMED (COS MEJOR — disqualifier for OpenSpace adoption)
+### 3. Safety contract — VERDICT: CONFIRMED (COS BETTER — disqualifier for OpenSpace adoption)
 
 | Side | Evidence |
 |---|---|
@@ -59,7 +59,7 @@ OpenSpace generates from live signal (post-task artifacts); COS generates from p
 
 OpenSpace ships an auto-apply contract; COS ships an enforced veto layer. This is the central disqualifier for OpenSpace adoption-as-replacement.
 
-### 4. Validation / judge — VERDICT: CONFIRMED (IGUAL, both have semantic gap)
+### 4. Validation / judge — VERDICT: CONFIRMED (EQUIVALENT, both have semantic gap)
 
 OpenSpace validates **structure** of evolved skills (`_validate_skill_dir`: SKILL.md exists + skill_id present) but does **not** semantically validate evolved content. COS validates **governance** (regex + policy fields) but does not auto-run declared `required_tests`. Both sides have the same gap: no automated semantic correctness check on the artifact produced. `scripts/self_improvement_discipline_gate.py:65–181` confirms governance-only validation on the COS side.
 
@@ -79,9 +79,9 @@ OpenSpace wins on **queryability + visualization** (SQLite + React); COS wins on
 | OpenSpace | `evolver.py` `process_metric_monitor()` + `_addressed_degradations` dict (anti-loop). Continuous metric-driven re-evolution. |
 | COS | `hooks/profile-drift-autoapply.sh` + `hooks/docker-drift-detector.sh` — 2 per-session auto-heal triggers (verified: both files exist). 8 batch on-demand drift tools (per ADR-136 / self-observability report). |
 
-Sonnet audit said "OpenSpace MEJOR; COS has no live drift detection." Direct verification shows COS does have 2 per-session detectors firing on every session (not zero, as sonnet implied). The gap is **continuous streaming drift on per-skill metrics**, which OpenSpace has and COS lacks. Verdict: OpenSpace still ahead, but the gap is "no per-skill streaming drift," not "no drift detection at all."
+Sonnet audit said "OpenSpace BETTER; COS has no live drift detection." Direct verification shows COS does have 2 per-session detectors firing on every session (not zero, as sonnet implied). The gap is **continuous streaming drift on per-skill metrics**, which OpenSpace has and COS lacks. Verdict: OpenSpace still ahead, but the gap is "no per-skill streaming drift," not "no drift detection at all."
 
-### 7. Cost discipline — VERDICT: CONFIRMED (COS MEJOR)
+### 7. Cost discipline — VERDICT: CONFIRMED (COS BETTER)
 
 OpenSpace constants verified at source: `_ANALYSIS_MAX_ITERATIONS = 5`, `_MAX_EVOLUTION_ITERATIONS = 5`, `_MAX_EVOLUTION_ATTEMPTS = 3`, `max_concurrent: int = 3`. No per-session $ cap; bounded by iteration limits and provider rate limits only. COS loop runs zero LLM inference (`scripts/cos_self_improvement_loop.py:1–53` invokes only `cos_boring_reliability.build_dashboard` and `cos_claim_signature_audit.build_report`). Doctrine proposer uses LLM only with explicit `--write` (`lib/doctrine_proposer.py`).
 
@@ -96,7 +96,7 @@ Per-iteration cost: OpenSpace ~$0.10–0.50 (5 analysis rounds × 1 evolution ×
 
 OpenSpace ships federation today. COS has the runway but not the network effect. This gap is real and durable — closing it would require cloud infrastructure investment, not just code.
 
-### 9. Maintenance load — VERDICT: CONFIRMED + STRENGTHENED (COS MEJOR)
+### 9. Maintenance load — VERDICT: CONFIRMED + STRENGTHENED (COS BETTER)
 
 Quantified from source:
 

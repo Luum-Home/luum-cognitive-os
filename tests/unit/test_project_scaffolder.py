@@ -24,16 +24,16 @@ from lib.project_scaffolder import (
 
 
 EXPECTED_DIRS = [
-    "01-contexto",
-    "02-arquitectura",
-    "03-dominio-riesgo",
-    "04-seguridad",
+    "01-context",
+    "02-architecture",
+    "03-domain-risk",
+    "04-security",
     "05-features",
     "06-backoffice",
-    "07-investigacion",
-    "08-estandares",
-    "09-plan-ejecucion",
-    "10-resumenes",
+    "07-research",
+    "08-standards",
+    "09-execution-plan",
+    "10-summaries",
 ]
 
 
@@ -113,7 +113,7 @@ def test_domain_risk_category_has_domain_model_and_risk_register(tmp_path: Path)
     s = ProjectScaffolder(project_name="T", project_dir=tmp_path)
     s.scaffold_all()
 
-    dr = tmp_path / "docs" / "03-dominio-riesgo"
+    dr = tmp_path / "docs" / "03-domain-risk"
     assert (dr / "domain-model.md").exists()
     assert (dr / "risk-register.md").exists()
 
@@ -150,7 +150,7 @@ def test_backoffice_category_has_ops_admin_monitoring(tmp_path: Path):
 def test_security_readme_references_security_audit_skill(tmp_path: Path):
     s = ProjectScaffolder(project_name="T", project_dir=tmp_path)
     s.scaffold_all()
-    readme = (tmp_path / "docs" / "04-seguridad" / "README.md").read_text()
+    readme = (tmp_path / "docs" / "04-security" / "README.md").read_text()
     assert "security-audit" in readme
 
 
@@ -164,14 +164,14 @@ def test_features_readme_references_document_feature_skill(tmp_path: Path):
 def test_research_readme_references_deep_research_skill(tmp_path: Path):
     s = ProjectScaffolder(project_name="T", project_dir=tmp_path)
     s.scaffold_all()
-    readme = (tmp_path / "docs" / "07-investigacion" / "README.md").read_text()
+    readme = (tmp_path / "docs" / "07-research" / "README.md").read_text()
     assert "deep-research" in readme
 
 
 def test_execution_plan_readme_references_sdd_tasks(tmp_path: Path):
     s = ProjectScaffolder(project_name="T", project_dir=tmp_path)
     s.scaffold_all()
-    readme = (tmp_path / "docs" / "09-plan-ejecucion" / "README.md").read_text()
+    readme = (tmp_path / "docs" / "09-execution-plan" / "README.md").read_text()
     assert "sdd-tasks" in readme
 
 
@@ -194,7 +194,7 @@ def test_scaffold_is_idempotent(tmp_path: Path):
 def test_overwrite_replaces_existing(tmp_path: Path):
     ProjectScaffolder(project_name="T", project_dir=tmp_path).scaffold_all()
 
-    target = tmp_path / "docs" / "01-contexto" / "business-context.md"
+    target = tmp_path / "docs" / "01-context" / "business-context.md"
     target.write_text("USER EDIT — should be preserved without --overwrite")
     assert "USER EDIT" in target.read_text()
 
@@ -216,11 +216,11 @@ def test_overwrite_replaces_existing(tmp_path: Path):
 
 def test_scaffold_single_category_only(tmp_path: Path):
     s = ProjectScaffolder(project_name="T", project_dir=tmp_path)
-    created = s.scaffold_category(3)  # 03-dominio-riesgo
+    created = s.scaffold_category(3)  # 03-domain-risk
 
     # Only the one category should exist
-    assert (tmp_path / "docs" / "03-dominio-riesgo").exists()
-    assert not (tmp_path / "docs" / "01-contexto").exists()
+    assert (tmp_path / "docs" / "03-domain-risk").exists()
+    assert not (tmp_path / "docs" / "01-context").exists()
     assert len(created) == 4  # README + domain-model + risk-register + glossary (v1.1)
 
 
@@ -273,5 +273,5 @@ def test_cli_scaffolds_in_tmp(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert payload["created_count"] == expected_file_count()
     assert payload["skipped_count"] == 0
-    assert (tmp_path / "cli-proj" / "docs" / "03-dominio-riesgo" / "risk-register.md").exists()
+    assert (tmp_path / "cli-proj" / "docs" / "03-domain-risk" / "risk-register.md").exists()
     assert (tmp_path / "cli-proj" / "docs" / "06-backoffice" / "operations.md").exists()

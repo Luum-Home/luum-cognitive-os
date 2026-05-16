@@ -60,7 +60,7 @@ _TRAILER_RE = re.compile(
     re.DOTALL,
 )
 
-# Decay time constants (τ) in days per decay class — ADR-071 §Decay classes
+# Decay time constants (tau) in days per decay class — ADR-071 §Decay classes
 _DECAY_TAU: dict[str, int] = {
     "architecture": 365,
     "decision": 180,

@@ -285,8 +285,8 @@ def test_audit_scans_git_tracked_files_and_reports_locations(tmp_path: Path) -> 
 
 
 def test_smoke_audit_flags_known_keyword(tmp_path: Path) -> None:
-    """Smoke pass catches a fixed-corpus Spanish keyword without loading lingua."""
-    # "ejecutá" is in the smoke blocklist.
+    """Smoke pass catches a fixed-corpus non-English keyword without loading lingua."""
+    # The encoded fixture below is in the smoke blocklist.
     (tmp_path / "note.md").write_text(
         "# Note\n" + _utf8("656a65637574c3a120746573747320616e74657320646520636f6d6d6974") + "\n",
         encoding="utf-8",

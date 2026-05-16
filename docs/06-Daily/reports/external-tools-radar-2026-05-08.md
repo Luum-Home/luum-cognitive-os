@@ -108,14 +108,14 @@ This radar edition verified these are real in code, not aspirational:
 
 ## 5. Methodology Note (for next edition)
 
-The bidirectional cross-check axis (verdicts MEJOR_NUESTRO / IGUAL /
-MEJOR_EXTERNO / NO_COMPARABLE) caught two classes of error the prior radar
+The bidirectional cross-check axis (verdicts OURS_BETTER / EQUIVALENT /
+EXTERNAL_BETTER / NOT_COMPARABLE) caught two classes of error the prior radar
 missed:
 
 1. **Recommendations that are categorically wrong** — e.g. research framed
    our skill router as a DSPy peer; in fact they operate on different
    abstraction layers. Adopting DSPy to "replace" the router would have
-   been waste. Verdict: NO_COMPARABLE. Selective adoption only.
+   been waste. Verdict: NOT_COMPARABLE. Selective adoption only.
 2. **Recommendations that miss already-shipped code** — e.g. shadow-git,
    fastmcp, Bubblewrap, MLflow/Phoenix, TUI, squads. Re-running these
    audits without the bidirectional check would have re-spawned

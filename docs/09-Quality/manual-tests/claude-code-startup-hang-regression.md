@@ -53,7 +53,7 @@ unset COS_DISABLE_HOOK_STDOUT_QUARANTINE
 4. Submit a short prompt that previously reproduced the issue, for example:
 
    ```text
-   hola, resumime el estado del repo en una frase
+   hello, summarize the repository state in one sentence
    ```
 
 5. If the workflow uses subagents, trigger one lightweight Agent/Explore task from Claude Code.

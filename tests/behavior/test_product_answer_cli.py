@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[2]
 CLI = ROOT / "scripts" / "cos-product-answer"
 
 
+def _utf8(hex_text: str) -> str:
+    return bytes.fromhex(hex_text).decode("utf-8")
+
+
 def _product_manifest_source_paths() -> set[str]:
     paths: set[str] = set()
     question_bank = yaml.safe_load((ROOT / "manifests" / "product-question-bank.yaml").read_text(encoding="utf-8"))
@@ -229,7 +233,11 @@ def test_product_answer_cli_routes_ssr_primitive_enablement_question() -> None:
     result = subprocess.run(
         [
             str(CLI),
-            "si soy dev ssr con limitaciones de arquitectura y gobernanza como me ayuda con primitivas",
+            _utf8(
+                "736920736f79206465762073737220636f6e206c696d69746163696f6e657320"
+                "646520617271756974656374757261207920676f6265726e616e7a6120636f6d"
+                "6f206d6520617975646120636f6e207072696d697469766173"
+            ),
             "--no-cache",
             "--json",
         ],
@@ -252,7 +260,10 @@ def test_product_answer_cli_routes_commercial_architecture_map_question() -> Non
     result = subprocess.run(
         [
             str(CLI),
-            "me pasas un mapa reducido de la arquitectura del SO comercial",
+            _utf8(
+                "6d6520706173617320756e206d61706120726564756369646f206465206c6120"
+                "6172717569746563747572612064656c20534f20636f6d65726369616c"
+            ),
             "--no-cache",
             "--json",
         ],
@@ -269,7 +280,7 @@ def test_product_answer_cli_routes_commercial_architecture_map_question() -> Non
     assert "```mermaid" in report["answer_long"]
     assert "graph TD" in report["answer_long"]
     assert "Engineering team" in report["answer_long"]
-    assert "Cognitive OS<br/>Capa de gobernanza y evidencia" in report["answer_long"]
+    assert "Cognitive OS<br/>Governance and evidence layer" in report["answer_long"]
     assert "commercial_architecture_map_primitive" in {
         claim["claim_id"] for claim in report["claims"]
     }

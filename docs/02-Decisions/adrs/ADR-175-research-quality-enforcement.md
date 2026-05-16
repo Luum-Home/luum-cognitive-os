@@ -44,7 +44,7 @@ was described at hand-wavy prose level. A user-driven rebuttal
 exposed several specific errors:
 
 - "Hook surface 5 vs 10" was actually 9 vs 10 (true count after Opus check).
-- "Multi-provider OpenHarness MEJOR" was wrong on both directions; the
+- "Multi-provider OpenHarness BETTER" was wrong on both directions; the
   Opus audit found 22 vs 7, not 7 vs 4.
 - "Command Groups convention" was asserted without verification.
 - Lock-in cost was reported at 197 and 266 hooks — true number is 227.

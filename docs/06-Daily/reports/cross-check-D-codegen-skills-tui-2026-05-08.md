@@ -73,7 +73,7 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 
 **Referencia externa:** https://github.com/obra/superpowers/blob/main/skills/writing-skills/SKILL.md · agentskills.io/specification.
 
-**Archivos consultados:**
+**Files consulted:**
 - `skills/code-review/SKILL.md` (rich governance schema, GGA-inspired)
 - `skills/sdd-explore/SKILL.md` (inputs/outputs + routing.tier=frontier)
 - `skills/CATALOG-COMPACT.md` / `skills/REGISTRY.lock`
@@ -100,18 +100,18 @@ ADR-187 (`ADR-187-surface-5-adoption-proof-contract.md`) **established the proof
 - MIT (vs Charm crush FSL-1.1-MIT blocked for ~2 years).
 - Battle-tested (lazygit, k9s, gh-dash, soft-serve).
 - Elm-architecture (Model/Update/View) maps cleanly a lifecycle states COS as fields and transitions as messages.
-- Bubbles + Lipgloss completan stack (table, viewport, list, styling).
+- Bubbles + Lipgloss complete the stack (table, viewport, list, styling).
 
 ### Why NOT Textual / ratatui / huh / gum?
 - **Textual (Python)**: discarded in proof — heavier, startup time, does not leverage the existing Go investment. It would have been valid if COS were Python-only, but Go already exists.
 - **ratatui (Rust)**: would add a third language to the toolchain (Python+Go+Rust). No pre-existing Rust surface.
-- **huh** and **gum**: son **componentes** sobre Bubble Tea (formularios and shell-scriptables), no substratos. Complementarios, no alternatives.
+- **huh** and **gum** are **components** on top of Bubble Tea (forms and shell-scriptable prompts), not substrates. They are complementary, not alternatives.
 - **bubbletea** won because of already vendored + Go-native + composability with `cmd/cos`.
 
-### Reason fundamental
+### Fundamental reason
 The premise "zero TUI imports, all Bash" of the audit is **outdated**: the Go proof slice already imports Bubble Tea (`cmd/cos/internal/tui/proof.go`). The Bash `scripts/cos-tui` is kept as a legacy bridge while Surface 5 is born in Go. **There is no open gap.**
 
-**Archivos consultados:**
+**Files consulted:**
 - `docs/02-Decisions/adrs/ADR-187-surface-5-adoption-proof-contract.md`
 - `docs/02-Decisions/adrs/ADR-192-surface-5-adopt-bubbletea.md`
 - `docs/02-Decisions/adrs/ADR-195-surface-5-operable-tui-contract.md`

@@ -6,11 +6,11 @@ See: docs/02-Decisions/adrs/ADR-029b-reinvention-phase-b-semantic.md
 
 Two index implementations:
 
-* **SemanticIndex** (Phase B-α, always available) — Jaccard set overlap on
+* **SemanticIndex** (Phase B-alpha, always available) — Jaccard set overlap on
   extracted tokens (docstrings, function/class names, shell header comments).
   Stdlib only. p95 query time < 50 ms.
 
-* **EmbeddingsIndex** (Phase B-β, optional) — cosine similarity over
+* **EmbeddingsIndex** (Phase B-beta, optional) — cosine similarity over
   sentence-transformer embeddings (``all-MiniLM-L6-v2`` default).
   Requires ``sentence-transformers>=3.0`` (``pip install
   luum-cognitive-os[semantic]``). Raises ``ImportError`` if absent so callers
@@ -24,7 +24,7 @@ Usage::
     idx.build_index(".")
     matches = idx.find_similar("throttle agent tool calls per minute", top_k=3)
 
-    # Phase B-β (embeddings):
+    # Phase B-beta (embeddings):
     try:
         from lib.reinvention_semantic import EmbeddingsIndex
         eidx = EmbeddingsIndex()
@@ -44,7 +44,7 @@ from typing import Iterable
 INDEX_SCHEMA_VERSION = 1
 DEFAULT_INDEX_RELPATH = ".cognitive-os/reinvention-index.json"
 
-# Embeddings index artefacts (Phase B-β).
+# Embeddings index artefacts (Phase B-beta).
 DEFAULT_EMBEDDINGS_RELPATH = ".cognitive-os/reinvention-index.embeddings.npy"
 DEFAULT_EMBEDDINGS_META_RELPATH = ".cognitive-os/reinvention-index.embeddings.json"
 
@@ -333,7 +333,7 @@ class SemanticIndex:
         return scored[:top_k]
 
 
-# ---------- Phase B-β: EmbeddingsIndex ----------
+# ---------- Phase B-beta: EmbeddingsIndex ----------
 
 
 def _require_sentence_transformers():
@@ -351,7 +351,7 @@ def _require_sentence_transformers():
 
 
 class EmbeddingsIndex:
-    """Cosine-similarity index over sentence-transformer embeddings (Phase B-β).
+    """Cosine-similarity index over sentence-transformer embeddings (Phase B-beta).
 
     Raises ``ImportError`` on instantiation if ``sentence-transformers`` is not
     installed — the caller must catch this and fall back to ``SemanticIndex``.
@@ -550,20 +550,20 @@ class EmbeddingsIndex:
 def _cli() -> int:
     import argparse
     parser = argparse.ArgumentParser(
-        description="Reinvention semantic index (Phase B-α Jaccard / Phase B-β Embeddings)."
+        description="Reinvention semantic index (Phase B-alpha Jaccard / Phase B-beta Embeddings)."
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     b = sub.add_parser("build", help="Build the index.")
     b.add_argument("--root", default=".")
-    b.add_argument("--embeddings", action="store_true", help="Build embeddings index (Phase B-β).")
+    b.add_argument("--embeddings", action="store_true", help="Build embeddings index (Phase B-beta).")
 
     q = sub.add_parser("query", help="Query the index.")
     q.add_argument("description")
     q.add_argument("--top-k", type=int, default=3)
     q.add_argument("--min-score", type=float, default=None)
     q.add_argument("--root", default=".")
-    q.add_argument("--embeddings", action="store_true", help="Query embeddings index (Phase B-β).")
+    q.add_argument("--embeddings", action="store_true", help="Query embeddings index (Phase B-beta).")
 
     args = parser.parse_args()
 

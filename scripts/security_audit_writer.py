@@ -4,7 +4,7 @@
 
 The /security-audit skill is READ-ONLY and produces a markdown report in the
 agent's response. When the user wants that report persisted into an adopting
-project's `docs/04-seguridad/` directory (per the 10-category convention),
+project's `docs/04-security/` directory (per the 10-category convention),
 they invoke this CLI with --project-dir.
 
 The CLI does NOT run the audit itself (that stays inside the skill). It
@@ -41,12 +41,12 @@ if str(_HERE) not in sys.path:
 from lib.docs_writer import write_doc  # noqa: E402
 
 
-CATEGORY = "04-seguridad"
+CATEGORY = "04-security"
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Persist a security-audit report into docs/04-seguridad/.",
+        description="Persist a security-audit report into docs/04-security/.",
     )
     parser.add_argument(
         "--project-dir",

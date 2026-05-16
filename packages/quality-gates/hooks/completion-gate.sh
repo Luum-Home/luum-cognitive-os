@@ -159,7 +159,7 @@ if [ -f "$CONFIG_FILE" ]; then
 fi
 
 IS_COMPLETION=false
-echo "$RESPONSE" | grep -qiE "done|complete|finished|implemented|fixed|resolved|delivered|all tasks|PASS|listo" && IS_COMPLETION=true
+echo "$RESPONSE" | grep -qiE "done|complete|finished|implemented|fixed|resolved|delivered|all tasks|PASS" && IS_COMPLETION=true
 
 # === PHASE 1: ACCEPTANCE CRITERIA VERIFICATION ===
 VERIFY_STATUS=""

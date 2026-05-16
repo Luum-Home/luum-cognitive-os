@@ -2,7 +2,7 @@
 
 **Date**: 2026-05-05  
 **Status**: read-only audit; no state modified  
-**Trigger**: OpenSpace deep audit (2026-05-05) declared OpenSpace MEJOR than COS on observability/drift/federation. User asked: *"revisemos en profundidad lo que tenemos"*. This audit answers what COS actually has, where it lives, and whether the gap is real.
+**Trigger**: OpenSpace deep audit (2026-05-05) declared OpenSpace BETTER than COS on observability/drift/federation. User asked for a deep review of the current system. This audit answers what COS actually has, where it lives, and whether the gap is real.
 
 ---
 

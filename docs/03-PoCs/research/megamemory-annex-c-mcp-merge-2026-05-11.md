@@ -178,14 +178,14 @@ Implementation: `judgment_required` envelope is computed at `mem_save` time by t
 
 | Dimension | MegaMemory | Engram | Verdict |
 |---|---|---|---|
-| **Trigger surface** | Out-of-band: `megamemory merge` CLI seeds conflicts; `list_conflicts` exposes them to the agent. | In-band: every `mem_save` may return `judgment_required=true` with candidates inline. | **MEJOR_NUESTRO** for inline ergonomics; **MEJOR_EXTERNO** for the explicit branch-merge use case (we don't have that today). |
-| **Resolution verb** | Explicit MCP tool `resolve_conflict` with a free-text `resolved.summary` and forced `reason`. | `mem_judge` with relation-specific resolution; ASK-vs-RESOLVE heuristic in CLAUDE.md. | **IGUAL** — different ergonomics, same outcome. MegaMemory's explicit verb is friendlier as a tool name in tool-pickers. |
-| **Agent guidance** | Tool description literally says: "Do NOT just pick a side — write the truth." | Heuristic in CLAUDE.md tells agent when to ASK user. | **IGUAL** — both apply discipline at the call site. Their inline-in-the-tool-description copy is a nicer pattern; ours is in a rule document. |
-| **Auto-resolution** | None. Every conflict requires a `resolve_conflict` call. | Heuristic-driven auto-resolve when `confidence ≥ 0.7` and relation is benign. | **MEJOR_NUESTRO** — less agent overhead on safe cases. |
-| **Conflict typing** | Boolean `needs_merge` + `merge_group` UUID. | Typed relations (`supersedes` vs `conflicts_with` vs `scoped` vs ...) carry semantics. | **MEJOR_NUESTRO** — richer wire signal. |
-| **Audit** | `timeline` table logs `resolve_conflict` invocation with affected IDs. | Engram observation lifecycle + judgment lifecycle. | **IGUAL**. |
-| **Three-way / ancestor merging** | No. | n/a (different model — Engram has no branch concept). | **NO_COMPARABLE**. |
-| **Branch model** | Explicit `source_branch` column + `::left` / `::right` suffix IDs. | No branch model — memory is a single timeline per project. | **MEJOR_EXTERNO** for the niche use case (multi-developer divergent Engram DBs); but COS does not currently have that requirement. |
+| **Trigger surface** | Out-of-band: `megamemory merge` CLI seeds conflicts; `list_conflicts` exposes them to the agent. | In-band: every `mem_save` may return `judgment_required=true` with candidates inline. | **OURS_BETTER** for inline ergonomics; **EXTERNAL_BETTER** for the explicit branch-merge use case (we don't have that today). |
+| **Resolution verb** | Explicit MCP tool `resolve_conflict` with a free-text `resolved.summary` and forced `reason`. | `mem_judge` with relation-specific resolution; ASK-vs-RESOLVE heuristic in CLAUDE.md. | **EQUIVALENT** — different ergonomics, same outcome. MegaMemory's explicit verb is friendlier as a tool name in tool-pickers. |
+| **Agent guidance** | Tool description literally says: "Do NOT just pick a side — write the truth." | Heuristic in CLAUDE.md tells agent when to ASK user. | **EQUIVALENT** — both apply discipline at the call site. Their inline-in-the-tool-description copy is a nicer pattern; ours is in a rule document. |
+| **Auto-resolution** | None. Every conflict requires a `resolve_conflict` call. | Heuristic-driven auto-resolve when `confidence ≥ 0.7` and relation is benign. | **OURS_BETTER** — less agent overhead on safe cases. |
+| **Conflict typing** | Boolean `needs_merge` + `merge_group` UUID. | Typed relations (`supersedes` vs `conflicts_with` vs `scoped` vs ...) carry semantics. | **OURS_BETTER** — richer wire signal. |
+| **Audit** | `timeline` table logs `resolve_conflict` invocation with affected IDs. | Engram observation lifecycle + judgment lifecycle. | **EQUIVALENT**. |
+| **Three-way / ancestor merging** | No. | n/a (different model — Engram has no branch concept). | **NOT_COMPARABLE**. |
+| **Branch model** | Explicit `source_branch` column + `::left` / `::right` suffix IDs. | No branch model — memory is a single timeline per project. | **EXTERNAL_BETTER** for the niche use case (multi-developer divergent Engram DBs); but COS does not currently have that requirement. |
 
 ---
 
@@ -199,7 +199,7 @@ Implementation: `judgment_required` envelope is computed at `mem_save` time by t
 
 4. **`source_branch` + UUID `merge_group`** as a *future* mechanism for cross-Engram-instance merging (e.g., long-running worktree branches each accumulating their own Engram observations). Not needed today. Worth noting in the memory-bundle SDD as a future port.
 
-5. The `timeline` audit table (`src/db.ts:138-154`) — append-only per-tool log with `is_write`, `is_error`, `affected_ids`. Engram has equivalent coverage through observation lifecycle, so verdict is **IGUAL**; not a port target.
+5. The `timeline` audit table (`src/db.ts:138-154`) — append-only per-tool log with `is_write`, `is_error`, `affected_ids`. Engram has equivalent coverage through observation lifecycle, so verdict is **EQUIVALENT**; not a port target.
 
 ---
 

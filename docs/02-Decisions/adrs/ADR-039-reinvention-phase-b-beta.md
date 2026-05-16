@@ -1,6 +1,6 @@
 ---
 adr: 39
-title: Reinvention Phase B-β (semantic embeddings)
+title: Reinvention Phase B-beta (semantic embeddings)
 status: proposed
 implementation_status: planned
 date: '2026-04-20'
@@ -12,7 +12,7 @@ tags: []
 classification_basis: explicit prose status migration for previously prose-only ADR
 ---
 
-# ADR-039 — Reinvention Phase B-β (semantic embeddings)
+# ADR-039 — Reinvention Phase B-beta (semantic embeddings)
 
 > Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/02-Decisions/adrs/`.
 
@@ -21,7 +21,7 @@ classification_basis: explicit prose status migration for previously prose-only 
 Proposed
 
 ## Gap
-ADR-029b Phase B-α (Jaccard over docstrings+function names, shipped 2026-04-20 commit `7008f58`) has LOW precision on real corpus:
+ADR-029b Phase B-alpha (Jaccard over docstrings+function names, shipped 2026-04-20 commit `7008f58`) has LOW precision on real corpus:
 - Threshold 0.3, observed scores 0.05-0.15 for genuine matches
 - Almost never fires in practice
 - ADR documents this was expected — "tuning follow-up work"
@@ -43,5 +43,5 @@ Upgrade to embedding-based similarity:
 ~1 session (Backend Architect sonnet + 1h to install deps + benchmark).
 
 ## Dependencies
-- ADR-029b (Phase B-α, shipped) — baseline
+- ADR-029b (Phase B-alpha, shipped) — baseline
 - Requires sentence-transformers dep added to pyproject.toml

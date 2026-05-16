@@ -2,7 +2,7 @@
 name: domain-model
 version: 1.0.0
 description: 'Use when you need this Cognitive OS skill: Scaffold a DDD domain-model.md
-  template under docs/03-dominio-riesgo/ (ADR-054 10-category convention). Emits bounded-contexts
+  template under docs/03-domain-risk/ (ADR-054 10-category convention). Emits bounded-contexts
   + entities + ubiquitous-language tables with TODO markers. Idempotent.; do not use
   when a narrower skill directly matches the task.'
 invocation: /domain-model --project-dir <path> [--brief "<description>"] [--overwrite]
@@ -39,11 +39,11 @@ routing_patterns:
 <!-- SCOPE: project -->
 # Domain Model Scaffolder
 
-Scaffolds `docs/03-dominio-riesgo/domain-model.md` in an adopting project. This is a **template scaffolder**, not a content generator — it emits structured markdown with `<!-- TODO -->` markers that humans or downstream agents fill in.
+Scaffolds `docs/03-domain-risk/domain-model.md` in an adopting project. This is a **template scaffolder**, not a content generator — it emits structured markdown with `<!-- TODO -->` markers that humans or downstream agents fill in.
 
 ## Scope
 
-- Creates or extends ONE file: `<project>/docs/03-dominio-riesgo/domain-model.md`
+- Creates or extends ONE file: `<project>/docs/03-domain-risk/domain-model.md`
 - Idempotent: re-running preserves user edits placed below the `<!-- domain-model:autogen-footer -->` marker
 - `--overwrite` replaces the entire file
 
@@ -76,17 +76,17 @@ A markdown file with these sections (all TODO-filled):
 ## NOT in scope
 
 - Generating domain content from prose descriptions (would require an LLM call; out of scope for a scaffolder).
-- Modifying any file outside `docs/03-dominio-riesgo/`.
+- Modifying any file outside `docs/03-domain-risk/`.
 
 ## Integration
 
 - Pairs with `/project-scaffold` (ADR-054) which creates the 10-category skeleton first.
-- Pairs with `/risk-register` for the second file under `03-dominio-riesgo/`.
+- Pairs with `/risk-register` for the second file under `03-domain-risk/`.
 
 ## Verification
 
 ```bash
 uv run python3 scripts/domain_model.py --project-dir /tmp/test-dm --brief "simple ecommerce" --json
-test -f /tmp/test-dm/docs/03-dominio-riesgo/domain-model.md
-grep -q "Bounded Contexts" /tmp/test-dm/docs/03-dominio-riesgo/domain-model.md
+test -f /tmp/test-dm/docs/03-domain-risk/domain-model.md
+grep -q "Bounded Contexts" /tmp/test-dm/docs/03-domain-risk/domain-model.md
 ```

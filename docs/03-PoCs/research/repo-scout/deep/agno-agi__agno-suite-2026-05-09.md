@@ -128,12 +128,12 @@ Risks:
 
 | Agno-suite capability | COS state | Verdict | Action |
 |---|---|---|---|
-| Production agent runtime with sessions, APIs, approvals, RBAC, scheduling, tracing | COS has hooks/rules/skills/memory and emerging service/control-plane work, but not a mature app-service runtime | **MEJOR_EXTERNO for app-runtime packaging** | Assess adapter-lab only; do not replace governance core |
-| Claude Agent SDK integration path | COS has ADR-064 provider/harness abstraction and direct provider routing | **IGUAL / DIFFERENT_LAYER** | Compare integration boundary; avoid SDK lock-in |
+| Production agent runtime with sessions, APIs, approvals, RBAC, scheduling, tracing | COS has hooks/rules/skills/memory and emerging service/control-plane work, but not a mature app-service runtime | **EXTERNAL_BETTER for app-runtime packaging** | Assess adapter-lab only; do not replace governance core |
+| Claude Agent SDK integration path | COS has ADR-064 provider/harness abstraction and direct provider routing | **EQUIVALENT / DIFFERENT_LAYER** | Compare integration boundary; avoid SDK lock-in |
 | OpenTelemetry tracing language | COS already chose Phoenix/OTel direction and deprecated Langfuse runtime/default | **COMPATIBLE** | Reuse OTel-first wording where it clarifies runtime evidence |
 | Human approval for workspace write/edit/delete/shell | COS has permission hooks and policy gates | **COMPATIBLE** | Compare UX, not enforcement semantics |
-| Dash layered data-agent knowledge | COS has Engram/Cognee memory and eval lanes but no dedicated agentic-SQL learning taxonomy | **MEJOR_EXTERNO for data-agent pattern** | Extract schema/prompt/eval ideas only |
-| Scout context providers across live business systems | COS has connector policy and MCP posture, not company-brain app | **MEJOR_EXTERNO for provider UX** | Pattern-only unless a consumer project explicitly opts in |
+| Dash layered data-agent knowledge | COS has Engram/Cognee memory and eval lanes but no dedicated agentic-SQL learning taxonomy | **EXTERNAL_BETTER for data-agent pattern** | Extract schema/prompt/eval ideas only |
+| Scout context providers across live business systems | COS has connector policy and MCP posture, not company-brain app | **EXTERNAL_BETTER for provider UX** | Pattern-only unless a consumer project explicitly opts in |
 | Hosted/free local control-plane UI | COS local-first doctrine requires explicit boundary between local control and SaaS | **RISKY** | Document hosted boundary before any integration |
 
 ## Recommendation

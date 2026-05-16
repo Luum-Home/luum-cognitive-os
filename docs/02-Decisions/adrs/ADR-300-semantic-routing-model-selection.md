@@ -82,7 +82,7 @@ Measured cosine distribution under e5-large on the same prompt corpus:
 
 | Prompt class | Cosine | Mapped confidence |
 |---|---:|---:|
-| Greetings ("hola", "thanks") | 0.80 | 0.68 |
+| Greetings ("hello", "thanks") | 0.80 | 0.68 |
 | Negative-context (skill mentions in critique) | 0.84 – 0.86 | 0.73 – 0.76 |
 | Screenshot-bug Spanish prompt (TRUE positive) | 0.906 | 0.77 |
 | Clean positive prompts | 0.95 – 0.99 | 0.94 – 0.96 |

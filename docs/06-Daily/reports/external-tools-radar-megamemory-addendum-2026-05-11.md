@@ -26,25 +26,25 @@ MegaMemory is a TypeScript MCP server providing a persistent project-scoped conc
 
 ## Bidirectional comparison vs Engram and the memory bundle
 
-Verdicts use the Phase 3 axis (MEJOR\_NUESTRO / IGUAL / MEJOR\_EXTERNO / NO\_COMPARABLE) and cite concrete COS files.
+Verdicts use the Phase 3 axis (OURS\_BETTER / EQUIVALENT / EXTERNAL\_BETTER / NOT\_COMPARABLE) and cite concrete COS files.
 
 ### vs Engram (in-house persistent memory)
 
 | Dimension | MegaMemory | Engram (COS) | Verdict |
 |---|---|---|---|
-| Storage substrate | SQLite + WAL + schema v3 | SQLite via daemon (`lib/engram_client.py`, `lib/engram_http_client.py`) | **IGUAL** |
-| Embeddings | In-process MiniLM, no keys | FTS5 baseline + optional Cognee HTTP (`lib/cognee_client.py`); no in-process embedder | **MEJOR_EXTERNO** (narrow: just the in-process pipeline) |
-| Relation typing | Single `link` verb | Typed relations: supersedes / conflicts\_with / related / compatible / scoped (`lib/engram_graph_walker.py`) | **MEJOR_NUESTRO** |
-| Conflict surfacing | `list_conflicts` + `resolve_conflict` MCP tools | `judgment_required` envelope + per-candidate `mem_judge` (CLAUDE.md "CONFLICT SURFACING") | **IGUAL** (we cover it; their public verb shape is a nicer portability cue) |
-| Bi-temporal | None | Planned via graphiti adoption (`docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §graphiti); `memory_relations` already has `created_at` / `superseded_at` | **MEJOR_NUESTRO** (current and planned) |
-| Memory class taxonomy | Concepts only | MIRIX-style `memory_class` overlay planned (`cross-check-A` §🔍12); current type strings cover bugfix/decision/architecture/discovery/pattern/config/preference | **MEJOR_NUESTRO** |
-| Graph walk | Cosine + lookup | BFS with typed relations + planned PPR (HippoRAG port, `cross-check-A` §HippoRAG) | **MEJOR_NUESTRO** |
-| Explorer UI | D3-force web view | None | **MEJOR_EXTERNO** (pattern only — not a current COS requirement) |
-| Capacity | <~10k nodes (stated) | Unbounded in practice via FTS5 | **MEJOR_NUESTRO** |
-| Harness portability | Per-target installer (opencode/claudecode/antigravity/codex) | `.ai/` portable overlay (ADR-258) + `manifests/external-tools-adoption.yaml` | **MEJOR_NUESTRO** |
-| Bus factor | Single author | Project core, multi-author | **MEJOR_NUESTRO** |
+| Storage substrate | SQLite + WAL + schema v3 | SQLite via daemon (`lib/engram_client.py`, `lib/engram_http_client.py`) | **EQUIVALENT** |
+| Embeddings | In-process MiniLM, no keys | FTS5 baseline + optional Cognee HTTP (`lib/cognee_client.py`); no in-process embedder | **EXTERNAL_BETTER** (narrow: just the in-process pipeline) |
+| Relation typing | Single `link` verb | Typed relations: supersedes / conflicts\_with / related / compatible / scoped (`lib/engram_graph_walker.py`) | **OURS_BETTER** |
+| Conflict surfacing | `list_conflicts` + `resolve_conflict` MCP tools | `judgment_required` envelope + per-candidate `mem_judge` (CLAUDE.md "CONFLICT SURFACING") | **EQUIVALENT** (we cover it; their public verb shape is a nicer portability cue) |
+| Bi-temporal | None | Planned via graphiti adoption (`docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §graphiti); `memory_relations` already has `created_at` / `superseded_at` | **OURS_BETTER** (current and planned) |
+| Memory class taxonomy | Concepts only | MIRIX-style `memory_class` overlay planned (`cross-check-A` §🔍12); current type strings cover bugfix/decision/architecture/discovery/pattern/config/preference | **OURS_BETTER** |
+| Graph walk | Cosine + lookup | BFS with typed relations + planned PPR (HippoRAG port, `cross-check-A` §HippoRAG) | **OURS_BETTER** |
+| Explorer UI | D3-force web view | None | **EXTERNAL_BETTER** (pattern only — not a current COS requirement) |
+| Capacity | <~10k nodes (stated) | Unbounded in practice via FTS5 | **OURS_BETTER** |
+| Harness portability | Per-target installer (opencode/claudecode/antigravity/codex) | `.ai/` portable overlay (ADR-258) + `manifests/external-tools-adoption.yaml` | **OURS_BETTER** |
+| Bus factor | Single author | Project core, multi-author | **OURS_BETTER** |
 
-**Net vs Engram:** **IGUAL** in concept-graph shape; **MEJOR_EXTERNO** narrowly on in-process embeddings + explorer; **MEJOR_NUESTRO** on every governance dimension. Runtime adoption would be a regression.
+**Net vs Engram:** **EQUIVALENT** in concept-graph shape; **EXTERNAL_BETTER** narrowly on in-process embeddings + explorer; **OURS_BETTER** on every governance dimension. Runtime adoption would be a regression.
 
 ### vs the memory bundle (Graphiti / LightRAG / HippoRAG / MIRIX)
 
@@ -52,10 +52,10 @@ Reference: `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`, `docs/
 
 | Bundle component | Provides | MegaMemory overlap | Verdict |
 |---|---|---|---|
-| **Graphiti** | Bi-temporal edges (`valid_from`/`valid_to` + `ingested_at`), cross-encoder rerank | None | Bundle wins; MegaMemory **NO_COMPARABLE** on temporality. |
+| **Graphiti** | Bi-temporal edges (`valid_from`/`valid_to` + `ingested_at`), cross-encoder rerank | None | Bundle wins; MegaMemory **NOT_COMPARABLE** on temporality. |
 | **LightRAG** | Dual-level (entity + topic) retrieval scoring fusion | Single-level cosine on concept embeddings | Bundle wins on algorithm; MegaMemory contributes the **in-process embedding** delivery vehicle that LightRAG's algorithm needs in-house. **Complementary**. |
-| **HippoRAG** | Personalized PageRank over entity graph | None (no multi-hop scoring) | Bundle wins; **NO_COMPARABLE**. |
-| **MIRIX** | Semantic / episodic / procedural / working memory_class taxonomy | None (concepts are flat) | Bundle wins; **NO_COMPARABLE**. |
+| **HippoRAG** | Personalized PageRank over entity graph | None (no multi-hop scoring) | Bundle wins; **NOT_COMPARABLE**. |
+| **MIRIX** | Semantic / episodic / procedural / working memory_class taxonomy | None (concepts are flat) | Bundle wins; **NOT_COMPARABLE**. |
 
 **Net vs bundle:** the memory bundle dominates on algorithms (bi-temporal, dual-level, PPR, taxonomy). MegaMemory contributes exactly one orthogonal slice — **in-process embeddings with no API key dependency** — which is a useful delivery primitive *under* the LightRAG dual-level algorithm rather than a replacement for any bundle component.
 

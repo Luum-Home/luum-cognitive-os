@@ -39,7 +39,7 @@ def test_render_template_contains_required_sections():
 def test_scaffold_creates_file_in_right_location(tmp_path: Path):
     s = DomainModelScaffolder(project_dir=tmp_path, brief="ecommerce")
     result = s.scaffold()
-    expected = tmp_path / "docs" / "03-dominio-riesgo" / "domain-model.md"
+    expected = tmp_path / "docs" / "03-domain-risk" / "domain-model.md"
     assert result.action == "created"
     assert result.path == expected
     assert expected.exists()
@@ -49,7 +49,7 @@ def test_scaffold_creates_file_in_right_location(tmp_path: Path):
 def test_idempotent_preserves_user_tail_content(tmp_path: Path):
     s = DomainModelScaffolder(project_dir=tmp_path, brief="first")
     s.scaffold()
-    target = tmp_path / "docs" / "03-dominio-riesgo" / "domain-model.md"
+    target = tmp_path / "docs" / "03-domain-risk" / "domain-model.md"
 
     # User adds content below the footer marker
     current = target.read_text()
@@ -68,7 +68,7 @@ def test_idempotent_preserves_user_tail_content(tmp_path: Path):
 
 
 def test_skips_existing_file_without_markers(tmp_path: Path):
-    target = tmp_path / "docs" / "03-dominio-riesgo" / "domain-model.md"
+    target = tmp_path / "docs" / "03-domain-risk" / "domain-model.md"
     target.parent.mkdir(parents=True)
     target.write_text("# User-authored, no markers\n\nImportant content.\n")
 
@@ -81,7 +81,7 @@ def test_skips_existing_file_without_markers(tmp_path: Path):
 
 
 def test_overwrite_replaces_everything(tmp_path: Path):
-    target = tmp_path / "docs" / "03-dominio-riesgo" / "domain-model.md"
+    target = tmp_path / "docs" / "03-domain-risk" / "domain-model.md"
     target.parent.mkdir(parents=True)
     target.write_text("# Old content\n")
 
@@ -97,7 +97,7 @@ def test_overwrite_replaces_everything(tmp_path: Path):
 def test_empty_brief_injects_todo_placeholder(tmp_path: Path):
     s = DomainModelScaffolder(project_dir=tmp_path, brief="")
     s.scaffold()
-    body = (tmp_path / "docs" / "03-dominio-riesgo" / "domain-model.md").read_text()
+    body = (tmp_path / "docs" / "03-domain-risk" / "domain-model.md").read_text()
     assert "TODO: describe domain" in body
 
 
@@ -114,4 +114,4 @@ def test_cli_end_to_end(tmp_path: Path):
     assert result.returncode == 0, f"stderr: {result.stderr}"
     payload = json.loads(result.stdout)
     assert payload["action"] == "created"
-    assert (tmp_path / "cli" / "docs" / "03-dominio-riesgo" / "domain-model.md").exists()
+    assert (tmp_path / "cli" / "docs" / "03-domain-risk" / "domain-model.md").exists()

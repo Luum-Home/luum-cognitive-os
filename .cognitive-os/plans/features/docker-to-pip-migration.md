@@ -30,7 +30,7 @@ All services from `docker-compose.cognitive-os.yml`:
 | langfuse-worker | default | — (langfuse dep) | Background job processor |
 | langfuse-web | default | on_demand | LLM observability UI |
 | litellm | default | **always** | LLM gateway / multi-provider proxy |
-| bifrost | default | on_demand | High-performance AI gateway (11μs latency) |
+| bifrost | default | on_demand | High-performance AI gateway (11 microseconds latency) |
 | nemo-guardrails | default | on_demand | AI guardrails / PII masking |
 | valkey | default | on_demand | Agent bus pub/sub, rate limiter queue |
 | jupyter | default | on_demand | ML compute sandbox |
@@ -137,7 +137,7 @@ Docker containers are kept in `docker-compose.cognitive-os.yml` for reference/CI
 - **Status**: No pip package exists (Go binary, Apache 2.0)
 - **Current**: `maximhq/bifrost` Docker container at `localhost:8081`, on_demand, ~100MB RAM
 - **Replacement**: litellm covers 90% of bifrost's use case (multi-provider routing, cost tracking). Bifrost is listed as an alternative in `skill_service_map` alongside litellm for `sdd-apply` etc.
-- **Trade-off**: Bifrost offers 11μs latency overhead vs litellm's higher overhead. For dev use, litellm is sufficient.
+- **Trade-off**: Bifrost offers 11 microseconds latency overhead vs litellm's higher overhead. For dev use, litellm is sufficient.
 - **Code impact**: Remove bifrost from `skill_service_map` in `cognitive-os.yaml`; keep litellm only
 - **RAM saved**: ~100MB
 - **Effort**: Low (config change + test that litellm routes correctly)

@@ -73,9 +73,9 @@ if [ -n "$FOUND_SOURCES" ]; then
     "Agent"
 fi
 
-# ADR-029b Phase B-α — semantic Jaccard advisory.
+# ADR-029b Phase B-alpha — semantic Jaccard advisory.
 # Gated behind REINVENTION_PHASE_B=1; stays silent on any failure path.
-# REINVENTION_PHASE_B=2 additionally tries embeddings (Phase B-β, ADR-039) and
+# REINVENTION_PHASE_B=2 additionally tries embeddings (Phase B-beta, ADR-039) and
 # falls back to Jaccard if sentence-transformers is not installed.
 if [ "${REINVENTION_PHASE_B:-0}" = "1" ] || [ "${REINVENTION_PHASE_B:-0}" = "2" ]; then
   THRESHOLD="${REINVENTION_PHASE_B_THRESHOLD:-0.3}"
@@ -102,7 +102,7 @@ root = os.environ.get("PROJECT_ROOT", ".")
 phase = os.environ.get("REINV_PHASE_B", "0")
 q = os.environ.get("REINV_QUERY", "")
 
-# Phase B-β (embeddings) — opt-in via PHASE_B=2; falls back silently to Jaccard
+# Phase B-beta (embeddings) — opt-in via PHASE_B=2; falls back silently to Jaccard
 # if sentence-transformers is not installed or the index has not been built.
 if phase == "2":
     try:
@@ -126,7 +126,7 @@ if phase == "2":
     except ImportError:
         pass  # sentence-transformers not installed — fall through to Jaccard
 
-# Phase B-α (Jaccard, stdlib) — default path.
+# Phase B-alpha (Jaccard, stdlib) — default path.
 idx = SemanticIndex(os.path.join(root, DEFAULT_INDEX_RELPATH))
 if not idx.load():
     # No lazy build on the hot path (ADR-029b §6) — fall back to Phase A only.

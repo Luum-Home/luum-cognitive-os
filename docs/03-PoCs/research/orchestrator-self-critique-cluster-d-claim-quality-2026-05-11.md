@@ -29,6 +29,7 @@ Source: `docs/06-Daily/reports/external-tools-radar-portable-primitives-addendum
 The addendum's **Decision** section (L16-28) names five families and assigns
 each a radar **posture**, not a score:
 
+<!-- english-only-content-audit: allow -->
 > 1. VERSA / dotAIslash — `ASSESS / trial-overlay-standard`.
 > 2. Agent Skills ecosystem — `ASSESS / conformance-reference`.
 > 3. Zed Agent Client Protocol (ACP) — `ASSESS / adapter-runtime-transport`.

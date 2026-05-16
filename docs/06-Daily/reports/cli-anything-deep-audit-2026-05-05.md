@@ -2,7 +2,7 @@
 
 **Date**: 2026-05-05
 **Status**: research-only — no adoption decision yet.
-**Trigger**: previous primitives audit identified HKUDS/CLI-Anything as the credible "gestor de primitivas"; user requested deep source-level inspection before any adoption.
+**Trigger**: previous primitives audit identified HKUDS/CLI-Anything as the credible "primitive manager"; user requested deep source-level inspection before any adoption.
 
 ---
 

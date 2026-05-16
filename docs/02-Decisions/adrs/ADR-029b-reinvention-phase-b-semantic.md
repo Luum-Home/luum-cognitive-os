@@ -17,7 +17,7 @@ partial_remaining_basis: explicit body remaining signal
 
 # ADR-029b — Reinvention gate Phase B: semantic similarity
 
-**Status**: Accepted (Phase B-α MVP); Phase B-β (embeddings) deferred
+**Status**: Accepted (Phase B-alpha MVP); Phase B-beta (embeddings) deferred
 **Date**: 2026-04-20
 **Deciders**: Maintainer
 **Supersedes**: ADR-029 §"Phase B (future)" placeholder
@@ -65,7 +65,7 @@ Four approaches evaluated. Scored 1 (bad) to 5 (good) on each axis.
 |---|----------|--------|-----------|---------|------|------|---------|---------|
 | a | Jaccard on docstrings + function-name tokens | 3 | 4 | 5 | 5 (stdlib only) | 5 ($0) | 5 | **MVP** |
 | b | TF-IDF + cosine on file contents | 3 | 4 | 4 | 3 (scikit-learn or hand-rolled) | 5 ($0) | 5 | Skip — marginal gain over (a) |
-| c | Local embeddings (sentence-transformers, `all-MiniLM-L6-v2`) | 5 | 4 | 2 (first call ~2s, warm ~80ms) | 2 (adds ~90MB deps + PyTorch) | 5 ($0 after download) | 5 | **Phase B-β target** |
+| c | Local embeddings (sentence-transformers, `all-MiniLM-L6-v2`) | 5 | 4 | 2 (first call ~2s, warm ~80ms) | 2 (adds ~90MB deps + PyTorch) | 5 ($0 after download) | 5 | **Phase B-beta target** |
 | d | LLM-as-judge (Haiku one-shot) | 5 | 5 | 1 (~1-3s/call) | 4 (already installed) | 2 (~$0.0003/call, hundreds of calls/day = $$) | 1 | Reject — latency + cost |
 
 ### Notes on each
@@ -89,7 +89,7 @@ vectors, ~80 ms per query warm, ~2 s cold (model load). Best recall: catches
 paraphrases like "throttle" ~ "rate limit" ~ "quota" because they cluster in
 embedding space. Cost: ~90 MB model + PyTorch CPU wheel (~200 MB). Blocker for
 MVP: deps are heavyweight and `ORCHESTRATOR_MODE=executor` environments may not
-have them. Target state: Phase B-β introduces it behind
+have them. Target state: Phase B-beta introduces it behind
 `REINVENTION_PHASE_B_EMBEDDINGS=1` with graceful fallback to (a) when the import
 fails.
 
@@ -99,10 +99,10 @@ that fires on every agent launch cannot afford either. Rejected outright.
 
 ## 3. Recommendation
 
-Ship **(a) Jaccard** as Phase B-α immediately. It is small, stdlib-only,
+Ship **(a) Jaccard** as Phase B-alpha immediately. It is small, stdlib-only,
 < 300 ms worst case, and exercises the whole architecture — index build, query,
 scoring, threshold, hook integration, metrics — that (c) will later reuse. Then
-pilot (c) embeddings as Phase B-β in a follow-up ADR once (a) is proven to have
+pilot (c) embeddings as Phase B-beta in a follow-up ADR once (a) is proven to have
 low false-positive rate in production.
 
 Reason for the split: the index + hook integration is 80% of the work. Swapping
@@ -122,7 +122,7 @@ Budget allocation:
 | bash + common.sh load | 40 ms | Already paid by Phase A |
 | stdin JSON parse | 10 ms | `jq` call |
 | Phase A grep + find | 60 ms | Measured today on this repo |
-| Phase B-α Jaccard query | 50 ms | Python subprocess, pre-loaded JSON index |
+| Phase B-alpha Jaccard query | 50 ms | Python subprocess, pre-loaded JSON index |
 | Metrics append | 10 ms | safe-jsonl |
 | **Total** | **170 ms** | ≥ 40% headroom vs 300 ms cap |
 
@@ -132,7 +132,7 @@ cached. Cold build is budgeted separately at ≤ 2 s (SLO 1: `SessionStart` p95
 
 ## 5. False-positive policy
 
-**Phase B-α: advisory only, never block.** Rationale:
+**Phase B-alpha: advisory only, never block.** Rationale:
 
 1. Jaccard has known false positives on boilerplate-heavy files (docstrings
    dominated by generic words like `config`, `agent`, `manager`).
@@ -213,11 +213,11 @@ absent, log `phase=B-alpha reason=fallback_to_A` and continue with Phase A only.
 
 | Step | Duration | Gate | Owner action |
 |------|----------|------|--------------|
-| 1. Ship Phase B-α behind `REINVENTION_PHASE_B=1` env gate | this commit | ADR accepted | Commit implementation + tests |
+| 1. Ship Phase B-alpha behind `REINVENTION_PHASE_B=1` env gate | this commit | ADR accepted | Commit implementation + tests |
 | 2. Dogfood for 7 days in the hermes-agent worktree | 1 week | ≥ 5 hook fires with real prompts | Review metrics JSONL |
 | 3. Measure precision on logged cases | 1 day | ≥ 0.8 precision at threshold 0.3 | Hand-label each match as TP/FP |
 | 4. Default-on if precision passes | 0.25 d | Step 3 passes | Flip default to `REINVENTION_PHASE_B=1` in `scripts/apply-efficiency-profile.sh default` |
-| 5. Phase B-β design ADR (embeddings) | 1 week | Step 4 stable for 2 weeks | Draft ADR-029c |
+| 5. Phase B-beta design ADR (embeddings) | 1 week | Step 4 stable for 2 weeks | Draft ADR-029c |
 | 6. Phase B-γ hard-block ADR | later | ≥ 30 days, precision ≥ 0.9 | Separate decision |
 
 If Step 3 fails (precision < 0.8), tune threshold upward or extend token
@@ -231,10 +231,10 @@ escalating to embeddings.
   hand-tuning.
 - **Multi-language tokenisation**: Go, TypeScript, shell all parsed with the
   same `re.split(r"[^a-z0-9]+")` regex after lowercasing. This is crude but
-  language-neutral. Revisit in B-β when AST parsing becomes cheap.
+  language-neutral. Revisit in B-beta when AST parsing becomes cheap.
 - **Negative examples**: should the index track *deleted* files so that
-  reviving a deleted pattern also trips the gate? Out of scope for B-α;
-  mention in B-β.
+  reviving a deleted pattern also trips the gate? Out of scope for B-alpha;
+  mention in B-beta.
 
 ## 10. Acceptance criteria (this ADR)
 
@@ -251,9 +251,9 @@ REINVENTION_PHASE_B=0 bash hooks/reinvention-check.sh < /dev/null  # Phase A onl
 
 ## Resolution Log
 
-### 2026-04-21 — Phase B-β wired as optional
+### 2026-04-21 — Phase B-beta wired as optional
 
-**Status change**: Phase B-β (embeddings) moved from "deferred" to "optional,
+**Status change**: Phase B-beta (embeddings) moved from "deferred" to "optional,
 wired, not installed by default". Hard-block escalation (Phase B-γ) still
 deferred per §5.
 
@@ -268,12 +268,12 @@ deferred per §5.
    embeddings path. The inline Python tries `EmbeddingsIndex` first, catches
    `ImportError` (sentence-transformers absent) or any query-time exception
    (model load failure, missing `.npy` artefacts), and falls back silently to
-   Phase B-α Jaccard. The metrics JSONL `phase` field reports the path actually
+   Phase B-alpha Jaccard. The metrics JSONL `phase` field reports the path actually
    taken (`B-alpha` or `B-beta`). Hook exit code remains `0` on every path
    (advisory only, §5).
 
 3. `EmbeddingsIndex` already existed in `lib/reinvention_semantic.py` (shipped
-   alongside Phase B-α). The stated "create `lib/reinvention_embeddings.py`"
+   alongside Phase B-alpha). The stated "create `lib/reinvention_embeddings.py`"
    step from the work order was deliberately NOT executed — creating a second
    module for the same class would itself be a reinvention incident. Instead,
    a latent `_persist()` bug (numpy auto-appends `.npy` to the tempfile, which
@@ -310,8 +310,8 @@ pytest tests/unit/test_reinvention_guard.py -v        # 11/11 pass (no regressio
 REINVENTION_PHASE_B=2 bash hooks/reinvention-check.sh < … # exit 0 without embeddings
 ```
 
-**Residual risk**: Phase B-β has never run against a real sentence-transformers
+**Residual risk**: Phase B-beta has never run against a real sentence-transformers
 install in CI. The test suite mocks the module; a first-run surprise on the
 real model (e.g. tokenizer download, huggingface_hub version drift) is possible.
 Dogfooding on one developer machine first (per §8 rollout plan Step 2, extended
-to B-β) is the intended mitigation.
+to B-beta) is the intended mitigation.

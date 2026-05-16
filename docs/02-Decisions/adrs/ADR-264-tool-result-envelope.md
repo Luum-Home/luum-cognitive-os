@@ -297,17 +297,17 @@ When the ledger says `REFERENCE_ONLY`, the envelope is rendered with `preview_te
 
 **D1.5 — Integration in agent_runner and dispatch_helper**
 
-- Modify `lib/agent_runner.py`: import + llamada a `wrap_if_large` post-tool-execution.
-- Modify `lib/dispatch_helper.py`: idem + guard of idempotencia.
-- Add log `tool_result_enveloped` in `agent-heartbeat.jsonl` when activated the envelope.
-- Integration test in `tests/integration/` with mock tool of 30KB output.
+- Modify `lib/agent_runner.py`: import and call `wrap_if_large` after tool execution.
+- Modify `lib/dispatch_helper.py`: same call path plus an idempotency guard.
+- Add `tool_result_enveloped` log entries in `agent-heartbeat.jsonl` when the envelope activates.
+- Add an integration test in `tests/integration/` with a mock tool that returns 30 KB of output.
 
 **D2 — Spillover storage + cleanup + composition**
 
-- Implement logic of spillover: path derivado of session ID + SHA-256.
-- Add cleanup to the hook `session-end`.
-- Add composition test with ADR-263 (skip if ledger is not implemented).
-- Run checklist of compliance F§5.
+- Implement spillover logic: derive the path from the session ID plus SHA-256.
+- Add cleanup to the `session-end` hook.
+- Add a composition test with ADR-263, skipped when the ledger is not implemented.
+- Run the F§5 compliance checklist.
 
 ---
 
@@ -328,7 +328,7 @@ When the ledger says `REFERENCE_ONLY`, the envelope is rendered with `preview_te
 This ADR adopts the pattern described in [private clean-room research dossier] §Capability HTTP result envelope
 under the protocol clean-room establecido in [private compliance dossier — see internal records].
 
-Declaraciones of compliance per Annex F §4.2:
+Compliance declarations per Annex F §4.2:
 
 ```yaml
 pattern_source: "holaos-annex-g-surprise-findings.md::§G1 (Capability HTTP result envelope)"

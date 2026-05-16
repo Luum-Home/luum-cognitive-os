@@ -54,11 +54,11 @@ Star counts are not adoption proof.
 
 | Agno-suite capability | COS state | Verdict | Action |
 |---|---|---|---|
-| SDK/runtime/control-plane for production agents | COS owns governance primitives and has emerging service-control-plane work | **MEJOR_EXTERNO for runtime packaging** | Assess adapter-lab only; keep COS governance authoritative |
-| Persistent sessions, tracing, scheduling, RBAC | COS has memory, metrics, OTel direction, and policy gates but not a polished app-runtime package | **MEJOR_EXTERNO for product packaging** | Harvest boundaries and UX; do not import runtime by default |
+| SDK/runtime/control-plane for production agents | COS owns governance primitives and has emerging service-control-plane work | **EXTERNAL_BETTER for runtime packaging** | Assess adapter-lab only; keep COS governance authoritative |
+| Persistent sessions, tracing, scheduling, RBAC | COS has memory, metrics, OTel direction, and policy gates but not a polished app-runtime package | **EXTERNAL_BETTER for product packaging** | Harvest boundaries and UX; do not import runtime by default |
 | Human approval flows for workspace mutations | COS has permission/policy hooks | **COMPATIBLE** | Compare UX language; preserve hook enforcement |
-| Dash self-learning SQL agent | COS has memory/eval primitives but no dedicated data-agent learning taxonomy | **MEJOR_EXTERNO for data-agent pattern** | Extract taxonomy and eval ideas, not direct SQL runtime |
-| Scout context providers and company brain | COS has connector/MCP posture but no default company-brain app | **MEJOR_EXTERNO for provider UX** | Pattern-only; gate all connectors through credentials/audit/rollback |
+| Dash self-learning SQL agent | COS has memory/eval primitives but no dedicated data-agent learning taxonomy | **EXTERNAL_BETTER for data-agent pattern** | Extract taxonomy and eval ideas, not direct SQL runtime |
+| Scout context providers and company brain | COS has connector/MCP posture but no default company-brain app | **EXTERNAL_BETTER for provider UX** | Pattern-only; gate all connectors through credentials/audit/rollback |
 | Hosted/local AgentOS UI | COS local-first doctrine requires explicit SaaS boundary | **RISKY** | Review telemetry and hosted-control-plane boundary before adapter work |
 
 ## What to extract

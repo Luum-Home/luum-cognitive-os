@@ -48,12 +48,12 @@ rules, hooks, memory, or release/governance semantics.
 
 | OpenSwarm capability | COS state | Verdict | Action |
 |---|---|---|---|
-| Orchestrator delegates to deliverable specialists | COS has agentic primitives, SDD/task orchestration, and harness adapters oriented to coding/governance | **NO_COMPARABLE** | Harvest UX language; do not replace COS core |
-| `SendMessage` for independent parallel subtasks vs `Handoff` for single-specialist full-context transfer | COS delegation policy exists in practice but needs durable receipts and control-plane proof | **MEJOR_EXTERNO for wording** | Port as documentation/policy pattern only |
-| File-producing agents must ask/record output paths | COS skills/plugins produce files but path discipline is uneven across surfaces | **MEJOR_EXTERNO for UX discipline** | Add to artifact-producing skill guidance after inventory |
-| Composio discover/inspect/execute shared tools | COS has connector/plugin posture and credential/env rules | **NO_COMPARABLE / RISKY** | Use sequence as adapter UX reference; all execution must go through COS policy wrappers |
-| npm one-command install that bootstraps Python, Node, Playwright, binaries | COS has bootstrap/projection work with stronger portability constraints | **MEJOR_NUESTRO for governance** | Do not copy auto-install side effects |
-| Agency Swarm runtime and all-to-all handoff mesh | COS owns governance semantics and runtime evidence | **MEJOR_NUESTRO for product boundary** | Keep OpenSwarm outside core; lab only if needed |
+| Orchestrator delegates to deliverable specialists | COS has agentic primitives, SDD/task orchestration, and harness adapters oriented to coding/governance | **NOT_COMPARABLE** | Harvest UX language; do not replace COS core |
+| `SendMessage` for independent parallel subtasks vs `Handoff` for single-specialist full-context transfer | COS delegation policy exists in practice but needs durable receipts and control-plane proof | **EXTERNAL_BETTER for wording** | Port as documentation/policy pattern only |
+| File-producing agents must ask/record output paths | COS skills/plugins produce files but path discipline is uneven across surfaces | **EXTERNAL_BETTER for UX discipline** | Add to artifact-producing skill guidance after inventory |
+| Composio discover/inspect/execute shared tools | COS has connector/plugin posture and credential/env rules | **NOT_COMPARABLE / RISKY** | Use sequence as adapter UX reference; all execution must go through COS policy wrappers |
+| npm one-command install that bootstraps Python, Node, Playwright, binaries | COS has bootstrap/projection work with stronger portability constraints | **OURS_BETTER for governance** | Do not copy auto-install side effects |
+| Agency Swarm runtime and all-to-all handoff mesh | COS owns governance semantics and runtime evidence | **OURS_BETTER for product boundary** | Keep OpenSwarm outside core; lab only if needed |
 
 ## What to extract
 

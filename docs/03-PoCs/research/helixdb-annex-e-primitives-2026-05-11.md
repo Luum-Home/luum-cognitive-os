@@ -78,7 +78,7 @@ The architectural insight is the *separation*: rerankers are first-class strateg
 
 ### Why this matters for COS
 
-The roadmap includes a LightRAG dual-level retrieval slice and Engram already plans hybrid FTS5 + future-vector retrieval. The natural temptation is to write a hard-coded "combine BM25 and cosine scores with weight α". That is wrong — score scales are incommensurable, and you cannot tune α robustly across queries. RRF avoids the problem; MMR avoids the redundancy problem when retrieving for prompts (where 5 near-duplicate hits waste budget).
+The roadmap includes a LightRAG dual-level retrieval slice and Engram already plans hybrid FTS5 + future-vector retrieval. The natural temptation is to write a hard-coded "combine BM25 and cosine scores with weight alpha". That is wrong — score scales are incommensurable, and you cannot tune alpha robustly across queries. RRF avoids the problem; MMR avoids the redundancy problem when retrieving for prompts (where 5 near-duplicate hits waste budget).
 
 ### Clean-room reimplementation contract
 

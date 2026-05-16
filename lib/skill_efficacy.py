@@ -164,7 +164,7 @@ def load_runs_from_archive(path: str | Path) -> list[SkillRun]:
 
 def format_markdown(summaries: list[SkillEfficacySummary]) -> str:
     """Format summaries as a simple operator report."""
-    lines = ["# Skill Efficacy Report", "", "| Skill | Uses | Paired | Success Δ | Cost Δ | Regression | Security | Net | Verdict |", "|---|---:|---:|---:|---:|---:|---:|---:|---|"]
+    lines = ["# Skill Efficacy Report", "", "| Skill | Uses | Paired | Success Delta | Cost Delta | Regression | Security | Net | Verdict |", "|---|---:|---:|---:|---:|---:|---:|---:|---|"]
     if not summaries:
         lines.append("| _none_ | 0 | 0 |  |  |  |  | 0 | no-data |")
         return "\n".join(lines) + "\n"

@@ -54,7 +54,7 @@ AGENT_PROMPT=$(echo "$INPUT" | jq -r '.tool_input.prompt // .tool_input.descript
 
 # Only run when the agent claims completion
 IS_COMPLETION=false
-echo "$RESPONSE" | grep -qiE "done|complete|finished|implemented|fixed|resolved|delivered|all tasks|PASS|listo" && IS_COMPLETION=true
+echo "$RESPONSE" | grep -qiE "done|complete|finished|implemented|fixed|resolved|delivered|all tasks|PASS" && IS_COMPLETION=true
 [ "$IS_COMPLETION" = "true" ] || exit 0
 
 # Pick the criteria source: prompt first (originator), then response (agent self-defined)

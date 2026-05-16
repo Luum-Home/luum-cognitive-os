@@ -18,9 +18,9 @@ open-source CLI/TUI tooling that could become the substrate for Surface 5
 
 User intent (paraphrased, 2026-05-05):
 
-> Tener ambas: CLI/TUI plana **y** una UI rica, sin descartar ninguna. Que la
-> UI permita modelar gobernanza COS (lifecycle / doctrine / audit_class /
-> hook reality) que Phoenix y Obsidian no modelan, pero **sin** caer en el
+> Keep both: a flat CLI/TUI and a rich UI, without discarding either. The UI
+> should model COS governance (lifecycle / doctrine / audit_class / hook reality)
+> in ways Phoenix and Obsidian do not, while avoiding a heavy product detour.
 
 Mapped to ADR-172 vocabulary:
 

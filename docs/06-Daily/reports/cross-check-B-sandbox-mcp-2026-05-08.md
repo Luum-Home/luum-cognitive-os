@@ -27,15 +27,15 @@ sandbox-exec genera profile inline `(deny default)(allow process*)(allow file-re
 
 Compared with upstream (`containers/bubblewrap`): bwrap is a CLI binary of C under LGPL-2.1; nobody "adopts" it as a library. The idiomatic way to use it IS via subprocess argv. Our implementation is standard and matches the pattern used by flatpak/toolbox.
 
-**Aislamiento real provisto vs prometido:**
-- Linux: equivalent to flatpak-spawn basic. `--ro-bind /` leaves the whole host FS visible read-only (is not a real chroot). Network unshared OK. Missing: `--die-with-parent`, `--new-session`, namespaces UID/PID, seccomp filter. For a write-capable agent, covers filesystem, does not provide defense-in-depth against exfil via syscalls raros o sensitive reads.
+**Actual isolation provided vs promised:**
+- Linux: equivalent to flatpak-spawn basic. `--ro-bind /` leaves the whole host FS visible read-only (is not a real chroot). Network unshared OK. Missing: `--die-with-parent`, `--new-session`, namespaces UID/PID, seccomp filter. For a write-capable agent, covers filesystem, does not provide defense-in-depth against exfil via unusual syscalls or sensitive reads.
 - macOS: profile Seatbelt minimal. `(allow process*)` allows `fork/exec` of any binary. No mach IPC restriction, no keychain restriction. Profile fairly loose.
 
-Research promised "permission boundaries below the prompt layer" — yes, it provides them. It did NOT promise hardening tipo gVisor, so the gap between claim and code is small.
+Research promised "permission boundaries below the prompt layer" — yes, it provides them. It did NOT promise gVisor-style hardening, so the gap between claim and code is small.
 
 **Recommendation:** Code is OK as Slice A. Concrete improvements (no rewrites):
 1. Add `--die-with-parent --new-session --cap-drop ALL` to the bwrap argv (1 line).
-2. Cerrar Seatbelt profile (`(deny process-fork)` salvo allowlist).
+2. Tighten Seatbelt profile (`(deny process-fork)` except an allowlist).
 3. Audit that `e2b-sandbox/` thin_wrapper is not listed as active in manifests if it has no wiring.
 
 **Effort:** S (1-2h) for hardening of the argv. Anything additional (Landlock, seccomp BPF, microvm real) → M-L and out of scope reconstruction.
@@ -120,7 +120,7 @@ This is a reasonable subset; it is not critical debt.
 | 🔍5 fastmcp | EXTERNAL_BETTER + EQUIVALENT in our surface | No (we use it genuinely) | Pin version, optional resources |
 | 🔍7 Deferred tool loading | OURS_BETTER in governance | "85%" yes — unmeasured claim | Document status, measure or remove number |
 
-**Hallazgos cruzados:**
+**Cross-check findings:**
 - The 3 ADRs (231/232/236) have honest status: they declare which slices exist and which do NOT. None is aspirational in the sense of "claim without code".
 - The aspirational claim is in the **external research narrative** ("85% token reduction", "adopt-code via subprocess implies deeper integration than reality"). The code and ADRs are more conservative than how the research presents them.
 - Pattern: COS is using bubblewrap/fastmcp/ToolSearch as **adapters/governance layers**, not as reimplementations. That is technically correct. The narrative of "adopt-code" overstates the depth.

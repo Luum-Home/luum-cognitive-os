@@ -132,7 +132,7 @@ ADR-027a contains a stale path (`docs/plans/features/hook-architecture-v2.md`) t
 
 - `inject-phase-context.sh` (hook) contains a hardcoded warning: `"plans/ at root has structure but no content. Active plans are in .cognitive-os/plans/. Both exist intentionally."` — but this is injected into agent prompts only, not documented.
 - `session-startup-protocol.sh` scans only `.cognitive-os/plans/features/` — `research/` and all `docs/04-Concepts/architecture/plans/` are invisible to the startup summary.
-- ADR-054 (Project Documentation Convention) assigns category `09-plan-ejecucion` for roadmaps/sprints but does not specify which filesystem path plans should live in.
+- ADR-054 (Project Documentation Convention) assigns category `09-execution-plan` for roadmaps/sprints but does not specify which filesystem path plans should live in.
 - No README, CONTRIBUTING.md, or AGENTS.md in the root project mentions plan directory conventions.
 
 ### Conclusion

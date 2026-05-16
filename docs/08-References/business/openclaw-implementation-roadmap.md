@@ -1,8 +1,8 @@
 # OpenClaw Patterns -- Implementation Roadmap
 
-> Este documento describe un plan priorizado de 12 semanas para adoptar los 25 patrones restantes de OpenClaw.
-> Ordenado por criticidad y cadena de dependencias.
-> Documento companero: [openclaw-remaining-patterns.md](openclaw-remaining-patterns.md)
+> This document describes a prioritized 12-week plan to adopt the remaining 25 OpenClaw patterns.
+> Ordered by criticality and dependency chain.
+> Companion document: [openclaw-remaining-patterns.md](openclaw-remaining-patterns.md)
 
 ---
 

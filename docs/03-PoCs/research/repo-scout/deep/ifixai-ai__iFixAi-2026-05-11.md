@@ -122,14 +122,14 @@ The five-pillar taxonomy (fabrication, manipulation, deception, unpredictability
 
 | iFixAi capability | COS state | Verdict | Action |
 |---|---|---|---|
-| 32-inspection misalignment battery | COS has `red-team`, `redteam-harness`, `security-red-team`, `deepeval-integration`, `promptfoo-integration`, `ragas-integration` — none ships a five-pillar misalignment taxonomy with policy-disclosed thresholds | **MEJOR_EXTERNO** (taxonomy) / **NO_COMPARABLE** (overall scope) | Extract taxonomy as pattern |
-| Cross-judge-by-default | COS does not enforce evaluator isolation in eval skills | **MEJOR_EXTERNO** | Add as rule for COS eval lanes |
-| Content-addressed reproducibility manifest | COS has ADR-247 manifest doctrine but not per-eval-run content-addressed replay | **MEJOR_EXTERNO** (per-run replay) / **COMPATIBLE** (manifest philosophy) | Pattern extract |
+| 32-inspection misalignment battery | COS has `red-team`, `redteam-harness`, `security-red-team`, `deepeval-integration`, `promptfoo-integration`, `ragas-integration` — none ships a five-pillar misalignment taxonomy with policy-disclosed thresholds | **EXTERNAL_BETTER** (taxonomy) / **NOT_COMPARABLE** (overall scope) | Extract taxonomy as pattern |
+| Cross-judge-by-default | COS does not enforce evaluator isolation in eval skills | **EXTERNAL_BETTER** | Add as rule for COS eval lanes |
+| Content-addressed reproducibility manifest | COS has ADR-247 manifest doctrine but not per-eval-run content-addressed replay | **EXTERNAL_BETTER** (per-run replay) / **COMPATIBLE** (manifest philosophy) | Pattern extract |
 | Multi-provider matrix (10 providers) | COS llm-dispatch covers Qwen/Claude per ADR-049 | **COMPATIBLE / DIFFERENT_AXIS** | No action; complementary surfaces |
-| Standards mappings (OWASP/NIST/ISO/EU-AI-Act) | COS aguara handles 189 rules but no public crosswalk artifact | **MEJOR_EXTERNO** (artifact form) | Use as reference for aguara docs |
-| vs `/plan-bug`, `/systematic-debugging` | iFixAi does not fix bugs; it diagnoses misalignment | **NO_COMPARABLE** | No interaction — different surface |
-| vs SDD apply-verify retry loop (ADR-228) | iFixAi is a one-shot diagnostic; no retry contract | **NO_COMPARABLE** | No interaction |
-| vs `/auto-rollback` | iFixAi has no rollback responsibility | **NO_COMPARABLE** | No interaction |
+| Standards mappings (OWASP/NIST/ISO/EU-AI-Act) | COS aguara handles 189 rules but no public crosswalk artifact | **EXTERNAL_BETTER** (artifact form) | Use as reference for aguara docs |
+| vs `/plan-bug`, `/systematic-debugging` | iFixAi does not fix bugs; it diagnoses misalignment | **NOT_COMPARABLE** | No interaction — different surface |
+| vs SDD apply-verify retry loop (ADR-228) | iFixAi is a one-shot diagnostic; no retry contract | **NOT_COMPARABLE** | No interaction |
+| vs `/auto-rollback` | iFixAi has no rollback responsibility | **NOT_COMPARABLE** | No interaction |
 
 ### Recommendation
 

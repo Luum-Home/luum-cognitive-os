@@ -54,7 +54,7 @@ work. Mock-based unit tests miss live integration. ADR sections without a
 matching audit test become aspirational.
 
 The operator's framing in Spanish was direct: *"fix everything and ensure there are
-tests por favor, end to end"*. Tests, not prose.
+tests please, end to end"*. Tests, not prose.
 
 The fixes for the three specific bugs landed in commit `b7c33c2`. This ADR
 codifies the **general** pattern so future conventions ship with their

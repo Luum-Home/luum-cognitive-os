@@ -98,12 +98,12 @@ logging around each generated skill.
 
 | EvoSkill capability | COS state | Verdict | Action |
 |---|---|---|---|
-| Failure-driven skill synthesis | COS has skills, skill registry, optimization docs, and Engram; no shipped benchmark loop that auto-writes skills | **MEJOR_EXTERNO** | Extract loop contract and fixture shape |
-| Held-out validation frontier | COS has ADR-247 regression audits and manifests, but not program-branch frontier selection | **MEJOR_EXTERNO** | Port as lab/eval primitive, not default git behavior |
-| Cross-harness skill packaging | COS has harness projection doctrine and Codex skills; EvoSkill has concrete `.agents/skills` symlink tests | **COMPATIBLE / MEJOR_EXTERNO in fixture detail** | Add future fixture for path projection without adopting `.claude` as canonical |
-| Governance, policy, credentials | COS has stronger hook/rule/credential doctrine | **MEJOR_NUESTRO** | Keep COS authoritative around any EvoSkill-inspired run |
+| Failure-driven skill synthesis | COS has skills, skill registry, optimization docs, and Engram; no shipped benchmark loop that auto-writes skills | **EXTERNAL_BETTER** | Extract loop contract and fixture shape |
+| Held-out validation frontier | COS has ADR-247 regression audits and manifests, but not program-branch frontier selection | **EXTERNAL_BETTER** | Port as lab/eval primitive, not default git behavior |
+| Cross-harness skill packaging | COS has harness projection doctrine and Codex skills; EvoSkill has concrete `.agents/skills` symlink tests | **COMPATIBLE / EXTERNAL_BETTER in fixture detail** | Add future fixture for path projection without adopting `.claude` as canonical |
+| Governance, policy, credentials | COS has stronger hook/rule/credential doctrine | **OURS_BETTER** | Keep COS authoritative around any EvoSkill-inspired run |
 | Runtime footprint | EvoSkill depends on multiple SDKs, Docker, optional eval packages, remote execution | **RISKY** | No default dependency; opt-in lab only |
-| Continuous learning from normal usage | EvoSkill README marks this as open research | **IGUAL / GAP** | Both need a governed usage-to-skill pipeline |
+| Continuous learning from normal usage | EvoSkill README marks this as open research | **EQUIVALENT / GAP** | Both need a governed usage-to-skill pipeline |
 
 ### Integration Plan
 

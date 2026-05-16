@@ -92,7 +92,7 @@ Operator asked to apply the empirical winner. **It did not work.** Documented wi
 | Threshold tested | Negs filtered | Screenshot routes | Held-out precision |
 |---|---|---|---:|
 | 0.50 (MiniLM-calibrated) | ❌ negs match | ✅ | 0.80 ✅ |
-| 0.65 | ❌ "hola" matches | ✅ | 0.80 ✅ |
+| 0.65 | ❌ "hello" matches | ✅ | 0.80 ✅ |
 | 0.87 | ✅ | ✅ (barely) | **0.53** ❌ |
 
 **Root cause**: e5-large cosine distribution is dense (1024-dim vs 384-dim). The screenshot prompt lives at cosine 0.906 — **next to** the false positives (negs 0.84-0.86, greetings 0.80). No threshold separates them.

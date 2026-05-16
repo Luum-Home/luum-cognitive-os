@@ -45,10 +45,10 @@ into the correct category:
 
 | Skill | Category | Writer |
 |---|---|---|
-| `security-audit` | `04-seguridad` | `scripts/security_audit_writer.py` |
-| `rules-export` (NEW) | `08-estandares` | `scripts/rules_export.py` |
+| `security-audit` | `04-security` | `scripts/security_audit_writer.py` |
+| `rules-export` (NEW) | `08-standards` | `scripts/rules_export.py` |
 
-The third target (`sdd-design` → `02-arquitectura`) lives OUTSIDE this
+The third target (`sdd-design` → `02-architecture`) lives OUTSIDE this
 repo (`~/.claude/skills/sdd-design` and `~/Tools/agent-teams-lite/`).
 Editing third-party/user-level skills is out of scope for this change;
 the convention is documented authoritatively here so any future
@@ -131,7 +131,7 @@ skill). IMPL/PARTIAL/ASPIR per the usual tri-state, advisory-only.
 
 - `sdd-design` extension deferred. Documented as a follow-up: any
   implementation (in or out of this repo) that writes to
-  `<project>/docs/02-arquitectura/` via `lib/docs_writer.write_doc()`
+  `<project>/docs/02-architecture/` via `lib/docs_writer.write_doc()`
   satisfies ADR-054/055 by construction.
 
 ## Verification

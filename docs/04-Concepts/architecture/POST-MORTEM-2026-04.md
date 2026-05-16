@@ -257,9 +257,9 @@ Based on what we learned:
 
 This post-mortem was written during the stabilization session on April 16, 2026, after the user asked:
 
-> "incluso hacer un post mortem producto de un crecimiento enorme durante el tiempo que nació el proyecto y a la velocidad que se desarrollaba dejaba lógica aspiracional vs comportamental, y todos los detalles que hablamos acá"
+> Operator request: write a post-mortem for the project's rapid growth, especially where development speed left aspirational logic ahead of behavioral reality, and preserve the details discussed in the session.
 
-That request triggered this document. It exists because the user recognized that the *malestar* — the discomfort of discovering 353 aspirational agentic primitives, 67 false tests, three wrong audits — is itself valuable knowledge. Losing that discomfort would mean losing the motivation for self-awareness.
+That request triggered this document. It exists because the user recognized that the discomfort of discovering 353 aspirational agentic primitives, 67 false tests, three wrong audits — is itself valuable knowledge. Losing that discomfort would mean losing the motivation for self-awareness.
 
 The post-mortem joins `LESSONS-LEARNED.md`, `FROZEN-BACKLOG.md`, and `stabilization-roadmap.md` as the four living documents that preserve institutional memory across sessions. Each captures a different dimension:
 

@@ -1365,7 +1365,7 @@ c32fca6af21d0858d1e377c8f10677cc141e4c06 2026-04-20 19:22:43 -0300 feat(orchestr
 32155106c4aed32738333a6e8d3b7b65e35d723b 2026-04-20 19:15:44 -0300 fix(rate-limiter): add hook+drainer retry_count wiring files (D45 core)
 184c3d1f0c513fbf352321d736479342f74d670b 2026-04-20 19:14:36 -0300 fix(rate-limiter): hook+drainer pass retry_count+1 end-to-end (closes D45 fully)
 1d86e719fed0b0469d88d9ece12a9e7349f8fb7b 2026-04-20 19:14:23 -0300 feat(v1.0-prep): core-vs-extensions audit + migration plan + advisory-llm POC (FROZEN P1)
-7008f58856aa13279bd647c9529c9add76713ecd 2026-04-20 19:11:05 -0300 feat(d07): ADR-029b reinvention Phase B-α Jaccard MVP
+7008f58856aa13279bd647c9529c9add76713ecd 2026-04-20 19:11:05 -0300 feat(d07): ADR-029b reinvention Phase B-alpha Jaccard MVP
 6282f835e115eaec8927169001c094daa7b9b980 2026-04-20 19:01:43 -0300 merge: session sweep — 11 sweep items + ADR-032 + 6 debt items closed
 974a38fd7bc593d0423aa393ce78776499de72f6 2026-04-20 19:00:23 -0300 feat(resilience): D13/D15 wire pre-compaction + crash-recovery + D17 graceful vitals + D24/D25 remove ghost hooks
 26068f966ea475826a49a78f91d70335dbe90cc8 2026-04-20 18:59:29 -0300 fix(rate-limiter): cap retries + backoff + circuit breaker (D45 BLOCKING)

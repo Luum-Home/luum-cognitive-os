@@ -527,7 +527,7 @@ def _section(title: str, findings: list[Finding]) -> str:
 
 
 def render_markdown(report: ReviewReport) -> str:
-    """Markdown report with Hallazgos críticos / medios / menores sections."""
+    """Markdown report with critical / medium / minor findings sections."""
     counts = report.severity_counts()
     by_tier: dict[str, list[Finding]] = {t: [] for t in _VALID_TIERS}
     for f in report.consolidated:
@@ -548,12 +548,12 @@ def render_markdown(report: ReviewReport) -> str:
         f"- S3 SUGGESTION: **{counts['S3']}**",
         f"- S4 QUESTION: **{counts['S4']}**",
         "",
-        "## Hallazgos",
+        "## Findings",
         "",
-        _section("Críticos (S1 BLOCKER)", by_tier["S1"]),
-        _section("Medios (S2 CONCERN)", by_tier["S2"]),
-        _section("Menores (S3 SUGGESTION)", by_tier["S3"]),
-        _section("Preguntas abiertas (S4 QUESTION)", by_tier["S4"]),
+        _section("Critical (S1 BLOCKER)", by_tier["S1"]),
+        _section("Medium (S2 CONCERN)", by_tier["S2"]),
+        _section("Minor (S3 SUGGESTION)", by_tier["S3"]),
+        _section("Open questions (S4 QUESTION)", by_tier["S4"]),
         "",
         "## Per-persona status",
         "",

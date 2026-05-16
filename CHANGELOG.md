@@ -645,7 +645,7 @@ operation; CI moves from GitHub-hosted to local pre-push gates.
 
 ### Added — confidence + Ebbinghaus decay (Phase 1, commit `d48dcb8`)
 
-- `lib/engram_lifecycle.py` — wrapper layer with `save`/`search`/`reinforce`, `decay_retention(t,τ)`, `reinforce_confidence(c,β=0.15)`, `adjusted_score(base,conf,ret,α=0.3)`. Six decay classes (architecture=365d, decision=180d, pattern=180d, discovery=90d, bugfix=60d, manual=90d). Lifecycle metadata stored as a `<engram-lifecycle>{...}</engram-lifecycle>` trailer in observation `content` so engram passes it through unchanged.
+- `lib/engram_lifecycle.py` — wrapper layer with `save`/`search`/`reinforce`, `decay_retention(t,tau)`, `reinforce_confidence(c,beta=0.15)`, `adjusted_score(base,conf,ret,alpha=0.3)`. Six decay classes (architecture=365d, decision=180d, pattern=180d, discovery=90d, bugfix=60d, manual=90d). Lifecycle metadata stored as a `<engram-lifecycle>{...}</engram-lifecycle>` trailer in observation `content` so engram passes it through unchanged.
 - `tests/unit/test_engram_lifecycle.py` — 22+ unit tests (trailer round-trip, decay math, reinforcement asymptote, ranking bounds, search re-ranking, decay-class mapping, malformed-trailer fallback).
 - `hooks/engram-reinforce-on-access.sh` — async PostToolUse hook for `mem_search`/`mem_get_observation`. Registered in both `apply-efficiency-profile.sh` and `set-security-profile.sh`.
 
@@ -673,7 +673,7 @@ operation; CI moves from GitHub-hosted to local pre-push gates.
 
 ### Documentation
 
-- `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision (schema, formulas, decay classes, ranking weight α=0.3, asymptotic confidence β=0.15) + two addendums (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** section listing 12 caveats: heuristic synthesis, supersedes-not-written, local-only reinforcement, schema coupling, save-count proxy, dormant hooks, unvalidated thresholds, structural-only cloud-sync compat, etc.
+- `docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision (schema, formulas, decay classes, ranking weight alpha=0.3, asymptotic confidence beta=0.15) + two addendums (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** section listing 12 caveats: heuristic synthesis, supersedes-not-written, local-only reinforcement, schema coupling, save-count proxy, dormant hooks, unvalidated thresholds, structural-only cloud-sync compat, etc.
 - `docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — analysis of the LLM Wiki v2 gist (rohitg00/agentmemory) + 14 sources + post-implementation status footer.
 - `.cognitive-os/plans/features/engram-lifecycle-evolution.md` — phased plan, marked SHIPPED for Phases 1–3, Phase 4 (Obsidian export) deferred.
 

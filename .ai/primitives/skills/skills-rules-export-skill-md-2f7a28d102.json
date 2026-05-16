@@ -74,14 +74,14 @@
     "trigger": {
       "kind": "documented_or_on_demand",
       "projection_targets": [
-        "docs/08-estandares/rules-snapshot-*.md"
+        "docs/08-standards/rules-snapshot-*.md"
       ],
       "runtime_projection": false
     }
   },
   "portable_id": "skills/rules-export/SKILL.md",
   "projection_targets": [
-    "docs/08-estandares/rules-snapshot-*.md"
+    "docs/08-standards/rules-snapshot-*.md"
   ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "skills/rules-export/SKILL.md",

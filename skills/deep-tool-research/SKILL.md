@@ -54,7 +54,7 @@ The holaOS deep evaluation locked a 7-axis taxonomy (A–G) and produced cross-c
 
 | Annex | Domain | Required content | Default model |
 |---|---|---|---|
-| **A — Memory & State** | How the tool models persistent state, recall, indexing, lifecycle. NO_COMPARABLE if not applicable, but the slot is still filled. | Schema/data model, recall pipeline, embedding/index strategy, lifecycle (TTL/GC/compaction), cross-session boundary, comparison vs COS Engram. | Opus |
+| **A — Memory & State** | How the tool models persistent state, recall, indexing, lifecycle. NOT_COMPARABLE if not applicable, but the slot is still filled. | Schema/data model, recall pipeline, embedding/index strategy, lifecycle (TTL/GC/compaction), cross-session boundary, comparison vs COS Engram. | Opus |
 | **B — Cost & Budget** | Token/replay/compute budgets, throttles, rate limits, ledgers. | Budget primitives, replay caps, context reserve, observability hooks, comparison vs `lib/budget_calculator.py`, `cognitive-os.yaml` cost section. | Opus |
 | **C — Evolution & Self-Improvement** | Skill review, post-run jobs, queue, evolve loop, self-modifying behavior. | Trigger surface, confidence model, queue/lease semantics, promotion gate, comparison vs `skills/self-improve`, `analyze-improvements`, `apply-improvements`. | Opus |
 | **D — Security & Plan** | Auth surface, grants, signing, capability boundary, compiled plan, secrets. | Grant model (HMAC/OAuth/etc.), capability projection, plan compilation, comparison vs `cosd`, `[credential-management]`, `[grant-signing]`. | Opus |

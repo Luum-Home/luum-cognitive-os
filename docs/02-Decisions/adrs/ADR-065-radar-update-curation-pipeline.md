@@ -49,8 +49,8 @@ surrounding style.
 
 The operator stated the pain plainly:
 
-> *"que pueda tirarle 20 URLs y que el radar quede actualizado, pero sin que
-> me pise lo que escribí a mano sobre cada uno"*
+> Operator request: allow a batch of URLs to update the radar without overwriting
+> manually curated notes for each repository.
 
 Manual curation does not scale past roughly **20 tools/month**. It is also
 the single most common source of radar drift (a repo gets re-evaluated, the

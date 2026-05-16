@@ -52,7 +52,7 @@ fi
 cat > "$NOTES_FILE" << NOTES
 # Cognitive OS v${VERSION}
 
-> "No existe el mejor modelo. Existe la mejor model orchestration."
+> "There is no single best model. There is only the best model orchestration."
 
 An open-source operating system for AI coding agents. Makes them safer, smarter, and cheaper through multi-model orchestration.
 

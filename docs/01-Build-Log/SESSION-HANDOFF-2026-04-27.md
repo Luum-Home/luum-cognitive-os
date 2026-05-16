@@ -25,7 +25,7 @@ Result: **one minor release** (v0.20.0) covering ADR-071 Phases 1+2+3, plus oper
 
 ### v0.20.0 — ADR-071 Engram Lifecycle Evolution Phases 1–3 (commits `d48dcb8`, `f2cd0aa`, `b551a2a`, `82415cb`, `9a7fb36`)
 
-- **Phase 1**: `lib/engram_lifecycle.py` — confidence + Ebbinghaus decay + asymptotic reinforcement (β=0.15) + ranking formula `adjusted = base × (1−α) + confidence × R(t) × α` with α=0.3. Six decay classes.
+- **Phase 1**: `lib/engram_lifecycle.py` — confidence + Ebbinghaus decay + asymptotic reinforcement (beta=0.15) + ranking formula `adjusted = base × (1−alpha) + confidence × R(t) × alpha` with alpha=0.3. Six decay classes.
 - **HTTP correction**: `lib/engram_http_client.py` (the Phase 1 caveat about CLI lacking `get`/`update` was wrong — port 7437 exposes both). `rules/engram-api-safety.md` ratified after the #13283 incident.
 - **Phase 2**: `lib/engram_crystallizer.py` — deterministic synthesis (no LLM in v1). Stop hook `hooks/engram-crystallize-on-session-end.sh`.
 - **Phase 3**: `lib/engram_graph_walker.py` — BFS over `memory_relations` SQLite (read-only). `EngramLifecycle.search(graph_walk=True)` integrates.
@@ -85,7 +85,7 @@ Result: **one minor release** (v0.20.0) covering ADR-071 Phases 1+2+3, plus oper
 - **Reinforcement is local-only** — engram cloud sync replicates `content` but does not aggregate counters.
 - **Graph walker couples to engram SQLite schema** — read-only mode is a safety floor.
 - **`revision_count` is a save-count proxy**, not a distinct-event count.
-- **Threshold tuning is unvalidated** — N≥5/30d, N≥10 total, τ values are defensible defaults pending real-data calibration.
+- **Threshold tuning is unvalidated** — N≥5/30d, N≥10 total, tau values are defensible defaults pending real-data calibration.
 - **Cloud sync compat is structurally sound but not e2e-tested** — see F6.
 - **Production daemon mutation incident** (#13283) — reconstructed from git + preview. Policy now codified in `rules/engram-api-safety.md`.
 

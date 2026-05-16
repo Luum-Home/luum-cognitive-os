@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: project
-"""Export SO rules/ content into an adopting project's docs/08-estandares/.
+"""Export SO rules/ content into an adopting project's docs/08-standards/.
 
 Part of ADR-054/055: skills emit into the 10-category convention. The
 rules/ directory is the canonical source of standards ("so-slo.md",
@@ -10,7 +10,7 @@ follow, in their own docs, so new contributors can read them without
 needing access to the SO repo.
 
 This CLI produces a single consolidated markdown file:
-  docs/08-estandares/rules-snapshot-<DATE>.md
+  docs/08-standards/rules-snapshot-<DATE>.md
 
 The snapshot has:
   - a header with SO commit SHA (if available) and export timestamp
@@ -49,7 +49,7 @@ if str(_HERE) not in sys.path:
 
 from lib.docs_writer import write_doc  # noqa: E402
 
-CATEGORY = "08-estandares"
+CATEGORY = "08-standards"
 
 # Minimal default set — the rules most relevant to adopting projects.
 # Keep this list short; adopters can expand via --rules.
@@ -93,7 +93,7 @@ def build_snapshot(so_root: Path, rule_names: list[str]) -> str:
     sha = _so_sha(so_root)
     now = datetime.now().isoformat(timespec="seconds")
     lines: list[str] = [
-        "# Rules Snapshot (ADR-054/055 — category 08-estandares)",
+        "# Rules Snapshot (ADR-054/055 — category 08-standards)",
         "",
         f"**Exported**: {now}  ",
         f"**Source**: Cognitive OS `rules/` @ `{sha}`  ",
@@ -125,7 +125,7 @@ def build_snapshot(so_root: Path, rule_names: list[str]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Export SO rules/ as a snapshot into docs/08-estandares/.",
+        description="Export SO rules/ as a snapshot into docs/08-standards/.",
     )
     parser.add_argument("--project-dir", required=True)
     parser.add_argument(

@@ -46,7 +46,7 @@ convention (`bugfix | discovery | decision | architecture | pattern | config | p
 manual | …`) is established by RULES-COMPACT §11 but carries no enforcement mechanism and no
 per-type policy. The type field is consumed in exactly one place: `lib/engram_lifecycle.py`
 maps it to a decay class via `_TYPE_TO_DECAY_CLASS`, which feeds the Ebbinghaus half-life
-calculation (`0.7 * relevance + 0.3 * (confidence * exp(-age/τ))`).
+calculation (`0.7 * relevance + 0.3 * (confidence * exp(-age/tau))`).
 
 No other component in the recall pipeline consults the type. `lib/memory_retriever.py` ranks
 results on FTS5 + Jaccard with weights 0.6/0.4; it does not call into `engram_lifecycle` and
@@ -219,10 +219,10 @@ Changes:
 observation record. Changes:
 
 - After computing `decay_class` from `_TYPE_TO_DECAY_CLASS`, call `get_policy(type)` and use
-  `policy.stale_after_seconds` (when not `None`) as an **override** of the Ebbinghaus τ for
+  `policy.stale_after_seconds` (when not `None`) as an **override** of the Ebbinghaus tau for
   that type. This ensures the lifecycle decay is consistent with the governance staleness
   threshold: a `blocker` observation (10-day threshold) will decay faster than a `decision`
-  (no threshold) even if both previously mapped to the same `τ` class.
+  (no threshold) even if both previously mapped to the same `tau` class.
 - Emit `governance_freshness_state` into the JSON trailer alongside `confidence` and
   `decay_class`. This allows downstream callers (including hooks and dashboard tooling) to
   read the pre-computed freshness state without re-computing it.
@@ -234,7 +234,7 @@ observation record. Changes:
 - Types not in the governance table: `get_policy` returns the no-op default. `is_stale`
   always returns `False`. `assess_freshness` returns `FreshnessResult(state="stable",
   note=None)`. `boosted_score` returns `raw_score` unchanged. No existing retrieval result
-  is suppressed. The lifecycle τ override has no effect.
+  is suppressed. The lifecycle tau override has no effect.
 - The `governance` parameter in `memory_retriever.py` defaults to `None`; all callers that
   do not explicitly pass it continue to work without modification.
 - The lifecycle trailer change is additive: new field `governance_freshness_state` is written
@@ -256,7 +256,7 @@ observation record. Changes:
 | `reference` (memory type)                          | Not adopted           | luum has no `reference` concept; `fact` covers the overlap     |
 
 luum-specific additions not in the research annex: `procedure` and `blocker` types (Annex A
-§Hallazgos sorpresa item 3, independently derived); `decision` enrolled from luum's existing
+§Unexpected findings item 3, independently derived); `decision` enrolled from luum's existing
 vocabulary; `FreshnessResult.note=None` when `state=="stable"` to reduce noise.
 
 ---
@@ -367,7 +367,7 @@ vocabulary; `FreshnessResult.note=None` when `state=="stable"` to reduce noise.
 
 **Day 0.5 — Lifecycle integration and rule file**
 
-- Modify `lib/engram_lifecycle.py`: add `stale_after_seconds` override of τ, emit
+- Modify `lib/engram_lifecycle.py`: add `stale_after_seconds` override of tau, emit
   `governance_freshness_state` into JSON trailer for governed types.
 - Write `rules/memory-governance.md`: type table, operational semantics, cross-references.
 - Run full acceptance criteria checklist.
@@ -404,7 +404,7 @@ See §Decision 6 above for the full identifier divergence table.
 
 luum-specific additions not present in the reference system:
 
-- `procedure` and `blocker` types added based on Annex A §Hallazgos sorpresa (gap analysis),
+- `procedure` and `blocker` types added based on Annex A §Unexpected findings (gap analysis),
   independently derived for luum.
 - `decision` type enrolled with a no-staleness policy (luum's existing vocabulary; not present
   in the reference system's six-type table).

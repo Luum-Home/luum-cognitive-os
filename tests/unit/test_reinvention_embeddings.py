@@ -1,4 +1,4 @@
-"""Tests for the EmbeddingsIndex (ADR-029b Phase B-β, ADR-039).
+"""Tests for the EmbeddingsIndex (ADR-029b Phase B-beta, ADR-039).
 
 sentence-transformers is OPTIONAL. These tests MOCK the module so CI never
 downloads or loads a real model. Six cases cover:
@@ -300,7 +300,7 @@ def test_find_similar_empty_index_returns_empty(monkeypatch, tmp_path):
 
 def test_hook_fallback_path_when_embeddings_module_missing(monkeypatch):
     """The hook's inline Python MUST import cleanly even when sentence_transformers
-    is absent — the B-α (Jaccard) path still works."""
+    is absent — the B-alpha (Jaccard) path still works."""
     monkeypatch.setitem(sys.modules, "sentence_transformers", None)
     import importlib
 

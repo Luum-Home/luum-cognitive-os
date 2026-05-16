@@ -44,7 +44,7 @@
 | # | Task | Effort | Why |
 |---|------|--------|-----|
 | 17 | SessionStart nudge cache optimization (500ms → <50ms) | 30 min | SLO honesty; follow pattern of cwd-inject-cache |
-| 18 | ADR-038 Wave 4 (planning template separado) | 2h | Optional smolagents pattern |
+| 18 | ADR-038 Wave 4 (separate planning template) | 2h | Optional smolagents pattern |
 | 19 | ADR-033b Wave 2 (Aider Python API migration) | 1 session | Hardening |
 | 20 | ADR-037 glossary quality (remove JSON-snippet noise in top results) | 1h | Cosmetic |
 

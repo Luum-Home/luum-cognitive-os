@@ -60,8 +60,8 @@ def test_slugify_handles_empty_fallback():
 
 
 def test_resolve_category_dir_creates_missing(tmp_path):
-    out = resolve_category_dir(tmp_path, "04-seguridad")
-    assert out == tmp_path / "docs" / "04-seguridad"
+    out = resolve_category_dir(tmp_path, "04-security")
+    assert out == tmp_path / "docs" / "04-security"
     assert out.is_dir()
 
 
@@ -72,15 +72,15 @@ def test_resolve_category_dir_rejects_unknown(tmp_path):
 
 def test_write_doc_creates_file_with_timestamped_name(tmp_path):
     ts = datetime(2026, 4, 21, 18, 30, 45)
-    out = write_doc(tmp_path, "04-seguridad", "my audit", "body", timestamp=ts)
+    out = write_doc(tmp_path, "04-security", "my audit", "body", timestamp=ts)
     assert out.exists()
     assert out.name == "my-audit-2026-04-21-183045.md"
     assert out.read_text() == "body"
-    assert out.parent == tmp_path / "docs" / "04-seguridad"
+    assert out.parent == tmp_path / "docs" / "04-security"
 
 
 def test_write_doc_respects_filename_override(tmp_path):
-    out = write_doc(tmp_path, "08-estandares", "ignored", "hello", filename="custom.md")
+    out = write_doc(tmp_path, "08-standards", "ignored", "hello", filename="custom.md")
     assert out.name == "custom.md"
     assert out.read_text() == "hello"
 
@@ -120,7 +120,7 @@ def test_security_audit_writer_writes_from_file(tmp_path):
     payload = json.loads(result.stdout)
     written = Path(payload["written"])
     assert written.exists()
-    assert written.parent == proj / "docs" / "04-seguridad"
+    assert written.parent == proj / "docs" / "04-security"
     assert "Security Audit Report" in written.read_text()
 
 
@@ -133,7 +133,7 @@ def test_security_audit_writer_reads_stdin(tmp_path):
         stdin=body,
     )
     assert result.returncode == 0, result.stderr
-    files = list((proj / "docs" / "04-seguridad").glob("initial-*.md"))
+    files = list((proj / "docs" / "04-security").glob("initial-*.md"))
     assert len(files) == 1
     assert files[0].read_text() == body
 
@@ -164,7 +164,7 @@ def test_rules_export_default_set(tmp_path):
     payload = json.loads(result.stdout)
     out_path = Path(payload["written"])
     assert out_path.exists()
-    assert out_path.parent == proj / "docs" / "08-estandares"
+    assert out_path.parent == proj / "docs" / "08-standards"
     body = out_path.read_text()
     assert "Rules Snapshot" in body
     # At least the 6 defaults are present as section headers.
@@ -251,22 +251,22 @@ def _make_category_docs(project_dir: Path) -> None:
 def test_prewrite_guard_warns_before_creating_new_markdown_doc(tmp_path):
     proj = tmp_path / "guard"
     _make_category_docs(proj)
-    existing = proj / "docs" / "02-arquitectura" / "primitive-gap-matrix.md"
+    existing = proj / "docs" / "02-architecture" / "primitive-gap-matrix.md"
     existing.write_text("# Primitive Gap Matrix\n\nGovernance primitive gap audit evidence.\n")
-    target = proj / "docs" / "02-arquitectura" / "primitive-gap-followup.md"
+    target = proj / "docs" / "02-architecture" / "primitive-gap-followup.md"
 
     result = _run_hook([], stdin=_docs_payload(target))
 
     assert result.returncode == 0
     assert "DOC REINVENTION GUARD" in result.stderr
     assert "search/update existing documentation" in result.stderr
-    assert "docs/02-arquitectura/primitive-gap-matrix.md" in result.stderr
+    assert "docs/02-architecture/primitive-gap-matrix.md" in result.stderr
 
 
 def test_prewrite_guard_skips_existing_markdown_doc(tmp_path):
     proj = tmp_path / "existing"
     _make_category_docs(proj)
-    target = proj / "docs" / "02-arquitectura" / "existing.md"
+    target = proj / "docs" / "02-architecture" / "existing.md"
     target.write_text("# Existing\n")
 
     result = _run_hook([], stdin=_docs_payload(target, tool_name="Edit"))
@@ -278,7 +278,7 @@ def test_prewrite_guard_skips_existing_markdown_doc(tmp_path):
 def test_prewrite_guard_strict_blocks_new_markdown_doc(tmp_path):
     proj = tmp_path / "strict"
     _make_category_docs(proj)
-    target = proj / "docs" / "02-arquitectura" / "new-doc.md"
+    target = proj / "docs" / "02-architecture" / "new-doc.md"
 
     result = subprocess.run(
         ["bash", str(REPO_ROOT / "hooks/project-docs-convention.sh")],
@@ -358,14 +358,14 @@ def test_adr_reservation_guard_strict_blocks_unreserved_new_adr(tmp_path):
 
 def test_hook_json_output_shape(tmp_path):
     proj = tmp_path / "partial"
-    (proj / "docs" / "01-contexto").mkdir(parents=True)
+    (proj / "docs" / "01-context").mkdir(parents=True)
     result = _run_hook(["--project-dir", str(proj), "--json"])
     assert result.returncode == 0
     payload = json.loads(result.stdout.strip())
     assert payload["status"] == "violation"
     assert payload["present_count"] == 1
     assert payload["missing_count"] == 9
-    assert "02-arquitectura" in payload["missing"]
+    assert "02-architecture" in payload["missing"]
 
 
 # ---------------------------------------------------------------------------
@@ -380,10 +380,10 @@ def test_scaffold_then_write_audit_composes(tmp_path):
     proj = tmp_path / "composed"
     ProjectScaffolder(project_name="Composed", project_dir=proj).scaffold_all()
 
-    # Now write a report. The 04-seguridad dir already exists.
-    out = write_doc(proj, "04-seguridad", "test-report", "# Test\n")
+    # Now write a report. The 04-security dir already exists.
+    out = write_doc(proj, "04-security", "test-report", "# Test\n")
     assert out.exists()
-    assert out.parent == proj / "docs" / "04-seguridad"
+    assert out.parent == proj / "docs" / "04-security"
 
     # Hook should now be green.
     result = _run_hook(["--project-dir", str(proj)])

@@ -3,7 +3,7 @@ report_type: repo-scout-deep
 subject: 0xK3vin/MegaMemory
 generated_at: 2026-05-11
 classification: ASSESS
-verdict_vs_engram: IGUAL (en concept-graph local) / MEJOR_EXTERNO (en explorer UI + in-process embeddings) / MEJOR_NUESTRO (en governance + bi-temporal + memory_class)
+verdict_vs_engram: EQUIVALENT (en concept-graph local) / EXTERNAL_BETTER (en explorer UI + in-process embeddings) / OURS_BETTER (en governance + bi-temporal + memory_class)
 related_adrs: [ADR-065, ADR-247, ADR-254]
 source_url: https://github.com/0xK3vin/MegaMemory
 license: MIT
@@ -63,13 +63,13 @@ Rationale: MegaMemory is a credible, well-scoped concept-graph MCP, but it is **
 
 | Candidate primitive | Source in MegaMemory | COS analogue | Verdict | Effort |
 |---|---|---|---|---|
-| **In-process embedding pipeline** (Xenova MiniLM, no API keys) | `understand` + create/update flow | Engram lacks in-process embeddings; relies on FTS5 + optional Cognee. See `lib/engram_http_client.py`, `lib/engram_lifecycle.py`. | MEJOR_EXTERNO — adopt-pattern (algorithm port). Combine with the **LightRAG dual-level** plan from `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §🔍2: in-process embedding fills the same gap as Cognee opt-in. | 3-5 days port (Python equivalent via `sentence-transformers` MiniLM); cost: one ~80MB model on disk. |
-| **Explicit `resolve_conflict` MCP tool surface** | 9-tool list | Engram surfaces conflicts via `judgment_required` envelope + `mem_judge` (CLAUDE.md "CONFLICT SURFACING"). Functionally equivalent but ours is per-candidate. | IGUAL — already covered by `mem_judge`. Worth borrowing the *tool name and verb shape* for the public MCP surface for harness portability. | 0.5 day (rename/alias). |
-| **D3-force graph explorer** | `megamemory serve` | No equivalent in COS. Engram has CLI inspectors, no graph UI. | MEJOR_EXTERNO — pattern-only (study UX, do not vendor JS bundle). | Out of scope; deferred to a future "Engram explorer" tracker item. |
-| **Two-way merge engine with concept-ID conflicts** | Merge code path | Engram has typed relations (supersedes/conflicts_with/related/compatible/scoped) which is richer; MegaMemory's binary "concept conflict" is a subset. | MEJOR_NUESTRO. | None. |
-| **Multi-editor installer** (opencode/claudecode/antigravity/codex) | `megamemory install --target` | `manifests/external-tools-adoption.yaml` + `.ai/` overlay (ADR-258) cover this with broader scope. | IGUAL / MEJOR_NUESTRO — our portable overlay generalizes. | None. |
-| **Concept-graph primitive itself** | Schema v3 | Engram `memory_relations` already implements this with richer typing + soft-delete + topic_key + bi-temporal candidates from graphiti cross-check. | IGUAL in shape, MEJOR_NUESTRO in semantics. | None. |
-| **<10k node capacity ceiling** | Doc-stated limit | Engram is FTS5-backed and unbounded in practice. | MEJOR_NUESTRO. | None. |
+| **In-process embedding pipeline** (Xenova MiniLM, no API keys) | `understand` + create/update flow | Engram lacks in-process embeddings; relies on FTS5 + optional Cognee. See `lib/engram_http_client.py`, `lib/engram_lifecycle.py`. | EXTERNAL_BETTER — adopt-pattern (algorithm port). Combine with the **LightRAG dual-level** plan from `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md` §🔍2: in-process embedding fills the same gap as Cognee opt-in. | 3-5 days port (Python equivalent via `sentence-transformers` MiniLM); cost: one ~80MB model on disk. |
+| **Explicit `resolve_conflict` MCP tool surface** | 9-tool list | Engram surfaces conflicts via `judgment_required` envelope + `mem_judge` (CLAUDE.md "CONFLICT SURFACING"). Functionally equivalent but ours is per-candidate. | EQUIVALENT — already covered by `mem_judge`. Worth borrowing the *tool name and verb shape* for the public MCP surface for harness portability. | 0.5 day (rename/alias). |
+| **D3-force graph explorer** | `megamemory serve` | No equivalent in COS. Engram has CLI inspectors, no graph UI. | EXTERNAL_BETTER — pattern-only (study UX, do not vendor JS bundle). | Out of scope; deferred to a future "Engram explorer" tracker item. |
+| **Two-way merge engine with concept-ID conflicts** | Merge code path | Engram has typed relations (supersedes/conflicts_with/related/compatible/scoped) which is richer; MegaMemory's binary "concept conflict" is a subset. | OURS_BETTER. | None. |
+| **Multi-editor installer** (opencode/claudecode/antigravity/codex) | `megamemory install --target` | `manifests/external-tools-adoption.yaml` + `.ai/` overlay (ADR-258) cover this with broader scope. | EQUIVALENT / OURS_BETTER — our portable overlay generalizes. | None. |
+| **Concept-graph primitive itself** | Schema v3 | Engram `memory_relations` already implements this with richer typing + soft-delete + topic_key + bi-temporal candidates from graphiti cross-check. | EQUIVALENT in shape, OURS_BETTER in semantics. | None. |
+| **<10k node capacity ceiling** | Doc-stated limit | Engram is FTS5-backed and unbounded in practice. | OURS_BETTER. | None. |
 
 **Net extraction recommendation:** port the in-process embedding pipeline (combined with the already-recommended LightRAG dual-level plan), borrow the public MCP tool naming as a portability gesture, study the explorer UX. Do **not** vendor the runtime.
 

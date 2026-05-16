@@ -41,8 +41,7 @@ This data had been continuously written by `scripts/hook-timing-wrapper.sh`
 for at least 24 hours. **Nothing was reading it.** The orchestrator was making
 delegation decisions without knowing that some spawns cost 90 s.
 
-The operator's observation: *"como nunca tomamos medidas de nada teniendo
-telemetría? no estamos haciendo nada con esta info."*
+The operator observed that telemetry existed but was not being used to drive measurements or decisions.
 
 That is the incident.
 

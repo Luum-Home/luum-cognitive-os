@@ -149,5 +149,5 @@ remaining_risk: <none or explicit risk>
 
 Keywords: leftover codex branch, leftover claude worktree, branch abierta,
 worktree abierto, cleanup branch, close worktree, merge leftover branch,
-foundation hardening branch, codex/* branch, claude/* branch, cerrar rama,
-cerrar worktree.
+foundation hardening branch, codex/* branch, claude/* branch, close branch,
+close worktree.

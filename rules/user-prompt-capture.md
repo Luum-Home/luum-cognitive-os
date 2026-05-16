@@ -36,7 +36,7 @@ The classifier handles Spanish prompts natively:
 | `task_request` | "construyamos el modulo", "arreglemos el test", "agregale soporte JWT" |
 | `decision` | "usemos PostgreSQL", "vamos con el enfoque A" |
 | `feedback` | "no hagas eso", "perfecto, segui asi" |
-| `acknowledgment` | "dale", "si", "bueno", "listo" |
+| `acknowledgment` | "yes", "ok", "sure", "done" |
 
 ## Format
 

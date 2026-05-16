@@ -4,7 +4,7 @@ repo: HelixDB/helix-db
 evaluated_at: 2026-05-11
 classification: REJECT
 license: AGPL-3.0
-verdict_vs_engram: MEJOR_NUESTRO (governance) / NO_COMPARABLE (raw graph+vector storage tier)
+verdict_vs_engram: OURS_BETTER (governance) / NOT_COMPARABLE (raw graph+vector storage tier)
 source_artifacts:
   - https://github.com/HelixDB/helix-db
   - https://www.helix-db.com/
@@ -29,7 +29,7 @@ The repository is still worth tracking as a **pattern reference** for: LMDB-back
 ## Acceptance criteria
 
 1. License posture is verified against `rules/license-policy.md` before any scoring proceeds. AGPL-3.0 is BLOCK.
-2. Bidirectional verdict is computed against Engram + COS memory stack (Cognee/ChromaDB) using the Phase 3 vocabulary (MEJOR_NUESTRO / IGUAL / MEJOR_EXTERNO / NO_COMPARABLE).
+2. Bidirectional verdict is computed against Engram + COS memory stack (Cognee/ChromaDB) using the Phase 3 vocabulary (OURS_BETTER / EQUIVALENT / EXTERNAL_BETTER / NOT_COMPARABLE).
 3. Adoption kind is assigned per `docs/04-Concepts/architecture/external-tool-adapter-taxonomy.md`.
 4. Deep eval covers identity, architecture, weighted scoring, primitive extraction candidates, risks, and rollback/exit path.
 5. Two artifacts written (this deep eval + the radar addendum) and INDEX appended.
@@ -106,9 +106,9 @@ This split mirrors how COS handled SSPL/AGPL DBs in Phase 2 (see `docs/05-Method
 
 ## Bidirectional verdict vs current COS memory stack
 
-- vs **Engram** (project's persistent memory; canonical reference `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md`): **MEJOR_NUESTRO for governance, NO_COMPARABLE for storage tier.** Engram owns lifecycle, privacy classes, project scoping, receipts, and portability — HelixDB owns none of that. HelixDB is a storage substrate; Engram is a governance memory product. They live at different layers.
-- vs **Cognee**: **NO_COMPARABLE.** Cognee is a knowledge-graph + RAG framework; HelixDB is a DB. Different layers.
-- vs **ChromaDB**: **IGUAL → MEJOR_EXTERNO on paper** for unified graph+vector, but **MEJOR_NUESTRO operationally** because ChromaDB is Apache-2.0 and already adoptable; HelixDB's AGPL closes the door.
+- vs **Engram** (project's persistent memory; canonical reference `docs/06-Daily/reports/cross-check-A-memory-2026-05-08.md`): **OURS_BETTER for governance, NOT_COMPARABLE for storage tier.** Engram owns lifecycle, privacy classes, project scoping, receipts, and portability — HelixDB owns none of that. HelixDB is a storage substrate; Engram is a governance memory product. They live at different layers.
+- vs **Cognee**: **NOT_COMPARABLE.** Cognee is a knowledge-graph + RAG framework; HelixDB is a DB. Different layers.
+- vs **ChromaDB**: **EQUIVALENT → EXTERNAL_BETTER on paper** for unified graph+vector, but **OURS_BETTER operationally** because ChromaDB is Apache-2.0 and already adoptable; HelixDB's AGPL closes the door.
 - vs **LMDB direct** (which COS could in principle embed itself): HelixDB's value-add over raw LMDB is HelixQL + the vector primitives. Those are exactly the parts an in-house clean-room would have to re-derive — and Engram already has graph patterns documented in `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md`.
 
 Net: HelixDB does not displace anything in the COS stack today, and cannot be embedded.

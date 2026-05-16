@@ -73,7 +73,7 @@ LOGGER = logging.getLogger(__name__)
 #   multilingual-e5-large gives +14 pts precision@1 on the seed corpus, BUT
 #   no single threshold satisfies the test contract:
 #     threshold 0.50 → negative-context tests fail (negs at 0.73-0.76 mapped)
-#     threshold 0.65 → "hola" / "thanks" still match (0.68 mapped)
+#     threshold 0.65 → "hello" / "thanks" still match (0.68 mapped)
 #     threshold 0.87 → filters negs AND legit prompts; held-out precision
 #                       drops from 0.80 to 0.53 (8/17 legit prompts return
 #                       None or wrong skill)

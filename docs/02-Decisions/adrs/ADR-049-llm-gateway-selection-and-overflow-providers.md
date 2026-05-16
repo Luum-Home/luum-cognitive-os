@@ -31,7 +31,7 @@ ADR-049 is canonical for LLM dispatch and overflow provider selection. It supers
 User on Claude Code Max ($200/mo) hitting rate limits mid-session:
 
 ```
-tarea en segundo plano completado
+background task completed
 Agent "Fase 3.1: Campaigns tenant-scoped" completed
 Error de API
 You're out of extra usage · resets 2pm (America/Buenos_Aires)

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -65,7 +66,12 @@ def _normalize(text: str) -> str:
 
 
 def _contains(haystack: str, needle: str) -> bool:
-    return _normalize(needle) in _normalize(haystack)
+    normalized_haystack = _normalize(haystack)
+    normalized_needle = _normalize(needle)
+    if not normalized_needle:
+        return False
+    pattern = r"(?<![a-z0-9])" + re.escape(normalized_needle) + r"(?![a-z0-9])"
+    return re.search(pattern, normalized_haystack) is not None
 
 
 def _score_question(question_text: str, question_id: str, row: dict[str, Any]) -> int:

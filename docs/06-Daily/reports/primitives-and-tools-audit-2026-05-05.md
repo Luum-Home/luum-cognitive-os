@@ -16,9 +16,9 @@ Web searches and WebFetch reads supplemented gh metadata for repos where descrip
 
 ---
 
-## Skill / Primitive Registries — the "gestor de repositorios de primitivas" question
+## Skill / Primitive Registries — the "primitive repository manager" question
 
-The user specifically asked: "hay supuestamente un gestor de repositorios de primitivas." After auditing the full list, three repos credibly function as primitive/skill registries or managers:
+The user specifically asked: "hay supuestamente un primitive repository manager." After auditing the full list, three repos credibly function as primitive/skill registries or managers:
 
 ### The credible candidates
 
@@ -31,7 +31,7 @@ autoskills scans your project's tech stack and installs curated AI agent skills 
 **3. obra/superpowers** (179,318 stars, MIT, Shell, pushed 2026-05-05) — skill collection, not a registry manager.
 Superpowers is a skills _framework_ and methodology, not a catalog or installer. It provides an organized library of composable skills (TDD, planning, review, worktree management) with a philosophy-first approach. It does not have registry/discovery mechanics. It is the leading Claude Code skills reference in the community. MIT license makes it fully adoptable.
 
-**Verdict**: HKUDS/CLI-Anything is the most credible "gestor de repositorios de primitivas" on this list. It has working discovery mechanics, an active catalog, and permissive licensing. autoskills is the second candidate architecturally, but its license blocks substrate use. obra/superpowers is a canonical skills library that is not itself a manager.
+**Verdict**: HKUDS/CLI-Anything is the most credible "primitive repository manager" on this list. It has working discovery mechanics, an active catalog, and permissive licensing. autoskills is the second candidate architecturally, but its license blocks substrate use. obra/superpowers is a canonical skills library that is not itself a manager.
 
 There is a fourth candidate outside this list worth naming for context: the Anthropic official `skills` format (SKILL.md convention) that all three above reference — this is the de-facto standard for Claude Code skill packaging.
 

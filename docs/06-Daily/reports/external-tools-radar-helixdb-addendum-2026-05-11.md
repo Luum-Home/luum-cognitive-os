@@ -47,10 +47,10 @@ Following the Phase 3 cross-check shape (`docs/06-Daily/reports/cross-check-A-me
 
 | Compared against | Verdict | Rationale + concrete COS refs |
 |---|---|---|
-| **Engram** (the project's persistent memory) | **MEJOR_NUESTRO (governance) / NO_COMPARABLE (storage tier)** | HelixDB is a storage substrate. Engram owns the governance product surface (project scoping, privacy classes, receipts, portability, decay) — see `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md` and `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md` Domain matrix row "Temporal memory / knowledge graph". HelixDB does not displace Engram; it would only ever sit underneath, which the license forbids. |
-| **Cognee** | **NO_COMPARABLE** | Different layers: Cognee = KG+RAG framework, HelixDB = DB. |
-| **ChromaDB** | **MEJOR_EXTERNO on paper / MEJOR_NUESTRO operationally** | Unified graph+vector primary types are arguably cleaner than Chroma's vector-first posture, but Chroma is Apache-2.0 and already integrable; HelixDB's AGPL closes the operational door. |
-| **Graphiti** (already on the COS radar as schema-port candidate per doctrine) | **IGUAL on schema ideas** | Both inform the same future Engram graph-memory schema-port. Graphiti is the preferred reference (permissive license per doctrine row); HelixDB is secondary pattern reading only. |
+| **Engram** (the project's persistent memory) | **OURS_BETTER (governance) / NOT_COMPARABLE (storage tier)** | HelixDB is a storage substrate. Engram owns the governance product surface (project scoping, privacy classes, receipts, portability, decay) — see `docs/04-Concepts/architecture/memory-layer-evolution-sdd.md` and `docs/04-Concepts/architecture/external-tool-adoption-doctrine.md` Domain matrix row "Temporal memory / knowledge graph". HelixDB does not displace Engram; it would only ever sit underneath, which the license forbids. |
+| **Cognee** | **NOT_COMPARABLE** | Different layers: Cognee = KG+RAG framework, HelixDB = DB. |
+| **ChromaDB** | **EXTERNAL_BETTER on paper / OURS_BETTER operationally** | Unified graph+vector primary types are arguably cleaner than Chroma's vector-first posture, but Chroma is Apache-2.0 and already integrable; HelixDB's AGPL closes the operational door. |
+| **Graphiti** (already on the COS radar as schema-port candidate per doctrine) | **EQUIVALENT on schema ideas** | Both inform the same future Engram graph-memory schema-port. Graphiti is the preferred reference (permissive license per doctrine row); HelixDB is secondary pattern reading only. |
 | **LMDB direct** | **N/A** | HelixDB's value-add over raw LMDB is exactly the AGPL-licensed parts (HelixQL + vector indexing). For COS, that value is unreachable. |
 
 Concrete COS-side anchors for any future pattern extraction:

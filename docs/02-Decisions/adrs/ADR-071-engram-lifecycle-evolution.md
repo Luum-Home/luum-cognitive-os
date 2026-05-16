@@ -55,13 +55,13 @@ Fields:
 - `confidence` — float [0.0, 1.0]. Initial value 0.5 for new observations. Increases asymptotically toward 1.0 with each reinforcement.
 - `last_reinforced` — ISO-8601 UTC timestamp. Set on save, updated on every access.
 - `reinforcement_count` — integer. Incremented on `mem_search` hit and `mem_get_observation` call.
-- `decay_class` — string. Determines the retention half-life τ used in the decay function.
+- `decay_class` — string. Determines the retention half-life tau used in the decay function.
 
 The trailer is invisible to humans reading the observation in prose but machine-readable by the wrapper layer.
 
 ### Decay classes
 
-| Class | τ (days) | Rationale |
+| Class | tau (days) | Rationale |
 |---|---|---|
 | architecture | 365 | Architecture decisions are durable; slow decay preserves them |
 | decision | 180 | ADRs and design choices; moderate decay |
@@ -83,16 +83,16 @@ The `decay_class` is derived automatically from the observation's `type_` field 
 When `lib/engram_lifecycle.py` wraps a `mem_search` call, it applies a lifecycle-adjusted score:
 
 ```
-adjusted_score = base_score × (1 − α) + confidence × R(t) × α
+adjusted_score = base_score × (1 − alpha) + confidence × R(t) × alpha
 ```
 
 Where:
 - `base_score` is engram's native relevance score (BM25+vector), normalized to [0, 1]
-- `α = 0.3` — lifecycle weight; engram's relevance signal dominates (70%) to preserve recall quality
+- `alpha = 0.3` — lifecycle weight; engram's relevance signal dominates (70%) to preserve recall quality
 - `confidence` — the observation's current confidence value
-- `R(t) = exp(−t / τ)` — Ebbinghaus retention function; `t` is days since `last_reinforced`, `τ` is the decay class half-life
+- `R(t) = exp(−t / tau)` — Ebbinghaus retention function; `t` is days since `last_reinforced`, `tau` is the decay class half-life
 
-The formula is bounded: `adjusted_score ∈ [0, 1]` always, because base\_score ∈ [0,1], R(t) ∈ (0,1], confidence ∈ [0,1], and α ∈ [0,1].
+The formula is bounded: `adjusted_score ∈ [0, 1]` always, because base\_score ∈ [0,1], R(t) ∈ (0,1], confidence ∈ [0,1], and alpha ∈ [0,1].
 
 ### Reinforcement
 
@@ -100,7 +100,7 @@ Every successful `mem_search` hit and every `mem_get_observation` call triggers 
 
 1. `reinforcement_count += 1`
 2. `last_reinforced = now()` (resets the decay clock)
-3. `confidence_new = confidence_old + (1 − confidence_old) × β` where `β = 0.15`
+3. `confidence_new = confidence_old + (1 − confidence_old) × beta` where `beta = 0.15`
 
 The asymptotic formula ensures confidence never reaches exactly 1.0 (no observation becomes "perfectly certain"), and converges toward ~0.98 after 20+ reinforcements.
 
@@ -132,7 +132,7 @@ Feature plan: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../
 - Each search call through the wrapper incurs ~10ms additional overhead for trailer parsing, decay computation, and re-ranking. Acceptable for interactive use; may accumulate in high-frequency automated hooks.
 - Observation `content` bodies have a trailer block appended, which is visible if a human reads the raw observation in the engram CLI. Minor visual noise; does not break engram's display or search.
 - Observations saved before Phase 1 ships have no trailer. The wrapper must handle missing-trailer gracefully (treat as confidence=0.5, decay\_class=manual, last\_reinforced=created\_at). This "cold start" period means re-ranking has limited effect until observations are accessed and reinforced.
-- `β = 0.15` and `α = 0.3` are initial calibration values. They are not empirically derived from this system's usage patterns. They will need tuning after Phase 1 is in production.
+- `beta = 0.15` and `alpha = 0.3` are initial calibration values. They are not empirically derived from this system's usage patterns. They will need tuning after Phase 1 is in production.
 
 ## Alternatives rejected
 
@@ -301,7 +301,7 @@ The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against 
 
 ### What is unvalidated
 
-8. **Threshold tuning is a starting heuristic.** `N≥5 in 30 days` and `N≥10 total` for crystallization, and τ values per decay class (`architecture=365d, decision=180d, pattern=180d, discovery=90d, bugfix=60d, manual=90d`), are defensible defaults but not empirically calibrated. Phase 2 logging should accumulate data to retune these.
+8. **Threshold tuning is a starting heuristic.** `N≥5 in 30 days` and `N≥10 total` for crystallization, and tau values per decay class (`architecture=365d, decision=180d, pattern=180d, discovery=90d, bugfix=60d, manual=90d`), are defensible defaults but not empirically calibrated. Phase 2 logging should accumulate data to retune these.
 
 9. **Cloud sync compat is structurally sound but not e2e-tested.** The trailer lives in `content` which engram cloud sync round-trips unchanged (verified by reading engram's source). No e2e test exercises a sync chunk through the lifecycle wrapper.
 
@@ -337,7 +337,7 @@ These are not "someday" items. Each has a **trigger** (the observable signal tha
 
 ### F4. Threshold calibration with real data
 - **Trigger**: ≥4 weeks of `crystallization-events.jsonl` and `lifecycle-reinforcement.jsonl` accumulated, or ≥100 crystallized digests, whichever comes first.
-- **Action**: write a one-off analysis script (`scripts/calibrate_engram_lifecycle.py`) that reads the JSONL logs and answers: (a) what fraction of crystallized digests get queried in the next 30 days? (signal that the threshold is right), (b) what is the half-life of "discovery"-type observations measured by access? (validates τ=90d), (c) histogram of `revision_count` distribution per topic_key (validates N≥5/N≥10). Re-tune the `DECAY_TAU` and `THRESHOLD_*` constants in `lib/engram_lifecycle.py` and `lib/engram_crystallizer.py` based on findings. Open a follow-up ADR if the changes are significant.
+- **Action**: write a one-off analysis script (`scripts/calibrate_engram_lifecycle.py`) that reads the JSONL logs and answers: (a) what fraction of crystallized digests get queried in the next 30 days? (signal that the threshold is right), (b) what is the half-life of "discovery"-type observations measured by access? (validates tau=90d), (c) histogram of `revision_count` distribution per topic_key (validates N≥5/N≥10). Re-tune the `DECAY_TAU` and `THRESHOLD_*` constants in `lib/engram_lifecycle.py` and `lib/engram_crystallizer.py` based on findings. Open a follow-up ADR if the changes are significant.
 - **Cost**: 4–6 hours including the analysis + retune + tests.
 - **Risk**: re-tuning silently changes ranking for everyone — must be a tracked ADR change with the empirical justification.
 

@@ -21,16 +21,16 @@
 set -uo pipefail
 
 CATEGORIES=(
-    "01-contexto"
-    "02-arquitectura"
-    "03-dominio-riesgo"
-    "04-seguridad"
+    "01-context"
+    "02-architecture"
+    "03-domain-risk"
+    "04-security"
     "05-features"
     "06-backoffice"
-    "07-investigacion"
-    "08-estandares"
-    "09-plan-ejecucion"
-    "10-resumenes"
+    "07-research"
+    "08-standards"
+    "09-execution-plan"
+    "10-summaries"
 )
 
 PROJECT_DIR=""

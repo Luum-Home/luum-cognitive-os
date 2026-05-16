@@ -52,8 +52,7 @@ cause of repeated drift. Symptoms surfaced today (2026-04-24):
 4. **Test ergonomics**: importing hyphenated scripts required path manipulation
    instead of `from scripts.radar_merge import …`.
 
-Operator quote (verbatim, 2026-04-24): *"me acabo de dar cuenta que tenemos
-cosas en bash, python, go, etc. lo ves bien?"* + *"dale [ADR]"*.
+Operator observation (2026-04-24): the repository spans Bash, Python, Go, and other languages; the operator asked whether that was acceptable and then requested an ADR.
 
 The operator does **not** want to rewrite anything. The ask is: **document the
 policy so future drift is caught at the audit-test layer, not at the

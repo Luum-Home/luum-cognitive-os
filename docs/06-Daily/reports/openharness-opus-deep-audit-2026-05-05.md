@@ -3,7 +3,7 @@
 **Date**: 2026-05-05
 **Model**: opus (per user request for architectural-decision rigor)
 **Status**: read-only audit; no source modified outside this report.
-**Trigger**: prior sonnet audit + sonnet rebuttal both contained numerical errors and asymmetric depth. User asked: "tenemos que estar muy seguros".
+**Trigger**: prior sonnet audit + sonnet rebuttal both contained numerical errors and asymmetric depth. User asked for high confidence before treating the result as reliable.
 **Inputs**: `docs/06-Daily/reports/openharness-deep-audit-2026-05-05.md` and `docs/06-Daily/reports/cos-side-deep-rebuttal-2026-05-05.md` treated as hypotheses, not facts.
 
 ---
@@ -12,11 +12,11 @@
 
 Per-dimension verdicts (HIGH-confidence unless noted), with notes on what changed vs the prior reports:
 
-1. **Hook lifecycle events** — IGUAL (CC contract). COS wires **9** distinct events via `_cc_hook_group` (TaskCompleted is printf-emitted but demoted per ADR-126/133). OpenHarness `HookEvent` enum has **10** values. **Original audit's "5 vs 10" was wrong; rebuttal's "10 vs 10" was also wrong.** True count is 9 vs 10. CC's lifecycle is fixed by Anthropic, so neither side can grow it independently.
-2. **Hook *type* diversity** — OpenHarness MEJOR. OH supports 4 (Command/Http/Prompt/Agent). COS supports 1 (shell). This is the real, structural gap.
-3. **Multi-provider** — OpenHarness MEJOR (CORRECTED vs **both** prior reports). OH ships **22** ProviderSpecs in `src/openharness/api/registry.py`. COS ships **7** in `lib/providers/__init__.py`. Rebuttal's "7 vs 4" was wrong on the OH side.
-4. **MCP integration** — NUANCED. OH is a deeper *consumer* (`McpClientManager`, 259 LOC, stdio+HTTP, auto-reconnect, schema inference). COS is the only *publisher* (`mcp-server/cos_mcp.py`, 780 LOC, 25 callable defs / ~8 tool surface). Different roles in MCP ecosystem; rebuttal's "IGUAL" framing held.
-5. **Skill discovery** — COS MEJOR. `lib/skill_router.py` is **1519 LOC** with 130 metric streams + 88 SKILL.md + lock manifest. OH `SkillRegistry` is **24 LOC**. Rebuttal's IGUAL undersold COS.
+1. **Hook lifecycle events** — EQUIVALENT (CC contract). COS wires **9** distinct events via `_cc_hook_group` (TaskCompleted is printf-emitted but demoted per ADR-126/133). OpenHarness `HookEvent` enum has **10** values. **Original audit's "5 vs 10" was wrong; rebuttal's "10 vs 10" was also wrong.** True count is 9 vs 10. CC's lifecycle is fixed by Anthropic, so neither side can grow it independently.
+2. **Hook *type* diversity** — OpenHarness BETTER. OH supports 4 (Command/Http/Prompt/Agent). COS supports 1 (shell). This is the real, structural gap.
+3. **Multi-provider** — OpenHarness BETTER (CORRECTED vs **both** prior reports). OH ships **22** ProviderSpecs in `src/openharness/api/registry.py`. COS ships **7** in `lib/providers/__init__.py`. Rebuttal's "7 vs 4" was wrong on the OH side.
+4. **MCP integration** — NUANCED. OH is a deeper *consumer* (`McpClientManager`, 259 LOC, stdio+HTTP, auto-reconnect, schema inference). COS is the only *publisher* (`mcp-server/cos_mcp.py`, 780 LOC, 25 callable defs / ~8 tool surface). Different roles in MCP ecosystem; rebuttal's "EQUIVALENT" framing held.
+5. **Skill discovery** — COS BETTER. `lib/skill_router.py` is **1519 LOC** with 130 metric streams + 88 SKILL.md + lock manifest. OH `SkillRegistry` is **24 LOC**. Rebuttal's EQUIVALENT undersold COS.
 6. **Provider validation in production** — COS WEAKER than its own marketing. `.cognitive-os/metrics/llm-dispatch.jsonl` has **4 lines, all "offline_dispatch_smoke" from May 3**. The cascade is wired and tested, not validated in real usage. Rebuttal failed to flag this.
 7. **CI maturity** — OH WEAKER. Last 10 GitHub Actions runs are all "Autopilot Scan/Run Next" (cancelled or queued). Original audit got this right; the rebuttal accepted the original audit verbatim.
 8. **Lock-in cost** — COS would lose the most by switching. **227 unique de-symlinked hooks** (not 197 nor 266). Rebuttal's "266" double-counted symlinks; user's spot-check of "197" was also wrong.
@@ -42,7 +42,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 - Line 422: `printf '    "TaskCompleted": [\n'` with comment "TaskCompleted is demoted from default projection" (ADR-126/133). Wired but not emitted to settings.json by default.
 - Canonical schema (`lib/harness_adapter/base.py:23-200`): 11 `CanonicalEvent` subclasses (SessionStart, UserPromptSubmit, SessionEnd, AgentStart, AgentEnd, ToolUse, TokenUsage, HeartbeatTick, ToolUseStart, ToolUseEnd, ProgressMarker, ParseError) — distinct from lifecycle hook count.
 
-**Verdict**: IGUAL on lifecycle (constrained by CC contract). Neither side can grow this independently — Claude Code defines the events.
+**Verdict**: EQUIVALENT on lifecycle (constrained by CC contract). Neither side can grow this independently — Claude Code defines the events.
 
 **Confidence**: HIGH.
 
@@ -54,7 +54,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **COS**: 1 hook type only (shell command). Settings driver emits only `command` entries to settings.json. No HTTP callback, no inline-prompt, no inline-agent hook.
 
-**Verdict**: OpenHarness MEJOR.
+**Verdict**: OpenHarness BETTER.
 
 **Confidence**: HIGH.
 
@@ -66,7 +66,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **COS**: `lib/agent_permissions.py`, `lib/anthropic_direct_policy.py`, `packages/agent-lifecycle/lib/agent_permissions.py`. Permissions live in `.claude/settings.json` (allowlist/denylist) projected from `cognitive-os.yaml`. Interception is at CC level via PreToolUse hooks; there is no COS-internal `PermissionChecker` between LLM and tool because COS doesn't own the LLM loop.
 
-**Verdict**: IGUAL with different locus. OH owns the loop and intercepts in-process; COS rides on CC's interception and adds policy via hooks.
+**Verdict**: EQUIVALENT with different locus. OH owns the loop and intercepts in-process; COS rides on CC's interception and adds policy via hooks.
 
 **Confidence**: MEDIUM. I did not read all three COS permission files end-to-end (per ≤80 tool budget).
 
@@ -80,7 +80,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **Confidence**: HIGH.
 
-**What prior audits got wrong**: Original audit framed COS as "bolted-on" without reading `mcp-server/`. Rebuttal corrected to IGUAL but didn't note that COS lacks a real *consumer* MCP client comparable to `McpClientManager` — that gap is real if COS ever needs to consume external MCP servers programmatically vs delegating to CC.
+**What prior audits got wrong**: Original audit framed COS as "bolted-on" without reading `mcp-server/`. Rebuttal corrected to EQUIVALENT but didn't note that COS lacks a real *consumer* MCP client comparable to `McpClientManager` — that gap is real if COS ever needs to consume external MCP servers programmatically vs delegating to CC.
 
 ### 5. Skill discovery
 
@@ -88,7 +88,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **COS**: `lib/skill_router.py` is **1519 LOC** (12 def/class). 88 SKILL.md files. `skills/CATALOG.md` catalog. `manifests/agentic-primitive-registry.lock.yaml` SHA-256 lock.
 
-**Verdict**: COS MEJOR. ~63x more code, with intent routing, lock manifest, and catalog. The hand-coded ~80-entry table noted by user (ADR-174) is a known refactor target but doesn't undermine the depth advantage.
+**Verdict**: COS BETTER. ~63x more code, with intent routing, lock manifest, and catalog. The hand-coded ~80-entry table noted by user (ADR-174) is a known refactor target but doesn't undermine the depth advantage.
 
 **Confidence**: HIGH.
 
@@ -98,11 +98,11 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **COS**: `lib/config_loader.py` (204 LOC) + `scripts/_lib/settings-driver-claude-code.sh` (501 LOC). Three loader variants (regex / yaml.safe_load / 5-path search). Settings driver projects `cognitive-os.yaml` → `.claude/settings.json` (idempotent atomic write, profile-aware).
 
-**Verdict**: IGUAL with different design goals. OH is a richer single Pydantic schema (validation, hot-reload). COS optimizes for cold-start hook safety (regex variant) and multi-harness portability (projection layer).
+**Verdict**: EQUIVALENT with different design goals. OH is a richer single Pydantic schema (validation, hot-reload). COS optimizes for cold-start hook safety (regex variant) and multi-harness portability (projection layer).
 
 **Confidence**: HIGH.
 
-**What prior audits got wrong**: Original called this "OpenHarness MEJOR" — too strong. Rebuttal corrected to IGUAL — held up.
+**What prior audits got wrong**: Original called this "OpenHarness BETTER" — too strong. Rebuttal corrected to EQUIVALENT — held up.
 
 ### 7. Context management
 
@@ -110,7 +110,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **COS**: Engram (vector + KV) with cross-session retrieval, PreCompact hook integration, MCP-exposed `mem_search`/`mem_save`/`mem_session_summary`, ADR-080.
 
-**Verdict**: COS MEJOR. Held vs both prior audits.
+**Verdict**: COS BETTER. Held vs both prior audits.
 
 **Confidence**: HIGH.
 
@@ -122,7 +122,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **Operational reality** (`.cognitive-os/metrics/llm-dispatch.jsonl`): **4 lines total, all `provider_used: "offline_dispatch_smoke"` from 2026-05-03**. The cascade is **wired and unit-validated, not exercised in real production usage** as of the audit date.
 
-**Verdict**: OpenHarness MEJOR on breadth (22 vs 7). COS MEJOR on operational rigor (cascade, kill-switches, JSONL). **Architecturally NUANCED; numerically OH wins.**
+**Verdict**: OpenHarness BETTER on breadth (22 vs 7). COS BETTER on operational rigor (cascade, kill-switches, JSONL). **Architecturally NUANCED; numerically OH wins.**
 
 **Confidence**: HIGH on counts. MEDIUM on the operational claim — I sampled only `llm-dispatch.jsonl`; real provider use may exist in other streams I didn't read.
 
@@ -137,7 +137,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 - After `readlink -f` dedup: **227 unique** files.
 - Plus `lib/harness_adapter/` with 6 named harnesses; `scripts/cos_init.py` lists 21 supported harnesses; 33 packages with `cos-package.yaml`.
 
-**Verdict**: COS MEJOR on raw breadth. OH MEJOR on hook *type* diversity (already counted in dim 2).
+**Verdict**: COS BETTER on raw breadth. OH BETTER on hook *type* diversity (already counted in dim 2).
 
 **Confidence**: HIGH.
 
@@ -149,7 +149,7 @@ For each dimension I (a) read source on both sides, (b) re-ran every numerical c
 
 **COS**: `lib/harness_adapter/base.py` canonical schema (ADR-033) → 130 distinct JSONL streams under `.cognitive-os/metrics/` (`ls | wc -l = 130`). Notably `agent-heartbeat.jsonl` has **2,135 lines** — real usage. SLO probes (ADR-028). MLflow integration. Phoenix (opt-in per ADR-170).
 
-**Verdict**: COS MEJOR.
+**Verdict**: COS BETTER.
 
 **Confidence**: HIGH.
 

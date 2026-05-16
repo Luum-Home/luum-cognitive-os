@@ -177,15 +177,15 @@ Engram uses free-form `type` strings (`bugfix`, `decision`, `architecture`, `dis
 
 | Dimension | MegaMemory | Engram | Verdict |
 |---|---|---|---|
-| Node-kind expressiveness | 6 fixed enum kinds | Free-form `type` + planned MIRIX memory_class | **IGUAL** for coverage today; **MEJOR_NUESTRO** planned. MegaMemory's fixed enum is friendlier for static validation but inflexible. |
-| Relation vocabulary | 5 directed connects/depends/impl/calls/configures | 6+ governance-aware relations including temporal/judgment semantics | **MEJOR_NUESTRO** |
-| Temporal model | `created_at` / `updated_at` / `removed_at` only | `superseded_at` + `valid_to` planned (Graphiti port) | **MEJOR_NUESTRO** |
-| Soft delete | Tombstone + reason (`removed_at`, `removed_reason`) | Same shape via Engram observation lifecycle | **IGUAL** |
-| Multi-process safety | WAL + busy_timeout=5000 + `BEGIN IMMEDIATE` migrations | Engram daemon serializes writes | **IGUAL** (different shape, both safe) |
-| Edge dedup | UNIQUE(from,to,relation) (schema v4) | `judgment_status` + relation lifecycle | **IGUAL** |
-| Hierarchical parent_id | Self-FK, ON DELETE SET NULL | Implicit via `topic_key` namespacing | MegaMemory more explicit; **IGUAL** in practice. |
-| ID readability | Slug paths (`auth/login-flow`) | UUID-like sync_ids + human topic_key | **NO_COMPARABLE** (style preference) |
-| Embedding column | `embedding BLOB` directly on `nodes` | FTS5 today; no embedding column yet | **MEJOR_EXTERNO** narrowly (their embedded model fits a single column; we will add this when LightRAG slice lands) |
+| Node-kind expressiveness | 6 fixed enum kinds | Free-form `type` + planned MIRIX memory_class | **EQUIVALENT** for coverage today; **OURS_BETTER** planned. MegaMemory's fixed enum is friendlier for static validation but inflexible. |
+| Relation vocabulary | 5 directed connects/depends/impl/calls/configures | 6+ governance-aware relations including temporal/judgment semantics | **OURS_BETTER** |
+| Temporal model | `created_at` / `updated_at` / `removed_at` only | `superseded_at` + `valid_to` planned (Graphiti port) | **OURS_BETTER** |
+| Soft delete | Tombstone + reason (`removed_at`, `removed_reason`) | Same shape via Engram observation lifecycle | **EQUIVALENT** |
+| Multi-process safety | WAL + busy_timeout=5000 + `BEGIN IMMEDIATE` migrations | Engram daemon serializes writes | **EQUIVALENT** (different shape, both safe) |
+| Edge dedup | UNIQUE(from,to,relation) (schema v4) | `judgment_status` + relation lifecycle | **EQUIVALENT** |
+| Hierarchical parent_id | Self-FK, ON DELETE SET NULL | Implicit via `topic_key` namespacing | MegaMemory more explicit; **EQUIVALENT** in practice. |
+| ID readability | Slug paths (`auth/login-flow`) | UUID-like sync_ids + human topic_key | **NOT_COMPARABLE** (style preference) |
+| Embedding column | `embedding BLOB` directly on `nodes` | FTS5 today; no embedding column yet | **EXTERNAL_BETTER** narrowly (their embedded model fits a single column; we will add this when LightRAG slice lands) |
 
 **Net for Annex A:** MegaMemory's schema is clean, well-migrated, and competently locked. But the relation model is **too thin for COS governance** — no judgment, no supersession, no conflict-typing — and that gap is precisely where Engram earns its keep. The one pattern worth borrowing here is the **single-column `embedding BLOB` next to the typed row** (vs a sidecar table); that's already implicit in the LightRAG port plan, but it's nice to see it confirmed in working production code.
 

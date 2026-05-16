@@ -18,7 +18,7 @@ from pathlib import Path
 
 __all__ = ["DomainModelScaffolder", "ScaffoldResult", "render_template"]
 
-DOC_REL = Path("docs/03-dominio-riesgo/domain-model.md")
+DOC_REL = Path("docs/03-domain-risk/domain-model.md")
 
 HEADER_MARKER = "<!-- domain-model:autogen-header -->"
 FOOTER_MARKER = "<!-- domain-model:autogen-footer -->"
@@ -75,7 +75,7 @@ class ScaffoldResult:
 
 
 class DomainModelScaffolder:
-    """Emit/extend docs/03-dominio-riesgo/domain-model.md idempotently."""
+    """Emit/extend docs/03-domain-risk/domain-model.md idempotently."""
 
     def __init__(
         self,

@@ -218,10 +218,10 @@ been completed end-to-end.
 blocking bugs that significantly degrade the value proposition.
 
 **Real**:
-- Ebbinghaus retention `R(t) = exp(-t / τ)` in `lib/engram_lifecycle.py:101`
+- Ebbinghaus retention `R(t) = exp(-t / tau)` in `lib/engram_lifecycle.py:101`
 - Confidence reinforcement `c' = c + (1 - c) * 0.15` in line 116
 - Adjusted score `base * 0.7 + confidence * retention * 0.3` in line 141
-- τ per type (days): architecture=365, decision=180, pattern=180,
+- tau per type (days): architecture=365, decision=180, pattern=180,
   discovery=90, bugfix=60, manual=90
 - 18 unit tests in `test_engram_lifecycle.py` covering decay monotonicity,
   reinforcement convergence, adjusted-score bounds (1,000 random iterations).

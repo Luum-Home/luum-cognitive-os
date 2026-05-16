@@ -101,8 +101,7 @@ installed), we adopt `@anthropic-ai/claude-agent-sdk` directly:
   interface as other providers.
 - Uses the direct Anthropic API credential (pay-per-token) — opt-in per ADR-060 doctrine.
 
-**Operator preference 2026-04-24**: "evitando usar las API keys de claude
-ya que son carísimas las consultas via api". So Claude-SDK via API
+**Operator preference 2026-04-24**: avoid Claude API keys for this loop because API calls were considered too expensive. So Claude-SDK via API
 remains OPT-IN ONLY. The primary cascade stays with Qwen / OpenRouter /
 Gemini / Ollama (ADR-062 tier 1-4); Claude is only tier-5 last-resort
 AND prefers Claude Code native (subscription-billed) over API (token-billed).

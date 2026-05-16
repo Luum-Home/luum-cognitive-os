@@ -71,8 +71,8 @@ def test_detects_asymmetric_row():
     sample = """# Test
 | Dimension | COS | External | Verdict |
 |---|---|---|---|
-| Hook surface | scripts/_lib/settings-driver-claude-code.sh:119-425 wires 10 events | several events roughly | IGUAL |
-| MCP | mcp-server/cos_mcp.py:1-780 publisher with 8 tools | various tools approximately | IGUAL |
+| Hook surface | scripts/_lib/settings-driver-claude-code.sh:119-425 wires 10 events | several events roughly | EQUIVALENT |
+| MCP | mcp-server/cos_mcp.py:1-780 publisher with 8 tools | various tools approximately | EQUIVALENT |
 """
     report = ResearchQualityAdvisor().score(sample)
     assert report.total_rows >= 2
@@ -99,8 +99,8 @@ grep -c CanonicalEvent lib/harness_adapter/base.py
 
 | Dimension | A side | B side | Verdict |
 |---|---|---|---|
-| Events | a/file.py:23-100 has 11 events | b/file.py:5-50 has 10 events | IGUAL |
-| Providers | a/file.py:1-65 lists 7 providers | b/file.py:5-200 lists 22 providers | B MEJOR |
+| Events | a/file.py:23-100 has 11 events | b/file.py:5-50 has 10 events | EQUIVALENT |
+| Providers | a/file.py:1-65 lists 7 providers | b/file.py:5-200 lists 22 providers | B BETTER |
 
 ## Verdict
 
@@ -168,8 +168,8 @@ Confidence: HIGH. This implementation is complete and robust.
 
 | Surface | COS | External | Verdict |
 |---|---|---|---|
-| Hooks | many hooks approximately do the same thing | several scripts probably implement it | IGUAL |
-| Tests | lots of tests exist | some tests exist | IGUAL |
+| Hooks | many hooks approximately do the same thing | several scripts probably implement it | EQUIVALENT |
+| Tests | lots of tests exist | some tests exist | EQUIVALENT |
 
 ## Uncertainties
 

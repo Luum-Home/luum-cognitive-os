@@ -145,7 +145,7 @@ The MegaMemory primitive plugs into precisely the gap LightRAG needs filled: a n
 
 | Dimension | MegaMemory | Engram (today) | Engram (LightRAG-slice plan) | Verdict |
 |---|---|---|---|---|
-| In-process semantic recall | Yes | No (FTS5 only) | Planned | **MEJOR_EXTERNO** today; closes once LightRAG slice lands. |
+| In-process semantic recall | Yes | No (FTS5 only) | Planned | **EXTERNAL_BETTER** today; closes once LightRAG slice lands. |
 | API-key dependency | None | None (FTS5) or Cognee daemon | TBD | MegaMemory's no-key path is the bar to clear. |
 | Model footprint | ~23 MB ONNX, INT8 quantized | n/a | TBD | MiniLM is a known-good default for sentence-level recall. |
 | Storage shape | `embedding BLOB` next to row | n/a | `observations.embedding BLOB` planned | MegaMemory confirms the shape works. |

@@ -1,4 +1,4 @@
-"""Tests for lib/reinvention_semantic.py (ADR-029b Phase B-α).
+"""Tests for lib/reinvention_semantic.py (ADR-029b Phase B-alpha).
 
 Five cases covering: build, exact match, partial/paraphrase match, no-match,
 threshold enforcement.

@@ -83,7 +83,7 @@ for the full system.
 **Natural-language entrypoints (skills)** — for agents and operators:
 - `session-pending-brief` — "what's open?" / "what's pending?" →
   invokes the projector, presents a ranked attack list
-- `session-pending-close` — "cerrá X" / "close Y" → atomic closure via
+- `session-pending-close` — "close X" / "close Y" → atomic closure via
   `cos-pending-truth-close` (tasks) or `cos-adr-close` (decisions) with
   bilateral proof; reports trust-signal delta
 - `session-wrapup` (extended) — end-of-session: refreshes aggregator +

@@ -1,7 +1,7 @@
 ---
 name: project-scaffold
 description: 'Use when you need this Cognitive OS skill: Scaffold the 10-category
-  docs/ tree adopted by Cognitive OS projects. Creates 01-contexto through 10-resumenes
+  docs/ tree adopted by Cognitive OS projects. Creates 01-context through 10-summaries
   with starter files and TODO markers. Idempotent. See ADR-054.; do not use when a
   narrower skill directly matches the task.'
 version: 1.0.0
@@ -47,16 +47,16 @@ Categories:
 
 | # | Dir | Covers |
 |---|---|---|
-| 01 | `01-contexto` | Business context, stakeholders |
-| 02 | `02-arquitectura` | System design, components, decisions |
-| 03 | `03-dominio-riesgo` | Domain model + risk register |
-| 04 | `04-seguridad` | Threat model, controls, IR |
+| 01 | `01-context` | Business context, stakeholders |
+| 02 | `02-architecture` | System design, components, decisions |
+| 03 | `03-domain-risk` | Domain model + risk register |
+| 04 | `04-security` | Threat model, controls, IR |
 | 05 | `05-features` | Feature inventory |
 | 06 | `06-backoffice` | Ops runbooks, admin, monitoring |
-| 07 | `07-investigacion` | Research spikes, competitive analysis |
-| 08 | `08-estandares` | Coding / doc / review standards |
-| 09 | `09-plan-ejecucion` | Roadmap, sprints, estimation |
-| 10 | `10-resumenes` | Exec summaries, status reports |
+| 07 | `07-research` | Research spikes, competitive analysis |
+| 08 | `08-standards` | Coding / doc / review standards |
+| 09 | `09-execution-plan` | Roadmap, sprints, estimation |
+| 10 | `10-summaries` | Exec summaries, status reports |
 
 ## Invocation
 
@@ -74,7 +74,7 @@ uv run python3 scripts/project_scaffold.py \
 - **Every category has a README.md** listing its files + purpose.
 - **No network, no LLM** — pure filesystem scaffolding.
 - **Cross-refs embedded**: each category's README mentions the SO skill that
-  feeds it (e.g. `04-seguridad/README.md` references `security-audit`).
+  feeds it (e.g. `04-security/README.md` references `security-audit`).
 
 ## When to invoke
 

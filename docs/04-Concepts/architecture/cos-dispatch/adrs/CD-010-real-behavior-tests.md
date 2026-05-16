@@ -19,8 +19,7 @@ This is the canonical failure mode of mock-heavy test suites: each layer is
 individually correct, the glue is nobody's responsibility, and the system ships
 broken.
 
-The user's directive for Phase 5 is unambiguous: *"tests automatizados que
-prueben el comportamiento real"* — automated tests that verify real behavior.
+The user's directive for Phase 5 is unambiguous: automated tests must verify real behavior.
 Not mock-based. Not `:memory:`-only (which hides driver, schema-apply and
 connection-pool issues). Not happy-path-only.
 

@@ -59,7 +59,7 @@ Inspected briefly via grep. The server exposes endpoints feeding the front-end: 
 
 | Dimension | MegaMemory | COS | Verdict |
 |---|---|---|---|
-| Interactive graph view | Yes, single-binary, no build | None | **MEJOR_EXTERNO** |
+| Interactive graph view | Yes, single-binary, no build | None | **EXTERNAL_BETTER** |
 | Operator setup cost | One command | n/a | — |
 | Reuse of query layer | Yes (shared library functions) | n/a | — |
 | Production-ready | At <10k nodes | n/a | — |
@@ -161,11 +161,11 @@ The installer decides whether the harness should invoke the global binary or cal
 | Dimension | MegaMemory | COS (ADR-258 + manifests) | Verdict |
 |---|---|---|---|
 | Number of supported harnesses | 4 | 1 canonical (Claude Code) + adapter taxonomy for others | MegaMemory: more breadth shipped; COS: stronger model. |
-| Wiring style | Push (write per-harness configs) | Pull (harness reads the overlay) | **MEJOR_NUESTRO** for governance, **MEJOR_EXTERNO** for first-time install ergonomics. |
-| Mutates user dotfiles | Yes (AGENTS.md, CLAUDE.md, opencode.json, ...) | No (or via explicit `cognitive-os-init`) | **MEJOR_NUESTRO** |
+| Wiring style | Push (write per-harness configs) | Pull (harness reads the overlay) | **OURS_BETTER** for governance, **EXTERNAL_BETTER** for first-time install ergonomics. |
+| Mutates user dotfiles | Yes (AGENTS.md, CLAUDE.md, opencode.json, ...) | No (or via explicit `cognitive-os-init`) | **OURS_BETTER** |
 | Managed-file marker | Yes | Implicit (overlay path is generated) | MegaMemory's marker is a cleaner safety belt for any future COS push-mode installer. |
 | JSONC handling | Bespoke parser | n/a | Borrow if we ever need to read Claude Code settings.json with comments. |
-| Idempotent re-runs | Yes | Yes | **IGUAL** |
+| Idempotent re-runs | Yes | Yes | **EQUIVALENT** |
 | Self-discovery (global vs local entrypoint) | Yes | Implicit via PATH on harness side | MegaMemory's pattern is nicer when we ship Engram as a global daemon. |
 
 ### 2.8 Is the installer pattern useful for COS?

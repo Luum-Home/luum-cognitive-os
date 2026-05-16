@@ -57,7 +57,7 @@ exposed Docker ports. Generates a structured report with CRITICAL/HIGH/MEDIUM/LO
 
 `/security-audit` -- Full security audit of the current project
 `/security-audit --project-dir <path>` -- Full audit + persist the
-final report into `<path>/docs/04-seguridad/` per the ADR-054/055
+final report into `<path>/docs/04-security/` per the ADR-054/055
 10-category convention.
 
 ### Persistence mode (--project-dir)
@@ -67,7 +67,7 @@ and, after the inline report is generated, pipes it into
 `scripts/security_audit_writer.py`, which writes:
 
 ```
-<project-dir>/docs/04-seguridad/security-audit-<YYYY-MM-DD>-<HHMMSS>.md
+<project-dir>/docs/04-security/security-audit-<YYYY-MM-DD>-<HHMMSS>.md
 ```
 
 Backward-compatible: without `--project-dir`, no files are written

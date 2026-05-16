@@ -25,7 +25,7 @@ from lib.domain_model import DomainModelScaffolder  # noqa: E402
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="Scaffold docs/03-dominio-riesgo/domain-model.md")
+    p = argparse.ArgumentParser(description="Scaffold docs/03-domain-risk/domain-model.md")
     p.add_argument("--project-dir", required=True)
     p.add_argument("--brief", default="", help="Short prose describing the domain (inserted verbatim).")
     p.add_argument("--project-name", default="")

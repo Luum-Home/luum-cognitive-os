@@ -2,7 +2,7 @@
 name: risk-register
 version: 1.0.0
 description: 'Use when you need this Cognitive OS skill: Scaffold STRIDE-based risk-register.md
-  under docs/03-dominio-riesgo/ with impact/likelihood matrix and 6 seed rows (one
+  under docs/03-domain-risk/ with impact/likelihood matrix and 6 seed rows (one
   per STRIDE category). Idempotent.; do not use when a narrower skill directly matches
   the task.'
 invocation: /risk-register --project-dir <path> [--assets "<brief>"] [--overwrite]
@@ -38,11 +38,11 @@ routing_intents:
 <!-- SCOPE: project -->
 # Risk Register Scaffolder
 
-Scaffolds `docs/03-dominio-riesgo/risk-register.md` with a STRIDE-organized table and an impact × likelihood matrix legend. This is a **template scaffolder**, not a threat-modeling engine — it seeds one row per STRIDE category and expects human/agent fill-in.
+Scaffolds `docs/03-domain-risk/risk-register.md` with a STRIDE-organized table and an impact × likelihood matrix legend. This is a **template scaffolder**, not a threat-modeling engine — it seeds one row per STRIDE category and expects human/agent fill-in.
 
 ## Scope
 
-- Creates or extends ONE file: `<project>/docs/03-dominio-riesgo/risk-register.md`
+- Creates or extends ONE file: `<project>/docs/03-domain-risk/risk-register.md`
 - Seeds 6 rows (one per STRIDE category) with placeholder IDs `R-01` through `R-06`
 - Idempotent via autogen markers (same contract as `/domain-model`)
 
@@ -88,6 +88,6 @@ Same as `/domain-model`:
 
 ```bash
 uv run python3 scripts/risk_register.py --project-dir /tmp/test-rr --assets "user db, API keys"
-grep -q "STRIDE threats" /tmp/test-rr/docs/03-dominio-riesgo/risk-register.md
-grep -cE '^\| R-0[1-6]' /tmp/test-rr/docs/03-dominio-riesgo/risk-register.md   # expect 6
+grep -q "STRIDE threats" /tmp/test-rr/docs/03-domain-risk/risk-register.md
+grep -cE '^\| R-0[1-6]' /tmp/test-rr/docs/03-domain-risk/risk-register.md   # expect 6
 ```

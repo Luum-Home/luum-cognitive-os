@@ -315,7 +315,7 @@ $15–$30 in agent costs before human review.
 |---|---|
 | Do nothing; stay on Claude Code | Operator explicitly requested portability 2026-04-24. Leaving the harness coupled defeats ADR-062's investment. |
 | Full Claude Code clone (replicate `~/.claude/projects`, MCP, Agent() internals) | ADR-063 already rejected this path. ~6+ sessions minimum, ToS-adjacent, perpetual catch-up maintenance. |
-| Adopt `@anthropic-ai/claude-agent-sdk` as the universal runtime | Pay-per-token model — operator explicitly rejected (*"evitando usar las API keys de claude ya que son carísimas"*, ADR-063). Also still Claude-semantic, not harness-agnostic. |
+| Adopt `@anthropic-ai/claude-agent-sdk` as the universal runtime | Pay-per-token model — operator explicitly rejected API-key usage for this loop because API calls were considered too expensive (ADR-063). Also still Claude-semantic, not harness-agnostic. |
 | Wrap Claude Code as a subprocess from a neutral shell | Brittle (Claude Code is interactive by design); doesn't solve Codex/Cursor/CI cases; adds a dependency we cannot ship in CI without an Anthropic login. |
 | Ship adapter packs as separate repos | Fragmentation risk; contract drift without shared test suite. Keep them in-tree under `lib/harness_adapter/` and `scripts/_lib/settings-driver-*/`. |
 

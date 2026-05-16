@@ -2,9 +2,9 @@
 """Project documentation scaffolder — 10-category convention (ADR-054).
 
 Generates the canonical `docs/` tree that Cognitive OS projects adopt:
-  01-contexto, 02-arquitectura, 03-dominio-riesgo, 04-seguridad,
-  05-features, 06-backoffice, 07-investigacion, 08-estandares,
-  09-plan-ejecucion, 10-resumenes.
+  01-context, 02-architecture, 03-domain-risk, 04-security,
+  05-features, 06-backoffice, 07-research, 08-standards,
+  09-execution-plan, 10-summaries.
 
 Each category has a README.md plus 1-3 starter files with section
 headers and TODO markers. Content is deliberately minimal: the agent/
@@ -31,22 +31,22 @@ __all__ = ["ProjectScaffolder", "CATEGORIES"]
 # files_to_create: list of (filename, template_body)
 CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
     (
-        "01-contexto",
+        "01-context",
         "Context",
         [
-            ("README.md", "# 01 — Contexto\n\nBusiness context, stakeholders, user personas, roles, user journeys.\n\n- [ ] business-context.md\n- [ ] stakeholders.md\n- [ ] personas.md\n- [ ] roles.md\n- [ ] user-journeys.md\n"),
+            ("README.md", "# 01 — Context\n\nBusiness context, stakeholders, user personas, roles, user journeys.\n\n- [ ] business-context.md\n- [ ] stakeholders.md\n- [ ] personas.md\n- [ ] roles.md\n- [ ] user-journeys.md\n"),
             ("business-context.md", "# Business Context\n\n## Problem\n<!-- TODO -->\n\n## Users\n<!-- TODO -->\n\n## Value proposition\n<!-- TODO -->\n"),
             ("stakeholders.md", "# Stakeholders\n\n| Role | Name | Responsibility |\n|---|---|---|\n<!-- TODO -->\n"),
             ("personas.md", "# User Personas\n\n## Persona template\n- **Name / archetype**:\n- **Context**: who they are, what they do\n- **Goals**:\n- **Pain points**:\n- **How our product helps**:\n\n## Personas\n<!-- TODO: 2-5 personas -->\n"),
-            ("roles.md", "# Roles\n\nUser-facing roles. For RBAC / permissions see `docs/04-seguridad/rbac.md`.\n\n| Role | Description | Key actions | Maps to auth role |\n|---|---|---|---|\n<!-- TODO -->\n"),
+            ("roles.md", "# Roles\n\nUser-facing roles. For RBAC / permissions see `docs/04-security/rbac.md`.\n\n| Role | Description | Key actions | Maps to auth role |\n|---|---|---|---|\n<!-- TODO -->\n"),
             ("user-journeys.md", "# User Journeys\n\nBusiness-level flows. For feature-level use cases see `docs/05-features/use-cases.md`.\n\n## Journey template\n- **Name**:\n- **Persona**:\n- **Trigger**:\n- **Steps**: numbered\n- **Success**: what \"done\" looks like\n- **Failure modes**: what goes wrong\n\n## Journeys\n<!-- TODO -->\n"),
         ],
     ),
     (
-        "02-arquitectura",
+        "02-architecture",
         "Architecture",
         [
-            ("README.md", "# 02 — Arquitectura\n\nSystem design, components, C4 diagrams, integration points. Cross-reference `docs/02-Decisions/adrs/` for decisions.\n\n- [ ] architecture-overview.md\n- [ ] components.md\n- [ ] c4-context.md (Level 1)\n- [ ] c4-container.md (Level 2)\n- [ ] c4-component.md (Level 3)\n"),
+            ("README.md", "# 02 — Architecture\n\nSystem design, components, C4 diagrams, integration points. Cross-reference `docs/02-Decisions/adrs/` for decisions.\n\n- [ ] architecture-overview.md\n- [ ] components.md\n- [ ] c4-context.md (Level 1)\n- [ ] c4-container.md (Level 2)\n- [ ] c4-component.md (Level 3)\n"),
             ("architecture-overview.md", "# Architecture Overview\n\n## High-level diagram\n<!-- TODO: ascii or mermaid -->\n\n## Tech stack\n<!-- TODO -->\n\n## Data flow\n<!-- TODO -->\n"),
             ("components.md", "# Components\n\n| Name | Responsibility | Depends on |\n|---|---|---|\n<!-- TODO -->\n"),
             ("c4-context.md", "# C4 — Level 1: System Context\n\nShows the system in its environment: users + external systems it depends on.\n\n```\n<!-- TODO: mermaid/plantuml. Example:\nUser --> System\nSystem --> ExternalAPI\n-->\n```\n\n## Actors\n<!-- TODO -->\n\n## External systems\n<!-- TODO -->\n"),
@@ -55,23 +55,23 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         ],
     ),
     (
-        "03-dominio-riesgo",
+        "03-domain-risk",
         "Domain + Risk",
         [
-            ("README.md", "# 03 — Dominio + Riesgo\n\nDomain model (entities, invariants, bounded contexts), ubiquitous language glossary, and risk register. `/domain-model` and `/risk-register` skills feed this dir.\n\n- [ ] domain-model.md\n- [ ] risk-register.md\n- [ ] glossary.md\n"),
+            ("README.md", "# 03 — Domain + Risk\n\nDomain model (entities, invariants, bounded contexts), ubiquitous language glossary, and risk register. `/domain-model` and `/risk-register` skills feed this dir.\n\n- [ ] domain-model.md\n- [ ] risk-register.md\n- [ ] glossary.md\n"),
             ("domain-model.md", "# Domain Model\n\n## Bounded contexts\n<!-- TODO -->\n\n## Core entities\n| Entity | Invariants | Aggregate root |\n|---|---|---|\n<!-- TODO -->\n\n## Ubiquitous language\n<!-- TODO — or split into glossary.md -->\n"),
             ("risk-register.md", "# Risk Register\n\n| ID | Risk | Likelihood | Impact | Mitigation | Owner |\n|---|---|---|---|---|---|\n<!-- TODO: populate. Use L/M/H for likelihood, impact. -->\n"),
             ("glossary.md", "# Glossary\n\nProject-wide ubiquitous language. Every domain term used in specs/code/docs should be defined here once.\n\n| Term | Definition | Used in |\n|---|---|---|\n<!-- TODO -->\n"),
         ],
     ),
     (
-        "04-seguridad",
+        "04-security",
         "Security",
         [
-            ("README.md", "# 04 — Seguridad\n\nThreat model, security controls, RBAC, incident response. Results of `security-audit` skill land here.\n\n- [ ] threat-model.md\n- [ ] security-controls.md\n- [ ] rbac.md\n- [ ] incident-response.md\n"),
+            ("README.md", "# 04 — Security\n\nThreat model, security controls, RBAC, incident response. Results of `security-audit` skill land here.\n\n- [ ] threat-model.md\n- [ ] security-controls.md\n- [ ] rbac.md\n- [ ] incident-response.md\n"),
             ("threat-model.md", "# Threat Model\n\n## Assets\n<!-- TODO -->\n\n## Threat actors\n<!-- TODO -->\n\n## STRIDE analysis\n| Category | Threat | Mitigation |\n|---|---|---|\n<!-- TODO -->\n"),
             ("security-controls.md", "# Security Controls\n\n## Authentication\n<!-- TODO -->\n\n## Authorization\n<!-- TODO -->\n\n## Data protection\n<!-- TODO -->\n\n## Audit logging\n<!-- TODO -->\n"),
-            ("rbac.md", "# Role-Based Access Control\n\nMaps user-facing roles (from `docs/01-contexto/roles.md`) to permissions on resources.\n\n## Resources\n<!-- TODO: list protected resources -->\n\n## Permission matrix\n| Role | Resource | Action | Condition |\n|---|---|---|---|\n<!-- TODO: action in (create, read, update, delete, admin) -->\n\n## Auth integration\n<!-- TODO: how roles are issued (JWT claim, session, etc.) -->\n"),
+            ("rbac.md", "# Role-Based Access Control\n\nMaps user-facing roles (from `docs/01-context/roles.md`) to permissions on resources.\n\n## Resources\n<!-- TODO: list protected resources -->\n\n## Permission matrix\n| Role | Resource | Action | Condition |\n|---|---|---|---|\n<!-- TODO: action in (create, read, update, delete, admin) -->\n\n## Auth integration\n<!-- TODO: how roles are issued (JWT claim, session, etc.) -->\n"),
             ("incident-response.md", "# Incident Response\n\n## Severity levels\n<!-- TODO -->\n\n## Runbook\n<!-- TODO -->\n\n## Escalation\n<!-- TODO -->\n"),
         ],
     ),
@@ -81,8 +81,8 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         [
             ("README.md", "# 05 — Features\n\nFeature inventory, PRD, use cases. `document-feature` skill emits into `features-backlog.md`.\n\n- [ ] features-backlog.md\n- [ ] prd.md\n- [ ] use-cases.md\n"),
             ("features-backlog.md", "# Features Backlog\n\n| ID | Feature | Status | Priority | Owner |\n|---|---|---|---|---|\n<!-- TODO: status in (backlog|in-progress|done|blocked) -->\n"),
-            ("prd.md", "# Product Requirements Document (PRD)\n\n## Product overview\n<!-- TODO: 1-paragraph summary -->\n\n## Goals\n<!-- TODO: measurable outcomes -->\n\n## Non-goals\n<!-- TODO: what's explicitly out of scope -->\n\n## Target users\n<!-- TODO: reference `docs/01-contexto/personas.md` -->\n\n## Functional requirements\n| ID | Requirement | Priority (MoSCoW) | Acceptance criteria |\n|---|---|---|---|\n<!-- TODO -->\n\n## Non-functional requirements\n<!-- TODO: performance, availability, security SLAs -->\n\n## Success metrics\n<!-- TODO: KPIs to measure success -->\n\n## Timeline\n<!-- TODO: high-level phases (cross-ref `docs/09-plan-ejecucion/roadmap.md`) -->\n"),
-            ("use-cases.md", "# Use Cases\n\nFeature-level flows. For business-level journeys see `docs/01-contexto/user-journeys.md`.\n\n## Use case template\n- **ID**: UC-001\n- **Name**:\n- **Actor** (from `docs/01-contexto/roles.md`):\n- **Precondition**:\n- **Main flow**: numbered steps\n- **Alternative flows**:\n- **Postcondition**:\n- **Error scenarios**:\n\n## Use cases\n<!-- TODO -->\n"),
+            ("prd.md", "# Product Requirements Document (PRD)\n\n## Product overview\n<!-- TODO: 1-paragraph summary -->\n\n## Goals\n<!-- TODO: measurable outcomes -->\n\n## Non-goals\n<!-- TODO: what's explicitly out of scope -->\n\n## Target users\n<!-- TODO: reference `docs/01-context/personas.md` -->\n\n## Functional requirements\n| ID | Requirement | Priority (MoSCoW) | Acceptance criteria |\n|---|---|---|---|\n<!-- TODO -->\n\n## Non-functional requirements\n<!-- TODO: performance, availability, security SLAs -->\n\n## Success metrics\n<!-- TODO: KPIs to measure success -->\n\n## Timeline\n<!-- TODO: high-level phases (cross-ref `docs/09-execution-plan/roadmap.md`) -->\n"),
+            ("use-cases.md", "# Use Cases\n\nFeature-level flows. For business-level journeys see `docs/01-context/user-journeys.md`.\n\n## Use case template\n- **ID**: UC-001\n- **Name**:\n- **Actor** (from `docs/01-context/roles.md`):\n- **Precondition**:\n- **Main flow**: numbered steps\n- **Alternative flows**:\n- **Postcondition**:\n- **Error scenarios**:\n\n## Use cases\n<!-- TODO -->\n"),
         ],
     ),
     (
@@ -96,7 +96,7 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         ],
     ),
     (
-        "07-investigacion",
+        "07-research",
         "Research",
         [
             ("README.md", "# 07 — Research\n\nResearch spikes, competitive analysis, tech evaluations. `deep-research` and `repo-scout` skills emit here.\n\n- [ ] research-notes.md\n- [ ] competitive-analysis.md\n"),
@@ -105,30 +105,30 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         ],
     ),
     (
-        "08-estandares",
+        "08-standards",
         "Standards",
         [
-            ("README.md", "# 08 — Estándares\n\nCoding, documentation, review standards adopted by the project. Anchored to `rules/` and `docs/02-Decisions/adrs/` for the why.\n\n- [ ] coding-standards.md\n- [ ] documentation-standards.md\n- [ ] review-standards.md\n"),
+            ("README.md", "# 08 — Standards\n\nCoding, documentation, review standards adopted by the project. Anchored to `rules/` and `docs/02-Decisions/adrs/` for the why.\n\n- [ ] coding-standards.md\n- [ ] documentation-standards.md\n- [ ] review-standards.md\n"),
             ("coding-standards.md", "# Coding Standards\n\n## Language conventions\n<!-- TODO -->\n\n## Formatting / Lint\n<!-- TODO: point to tool configs -->\n\n## Naming\n<!-- TODO -->\n"),
             ("documentation-standards.md", "# Documentation Standards\n\n## Required sections per document type\n<!-- TODO -->\n\n## Review cadence\n<!-- TODO -->\n"),
             ("review-standards.md", "# Review Standards\n\n## PR checklist\n<!-- TODO -->\n\n## Approvals required\n<!-- TODO -->\n"),
         ],
     ),
     (
-        "09-plan-ejecucion",
+        "09-execution-plan",
         "Execution Plan",
         [
-            ("README.md", "# 09 — Plan de ejecución\n\nRoadmap, sprints, estimations. `sdd-tasks` and `cos-sprint` skills emit artifacts here.\n\n- [ ] roadmap.md\n- [ ] sprint-plans.md\n- [ ] estimation.md\n"),
+            ("README.md", "# 09 — Execution Plan\n\nRoadmap, sprints, estimations. `sdd-tasks` and `cos-sprint` skills emit artifacts here.\n\n- [ ] roadmap.md\n- [ ] sprint-plans.md\n- [ ] estimation.md\n"),
             ("roadmap.md", "# Roadmap\n\n## Q1\n<!-- TODO -->\n\n## Q2\n<!-- TODO -->\n\n## Later\n<!-- TODO -->\n"),
             ("sprint-plans.md", "# Sprint Plans\n\n| Sprint | Goal | Scope | Exit criteria |\n|---|---|---|---|\n<!-- TODO -->\n"),
             ("estimation.md", "# Estimation\n\n## Method\n<!-- TODO: story points / t-shirts / hours -->\n\n## History (actual vs estimated)\n<!-- TODO -->\n"),
         ],
     ),
     (
-        "10-resumenes",
+        "10-summaries",
         "Summaries",
         [
-            ("README.md", "# 10 — Resúmenes\n\nExecutive summaries and status reports. `session-wrapup` + `generate-changelog` feed this.\n\n- [ ] executive-summary.md\n- [ ] status-reports.md\n"),
+            ("README.md", "# 10 — Summaries\n\nExecutive summaries and status reports. `session-wrapup` + `generate-changelog` feed this.\n\n- [ ] executive-summary.md\n- [ ] status-reports.md\n"),
             ("executive-summary.md", "# Executive Summary\n\n## Current state\n<!-- TODO -->\n\n## Recent wins\n<!-- TODO -->\n\n## Next milestones\n<!-- TODO -->\n"),
             ("status-reports.md", "# Status Reports\n\n## Template\n- Date:\n- Status: on-track|at-risk|blocked\n- Delivered this week:\n- Blocked on:\n- Next week:\n\n## Reports\n<!-- TODO: append new reports at top -->\n"),
         ],
@@ -263,7 +263,7 @@ class ProjectScaffolder:
             "- **Decision**: what we chose\n"
             "- **Consequences**: positive / negative / neutral\n"
             "- **Alternatives rejected** (if relevant)\n"
-            "- **Related**: other ADRs, docs categories (02-arquitectura, etc.)\n\n"
+            "- **Related**: other ADRs, docs categories (02-architecture, etc.)\n\n"
             "## Index\n"
             "<!-- TODO: add new ADRs here as they land -->\n"
         )

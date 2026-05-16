@@ -96,7 +96,7 @@ Concrete artifact: **`skills/deep-tool-research/SKILL.md`** (skeleton, this comm
 
 Each deep evaluation contains a ranked recommendation list (typically in §6 verdict, §8 next steps, or in Annex E §6 primitives). Spot-check:
 
-- `holaos-comparison-2026-05-10.md` §8 ("Próximos pasos recomendados") names 5 owners + estimaciones; no citation of `master-pending-*`, sprint state, dogfood-score, or sprint capacity.
+- `holaos-comparison-2026-05-10.md` §8 ("Recommended next steps") names 5 owners + estimates; no citation of `master-pending-*`, sprint state, dogfood-score, or sprint capacity.
 - `helixdb-comparison-2026-05-11.md` Annex E (primitives) — same shape, ranked by analytical merit, no operational grounding.
 - `ifixai-comparison-2026-05-11.md` §6 ("Sequencing: Phase A/B/C") — sequenced without referencing `radar-2026-05-08-implementation-tracker.md`, current sprint, or prior decisions in Engram.
 - `megamemory-comparison-2026-05-11.md` §6 + Annex E — recommends "port the in-process MiniLM pipeline, nothing else" without citing memory bundle plans (`docs/04-Concepts/architecture/memory-layer-evolution-sdd.md` is referenced but only for cross-validation, not as a capacity/sequencing signal).

@@ -111,7 +111,7 @@ def decision_from_winner(winner: dict[str, Any] | None) -> dict[str, Any]:
 
 def markdown_table(comparison: dict[str, Any]) -> str:
     lines = [
-        "| Strategy | Status | Passed | Blocks | ΔPassed | ΔTemporal | ΔSource | Score | Fixed fixtures |",
+        "| Strategy | Status | Passed | Blocks | Delta Passed | Delta Temporal | Delta Source | Score | Fixed fixtures |",
         "|---|---|---:|---:|---:|---:|---:|---:|---|",
     ]
     for row in comparison["rows"]:

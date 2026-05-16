@@ -41,13 +41,17 @@ TEXT_SUFFIXES = PROSE_SUFFIXES | CODE_SUFFIXES | {
 
 DEFAULT_EXCLUDE_GLOBS = (
     ".git/**",
+    ".ai/**",
     "**/__pycache__/**",
     "**/.pytest_cache/**",
     "**/.mypy_cache/**",
     "**/.venv/**",
     "**/node_modules/**",
+    "**/package-lock.json",
+    "THIRD_PARTY_LICENSES.txt",
     # Intentional multilingual runtime fixture corpus for ADR-298 routing benchmarks.
     "manifests/routing-benchmark-corpus.yaml",
+    "manifests/routing-benchmark-corpus-multilingual.yaml",
 )
 
 FORBIDDEN_PUNCTUATION = "".join(chr(code) for code in (0x00A1, 0x00BF))
@@ -105,7 +109,9 @@ ALLOW_BLOCK_MARKER = "english-only-content-audit: allow-block"
 
 # Regex patterns for stripping non-prose content from markdown/text.
 _CODE_FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
+_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 _INLINE_CODE_RE = re.compile(r"`[^`\n]+`")
+_MARKDOWN_LINK_RE = re.compile(r"\[[^\]\n]+\]\([^)]+\)")
 _URL_RE = re.compile(r"https?://\S+|www\.\S+")
 _TABLE_LINE_RE = re.compile(r"^\s*\|")
 _FRONTMATTER_RE = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
@@ -349,6 +355,8 @@ def _fast_prepass_finding(
 def _strip_prose_noise(text: str) -> str:
     """Remove code fences, inline code, URLs, and table lines from prose."""
     text = _CODE_FENCE_RE.sub("", text)
+    text = _HTML_COMMENT_RE.sub("", text)
+    text = _MARKDOWN_LINK_RE.sub("", text)
     text = _INLINE_CODE_RE.sub("", text)
     text = _URL_RE.sub("", text)
     lines = [l for l in text.splitlines() if not _TABLE_LINE_RE.match(l)]
@@ -359,8 +367,57 @@ def _strip_frontmatter(text: str) -> str:
     return _FRONTMATTER_RE.sub("", text, count=1)
 
 
+def _blank_frontmatter_preserve_lines(text: str) -> str:
+    """Blank YAML frontmatter while preserving line numbers."""
+    match = _FRONTMATTER_RE.match(text)
+    if match is None:
+        return text
+    frontmatter = match.group(0)
+    blanks = "\n" * frontmatter.count("\n")
+    return blanks + text[match.end():]
+
+
+def _blank_fenced_blocks_preserve_lines(text: str) -> str:
+    """Blank fenced code blocks before paragraph segmentation.
+
+    `_strip_prose_noise()` removes fences only after paragraph collection. That
+    misses fenced blocks with blank lines inside them because paragraph
+    segmentation has already split the block into prose-like chunks. Blank the
+    fence lines first so examples, shell transcripts, and Dockerfiles never
+    become language-detection input.
+    """
+    out: list[str] = []
+    in_fence = False
+    for line in text.splitlines(keepends=True):
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            out.append("\n" if line.endswith("\n") else "")
+            continue
+        if in_fence:
+            out.append("\n" if line.endswith("\n") else "")
+            continue
+        out.append(line)
+    return "".join(out)
+
+
 def _word_count(text: str) -> int:
-    return len(text.split())
+    return len(re.findall(r"[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ'-]{2,}", text))
+
+
+def _looks_like_code_or_data(text: str) -> bool:
+    """Return True for code/data blobs that tree-sitter can expose as strings."""
+    stripped = text.strip()
+    if not stripped:
+        return True
+    nonspace = [c for c in stripped if not c.isspace()]
+    if not nonspace:
+        return True
+    symbolic = sum(1 for c in nonspace if not c.isalnum() and c not in "'-")
+    if symbolic / len(nonspace) > 0.28:
+        return True
+    if re.search(r"[$(){}]|\\b(?:jq|argjson|re\\.compile|regex)\\b", stripped):
+        return True
+    return False
 
 
 def _detect_chunk(
@@ -400,7 +457,8 @@ def _lingua_findings_for_paragraphs(
     findings: list[Finding] = []
     seen_lines: set[int] = set()  # Deduplicate findings by first_line.
 
-    text = _strip_frontmatter(text)
+    text = _blank_frontmatter_preserve_lines(text)
+    text = _blank_fenced_blocks_preserve_lines(text)
     original_lines = text.splitlines()
 
     # Collect paragraphs: (joined_text, first_line_1indexed).
@@ -422,7 +480,7 @@ def _lingua_findings_for_paragraphs(
 
     # Sentence-level min_words and confidence are more lenient.
     sent_min_words = max(5, min_words // 2)
-    sent_min_confidence = max(0.55, min_confidence - 0.20)
+    sent_min_confidence = min_confidence
 
     for para_text, first_line in paragraphs:
         # Allow-marker check.
@@ -536,10 +594,12 @@ def _lingua_findings_for_code(
     lines = text.splitlines()
 
     sent_min_words = max(5, min_words // 2)
-    sent_min_confidence = max(0.55, min_confidence - 0.20)
+    sent_min_confidence = min_confidence
 
     findings: list[Finding] = []
     for chunk, line_no in _walk_nodes(tree.root_node, text_bytes, min_words):
+        if _looks_like_code_or_data(chunk):
+            continue
         # Allow-marker check in surrounding source lines.
         window = _context_window(lines, line_no - 1, radius=3)
         if _has_allow_block_marker(window) or _has_allow_marker(window):

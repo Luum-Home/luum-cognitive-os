@@ -35,7 +35,7 @@ COS eval / red-team lanes: `red-team`, `redteam-harness`, `security-red-team`,
 and the aguara policy/standards crosswalk.
 
 The original intake brief asked for bidirectional verdicts against the bug-fix
-family; those verdicts are recorded as **NO_COMPARABLE** for completeness, and
+family; those verdicts are recorded as **NOT_COMPARABLE** for completeness, and
 the substantive verdicts are recorded against the eval/red-team family.
 
 ## Executive verdict
@@ -78,24 +78,24 @@ not adoption proof.
 
 | Comparable | Verdict | Note |
 |---|---|---|
-| `/plan-bug` skill | **NO_COMPARABLE** | iFixAi does not analyze defects in user code |
-| `/systematic-debugging` skill | **NO_COMPARABLE** | iFixAi is a black-box LLM diagnostic, not a debugger |
-| SDD apply-verify retry loop (ADR-228) | **NO_COMPARABLE** | No code-edit retry contract; one-shot diagnostic |
-| `/auto-rollback` | **NO_COMPARABLE** | No rollback responsibility |
+| `/plan-bug` skill | **NOT_COMPARABLE** | iFixAi does not analyze defects in user code |
+| `/systematic-debugging` skill | **NOT_COMPARABLE** | iFixAi is a black-box LLM diagnostic, not a debugger |
+| SDD apply-verify retry loop (ADR-228) | **NOT_COMPARABLE** | No code-edit retry contract; one-shot diagnostic |
+| `/auto-rollback` | **NOT_COMPARABLE** | No rollback responsibility |
 
 ### Against the actual peer family (eval / red-team / governance)
 
 | iFixAi capability | COS state | Verdict | Action |
 |---|---|---|---|
-| Five-pillar misalignment taxonomy (32 inspections) | `red-team`, `redteam-harness`, `security-red-team` cover attack red-teaming; no shipped misalignment taxonomy with policy-disclosed thresholds | **MEJOR_EXTERNO** | Extract taxonomy as a COS pattern reference |
-| Cross-judge by default (SUT cannot self-grade) | COS eval skills do not enforce evaluator isolation | **MEJOR_EXTERNO** | Encode as rule for COS eval lanes |
+| Five-pillar misalignment taxonomy (32 inspections) | `red-team`, `redteam-harness`, `security-red-team` cover attack red-teaming; no shipped misalignment taxonomy with policy-disclosed thresholds | **EXTERNAL_BETTER** | Extract taxonomy as a COS pattern reference |
+| Cross-judge by default (SUT cannot self-grade) | COS eval skills do not enforce evaluator isolation | **EXTERNAL_BETTER** | Encode as rule for COS eval lanes |
 | Provider-portable harness (10 providers) | COS llm-dispatch covers Qwen/Claude per ADR-049 | **COMPATIBLE / DIFFERENT_AXIS** | No action — different surface |
-| Content-addressed reproducibility manifest | COS has ADR-247 manifest doctrine; no per-eval-run content-addressed replay | **MEJOR_EXTERNO** (per-run) / **COMPATIBLE** (philosophy) | Pattern extract |
-| Standards crosswalk (OWASP/NIST/ISO/EU-AI-Act) mapping layer | Aguara handles 189 rules; no public artifact-form crosswalk | **MEJOR_EXTERNO** (artifact form) | Use as reference structure for aguara docs |
-| Threshold-policy self-disclaimer | COS scorecards do not standardize "calibration caveat" | **MEJOR_EXTERNO** (disclosure pattern) | Adopt as claim-debt control |
-| vs `promptfoo-integration` | Promptfoo is a generic eval runner; iFixAi is opinionated on alignment | **IGUAL / DIFFERENT_AXIS** | Keep both; iFixAi for alignment lane, promptfoo for generic evals |
-| vs `deepeval-integration` | DeepEval is metric-rich; iFixAi is taxonomy-rich | **IGUAL / DIFFERENT_AXIS** | Complementary |
-| vs `ragas-integration` | Ragas is RAG-specific; iFixAi is alignment-specific | **IGUAL / DIFFERENT_AXIS** | Complementary |
+| Content-addressed reproducibility manifest | COS has ADR-247 manifest doctrine; no per-eval-run content-addressed replay | **EXTERNAL_BETTER** (per-run) / **COMPATIBLE** (philosophy) | Pattern extract |
+| Standards crosswalk (OWASP/NIST/ISO/EU-AI-Act) mapping layer | Aguara handles 189 rules; no public artifact-form crosswalk | **EXTERNAL_BETTER** (artifact form) | Use as reference structure for aguara docs |
+| Threshold-policy self-disclaimer | COS scorecards do not standardize "calibration caveat" | **EXTERNAL_BETTER** (disclosure pattern) | Adopt as claim-debt control |
+| vs `promptfoo-integration` | Promptfoo is a generic eval runner; iFixAi is opinionated on alignment | **EQUIVALENT / DIFFERENT_AXIS** | Keep both; iFixAi for alignment lane, promptfoo for generic evals |
+| vs `deepeval-integration` | DeepEval is metric-rich; iFixAi is taxonomy-rich | **EQUIVALENT / DIFFERENT_AXIS** | Complementary |
+| vs `ragas-integration` | Ragas is RAG-specific; iFixAi is alignment-specific | **EQUIVALENT / DIFFERENT_AXIS** | Complementary |
 | vs `red-team` / `redteam-harness` | COS red-team is attack-driven; iFixAi is inspection-driven | **COMPATIBLE** | iFixAi could be invoked from `red-team` lane via CLI-adapter |
 
 ## Adoption kind (per `external-tool-adapter-taxonomy.md`)

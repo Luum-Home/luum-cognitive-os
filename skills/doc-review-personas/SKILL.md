@@ -33,7 +33,7 @@ triggers:
 - review documentation
 - personas
 - multi-persona
-- hallazgos
+- findings
 - findings from different lenses
 platforms:
 - claude-code
@@ -121,11 +121,11 @@ severity** when two personas independently flag the same file+topic.
 # Doc Review — Multi-Persona
 - docs_dir, files reviewed, personas, total cost
 ## Summary  — counts by tier
-## Hallazgos
-### Críticos (S1 BLOCKER)     — table with location, what, why, recommendation, reviewers
-### Medios (S2 CONCERN)
-### Menores (S3 SUGGESTION)
-### Preguntas abiertas (S4 QUESTION)
+## Findings
+### Critical (S1 BLOCKER)     — table with location, what, why, recommendation, reviewers
+### Medium (S2 CONCERN)
+### Minor (S3 SUGGESTION)
+### Open questions (S4 QUESTION)
 ## Per-persona status
 ```
 

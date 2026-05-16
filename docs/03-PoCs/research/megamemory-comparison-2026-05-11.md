@@ -16,7 +16,7 @@ related_docs:
 
 # MegaMemory Deep Comparison — luum-agent-os vs MegaMemory
 
-> Phase-3 axis verdicts: MEJOR_NUESTRO / IGUAL / MEJOR_EXTERNO / NO_COMPARABLE.
+> Phase-3 axis verdicts: OURS_BETTER / EQUIVALENT / EXTERNAL_BETTER / NOT_COMPARABLE.
 > Research-only artifact, parallel to the holaOS comparison shape. Adoption decision
 > is already taken (ASSESS / pattern-only) in `docs/06-Daily/reports/external-tools-radar-megamemory-addendum-2026-05-11.md`;
 > this corpus drills the why behind that verdict and pins port surfaces.
@@ -89,19 +89,19 @@ A condensed verdict matrix:
 
 | Dimension | MegaMemory | Engram + planned bundle | Verdict |
 |---|---|---|---|
-| Storage substrate | SQLite WAL + soft-delete + timeline | Engram daemon over SQLite + `memory_relations` | IGUAL |
-| Embedding source | In-process MiniLM 384-dim ONNX | FTS5-only today; LightRAG slice planned | MEJOR_EXTERNO (narrow primitive) |
-| Relation typing | 5 directed relations (`connects_to`, `depends_on`, `implements`, `calls`, `configured_by`) | 6+ judgment-aware relations (`supersedes`, `conflicts_with`, `related`, `compatible`, `scoped`, `not_conflict`) with `judgment_status` lifecycle | MEJOR_NUESTRO |
-| Concept-kind taxonomy | 6 fixed kinds | Free-form `type` strings + planned MIRIX memory_class | IGUAL on coverage; MIRIX path more expressive |
-| Conflict surfacing | Explicit `list_conflicts` + `resolve_conflict` MCP tools | `judgment_required` envelope + per-candidate `mem_judge` (CLAUDE.md "CONFLICT SURFACING") | IGUAL (different ergonomics, same outcome) |
-| Bi-temporal model | None | Planned via Graphiti adoption (`valid_to` via `memory_relations.superseded_at`) | MEJOR_NUESTRO |
-| Graph walk | Cosine over candidates + 1-hop lookup | BFS with typed-edge filtering (`lib/engram_graph_walker.py`) + planned HippoRAG PPR | MEJOR_NUESTRO |
-| Explorer UI | D3-force web view (`megamemory serve`) | None | MEJOR_EXTERNO (not a current requirement) |
-| Audit trail | Append-only `timeline` table per tool invocation | Engram observations + judgment lifecycle + sessions | IGUAL (different shape, same coverage) |
-| Capacity ceiling | <~10k nodes (stated) | Unbounded via FTS5 + Engram daemon | MEJOR_NUESTRO |
-| Harness portability | Per-target installer (4 harnesses) | `.ai/` portable overlay (ADR-258) + manifest-driven adoption | MEJOR_NUESTRO |
+| Storage substrate | SQLite WAL + soft-delete + timeline | Engram daemon over SQLite + `memory_relations` | EQUIVALENT |
+| Embedding source | In-process MiniLM 384-dim ONNX | FTS5-only today; LightRAG slice planned | EXTERNAL_BETTER (narrow primitive) |
+| Relation typing | 5 directed relations (`connects_to`, `depends_on`, `implements`, `calls`, `configured_by`) | 6+ judgment-aware relations (`supersedes`, `conflicts_with`, `related`, `compatible`, `scoped`, `not_conflict`) with `judgment_status` lifecycle | OURS_BETTER |
+| Concept-kind taxonomy | 6 fixed kinds | Free-form `type` strings + planned MIRIX memory_class | EQUIVALENT on coverage; MIRIX path more expressive |
+| Conflict surfacing | Explicit `list_conflicts` + `resolve_conflict` MCP tools | `judgment_required` envelope + per-candidate `mem_judge` (CLAUDE.md "CONFLICT SURFACING") | EQUIVALENT (different ergonomics, same outcome) |
+| Bi-temporal model | None | Planned via Graphiti adoption (`valid_to` via `memory_relations.superseded_at`) | OURS_BETTER |
+| Graph walk | Cosine over candidates + 1-hop lookup | BFS with typed-edge filtering (`lib/engram_graph_walker.py`) + planned HippoRAG PPR | OURS_BETTER |
+| Explorer UI | D3-force web view (`megamemory serve`) | None | EXTERNAL_BETTER (not a current requirement) |
+| Audit trail | Append-only `timeline` table per tool invocation | Engram observations + judgment lifecycle + sessions | EQUIVALENT (different shape, same coverage) |
+| Capacity ceiling | <~10k nodes (stated) | Unbounded via FTS5 + Engram daemon | OURS_BETTER |
+| Harness portability | Per-target installer (4 harnesses) | `.ai/` portable overlay (ADR-258) + manifest-driven adoption | OURS_BETTER |
 | Dependency footprint | `@xenova/transformers`, `libsql`, `zod`, `picocolors`, MCP SDK | Stdlib-heavy Python + Engram daemon; embedder TBD | MegaMemory heavier on a port |
-| Bus factor | Single author | Multi-author project core | MEJOR_NUESTRO |
+| Bus factor | Single author | Multi-author project core | OURS_BETTER |
 
 **Net:** MegaMemory wins narrowly on **two** dimensions (in-process embedder, explorer UI) and loses on everything else. The win is real but is a single primitive's worth, not a system's worth.
 

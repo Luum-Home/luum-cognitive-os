@@ -28,7 +28,7 @@ Close the 8 gaps identified in orchestrator research (2026-04-20, engram topic `
 3. Typed output schema (TRUST_REPORT is text convention, not Pydantic/JSON)
 4. Iteration cap (reasoning cycles, separate from tool-call cap)
 5. Escalation routing spec (text-only, no typed handoff like AutoGen)
-6. Planning template separado (smolagents-unique, enables pre-computation)
+6. Separate planning template (smolagents-unique, enables pre-computation)
 7. Retry diversity protocol (each retry must use different approach)
 8. Memory scope declaration (SEARCH_PERMISSION binary, no tiers)
 

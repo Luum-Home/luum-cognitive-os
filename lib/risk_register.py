@@ -15,7 +15,7 @@ from typing import List
 
 __all__ = ["RiskRegisterScaffolder", "STRIDE_CATEGORIES", "render_template", "ScaffoldResult"]
 
-DOC_REL = Path("docs/03-dominio-riesgo/risk-register.md")
+DOC_REL = Path("docs/03-domain-risk/risk-register.md")
 
 HEADER_MARKER = "<!-- risk-register:autogen-header -->"
 FOOTER_MARKER = "<!-- risk-register:autogen-footer -->"

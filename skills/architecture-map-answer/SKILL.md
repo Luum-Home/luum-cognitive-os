@@ -6,10 +6,7 @@ description: Use when you need a commercial-safe Cognitive OS architecture map f
   claims.
 triggers:
 - architecture map
-- mapa del SO
-- mapa de arquitectura
 - commercial architecture
-- arquitectura comercial
 user-invocable: true
 audience: os-dev
 tags:
@@ -26,9 +23,9 @@ platforms:
 - shell
 prerequisites: []
 routing_patterns:
-- pattern: \b(architecture|arquitectura).{0,40}(map|mapa|commercial|comercial)\b
+- pattern: \barchitecture.{0,40}(map|commercial)\b
   confidence: 0.95
-- pattern: \b(mapa del SO|mapa reducido|agent OS map|cognitive os map)\b
+- pattern: \b(agent OS map|cognitive os map)\b
   confidence: 0.95
 routing_intents:
 - intent: commercial_architecture_map

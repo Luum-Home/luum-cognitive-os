@@ -175,10 +175,10 @@ Extend `lib/engram_lifecycle.py` search to walk `mem_judge` edges after initial 
 ### Graph contribution weight
 
 ```
-final_score = lifecycle_score × (1 − α_graph) + graph_boost × α_graph
+final_score = lifecycle_score × (1 − alpha_graph) + graph_boost × alpha_graph
 ```
 
-Default `α_graph = 0.2`. Graph-connected observations that did not appear in the initial search get a base boost of 0.3 before lifecycle adjustment.
+Default `alpha_graph = 0.2`. Graph-connected observations that did not appear in the initial search get a base boost of 0.3 before lifecycle adjustment.
 
 ### Definition of Done — Phase 3
 
@@ -229,6 +229,6 @@ A read-only export layer that renders engram observations as Obsidian Markdown w
 |---|---|---|
 | Engram upstream binary update breaks trailer-in-content assumption | Low (v1.14.5 stable; content is opaque to engram) | Pin engram version in `cognitive-os.yaml`; add integration test that round-trips content with trailer through engram MCP call |
 | Reinforcement hook fires too frequently (automated re-reads create noise) | Medium — automated hooks can read the same observation many times | Add deduplication: skip reinforcement if `last_reinforced` was within the last 60 seconds for the same observation ID |
-| α=0.3 and β=0.15 are wrong calibration for this system | Unknown until production | Log pre/post scores to `.cognitive-os/metrics/engram-lifecycle-scores.jsonl`; run `/model-optimizer`-style analysis after 2 weeks |
+| alpha=0.3 and beta=0.15 are wrong calibration for this system | Unknown until production | Log pre/post scores to `.cognitive-os/metrics/engram-lifecycle-scores.jsonl`; run `/model-optimizer`-style analysis after 2 weeks |
 | Cold-start period: observations without trailer get no lifecycle signal | Certain — all existing observations predate Phase 1 | Fallback to defaults (confidence=0.5, decay\_class=manual); system self-corrects as observations are accessed and reinforced |
 | Performance overhead at scale (>1000 observations in search result pool) | Low currently, watch as corpus grows | Profile at 500, 1000, 5000 obs; add `max_rerank_candidates` config option to bypass re-ranking when pool exceeds threshold |

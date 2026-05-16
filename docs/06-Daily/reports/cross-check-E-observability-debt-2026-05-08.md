@@ -113,4 +113,4 @@ Cons / open risks:
   1. Create ADR tombstone for squad archival (DEBT-2).
   2. Correct count 11+3 → 12+2 in README L26.
   3. Soften claim for Trust Report "requires" or add blocking enforcement where README promises it.
-  4. Cerrar ADR-058 Phase 3 (remove Langfuse from docker-compose) before 2026-06-15.
+  4. Close ADR-058 Phase 3 (remove Langfuse from docker-compose) before 2026-06-15.

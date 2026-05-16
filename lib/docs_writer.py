@@ -6,9 +6,9 @@ Resolves `<project_dir>/docs/<NN-category>/` and writes a timestamped
 markdown file into it. If the category dir does not exist, it is created
 (the scaffolder is idempotent — re-running /project-scaffold is also fine).
 
-Intended callers: skills/security-audit (→ 04-seguridad),
-skills/rules-export (→ 08-estandares), and future writers (sdd-design →
-02-arquitectura, document-feature → 05-features, etc.).
+Intended callers: skills/security-audit (→ 04-security),
+skills/rules-export (→ 08-standards), and future writers (sdd-design →
+02-architecture, document-feature → 05-features, etc.).
 
 Design:
     - PURE file I/O. No LLM calls, no subprocess. Safe to test with tmp_path.
@@ -34,16 +34,16 @@ __all__ = [
 
 
 CATEGORY_DIR_NAMES = (
-    "01-contexto",
-    "02-arquitectura",
-    "03-dominio-riesgo",
-    "04-seguridad",
+    "01-context",
+    "02-architecture",
+    "03-domain-risk",
+    "04-security",
     "05-features",
     "06-backoffice",
-    "07-investigacion",
-    "08-estandares",
-    "09-plan-ejecucion",
-    "10-resumenes",
+    "07-research",
+    "08-standards",
+    "09-execution-plan",
+    "10-summaries",
 )
 
 

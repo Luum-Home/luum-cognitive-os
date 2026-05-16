@@ -32695,10 +32695,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,analysis,annex,based,blocker,hallazgos,procedure,types"
+        "terms:added,analysis,annex,based,blocker,findings,procedure,types"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "`procedure` and `blocker` types added based on Annex A \u00a7Hallazgos sorpresa (gap analysis),",
+      "item": "`procedure` and `blocker` types added based on Annex A \u00a7Unexpected findings (gap analysis),",
       "kind": "bullet",
       "line": 399,
       "next_action": "add explicit test/workflow/proof link",
@@ -52129,7 +52129,7 @@
         "weak_terms:openclaw-remaining-patterns"
       ],
       "inferred_status": "planned",
-      "item": "> Documento companero: [openclaw-remaining-patterns.md](openclaw-remaining-patterns.md)",
+      "item": "> Companion document: [openclaw-remaining-patterns.md](openclaw-remaining-patterns.md)",
       "kind": "prose",
       "line": 5,
       "next_action": "keep planned or add implementation proof when complete",
@@ -58782,7 +58782,7 @@
         "terms:adr-054,assigns,category,convention,does,filesystem,live,path"
       ],
       "inferred_status": "proposed",
-      "item": "ADR-054 (Project Documentation Convention) assigns category `09-plan-ejecucion` for roadmaps/sprints but does not specify which filesystem path plans should live in.",
+      "item": "ADR-054 (Project Documentation Convention) assigns category `09-execution-plan` for roadmaps/sprints but does not specify which filesystem path plans should live in.",
       "kind": "bullet",
       "line": 135,
       "next_action": "keep as proposal until accepted/implemented",
@@ -62278,7 +62278,7 @@
         "terms:capacity,citation,dogfood-score,holaos-comparison-2026-05-10,master-pending-,names,owners,sprint"
       ],
       "inferred_status": "planned",
-      "item": "`holaos-comparison-2026-05-10.md` \u00a78 (\"Pr\u00f3ximos pasos recomendados\") names 5 owners + estimaciones; no citation of `master-pending-*`, sprint state, dogfood-score, or sprint capacity.",
+      "item": "`holaos-comparison-2026-05-10.md` \u00a78 (\"Pr\u00f3ximos pasos recomendados\") names 5 owners + estimates; no citation of `master-pending-*`, sprint state, dogfood-score, or sprint capacity.",
       "kind": "bullet",
       "line": 99,
       "next_action": "keep planned or add implementation proof when complete",

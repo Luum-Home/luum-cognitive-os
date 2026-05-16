@@ -32,9 +32,9 @@ wc -l lib/providers/__init__.py
 
 | Dim | A | B | Verdict |
 |---|---|---|---|
-| Events | a/file.py:23-100 wires 11 events | b/file.py:5-50 wires 10 events | IGUAL |
-| Providers | c/file.py:1-65 lists 7 providers | d/file.py:5-200 lists 22 providers | B MEJOR |
-| Hooks | e/foo.sh:10-40 has 9 hooks | f/bar.sh:1-100 has 10 hooks | IGUAL |
+| Events | a/file.py:23-100 wires 11 events | b/file.py:5-50 wires 10 events | EQUIVALENT |
+| Providers | c/file.py:1-65 lists 7 providers | d/file.py:5-200 lists 22 providers | B BETTER |
+| Hooks | e/foo.sh:10-40 has 9 hooks | f/bar.sh:1-100 has 10 hooks | EQUIVALENT |
 
 **Verdict**: the comparison is balanced. Confidence HIGH.
 
@@ -53,8 +53,8 @@ LOW_QUALITY_REPORT = """# Synthetic shallow audit
 
 | Dim | A | B | Verdict |
 |---|---|---|---|
-| Events | scripts/foo.sh:10-50 wires several events | several events roughly | IGUAL |
-| Providers | lib/bar.py:1-20 has 7 providers approximately | various providers around 4 | B MEJOR |
+| Events | scripts/foo.sh:10-50 wires several events | several events roughly | EQUIVALENT |
+| Providers | lib/bar.py:1-20 has 7 providers approximately | various providers around 4 | B BETTER |
 """
 
 

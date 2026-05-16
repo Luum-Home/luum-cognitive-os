@@ -34,30 +34,30 @@ mkdir -p "$TMP_DIR/docs"
 # Intentional defects seeded across 3 files:
 #   1. README lacks installation instructions + has broken link
 #   2. BUDGET has dates that don't close + no ROI
-#   3. SPEC has a typo / missing tilde
+#   3. SPEC has vague, unsupported technical claims.
 cat > "$TMP_DIR/docs/00-MOCs/entrypoints/README.md" <<'EOF'
-# Projecto Demo
+# Demo Project
 
-Este es un proyecto demo.
+This is a demo project.
 
-Ver [arquitectura](docs/04-Concepts/architecture/overview.md) para mas detalles.
+See [architecture](docs/04-Concepts/architecture/overview.md) for more details.
 EOF
 
 cat > "$TMP_DIR/docs/BUDGET.md" <<'EOF'
-# Presupuesto
+# Budget
 
-- Sprint 1: semanas 1-3
-- Sprint 2: semanas 4-6
-- Sprint 3: semanas 5-7
+- Sprint 1: weeks 1-3
+- Sprint 2: weeks 4-6
+- Sprint 3: weeks 5-7
 
-Costo total: se definira mas adelante.
+Total cost will be defined later.
 EOF
 
 cat > "$TMP_DIR/docs/SPEC.md" <<'EOF'
-# Especificacion tecnica
+# Technical Specification
 
-La solucion utiliza una arquitectura de microservicios.
-La tecnica aplicada es nueva y revolucionaria.
+The solution uses a microservice architecture.
+The applied technique is new and revolutionary.
 EOF
 
 echo "[smoke] running /doc-review-personas with cfo + editor_qa against $TMP_DIR/docs"
@@ -82,7 +82,7 @@ if [ ! -s "$OUTPUT_FILE" ]; then
 fi
 
 # Require at least one S1 or S2 finding — smoke docs are deliberately broken
-if ! grep -qE '(Críticos \(S1|Medios \(S2)' "$OUTPUT_FILE" ; then
+if ! grep -qE '(Critical \(S1|Medium \(S2)' "$OUTPUT_FILE" ; then
   echo "[smoke] FAIL: no S1/S2 section headers in report"
   exit 3
 fi

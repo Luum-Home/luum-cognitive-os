@@ -43,7 +43,7 @@ def test_render_seeds_one_row_per_stride_category():
 def test_scaffold_creates_at_canonical_path(tmp_path: Path):
     s = RiskRegisterScaffolder(project_dir=tmp_path, assets_brief="database")
     result = s.scaffold()
-    expected = tmp_path / "docs" / "03-dominio-riesgo" / "risk-register.md"
+    expected = tmp_path / "docs" / "03-domain-risk" / "risk-register.md"
     assert result.action == "created"
     assert expected.exists()
     body = expected.read_text()
@@ -55,7 +55,7 @@ def test_scaffold_creates_at_canonical_path(tmp_path: Path):
 def test_matrix_and_legend_present(tmp_path: Path):
     s = RiskRegisterScaffolder(project_dir=tmp_path)
     s.scaffold()
-    body = (tmp_path / "docs" / "03-dominio-riesgo" / "risk-register.md").read_text()
+    body = (tmp_path / "docs" / "03-domain-risk" / "risk-register.md").read_text()
     # Legend values
     for k in ("(Low)", "(Medium)", "(High)"):
         assert k in body, f"missing legend tier: {k}"
@@ -67,7 +67,7 @@ def test_matrix_and_legend_present(tmp_path: Path):
 def test_extended_preserves_user_tail(tmp_path: Path):
     s = RiskRegisterScaffolder(project_dir=tmp_path)
     s.scaffold()
-    target = tmp_path / "docs" / "03-dominio-riesgo" / "risk-register.md"
+    target = tmp_path / "docs" / "03-domain-risk" / "risk-register.md"
     target.write_text(target.read_text() + "\n## CUSTOM NOTES\nimportant\n")
 
     s2 = RiskRegisterScaffolder(project_dir=tmp_path, assets_brief="new assets")
@@ -80,7 +80,7 @@ def test_extended_preserves_user_tail(tmp_path: Path):
 
 
 def test_skip_existing_without_markers(tmp_path: Path):
-    target = tmp_path / "docs" / "03-dominio-riesgo" / "risk-register.md"
+    target = tmp_path / "docs" / "03-domain-risk" / "risk-register.md"
     target.parent.mkdir(parents=True)
     target.write_text("# My hand-written register\n")
 
@@ -104,5 +104,5 @@ def test_cli_end_to_end(tmp_path: Path):
     assert result.returncode == 0, f"stderr: {result.stderr}"
     payload = json.loads(result.stdout)
     assert payload["action"] == "created"
-    body = (tmp_path / "cli" / "docs" / "03-dominio-riesgo" / "risk-register.md").read_text()
+    body = (tmp_path / "cli" / "docs" / "03-domain-risk" / "risk-register.md").read_text()
     assert "pii, billing" in body

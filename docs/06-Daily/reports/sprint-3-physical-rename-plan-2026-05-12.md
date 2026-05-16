@@ -123,7 +123,7 @@ Engram topic key (when run): `sprint-3-physical-rename/state` — orchestrator m
 
 Operator's original framing on 2026-05-12:
 
-> *"arrancamos con Fase 1+2 SOLO en las carpetas de bajo costo (`08-References/`, `99-Archive/`, `03-PoCs/`) que tienen pocos callers. Si eso anda limpio, escalamos. Si rompe, contenemos."*
+> Operator framing: start with Phase 1+2 only in the low-cost directories (`08-References/`, `99-Archive/`, `03-PoCs/`) that have few callers. If that is clean, escalate; if it breaks, contain the blast radius.
 
 ### Real per-directory caller counts (re-measured 2026-05-12)
 

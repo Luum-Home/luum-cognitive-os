@@ -303,7 +303,7 @@ ADR-034 reference configuration.
   Langfuse recommendation to "deprecated" while leaving the MLflow / Opik
   decisions intact.
 - **ADR-054** — Project docs convention. Adoption note for Phoenix lands in
-  `docs/02-arquitectura/` per ADR-054.
+  `docs/02-architecture/` per ADR-054.
 - **`docs/04-Concepts/architecture/observability-backend-evaluation-2026-04-24.md`** —
   landscape evaluation; the appended §Decision section pins this outcome.
 - **`docs/04-Concepts/architecture/infrastructure-service-catalog.md`** — services table

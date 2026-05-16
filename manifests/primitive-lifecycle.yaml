@@ -22853,7 +22853,7 @@ primitives:
   - claude
   - shell
   projection_targets:
-  - docs/03-dominio-riesgo/domain-model.md
+  - docs/03-domain-risk/domain-model.md
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 011; scaffolds adopter-project
     DDD documentation.
@@ -23765,7 +23765,7 @@ primitives:
   - claude
   - shell
   projection_targets:
-  - docs/03-dominio-riesgo/risk-register.md
+  - docs/03-domain-risk/risk-register.md
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 011; scaffolds adopter-project
     STRIDE risk register.
@@ -23792,7 +23792,7 @@ primitives:
   - claude
   - shell
   projection_targets:
-  - docs/08-estandares/rules-snapshot-*.md
+  - docs/08-standards/rules-snapshot-*.md
   runtime_projection: false
   behavior_evidence: Manual scope calibration iteration 011; exports SO rules snapshots
     into adopting projects.

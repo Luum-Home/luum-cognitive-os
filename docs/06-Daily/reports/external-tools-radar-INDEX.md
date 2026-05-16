@@ -104,8 +104,8 @@ adoption.
 
 The 2026-05-06 radar ranked tools by *extractable primitive value*. The
 2026-05-08 edition adds a second axis: **delta against shipped code**. For
-every recommendation, verdict ∈ {MEJOR\_NUESTRO, IGUAL, MEJOR\_EXTERNO,
-NO\_COMPARABLE} grounded in concrete file references on both sides.
+every recommendation, verdict ∈ {OURS\_BETTER, EQUIVALENT, EXTERNAL\_BETTER,
+NOT\_COMPARABLE} grounded in concrete file references on both sides.
 
 | Path | Role |
 |---|---|

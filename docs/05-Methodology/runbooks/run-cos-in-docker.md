@@ -71,7 +71,7 @@ All credentials are caller-supplied per ADR-139. The worker does **not** read yo
 
 ```bash
 COS_WORKSPACE=/path/to/repo            # default: this repo's root
-COGNITIVE_OS_SESSION_ID=mi-sesion      # default: cos-worker
+COGNITIVE_OS_SESSION_ID=my-session      # default: cos-worker
 LLM_PRIMARY_API_KEY=sk-...             # optional, BYOK primary provider
 LLM_FALLBACK_API_KEY=sk-...            # optional, BYOK fallback provider
 ENGRAM_CLOUD_PORT=8080                 # default: 8080

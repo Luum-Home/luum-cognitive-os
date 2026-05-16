@@ -67,12 +67,12 @@ proof.
 
 | EvoSkill capability | COS state | Verdict | Action |
 |---|---|---|---|
-| Base → failure → proposer → generator → evaluator → frontier loop | COS has skills, optimization docs, and regression doctrine but no shipped equivalent loop | **MEJOR_EXTERNO** | Encode as a COS lab contract |
-| Held-out validation before skill promotion | COS has postmortem-regression audit direction | **COMPATIBLE / MEJOR_EXTERNO in implementation** | Reuse as fixture pattern |
-| `.claude/skills` to `.agents/skills` bridge | COS cares about harness-agnostic projection | **MEJOR_EXTERNO for concrete Codex fixture** | Extract projection tests, not canonical path choice |
+| Base → failure → proposer → generator → evaluator → frontier loop | COS has skills, optimization docs, and regression doctrine but no shipped equivalent loop | **EXTERNAL_BETTER** | Encode as a COS lab contract |
+| Held-out validation before skill promotion | COS has postmortem-regression audit direction | **COMPATIBLE / EXTERNAL_BETTER in implementation** | Reuse as fixture pattern |
+| `.claude/skills` to `.agents/skills` bridge | COS cares about harness-agnostic projection | **EXTERNAL_BETTER for concrete Codex fixture** | Extract projection tests, not canonical path choice |
 | Git program branches and frontier tags | COS has stronger safety requirements for user workspaces | **RISKY** | Only in disposable labs with rollback receipts |
 | Docker/Daytona long-running execution | COS has local-first and credential policies | **RISKY** | Data-flow review before any remote run |
-| Generated skill promotion | COS has governance and security lanes | **MEJOR_NUESTRO** | COS gates remain authoritative |
+| Generated skill promotion | COS has governance and security lanes | **OURS_BETTER** | COS gates remain authoritative |
 
 ## What to extract
 

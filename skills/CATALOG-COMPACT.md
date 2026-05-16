@@ -172,7 +172,7 @@ Total skills: 178
 | resume-tasks | Check for incomplete tasks from previous sessions and offer to resume |
 | retrospective | Weekly analysis of all squads with trend analysis and auto-reconfiguration… |
 | risk-register | Scaffold STRIDE risk register with impact/likelihood matrix idempotently. |
-| rules-export | Export SO rules/ as a point-in-time snapshot into docs/08-estandares/. |
+| rules-export | Export SO rules/ as a point-in-time snapshot into docs/08-standards/. |
 | run-tests | 'Use when you need this Cognitive OS skill: Auto-detect project test |
 | sandbox-sample | Classify, sample, sandbox-verify, then scale changes across large file |
 | scout | Quick pre-implementation codebase reconnaissance with 3 depth levels. |

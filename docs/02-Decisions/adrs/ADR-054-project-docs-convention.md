@@ -36,16 +36,16 @@ Audit (2026-04-21) found that adopting projects already converged on a
 
 | # | Dir | Purpose |
 |---|---|---|
-| 01 | `01-contexto` | Business context, stakeholders, problem framing |
-| 02 | `02-arquitectura` | System design, components, diagrams |
-| 03 | `03-dominio-riesgo` | Domain model + risk register (combined by design) |
-| 04 | `04-seguridad` | Threat model, controls, incident response |
+| 01 | `01-context` | Business context, stakeholders, problem framing |
+| 02 | `02-architecture` | System design, components, diagrams |
+| 03 | `03-domain-risk` | Domain model + risk register (combined by design) |
+| 04 | `04-security` | Threat model, controls, incident response |
 | 05 | `05-features` | Feature inventory and backlog |
 | 06 | `06-backoffice` | Operations, admin processes, monitoring |
-| 07 | `07-investigacion` | Research spikes, competitive analysis |
-| 08 | `08-estandares` | Coding, doc, review standards |
-| 09 | `09-plan-ejecucion` | Roadmap, sprints, estimation |
-| 10 | `10-resumenes` | Executive summaries, status reports |
+| 07 | `07-research` | Research spikes, competitive analysis |
+| 08 | `08-standards` | Coding, doc, review standards |
+| 09 | `09-execution-plan` | Roadmap, sprints, estimation |
+| 10 | `10-summaries` | Executive summaries, status reports |
 
 The SO had skills covering ~60% of these categories but (a) no single
 skill scaffolded the whole tree, and (b) several skills emitted output
@@ -69,23 +69,23 @@ adopting projects. Ship tooling to:
   require a new ADR.
 - Spanish dir names are intentional (the convention originated in a
   Spanish-speaking team). File names inside are English by default.
-- Combination `03-dominio-riesgo` is deliberate — domain modeling and
+- Combination `03-domain-risk` is deliberate — domain modeling and
   risk assessment co-evolve; separating them leads to both being ignored.
 
 ### Skill mapping (authoritative)
 
 | Category | SO skill(s) that feed it |
 |---|---|
-| 01-contexto | `deep-research`, `scout-pattern` |
-| 02-arquitectura | `sdd-design`, `sdd-spec` |
-| 03-dominio-riesgo | `sdd-propose` (domain part); risk is human-curated |
-| 04-seguridad | `security-audit`, `pentest-self`, `red-team` |
+| 01-context | `deep-research`, `scout-pattern` |
+| 02-architecture | `sdd-design`, `sdd-spec` |
+| 03-domain-risk | `sdd-propose` (domain part); risk is human-curated |
+| 04-security | `security-audit`, `pentest-self`, `red-team` |
 | 05-features | `document-feature`, `sdd-propose` |
 | 06-backoffice | — (primarily human-curated; ops runbooks) |
-| 07-investigacion | `deep-research`, `repo-scout`, `repo-forensics` |
-| 08-estandares | mirrors `rules/*.md` — can be generated |
-| 09-plan-ejecucion | `sdd-tasks`, `exhaustive-prompt`, `cos-sprint` |
-| 10-resumenes | `session-wrapup`, `compress`, `generate-changelog` |
+| 07-research | `deep-research`, `repo-scout`, `repo-forensics` |
+| 08-standards | mirrors `rules/*.md` — can be generated |
+| 09-execution-plan | `sdd-tasks`, `exhaustive-prompt`, `cos-sprint` |
+| 10-summaries | `session-wrapup`, `compress`, `generate-changelog` |
 
 ## Consequences
 
@@ -102,7 +102,7 @@ adopting projects. Ship tooling to:
 
 - Dir names are hardcoded in Spanish — mixed-language teams must accept
   that. Aliasing is out of scope for v1.
-- `06-backoffice` and `03-dominio-riesgo` have no dedicated skill today.
+- `06-backoffice` and `03-domain-risk` have no dedicated skill today.
   They're scaffolded with TODO markers but require human work. Future
   work: skills to generate starter content from domain prompts.
 
@@ -132,7 +132,7 @@ adopting projects. Ship tooling to:
 
 1. Should adoption be enforced via a rule (fail CI if dirs are missing)?
    — Deferred; convention over enforcement for v1.
-2. Should `03-dominio-riesgo` split into 03a-dominio + 03b-riesgo later?
+2. Should `03-domain-risk` split into 03a-domain + 03b-risk later?
    — Empirically the two co-evolve; keep combined.
 3. Should there be a `/project-scaffold-migrate` variant that renames
    existing ad-hoc dirs to the convention? — Future, scoped out of v1.

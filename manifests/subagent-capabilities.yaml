@@ -8,6 +8,7 @@ default_policy:
   file_artifact_requires_write: true
   parent_persistence_requires_explicit_phrase: true
 
+# english-only-content-audit: allow
 parent_persistence_markers:
   - parent will persist
   - parent persists

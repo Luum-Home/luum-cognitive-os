@@ -43,10 +43,10 @@ Checked on 2026-05-09 through GitHub repository metadata, GitHub release metadat
 
 | Langflow capability | COS state | Verdict | Action |
 |---|---|---|---|
-| Visual graph workflow builder | COS has SDD, TaskDAG, plans, hooks, and docs but no visual flow authoring UI | **MEJOR_EXTERNO for visual authoring UX** | Harvest UI/graph vocabulary only if COS needs a visual policy-plan surface |
-| Flow-to-API and flow-to-MCP deployment | COS has MCP/gateway/security posture and adapter doctrine | **MEJOR_EXTERNO for workflow packaging** | Use as adapter-lab reference behind COS policy gates |
+| Visual graph workflow builder | COS has SDD, TaskDAG, plans, hooks, and docs but no visual flow authoring UI | **EXTERNAL_BETTER for visual authoring UX** | Harvest UI/graph vocabulary only if COS needs a visual policy-plan surface |
+| Flow-to-API and flow-to-MCP deployment | COS has MCP/gateway/security posture and adapter doctrine | **EXTERNAL_BETTER for workflow packaging** | Use as adapter-lab reference behind COS policy gates |
 | Component/bundle registry | COS has skills/rules/hooks registries and projection mechanisms | **COMPATIBLE pattern** | Compare registry lifecycle and bundle metadata; keep agentic primitive terminology in COS |
-| Runtime service, database, auth, telemetry | COS is portable governance overlay, not an app server | **NO_COMPARABLE / RISKY** | Do not import runtime into COS core |
+| Runtime service, database, auth, telemetry | COS is portable governance overlay, not an app server | **NOT_COMPARABLE / RISKY** | Do not import runtime into COS core |
 | Dynamic custom code validation | COS already treats arbitrary tool/code execution as high-risk | **RISKY** | Require sandbox, credential isolation, and explicit operator opt-in before any lab |
 | MCP project/tool surfaces | COS has MCP scan/gateway/security direction | **USEFUL but dangerous** | Route through existing security primitives, audit, and rollback |
 

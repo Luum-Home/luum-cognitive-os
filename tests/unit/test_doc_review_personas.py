@@ -261,8 +261,8 @@ class TestRendering(unittest.TestCase):
     def test_markdown_renders_sections(self):
         md = drp.render_markdown(self._make_report())
         self.assertIn("# Doc Review — Multi-Persona", md)
-        self.assertIn("Críticos (S1 BLOCKER)", md)
-        self.assertIn("Menores (S3 SUGGESTION)", md)
+        self.assertIn("Critical (S1 BLOCKER)", md)
+        self.assertIn("Minor (S3 SUGGESTION)", md)
         self.assertIn("docs/a.md", md)
         self.assertIn("big problem", md)
         self.assertIn("cfo, tech_lead", md)  # reviewers attribution
