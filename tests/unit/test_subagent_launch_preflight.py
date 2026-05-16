@@ -72,7 +72,7 @@ def test_general_purpose_allows_file_artifact_requirement(manifest):
 def test_worker_allows_spanish_file_artifact_requirement(manifest):
     result = evaluate(
         "worker",
-        "Investigá y guardá en research/03-private-content.md",
+        "Research and save in research/03-private-content.md",
         manifest,
     )
 

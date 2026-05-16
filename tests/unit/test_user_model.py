@@ -117,7 +117,7 @@ class TestProfileSummary:
         model.record_preference("communication", "language", "Spanish", 0.8)
         model.record_preference("communication", "verbosity", "terse", 0.3)
         summary = model.get_profile_summary()
-        # Spanish (0.8) should appear before terse (0.3)
+        # Additional English variants (0.8) should appear before terse (0.3)
         assert summary.index("Spanish") < summary.index("terse")
 
     def test_only_preferences_section_when_no_context(self):
@@ -136,19 +136,17 @@ class TestProfileSummary:
 
 
 class TestInference:
-    def test_infer_spanish_from_indicator(self):
+    def test_no_language_preference_from_plain_request(self):
         model = UserModel()
-        model.infer_from_message("dale hacé el endpoint")
+        model.infer_from_message("please build the endpoint")
         pref = model.get_preference("communication", "language")
-        assert pref is not None
-        assert "Spanish" in pref.value
+        assert pref is None
 
-    def test_infer_spanish_from_necesito(self):
+    def test_no_language_preference_from_need_request(self):
         model = UserModel()
-        model.infer_from_message("necesito arreglá el test")
+        model.infer_from_message("I need to fix the test")
         pref = model.get_preference("communication", "language")
-        assert pref is not None
-        assert "Spanish" in pref.value
+        assert pref is None
 
     def test_no_spanish_for_plain_english_message(self):
         model = UserModel()

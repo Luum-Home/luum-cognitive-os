@@ -59,14 +59,14 @@ to skills using pattern-based intent detection (English + Spanish).
 |---|---|---|---|
 | GitHub URL in message | `/repo-forensics` | `/repo-scout` | 0.95 |
 | "evaluate repo", "scout repo", "tech radar" | `/repo-scout` | -- | 0.85 |
-| "fix bug", "arreglá el bug", "hay un error" | `/plan-bug` | `/systematic-debugging` | 0.90 |
+| "fix bug", "fix the bug", "there is an error" | `/plan-bug` | `/systematic-debugging` | 0.90 |
 | "debug", "no funciona", "doesn't work" | `/systematic-debugging` | -- | 0.85 |
-| "new feature", "agregar", "necesito crear" | `/sdd-new` | `/plan-feature` | 0.85 |
+| "new feature", "add", "I need to create" | `/sdd-new` | `/plan-feature` | 0.85 |
 | "plan feature", "planificar funcionalidad" | `/plan-feature` | -- | 0.85 |
 | "run tests", "corré los tests", "pytest" | `/run-tests` | -- | 0.95 |
 | "write tests", "TDD", "red-green-refactor" | `/test-driven-development` | -- | 0.85 |
 | "coverage report", "cobertura" | `/coverage-report` | -- | 0.80 |
-| "security audit", "revisá la seguridad" | `/security-audit` | `/pentest-self` | 0.90 |
+| "security audit", "review security" | `/security-audit` | `/pentest-self` | 0.90 |
 | "pentest", "penetration test" | `/pentest-self` | -- | 0.90 |
 | "red team", "prompt injection test" | `/red-team` | `/vulnerability-scan` | 0.85 |
 | "vulnerability scan", "garak" | `/vulnerability-scan` | -- | 0.85 |
@@ -81,21 +81,21 @@ to skills using pattern-based intent detection (English + Spanish).
 | "model optimizer", "model routing" | `/model-optimizer` | -- | 0.85 |
 | "trust audit", "trust score analysis" | `/trust-audit` | -- | 0.85 |
 | "performance dashboard", "cos perf" | `cos perf` | -- | 0.85 |
-| "research", "investigá", "deep research" | `/deep-research` | `/tool-discovery` | 0.80 |
+| "research", "research", "deep research" | `/deep-research` | `/tool-discovery` | 0.80 |
 | "find tools", "discover tools" | `/tool-discovery` | -- | 0.85 |
 | "create skill", "nueva skill" | `/skill-creator` | -- | 0.95 |
 | "optimize skill", "mejorar skill" | `/optimize-skill` | -- | 0.90 |
 | "release", "versión", "tag new version" | `/release-os` | -- | 0.90 |
-| "scout", "explorá el código", "reconnaissance" | `/scout` | `/sdd-explore` | 0.85 |
+| "scout", "explore the code", "reconnaissance" | `/scout` | `/sdd-explore` | 0.85 |
 | "sdd explore", "feasibility" | `/sdd-explore` | -- | 0.75 |
 | "document feature", "write docs" | `/document-feature` | `/doc-sync` | 0.85 |
 | "doc sync", "stale docs", "sync documentation" | `/doc-sync` | -- | 0.85 |
-| "review code", "revisá el código" | `/self-review` | `/sdd-verify` | 0.85 |
+| "review code", "review the code" | `/self-review` | `/sdd-verify` | 0.85 |
 | "stress test", "degradación", "cognitive load" | `/agent-stress-test` | -- | 0.90 |
-| "recommend library", "qué librería" | `/recommend-library` | -- | 0.85 |
+| "recommend library", "which library" | `/recommend-library` | -- | 0.85 |
 | "planning poker", "estimate cost" | `/planning-poker` | `/cost-predict` | 0.85 |
 | "cost predict", "predict cost" | `/cost-predict` | -- | 0.85 |
-| "status", "cómo viene", "health check" | `/cognitive-os-status` | -- | 0.80 |
+| "status", "how is it going", "health check" | `/cognitive-os-status` | -- | 0.80 |
 | "sprint", "sprint plan/status/retro" | `/sprint` | -- | 0.80 |
 | "SRE", "monitor services", "container down" | `/sre-agent` | -- | 0.80 |
 | "error analyzer", "analyze errors" | `/error-analyzer` | -- | 0.85 |
@@ -146,7 +146,7 @@ The orchestrator uses `lib/skill_router.py` to auto-select skills:
 2. If confidence >= 0.80: suggest the skill to the user (do not auto-invoke without confirmation)
 3. If confidence 0.50-0.79: mention as a possibility
 4. If confidence < 0.50 or None: proceed normally without suggestion
-5. Spanish patterns are supported natively (e.g., "investigá", "arreglá", "necesito")
+5. English patterns are supported natively (e.g., "research", "fix", "I need")
 
 ```python
 from lib.skill_router import SkillRouter

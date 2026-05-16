@@ -99,7 +99,7 @@ CATEGORIES: List[Tuple[str, str, List[Tuple[str, str]]]] = [
         "07-investigacion",
         "Research",
         [
-            ("README.md", "# 07 — Investigación\n\nResearch spikes, competitive analysis, tech evaluations. `deep-research` and `repo-scout` skills emit here.\n\n- [ ] research-notes.md\n- [ ] competitive-analysis.md\n"),
+            ("README.md", "# 07 — Research\n\nResearch spikes, competitive analysis, tech evaluations. `deep-research` and `repo-scout` skills emit here.\n\n- [ ] research-notes.md\n- [ ] competitive-analysis.md\n"),
             ("research-notes.md", "# Research Notes\n\n| Date | Topic | Question | Finding | Decision |\n|---|---|---|---|---|\n<!-- TODO -->\n"),
             ("competitive-analysis.md", "# Competitive Analysis\n\n## Direct competitors\n<!-- TODO -->\n\n## Feature comparison\n| Feature | Us | Competitor A | Competitor B |\n|---|---|---|---|\n<!-- TODO -->\n"),
         ],

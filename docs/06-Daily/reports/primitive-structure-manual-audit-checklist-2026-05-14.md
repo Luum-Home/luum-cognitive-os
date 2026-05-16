@@ -5,7 +5,7 @@
 Depurar la estandarización estructural de primitivas después de la normalización automática, separando tres cosas:
 
 1. estructura de archivo parseable;
-2. contrato comportamental/proyección (`manifests/primitive-contracts.yaml`);
+2. contrato comportamental/projection (`manifests/primitive-contracts.yaml`);
 3. taxonomía semántica `SCOPE` gobernada por ADR-314.
 
 ## Non-goals
@@ -18,7 +18,7 @@ Depurar la estandarización estructural de primitivas después de la normalizaci
 
 - [ ] Parser inventory: `missing_scope_marker = 0`.
 - [ ] Parser inventory: `structural_findings = {}`.
-- [ ] `primitive-contracts.yaml` sigue documentado como registry canónico de comportamiento/proyección.
+- [ ] `primitive-contracts.yaml` sigue documentado como registry canónico de comportamiento/projection.
 - [ ] Skills: YAML empieza en byte 0; `SCOPE` aparece después del frontmatter; no hay pérdida de comentarios no-SCOPE relevantes.
 - [ ] Rules: reglas normales tienen `Contextual Trigger`; índices (`RULES-COMPACT`, `ROADMAP`) no son tratados como reglas normales.
 - [ ] Hooks: hooks reales tienen scope; archived/disabled/support no inflan deuda.

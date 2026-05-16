@@ -33,10 +33,9 @@ marked "needs a dedicated session, not fire-and-forget":
 - **Item I** — extend ADR-067's template+hook+audit pattern to `rules/`, `hooks/`, ADRs
 - **Item J** — bump Python deps across major versions (wrapt 1→2, rich 14→15, cryptography 46→47)
 
-The operator pushed back ("no entiendo esto"), and the orchestrator answered:
+The operator pushed back ("I do not understand this"), and the orchestrator answered:
 these have judgment calls mid-flight that a fire-and-forget agent cannot make
-alone. The operator agreed and added: "dale si, aunque expone esto en una
-documentación, ADR" — codify it before the next session re-invents the
+alone. The operator agreed and added: "yes, but expose this in documentation, ADR" — codify it before the next session re-invents the
 distinction.
 
 Why background agents work for some things but not for these:

@@ -23,7 +23,7 @@ The router had only a narrow `/auto-rollback` meta-reference guard. Other skills
 - `dogfood evidence`;
 - `ignoro` / `ignored`;
 - `mal calibrado` / `false positive`;
-- `por qué disparó` / `what triggered`;
+- `why it triggered` / `what triggered`;
 - risk-analysis language such as `me preocupa` or `me asusta`.
 
 The missing abstraction was a router-level **negative evidence reject class**, not one-off filters per skill.
@@ -50,7 +50,7 @@ But blocks critique/meta-discussion:
 
 ```text
 Ignoré la sugerencia del router /phoenix-trace-ui — dogfood evidence #11
-Qué dispara /auto-rollback? Me asusta que se pierda trabajo
+What triggers /auto-rollback? I am afraid work could be lost
 Skill router /deep-research para escritura sigue mal calibrado
 ```
 

@@ -197,15 +197,8 @@ class UserModel:
         self.interaction_count += 1
 
         # --- Language detection ---
-        spanish_indicators = [
-            "dale", "hacé", "poné", "usá", "mirá", "revisá",
-            "necesito", "quiero", "podés", "tenés", "arreglá",
-            "agregá", "creá", "escribí", "configurá", "borr",
-        ]
-        if any(word in message.lower() for word in spanish_indicators):
-            self.record_preference(
-                "communication", "language", "Spanish (informal)", 0.8, "inferred"
-            )
+        # Repository-facing behavior is English-only; do not infer non-English
+        # communication preferences from ordinary task wording.
 
         # --- Verbosity preference (short messages → terse user) ---
         if len(message.split()) < 10:

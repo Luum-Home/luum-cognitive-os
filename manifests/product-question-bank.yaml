@@ -9,7 +9,7 @@ questions:
     - diferenciador
     - factor diferenciador
     - cual es nuestro diferenciador
-    - cuál es nuestro diferenciador
+    - what is our differentiator
     - what is our differentiator
     - product wedge
     - moat
@@ -58,13 +58,13 @@ questions:
     category: positioning-boundary
     aliases:
     - que no es diferenciador
-    - qué no es diferenciador
+    - what is not a differentiator
     - what is not unique
     - commodity claims
     keywords:
     - commodity
     - unico
-    - único
+    - unique
     - not unique
     - no es diferenciador
     - tracing
@@ -92,7 +92,7 @@ questions:
     category: primitive-map
     aliases:
     - que primitivas existen
-    - qué primitivas existen
+    - what primitives exist
     - existing primitives
     - primitives that answer this
     keywords:
@@ -132,7 +132,7 @@ questions:
     category: automation
     aliases:
     - que automatizacion falta
-    - qué automatización falta
+    - what automation is missing
     - can this be automated
     - se puede automatizar
     - automatizar preguntas comerciales
@@ -190,7 +190,7 @@ questions:
     answer_long: 'The best first-contact pitch should be pain-first and evidence-first:
       agents are fast but opaque, and COS makes their claims verifiable before risky
       work lands. Avoid leading with platform size or architecture inventory.'
-    recommended_pitch: Tu agente programa más rápido. Cognitive OS lo obliga a probarlo.
+    recommended_pitch: Your agent codes faster. Cognitive OS forces it to prove it.
     unsafe_claims_to_avoid:
     - the only operating system for all agents
     - no competitor has any observability
@@ -369,7 +369,7 @@ questions:
     - puede correr como servicio
     - puede correr headless
     - corre fuera del ide
-    - además del ide
+    - aothers del ide
     - ademas del ide
     - service mode
     - headless service
@@ -414,11 +414,11 @@ questions:
     category: competitive-choice
     aliases:
     - por que no uso hermes
-    - por qué no uso hermes
+    - why not use hermes
     - por que no agent zero
-    - por qué no agent zero
+    - why not agent zero
     - por que no openclaw
-    - por qué no openclaw
+    - why not openclaw
     - hermes en su lugar
     - agent zero en su lugar
     - openclaw en su lugar
@@ -464,18 +464,18 @@ questions:
     category: developer-enablement
     aliases:
     - dev ssr primitivas
-    - desarrollador ssr primitivas
+    - SSR developer primitives
     - me ayuda como dev ssr
     - arquitectura gobernanza agentes primitivas
-    - crear primitivas como desarrollador
+    - create primitives as a developer
     - mejorar primitivas desde chat
     - agent zero openclaw hermes primitivas
-    - cómo maneja primitivas el so
+    - how the OS handles primitives
     - como maneja primitivas el so
     keywords:
     - ssr
     - developer
-    - desarrollador
+    - developer
     - primitivas
     - primitives
     - gobernanza
@@ -536,8 +536,8 @@ questions:
     - what is cognitive os
     - what is this for
     - para que sirve
-    - para qué sirve
-    - qué hace el SO
+    - what it is for
+    - what the OS does
     - wat doet dit OS
     - wozu dient das
     keywords:
@@ -571,7 +571,7 @@ questions:
     - useful for someone without knowledge
     - can a junior use this
     - does it help someone who doesn't know best practices
-    - sirve para alguien sin experiencia
+    - useful for someone without experience
     - puede ayudar a un dev sin conocimiento
     - utile pour un developpeur sans experience
     - nutzlich fur einen entwickler ohne erfahrung
@@ -660,7 +660,7 @@ questions:
     - agent OS map
     - cognitive os map
     - explicame la arquitectura del SO
-    - cómo explicar Cognitive OS
+    - how to explain Cognitive OS
     keywords:
     - arquitectura
     - architecture
@@ -694,7 +694,7 @@ questions:
 
       ```mermaid
       graph TD
-        A["Equipo de ingeniería"] --> B["Agentes de código"]
+        A["Engineering team"] --> B["Coding agents"]
 
         B --> C["Cognitive OS<br/>Capa de gobernanza y evidencia"]
 
@@ -702,7 +702,7 @@ questions:
         C --> E["Políticas operativas<br/>Alinean comportamiento del agente"]
         C --> F["Playbooks reutilizables<br/>Guían tareas complejas"]
         C --> G["Memoria persistente<br/>Conserva decisiones y aprendizajes"]
-        C --> H["Evidencia auditable<br/>Registra qué ocurrió y qué se verificó"]
+        C --> H["Auditable evidence<br/>Records what happened and what was verified"]
 
         D --> I["Confianza operativa"]
         E --> I
@@ -710,9 +710,9 @@ questions:
         G --> I
         H --> I
 
-        I --> J["Resultado<br/>Agentes más seguros, verificables y escalables"]
+        I --> J["Result<br/>Safer, verifiable, scalable agents"]
 
-        C --> K["Adaptadores<br/>Se proyecta sobre herramientas existentes"]
+        C --> K["Adapters<br/>Projects onto existing tools"]
         C --> L["Superficie de servicio<br/>Para UI, automatización y operación externa"]
       ```
 
@@ -738,7 +738,7 @@ questions:
     - how big is the codebase
     - how many commits
     - cuanto codigo tiene
-    - cuánto código tiene
+    - how much code it has
     - wie viel code hat es
     - combien de code
     keywords:
@@ -785,7 +785,7 @@ questions:
     - getting started
     - first steps
     - como empiezo
-    - cómo empiezo
+    - how do I start
     - comment commencer
     - wie fange ich an
     keywords:

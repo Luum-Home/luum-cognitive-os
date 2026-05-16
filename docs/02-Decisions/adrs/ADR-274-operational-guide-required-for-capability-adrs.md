@@ -53,7 +53,7 @@ fix. **It did not generalize**:
 
 **Empirical magnitude (from 2026-05-12 audit)**: of 280 ADRs, approximately
 N (TBD post-audit) maintainer-tier capability ADRs lack an
-§Operational Guide. Each is a future "esto está documentado?" moment.
+§Operational Guide. Each is a future "is this documented?" moment.
 
 **Root cause shared with ADR-273**: COS produces capabilities faster than
 documentation discipline keeps up. Without explicit gates, operational

@@ -59,7 +59,7 @@ conversación del modelo sin post-procesamiento de tamaño. `lib/dispatch_helper
 payload que va al modelo en cada turno, igualmente sin inspección de tamaño por resultado
 individual.
 
-### Patrón identificado en investigación
+### Pattern identified in research
 
 El [private clean-room research dossier] §Capability HTTP result envelope del estudio holaOS identifica un patrón de infraestructura transversal: cuando un
 tool result supera un threshold, en lugar de descartarlo o truncarlo ciegamente, se lo reemplaza
@@ -70,7 +70,7 @@ por un **envelope estructurado** que preserva:
 - Un puntero al payload completo (spillover storage) para recuperación opcional.
 
 El patrón es ortogonal al tool-replay ledger (ADR-263): ADR-263 opera sobre la dimensión temporal
-(cuántas veces se ejecutó un mismo tool en la sesión); este ADR opera sobre la dimensión espacial
+(how many times the same tool ran in the session); this ADR operates on the spatial dimension
 (cuán grande es el resultado de una ejecución individual). Ambos reducen consumo de contexto por
 caminos independientes y se componen sin conflicto.
 
@@ -82,7 +82,7 @@ Claude Code (ventana de 200K tokens, 1 token ≈ 4 bytes):
 - 28 KB ≈ 7 000 tokens ≈ 3.5% del contexto disponible.
 - En sesiones con 15-20 tool calls activos, 3-4 resultados grandes a 28 KB cada uno suman
   ~14% del contexto solo en resultados, antes de incluir historial de conversación.
-- 28 KB es más conservador que 32 KB, apropiado para un contexto compartido con más artefactos
+- 28 KB is more conservative than 32 KB, appropriate for a shared context with more artifacts
   concurrentes (engram, session state, agent prompts). Ver §Open Questions para calibración futura.
 
 ---
@@ -120,7 +120,7 @@ def wrap_if_large(
     spillover_dir: str | None = None,
 ) -> str:
     """Retorna raw_result tal cual si len(raw_result) <= threshold.
-    Si excede, retorna un envelope estructurado Markdown con preview + metadata + pointer.
+    Si excede, returns un envelope estructurado Markdown con preview + metadata + pointer.
     Si persist_full=True, escribe el contenido completo en spillover_dir.
     """
 ```
@@ -199,10 +199,10 @@ Los payloads completos de resultados enveloped se persisten en:
 .cognitive-os/sessions/<session-id>/envelopes/<sha256-of-content>.txt
 ```
 
-- El directorio se crea en la primera escritura de la sesión.
+- The directory is created on the first write of the session.
 - El nombre del archivo es el SHA-256 hex del contenido original (primeros 64 chars del digest).
 - `full_pointer` en el envelope apunta al path absoluto de este archivo.
-- Cleanup: el directorio completo se elimina al finalizar la sesión (hook `session-end`).
+- Cleanup: the full directory is deleted when the session ends (hook `session-end`).
 - Si `persist_full=False` (útil en tests o contextos de solo-preview), no se escribe archivo y
   `full_pointer` es `None`.
 
@@ -220,33 +220,33 @@ ledger.check(tool_name) → REFERENCE_ONLY | FRESH | BLOCKED
 ```
 
 Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_text=""` y
-`full_pointer` apunta al spillover del resultado más reciente del mismo tool.
+`full_pointer` points to the spillover of the most recent result from the same tool.
 
 ---
 
 ## Acceptance Criteria
 
 ```
-[ ] lib/tool_result_envelope.py existe, es importable vía:
+[ ] lib/tool_result_envelope.py existe, es importable via:
     python3 -c "from lib.tool_result_envelope import wrap_if_large, EnvelopePreview"
     sin dependencias externas al stdlib.
 
 [ ] pytest tests/unit/test_tool_result_envelope.py pasa con cobertura de:
-    - under-threshold passthrough: resultado < 28KB retorna el string original sin modificar
-    - over-threshold envelope: resultado > 28KB retorna string con marcador [TOOL RESULT ENVELOPE]
-    - persist_full=False: no se escribe ningún archivo en spillover_dir
+    - under-threshold passthrough: resultado < 28KB returns el string original sin modificar
+    - over-threshold envelope: resultado > 28KB returns string con marcador [TOOL RESULT ENVELOPE]
+    - persist_full=False: no file is written in spillover_dir
     - persist_full=True: se escribe archivo en spillover_dir y full_pointer apunta al path
     - spillover filename: nombre es SHA-256 hex del contenido original (64 chars)
     - preview truncation: preview_text tiene exactamente min(7KB, len(raw)) chars
     - idempotency: llamar wrap_if_large en un envelope ya renderizado no re-envuelve
 
-[ ] lib/agent_runner.py aplica wrap_if_large a cada tool result antes de agregarlo al historial.
-    Test de integración: mock tool que retorna 30KB de texto → historial contiene envelope,
+[ ] lib/agent_runner.py aplica wrap_if_large a cada tool result antes de addlo al historial.
+    Test de integración: mock tool que returns 30KB de texto → historial contiene envelope,
     no el blob completo.
 
 [ ] lib/dispatch_helper.py idem. Test: payload con envelope ya aplicado no genera doble-wrap.
 
-[ ] Composición con ADR-263 testeada (puede ser test pendiente/skip si ADR-263 no está
+[ ] Composition with ADR-263 tested (can be pending/skipped if ADR-263 is not
     implementado aún):
     ledger=REFERENCE_ONLY + wrap_if_large → preview_text="" + full_pointer solo.
 
@@ -282,18 +282,18 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
 
 - **Overhead de render.** El texto del envelope agrega ~200 bytes de markup por resultado
   enveloped. Negligible frente al ahorro (resultado típico de 50KB → 7KB preview + 200B markup).
-- **Spillover dir crece durante la sesión.** En sesiones con muchos tool calls grandes, el dir
+- **Spillover dir grows during the session.** In sessions with many large tool calls, el dir
   `.cognitive-os/sessions/<id>/envelopes/` puede crecer varios MB. Mitigado con cleanup en
-  session-end y cap futuro (ver §Open Questions).
+  session-end y cap future (ver §Open Questions).
 - **Double-wrap risk.** Si `agent_runner` y `dispatch_helper` ambos aplican el envelope, se
   necesita detección de idempotencia. El marcador `[TOOL RESULT ENVELOPE]` en el texto actúa
   como flag de detección.
 
 ### Mitigación
 
-- Cleanup automático del spillover dir en hook `session-end` (a añadir en `scripts/session-end.sh`
+- Automatic cleanup del spillover dir en hook `session-end` (to add en `scripts/session-end.sh`
   o equivalente).
-- Cap de spillover dir a 50 MB como guardrail de sesión (futuro, ADR follow-up).
+- Cap spillover dir at 50 MB as a session guardrail (future, ADR follow-up).
 
 ---
 
@@ -316,20 +316,20 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
 
 - Implementar lógica de spillover: path derivado de session ID + SHA-256.
 - Añadir cleanup al hook `session-end`.
-- Agregar test de composición con ADR-263 (skip si ledger no implementado).
+- Add composition test con ADR-263 (skip si ledger no implementado).
 - Ejecutar checklist de compliance F§5.
 
 ---
 
 ## Alternatives rejected
 
-| Alternativa | Decisión | Razón |
+| Alternative | Decision | Reason |
 |-------------|----------|-------|
-| Hard truncate sin envelope (status quo) | Rechazado | Pierde metadata; el modelo no sabe qué se truncó ni cuánto |
-| JSON envelope (al estilo holaOS) | Rechazado | El modelo parsea Markdown más naturalmente en el contexto de Claude Code; JSON requiere parsing adicional; format distinto satisface constraint clean-room |
-| Streamed truncation per-chunk | Rechazado | Overkill para el caso de uso; añade complejidad de streaming al loop síncrono |
-| Reemplazar `smart_truncator.py` completamente | Rechazado | `smart_truncator` tiene lógica de head/tail para casos where el modelo necesita ver tanto el inicio como el fin; envelope preserva solo el inicio. Coexistencia es más segura |
-| threshold 32 KB (literal de holaOS) | Rechazado | Violaría constraint clean-room de Anexo F §2 Nivel 1 (no copiar valores literales del harness de referencia); 28 KB es derivado independiente del context window luum |
+| Hard truncate without envelope (status quo) | Rejected | Loses metadata; the model does not know what was truncated or by how much |
+| JSON envelope (holaOS-style) | Rejected | The model parses Markdown more naturally in Claude Code context; JSON requires additional parsing; a distinct format satisfies the clean-room constraint |
+| Streamed truncation per-chunk | Rejected | Overkill para el caso de uso; añade complejidad de streaming al loop síncrono |
+| Replace `smart_truncator.py` completely | Rejected | `smart_truncator` has head/tail logic for cases where the model must see both the beginning and the end; envelope preserves only the beginning. Coexistence is safer |
+| threshold 32 KB (literal de holaOS) | Rejected | Violaría constraint clean-room de Anexo F §2 Nivel 1 (no copiar valores literales del harness de referencia); 28 KB es derivado independiente del context window luum |
 
 ---
 
@@ -348,7 +348,7 @@ holaos_files_blocked_for_impl: ["ALL"]
 
 Identifier divergence (Annex F §2, Nivel 1 PATTERN-ONLY):
 
-| holaOS identifier (de la research annex) | luum identifier | Razón |
+| holaOS identifier (de la research annex) | luum identifier | Reason |
 |------------------------------------------|-----------------|-------|
 | `formatCapabilityToolResultForModel` | `wrap_if_large` | Snake_case Python; nombre descriptivo del comportamiento |
 | `FormattedCapabilityToolResult` | `EnvelopePreview` | Nombre refleja el contenido del sobre, no el proceso de formateo |
@@ -384,21 +384,21 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 1. **Threshold óptimo: 28 KB vs 24 KB vs 32 KB.** El valor 28 KB es una derivación conservadora
    del context window de Claude Code. La calibración correcta requiere medir p50/p95 del tamaño
    de tool results en producción durante 2 semanas. `ENVELOPE_THRESHOLD` debe ser configurable
-   vía `cognitive-os.yaml` (`tool_result_envelope.threshold_kb`) para ajustar sin redeployment.
+   via `cognitive-os.yaml` (`tool_result_envelope.threshold_kb`) to adjust without redeployment.
    **UNSURE** si 28 KB es too conservative para sesiones con pocos tool calls.
 
-2. **Preview size: ¿7 KB es suficiente para que el modelo decida si solicitar el full output?**
-   En resultados de tipo JSON (estructurados, inicio predecible), 7 KB puede ser más que
+2. **Preview size: is 7 KB enough for the model to decide whether to request full output?**
+   For JSON-type results (structured, predictable beginning), 7 KB can be more than
    suficiente. En resultados de tipo log de compilación o diff grande, el inicio puede ser poco
-   informativo. **UNSURE** — candidato a `preview_kb` configurable también.
+   informativo. **UNSURE** — also a candidate for configurable `preview_kb`.
 
-3. **¿Exponer `expand_envelope(pointer)` como tool del modelo?** Permitiría al modelo solicitar
+3. **Expose `expand_envelope(pointer)` as a model tool?** This would let the model request
    explícitamente el payload completo de un envelope mediante tool call. Requiere registrar el
-   tool en el harness. Potencialmente más útil que el spillover pasivo. Parking para ADR
+   tool en el harness. Potentially more useful than passive spillover. Park for ADR
    follow-up (no bloquea esta adopción).
 
-4. **Cap del spillover dir.** Sin cap, una sesión con 100 tool calls grandes podría acumular
-   ~500 MB en `.cognitive-os/sessions/<id>/envelopes/`. El cleanup en session-end mitiga esto
+4. **Cap del spillover dir.** Without a cap, a session with 100 large tool calls could accumulate
+   ~500 MB en `.cognitive-os/sessions/<id>/envelopes/`. Session-end cleanup mitigates this
    para sesiones normales, pero sesiones largas no terminan pronto. Parking como guardrail
    en ADR follow-up.
 

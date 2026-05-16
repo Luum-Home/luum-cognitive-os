@@ -26,7 +26,7 @@ Accepted
 **Status**: Accepted — slice 1 audit substrate active
 **Date**: 2026-05-06
 **Related**: ADR-212, ADR-215, ADR-208, ADR-211, ADR-031, ADR-206
-**Source**: Operator question — *"falta análisis de si está adoptado ya y de qué forma (esto también debería estar en las primitivas)"*
+**Source**: Operator question — *"analysis is missing on whether it is already adopted and how (this should also be in the primitives)"*
 
 ---
 

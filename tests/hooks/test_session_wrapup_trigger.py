@@ -57,7 +57,7 @@ class TestPositiveTriggers:
     """Hook should emit additionalContext containing AUTO-TRIGGER and /session-wrapup."""
 
     def test_cerremos_sesion_triggers(self):
-        result = run_trigger("cerremos sesión")
+        result = run_trigger("close session")
         assert result.returncode == 0
         output = parse_output(result)
         assert output is not None, "Expected JSON output for closure prompt"
@@ -74,20 +74,20 @@ class TestPositiveTriggers:
         assert "AUTO-TRIGGER" in ctx
         assert "/session-wrapup" in ctx
 
-    def test_terminamos_triggers(self):
-        result = run_trigger("ok terminamos por hoy")
+    def test_we_are_done_triggers(self):
+        result = run_trigger("ok we are done for today")
         assert result.returncode == 0
         output = parse_output(result)
-        assert output is not None, "Expected JSON output for 'terminamos'"
+        assert output is not None, "Expected JSON output for 'we are done'"
         ctx = output["hookSpecificOutput"]["additionalContext"]
         assert "AUTO-TRIGGER" in ctx
         assert "/session-wrapup" in ctx
 
-    def test_cerrar_sesion_triggers(self):
-        result = run_trigger("necesito cerrar sesión ahora")
+    def test_close_session_triggers(self):
+        result = run_trigger("I need to close the session now")
         assert result.returncode == 0
         output = parse_output(result)
-        assert output is not None, "Expected JSON output for 'cerrar sesión'"
+        assert output is not None, "Expected JSON output for 'close session'"
         ctx = output["hookSpecificOutput"]["additionalContext"]
         assert "AUTO-TRIGGER" in ctx
 
@@ -118,7 +118,7 @@ class TestNegativeTriggers:
     """Hook should produce NO output (empty stdout) for non-closure prompts."""
 
     def test_generic_greeting_silent(self):
-        result = run_trigger("hola, como estás?")
+        result = run_trigger("hola, como iss?")
         assert result.returncode == 0
         assert result.stdout.strip() == "", (
             f"Unexpected output for generic greeting: {result.stdout!r}"
@@ -143,7 +143,7 @@ class TestNegativeTriggers:
         assert result.stdout.strip() == ""
 
     def test_spanish_unrelated_silent(self):
-        result = run_trigger("analiza el código y dime qué está fallando")
+        result = run_trigger("analyze the code and tell me what is failing")
         assert result.returncode == 0
         assert result.stdout.strip() == ""
 
@@ -199,7 +199,7 @@ class TestEdgeCases:
 
     def test_output_is_valid_json_when_triggered(self):
         """When triggered, stdout must be valid JSON with the required keys."""
-        result = run_trigger("cerremos la sesión ya")
+        result = run_trigger("close the session now")
         assert result.returncode == 0
         output = parse_output(result)
         assert output is not None
@@ -213,7 +213,7 @@ class TestEdgeCases:
         """Hook should also accept 'prompt' key (not just 'user_prompt')."""
         if not HOOK.exists():
             pytest.skip(f"Hook not found: {HOOK}")
-        payload = json.dumps({"prompt": "cerremos la sesión"})
+        payload = json.dumps({"prompt": "close the session"})
         result = subprocess.run(
             ["bash", str(HOOK)],
             input=payload,

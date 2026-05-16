@@ -20,7 +20,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
-# ─── Hook existence and syntax ───────────────────────────────────────────────
+# ─── Hook existsnce and syntax ───────────────────────────────────────────────
 
 
 class TestScopeCreepHook:

@@ -57,10 +57,10 @@ VERIFY_PATTERNS = [r"\btest", r"\bvalidar\b", r"\bverificar\b", r"\bchecklist\b"
 COMMAND_PATTERN = re.compile(r"^\s*(?:git|python3?|bash|pytest|make|scripts/|\.\/scripts/|for\s+\w+\s+in\s+)\b", re.MULTILINE)
 
 STOPWORDS = {
-    "esto", "esta", "este", "para", "como", "todo", "todos", "todas", "hacer", "hace",
+    "this", "that", "for", "as", "all", "do", "does",
     "tiene", "tienen", "puede", "pueden", "que", "con", "los", "las", "una", "unos", "unas",
     "the", "and", "for", "with", "should", "could", "would", "from", "into", "when", "then",
-    "run", "test", "tests", "script", "python", "python3", "automatizado", "automatizados", "automática", "automatico", "automático",
+    "run", "test", "tests", "script", "python", "python3", "automatizado", "automatizados", "automática", "automatico", "automatic",
 }
 
 DOMAIN_HINTS = [
@@ -172,7 +172,7 @@ def infer_primitive_type(text: str) -> str:
     lower = text.lower()
     if any(word in lower for word in ["hook", "pre-commit", "posttooluse", "pretooluse"]):
         return "hook-or-gate"
-    if command_count(text) or any(word in lower for word in ["cleanup", "borrar", "drop", "archive", "reaper"]):
+    if command_count(text) or any(word in lower for word in ["cleanup", "delete", "drop", "archive", "reaper"]):
         return "action-layer-script"
     if count_matches(DOC_PATTERNS, text) and not command_count(text):
         return "documentation-decision"
@@ -250,7 +250,7 @@ def risk_labels(text: str) -> list[str]:
     lower = text.lower()
     mapping = {
         "git-state": ["stash", "worktree", "commit", "push", "branch"],
-        "data-loss": ["drop", "borrar", "remove", "cleanup", "limpiar"],
+        "data-loss": ["drop", "delete", "remove", "cleanup", "clean"],
         "security": ["secret", "credencial", "token", "path absoluto"],
         "concurrency": ["agente", "concurr", "multi-session", "ide"],
     }

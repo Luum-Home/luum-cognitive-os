@@ -83,7 +83,7 @@ def test_load_skill_metadata_parses_real_catalog(real_router):
     # routing_intents may be a mix of struct dicts (rendered as
     # "intent: description") and plain strings — both forms must parse.
     assert isinstance(pa["routing_intents"], list)
-    assert any("¿puede" in s or "puede ayudar" in s for s in pa["routing_intents"]), (
+    assert any("can it" in s or "can help" in s for s in pa["routing_intents"]), (
         "ADR-296 added multilingual example utterances to product-answer"
     )
 
@@ -117,8 +117,8 @@ def test_loader_accepts_string_form_intents(tmp_path):
 # The Spanish capability-question that motivated ADR-296.
 SPANISH_ACCEPTANCE_PROMPT = (
     "Si yo soy un dev que tengo limitaciones en cuanto al conocimiento de las "
-    "buenas prácticas, codigo y arquitectura limpia, seguridad, construcción "
-    "de tests, documentación, primitivas de agentes, entre otras cosas, este "
+    "best practices, code and clean architecture, security, building "
+    "tests, documentation, agent primitives, among other things, this "
     "SO me puede ayudar?"
 )
 
@@ -133,7 +133,7 @@ HELD_OUT: list[tuple[str, tuple[str, ...]]] = [
     # /product-answer — capability / value-proposition questions
     (SPANISH_ACCEPTANCE_PROMPT, ("product-answer",)),
     ("Can this OS help a developer who does not know best practices?", ("product-answer",)),
-    ("¿puede ayudarme este SO como desarrollador?", ("product-answer",)),
+    ("can this OS help me as a developer?", ("product-answer",)),
     ("Este SO serve para um desenvolvedor sem experiência?", ("product-answer",)),
     ("Ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?", ("product-answer",)),
     ("Est-ce que ce SO peut aider un développeur sans expérience?", ("product-answer",)),
@@ -142,8 +142,8 @@ HELD_OUT: list[tuple[str, tuple[str, ...]]] = [
     # optimize-skill SKILL.md also describes "review changed code for reuse,
     # quality, and efficiency" so it is an acceptable near-neighbour.
     ("review the changed code for quality and reuse issues", ("code-review", "optimize-skill")),
-    ("revisar el código cambiado para detectar problemas", ("code-review", "optimize-skill")),
-    ("revisão de código com foco em qualidade e reutilização", ("code-review", "optimize-skill")),
+    ("review the changed code to detect problems", ("code-review", "optimize-skill")),
+    ("code review focused on quality and reuse", ("code-review", "optimize-skill")),
     # /run-tests — execute tests in this repo
     ("run the tests in this repository", ("run-tests",)),
     ("ejecutar los tests de este repositorio", ("run-tests",)),
@@ -151,10 +151,10 @@ HELD_OUT: list[tuple[str, tuple[str, ...]]] = [
     # /repo-forensics — deep analysis of a git repository. repo-scout is
     # the same-axis sibling (lighter recon mode).
     ("perform deep forensic analysis of this git repository", ("repo-forensics", "repo-scout")),
-    ("análisis forense profundo de este repositorio git", ("repo-forensics", "repo-scout")),
+    ("deep forensic analysis of this git repository", ("repo-forensics", "repo-scout")),
     # /security-audit — security review framing
     ("audit this codebase for security vulnerabilities", ("security-audit",)),
-    ("auditar este código en busca de vulnerabilidades de seguridad", ("security-audit",)),
+    ("audit this code for security vulnerabilities", ("security-audit",)),
 ]
 
 

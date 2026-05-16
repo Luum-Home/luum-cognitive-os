@@ -4,7 +4,7 @@
 
 ## Why this plan
 
-User question: "¿garantiza que el SessionStart va a ser más eficiente?"
+User question: "does this guarantee that SessionStart will be more efficient?"
 Honest answer so far: No. The work landed today (`991b24a`, `c8a5259`, `e93e3b7`,
 `f360fe4`, `0c2583f` + pending) targets PreToolUse[Agent] expansion, not
 SessionStart. The user wants a real, measured analysis of:

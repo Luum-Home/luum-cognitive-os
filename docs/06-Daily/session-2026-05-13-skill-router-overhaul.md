@@ -2,9 +2,9 @@
 
 ## Trigger
 
-Screenshot del operador: prompt en español ("Si yo soy un dev que tengo limitaciones en cuanto al conocimiento de las buenas prácticas...") devolvió **NONE** en el skill router. Bug visible. Punto de partida.
+Screenshot del operador: Spanish prompt ("If I am a developer with limited knowledge of best practices...") returned **NONE** en el skill router. Bug visible. Starting point.
 
-## Outcome en una línea
+## One-line outcome
 
 13 commits, 6 ADRs nuevos (296-301), bug original resuelto, infraestructura de benchmark + enrichment + multi-modelo construida y documentada, Phase 2 (adopción de e5-large) rechazada con evidencia empírica.
 
@@ -32,7 +32,7 @@ eb443942  chore(skills): drop intent_examples cleanup
 |---|---|---|---|
 | 296 | Language-Agnostic Semantic Routing (semantic fallback multilingüe) | Implemented | `18092c51` |
 | 297 | LLM-Dispatched Routing Fallback (tie-breaker para casos ambiguos) | Implemented | `ac94b26e` |
-| 298 | Routing Model Benchmark Harness (autoridad empírica para futuros swaps) | Implemented | `935c0ebf` |
+| 298 | Routing Model Benchmark Harness (autoridad empírica para futures swaps) | Implemented | `935c0ebf` |
 | 299 | Skill Description Enrichment Tool (LLM-generated routing_intents) | Implemented | `af7cda71` |
 | 300 | Semantic Routing Model Selection Phase 1 + Phase 2 rejection | Implemented (Phase 1) / Rejected (Phase 2) | `f705b7dc` + `5658d4b5` |
 | 301 | ONNX-Direct Routing Adapter (para modelos fuera de FastEmbed registry) | Implemented | `6a2a75a3` |
@@ -41,7 +41,7 @@ eb443942  chore(skills): drop intent_examples cleanup
 
 ### Fase 1 — Diagnóstico del bug original (commit `18092c51`)
 
-Prompt español → NONE → diagnóstico encontró 3 bugs encadenados:
+Spanish prompt → NONE → diagnosis found 3 chained bugs:
 - `sentence-transformers` no instalado → fallback silencioso a Jaccard
 - Jaccard tokens no cruzan idiomas (intersección vacía ES/EN)
 - Solo 19/196 skills tenían `routing_intents`
@@ -50,10 +50,10 @@ Prompt español → NONE → diagnóstico encontró 3 bugs encadenados:
 
 ### Fase 2 — Survey de SOTA + Benchmark harness (commits `d077f400`, `935c0ebf`)
 
-Pregunta del operador: "¿no hay herramientas más inteligentes?". Disparó:
+Operator question: "are there no smarter tools?". Triggered:
 - Survey 5-agente cross-validado de 40+ fuentes (model registries, vendor blogs, foros, reviewers, github frameworks)
 - Confirmación arquitectónica: vLLM Semantic Router (Jan 2026) midió empíricamente que pure LLM function-calling cae 94% → 13.62% accuracy entre 49 y 741 tools. **El pattern 2-stage (embed shortlist → LLM call) que ADR-296+297 implementa es exactamente lo que LangGraph BigTool, vLLM SR y Anthropic Tool Search Tool convergieron**. COS no es over-engineered.
-- ADR-298 benchmark harness construido como la autoridad empírica para futuros decisiones de modelo.
+- ADR-298 benchmark harness construido como la autoridad empírica para futures decisiones de modelo.
 
 ### Fase 3 — Benchmark con candidatos reales (commit `45413a77`)
 
@@ -65,7 +65,7 @@ Resultados reales sobre corpus seed (10 skills × 6 langs × 5 prompts):
 | multilingual-mpnet-base | 0.810 | 15.4 ms | Apache |
 | baseline-MiniLM (current) | 0.753 | 26.6 ms | Apache |
 
-Per-language: e5-large fixea PT (+18) y FR (+16) — los lenguajes más débiles del baseline.
+Per-language: e5-large fixes PT (+18) y FR (+16) — the weakest languages del baseline.
 
 **Bug colateral resuelto**: dependency-adoption-gate bloqueaba `uv sync --extra semantic-routing` por conflicto `browser-use==0.12.6` pinea `rich==14.3.1` vs root `rich>=15`. Relajé el constraint a `rich>=14.3.1,<15` (commit `b61a33c1`).
 
@@ -83,7 +83,7 @@ Comparativa BGE-M3 vs e5-large (ambos ~570M params, MIT):
 | warm-p95 | 47 ms | **40 ms** | BGE-M3 (within noise) |
 | peak RAM | 1654 MB | **1398 MB** | BGE-M3 |
 
-**Hallazgo no-anticipado**: BGE-M3 gana en lenguas latinas, e5-large gana en germánicas. Posible ADR-302 futuro: ensemble per-idioma.
+**Hallazgo no-anticipado**: BGE-M3 gana en lenguas latinas, e5-large gana en germánicas. Posible ADR-302 future: ensemble per-idioma.
 
 ### Fase 5 — Phase 2 (adoptar e5-large) intentada y RECHAZADA (commit `5658d4b5`)
 
@@ -97,16 +97,16 @@ Operador pidió aplicar el winner empírico. **No funcionó.** Documenté con da
 
 **Causa raíz**: distribución de cosines de e5-large es densa (1024-dim vs 384-dim). El prompt del screenshot vive en cosine 0.906 — **al lado** de los false-positives (negs 0.84-0.86, greetings 0.80). No hay threshold que separe.
 
-**Decisión honesta**: rollback al baseline. ADR-300 §Phase 2 actualizado con la tabla empírica de rechazo. Phase 2 real requiere coordinated change a:
-1. Recalibrar ADR-297 trigger band (semantic 0.30-0.55 está muerto bajo e5)
+**Honest decision**: rollback al baseline. ADR-300 §Phase 2 actualizado con la empirical rejection table. Phase 2 real requiere coordinated change a:
+1. Recalibrar ADR-297 trigger band (semantic 0.30-0.55 is dead bajo e5)
 2. Pivotear negative-context tests a full-pipeline
 3. Decidir confidence-band semantics per-model
 
-Eso es 1 sprint dedicado, no un commit. Tracked como ADR-302 futuro.
+Eso es 1 sprint dedicado, no un commit. Tracked como ADR-302 future.
 
 ### Fase 6 — Cleanup (commit `78a63b48`)
 
-Bug pre-existente detectado: `pytest.mark.xfail` perdido en parametrize entry para `/deep-research` case. Retiré ese caso porque era trade-off de diseño documentado, no regresión. Suite quedó **122 passed, 1 skipped (live LLM gated), 3 deselected (benchmark+enrichment markers)**.
+Pre-existing bug detected: `pytest.mark.xfail` missing en parametrize entry para `/deep-research` case. I removed that case because it was a documented design trade-off, not a regression. Suite ended **122 passed, 1 skipped (live LLM gated), 3 deselected (benchmark+enrichment markers)**.
 
 ## Tools nuevos disponibles (para futuras sesiones)
 
@@ -145,23 +145,23 @@ export COS_SEMANTIC_ROUTING_MODEL=intfloat/multilingual-e5-large
 
 ## Decisiones operativas tomadas
 
-1. **Mantener `paraphrase-multilingual-MiniLM-L12-v2` como default** (Apache 2.0, calibrado, 0.22 GB, threshold 0.50 estable)
+1. **Keep `paraphrase-multilingual-MiniLM-L12-v2` como default** (Apache 2.0, calibrado, 0.22 GB, threshold 0.50 estable)
 2. **Exponer `COS_SEMANTIC_ROUTING_MODEL` env var** para que operadores experimenten sin commit
-3. **No correr enrichment masivo en esta sesión** (requiere API key Qwen/Claude que no estaba configurada localmente)
+3. **Do not run massive enrichment in this session** (requires a Qwen/Claude API key that was not configured locally)
 4. **No adoptar e5-large** a pesar de ser empíricamente +14 pts mejor — la architectural cost del swap no entra en este slice
 5. **Documentar todo con números, no opiniones** — tabla empírica en ADR-300 §Phase 2 es la prueba
 
 ## Insights arquitectónicos descubiertos
 
 1. **El pattern COS = industria.** vLLM SR + LangGraph BigTool + Anthropic Tool Search Tool convergen al mismo 2-stage hybrid. No estamos sobre-ingenierizando.
-2. **Corpus > Modelo.** SkillRouter paper (arXiv 2603.22455): stripping skill description text causa drops de 31-44 pts incluso con modelos fuertes. La calidad de las descriptions importa más que el modelo. ADR-299 (enrichment) es el lever de mayor ROI.
+2. **Corpus > Modelo.** SkillRouter paper (arXiv 2603.22455): stripping skill description text causes drops de 31-44 pts incluso with strong models. Description quality matters more than the model. ADR-299 (enrichment) is the highest-ROI lever.
 3. **License gate primero.** Jina v3/v4/v5 todas CC-BY-NC, bloqueadas. Mxbai-rerank-xsmall validado como under-performing en benchmark independiente. Yamaha de calidad ≠ confianza ciega en hype.
 4. **Score distribution importa tanto como accuracy.** e5-large es +14 pts pero su distribución densa hace imposible separar true positives de semantic-mention false positives con un solo threshold.
 
 ## Próximos pasos sugeridos (no urgentes)
 
 1. **Operador**: configurar Qwen o Claude para correr `cos-skill-description-enrich --apply` sobre los 385 skills (cost ~$2-3). Mayor ROI según SkillRouter paper.
-2. **ADR-302** (cuando se vuelva al tema): refactor coordinado para adoptar un modelo más fuerte como default — incluye recalibrar tie-breaker, pivotear tests, decidir confidence-band semantics.
+2. **ADR-302** (when returning to the topic): refactor coordinado para adoptar un stronger model como default — incluye recalibrar tie-breaker, pivotear tests, decidir confidence-band semantics.
 3. **Ensemble per-idioma**: BGE-M3 para ES/PT/IT, e5-large para EN/DE/FR. Posible ADR-303 si vale la complejidad operacional.
 4. **Live LLM test de ADR-297**: con `COS_LLM_ROUTING_LIVE_TEST=1` cuando haya credenciales.
 

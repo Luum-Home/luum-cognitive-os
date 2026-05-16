@@ -66,18 +66,18 @@ class TestTaskRequest:
         assert result.category == PromptCategory.TASK_REQUEST
         assert result.should_capture is True
 
-    def test_spanish_build(self):
-        result = classify_prompt("Construyamos el modulo de autenticacion")
+    def test_build_request(self):
+        result = classify_prompt("Build the authentication module")
         assert result.category == PromptCategory.TASK_REQUEST
         assert result.should_capture is True
 
-    def test_spanish_fix(self):
-        result = classify_prompt("Arreglemos el test que esta roto")
+    def test_fix_request(self):
+        result = classify_prompt("Fix the broken test")
         assert result.category == PromptCategory.TASK_REQUEST
         assert result.should_capture is True
 
-    def test_spanish_hagamos(self):
-        result = classify_prompt("Hagamos el endpoint de usuarios")
+    def test_english_build(self):
+        result = classify_prompt("Build the users endpoint")
         assert result.category == PromptCategory.TASK_REQUEST
         assert result.should_capture is True
 
@@ -110,13 +110,13 @@ class TestDecision:
         assert result.category == PromptCategory.DECISION
         assert result.should_capture is True
 
-    def test_spanish_usemos(self):
-        result = classify_prompt("Usemos PostgreSQL para el nuevo servicio")
+    def test_use_decision_request(self):
+        result = classify_prompt("Use PostgreSQL for the new service")
         assert result.category == PromptCategory.DECISION
         assert result.should_capture is True
 
-    def test_spanish_vamos_con(self):
-        result = classify_prompt("Vamos con el enfoque A")
+    def test_go_with_approach(self):
+        result = classify_prompt("Go with approach A")
         assert result.category == PromptCategory.DECISION
         assert result.should_capture is True
 

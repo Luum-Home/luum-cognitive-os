@@ -100,6 +100,6 @@ instead of creating a duplicate.
 
 ## Contextual Trigger
 
-Keywords: convert conversation to primitive, esto debería ser automático,
+Keywords: convert conversation to primitive, this should be automatic,
 crear skill, crear primitiva, no receta manual, harvester, classify primitive,
 descartar conversación, mejorar skill existente, usar primitiva existente.

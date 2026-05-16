@@ -20,7 +20,7 @@ PROMPT=$(echo "$INPUT" | jq -r '.user_prompt // .prompt // empty' 2>/dev/null ||
 
 # Closure-intent regex (case-insensitive, whole-word where helpful)
 # Accented/unaccented variants + Spanish + English + common colloquial
-CLOSURE_RE='cerr(a|á|emos|emosla)[[:space:]]+(la[[:space:]]+)?sesi[oó]n|session[[:space:]]+(close|end|wrap[[:space:]]*up)|terminamos|listo[,[:space:]]+(ce|cerr)|cerrar[[:space:]]+sesi[oó]n'
+CLOSURE_RE='cerr(a|á|emos|emosla)[[:space:]]+(la[[:space:]]+)?sesi[oó]n|session[[:space:]]+(close|end|wrap[[:space:]]*up)|we are done|listo[,[:space:]]+(ce|cerr)|cerrar[[:space:]]+sesi[oó]n'
 
 if echo "$PROMPT" | grep -qiE "$CLOSURE_RE"; then
     # Emit additionalContext per ADR-023 pattern

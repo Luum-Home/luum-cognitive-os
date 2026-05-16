@@ -11,10 +11,10 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 
 ### Aider unique value
 - **Repo-map**: graph-ranking algorithm sobre dependency graph (nodos=archivos, edges=imports/calls) que extrae "most important classes/functions with type signatures" dentro de un **token budget configurable** (`--map-tokens`, default 1k). Tree-sitter para extracción simbólica selectiva — filtra ruido que grep no filtra.
-- **Edit-block diff format**: SEARCH/REPLACE bloques (formato `<<<<<<< SEARCH ... ======= ... >>>>>>> REPLACE`) que el LLM emite como diff aplicable. Claude Code ya tiene `Edit` nativo que cubre esto — **NO_COMPARABLE** en ese eje (paridad funcional).
+- **Edit-block diff format**: SEARCH/REPLACE blocks (format `<<<<<<< SEARCH ... ======= ... >>>>>>> REPLACE`) that the LLM emits as an applicable diff. Claude Code already has native `Edit` that covers this — **NO_COMPARABLE** on that axis (functional parity).
 
 ### Nuestro equivalente
-- `lib/context_diet.py` — selección **por task_type** (implementation/review/debug/etc.) con allowlist estática de rules. Token estimation char/4. **No usa graph ranking ni dependency graph.**
+- `lib/context_diet.py` — selección **por task_type** (implementation/review/debug/etc.) con allowlist istica de rules. Token estimation char/4. **No usa graph ranking ni dependency graph.**
 - `lib/context_budget.py`, `lib/context_budget_monitor.py`, `lib/context_compressor.py`, `lib/context_estimator.py` — budget enforcement y compresión, pero ninguno hace **ranking por importancia simbólica**.
 - `lib/context_optimization` — no existe como módulo separado (sólo aparece como rule key `[context-optimization]` en RULES-COMPACT §9).
 
@@ -26,8 +26,8 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 | Token budget dinámico | Sí (`--map-tokens`) | Sí (`context_budget.py`) |
 | Edit application | SEARCH/REPLACE blocks | Native `Edit` tool |
 
-### ¿Vale portar repo-map?
-**Sí, como `lib/repo_map.py`** — pattern-only port (Apache-2.0 permite hasta copy-code). Valor concreto: cuando un sub-agente recibe el prompt SDD, en vez de leer rules estáticas + grep ad-hoc, recibiría un mapa simbólico priorizado del subgrafo relevante. Reduciría context waste en `sdd-apply` sobre repos grandes (luum-agent-os ya tiene >500 archivos Python).
+### Is repo-map worth porting?
+**Sí, como `lib/repo_map.py`** — pattern-only port (Apache-2.0 permite hasta copy-code). Valor concreto: cuando un sub-agente recibe el prompt SDD, en vez de leer rules isticas + grep ad-hoc, recibiría un mapa simbólico priorizado del subgrafo relevante. Reduciría context waste en `sdd-apply` sobre repos grandes (luum-agent-os ya tiene >500 archivos Python).
 
 **Trabajo estimado:** medium — necesita tree-sitter (Python ya tiene `tree_sitter_languages`), graph builder, ranker (PageRank-style). 2-3 días para MVP.
 
@@ -37,7 +37,7 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 
 ## 🔍13 Skill schemas: obra/superpowers vs nuestro
 
-**Veredicto:** **MEJOR_NUESTRO** (significativamente). Schema superpowers es minimalista por diseño cross-agent; el nuestro modela governance.
+**Veredicto:** **MEJOR_NUESTRO** (significativamente). Schema superpowers es minimalists por diseño cross-agent; el nuestro modela governance.
 
 ### Comparación de schema
 
@@ -52,7 +52,7 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 | `effort` | — | `opus`/`sonnet`/`haiku` (model routing) |
 | `summary_line` | — | one-line preview |
 | `platforms` | implícito (cross-agent) | `["claude-code"]` explícito |
-| `prerequisites` | — | lista |
+| `prerequisites` | — | lists |
 | `inputs`/`outputs` | — | estructurados (sdd-explore) |
 | `routing_patterns` | — | regex + confidence (skill_router) |
 | `routing` (LLM) | — | tier/providers/budget_max_usd (ADR-049) |
@@ -63,13 +63,13 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 | `context info` | — | author/pattern/inspired-by |
 | `<!-- SCOPE: both -->` | — | pre-frontmatter scope marker (os/project/both) |
 
-### Análisis
+### Analysis
 - **Superpowers schema = mínimo viable cross-agent** (sólo `name` + `description`). Spec deferida a agentskills.io. Gana en portabilidad, pierde en governance.
 - **Nuestro schema = governance-rich**: model routing (effort+routing.tier), cost ceiling (budget_max_usd_per_call), pattern-based invocation (regex+confidence), ADR provenance, scope discrimination. Atado a Claude Code pero con `platforms` explícito = upgrade path.
 - "455 SKILL.md vs 90" es métrica de cantidad, no de schema. Nuestras 90 son densas (governance, model directives, routing); muchas de las 455 de everything-claude-code son mirrors de Anthropic specs.
 
-### ¿Migrar / mantener / hibridizar?
-**Hibridizar (low-cost):** mantener schema actual + adoptar la convención `description: "Use when…"` de superpowers. El "Use when" pattern mejora **trigger discoverability** del skill_router porque alinea descripción con condiciones de invocación. Cambio mecánico: actualizar `skill-creator` para forzar prefijo "Use when" en `description`. No tocar las 90 existentes en bulk — sólo nuevas y refresh natural.
+### Migrate / maintain / hybridize?
+**Hybridize (low-cost):** keep current schema + adopt the convention `description: "Use when…"` de superpowers. The "Use when" pattern improves **trigger discoverability** del skill_router because it aligns description with invocation conditions. Mechanical change: update `skill-creator` to force prefix "Use when" en `description`. Do not touch the 90 existing ones in bulk; only new ones and natural refresh.
 
 **Referencia externa:** https://github.com/obra/superpowers/blob/main/skills/writing-skills/SKILL.md · agentskills.io/specification.
 
@@ -82,10 +82,10 @@ Phase: reconstruction. Blast radius: 0 (research-only).
 
 ## 🔍8 TUI substrate SURFACE-5
 
-**Veredicto:** **NO_COMPARABLE — research está cerrado, decisión tomada (Bubble Tea), proof shipped.**
+**Verdict:** **NO_COMPARABLE — research is closed, decision made (Bubble Tea), proof shipped.**
 
 ### Estado de ADR-187 / ADR-192
-ADR-187 (`ADR-187-surface-5-adoption-proof-contract.md`) **estableció el proof contract** y ADR-192 (`ADR-192-surface-5-adopt-bubbletea.md`, status=Accepted 2026-05-06) **resolvió la decisión: adoptar Bubble Tea**. Cadena completa:
+ADR-187 (`ADR-187-surface-5-adoption-proof-contract.md`) **established the proof contract** y ADR-192 (`ADR-192-surface-5-adopt-bubbletea.md`, status=Accepted 2026-05-06) **resolved the decision: adopt Bubble Tea**. Complete chain:
 
 1. ADR-172 — Multi-Surface UI Architecture (deja Surface 5 abierto)
 2. ADR-173 — Surface 5 Research Gate
@@ -102,13 +102,13 @@ ADR-187 (`ADR-187-surface-5-adoption-proof-contract.md`) **estableció el proof 
 - Elm-architecture (Model/Update/View) mapea limpio a lifecycle states COS como fields y transiciones como messages.
 - Bubbles + Lipgloss completan stack (table, viewport, list, styling).
 
-### ¿Por qué NO Textual / ratatui / huh / gum?
-- **Textual (Python)**: descartado en proof — más pesado, startup time, no aprovecha la inversión Go existente. Habría sido válido si COS fuera Python-only, pero ya hay Go.
+### Why NOT Textual / ratatui / huh / gum?
+- **Textual (Python)**: discarded in proof — heavier, startup time, does not leverage the existing Go investment. It would have been valid if COS were Python-only, but Go already exists.
 - **ratatui (Rust)**: añadiría tercer lenguaje al toolchain (Python+Go+Rust). Sin pre-existing Rust surface.
 - **huh** y **gum**: son **componentes** sobre Bubble Tea (formularios y shell-scriptables), no substratos. Complementarios, no alternativos.
 - **bubbletea** ganó por ya-vendored + Go-native + composabilidad con `cmd/cos`.
 
-### Razón fundamental
+### Reason fundamental
 La premisa "cero imports TUI, todo bash" del audit es **outdated**: el proof slice Go ya importa Bubble Tea (`cmd/cos/internal/tui/proof.go`). El bash `scripts/cos-tui` se mantiene como bridge legacy mientras Surface 5 nace en Go. **No hay gap abierto.**
 
 **Archivos consultados:**
@@ -128,9 +128,9 @@ La premisa "cero imports TUI, todo bash" del audit es **outdated**: el proof sli
 | Item | Veredicto | Acción recomendada |
 |---|---|---|
 | 🔍9 Aider repo-map | MEJOR_EXTERNO (parcial) | Portar repo-map como `lib/repo_map.py` (pattern-port, Apache-2.0). Edit-block ya cubierto por `Edit` nativo. |
-| 🔍13 Skill schemas | MEJOR_NUESTRO | Mantener. Hibridizar adoptando convención `description: "Use when…"` de superpowers en skill-creator. |
+| 🔍13 Skill schemas | MEJOR_NUESTRO | Keep. Hibridizar adoptando convención `description: "Use when…"` de superpowers en skill-creator. |
 | 🔍8 TUI Surface-5 | NO_COMPARABLE | Cerrado: ADR-192 adopta Bubble Tea, proof en `cmd/cos/internal/tui/`. No reabrir. |
 
-**Confianza:** alta en 🔍8 (ADRs concretos), alta en 🔍13 (schema diff directo), media-alta en 🔍9 (repo-map docs cubiertos, edit-block sólo descrito superficialmente vía web).
+**Confianza:** alta en 🔍8 (ADRs concretos), alta en 🔍13 (schema diff directo), media-alta en 🔍9 (repo-map docs cubiertos, edit-block sólo descrito superficialmente via web).
 
-**Gaps flagueados:** ninguno respecto a TUI (research cerrado). El único trabajo accionable es repo-map port — candidato a `/sdd-new repo-map-context-selector`.
+**Gaps flagueados:** ninguno respecto a TUI (research cerrado). El unique trabajo accionable es repo-map port — candidato a `/sdd-new repo-map-context-selector`.

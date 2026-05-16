@@ -53,7 +53,7 @@ Documentation alone drifts because nobody re-reads the doc when they ship the
 work. Mock-based unit tests miss live integration. ADR sections without a
 matching audit test become aspirational.
 
-The operator's framing in Spanish was direct: *"solucionemos todo y que hayan
+The operator's framing in Spanish was direct: *"fix everything and ensure there are
 tests por favor, end to end"*. Tests, not prose.
 
 The fixes for the three specific bugs landed in commit `b7c33c2`. This ADR

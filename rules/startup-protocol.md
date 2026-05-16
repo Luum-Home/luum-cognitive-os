@@ -34,7 +34,7 @@ Any time you are about to draft a new ADR or new plan, check whether:
 - an existing ADR already decided this question (extend it with an addendum
   rather than superseding it blindly)
 
-User quote (2026-04-21): "si hubiera hecho esto hoy, habria consultado
+User quote (2026-04-21): "if I had done this today, I would have consulted
 hook-architecture-v2.md, stabilization-mega-plan.md y
 token-optimization-masterplan.md ANTES de escribir ADR-027/028 — y
 probablemente los ADRs habrian sido addenda, no docs nuevos."

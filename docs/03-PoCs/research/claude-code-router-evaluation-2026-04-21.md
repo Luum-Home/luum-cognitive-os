@@ -216,7 +216,7 @@ Since 3 of 5 conditions fail today, recommend we **lift the CCR-SUBAGENT-MODEL t
 7. [Issue #670 — subagents can't route to the specified model](https://github.com/musistudio/claude-code-router/issues/670)
 8. [Issue #572 — subagent doesn't apply after apply requirements](https://github.com/musistudio/claude-code-router/issues/572)
 9. [Issue #1274 — Is there a way to use my anthropic subscription](https://github.com/musistudio/claude-code-router/issues/1274)
-10. [Issue #1111 — CCR Subagent 私有协议](https://github.com/musistudio/claude-code-router/issues/1111)
+10. [Issue #1111 — CCR Subagent Private Protocol](https://github.com/musistudio/claude-code-router/issues/1111)
 11. [npm @musistudio/claude-code-router](https://www.npmjs.com/package/@musistudio/claude-code-router)
 12. [npm @musistudio/llms](https://www.npmjs.com/package/@musistudio/llms) — core deps
 13. [package.json](https://raw.githubusercontent.com/musistudio/claude-code-router/main/package.json)

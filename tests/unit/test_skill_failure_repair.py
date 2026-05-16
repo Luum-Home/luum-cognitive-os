@@ -293,7 +293,7 @@ class TestEmitRepairSignal:
         """Each emitted line must be parseable JSON."""
         output = tmp_path / "q.jsonl"
         plan = {
-            "skill": "unicode-skill-名前",
+            "skill": "unicode-skill-name",
             "failure_count": 7,
             "sample_errors": ["error with 'quotes' and \"double\""],
             "suggested_action": "regenerate",
@@ -301,4 +301,4 @@ class TestEmitRepairSignal:
         emit_repair_signal(plan, output)
         line = output.read_text().strip()
         record = json.loads(line)  # must not raise
-        assert record["skill"] == "unicode-skill-名前"
+        assert record["skill"] == "unicode-skill-name"

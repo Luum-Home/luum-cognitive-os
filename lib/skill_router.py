@@ -12,7 +12,7 @@ Usage:
     from lib.skill_router import SkillRouter
 
     router = SkillRouter()
-    match = router.best_match("investigá este repo")
+    match = router.best_match("research este repo")
     if match:
         print(match.invoke_command)  # "/repo-forensics"
 """
@@ -588,7 +588,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
                 (r"\b(fix|arregl[áa]\w*|repar[áa]\w*)\s+(the|el|la|this|ese?|este?)?\s*(error|fallo|falla|issue|problema|broken)", 0.88),
                 (r"\bplan[- ]?bug\b", 0.95),
                 (r"\bbug\s+(fix|report|found)\b", 0.85),
-                (r"\b(hay|there'?s|found)\s+(un|a|an)?\s*(bug|error|fallo)\b", 0.80),
+                (r"\b(there'?s|there is|found)\s+(a|an)?\s*(bug|error|issue)\b", 0.80),
             ]),
             skill_name="plan-bug",
             invoke_command="/plan-bug",
@@ -614,8 +614,8 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         # --- New feature / SDD ---
         _RoutingEntry(
             patterns=_compile([
-                (r"\b(new feature|add feature|implement feature|nueva funcionalidad|agregar funcionalidad)\b", 0.88),
-                (r"\b(necesito|I need to|quiero)\s+(agregar|add|implement|crear|create)\b", 0.85),
+                (r"\b(new feature|add feature|implement feature|nueva funcionalidad|add funcionalidad)\b", 0.88),
+                (r"\b(I need to|I want to)\s+(add|add|implement|create)\b", 0.85),
                 (r"\bsdd[- ]?new\b", 0.95),
                 (r"\b(design|dise[ñn][áa]\w*)\s+(a|an|un|una)?\s*(new|nuev[oa])\b", 0.80),
                 (r"\b(build|construir?|arm[áa]\w*|armemos)\s+(a|an|un|una)?\s*(new|nuev[oa])?\s*(service|module|endpoint|api|feature|m[oó]dulo|servicio)", 0.85),
@@ -783,7 +783,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
             patterns=_compile([
                 (r"\b(deep[- ]?research|investigaci[oó]n\s+profunda)\b", 0.95),
                 (r"\b(research|investigar?|investig[áa]\w*)\b", 0.80),
-                (r"\b(investig[áa]\w*|research)\s+(this|the|esto|este|ese?)\b", 0.85),
+                (r"\b(research)\s+(this|the|this|that)\b", 0.85),
             ]),
             skill_name="deep-research",
             invoke_command="/deep-research",
@@ -793,7 +793,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\btool[- ]?discovery\b", 0.95),
-                (r"\b(find|discover|buscar?|encontr[áa]\w*)\s+(new\s+)?(tools?|herramientas?)\b", 0.85),
+                (r"\b(find|discover|find|discover)\s+(new\s+)?(tools?|tools?)\b", 0.85),
                 (r"\bgithub\s+scan\b", 0.80),
             ]),
             skill_name="tool-discovery",

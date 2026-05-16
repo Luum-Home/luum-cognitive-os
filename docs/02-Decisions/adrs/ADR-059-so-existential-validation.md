@@ -40,12 +40,12 @@ dogfood-score: **65.66 / 100**. Worst dimensions:
 
 Three existential questions the operator posed:
 
-1. **"Qué tanto es humo?"** — Answered: ~38% (not 64% as initial metric
+1. **"How much is hype?"** — Answered: ~38% (not 64% as initial metric
    suggested before ON_DEMAND distinction).
-2. **"Vale más que vanilla Claude Code / Codex?"** — Partially proven (governance,
+2. **"Is it worth more than vanilla Claude Code / Codex?"** — Partially proven (governance,
    memory, dispatch cascade, cross-harness), but ~38% of surface is dead
    weight that burns adoption.
-3. **"¿Las promesas (plug-and-play install, auto-improve, DX genial) se cumplen?"**
+3. **"Are the promises (plug-and-play install, auto-improve, great DX) fulfilled?"**
    — **Not measured** today. Zero empirical test runs. Answering this is the
    point of Phase 2 below.
 

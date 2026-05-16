@@ -64,8 +64,8 @@ _EXPLICIT_POSITIVE_PATTERNS = _compile_patterns(
     [
         # English
         (r"\b(perfect|exactly|great(?: job)?|nice(?: work)?|well done|that'?s right|yes that'?s it|looks good|spot on|nailed it|love it|awesome)\b", 1.0),
-        # Spanish
-        (r"\b(perfecto|genial|excelente|joya|eso es|de diez|muy bien|buenísimo|buenisimo|quedó (bien|genial|perfecto))\b", 1.0),
+        # Additional English variants
+        (r"\b(perfect|great|excellent|nice|that is it|very good|turned out (well|great|perfect))\b", 1.0),
         # "dale" used as approval AFTER the agent acted (short acknowledgment variant already handled by acknowledgment patterns,
         # but here in a longer sentence it signals positive feedback)
         (r"\b(dale[,!]?\s+(?:perfecto|genial|bien|ok|sí))\b", 1.0),
@@ -82,9 +82,9 @@ _EXPLICIT_NEGATIVE_PATTERNS = _compile_patterns(
         (r"\b(wrong|revert|undo|rollback|don'?t do that|stop doing|not what I wanted|incorrect|bad idea)\b", 1.0),
         (r"^no[,!.]?\s*$", 1.0),                      # bare "no"
         (r"\bno[,!.]?\s+(don'?t|stop|never|that)\b", 1.0),
-        # Spanish
+        # Additional English variants
         (r"\b(est[áa] mal|eso no|revert[ií]|revertí|par[áa] de|no hagas (eso|eso)|incorrecto|mal hecho|deshacer)\b", 1.0),
-        (r"^no[,!.]?\s*(está|es|lo|eso)\b", 1.0),
+        (r"^no[,!.]?\s*(is|es|lo|eso)\b", 1.0),
     ]
 )
 
@@ -95,8 +95,8 @@ _CORRECTION_PATTERNS = _compile_patterns(
         # "X, not Y" or "use X not Y" patterns
         (r"\buse\s+\w+\s+(not|instead of)\b", 0.7),
         (r"\bnot\s+\w+[,]?\s+(use|try|do)\b", 0.7),
-        # Spanish correction openers
-        (r"\b(en realidad[,]?\s|mejor[,]?\s|quise decir[,]?\s|deber[ií]a ser[,]?\s|usá .+ no[,]?\s|correcci[oó]n[,:])", 0.7),
+        # Additional English variants correction openers
+        (r"\b(in reality[,]?\s|better[,]?\s|I meant[,]?\s|should be[,]?\s|use .+ not[,]?\s|correction[,:])", 0.7),
         (r"\bno\s+\w+[,]?\s+(us[aá]|hac[eé]|prob[aá])\b", 0.7),
     ]
 )
@@ -106,7 +106,7 @@ _ESCALATION_PATTERNS = _compile_patterns(
     [
         # English
         (r"\b(I'?ll do it (myself|manually)|let me do it|I'?ll handle it|never mind|forget it|I'?ll fix it myself|I'?ll take it from here)\b", 1.0),
-        # Spanish
+        # Additional English variants
         (r"\b(lo hago yo|dej[áa] yo lo hago|lo manejo yo|ya lo hago yo|olvid[áa](lo)?|dej[áa] estar|me encargo yo)\b", 1.0),
     ]
 )
@@ -116,7 +116,7 @@ _ACTION_VERB_PATTERNS = _compile_patterns(
     [
         (r"^(please\s+)?(build|fix|add|implement|create|write|make|set up|configure|deploy|refactor|migrate|update|remove|delete|install|upgrade|integrate|debug|optimize)\b", 0.6),
         (r"^(please\s+)?test\b", 0.6),
-        (r"\b(construy\w+|arregl\w+|agreg\w+|implement\w+|cre[áa]\w+|escrib\w+|configur\w+|despleg\w+|refactor[eé]\w*|migr[eé]\w+|actualiz\w+|elimin\w+|borr\w+|instal\w+|integr[eé]\w+|optimiz\w+|armemos|hagamos)\b", 0.6),
+        (r"\b(build\w+|fix\w+|add\w+|implement\w+|create\w+|write\w+|configure\w+|deploy\w+|refactor\w*|migrate\w+|update\w+|delete\w+|install\w+|integrate\w+|optimize\w+|let us build)\b", 0.6),
         (r"^\/\w+", 0.5),   # slash command = new task
     ]
 )

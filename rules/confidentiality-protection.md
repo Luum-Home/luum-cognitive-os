@@ -27,7 +27,7 @@ Discussion of source projects in the conversation is permitted — the developer
 
 English: "based on", "adapted from", "inspired by", "taken from", "copied from", "extracted from", "reused from", "ported from"
 
-Spanish: "basado en", "extraído de", "modelo tomado de", "tomado de", "copiado de", "adaptado de", "reutilizado de", "inspirado en"
+English examples: "based on", "extracted from", "model taken from", "taken from", "copied from", "adapted from", "reused from", "inspired by"
 
 ### How to Present Adapted Patterns
 

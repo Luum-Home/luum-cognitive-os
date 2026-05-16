@@ -24,7 +24,7 @@ rejects a full Claude Code Agent() clone.
 
 ## Context
 
-Operator asked (2026-04-24): "¿podemos replicar completamente Agent()? ¿es
+Operator asked (2026-04-24): "can we fully replicate Agent()? is
 posible analizar sus entrañas?"
 
 "Agent()" here means the native Claude Code tool that spawns isolated

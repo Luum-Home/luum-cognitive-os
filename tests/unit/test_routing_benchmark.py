@@ -53,7 +53,7 @@ VALID_CORPUS_YAML = textwrap.dedent(
         description: "Answer product questions from cached cards."
         prompts:
           en: ["what is our differentiator"]
-          es: ["¿cuál es nuestro diferenciador?"]
+          es: ["what is our differentiator?"]
           pt: ["qual é o nosso diferenciador?"]
           de: ["was ist unser Differenzierungsmerkmal?"]
           fr: ["quel est notre facteur différenciant?"]

@@ -17,7 +17,7 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 
 **External anchor:** `docs/03-PoCs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md` deep-evaluated `awslabs/agent-squad` (Apache-2.0, ~7.6k★) at `MONITOR_CONFIRMED` — explicitly noted overlap with `skill_router.best_match` and "would compete with existing skill_router". This is the correct verdict: the *concept* is mature externally, but adopting awslabs/agent-squad would re-introduce the same kind of routing bespoke we just archived.
 
-**¿Reactivar, formalizar tombstone, o re-diseñar?:**
+**Reactivate, formalize tombstone, or redesign?:**
 - **Tombstone is NOT owed.** The archival README *is* the tombstone — it is dated, cites the audit, lists the un-archive preconditions (loader, agentRef resolution, skills resolution, governance gate wiring), and points at the design doc (`docs/04-Concepts/root/plug-and-play.md`).
 - **Already re-designed.** ADR-251 is the redesign: instead of growing a bespoke "squad runtime", COS becomes the *governance plane* and external orchestrators (LangGraph et al.) plug in as adapters. The adapter manifest + boundary audit + benchmark trio is the load-bearing primitive, not a YAML squad loader.
 - **Reactivation gate:** un-archive only after a YAML loader resolves agentRef + skills against real artefacts. That is the same gate the README sets and is consistent with `[component-reality-check]` (`scripts/aspirational_audit.py`).
@@ -29,7 +29,7 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 
 ## 🔍6 Hermes / Cline shadow-git (ADR-227)
 
-**Veredicto:** **IGUAL (parity on substrate)** + **MEJOR_NUESTRO on atomicity guarantees** vs. Cline; claim "Slices A–F implementadas" is **CONFIRMED**, not aspirational.
+**Veredicto:** **IGUAL (parity on substrate)** + **MEJOR_NUESTRO on atomicity guarantees** vs. Cline; claim "Slices A–F implemented" is **CONFIRMED**, not aspirational.
 
 **Nuestra implementación (concrete files):**
 - `lib/shadow_git.py` (canonical substrate). Implements `snapshot()` via `git init --bare` + `GIT_INDEX_FILE=<temp>` + `git hash-object -w` + `git update-index --add --cacheinfo` + `git write-tree`. The user's `.git/index` is provably untouched (the index is a sibling of the bare repo at `repo.parent / "shadow.index"`).
@@ -40,7 +40,7 @@ Repo: `luum-agent-os` @ `main` (working tree, not public mirror).
 - `scripts/cos-rollback` (CLI surface specified in ADR-227).
 - ADR-227 frontmatter: "Slices A–F implemented (2026-05-07)", complementary ADR-224 ("shadow-state snapshots — off-repo") and ADR-099 / ADR-200 / ADR-220 are wired in.
 
-**Cómo se compara con Cline:**
+**How it compares with Cline:**
 
 Cline's shadow-git is documented at <https://github.com/cline/cline> (`src/integrations/checkpoints/`, see `CheckpointTracker.ts`, `CheckpointGitOperations.ts`). Convergent invariants — both implementations satisfy:
 
@@ -55,7 +55,7 @@ Cline's shadow-git is documented at <https://github.com/cline/cline> (`src/integ
 - **Governance-as-restore-point.** ADR-227 §Context: every policy-check / blast-radius / audit-finding event carries `file_tree_sha`. Cline does not have this — it is the explicit defensible differentiator the gap research called out.
 - **Schema versioning** (`shadow-git/v1`) and **CLI refusals** (refuses-without-preview, refuses-under-dirty-workspace). Stronger guarantees than Cline's UX.
 
-**¿Hay claim aspirational?:** **NO.** I verified the file exists, contains real `subprocess.run(["git", "init", "--bare", ...])` and `git write-tree` calls, real `GIT_INDEX_FILE` isolation, and real session-scoped `flock`. The "Slices A–F implementadas" frontmatter is backed by code. The pattern *was* imported from Cline/Hermes/Kilo.ai/`git-shadow` (ADR-227 §"Source"), per `[reinvention-prevention]` — pattern adoption, not code adoption.
+**Is there an aspirational claim?:** **NO.** I verified the file exists, contains real `subprocess.run(["git", "init", "--bare", ...])` and `git write-tree` calls, real `GIT_INDEX_FILE` isolation, and real session-scoped `flock`. The "Slices A–F implemented" frontmatter is backed by code. The pattern *was* imported from Cline/Hermes/Kilo.ai/`git-shadow` (ADR-227 §"Source"), per `[reinvention-prevention]` — pattern adoption, not code adoption.
 
 **Caveat to flag:** ADR-227 test matrix lists T1/T2/T3/T4/T5/T7/T10 as ✅ but T6 (performance, p95<200ms) and T9 (adoption-truth) as ⬜. The 200ms p95 budget is a non-trivial claim under heavy workspaces; recommend running the benchmark before any public messaging that cites "Devin-parity at zero infra cost".
 
@@ -85,7 +85,7 @@ These overlap *only* on "harness fingerprinting" — the question of "is this ou
 - **MEJOR_EXTERNO:** agentapi's `lib/msgfmt/testdata/{format,initialization}/{aider,amazonq,amp,auggie,claude,codex,copilot,cursor,gemini,goose,opencode}/` is the most comprehensive harness-format corpus in the public radar (11 harnesses, golden fixtures for `first_message`, `multi-line-input`, `second_message`, `thinking`, `confirmation_box`, `auto-accept-edits`, `remove-task-tool-call`). COS has nothing equivalent.
 - **MEJOR_NUESTRO** for the canonical-event surface (ADR-033's typed dataclasses + `_registry` are cleaner than parsing free-form HTTP messages; AgentBusMetrics / cost dashboards can consume our schema directly).
 
-**¿Mismos casos?:** **No.** agentapi normalises *interactive I/O*; `lib/harness_adapter/` normalises *observability events*. agentapi is closer in spirit to ADR-161 (remote control plane / provider adapter boundary) and ADR-196 (cosd task API) than to ADR-033.
+**Same cases?:** **No.** agentapi normalises *interactive I/O*; `lib/harness_adapter/` normalises *observability events*. agentapi is closer in spirit to ADR-161 (remote control plane / provider adapter boundary) and ADR-196 (cosd task API) than to ADR-033.
 
 **Recommended action (already noted in the deep-eval):** vendor `lib/msgfmt/testdata/` under MIT into `lib/harness_adapter/testdata/` and use it as the golden corpus for adapter unit tests. Phase-2 task, ~1 day for testdata vendor + 3–5 days to port `msgfmt` parsers to Python. Do **not** adopt agentapi as a sidecar — that would re-introduce a Go runtime dependency and cross the boundary set by ADR-049 (LLM dispatch) without justification.
 

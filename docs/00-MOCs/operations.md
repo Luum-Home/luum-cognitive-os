@@ -81,7 +81,7 @@ for the full system.
 - `.githooks/pre-commit` Gate 3 — ADR lifecycle + INDEX.md staleness
 
 **Natural-language entrypoints (skills)** — for agents and operators:
-- `session-pending-brief` — "what's open?" / "qué hay pendiente?" →
+- `session-pending-brief` — "what's open?" / "what's pending?" →
   invokes the projector, presents a ranked attack list
 - `session-pending-close` — "cerrá X" / "close Y" → atomic closure via
   `cos-pending-truth-close` (tasks) or `cos-adr-close` (decisions) with

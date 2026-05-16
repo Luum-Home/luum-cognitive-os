@@ -64,7 +64,7 @@ No primitive composes those ideas into a fast product/commercial question answer
 Add a deterministic **Product Question-to-Evidence Primitive** exposed as:
 
 ```bash
-scripts/cos-product-answer "¿Cuál es nuestro diferenciador?" --json
+scripts/cos-product-answer "What is our differentiator?" --json
 scripts/cos-product-answer --question-id differentiator --format markdown
 ```
 
@@ -150,6 +150,6 @@ may appear only as explicit gaps or non-claims.
 
 ```bash
 python3 -m pytest tests/unit/test_product_answer.py tests/behavior/test_product_answer_cli.py -q
-scripts/cos-product-answer "¿Cuál es nuestro diferenciador?" --json
+scripts/cos-product-answer "What is our differentiator?" --json
 scripts/cos-product-answer --question-id differentiator --format markdown
 ```

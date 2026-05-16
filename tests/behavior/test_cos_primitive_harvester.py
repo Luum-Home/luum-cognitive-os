@@ -25,8 +25,8 @@ def run_harvester(text: str, repo: Path = REPO_ROOT) -> dict:
 
 def test_create_primitive_for_repeatable_risky_verifiable_recipe() -> None:
     payload = run_harvester(
-        "Esto no debería quedar como receta manual. Construyamos una primitiva automática "
-        "para rotar y borrar snapshots de benchmark externos, hacer backup, ejecutar "
+        "This should not remain a manual recipe. Build an automatic primitive "
+        "to rotate and delete external benchmark snapshots, create backups, run "
         "python3 scripts/cos_benchmark_snapshot_rotate.py --dry-run y validar con tests automatizados."
     )
 
@@ -39,7 +39,7 @@ def test_create_primitive_for_repeatable_risky_verifiable_recipe() -> None:
 
 def test_improve_existing_when_matching_skill_exists_and_user_asks_edge_cases() -> None:
     payload = run_harvester(
-        "Agrega más edge cases al cleanup preserved WIP: stashes con nombres raros, "
+        "Add more edge cases to preserved WIP cleanup: stashes with unusual names, "
         "validation capsule dirty, tests automatizados y portabilidad."
     )
 
@@ -50,7 +50,7 @@ def test_improve_existing_when_matching_skill_exists_and_user_asks_edge_cases() 
 
 def test_use_existing_when_request_matches_existing_primitive_without_change() -> None:
     payload = run_harvester(
-        "Necesito limpiar stashes preservados y un validation capsule worktree usando el flujo existente."
+        "I need to clean preserved stashes and a validation capsule worktree using the existing flow."
     )
 
     assert payload["decision"] == "USE_EXISTING"
@@ -69,7 +69,7 @@ def test_use_existing_even_when_user_says_create_but_primitive_exists() -> None:
 
 def test_document_only_for_architecture_decision_without_action_layer() -> None:
     payload = run_harvester(
-        "Documentemos un ADR sobre la decisión de llamar agentic primitives a esta capa, "
+        "Document an ADR about the decision to call this layer agentic primitives, "
         "con alternativas y consecuencias."
     )
 
@@ -87,7 +87,7 @@ def test_discard_small_non_repeatable_chat() -> None:
 
 
 def test_discard_ambiguous_preference_without_verifiable_workflow() -> None:
-    payload = run_harvester("me gusta más que los nombres sean cortos")
+    payload = run_harvester("I prefer shorter names")
 
     assert payload["decision"] == "DISCARD"
 
@@ -107,7 +107,7 @@ def test_create_when_it_can_improve_skills_and_other_primitives() -> None:
 def test_cli_accepts_conversation_file(tmp_path: Path) -> None:
     convo = tmp_path / "conversation.txt"
     convo.write_text(
-        "Esto debería ser automático: script reusable con checklist, backup, tests y validación.",
+        "This should be automatic: reusable script with checklist, backup, tests, and validation.",
         encoding="utf-8",
     )
     result = subprocess.run(

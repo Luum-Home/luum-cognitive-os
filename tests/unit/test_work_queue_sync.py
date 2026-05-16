@@ -16,7 +16,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
-# ── 1. Hook existence ─────────────────────────────────────────────────────────
+# ── 1. Hook existsnce ─────────────────────────────────────────────────────────
 
 def test_work_queue_sync_hook_exists_and_executable():
     """hooks/work-queue-sync.sh must exist and be executable."""

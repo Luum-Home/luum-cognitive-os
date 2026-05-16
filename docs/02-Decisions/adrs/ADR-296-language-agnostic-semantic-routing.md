@@ -59,8 +59,8 @@ A real failing case (operator screenshot, used as the acceptance test):
 
 ```
 "Si yo soy un dev que tengo limitaciones en cuanto al conocimiento de las
- buenas prácticas, codigo y arquitectura limpia, seguridad, construcción
- de tests, documentación, primitivas de agentes, entre otras cosas, este
+ best practices, code and clean architecture, security, building
+ tests, documentation, agent primitives, among other things, this
  SO me puede ayudar?"
 ```
 
@@ -150,7 +150,7 @@ routing_intents:
   - intent: capability_question
     description: User asks what the OS can do for them.
   - "can this help me as a developer?"
-  - "¿puede ayudarme como desarrollador?"
+  - "can it help me as a developer?"
 ```
 
 Use it when a skill's `description` is too abstract to differentiate from

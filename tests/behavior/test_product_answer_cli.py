@@ -44,7 +44,7 @@ def test_product_answer_manifest_sources_are_clean_checkout_portable() -> None:
 
 def test_product_answer_cli_answers_differentiator_json() -> None:
     result = subprocess.run(
-        [str(CLI), "¿Cuál es nuestro diferenciador?", "--no-cache", "--json"],
+        [str(CLI), "What is our differentiator?", "--no-cache", "--json"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -102,7 +102,7 @@ def test_product_answer_refresh_cli_materializes_and_answer_cli_uses_cache(tmp_p
         check=False,
     )
     answer = subprocess.run(
-        [str(CLI), "¿Cuál es nuestro diferenciador?", "--cache-dir", str(cache_dir), "--json"],
+        [str(CLI), "What is our differentiator?", "--cache-dir", str(cache_dir), "--json"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -268,7 +268,7 @@ def test_product_answer_cli_routes_commercial_architecture_map_question() -> Non
     assert "governance and evidence layer" in report["answer_short"]
     assert "```mermaid" in report["answer_long"]
     assert "graph TD" in report["answer_long"]
-    assert "Equipo de ingeniería" in report["answer_long"]
+    assert "Engineering team" in report["answer_long"]
     assert "Cognitive OS<br/>Capa de gobernanza y evidencia" in report["answer_long"]
     assert "commercial_architecture_map_primitive" in {
         claim["claim_id"] for claim in report["claims"]

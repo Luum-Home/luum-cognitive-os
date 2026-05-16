@@ -402,7 +402,7 @@ def test_enriched_corpus_improves_baseline_routing(tmp_path: Path) -> None:
     # Spanish prompts — one per skill, paraphrased.
     test_prompts = {
         "deploy-checker": "como verifico si esta listo el despliegue a prod",
-        "log-analyzer": "necesito analizar logs para encontrar fallos",
+        "log-analyzer": "I need to analyze logs to find failures",
         "schema-migrate": "quiero correr migraciones de la base de datos",
         "perf-profile": "ayuda con cuellos de botella de rendimiento",
         "secret-scan": "buscar secretos filtrados en el repositorio",

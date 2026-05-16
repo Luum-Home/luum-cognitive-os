@@ -79,11 +79,9 @@ _TASK_PATTERNS = _compile_patterns(
         (r"\b(build|fix|add|implement|create|write|make|set up|configure|deploy|refactor|migrate|update|remove|delete|install|upgrade|integrate|debug|optimize)\b", 0.7),
         # "test" as a verb command (not noun usage like "the test")
         (r"^(please\s+)?test\b", 0.7),
-        # Spanish action verbs (conjugated imperative/subjunctive forms)
-        (r"\b(construy\w+|arregl\w+|agreg\w+|implement\w+|cre[áa]\w+|escrib\w+|configur\w+|despleg\w+|refactor[eé]\w*|migr[eé]\w+|actualiz\w+|elimin\w+|borr\w+|instal\w+|integr[eé]\w+|optimiz\w+|armemos|hagamos)\b", 0.7),
         # Imperative patterns
         (r"^(please\s+)?(can you|could you|I need you to|I want you to)", 0.5),
-        (r"^(por favor\s+)?(pod[eé]s|podr[ií]as|necesito que|quiero que)", 0.5),
+        (r"^(please\s+)?(can you|could you|I need you to|I want you to)", 0.5),
         # SDD commands
         (r"\/sdd-(new|ff|apply|verify|explore|continue)", 0.9),
         # Direct commands
@@ -95,8 +93,8 @@ _DECISION_PATTERNS = _compile_patterns(
     [
         # English decision language
         (r"\b(use|go with|choose|prefer|let'?s do|let'?s go with|switch to|adopt|pick|select|we should|I want to use)\b", 0.6),
-        # Spanish decision language
-        (r"\b(us[áae]|vamos con|elegi|prefer|hagamos|cambiemos a|adoptemos|elijamos|usemos)\b", 0.6),
+        # Additional English decision language
+        (r"\b(use|go with|choose|prefer|let us|switch to|adopt|select)\b", 0.6),
         # Explicit decision markers
         (r"\b(decision|decided|approach|strategy|the plan is)\b", 0.5),
         (r"\b(decisi[oó]n|decidimos|enfoque|estrategia|el plan es)\b", 0.5),
@@ -109,14 +107,14 @@ _FEEDBACK_PATTERNS = _compile_patterns(
         (r"\b(don'?t|stop|no more|that'?s wrong|incorrect|bad|revert|undo|rollback|not what I)\b", 0.7),
         # Positive feedback (English)
         (r"\b(keep doing|perfect|exactly|great job|that'?s right|correct|well done|nice)\b", 0.6),
-        # Negative feedback (Spanish) — use "pará" (with accent) or "para de" to avoid matching preposition "para"
+        # Additional negative feedback
         (r"\b(no hagas|par[áa] de|pará|est[áa] mal|incorrecto|malo|revert|deshacer|no es lo que)\b", 0.7),
-        # Positive feedback (Spanish) — segui asi pattern gets high weight
+        # Additional keep-going feedback
         (r"\bsegu[ií]\w*\s+as[ií]\b", 0.8),
         (r"\b(perfecto|exacto|bien hecho|correcto|genial|excelente)\b", 0.5),
         # Correction patterns
         (r"\b(actually|instead|rather|correction|I meant)\b", 0.6),
-        (r"\b(en realidad|mejor|correccion|quise decir)\b", 0.6),
+        (r"\b(in reality|mejor|correccion|quise decir)\b", 0.6),
     ]
 )
 
@@ -125,7 +123,7 @@ _CONTEXT_PATTERNS = _compile_patterns(
         # English context — high weight for clear context markers
         (r"\b(working on|the goal is|deadline|for context|fyi|note that|keep in mind|remember that)\b", 0.8),
         (r"\b(we need|the project|background)\b", 0.6),
-        # Spanish context
+        # Additional context phrases
         (r"\b(trabajando en|el objetivo es|necesitamos|fecha l[ií]mite|el proyecto|contexto|para que sepas|ten[eé] en cuenta|acord[áa]te que)\b", 0.6),
         # Project info patterns
         (r"\b(the stack is|we use|our (api|database|service|framework))\b", 0.5),
@@ -137,7 +135,7 @@ _STATUS_PATTERNS = _compile_patterns(
     [
         # English status queries — high weight for clear status markers
         (r"\b(what'?s left|status|how'?s|progress|where are we|what remains|how far|what did you)\b", 0.8),
-        # Spanish status queries
+        # Additional English variants status queries
         (r"\b(qu[eé] falta|estado|c[oó]mo va|progreso|d[oó]nde estamos|qu[eé] queda|cu[aá]nto falta|qu[eé] hiciste)\b", 0.8),
         # Question about current state
         (r"^(what|how|where|when|which|who)\b.*\?$", 0.3),
@@ -149,8 +147,8 @@ _NAVIGATION_PATTERNS = _compile_patterns(
     [
         # English navigation
         (r"\b(show me|read file|open|check|look at|display|list|cat|grep|find)\b", 0.6),
-        # Spanish navigation
-        (r"\b(mostr[áa]me|le[eé] el archivo|abr[ií]|fijate|mir[áa]|mostrar|listar)\b", 0.6),
+        # Additional English variants navigation
+        (r"\b(mostr[áa]me|le[eé] el archivo|abr[ií]|fijate|mir[áa]|mostrar|listsr)\b", 0.6),
         # File references
         (r"\b(the file|this file|that file|in file)\b", 0.3),
     ]
@@ -160,7 +158,7 @@ _ACKNOWLEDGMENT_PATTERNS = _compile_patterns(
     [
         # English acknowledgments (short)
         (r"^(ok|okay|yes|yep|yeah|sure|got it|thanks|thank you|right|alright|go ahead|proceed|continue|lgtm|ack|roger|copy|dale|si|s[ií]|bien|bueno|perfecto|genial|sigue|continu[áa])\s*[.!]?\s*$", 0.9),
-        # Spanish acknowledgments
+        # Additional English variants acknowledgments
         (r"^(dale|si|s[ií]|bueno|bien|perfecto|genial|ok[eé]i|va|listo|segui|segu[ií])\s*[.!]?\s*$", 0.9),
     ]
 )

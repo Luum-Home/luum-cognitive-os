@@ -83,7 +83,7 @@ claims:
 
 def test_select_question_matches_spanish_alias(tmp_path: Path) -> None:
     project = _project(tmp_path)
-    report = build_answer(project, question_text="¿Cuál es nuestro diferenciador?")
+    report = build_answer(project, question_text="What is our differentiator?")
 
     assert report["question_id"] == "differentiator"
     assert report["status"] == "warn"
