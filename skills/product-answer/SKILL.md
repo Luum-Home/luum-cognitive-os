@@ -13,8 +13,8 @@ tags:
 - evidence
 - positioning
 - token-efficiency
-summary_line: Answer COS product/commercial questions from cached evidence cards,
-  not broad repo research.
+summary_line: Answer whether COS helps developers and teams, and answer COS product/commercial
+  questions from cached evidence cards, not broad repo research.
 platforms:
 - claude-code
 - codex
@@ -23,18 +23,14 @@ prerequisites: []
 routing_patterns:
 - pattern: \bproduct[- ]?answer\b
   confidence: 0.99
-- pattern: \b(diferenciador|factor diferenciador|moat|wedge|positioning|posicionamiento)\b
-  confidence: 0.96
-- pattern: \b(product|producto|commercial|comercial)\b.{0,40}\b(question|pregunta|answer|respuesta)\b
-  confidence: 0.9
-- pattern: \b(ICP|buyer|pricing|precio|competitors|competencia|pitch|landing)\b
-  confidence: 0.86
-- pattern: \b(what|which).{0,30}(claim|promise|difference|sell|selling)\b
-  confidence: 0.8
+- pattern: /product-answer\b
+  confidence: 0.99
 routing_intents:
 - intent: product_capability_question
   description: User asks what Cognitive OS can do, whether it is useful for their
-    situation, or whether it can help a developer or team.
+    situation, or whether it can help a developer or team with limited expertise
+    in best practices, clean architecture, security, tests, documentation, or
+    agentic primitives.
   confidence: 0.88
 - intent: value_proposition_question
   description: User asks who Cognitive OS is for, what problems it solves, why to
@@ -44,15 +40,6 @@ routing_intents:
   description: User asks about Cognitive OS positioning, ICP, buyer, pricing, competitors,
     pitch, landing page claims, moat, wedge, or safe product claims.
   confidence: 0.88
-- can this help a developer who does not know best practices?
-- is this OS useful for someone without architecture experience?
-- what can this OS do for me?
-- can this OS help me as a developer?
-- can it help someone without knowledge of best practices, architecture, or security?
-- is this operating system useful for someone who does not know testing or documentation?
-- este SO serve para um desenvolvedor sem experiência em arquitetura?
-- ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?
-- est-ce que ce SO peut aider un développeur sans expérience?
 triggers:
 - product-answer
 - /product-answer

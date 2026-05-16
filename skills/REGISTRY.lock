@@ -205,7 +205,7 @@ skills:
 - path: skills/private-mode/SKILL.md
   sha256: 41a9ba6e7dee3243733c8932cff884703987b3efd8ad4ca45cdc76ac024fd5fa
 - path: skills/product-answer/SKILL.md
-  sha256: 2753490656416fd2f51f0e8d05df3c76b04e6868dbee590fd1a2434dd1a0080d
+  sha256: d57f0b87cd8832291940d14a602e3f5a889b72e27941c3895c11b917eaec871d
 - path: skills/project-scaffold/SKILL.md
   sha256: f8175a55ed62985841032b380ed9391709d4ae7e226b23dd5fe13026bdf00e9c
 - path: skills/promptfoo-integration/SKILL.md
