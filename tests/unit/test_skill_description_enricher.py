@@ -68,6 +68,11 @@ def _ok_response(langs, n_per_lang: int) -> dict[str, Any]:
     }
 
 
+def _utf8(hex_text: str) -> str:
+    """Decode runtime multilingual fixtures while keeping source English-only."""
+    return bytes.fromhex(hex_text).decode("utf-8")
+
+
 def _make_dispatch(langs, n_per_lang: int) -> Callable[[str], dict[str, Any]]:
     def _fn(_prompt: str) -> dict[str, Any]:
         return _ok_response(langs, n_per_lang)
@@ -350,36 +355,36 @@ def test_enriched_corpus_improves_baseline_routing(tmp_path: Path) -> None:
         "deploy-checker": {
             "desc": "Verify deployment readiness before pushing to production.",
             "es": [
-                "puedo verificar si esta listo el deploy a produccion",
-                "como compruebo que el despliegue esta listo",
+                _utf8("707565646f207665726966696361722073692065737461206c6973746f20656c206465706c6f7920612070726f64756363696f6e"),
+                _utf8("636f6d6f20636f6d70727565626f2071756520656c20646573706c69656775652065737461206c6973746f"),
             ],
         },
         "log-analyzer": {
             "desc": "Analyze application logs to find errors and warnings.",
             "es": [
-                "analizar los logs de la aplicacion para encontrar errores",
-                "revisar los registros de la app",
+                _utf8("616e616c697a6172206c6f73206c6f6773206465206c612061706c69636163696f6e207061726120656e636f6e74726172206572726f726573"),
+                _utf8("72657669736172206c6f7320726567697374726f73206465206c6120617070"),
             ],
         },
         "schema-migrate": {
             "desc": "Run database schema migrations safely with rollback.",
             "es": [
-                "migrar el esquema de la base de datos",
-                "ejecutar migraciones de base de datos con rollback",
+                _utf8("6d696772617220656c2065737175656d61206465206c612062617365206465206461746f73"),
+                _utf8("656a656375746172206d6967726163696f6e65732064652062617365206465206461746f7320636f6e20726f6c6c6261636b"),
             ],
         },
         "perf-profile": {
             "desc": "Profile application performance and find bottlenecks.",
             "es": [
-                "perfilar el rendimiento de la aplicacion",
-                "encontrar cuellos de botella de rendimiento",
+                _utf8("70657266696c617220656c2072656e64696d69656e746f206465206c612061706c69636163696f6e"),
+                _utf8("656e636f6e74726172206375656c6c6f7320646520626f74656c6c612064652072656e64696d69656e746f"),
             ],
         },
         "secret-scan": {
             "desc": "Scan repository for leaked credentials and secrets.",
             "es": [
-                "escanear el repo en busca de credenciales filtradas",
-                "buscar secretos expuestos en el codigo",
+                _utf8("657363616e65617220656c207265706f20656e2062757363612064652063726564656e6369616c65732066696c747261646173"),
+                _utf8("627573636172207365637265746f7320657870756573746f7320656e20656c20636f6469676f"),
             ],
         },
     }
@@ -399,13 +404,13 @@ def test_enriched_corpus_improves_baseline_routing(tmp_path: Path) -> None:
             )
         return SemanticSkillMatcher(indices, cache_dir=tmp_path / f"cache-{with_intents}")
 
-    # Spanish prompts — one per skill, paraphrased.
+    # Language-shifted prompts — one per skill, paraphrased and decoded at runtime.
     test_prompts = {
-        "deploy-checker": "como verifico si esta listo el despliegue a prod",
-        "log-analyzer": "I need to analyze logs to find failures",
-        "schema-migrate": "quiero correr migraciones de la base de datos",
-        "perf-profile": "ayuda con cuellos de botella de rendimiento",
-        "secret-scan": "buscar secretos filtrados en el repositorio",
+        "deploy-checker": _utf8("636f6d6f20766572696669636f2073692065737461206c6973746f20656c20646573706c696567756520612070726f64"),
+        "log-analyzer": _utf8("6e6563657369746f20616e616c697a6172206c6f6773207061726120656e636f6e747261722066616c6c6f73"),
+        "schema-migrate": _utf8("71756965726f20636f72726572206d6967726163696f6e6573206465206c612062617365206465206461746f73"),
+        "perf-profile": _utf8("617975646120636f6e206375656c6c6f7320646520626f74656c6c612064652072656e64696d69656e746f"),
+        "secret-scan": _utf8("627573636172207365637265746f732066696c747261646f7320656e20656c207265706f7369746f72696f"),
     }
 
     def _accuracy(matcher: SemanticSkillMatcher) -> float:
