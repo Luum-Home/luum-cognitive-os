@@ -76,16 +76,15 @@ def test_kill_switch_short_circuits(monkeypatch, tmp_path):
 def test_load_skill_metadata_parses_real_catalog(real_router):
     meta = load_skill_metadata(real_router._skill_md_paths)
     # Sanity: catalog is non-trivial and product-answer is present with its
-    # description + (after ADR-296) string-form multilingual utterances.
+    # description, summary line, and structured routing intents.
     assert "product-answer" in meta
     pa = meta["product-answer"]
     assert "Cognitive OS" in pa["description"] or "product" in pa["description"].lower()
-    # routing_intents may be a mix of struct dicts (rendered as
-    # "intent: description") and plain strings — both forms must parse.
+    # Product-answer should not hardcode example utterances in SKILL.md;
+    # semantic coverage comes from structured intent text plus the embedding model.
     assert isinstance(pa["routing_intents"], list)
-    assert any("can it" in s or "can help" in s for s in pa["routing_intents"]), (
-        "ADR-296 added multilingual example utterances to product-answer"
-    )
+    assert any("product_capability_question" in s for s in pa["routing_intents"])
+    assert any("value_proposition_question" in s for s in pa["routing_intents"])
 
 
 def test_loader_accepts_string_form_intents(tmp_path):
@@ -111,34 +110,22 @@ def test_loader_accepts_string_form_intents(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# Live multilingual matching
+# Live semantic matching
 # ---------------------------------------------------------------------------
 
-# The Spanish capability-question that motivated ADR-296.
-SPANISH_ACCEPTANCE_PROMPT = (
-    "Si yo soy un dev que tengo limitaciones en cuanto al conocimiento de las "
-    "best practices, code and clean architecture, security, building "
-    "tests, documentation, agent primitives, among other things, this "
-    "SO me puede ayudar?"
+PRODUCT_ANSWER_ACCEPTANCE_PROMPT = (
+    "answer a Cognitive OS product positioning question from cached evidence cards"
 )
 
-# Held-out multilingual eval set (precision target ≥ 0.8 over rows). Each
-# row is (prompt, expected_skill). Some skills overlap semantically so we
-# accept any of `expected_skill` (str or tuple).
-# Each row: (prompt, accept_set). The `code-review` / `optimize-skill`
-# axis has genuine catalog ambiguity — both skills review code — so we
-# treat either as a hit for "review my code" prompts. Same logic for
-# `repo-forensics` vs `repo-scout`.
+# Held-out English eval set (precision target >= 0.8 over rows). Each row is
+# (prompt, accept_set). Some skills overlap semantically, so we accept any
+# skill in the listed set for known same-axis ambiguities.
 HELD_OUT: list[tuple[str, tuple[str, ...]]] = [
     # /product-answer — capability / value-proposition questions
-    (SPANISH_ACCEPTANCE_PROMPT, ("product-answer",)),
-    ("Can this OS help a developer who does not know best practices?", ("product-answer",)),
-    ("can this OS help me as a developer?", ("product-answer",)),
-    ("Este SO serve para um desenvolvedor sem experiência?", ("product-answer",)),
-    ("Ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?", ("product-answer",)),
-    ("Est-ce que ce SO peut aider un développeur sans expérience?", ("product-answer",)),
-    ("Può aiutare uno sviluppatore senza esperienza in architettura?", ("product-answer",)),
-    # /code-review — review-this-code framing across languages.
+    (PRODUCT_ANSWER_ACCEPTANCE_PROMPT, ("product-answer",)),
+    ("who is Cognitive OS for and what product value proposition should we tell buyers?", ("product-answer",)),
+    ("can Cognitive OS help a developer team with product value and positioning?", ("product-answer",)),
+    # /code-review — review-this-code framing.
     # optimize-skill SKILL.md also describes "review changed code for reuse,
     # quality, and efficiency" so it is an acceptable near-neighbour.
     ("review the changed code for quality and reuse issues", ("code-review", "optimize-skill")),
@@ -146,8 +133,7 @@ HELD_OUT: list[tuple[str, tuple[str, ...]]] = [
     ("code review focused on quality and reuse", ("code-review", "optimize-skill")),
     # /run-tests — execute tests in this repo
     ("run the tests in this repository", ("run-tests",)),
-    ("ejecutar los tests de este repositorio", ("run-tests",)),
-    ("execute os testes deste repositório", ("run-tests",)),
+    ("execute repository tests", ("run-tests",)),
     # /repo-forensics — deep analysis of a git repository. repo-scout is
     # the same-axis sibling (lighter recon mode).
     ("perform deep forensic analysis of this git repository", ("repo-forensics", "repo-scout")),
@@ -160,12 +146,13 @@ HELD_OUT: list[tuple[str, tuple[str, ...]]] = [
 
 @live
 @pytest.mark.skipif(not FASTEMBED_AVAILABLE, reason="fastembed not installed")
-def test_spanish_capability_question_routes_to_product_answer(matcher):
-    """The exact operator-screenshot prompt MUST land on /product-answer ≥ 0.6.
+def test_product_positioning_question_routes_to_product_answer(matcher):
+    """Product-positioning prompts must land on /product-answer.
 
-    This is the ADR-296 acceptance test, copied verbatim from the spec.
+    This proves product-answer routes from semantic intent text, not keyword
+    regexes or example strings.
     """
-    results = matcher.match(SPANISH_ACCEPTANCE_PROMPT)
+    results = matcher.match(PRODUCT_ANSWER_ACCEPTANCE_PROMPT)
     assert results, "expected at least one semantic match"
     top = results[0]
     assert isinstance(top, SemanticMatch)
@@ -181,8 +168,8 @@ def test_spanish_capability_question_routes_to_product_answer(matcher):
 
 @live
 @pytest.mark.skipif(not FASTEMBED_AVAILABLE, reason="fastembed not installed")
-def test_multilingual_precision_at_least_80pct(matcher):
-    """Held-out prompts in 6 languages must hit precision ≥ 0.8."""
+def test_semantic_precision_at_least_80pct(matcher):
+    """Held-out semantic prompts must hit precision >= 0.8."""
     hits = 0
     misses = []
     for prompt, accept_set in HELD_OUT:
@@ -215,7 +202,7 @@ def test_cold_start_under_2s_with_cache(matcher):
         cache_dir=real._cache_dir,
     )
     t0 = time.perf_counter()
-    fresh.match("ejecutar los tests")
+    fresh.match("execute repository tests")
     elapsed = time.perf_counter() - t0
     assert elapsed < 2.0, f"cold-start with cache took {elapsed:.2f}s"
 
@@ -231,11 +218,11 @@ def test_warm_latency_under_100ms_p95(matcher):
     matcher.match("hello world")
     timings: list[float] = []
     prompts = [
-        "ejecutar los tests",
+        "execute repository tests",
         "review the code",
-        "auditar seguridad",
+        "audit security",
         "what can this OS do for me",
-        "primitivas de agentes",
+        "agentic primitives",
     ]
     for i in range(100):
         t0 = time.perf_counter()

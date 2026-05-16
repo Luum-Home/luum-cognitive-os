@@ -25,7 +25,7 @@ def test_product_answer_skill_is_os_only_and_routes_commercial_questions() -> No
     assert fm["name"] == "product-answer"
     assert fm["audience"] == "os-dev"
     assert "SCOPE: os-only" in text
-    assert "diferenciador" in text
+    assert "/product-answer" in text
     assert "pricing" in text
     assert "competitors" in text
     assert "vanilla" in text
