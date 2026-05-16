@@ -27,6 +27,15 @@ routing_patterns:
   confidence: 0.8
 - pattern: \btriage\s+decisions?\b
   confidence: 0.75
+routing_intents:
+- intent: triage_pending_operator_decisions
+  description: User wants an urgency-sorted inventory of unresolved operator decisions
+    found in research reports and ADR open questions.
+  confidence: 0.88
+- intent: separate_decisions_from_task_backlog
+  description: User asks what choices need human direction, distinct from listing
+    implementation tasks or session backlog items.
+  confidence: 0.84
 triggers:
 - decision-triage
 - /decision-triage

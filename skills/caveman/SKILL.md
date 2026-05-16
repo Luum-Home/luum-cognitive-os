@@ -16,6 +16,15 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bsimplify\s+prompt\b
   confidence: 0.75
+routing_intents:
+- intent: switch_to_caveman_response_mode
+  description: User wants future assistant replies to be ultra-brief and token-efficient
+    while keeping technical accuracy, without editing repository files.
+  confidence: 0.89
+- intent: request_brief_token_saving_style
+  description: User asks for compressed conversational style or less verbose answers,
+    distinct from compressing persisted memory files.
+  confidence: 0.85
 triggers:
 - caveman
 - /caveman

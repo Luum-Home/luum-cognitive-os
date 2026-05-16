@@ -18,6 +18,15 @@ metadata:
 audience: both
 summary_line: N-persona parallel doc review with severity-tiered consolidation.
 model: haiku
+routing_intents:
+- intent: run_multi_persona_documentation_review
+  description: User wants parallel adversarial documentation review from multiple
+    stakeholder lenses, consolidated into severity-ranked findings and fixes.
+  confidence: 0.89
+- intent: find_documentation_gaps_by_audience
+  description: User asks how different readers such as finance, engineering, commercial,
+    new developer, or editor personas would critique the same docs.
+  confidence: 0.84
 triggers:
 - review docs
 - doc review

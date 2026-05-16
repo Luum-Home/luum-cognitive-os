@@ -15,6 +15,15 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: classify_agentic_primitive_scope
+  description: User needs to decide whether a new skill, hook, rule, or library helper
+    belongs in the OS kernel or should ship as a package.
+  confidence: 0.88
+- intent: evaluate_core_vs_package_boundary
+  description: User is designing new Cognitive OS functionality and needs boundary
+    guidance before implementation, not a usage map of existing primitives.
+  confidence: 0.84
 triggers:
 - primitive-classifier
 - /primitive-classifier

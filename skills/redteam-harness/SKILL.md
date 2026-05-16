@@ -31,6 +31,13 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bfalse[- ]?done\s+detection\b
   confidence: 0.75
+routing_intents:
+- intent: run_agent_os_redteam_scenarios
+  description: User wants to execute red-team scenario files against Cognitive OS behavior to expose false-done or partial-completion failures.
+  confidence: 0.9
+- intent: aggregate_redteam_baseline
+  description: User asks to collect and summarize red-team harness evidence across scenarios, distinct from a single manual review.
+  confidence: 0.86
 ---
 <!-- SCOPE: both -->
 # /redteam-harness

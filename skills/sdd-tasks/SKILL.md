@@ -20,6 +20,13 @@ routing_patterns:
   confidence: 0.96
 - pattern: \bEAS gap matrix\b
   confidence: 0.88
+routing_intents:
+- intent: break_sdd_spec_into_tasks
+  description: User wants to convert an approved SDD spec, design, or acceptance specification into ordered implementation tasks.
+  confidence: 0.9
+- intent: build_eas_task_gap_matrix
+  description: User asks to map Executable Acceptance Specification rows to concrete work items before coding begins.
+  confidence: 0.86
 triggers:
 - sdd-tasks
 - /sdd-tasks

@@ -36,6 +36,13 @@ routing_patterns:
   confidence: 0.9
 - pattern: \blast\s+completed\s+(sdd\s+)?phase\b
   confidence: 0.84
+routing_intents:
+- intent: resume_sdd_from_last_completed_phase
+  description: User wants to restart an SDD pipeline from detected progress or a specified phase with state visibility.
+  confidence: 0.9
+- intent: report_sdd_phase_timing
+  description: User asks for SDD continuation with per-phase timing and cost context, distinct from general next-action recommendation.
+  confidence: 0.86
 triggers:
 - sdd-resume
 - /sdd-resume

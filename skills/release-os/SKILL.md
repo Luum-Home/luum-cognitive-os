@@ -16,6 +16,13 @@ summary_line: META — orchestrate the full Cognitive OS release by chaining the
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: orchestrate_full_os_release
+  description: User wants the meta release workflow that chains all atomic Cognitive OS release skills from preparation through publication.
+  confidence: 0.9
+- intent: coordinate_release_skill_sequence
+  description: User asks which release phase to run next or wants end-to-end release coordination rather than one atomic release step.
+  confidence: 0.86
 triggers:
 - release-os
 - /release-os

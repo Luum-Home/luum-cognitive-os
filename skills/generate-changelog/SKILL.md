@@ -16,6 +16,10 @@ effort: haiku
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: release_changelog_section
+  description: User wants to move Unreleased changelog entries into a versioned release section; not a request to generate arbitrary release notes from Git history.
+  confidence: 0.88
 triggers:
 - generate-changelog
 - /generate-changelog

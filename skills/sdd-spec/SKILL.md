@@ -24,6 +24,13 @@ routing_patterns:
   confidence: 0.9
 - pattern: \bEasy Approach to Requirements Syntax\b
   confidence: 0.9
+routing_intents:
+- intent: write_sdd_specification
+  description: User wants to create or update the SDD requirements specification for a proposed change.
+  confidence: 0.9
+- intent: produce_executable_acceptance_specification
+  description: User asks for EARS-style requirements or an Executable Acceptance Specification before task breakdown or implementation.
+  confidence: 0.88
 triggers:
 - sdd-spec
 - /sdd-spec

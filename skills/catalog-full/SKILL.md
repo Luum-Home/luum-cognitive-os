@@ -22,6 +22,15 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bshow\s+(full\s+)?catalog\b
   confidence: 0.75
+routing_intents:
+- intent: show_full_skill_catalog
+  description: User needs the exhaustive skills catalog with commands, sections,
+    and audience columns because the compact catalog is not detailed enough.
+  confidence: 0.88
+- intent: inspect_skill_catalog_details
+  description: User asks to browse detailed skill inventory metadata, not to route
+    a single request to one matching skill.
+  confidence: 0.82
 triggers:
 - catalog-full
 - /catalog-full

@@ -22,6 +22,13 @@ platforms:
 - codex
 - shell
 user-invocable: true
+routing_intents:
+- intent: measure_primitive_surface_coverage
+  description: User needs a report showing which agentic primitives are actually implemented across Claude, Codex, CLI, UI, or report surfaces.
+  confidence: 0.9
+- intent: audit_scope_both_harness_parity
+  description: User wants to verify that SCOPE both declarations reflect real cross-harness behavior rather than metadata-only parity.
+  confidence: 0.87
 routing_patterns:
 - pattern: harness.*coverage
   confidence: 0.9

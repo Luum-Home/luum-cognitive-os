@@ -13,6 +13,15 @@ version: 1.0.0
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: compress_memory_file_to_caveman
+  description: User wants a specific natural-language memory file rewritten into
+    caveman format while preserving technical content and creating a readable backup.
+  confidence: 0.88
+- intent: reduce_persistent_context_tokens
+  description: User asks to lower token cost of stored context files such as CLAUDE.md,
+    todos, or preferences, not to change the assistant's live response style.
+  confidence: 0.85
 triggers:
 - compress
 - /compress

@@ -21,6 +21,13 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bconservative\s+surface\s+reduction\b
   confidence: 0.75
+routing_intents:
+- intent: primitive_surface_reduction_plan
+  description: User wants to identify unused or overexposed Cognitive OS agentic primitives and plan a conservative reduction without removing active consumers.
+  confidence: 0.88
+- intent: apply_primitive_surface_cleanup
+  description: User asks to execute a scoped cleanup of unused primitive surface after usage evidence exists, distinct from merely mapping references.
+  confidence: 0.84
 triggers:
 - primitive-surface-reduction
 - /primitive-surface-reduction

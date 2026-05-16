@@ -28,6 +28,13 @@ routing_patterns:
   confidence: 0.95
 - pattern: \bupdate\s+(tech\s+)?radar\b
   confidence: 0.85
+routing_intents:
+- intent: update_technology_radar
+  description: User wants to merge repository evaluations into the canonical technology radar documents while preserving human-authored prose.
+  confidence: 0.9
+- intent: curate_tool_adoption_status
+  description: User asks to classify ecosystem tools as allowed or blocked from repo-scout evidence, distinct from evaluating a single repository only.
+  confidence: 0.86
 triggers:
 - radar-update
 - /radar-update

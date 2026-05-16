@@ -27,6 +27,13 @@ routing_patterns:
   confidence: 0.85
 - pattern: \bscaffold\s+risk\b
   confidence: 0.75
+routing_intents:
+- intent: scaffold_stride_risk_register
+  description: User wants to create a project risk-register document seeded with STRIDE categories and impact-likelihood scoring.
+  confidence: 0.9
+- intent: initialize_threat_modeling_register
+  description: User asks for an idempotent security risk tracking artifact, distinct from exporting standards or scaffolding the full docs tree.
+  confidence: 0.86
 ---
 <!-- SCOPE: project -->
 # Risk Register Scaffolder

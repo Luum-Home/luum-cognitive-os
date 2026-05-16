@@ -20,6 +20,13 @@ model: haiku
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: scaffold_operations_runbooks
+  description: User needs deploy, rollback, on-call, SLO, or monitoring runbook files scaffolded under the standard operations documentation area.
+  confidence: 0.88
+- intent: document_operational_procedures
+  description: User asks to create project operations documentation, distinct from domain modeling or changelog generation.
+  confidence: 0.84
 routing_patterns:
 - pattern: \bops[- ]?runbook\b
   confidence: 0.95

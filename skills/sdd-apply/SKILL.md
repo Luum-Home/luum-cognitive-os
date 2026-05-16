@@ -20,6 +20,13 @@ routing_patterns:
   confidence: 0.96
 - pattern: \bimplement against EAS\b
   confidence: 0.88
+routing_intents:
+- intent: implement_sdd_tasks
+  description: User wants to execute approved SDD implementation tasks against requirements and acceptance evidence.
+  confidence: 0.9
+- intent: apply_eas_backed_changes
+  description: User asks to modify code to satisfy Executable Acceptance Specification rows, distinct from writing specs or verifying completion.
+  confidence: 0.86
 triggers:
 - sdd-apply
 - /sdd-apply

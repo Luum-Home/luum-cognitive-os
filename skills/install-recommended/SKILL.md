@@ -13,6 +13,13 @@ triggers:
 platforms:
 - claude-code
 prerequisites: []
+routing_intents:
+- intent: recommend_skills_for_stack
+  description: User wants stack-aware recommendations for which Cognitive OS skills to install, distinct from generating cognitive-os.yaml or running project initialization.
+  confidence: 0.88
+- intent: detect_stack_skill_install_plan
+  description: User asks for an install plan based on the project technology stack rather than direct execution of a specific named skill.
+  confidence: 0.84
 routing_patterns:
 - pattern: \binstall[- ]?recommended\b
   confidence: 0.95

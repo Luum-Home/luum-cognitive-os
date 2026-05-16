@@ -27,6 +27,13 @@ routing_patterns:
   confidence: 0.9
 - pattern: \binspect\s+sdd\s+state\b
   confidence: 0.84
+routing_intents:
+- intent: inspect_sdd_state_and_recommend_next_step
+  description: User wants to inspect in-progress SDD artifacts and choose the optimal next phase without forcing a specific resume point.
+  confidence: 0.9
+- intent: continue_sdd_workflow_decision
+  description: User asks what to do next in an SDD change, distinct from executing implementation or verification directly.
+  confidence: 0.86
 triggers:
 - sdd-continue
 - /sdd-continue
