@@ -9,6 +9,7 @@ from scripts.english_only_content_audit import (
     audit,
     first_forbidden_script_letter,
     report_to_markdown,
+    smoke_audit,
 )
 
 
@@ -67,8 +68,12 @@ def test_first_forbidden_script_letter_allows_latin_diacritic() -> None:
     assert first_forbidden_script_letter("Mat" + chr(0x00ED) + "as") is None
 
 
-def test_first_forbidden_script_letter_flags_greek_letter() -> None:
-    assert first_forbidden_script_letter("score = " + chr(0x03B1)) == chr(0x03B1)
+def test_first_forbidden_script_letter_allows_greek_technical_symbols() -> None:
+    assert first_forbidden_script_letter("score = " + chr(0x03B1) + " + " + chr(0x03B2)) is None
+
+
+def test_first_forbidden_script_letter_flags_greek_prose() -> None:
+    assert first_forbidden_script_letter(chr(0x0391) + chr(0x03C5) + chr(0x03C4) + chr(0x03CC)) == chr(0x0391)
 
 
 def test_first_forbidden_script_letter_allows_micro_sign() -> None:
@@ -277,3 +282,35 @@ def test_audit_scans_git_tracked_files_and_reports_locations(tmp_path: Path) -> 
     assert report.finding_count >= 1
     cyrillic_findings = [f for f in report.findings if f.code == "non-english-script"]
     assert any(f.file == "docs/note.md" for f in cyrillic_findings)
+
+
+def test_smoke_audit_flags_known_keyword(tmp_path: Path) -> None:
+    """Smoke pass catches a fixed-corpus Spanish keyword without loading lingua."""
+    # "ejecutá" is in the smoke blocklist.
+    (tmp_path / "note.md").write_text(
+        "# Note\n" + _utf8("656a65637574c3a120746573747320616e74657320646520636f6d6d6974") + "\n",
+        encoding="utf-8",
+    )
+    _git_init(tmp_path)
+    report = smoke_audit(tmp_path)
+    assert report.finding_count >= 1
+    assert any(f.code == "non-english-term" for f in report.findings)
+    assert report.schema_version.endswith("+smoke")
+
+
+def test_smoke_audit_is_strictly_weaker_than_lingua(tmp_path: Path) -> None:
+    """Smoke pass is intentionally narrower than the lingua audit."""
+    # Spanish paragraph built from words ABSENT from the smoke keyword blocklist.
+    sample = _utf8(
+        "506f72206e75657374726f206d6f64656c6f20656e7472656e61646f206573706563c3ad"
+        "666963616d656e74652063616c69627261646f206c6173206d65646964617320696e7465"
+        "726e617320667563696f6e616e2062"
+        "69656e2e2050616c6162726f6e657320666f726d616c6573206465207072656e64612e"
+    )
+    (tmp_path / "note.md").write_text("# Note\n\n" + sample + "\n", encoding="utf-8")
+    _git_init(tmp_path)
+    smoke_report = smoke_audit(tmp_path)
+    lingua_report = audit(tmp_path, min_words=8, min_confidence=0.75)
+    # Lingua MUST catch this; smoke may miss it (intentional gap).
+    assert lingua_report.finding_count >= 1
+    assert lingua_report.finding_count >= smoke_report.finding_count

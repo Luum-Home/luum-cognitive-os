@@ -51,6 +51,50 @@ DEFAULT_EXCLUDE_GLOBS = (
 FORBIDDEN_PUNCTUATION = "".join(chr(code) for code in (0x00A1, 0x00BF))
 FORBIDDEN_PUNCTUATION_RE = re.compile("[" + re.escape(FORBIDDEN_PUNCTUATION) + "]")
 
+# Smoke-mode keyword corpus. Kept in base64 so this file stays English-only.
+# Used ONLY by --smoke (fast pre-commit pass that does not load lingua).
+# The lingua-based audit() remains the authoritative CI gate.
+_SMOKE_TERMS_B64 = (
+    "YWRlbcOhcw==", "YWdyZWfDoQ==", "YWdyZWdhcg==", "YWdyZWd1ZW1vcw==",
+    "YWxndWllbg==", "YW7DoWxpc2lz", "YXJyZWdsw6E=", "YXJyZWdsYXI=",
+    "YXPDrQ==", "YXV0b23DoXRpY28=", "Ym9ycsOh", "Ym9ycmFy", "YnVlbmFz",
+    "Y8OzZGlnbw==", "Y8OzbW8=", "Y29uc3RydWNjacOzbg==", "Y3XDoWw=",
+    "Y3XDoWxlcw==", "ZGViZXLDrWE=", "ZGViZXLDrWFu", "ZGVjaXNpw7Nu",
+    "ZGVzYXJyb2xsYWRvcg==", "ZG9jdW1lbnRhY2nDs24=", "ZMOzbmRl",
+    "ZWplY3V0w6E=", "ZW4gZXNwYcOxb2w=", "ZXNwYcOxb2w=", "ZXN0w6E=",
+    "ZXN0w6Fu", "ZXN0bw==", "ZXh0cmHDrWRv", "aGFjw6k=", "aGFnYW1vcw==",
+    "aGVycmFtaWVudGE=", "aGVycmFtaWVudGFz", "aW52ZXN0aWdhY2nDs24=",
+    "aW52ZXN0aWfDoQ==", "bMOtbmVh", "bcOhcw==", "bmVjZXNpdG8=",
+    "bmluZ8O6bg==", "b3JxdWVzdGFjacOzbg==", "cGFsYWJyZXLDrWE=",
+    "cG9kw6lz", "cG9kcsOtYXM=", "cHLDoWN0aWNhcw==", "cXXDqQ==",
+    "cXVlZMOz", "cXVlcsOpcw==", "cmV2aXPDoQ==", "c2VzacOzbg==",
+    "c8OtbnRlc2lz", "c29sdWNpb25lbW9z", "dGFtYmnDqW4=", "dMOpY25pY28=",
+    "dG9kYXbDrWE=", "w7puaWNv", "dXPDoQ==", "dsOtYQ==",
+    "Ym9uam91cg==", "bWVyY2k=", "bW9uc2lldXI=", "bWFkYW1l", "cG91cnF1b2k=",
+    "YXVmZ2FiZQ==", "Yml0dGU=", "ZGFua2U=", "d2ljaHRpZw==",
+    "c2NobmVsbA==", "Z3Jhemll", "cHJlZ28=", "cGVyY2jDqA==", "YWRlc3Nv",
+    "b2JyaWdhZG8=", "b2JyaWdhZGE=", "cG9ycXVl", "cXVhbmRv", "ZmVjaGFy",
+)
+_SMOKE_TERM_RE: re.Pattern[str] | None = None
+
+
+def _get_smoke_pattern() -> re.Pattern[str]:
+    """Decode the base64 keyword corpus and compile a single regex (memoised)."""
+    global _SMOKE_TERM_RE
+    if _SMOKE_TERM_RE is None:
+        import base64
+        terms = tuple(
+            base64.b64decode(t).decode("utf-8") for t in _SMOKE_TERMS_B64
+        )
+        _SMOKE_TERM_RE = re.compile(
+            r"(?<!\w)(?:"
+            + "|".join(re.escape(t) for t in sorted(terms, key=len, reverse=True))
+            + r")(?!\w)",
+            re.IGNORECASE,
+        )
+    return _SMOKE_TERM_RE
+
+
 ALLOW_MARKERS = (
     "english-only-content-audit: allow",
     "non-english-content-audit: allow",
@@ -226,6 +270,22 @@ def _has_allow_block_marker(block_text: str) -> bool:
 # ---------------------------------------------------------------------------
 
 ALLOWED_NON_ASCII_SYMBOLS = {chr(0x00B5)}  # MICRO SIGN: technical unit prefix.
+_MATH_CONTEXT_CHARS = set("=+-*/^_()[]{}<>≤≥≈≠∞∑∏√∫.,:; \t")
+
+
+def _is_greek_technical_symbol(line: str, index: int) -> bool:
+    """Return True for Greek letters used as math/code notation, not prose.
+
+    Greek letters are common variable names in technical examples (`alpha`,
+    `beta`, coefficients, angles). The English-only audit should allow that
+    notation while still flagging Greek prose. Require a code-like operator on
+    the same line and non-word/math boundaries around the symbol.
+    """
+    if not any(op in line for op in ("=", "+", "-", "*", "/", "^", "≤", "≥", "≈", "≠")):
+        return False
+    prev_char = line[index - 1] if index > 0 else " "
+    next_char = line[index + 1] if index + 1 < len(line) else " "
+    return prev_char in _MATH_CONTEXT_CHARS and next_char in _MATH_CONTEXT_CHARS
 
 
 def first_forbidden_script_letter(line: str) -> str | None:
@@ -233,11 +293,10 @@ def first_forbidden_script_letter(line: str) -> str | None:
 
     This is intentionally a script guard, not a language detector: Latin
     letters with diacritics are left for the paragraph-level detector so names
-    and loanwords do not fail solely because of one character. Non-Latin
-    alphabetic scripts, including Greek letters, are blocked unless a nearby
-    allow marker documents an intentional fixture or notation example.
+    and loanwords do not fail solely because of one character. Greek letters
+    are allowed only in math/code notation contexts; Greek prose is flagged.
     """
-    for char in line:
+    for idx, char in enumerate(line):
         if ord(char) < 128 or char in ALLOWED_NON_ASCII_SYMBOLS:
             continue
         category = unicodedata.category(char)
@@ -248,6 +307,8 @@ def first_forbidden_script_letter(line: str) -> str | None:
         except ValueError:
             return char
         if "LATIN" in name:
+            continue
+        if "GREEK" in name and _is_greek_technical_symbol(line, idx):
             continue
         return char
     return None
@@ -609,6 +670,85 @@ def audit(
 
 
 # ---------------------------------------------------------------------------
+# Smoke audit (fast keyword + script + punctuation; no lingua / no tree-sitter)
+# ---------------------------------------------------------------------------
+
+def smoke_scan_file(root: Path, rel_path: str) -> list[Finding]:
+    """Per-line keyword + script + punctuation scan, no model load."""
+    path = root / rel_path
+    if not is_probably_text(path):
+        return []
+    findings: list[Finding] = []
+    pattern = _get_smoke_pattern()
+    try:
+        with path.open("r", encoding="utf-8", errors="ignore") as handle:
+            buffer: list[str] = []
+            for raw in handle:
+                buffer.append(raw.rstrip("\n"))
+            for idx, line in enumerate(buffer):
+                window = "\n".join(buffer[max(0, idx - 1): idx + 2])
+                if any(m in window for m in ALLOW_MARKERS):
+                    continue
+                if (script := first_forbidden_script_letter(line)) is not None:
+                    findings.append(Finding(
+                        code="non-english-script", severity="error",
+                        file=rel_path, line=idx + 1, evidence=script,
+                        message="Non-Latin script character.",
+                    ))
+                    continue
+                if (m := pattern.search(line)) is not None:
+                    findings.append(Finding(
+                        code="non-english-term", severity="error",
+                        file=rel_path, line=idx + 1, evidence=m.group(0),
+                        message="Non-English keyword (smoke blocklist).",
+                    ))
+                    continue
+                if (p := FORBIDDEN_PUNCTUATION_RE.search(line)) is not None:
+                    findings.append(Finding(
+                        code="non-english-punctuation", severity="error",
+                        file=rel_path, line=idx + 1, evidence=p.group(0),
+                        message="Inverted exclamation/question punctuation.",
+                    ))
+    except OSError:
+        return []
+    return findings
+
+
+def smoke_audit(
+    root: Path,
+    *,
+    include_untracked: bool = False,
+    exclude_globs: Sequence[str] = (),
+) -> Report:
+    """Fast pre-commit pass. No lingua, no tree-sitter — keyword blocklist only.
+
+    This is intentionally narrow: it catches obvious Spanish keywords from a
+    fixed corpus and forbidden Spanish punctuation. Misses mixed-language
+    drift that the lingua-based audit() catches. Use `audit()` in CI as the
+    authoritative gate.
+    """
+    root = root.resolve()
+    all_excludes = tuple(DEFAULT_EXCLUDE_GLOBS) + tuple(exclude_globs)
+    scanned_files = 0
+    findings: list[Finding] = []
+    for rel_path in discover_files(root, include_untracked=include_untracked):
+        if excluded(rel_path, all_excludes):
+            continue
+        path = root / rel_path
+        if not path.is_file() or not is_probably_text(path):
+            continue
+        scanned_files += 1
+        findings.extend(smoke_scan_file(root, rel_path))
+    return Report(
+        schema_version=SCHEMA_VERSION + "+smoke",
+        root=str(root),
+        scanned_files=scanned_files,
+        finding_count=len(findings),
+        findings=tuple(findings),
+    )
+
+
+# ---------------------------------------------------------------------------
 # Reporting
 # ---------------------------------------------------------------------------
 
@@ -659,18 +799,32 @@ def build_parser() -> argparse.ArgumentParser:
         "--min-confidence", type=float, default=0.85,
         help="Minimum lingua confidence to emit a finding (default: 0.85)",
     )
+    parser.add_argument(
+        "--smoke", action="store_true",
+        help=(
+            "Fast keyword-blocklist pass (no lingua / no tree-sitter). "
+            "Suitable for pre-commit; NOT a substitute for the lingua audit in CI."
+        ),
+    )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    report = audit(
-        Path(args.root),
-        include_untracked=args.include_untracked,
-        exclude_globs=args.exclude_glob,
-        min_words=args.min_words,
-        min_confidence=args.min_confidence,
-    )
+    if args.smoke:
+        report = smoke_audit(
+            Path(args.root),
+            include_untracked=args.include_untracked,
+            exclude_globs=args.exclude_glob,
+        )
+    else:
+        report = audit(
+            Path(args.root),
+            include_untracked=args.include_untracked,
+            exclude_globs=args.exclude_glob,
+            min_words=args.min_words,
+            min_confidence=args.min_confidence,
+        )
     if args.json:
         payload = asdict(report)
         payload["findings"] = [asdict(f) for f in report.findings]
