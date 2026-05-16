@@ -23,17 +23,15 @@ from lib.memory_governance import assess_freshness, boosted_score, get_policy
 
 
 # ---------------------------------------------------------------------------
-# Stop words — English + Spanish
+# Stop words for memory retrieval
 # ---------------------------------------------------------------------------
 
 _STOP_WORDS: frozenset[str] = frozenset({
-    # English
     "the", "a", "an", "is", "are", "was", "were", "in", "on",
     "at", "to", "for", "of", "with", "and", "or", "not", "it",
     "this", "that", "from", "by", "as", "be", "has", "had",
     "have", "will", "would", "could", "should", "do", "did",
     "its", "if", "so", "but", "we", "he", "she", "they", "you",
-    # Spanish
     "el", "la", "los", "las", "de", "en", "un", "una", "y", "o",
     "es", "son", "ser", "estar", "con", "por", "para", "al", "del",
     "lo", "le", "se", "su", "sus", "que", "no", "si", "me", "te",
@@ -317,8 +315,7 @@ class MemoryRetriever:
     def _tokenize(text: str) -> set:
         """Tokenise *text* into a lowercase word set with stop words removed.
 
-        Uses a simple regex word-character split — no stemming.  Spanish stop
-        words are included alongside English ones.
+        Uses a simple regex word-character split and a compact stop-word set — no stemming.
         """
         if not text:
             return set()

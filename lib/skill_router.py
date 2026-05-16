@@ -3,7 +3,7 @@
 """Skill Router — Auto-select skills from conversation context.
 
 Matches user messages to the most appropriate Cognitive OS skill using
-pattern-based intent detection. Supports English prompts.
+regex intent detection plus optional language-agnostic semantic fallback.
 
 The router reads CATALOG.md to know which skills exist and uses a routing
 table of (pattern, skill, confidence) tuples to score matches.

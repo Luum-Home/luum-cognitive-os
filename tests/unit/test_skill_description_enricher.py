@@ -69,7 +69,7 @@ def _ok_response(langs, n_per_lang: int) -> dict[str, Any]:
 
 
 def _utf8(hex_text: str) -> str:
-    """Decode runtime multilingual fixtures while keeping source English-only."""
+    """Decode runtime multilingual fixtures from hex literals."""
     return bytes.fromhex(hex_text).decode("utf-8")
 
 

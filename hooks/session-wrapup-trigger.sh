@@ -19,7 +19,7 @@ PROMPT=$(echo "$INPUT" | jq -r '.user_prompt // .prompt // empty' 2>/dev/null ||
 [ -z "$PROMPT" ] && exit 0
 
 # Closure-intent regex (case-insensitive).
-# English-only repository policy: match explicit session-close intent only.
+# Match explicit session-close intent only.
 CLOSURE_RE='close[[:space:]]+(the[[:space:]]+)?session|end[[:space:]]+(the[[:space:]]+)?session|session[[:space:]]+(close|end|wrap[[:space:]]*up)|wrap[[:space:]]+up[[:space:]]+the[[:space:]]+session|we[[:space:]]+are[[:space:]]+done|done[[:space:]]+for[[:space:]]+(today|now)|finish[[:space:]]+(the[[:space:]]+)?session'
 
 if echo "$PROMPT" | grep -qiE "$CLOSURE_RE"; then

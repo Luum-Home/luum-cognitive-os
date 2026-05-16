@@ -114,7 +114,7 @@ def test_loader_accepts_string_form_intents(tmp_path):
 # ---------------------------------------------------------------------------
 
 def _utf8(hex_text: str) -> str:
-    """Decode held-out prompts while keeping source files English-only."""
+    """Decode held-out runtime fixtures from hex literals."""
     return bytes.fromhex(hex_text).decode("utf-8")
 
 
@@ -129,8 +129,8 @@ LANGUAGE_AGNOSTIC_ACCEPTANCE_PROMPT = _utf8(
 )
 
 # Held-out eval set across several languages (precision target >= 0.8 over rows).
-# Non-English prompts are encoded so repository text stays English-only while the
-# runtime test still exercises the multilingual embedding model. Each row is
+# Held-out multilingual prompts are encoded as hex literals so the runtime
+# test exercises the multilingual embedding model without inline fixture prose. Each row is
 # (prompt, accept_set). Some skills overlap semantically, so we accept any skill
 # in the listed set for known same-axis ambiguities.
 HELD_OUT: list[tuple[str, tuple[str, ...]]] = [

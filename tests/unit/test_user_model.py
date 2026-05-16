@@ -117,7 +117,7 @@ class TestProfileSummary:
         model.record_preference("communication", "language", "Plain English", 0.8)
         model.record_preference("communication", "verbosity", "terse", 0.3)
         summary = model.get_profile_summary()
-        # Additional English variants (0.8) should appear before terse (0.3)
+        # Higher-confidence language preference should appear before terse (0.3)
         assert summary.index("Plain English") < summary.index("terse")
 
     def test_only_preferences_section_when_no_context(self):

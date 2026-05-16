@@ -51,7 +51,7 @@ _GENERIC_WORDS: frozenset[str] = frozenset(
     }
 )
 
-# English action verbs that indicate a useful verb + skill-name routing anchor.
+# Supported action verbs that indicate a useful verb + skill-name routing anchor.
 _ACTION_VERBS: tuple[str, ...] = (
     "create",
     "generate",
@@ -102,7 +102,7 @@ class RoutingPatternDeriver:
         1. Skill name as \\b<name>\\b  → confidence 0.95
         2. Hyphen-collapsed variant (hyphens replaced by spaces) → 0.85
            (skipped if identical to rule 1 result after normalisation)
-        3. Action trigger if description contains a known English action verb → 0.80
+        3. Action trigger if description contains a supported action verb → 0.80
         4. 2-word keyword combo extracted from description → 0.75
            (skipped if both keywords are generic)
         """
@@ -136,7 +136,7 @@ class RoutingPatternDeriver:
                     )
                 )
 
-        # --- Rule 3: English action trigger ---
+        # --- Rule 3: action trigger ---
         desc_lower = description.lower()
         matched_action_verb = next(
             (v for v in _ACTION_VERBS if re.search(rf"\b{v}\b", desc_lower)),
@@ -149,7 +149,7 @@ class RoutingPatternDeriver:
                 RoutingPattern(
                     pattern=action_pattern,
                     confidence=0.80,
-                    source="english-action-verb",
+                    source="action-verb",
                 )
             )
 

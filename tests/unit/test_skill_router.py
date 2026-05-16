@@ -13,7 +13,7 @@ pytestmark = pytest.mark.unit
 
 
 def _utf8(hex_text: str) -> str:
-    """Decode runtime multilingual fixtures while keeping source English-only."""
+    """Decode runtime multilingual fixtures from hex literals."""
     return bytes.fromhex(hex_text).decode("utf-8")
 
 
@@ -269,12 +269,12 @@ class TestFormatSuggestion:
 
 
 # ---------------------------------------------------------------------------
-# English patterns
+# Baseline regex patterns
 # ---------------------------------------------------------------------------
 
 
-class TestEnglishPatterns:
-    """English language patterns should work correctly."""
+class TestBaselineRegexPatterns:
+    """Baseline regex patterns should work correctly."""
 
     def test_research_topic(self, router: SkillRouter):
         match = router.best_match("research this performance topic")
@@ -625,7 +625,7 @@ class TestSemanticMatcherUnit:
 
         The prior `test_overlap_path_returns_match_when_no_model` exercised
         the Jaccard token-overlap fallback. ADR-296 tombstoned that branch
-        because it collapsed to zero for cross-language prompts against an English-only corpus. The remaining contract is:
+        because it collapsed to zero for cross-language prompts against the description corpus. The remaining contract is:
         no embeddings → no semantic matches.
         """
         from lib import semantic_skill_matcher as ssm

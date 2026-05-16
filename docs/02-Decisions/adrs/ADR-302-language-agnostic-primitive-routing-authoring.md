@@ -51,7 +51,7 @@ tool that can generate multilingual `routing_intents` for skills.
 
 That stack fixes runtime capability, but it does not by itself fix primitive
 authoring habits. Existing skills and rules still contain many
-`routing_patterns` that match human-language keywords in English/Spanish. A raw
+`routing_patterns` that match ad hoc human-language keywords. A raw
 regex audit previously reported the same number for all cases, which mixed four
 different realities:
 
@@ -77,7 +77,7 @@ Keep `routing_patterns` for:
 - machine shapes: URLs, paths, file extensions, IDs, config keys.
 
 Do **not** add new regexes whose purpose is natural-language intent detection,
-such as matching ad hoc English/Spanish keywords.
+such as matching ad hoc language-specific keywords.
 
 ### 2. Natural-language routing belongs in semantic metadata
 
@@ -128,7 +128,7 @@ whether the semantic routing behavior actually improved.
 This contract applies to both layers:
 
 - **SO construction**: core `skills/`, `rules/`, packages, and future primitives
-  must follow the contract so COS does not become English/Spanish-specific.
+  must follow the contract so COS does not become language-specific.
 - **Consumer projects**: projected or project-local primitives should use the
   same shape. Project-specific vocabulary belongs in semantic metadata and
   project overlays, not hardcoded into OS-level keyword regexes.

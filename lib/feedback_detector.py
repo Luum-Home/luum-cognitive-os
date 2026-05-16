@@ -62,9 +62,9 @@ def _score_patterns(text: str, patterns: List[Tuple[re.Pattern, float]]) -> floa
 
 _EXPLICIT_POSITIVE_PATTERNS = _compile_patterns(
     [
-        # English
+        # Positive phrases
         (r"\b(perfect|exactly|great(?: job)?|nice(?: work)?|well done|that'?s right|yes that'?s it|looks good|spot on|nailed it|love it|awesome)\b", 1.0),
-        # Additional English variants
+        # Additional variants
         (r"\b(perfect|great|excellent|nice|that is it|very good|turned out (well|great|perfect))\b", 1.0),
         # Keep-doing patterns (high-weight explicit positive)
         (r"\b(keep doing|keep it up|keep going|continue like this)\b", 1.0),
@@ -73,24 +73,24 @@ _EXPLICIT_POSITIVE_PATTERNS = _compile_patterns(
 
 _EXPLICIT_NEGATIVE_PATTERNS = _compile_patterns(
     [
-        # English — order matters: "that's not" before generic "not"
+        # Order matters: "that's not" before generic "not"
         (r"\b(that'?s (wrong|not right|not what I|incorrect))\b", 1.0),
         (r"\b(wrong|revert|undo|rollback|don'?t do that|stop doing|not what I wanted|incorrect|bad idea)\b", 1.0),
         (r"^no[,!.]?\s*$", 1.0),                      # bare "no"
         (r"\bno[,!.]?\s+(don'?t|stop|never|that)\b", 1.0),
-        # Additional English variants
+        # Additional variants
         (r"^no[,!.]?\s*(it|this|that)\b", 1.0),
     ]
 )
 
 _CORRECTION_PATTERNS = _compile_patterns(
     [
-        # English correction openers
+        # Correction openers
         (r"\b(actually[,]?\s|instead[,]?\s|I meant[,]?\s|rather[,]?\s|should be[,]?\s|not .+ use|correction[,:])", 0.7),
         # "X, not Y" or "use X not Y" patterns
         (r"\buse\s+\w+\s+(not|instead of)\b", 0.7),
         (r"\bnot\s+\w+[,]?\s+(use|try|do)\b", 0.7),
-        # Additional English variants correction openers
+        # Additional variants correction openers
         (r"\b(in reality[,]?\s|better[,]?\s|I meant[,]?\s|should be[,]?\s|use .+ not[,]?\s|correction[,:])", 0.7),
     ]
 )
@@ -98,7 +98,7 @@ _CORRECTION_PATTERNS = _compile_patterns(
 # Explicit escalation — user signals they will handle it themselves
 _ESCALATION_PATTERNS = _compile_patterns(
     [
-        # English
+        # Self-escalation phrases
         (r"\b(I'?ll do it (myself|manually)|let me do it|I'?ll handle it|never mind|forget it|I'?ll fix it myself|I'?ll take it from here)\b", 1.0),
     ]
 )

@@ -196,9 +196,9 @@ class UserModel:
         """
         self.interaction_count += 1
 
-        # --- Language detection ---
-        # Repository-facing behavior is English-only; do not infer non-English
-        # communication preferences from ordinary task wording.
+        # --- Language preference detection ---
+        # Do not infer communication-language preferences from ordinary task
+        # wording; only explicit preference signals should change that.
 
         # --- Verbosity preference (short messages → terse user) ---
         if len(message.split()) < 10:

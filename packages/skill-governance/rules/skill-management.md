@@ -51,7 +51,7 @@ Update feedback to note the successful approach.
 
 When the orchestrator receives a task, consult this routing table to select the most appropriate skill.
 Auto-selection is handled by `lib/skill_router.py` — the `SkillRouter` class matches user messages
-to skills using pattern-based intent detection (English + Spanish).
+to skills using regex intent detection plus optional semantic fallback.
 
 ### Core Routing Table
 
@@ -60,12 +60,12 @@ to skills using pattern-based intent detection (English + Spanish).
 | GitHub URL in message | `/repo-forensics` | `/repo-scout` | 0.95 |
 | "evaluate repo", "scout repo", "tech radar" | `/repo-scout` | -- | 0.85 |
 | "fix bug", "fix the bug", "there is an error" | `/plan-bug` | `/systematic-debugging` | 0.90 |
-| "debug", "no funciona", "doesn't work" | `/systematic-debugging` | -- | 0.85 |
+| "debug", "doesn't work", "failure" | `/systematic-debugging` | -- | 0.85 |
 | "new feature", "add", "I need to create" | `/sdd-new` | `/plan-feature` | 0.85 |
-| "plan feature", "planificar funcionalidad" | `/plan-feature` | -- | 0.85 |
-| "run tests", "corré los tests", "pytest" | `/run-tests` | -- | 0.95 |
+| "plan feature", "feature plan" | `/plan-feature` | -- | 0.85 |
+| "run tests", "execute tests", "pytest" | `/run-tests` | -- | 0.95 |
 | "write tests", "TDD", "red-green-refactor" | `/test-driven-development` | -- | 0.85 |
-| "coverage report", "cobertura" | `/coverage-report` | -- | 0.80 |
+| "coverage report", "coverage" | `/coverage-report` | -- | 0.80 |
 | "security audit", "review security" | `/security-audit` | `/pentest-self` | 0.90 |
 | "pentest", "penetration test" | `/pentest-self` | -- | 0.90 |
 | "red team", "prompt injection test" | `/red-team` | `/vulnerability-scan` | 0.85 |
@@ -146,7 +146,7 @@ The orchestrator uses `lib/skill_router.py` to auto-select skills:
 2. If confidence >= 0.80: suggest the skill to the user (do not auto-invoke without confirmation)
 3. If confidence 0.50-0.79: mention as a possibility
 4. If confidence < 0.50 or None: proceed normally without suggestion
-5. English patterns are supported natively (e.g., "research", "fix", "I need")
+5. Baseline regex patterns handle common task phrasing (e.g., "research", "fix", "I need")
 
 ```python
 from lib.skill_router import SkillRouter

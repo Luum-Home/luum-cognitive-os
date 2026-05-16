@@ -70,7 +70,7 @@ Future sessions can search user prompts to understand:
 | `classify_prompt(text)` | `ClassificationResult(category, should_capture, confidence)` | Full classification with confidence score |
 | `should_capture_prompt(text)` | `bool` | Quick yes/no for capture decisions |
 
-The classifier uses regex pattern matching with weighted scoring. Each category has English and Spanish patterns. The highest-scoring category wins. Confidence ranges from 0.0 to 1.0.
+The classifier uses regex pattern matching with weighted scoring. Each category has repository-authored patterns. The highest-scoring category wins. Confidence ranges from 0.0 to 1.0.
 
 ## Integration with Engram
 

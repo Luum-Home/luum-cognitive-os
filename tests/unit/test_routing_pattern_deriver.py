@@ -74,21 +74,21 @@ class TestKnownSkills:
 
 
 # ---------------------------------------------------------------------------
-# English action verb detection
+# Action verb detection
 # ---------------------------------------------------------------------------
 
 
-class TestEnglishActionTrigger:
+class TestActionTrigger:
     def test_action_verb_creates_pattern(self, deriver: RoutingPatternDeriver) -> None:
         result = deriver.derive(
             "plan-feature",
             "Generate a detailed plan to implement a new feature",
         )
         patterns = [p["pattern"] for p in result]
-        # Should have an action-triggered pattern containing an English verb.
+        # Should have an action-triggered pattern containing a supported verb.
         assert any("generate" in pat or "implement" in pat for pat in patterns)
 
-    def test_action_source_is_english(self, deriver: RoutingPatternDeriver) -> None:
+    def test_action_source_is_action_verb(self, deriver: RoutingPatternDeriver) -> None:
         result = deriver.derive("plan-feature", "Generate a plan for a new feature")
         patterns = [p["pattern"] for p in result]
         assert any("generate" in pat for pat in patterns)

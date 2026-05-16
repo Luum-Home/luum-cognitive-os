@@ -5,7 +5,7 @@ Classifies user messages into categories and determines whether they should
 be persisted via mem_save_prompt. Captures task requests, decisions, feedback,
 and context while skipping acknowledgments, status queries, and navigation.
 
-Supports English prompts.
+Uses repository-authored regex patterns.
 """
 
 from __future__ import annotations
@@ -75,7 +75,7 @@ def _compile_patterns(patterns: List[Tuple[str, float]]) -> List[Tuple[re.Patter
 
 _TASK_PATTERNS = _compile_patterns(
     [
-        # English action verbs — imperative/infinitive forms only
+        # Action verbs — imperative/infinitive forms only
         (r"\b(build|fix|add|implement|create|write|make|set up|configure|deploy|refactor|migrate|update|remove|delete|install|upgrade|integrate|debug|optimize)\b", 0.7),
         # "test" as a verb command (not noun usage like "the test")
         (r"^(please\s+)?test\b", 0.7),
@@ -91,9 +91,9 @@ _TASK_PATTERNS = _compile_patterns(
 
 _DECISION_PATTERNS = _compile_patterns(
     [
-        # English decision language
+        # Decision language
         (r"\b(use|go with|choose|prefer|let'?s do|let'?s go with|switch to|adopt|pick|select|we should|I want to use)\b", 0.6),
-        # Additional English decision language
+        # Additional decision language
         (r"\b(use|go with|choose|prefer|let us|switch to|adopt|select)\b", 0.6),
         # Explicit decision markers
         (r"\b(decision|decided|approach|strategy|the plan is)\b", 0.5),
@@ -102,9 +102,9 @@ _DECISION_PATTERNS = _compile_patterns(
 
 _FEEDBACK_PATTERNS = _compile_patterns(
     [
-        # Negative feedback (English)
+        # Negative feedback
         (r"\b(don'?t|stop|no more|that'?s wrong|incorrect|bad|revert|undo|rollback|not what I)\b", 0.7),
-        # Positive feedback (English)
+        # Positive feedback
         (r"\b(keep doing|perfect|exactly|great job|that'?s right|correct|well done|nice)\b", 0.6),
         # Correction patterns
         (r"\b(actually|instead|rather|correction|I meant)\b", 0.6),
@@ -114,7 +114,7 @@ _FEEDBACK_PATTERNS = _compile_patterns(
 
 _CONTEXT_PATTERNS = _compile_patterns(
     [
-        # English context — high weight for clear context markers
+        # Context markers — high weight for clear context markers
         (r"\b(working on|the goal is|deadline|for context|fyi|note that|keep in mind|remember that)\b", 0.8),
         (r"\b(we need|the project|background)\b", 0.6),
         # Project info patterns
@@ -124,7 +124,7 @@ _CONTEXT_PATTERNS = _compile_patterns(
 
 _STATUS_PATTERNS = _compile_patterns(
     [
-        # English status queries — high weight for clear status markers
+        # Status queries — high weight for clear status markers
         (r"\b(what'?s left|status|how'?s|progress|where are we|what remains|how far|what did you)\b", 0.8),
         # Question about current state
         (r"^(what|how|where|when|which|who)\b.*\?$", 0.3),
@@ -133,7 +133,7 @@ _STATUS_PATTERNS = _compile_patterns(
 
 _NAVIGATION_PATTERNS = _compile_patterns(
     [
-        # English navigation
+        # Navigation
         (r"\b(show me|read file|open|check|look at|display|list|cat|grep|find)\b", 0.6),
         # File references
         (r"\b(the file|this file|that file|in file)\b", 0.3),
@@ -142,7 +142,7 @@ _NAVIGATION_PATTERNS = _compile_patterns(
 
 _ACKNOWLEDGMENT_PATTERNS = _compile_patterns(
     [
-        # English acknowledgments (short)
+        # Acknowledgments (short)
         (r"^(ok|okay|yes|yep|yeah|sure|got it|thanks|thank you|right|alright|go ahead|proceed|continue|lgtm|ack|roger|copy)\s*[.!]?\s*$", 0.9),
     ]
 )

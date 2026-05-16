@@ -280,10 +280,8 @@ class TestClarificationGateEdgeCases:
         # Should not even warn
         assert "WARNING" not in result.stdout
 
-    def test_10_prompt_in_spanish(self, run_hook, cognitive_os_env):
-        """Prompt in Spanish -> should still detect ambiguity patterns.
-        The gate uses English keywords, so a Spanish prompt without file
-        paths or criteria should trigger on length and missing signals."""
+    def test_10_short_ambiguous_prompt(self, run_hook, cognitive_os_env):
+        """Short prompt without file paths or criteria should trigger ambiguity handling."""
         env = cognitive_os_env["env"]
         prompt = make_agent_input("fix the errors")
         result = run_hook("clarification-gate.sh", env=env, stdin=prompt)
