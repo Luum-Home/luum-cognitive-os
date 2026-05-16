@@ -87,3 +87,15 @@ models:
       implemented (current adapter is bi-encoder). Entry kept for license
       gate verification; harness will refuse to run it cleanly until the
       cross-encoder adapter lands. See ADR-298 §Roadmap.
+
+  - id: semantic-fallback
+    adapter: semantic-fallback
+    model_name: adr-296-runtime-fallback
+    license: MIT
+    role: fallback
+    note: |
+      Synthetic model: delegates to lib.semantic_skill_matcher.SemanticSkillMatcher.match()
+      so --multilingual measures ADR-296 candidate ranking through the runtime
+      semantic matcher, not just the underlying embedder (which is already
+      covered by baseline-minilm). Benchmark mode uses threshold=0.0 because
+      the harness evaluates ranking quality across all candidates.

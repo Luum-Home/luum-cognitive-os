@@ -52,6 +52,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Protocol, Tuple
 
+# ADR-296 runtime fallback — imported for SemanticFallbackAdapter (CLR-1).
+from lib.semantic_skill_matcher import SemanticSkillMatcher, _SkillIndex
+
 LOGGER = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -190,6 +193,37 @@ def corpus_signature(corpus: Dict[str, Dict[str, Any]]) -> str:
     """Stable hash of the corpus content — used as cache key."""
     serialised = json.dumps(corpus, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(serialised.encode("utf-8")).hexdigest()[:16]
+
+
+def candidate_signature(candidates: List[Tuple[str, str]]) -> str:
+    """Stable hash of the candidate universe used for ranking."""
+    serialised = json.dumps(candidates, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(serialised.encode("utf-8")).hexdigest()[:16]
+
+
+def load_skill_catalog(
+    skills_root: Path = Path("skills"),
+    package_skills_root: Path = Path("packages"),
+) -> Dict[str, str]:
+    """Load the on-disk SKILL.md catalog as ``{skill_name: description}``.
+
+    This is used by full-catalog routing benchmarks so a small multilingual
+    prompt corpus can still be ranked against the complete skill surface.
+    """
+    skill_md_paths: Dict[str, Path] = {}
+    for root in (skills_root, package_skills_root):
+        if not root.exists():
+            continue
+        for p in root.rglob("SKILL.md"):
+            name = p.parent.name
+            skill_md_paths.setdefault(name, p)
+
+    out: Dict[str, str] = {}
+    for name, path in sorted(skill_md_paths.items()):
+        desc = _parse_description(path)
+        if desc:
+            out[name] = desc
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -503,10 +537,69 @@ def _build_onnx_direct(model_id, model_name, role, **kw):
     )
 
 
+class SemanticFallbackAdapter:
+    """Adapter that delegates ranking to ``SemanticSkillMatcher.match()``.
+
+    Benchmark mode sets threshold to zero so the harness can measure ranking
+    quality across every candidate instead of the router's runtime cutoff.
+    """
+
+    def __init__(self, model_id: str, model_name: str, role: str) -> None:
+        self.model_id = model_id
+        self.model_name = model_name
+        self.role = role
+        self._matcher: Optional[Any] = None  # SemanticSkillMatcher, lazy
+        self._candidate_signature: Optional[str] = None
+
+    def load(self) -> None:
+        # Lazy — matcher is built on first predict() when candidates are known.
+        pass
+
+    def predict(self, prompt: str, candidates: List[Any]) -> List[tuple]:
+        candidate_signature = hashlib.sha256(
+            json.dumps(candidates, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        ).hexdigest()
+        if self._matcher is None or self._candidate_signature != candidate_signature:
+            indices = [
+                _SkillIndex(
+                    skill_name=name,
+                    invoke_command=f"/{name}",
+                    description=description or "",
+                    summary_line="",
+                    routing_intents=[],
+                )
+                for name, description in candidates
+            ]
+            try:
+                self._matcher = SemanticSkillMatcher(indices)
+                self._candidate_signature = candidate_signature
+            except Exception as exc:
+                raise RuntimeError(
+                    f"SemanticFallbackAdapter: failed to build matcher: {exc}"
+                ) from exc
+        # Benchmark mode: pass threshold=0.0 so we get a full ranking
+        # (the runtime threshold gating is a routing decision, not a
+        # retrieval-quality measurement). The harness measures ranking
+        # quality across all candidates.
+        matches = self._matcher.match(prompt, threshold=0.0)
+        return [(m.skill_name, m.confidence) for m in matches]
+
+    def unload(self) -> None:
+        self._matcher = None
+        self._candidate_signature = None
+
+
+def _build_semantic_fallback(
+    model_id: str, model_name: str, role: str, **_kw: Any
+) -> "SemanticFallbackAdapter":
+    return SemanticFallbackAdapter(model_id=model_id, model_name=model_name, role=role)
+
+
 # Registry: adapter_kind -> factory(model_id, model_name, role, **kw)
 _ADAPTER_REGISTRY: Dict[str, Callable[..., RoutingAdapter]] = {
     "fastembed-bi-encoder": _build_fastembed,
     "onnx-direct-bi-encoder": _build_onnx_direct,
+    "semantic-fallback": _build_semantic_fallback,
 }
 
 
@@ -544,6 +637,15 @@ class PerLangMetric:
 
 
 @dataclass
+class QueryMiss:
+    language: str
+    prompt_digest: str
+    expected_skill: str
+    top_skill: Optional[str]
+    expected_rank: int
+
+
+@dataclass
 class ModelMetric:
     model_id: str
     model_name: str
@@ -565,6 +667,7 @@ class ModelMetric:
     peak_rss_mb: float
     model_size_mb: float
     per_language: List[PerLangMetric] = field(default_factory=list)
+    top1_misses: List[QueryMiss] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -577,8 +680,10 @@ class BenchmarkReport:
     timestamp: str
     environment: Dict[str, Any]
     corpus_signature: str
+    candidate_signature: str
     corpus_skills: int
     corpus_prompts: int
+    candidate_skills: int
     models: List[ModelMetric]
 
     def to_dict(self) -> Dict[str, Any]:
@@ -587,8 +692,10 @@ class BenchmarkReport:
             "timestamp": self.timestamp,
             "environment": self.environment,
             "corpus_signature": self.corpus_signature,
+            "candidate_signature": self.candidate_signature,
             "corpus_skills": self.corpus_skills,
             "corpus_prompts": self.corpus_prompts,
+            "candidate_skills": self.candidate_skills,
             "models": [m.to_dict() for m in self.models],
         }
 
@@ -700,12 +807,18 @@ class BenchmarkHarness:
         cache_dir: Optional[Path] = None,
         warm_queries: int = WARM_QUERY_COUNT,
         adapter_factory: Optional[Callable[[Dict[str, Any]], RoutingAdapter]] = None,
+        full_catalog_candidates: bool = False,
+        skills_root: Path = Path("skills"),
+        package_skills_root: Path = Path("packages"),
     ):
         self.models_manifest_path = models_manifest_path
         self.corpus_path = corpus_path
         self.cache_dir = cache_dir or CACHE_DIR_DEFAULT
         self.warm_queries = warm_queries
         self._adapter_factory = adapter_factory or build_adapter
+        self.full_catalog_candidates = full_catalog_candidates
+        self.skills_root = skills_root
+        self.package_skills_root = package_skills_root
 
     # ------------------------------------------------------------------ run
     def run(
@@ -733,10 +846,8 @@ class BenchmarkHarness:
             for prompts in entry["prompts"].values()
         )
 
-        # Candidate list passed to each adapter.
-        candidates = [
-            (skill, entry["description"]) for skill, entry in sorted(corpus.items())
-        ]
+        candidates = self._build_candidates(corpus)
+        cand_sig = candidate_signature(candidates)
 
         metrics: List[ModelMetric] = []
         for entry in manifest:
@@ -750,11 +861,29 @@ class BenchmarkHarness:
             timestamp=datetime.now(timezone.utc).isoformat(),
             environment=_environment_snapshot(),
             corpus_signature=sig,
+            candidate_signature=cand_sig,
             corpus_skills=len(corpus),
             corpus_prompts=total_prompts,
+            candidate_skills=len(candidates),
             models=metrics,
         )
         return report
+
+    def _build_candidates(
+        self, corpus: Dict[str, Dict[str, Any]]
+    ) -> List[Tuple[str, str]]:
+        """Build the candidate universe passed to adapters."""
+        candidates: Dict[str, str] = {
+            skill: entry["description"] for skill, entry in corpus.items()
+        }
+        if self.full_catalog_candidates:
+            catalog = load_skill_catalog(self.skills_root, self.package_skills_root)
+            candidates.update(catalog)
+            # Corpus descriptions are benchmark ground truth for expected
+            # skills, so they override catalog text when both exist.
+            for skill, entry in corpus.items():
+                candidates[skill] = entry["description"]
+        return sorted(candidates.items())
 
     # ------------------------------------------------- per-model benchmark
     def _benchmark_one(
@@ -799,7 +928,7 @@ class BenchmarkHarness:
             )
 
         # Cache lookup.
-        cached = self._load_cache(entry, queries)
+        cached = self._load_cache(entry, queries, candidates)
         if cached is not None:
             return cached
 
@@ -828,6 +957,7 @@ class BenchmarkHarness:
         hits_at_1 = 0
         hits_at_5 = 0
         reciprocal_ranks: List[float] = []
+        top1_misses: List[QueryMiss] = []
         per_lang_counters: Dict[str, Dict[str, float]] = {
             lg: {"q": 0, "p1": 0, "p5": 0, "rr_sum": 0.0} for lg in LANGUAGES
         }
@@ -860,6 +990,18 @@ class BenchmarkHarness:
             if top_skill == q.expected_skill:
                 hits_at_1 += 1
                 lc["p1"] += 1
+            else:
+                top1_misses.append(
+                    QueryMiss(
+                        language=q.language,
+                        prompt_digest=hashlib.sha256(
+                            q.prompt.encode("utf-8")
+                        ).hexdigest()[:12],
+                        expected_skill=q.expected_skill,
+                        top_skill=top_skill,
+                        expected_rank=rank,
+                    )
+                )
             if q.expected_skill in top_5:
                 hits_at_5 += 1
                 lc["p5"] += 1
@@ -918,16 +1060,23 @@ class BenchmarkHarness:
             peak_rss_mb=_peak_rss_mb(),
             model_size_mb=size_mb,
             per_language=per_lang,
+            top1_misses=top1_misses,
         )
 
         # Persist cache.
-        self._save_cache(entry, queries, metric)
+        self._save_cache(entry, queries, candidates, metric)
         adapter.unload()
         return metric
 
     # ------------------------------------------------------------ cache I/O
-    def _cache_key(self, entry: Dict[str, Any], queries: List[_Query]) -> Path:
+    def _cache_key(
+        self,
+        entry: Dict[str, Any],
+        queries: List[_Query],
+        candidates: List[Tuple[str, str]],
+    ) -> Path:
         h = hashlib.sha256()
+        h.update(b"routing-benchmark-cache/v2")
         h.update(json.dumps(entry, sort_keys=True).encode())
         h.update(
             json.dumps(
@@ -935,12 +1084,16 @@ class BenchmarkHarness:
                 sort_keys=True,
             ).encode()
         )
+        h.update(json.dumps(candidates, sort_keys=True, ensure_ascii=False).encode())
         return self.cache_dir / f"{entry['id']}-{h.hexdigest()[:16]}.json"
 
     def _load_cache(
-        self, entry: Dict[str, Any], queries: List[_Query]
+        self,
+        entry: Dict[str, Any],
+        queries: List[_Query],
+        candidates: List[Tuple[str, str]],
     ) -> Optional[ModelMetric]:
-        path = self._cache_key(entry, queries)
+        path = self._cache_key(entry, queries, candidates)
         if not path.exists():
             return None
         try:
@@ -948,7 +1101,9 @@ class BenchmarkHarness:
         except Exception:
             return None
         per_lang = [PerLangMetric(**pl) for pl in data.get("per_language", [])]
+        top1_misses = [QueryMiss(**miss) for miss in data.get("top1_misses", [])]
         data["per_language"] = per_lang
+        data["top1_misses"] = top1_misses
         try:
             return ModelMetric(**data)
         except TypeError:
@@ -958,9 +1113,10 @@ class BenchmarkHarness:
         self,
         entry: Dict[str, Any],
         queries: List[_Query],
+        candidates: List[Tuple[str, str]],
         metric: ModelMetric,
     ) -> None:
-        path = self._cache_key(entry, queries)
+        path = self._cache_key(entry, queries, candidates)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(metric.to_dict(), indent=2), encoding="utf-8")
 
@@ -1023,9 +1179,11 @@ def write_report_markdown(report: BenchmarkReport, path: Path) -> None:
     lines.append(f"- Generated: {report.timestamp}")
     lines.append(f"- Schema: `{report.schema_version}`")
     lines.append(f"- Corpus signature: `{report.corpus_signature}`")
+    lines.append(f"- Candidate signature: `{report.candidate_signature}`")
     lines.append(
         f"- Corpus: {report.corpus_skills} skills, {report.corpus_prompts} prompts"
     )
+    lines.append(f"- Candidate universe: {report.candidate_skills} skills")
     lines.append("")
     lines.append("## Environment")
     lines.append("")
@@ -1086,6 +1244,18 @@ def write_report_markdown(report: BenchmarkReport, path: Path) -> None:
         lines.append(
             f"| {m.model_id} | {loaded_str} | {m.failures} | {load_error} |"
         )
+    lines.append("")
+    lines.append("## Top-1 Misses")
+    lines.append("")
+    lines.append("| model | language | prompt digest | expected | top-1 | expected rank |")
+    lines.append("| --- | --- | --- | --- | --- | ---: |")
+    for m in report.models:
+        for miss in m.top1_misses[:50]:
+            top_skill = miss.top_skill or ""
+            lines.append(
+                f"| {m.model_id} | {miss.language} | `{miss.prompt_digest}` | "
+                f"{miss.expected_skill} | {top_skill} | {miss.expected_rank} |"
+            )
     lines.append("")
     lines.append("## Recommendation Block")
     lines.append("")
@@ -1282,7 +1452,62 @@ def _parse_args(argv: List[str]) -> argparse.Namespace:
         default=None,
         help="Cap on skills when regenerating (for cost control)",
     )
+    p.add_argument(
+        "--multilingual",
+        action="store_true",
+        default=False,
+        help=(
+            "Use manifests/routing-benchmark-corpus-multilingual.yaml as corpus "
+            "and restrict models to semantic-fallback (ADR-296 runtime path). "
+            "By default this ranks against the full on-disk skill catalog. "
+            "Explicit --corpus or --models co-passed with --multilingual override "
+            "these defaults (operator wins) and print a warning to stderr."
+        ),
+    )
+    p.add_argument(
+        "--full-catalog-candidates",
+        action="store_true",
+        default=False,
+        help=(
+            "Rank each query against every on-disk SKILL.md candidate, not only "
+            "the skills present in the prompt corpus. Use this to avoid inflated "
+            "accuracy from a tiny candidate set."
+        ),
+    )
+    p.add_argument(
+        "--corpus-candidates",
+        action="store_true",
+        default=False,
+        help=(
+            "With --multilingual, opt back into corpus-only candidates for "
+            "debugging. Do not use as the acceptance benchmark."
+        ),
+    )
     return p.parse_args(argv)
+
+
+def _apply_multilingual_defaults(args: argparse.Namespace) -> argparse.Namespace:
+    """Apply multilingual benchmark defaults after argument parsing."""
+    if args.multilingual:
+        multilingual_corpus = "manifests/routing-benchmark-corpus-multilingual.yaml"
+        multilingual_model = "semantic-fallback"
+        if args.corpus == "manifests/routing-benchmark-corpus.yaml":
+            args.corpus = multilingual_corpus
+        else:
+            print(
+                f"WARN: --corpus={args.corpus!r} overrides --multilingual corpus default",
+                file=sys.stderr,
+            )
+        if args.models is None:
+            args.models = multilingual_model
+        else:
+            print(
+                f"WARN: --models={args.models!r} overrides --multilingual model default",
+                file=sys.stderr,
+            )
+        if not args.corpus_candidates:
+            args.full_catalog_candidates = True
+    return args
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -1290,7 +1515,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         level=os.environ.get("COS_BENCHMARK_LOG", "INFO"),
         format="%(levelname)s %(message)s",
     )
-    args = _parse_args(argv or sys.argv[1:])
+    args = _apply_multilingual_defaults(_parse_args(argv or sys.argv[1:]))
 
     if args.regenerate_corpus:
         count = regenerate_corpus(
@@ -1311,6 +1536,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     harness = BenchmarkHarness(
         models_manifest_path=Path(args.models_manifest),
         corpus_path=Path(args.corpus),
+        full_catalog_candidates=args.full_catalog_candidates,
     )
     try:
         report = harness.run(

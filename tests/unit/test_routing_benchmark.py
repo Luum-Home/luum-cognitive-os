@@ -274,7 +274,82 @@ def test_benchmark_runs_with_stub_factory(models_path: Path, corpus_path: Path):
             for lang, prompts in entry["prompts"].items()
             if prompts
         }
-        assert {pl.language for pl in m.per_language} == expected_languages
+        by_language = {pl.language: pl for pl in m.per_language}
+        assert expected_languages <= set(by_language)
+        assert all(by_language[lang].queries > 0 for lang in expected_languages)
+
+
+def _write_skill(root: Path, name: str, description: str) -> None:
+    skill_dir = root / name
+    skill_dir.mkdir(parents=True, exist_ok=True)
+    (skill_dir / "SKILL.md").write_text(
+        "---\n"
+        f"name: {name}\n"
+        f"description: {description}\n"
+        "---\n\n"
+        f"# {name}\n",
+        encoding="utf-8",
+    )
+
+
+def test_full_catalog_candidates_adds_distractors(
+    models_path: Path, corpus_path: Path, tmp_path: Path
+):
+    skills_root = tmp_path / "skills"
+    _write_skill(skills_root, "product-answer", "Catalog product answer")
+    _write_skill(skills_root, "unrelated-distractor", "A competing distractor skill")
+
+    harness = BenchmarkHarness(
+        models_manifest_path=models_path,
+        corpus_path=corpus_path,
+        adapter_factory=_stub_factory,
+        warm_queries=5,
+        cache_dir=tmp_path / "cache",
+        full_catalog_candidates=True,
+        skills_root=skills_root,
+        package_skills_root=tmp_path / "packages",
+    )
+    corpus = load_corpus(corpus_path)
+    candidates = harness._build_candidates(corpus)
+    names = {name for name, _description in candidates}
+    assert names == {"product-answer", "security-audit", "unrelated-distractor"}
+    # Corpus descriptions remain authoritative for expected skills.
+    assert dict(candidates)["product-answer"].startswith("Answer product")
+
+
+def test_report_exposes_candidate_universe_size(
+    models_path: Path, corpus_path: Path, tmp_path: Path
+):
+    skills_root = tmp_path / "skills"
+    _write_skill(skills_root, "extra-skill", "An extra full catalog skill")
+    harness = BenchmarkHarness(
+        models_manifest_path=models_path,
+        corpus_path=corpus_path,
+        adapter_factory=_stub_factory,
+        warm_queries=5,
+        cache_dir=tmp_path / "cache",
+        full_catalog_candidates=True,
+        skills_root=skills_root,
+        package_skills_root=tmp_path / "packages",
+    )
+    report = harness.run()
+    assert report.corpus_skills == 2
+    assert report.candidate_skills == 3
+    assert report.candidate_signature
+
+
+def test_multilingual_defaults_use_full_catalog_candidates() -> None:
+    args = rb._apply_multilingual_defaults(rb._parse_args(["--multilingual"]))
+    assert args.corpus == "manifests/routing-benchmark-corpus-multilingual.yaml"
+    assert args.models == "semantic-fallback"
+    assert args.full_catalog_candidates is True
+
+
+def test_multilingual_corpus_candidate_debug_escape_hatch() -> None:
+    args = rb._apply_multilingual_defaults(
+        rb._parse_args(["--multilingual", "--corpus-candidates"])
+    )
+    assert args.full_catalog_candidates is False
 
 
 def test_benchmark_idempotent_via_cache(
@@ -307,6 +382,41 @@ def test_benchmark_idempotent_via_cache(
         assert m1.model_id == m2.model_id
 
 
+def test_cache_key_includes_candidate_universe(
+    models_path: Path, corpus_path: Path, tmp_path: Path
+):
+    skills_root = tmp_path / "skills"
+    cache = tmp_path / "cache"
+
+    harness1 = BenchmarkHarness(
+        models_manifest_path=models_path,
+        corpus_path=corpus_path,
+        adapter_factory=_stub_factory,
+        warm_queries=5,
+        cache_dir=cache,
+        full_catalog_candidates=True,
+        skills_root=skills_root,
+        package_skills_root=tmp_path / "packages",
+    )
+    report1 = harness1.run()
+
+    _write_skill(skills_root, "new-distractor", "A newly added distractor")
+    harness2 = BenchmarkHarness(
+        models_manifest_path=models_path,
+        corpus_path=corpus_path,
+        adapter_factory=_stub_factory,
+        warm_queries=5,
+        cache_dir=cache,
+        full_catalog_candidates=True,
+        skills_root=skills_root,
+        package_skills_root=tmp_path / "packages",
+    )
+    report2 = harness2.run()
+    assert report1.candidate_signature != report2.candidate_signature
+    assert report1.candidate_skills == 2
+    assert report2.candidate_skills == 3
+
+
 # ---------------------------------------------------------------------------
 # Report writers
 # ---------------------------------------------------------------------------
@@ -331,15 +441,20 @@ def test_report_writer_produces_markdown_and_json(
     md_text = md.read_text(encoding="utf-8")
     assert "Routing Model Benchmark Report" in md_text
     assert "precision@1" in md_text
+    assert "Candidate universe" in md_text
     assert "Per-Language Precision@1" in md_text
+    assert "Top-1 Misses" in md_text
     assert "Recommendation Block" in md_text
 
     parsed = json.loads(js.read_text(encoding="utf-8"))
     assert parsed["schema_version"] == rb.REPORT_SCHEMA_VERSION
     assert parsed["corpus_skills"] == 2
+    assert parsed["candidate_skills"] == 2
+    assert parsed["candidate_signature"]
     assert len(parsed["models"]) == 2
     for m in parsed["models"]:
         assert "per_language" in m
+        assert "top1_misses" in m
         assert "warm_p95_ms" in m
 
 
