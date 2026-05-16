@@ -21,7 +21,7 @@ from typing import List, Optional, Tuple
 
 
 class FeedbackType(Enum):
-    EXPLICIT_POSITIVE = "explicit_positive"   # "perfect", "exactly", "genial"
+    EXPLICIT_POSITIVE = "explicit_positive"   # "perfect", "exactly", "great"
     EXPLICIT_NEGATIVE = "explicit_negative"   # "no", "wrong", "revert"
     IMPLICIT_POSITIVE = "implicit_positive"   # user continues with new task
     IMPLICIT_NEGATIVE = "implicit_negative"   # user repeats same request differently
@@ -66,12 +66,8 @@ _EXPLICIT_POSITIVE_PATTERNS = _compile_patterns(
         (r"\b(perfect|exactly|great(?: job)?|nice(?: work)?|well done|that'?s right|yes that'?s it|looks good|spot on|nailed it|love it|awesome)\b", 1.0),
         # Additional English variants
         (r"\b(perfect|great|excellent|nice|that is it|very good|turned out (well|great|perfect))\b", 1.0),
-        # "dale" used as approval AFTER the agent acted (short acknowledgment variant already handled by acknowledgment patterns,
-        # but here in a longer sentence it signals positive feedback)
-        (r"\b(dale[,!]?\s+(?:perfecto|genial|bien|ok|sí))\b", 1.0),
         # Keep-doing patterns (high-weight explicit positive)
         (r"\b(keep doing|keep it up|keep going|continue like this)\b", 1.0),
-        (r"\bsegu[ií]\w*\s+as[ií]\b", 1.0),
     ]
 )
 
@@ -83,8 +79,7 @@ _EXPLICIT_NEGATIVE_PATTERNS = _compile_patterns(
         (r"^no[,!.]?\s*$", 1.0),                      # bare "no"
         (r"\bno[,!.]?\s+(don'?t|stop|never|that)\b", 1.0),
         # Additional English variants
-        (r"\b(est[áa] mal|eso no|revert[ií]|revertí|par[áa] de|no hagas (eso|eso)|incorrecto|mal hecho|deshacer)\b", 1.0),
-        (r"^no[,!.]?\s*(is|es|lo|eso)\b", 1.0),
+        (r"^no[,!.]?\s*(it|this|that)\b", 1.0),
     ]
 )
 
@@ -97,7 +92,6 @@ _CORRECTION_PATTERNS = _compile_patterns(
         (r"\bnot\s+\w+[,]?\s+(use|try|do)\b", 0.7),
         # Additional English variants correction openers
         (r"\b(in reality[,]?\s|better[,]?\s|I meant[,]?\s|should be[,]?\s|use .+ not[,]?\s|correction[,:])", 0.7),
-        (r"\bno\s+\w+[,]?\s+(us[aá]|hac[eé]|prob[aá])\b", 0.7),
     ]
 )
 
@@ -106,8 +100,6 @@ _ESCALATION_PATTERNS = _compile_patterns(
     [
         # English
         (r"\b(I'?ll do it (myself|manually)|let me do it|I'?ll handle it|never mind|forget it|I'?ll fix it myself|I'?ll take it from here)\b", 1.0),
-        # Additional English variants
-        (r"\b(lo hago yo|dej[áa] yo lo hago|lo manejo yo|ya lo hago yo|olvid[áa](lo)?|dej[áa] estar|me encargo yo)\b", 1.0),
     ]
 )
 
@@ -128,13 +120,11 @@ _ACTION_VERB_PATTERNS = _compile_patterns(
 
 def _tokenize(text: str) -> set:
     """Simple word-level tokenizer, lowercased, strips punctuation."""
-    words = re.findall(r"[a-záéíóúüñ]+", text.lower())
+    words = re.findall(r"[a-z]+", text.lower())
     # Remove very common stop-words to focus on content words
     stops = {
         "the", "a", "an", "in", "on", "at", "to", "for", "of", "and", "or",
         "is", "it", "that", "this", "i", "you", "me", "my", "your",
-        "el", "la", "los", "las", "un", "una", "en", "de", "del", "al",
-        "que", "y", "o", "es", "lo", "le", "mi", "tu", "su",
     }
     return {w for w in words if w not in stops and len(w) > 2}
 
