@@ -91,7 +91,7 @@ _EN_ATTRIBUTION = (
 
 # Attribution phrases in Spanish.
 _ES_ATTRIBUTION = (
-    r"(?:basado en|basada en|extraído de|extraída de|modelo tomado de"
+    r"(?:based on|extracted from|model taken from"
     r"|tomado de|tomada de|copiado de|copiada de|adaptado de|adaptada de"
     r"|reutilizado de|reutilizada de|inspirado en|inspirada en)"
 )

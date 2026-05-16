@@ -56,8 +56,8 @@ Investigation surfaced two concurrent failure modes:
    landed in tree without a description and **no automated check fired**.
 
 Operator quotes (verbatim):
-- *"esto no tiene un test para evitarlo, probarlo?"*
-- *"esto no tiene hooks u otro componente para asegurarnos de que no pase?"*
+- *"does this have no test to prevent it? test it?"*
+- *"does this have no hooks or another component to ensure it does not happen?"*
 - *"si, y que sea adr"*
 
 ### Gap analysis (state today)
@@ -214,7 +214,7 @@ authoring is human/agent-driven.**
 1. **"Just fix the parser, leave 7 broken descriptions for later."**
    Rejected. Addresses one symptom (parser), not the source (no gate against
    empty descriptions). The 7 would come back. Operator's directive
-   ("esto no tiene un test para evitarlo") explicitly rejects this option.
+   ("this does not have a test to prevent it") explicitly rejects this option.
 
 2. **"Audit test alone (no hook, no template)."**
    Rejected. Ratchet works, but feedback arrives at CI time. Agents finish

@@ -83,7 +83,7 @@ def test_detects_protected_repo_url():
 
 def test_detects_spanish_attribution_with_protected_term():
     """A Spanish attribution phrase followed by a protected project name is caught."""
-    text = "El diseño está basado en el modelo de project-alpha para facilitar la integración."
+    text = "El diseño is basado en el modelo de project-alpha para facilitar la integración."
     terms = ProtectedTerms(project_names=["project-alpha"])
     violations = scan_text(text, terms=terms)
 

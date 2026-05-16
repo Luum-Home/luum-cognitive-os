@@ -87,7 +87,7 @@ Coverage was added in `tests/unit/test_skill_router.py` proving:
 
 - direct intent still routes: `run auto-rollback for the failed apply`;
 - router critique does not route: `Ignoro la sugerencia de /auto-rollback`;
-- risk questions do not route: `Qué dispara /auto-rollback? Me asusta...`.
+- risk questions do not route: `What triggers /auto-rollback? I am afraid...`.
 
 Validation:
 

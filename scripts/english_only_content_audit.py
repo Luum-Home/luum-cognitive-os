@@ -157,7 +157,7 @@ def first_non_ascii_letter(line: str) -> str | None:
     return None
 
 
-def first_non_latin_letter(line: str) -> str | None:
+def first_forbidden_script_letter(line: str) -> str | None:
     for char in line:
         if not char.isalpha() or ord(char) < 128:
             continue
@@ -165,13 +165,14 @@ def first_non_latin_letter(line: str) -> str | None:
             name = unicodedata.name(char)
         except ValueError:
             return char
-        if "LATIN" not in name:
-            return char
+        if "LATIN" in name or "GREEK" in name or name == "MICRO SIGN":
+            continue
+        return char
     return None
 
 
 def classify_line(line: str) -> tuple[str, str, str] | None:
-    script_match = first_non_latin_letter(line)
+    script_match = first_forbidden_script_letter(line)
     if script_match is not None:
         return ("non-english-script", "error", script_match)
 
@@ -183,9 +184,6 @@ def classify_line(line: str) -> tuple[str, str, str] | None:
     if punctuation_match:
         return ("non-english-punctuation", "error", punctuation_match.group(0))
 
-    non_ascii_letter = first_non_ascii_letter(line)
-    if non_ascii_letter is not None:
-        return ("non-ascii-letter", "error", non_ascii_letter)
     return None
 
 

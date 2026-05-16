@@ -20,7 +20,7 @@ def test_harvester_runs_against_consumer_repo_with_no_primitives(tmp_path: Path)
             "--repo",
             str(consumer),
             "--text",
-            "Esto debería ser automático: script reusable con tests y checklist para validar cleanup.",
+            "This should be automatic: reusable script with tests and checklist to validate cleanup.",
             "--json",
         ],
         text=True,

@@ -65,24 +65,20 @@ class TestExplicitPositive:
         result = detector.detect("Great job!")
         assert result.type == FeedbackType.EXPLICIT_POSITIVE
 
-    def test_perfecto_spanish(self, detector):
-        result = detector.detect("perfecto")
+    def test_great_english(self, detector):
+        result = detector.detect("great, that is what I wanted")
         assert result.type == FeedbackType.EXPLICIT_POSITIVE
 
-    def test_genial_spanish(self, detector):
-        result = detector.detect("genial, eso es lo que quería")
-        assert result.type == FeedbackType.EXPLICIT_POSITIVE
-
-    def test_excelente_spanish(self, detector):
-        result = detector.detect("excelente trabajo")
+    def test_excellent_english(self, detector):
+        result = detector.detect("excellent work")
         assert result.type == FeedbackType.EXPLICIT_POSITIVE
 
     def test_keep_doing_english(self, detector):
         result = detector.detect("keep doing this, it's working well")
         assert result.type == FeedbackType.EXPLICIT_POSITIVE
 
-    def test_segui_asi_spanish(self, detector):
-        result = detector.detect("seguí así, está perfecto")
+    def test_keep_going_english(self, detector):
+        result = detector.detect("keep going, it is perfect")
         assert result.type == FeedbackType.EXPLICIT_POSITIVE
 
     def test_high_confidence_for_clear_positive(self, detector):

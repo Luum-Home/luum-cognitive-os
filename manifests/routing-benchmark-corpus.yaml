@@ -33,11 +33,11 @@ skills:
         - "what is our ICP?"
         - "answer a product question: what's our wedge?"
       es:
-        - "¿cuál es nuestro diferenciador?"
-        - "¿cuál es el moat de COS frente a competidores?"
+        - "what is our differentiator?"
+        - "what is the COS moat against competitors?"
         - "dame el pitch del producto"
-        - "¿cuál es nuestro ICP?"
-        - "responde una pregunta de producto: ¿cuál es nuestro wedge?"
+        - "what is our ICP?"
+        - "answer a product question: what is our wedge?"
       pt:
         - "qual é o nosso diferenciador?"
         - "qual é o moat do COS contra concorrentes?"
@@ -77,13 +77,13 @@ skills:
       es:
         - "ejecuta una auditoría de seguridad sobre la rama actual"
         - "escanea mis cambios buscando secretos y vulnerabilidades"
-        - "audita este código por problemas de seguridad"
+        - "audit this code for security issues"
         - "busca credenciales hardcodeadas"
         - "haz una revisión de seguridad"
       pt:
         - "roda uma auditoria de segurança na branch atual"
         - "escaneie minhas mudanças por segredos e vulnerabilidades"
-        - "audite este código por problemas de segurança"
+        - "audit this code for security issues"
         - "verifique credenciais hardcoded"
         - "faça uma revisão de segurança"
       de:
@@ -159,17 +159,17 @@ skills:
         - "give me a critique of my latest commit"
         - "review code adversarially"
       es:
-        - "revisa mi código"
-        - "haz una revisión de código sobre este PR"
+        - "review my code"
+        - "perform a code review on this PR"
         - "revisa los cambios en stage"
         - "dame una crítica de mi último commit"
-        - "revisión adversarial de código"
+        - "adversarial code review"
       pt:
-        - "revise meu código"
+        - "review my code"
         - "faça um code review neste PR"
         - "revise as mudanças staged"
         - "me dê uma crítica do meu último commit"
-        - "revisão adversarial de código"
+        - "adversarial code review"
       de:
         - "review meinen Code"
         - "mach ein Code-Review zu diesem PR"
@@ -201,11 +201,11 @@ skills:
         - "investigate this question thoroughly"
         - "build a research dossier"
       es:
-        - "haz investigación profunda sobre este tema"
-        - "investiga cómo se implementa X habitualmente"
-        - "produce un informe de investigación profunda"
+        - "perform deep research on this topic"
+        - "research how X is usually implemented"
+        - "produce a deep research report"
         - "investiga esta pregunta exhaustivamente"
-        - "arma un dossier de investigación"
+        - "prepare a research dossier"
       pt:
         - "faça pesquisa profunda sobre este tema"
         - "pesquise como X é tipicamente implementado"
@@ -243,7 +243,7 @@ skills:
         - "bisect this regression"
         - "find the real root cause"
       es:
-        - "ayúdame a debuggear esto sistemáticamente"
+        - "help me debug this systematically"
         - "analiza la causa raíz de este bug"
         - "aplica debugging sistemático"
         - "bisecta esta regresión"
@@ -287,13 +287,13 @@ skills:
       es:
         - "revisa este PR"
         - "haz revisión de pull request"
-        - "¿este PR está listo para mergear?"
+        - "is this PR ready to merge?"
         - "evalúa este PR para merge"
         - "revisa pull request"
       pt:
         - "revise este PR"
         - "faça revisão de pull request"
-        - "este PR está pronto para merge?"
+        - "este PR is pronto para merge?"
         - "avalie este PR para merge"
         - "revise pull request"
       de:
@@ -327,10 +327,10 @@ skills:
         - "current state of the cognitive OS?"
         - "cos status please"
       es:
-        - "¿cuál es el estado de COS?"
+        - "what is COS status?"
         - "muestra el estado del cognitive os"
         - "dame un snapshot del estado del OS"
-        - "¿estado actual del cognitive OS?"
+        - "current Cognitive OS status?"
         - "estado de cos por favor"
       pt:
         - "qual é o status do COS?"
@@ -343,7 +343,7 @@ skills:
         - "zeige den Cognitive-OS-Status"
         - "gib mir einen OS-Status-Snapshot"
         - "aktueller Stand des Cognitive OS?"
-        - "cos Status bitte"
+        - "cos status please"
       fr:
         - "quel est le statut COS ?"
         - "montre le statut du cognitive os"
@@ -373,7 +373,7 @@ skills:
         - "crea una skill llamada foo"
         - "registra una nueva skill"
         - "scaffold de una skill"
-        - "quiero agregar una skill"
+        - "quiero add una skill"
       pt:
         - "adicione uma nova skill"
         - "crie uma skill chamada foo"

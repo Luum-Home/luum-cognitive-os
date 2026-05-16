@@ -1,6 +1,6 @@
 ---
 name: session-pending-brief
-description: Use when starting a session OR when the operator asks 'qué hay pendiente?'
+description: Use when starting a session OR when the operator asks 'what's pending?'
   / 'what's open?' / 'what should I attack?' — runs the ADR-275 session-start projector
   and presents a ranked attack list spanning tasks, ADR decisions, audits, staged
   deploys, and git state in one bounded view. Do not use for executing the work itself.
@@ -23,7 +23,7 @@ prerequisites: []
 routing_patterns:
 - pattern: \bpending[- ]?brief\b
 - pattern: \bsession[- ]?start[- ]?brief\b
-- pattern: \b(que|qué|what).{0,30}(pendiente|open|attack|to.do|abierto)\b
+- pattern: \b(what|which).{0,30}(pending|open|attack|to.do)\b
   confidence: 0.86
 routing_intents:
 - intent: session_pending_work_brief
@@ -40,7 +40,7 @@ triggers:
 
 ## Purpose
 
-Bridge a natural-language ask ("what's open?", "qué hay para atacar?")
+Bridge a natural-language ask ("what's open?", "what is available to attack?")
 into the ADR-275 session-start projector and present its output as a
 ranked, bounded, actionable list. Agents use this at SessionStart or
 whenever they need to know what to work on next.

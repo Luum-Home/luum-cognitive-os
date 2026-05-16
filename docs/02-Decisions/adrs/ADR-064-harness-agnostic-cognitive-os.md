@@ -70,7 +70,7 @@ uniform OpenAI-compatible loop. But the **harness** — the environment that
 loads skills, fires hooks, spawns sub-agents, and records sessions — is still
 Claude Code-specific. When the operator said on 2026-04-24:
 
-> *"además tiene que ser agnóstico"*
+> *"it also has to be agnostic"*
 
 they were pointing at the layer above the LLM: if we move to Codex, Cursor,
 a bare Python CLI, or a GitHub Action, most of the OS value evaporates even

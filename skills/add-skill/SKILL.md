@@ -15,7 +15,7 @@ prerequisites: []
 routing_patterns:
 - pattern: \badd[- ]?skill\b
   confidence: 0.95
-- pattern: \b(add|agregar?)\s+(a\s+|un[ao]?\s+)?skill\b
+- pattern: \b(add|add?)\s+(a\s+|un[ao]?\s+)?skill\b
   confidence: 0.86
 - pattern: \bnuev[ao]?\s+skill\b
   confidence: 0.8

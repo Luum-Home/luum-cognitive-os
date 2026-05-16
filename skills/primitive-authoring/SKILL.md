@@ -28,7 +28,7 @@ routing_patterns:
   confidence: 0.96
 - pattern: \b(create|build|add|author|promote|modify)\s+(a\s+)?(new\s+)?(agentic\s+)?primitive\b
   confidence: 0.92
-- pattern: \b(nueva?|crear|construir|agregar|promover)\s+(una?\s+)?primitiva\b
+- pattern: \b(nueva?|crear|construir|add|promover)\s+(una?\s+)?primitiva\b
   confidence: 0.9
 routing_intents:
 - intent: agentic_primitive_authoring

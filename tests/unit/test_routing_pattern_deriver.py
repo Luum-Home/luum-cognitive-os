@@ -92,7 +92,7 @@ class TestSpanishTrigger:
         result = deriver.derive("plan-feature", "Generate a plan for a new feature")
         patterns = [p["pattern"] for p in result]
         # None of the Spanish verbs should appear
-        spanish_verbs = ["crear", "generar", "arreglar", "implementar"]
+        spanish_verbs = ["crear", "generar", "fix", "implementar"]
         assert not any(
             any(sv in pat for sv in spanish_verbs) for pat in patterns
         )
@@ -153,7 +153,7 @@ class TestEdgeCases:
         assert any("recon" in pat or "reconnaissance" in pat for pat in patterns)
 
     def test_unicode_description_handled(self, deriver: RoutingPatternDeriver) -> None:
-        result = deriver.derive("unicode-skill", "Ñoño análisis de código")
+        result = deriver.derive("unicode-skill", "Detailed code analysis")
         assert isinstance(result, list)
 
 

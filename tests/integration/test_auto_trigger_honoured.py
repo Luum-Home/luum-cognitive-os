@@ -164,7 +164,7 @@ def _make_emission(
             "suggested_skill": suggested_skill,
             "session_id": session_id,
             "prompt_digest": "abcd1234",
-            "matched_phrase": "cerremos la sesión",
+            "matched_phrase": "close the session",
         },
     }
 

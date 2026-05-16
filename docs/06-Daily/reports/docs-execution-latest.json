@@ -10033,10 +10033,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,agreed,alone,dale,esto,expone,operator"
+        "terms:added,agreed,alone,yes,this,expose,operator"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "alone. The operator agreed and added: \"dale si, aunque expone esto en una",
+      "item": "alone. The operator agreed and added: \"yes, but expose this in",
       "kind": "prose",
       "line": 38,
       "next_action": "add explicit test/workflow/proof link",
@@ -10272,7 +10272,7 @@
         "terms:direct,framing,operator,spanish,todo"
       ],
       "inferred_status": "planned",
-      "item": "The operator's framing in Spanish was direct: *\"solucionemos todo y que hayan",
+      "item": "The operator's framing in Spanish was direct: *\"fix everything and ensure there are",
       "kind": "prose",
       "line": 56,
       "next_action": "keep planned or add implementation proof when complete",
@@ -35049,10 +35049,10 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:each,esto,future,guide,moment,operational"
+        "terms:each,this,future,guide,moment,operational"
       ],
       "inferred_status": "planned",
-      "item": "\u00a7Operational Guide. Each is a future \"esto est\u00e1 documentado?\" moment.",
+      "item": "\u00a7Operational Guide. Each is a future \"is this documented?\" moment.",
       "kind": "prose",
       "line": 56,
       "next_action": "keep planned or add implementation proof when complete",
@@ -61096,10 +61096,10 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:estamos,herramientas,materia,operator,otras,question,todo,trigger"
+        "terms:are,we,tools,area,operator,other,question,all,trigger"
       ],
       "inferred_status": "planned",
-      "item": "**Trigger**: Operator question \u2014 *\"\u00bfestamos seguros que en materia de orquestaci\u00f3n estamos cubriendo todo lo que las otras herramientas cubren, en sus versiones m\u00e1s recientes?\"*",
+      "item": "**Trigger**: Operator question \u2014 *\"are we sure that, for orchestration, we cover everything other tools cover in their latest versions?\"*",
       "kind": "prose",
       "line": 5,
       "next_action": "keep planned or add implementation proof when complete",

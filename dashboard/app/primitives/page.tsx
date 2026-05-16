@@ -131,7 +131,7 @@ export default async function PrimitivesPage() {
 
         <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
           <h2 className="text-lg font-semibold">Promotion Gaps</h2>
-          <p className="mt-2 text-sm text-[var(--color-text-muted)]">Qué falta para promover: harnesses no alineados o pendientes de runtime smoke por contrato.</p>
+          <p className="mt-2 text-sm text-[var(--color-text-muted)]">Promotion gaps: misaligned harnesses or pending runtime smoke checks by contract.</p>
           <div className="mt-4 space-y-3 text-sm">
             {projectionRows.filter((row) => row.pendingReasons.length > 0).slice(0, 12).map((row) => (
               <div key={row.contractId} className="rounded border border-[var(--color-border)] p-3">

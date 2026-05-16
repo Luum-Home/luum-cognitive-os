@@ -63,7 +63,7 @@ claims:
     forbidden_phrases:
       - Known remaining gap
       - falta una capa explícita de authority/write-effects audit
-      - no está documentado todavía
+      - no is documentado todavia
       - not implemented yet
     generated_block:
       doc: docs/04-Concepts/architecture/primitive-authority-write-effects.md

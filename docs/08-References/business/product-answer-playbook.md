@@ -12,7 +12,7 @@ commercial pitch, product wedge, claims, or what COS can safely promise.
 ## Canonical command
 
 ```bash
-scripts/cos-product-answer "¿Cuál es nuestro diferenciador?" --json
+scripts/cos-product-answer "What is our differentiator?" --json
 scripts/cos-product-answer --question-id differentiator --format markdown
 ```
 
@@ -28,7 +28,7 @@ Short pitch:
 
 Spanish variant:
 
-> Tus agentes programan más rápido. Cognitive OS los obliga a probarlo.
+> Your agents code faster. Cognitive OS forces them to prove it.
 
 ## Answer discipline
 

@@ -55,10 +55,10 @@ _GENERIC_WORDS: frozenset[str] = frozenset(
 _SPANISH_ACTION_VERBS: tuple[str, ...] = (
     "crear",
     "generar",
-    "arreglar",
+    "fix",
     "corregir",
     "ejecutar",
-    "agregar",
+    "add",
     "añadir",
     "construir",
     "actualizar",

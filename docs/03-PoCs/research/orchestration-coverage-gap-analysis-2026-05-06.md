@@ -2,7 +2,7 @@
 
 **Status**: Active — research-driven; per-gap deep-dives spawned in parallel
 **Author**: Operator session 2026-05-06 (inline assessment, follow-up agents launched into `docs/03-PoCs/research/orchestration-gaps/`)
-**Trigger**: Operator question — *"¿estamos seguros que en materia de orquestación estamos cubriendo todo lo que las otras herramientas cubren, en sus versiones más recientes?"*
+**Trigger**: Operator question — *"are we sure that, for orchestration, we cover everything other tools cover in their latest versions?"*
 **Companion**: [`multi-agent-orchestration-prior-art-2026-05-06.md`](multi-agent-orchestration-prior-art-2026-05-06.md) — 79-source research focused on git/concurrency/stash. This document is wider: covers orchestration as a whole, not just the slice that produced the bug.
 
 ---

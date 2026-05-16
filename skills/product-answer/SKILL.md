@@ -29,7 +29,7 @@ routing_patterns:
   confidence: 0.9
 - pattern: \b(ICP|buyer|pricing|precio|competitors|competencia|pitch|landing)\b
   confidence: 0.86
-- pattern: \b(what|qué|que).{0,30}(claim|prometer|diferencia|vende|vendemos)\b
+- pattern: \b(what|which).{0,30}(claim|promise|difference|sell|selling)\b
   confidence: 0.8
 routing_intents:
 - intent: product_capability_question
@@ -47,9 +47,9 @@ routing_intents:
 - can this help a developer who does not know best practices?
 - is this OS useful for someone without architecture experience?
 - what can this OS do for me?
-- ¿este SO me puede ayudar como desarrollador?
-- ¿puede ayudar a alguien sin conocimiento de buenas prácticas, arquitectura o seguridad?
-- ¿sirve este sistema operativo para alguien que no conoce testing o documentación?
+- can this OS help me as a developer?
+- can it help someone without knowledge of best practices, architecture, or security?
+- is this operating system useful for someone who does not know testing or documentation?
 - este SO serve para um desenvolvedor sem experiência em arquitetura?
 - ist dieses System für einen Entwickler ohne Architekturkenntnisse nützlich?
 - est-ce que ce SO peut aider un développeur sans expérience?
@@ -74,8 +74,8 @@ wedge. It is not a project-facing adopter skill.
 
 ## Use when
 
-- The user asks: "cuál es nuestro diferenciador?", "what is our moat/wedge?",
-  "qué decimos de competidores?", "pricing", "ICP", "pitch", "landing".
+- The user asks: "what is our differentiator?", "what is our moat/wedge?",
+  "what do we say about competitors?", "pricing", "ICP", "pitch", "landing".
 - The user asks about already-analyzed external tools, competitors, or adjacent
   agent frameworks such as Hermes, Agent Zero, OpenClaw, Langfuse, AgentOps,
   Datadog, Dynatrace, or Galileo.
@@ -210,5 +210,5 @@ For named competitor comparisons, refresh external research first.
 ```bash
 python3 -m pytest tests/unit/test_product_answer.py tests/behavior/test_product_answer_cli.py -q
 scripts/cos-product-answer-refresh --all --json
-scripts/cos-product-answer "cuál es nuestro diferenciador" --json
+scripts/cos-product-answer "what is our differentiator" --json
 ```

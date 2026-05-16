@@ -62,7 +62,7 @@ def classify_learning(text: str) -> dict[str, str]:
 
     if any(word in lower for word in ("must", "debe", "should", "conviene", "correcto", "evita", "avoid")):
         actionability = "candidate-improvement"
-    elif any(word in lower for word in ("implemented", "quedó", "validated", "pusheado")):
+    elif any(word in lower for word in ("implemented", "done", "validated", "pushed")):
         actionability = "evidence"
     else:
         actionability = "observation"

@@ -252,7 +252,7 @@ class TestSpecialCharacterRoundtrip:
     def test_unicode_content_survives(self, real_engram):
         """Spanish/accented characters survive the round-trip."""
         title = f"unicode-{_unique()}"
-        content = "Decisión arquitectural: usar ginext no huma. Éxito en la implementación."
+        content = "Architecture decision: use ginext, not huma. Implementation succeeded."
         result = real_engram["save"](title, content)
         assert result.returncode == 0, f"Save of unicode content failed: {result.stderr}"
 

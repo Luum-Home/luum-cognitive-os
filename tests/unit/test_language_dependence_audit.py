@@ -100,7 +100,7 @@ def test_audit_classifies_intentionally_localized_skill(tmp_path: Path, monkeypa
     _write_skill(
         tmp_path,
         "caveman-es",
-        [r"\b(revisar|arreglar|hacer).{0,40}\b(codigo|código)\b"],
+        [r"\b(review|fix|do).{0,40}\b(code)\b"],
     )
 
     default_report = audit(tmp_path)

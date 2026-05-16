@@ -55,7 +55,7 @@ Add an ADR-282 answer-card materialization layer over ADR-280:
 ```bash
 scripts/cos-product-answer-refresh --all
 scripts/cos-product-answer-refresh --question-id differentiator
-scripts/cos-product-answer "¿Cuál es nuestro diferenciador?"
+scripts/cos-product-answer "What is our differentiator?"
 ```
 
 The refresh primitive generates ignored local artifacts under:
@@ -168,5 +168,5 @@ read is necessary.
 ```bash
 python3 -m pytest tests/unit/test_product_answer.py tests/behavior/test_product_answer_cli.py -q
 scripts/cos-product-answer-refresh --question-id differentiator --json
-scripts/cos-product-answer "¿Cuál es nuestro diferenciador?" --json
+scripts/cos-product-answer "What is our differentiator?" --json
 ```

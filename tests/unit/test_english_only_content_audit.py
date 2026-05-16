@@ -34,8 +34,12 @@ def test_classify_line_flags_forbidden_punctuation() -> None:
     )
 
 
-def test_classify_line_flags_latin_diacritic() -> None:
-    assert classify_line("Author: Mat" + chr(0x00ED) + "as") == ("non-ascii-letter", "error", chr(0x00ED))
+def test_classify_line_allows_latin_diacritic_names() -> None:
+    assert classify_line("Author: Mat" + chr(0x00ED) + "as") is None
+
+
+def test_classify_line_allows_greek_technical_symbols() -> None:
+    assert classify_line("score = " + chr(0x03B1) + " + " + chr(0x03B2)) is None
 
 
 def test_audit_scans_git_tracked_files_and_reports_locations(tmp_path: Path) -> None:

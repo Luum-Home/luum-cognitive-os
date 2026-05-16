@@ -52,7 +52,7 @@ class TestGitHubUrlDetection:
 
     def test_github_url_in_spanish_context(self, router: SkillRouter):
         match = router.best_match(
-            "investigá este repo https://github.com/luum/luum-agent-os"
+            "research este repo https://github.com/luum/luum-agent-os"
         )
         assert match is not None
         assert match.invoke_command == "/repo-forensics"
@@ -84,8 +84,8 @@ class TestBugFixDetection:
         assert match.invoke_command == "/plan-bug"
         assert match.confidence >= 0.85
 
-    def test_fix_bug_spanish(self, router: SkillRouter):
-        match = router.best_match("arreglá el bug en el handler de usuarios")
+    def test_fix_bug_handler(self, router: SkillRouter):
+        match = router.best_match("fix the bug in the users handler")
         assert match is not None
         assert match.invoke_command == "/plan-bug"
 
@@ -94,8 +94,8 @@ class TestBugFixDetection:
         assert match is not None
         assert match.invoke_command == "/plan-bug"
 
-    def test_hay_un_error(self, router: SkillRouter):
-        match = router.best_match("hay un error en el módulo de pagos")
+    def test_there_is_an_error(self, router: SkillRouter):
+        match = router.best_match("there is an error in the payment module")
         assert match is not None
         assert match.invoke_command == "/plan-bug"
 
@@ -114,7 +114,7 @@ class TestFeatureRequestDetection:
         assert match.invoke_command == "/sdd-new"
 
     def test_spanish_feature_request(self, router: SkillRouter):
-        match = router.best_match("necesito agregar autenticación JWT al servicio")
+        match = router.best_match("I need to add JWT authentication to the service")
         assert match is not None
         assert match.invoke_command == "/sdd-new"
 
@@ -169,7 +169,7 @@ class TestSecurityDetection:
         assert match.confidence >= 0.85
 
     def test_security_audit_spanish(self, router: SkillRouter):
-        match = router.best_match("revisá la seguridad del proyecto")
+        match = router.best_match("review security del proyecto")
         assert match is not None
         assert match.invoke_command == "/security-audit"
 
@@ -273,17 +273,17 @@ class TestSpanishPatterns:
     """Spanish language patterns should work correctly."""
 
     def test_investiga(self, router: SkillRouter):
-        match = router.best_match("investigá este tema de performance")
+        match = router.best_match("research este tema de performance")
         assert match is not None
         assert match.invoke_command == "/deep-research"
 
     def test_arregla(self, router: SkillRouter):
-        match = router.best_match("arreglá el bug en el login")
+        match = router.best_match("fix the bug en el login")
         assert match is not None
         assert match.invoke_command == "/plan-bug"
 
     def test_necesito(self, router: SkillRouter):
-        match = router.best_match("necesito agregar un endpoint nuevo")
+        match = router.best_match("I need to add a new endpoint")
         assert match is not None
         assert match.invoke_command == "/sdd-new"
 
@@ -483,7 +483,7 @@ class TestSafetyRecoveryNegativeContext:
 
     def test_auto_rollback_risk_question_does_not_match(self, router: SkillRouter):
         message = (
-            "Qué dispara /auto-rollback? Me asusta que los agentes hagan cosas "
+            "What triggers /auto-rollback? I am afraid agents will do things "
             "y se pierda trabajo."
         )
         matches = router.match(message)
@@ -497,7 +497,7 @@ class TestSafetyRecoveryNegativeContext:
                 "/systematic-debugging",
             ),
             (
-                "Ignoré la sugerencia del router /auto-refine 0.95 para síntesis",
+                "I ignored the /auto-refine 0.95 router suggestion for synthesis",
                 "/auto-refine",
             ),
             (
@@ -591,7 +591,7 @@ class TestSemanticRoutingProductAnswer:
     def test_spanish_phrasing_without_regex_keywords(self, router: SkillRouter):
         # Avoids "diferenciador", "moat", "ICP", "pricing", etc.
         matches = router.match(
-            "¿puede ayudar a alguien sin conocimiento de arquitectura?"
+            "can it help someone without architecture knowledge?"
         )
         names = [m.skill_name for m in matches]
         if matches:

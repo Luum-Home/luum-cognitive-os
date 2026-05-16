@@ -105,8 +105,8 @@ class TestRequestPersistenceAcrossSessionLifecycle:
 
     def test_unicode_messages_persist(self, session_env):
         """Messages with unicode (Spanish, emojis) survive serialization."""
-        enqueue_request("arreglá el bug de autenticación 🔐", session_dir=session_env["session_dir"])
-        enqueue_request("también hacé los tests 📋", session_dir=session_env["session_dir"])
+        enqueue_request("fix the bug de autenticación 🔐", session_dir=session_env["session_dir"])
+        enqueue_request("also write the tests 📋", session_dir=session_env["session_dir"])
 
         pending = get_pending_requests(session_dir=session_env["session_dir"])
         assert len(pending) == 2

@@ -297,7 +297,7 @@
 
 ## 9. Orchestration Coverage Substrate (line of work landed 2026-05-06/07)
 
-> Disparada por la pregunta del operador *"¿estamos cubriendo todo lo que cubren los demás en sus versiones más recientes?"*. 79-source prior-art research + 11 reportes paralelos por gap + síntesis ranqueada → 14 ADRs (220–236, ADR-229 tombstone) drafted + Slice A implemented en ~24h. Detalle completo en [SYNTHESIS-2026-05-06.md](../research/orchestration-gaps/SYNTHESIS-2026-05-06.md) y [IMPLEMENTATION-CHECKLIST-2026-05-07.md](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+> Triggered by the operator question *"are we covering everything others cover in their latest versions?"*. 79-source prior-art research + 11 parallel reports by gap + ranked synthesis → 14 ADRs (220–236, ADR-229 tombstone) drafted + Slice A implemented in ~24h. Full detail in [SYNTHESIS-2026-05-06.md](../research/orchestration-gaps/SYNTHESIS-2026-05-06.md) and [IMPLEMENTATION-CHECKLIST-2026-05-07.md](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
 
 ### 9.1 Evaluation contract
 

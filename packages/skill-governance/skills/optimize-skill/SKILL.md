@@ -55,7 +55,7 @@ Para cada eval en `evals/`:
    - `pass_rate`: % de criterios que pasarian
    - `token_estimate`: tokens estimados que usaria
    - `tool_calls_estimate`: cantidad de tool calls
-   - `quality`: 0-1 basado en formato y completitud esperada
+   - `quality`: 0-1 basado en format y completitud esperada
 
 ### Paso 3: Identificar areas de mejora
 
@@ -70,8 +70,8 @@ Analizar los evals que tienen menor score y determinar POR QUE:
 
 Aplicar UNA sola modificacion al SKILL.md por iteracion.
 Estrategias en orden de prioridad:
-1. Corregir instrucciones que causan fallos en evals
-2. Agregar ejemplos para criterios que fallan
+1. Correct instrucciones que causan fallos en evals
+2. Add examples for failing criteria
 3. Eliminar pasos redundantes (reduce tokens)
 4. Reordenar para eficiencia
 5. Mejorar description/name para triggering
@@ -86,8 +86,8 @@ Comparar scores.
 
 ```
 SI nuevo_score > score_anterior:
-  → Mantener cambio
-  → Agregar linea a benchmark.tsv
+  → Keep cambio
+  → Add line to benchmark.tsv
   → Continuar con siguiente iteracion
 
 SI nuevo_score <= score_anterior:

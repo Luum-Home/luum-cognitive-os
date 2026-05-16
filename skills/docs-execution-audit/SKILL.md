@@ -42,4 +42,4 @@ Use this when asking what remains across all documentation, what is stale, or wh
 
 ## Contextual Trigger
 
-Use when the user asks: qué está hecho, qué falta, docs stale, documentación pendiente, roadmap reality, docs execution coverage.
+Use when the user asks: what is done, what is missing, docs stale, pending documentation, roadmap reality, docs execution coverage.

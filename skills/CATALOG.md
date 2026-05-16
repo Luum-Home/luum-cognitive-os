@@ -153,7 +153,7 @@
 | Skill | Description | Invoke | Audience |
 |-------|-------------|--------|----------|
 | caveman | Ultra-compressed communication mode (~75% token reduction). Intensity levels: lite/full/ultra | `/caveman [lite\|full\|ultra]` | both |
-| caveman-es | Modo cavernícola en español. Misma compresión, soporte nativo español | `/caveman-es [lite\|full\|ultra]` | both |
+| caveman-es | Spanish caveman mode. Same compression, native Spanish support | `/caveman-es [lite\|full\|ultra]` | both |
 | caveman-compress | Compress natural language memory files (CLAUDE.md, todos) into caveman format | `/caveman:compress <filepath>` | both |
 
 ## External Skills — Trail of Bits [submodule]
@@ -214,7 +214,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **capability-snapshot** — Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors
 - **catalog-full** — Use when the compact Level-1 catalog does not have enough detail. Purpose: Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns.
 - **caveman** — Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman. Also auto-triggers when token efficiency is requested. Purpose: Ultr...
-- **caveman-es** — Use when you need this Cognitive OS skill: Modo cavernícola en español. Corta ~75% de tokens hablando como cavernícola técnico. Misma precisión técnica, menos palabrería. Niveles: lite, full (defau...
+- **caveman-es** — Use when you need this Cognitive OS skill: Spanish caveman mode. Cuts ~75% of tokens using technical caveman style. Same precision, less verbosity. Levels: lite, full (defau...
 - **code-review** — Use when you need this Cognitive OS skill: Engram-integrated code review with adversarial protocol. Reviews
 - **cognee-integration** — Configure and use Cognee for knowledge graph memory. Provides structured knowledge extraction, graph-based retrieval, and MCP server integration.
 - **cognee-search** — Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrieval
@@ -333,7 +333,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **semgrep-scan** — Run Semgrep SAST security scanning on a path or changed files. Reports findings in adversarial review format (BLOCKER/CONCERN/SUGGESTION).
 - **session-backlog** — Use when you need this Cognitive OS skill: Inventory all pending work across plans, engram, tasks, todos, audits,
 - **session-manager** — Use when you need this Cognitive OS skill: Manage concurrent Cognitive OS sessions — list, inspect, and clean
-- **session-pending-brief** — Use when starting a session OR when the operator asks 'qué hay pendiente?' / 'what's open?' / 'what should I
+- **session-pending-brief** — Use when starting a session OR when the operator asks 'what's pending?' / 'what's open?' / 'what should I
 - **session-pending-close** — Use when closing one or many pending-truth items with bilateral proof — invokes scripts/cos-pending-truth-close
 - **session-report-executive** — Use when you need this Cognitive OS skill: Generate an executive-level session report translating technical metrics into business language. For non-technical leaders who need to know what the Cogni...
 - **session-wrapup** — Use when you need this Cognitive OS skill: End-of-session routine — run session-backlog inventory, save to engram, write session summary, and report what was accomplished and what comes next.; do n...

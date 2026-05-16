@@ -122,7 +122,7 @@ benchmark:
       rationale: Mentioning a false-positive research suggestion must not route.
 
     - id: fp-auto-refine-meta
-      prompt: "Ignoro /auto-refine 0.95 para síntesis; router mal calibrado"
+      prompt: "I ignore /auto-refine 0.95 for synthesis; router poorly calibrated"
       expected: none
       required: true
       rationale: Mentioning auto-refine as miscalibration must not route.
@@ -134,13 +134,13 @@ benchmark:
       rationale: Mentioning self-improve as dogfood evidence must not route.
 
     - id: repo-forensics-positive
-      prompt: "necesito investigar este repo https://github.com/foo/bar"
+      prompt: "I need to research this repo https://github.com/foo/bar"
       expected_command: /repo-forensics
       required: true
       rationale: GitHub repo analysis should route to repo-forensics.
 
     - id: security-audit-positive
-      prompt: "hagamos un security audit de secrets del repo"
+      prompt: "run a security audit of repository secrets"
       expected_command: /security-audit
       required: true
       rationale: Security audit wording should route to security-audit.
@@ -152,7 +152,7 @@ benchmark:
       rationale: Code review wording should route to code-review.
 
     - id: add-skill-known-gap
-      prompt: "necesito crear una nueva skill para auditoría"
+      prompt: "I need to create a new audit skill"
       expected_command: /add-skill
       required: false
       known_gap: true

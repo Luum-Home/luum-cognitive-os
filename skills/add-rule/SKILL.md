@@ -15,7 +15,7 @@ prerequisites: []
 routing_patterns:
 - pattern: \badd[- ]?rule\b
   confidence: 0.95
-- pattern: \b(agregar?|a[ñn]adir|crear)\s+(una?\s+)?rule\b
+- pattern: \b(add?|a[ñn]adir|crear)\s+(una?\s+)?rule\b
   confidence: 0.8
 - pattern: \bnew\s+rule\b
   confidence: 0.75

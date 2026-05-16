@@ -221,7 +221,7 @@ authorship. The ledger is a structured machine-readable index that enables:
 **Why startup banner and not commit-time gate.** The bundles are evidence of
 past rewrites, not active mutations. Blocking commits because of past
 undocumented rewrites would be punitive. A persistent visible WARNING at session
-start surfaces the deuda de documentación without blocking forward work.
+start surfaces the documentation debt without blocking forward work.
 
 **Why `--adr-ref` on the wrapper but not on direct filter-repo.** The wrapper
 is opt-in. Adding filter-repo to DESTRUCTIVE_PATTERN forces all rewrite paths

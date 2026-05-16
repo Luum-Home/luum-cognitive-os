@@ -6,7 +6,7 @@ For commercial/closed-source projects, ALL dependencies must comply with this po
 
 ## Regla General
 
-Antes de integrar CUALQUIER herramienta open-source, verificar su licencia.
+Before integrating ANY tool open-source, verify its license.
 
 ## Licencias Permitidas
 
@@ -14,7 +14,7 @@ Antes de integrar CUALQUIER herramienta open-source, verificar su licencia.
 |----------|-----------|-------------|
 | MIT | ✅ SAFE | Solo mantener copyright notice |
 | BSD-2, BSD-3 | ✅ SAFE | Solo mantener copyright notice |
-| Apache 2.0 | ✅ SAFE | Mantener NOTICE + indicar cambios |
+| Apache 2.0 | ✅ SAFE | Keep NOTICE + indicar cambios |
 | ISC | ✅ SAFE | Sin restricciones |
 | CC0 / Public Domain | ✅ SAFE | Sin restricciones |
 
@@ -26,7 +26,7 @@ Antes de integrar CUALQUIER herramienta open-source, verificar su licencia.
 | MPL 2.0 | ⚠️ CAUTION | Cambios al codigo MPL deben ser open-source, pero TU codigo puede ser cerrado |
 | Artistic 2.0 | ⚠️ CAUTION | Similar a MPL — cambios al original deben publicarse |
 
-## Licencias BLOQUEADAS para SaaS
+## Licencias BLOCKSDAS para SaaS
 
 | Licencia | Veredicto | Por que |
 |----------|-----------|---------|
@@ -40,20 +40,20 @@ Antes de integrar CUALQUIER herramienta open-source, verificar su licencia.
 
 ## Procedimiento Obligatorio
 
-1. **Antes de agregar cualquier dependencia**: verificar licencia en GitHub/npm/Maven
+1. **Antes de add cualquier dependencia**: verificar licencia en GitHub/npm/Maven
 2. **Dependencias transitivas tambien cuentan**: si A (MIT) depende de B (AGPL), B contamina
-3. **Dual licensing**: si una herramienta ofrece Community (AGPL) + Commercial, evaluar costo de licencia comercial
+3. **Dual licensing**: if a tool offers Community (AGPL) + Commercial, evaluate commercial license cost
 4. **Ante la duda**: NO integrar. Buscar alternativa con licencia permisiva.
 5. **Documentar**: toda decision de licencia en `docs/03-PoCs/research/license-analysis.md`
 
 ## Excepciones
 
-Una herramienta con licencia AGPL/SSPL PUEDE usarse si:
+A tool with license AGPL/SSPL MAY be used if:
 - Corre como servicio COMPLETAMENTE SEPARADO (container propio, sin modificaciones)
 - NO se modifica su codigo fuente
 - Se comunica SOLO via API publica documentada
 - Se documenta la justificacion y el riesgo
-- Se aprueba explicitamente
+- Se aprueba states explicitlymente
 
 Aun asi, la recomendacion es buscar alternativa con licencia permisiva.
 

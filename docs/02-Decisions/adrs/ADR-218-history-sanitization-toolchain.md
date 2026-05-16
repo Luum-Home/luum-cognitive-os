@@ -26,7 +26,7 @@ Accepted
 **Status**: Accepted — slices 1–6 active (dry-run + execute substrate, behavior round-trip + 3 refusal-path tests passing 2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-202, ADR-203, ADR-211, ADR-215, ADR-055b
-**Source**: Operator question — *"cómo depuramos lo que está en git sobre datos sensibles y estos cambios de licencias sin crear un repo nuevo?"*
+**Source**: Operator question — *"how do we clean what is in git about sensitive data and these license changes without creating a new repo?"*
 
 ---
 
@@ -46,7 +46,7 @@ contains:
   and **must not** be sanitized.
 
 The decision recorded in
-`.cognitive-os/strategy/04-license-repo-and-corrections-log.md` was Vía 4
+`.cognitive-os/strategy/04-license-repo-and-corrections-log.md` was Path 4
 (preserve history) — the operator does not want to discard the dev journey.
 That choice creates a tension: how to scrub the genuinely sensitive content
 from old blobs **without** a fresh repo, **without** losing the license-
@@ -217,8 +217,8 @@ Not yet active: live `git-filter-repo` rewrite, mirror-backup creation, interact
   expressive than git-filter-repo's `--replace-text`. Manifest interop is
   weaker. Acceptable as forensic fallback only.
 - **Squash to single commit**: rejected. Loses all the dev journey
-  provenance the operator explicitly wanted to preserve in Vía 4.
-- **Two-repo split** (Vía 1 from strategy/04): rejected per the operator's
+  provenance the operator explicitly wanted to preserve in Path 4.
+- **Two-repo split** (Path 1 from strategy/04): rejected per the operator's
   decision in this session ("no quiero crear un repo nuevo").
 - **Don't sanitize at all, accept history leaks**: rejected. Operator email
   and personal paths in committed blobs damage trust and surface-of-attack;

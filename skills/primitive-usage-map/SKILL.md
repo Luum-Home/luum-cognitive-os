@@ -82,4 +82,4 @@ python3 scripts/primitive_usage_map.py \
 
 ## Contextual Trigger
 
-Use when the user says: qué skills usan scripts, primitive usage, coverage de primitivas, scripts sin skill, mapa de dependencias entre primitivas.
+Use when the user says: which skills use scripts, primitive usage, primitive coverage, scripts without skills, dependency map between primitives.

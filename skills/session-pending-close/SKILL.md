@@ -43,7 +43,7 @@ triggers:
 ## Purpose
 
 Atomic, audited closure of pending-truth items. Bridges natural-language
-("cerrá esto", "close that adr") into the canonical close primitives so
+("close this", "close that adr") into the canonical close primitives so
 no closure happens without bilateral proof (ADR-105).
 
 Two complementary primitives:

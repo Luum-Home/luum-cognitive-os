@@ -285,7 +285,7 @@ class TestClarificationGateEdgeCases:
         The gate uses English keywords, so a Spanish prompt without file
         paths or criteria should trigger on length and missing signals."""
         env = cognitive_os_env["env"]
-        prompt = make_agent_input("arreglar los errores")
+        prompt = make_agent_input("fix the errors")
         result = run_hook("clarification-gate.sh", env=env, stdin=prompt)
         # Short, no file paths, no criteria -> should block or warn
         combined = result.stdout + result.stderr
