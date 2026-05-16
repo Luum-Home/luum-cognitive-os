@@ -26,9 +26,9 @@ tags:
 verification_level: medium
 classification_basis: |
   Lands a benchmark harness (lib/routing_benchmark.py) plus seed manifests
-  for candidate models and a 10-skill English-only corpus. The harness
+  for candidate models and a 10-skill multilingual corpus. The harness
   gates every model on the project license policy (MIT/BSD/Apache) before
-  any download, measures precision@1/@5/MRR for supported prompt language plus
+  any download, measures precision@1/@5/MRR for supported prompt languages plus
   latency/memory/size, and writes a versioned Markdown+JSON report.
   Tests run unconditionally against an injected stub adapter; a separate
   @pytest.mark.benchmark test exercises the real fastembed model.
@@ -70,8 +70,8 @@ output) or in a dedicated evidence section.
 
 - `manifests/routing-benchmark-models.yaml` — candidate manifest;
   each entry declares `adapter`, `model_name`, `license`, `role`.
-- `manifests/routing-benchmark-corpus.yaml` — English-only seed
-  corpus (10 skills × ~5 prompts each). Operators
+- `manifests/routing-benchmark-corpus.yaml` — multilingual seed
+  corpus (10 skills × ~5 prompts per language where available). Operators
   regenerate the full 385-skill corpus on demand via
   `scripts/cos-routing-benchmark --regenerate-corpus`, which uses
   ADR-049 LLM dispatch.

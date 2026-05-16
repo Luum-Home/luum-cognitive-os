@@ -1,8 +1,8 @@
 # SCOPE: os-only
 """Reproducible model-evaluation harness for the COS skill router (ADR-298).
 
-The COS skill router (`lib/skill_router.py`) routes English user prompts to one
-of ~385 skills. Two recent ADRs introduced model-driven layers:
+The COS skill router (`lib/skill_router.py`) routes user prompts across the
+benchmark languages to one of ~385 skills. Two recent ADRs introduced model-driven layers:
 
 * ADR-296 — bi-encoder semantic matcher (FastEmbed + MiniLM)
 * ADR-297 — LLM tie-breaker for ambiguous regex/embedding results
@@ -76,7 +76,7 @@ CORPUS_SCHEMA_VERSION = "routing-benchmark-corpus/v1"
 MODELS_SCHEMA_VERSION = "routing-benchmark-models/v1"
 
 CACHE_DIR_DEFAULT = Path(".cognitive-os/cache/routing-benchmark")
-LANGUAGES = ("en",)
+LANGUAGES = ("en", "es", "pt", "de", "fr", "it")
 WARM_QUERY_COUNT = 200
 
 # Exit codes
@@ -1129,7 +1129,7 @@ def regenerate_corpus(
     dispatch_fn: Optional[Callable[..., Any]] = None,
     max_skills: Optional[int] = None,
 ) -> int:
-    """Walk SKILL.md files, ask the LLM dispatcher to draft English prompts.
+    """Walk SKILL.md files, ask the LLM dispatcher to draft benchmark prompts.
 
     Returns the number of skills written. ``dispatch_fn`` is injected for
     tests; defaults to ``lib.dispatch.dispatch``. Output is deterministic:
@@ -1166,10 +1166,12 @@ def regenerate_corpus(
         desc = _parse_description(path)
         if not desc:
             continue
+        language_list = ", ".join(LANGUAGES)
         prompt_template = (
-            "Generate 3 short English user prompts that a user would write "
-            f"to invoke a skill described as: '{desc}'. Return strict YAML "
-            "with key en; its value is a list of strings. No prose."
+            "Generate 3 short user prompts per requested language that a user would write "
+            f"to invoke a skill described as: '{desc}'. Languages: {language_list}. "
+            "Return strict YAML with one top-level key per language code; each value "
+            "is a list of strings. No prose."
         )
         try:
             result = dispatch_fn(prompt=prompt_template, task_type="general")

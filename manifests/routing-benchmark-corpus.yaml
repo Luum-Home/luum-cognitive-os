@@ -1,7 +1,7 @@
 # SCOPE: os-only
 # AUTO-GENERATED seed corpus for ADR-298 routing-benchmark harness.
-# English-only corpus: this benchmark measures routing over repository-approved
-# English prompts, not multilingual routing capability.
+# Multilingual benchmark corpus: this file intentionally contains prompt
+# fixtures in several languages so ADR-298 can measure cross-language routing.
 # Refine prompts manually as needed — the harness measures regressions,
 # not absolute truth. Stable order, deterministic hash.
 #
@@ -15,6 +15,11 @@
 #       description: <SKILL.md description, source of truth>
 #       prompts:
 #         en: [...]
+#         es: [...]
+#         pt: [...]
+#         de: [...]
+#         fr: [...]
+#         it: [...]
 schema_version: routing-benchmark-corpus/v1
 skills:
   product-answer:
@@ -113,10 +118,40 @@ skills:
     prompts:
       en:
         - "add a new skill"
-        - "create a skill called foo"
+        - "create a skill named foo"
         - "register a new skill"
         - "scaffold a skill"
         - "I want to add a skill"
+      es:
+        - "agrega una nueva skill"
+        - "crea una skill llamada foo"
+        - "registra una nueva skill"
+        - "genera el scaffold de una skill"
+        - "quiero agregar una skill"
+      pt:
+        - "adicione uma nova skill"
+        - "crie uma skill chamada foo"
+        - "registre uma nova skill"
+        - "scaffold de uma skill"
+        - "quero adicionar uma skill"
+      de:
+        - "füge eine neue Skill hinzu"
+        - "erstelle eine Skill namens foo"
+        - "registriere eine neue Skill"
+        - "scaffolde eine Skill"
+        - "ich möchte eine Skill hinzufügen"
+      fr:
+        - "ajoute une nouvelle skill"
+        - "crée une skill nommée foo"
+        - "enregistre une nouvelle skill"
+        - "scaffolde une skill"
+        - "je veux ajouter une skill"
+      it:
+        - "aggiungi una nuova skill"
+        - "crea una skill chiamata foo"
+        - "registra una nuova skill"
+        - "scaffolda una skill"
+        - "voglio aggiungere una skill"
   sdd-init:
     description: |
       Initialise Spec-Driven Development in this project — detect stack,

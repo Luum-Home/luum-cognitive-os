@@ -267,8 +267,14 @@ def test_benchmark_runs_with_stub_factory(models_path: Path, corpus_path: Path):
         assert m.warm_p95_ms >= 0
         assert m.license_ok
         assert m.load_error is None
-        # Supported benchmark languages should all be represented.
-        assert {pl.language for pl in m.per_language} == set(rb.LANGUAGES)
+        # Languages with prompts in the loaded corpus should be represented.
+        expected_languages = {
+            lang
+            for entry in load_corpus(corpus_path).values()
+            for lang, prompts in entry["prompts"].items()
+            if prompts
+        }
+        assert {pl.language for pl in m.per_language} == expected_languages
 
 
 def test_benchmark_idempotent_via_cache(

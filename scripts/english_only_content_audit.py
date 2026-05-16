@@ -46,6 +46,8 @@ DEFAULT_EXCLUDE_GLOBS = (
     "**/.mypy_cache/**",
     "**/.venv/**",
     "**/node_modules/**",
+    # Intentional multilingual runtime fixture corpus for ADR-298 routing benchmarks.
+    "manifests/routing-benchmark-corpus.yaml",
 )
 
 FORBIDDEN_PUNCTUATION = "".join(chr(code) for code in (0x00A1, 0x00BF))
