@@ -410,20 +410,29 @@ class TestNoProgressEscalation:
         assert verdict.verdict == "incomplete", (
             f"Expected incomplete below threshold; got {verdict.verdict}"
         )
-        # Counter must have incremented
-        assert goal.consecutive_no_progress == 4
+        # evaluate() is read-only — goal field must NOT be mutated
+        assert goal.consecutive_no_progress == 3, (
+            "evaluate() must not mutate goal.consecutive_no_progress (S1-2)"
+        )
 
     def test_at_threshold_gives_escalate(self):
-        """consecutive_no_progress == threshold → verdict = 'escalate'."""
+        """consecutive_no_progress == threshold → verdict = 'escalate'.
+
+        Threshold is 5; progress=4 means next_count=5 >= threshold → escalate.
+        evaluate() does not mutate the goal field; verdict is based on next_count.
+        """
         goal = self._goal_at_threshold(threshold=5, progress=4)
         packet = _make_packet({"AC-001": ""})
         ev = GoalEvaluator()
         verdict = ev.evaluate(goal, packet)
-        # After increment: 4+1=5 >= threshold(5) → escalate
+        # next_count = 4+1=5 >= threshold(5) → escalate
         assert verdict.verdict == "escalate", (
             f"Expected escalate at threshold; got {verdict.verdict}"
         )
-        assert goal.consecutive_no_progress == 5
+        # evaluate() is read-only — goal field must NOT be mutated
+        assert goal.consecutive_no_progress == 4, (
+            "evaluate() must not mutate goal.consecutive_no_progress (S1-2)"
+        )
 
     def test_above_threshold_gives_escalate(self):
         """consecutive_no_progress already > threshold → escalate."""
@@ -458,15 +467,21 @@ class TestNoProgressEscalation:
         assert "CI is broken" in verdict.reason
 
     def test_counter_resets_on_complete(self):
-        """consecutive_no_progress resets to 0 when evaluation returns complete."""
+        """evaluate() returns complete verdict; goal field is NOT reset (read-only).
+
+        The Stop-hook writer (goal-stop-gate.sh) resets consecutive_no_progress
+        to 0 after a complete verdict. evaluate() itself is read-only per S1-2.
+        """
         goal = self._goal_at_threshold(threshold=10, progress=7)
         # Full coverage — will complete
         packet = _make_packet({"AC-001": "explicit evidence that check is satisfied"})
         ev = GoalEvaluator()
         verdict = ev.evaluate(goal, packet)
         assert verdict.verdict == "complete"
-        assert goal.consecutive_no_progress == 0, (
-            f"Counter should reset to 0 on complete; got {goal.consecutive_no_progress}"
+        # evaluate() must NOT reset the field — that is the Stop-hook writer's job
+        assert goal.consecutive_no_progress == 7, (
+            "evaluate() must not mutate goal.consecutive_no_progress (S1-2); "
+            f"got {goal.consecutive_no_progress}"
         )
 
     def test_counter_persists_across_serialization(self):
@@ -497,6 +512,79 @@ class TestNoProgressEscalation:
             acceptance_checks=["done"],
         )
         assert goal.escalation_threshold == 5
+
+
+# ---------------------------------------------------------------------------
+# S1-2: evaluate() must be read-only — does not mutate GoalState
+# ---------------------------------------------------------------------------
+
+
+class TestEvaluateIsReadOnly:
+    """S1-2: GoalEvaluator.evaluate() must not mutate any field on the goal dataclass.
+
+    The Stop-hook path (goal-stop-gate.sh) is the sole writer of
+    consecutive_no_progress, turns_used, etc. per design.
+    """
+
+    def test_evaluate_is_read_only_on_goal_state(self):
+        """consecutive_no_progress is unchanged before and after evaluate()."""
+        goal = GoalState.create(
+            objective="Read-only contract test",
+            acceptance_checks=["AC-001"],
+            escalation_threshold=5,
+        )
+        goal.consecutive_no_progress = 2
+
+        # Capture all relevant goal fields before evaluate()
+        before_progress = goal.consecutive_no_progress
+        before_turns = goal.turns_used
+        before_status = goal.status
+        before_guidance = goal.last_guidance
+        before_history_len = len(goal.evaluator_history)
+
+        # Use a packet that triggers the no-progress path (empty coverage)
+        packet = _make_packet({"AC-001": ""})
+        ev = GoalEvaluator()
+        verdict = ev.evaluate(goal, packet)
+
+        # Verdict should be incomplete (below threshold)
+        assert verdict.verdict == "incomplete"
+
+        # evaluate() must not have mutated any goal field
+        assert goal.consecutive_no_progress == before_progress, (
+            f"evaluate() mutated consecutive_no_progress: {before_progress} -> "
+            f"{goal.consecutive_no_progress}"
+        )
+        assert goal.turns_used == before_turns, (
+            f"evaluate() mutated turns_used: {before_turns} -> {goal.turns_used}"
+        )
+        assert goal.status == before_status, (
+            f"evaluate() mutated status: {before_status} -> {goal.status}"
+        )
+        assert goal.last_guidance == before_guidance, (
+            f"evaluate() mutated last_guidance"
+        )
+        assert len(goal.evaluator_history) == before_history_len, (
+            f"evaluate() appended to evaluator_history"
+        )
+
+    def test_evaluate_read_only_on_complete_path(self):
+        """evaluate() returning complete also leaves consecutive_no_progress unchanged."""
+        goal = GoalState.create(
+            objective="Read-only complete test",
+            acceptance_checks=["AC-001"],
+        )
+        goal.consecutive_no_progress = 3
+        before_progress = goal.consecutive_no_progress
+
+        packet = _make_packet({"AC-001": "explicit evidence"})
+        ev = GoalEvaluator()
+        verdict = ev.evaluate(goal, packet)
+
+        assert verdict.verdict == "complete"
+        assert goal.consecutive_no_progress == before_progress, (
+            "evaluate() must not reset consecutive_no_progress on complete (read-only)"
+        )
 
 
 # T-18 AC entry point — tasks.md specifies this exact node name

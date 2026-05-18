@@ -343,13 +343,15 @@ class GoalEvaluator:
         # (EvidencePacket dataclass guarantees structure; check semantic gaps)
         missing_coverage = _missing_coverage(packet, goal.acceptance_checks)
         if missing_coverage:
-            # Missing coverage = no progress — increment counter and check escalation
-            goal.consecutive_no_progress += 1
-            if goal.consecutive_no_progress >= goal.escalation_threshold:
+            # Missing coverage = no-progress path.
+            # NOTE: evaluate() is read-only — do NOT mutate goal.consecutive_no_progress.
+            # The Stop-hook path (goal-stop-gate.sh) is the sole writer per design.
+            next_count = goal.consecutive_no_progress + 1
+            if next_count >= goal.escalation_threshold:
                 return EvaluatorVerdict(
                     verdict="escalate",
                     reason=(
-                        f"Escalation threshold reached ({goal.consecutive_no_progress}/"
+                        f"Escalation threshold reached ({next_count}/"
                         f"{goal.escalation_threshold} consecutive no-progress turns). "
                         "Proxy evidence rejected: missing coverage for: "
                         + ", ".join(f"'{c}'" for c in missing_coverage)
@@ -372,13 +374,14 @@ class GoalEvaluator:
 
         # --- Pre-check 3: blockers must be empty for completion ---
         if packet.blockers:
-            # Blockers count as no-progress — increment counter
-            goal.consecutive_no_progress += 1
-            if goal.consecutive_no_progress >= goal.escalation_threshold:
+            # Blockers count as no-progress.
+            # NOTE: read-only — do NOT mutate goal.consecutive_no_progress.
+            next_count = goal.consecutive_no_progress + 1
+            if next_count >= goal.escalation_threshold:
                 return EvaluatorVerdict(
                     verdict="escalate",
                     reason=(
-                        f"Escalation threshold reached ({goal.consecutive_no_progress}/"
+                        f"Escalation threshold reached ({next_count}/"
                         f"{goal.escalation_threshold} consecutive no-progress turns). "
                         f"Unresolved blockers: {'; '.join(packet.blockers)}"
                     ),
@@ -405,12 +408,13 @@ class GoalEvaluator:
                 if not packet.acceptance_coverage.get(c, "").strip()
             ]
             if empty_checks:
-                goal.consecutive_no_progress += 1
-                if goal.consecutive_no_progress >= goal.escalation_threshold:
+                # NOTE: read-only — do NOT mutate goal.consecutive_no_progress.
+                next_count = goal.consecutive_no_progress + 1
+                if next_count >= goal.escalation_threshold:
                     return EvaluatorVerdict(
                         verdict="escalate",
                         reason=(
-                            f"Escalation threshold reached ({goal.consecutive_no_progress}/"
+                            f"Escalation threshold reached ({next_count}/"
                             f"{goal.escalation_threshold} consecutive no-progress turns). "
                             "Acceptance checks have empty coverage entries: "
                             + ", ".join(f"'{c}'" for c in empty_checks)
@@ -429,8 +433,7 @@ class GoalEvaluator:
                     confidence=0.8,
                     evaluated_at=now,
                 )
-            # All checks have coverage — reset no-progress counter
-            goal.consecutive_no_progress = 0
+            # All checks have coverage — complete (counter reset is handled by Stop-hook writer)
             return EvaluatorVerdict(
                 verdict="complete",
                 reason="All acceptance checks have coverage entries (presence-based evaluation).",
@@ -462,12 +465,13 @@ class GoalEvaluator:
                 failure_reasons.append(f"[{result.check_name}] {result.reason}")
 
         if failed_checks:
-            goal.consecutive_no_progress += 1
-            if goal.consecutive_no_progress >= goal.escalation_threshold:
+            # NOTE: read-only — do NOT mutate goal.consecutive_no_progress.
+            next_count = goal.consecutive_no_progress + 1
+            if next_count >= goal.escalation_threshold:
                 return EvaluatorVerdict(
                     verdict="escalate",
                     reason=(
-                        f"Escalation threshold reached ({goal.consecutive_no_progress}/"
+                        f"Escalation threshold reached ({next_count}/"
                         f"{goal.escalation_threshold} consecutive no-progress turns). "
                         "Rule evaluation failed: " + "; ".join(failure_reasons)
                     ),
@@ -483,8 +487,7 @@ class GoalEvaluator:
                 evaluated_at=now,
             )
 
-        # All rules passed — reset no-progress counter
-        goal.consecutive_no_progress = 0
+        # All rules passed — complete (counter reset is handled by Stop-hook writer)
         return EvaluatorVerdict(
             verdict="complete",
             reason="All acceptance check rules passed.",

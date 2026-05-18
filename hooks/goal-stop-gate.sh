@@ -111,7 +111,19 @@ def _budget_limit_and_allow(goal, reason, dimension=""):
 # Budget is a hard stop condition and must be checked even when no evidence
 # packet exists yet. Otherwise max_turns=0 / max_minutes=0 goals can block
 # forever before evaluation starts.
-budget = check_budget(goal, project_dir)
+# REQ-004: fail-CLOSED — budget errors with an active goal must block, not allow.
+try:
+    budget = check_budget(goal, project_dir)
+except Exception as exc:
+    block_payload = json.dumps({
+        "decision": "block",
+        "reason": (
+            f"goal-loop evaluator error: check_budget raised for goal "
+            f"'{goal.goal_id}': {exc}. Resolve before stopping."
+        ),
+    })
+    print(f"BLOCK:{block_payload}")
+    sys.exit(0)
 if budget.exhausted:
     _budget_limit_and_allow(
         goal,
@@ -255,6 +267,11 @@ try:
     goal.evaluator_history.append(verdict)
     goal.turns_used = goal.turns_used + 1
     goal.last_guidance = guidance
+    # Stop hook is the sole writer of consecutive_no_progress (evaluate() is read-only).
+    if verdict.verdict in ("incomplete", "escalate"):
+        goal.consecutive_no_progress += 1
+    else:
+        goal.consecutive_no_progress = 0
     store.save(goal)
     store.append_event("evaluate", {
         "goal_id": goal.goal_id,
