@@ -14,6 +14,12 @@ Sonnet 2026-05-10 decision: ARCHIVE. Opus agreement: ARCHIVE confirmed; subsumpt
 
 # Runtime Comparison Benchmark Plan
 
+> **STATUS: DEFER per ADR-132** — Archived in place (not tombstoned) on 2026-05-11
+> by the Opus reconciliation pass. Phase 1 workstation+container baseline may be
+> revisited opportunistically when an external buyer requests comparative
+> benchmarks or a Shape-B federation/cluster trigger fires per ADR-132. See the
+> `<!-- RECONCILIATION STATUS -->` block above for the full rationale.
+
 This plan extends ADR-027 with a competitive benchmark matrix. The goal is not
 to prove Cognitive OS is always faster than vanilla tools. The goal is to
 measure where the operating layer adds enough governance, verification,

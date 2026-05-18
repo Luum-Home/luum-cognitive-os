@@ -153,9 +153,9 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] Trivial fixes can bypass SDD without warning.
-- [ ] Medium+ changes get SDD recommendation.
-- [ ] Routing decisions are logged without blocking work.
+- [x] Trivial fixes can bypass SDD without warning. (verified: grep -c get_phases lib/sdd_pipeline.py)
+- [x] Medium+ changes get SDD recommendation. (verified: grep -c SDDPipeline lib/sdd_pipeline.py)
+- [x] Routing decisions are logged without blocking work. (verified: grep -r llm-dispatch.jsonl scripts/llm_status.py)
 
 ## Phase 7 — ROI dashboard and friction budget
 
