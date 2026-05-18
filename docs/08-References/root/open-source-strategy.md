@@ -9,7 +9,7 @@
 <details>
 <summary><strong>Historical recommendation (superseded)</strong> — expand to read the original Apache-2.0 strategy analysis</summary>
 
-# ADR-OSS-001: Open-Sourcing Cognitive OS
+## ADR-OSS-001: Open-Sourcing Cognitive OS
 
 ## Status
 Proposed
