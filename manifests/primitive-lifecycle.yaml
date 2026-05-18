@@ -1297,7 +1297,7 @@ primitives:
   owner_adr: ADR-222
   lifecycle_state: advisory
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
@@ -1412,7 +1412,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
@@ -5146,7 +5146,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
@@ -7223,7 +7223,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
@@ -7281,7 +7281,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: lab
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: runtime-safety
   risk_class: blocking
