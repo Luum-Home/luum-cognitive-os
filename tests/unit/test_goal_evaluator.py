@@ -649,3 +649,79 @@ def test_no_progress_threshold_escalates() -> None:
     group.test_counter_persists_across_serialization()
     group.test_custom_threshold_configurable()
     group.test_default_threshold_is_five()
+
+
+class TestRuleCommandShellSafety:
+    """S2-2: shell=False + shlex.split eliminates command injection from rule.path."""
+
+    def test_shell_metacharacters_do_not_execute_as_pipeline(self, tmp_path):
+        """A `;` in rule.path must NOT split commands. Pre-fix (shell=True)
+        the second command in `echo safe; rm -f <sentinel>` would have
+        deleted the sentinel. With shell=False shlex treats everything as
+        argv to a single executable (`echo`)."""
+        sentinel = tmp_path / "probe.canary"
+        sentinel.write_text("DO_NOT_DELETE", encoding="utf-8")
+        injection = f"echo safe; rm -f {sentinel}"
+        rules = [
+            EvaluatorRule(
+                check_name="injected",
+                rule_type="test_command_passes",
+                path=injection,
+                workspace_root=tmp_path,
+            )
+        ]
+        goal = _make_goal(acceptance_checks=["injected"])
+        packet = _make_packet({"injected": "tried injection"})
+        ev = GoalEvaluator(rules=rules)
+        ev.evaluate(goal, packet)
+        # Sentinel survives: rm never ran as a separate command.
+        assert sentinel.exists(), "shell=True regression: rm executed via `;` injection"
+        assert sentinel.read_text(encoding="utf-8") == "DO_NOT_DELETE"
+
+    def test_invalid_shell_syntax_fails_safely(self, tmp_path):
+        """Unbalanced quotes in rule.path must NOT crash the evaluator."""
+        rules = [
+            EvaluatorRule(
+                check_name="bad-quote",
+                rule_type="test_command_passes",
+                path="echo 'unclosed",
+                workspace_root=tmp_path,
+            )
+        ]
+        goal = _make_goal(acceptance_checks=["bad-quote"])
+        packet = _make_packet({"bad-quote": "tried"})
+        ev = GoalEvaluator(rules=rules)
+        verdict = ev.evaluate(goal, packet)
+        assert verdict.verdict == "incomplete"
+
+    def test_empty_command_fails_safely(self, tmp_path):
+        rules = [
+            EvaluatorRule(
+                check_name="empty",
+                rule_type="test_command_passes",
+                path="   ",
+                workspace_root=tmp_path,
+            )
+        ]
+        goal = _make_goal(acceptance_checks=["empty"])
+        packet = _make_packet({"empty": "tried"})
+        ev = GoalEvaluator(rules=rules)
+        verdict = ev.evaluate(goal, packet)
+        assert verdict.verdict == "incomplete"
+
+    def test_command_not_found_fails_safely(self, tmp_path):
+        """Non-existent executable raises FileNotFoundError internally; the
+        evaluator must catch it and report incomplete, not crash."""
+        rules = [
+            EvaluatorRule(
+                check_name="missing-exe",
+                rule_type="test_command_passes",
+                path="this-binary-definitely-does-not-exist-9f3a2",
+                workspace_root=tmp_path,
+            )
+        ]
+        goal = _make_goal(acceptance_checks=["missing-exe"])
+        packet = _make_packet({"missing-exe": "tried"})
+        ev = GoalEvaluator(rules=rules)
+        verdict = ev.evaluate(goal, packet)
+        assert verdict.verdict == "incomplete"
