@@ -544,7 +544,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.output:
         out_path = Path(args.output)
     else:
-        out_path = _PROJECT_ROOT / "docs" / "measurements" / "tier-filter-validation-output.json"
+        out_path = _PROJECT_ROOT / "docs" / "06-Daily" / "measurements" / "tier-filter-validation-output.json"
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2), encoding="utf-8")

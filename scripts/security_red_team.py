@@ -213,7 +213,7 @@ def probe_scanner_hook_presence(findings: list[Finding]) -> ProbeResult:
 
 def probe_runtime_flag_registry(findings: list[Finding]) -> ProbeResult:
     manifest = REPO_ROOT / "manifests" / "runtime-env-flags.yaml"
-    docs = REPO_ROOT / "docs" / "runtime-env-flags.md"
+    docs = REPO_ROOT / "docs" / "04-Concepts" / "root" / "runtime-env-flags.md"
     if not manifest.exists() or not docs.exists():
         findings.append(Finding(
             "runtime_flag_registry_missing",

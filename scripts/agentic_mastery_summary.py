@@ -12,9 +12,9 @@ REPORTS = ROOT / ".cognitive-os" / "reports"
 OUTPUT = REPORTS / "agentic-mastery-summary.md"
 
 SECTIONS = [
-    ("Safety", ROOT / "docs" / "security" / "lethal-trifecta-gate.md"),
-    ("ACI", ROOT / "docs" / "architecture" / "agent-computer-interface.md"),
-    ("Trajectory", ROOT / "docs" / "architecture" / "agent-trajectory-schema.md"),
+    ("Safety", ROOT / "docs" / "09-Quality" / "security" / "lethal-trifecta-gate.md"),
+    ("ACI", ROOT / "docs" / "04-Concepts" / "architecture" / "agent-computer-interface.md"),
+    ("Trajectory", ROOT / "docs" / "04-Concepts" / "architecture" / "agent-trajectory-schema.md"),
     ("Skill efficacy", REPORTS / "skill-efficacy-smoke-report.md"),
     ("Runtime benchmark", REPORTS / "runtime-benchmark-leaderboard.md"),
     ("Adversarial generalization", REPORTS / "adversarial-generalization-report.md"),

@@ -36,7 +36,7 @@ PROJECT_ROOT = Path(
                                   str(Path(__file__).resolve().parents[1])))
 )
 TELEMETRY_PATH = PROJECT_ROOT / ".cognitive-os" / "runtime" / "skill-discovery.jsonl"
-BASELINE_PATH = PROJECT_ROOT / "docs" / "measurements" / "lazy-catalog-baseline.json"
+BASELINE_PATH = PROJECT_ROOT / "docs" / "06-Daily" / "measurements" / "lazy-catalog-baseline.json"
 
 
 def load_records(window_hours: float) -> list[dict[str, Any]]:
