@@ -47,7 +47,7 @@ COS should use the host-compatible subset: Stop-hook loop, separate evaluator, C
 
 ### REQ-005 — Separate evaluator
 
-**WHEN** an active goal has new evidence, **THE SYSTEM SHALL** evaluate completion through a separate evaluator path from the worker turn and persist the evaluator verdict and reason.
+**WHEN** an active goal has new evidence, **THE SYSTEM SHALL** evaluate completion through an evaluator path that is independent from the worker turn and persist the evaluator verdict and reason. If the MVP uses deterministic contract evaluation, it must be explicitly scoped as deterministic evaluation and must not be represented as model-based separate evaluation.
 
 ### REQ-006 — Proxy evidence rejection
 
@@ -59,7 +59,7 @@ COS should use the host-compatible subset: Stop-hook loop, separate evaluator, C
 
 ### REQ-008 — Budget limit transition
 
-**WHEN** max turns, wall-clock budget, token budget, or configured cost budget is exhausted before completion, **THE SYSTEM SHALL** transition the goal to `budget_limited`, persist a wind-down reason, and stop continuation without marking the goal complete.
+**WHEN** max turns or wall-clock budget is exhausted before completion, **THE SYSTEM SHALL** transition the goal to `budget_limited`, persist a wind-down reason, and stop continuation without marking the goal complete. Token and cost budgets SHALL NOT be accepted as structured fields until a concrete metrics reader enforces them.
 
 ### REQ-009 — Pause
 
@@ -79,15 +79,31 @@ COS should use the host-compatible subset: Stop-hook loop, separate evaluator, C
 
 ### REQ-013 — Compaction and resume resilience
 
-**WHEN** a session resumes or compacts, **THE SYSTEM SHALL** recover goal state from COS-owned persistence rather than relying only on conversation context.
+**WHEN** a session resumes, crosses a process boundary, or loses mid-conversation context due to truncation/compaction, **THE SYSTEM SHALL** re-project active goal state and evidence history from COS-owned persistence rather than relying on conversation context.
 
 ### REQ-014 — Prompt-injection defense
 
-**WHERE** objective text, command output, file content, or worker evidence is passed to the evaluator, **THE SYSTEM SHALL** wrap or label it as untrusted data and forbid following instructions contained inside that data.
+**WHERE** objective text, command output, file content, or worker evidence is passed to the evaluator, **THE SYSTEM SHALL** escape nested untrusted-data delimiters, wrap or label the payload as untrusted data, and forbid following instructions contained inside that data.
 
 ### REQ-015 — Auditability
 
 **THE SYSTEM SHALL** write an append-only goal event log containing state transitions, evaluator verdicts, budget counters, and evidence hashes or summaries.
+
+### REQ-016 — Concurrent session safety
+
+**WHEN** multiple sessions in the same workspace/thread attempt to create, update, evaluate, pause, resume, clear, or archive a goal concurrently, **THE SYSTEM SHALL** serialize writes with a lock, preserve the previous state, and report a coordination conflict instead of silently overwriting `current.json`.
+
+### REQ-017 — Escalation transition
+
+**WHEN** the evaluator or budget policy determines that progress is blocked, unsafe, or repeatedly non-improving within the configured escalation threshold, **THE SYSTEM SHALL** transition the goal to `escalated`, persist the reason, allow Stop, and show the operator the evidence needed to resume or clear.
+
+### REQ-018 — Harness adapter honesty
+
+**WHERE** auto-continuation is claimed for a harness, **THE SYSTEM SHALL** route Stop-hook enforcement through a harness adapter that declares support level for that harness. Unsupported harnesses must expose state/status but must not claim runtime Stop enforcement.
+
+### REQ-019 — Rate-limiter interaction
+
+**WHEN** a goal continuation is generated, **THE SYSTEM SHALL** use a bounded priority lane or explicit rate-limiter carve-out so continuation guidance is not blocked by normal token buckets, while still respecting hard budget and safety stops.
 
 ## 4. Non-Goals
 
@@ -108,15 +124,19 @@ COS should use the host-compatible subset: Stop-hook loop, separate evaluator, C
 | AC-005 | REQ-005 | Unit test injects a fake evaluator adapter | Worker cannot mark complete without evaluator verdict. |
 | AC-006 | REQ-006 | Behavior test uses proxy-only evidence | Goal remains active and missing acceptance criteria are named. |
 | AC-007 | REQ-007 | Behavior test uses complete evidence | Goal transitions to complete and Stop is allowed. |
-| AC-008 | REQ-008 | Unit test exhausts max turns | Goal transitions to `budget_limited`, not `complete`. |
+| AC-008 | REQ-008 | Unit tests exhaust max turns and max minutes | Goal transitions to `budget_limited`, not `complete`; token/cost fields are rejected unless enforcement is wired. |
 | AC-009 | REQ-009 | CLI test pauses active goal | State becomes `paused`; Stop hook does not block. |
 | AC-010 | REQ-010 | CLI test resumes paused goal | State becomes `active`; Stop hook blocks incomplete goal again. |
 | AC-011 | REQ-011 | CLI test clears active goal | No active goal remains; audit event retained. |
 | AC-012 | REQ-012 | Hook-disabled fixture runs status/preflight | Reports unsupported enforcement without false success. |
-| AC-013 | REQ-013 | Reload state from disk after process boundary | Goal state and counters are preserved. |
-| AC-014 | REQ-014 | Evaluator prompt snapshot test | Objective/evidence are inside untrusted-data delimiters. |
-| AC-015 | REQ-015 | Event-log test checks transitions | Append-only log includes create/evaluate/pause/resume/complete/budget events. |
-| AC-016 | All | `scripts/english_only_content_audit.py --json` | `finding_count == 0`. |
+| AC-013 | REQ-013 | Behavior test clears in-memory state and reloads after simulated process boundary and mid-conversation truncation | Goal state, counters, and evidence history are re-projected from persistence. |
+| AC-014 | REQ-014 | Evaluator prompt snapshot test with nested `</untrusted_evidence>` payload | Objective/evidence delimiters are escaped and the payload remains untrusted data. |
+| AC-015 | REQ-015 | Event-log test checks transitions | Append-only log includes create/evaluate/pause/resume/complete/budget/escalated events. |
+| AC-016 | REQ-016 | Concurrent writer test runs two sessions against one workspace | One writer succeeds, the other receives a coordination conflict; no state is lost. |
+| AC-017 | REQ-017 | Unit/behavior test triggers no-progress escalation threshold | Goal transitions to `escalated`, not `complete`, and Stop is allowed with escalation evidence. |
+| AC-018 | REQ-018 | Harness adapter fixture tests supported and unsupported harnesses | Supported harness claims Stop enforcement; unsupported harness reports status-only. |
+| AC-019 | REQ-019 | Rate-limiter fixture simulates exhausted normal bucket | Bounded goal-continuation guidance still emits unless hard goal budget is exhausted. |
+| AC-020 | All | `scripts/english_only_content_audit.py --json` | `finding_count == 0`. |
 
 ## 6. Verification Commands
 
@@ -145,3 +165,8 @@ Correct. Disabled hook detection is part of the spec. In unsupported mode, the g
 ### OBJ-004 — This can spin forever
 
 No goal may be created without a bounded stop condition: max turns, wall-clock budget, token/cost budget, or explicit escalation threshold.
+
+
+## 8. Apply Gate
+
+`/sdd-apply` MUST NOT start until OD-001 and OD-002 from the proposal are resolved in this spec/design/tasks set. Until then, evaluator strategy and token/cost budget enforcement are intentionally unresolved.

@@ -13,9 +13,9 @@ The immediate driver is the repeated failure mode observed in long cleanup/routi
 - Define a COS-native goal state model with statuses: `active`, `paused`, `budget_limited`, `complete`, and `escalated`.
 - Persist active and historical goal state outside the conversation context.
 - Add a Stop-hook-driven continuation loop that blocks final stop while the active goal remains incomplete.
-- Add a separate evaluator path, defaulting to a small evaluator model, so completion is not judged solely by the worker that performed the task.
-- Require structured goal evidence after each iteration: changed files, commands run, passing checks, remaining findings, blockers, and next action.
-- Add structured budgets: max turns, max wall-clock minutes, and optional token/cost budget hooks where available.
+- Add a separate evaluator path so completion is not judged solely by the worker that performed the task; whether MVP must use a model-backed evaluator or may start with deterministic contract evaluation remains an explicit open decision.
+- Require explicit structured goal evidence after each iteration: changed files, commands run, passing checks, remaining findings, blockers, and next action. Transcript scraping is not an MVP evidence source.
+- Add structured budgets for max turns and max wall-clock minutes. Token/cost budget enforcement remains an explicit open decision until a real metrics reader is wired.
 - Support pause/resume/clear behavior.
 - Provide a CLI/script surface for creating, inspecting, pausing, resuming, clearing, and evaluating goals.
 - Add tests that prove the loop does not complete on proxy evidence alone.
@@ -34,11 +34,11 @@ The immediate driver is the repeated failure mode observed in long cleanup/routi
 
 Use a hybrid design:
 
-- **Loop driver:** Stop hook, because COS can reliably compose with hook infrastructure but cannot modify host runtime internals.
-- **Evaluator:** separate evaluation step inspired by Claude Code's fresh-model evaluator to reduce rationalization bias.
-- **Budget:** structured fields inspired by Codex goals, including explicit `budget_limited` terminal state.
-- **Persistence:** COS-owned durable state, with Engram integration as a later persistence backend and local JSON state as the implementation baseline.
-- **Prompt-injection defense:** wrap user goal text as untrusted objective data and keep evaluator instructions separate from worker-generated evidence.
+- **Loop driver:** a harness adapter invoked by the Stop hook where the harness supports Stop; unsupported harnesses get honest preflight/status only.
+- **Evaluator:** separate evaluation step inspired by Claude Code's fresh-model evaluator to reduce rationalization bias; MVP evaluator strategy is not decided until the self-eval vs separate-eval decision is closed.
+- **Budget:** max-turn and wall-clock budgets with explicit `budget_limited` terminal state. Token/cost budgets are not accepted as inert config.
+- **Persistence:** COS-owned durable state protected by a workspace/thread lock, with Engram integration as a later persistence backend and local JSON state as the implementation baseline.
+- **Prompt-injection defense:** wrap user goal text and evidence as escaped untrusted data and keep evaluator instructions separate from worker-generated evidence.
 
 ## Affected Areas
 
@@ -60,9 +60,11 @@ Use a hybrid design:
 | Stop hook loops indefinitely on vague goals | Medium | High | Require max turns/wall-clock budget and escalation after repeated no-progress evaluations. |
 | Evaluator marks complete from transcript-only proxy evidence | Medium | High | Require structured evidence and explicit acceptance criteria; evaluator rejects incomplete evidence. |
 | Hook disabled or unsupported in a harness | Medium | Medium | CLI reports unsupported mode; goal remains stateful but cannot auto-continue. |
-| Goal state becomes stale after compaction or resume | Medium | Medium | Persist state in COS-owned file; append iteration records; include compaction summary fields. |
-| Prompt injection inside goal text or command output | Medium | High | Treat objective and evidence as untrusted data; evaluator prompt states hierarchy and rejects instruction-following inside evidence. |
-| Cost blow-up from evaluator calls | Medium | Medium | Use small evaluator by default, structured max turns, budget-limited state, and no evaluator call when no tool/evidence changed. |
+| Goal state becomes stale after compaction or resume | Medium | High | Re-project the active goal from COS persistence after process boundaries and mid-conversation context truncation; never rely on transcript memory as authority. |
+| Concurrent sessions overwrite goal state | Medium | High | Use a workspace/thread lock and reject or queue conflicting writes; surface coordination status instead of silently replacing `current.json`. |
+| Prompt injection inside goal text or command output | Medium | High | Escape nested untrusted-data delimiters, treat objective/evidence as untrusted data, and reject instruction-following inside evidence. |
+| Rate limiter blocks required continuation | Medium | Medium | Define a bounded priority-lane carve-out for goal continuation guidance, still subject to hard stop budgets. |
+| Cost blow-up from evaluator calls | Medium | Medium | Enforce max-turn/max-minute budgets and do not add token/cost fields until dispatch metrics are readable. |
 
 ## Rollback Plan
 
@@ -81,7 +83,7 @@ Use a hybrid design:
 ## Success Criteria
 
 - [ ] A user can create a goal with objective, acceptance checks, constraints, and budget.
-- [ ] Goal state survives at least one process/session boundary through COS-owned persistence.
+- [ ] Goal state survives process/session boundaries and mid-conversation context truncation through COS-owned persistence re-projection.
 - [ ] Stop hook blocks final stop when acceptance evidence is incomplete and returns concrete next-step guidance.
 - [ ] Separate evaluator rejects proxy-only evidence.
 - [ ] `pause`, `resume`, and `clear` commands transition state deterministically.
@@ -94,3 +96,9 @@ Use a hybrid design:
 - Classification: **large / operating-system primitive**.
 - Estimated SDD work: 1-2 days for spec/design/tasks; 2-4 days for MVP implementation depending on hook registration complexity.
 - Requires adversarial verify before archive.
+
+
+## Open Decisions Before Apply
+
+- **OD-001 — Evaluator strategy**: decide whether MVP requires a model-backed separate evaluator or may start with deterministic contract evaluation plus a model-adapter seam. Do not describe deterministic-only evaluation as a separate evaluator until this is resolved.
+- **OD-002 — Token/cost budget**: decide whether to implement real token/cost enforcement by reading dispatch metrics or remove token/cost fields from the MVP and keep such limits as natural-language constraints only.
