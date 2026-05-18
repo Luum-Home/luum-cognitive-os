@@ -36,7 +36,7 @@ from typing import Any
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-ADRS = ROOT / "docs" / "adrs"
+ADRS = ROOT / "docs" / "02-Decisions" / "adrs"
 VALID_TARGETS = {"implemented", "partial", "partial-blocked", "blocked", "deferred", "planned", "not-applicable", "resolved"}
 
 

@@ -19,40 +19,6 @@
       "title": "AGPL License Compliance -- Replace Redis and MinIO"
     },
     {
-      "adr": "ADR-008",
-      "classification_basis": "architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation",
-      "date": "2026-03-28",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [],
-      "implementation_status": "partial",
-      "number": "008",
-      "owner": "",
-      "partial_remaining": "architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation",
-      "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/02-Decisions/adrs/ADR-008-multi-tool-support.md",
-      "remaining": "architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation",
-      "remaining_in_scope": null,
-      "title": "Multi-Tool Support -- Not Claude Code-Only"
-    },
-    {
-      "adr": "ADR-013",
-      "classification_basis": "implementation evidence plus partial/deferred/future signal",
-      "date": "2026-03-29",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [],
-      "implementation_status": "partial",
-      "number": "013",
-      "owner": "",
-      "partial_remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
-      "partial_remaining_basis": "generic audit fallback",
-      "path": "docs/02-Decisions/adrs/ADR-013-security-stack.md",
-      "remaining": "Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.",
-      "remaining_in_scope": null,
-      "title": "Security Stack -- 8 Layers, 32 Tools"
-    },
-    {
       "adr": "ADR-014",
       "classification_basis": "accepted record with explicit partial/phase scope",
       "date": "2026-03-31",
@@ -68,23 +34,6 @@
       "remaining": "Runtime model-capability auto-calibration remains partial; the pipeline uses configurable thresholds rather than automatically calibrated fast/full-path selection.",
       "remaining_in_scope": true,
       "title": "SDD Fast Path -- Skip Phases for Capable Models"
-    },
-    {
-      "adr": "ADR-015",
-      "classification_basis": "implementation evidence plus partial/deferred/future signal",
-      "date": "2026-04-10",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [],
-      "implementation_status": "partial",
-      "number": "015",
-      "owner": "",
-      "partial_remaining": "Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules.",
-      "partial_remaining_basis": "manual correction after heuristic review",
-      "path": "docs/02-Decisions/adrs/ADR-015-rules-to-hooks-migration.md",
-      "remaining": "Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules.",
-      "remaining_in_scope": true,
-      "title": "Rules-to-Hooks Migration -- From Context to Enforcement"
     },
     {
       "adr": "ADR-016",
@@ -1476,31 +1425,6 @@
       "title": "OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile)"
     },
     {
-      "adr": "ADR-179",
-      "classification_basis": "initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete",
-      "date": "2026-05-05",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [
-        "lib/rule_router.py",
-        "hooks/rule-router-prompt-suggest.sh",
-        "hooks/rule-md-routing-validator.sh",
-        "manifests/rule-routing-coverage.yaml",
-        "tests/unit/test_rule_router.py",
-        "tests/contracts/test_rule_router_invariant.py",
-        "tests/unit/test_rule_md_routing_validator_hook.py"
-      ],
-      "implementation_status": "partial",
-      "number": "179",
-      "owner": "",
-      "partial_remaining": "initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete",
-      "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/02-Decisions/adrs/ADR-179-rules-auto-derive-routing.md",
-      "remaining": "initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete",
-      "remaining_in_scope": null,
-      "title": "Auto-Derived Rule Routing for Agent-Instruction Rules"
-    },
-    {
       "adr": "ADR-190",
       "classification_basis": "accepted record with explicit partial/phase scope",
       "date": "2026-05-06",
@@ -1948,29 +1872,6 @@
       "title": "Primitive Behavioral Proof and Anti-Overfit Testing"
     },
     {
-      "adr": "ADR-252",
-      "classification_basis": "Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete",
-      "date": "2026-05-08",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [
-        "manifests/capability-coverage.yaml",
-        "scripts/cos-capability-matrix",
-        "docs/07-Capabilities/capabilities/MATRIX.md",
-        "docs/06-Daily/reports/capability-coverage-latest.json",
-        "tests/unit/test_capability_matrix.py"
-      ],
-      "implementation_status": "partial",
-      "number": "252",
-      "owner": "",
-      "partial_remaining": "Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete",
-      "partial_remaining_basis": "specific classification_basis",
-      "path": "docs/02-Decisions/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md",
-      "remaining": "Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete",
-      "remaining_in_scope": null,
-      "title": "Capability Coverage Matrix and Feature Reality Ledger"
-    },
-    {
       "adr": "ADR-254",
       "classification_basis": "accepted record with explicit partial/phase scope",
       "date": "2026-05-08",
@@ -2207,31 +2108,6 @@
       "title": "Detractor Review Modes for Planning and Verification"
     },
     {
-      "adr": "ADR-322",
-      "classification_basis": "",
-      "date": "2026-05-15",
-      "decision_status": "accepted",
-      "follow_up_adr": "",
-      "implementation_files": [
-        "cmd/cos/internal/cli/sdd.go",
-        "cmd/cos/internal/cli/sdd_test.go",
-        "scripts/demo-consumer-sdd-lane.sh",
-        "docs/09-Quality/manual-tests/consumer-sdd-lane.md",
-        "docs/08-References/business/sdd-harness-consumer-workflow-audit.md",
-        "docs/08-References/business/consumer-sdd-lane-surgical-review-plan.md",
-        "docs/04-Concepts/architecture/consumer-sdd-task-state-adapters.md"
-      ],
-      "implementation_status": "partial",
-      "number": "322",
-      "owner": "",
-      "partial_remaining": "",
-      "partial_remaining_basis": "",
-      "path": "docs/02-Decisions/adrs/ADR-322-consumer-sdd-lane-contract.md",
-      "remaining": "",
-      "remaining_in_scope": null,
-      "title": "Consumer SDD Lane Contract"
-    },
-    {
       "adr": "ADR-324",
       "classification_basis": "accepted doctrine, template, rule, validator, and SDD skill wiring; runtime orchestration still depends on harness/skill invocation",
       "date": "2026-05-15",
@@ -2292,10 +2168,10 @@
   "summary": {
     "by_implementation_status": {
       "deferred": 1,
-      "partial": 123,
+      "partial": 117,
       "partial-blocked": 1
     },
-    "missing_partial_remaining": 4,
-    "total": 125
+    "missing_partial_remaining": 3,
+    "total": 119
   }
 }

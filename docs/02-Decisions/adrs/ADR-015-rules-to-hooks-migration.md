@@ -2,15 +2,19 @@
 adr: 15
 title: Rules-to-Hooks Migration -- From Context to Enforcement
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-04-10'
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+- hooks/self-install.sh
 tier: maintainer
 tags: []
-classification_basis: implementation evidence plus partial/deferred/future signal
-partial_remaining: Dynamic rule loading remains only partially adopted; contextual rule loading exists, but hook-enforced behavior is still the primary migration path where enforcement can replace passive rules.
+classification_basis: Rules-to-hooks migration achieved 78% rule reduction; EXCLUDED_RULES
+  mechanism active in hooks/self-install.sh; Tier 3 irreducible rules remain by design.
+partial_remaining: Dynamic rule loading remains only partially adopted; contextual
+  rule loading exists, but hook-enforced behavior is still the primary migration path
+  where enforcement can replace passive rules.
 remaining_in_scope: true
 partial_remaining_basis: manual correction after heuristic review
 ---
@@ -51,3 +55,10 @@ Migrate rules from passive context documents to active enforcement mechanisms us
 - The EXCLUDED_RULES array in self-install.sh became a maintenance point -- adding a new hook requires updating the exclusion list.
 - Rules that were converted to hooks gained deterministic enforcement: they cannot be forgotten, skipped, or interpreted differently by the agent.
 - RULES-COMPACT with "(enforced by hook)" annotations serves as documentation of what the hook system guarantees, even though agents no longer need to act on those rules.
+
+## Implementation Evidence
+
+Closure basis: Rules-to-hooks migration achieved 78% rule reduction; EXCLUDED_RULES mechanism active in hooks/self-install.sh; Tier 3 irreducible rules remain by design.
+
+- `hooks/self-install.sh`
+

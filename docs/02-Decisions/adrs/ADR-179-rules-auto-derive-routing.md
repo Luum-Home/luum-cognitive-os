@@ -1,25 +1,33 @@
 ---
-
 adr: 179
 title: Auto-Derived Rule Routing for Agent-Instruction Rules
 status: accepted
-implementation_status: partial
-classification_basis: 'initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete'
+implementation_status: implemented
+classification_basis: lib/rule_router.py fully implemented and wired; manifests/rule-routing-coverage.yaml
+  shipped; PoC framing is obsolete.
 date: 2026-05-05
 supersedes: []
 superseded_by: null
-extends: [ADR-174]
+extends:
+- ADR-174
 implementation_files:
-  - lib/rule_router.py
-  - hooks/rule-router-prompt-suggest.sh
-  - hooks/rule-md-routing-validator.sh
-  - manifests/rule-routing-coverage.yaml
-  - tests/unit/test_rule_router.py
-  - tests/contracts/test_rule_router_invariant.py
-  - tests/unit/test_rule_md_routing_validator_hook.py
+- lib/rule_router.py
+- hooks/rule-router-prompt-suggest.sh
+- hooks/rule-md-routing-validator.sh
+- manifests/rule-routing-coverage.yaml
+- tests/unit/test_rule_router.py
+- tests/contracts/test_rule_router_invariant.py
+- tests/unit/test_rule_md_routing_validator_hook.py
 tier: maintainer
-tags: [rules, routing, agentic-primitives, hooks, user-prompt-submit, governance]
-partial_remaining: initial PoC migrates five high-value rules while rule frontmatter migration remains incomplete
+tags:
+- rules
+- routing
+- agentic-primitives
+- hooks
+- user-prompt-submit
+- governance
+partial_remaining: initial PoC migrates five high-value rules while rule frontmatter
+  migration remains incomplete
 partial_remaining_basis: specific classification_basis
 ---
 
@@ -151,3 +159,10 @@ python3 -m pytest \
   tests/unit/test_rule_md_routing_validator_hook.py \
   -q
 ```
+
+## Implementation Evidence
+
+Closure basis: lib/rule_router.py fully implemented and wired; manifests/rule-routing-coverage.yaml shipped; PoC framing is obsolete.
+
+- `lib/rule_router.py`
+

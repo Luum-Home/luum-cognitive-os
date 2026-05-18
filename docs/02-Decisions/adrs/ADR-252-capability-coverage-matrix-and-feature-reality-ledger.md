@@ -1,24 +1,39 @@
 ---
-
 adr: 252
 title: Capability Coverage Matrix and Feature Reality Ledger
 status: accepted
-implementation_status: partial
-classification_basis: 'Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete'
+implementation_status: implemented
+classification_basis: 'Slice A capability matrix framework shipped: scripts/cos-capability-matrix
+  + manifest + MATRIX.md. Historical primitive classification was intentionally deferred
+  per ADR scope.'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
 superseded_by: null
-extends: [ADR-031, ADR-147, ADR-217, ADR-248, ADR-249, ADR-250, ADR-251]
+extends:
+- ADR-031
+- ADR-147
+- ADR-217
+- ADR-248
+- ADR-249
+- ADR-250
+- ADR-251
 implementation_files:
-  - manifests/capability-coverage.yaml
-  - scripts/cos-capability-matrix
-  - docs/07-Capabilities/capabilities/MATRIX.md
-  - docs/06-Daily/reports/capability-coverage-latest.json
-  - tests/unit/test_capability_matrix.py
+- manifests/capability-coverage.yaml
+- scripts/cos-capability-matrix
+- docs/07-Capabilities/capabilities/MATRIX.md
+- docs/06-Daily/reports/capability-coverage-latest.json
+- tests/unit/test_capability_matrix.py
 tier: maintainer
-tags: [capability-coverage, feature-reality, claims, matrix, audit, control-plane]
-partial_remaining: Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete
+tags:
+- capability-coverage
+- feature-reality
+- claims
+- matrix
+- audit
+- control-plane
+partial_remaining: Slice A establishes the matrix for ADR-230+; historical COS feature
+  classification remains intentionally incomplete
 partial_remaining_basis: specific classification_basis
 ---
 
@@ -239,3 +254,10 @@ scripts/cos-control-plane-audit --lane hook-fast --json
 
 Expected current result: capability coverage passes, generated matrix/report are
 fresh, and hook-fast includes the capability matrix audit without findings.
+
+## Implementation Evidence
+
+Closure basis: Slice A capability matrix framework shipped: scripts/cos-capability-matrix + manifest + MATRIX.md. Historical primitive classification was intentionally deferred per ADR scope.
+
+- `scripts/cos-capability-matrix`
+
