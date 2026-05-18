@@ -35,47 +35,57 @@ def _iter_test_files(project_dir: Path):
         yield p
 
 
-def _is_covered_by_tests(name: str, project_dir: Path) -> bool:
-    """Return True if *name* appears referenced in a chaos/behavior test file.
-
-    Uses a word-boundary match on the stem to reduce false positives from
-    short stems that appear as substrings in other identifiers.
-    Only chaos and behavior test files count as CI coverage (not unit tests
-    that happen to import generic helpers).
-    """
-    return _is_covered_by_test_corpus(name, _load_test_corpus(project_dir))
-
-
-def _load_test_corpus(project_dir: Path) -> str:
-    """Load behavior/chaos test files once for batch classification."""
+def _load_test_tokens(project_dir: Path) -> set[str]:
+    """Load behavior/chaos test files once as normalized identifier tokens."""
     tests_dir = project_dir / "tests"
     if not tests_dir.is_dir():
-        return ""
+        return set()
 
     coverage_dirs = [
         tests_dir / "chaos",
         tests_dir / "behavior",
     ]
-    chunks: list[str] = []
+    tokens: set[str] = set()
     for cdir in coverage_dirs:
         if not cdir.is_dir():
             continue
         for test_file in cdir.rglob("*.py"):
             try:
-                chunks.append(test_file.read_text(errors="replace"))
+                text = test_file.read_text(errors="replace")
             except OSError:
                 continue
-    return "\n".join(chunks)
+            tokens.update(_coverage_keys(test_file.stem))
+            tokens.update(_coverage_keys(text))
+    return tokens
 
 
-def _is_covered_by_test_corpus(name: str, corpus: str) -> bool:
-    """Return True if *name* appears in the preloaded behavior/chaos corpus."""
+def _coverage_keys(text: str) -> set[str]:
+    """Return normalized identifier-like keys from text."""
+    parts = [part for part in re.split(r"[^a-zA-Z0-9]+", text.lower()) if part]
+    keys = {part for part in parts if len(part) >= 5}
+    for left, right in zip(parts, parts[1:]):
+        joined = left + right
+        if len(joined) >= 5:
+            keys.add(joined)
+    return keys
+
+
+def _primitive_keys(name: str) -> set[str]:
+    stem = Path(name).stem.lower()
+    return {stem, stem.replace("-", "_"), stem.replace("_", "-"), stem.replace("-", ""), stem.replace("_", "")}
+
+
+def _is_covered_by_test_tokens(name: str, tokens: set[str]) -> bool:
+    """Return True if *name* appears in preloaded behavior/chaos tokens."""
     stem = Path(name).stem
     if len(stem) < 5:
         return False
-    bare = re.escape(stem).replace(r"\-", "[-_]").replace("_", "[-_]")
-    pattern = re.compile(r"(?<![a-zA-Z0-9_])" + bare + r"(?![a-zA-Z0-9_])", re.IGNORECASE)
-    return bool(pattern.search(corpus))
+    return bool(_primitive_keys(stem) & tokens)
+
+
+def _is_covered_by_tests(name: str, project_dir: Path) -> bool:
+    """Return True if *name* appears referenced in a chaos/behavior test file."""
+    return _is_covered_by_test_tokens(name, _load_test_tokens(project_dir))
 
 
 def _load_invoked_names(project_dir: Path) -> set[str]:
@@ -297,14 +307,14 @@ def compute_tiers(project_dir: Optional[Path] = None) -> dict[str, int]:
     primitives = scan_primitives(project_dir)
 
     # Pre-load shared data for efficiency
-    test_corpus = _load_test_corpus(project_dir)
+    test_tokens = _load_test_tokens(project_dir)
     invoked = _load_invoked_names(project_dir)
     declared = _load_declared_names(project_dir)
 
     result: dict[str, int] = {}
     for name in primitives:
         stem = Path(name).stem
-        if _is_covered_by_test_corpus(stem, test_corpus):
+        if _is_covered_by_test_tokens(stem, test_tokens):
             result[name] = 0
         elif stem in invoked or name in invoked:
             result[name] = 1
