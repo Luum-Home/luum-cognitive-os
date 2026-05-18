@@ -232,6 +232,7 @@ core_surfaces:
   - detached-agent-event
 core_file_allowlist:
 - lib/agent_bus.py
+- lib/agent_input_validator.py  # ADR-038 Wave 1 INPUT SCHEMA validator (commit 817d1133)
 - lib/agent_bus_metrics.py
 - lib/agent_spawn_benchmark.py  # ADR-303 observability tool; reads hook-timing.jsonl
 - lib/agent_context_injector.py
