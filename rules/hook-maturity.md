@@ -78,3 +78,7 @@ contract; the audit test verifies both agree.
 - `manifests/hook-registration-classification.yaml` — unregistered hook classification
 - ADR-124 — distribution tiers
 - Operational Stability Phase 2 acceptance verified 2026-05-18
+
+## Contextual Trigger
+
+Load this rule when creating, registering, promoting, or reviewing hook maturity metadata; editing `manifests/hook-quality.yaml`; changing hook block/warn/observe behavior; or adding false-positive coverage for hook gates.
