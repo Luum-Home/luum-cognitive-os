@@ -14155,7 +14155,7 @@ primitives:
 - id: scripts/cos-config-audit.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -14253,7 +14253,7 @@ primitives:
 - id: scripts/cos-core-skills-check.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -14504,7 +14504,7 @@ primitives:
 - id: scripts/cos-doctor-memory-lifecycle.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -14592,7 +14592,7 @@ primitives:
 - id: scripts/cos-doctor-tools.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -15597,7 +15597,7 @@ primitives:
 - id: scripts/cos-merge-queue-worker.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -17179,7 +17179,7 @@ primitives:
 - id: scripts/cos-validation-break.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -17236,7 +17236,7 @@ primitives:
 - id: scripts/cos-validation-status.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -17291,7 +17291,7 @@ primitives:
 - id: scripts/cos-weekly-config-audit.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -17542,7 +17542,7 @@ primitives:
 - id: scripts/cos_boring_reliability.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -18164,7 +18164,7 @@ primitives:
 - id: scripts/cos_primitive_harvester.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -18218,7 +18218,7 @@ primitives:
 - id: scripts/cos_recovery_drill.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -18650,7 +18650,7 @@ primitives:
 - id: scripts/create-release.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -18763,7 +18763,7 @@ primitives:
 - id: scripts/demo-first-run-onboarding.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -18791,7 +18791,7 @@ primitives:
 - id: scripts/demo-portability-proof.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -19205,7 +19205,7 @@ primitives:
 - id: scripts/generate_compact_catalog.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -19286,7 +19286,7 @@ primitives:
 - id: scripts/hook-stream-statusline.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -21183,7 +21183,7 @@ primitives:
 - id: scripts/smoke-multi-provider-fallback.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -21210,7 +21210,7 @@ primitives:
 - id: scripts/smoke-qwen-fallback.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -21610,7 +21610,7 @@ primitives:
 - id: scripts/uninstall.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
@@ -21641,7 +21641,7 @@ primitives:
 - id: scripts/upgrade.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: advisory
   maturity: observe
   distribution: maintainer
   governance_class: delivery-structure
