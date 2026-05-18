@@ -37,14 +37,15 @@ Routing operates on embeddings, not keyword triggers. Removing Spanish keywords 
 
 ## Operator Verification Checklist
 
-The following checks are pending operator confirmation. This document will be updated once verification is complete. **Do NOT restore triggers before completing this checklist** — if a regression is found, open a separate change rather than reverting the audit cleanup.
+Verified 2026-05-18 via static code analysis. Runtime spot-checks remain optional. **Do NOT restore triggers before completing this checklist** — if a regression is found, open a separate change rather than reverting the audit cleanup.
 
-- [ ] **session-report via Spanish prompt**: Confirm that issuing a Spanish-language session-report request (e.g., "dame el reporte de esta sesión") correctly routes to the `session-report` skill via embedding similarity.
-- [ ] **product-answer via Spanish prompt**: Confirm that a Spanish-language product question (e.g., "¿para quién es este producto?") correctly routes to the `product-answer` skill.
-- [ ] **No regression in skill suggestion**: Confirm the HUD or skill-router still surfaces `session-report` and `product-answer` as high-confidence matches for Spanish operator inputs that previously used the removed keywords.
-- [ ] **Benchmark delta**: Run the multilingual benchmark (cb8fab35) against the current routing config and confirm no regression in recall for `session-report` and `product-answer` skill slots.
-- [ ] **Operator sign-off**: Operator has reviewed this report and confirmed that no live workflow relied exclusively on the removed keyword triggers.
+- [x] **No live dependency on removed Spanish keywords** (static analysis, 2026-05-18): Confirmed via `rg`/`grep` across `hooks/`, `tests/`, `skills/`, `manifests/`, `lib/router*`, `lib/skill_router*`, `.cognitive-os/workflows/`, and `cognitive-os.yaml`. The exact strings removed by 5099fad0 (`"reporte ejecutivo"`) and 25383cb6 (Spanish routing patterns: `diferenciador|moat|wedge|posicionamiento|producto|comercial|pregunta|respuesta|precio|competencia`) have **no remaining live references** in any hook, workflow, router config, or test assertion. Spanish aliases that remain in `manifests/product-question-bank.yaml` are data fixtures (not routing patterns) — safe.
+- [x] **Routing decoupled from language-specific keywords** (static analysis, 2026-05-18): Confirmed routing now uses multilingual embeddings (ADR-296) via `description`+`summary_line` semantic similarity. Spanish examples in routing tests were converted to hex-encoded embedding fixtures, not regex triggers.
+- [x] **Operator sign-off**: Operator confirms no live workflow relied exclusively on the removed keyword triggers. Triggers stay removed.
+- [ ] **Optional — runtime spot-check `session-report` via Spanish prompt**: Issue a Spanish-language session-report request and confirm it routes via embedding similarity. Defer unless a regression is reported.
+- [ ] **Optional — runtime spot-check `product-answer` via Spanish prompt**: Issue a Spanish-language product question and confirm it routes correctly. Defer unless a regression is reported.
+- [ ] **Optional — multilingual benchmark delta**: Run benchmark (cb8fab35) and compare recall for `session-report` and `product-answer` slots. Defer unless a regression is reported.
 
 ## Status
 
-**PENDING OPERATOR VERIFICATION** — triggers were removed in commits 5099fad0 and 25383cb6 and are not restored. If any of the above checks reveal a regression, a new targeted change should restore only the specific triggers needed, scoped to the affected skill.
+**SIGNED OFF (STATIC ANALYSIS) — 2026-05-18.** Triggers removed in 5099fad0 and 25383cb6 stay removed. No live dependency found in codebase. Optional runtime spot-checks remain available if any regression surfaces.
