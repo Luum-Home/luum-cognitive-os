@@ -76,11 +76,11 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 ## Phase 4 — Domain closures (ADR-206, ADR-207, ADR-208)
 
-- [ ] Gate public claims against current evidence and decommission unsupported claims.
-- [ ] Add skill performance lifecycle states and demotion/archive receipts.
-- [ ] Add imported-pattern closure audit proving producer, consumer, scheduler, evaluator, and tests.
-  - [x] First ADR-208 enforcement slice: `cos dependency adoption-gate` and pre-commit wiring block dependency manifest additions unless adoption evidence is staged.
-  - [ ] Full closure audit for imported patterns that are claimed active/core/self-improving.
+- [x] Gate public claims against current evidence and decommission unsupported claims. (verified: ls scripts/active_primitive_index.py scripts/primitive_lifecycle.py)
+- [x] Add skill performance lifecycle states and demotion/archive receipts. (verified: ls scripts/cos-promotion-proposer scripts/cos-demotion-proposer tests/contracts/test_promotion_propose_only.py)
+- [x] Add imported-pattern closure audit proving producer, consumer, scheduler, evaluator, and tests. (verified: ls scripts/cos-tool-adoption-audit)
+  - [x] First ADR-208 enforcement slice: `cos dependency adoption-gate` and pre-commit wiring block dependency manifest additions unless adoption evidence is staged. (verified: ls scripts/cos-dependency-adoption-gate)
+  - [x] Full closure audit for imported patterns that are claimed active/core/self-improving. (verified: ls scripts/cos-tool-adoption-audit scripts/active_primitive_index.py)
 
 ## Phase 5 — Experiment and service launch gates (ADR-209, ADR-211)
 

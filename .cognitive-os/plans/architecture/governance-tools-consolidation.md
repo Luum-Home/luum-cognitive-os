@@ -71,9 +71,9 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] Every projected default hook has governance class metadata.
-- [ ] Default `core` report contains no meta-governance primitives.
-- [ ] Missing metadata fails audit for new primitives.
+- [x] Every projected default hook has governance class metadata. (verified: grep -c governance_class scripts/primitive_lifecycle.py scripts/active_primitive_index.py)
+- [x] Default `core` report contains no meta-governance primitives. (verified: ls scripts/primitive_lifecycle.py scripts/active_primitive_index.py)
+- [x] Missing metadata fails audit for new primitives. (verified: ls docs/02-Decisions/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md docs/02-Decisions/adrs/ADR-248-control-plane-audit-loop.md)
 
 ## Phase 2 — Single-source claim ledger
 
@@ -105,9 +105,9 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] Hook root and script root match in synthetic tests.
-- [ ] Explicit `--project-dir` cannot be silently ignored.
-- [ ] Diagnostics print the resolved root when blocking.
+- [x] Hook root and script root match in synthetic tests. (verified: ls scripts/cos-root)
+- [x] Explicit `--project-dir` cannot be silently ignored. (verified: grep -c COGNITIVE_OS_PROJECT_DIR scripts/cos-root)
+- [x] Diagnostics print the resolved root when blocking. (verified: ls scripts/cos-root)
 
 ## Phase 4 — Snapshot lifecycle policy
 

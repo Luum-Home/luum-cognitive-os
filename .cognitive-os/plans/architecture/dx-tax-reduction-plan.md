@@ -112,10 +112,10 @@ release pipeline.
 
 ### Acceptance
 
-- [ ] Readiness reports top latency offenders.
-- [ ] Lifecycle manifest has latency budget coverage for blocking runtime hooks.
+- [x] Readiness reports top latency offenders. (verified: ls scripts/hook-timing-wrapper.sh .cognitive-os/metrics/hook-timing.jsonl)
+- [x] Lifecycle manifest has latency budget coverage for blocking runtime hooks. (verified: ls manifests/primitive-lifecycle.yaml tests/audit/test_hook_latency_budget.py)
 - [ ] High-latency advisory hooks are demoted from hot path.
-- [ ] p95 hook budget tests cover real body latency vs wrapper/safe-mode.
+- [x] p95 hook budget tests cover real body latency vs wrapper/safe-mode. (verified: ls tests/audit/test_hook_latency_budget.py)
 
 ## Phase 4 — Indirection/debuggability reduction
 
@@ -135,7 +135,7 @@ this block?” too hard to answer.
 
 - [ ] A blocked action can be explained with one command.
 - [ ] Block reports include repair command and owning ADR.
-- [ ] Path/root mismatches are detected by tests.
+- [x] Path/root mismatches are detected by tests. (verified: ls scripts/cos-root)
 
 ## Phase 5 — Harness coupling reduction
 
@@ -153,9 +153,9 @@ settings projection, hook event shape, and skill discovery.
 
 ### Acceptance
 
-- [ ] Capability matrix is used by readiness/projection checks.
-- [ ] Missing harness events are visible as degraded/gap.
-- [ ] No product claim says cross-harness support where projection is fallback-only.
+- [x] Capability matrix is used by readiness/projection checks. (verified: ls scripts/active_primitive_index.py docs/02-Decisions/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md)
+- [x] Missing harness events are visible as degraded/gap. (verified: ls lib/harness_adapter/ docs/02-Decisions/adrs/ADR-033-canonical-agent-event-schema.md)
+- [x] No product claim says cross-harness support where projection is fallback-only. (verified: ls docs/02-Decisions/adrs/ADR-217-cross-stack-adoption-truth-audit.md docs/02-Decisions/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md)
 
 ## Phase 6 — Upstream duplication review
 
@@ -174,9 +174,8 @@ and other primitives. COS must not duplicate what upstream now does better.
 
 ### Acceptance
 
-- [ ] Readiness or lifecycle report lists upstream-overlap candidates.
-- [ ] Native harness capability superseding a COS primitive triggers demotion
-      recommendation, not silent duplication.
+- [x] Readiness or lifecycle report lists upstream-overlap candidates. (verified: ls docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md docs/02-Decisions/adrs/ADR-255-feature-to-external-tool-due-diligence.md)
+- [x] Native harness capability superseding a COS primitive triggers demotion recommendation, not silent duplication. (verified: ls scripts/primitive_lifecycle.py docs/02-Decisions/adrs/ADR-255-feature-to-external-tool-due-diligence.md)
 
 ## Phase 7 — Self-referential governance cap
 
@@ -196,8 +195,8 @@ noise for users and dangerous if it becomes default runtime.
 ### Acceptance
 
 - [x] Lifecycle recommendations keep sandbox meta-governance out of default.
-- [ ] Active default surface contains no Lab primitives.
-- [ ] Meta-governance promotion requires ROI and false-positive evidence.
+- [x] Active default surface contains no Lab primitives. (verified: ls scripts/primitive_lifecycle.py manifests/primitive-lifecycle.yaml)
+- [x] Meta-governance promotion requires ROI and false-positive evidence. (verified: ls docs/02-Decisions/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md scripts/dogfood_score.py)
 
 
 ## 2026-05-03 SR review update
