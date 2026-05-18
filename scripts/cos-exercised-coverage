@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""cos-exercised-coverage — ADR-041 exercised-coverage scanner.
+
+Scans all agentic primitives (hooks, scripts, manifests) and classifies them
+into 4 tiers based on observed evidence. Emits JSON to stdout.
+
+Tiers:
+  TIER 0 (CI tests)       — covered by behavioral/unit tests
+  TIER 1 (manual exercise) — invoked in a real session
+  TIER 2 (declared only)  — in manifests but not exercised
+  TIER 3 (aspirational)   — no tests, no invocation, no contract
+
+Usage:
+  scripts/cos-exercised-coverage [--project-dir PATH] [--output PATH] [--summary]
+
+Exit codes:
+  0  — success
+  1  — no primitives found or error
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+
+def _find_project_dir() -> Path:
+    cwd = Path.cwd()
+    candidate = cwd
+    while candidate != candidate.parent:
+        if (candidate / ".git").exists():
+            return candidate
+        candidate = candidate.parent
+    return cwd
+
+
+def _load_lib(project_dir: Path):
+    """Import lib/exercised_coverage from project_dir."""
+    import importlib.util
+
+    lib_path = project_dir / "lib" / "exercised_coverage.py"
+    if not lib_path.is_file():
+        print(
+            f"ERROR: lib/exercised_coverage.py not found at {lib_path}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    spec = importlib.util.spec_from_file_location("exercised_coverage", lib_path)
+    mod = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
+    spec.loader.exec_module(mod)  # type: ignore[union-attr]
+    return mod
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="ADR-041 exercised-coverage scanner — classify primitives into tiers 0-3."
+    )
+    parser.add_argument(
+        "--project-dir",
+        default=None,
+        help="Project root directory (default: git root or cwd).",
+    )
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Write JSON result to this file in addition to stdout.",
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print human-readable tier summary to stderr.",
+    )
+    args = parser.parse_args()
+
+    project_dir = (
+        Path(args.project_dir).resolve() if args.project_dir else _find_project_dir()
+    )
+
+    mod = _load_lib(project_dir)
+
+    tiers = mod.compute_tiers(project_dir)
+    if not tiers:
+        print("No primitives found.", file=sys.stderr)
+        sys.exit(1)
+
+    dist = mod.distribution(tiers)
+
+    payload = {
+        "schema_version": "exercised-coverage/v1",
+        "project_dir": str(project_dir),
+        "total": len(tiers),
+        "distribution": {f"tier_{k}": v for k, v in sorted(dist.items())},
+        "primitives": tiers,
+    }
+
+    output_json = json.dumps(payload, indent=2, sort_keys=False)
+    print(output_json)
+
+    if args.output:
+        out_path = Path(args.output)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(output_json + "\n")
+        print(f"Wrote {len(tiers)} primitives to {out_path}", file=sys.stderr)
+
+    if args.summary:
+        tier_labels = {
+            0: "CI tests",
+            1: "Manual exercise",
+            2: "Declared only",
+            3: "Aspirational/dead",
+        }
+        print("\nExercised Coverage Summary", file=sys.stderr)
+        print(f"  Project: {project_dir}", file=sys.stderr)
+        print(f"  Total primitives: {len(tiers)}", file=sys.stderr)
+        print("", file=sys.stderr)
+        for tier in range(4):
+            count = dist.get(tier, 0)
+            pct = (count / len(tiers) * 100) if tiers else 0.0
+            label = tier_labels[tier]
+            print(
+                f"  TIER {tier} ({label}): {count:4d}  ({pct:5.1f}%)",
+                file=sys.stderr,
+            )
+
+        covered = dist.get(0, 0) + dist.get(1, 0)
+        ratio_dormant = (len(tiers) - covered) / len(tiers) * 100 if tiers else 0.0
+        print("", file=sys.stderr)
+        print(
+            f"  Dormant+Aspirational ratio: {ratio_dormant:.1f}%"
+            f"  (target: <40%)",
+            file=sys.stderr,
+        )
+
+
+if __name__ == "__main__":
+    main()
