@@ -192,6 +192,10 @@ class GoalState:
     (log rotation), the cursor is reset to 0 and the file is re-read from the
     start.
     """
+    dispatch_tokens_used: int = 0
+    """Cumulative token count already charged to this goal from dispatch metrics."""
+    dispatch_cost_used: float = 0.0
+    """Cumulative USD cost already charged to this goal from dispatch metrics."""
 
     # ------------------------------------------------------------------
     # Factory
@@ -263,6 +267,8 @@ class GoalState:
             "consecutive_no_progress": self.consecutive_no_progress,
             "escalation_threshold": self.escalation_threshold,
             "dispatch_cursor": self.dispatch_cursor,
+            "dispatch_tokens_used": self.dispatch_tokens_used,
+            "dispatch_cost_used": self.dispatch_cost_used,
         }
 
     @classmethod
@@ -289,6 +295,8 @@ class GoalState:
             consecutive_no_progress=d.get("consecutive_no_progress", 0),
             escalation_threshold=d.get("escalation_threshold", 5),
             dispatch_cursor=d.get("dispatch_cursor", 0),
+            dispatch_tokens_used=d.get("dispatch_tokens_used", 0),
+            dispatch_cost_used=d.get("dispatch_cost_used", 0.0),
         )
 
     # ------------------------------------------------------------------

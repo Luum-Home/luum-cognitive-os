@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 
 from lib.goal_budget import check_budget, _goal_dispatch_totals
-from lib.goal_state import GoalState
+from lib.goal_state import GoalState, GoalStateStore
 
 
 # ---------------------------------------------------------------------------
@@ -390,6 +390,75 @@ class TestGoalDispatchTotals:
         assert tokens == 300  # 70+80 + 60+90
         assert new_cursor > 0
         assert new_cursor <= metrics_path.stat().st_size
+
+
+class TestCumulativeDispatchBudget:
+    def test_check_budget_enforces_cumulative_tokens_across_incremental_reads(self, tmp_path):
+        """Two individually under-limit batches must exhaust the lifetime token budget."""
+        metrics_path = tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
+        store = GoalStateStore(
+            base_dir=tmp_path / ".cognitive-os" / "goals",
+            workspace_thread_id="budget-cumulative",
+        )
+        goal = _make_goal(max_tokens=1000, workspace_thread_id="budget-cumulative")
+        store.save(goal)
+
+        first = [_make_dispatch_record(goal.created_at, 300, 300, 0.01)]
+        _write_dispatch_records(metrics_path, first)
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            first_result = check_budget(store.load(), project_dir=tmp_path, store=store)
+
+        assert first_result.exhausted is False
+        assert first_result.tokens_used == 600
+        persisted = store.load()
+        assert persisted is not None
+        assert persisted.dispatch_tokens_used == 600
+        assert persisted.dispatch_cursor > 0
+
+        with metrics_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(_make_dispatch_record(goal.created_at, 300, 300, 0.01)) + "\n")
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            second_result = check_budget(store.load(), project_dir=tmp_path, store=store)
+
+        assert second_result.exhausted is True
+        assert second_result.dimension == "max_tokens"
+        assert second_result.tokens_used == 1200
+        persisted = store.load()
+        assert persisted is not None
+        assert persisted.dispatch_tokens_used == 1200
+
+    def test_check_budget_enforces_cumulative_cost_across_incremental_reads(self, tmp_path):
+        """Two individually under-limit batches must exhaust the lifetime cost budget."""
+        metrics_path = tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
+        store = GoalStateStore(
+            base_dir=tmp_path / ".cognitive-os" / "goals",
+            workspace_thread_id="cost-cumulative",
+        )
+        goal = _make_goal(max_cost_usd=0.05, workspace_thread_id="cost-cumulative")
+        store.save(goal)
+
+        _write_dispatch_records(
+            metrics_path,
+            [_make_dispatch_record(goal.created_at, 10, 10, 0.03)],
+        )
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            first_result = check_budget(store.load(), project_dir=tmp_path, store=store)
+
+        assert first_result.exhausted is False
+        assert abs(first_result.cost_used - 0.03) < 0.001
+
+        with metrics_path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(_make_dispatch_record(goal.created_at, 10, 10, 0.03)) + "\n")
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            second_result = check_budget(store.load(), project_dir=tmp_path, store=store)
+
+        assert second_result.exhausted is True
+        assert second_result.dimension == "max_cost_usd"
+        assert abs(second_result.cost_used - 0.06) < 0.001
 
 
 # ---------------------------------------------------------------------------

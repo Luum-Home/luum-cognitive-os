@@ -21,6 +21,7 @@ REQ-012: Harness adapter determines enforcement level.
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -726,24 +727,25 @@ class TestStopHookFailClosed:
     def test_stop_hook_blocks_on_budget_error_with_active_goal(self, tmp_path):
         """check_budget raising with an active goal → hook must block (S1-1).
 
-        Runs the hook as subprocess with a corrupted dispatch metrics path that
-        causes an import error in check_budget, verifying the hook still blocks
-        when the goal is active and loaded successfully.
-
-        Strategy: use an active goal with max_tokens set (forces metrics read) and
-        point the metrics file to a broken path via PYTHONPATH override. Since we
-        cannot inject errors into the subprocess easily, we verify the hook BLOCKS
-        on the no-evidence path, which tests the fail-CLOSED contract at the
-        budget-check entry point.
+        Runs the real hook subprocess against a temporary project_dir whose lib
+        package shadows goal_budget.check_budget with a deterministic exception.
+        This proves the hook's budget-error branch blocks instead of falling
+        through to the generic no-evidence block or silently allowing Stop.
         """
-        # Simpler: verify the hook blocks on active goal regardless — the budget path
-        # is also tested via the existing test_hook_transitions_to_budget_limited_when_budget_exhausted.
-        # For S1-1, verify the hook does NOT silently allow when an active goal is present
-        # even when environment is adversarial (corrupted state would be None → allow,
-        # which is the only allowed allow-stop path).
         store = _make_store(tmp_path, "s1-1-budget-wt")
         goal = _make_active_goal()
         store.save(goal)
+
+        shutil.copytree(
+            ROOT / "lib",
+            tmp_path / "lib",
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+        )
+        (tmp_path / "lib" / "goal_budget.py").write_text(
+            "def check_budget(goal, project_dir=None, store=None):\n"
+            "    raise RuntimeError('simulated budget boom')\n",
+            encoding="utf-8",
+        )
 
         rc, stdout, stderr = _run_hook(
             env_override={
@@ -752,12 +754,12 @@ class TestStopHookFailClosed:
             }
         )
         assert rc == 0
-        assert stdout.strip(), "Active goal with no evidence must block stop (fail-CLOSED)"
+        assert stdout.strip(), stderr
         import json
         data = json.loads(stdout.strip())
-        assert data["decision"] == "block", (
-            f"Hook must block on active goal; got {data}"
-        )
+        assert data["decision"] == "block"
+        assert "check_budget raised" in data["reason"]
+        assert "simulated budget boom" in data["reason"]
 
 
 class TestStopHookContinuationBoundedContract:
@@ -878,4 +880,3 @@ class TestGoalContinuationBoundedContract:
         assert len(stdout.encode()) < 16 * 1024, (
             f"Continuation guidance exceeds 16KB: {len(stdout.encode())} bytes"
         )
-

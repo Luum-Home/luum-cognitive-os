@@ -83,6 +83,9 @@ class TestGoalStateCreation:
         assert goal.max_turns == 10
         assert goal.max_minutes == 60
         assert goal.turns_used == 0
+        assert goal.dispatch_cursor == 0
+        assert goal.dispatch_tokens_used == 0
+        assert goal.dispatch_cost_used == 0.0
 
     def test_create_initializes_empty_histories(self):
         goal = _minimal_goal()
@@ -104,6 +107,16 @@ class TestGoalStateCreation:
         assert restored.objective == goal.objective
         assert restored.acceptance_checks == goal.acceptance_checks
         assert restored.max_turns == goal.max_turns
+
+    def test_round_trip_dispatch_budget_accounting_fields(self):
+        goal = _minimal_goal()
+        goal.dispatch_cursor = 123
+        goal.dispatch_tokens_used = 456
+        goal.dispatch_cost_used = 0.078
+        restored = GoalState.from_dict(goal.to_dict())
+        assert restored.dispatch_cursor == 123
+        assert restored.dispatch_tokens_used == 456
+        assert restored.dispatch_cost_used == 0.078
 
     def test_round_trip_with_evidence_history(self):
         goal = _minimal_goal()
@@ -697,5 +710,4 @@ class TestConcurrentGoalWritesMultiprocess:
             f"fcntl lock invariant broken: expected status='conflict', got "
             f"status={status!r}, owner={owner!r}, detail={detail!r}"
         )
-
 

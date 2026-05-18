@@ -1,4 +1,4 @@
-# SDD cos-native-goal-loop Follow-up Audit — 2026-05-18
+# SDD cos-native-goal-loop Follow-up Audit — CATALOG-COMPACT edit in 07572f1e
 
 ## Context
 

@@ -12,9 +12,9 @@ Three enforcement levels are declared:
 This module is the canonical authority for determining enforcement level.
 ``scripts/cos_goal.py doctor`` and the stop-gate hook both delegate here.
 
-The adapter is Claude Code-only in MVP. Stop hook registration is only
-possible when the harness provides a Stop event, so other harnesses
-(Codex, Bare-CLI) report status-only until they wire their own Stop analogue.
+The adapter detects every harness that exposes a compatible Stop-event hook
+surface. Claude Code and Codex registrations are currently probed directly;
+harnesses without a compatible Stop analogue report status-only or unsupported.
 """
 
 from __future__ import annotations

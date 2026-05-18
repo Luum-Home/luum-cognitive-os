@@ -42,7 +42,7 @@ def _goal_dispatch_totals(
     goal: "GoalState",
     project_dir: Path | None = None,
 ) -> tuple[int, float, int]:
-    """Return (total_tokens, total_cost_usd, new_cursor) for dispatches since goal creation.
+    """Return (new_tokens, new_cost_usd, new_cursor) for unread dispatches.
 
     Uses ``goal.dispatch_cursor`` as a byte-offset start position so that each
     call reads only *new* records appended since the last check — O(new records)
@@ -52,7 +52,9 @@ def _goal_dispatch_totals(
     reset to 0 and the full file is re-read from the start.
 
     Reads .cognitive-os/metrics/llm-dispatch.jsonl via lib.dispatch._metrics_path().
-    Returns (0, 0.0, 0) gracefully when the file is absent or unreadable.
+    Returns (0, 0.0, goal.dispatch_cursor) gracefully when the file is absent or
+    unreadable so transient metric-file unavailability does not rewind the
+    cursor and double-count later.
 
     Args:
         goal: Active GoalState whose dispatch_cursor and created_at are used.
@@ -62,13 +64,13 @@ def _goal_dispatch_totals(
         from lib.dispatch import _metrics_path
         path = _metrics_path(project_dir)
     except Exception:  # noqa: BLE001
-        return 0, 0.0, 0
+        return 0, 0.0, goal.dispatch_cursor
 
     total_tokens: int = 0
     total_cost: float = 0.0
 
     if not path.exists():
-        return total_tokens, total_cost, 0
+        return total_tokens, total_cost, goal.dispatch_cursor
 
     try:
         cutoff = datetime.datetime.fromisoformat(
@@ -163,9 +165,10 @@ def check_budget(
 
     Gracefully handles absent dispatch metrics file (returns zeros for 3 & 4).
 
-    When ``store`` is provided, the updated ``dispatch_cursor`` is persisted back
-    to the goal state after a successful metrics read.  The cursor is the ONLY
-    field mutated here — it is by design stateful (bounded incremental reads).
+    When ``store`` is provided, dispatch cursor and cumulative dispatch totals
+    are persisted back to the goal state after a successful metrics read. The
+    file read remains incremental, but max_tokens/max_cost_usd are enforced
+    against lifetime cumulative totals for the goal.
     """
     turns_used = goal.turns_used
     wall_minutes_used = (time.time() - goal.started_at_epoch) / 60.0
@@ -174,14 +177,26 @@ def check_budget(
     tokens_used: int = 0
     cost_used: float = 0.0
     if goal.max_tokens is not None or goal.max_cost_usd is not None:
-        tokens_used, cost_used, new_cursor = _goal_dispatch_totals(goal, project_dir)
-        # Persist the advanced cursor so the next call starts from here
-        if store is not None and new_cursor != goal.dispatch_cursor:
+        new_tokens, new_cost, new_cursor = _goal_dispatch_totals(goal, project_dir)
+        tokens_used = goal.dispatch_tokens_used + new_tokens
+        cost_used = goal.dispatch_cost_used + new_cost
+        # Persist cumulative totals plus the advanced cursor so the next call
+        # starts from here without losing lifetime budget semantics.
+        if (
+            store is not None
+            and (
+                new_cursor != goal.dispatch_cursor
+                or new_tokens != 0
+                or new_cost != 0.0
+            )
+        ):
             goal.dispatch_cursor = new_cursor
+            goal.dispatch_tokens_used = tokens_used
+            goal.dispatch_cost_used = cost_used
             try:
                 store.save(goal)
             except Exception:  # noqa: BLE001
-                pass  # cursor persistence is best-effort; never block budget checks
+                pass  # persistence is best-effort; never block budget checks
 
     # --- Dimension 1: max_turns ---
     if goal.max_turns is not None and turns_used >= goal.max_turns:

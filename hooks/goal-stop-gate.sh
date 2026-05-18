@@ -113,7 +113,7 @@ def _budget_limit_and_allow(goal, reason, dimension=""):
 # forever before evaluation starts.
 # REQ-004: fail-CLOSED — budget errors with an active goal must block, not allow.
 try:
-    budget = check_budget(goal, project_dir)
+    budget = check_budget(goal, project_dir, store=store)
 except Exception as exc:
     block_payload = json.dumps({
         "decision": "block",
