@@ -250,6 +250,300 @@ def write_latest_report(path: Path, payload: dict[str, Any]) -> None:
     tmp.replace(path)
 
 
+# ---------------------------------------------------------------------------
+# Phase 1 semantic rollups — skill / provider / primitive
+# ---------------------------------------------------------------------------
+
+def _parse_ts(ts: str | None) -> datetime | None:
+    """Parse ISO-8601 timestamp strings robustly; return None on failure."""
+    if not ts:
+        return None
+    for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S+00:00", "%Y-%m-%dT%H:%M:%S.%fZ"):
+        try:
+            return datetime.strptime(ts, fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    return None
+
+
+def _window_bounds(timestamps: list[str]) -> dict[str, Any]:
+    """Return {start, end, duration_seconds} from a list of ISO timestamp strings."""
+    parsed = [_parse_ts(t) for t in timestamps if t]
+    parsed = [p for p in parsed if p is not None]
+    if not parsed:
+        return {"start": None, "end": None, "duration_seconds": None}
+    start = min(parsed)
+    end = max(parsed)
+    return {
+        "start": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "end": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "duration_seconds": round((end - start).total_seconds(), 3),
+    }
+
+
+def attach_source_refs(events: list[dict[str, Any]], source_file: str) -> list[dict[str, Any]]:
+    """Return source reference list from a list of raw event dicts.
+
+    Each event carries its index within the source file as `line` (1-based).
+    The `source_metric` field, when present in the event, is preferred over
+    the fallback ``source_file`` parameter.
+    """
+    refs: list[dict[str, Any]] = []
+    for i, event in enumerate(events, start=1):
+        file_ref = event.get("source_metric") or source_file
+        refs.append({"file": str(file_ref), "line": i})
+    return refs
+
+
+def attach_harness_metadata(events: list[dict[str, Any]]) -> str | None:
+    """Derive harness string from event list.
+
+    Scans each event for a ``harness`` field.  Returns the most frequent
+    non-null value found, or *None* when no harness can be determined.
+    This keeps rollups harness-agnostic: if events lack the field the
+    rollup still succeeds with harness=null.
+    """
+    counts: dict[str, int] = {}
+    for event in events:
+        h = event.get("harness")
+        if h and isinstance(h, str):
+            counts[h] = counts.get(h, 0) + 1
+    if not counts:
+        return None
+    return max(counts, key=lambda k: counts[k])
+
+
+def rollup_skill_metrics(
+    events: list[dict[str, Any]],
+    *,
+    source_file: str = "unknown",
+) -> dict[str, Any]:
+    """Aggregate skill-level metrics from a list of skill event dicts.
+
+    Handles two observed schemas:
+      - skill-invocations.jsonl  → payload.skill_name / event_type
+      - skill-metrics.jsonl      → skill / success / duration_ms / tokens
+
+    Missing fields receive documented defaults so rollups are always complete.
+
+    Returns a rollup dict matching the canonical schema:
+      {rollup_kind, subject_id, window, metrics, source_refs, harness}
+    """
+    if not events:
+        return {}
+
+    # Determine subject_id: use skill name from first event.
+    first = events[0]
+    subject_id: str = (
+        first.get("skill")
+        or (first.get("payload") or {}).get("skill_name")
+        or "unknown"
+    )
+
+    invocation_count = 0
+    success_count = 0
+    failure_count = 0
+    override_count = 0   # event_type == "skill.override" → no data yet; default 0
+    durations: list[float] = []
+    timestamps: list[str] = []
+
+    for event in events:
+        ts = event.get("timestamp") or event.get("ts") or ""
+        if ts:
+            timestamps.append(ts)
+
+        etype = event.get("event_type", "")
+        # skill-metrics schema
+        if "success" in event:
+            invocation_count += 1
+            if event["success"]:
+                success_count += 1
+            else:
+                failure_count += 1
+            dur = event.get("duration_ms")
+            if dur is not None:
+                durations.append(float(dur))
+        # skill-invocations schema
+        elif etype.startswith("skill."):
+            invocation_count += 1
+            if etype == "skill.invoked":
+                success_count += 1  # invoked = considered a triggered invocation
+            elif etype in ("skill.error", "skill.failed"):
+                failure_count += 1
+            elif etype == "skill.override":
+                override_count += 1
+
+    total = invocation_count or 1  # guard div-by-zero
+    avg_duration_ms: float | None = round(sum(durations) / len(durations), 3) if durations else None
+
+    return {
+        "rollup_kind": "skill",
+        "subject_id": subject_id,
+        "window": _window_bounds(timestamps),
+        "metrics": {
+            "invocations": invocation_count,
+            "success_count": success_count,
+            "failure_count": failure_count,
+            # override_rate: fraction of invocations that bypassed the skill
+            "override_rate": _ratio(override_count, total),
+            # trust_pass_rate: fraction of invocations where trust gate passed
+            # NOTE: no trust signal in current schema; defaulting to null
+            "trust_pass_rate": None,
+            # time_to_complete_ms: mean duration across events that carried it
+            "time_to_complete_ms": avg_duration_ms,
+        },
+        "source_refs": attach_source_refs(events, source_file),
+        "harness": attach_harness_metadata(events),
+    }
+
+
+def rollup_provider_metrics(
+    events: list[dict[str, Any]],
+    *,
+    source_file: str = "unknown",
+) -> dict[str, Any]:
+    """Aggregate provider/router metrics from a list of dispatch or routing event dicts.
+
+    Observed schemas:
+      - skill-routing.jsonl   → primitive / action / reason_code / target_ref
+      - dispatch-gate.jsonl   → active / max / action / description
+      - agent-heartbeat.jsonl → model (chosen_provider fallback)
+
+    Missing fields (latency, cost, retry_count) receive null defaults and are
+    documented below so consumers know the absence is intentional, not a bug.
+
+    Returns a rollup dict matching the canonical schema.
+    """
+    if not events:
+        return {}
+
+    first = events[0]
+    # subject_id: chosen_provider or primitive or "unknown"
+    subject_id: str = (
+        first.get("chosen_provider")
+        or first.get("primitive")
+        or first.get("model")
+        or "unknown"
+    )
+
+    total_dispatches = 0
+    fallback_count = 0
+    retry_count_total = 0
+    latencies: list[float] = []
+    costs: list[float] = []
+    timestamps: list[str] = []
+
+    for event in events:
+        ts = event.get("timestamp") or event.get("ts") or ""
+        if ts:
+            timestamps.append(ts)
+        total_dispatches += 1
+
+        action = event.get("action", "")
+        if action in ("fallback", "FALLBACK", "block", "BLOCK"):
+            fallback_count += 1
+
+        # retry_count: explicit field (not present yet → default 0 per event)
+        retry_count_total += int(event.get("retry_count", 0))
+
+        # latency_ms: not in current schemas; leave empty → avg will be None
+        lat = event.get("latency_ms") or event.get("duration_ms")
+        if lat is not None:
+            latencies.append(float(lat))
+
+        # cost_usd: not in current dispatch schemas; leave empty
+        cost = event.get("cost_usd") or event.get("cost")
+        if cost is not None:
+            costs.append(float(cost))
+
+    total = total_dispatches or 1
+    avg_latency_ms: float | None = round(sum(latencies) / len(latencies), 3) if latencies else None
+    total_cost_usd: float | None = round(sum(costs), 6) if costs else None
+
+    return {
+        "rollup_kind": "provider",
+        "subject_id": subject_id,
+        "window": _window_bounds(timestamps),
+        "metrics": {
+            "total_dispatches": total_dispatches,
+            "fallback_rate": _ratio(fallback_count, total),
+            # latency_ms: not in current schemas → null (field present for contract compliance)
+            "latency_ms_avg": avg_latency_ms,
+            # cost_usd: not in current schemas → null
+            "cost_usd_total": total_cost_usd,
+            # retry_count: sum of explicit retry_count fields; 0 when absent
+            "retry_count_total": retry_count_total,
+        },
+        "source_refs": attach_source_refs(events, source_file),
+        "harness": attach_harness_metadata(events),
+    }
+
+
+def rollup_primitive_metrics(
+    events: list[dict[str, Any]],
+    *,
+    source_file: str = "unknown",
+) -> dict[str, Any]:
+    """Aggregate primitive-level metrics from primitive-intervention event dicts.
+
+    Observed schema (primitive-interventions.jsonl, primitive-intervention.v1):
+      primitive_id / primitive_family / action_kind / reason_code /
+      harness / tool / source_metric / session_id / timestamp
+
+    Each event represents one intervention.  Counts are broken down by
+    action_kind (warn/block/allow) and by the five canonical primitive families:
+      dispatch / skill-routing / state-retention / repair / validation
+
+    Returns a rollup dict matching the canonical schema.
+    """
+    if not events:
+        return {}
+
+    first = events[0]
+    subject_id: str = (
+        first.get("primitive_id")
+        or first.get("primitive")
+        or "unknown"
+    )
+
+    action_counts: dict[str, int] = {}
+    family_counts: dict[str, int] = {}
+    timestamps: list[str] = []
+
+    CANONICAL_FAMILIES = {"dispatch", "skill-routing", "state-retention", "repair", "validation"}
+
+    for event in events:
+        ts = event.get("timestamp") or event.get("ts") or ""
+        if ts:
+            timestamps.append(ts)
+
+        action = event.get("action_kind") or event.get("action") or "unknown"
+        action_counts[action] = action_counts.get(action, 0) + 1
+
+        family = event.get("primitive_family", "unknown")
+        family_counts[family] = family_counts.get(family, 0) + 1
+
+    total = sum(action_counts.values()) or 1
+
+    return {
+        "rollup_kind": "primitive",
+        "subject_id": subject_id,
+        "window": _window_bounds(timestamps),
+        "metrics": {
+            "total_interventions": sum(action_counts.values()),
+            "action_counts": action_counts,
+            # block_rate: fraction of interventions that were blocking
+            "block_rate": _ratio(action_counts.get("block", 0) + action_counts.get("BLOCK", 0), total),
+            # family_counts: keyed by primitive_family; canonical families always present
+            "family_counts": {f: family_counts.get(f, 0) for f in sorted(CANONICAL_FAMILIES)} | {
+                k: v for k, v in family_counts.items() if k not in CANONICAL_FAMILIES
+            },
+        },
+        "source_refs": attach_source_refs(events, source_file),
+        "harness": attach_harness_metadata(events),
+    }
+
+
 def compile_ledger(
     project_dir: Path | None = None,
     *,
