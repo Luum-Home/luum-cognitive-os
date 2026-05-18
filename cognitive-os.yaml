@@ -1827,6 +1827,11 @@ harness:
       event: Stop
       scope: os-only
 
+    goal-stop-gate:
+      script: hooks/goal-stop-gate.sh
+      event: Stop
+      scope: os-only
+      profiles: [standard, paranoid]
 
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────

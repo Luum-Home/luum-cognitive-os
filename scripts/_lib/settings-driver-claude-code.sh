@@ -394,25 +394,51 @@ cc_driver_emit() {
   )
 
   local stop_hooks
-  stop_hooks=$(_cc_hook_group "Stop" "" \
-    "hooks/session-summary-reminder.sh"       "false" \
-    "hooks/session-learning.sh"               "false" \
-    "hooks/session-cleanup.sh"                "false" \
-    "hooks/edit-lock-session-end.sh"          "false" \
-    "hooks/git-context-capture.sh"            "false" \
-    "hooks/session-changelog.sh"              "false" \
-    "hooks/skill-failure-monitor.sh"          "false" \
-    "hooks/skill-synthesis-scanner.sh"        "false" \
-    "hooks/session-end-reap.sh"               "false" \
-    "hooks/cross-session-event-emit.sh"        "true"  \
-    "hooks/branch-ownership-release.sh"        "false" \
-    "hooks/kpi-trigger.sh"                    "true"  \
-    "hooks/engram-crystallize-on-session-end.sh" "true" \
-    "hooks/engram-obsidian-export-on-stop.sh" "true" \
-    "hooks/control-plane-audit-hourly.sh"    "false" \
-    "hooks/pending-truth-verify-weekly.sh"   "true"  \
-    "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
-  )
+  # goal-stop-gate.sh: standard + paranoid (maintainer/full) profiles only.
+  # Minimal/core installs expose status-only via scripts/cos-goal doctor.
+  # ADR-064 + cos-native-goal-loop SDD design §9.
+  if [ "$PROFILE" = "core" ]; then
+    stop_hooks=$(_cc_hook_group "Stop" "" \
+      "hooks/session-summary-reminder.sh"       "false" \
+      "hooks/session-learning.sh"               "false" \
+      "hooks/session-cleanup.sh"                "false" \
+      "hooks/edit-lock-session-end.sh"          "false" \
+      "hooks/git-context-capture.sh"            "false" \
+      "hooks/session-changelog.sh"              "false" \
+      "hooks/skill-failure-monitor.sh"          "false" \
+      "hooks/skill-synthesis-scanner.sh"        "false" \
+      "hooks/session-end-reap.sh"               "false" \
+      "hooks/cross-session-event-emit.sh"        "true"  \
+      "hooks/branch-ownership-release.sh"        "false" \
+      "hooks/kpi-trigger.sh"                    "true"  \
+      "hooks/engram-crystallize-on-session-end.sh" "true" \
+      "hooks/engram-obsidian-export-on-stop.sh" "true" \
+      "hooks/control-plane-audit-hourly.sh"    "false" \
+      "hooks/pending-truth-verify-weekly.sh"   "true"  \
+      "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
+    )
+  else
+    stop_hooks=$(_cc_hook_group "Stop" "" \
+      "hooks/goal-stop-gate.sh"                 "false" \
+      "hooks/session-summary-reminder.sh"       "false" \
+      "hooks/session-learning.sh"               "false" \
+      "hooks/session-cleanup.sh"                "false" \
+      "hooks/edit-lock-session-end.sh"          "false" \
+      "hooks/git-context-capture.sh"            "false" \
+      "hooks/session-changelog.sh"              "false" \
+      "hooks/skill-failure-monitor.sh"          "false" \
+      "hooks/skill-synthesis-scanner.sh"        "false" \
+      "hooks/session-end-reap.sh"               "false" \
+      "hooks/cross-session-event-emit.sh"        "true"  \
+      "hooks/branch-ownership-release.sh"        "false" \
+      "hooks/kpi-trigger.sh"                    "true"  \
+      "hooks/engram-crystallize-on-session-end.sh" "true" \
+      "hooks/engram-obsidian-export-on-stop.sh" "true" \
+      "hooks/control-plane-audit-hourly.sh"    "false" \
+      "hooks/pending-truth-verify-weekly.sh"   "true"  \
+      "hooks/pyrefly-typecheck-advisory.sh"   "true"  \
+    )
+  fi
 
   local teammate_idle
   teammate_idle=$(_cc_hook_group "TeammateIdle" "" \

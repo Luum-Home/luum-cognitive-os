@@ -709,6 +709,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/goal-stop-gate.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-summary-reminder.sh\""
           },
           {
