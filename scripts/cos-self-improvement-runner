@@ -1,0 +1,226 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+# SPDX-License-Identifier: LicenseRef-CognitiveOS-SourceAvailable-1.0
+"""Scheduled propose-only runner for the Cognitive OS self-improvement loop.
+
+ADR-201 gate: This runner is PERMANENTLY bounded to propose-only mode.
+It never auto-promotes, auto-merges, or mutates runtime surfaces.
+Attempting to run without --propose-only is a hard error — callers must
+be explicit about the contract.
+
+Typical cron invocation (weekly, Sunday 02:00 local):
+    0 2 * * 0 /path/to/scripts/cos-self-improvement-runner --propose-only --write --profile core
+
+Output is appended to:
+    .cognitive-os/improvements/proposals/scheduled-<ISO8601>.json
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+# Proposal output directory — mirrors write_plan() in lib/self_improvement_loop.py
+PROPOSALS_DIR = PROJECT_ROOT / ".cognitive-os" / "improvements" / "proposals"
+
+REQUIRED_PROPOSAL_FIELDS = {"timestamp", "source", "proposal_text", "kind"}
+
+
+def _enforce_propose_only(args: argparse.Namespace) -> None:
+    """Hard-fail if caller did not pass --propose-only (ADR-201 gate)."""
+    if not args.propose_only:
+        print(
+            "ERROR: --propose-only is required by ADR-201. "
+            "This runner does not execute mutations.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
+
+def _check_boring_reliability(profile: str, project_root: Path) -> int:
+    """Run cos-boring-reliability and return exit code.
+
+    Phase 4 requirement: runner stops on non-zero exit from boring-reliability.
+    In dry-run mode this check is skipped (no external subprocess side-effects).
+    """
+    script = project_root / "scripts" / "cos-boring-reliability"
+    if not script.exists():
+        # Primitive missing; treat as non-blocking warning, not a hard stop.
+        print(
+            f"WARNING: {script} not found — skipping reliability gate",
+            file=sys.stderr,
+        )
+        return 0
+    result = subprocess.run(
+        [sys.executable, str(project_root / "scripts" / "cos_boring_reliability.py"),
+         "--profile", profile],
+        cwd=str(project_root),
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        print(
+            f"STOP: cos-boring-reliability exited {result.returncode}. "
+            "Proposals suppressed until reliability gate passes.",
+            file=sys.stderr,
+        )
+        print(result.stdout, file=sys.stderr)
+        print(result.stderr, file=sys.stderr)
+    return result.returncode
+
+
+def _run_loop(profile: str, project_root: Path, write: bool, dry_run: bool) -> dict:
+    """Invoke the existing self-improvement loop and return the plan dict."""
+    loop_script = project_root / "scripts" / "cos_self_improvement_loop.py"
+
+    cmd = [sys.executable, str(loop_script), "--profile", profile, "--mode", "propose"]
+    if write and not dry_run:
+        cmd.append("--write")
+
+    result = subprocess.run(
+        cmd,
+        cwd=str(project_root),
+        capture_output=True,
+        text=True,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"cos-self-improvement-loop failed (exit {result.returncode}):\n"
+            f"{result.stderr}"
+        )
+
+    try:
+        plan = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(
+            f"cos-self-improvement-loop produced non-JSON output:\n{result.stdout}"
+        ) from exc
+
+    return plan
+
+
+def _write_scheduled_artifact(plan: dict, project_root: Path) -> Path:
+    """Write a scheduled-<ISO>.json that includes required envelope fields."""
+    proposals_dir = project_root / ".cognitive-os" / "improvements" / "proposals"
+    proposals_dir.mkdir(parents=True, exist_ok=True)
+
+    now_iso = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    out_path = proposals_dir / f"scheduled-{now_iso}.json"
+
+    # Normalise each proposal into the canonical envelope schema
+    normalised: list[dict] = []
+    for prop in plan.get("proposals", []):
+        normalised.append({
+            "timestamp": now_iso,
+            "source": prop.get("source", "self-improvement-loop"),
+            "proposal_text": prop.get("summary", prop.get("title", "")),
+            "kind": prop.get("candidate_action", "bounded_fix"),
+            # Pass through the full upstream proposal for traceability
+            "_upstream": prop,
+        })
+
+    artifact = {
+        "generated_at": now_iso,
+        "runner": "cos-self-improvement-runner",
+        "mode": "propose-only",
+        "profile": plan.get("profile", "core"),
+        "status": plan.get("status", "unknown"),
+        "proposal_count": len(normalised),
+        "proposals": normalised,
+        "policy": plan.get("policy", {}),
+        # ADR-201 guarantee — written into the artifact for audit trail
+        "adr_201_guarantee": {
+            "propose_only": True,
+            "auto_merge_blocked": True,
+            "auto_promote_blocked": True,
+            "human_approval_required": True,
+        },
+    }
+
+    out_path.write_text(json.dumps(artifact, indent=2, sort_keys=True))
+    return out_path
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--propose-only",
+        action="store_true",
+        required=True,
+        help="REQUIRED. Asserts ADR-201 compliance: no mutations will occur.",
+    )
+    parser.add_argument(
+        "--profile",
+        choices=["core", "team", "maintainer", "lab"],
+        default="core",
+        help="Primitive profile to audit (default: core).",
+    )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Write the scheduled artifact to .cognitive-os/improvements/proposals/.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Simulate the run without writing files or running subprocesses.",
+    )
+    parser.add_argument(
+        "--project-dir",
+        default=str(PROJECT_ROOT),
+        help="Override project root (default: auto-detected).",
+    )
+    parser.add_argument(
+        "--skip-reliability-gate",
+        action="store_true",
+        help="Skip the cos-boring-reliability stop gate (for testing only).",
+    )
+    args = parser.parse_args(argv)
+
+    # Hard contract check — must come first.
+    _enforce_propose_only(args)
+
+    project_root = Path(args.project_dir).resolve()
+
+    if args.dry_run:
+        print(
+            json.dumps(
+                {
+                    "mode": "dry-run",
+                    "propose_only": True,
+                    "profile": args.profile,
+                    "proposals": [],
+                    "proposal_count": 0,
+                    "status": "dry_run_ok",
+                },
+                indent=2,
+            )
+        )
+        return 0
+
+    # Phase 4 gate: stop on non-zero boring-reliability
+    if not args.skip_reliability_gate:
+        rc = _check_boring_reliability(args.profile, project_root)
+        if rc != 0:
+            return rc
+
+    plan = _run_loop(args.profile, project_root, args.write, args.dry_run)
+
+    if args.write:
+        out_path = _write_scheduled_artifact(plan, project_root)
+        plan["scheduled_artifact"] = str(out_path)
+
+    print(json.dumps(plan, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

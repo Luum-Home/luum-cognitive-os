@@ -2112,3 +2112,27 @@ tool_replay_ledger:
   max_tracked_ledgers: 64
   spillover_dir: .cognitive-os/sessions/{session_id}/spillover
   metric_log: .cognitive-os/metrics/tool-replay-ledger.jsonl
+
+# ---------------------------------------------------------------------------
+# Scheduled Tasks — Phase 4 of headless-self-improvement-proposer-plan.md
+# ADR-201 gate: all scheduled runners MUST use --propose-only.
+# No task here may auto-merge, auto-promote, or mutate runtime surfaces.
+# ---------------------------------------------------------------------------
+scheduled_tasks:
+  self_improvement_proposer:
+    # Cron schedule: weekly, Sunday at 02:00 UTC
+    # Override via SELF_IMPROVEMENT_CRON env var or by editing this key.
+    cron: "0 2 * * 0"
+    script: scripts/cos-self-improvement-runner
+    args:
+      - --propose-only
+      - --write
+      - --profile
+      - core
+    # propose-only guarantee (ADR-201): no promotion, no merge, no mutation.
+    propose_only: true
+    human_approval_required: true
+    output_dir: .cognitive-os/improvements/proposals
+    # Runner stops if cos-boring-reliability returns non-zero.
+    reliability_gate: true
+    enabled: true
