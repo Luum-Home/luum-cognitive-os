@@ -27,6 +27,10 @@ METRICS_RE = re.compile(
     r"(safe-jsonl|\.jsonl\b|/metrics/|\.cognitive-os/metrics|record[_-]?metric|emit[_-]?metric|metrics)",
     re.IGNORECASE,
 )
+NATIVE_BLOCK_RE = re.compile(
+    r"(permissionDecision|decision)\s*:\s*[\"']block[\"']|[\"'](permissionDecision|decision)[\"']\s*:\s*[\"']block[\"']",
+    re.IGNORECASE,
+)
 BLOCKING_LABELS = {"blocking", "default-on", "enforcing"}
 INACTIVE_STATES = {"demoted", "archived", "deleted"}
 CATEGORIES = (
@@ -66,6 +70,7 @@ class DocumentedHook:
 class RuntimeSignals:
     hook_exists: bool
     exit2_observable: bool
+    native_block_observable: bool
     metrics_or_jsonl_observable: bool
 
 
@@ -81,6 +86,7 @@ class ClassifiedHook:
     runtime_projection: bool | None = None
     hook_exists: bool | None = None
     exit2_observable: bool | None = None
+    native_block_observable: bool | None = None
     metrics_or_jsonl_observable: bool | None = None
     reasons: list[str] = field(default_factory=list)
 
@@ -486,12 +492,13 @@ def _strip_shell_comments(text: str) -> str:
 def runtime_signals(root: Path, hook_path: str) -> RuntimeSignals:
     absolute = root / hook_path
     if not absolute.exists():
-        return RuntimeSignals(hook_exists=False, exit2_observable=False, metrics_or_jsonl_observable=False)
+        return RuntimeSignals(hook_exists=False, exit2_observable=False, native_block_observable=False, metrics_or_jsonl_observable=False)
     text = absolute.read_text(encoding="utf-8", errors="ignore")
     executable_text = _strip_shell_comments(text)
     return RuntimeSignals(
         hook_exists=True,
         exit2_observable=bool(EXIT_2_RE.search(executable_text)),
+        native_block_observable=bool(NATIVE_BLOCK_RE.search(executable_text)),
         metrics_or_jsonl_observable=bool(METRICS_RE.search(executable_text)),
     )
 
@@ -537,6 +544,7 @@ def classify_hook(
             async_projected=projected.async_projected,
             hook_exists=signals.hook_exists,
             exit2_observable=signals.exit2_observable,
+            native_block_observable=signals.native_block_observable,
             metrics_or_jsonl_observable=signals.metrics_or_jsonl_observable,
             reasons=["hook is projected by .claude/settings.json but absent from primitive lifecycle metadata"],
         )
@@ -546,12 +554,12 @@ def classify_hook(
 
     signals = runtime_signals(root, path)
     if _claims_blocking(documented):
-        if signals.exit2_observable:
+        if signals.exit2_observable or signals.native_block_observable:
             category = "real_blocking"
-            reasons.append("blocking metadata is backed by an observable exit 2 path")
+            reasons.append("blocking metadata is backed by an observable legacy exit 2 or native block path")
         else:
             category = "observe_only"
-            reasons.append("blocking metadata is not backed by an observable exit 2 path")
+            reasons.append("blocking metadata is not backed by an observable legacy exit 2 or native block path")
     elif signals.metrics_or_jsonl_observable:
         category = "real_advisory"
         reasons.append("non-blocking hook has observable metrics/jsonl behavior")
@@ -573,6 +581,7 @@ def classify_hook(
         runtime_projection=documented.runtime_projection,
         hook_exists=signals.hook_exists,
         exit2_observable=signals.exit2_observable,
+        native_block_observable=signals.native_block_observable,
         metrics_or_jsonl_observable=signals.metrics_or_jsonl_observable,
         reasons=reasons,
     )
@@ -608,8 +617,8 @@ def build_report(
                 "hook": hook.path,
                 "classification": classified_absence.get(hook.path),
             })
-        elif hook.lifecycle_state not in INACTIVE_STATES and hook.maturity in BLOCKING_LABELS and not hook.exit2_observable:
-            findings.append({"id": "blocking-hook-without-exit2", "severity": "fail", "hook": hook.path})
+        elif hook.lifecycle_state not in INACTIVE_STATES and hook.maturity in BLOCKING_LABELS and not (hook.exit2_observable or hook.native_block_observable):
+            findings.append({"id": "blocking-hook-without-block-signal", "severity": "fail", "hook": hook.path})
         elif hook.hook_exists is False:
             findings.append({"id": "hook-file-missing", "severity": "fail", "hook": hook.path})
 

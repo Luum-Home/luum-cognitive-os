@@ -178,14 +178,14 @@ finish() {
   python3 "$SCRIPT_DIR/agent_work_ledger.py" --project-dir "$PROJECT_DIR" \
     record --agent-id "$AGENT_ID" --session-id "$SESSION_ID" \
     --task "$TASK_ID" --status "$status" --scope "$SCOPE" >/dev/null 2>&1 || true
-  python3 "$SCRIPT_DIR/claim_task.py" --project-dir "$PROJECT_DIR" \
-    release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_ID" >/dev/null 2>&1 || true
-  release_branch_lease
   if [ "$rc" -eq 0 ]; then
     complete_active_claim
   else
     release_active_claim
   fi
+  python3 "$SCRIPT_DIR/claim_task.py" --project-dir "$PROJECT_DIR" \
+    release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_ID" >/dev/null 2>&1 || true
+  release_branch_lease
 }
 
 if [ "${#COMMAND[@]}" -eq 0 ]; then

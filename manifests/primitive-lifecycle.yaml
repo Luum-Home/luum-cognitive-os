@@ -25240,3 +25240,49 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: template
   metrics_file: none
+- id: hooks/goal-stop-gate.sh
+  kind: hook
+  owner_adr: ADR-064
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  governance_class: goal-loop-runtime
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/goal-stop-gate.sh
+  runtime_projection: true
+  behavior_evidence: Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q
+  docs_claim_level: blocking
+  exit_behavior: native-block-json
+  metrics_file: .cognitive-os/goals/current.json
+- id: hooks/eas-validation-gate.sh
+  kind: hook
+  owner_adr: ADR-324
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-shared-surface
+  governance_class: review-quality-gate
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/eas-validation-gate.sh
+  runtime_projection: true
+  behavior_evidence: Native Stop-hook block gate when an active review surface has malformed or uncovered EAS rows.
+  evidence_commands:
+  - python3 -m pytest tests/hooks/test_eas_validation_gate.py tests/unit/test_bash_hot_path_dispatcher_projection.py -q
+  docs_claim_level: blocking
+  exit_behavior: native-block-json
+  metrics_file: none
