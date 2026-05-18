@@ -688,10 +688,36 @@ HEALTH_TSV="$(run_health_checks)"
 HEALTH_FAIL_COUNT=$(printf '%s' "$HEALTH_TSV" | awk -F'\t' '$1=="FAIL"' | awk 'NF>0' | wc -l | tr -d ' ')
 [ -z "$HEALTH_FAIL_COUNT" ] && HEALTH_FAIL_COUNT=0
 
+# ── Primitive distribution counts (ADR-124/126/127) ────────────────────
+# Per-distribution active primitive counts surfaced from the lifecycle
+# manifest via active_primitive_index.py. Fail-soft: empty object if the
+# index cannot be built (e.g., manifest missing).
+# active_primitive_index.py returns rc=1 when surface exceeds DX thresholds,
+# which trips pipefail. Wrap the producer in a subshell that swallows rc so the
+# downstream parser always sees the data on stdin.
+PRIMITIVES_JSON=$( { python3 "$PROJECT_ROOT/scripts/active_primitive_index.py" --json --project-dir "$PROJECT_ROOT" 2>/dev/null || true; } \
+  | python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin).get("summary", {}) or {}
+except Exception:
+    d = {}
+out = {
+    "counts_by_tier": d.get("counts_by_tier", {}),
+    "active_counts_by_tier": d.get("active_counts_by_tier", {}),
+    "default_visible_counts_by_tier": d.get("default_visible_counts_by_tier", {}),
+    "active_surface_count": d.get("active_surface_count", 0),
+    "default_visible_count": d.get("default_visible_count", 0),
+    "status": d.get("status", "unknown"),
+}
+print(json.dumps(out))
+' 2>/dev/null )
+[ -z "$PRIMITIVES_JSON" ] && PRIMITIVES_JSON='{}'
+
 # ── JSON output ────────────────────────────────────────────────────────
 
 emit_json() {
-  python3 - <<PYEOF
+  PRIMITIVES_JSON="$PRIMITIVES_JSON" python3 - <<PYEOF
 import json, sys, os
 
 profile = "$PROFILE"
@@ -707,6 +733,12 @@ packages_count = int("$PACKAGES_COUNT")
 install_source = """$INSTALL_SOURCE"""
 last_session = """$LAST_SESSION"""
 total_hooks = int("$TOTAL_HOOKS" or 0)
+
+primitives_raw = os.environ.get("PRIMITIVES_JSON", "{}")
+try:
+    primitives = json.loads(primitives_raw) if primitives_raw.strip() else {}
+except json.JSONDecodeError:
+    primitives = {}
 
 # Parse hook tsv
 hook_tsv = """$HOOK_TSV"""
@@ -755,6 +787,7 @@ out = {
         "source_path": rules_source_path,
     },
     "packages": {"count": packages_count},
+    "primitives": primitives,
     "install": {"source": install_source},
     "session": {"last_end": last_session},
     "health": {
@@ -789,6 +822,32 @@ pretty_print() {
     if [ "$SKILLS_DRIVER" -gt 20 ]; then
       printf '                   ... (%d more, use --json for full list)\n' "$((SKILLS_DRIVER - 20))"
     fi
+  fi
+
+  # Primitives section (ADR-124/126/127 — per-distribution active surface)
+  if [ -n "$PRIMITIVES_JSON" ] && [ "$PRIMITIVES_JSON" != "{}" ]; then
+    PRIMITIVES_JSON="$PRIMITIVES_JSON" \
+    COS_PRIM_VERBOSE="$VERBOSE" \
+    COS_PRIM_C_GREEN="$C_GREEN" COS_PRIM_C_YELLOW="$C_YELLOW" COS_PRIM_C_RED="$C_RED" COS_PRIM_C_DIM="$C_DIM" COS_PRIM_C_RESET="$C_RESET" \
+    python3 - <<'PYEOF_PRIM'
+import json, os
+try:
+    p = json.loads(os.environ.get("PRIMITIVES_JSON", "{}"))
+except Exception:
+    p = {}
+active = p.get("active_counts_by_tier") or {}
+total = p.get("counts_by_tier") or {}
+status = p.get("status", "unknown")
+if active or total:
+    cmap = {"pass": os.environ.get("COS_PRIM_C_GREEN",""),
+            "warn": os.environ.get("COS_PRIM_C_YELLOW",""),
+            "fail": os.environ.get("COS_PRIM_C_RED","")}
+    color_status = cmap.get(status, os.environ.get("COS_PRIM_C_DIM",""))
+    reset = os.environ.get("COS_PRIM_C_RESET","")
+    print(f"Primitives:      core={active.get('core',0)}/{total.get('core',0)} team={active.get('team',0)}/{total.get('team',0)} maintainer={active.get('maintainer',0)}/{total.get('maintainer',0)} lab={active.get('lab',0)}/{total.get('lab',0)}  {color_status}{status}{reset}")
+    if os.environ.get("COS_PRIM_VERBOSE") == "1":
+        print(f"                 active_surface={p.get('active_surface_count',0)} default_visible={p.get('default_visible_count',0)}")
+PYEOF_PRIM
   fi
 
   # Hooks section
