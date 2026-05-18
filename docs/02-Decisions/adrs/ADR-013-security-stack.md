@@ -63,4 +63,3 @@ P0 integrations (Semgrep AI, MCP-Scan, Promptfoo) were implemented immediately. 
 Closure basis: 8-layer security stack shipped: Semgrep, MCP-Scan, Promptfoo, and 29 other tools active per docs/02-Decisions/adrs/ADR-013. Architecture policy accepted, no further closure work.
 
 - `docs/02-Decisions/adrs/ADR-013-security-stack.md`
-

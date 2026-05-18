@@ -161,6 +161,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
 fi
 
 # Create the symlink
+mkdir -p "$(dirname "$SYMLINK_TARGET")"
 ln -s "$RELATIVE_TARGET" "$SYMLINK_TARGET"
 echo "install-skill: created .claude/skills/${SKILL_NAME}"
 

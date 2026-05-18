@@ -61,4 +61,3 @@ Migrate rules from passive context documents to active enforcement mechanisms us
 Closure basis: Rules-to-hooks migration achieved 78% rule reduction; EXCLUDED_RULES mechanism active in hooks/self-install.sh; Tier 3 irreducible rules remain by design.
 
 - `hooks/self-install.sh`
-

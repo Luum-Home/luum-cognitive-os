@@ -57,4 +57,3 @@ Seven ecosystem tools were approved for immediate integration: agnix (linter), c
 Closure basis: Architectural policy accepted: multi-tool support is a long-running stance, not a feature with a finish line. Existing adapters (Claude Code, Codex, generic CLI) demonstrate the policy in production.
 
 - `docs/02-Decisions/adrs/ADR-008-multi-tool-support.md`
-

@@ -154,35 +154,35 @@ def test_no_undefined_local_imports() -> None:
         except OSError:
             continue
 
-            for node in ast.walk(tree):
-                modules_to_check: list[str] = []
+        for node in ast.walk(tree):
+            modules_to_check: list[str] = []
 
-                if isinstance(node, ast.Import):
-                    modules_to_check = [alias.name for alias in node.names]
-                elif isinstance(node, ast.ImportFrom):
-                    if node.module:
-                        modules_to_check = [node.module]
+            if isinstance(node, ast.Import):
+                modules_to_check = [alias.name for alias in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                if node.module:
+                    modules_to_check = [node.module]
 
-                for mod in modules_to_check:
-                    top_level = mod.split(".")[0]
+            for mod in modules_to_check:
+                top_level = mod.split(".")[0]
 
-                    # Skip stdlib and known third-party
-                    if _is_third_party(top_level):
-                        continue
+                # Skip stdlib and known third-party
+                if _is_third_party(top_level):
+                    continue
 
-                    # Skip non-local top-levels
-                    if top_level not in LOCAL_PREFIXES:
-                        continue
+                # Skip non-local top-levels
+                if top_level not in LOCAL_PREFIXES:
+                    continue
 
-                    # This is a local import — verify it resolves
-                    if not _resolve_local_module(mod):
-                        expected_path = str(REPO / Path(*mod.split(".")).with_suffix(".py"))
-                        violations.append((
-                            str(py_file.relative_to(REPO)),
-                            getattr(node, "lineno", 0),
-                            mod,
-                            expected_path,
-                        ))
+                # This is a local import — verify it resolves
+                if not _resolve_local_module(mod):
+                    expected_path = str(REPO / Path(*mod.split(".")).with_suffix(".py"))
+                    violations.append((
+                        str(py_file.relative_to(REPO)),
+                        getattr(node, "lineno", 0),
+                        mod,
+                        expected_path,
+                    ))
 
     assert not violations, (
         f"Found {len(violations)} import statement(s) referencing local modules that "

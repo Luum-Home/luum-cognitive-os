@@ -260,4 +260,3 @@ fresh, and hook-fast includes the capability matrix audit without findings.
 Closure basis: Slice A capability matrix framework shipped: scripts/cos-capability-matrix + manifest + MATRIX.md. Historical primitive classification was intentionally deferred per ADR scope.
 
 - `scripts/cos-capability-matrix`
-
