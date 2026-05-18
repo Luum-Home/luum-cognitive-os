@@ -201,6 +201,17 @@ class TestTypeMismatch:
         assert ok is True
         assert not any("TYPE_MISMATCH" in e for e in errors)
 
+    def test_bool_does_not_satisfy_integer_field(self):
+        ok, errors = validate_input(
+            SIMPLE_SCHEMA,
+            payload={
+                "task_description": "do something",
+                "blast_radius": True,
+            },
+        )
+        assert ok is False
+        assert any("TYPE_MISMATCH" in e and "blast_radius" in e for e in errors)
+
     def test_list_type_mismatch(self):
         ok, errors = validate_input(
             SIMPLE_SCHEMA,
@@ -221,6 +232,17 @@ class TestTypeMismatch:
             },
         )
         assert ok is True
+
+    def test_list_str_rejects_wrong_item_type(self):
+        ok, errors = validate_input(
+            SIMPLE_SCHEMA,
+            payload={
+                "task_description": "do something",
+                "acceptance_criteria": ["check A", 123],
+            },
+        )
+        assert ok is False
+        assert any("TYPE_MISMATCH" in e and "item 1" in e for e in errors)
 
 
 # ---------------------------------------------------------------------------

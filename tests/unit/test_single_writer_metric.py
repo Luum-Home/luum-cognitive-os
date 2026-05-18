@@ -67,3 +67,9 @@ def test_parent_dirs_created(tmp_path: Path) -> None:
     deep = tmp_path / "a" / "b" / "c" / "metric.jsonl"
     record_push_attempt("sess-7", "main", "allowed", metric_file=deep)
     assert deep.exists()
+
+
+def test_invalid_outcome_rejected(metric_path: Path) -> None:
+    with pytest.raises(ValueError, match="invalid single-writer outcome"):
+        record_push_attempt("sess-8", "main", "unknown", metric_file=metric_path)  # type: ignore[arg-type]
+    assert not metric_path.exists()

@@ -17,6 +17,7 @@ from typing import Literal
 METRIC_FILE = Path(".cognitive-os/metrics/single-writer-enforcement.jsonl")
 
 Outcome = Literal["allowed", "blocked", "bypassed", "queued"]
+VALID_OUTCOMES = {"allowed", "blocked", "bypassed", "queued"}
 
 
 def record_push_attempt(
@@ -45,6 +46,9 @@ def record_push_attempt(
     metric_file:
         Override the default path (useful in tests).
     """
+    if outcome not in VALID_OUTCOMES:
+        raise ValueError(f"invalid single-writer outcome: {outcome!r}")
+
     target = metric_file or _resolve_metric_file()
     target.parent.mkdir(parents=True, exist_ok=True)
 

@@ -76,6 +76,47 @@ def _resolve_type(raw: str) -> tuple[type | None, bool]:
     return None, True  # unknown — treat as any
 
 
+def _type_error(spec: FieldSpec, value: Any) -> str | None:
+    """Return a TYPE_MISMATCH message for *value*, or None when valid."""
+    raw = spec.raw_type.strip().lower()
+
+    if raw in {"int", "integer"}:
+        # bool is a subclass of int in Python, but schema int must mean a real
+        # integer field for launch contracts.
+        if isinstance(value, bool) or not isinstance(value, int):
+            return (
+                f"TYPE_MISMATCH: field '{spec.name}' expected {spec.raw_type} "
+                f"but got {type(value).__name__}"
+            )
+        return None
+
+    if raw in {"list[str]", "list[int]"}:
+        if not isinstance(value, list):
+            return (
+                f"TYPE_MISMATCH: field '{spec.name}' expected {spec.raw_type} "
+                f"but got {type(value).__name__}"
+            )
+        item_type = str if raw == "list[str]" else int
+        for index, item in enumerate(value):
+            if raw == "list[int]" and isinstance(item, bool):
+                valid = False
+            else:
+                valid = isinstance(item, item_type)
+            if not valid:
+                return (
+                    f"TYPE_MISMATCH: field '{spec.name}' expected {spec.raw_type} "
+                    f"but item {index} is {type(item).__name__}"
+                )
+        return None
+
+    if spec.python_type is not None and not isinstance(value, spec.python_type):
+        return (
+            f"TYPE_MISMATCH: field '{spec.name}' expected {spec.raw_type} "
+            f"but got {type(value).__name__}"
+        )
+    return None
+
+
 def parse_schema(schema_block: str) -> list[FieldSpec]:
     """Parse a raw INPUT SCHEMA block (the content after the header line).
 
@@ -153,11 +194,9 @@ def validate_input(
 
         # --- Type check (only if value present and type known) ---
         if value is not None and not spec.unknown_type and spec.python_type is not None:
-            if not isinstance(value, spec.python_type):
-                errors.append(
-                    f"TYPE_MISMATCH: field '{spec.name}' expected {spec.raw_type} "
-                    f"but got {type(value).__name__}"
-                )
+            mismatch = _type_error(spec, value)
+            if mismatch:
+                errors.append(mismatch)
 
         # --- Unknown type note (informational, not an error) ---
         if spec.unknown_type and value is not None:
