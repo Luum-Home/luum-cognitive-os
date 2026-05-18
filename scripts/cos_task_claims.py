@@ -192,7 +192,21 @@ def prune_claims(project: Path, data: dict[str, Any]) -> dict[str, Any]:
     return {**data, "claims": claims, "updated_at": now_iso()}
 
 
-def claim_task(project: Path, task: dict[str, Any], session: str | None = None, expected_files: Sequence[str] | None = None) -> tuple[bool, dict[str, Any]]:
+def claim_task(
+    project: Path,
+    task: dict[str, Any],
+    session: str | None = None,
+    expected_files: Sequence[str] | None = None,
+    *,
+    agent_id: str | None = None,
+    scope: str | None = None,
+    ttl_seconds: int | None = None,
+    pid: int | None = None,
+    host: str | None = None,
+) -> tuple[bool, dict[str, Any]]:
+    import socket as _socket
+    import time as _time
+
     session = session or session_id()
     task_id = str(task.get("id") or task.get("task_id") or task.get("toolUseId") or "unknown")
     fingerprint = task_fingerprint(task, expected_files)
@@ -212,14 +226,25 @@ def claim_task(project: Path, task: dict[str, Any], session: str | None = None, 
                 append_event(project, "conflict", session, payload)
                 atomic_write_json(path, data)
                 return False, {"status": "conflict", **payload}
-        claim = {
+        ttl = ttl_seconds if ttl_seconds and ttl_seconds > 0 else claim_ttl_seconds()
+        now_epoch = _time.time()
+        claim: dict[str, Any] = {
             "task_id": task_id,
             "session_id": session,
             "claimed_at": now_iso(),
             "expected_files": expected,
             "fingerprint": fingerprint,
             "status": "active",
+            # Extended fields for TCL-compatible consumers
+            "expires_at": now_epoch + ttl,
+            "ttl_seconds": ttl,
+            "pid": pid if pid is not None else os.getpid(),
+            "host": host or _socket.gethostname(),
         }
+        if agent_id is not None:
+            claim["agent_id"] = agent_id
+        if scope is not None:
+            claim["scope"] = scope
         data["claims"] = [c for c in data["claims"] if not (c.get("task_id") == task_id and c.get("session_id") == session and c.get("status") == "active")]
         data["claims"].append(claim)
         atomic_write_json(path, data)
@@ -274,10 +299,34 @@ def release_task(project: Path, task_id: str, session: str | None = None) -> dic
     return payload
 
 
+def list_claims(project: Path, *, include_stale: bool = False) -> list[dict[str, Any]]:
+    """Return claims from the canonical store.
+
+    By default only active claims are returned.  Pass ``include_stale=True``
+    to include stale/completed/released entries as well.
+    """
+    data = prune_claims(project, normalize_claims(read_json(claims_path(project), {"claims": []})))
+    all_claims = [c for c in data.get("claims", []) if isinstance(c, dict)]
+    if include_stale:
+        return sorted(all_claims, key=lambda c: str(c.get("task_id", "")))
+    return sorted(
+        (c for c in all_claims if c.get("status") == "active"),
+        key=lambda c: str(c.get("task_id", "")),
+    )
+
+
 def cmd_claim(args: argparse.Namespace) -> int:
     project = project_dir(args)
     task = read_json(Path(args.task_json), {}) if args.task_json else {"id": args.task_id, "description": args.description or "", "deliverable": args.deliverable or ""}
-    ok, result = claim_task(project, task, args.session_id, args.expected_file)
+    ok, result = claim_task(
+        project,
+        task,
+        args.session_id,
+        args.expected_file,
+        agent_id=getattr(args, "agent_id", None),
+        scope=getattr(args, "scope", None),
+        ttl_seconds=getattr(args, "ttl_seconds", None),
+    )
     print(json.dumps(result, sort_keys=True))
     return 0 if ok else 2
 
@@ -318,6 +367,9 @@ def build_parser() -> argparse.ArgumentParser:
     claim.add_argument("--deliverable")
     claim.add_argument("--expected-file", action="append")
     claim.add_argument("--session-id")
+    claim.add_argument("--agent-id", dest="agent_id", default=None)
+    claim.add_argument("--scope", default=None)
+    claim.add_argument("--ttl-seconds", dest="ttl_seconds", type=int, default=None)
     claim.set_defaults(func=cmd_claim)
     complete = sub.add_parser("complete")
     complete.add_argument("--task-id", required=True)
