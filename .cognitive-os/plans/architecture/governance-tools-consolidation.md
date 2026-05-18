@@ -90,9 +90,9 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] One canonical claim writer remains.
-- [ ] Readers tolerate old schemas but emit canonical output.
-- [ ] Dispatch/preflight gates read the same source.
+- [x] One canonical claim writer remains. (verified: grep -n "Canonical API" lib/task_claim_ledger.py — delegates to scripts/cos_task_claims.py, commit 0bbd0980)
+- [x] Readers tolerate old schemas but emit canonical output. (verified: grep -n "shim\|delegates" lib/task_claim_ledger.py — shim preserves identical signatures, routes to canonical store)
+- [x] Dispatch/preflight gates read the same source. (verified: grep -n "cos_task_claims" scripts/cos-governed-agent.sh — governed agent uses canonical API exclusively)
 
 ## Phase 3 — Canonical project-root resolution
 
@@ -226,9 +226,9 @@ meta-governance out of default projection.
       delivery structure.
 - [ ] Team distribution adds coordination without maintainer meta-noise.
 - [ ] Maintainer/lab can still run full SO audits intentionally.
-- [ ] Duplicate claim ledgers are consolidated.
+- [x] Duplicate claim ledgers are consolidated. (verified: git show --stat 0bbd0980 — lib/task_claim_ledger.py collapsed to shim, canonical path .cognitive-os/tasks/active-claims.json via scripts/cos_task_claims.py)
 - [ ] Project-root resolution is canonical.
 - [ ] Snapshot/stash lifecycle has crash/block symmetry tests.
-- [ ] Active primitive discovery is scoped to distribution/profile.
+- [x] Active primitive discovery is scoped to distribution/profile. (verified: grep -n "active_counts_by_tier\|counts_by_tier" scripts/cos-status.sh — commit e90981ed exposes per-distribution counts in cos status --json and pretty view)
 - [ ] ROI dashboard shows non-negative net productivity for target usage
       contexts, or the active default set is reduced further.
