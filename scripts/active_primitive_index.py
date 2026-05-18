@@ -328,15 +328,16 @@ def build_index(
     }
 
 
-def print_list(index: dict[str, Any], tier: str | None = None) -> None:
+def print_list(index: dict[str, Any], tier: str | None = None) -> bool:
     """Emit one line per active primitive: <tier>\t<id>."""
     primitives = index.get("primitives", [])
     active = [p for p in primitives if p.get("active")]
     if not active:
         print("(no active primitives in selection)", file=sys.stderr)
-        return
+        return False
     for p in sorted(active, key=lambda x: (x["tier"], x["id"])):
         print(f"{p['tier']}\t{p['id']}")
+    return True
 
 
 def print_human(index: dict[str, Any]) -> None:
@@ -362,7 +363,10 @@ def print_human(index: dict[str, Any]) -> None:
     if summary["findings"]:
         print("findings:")
         for finding in summary["findings"]:
-            print(f"- {finding['severity'].upper()} {finding['id']}: {finding['message']} ({finding['count']}>{finding['threshold']})")
+            suffix = ""
+            if "count" in finding and "threshold" in finding:
+                suffix = f" ({finding['count']}>{finding['threshold']})"
+            print(f"- {finding['severity'].upper()} {finding['id']}: {finding['message']}{suffix}")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -380,7 +384,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
     if args.list_primitives:
-        print_list(index, args.tier)
+        return 0 if print_list(index, args.tier) else 1
     elif args.human:
         print_human(index)
     else:

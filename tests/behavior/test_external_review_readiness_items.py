@@ -100,8 +100,7 @@ class TestSurfaceList:
         """main() with --list does not raise an exception for a valid manifest."""
         manifest = self._make_manifest(tmp_path, [self._core_primitive("hooks/z.sh")])
         rc = active_index.main(["--manifest", str(manifest), "--list", "--tier", "core"])
-        # rc is 0 (pass) or 1 (fail due to surface findings) — both mean --list ran successfully
-        assert rc in (0, 1)
+        assert rc == 0
 
 
 # ---------------------------------------------------------------------------
