@@ -32,6 +32,34 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Language-agnostic semantic routing now uses embeddings against `description`+`summary_line` fields (multilingual-e5-large, ADR-296/298); language dependence audit reports 0 actionable findings.
 - Synced the radar implementation tracker after `v0.28.0`: C1-C4 adoption cleanup is now audit-pass, and post-0.28 priorities are explicit for H6, Wave 2 M1, ToolSearch metrics, seccomp, Wave 3, and public launch.
 
+### Goal-Loop Feature Ship
+
+- Added native goal-stop contract: operator sets `--goal` before session; evaluator checks evidence at each agent stop; budget enforcement (`cos goal set/status/clear` CLI). (a07d8071 — core primitives)
+- Added Stop hook + harness adapter for goal-loop evaluation gate. (2bb12748)
+- Added operator rule and concept page documenting the goal-loop design and operator contract. (d4bbfada)
+- Archived SDD change for goal-loop after full apply-verify cycle. (fb24ec50)
+
+### Goal-Loop Hardening (S1/S2)
+
+- Hardened goal-stop to fail-CLOSED on budget or evaluator errors when an active goal is set (S1-1): previously a failed evaluator silently continued execution. (3cb849da)
+- Made `evaluate` read-only — evaluator command execution no longer modifies repository state (S1-2). (6b12f4c4)
+- Added Codex Stop-hook detection so goal evaluation fires correctly in non-Claude harnesses (S1-3). (625215c8)
+- Added deterministic concurrent-writer lock test to close race condition in goal-state persistence (S1-7). (7690da12)
+- Bounded dispatch-metrics read to prevent unbounded file growth during long sessions. (031fc38a)
+- Preserved cumulative dispatch budgets across evaluator invocations so multi-step goals do not reset token accounting (S2-1). (dfaf8654)
+- Hardened evaluator command execution to prevent injection and improve error reporting (S2-2). (92f01925)
+- Added regression tests covering S2-1 and S2-2 evaluator hardening scenarios. (bd4ce3a3)
+
+### License Clarification
+
+- Clarified README and docs wording from "Open-Source Core" to "Source-Available Core" to accurately reflect the FSL-1.1-MIT license posture. LICENSE file text is unchanged; FSL-1.1-MIT → MIT (after Change Date) remains authoritative. (09f9ec96)
+
+### English-Only Audit Cleanup and Disclosure
+
+- Removed English-language trigger phrases from `session-report` skill (5099fad0) and `product-answer` skill (25383cb6) as part of the language-dependence audit; multilingual RUNTIME routing (multilingual-e5-large embeddings) is preserved.
+- Preserved multilingual capability chain: semantic matcher (743a4701), enrichment pipeline (94ee1272), router (e9fdac50), multilingual corpus (125c0f4b), multilingual fixtures (08bc5f46), and multilingual benchmark (cb8fab35) — routing operates on embeddings, not keyword triggers.
+- Disclosure: a CATALOG-COMPACT edit was included in commit 44513883 without explicit operator sign-off; this was documented and retained (not reverted) in 2558d6f3. Operator awareness confirmed post-facto.
+
 ## [0.28.0] - 2026-05-10
 
 ### Added
