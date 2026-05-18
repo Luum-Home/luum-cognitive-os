@@ -49,6 +49,19 @@ def codex_bash_group(settings: dict) -> list[str]:
     raise AssertionError("Codex PreToolUse bash group not found")
 
 
+def stop_group(settings: dict) -> list[str]:
+    for group in settings["hooks"]["Stop"]:
+        return [hook["command"] for hook in group["hooks"]]
+    raise AssertionError("Claude Stop group not found")
+
+
+def codex_stop_group(settings: dict) -> list[str]:
+    for group in settings["Stop"]:
+        if group.get("matcher") == "shutdown":
+            return [hook["command"] for hook in group["hooks"]]
+    raise AssertionError("Codex Stop group not found")
+
+
 def test_default_bash_hot_path_uses_tier_dispatcher_only() -> None:
     commands = bash_group(emit_settings())
 
@@ -87,3 +100,17 @@ def test_codex_full_profile_keeps_exhaustive_bash_mesh() -> None:
     assert "hooks/destructive-git-blocker.sh" in commands
     assert "hooks/scope-marker-portability-gate.sh" in commands
     assert "hooks/bash-hot-path-dispatcher.sh" not in commands
+
+
+def test_default_stop_projection_includes_eas_validation_gate() -> None:
+    commands = "\n".join(stop_group(emit_settings()))
+
+    assert "hooks/goal-stop-gate.sh" in commands
+    assert "hooks/eas-validation-gate.sh" in commands
+
+
+def test_codex_stop_projection_includes_eas_validation_gate() -> None:
+    commands = "\n".join(codex_stop_group(emit_codex_hooks()))
+
+    assert "hooks/goal-stop-gate.sh" in commands
+    assert "hooks/eas-validation-gate.sh" in commands

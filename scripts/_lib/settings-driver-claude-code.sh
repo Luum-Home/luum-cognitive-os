@@ -420,6 +420,7 @@ cc_driver_emit() {
   else
     stop_hooks=$(_cc_hook_group "Stop" "" \
       "hooks/goal-stop-gate.sh"                 "false" \
+      "hooks/eas-validation-gate.sh"            "false" \
       "hooks/session-summary-reminder.sh"       "false" \
       "hooks/session-learning.sh"               "false" \
       "hooks/session-cleanup.sh"                "false" \

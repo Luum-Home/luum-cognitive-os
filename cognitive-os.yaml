@@ -1833,6 +1833,12 @@ harness:
       scope: os-only
       profiles: [standard, paranoid]
 
+    eas-validation-gate:
+      script: hooks/eas-validation-gate.sh
+      event: Stop
+      scope: both
+      profiles: [standard, paranoid]
+
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────
     # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)
