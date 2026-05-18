@@ -512,3 +512,50 @@ class TestGoalDoctor:
         assert rc == 0
         data = json.loads(capsys.readouterr().out)
         assert data["support_level"] in ("native-stop-hook", "status-only", "unsupported")
+
+    def test_doctor_json_includes_per_harness_keys(self, base_args, capsys):
+        """S1-3: doctor JSON output includes claude_code, codex, active_any keys."""
+        rc = run(base_args + ["doctor", "--json"])
+        assert rc == 0
+        data = json.loads(capsys.readouterr().out)
+        assert "claude_code" in data, "doctor JSON must include 'claude_code' key (S1-3)"
+        assert "codex" in data, "doctor JSON must include 'codex' key (S1-3)"
+        assert "active_any" in data, "doctor JSON must include 'active_any' key (S1-3)"
+        assert isinstance(data["claude_code"], bool)
+        assert isinstance(data["codex"], bool)
+        assert isinstance(data["active_any"], bool)
+
+    def test_doctor_reports_codex_when_codex_hooks_registered(self, tmp_path, capsys):
+        """S1-3: test_doctor_reports_codex_when_codex_hooks_registered.
+
+        With a synthesized .codex/hooks.json containing goal-stop-gate.sh in Stop
+        registrations, doctor must report codex=True and support_level=native-stop-hook.
+        """
+        # Create synthesized .codex/hooks.json
+        codex_dir = tmp_path / ".codex"
+        codex_dir.mkdir()
+        codex_hooks = {
+            "Stop": [
+                {
+                    "hooks": [
+                        {
+                            "type": "command",
+                            "command": "bash \"$PWD/hooks/goal-stop-gate.sh\"",
+                        }
+                    ]
+                }
+            ]
+        }
+        (codex_dir / "hooks.json").write_text(json.dumps(codex_hooks))
+
+        # Run detect_enforcement_level pointing at tmp_path
+        from lib.harness_adapter.goal_stop import detect_enforcement_level
+        result = detect_enforcement_level(project_dir=tmp_path)
+
+        assert result["codex"] is True, (
+            f"codex must be True when .codex/hooks.json registers goal-stop-gate; got {result}"
+        )
+        assert result["support_level"] == "native-stop-hook", (
+            f"support_level must be native-stop-hook; got {result['support_level']}"
+        )
+        assert result["active_any"] is True

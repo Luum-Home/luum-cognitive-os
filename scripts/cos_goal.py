@@ -331,11 +331,22 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     print(f"Harness support level: {support}")
     if support == "native-stop-hook":
         print("  Stop-hook enforcement: ACTIVE")
-        print(f"  Registered in: {harness.get('settings_file', 'unknown')}")
+        # Report per-harness registration status (S1-3: Codex visibility)
+        if harness.get("claude_code"):
+            sf = harness.get("settings_file", "unknown")
+            print(f"  Claude Code: registered ({sf})")
+        else:
+            print("  Claude Code: not registered")
+        if harness.get("codex"):
+            cf = harness.get("codex_hooks_file", "unknown")
+            print(f"  Codex:       registered ({cf})")
+        else:
+            print("  Codex:       not registered")
     elif support == "status-only":
         print("  Stop-hook enforcement: UNAVAILABLE")
         print(f"  Hook exists at: {harness.get('hook_path', 'unknown')}")
         print("  Action: register goal-stop-gate.sh in settings.json hooks.Stop")
+        print("          and/or .codex/hooks.json Stop registrations")
     else:
         print("  Stop-hook enforcement: UNSUPPORTED")
         print("  Auto-continuation is not available in this harness.")

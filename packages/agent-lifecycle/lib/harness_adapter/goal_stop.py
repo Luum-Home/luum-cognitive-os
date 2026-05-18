@@ -28,20 +28,41 @@ from typing import Any, Literal
 EnforcementLevel = Literal["native-stop-hook", "status-only", "unsupported"]
 
 
+def _check_stop_hooks_for_gate(stop_hooks: list) -> bool:
+    """Return True if goal-stop-gate.sh appears in any Stop hook entry."""
+    for entry in stop_hooks:
+        if isinstance(entry, dict):
+            # Group format: {"matcher": "...", "hooks": [...]}
+            nested = entry.get("hooks", [])
+            for hook in nested:
+                cmd = hook if isinstance(hook, str) else hook.get("command", "")
+                if "goal-stop-gate" in cmd:
+                    return True
+            # Also check flat command key on entry itself
+            if "goal-stop-gate" in entry.get("command", ""):
+                return True
+        elif isinstance(entry, str) and "goal-stop-gate" in entry:
+            return True
+    return False
+
+
 def detect_enforcement_level(project_dir: Path | None = None) -> dict[str, Any]:
     """Return a dict describing the current harness Stop-hook support level.
 
-    Checks for ``goal-stop-gate.sh`` in Claude Code settings.json Stop hooks.
-    Falls back gracefully when files are missing or unreadable.
+    Checks for ``goal-stop-gate.sh`` in Claude Code settings.json Stop hooks
+    AND in Codex .codex/hooks.json Stop event registrations.
 
     Args:
-        project_dir: Project root to resolve settings.json. Defaults to cwd.
+        project_dir: Project root to resolve settings files. Defaults to cwd.
 
     Returns:
         Dict with at minimum:
           support_level: "native-stop-hook" | "status-only" | "unsupported"
-          hook_registered: bool
+          hook_registered: bool  (True if registered in ANY harness)
           enforcement: str (human-readable status)
+          claude_code: bool  (True if registered in Claude Code settings.json)
+          codex: bool  (True if registered in .codex/hooks.json)
+          active_any: bool  (True if registered in at least one harness)
     """
     root = project_dir or Path(
         os.environ.get("CLAUDE_PROJECT_DIR")
@@ -50,11 +71,14 @@ def detect_enforcement_level(project_dir: Path | None = None) -> dict[str, Any]:
         or Path.cwd()
     )
 
+    claude_code_registered = False
+    claude_code_settings_file: str | None = None
+
+    # --- Claude Code: probe .claude/settings.json and .claude/settings.local.json ---
     settings_paths = [
         root / ".claude" / "settings.json",
         root / ".claude" / "settings.local.json",
     ]
-
     for path in settings_paths:
         if not path.exists():
             continue
@@ -62,54 +86,58 @@ def detect_enforcement_level(project_dir: Path | None = None) -> dict[str, Any]:
             data = json.loads(path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             continue
+        stop_hooks = data.get("hooks", {}).get("Stop", [])
+        if _check_stop_hooks_for_gate(stop_hooks):
+            claude_code_registered = True
+            claude_code_settings_file = str(path)
+            break
 
-        hooks: dict = data.get("hooks", {})
-        stop_hooks = hooks.get("Stop", [])
+    # --- Codex: probe .codex/hooks.json Stop event registrations ---
+    codex_registered = False
+    codex_hooks_file: str | None = None
+    codex_hooks_path = root / ".codex" / "hooks.json"
+    if codex_hooks_path.exists():
+        try:
+            data = json.loads(codex_hooks_path.read_text(encoding="utf-8"))
+            stop_hooks = data.get("Stop", [])
+            if _check_stop_hooks_for_gate(stop_hooks):
+                codex_registered = True
+                codex_hooks_file = str(codex_hooks_path)
+        except (json.JSONDecodeError, OSError):
+            pass
 
-        for entry in stop_hooks:
-            # Each entry can be a group dict with nested "hooks" list, or a
-            # raw string/dict from older formats.
-            if isinstance(entry, dict):
-                # Group format: {"matcher": "...", "hooks": [...]}
-                nested = entry.get("hooks", [])
-                for hook in nested:
-                    cmd = hook if isinstance(hook, str) else hook.get("command", "")
-                    if "goal-stop-gate" in cmd:
-                        return {
-                            "support_level": "native-stop-hook",
-                            "hook_registered": True,
-                            "enforcement": "active",
-                            "settings_file": str(path),
-                            "harness": "claude-code",
-                        }
-                # Also check if entry itself has a command key (flat format)
-                cmd = entry.get("command", "")
-                if "goal-stop-gate" in cmd:
-                    return {
-                        "support_level": "native-stop-hook",
-                        "hook_registered": True,
-                        "enforcement": "active",
-                        "settings_file": str(path),
-                        "harness": "claude-code",
-                    }
-            elif isinstance(entry, str) and "goal-stop-gate" in entry:
-                return {
-                    "support_level": "native-stop-hook",
-                    "hook_registered": True,
-                    "enforcement": "active",
-                    "settings_file": str(path),
-                    "harness": "claude-code",
-                }
+    active_any = claude_code_registered or codex_registered
 
-    # Hook file exists but not registered → status-only
+    if active_any:
+        harnesses = []
+        if claude_code_registered:
+            harnesses.append("claude-code")
+        if codex_registered:
+            harnesses.append("codex")
+        return {
+            "support_level": "native-stop-hook",
+            "hook_registered": True,
+            "enforcement": "active",
+            "claude_code": claude_code_registered,
+            "codex": codex_registered,
+            "active_any": True,
+            "harness": "+".join(harnesses),
+            **({"settings_file": claude_code_settings_file} if claude_code_settings_file else {}),
+            **({"codex_hooks_file": codex_hooks_file} if codex_hooks_file else {}),
+        }
+
+    # Hook file exists but not registered in any harness → status-only
     hook_path = root / "hooks" / "goal-stop-gate.sh"
     if hook_path.exists():
         return {
             "support_level": "status-only",
             "hook_registered": False,
-            "enforcement": "unavailable — hook exists but not registered in settings.json",
+            "enforcement": "unavailable — hook exists but not registered in settings.json or .codex/hooks.json",
             "hook_path": str(hook_path),
-            "harness": "claude-code",
+            "claude_code": False,
+            "codex": False,
+            "active_any": False,
+            "harness": "none",
         }
 
     # No hook at all
@@ -117,6 +145,9 @@ def detect_enforcement_level(project_dir: Path | None = None) -> dict[str, Any]:
         "support_level": "unsupported",
         "hook_registered": False,
         "enforcement": "unavailable — goal-stop-gate.sh not found",
+        "claude_code": False,
+        "codex": False,
+        "active_any": False,
         "harness": "unknown",
     }
 
