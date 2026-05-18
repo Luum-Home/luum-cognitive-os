@@ -294,6 +294,8 @@ core_file_allowlist:
 - lib/tool_budget_catalog.py
 - lib/work_queue.py
 - lib/worktree_audit.py
+- lib/performance_ledger.py  # ADR-201 Phase 1 semantic rollups (commit 1245f32e)
+- lib/promote_from_telemetry.py  # ADR-201 Phase 2 pattern detections (skill/provider/primitive)
 - packages/adaptive-workflow/lib/token_budget_monitor.py
 - packages/agent-coordination/lib/agent_bus.py
 - packages/agent-coordination/lib/agent_dashboard.py
