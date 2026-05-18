@@ -1,4 +1,15 @@
-# ADR-OSS-001: Open-Sourcing Cognitive OS
+# Open-Source Strategy (Historical, Superseded)
+
+> **SUPERSEDED 2026-05-18** — The authoritative licensing posture is FSL-1.1-MIT (Functional Source License → MIT after Change Date). See `LICENSE` and `README.md` for current source-available terms.
+>
+> This document is a historical strategy memo written before the FSL-1.1-MIT decision was made. The Apache-2.0 recommendation below is **not** the current license. The current repository uses FSL-1.1-MIT as documented in [`LICENSE`](../../../LICENSE), [`README.md`](../../../README.md), and [`docs/09-Quality/legal/license-faq.md`](../../09-Quality/legal/license-faq.md).
+
+---
+
+<details>
+<summary><strong>Historical recommendation (superseded)</strong> — expand to read the original Apache-2.0 strategy analysis</summary>
+
+## ADR-OSS-001: Open-Sourcing Cognitive OS
 
 ## Status
 Proposed
@@ -358,3 +369,5 @@ All current code, rules, hooks, skills, packages, tests, and documentation shoul
 - Maintaining code quality with external contributors
 - Preventing community fragmentation through forks
 - Protecting the "Cognitive OS" brand identity
+
+</details>
