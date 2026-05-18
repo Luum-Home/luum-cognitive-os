@@ -501,7 +501,7 @@ def aggregate_test_results(
 
     Delegates to ``lib.sprint_test_aggregator.aggregate()`` when importable.
     Falls back to an empty summary (all zeros) so callers always get a typed
-    object regardless of whether the aggregator is installed.
+    object when the aggregator is not installed.
 
     Parameters
     ----------
@@ -516,25 +516,36 @@ def aggregate_test_results(
     base = Path(project_dir) if project_dir else Path.cwd()
     try:
         from lib.sprint_test_aggregator import aggregate as _agg  # type: ignore
+        from lib.sprint_test_aggregator import detect_recent_sessions as _recent  # type: ignore
+    except ImportError:
+        return SprintTestSummary(
+            sprint_id=sprint_id,
+            ended_at=now_epoch(),
+            session_id=session_id,
+        )
 
-        totals = _agg(session_id=session_id, project_dir=base)
-        return SprintTestSummary(
-            sprint_id=sprint_id,
-            passed=totals.get("passed", 0),
-            failed=totals.get("failed", 0),
-            skipped=totals.get("skipped", 0),
-            error=totals.get("error", 0),
-            task_count=totals.get("task_count", 0),
-            has_regressions=bool(totals.get("regressions")),
-            ended_at=now_epoch(),
-            session_id=session_id,
-        )
-    except Exception:  # noqa: BLE001 — aggregator optional; never break sprint close
+    sessions_root = base / ".cognitive-os" / "sessions"
+    session_ids = [session_id] if session_id else _recent(limit=5, sessions_root=sessions_root)
+    if not session_ids:
         return SprintTestSummary(
             sprint_id=sprint_id,
             ended_at=now_epoch(),
             session_id=session_id,
         )
+
+    report = _agg(session_ids=session_ids, sessions_root=sessions_root)
+    totals = report.get("totals", {})
+    return SprintTestSummary(
+        sprint_id=sprint_id,
+        passed=int(totals.get("passed", 0) or 0),
+        failed=int(totals.get("failed", 0) or 0),
+        skipped=int(totals.get("skipped", 0) or 0),
+        error=int(totals.get("errors", 0) or 0),
+        task_count=len(report.get("records", []) or []),
+        has_regressions=bool(report.get("regressions")),
+        ended_at=now_epoch(),
+        session_id=session_id,
+    )
 
 
 def aggregate_test_results_stub(
