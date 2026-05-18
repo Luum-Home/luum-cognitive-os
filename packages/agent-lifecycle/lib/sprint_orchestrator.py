@@ -193,6 +193,28 @@ class SprintCompleted(CanonicalEvent):
     session_id: Optional[str] = None
 
 
+@dataclass
+class SprintTestSummary(CanonicalEvent):
+    """Aggregated test results emitted alongside :class:`SprintCompleted`.
+
+    Introduced in Beta wave (ADR-036 follow-up). Callers produce this via
+    :func:`aggregate_test_results`, which delegates to
+    ``lib.sprint_test_aggregator`` when available and falls back to the stub.
+    """
+
+    event_type: ClassVar[str] = "sprint_test_summary"
+
+    sprint_id: str = ""
+    passed: int = 0
+    failed: int = 0
+    skipped: int = 0
+    error: int = 0
+    task_count: int = 0
+    has_regressions: bool = False
+    ended_at: float = 0.0
+    session_id: Optional[str] = None
+
+
 # ---------------------------------------------------------------------------
 # Spec loading + validation
 # ---------------------------------------------------------------------------
@@ -470,19 +492,69 @@ def render_sprint_status_stub(manifest: SprintManifest) -> str:
     return "\n".join(lines)
 
 
+def aggregate_test_results(
+    sprint_id: str,
+    session_id: Optional[str] = None,
+    project_dir: Optional[Path] = None,
+) -> "SprintTestSummary":
+    """Aggregate test results across all tasks and return a :class:`SprintTestSummary`.
+
+    Delegates to ``lib.sprint_test_aggregator.aggregate()`` when importable.
+    Falls back to an empty summary (all zeros) so callers always get a typed
+    object regardless of whether the aggregator is installed.
+
+    Parameters
+    ----------
+    sprint_id:
+        The sprint whose results to aggregate.
+    session_id:
+        Optional COS session ID. When provided the aggregator reads
+        ``.cognitive-os/sessions/<session_id>/test-results.jsonl`` first.
+    project_dir:
+        Root of the project (CWD when *None*).
+    """
+    base = Path(project_dir) if project_dir else Path.cwd()
+    try:
+        from lib.sprint_test_aggregator import aggregate as _agg  # type: ignore
+
+        totals = _agg(session_id=session_id, project_dir=base)
+        return SprintTestSummary(
+            sprint_id=sprint_id,
+            passed=totals.get("passed", 0),
+            failed=totals.get("failed", 0),
+            skipped=totals.get("skipped", 0),
+            error=totals.get("error", 0),
+            task_count=totals.get("task_count", 0),
+            has_regressions=bool(totals.get("regressions")),
+            ended_at=now_epoch(),
+            session_id=session_id,
+        )
+    except Exception:  # noqa: BLE001 — aggregator optional; never break sprint close
+        return SprintTestSummary(
+            sprint_id=sprint_id,
+            ended_at=now_epoch(),
+            session_id=session_id,
+        )
+
+
 def aggregate_test_results_stub(
     sprint_id: str,
     task_results: List[Dict[str, Any]],
 ) -> Dict[str, Any]:
-    """MVP stub. Full implementation: parse per-task test output, sum
-    passed/failed/skipped, emit ``SprintTestSummary`` canonical events.
+    """Kept for API stability. New callers should use :func:`aggregate_test_results`.
 
-    Follow-up task: implement parsing for pytest, go test, jest, vitest.
+    Returns a dict for backward-compat with any code written against the MVP stub
+    signature. Internally delegates to the real aggregator when available.
     """
+    summary = aggregate_test_results(sprint_id=sprint_id)
     return {
         "sprint_id": sprint_id,
         "task_count": len(task_results),
-        "status": "stubbed — aggregation pending ADR-036 follow-up",
+        "passed": summary.passed,
+        "failed": summary.failed,
+        "skipped": summary.skipped,
+        "error": summary.error,
+        "has_regressions": summary.has_regressions,
     }
 
 
