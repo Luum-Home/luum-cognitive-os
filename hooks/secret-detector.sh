@@ -5,9 +5,8 @@
 # PreToolUse mode (Bash | Edit | Write):
 #   Detects literal secret patterns in tool_input.command / .content / .new_string
 #   and REDACTS them in place via hookSpecificOutput.updatedInput, allowing the
-#   tool call to proceed (ADR-023). Falls back to a hard block (exit 2) only when
-#   the redaction would render the command meaningless (e.g. the entire payload
-#   is one secret).
+#   tool call to proceed (ADR-023). When redaction would render the command meaningless (e.g. the entire payload
+#   is one secret), emits a native hookSpecificOutput block instead.
 #
 # PostToolUse mode (Edit | Write):
 #   Legacy behavior — scans the just-written file for env-var references that
@@ -170,10 +169,20 @@ pre_tool_use_redact() {
   ' 2>/dev/null | sed -E 's/\[REDACTED\]//g; s/[[:space:]]+//g')"
 
   if [ -z "$visible_after" ]; then
-    # Block — there is nothing meaningful left to execute.
-    echo "BLOCKED: tool input consisted entirely of secrets (${hits_dedup})." >&2
-    echo "Refactor the call to read the secret from \$ENV or a config file instead." >&2
-    exit 2
+    # Entire input was secrets — emit native hookSpecificOutput with
+    # permissionDecision: block instead of legacy exit 2.
+    local block_ctx
+    block_ctx="SECURITY WARNING: tool input consisted entirely of secrets (${hits_dedup}). The call was suppressed. Refactor to read the secret from \$ENV or a config file instead of passing it as a literal argument."
+    jq -c -n \
+      --arg ctx "$block_ctx" \
+      '{
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "block",
+          additionalContext: $ctx
+        }
+      }'
+    exit 0
   fi
 
   # Log the redaction for auditability.
