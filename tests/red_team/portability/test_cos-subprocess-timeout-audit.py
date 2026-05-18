@@ -81,6 +81,17 @@ def test_falsification_untimed_yields_warn(tmp_path: Path) -> None:
     assert f["stable_id"].startswith("adr-278/subprocess-timeout/")
 
 
+def test_ignores_docstrings_and_string_literals(tmp_path: Path) -> None:
+    _seed(tmp_path, "scripts/docstring_only.py", textwrap.dedent('''
+        """Example: subprocess.run(["x"]) should stay documentation."""
+        VALUE = "subprocess.run(['also-not-code'])"
+    '''))
+    cp = _run(tmp_path)
+    payload = json.loads(cp.stdout)
+    assert payload["summary"]["total_calls"] == 0
+    assert payload["findings"] == []
+
+
 def test_bilateral_allowlist_excludes_call(tmp_path: Path) -> None:
     _seed(tmp_path, "scripts/server.py", textwrap.dedent("""
         import subprocess
@@ -124,3 +135,32 @@ def test_findings_have_control_plane_shape(tmp_path: Path) -> None:
     for key in ("severity", "code", "message", "details", "stable_id", "adr"):
         assert key in f, f"missing {key}"
     assert f["adr"] == "ADR-278"
+
+
+def test_backfill_dry_run_ignores_docstrings(tmp_path: Path) -> None:
+    import importlib.machinery
+    import importlib.util
+    import types
+
+    script = REPO / "scripts" / "cos-subprocess-timeout-backfill"
+    loader = importlib.machinery.SourceFileLoader("cos_subprocess_timeout_backfill_test", str(script))
+    spec = importlib.util.spec_from_loader("cos_subprocess_timeout_backfill_test", loader)
+    assert spec is not None
+    module = types.ModuleType("cos_subprocess_timeout_backfill_test")
+    module.__spec__ = spec
+    module.__file__ = str(script)
+    module.__loader__ = loader
+    loader.exec_module(module)
+
+    target = tmp_path / "docstring_only.py"
+    target.write_text(textwrap.dedent('''
+        """Example: subprocess.run(["x"]) should stay documentation."""
+        VALUE = "subprocess.run(['also-not-code'])"
+    '''), encoding="utf-8")
+
+    patches = module.process_file(
+        target,
+        {"files": set(), "lines": set()},
+        dry_run=True,
+    )
+    assert patches == []

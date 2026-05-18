@@ -17,6 +17,7 @@ Timeouts applied:
 """
 
 import argparse
+import ast
 import re
 import subprocess
 import sys
@@ -59,8 +60,8 @@ def load_allowlist() -> dict:
     allowlisted_lines: set[tuple[str, int]] = set()
 
     for entry in entries:
-        if "file" in entry:
-            fp = entry["file"]
+        fp = entry.get("path") or entry.get("file")
+        if fp:
             if "line" in entry:
                 allowlisted_lines.add((fp, int(entry["line"])))
             else:
@@ -110,6 +111,41 @@ def classify_timeout(text: str) -> tuple[int, str]:
     if re.search(r'["\']git["\']', text):
         return TIMEOUT_GIT, "git"
     return TIMEOUT_DEFAULT, "default"
+
+
+def subprocess_run_call_spans(text: str) -> list[tuple[int, int, int]]:
+    """Return ``(start, end_exclusive, lineno)`` spans for real subprocess.run calls.
+
+    The ADR-278 backfill must never rewrite docstrings, comments, or plain
+    string literals containing the text ``subprocess.run(``.  AST spans give us
+    concrete call expressions only.
+    """
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return []
+
+    line_starts = [0]
+    for idx, ch in enumerate(text):
+        if ch == "\n":
+            line_starts.append(idx + 1)
+
+    spans: list[tuple[int, int, int]] = []
+    for node in ast.walk(tree):
+        if not (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "run"
+            and isinstance(node.func.value, ast.Name)
+            and node.func.value.id == "subprocess"
+            and getattr(node, "end_lineno", None) is not None
+            and getattr(node, "end_col_offset", None) is not None
+        ):
+            continue
+        start = line_starts[node.lineno - 1] + node.col_offset
+        end = line_starts[node.end_lineno - 1] + node.end_col_offset
+        spans.append((start, end, node.lineno))
+    return sorted(spans)
 
 
 def find_call_end(text: str, start: int) -> int:
@@ -240,7 +276,10 @@ def process_file(
     Find and patch all subprocess.run() calls without timeout= in the file.
     Returns list of (lineno, before, after) patches.
     """
-    rel_path = str(filepath.relative_to(REPO_ROOT))
+    try:
+        rel_path = str(filepath.relative_to(REPO_ROOT))
+    except ValueError:
+        rel_path = str(filepath)
     patches = []
 
     try:
@@ -257,33 +296,24 @@ def process_file(
         COUNTERS["skipped_allowlist"] += content.count("subprocess.run(")
         return patches
 
-    # Find all subprocess.run( occurrences
-    pattern = re.compile(r"subprocess\.run\(")
     result_parts = []
     last_end = 0
     any_modified = False
 
-    for m in pattern.finditer(content):
-        start = m.start()
-
-        # Find the complete call
-        call_end = find_call_end(content, start)
-        call_text = content[start : call_end + 1]
-
-        # Compute line number for this occurrence
-        lineno = content[:start].count("\n") + 1
+    for start, call_end, lineno in subprocess_run_call_spans(content):
+        call_text = content[start:call_end]
 
         # Check line-level allowlist
         if (rel_path, lineno) in allowlist["lines"]:
-            result_parts.append(content[last_end : call_end + 1])
-            last_end = call_end + 1
+            result_parts.append(content[last_end:call_end])
+            last_end = call_end
             COUNTERS["skipped_allowlist"] += 1
             continue
 
         # Already has timeout?
         if "timeout=" in call_text:
-            result_parts.append(content[last_end : call_end + 1])
-            last_end = call_end + 1
+            result_parts.append(content[last_end:call_end])
+            last_end = call_end
             COUNTERS["skipped_has_timeout"] += 1
             continue
 
@@ -295,8 +325,8 @@ def process_file(
             new_call_text = add_timeout_to_call(call_text, timeout_val, category)
         except Exception as e:
             print(f"WARNING: could not patch {rel_path}:{lineno}: {e}", file=sys.stderr)
-            result_parts.append(content[last_end : call_end + 1])
-            last_end = call_end + 1
+            result_parts.append(content[last_end:call_end])
+            last_end = call_end
             continue
 
         if new_call_text != call_text:
@@ -306,10 +336,10 @@ def process_file(
             any_modified = True
             result_parts.append(content[last_end:start])
             result_parts.append(new_call_text)
-            last_end = call_end + 1
+            last_end = call_end
         else:
-            result_parts.append(content[last_end : call_end + 1])
-            last_end = call_end + 1
+            result_parts.append(content[last_end:call_end])
+            last_end = call_end
 
     if any_modified:
         result_parts.append(content[last_end:])

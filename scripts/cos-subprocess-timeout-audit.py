@@ -32,9 +32,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import os
-import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,10 +44,17 @@ SCHEMA_VERSION = "subprocess-timeout-audit/v1"
 ALLOWLIST_PATH = "manifests/subprocess-timeout-allowlist.yaml"
 SCAN_AREAS = ("scripts", "hooks", "lib", "tests", "packages")
 SKIP_DIRS = {".venv", "__pycache__", "node_modules", ".git", "reference"}
-# Match subprocess.run(...) including its argument tuple. We use a balanced
-# parser rather than a regex so nested parens (lambdas, comprehensions) are
-# handled correctly.
 RUN_TOKEN = "subprocess.run("
+
+
+def _is_subprocess_run_call(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "run"
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "subprocess"
+    )
 
 
 def _resolve_project_dir(arg: str | None) -> Path:
@@ -81,34 +88,6 @@ def _load_allowlist(root: Path) -> set[str]:
     return out
 
 
-def _extract_call(text: str, start: int) -> tuple[str, int] | None:
-    """Return (call_substring, line_of_start) starting at subprocess.run(."""
-    depth = 0
-    i = start + len(RUN_TOKEN)
-    end = i
-    in_string = None
-    while end < len(text):
-        c = text[end]
-        if in_string:
-            if c == "\\":
-                end += 2
-                continue
-            if c == in_string:
-                in_string = None
-        elif c in ("'", '"'):
-            in_string = c
-        elif c == "(":
-            depth += 1
-        elif c == ")":
-            if depth == 0:
-                # Closing bracket of subprocess.run(...)
-                line_of_start = text[:start].count("\n") + 1
-                return text[start:end + 1], line_of_start
-            depth -= 1
-        end += 1
-    return None
-
-
 def scan_file(path: Path, root: Path) -> list[dict[str, Any]]:
     try:
         text = path.read_text(encoding="utf-8", errors="ignore")
@@ -116,17 +95,16 @@ def scan_file(path: Path, root: Path) -> list[dict[str, Any]]:
         return []
     rel = path.relative_to(root).as_posix()
     findings: list[dict[str, Any]] = []
-    cursor = 0
-    while True:
-        idx = text.find(RUN_TOKEN, cursor)
-        if idx == -1:
-            break
-        result = _extract_call(text, idx)
-        if not result:
-            break
-        call, line = result
-        cursor = idx + len(RUN_TOKEN)
-        has_timeout = bool(re.search(r"\btimeout\s*=", call))
+    try:
+        tree = ast.parse(text, filename=str(path))
+    except SyntaxError:
+        return []
+
+    for node in ast.walk(tree):
+        if not _is_subprocess_run_call(node):
+            continue
+        line = int(getattr(node, "lineno", 0) or 0)
+        has_timeout = any(keyword.arg == "timeout" for keyword in node.keywords)
         findings.append({
             "rel": rel,
             "line": line,
