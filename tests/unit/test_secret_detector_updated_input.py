@@ -76,7 +76,7 @@ class TestSecretDetectorUpdatedInput:
         assert "aws s3 ls" in updated_cmd
         assert "us-east-1" in updated_cmd
 
-        ctx = data.get("additionalContext", "")
+        ctx = data.get("hookSpecificOutput", {}).get("additionalContext", "")
         assert "redact" in ctx.lower() or "Redact" in ctx
 
     def test_redacts_github_token(self, tmp_path: Path) -> None:
@@ -153,9 +153,9 @@ class TestSecretDetectorUpdatedInput:
         assert isinstance(hso["updatedInput"], dict)
         # additionalContext is required so the orchestrator can surface
         # WHICH secrets were redacted.
-        assert "additionalContext" in data
-        assert isinstance(data["additionalContext"], str)
-        assert len(data["additionalContext"]) > 0
+        assert "additionalContext" in hso
+        assert isinstance(hso["additionalContext"], str)
+        assert len(hso["additionalContext"]) > 0
 
 
     def test_redacts_anthropic_key(self, tmp_path: Path) -> None:
@@ -197,17 +197,20 @@ class TestSecretDetectorUpdatedInput:
             f"Expected silent allow, got stdout={result.stdout!r}"
         )
 
-    def test_meaningless_after_redaction_blocks(self, tmp_path: Path) -> None:
+    def test_meaningless_after_redaction_blocks_natively(self, tmp_path: Path) -> None:
         """Fallback contract: when the entire payload IS the secret, redaction
-        would leave nothing meaningful — the hook must block (exit 2) with a
-        helpful message instead of running an empty command."""
+        would leave nothing meaningful — the hook must emit a native
+        hookSpecificOutput block while exiting 0, not legacy exit 2."""
         payload = _pre_payload(
             "Bash",
             {"command": "AKIAIOSFODNN7EXAMPLE"},
         )
         result = _run(payload, env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)})
-        assert result.returncode == 2, (
-            "Hook must block when redaction would yield an empty command, "
+        assert result.returncode == 0, (
+            "Hook must use native block output instead of legacy exit 2, "
             f"got {result.returncode}"
         )
-        assert "BLOCKED" in result.stderr or "blocked" in result.stderr.lower()
+        data = json.loads(result.stdout.strip())
+        hso = data["hookSpecificOutput"]
+        assert hso["permissionDecision"] == "block"
+        assert hso["additionalContext"]

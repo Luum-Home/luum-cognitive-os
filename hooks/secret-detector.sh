@@ -210,9 +210,9 @@ pre_tool_use_redact() {
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         permissionDecision: "allow",
-        updatedInput: $updated
-      },
-      additionalContext: $ctx
+        updatedInput: $updated,
+        additionalContext: $ctx
+      }
     }'
 
   exit 0
