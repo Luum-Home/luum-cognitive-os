@@ -1,6 +1,14 @@
-# ADR-275 — SessionStart hook wiring (staged)
+# ADR-275 — SessionStart hook wiring (deployed)
 
-**Status**: STAGED, not yet deployed.
+**Status**: DEPLOYED 2026-05-18. Verified wired in all three harnesses:
+
+- `.claude/settings.json` — invokes `hooks/cos-session-start-projector.sh` via the timing wrapper.
+- `.codex/hooks.json` — invokes the same hook conditionally on file existence.
+- `.cognitive-os/cos-runner-hooks.json` — registered as `cos-session-start-projector` with `async: false`.
+
+The runbook below is kept as the historical staging artifact. To verify
+current state, run `grep cos-session-start-projector .claude/settings.json
+.codex/hooks.json .cognitive-os/cos-runner-hooks.json`.
 
 The session-start projector (`scripts/cos-session-start-projector`) is
 operational. What's staged here are the per-harness `SessionStart` hook
