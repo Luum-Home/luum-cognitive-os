@@ -7174,50 +7174,6 @@ primitives:
   metrics_file: none
   consumer_accessibility: maintainer-only
   consumer_access_next_action: Keep out of default consumer-project projection.
-- id: hooks/task-completed.sh
-  kind: hook
-  owner_adr: ADR-126
-  lifecycle_state: demoted
-  maturity: blocking
-  distribution: team
-  consumer_accessibility: lifecycle-declared-shared-surface
-  governance_class: runtime-safety
-  risk_class: blocking
-  supported_harnesses:
-  - claude
-  projection_targets:
-  - hooks/task-completed.sh
-  runtime_projection: false
-  behavior_evidence: static-exit2-detected
-  evidence_commands:
-  - bash -n hooks/task-completed.sh
-  - python3 -m pytest tests/unit/test_event_bus.py tests/unit/test_task_bridge.py
-    -q
-  rollback_or_repair_command: Disable or demote hooks/task-completed.sh in generated
-    harness settings, then regenerate projections.
-  sunset_criteria: Keep demoted until task completion events show sustained positive
-    ROI and cross-harness projection support; archive after 90 days with no opt-in
-    use.
-  demotion_evidence:
-    demoted_on: '2026-05-03'
-    primary_signal: semantic-portability
-    reason: COS extension hook is not required for default team/core adoption; demotion
-      proves ADR-126 inactive lifecycle semantics without deleting the primitive.
-    control_plane_commands:
-    - scripts/cos-active-primitive-index --json
-    - scripts/cos-adoption-profile --profile team
-    - scripts/cos-boring-reliability --profile core
-    expected_effect: default_visible_count decreases while hooks/task-completed.sh
-      remains available for opt-in/manual task systems.
-  latency_budget_ms: 1000
-  repair_message: task-completed blocked the action; follow the hook message, repair
-    the unsafe state, or demote only with operator approval.
-  false_positive_tests:
-  - tests/unit/test_event_bus.py
-  - tests/unit/test_task_bridge.py
-  docs_claim_level: blocking
-  exit_behavior: exit_2
-  metrics_file: .cognitive-os/metrics/task-completed.jsonl
 - id: hooks/task-created.sh
   kind: hook
   owner_adr: ADR-126
@@ -13247,7 +13203,7 @@ primitives:
 - id: scripts/adr_implementation_ledger.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13315,7 +13271,7 @@ primitives:
 - id: scripts/agent_work_ledger.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13376,7 +13332,7 @@ primitives:
 - id: scripts/approval_ledger.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13405,7 +13361,7 @@ primitives:
 - id: scripts/aspirational_audit.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
@@ -13433,7 +13389,7 @@ primitives:
 - id: scripts/check_absolute_paths.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13595,7 +13551,7 @@ primitives:
 - id: scripts/check_test_ratchet.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13624,7 +13580,7 @@ primitives:
 - id: scripts/claim_task.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -13677,7 +13633,7 @@ primitives:
 - id: scripts/cos
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: delivery-structure
@@ -13705,7 +13661,7 @@ primitives:
 - id: scripts/cos-action-receipt
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -14724,7 +14680,7 @@ primitives:
 - id: scripts/cos-document-ingest
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -14947,7 +14903,7 @@ primitives:
 - id: scripts/cos-fingerprint.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15005,7 +14961,7 @@ primitives:
 - id: scripts/cos-gate-stack.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15034,7 +14990,7 @@ primitives:
 - id: scripts/cos-git-sync.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15153,7 +15109,7 @@ primitives:
 - id: scripts/cos-headless-pipeline
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15236,7 +15192,7 @@ primitives:
 - id: scripts/cos-headless-safe-mode
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15612,7 +15568,7 @@ primitives:
 - id: scripts/cos-merge-queue-bench.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15669,7 +15625,7 @@ primitives:
 - id: scripts/cos-merge-queue.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15781,7 +15737,7 @@ primitives:
 - id: scripts/cos-orphan-process-audit.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15862,7 +15818,7 @@ primitives:
 - id: scripts/cos-pending-truth-verify
   kind: script
   owner_adr: ADR-273
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: advisory
   distribution: team
   governance_class: meta-governance
@@ -15888,7 +15844,7 @@ primitives:
 - id: scripts/cos-policy-settings-projection
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15940,7 +15896,7 @@ primitives:
 - id: scripts/cos-portable-ai-consumer-impact
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -15969,7 +15925,7 @@ primitives:
 - id: scripts/cos-portable-ai-consumer-package-smoke
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16234,7 +16190,7 @@ primitives:
 - id: scripts/cos-provider-call
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16495,7 +16451,7 @@ primitives:
 - id: scripts/cos-repair
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16524,7 +16480,7 @@ primitives:
 - id: scripts/cos-repo-map
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16553,7 +16509,7 @@ primitives:
 - id: scripts/cos-run-task
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16608,7 +16564,7 @@ primitives:
 - id: scripts/cos-safe-clean
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16773,7 +16729,7 @@ primitives:
 - id: scripts/cos-session-branch.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -16855,7 +16811,7 @@ primitives:
 - id: scripts/cos-session-start-projector
   kind: script
   owner_adr: ADR-275
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: advisory
   distribution: team
   governance_class: meta-governance
@@ -17018,7 +16974,7 @@ primitives:
 - id: scripts/cos-team
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17194,7 +17150,7 @@ primitives:
 - id: scripts/cos-validate
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17251,7 +17207,7 @@ primitives:
 - id: scripts/cos-validation-capsule.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17366,7 +17322,7 @@ primitives:
 - id: scripts/cos-wiki-ingest
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17614,7 +17570,7 @@ primitives:
 - id: scripts/cos_branch_lock.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17643,7 +17599,7 @@ primitives:
 - id: scripts/cos_cleanup_preserved_wip.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17672,7 +17628,7 @@ primitives:
 - id: scripts/cos_closure_discipline_audit.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: maintainer
   governance_class: runtime-safety
@@ -17700,7 +17656,7 @@ primitives:
 - id: scripts/cos_concurrent_status.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -17782,7 +17738,7 @@ primitives:
 - id: scripts/cos_coordination_status.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18058,7 +18014,7 @@ primitives:
 - id: scripts/cos_key_learnings_capture.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18115,7 +18071,7 @@ primitives:
 - id: scripts/cos_preamble_budget.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18290,7 +18246,7 @@ primitives:
 - id: scripts/cos_remote_branch_triage.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18319,7 +18275,7 @@ primitives:
 - id: scripts/cos_run_task.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18403,7 +18359,7 @@ primitives:
 - id: scripts/cos_session_coordination.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18432,7 +18388,7 @@ primitives:
 - id: scripts/cos_task_claims.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18460,7 +18416,7 @@ primitives:
 - id: scripts/cos_test_quality_audit.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18516,7 +18472,7 @@ primitives:
 - id: scripts/cos_wip_safety_score.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18572,7 +18528,7 @@ primitives:
 - id: scripts/cos_worktree_sweeper.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18752,7 +18708,7 @@ primitives:
 - id: scripts/cross_session_reconciler.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -18928,7 +18884,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -18953,7 +18909,7 @@ primitives:
 - id: scripts/docs_execution_audit.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
@@ -19010,7 +18966,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -19096,7 +19052,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -19357,7 +19313,7 @@ primitives:
 - id: scripts/hook-timing-wrapper.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: delivery-structure
@@ -19411,7 +19367,7 @@ primitives:
 - id: scripts/ide-bridge.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -19494,7 +19450,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
@@ -19582,7 +19538,7 @@ primitives:
   owner_adr: ADR-146
   lifecycle_state: candidate
   maturity: observe
-  distribution: team
+  distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
   governance_class: meta-governance
   risk_class: advisory
@@ -19693,7 +19649,7 @@ primitives:
 - id: scripts/invariant_check_helper.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
@@ -19922,7 +19878,7 @@ primitives:
 - id: scripts/orchestrator_claim_gate.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -19951,7 +19907,7 @@ primitives:
 - id: scripts/orphan_overwrite_detector.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20027,7 +19983,7 @@ primitives:
 - id: scripts/portable_ai_consumer_package.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20107,7 +20063,7 @@ primitives:
 - id: scripts/precommit_content_hash.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20556,7 +20512,7 @@ primitives:
 - id: scripts/push_collision_detect.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20612,7 +20568,7 @@ primitives:
 - id: scripts/python_stdin_antipattern_audit.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20641,7 +20597,7 @@ primitives:
 - id: scripts/queue_throughput_bench.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20698,7 +20654,7 @@ primitives:
 - id: scripts/redteam_aggregate.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: maintainer
   governance_class: runtime-safety
@@ -20725,7 +20681,7 @@ primitives:
 - id: scripts/resource_lease.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -20754,7 +20710,7 @@ primitives:
 - id: scripts/risk_register.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
@@ -20838,7 +20794,7 @@ primitives:
 - id: scripts/run-redteam-scenario.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
@@ -20946,7 +20902,7 @@ primitives:
 - id: scripts/security_audit_writer.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
@@ -21028,7 +20984,7 @@ primitives:
 - id: scripts/session_event_bus.py
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -21281,7 +21237,7 @@ primitives:
 - id: scripts/so-emergency-stop.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: maintainer
   consumer_accessibility: maintainer-only
@@ -21407,7 +21363,7 @@ primitives:
 - id: scripts/stash-leak-alarm.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -21625,7 +21581,7 @@ primitives:
 - id: scripts/topology-discover.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   consumer_accessibility: lifecycle-declared-shared-surface
@@ -21766,7 +21722,7 @@ primitives:
 - id: scripts/weekly-aspirational-audit.sh
   kind: script
   owner_adr: ADR-146
-  lifecycle_state: candidate
+  lifecycle_state: sandbox
   maturity: observe
   distribution: team
   governance_class: runtime-safety
