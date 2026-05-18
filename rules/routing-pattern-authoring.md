@@ -51,3 +51,7 @@ fallback path against `manifests/routing-benchmark-corpus-multilingual.yaml`
 - ADR-296 — semantic multilingual routing path
 - ADR-298 — routing benchmark harness
 - `rules/RULES-COMPACT.md` §11 Skill Lifecycle
+
+## Contextual Trigger
+
+Load this rule when editing `routing_patterns:` in `SKILL.md` files, updating skill routing regexes, changing multilingual routing behavior, or reviewing ADR-296 routing fallback contracts.
