@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 178
+Total skills: 177
 
 ## os (21)
 
@@ -61,7 +61,7 @@ Total skills: 178
 | primitive-classifier | Classify a new agentic primitive (skill, hook, rule, lib) as CORE or |
 | primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |
 | primitive-usage-map | Static primitive consumer map for scripts, hooks, skills, and rules. |
-| product-answer | Answer COS product/commercial questions from cached evidence cards, |
+| product-answer | Answer whether COS helps developers and teams, and answer COS product/commercial |
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of |
 | pyrefly-typecheck | Use when Python files changed and you need fast advisory static type/API-shape checking with Pyrefl… |
 | queue-drain | Periodic agent queue drain and health check. |
@@ -77,7 +77,7 @@ Total skills: 178
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints. |
 
-## both (39)
+## both (38)
 
 | Skill | Description |
 |-------|-------------|
@@ -146,14 +146,14 @@ Total skills: 178
 | evaluate-plan | Evaluate any existing plan file with a 0-50 scoring system. |
 | exhaustive-prompt | Generate exhaustive agent prompts with scope enumeration and acceptance |
 | gpu-sandbox | Execute Python code in Jupyter runtime for compute-heavy tasks (ML, |
-| impact-analysis | '"Analyze change impact: imports, tests, configs, services, and SDD |
+| impact-analysis | "Analyze downstream blast radius: imports, tests, configs, services, and SDD artifacts… |
 | install-recommended | 'Use when you need this Cognitive OS skill: Detect project stack and |
 | invariant-check | Scans a target file pair (ADR + lib, or similar) for numeric-constant |
 | issue-pipeline | Fetch a GitHub issue, run the SDD pipeline, and open a pull request |
 | jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis, Python snippets… |
 | memu-context | Query memU proactive memory for relevant context before starting work |
 | ops-runbook | Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under |
-| optimize-skill | Optimizar un skill de Claude Code iterativamente usando evals, midiendo |
+| optimize-skill | Iteratively optimize a Claude Code skill with evaluations, score measurement, and prompt refinement. |
 | persistent-agent | Create persistent agents that maintain their own state across sessions. |
 | phoenix-trace-ui | Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker). |
 | plan-bug | Create a bug fix plan with root cause analysis and evaluation scoring. |

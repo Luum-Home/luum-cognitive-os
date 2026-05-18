@@ -98,7 +98,7 @@ Use a hybrid design:
 - Requires adversarial verify before archive.
 
 
-## Open Decisions Before Apply
+## Resolved Decisions
 
-- **OD-001 — Evaluator strategy**: decide whether MVP requires a model-backed separate evaluator or may start with deterministic contract evaluation plus a model-adapter seam. Do not describe deterministic-only evaluation as a separate evaluator until this is resolved.
-- **OD-002 — Token/cost budget**: decide whether to implement real token/cost enforcement by reading dispatch metrics or remove token/cost fields from the MVP and keep such limits as natural-language constraints only.
+- **OD-001 — Evaluator strategy** (resolved 2026-05-18, operator): **Self-eval deterministic**. The MVP evaluator is an in-process checker that reads structured evidence packets using declarative rules: `file_exists`, `test_command_passes`, `regex_match`, `command_exit_zero`. No model evaluator. No Haiku. A seam for future model evaluators is noted in design §6 but MUST NOT be wired in MVP.
+- **OD-002 — Token/cost budget** (resolved 2026-05-18, operator): **All four budget dimensions enforced in MVP**: `max_turns`, `wall_clock_minutes`, `max_tokens`, `max_cost_usd`. Token and cost dimensions are wired through `lib/dispatch.py` metrics — the `DispatchResult` fields (`input_tokens`, `output_tokens`, `cost_usd`) and the cumulative session record from `.cognitive-os/metrics/llm-dispatch.jsonl` (one JSONL line per dispatch, fields: `tokens_in`, `tokens_out`, `cost_usd`, `ts`, `dispatch_id`). The `_metrics_path()` helper in `lib/dispatch.py` resolves the canonical path.

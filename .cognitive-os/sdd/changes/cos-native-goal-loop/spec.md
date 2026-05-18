@@ -45,9 +45,9 @@ COS should use the host-compatible subset: Stop-hook loop, separate evaluator, C
 
 **WHEN** the host Stop event fires and an active goal is not complete, **THE SYSTEM SHALL** block the stop and return continuation guidance that references the evaluator reason and the next unmet acceptance check.
 
-### REQ-005 — Separate evaluator
+### REQ-005 — Deterministic self-evaluator
 
-**WHEN** an active goal has new evidence, **THE SYSTEM SHALL** evaluate completion through an evaluator path that is independent from the worker turn and persist the evaluator verdict and reason. If the MVP uses deterministic contract evaluation, it must be explicitly scoped as deterministic evaluation and must not be represented as model-based separate evaluation.
+**WHEN** an active goal has new evidence, **THE SYSTEM SHALL** evaluate completion through an in-process deterministic checker that reads structured evidence packets using declarative rule types: `file_exists`, `test_command_passes`, `regex_match`, and `command_exit_zero`. The evaluator persists the verdict and reason. This evaluator is explicitly scoped as deterministic self-evaluation; it is NOT a model-backed separate evaluator. The implementation MUST expose a named seam (e.g., `GoalEvaluator.backend`) for a future model adapter, but the seam MUST NOT be wired or callable in MVP. (OD-001 resolved 2026-05-18, operator)
 
 ### REQ-006 — Proxy evidence rejection
 
@@ -59,7 +59,13 @@ COS should use the host-compatible subset: Stop-hook loop, separate evaluator, C
 
 ### REQ-008 — Budget limit transition
 
-**WHEN** max turns or wall-clock budget is exhausted before completion, **THE SYSTEM SHALL** transition the goal to `budget_limited`, persist a wind-down reason, and stop continuation without marking the goal complete. Token and cost budgets SHALL NOT be accepted as structured fields until a concrete metrics reader enforces them.
+**WHEN** any of the four budget dimensions is exhausted before completion, **THE SYSTEM SHALL** transition the goal to `budget_limited`, persist a wind-down reason, and stop continuation without marking the goal complete. All four dimensions are enforced in MVP: `max_turns` (turn counter), `wall_clock_minutes` (wall-clock since `started_at_epoch`), `max_tokens` (cumulative `tokens_in + tokens_out` read from `.cognitive-os/metrics/llm-dispatch.jsonl` via `lib/dispatch._metrics_path()`), and `max_cost_usd` (cumulative `cost_usd` from the same log). (OD-002 resolved 2026-05-18, operator)
+
+**Acceptance criteria for each dimension**:
+- AC-008a: Unit test exhausts `max_turns`; goal transitions to `budget_limited`, not `complete`.
+- AC-008b: Unit test exhausts `wall_clock_minutes`; goal transitions to `budget_limited`, not `complete`.
+- AC-008c: Unit test exhausts `max_tokens` by injecting mock dispatch-metric records; goal transitions to `budget_limited`, not `complete`.
+- AC-008d: Unit test exhausts `max_cost_usd` by injecting mock dispatch-metric records; goal transitions to `budget_limited`, not `complete`.
 
 ### REQ-009 — Pause
 
@@ -169,4 +175,4 @@ No goal may be created without a bounded stop condition: max turns, wall-clock b
 
 ## 8. Apply Gate
 
-`/sdd-apply` MUST NOT start until OD-001 and OD-002 from the proposal are resolved in this spec/design/tasks set. Until then, evaluator strategy and token/cost budget enforcement are intentionally unresolved.
+OD-001 and OD-002 are resolved (2026-05-18, operator). `/sdd-apply` may proceed once all tasks reflect the resolutions: deterministic self-evaluator with `file_exists`, `test_command_passes`, `regex_match`, `command_exit_zero` rule types (OD-001) and all four budget dimensions wired through dispatch metrics (OD-002).
