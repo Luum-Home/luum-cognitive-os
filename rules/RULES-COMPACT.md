@@ -57,6 +57,9 @@ Lane registry at `.cognitive-os/test-lanes.yaml` is single source of truth (read
 ### 16. Session-Close Documentation-Truth Discipline
 Every documentation contradiction discovered during a session MUST terminate in (a) pointwise fix + claim added to `manifests/documentation-truth-claims.yaml`, OR (b) explicit debt entry in the pending-truth ledger — never as a comment/bullet alone. Enforced at `/session-wrapup` Step 2b (sub-step 6), at `cos-adr-close` lifecycle transitions, and via the control-plane `documentation_truth` audit. Criterion for what goes in documentation-truth (volatile facts only: coverage, harnesses, gaps, authority, reports, ADR status, manifest-derived lists) at [`session-close-doc-truth`] — see ADR-277 + ADR-275.
 
+### 17. Goal Loop
+Native goal-stop contract: operator sets `--goal` before session; evaluator checks evidence at each agent stop; budget enforcement. `cos goal set/status/clear` CLI. Gate hook registered standard+paranoid profiles. [`goal-loop`].
+
 ## Contextual (loaded on trigger)
 
 **Team**: [`squad-protocol`] auto-reconfig <0.80. [`estimation-calibration`] medium+. [`self-improvement-protocol`] weekly, max 5 changes. SO self-build maturity tracked via `/dogfood-score` (`scripts/dogfood_score.py` + `lib/dogfood_scorer.py`; ADR-059 §KPI ledger) [`dogfood-score`].
