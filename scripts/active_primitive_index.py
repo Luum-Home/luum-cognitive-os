@@ -328,6 +328,17 @@ def build_index(
     }
 
 
+def print_list(index: dict[str, Any], tier: str | None = None) -> None:
+    """Emit one line per active primitive: <tier>\t<id>."""
+    primitives = index.get("primitives", [])
+    active = [p for p in primitives if p.get("active")]
+    if not active:
+        print("(no active primitives in selection)", file=sys.stderr)
+        return
+    for p in sorted(active, key=lambda x: (x["tier"], x["id"])):
+        print(f"{p['tier']}\t{p['id']}")
+
+
 def print_human(index: dict[str, Any]) -> None:
     summary = index["summary"]
     coverage = summary["runtime_coverage"]
@@ -361,13 +372,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--tier", choices=TIERS, help="filter primitives by adoption tier")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON; this is the default")
     parser.add_argument("--human", action="store_true", help="emit a compact human summary")
+    parser.add_argument("--list", action="store_true", dest="list_primitives", help="list active primitives one per line: <tier>\\t<id>")
     args = parser.parse_args(argv)
     try:
         index = build_index(args.manifest, args.tier, args.project_dir)
     except ActivePrimitiveIndexError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
-    if args.human:
+    if args.list_primitives:
+        print_list(index, args.tier)
+    elif args.human:
         print_human(index)
     else:
         print(json.dumps(index, indent=2, sort_keys=True))

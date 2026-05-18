@@ -1,0 +1,226 @@
+#!/usr/bin/env python3
+# SCOPE: os-only
+"""
+Lean/Core 5-minute proof path.
+
+Runs the core install smoke check sequence and reports whether the Lean/Core
+distribution surface is small enough for first-run docs and completes within
+the 5-minute budget.
+
+Usage:
+    scripts/cos-lean-core-5min-proof [--dry-run] [--json] [--timeout SECONDS]
+
+Exit codes:
+    0  all checks passed within time budget
+    1  one or more checks failed or timeout exceeded
+    2  usage / configuration error
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+import time
+from dataclasses import asdict, dataclass, field
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_TIMEOUT_SECONDS = 300  # 5 minutes
+LEAN_CORE_SURFACE_FAIL_THRESHOLD = 25  # matches VISIBLE_FAIL_THRESHOLD in active_primitive_index.py
+
+
+@dataclass
+class ProofStep:
+    name: str
+    command: list[str]
+    description: str
+    passed: bool = False
+    skipped: bool = False
+    elapsed_s: float = 0.0
+    output: str = ""
+    error: str = ""
+
+
+@dataclass
+class ProofReport:
+    proof: str = "lean-core-5min"
+    dry_run: bool = False
+    timeout_s: int = DEFAULT_TIMEOUT_SECONDS
+    total_elapsed_s: float = 0.0
+    status: str = "pending"
+    steps: list[ProofStep] = field(default_factory=list)
+    summary: str = ""
+    residual_debt: list[str] = field(default_factory=list)
+
+
+def _run_step(step: ProofStep, dry_run: bool, deadline: float) -> None:
+    if dry_run:
+        step.skipped = True
+        step.output = f"[dry-run] would run: {' '.join(step.command)}"
+        step.passed = True
+        return
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        step.skipped = True
+        step.error = "timeout budget exhausted before step"
+        return
+    t0 = time.monotonic()
+    try:
+        result = subprocess.run(
+            step.command,
+            capture_output=True,
+            text=True,
+            timeout=min(remaining, DEFAULT_TIMEOUT_SECONDS),
+            cwd=str(REPO_ROOT),
+        )
+        step.elapsed_s = time.monotonic() - t0
+        step.output = result.stdout[:2000]
+        step.error = result.stderr[:1000]
+        step.passed = result.returncode == 0
+    except subprocess.TimeoutExpired:
+        step.elapsed_s = time.monotonic() - t0
+        step.error = "step timed out"
+        step.passed = False
+    except FileNotFoundError as exc:
+        step.elapsed_s = time.monotonic() - t0
+        step.error = f"command not found: {exc}"
+        step.passed = False
+
+
+def build_steps() -> list[ProofStep]:
+    active_index_script = str(REPO_ROOT / "scripts" / "active_primitive_index.py")
+    return [
+        ProofStep(
+            name="lean-surface-count",
+            command=[sys.executable, active_index_script, "--tier", "core", "--human"],
+            description="Verify core-tier active primitive surface is within lean-docs threshold",
+        ),
+        ProofStep(
+            name="lean-surface-list",
+            command=[sys.executable, active_index_script, "--tier", "core", "--list"],
+            description="List core-tier active primitives (must be non-empty, must contain known entries)",
+        ),
+        ProofStep(
+            name="governance-readiness-json",
+            command=[str(REPO_ROOT / "scripts" / "cos"), "governance", "readiness", "--json"],
+            description="cos governance readiness --json exits without crash for lean/core operator",
+        ),
+        ProofStep(
+            name="smoke-tests",
+            command=[
+                sys.executable, "-m", "pytest",
+                "tests/smoke/",
+                "-q", "--tb=short", "-x",
+                "--timeout=60",
+            ],
+            description="Smoke test suite passes within budget",
+        ),
+    ]
+
+
+def evaluate_surface_count(steps: list[ProofStep]) -> tuple[bool, str]:
+    """Check that the lean-surface-list step output contains real primitives."""
+    list_step = next((s for s in steps if s.name == "lean-surface-list"), None)
+    if list_step is None or not list_step.passed:
+        return False, "lean-surface-list step not available"
+    lines = [ln for ln in list_step.output.splitlines() if ln.strip()]
+    if not lines:
+        return False, "lean/core active surface list is empty — no primitives registered"
+    # Verify at least one known-active core hook is present
+    known_core_hooks = {"hooks/destructive-git-blocker.sh", "hooks/direct-main-guard.sh"}
+    ids = {parts[1] for ln in lines if (parts := ln.split("\t")) and len(parts) >= 2}
+    overlap = known_core_hooks & ids
+    if not overlap:
+        return (
+            False,
+            f"lean/core surface list does not include expected primitives; found {len(ids)} entries",
+        )
+    count = len(lines)
+    if count > LEAN_CORE_SURFACE_FAIL_THRESHOLD:
+        return (
+            False,
+            f"lean/core active surface has {count} primitives — exceeds DX threshold of {LEAN_CORE_SURFACE_FAIL_THRESHOLD}",
+        )
+    return True, f"lean/core surface: {count} active primitives (within DX threshold)"
+
+
+def run_proof(timeout_s: int, dry_run: bool) -> ProofReport:
+    report = ProofReport(dry_run=dry_run, timeout_s=timeout_s)
+    steps = build_steps()
+    deadline = time.monotonic() + timeout_s
+    t0 = time.monotonic()
+    for step in steps:
+        _run_step(step, dry_run, deadline)
+        report.steps.append(step)
+
+    report.total_elapsed_s = round(time.monotonic() - t0, 2)
+
+    # Post-process surface count check
+    surface_ok, surface_msg = evaluate_surface_count(steps)
+    passed_count = sum(1 for s in steps if s.passed and not s.skipped)
+    skipped_count = sum(1 for s in steps if s.skipped)
+    failed_steps = [s.name for s in steps if not s.passed and not s.skipped]
+
+    if dry_run:
+        report.status = "dry-run"
+        report.summary = f"dry-run: {len(steps)} steps would run in ≤{timeout_s}s"
+    elif failed_steps:
+        report.status = "fail"
+        report.summary = f"FAIL: {len(failed_steps)} step(s) failed: {', '.join(failed_steps)}"
+    elif not surface_ok:
+        report.status = "fail"
+        report.summary = f"FAIL: surface check failed — {surface_msg}"
+    elif report.total_elapsed_s > timeout_s:
+        report.status = "fail"
+        report.summary = f"FAIL: proof took {report.total_elapsed_s}s — exceeds {timeout_s}s budget"
+    else:
+        report.status = "pass"
+        report.summary = (
+            f"PASS: lean/core proof completed in {report.total_elapsed_s}s "
+            f"({passed_count} steps passed, {skipped_count} skipped). {surface_msg}"
+        )
+
+    report.residual_debt = [
+        "Real install-from-scratch proof (fresh venv + cos install) requires isolated environment — deferred to CI matrix.",
+        "Multi-harness lean/core proof (Codex, Gemini) not yet automated.",
+    ]
+    return report
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--dry-run", action="store_true", help="skip actual command execution; validate flags and emit report skeleton")
+    parser.add_argument("--json", action="store_true", dest="emit_json", help="emit machine-readable JSON report")
+    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS, metavar="SECONDS", help=f"total proof budget in seconds (default {DEFAULT_TIMEOUT_SECONDS})")
+    args = parser.parse_args(argv)
+
+    if args.timeout < 10:
+        print("ERROR: --timeout must be at least 10 seconds", file=sys.stderr)
+        return 2
+
+    report = run_proof(timeout_s=args.timeout, dry_run=args.dry_run)
+
+    if args.emit_json:
+        data = asdict(report)
+        print(json.dumps(data, indent=2))
+    else:
+        print(f"proof: {report.proof}")
+        print(f"status: {report.status}")
+        print(f"elapsed: {report.total_elapsed_s}s / {report.timeout_s}s budget")
+        print(f"summary: {report.summary}")
+        for step in report.steps:
+            flag = "PASS" if step.passed else ("SKIP" if step.skipped else "FAIL")
+            print(f"  [{flag}] {step.name} ({step.elapsed_s:.1f}s): {step.description}")
+            if not step.passed and step.error:
+                print(f"         error: {step.error[:200]}")
+        if report.residual_debt:
+            print("residual debt:")
+            for item in report.residual_debt:
+                print(f"  - {item}")
+
+    return 0 if report.status in {"pass", "dry-run"} else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

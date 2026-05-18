@@ -1,0 +1,98 @@
+schema_version: external-review-scenarios.v1
+purpose: >-
+  Explicit enumeration of all border-case scenarios that external architecture
+  reviewers identified as critical proof points. Each scenario MUST have either
+  an automated behavior/chaos test or an explicit manual proof before Phase 4
+  acceptance can be checked. See external-review-readiness-plan.md Phase 4.
+coverage_adrs:
+  - ADR-218  # history sanitization recovery (execute slice)
+  - ADR-245  # production-source read-only chaos guard
+  - ADR-246  # release-transaction freeze
+required_fields:
+  - id
+  - description
+  - failure_mode
+  - expected_safe_action
+  - coverage_status
+  - evidence
+
+scenarios:
+  - id: two-ides-same-branch
+    description: >-
+      Two IDE sessions (e.g. VS Code + Cursor) both open the same branch and
+      attempt concurrent writes.
+    failure_mode: silent merge conflict or data loss
+    expected_safe_action: block second writer; emit branch-lease conflict with holder metadata
+    owner_primitive: branch-writer-lease
+    coverage_status: automated
+    evidence:
+      adr: ADR-239
+      test: tests/behavior/test_branch_writer_lease.py
+      commit: ADR-239-isolated-worktree-default
+
+  - id: two-agents-same-file
+    description: >-
+      Two agents attempt concurrent edits on the same file within the same
+      session or across sessions sharing a branch.
+    failure_mode: last-write-wins overwrites first agent's work silently
+    expected_safe_action: block second writer; preserve winning edit; emit lock metadata
+    owner_primitive: cooperative-edit-lock
+    coverage_status: automated
+    evidence:
+      adr: ADR-118
+      test: tests/behavior/test_branch_writer_lease.py
+      manifest: manifests/multi-ide-swarm-scenarios.yaml#same-file-race
+
+  - id: agent-blocked-after-pre-snapshot
+    description: >-
+      An agent is blocked mid-task after a pre-snapshot stash was created.
+      The block must not leave an orphan stash in the repository.
+    failure_mode: orphan stash accumulates; repo state becomes inconsistent
+    expected_safe_action: stash is named, audited, and cleaned up; no orphan remains
+    owner_primitive: stash-quarantine
+    coverage_status: automated
+    evidence:
+      adr: ADR-117
+      test: tests/behavior/test_agent_blocked_preflight_no_stash.py
+      rule: rules/stash-mutation-reversibility.md
+
+  - id: cloud-worker-restart-mid-task
+    description: >-
+      A headless cloud worker is restarted (SIGTERM / pod eviction) while
+      processing a task. The task must not corrupt state or publish partial work.
+    failure_mode: partial commit pushed; task claim left locked; evidence lost
+    expected_safe_action: task claim released or re-queued; safe-mode prevents new task admission; evidence preserved
+    owner_primitive: headless-safe-mode
+    coverage_status: partial
+    evidence:
+      adr: ADR-246
+      notes: >-
+        Release-transaction freeze (ADR-246) covers the publication side.
+        Worker-restart mid-task chaos harness is a follow-up item; current
+        coverage is manual proof only via cos safe-mode gate.
+
+  - id: headless-direct-main-publication
+    description: >-
+      A headless agent attempts to push directly to main without going through
+      the protected landing / review gate.
+    failure_mode: unreviewed code lands on main; bypasses all governance
+    expected_safe_action: push blocked; direct-main-guard emits rejection with required landing path
+    owner_primitive: direct-main-guard
+    coverage_status: automated
+    evidence:
+      adr: ADR-245
+      test: tests/behavior/test_agent_prelaunch_read_only.py
+      commit: d3c179730
+
+  - id: derived-artifact-drift
+    description: >-
+      A registry or manifest changes but derived artifacts (projections, lock
+      files, adoption docs) are not regenerated before the next agent run.
+    failure_mode: agent operates on stale projections; runtime behavior diverges from metadata
+    expected_safe_action: derived-artifact-gate blocks agent admission; emits regeneration command
+    owner_primitive: derived-artifact-gate
+    coverage_status: automated
+    evidence:
+      adr: ADR-218
+      manifest: manifests/multi-ide-swarm-scenarios.yaml#registry-projection-drift
+      test: tests/behavior/test_agent_prelaunch_worktree_audit.py
