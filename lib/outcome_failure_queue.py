@@ -68,7 +68,7 @@ def enqueue_failure(
 def drain_queue(
     *,
     queue_path: Path | None = None,
-    status_filter: str = "pending",
+    status_filter: str | None = "pending",
 ) -> list[dict[str, Any]]:
     """Return all queue entries matching ``status_filter``.
 
