@@ -30,7 +30,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from lib.goal_state import GoalState
+    from lib.goal_state import GoalState, GoalStateStore
 
 
 # ---------------------------------------------------------------------------
@@ -39,41 +39,53 @@ if TYPE_CHECKING:
 
 
 def _goal_dispatch_totals(
-    goal_created_at: str,
+    goal: "GoalState",
     project_dir: Path | None = None,
-) -> tuple[int, float]:
-    """Return (total_tokens, total_cost_usd) for dispatches since goal creation.
+) -> tuple[int, float, int]:
+    """Return (total_tokens, total_cost_usd, new_cursor) for dispatches since goal creation.
+
+    Uses ``goal.dispatch_cursor`` as a byte-offset start position so that each
+    call reads only *new* records appended since the last check — O(new records)
+    rather than O(total file size).
+
+    If the file is smaller than the stored cursor (log rotation), the cursor is
+    reset to 0 and the full file is re-read from the start.
 
     Reads .cognitive-os/metrics/llm-dispatch.jsonl via lib.dispatch._metrics_path().
-    Returns (0, 0.0) gracefully when the file is absent or unreadable.
+    Returns (0, 0.0, 0) gracefully when the file is absent or unreadable.
 
     Args:
-        goal_created_at: ISO-8601 string (the goal's created_at timestamp).
-            Only dispatch records with ts >= this value are counted.
+        goal: Active GoalState whose dispatch_cursor and created_at are used.
         project_dir: Optional override for project root resolution.
     """
     try:
         from lib.dispatch import _metrics_path
         path = _metrics_path(project_dir)
     except Exception:  # noqa: BLE001
-        return 0, 0.0
+        return 0, 0.0, 0
 
     total_tokens: int = 0
     total_cost: float = 0.0
 
     if not path.exists():
-        return total_tokens, total_cost
+        return total_tokens, total_cost, 0
 
     try:
         cutoff = datetime.datetime.fromisoformat(
-            goal_created_at.replace("Z", "+00:00")
+            goal.created_at.replace("Z", "+00:00")
         )
     except (ValueError, AttributeError):
         # Unparseable timestamp — count all records conservatively
         cutoff = datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
 
     try:
+        file_size = path.stat().st_size
+        # Handle log rotation: if cursor is past the current file size, reset to 0
+        start_offset = goal.dispatch_cursor if goal.dispatch_cursor <= file_size else 0
+
         with path.open(encoding="utf-8") as fh:
+            if start_offset > 0:
+                fh.seek(start_offset)
             for line in fh:
                 line = line.strip()
                 if not line:
@@ -97,10 +109,11 @@ def _goal_dispatch_totals(
                         total_cost += float(rec.get("cost_usd", 0.0))
                 except Exception:  # noqa: BLE001
                     continue
+            new_cursor = fh.tell()
     except OSError:
-        pass
+        return 0, 0.0, goal.dispatch_cursor
 
-    return total_tokens, total_cost
+    return total_tokens, total_cost, new_cursor
 
 
 # ---------------------------------------------------------------------------
@@ -135,6 +148,7 @@ class BudgetCheckResult:
 def check_budget(
     goal: "GoalState",
     project_dir: Path | None = None,
+    store: "GoalStateStore | None" = None,
 ) -> BudgetCheckResult:
     """Check all four budget dimensions for the given goal.
 
@@ -148,6 +162,10 @@ def check_budget(
     is True and ``dimension``/``reason`` name the first breach.
 
     Gracefully handles absent dispatch metrics file (returns zeros for 3 & 4).
+
+    When ``store`` is provided, the updated ``dispatch_cursor`` is persisted back
+    to the goal state after a successful metrics read.  The cursor is the ONLY
+    field mutated here — it is by design stateful (bounded incremental reads).
     """
     turns_used = goal.turns_used
     wall_minutes_used = (time.time() - goal.started_at_epoch) / 60.0
@@ -156,7 +174,14 @@ def check_budget(
     tokens_used: int = 0
     cost_used: float = 0.0
     if goal.max_tokens is not None or goal.max_cost_usd is not None:
-        tokens_used, cost_used = _goal_dispatch_totals(goal.created_at, project_dir)
+        tokens_used, cost_used, new_cursor = _goal_dispatch_totals(goal, project_dir)
+        # Persist the advanced cursor so the next call starts from here
+        if store is not None and new_cursor != goal.dispatch_cursor:
+            goal.dispatch_cursor = new_cursor
+            try:
+                store.save(goal)
+            except Exception:  # noqa: BLE001
+                pass  # cursor persistence is best-effort; never block budget checks
 
     # --- Dimension 1: max_turns ---
     if goal.max_turns is not None and turns_used >= goal.max_turns:
