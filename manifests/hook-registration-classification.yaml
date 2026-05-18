@@ -3,6 +3,10 @@ scope: top-level hooks/*.sh absent from .claude/settings.json after ADR-144 proj
 contract: Every unregistered top-level hook must appear here with status, rationale,
   and next_action.
 entries:
+- path: hooks/subagent-input-schema-validator.sh
+  status: conditional_opt_in
+  rationale: "ADR-038 Wave 2 — validates sub-agent inputs against INPUT SCHEMA blocks declared in orchestrator prompts. Only activates when the prompt contains an INPUT SCHEMA block; safe no-op otherwise. Blocking by design (permissionDecision=block) when required fields are missing or mistyped. Not registered globally because it requires the lib/agent_input_validator.py Wave 1 library to be present."
+  next_action: "Promote to standard profile PreToolUse Agent after one sprint of production observation confirming low false-positive rate."
 - path: hooks/ai-provider-identity-guard.sh
   status: conditional_opt_in
   rationale: ADR-238 follow-up — blocks invented AI-provider identities at commit
