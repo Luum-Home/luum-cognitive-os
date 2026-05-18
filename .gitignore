@@ -18,9 +18,11 @@
 !.cognitive-os/skills/_catalog-allowlist.txt
 !.cognitive-os/preserve-manifests/
 !.cognitive-os/preserve-manifests/*.json
-# SDD archive trail is tracked (override .cognitive-os/* ignore)
+# SDD archive trail is tracked, in-flight changes stay local (override .cognitive-os/* ignore)
 !.cognitive-os/sdd/
+.cognitive-os/sdd/*
 !.cognitive-os/sdd/changes/
+.cognitive-os/sdd/changes/*
 !.cognitive-os/sdd/changes/archive/
 !.cognitive-os/sdd/changes/archive/**
 dynamic-tools/
