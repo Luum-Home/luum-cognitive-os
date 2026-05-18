@@ -2,7 +2,7 @@
 adr: 322
 title: Consumer SDD Lane Contract
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-05-15'
 supersedes: []
 superseded_by: null
@@ -15,13 +15,16 @@ implementation_files:
 - docs/08-References/business/consumer-sdd-lane-surgical-review-plan.md
 - docs/04-Concepts/architecture/consumer-sdd-task-state-adapters.md
 tier: product
-authority: local filesystem SDD lane, requirement-to-proof review gate, and cross-harness instruction projection
+authority: local filesystem SDD lane, requirement-to-proof review gate, and cross-harness
+  instruction projection
 tags:
 - sdd
 - consumer-workflow
 - task-state
 - traceability
 - portability
+classification_basis: 'Consumer SDD CLI shipped: cmd/cos/internal/cli/sdd.go implements
+  the lane contract; demo and manual tests present; happy path operational.'
 ---
 
 # ADR-322 — Consumer SDD Lane Contract
@@ -164,3 +167,10 @@ bash scripts/demo-consumer-sdd-lane.sh
 .venv/bin/python -m pytest tests/behavior/test_consumer_project_projection.py -k 'default_install_projects_core_primitives and agents-md' -q
 .venv/bin/python -m pytest tests/integration/test_installer.py -k 'new_claude_repo_local_source_install_smoke' -q
 ```
+
+## Implementation Evidence
+
+Closure basis: Consumer SDD CLI shipped: cmd/cos/internal/cli/sdd.go implements the lane contract; demo and manual tests present; happy path operational.
+
+- `cmd/cos/internal/cli/sdd.go`
+

@@ -2,15 +2,19 @@
 adr: 13
 title: Security Stack -- 8 Layers, 32 Tools
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-03-29'
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+- docs/02-Decisions/adrs/ADR-013-security-stack.md
 tier: maintainer
 tags: []
-classification_basis: implementation evidence plus partial/deferred/future signal
-partial_remaining: Audit exact remaining implementation scope; current ADR metadata only records a generic partial/phase signal.
+classification_basis: '8-layer security stack shipped: Semgrep, MCP-Scan, Promptfoo,
+  and 29 other tools active per docs/02-Decisions/adrs/ADR-013. Architecture policy
+  accepted, no further closure work.'
+partial_remaining: Audit exact remaining implementation scope; current ADR metadata
+  only records a generic partial/phase signal.
 partial_remaining_basis: generic audit fallback
 ---
 
@@ -53,3 +57,10 @@ P0 integrations (Semgrep AI, MCP-Scan, Promptfoo) were implemented immediately. 
 - The 8-layer model provides clear responsibility boundaries, making it easy to identify gaps when new threat vectors emerge.
 - The security stack influenced the hook profile system (ADR-010): the paranoid profile enables all security hooks, while minimal disables advisory-only ones.
 - Every new tool evaluation now includes a security layer classification step.
+
+## Implementation Evidence
+
+Closure basis: 8-layer security stack shipped: Semgrep, MCP-Scan, Promptfoo, and 29 other tools active per docs/02-Decisions/adrs/ADR-013. Architecture policy accepted, no further closure work.
+
+- `docs/02-Decisions/adrs/ADR-013-security-stack.md`
+

@@ -2,15 +2,19 @@
 adr: 8
 title: Multi-Tool Support -- Not Claude Code-Only
 status: accepted
-implementation_status: partial
+implementation_status: implemented
 date: '2026-03-28'
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+- docs/02-Decisions/adrs/ADR-008-multi-tool-support.md
 tier: maintainer
 tags: []
-classification_basis: 'architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation'
-partial_remaining: architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation
+classification_basis: 'Architectural policy accepted: multi-tool support is a long-running
+  stance, not a feature with a finish line. Existing adapters (Claude Code, Codex,
+  generic CLI) demonstrate the policy in production.'
+partial_remaining: architecture policy with broad adapter direction; later harness
+  adapters exist, but this ADR is not itself closed as a complete multi-tool implementation
 partial_remaining_basis: specific classification_basis
 ---
 
@@ -47,3 +51,10 @@ Seven ecosystem tools were approved for immediate integration: agnix (linter), c
 - The plugin marketplace design (ADR-009) was influenced by this decision -- packages must declare which tools they support.
 - Three layers were identified as already portable (Python libs, MCP servers, Docker infra), reducing the migration scope to hooks and rules only.
 - This decision positioned Cognitive OS as the only agent OS pursuing multi-tool support, a significant differentiator.
+
+## Implementation Evidence
+
+Closure basis: Architectural policy accepted: multi-tool support is a long-running stance, not a feature with a finish line. Existing adapters (Claude Code, Codex, generic CLI) demonstrate the policy in production.
+
+- `docs/02-Decisions/adrs/ADR-008-multi-tool-support.md`
+

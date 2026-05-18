@@ -8,13 +8,16 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 
 ## Active
 
-### Active / Implemented (157)
+### Active / Implemented (163)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
+| [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
 | [009](ADR-009-package-architecture.md) | Package Architecture -- 375 Agentic Primitives Reclassified | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
 | [010](ADR-010-hook-architecture-v2.md) | Hook Architecture v2 -- 10 Event Types, 3 Security Profiles | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 to 2026-04-13 |
 | [012](ADR-012-prompt-driven-governance.md) | Prompt-Driven Governance -- Declarative Hook Logic | accepted | implemented | 2026-03-29 | **Date:** 2026-03-29 |
+| [013](ADR-013-security-stack.md) | Security Stack -- 8 Layers, 32 Tools | accepted | implemented | 2026-03-29 | **Date:** 2026-03-29 |
+| [015](ADR-015-rules-to-hooks-migration.md) | Rules-to-Hooks Migration -- From Context to Enforcement | accepted | implemented | 2026-04-10 | **Date:** 2026-04-10 |
 | [027](ADR-027.md) | SO Slimming — Test Strategy, Context Overhead, Resource Consumption | accepted | implemented | 2026-04-21 | ACCEPTED (2026-04-21) — WS1-WS3 shipped, included in v0.12.0 release. Implementation commits: 8dc4a6e, 9bd895b, 15d67eb. Resolved by ADR-027a. Originally propos |
 | [027a](ADR-027a.md) | Addendum: Reconciliation with main baseline | accepted | implemented | 2026-04-18 | **Supersedes**: ADR-027 §Baseline (context overhead table), §KPIs row "CLAUDE.md tokens loaded on session start" |
 | [028](ADR-028.md) | SO Reliability & Observability Framework | accepted | implemented | 2026-04-21 | ACCEPTED (2026-04-21) — Full 6-pillar framework CLOSED. Addenda ADR-028a/b/c resolved all PENDING items (commit 423bd86). Originally proposed 2026-04-17. |
@@ -79,6 +82,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [175](ADR-175-research-quality-enforcement.md) | Research-quality enforcement for audit reports | accepted | implemented | 2026-05-05 | **Accepted** — 2026-05-05 |
 | [176](ADR-176-skillstore-and-analysis-trigger.md) | SkillStore SQLite Schema Adoption + Post-Execution Analysis Trigger (Discipline-Gated) | accepted | implemented | 2026-05-05 | Accepted. |
 | [177](ADR-177-activate-skill-lifecycle-promotion-ladder.md) | Activate Skill Lifecycle Promotion Ladder | accepted | implemented | 2026-05-06 | Accepted. |
+| [179](ADR-179-rules-auto-derive-routing.md) | Auto-Derived Rule Routing for Agent-Instruction Rules | accepted | implemented | 2026-05-05 | **Accepted** — 2026-05-05 |
 | [180](ADR-180-lifecycle-promotion-activation.md) | Lifecycle Promotion Activation — Concrete Proposers and Hook Wiring | accepted | implemented | 2026-05-05 | Accepted. |
 | [181](ADR-181-adr-relevance-suggester.md) | ADR Relevance Suggester — Lightweight Routing for Architecture Decisions | accepted | implemented | 2026-05-05 | Accepted — 2026-05-05 |
 | [182](ADR-182-branch-ownership-lock.md) | Branch Ownership Lock — Single-Writer Surface for Concurrent Orchestrators | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as the ADR-182 branch-lock hook, library, CLI wrappers, and contract tests. Filed in response to the cross-session collision incident |
@@ -120,6 +124,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [247](ADR-247-manifest-driven-postmortem-regression-audits.md) | Manifest-Driven Postmortem Regression Audits and External Tool Adapters | accepted | implemented | 2026-05-08 | Accepted. This ADR documents the policy correction made after ADR-242 through |
 | [250](ADR-250-skill-router-retrieval-adapter-boundary.md) | Skill Router Retrieval Adapter Boundary | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. |
 | [251](ADR-251-agent-orchestration-adapter-boundary.md) | Agent Orchestration Adapter Boundary | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. |
+| [252](ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | Capability Coverage Matrix and Feature Reality Ledger | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. |
 | [255](ADR-255-feature-to-external-tool-due-diligence.md) | Feature-to-External-Tool Due Diligence | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented |
 | [256](ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) | Primitive Contract Registry and Runtime Evidence Ledger | accepted | implemented | 2026-05-09 | Accepted — implemented through Phases 1–6; all primitive-lifecycle rows are registry-backed; OpenCode signed smoke covers the first 20 runtime primitives |
 | [257](ADR-257-primitive-contract-registry-phase-1.md) | Primitive Contract Registry Phase 1 | accepted | implemented | 2026-05-09 | Accepted — implemented |
@@ -168,17 +173,15 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [318](ADR-318-copy-only-checkpoints-and-stash-quarantine.md) | Copy-Only Checkpoints and Stash Quarantine | accepted | implemented | 2026-05-15 | Accepted. |
 | [320](ADR-320-install-scope-surface-debt.md) | Install Scope Surface Debt and Protected Config Boundary | accepted | implemented | 2026-05-15 | Accepted. |
 | [321](ADR-321-primitive-scope-plane-balance-and-proof-ratchets.md) | Primitive Scope Plane Balance and Proof Ratchets | accepted | implemented | 2026-05-15 | Accepted. |
+| [322](ADR-322-consumer-sdd-lane-contract.md) | Consumer SDD Lane Contract | accepted | implemented | 2026-05-15 | Accepted. |
 | [323](ADR-323-primitive-behavior-depth-ratchet.md) | Primitive Behavior Depth Ratchet | accepted | implemented | 2026-05-15 | Accepted. |
 
-### Active / Partial (123)
+### Active / Partial (117)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [006](ADR-006-agpl-license-compliance.md) | AGPL License Compliance -- Replace Redis and MinIO | accepted | partial | 2026-03-23 | **Date:** 2026-03-23 |
-| [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | partial | 2026-03-28 | **Date:** 2026-03-28 |
-| [013](ADR-013-security-stack.md) | Security Stack -- 8 Layers, 32 Tools | accepted | partial | 2026-03-29 | **Date:** 2026-03-29 |
 | [014](ADR-014-sdd-fast-path.md) | SDD Fast Path -- Skip Phases for Capable Models | accepted | partial | 2026-03-31 | **Date:** 2026-03-31 |
-| [015](ADR-015-rules-to-hooks-migration.md) | Rules-to-Hooks Migration -- From Context to Enforcement | accepted | partial | 2026-04-10 | **Date:** 2026-04-10 |
 | [016](ADR-016-context-diet.md) | Context Diet -- Token Optimization Strategy | accepted | partial | 2026-03-31 | **Date:** 2026-03-31 |
 | [018](ADR-018-docker-to-pip-migration.md) | Docker-to-pip Migration -- Service Infrastructure Change | accepted | partial | 2026-04-11 | **Date:** 2026-04-11 to 2026-04-13 |
 | [019](ADR-019-scope-tagging.md) | Scope Tagging -- Agentic Primitive Audience Classification | accepted | partial | 2026-04-13 | **Date:** 2026-04-13 |
@@ -256,7 +259,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [163](ADR-163-cos-instance-installer.md) | Cognitive OS Instance Installer | accepted | partial | 2026-05-05 | **Accepted** — 2026-05-05 |
 | [168](ADR-168-cross-device-dependency-installation.md) | Cross-Device Dependency Installation Contract | implemented | partial | 2026-05-05 | **Implemented for the manifest-driven dry-run installer and credential-safe |
 | [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted | partial | 2026-05-05 | **Deciders**: Maintainer |
-| [179](ADR-179-rules-auto-derive-routing.md) | Auto-Derived Rule Routing for Agent-Instruction Rules | accepted | partial | 2026-05-05 | **Accepted** — 2026-05-05 |
 | [190](ADR-190-harness-action-receipts.md) | Harness Action Receipts and VCS Event Telemetry | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
 | [191](ADR-191-cos-binary-release-pipeline.md) | COS Binary Release Pipeline | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
 | [193](ADR-193-cosd-local-network-api.md) | cosd Local Network API | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
@@ -282,7 +284,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [246](ADR-246-release-transaction-freeze.md) | Release Transaction Freeze for Destructive and Public-State Operations | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitiv |
 | [248](ADR-248-control-plane-audit-loop.md) | Control-Plane Audit Loop for ADR-239+ Primitive Drift | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
 | [249](ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | Primitive Behavioral Proof and Anti-Overfit Testing | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
-| [252](ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | Capability Coverage Matrix and Feature Reality Ledger | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
 | [254](ADR-254-external-tool-intelligence-plane-and-project-overlays.md) | External Tool Intelligence Plane and Project Overlays | accepted | partial | 2026-05-08 | status: accepted |
 | [258](ADR-258-portable-ai-overlay-for-agentic-primitives.md) | Portable `.ai` Overlay for Agentic Primitives | accepted | partial | 2026-05-09 | Accepted — generated overlay implemented; canonical migration intentionally deferred |
 | [259](ADR-259-external-pattern-adoption-posture.md) | holaOS Adoption Posture: Patterns-Only Library with Clean-Room Rewrite | accepted | partial | 2026-05-11 | **Date:** 2026-05-11 |
@@ -294,7 +295,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [289](ADR-289-three-layer-knowledge-architecture.md) | Three-Layer Knowledge Architecture: Raw Sources, Compiled Vault, Operational Engram | accepted | partial | 2026-05-13 | Accepted — 2026-05-13. |
 | [291](ADR-291-agent-runtime-web-service.md) | Agent Runtime Web Service: HTTP + SSE Surface for Harness-Independent Clients | accepted | partial | 2026-05-13 | **Date:** 2026-05-13 |
 | [319](ADR-319-detractor-review-modes.md) | Detractor Review Modes for Planning and Verification | accepted | partial | 2026-05-15 | Accepted. |
-| [322](ADR-322-consumer-sdd-lane-contract.md) | Consumer SDD Lane Contract | accepted | partial | 2026-05-15 | Accepted. |
 | [324](ADR-324-executable-acceptance-specification-eas.md) | Executable Acceptance Specification (EAS) Evidence Artifact | accepted | partial | 2026-05-15 | Accepted. |
 | [325](ADR-325-ai-resource-economy-and-degradation.md) | AI Resource Economy, Budget Preflight, and Graceful Degradation | accepted | partial | 2026-05-15 | Accepted. Partial implementation starts with a manifest, audit, preflight CLI, and language-token-economy rule. Runtime hook enforcement and provider-specific a |
 

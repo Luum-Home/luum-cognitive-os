@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T17:48:01+00:00",
+  "generated_at": "2026-05-18T21:33:30+00:00",
   "manifest": "manifests/documentation-truth-claims.yaml",
   "rows": [
     {
@@ -355,9 +355,9 @@
       "claim_id": "primitive_authority_write_effects",
       "doc": "docs/04-Concepts/architecture/primitive-authority-write-effects.md",
       "evidence": [
-        "no est\u00e1 documentado todav\u00eda"
+        "no is documentado todavia"
       ],
-      "message": "Forbidden stale phrase absent: no est\u00e1 documentado todav\u00eda",
+      "message": "Forbidden stale phrase absent: no is documentado todavia",
       "next_action": "remove stale or contradictory prose",
       "severity": "high",
       "status": "pass"
@@ -415,9 +415,9 @@
       "claim_id": "primitive_authority_write_effects",
       "doc": "docs/02-Decisions/adrs/ADR-276-primitive-authority-write-effects.md",
       "evidence": [
-        "no est\u00e1 documentado todav\u00eda"
+        "no is documentado todavia"
       ],
-      "message": "Forbidden stale phrase absent: no est\u00e1 documentado todav\u00eda",
+      "message": "Forbidden stale phrase absent: no is documentado todavia",
       "next_action": "remove stale or contradictory prose",
       "severity": "high",
       "status": "pass"

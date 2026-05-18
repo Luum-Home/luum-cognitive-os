@@ -1,6 +1,6 @@
 # Documentation Truth Audit — Latest
 
-Generated: 2026-05-12T17:48:01+00:00
+Generated: 2026-05-18T21:33:30+00:00
 Status: `pass`
 
 ## Summary
