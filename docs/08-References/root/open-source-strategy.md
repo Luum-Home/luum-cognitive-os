@@ -3,6 +3,38 @@
 ## Status
 Proposed
 
+
+## Current public-license posture
+
+This document is a historical strategy memo. The current repository posture is
+FSL-1.1-MIT with an automatic MIT future license, documented in
+[`docs/09-Quality/legal/license-faq.md`](../../09-Quality/legal/license-faq.md).
+The community-facing interpretation is:
+
+Generally allowed before the Change Date:
+
+- self-hosting for your own organization;
+- internal company use;
+- production use for your own organization or for products where Cognitive OS
+  is not the primary product;
+- consulting where Cognitive OS is used as a tool; and
+- building applications or products where Cognitive OS is not the primary
+  product.
+
+Generally not allowed before the Change Date without a separate commercial
+arrangement when the primary value derives substantially from Cognitive OS:
+
+- hosted Cognitive OS;
+- managed agent runtime;
+- agent orchestration SaaS;
+- control plane SaaS for third-party agents; and
+- white-label resale of Cognitive OS.
+
+The older Apache-2.0 recommendation below remains useful as community strategy
+analysis, but it is not the current license of the repository.
+
+---
+
 ## Context
 
 Cognitive OS (COS) is a governance framework for AI coding agents. It is currently developed in a private repository (Luum-Home/luum-cognitive-os on GitHub) with zero external contributors. The competitive landscape has shifted: Agent Zero (16.5K stars, MIT license) and OpenClaw (340K+ stars, MIT license) are both fully open-source and building community-driven ecosystems. The absence of community around COS is a strategic weakness that limits adoption, feedback velocity, and ecosystem growth.
@@ -241,7 +273,7 @@ All current code, rules, hooks, skills, packages, tests, and documentation shoul
 
 | Task | Description |
 |------|-------------|
-| Add LICENSE file | Apache-2.0 full text at repo root |
+| Add LICENSE file | Historical recommendation: Apache-2.0 full text at repo root |
 | Add NOTICE file | Required by Apache-2.0; list copyright holders and any third-party notices |
 | Add license headers | Add Apache-2.0 header to all source files (Go, Python, Shell) |
 | CLA decision | Decide whether to require a Contributor License Agreement (recommended for patent protection) |

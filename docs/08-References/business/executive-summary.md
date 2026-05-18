@@ -40,7 +40,7 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 > Status legend: **REAL** = production-ready and hook-enforced. **DORMANT** = code
 > exists but feature-flagged off / opt-in. **ASPIRATIONAL** = scaffolded, loop
 > not yet closed. Full reconciliation in
-> [`docs/09-Quality/legal/h1-feature-status-audit.md`](../legal/h1-feature-status-audit.md)
+> [`docs/09-Quality/legal/h1-feature-status-audit.md`](../../09-Quality/legal/h1-feature-status-audit.md)
 > and [`docs/08-References/business/features.md`](features.md).
 
 | # | Feature | Status | What It Does |
@@ -54,7 +54,7 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 | 7 | Observability and Costs | REAL | Traces, metrics, budget caps |
 | 8 | Multi-IDE Portability | REAL | Claude/Codex native lifecycle plus structural projections; proof level differs by harness |
 | 9 | Industry Presets | REAL | Pre-loaded best practices for fintech, healthcare, e-commerce |
-| 10 | Open-Source Core | REAL | FSL-1.1-MIT (source-available, converts to MIT after 2 years), extensible via plugins |
+| 10 | Source-Available Core | REAL | FSL-1.1-MIT (source-available, converts to MIT after 2 years), extensible via plugins |
 
 ## Proven in Production
 
@@ -97,7 +97,7 @@ claude
 
 ## Contributing
 
-Cognitive OS is open-source and contributions are welcome. Visit the repository on GitHub to report issues, propose features, or create plugins for your industry.
+Cognitive OS is source-available under FSL-1.1-MIT, with automatic MIT conversion, and contributions are welcome. Visit the repository on GitHub to report issues, propose features, or create plugins for your industry.
 
 ---
 

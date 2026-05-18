@@ -180,4 +180,25 @@ production mutation is **not** claimed.
 
 **Contributing**: see [CONTRIBUTING.md](CONTRIBUTING.md) — AI-authorship policy, commit conventions, DCO sign-off.
 
+**Community and commercial use**: the project's plain-language
+interpretation is below; the [LICENSE](LICENSE) remains authoritative. Before
+the Change Date, these uses are generally allowed:
+
+- self-hosting for your own organization;
+- internal company use;
+- production use for your own organization or for products where Cognitive OS
+  is not the primary product;
+- consulting where Cognitive OS is used as a tool; and
+- building applications or products where Cognitive OS is not the primary product.
+
+Under that same plain-language interpretation, these uses are generally not
+allowed before the Change Date without a separate commercial arrangement when
+the primary value derives substantially from Cognitive OS:
+
+- hosted Cognitive OS;
+- managed agent runtime;
+- agent orchestration SaaS;
+- control plane SaaS for third-party agents; and
+- white-label resale of Cognitive OS.
+
 **License**: FSL-1.1-MIT — see [LICENSE](LICENSE) and the [License FAQ](docs/09-Quality/legal/license-faq.md).

@@ -1,14 +1,14 @@
 # License FAQ — Cognitive OS (luum-agent-os)
 
-> **Current license**: [FSL-1.1-MIT](../../LICENSE) — Functional Source
+> **Current license**: [FSL-1.1-MIT](../../../LICENSE) — Functional Source
 > License 1.1 with an automatic MIT future license.
 >
 > **Canonical FSL site**: <https://fsl.software/>
 >
-> This FAQ is explanatory only. The repository [`LICENSE`](../../LICENSE) file
+> This FAQ is explanatory only. The repository [`LICENSE`](../../../LICENSE) file
 > is authoritative if this document and the license text differ.
 >
-> **See also:** [`TRANSPARENCY.md`](../../TRANSPARENCY.md) — the public-launch
+> **See also:** [`TRANSPARENCY.md`](../../../TRANSPARENCY.md) — the public-launch
 > transparency disclosure (covers the Apache-2.0 → FSL-1.1-MIT timeline in §2
 > and the manifest preserve-rule that pins these license strings).
 
@@ -72,6 +72,9 @@ We can only choose to move earlier to MIT or another more permissive license.
 You can, without paying Luum:
 
 - use Cognitive OS internally at a company;
+- self-host Cognitive OS for your own organization;
+- use Cognitive OS in production for your own organization or for products where
+  Cognitive OS is not the primary product;
 - use it for personal, educational, research, or nonprofit work;
 - inspect and audit the source code;
 - fork the repository;
@@ -79,12 +82,41 @@ You can, without paying Luum:
 - publish patches or forks under the same license terms;
 - redistribute source or binaries with the required notices;
 - run it as part of your own development workflow;
-- embed it in a product or service whose primary value is something other than
-  reselling Cognitive OS; and
+- use Cognitive OS as a tool while consulting, when you are delivering a broader
+  customer solution rather than selling Cognitive OS itself as the hosted or
+  managed product;
+- embed it in an application or product whose primary value is something other
+  than Cognitive OS itself; and
 - use the MIT-converted code under MIT after the applicable Change Date.
 
-No license key, registration, usage reporting, or revenue share is required by
-FSL-1.1-MIT.
+No license key, registration, usage reporting, royalty, or revenue share is
+required by FSL-1.1-MIT.
+
+## Community-use summary
+
+The intent is to keep normal community, internal, production, and product use
+available while reserving hosted or managed resale of Cognitive OS itself before
+the Change Date. This section is explanatory only; the repository `LICENSE` file
+controls.
+
+Generally allowed before the Change Date:
+
+- self-hosting for your own organization;
+- internal company use;
+- production use for your own organization or for products where Cognitive OS
+  is not the primary product;
+- consulting where Cognitive OS is used as a tool; and
+- building applications or products where Cognitive OS is not the primary
+  product.
+
+Generally not allowed before the Change Date without a separate commercial
+arrangement when the primary value derives substantially from Cognitive OS:
+
+- hosted Cognitive OS;
+- managed agent runtime;
+- agent orchestration SaaS;
+- control plane SaaS for third-party agents; and
+- white-label resale of Cognitive OS.
 
 ## What changed relative to Apache 2.0?
 
@@ -131,20 +163,32 @@ engine for a product whose value is not substantially Cognitive OS itself.
 Examples that are generally permitted before the Change Date:
 
 - a company using Cognitive OS internally for engineering workflows;
+- self-hosting Cognitive OS for one organization, including production use;
 - a SaaS product that uses Cognitive OS behind the scenes to deliver a distinct
   application to customers;
 - a vertical agent product that embeds Cognitive OS as infrastructure;
 - a consulting project where you are paid to build or integrate a broader
-  customer solution that uses Cognitive OS; and
+  customer solution that uses Cognitive OS as a tool; and
 - redistribution of Cognitive OS as part of a larger product, with notices,
   where the larger product is not essentially resale of Cognitive OS.
 
-Examples that are restricted before the Change Date:
+Examples that generally require a separate commercial agreement before the
+Change Date when the primary value derives substantially from Cognitive OS:
 
-- selling "Cognitive OS Cloud" or a substantially equivalent hosted version;
-- charging for hosting Cognitive OS as the main service;
-- selling paid support for Cognitive OS as the standalone product; or
-- white-labelling Cognitive OS for customers as the thing being purchased.
+- hosted Cognitive OS;
+- paid managed hosting whose main value is running Cognitive OS for customers;
+- managed agent runtime services;
+- agent orchestration SaaS;
+- control plane SaaS for third-party agents;
+- paid support, operations, OEM, or white-label resale where the thing customers
+  are primarily buying is Cognitive OS; and
+- a commercial distribution whose primary value is the Cognitive OS functionality
+  rather than your own separate application.
+
+Commercial exceptions may be available from the project owner for hosted
+Cognitive OS, managed Cognitive OS services, OEM, white-label, or third-party
+services whose primary value derives substantially from Cognitive OS. The public
+license itself does not create a royalty or revenue-share program.
 
 The distinction is the source of value. If customers are paying for your own
 application and Cognitive OS is an implementation detail, that is different from
@@ -154,7 +198,7 @@ customers paying for Cognitive OS itself.
 
 No. Contributors keep copyright in their contributions. Contributions are made
 under the repository license, so they follow FSL-1.1-MIT and the same automatic
-MIT conversion. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md) for contribution
+MIT conversion. See [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) for contribution
 process details.
 
 ## Will the project become more restrictive later?
