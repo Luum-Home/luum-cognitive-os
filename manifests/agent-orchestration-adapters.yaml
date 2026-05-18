@@ -269,6 +269,7 @@ core_file_allowlist:
 - lib/handoff_envelope.py
 - lib/merge_queue.py
 - lib/openai_compatible_agent_loop.py
+- lib/outcome_failure_queue.py  # ADR-200+ Phase 5 outcome failure queue (commit c3bbec84)
 - lib/queue_advisor.py
 - lib/queue_drainer.py
 - lib/queue_rebase.py
