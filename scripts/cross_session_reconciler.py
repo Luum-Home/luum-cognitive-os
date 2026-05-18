@@ -24,7 +24,7 @@ def preserve_summary(project: Path) -> dict[str, Any]:
     script = ROOT / "scripts" / "cos-doctor-preserve.sh"
     if not script.exists() or not (project / ".git").exists():
         return {"available": False, "reason": "not-a-git-project-or-script-missing"}
-    proc = subprocess.run(["bash", str(script), "--project-dir", str(project), "--json"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    proc = subprocess.run(["bash", str(script), "--project-dir", str(project), "--json"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=30)  # timeout per ADR-278 (default - review)
     try:
         parsed_payload = json.loads(proc.stdout)
     except json.JSONDecodeError:

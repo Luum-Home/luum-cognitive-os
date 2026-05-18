@@ -477,7 +477,8 @@ def main(argv: list[str] | None = None) -> int:
     root = Path(
         subprocess.run(
             ["git", "rev-parse", "--show-toplevel"],
-            capture_output=True, text=True
+            capture_output=True, text=True,
+            timeout=60,
         ).stdout.strip()
         or "."
     )

@@ -415,6 +415,7 @@ def _create_backup_mirror(project_dir: Path, backup_path: Path) -> None:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if proc.returncode != 0:
         raise SanitizationError(
@@ -426,6 +427,7 @@ def _create_backup_mirror(project_dir: Path, backup_path: Path) -> None:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if fsck.returncode != 0:
         raise SanitizationError(
@@ -680,6 +682,7 @@ def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, 
         text=True,
         capture_output=True,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     if proc.returncode != 0:
         raise SanitizationError(
@@ -708,6 +711,7 @@ def _verification_haystack(
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     return proc.stdout if proc.returncode == 0 else ""
 

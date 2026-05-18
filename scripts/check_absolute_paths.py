@@ -206,6 +206,7 @@ def git_deleted_from_index(root: Path) -> set[str]:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if result.returncode != 0:
         return set()
@@ -219,6 +220,7 @@ def git_tracked_files(root: Path) -> list[str]:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if result.returncode != 0:
         return []
@@ -252,6 +254,7 @@ def is_git_repository(root: Path) -> bool:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     return result.returncode == 0 and result.stdout.strip() == "true"
 
@@ -262,6 +265,7 @@ def staged_files(root: Path) -> list[StagedFile]:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if result.returncode != 0:
         return []
@@ -296,6 +300,7 @@ def staged_findings(root: Path) -> list[Finding]:
             cwd=str(root),
             capture_output=True,
             check=False,
+            timeout=60,
         )
         if result.returncode != 0:
             continue

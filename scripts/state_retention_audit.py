@@ -28,7 +28,7 @@ def stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 def git(project: Path, args: Sequence[str], check: bool=False) -> subprocess.CompletedProcess[str]:
-    r = subprocess.run(["git","-C",str(project),*args], text=True, capture_output=True)
+    r = subprocess.run(["git","-C",str(project),*args], text=True, capture_output=True, timeout=60)
     if check and r.returncode != 0: raise RuntimeError(r.stderr or r.stdout)
     return r
 

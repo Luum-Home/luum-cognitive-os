@@ -34,6 +34,7 @@ def _git_branch(project_dir: str) -> str:
             ["git", "-C", project_dir, "rev-parse", "--abbrev-ref", "HEAD"],
             capture_output=True,
             text=True,
+            timeout=60,
         )
         if result.returncode == 0:
             return result.stdout.strip()

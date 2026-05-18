@@ -21,7 +21,7 @@ from scripts.cos_task_claims import claims_path, normalize_claims, prune_claims,
 
 
 def run(project: Path, args: Sequence[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", *args], cwd=project, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    return subprocess.run(["git", *args], cwd=project, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
 
 
 def parse_iso_epoch(value: Any) -> float | None:
@@ -121,7 +121,7 @@ def worktrees(project: Path) -> list[dict[str, str]]:
     for row in rows:
         path = row.get("worktree")
         if path:
-            status = subprocess.run(["git", "status", "--short"], cwd=path, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
+            status = subprocess.run(["git", "status", "--short"], cwd=path, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False, timeout=60)
             row["wip_count"] = str(len([l for l in status.stdout.splitlines() if l.strip()])) if status.returncode == 0 else "?"
     return rows
 

@@ -1,0 +1,385 @@
+#!/usr/bin/env python3
+"""
+cos-subprocess-timeout-backfill — ADR-278 Phase 2 backfill tool.
+
+Adds timeout= to subprocess.run() calls in lib/, scripts/, packages/*/lib/
+that are missing it. Idempotent, allowlist-aware, pattern-driven.
+
+Usage:
+    python3 scripts/cos-subprocess-timeout-backfill --dry-run
+    python3 scripts/cos-subprocess-timeout-backfill --apply
+
+Timeouts applied:
+    git ops   → timeout=60
+    pytest    → timeout=300
+    docker    → timeout=120
+    default   → timeout=30  # timeout per ADR-278 (default - review)
+"""
+
+import argparse
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+try:
+    import yaml
+except ImportError:
+    yaml = None  # type: ignore
+
+REPO_ROOT = Path(__file__).parent.parent
+ALLOWLIST_PATH = REPO_ROOT / "manifests" / "subprocess-timeout-allowlist.yaml"
+
+TIMEOUT_GIT = 60
+TIMEOUT_PYTEST = 300
+TIMEOUT_DOCKER = 120
+TIMEOUT_DEFAULT = 30
+
+COUNTERS = {
+    "git": 0,
+    "pytest": 0,
+    "docker": 0,
+    "default": 0,
+    "skipped_allowlist": 0,
+    "skipped_has_timeout": 0,
+    "files_patched": 0,
+    "lines_modified": 0,
+}
+
+
+def load_allowlist() -> dict:
+    if not ALLOWLIST_PATH.exists() or yaml is None:
+        return {"files": set(), "lines": set()}
+
+    with ALLOWLIST_PATH.open() as f:
+        data = yaml.safe_load(f) or {}
+
+    entries = data.get("entries", []) or []
+    allowlisted_files: set[str] = set()
+    allowlisted_lines: set[tuple[str, int]] = set()
+
+    for entry in entries:
+        if "file" in entry:
+            fp = entry["file"]
+            if "line" in entry:
+                allowlisted_lines.add((fp, int(entry["line"])))
+            else:
+                allowlisted_files.add(fp)
+
+    return {"files": allowlisted_files, "lines": allowlisted_lines}
+
+
+def get_python_files() -> list[Path]:
+    result = subprocess.run(
+        ["git", "ls-files", "lib/", "scripts/", "packages/"],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+        timeout=30,
+    )
+    if result.returncode != 0:
+        print(f"ERROR: git ls-files failed: {result.stderr}", file=sys.stderr)
+        sys.exit(1)
+
+    candidates = []
+    for line in result.stdout.strip().split("\n"):
+        if not line:
+            continue
+        p = REPO_ROOT / line
+        if not p.exists():
+            continue
+        if p.suffix == ".py":
+            candidates.append(p)
+        elif p.suffix == "":
+            try:
+                first_line = p.read_bytes()[:60].decode("utf-8", errors="ignore")
+                if "#!" in first_line and "python" in first_line:
+                    candidates.append(p)
+            except Exception:
+                pass
+
+    return candidates
+
+
+def classify_timeout(text: str) -> tuple[int, str]:
+    """Classify timeout based on command content."""
+    if re.search(r'["\']pytest["\']|\bpytest\b', text):
+        return TIMEOUT_PYTEST, "pytest"
+    if re.search(r'["\']docker["\']', text):
+        return TIMEOUT_DOCKER, "docker"
+    if re.search(r'["\']git["\']', text):
+        return TIMEOUT_GIT, "git"
+    return TIMEOUT_DEFAULT, "default"
+
+
+def find_call_end(text: str, start: int) -> int:
+    """
+    Find the character index of the closing ')' that matches the '(' after
+    'subprocess.run' starting at position `start`.
+    Returns index of the matching ')'.
+    """
+    # Find the opening '('
+    paren_open = text.index("(", start)
+    depth = 0
+    i = paren_open
+    in_str = None
+    escape = False
+
+    while i < len(text):
+        ch = text[i]
+
+        if escape:
+            escape = False
+            i += 1
+            continue
+
+        if ch == "\\" and in_str:
+            escape = True
+            i += 1
+            continue
+
+        if in_str:
+            if ch == in_str:
+                in_str = None
+        elif ch in ('"', "'"):
+            # Check for triple quotes
+            if text[i : i + 3] in ('"""', "'''"):
+                triple = text[i : i + 3]
+                end = text.find(triple, i + 3)
+                if end != -1:
+                    i = end + 3
+                    continue
+                else:
+                    break
+            in_str = ch
+        elif ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth == 0:
+                return i
+
+        i += 1
+
+    return len(text) - 1  # fallback
+
+
+def add_timeout_to_call(call_text: str, timeout_val: int, category: str) -> str:
+    """
+    Insert timeout=N into a subprocess.run(...) call text.
+    Handles single-line and multi-line calls.
+    Returns the modified call text.
+    """
+    # Find the opening paren of .run(
+    open_paren = call_text.index("subprocess.run(") + len("subprocess.run(")
+    # The closing paren is the last char (we extracted exactly the call)
+    close_paren = len(call_text) - 1
+
+    inner = call_text[open_paren:close_paren]
+    is_multiline = "\n" in inner
+
+    comment = "  # timeout per ADR-278 (default - review)" if category == "default" else ""
+
+    if is_multiline:
+        # Find the last line before the closing paren
+        # Insert a new line before the closing paren
+        last_newline = call_text.rfind("\n", 0, close_paren)
+        close_line = call_text[last_newline + 1 : close_paren + 1]
+        # Determine indentation for the new line (match existing arg indentation)
+        lines_inner = inner.splitlines()
+        indent = ""
+        for l in lines_inner:
+            stripped = l.lstrip()
+            if stripped:
+                indent = l[: len(l) - len(stripped)]
+                break
+
+        # Ensure last arg line ends with comma
+        # Find the second-to-last non-empty line in inner
+        inner_stripped = inner.rstrip()
+        if inner_stripped and not inner_stripped.endswith(","):
+            # Add comma to last arg
+            last_content = inner_stripped.rfind("\n")
+            if last_content != -1:
+                pre = inner[: last_content + 1]
+                last_arg_line = inner[last_content + 1 :].rstrip()
+                rest = inner[last_content + 1 + len(last_arg_line) :]
+                inner_new = pre + last_arg_line + "," + rest
+                call_text = call_text[:open_paren] + inner_new + call_text[open_paren + len(inner) :]
+                # Recalculate — close_paren shifted by 1 (the added comma)
+                close_paren = len(call_text) - 1
+                inner = call_text[open_paren:close_paren]
+                last_newline = call_text.rfind("\n", 0, close_paren)
+
+        new_timeout_line = f"\n{indent}timeout={timeout_val},{comment}"
+        return call_text[:last_newline] + new_timeout_line + call_text[last_newline:]
+    else:
+        # Single-line: insert before closing paren, comment goes AFTER the closing paren
+        inner_stripped = inner.strip()
+        if inner_stripped.endswith(","):
+            sep = " "
+        elif inner_stripped:
+            sep = ", "
+        else:
+            sep = ""
+        # comment must be placed after the closing ), not inside it
+        return (
+            call_text[:close_paren]
+            + f"{sep}timeout={timeout_val}"
+            + call_text[close_paren:]
+            + comment
+        )
+
+
+def process_file(
+    filepath: Path,
+    allowlist: dict,
+    dry_run: bool,
+) -> list[tuple[int, str, str]]:
+    """
+    Find and patch all subprocess.run() calls without timeout= in the file.
+    Returns list of (lineno, before, after) patches.
+    """
+    rel_path = str(filepath.relative_to(REPO_ROOT))
+    patches = []
+
+    try:
+        content = filepath.read_text(encoding="utf-8")
+    except Exception as e:
+        print(f"SKIP {rel_path}: {e}", file=sys.stderr)
+        return patches
+
+    if "subprocess.run(" not in content:
+        return patches
+
+    # File-level allowlist
+    if rel_path in allowlist["files"]:
+        COUNTERS["skipped_allowlist"] += content.count("subprocess.run(")
+        return patches
+
+    # Find all subprocess.run( occurrences
+    pattern = re.compile(r"subprocess\.run\(")
+    result_parts = []
+    last_end = 0
+    any_modified = False
+
+    for m in pattern.finditer(content):
+        start = m.start()
+
+        # Find the complete call
+        call_end = find_call_end(content, start)
+        call_text = content[start : call_end + 1]
+
+        # Compute line number for this occurrence
+        lineno = content[:start].count("\n") + 1
+
+        # Check line-level allowlist
+        if (rel_path, lineno) in allowlist["lines"]:
+            result_parts.append(content[last_end : call_end + 1])
+            last_end = call_end + 1
+            COUNTERS["skipped_allowlist"] += 1
+            continue
+
+        # Already has timeout?
+        if "timeout=" in call_text:
+            result_parts.append(content[last_end : call_end + 1])
+            last_end = call_end + 1
+            COUNTERS["skipped_has_timeout"] += 1
+            continue
+
+        # Classify
+        timeout_val, category = classify_timeout(call_text)
+
+        # Build new call
+        try:
+            new_call_text = add_timeout_to_call(call_text, timeout_val, category)
+        except Exception as e:
+            print(f"WARNING: could not patch {rel_path}:{lineno}: {e}", file=sys.stderr)
+            result_parts.append(content[last_end : call_end + 1])
+            last_end = call_end + 1
+            continue
+
+        if new_call_text != call_text:
+            patches.append((lineno, call_text, new_call_text))
+            COUNTERS[category] += 1
+            COUNTERS["lines_modified"] += 1
+            any_modified = True
+            result_parts.append(content[last_end:start])
+            result_parts.append(new_call_text)
+            last_end = call_end + 1
+        else:
+            result_parts.append(content[last_end : call_end + 1])
+            last_end = call_end + 1
+
+    if any_modified:
+        result_parts.append(content[last_end:])
+        new_content = "".join(result_parts)
+        if not dry_run:
+            filepath.write_text(new_content, encoding="utf-8")
+        COUNTERS["files_patched"] += 1
+
+    return patches
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="ADR-278 Phase 2: backfill timeout= to subprocess.run() calls"
+    )
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--dry-run", action="store_true")
+    group.add_argument("--apply", action="store_true")
+    parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--max-show", type=int, default=20)
+    args = parser.parse_args()
+
+    allowlist = load_allowlist()
+    print(f"Allowlist: {len(allowlist['files'])} files, {len(allowlist['lines'])} lines exempted")
+
+    files = get_python_files()
+    print(f"Scanning {len(files)} Python files...")
+    print()
+
+    all_patches = []
+    for filepath in sorted(files):
+        patches = process_file(filepath, allowlist, dry_run=args.dry_run)
+        if patches:
+            rel = str(filepath.relative_to(REPO_ROOT))
+            all_patches.append((rel, patches))
+
+    shown = 0
+    for rel, patches in all_patches:
+        for lineno, before, after in patches:
+            if shown < args.max_show or args.verbose:
+                print(f"--- {rel}:{lineno} ---")
+                before_short = before.strip().replace("\n", " ↵ ")[:140]
+                after_short = after.strip().replace("\n", " ↵ ")[:140]
+                print(f"  BEFORE: {before_short}")
+                print(f"  AFTER:  {after_short}")
+                print()
+                shown += 1
+
+    total = sum(len(p) for _, p in all_patches)
+    if shown < total:
+        print(f"... and {total - shown} more patches (use --verbose to see all)")
+        print()
+
+    print("=" * 60)
+    print("SUMMARY")
+    print("=" * 60)
+    print(f"Mode:                   {'DRY RUN (no files written)' if args.dry_run else 'APPLIED'}")
+    print(f"Files patched:          {COUNTERS['files_patched']}")
+    print(f"Lines modified:         {COUNTERS['lines_modified']}")
+    print(f"  git ops (60s):        {COUNTERS['git']}")
+    print(f"  pytest (300s):        {COUNTERS['pytest']}")
+    print(f"  docker (120s):        {COUNTERS['docker']}")
+    print(f"  default (30s):        {COUNTERS['default']}")
+    print(f"  skipped (allowlist):  {COUNTERS['skipped_allowlist']}")
+    print(f"  skipped (has timeout):{COUNTERS['skipped_has_timeout']}")
+
+    if args.dry_run:
+        print()
+        print("Run with --apply to write changes.")
+
+
+if __name__ == "__main__":
+    main()

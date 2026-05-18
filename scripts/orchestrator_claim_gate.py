@@ -77,6 +77,7 @@ def run_git(root: Path, args: Sequence[str], check: bool = False) -> subprocess.
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=check,
+        timeout=60,
     )
 
 
@@ -301,6 +302,7 @@ def _patch_id(root: Path, sha: str) -> str | None:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=60,
     )
     if proc.returncode != 0 or not proc.stdout.strip():
         return None

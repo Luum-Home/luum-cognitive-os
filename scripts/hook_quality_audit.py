@@ -179,7 +179,7 @@ def audit() -> tuple[list[str], dict[str, Any]]:
         if not script.is_file():
             failures.append(f"hook {hook_id} script missing: {entry.get('script')}"); continue
         if header_scope(script) not in {"os-only", "project", "both"}: failures.append(f"hook {hook_id} script missing valid SCOPE header")
-        proc = subprocess.run(["bash", "-n", str(script)], cwd=REPO, text=True, capture_output=True, check=False)
+        proc = subprocess.run(["bash", "-n", str(script)], cwd=REPO, text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
         checked += 1
         if proc.returncode != 0: failures.append(f"hook {hook_id} fails bash -n: {proc.stderr.strip()}")
         tiers = entry.get("harness_tiers") or {}

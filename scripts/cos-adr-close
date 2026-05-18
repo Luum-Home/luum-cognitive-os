@@ -90,7 +90,7 @@ def _append_evidence(body: str, evidence: list[str], basis: str) -> str:
 
 
 def _run(cmd: list[str]) -> None:
-    result = subprocess.run(cmd, cwd=ROOT, text=True)
+    result = subprocess.run(cmd, cwd=ROOT, text=True, timeout=30)  # timeout per ADR-278 (default - review)
     if result.returncode != 0:
         raise SystemExit(result.returncode)
 

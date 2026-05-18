@@ -198,6 +198,7 @@ def adr_paths() -> list[Path]:
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         check=False,
+        timeout=60,
     )
     if result.returncode == 0 and result.stdout.strip():
         return [ROOT / line for line in result.stdout.splitlines()]

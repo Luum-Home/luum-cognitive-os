@@ -74,6 +74,7 @@ def _git(args: list[str], repo_root: Path, check: bool = True) -> subprocess.Com
         capture_output=True,
         text=True,
         check=check,
+        timeout=60,
     )
 
 

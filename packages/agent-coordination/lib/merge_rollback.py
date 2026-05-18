@@ -63,6 +63,7 @@ def _run_git(
         capture_output=True,
         text=True,
         check=check,
+        timeout=60,
     )
 
 

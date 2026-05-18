@@ -64,6 +64,7 @@ def _check_boring_reliability(profile: str, project_root: Path) -> int:
         cwd=str(project_root),
         capture_output=True,
         text=True,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     if result.returncode != 0:
         print(
@@ -89,6 +90,7 @@ def _run_loop(profile: str, project_root: Path, write: bool, dry_run: bool) -> d
         cwd=str(project_root),
         capture_output=True,
         text=True,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
 
     if result.returncode != 0:

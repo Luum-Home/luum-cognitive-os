@@ -37,6 +37,7 @@ def tracked_files(root: Path) -> list[Path]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=60,
     )
     if proc.returncode != 0:
         return sorted(path for path in root.rglob("*") if path.is_file() and ".git" not in path.parts)

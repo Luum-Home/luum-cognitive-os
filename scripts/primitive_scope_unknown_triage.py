@@ -147,7 +147,7 @@ class TriageRow:
 def _load_classifier_report(root: Path) -> dict[str, Any]:
     report = root / ".cognitive-os" / "reports" / "primitive-scope-classifier.json"
     if not report.exists():
-        subprocess.run([sys.executable, str(root / "scripts" / "primitive_scope_classifier.py"), "--project-dir", str(root)], check=True)
+        subprocess.run([sys.executable, str(root / "scripts" / "primitive_scope_classifier.py"), "--project-dir", str(root)], check=True, timeout=30)  # timeout per ADR-278 (default - review)
     return json.loads(report.read_text())
 
 

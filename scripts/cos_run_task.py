@@ -45,6 +45,7 @@ def current_branch(project_dir: Path) -> str:
                 check=False,
                 capture_output=True,
                 text=True,
+                timeout=60,
             )
         except OSError:
             continue

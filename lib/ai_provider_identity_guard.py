@@ -96,11 +96,11 @@ def scan_text(text: str, *, path: str, policy: dict[str, Any]) -> list[Finding]:
 
 
 def _git(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", "-C", str(project_dir), *args], text=True, capture_output=True, check=False)
+    return subprocess.run(["git", "-C", str(project_dir), *args], text=True, capture_output=True, check=False, timeout=60)
 
 
 def _git_bytes(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[bytes]:
-    return subprocess.run(["git", "-C", str(project_dir), *args], text=False, capture_output=True, check=False)
+    return subprocess.run(["git", "-C", str(project_dir), *args], text=False, capture_output=True, check=False, timeout=60)
 
 
 def staged_paths(project_dir: Path) -> list[str]:

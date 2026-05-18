@@ -31,7 +31,7 @@ def find_untagged_files() -> list[Path]:
         cmd.append(str(REPO_ROOT / d))
     for ext in INCLUDE_EXTS:
         cmd += ["--include", ext]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)  # timeout per ADR-278 (default - review)
     paths = [Path(p.strip()) for p in result.stdout.splitlines() if p.strip()]
     return paths
 

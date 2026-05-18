@@ -221,6 +221,7 @@ def run_git_ls_files(root: Path) -> list[str]:
         check=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        timeout=60,
     )
     return [p for p in proc.stdout.decode("utf-8", errors="ignore").split("\0") if p]
 

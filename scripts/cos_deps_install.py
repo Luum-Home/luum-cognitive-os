@@ -235,7 +235,7 @@ def build_report(profile_name: str, target_platform: str, *, apply: bool, includ
         for row in list(report["installable"]):
             if row.get("auth_bound") or row.get("manual") or not row.get("install_command"):
                 continue
-            proc = subprocess.run(row["install_command"], shell=True, text=True, capture_output=True, check=False)
+            proc = subprocess.run(row["install_command"], shell=True, text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
             result = {**row, "returncode": proc.returncode}
             if proc.returncode == 0:
                 report["installed"].append(result)
@@ -244,7 +244,7 @@ def build_report(profile_name: str, target_platform: str, *, apply: bool, includ
                 report["failed"].append(result)
         py = report["python"]
         if include_python and py.get("packages"):
-            proc = subprocess.run(str(py["install_command"]), shell=True, text=True, capture_output=True, check=False)
+            proc = subprocess.run(str(py["install_command"]), shell=True, text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
             py["returncode"] = proc.returncode
             if proc.returncode != 0:
                 report["failed"].append({"name": "python-groups", "returncode": proc.returncode, "stderr": proc.stderr[-1000:]})

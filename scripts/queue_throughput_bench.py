@@ -68,6 +68,7 @@ def _git(args: list[str], cwd: Path, check: bool = True) -> subprocess.Completed
         capture_output=True,
         text=True,
         check=check,
+        timeout=60,
     )
 
 

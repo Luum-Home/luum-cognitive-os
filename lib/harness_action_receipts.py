@@ -107,6 +107,7 @@ def _run_git(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=60,
     )
 
 

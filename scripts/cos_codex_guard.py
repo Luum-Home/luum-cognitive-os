@@ -14,6 +14,7 @@ def main() -> int:
     return subprocess.run(
         [sys.executable, str(runner), "--harness", "codex", *sys.argv[1:]],
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     ).returncode
 
 

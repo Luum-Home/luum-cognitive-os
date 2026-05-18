@@ -60,6 +60,7 @@ def load_base_manifest(repo_root: Path, base_ref: str, manifest_rel: str) -> dic
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if result.returncode != 0:
         return {"primitives": []}

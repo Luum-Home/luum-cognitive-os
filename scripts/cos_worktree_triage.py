@@ -29,6 +29,7 @@ def run_git(repo: Path, args: list[str], *, check: bool = False) -> subprocess.C
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=check,
+        timeout=60,
     )
 
 

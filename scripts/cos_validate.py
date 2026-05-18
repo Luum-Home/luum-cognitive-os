@@ -17,7 +17,7 @@ from lib.validation_lanes import recommend_lane
 
 
 def changed_files(repo: Path) -> list[str]:
-    proc = subprocess.run(["git", "diff", "--name-only", "HEAD"], cwd=repo, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    proc = subprocess.run(["git", "diff", "--name-only", "HEAD"], cwd=repo, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
     return [line for line in proc.stdout.splitlines() if line.strip()]
 
 

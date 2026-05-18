@@ -104,7 +104,7 @@ class Check:
 
 
 def run_git_stash_list(root: Path) -> list[str]:
-    result = subprocess.run(["git", "stash", "list"], cwd=root, text=True, capture_output=True, check=False)
+    result = subprocess.run(["git", "stash", "list"], cwd=root, text=True, capture_output=True, check=False, timeout=60)
     if result.returncode != 0:
         return [f"<error:{result.stderr.strip()}>"]
     return [line for line in result.stdout.splitlines() if line.strip()]
@@ -129,6 +129,7 @@ def check_adoption_tiers(root: Path) -> Check:
         text=True,
         capture_output=True,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     return Check(
         id="adoption-tiers-derived",

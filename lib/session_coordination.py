@@ -155,6 +155,7 @@ def current_branch(project_dir: Path) -> str:
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         check=False,
+        timeout=60,
     )
     return proc.stdout.strip() if proc.returncode == 0 else ""
 
@@ -326,6 +327,7 @@ def parse_git_worktrees(project_dir: str | Path) -> list[dict[str, str]]:
         stdout=subprocess.PIPE,
         stderr=subprocess.DEVNULL,
         check=False,
+        timeout=60,
     )
     if proc.returncode != 0:
         return []

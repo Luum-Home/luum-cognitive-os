@@ -13,7 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def run_git(args: list[str], root: Path) -> str:
-    proc = subprocess.run(["git", *args], cwd=root, text=True, capture_output=True, check=False)
+    proc = subprocess.run(["git", *args], cwd=root, text=True, capture_output=True, check=False, timeout=60)
     return proc.stdout if proc.returncode == 0 else ""
 
 

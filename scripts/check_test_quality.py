@@ -227,6 +227,7 @@ def get_new_test_files_in_pr() -> list[Path]:
             capture_output=True,
             text=True,
             check=True,
+            timeout=60,
         )
         return [Path(f) for f in result.stdout.strip().splitlines() if f]
     except subprocess.CalledProcessError:
@@ -241,6 +242,7 @@ def get_changed_test_files_cached() -> list[Path]:
             capture_output=True,
             text=True,
             check=True,
+            timeout=60,
         )
         return [Path(f) for f in result.stdout.strip().splitlines() if f]
     except subprocess.CalledProcessError:

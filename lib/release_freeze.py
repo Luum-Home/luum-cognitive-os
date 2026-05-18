@@ -45,7 +45,7 @@ def compact_ts() -> str:
 
 
 def git(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", "-C", str(project_dir), *args], text=True, capture_output=True, check=False)
+    return subprocess.run(["git", "-C", str(project_dir), *args], text=True, capture_output=True, check=False, timeout=60)
 
 
 def git_root(start: Path) -> Path:

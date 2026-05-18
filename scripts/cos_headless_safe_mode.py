@@ -75,6 +75,7 @@ def resolve_project_dir(raw_project_dir: str | None) -> Path:
             check=True,
             capture_output=True,
             text=True,
+            timeout=60,
         ).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         git_root = ""

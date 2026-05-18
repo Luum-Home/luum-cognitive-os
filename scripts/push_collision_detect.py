@@ -80,6 +80,7 @@ def _run_git(root: Path, args: Sequence[str]) -> subprocess.CompletedProcess[str
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        timeout=60,
     )
 
 
@@ -127,6 +128,7 @@ def patch_id(root: Path, sha: str) -> str | None:
         cwd=str(root),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        timeout=60,
     )
     if show_proc.returncode != 0:
         return None
@@ -136,6 +138,7 @@ def patch_id(root: Path, sha: str) -> str | None:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=str(root),
+        timeout=60,
     )
     if pid_proc.returncode != 0 or not pid_proc.stdout.strip():
         return None

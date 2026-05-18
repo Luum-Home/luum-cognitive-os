@@ -164,7 +164,7 @@ def fetch_external_source(repo: Path, manifest_path: Path, url: str, *, execute:
     report["stderr_tail"] = "\n".join((proc.stderr or "").splitlines()[-10:])
     report["status"] = "pass" if proc.returncode == 0 else "block"
     if target.exists():
-        head = subprocess.run(["git", "-C", str(target), "rev-parse", "HEAD"], text=True, capture_output=True, check=False)
+        head = subprocess.run(["git", "-C", str(target), "rev-parse", "HEAD"], text=True, capture_output=True, check=False, timeout=60)
         report["head"] = head.stdout.strip() if head.returncode == 0 else None
     return report
 

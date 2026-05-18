@@ -341,6 +341,7 @@ def read_input(args: argparse.Namespace) -> str:
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             check=False,
+            timeout=60,
         )
         return proc.stdout
     raise SystemExit("Provide --text or --conversation-file")

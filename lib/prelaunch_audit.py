@@ -98,7 +98,7 @@ def utc_stamp() -> str:
 
 
 def repo_root(start: Path) -> Path:
-    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False)
+    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False, timeout=60)
     if proc.returncode != 0:
         raise SystemExit(f"not a git repository: {start}")
     return Path(proc.stdout.strip()).resolve()
@@ -640,7 +640,7 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
     if not shutil.which("git-filter-repo"):
         raise SystemExit("git-filter-repo is required")
     backup_path = repo.parent / f"prelaunch-history-backup-{utc_stamp()}.bundle"
-    bundle = subprocess.run(["git", "-C", str(repo), "bundle", "create", str(backup_path), "--all"], text=True, capture_output=True, check=False)
+    bundle = subprocess.run(["git", "-C", str(repo), "bundle", "create", str(backup_path), "--all"], text=True, capture_output=True, check=False, timeout=60)
     if bundle.returncode != 0:
         raise SystemExit(bundle.stderr.strip() or "git bundle backup failed")
     remotes = snapshot_remotes(repo)
@@ -649,7 +649,7 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
     (target_dir / "branch-upstream-snapshot.json").write_text(json.dumps(branch_upstreams, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     executed: list[list[str]] = []
     for action in actions:
-        proc = subprocess.run(action, cwd=repo, text=True, capture_output=True, check=False)
+        proc = subprocess.run(action, cwd=repo, text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
         executed.append(action[:4])
         if proc.returncode != 0:
             restore_remotes(repo, remotes)
@@ -683,7 +683,7 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
         push_args = ["git", "-c", "core.hooksPath=/dev/null", "push"]
         push_args.append(f"--force-with-lease={branch}:{old}" if old else "--force-with-lease")
         push_args.extend([remote, branch])
-        push = subprocess.run(push_args, cwd=repo, text=True, capture_output=True, check=False)
+        push = subprocess.run(push_args, cwd=repo, text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
         result["push"] = {"returncode": push.returncode, "stdout": push.stdout, "stderr": push.stderr}
         if push.returncode != 0:
             raise SystemExit(push.stderr.strip() or "force push failed")

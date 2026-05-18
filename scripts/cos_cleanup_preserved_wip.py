@@ -36,6 +36,7 @@ def run_git(repo: Path, args: list[str], *, check: bool = False) -> subprocess.C
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=check,
+        timeout=60,
     )
 
 
@@ -127,11 +128,11 @@ def backup_worktree(path: Path, backup_dir: Path) -> dict[str, Any]:
     name = path.name.replace(os.sep, "_")
     wt_dir = backup_dir / "worktrees" / name
     wt_dir.mkdir(parents=True, exist_ok=True)
-    status = subprocess.run(["git", "-C", str(path), "status", "--short", "--branch"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
-    diff = subprocess.run(["git", "-C", str(path), "diff"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    status = subprocess.run(["git", "-C", str(path), "status", "--short", "--branch"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
+    diff = subprocess.run(["git", "-C", str(path), "diff"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
     write_text(wt_dir / "status.txt", status.stdout + status.stderr)
     write_text(wt_dir / "diff.patch", diff.stdout + diff.stderr)
-    untracked = subprocess.run(["git", "-C", str(path), "ls-files", "--others", "--exclude-standard"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    untracked = subprocess.run(["git", "-C", str(path), "ls-files", "--others", "--exclude-standard"], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
     files = [item for item in untracked.stdout.splitlines() if item]
     write_text(wt_dir / "untracked.txt", "\n".join(files) + ("\n" if files else ""))
     tar_path = wt_dir / "untracked.tgz"
@@ -195,6 +196,7 @@ def process_activity_for_path(path: Path) -> tuple[bool, str]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     if proc.returncode == 0 and any(needle in line and "cos_cleanup_preserved_wip.py" not in line for line in proc.stdout.splitlines()):
         return True, "process command references validation capsule path"
@@ -207,6 +209,7 @@ def process_activity_for_path(path: Path) -> tuple[bool, str]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     if lsof_proc.returncode == 0 and lsof_proc.stdout.strip():
         return True, "open file detected under validation capsule path"

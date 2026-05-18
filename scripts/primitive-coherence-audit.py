@@ -58,6 +58,7 @@ def repo_root(start: Path) -> Path:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if proc.returncode != 0:
         return start.resolve()
@@ -219,7 +220,7 @@ def legacy_unregistered(repo: Path, manifest: dict[str, Any]) -> set[str]:
     checker = repo / str(reg.get("legacy_checker", "scripts/check_hook_registration.py"))
     if not checker.exists():
         return set()
-    proc = subprocess.run([sys.executable, str(checker)], cwd=str(repo), text=True, capture_output=True, check=False)
+    proc = subprocess.run([sys.executable, str(checker)], cwd=str(repo), text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
     text = proc.stdout + "\n" + proc.stderr
     return set(re.findall(r"-\s+([A-Za-z0-9_.-]+\.sh)\s+\(missing:", text))
 

@@ -156,6 +156,7 @@ def run_chain(root: Path, chain: list[tuple[str, dict[str, Any]]], payload: dict
             stdout=sys.stdout.buffer,
             stderr=sys.stderr.buffer,
             check=False,
+            timeout=30,  # timeout per ADR-278 (default - review)
         )
         if proc.returncode == 2:
             print(f"cos-governed-runner: blocked by {hook_id}", file=sys.stderr)

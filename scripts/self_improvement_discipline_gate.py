@@ -51,6 +51,7 @@ def _load_plan(project_root: Path, profile: str) -> dict[str, Any]:
         text=True,
         capture_output=True,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     if result.returncode != 0:
         return {

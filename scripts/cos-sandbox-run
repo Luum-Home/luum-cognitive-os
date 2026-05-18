@@ -39,7 +39,7 @@ def main() -> int:
         print(json.dumps(plan.to_dict(), sort_keys=True))
         return 0
     import subprocess
-    proc = subprocess.run(plan.command, cwd=str(Path(args.workspace).resolve()))
+    proc = subprocess.run(plan.command, cwd=str(Path(args.workspace).resolve()), timeout=30)  # timeout per ADR-278 (default - review)
     return proc.returncode
 
 

@@ -33,7 +33,7 @@ def main() -> int:
         return 0
     if not shutil.which('docker'):
         raise SystemExit('docker is required for real network sandbox mode')
-    proc=subprocess.run(cmd, text=True)
+    proc=subprocess.run(cmd, text=True, timeout=30)  # timeout per ADR-278 (default - review)
     return proc.returncode
 if __name__=='__main__':
     raise SystemExit(main())

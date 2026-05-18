@@ -71,6 +71,7 @@ def repo_root(start: Path) -> Path:
         text=True,
         capture_output=True,
         check=False,
+        timeout=60,
     )
     if proc.returncode == 0 and proc.stdout.strip():
         return Path(proc.stdout.strip()).resolve()

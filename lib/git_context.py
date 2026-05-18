@@ -38,6 +38,7 @@ def _run(args: List[str], cwd: str) -> str:
             capture_output=True,
             text=True,
             cwd=cwd,
+            timeout=30,  # timeout per ADR-278 (default - review)
         )
         if result.returncode == 0:
             return result.stdout.strip()

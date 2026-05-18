@@ -25,7 +25,7 @@ class Worktree:
 
 
 def run_command(args: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(args, cwd=str(cwd) if cwd else None, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    return subprocess.run(args, cwd=str(cwd) if cwd else None, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=30)  # timeout per ADR-278 (default - review)
 
 
 def parse_worktrees(output: str) -> list[Worktree]:

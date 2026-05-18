@@ -41,6 +41,7 @@ def _run(cmd: list[str], cwd: Path) -> tuple[int, str, str]:
         cwd=str(cwd),
         capture_output=True,
         text=True,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     return result.returncode, result.stdout.strip(), result.stderr.strip()
 

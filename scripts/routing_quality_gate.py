@@ -114,7 +114,7 @@ def evaluate_report(report: dict[str, Any], thresholds: GateThresholds) -> GateR
 
 def run_command(cmd: list[str], *, cwd: Path) -> None:
     print("$ " + " ".join(cmd), flush=True)
-    subprocess.run(cmd, cwd=cwd, check=True)
+    subprocess.run(cmd, cwd=cwd, check=True, timeout=30)  # timeout per ADR-278 (default - review)
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

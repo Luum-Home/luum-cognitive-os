@@ -304,6 +304,7 @@ def run_local_command(project_dir: Path, task: dict[str, Any], lease: Lease) -> 
         text=True,
         capture_output=True,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     completed_at = iso(utc_now())
     stdout, stdout_redactions = redact(result.stdout)
@@ -394,6 +395,7 @@ def run_host_cli_adapter(
                 text=True,
                 capture_output=True,
                 check=False,
+                timeout=30,  # timeout per ADR-278 (default - review)
             )
             stdout = result.stdout
             stderr = result.stderr

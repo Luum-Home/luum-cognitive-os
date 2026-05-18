@@ -64,6 +64,7 @@ def _git(args: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
         cwd=str(cwd),
         capture_output=True,
         text=True,
+        timeout=60,
     )
 
 

@@ -115,7 +115,7 @@ def collect_snapshot_benefits(root: Path, since_epoch: float | None) -> dict[str
     try:
         import subprocess
 
-        proc = subprocess.run(["git", "stash", "list"], cwd=root, text=True, capture_output=True, check=False)
+        proc = subprocess.run(["git", "stash", "list"], cwd=root, text=True, capture_output=True, check=False, timeout=60)
         auto_stashes = [line for line in proc.stdout.splitlines() if "auto-pre-agent-" in line]
     except Exception:
         auto_stashes = []

@@ -111,6 +111,7 @@ def git(project: Path, args: list[str], *, check: bool = False) -> subprocess.Co
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=check,
+        timeout=60,
     )
 
 
@@ -729,6 +730,7 @@ def process_activity_for_worktree(path: Path) -> dict[str, Any]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     if ps_proc.returncode == 0:
         for line in ps_proc.stdout.splitlines():
@@ -756,6 +758,7 @@ def process_activity_for_worktree(path: Path) -> dict[str, Any]:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=False,
+            timeout=30,  # timeout per ADR-278 (default - review)
         )
         if lsof_proc.returncode == 0:
             for line in lsof_proc.stdout.splitlines()[1:20]:
@@ -788,6 +791,7 @@ def collect_edit_lock_for_path(project: Path, rel_path: str) -> dict[str, Any]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     output = (proc.stdout + proc.stderr).strip()
     if "FREE" in output:

@@ -100,7 +100,7 @@ def repo_root() -> Path:
 
 
 def _run_git(repo: Path, args: list[str]) -> str:
-    result = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, check=False)
+    result = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, check=False, timeout=60)
     if result.returncode != 0:
         return ""
     return result.stdout

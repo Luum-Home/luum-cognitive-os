@@ -43,7 +43,7 @@ def dispatch_metrics_evidence(root: Path) -> dict[str, Any]:
     }
 
 def readiness_summary(root: Path) -> dict[str, Any]:
-    proc = subprocess.run(["python3", "scripts/cos_architecture_readiness.py", "--json"], cwd=root, text=True, capture_output=True, check=False)
+    proc = subprocess.run(["python3", "scripts/cos_architecture_readiness.py", "--json"], cwd=root, text=True, capture_output=True, check=False, timeout=30)  # timeout per ADR-278 (default - review)
     try:
         report = json.loads(proc.stdout)
     except json.JSONDecodeError:

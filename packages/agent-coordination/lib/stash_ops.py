@@ -175,6 +175,7 @@ def budget_check(
             text=True,
             check=False,
             cwd=str(project_dir or _project_dir()),
+            timeout=60,
         )
         lines = result.stdout.strip().splitlines() if result.stdout.strip() else []
         unrestored = sum(1 for line in lines if sid in line)
@@ -238,6 +239,7 @@ def push_named(
                 text=True,
                 check=True,
                 cwd=str(project_dir or _project_dir()),
+                timeout=30,  # timeout per ADR-278 (default - review)
             )
         except subprocess.CalledProcessError:
             audit_append(hook, full_label, "push", "fail", project_dir=project_dir)
@@ -288,6 +290,7 @@ def apply_by_name(
                 text=True,
                 check=True,
                 cwd=str(project_dir or _project_dir()),
+                timeout=60,
             )
             audit_append(hook, name, "apply", "ok", project_dir=project_dir)
             return True
@@ -321,6 +324,7 @@ def drop_by_ref(
                 text=True,
                 check=True,
                 cwd=str(project_dir or _project_dir()),
+                timeout=60,
             )
             audit_append(hook, name, "drop", "ok", project_dir=project_dir)
             return True
@@ -346,6 +350,7 @@ def _resolve_ref_by_label(
             text=True,
             check=False,
             cwd=str(project_dir or _project_dir()),
+            timeout=60,
         )
         for line in result.stdout.splitlines():
             if label in line:
@@ -370,6 +375,7 @@ def _label_for_ref(
             text=True,
             check=False,
             cwd=str(project_dir or _project_dir()),
+            timeout=60,
         )
         for line in result.stdout.splitlines():
             if line.startswith(ref + ":"):

@@ -48,6 +48,7 @@ def _run(cmd: list[str], *, cwd: Optional[str | Path] = None, stdin: Optional[by
         input=stdin,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        timeout=30,  # timeout per ADR-278 (default - review)
     )
     return result.returncode, result.stdout.decode("utf-8", errors="replace"), result.stderr.decode("utf-8", errors="replace")
 
