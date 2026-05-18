@@ -13,6 +13,7 @@ import pytest
 from lib.task_claim_ledger import acquire_claim, list_claims, release_claim
 from scripts.cos_task_claims import (
     claim_task as ctc_claim_task,
+    claim_is_stale,
     claims_path,
     list_claims as ctc_list_claims,
     normalize_claims,
@@ -116,3 +117,21 @@ def test_extended_fields_persisted_via_tcl(tmp_path: Path) -> None:
     assert "expires_at" in claim
     assert "pid" in claim
     assert "host" in claim
+
+
+def test_ctc_staleness_honors_per_claim_ttl_and_expires_at(tmp_path: Path) -> None:
+    """TTL fields added for TCL-compatible consumers must affect pruning semantics."""
+    result = acquire_claim(
+        tmp_path,
+        task_id="coherence-task-ttl",
+        session_id="s-ttl",
+        agent_id="agent-ttl",
+        ttl_seconds=1,
+    )
+    assert result.status == "acquired"
+
+    data = normalize_claims(read_json(claims_path(tmp_path), {"claims": []}))
+    claim = next(c for c in data["claims"] if c.get("task_id") == "coherence-task-ttl")
+
+    now_epoch = float(claim["expires_at"]) + 0.1
+    assert claim_is_stale(claim, {}, now_epoch) is True

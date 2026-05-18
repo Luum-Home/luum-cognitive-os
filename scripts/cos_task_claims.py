@@ -172,10 +172,22 @@ def claim_is_stale(claim: dict[str, Any], liveness: dict[str, bool], now_epoch: 
     sid = str(claim.get("session_id") or "")
     if sid in liveness:
         return not liveness[sid]
+    expires_at = claim.get("expires_at")
+    if isinstance(expires_at, (int, float)):
+        return float(expires_at) <= now_epoch
+    if isinstance(expires_at, str):
+        expires_epoch = parse_iso_epoch(expires_at)
+        if expires_epoch is not None:
+            return expires_epoch <= now_epoch
     claimed_epoch = parse_iso_epoch(claim.get("claimed_at"))
     if claimed_epoch is None:
         return False
-    return now_epoch - claimed_epoch > claim_ttl_seconds()
+    ttl = claim.get("ttl_seconds")
+    try:
+        ttl_seconds = int(ttl)
+    except (TypeError, ValueError):
+        ttl_seconds = claim_ttl_seconds()
+    return now_epoch - claimed_epoch > max(1, ttl_seconds)
 
 
 def prune_claims(project: Path, data: dict[str, Any]) -> dict[str, Any]:
