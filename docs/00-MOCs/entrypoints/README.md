@@ -11,6 +11,10 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 
+## Goal-loop and completion-contract research
+
+- [Goal Features Internals — 2026-05-16](../../06-Daily/reports/goal-features-internals-2026-05-16.md) — comparison of Codex and Claude Code goal mechanics feeding the COS-native `/goal` SDD under `.cognitive-os/sdd/changes/cos-native-goal-loop/`.
+
 ## Recent tech-radar governance additions
 - [External Tools Radar Pyrefly Addendum — 2026-05-15](reports/external-tools-radar-pyrefly-addendum-2026-05-15.md) — targeted TRIAL/advisory Python type-check gate for agentic loops, with local pilot receipts.
 
