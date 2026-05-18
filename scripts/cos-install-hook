@@ -1,0 +1,249 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# PURPOSE: Install an extension hook into cognitive-os.yaml and re-project to harness
+# Usage: scripts/cos-install-hook <name> [--event <EventType>] [--matcher <pattern>]
+#                                        [--source <path>] [--dry-run]
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# ---------------------------------------------------------------------------
+# Parse arguments
+# ---------------------------------------------------------------------------
+HOOK_NAME=""
+EVENT_TYPE=""
+MATCHER=""
+SOURCE_PATH=""
+DRY_RUN=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --event)   EVENT_TYPE="$2"; shift 2 ;;
+    --matcher) MATCHER="$2"; shift 2 ;;
+    --source)  SOURCE_PATH="$2"; shift 2 ;;
+    --dry-run) DRY_RUN=true; shift ;;
+    --*)       echo "ERROR: Unknown flag: $1" >&2; exit 1 ;;
+    *)
+      if [[ -z "$HOOK_NAME" ]]; then
+        HOOK_NAME="$1"
+      else
+        echo "ERROR: Unexpected argument: $1" >&2
+        exit 1
+      fi
+      shift
+      ;;
+  esac
+done
+
+if [[ -z "$HOOK_NAME" ]]; then
+  echo "Usage: cos-install-hook <name> [--event <EventType>] [--matcher <pattern>] [--source <path>] [--dry-run]" >&2
+  exit 1
+fi
+
+# Normalize: strip .sh suffix if provided
+HOOK_NAME="${HOOK_NAME%.sh}"
+
+# ---------------------------------------------------------------------------
+# Helper: resolve hook source file
+# ---------------------------------------------------------------------------
+resolve_source() {
+  local name="$1"
+
+  if [[ -n "$SOURCE_PATH" ]]; then
+    local f="$SOURCE_PATH"
+    # Accept either a directory (look for <name>.sh inside) or direct file path
+    [[ -d "$f" ]] && f="${f}/${name}.sh"
+    if [[ ! -f "$f" ]]; then
+      echo "ERROR: --source path does not exist: $f" >&2; exit 1
+    fi
+    local canonical
+    canonical="$(cd "$(dirname "$f")" && pwd)/$(basename "$f")"
+    if [[ "$canonical" != "$PROJECT_ROOT"/* ]]; then
+      echo "ERROR: source must be within project root (scope violation): $canonical" >&2; exit 1
+    fi
+    echo "$canonical"
+    return
+  fi
+
+  # packages/cos-*/hooks/<name>.sh
+  local pkg_match
+  pkg_match="$(find "${PROJECT_ROOT}/packages" -maxdepth 3 -name "${name}.sh" 2>/dev/null | grep -E "/hooks/${name}\.sh$" | head -1 || true)"
+  if [[ -n "$pkg_match" ]]; then
+    echo "$pkg_match"; return
+  fi
+
+  # hooks/<name>.sh
+  if [[ -f "${PROJECT_ROOT}/hooks/${name}.sh" ]]; then
+    echo "${PROJECT_ROOT}/hooks/${name}.sh"; return
+  fi
+
+  echo "ERROR: Cannot find hook '${name}.sh' in any search path." >&2
+  echo "  Searched:" >&2
+  echo "    packages/cos-*/hooks/${name}.sh" >&2
+  echo "    hooks/${name}.sh" >&2
+  echo "  Pass --source <path> to specify location explicitly." >&2
+  exit 1
+}
+
+# ---------------------------------------------------------------------------
+# Helper: extract header value from hook script
+# ---------------------------------------------------------------------------
+extract_header() {
+  local file="$1" key="$2"
+  grep -m1 "^# ${key}:" "$file" | sed "s|^# ${key}:[[:space:]]*||" || true
+}
+
+# ---------------------------------------------------------------------------
+# Helper: validate hook script basics
+# ---------------------------------------------------------------------------
+validate_hook() {
+  local f="$1"
+
+  # Shebang
+  local shebang
+  shebang="$(head -1 "$f")"
+  if [[ "$shebang" != "#!/usr/bin/env bash" ]]; then
+    echo "WARNING: shebang is not '#!/usr/bin/env bash': $shebang" >&2
+  fi
+
+  # set -euo pipefail within first 20 lines
+  if ! head -20 "$f" | grep -q "set -euo pipefail"; then
+    echo "WARNING: 'set -euo pipefail' not found in first 20 lines of $f" >&2
+  fi
+
+  # SCOPE header
+  if ! grep -q "^# SCOPE:" "$f"; then
+    echo "WARNING: missing '# SCOPE:' header in $f" >&2
+  fi
+}
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+RESOLVED_SOURCE="$(resolve_source "$HOOK_NAME")"
+echo "install-hook: resolved source: ${RESOLVED_SOURCE}"
+
+# Ensure executable
+if [[ ! -x "$RESOLVED_SOURCE" ]]; then
+  echo "install-hook: chmod +x ${RESOLVED_SOURCE}"
+  chmod +x "$RESOLVED_SOURCE"
+fi
+
+validate_hook "$RESOLVED_SOURCE"
+
+# Determine event type
+if [[ -z "$EVENT_TYPE" ]]; then
+  EVENT_TYPE="$(extract_header "$RESOLVED_SOURCE" "EVENT")"
+fi
+if [[ -z "$EVENT_TYPE" ]]; then
+  echo "ERROR: Cannot determine event type. Pass --event <PreToolUse|PostToolUse|SessionStart|Stop>" >&2
+  exit 1
+fi
+
+# Validate event type
+case "$EVENT_TYPE" in
+  PreToolUse|PostToolUse|SessionStart|Stop) ;;
+  *)
+    echo "ERROR: Invalid event type '${EVENT_TYPE}'. Must be one of: PreToolUse, PostToolUse, SessionStart, Stop" >&2
+    exit 1
+    ;;
+esac
+
+# Determine matcher
+if [[ -z "$MATCHER" ]]; then
+  MATCHER="$(extract_header "$RESOLVED_SOURCE" "MATCHER")"
+fi
+if [[ -z "$MATCHER" ]]; then
+  MATCHER=".*"  # catch-all default
+  echo "install-hook: no matcher found — defaulting to '.*' (catch-all)" >&2
+fi
+
+# Relative hook path for command string
+REL_HOOK_PATH="$(python3 -c "
+import os
+print(os.path.relpath('${RESOLVED_SOURCE}', '${PROJECT_ROOT}'))
+")"
+HOOK_COMMAND="bash \"\$CLAUDE_PROJECT_DIR/${REL_HOOK_PATH}\""
+
+echo "install-hook: event=${EVENT_TYPE}, matcher=${MATCHER}"
+echo "install-hook: command=${HOOK_COMMAND}"
+
+COSYAML="${PROJECT_ROOT}/cognitive-os.yaml"
+
+# Check if already registered
+if grep -q "${REL_HOOK_PATH}" "$COSYAML" 2>/dev/null; then
+  echo "ERROR: Hook '${HOOK_NAME}' appears already registered in cognitive-os.yaml." >&2
+  echo "  Edit cognitive-os.yaml directly to change matcher/event, then re-run apply-efficiency-profile.sh" >&2
+  exit 1
+fi
+
+if [[ "$DRY_RUN" == "true" ]]; then
+  echo "[dry-run] Would register in cognitive-os.yaml:"
+  echo "  harness.hooks.${EVENT_TYPE}: matcher=${MATCHER} command=${HOOK_COMMAND}"
+  echo "[dry-run] Would run: scripts/apply-efficiency-profile.sh"
+  echo "[dry-run] Done. No files written."
+  exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# Register in cognitive-os.yaml via Python (preserves YAML structure)
+# ---------------------------------------------------------------------------
+python3 - "$COSYAML" "$EVENT_TYPE" "$MATCHER" "$HOOK_COMMAND" "$HOOK_NAME" << 'PYEOF'
+import sys, pathlib, re
+
+cosyaml_path = pathlib.Path(sys.argv[1])
+event_type   = sys.argv[2]
+matcher      = sys.argv[3]
+command      = sys.argv[4]
+hook_name    = sys.argv[5]
+
+content = cosyaml_path.read_text()
+
+# Build the hook entry block (2-space indent for harness.hooks children)
+entry_lines = (
+    f"      - matcher: \"{matcher}\"\n"
+    f"        hooks:\n"
+    f"          - type: command\n"
+    f"            command: \"{command}\"\n"
+    f"            # installed by cos-install-hook: {hook_name}\n"
+)
+
+# Check if harness.hooks.<EventType> already exists
+event_pattern = re.compile(r"(    " + re.escape(event_type) + r":\n)", re.MULTILINE)
+if event_pattern.search(content):
+    # Append under existing event key
+    content = event_pattern.sub(r"\1" + entry_lines, content, count=1)
+elif "harness:" in content and "hooks:" in content:
+    # harness.hooks exists — append new event key
+    hooks_pattern = re.compile(r"(  hooks:\n)", re.MULTILINE)
+    new_event_block = (
+        f"    {event_type}:\n" + entry_lines
+    )
+    content = hooks_pattern.sub(r"\1" + new_event_block, content, count=1)
+else:
+    # No harness.hooks at all — append at end
+    new_block = (
+        f"\nharness:\n"
+        f"  hooks:\n"
+        f"    {event_type}:\n"
+        + entry_lines
+    )
+    content = content.rstrip("\n") + new_block + "\n"
+
+cosyaml_path.write_text(content)
+print(f"install-hook: registered {hook_name} in cognitive-os.yaml [{event_type}]")
+PYEOF
+
+# ---------------------------------------------------------------------------
+# Re-project harness surfaces
+# ---------------------------------------------------------------------------
+echo "install-hook: running apply-efficiency-profile.sh ..."
+if ! bash "${PROJECT_ROOT}/scripts/apply-efficiency-profile.sh" 2>&1; then
+  echo "ERROR: apply-efficiency-profile.sh failed — rolling back cognitive-os.yaml change" >&2
+  git -C "$PROJECT_ROOT" checkout -- cognitive-os.yaml 2>/dev/null || true
+  exit 1
+fi
+
+echo "install-hook: SUCCESS — hook '${HOOK_NAME}' is now active in the harness"
+echo "  Event: ${EVENT_TYPE}, Matcher: ${MATCHER}"
