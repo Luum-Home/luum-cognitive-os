@@ -5,6 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.29.0] - 2026-05-18 — "Primitive Scope Discipline, Deterministic Quality Gates, and Wave 3 Runtime"
+
 ### Fixed
 - Stabilized Agent PostToolUse latency validation by demoting superseded legacy verification hooks from active Claude projection and adding cheap no-op paths for completion/review hooks.
 - Hardened F1 integration shard execution to allow `COS_TEST_PYTHON` when local shells do not have `uv` or compatible `python3` dependencies.
@@ -12,6 +14,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- Added `adversarial-review-gate` and `decision-depth-gate` PostToolUse hooks, converting agent-instruction quality rules to deterministic hook enforcement.
+- Added `developer-as-orchestrator.md` and `maintainer-philosophy.md` concept docs.
+- Added five product Q&A cards to `manifests/product-question-bank.yaml`: `value_proposition`, `who_is_it_for`, `stack_agnostic`, `codebase_scale`, `onboarding`.
+- Reclassified 134 hooks and 45 skills from `SCOPE: both` to `SCOPE: os-only` via content audit; 26 package-layer hooks and 48 skills remain `SCOPE: both` as verified portable primitives.
 - Added F1 laptop integration sharding via `scripts/cos-integration-shard-plan`, `make test-laptop-integration-plan`, and `make test-laptop-integration-shard`.
 - Added Wave 2 post-M1 opt-in memory retrieval modes: dual-level scoring, Personalized PageRank, memory-class overlay, and hybrid scoring.
 - Added opt-in bubblewrap seccomp command construction plus strict profile manifest; default sandbox behavior remains namespace-only.
@@ -23,6 +29,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- Language-agnostic semantic routing now uses embeddings against `description`+`summary_line` fields (multilingual-e5-large, ADR-296/298); language dependence audit reports 0 actionable findings.
 - Synced the radar implementation tracker after `v0.28.0`: C1-C4 adoption cleanup is now audit-pass, and post-0.28 priorities are explicit for H6, Wave 2 M1, ToolSearch metrics, seccomp, Wave 3, and public launch.
 
 ## [0.28.0] - 2026-05-10
