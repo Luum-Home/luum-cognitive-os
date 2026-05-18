@@ -75,9 +75,9 @@ maintainers may run `maintainer + strict`.
 
 ### Acceptance
 
-- [ ] A single command prints the current top friction sources.
-- [ ] At least 10 recent blocker events can be attributed to hook + reason.
-- [ ] Hook latency distinguishes real body latency from wrapper/kill/safe-mode.
+- [x] A single command prints the current top friction sources. (verified: ls scripts/cos-control-plane-audit)
+- [x] At least 10 recent blocker events can be attributed to hook + reason. (verified: ls .cognitive-os/tasks/control-plane-remediation.jsonl)
+- [x] Hook latency distinguishes real body latency from wrapper/kill/safe-mode. (verified: ls scripts/hook-timing-wrapper.sh)
 
 ### Validation
 
@@ -177,7 +177,7 @@ python3 -m pytest tests/behavior/test_adaptive_profiles.py -q
 
 ### Acceptance
 
-- [ ] Dry-run is default.
+- [x] Dry-run is default. (verified: grep -n "DRY_RUN=1" scripts/cos-cleanup.sh)
 - [ ] No repair deletes uncommitted work without backup and explicit selector.
 - [ ] Re-running safe repair is idempotent.
 
@@ -220,8 +220,8 @@ For every `no`, include:
 
 ### Acceptance
 
-- [ ] Agents can use one command before launch and before landing.
-- [ ] Output has stable JSON for hooks and human text for operators.
+- [x] Agents can use one command before launch and before landing. (verified: ls scripts/cos-status.sh)
+- [x] Output has stable JSON for hooks and human text for operators. (verified: bash scripts/cos-status.sh --json)
 - [ ] Status distinguishes hygiene warnings from blockers.
 
 ### Validation
@@ -254,9 +254,9 @@ python3 -m pytest tests/behavior/test_cos_status_operator_messages.py -q
 
 ### Acceptance
 
-- [ ] `cos validate --recommend` prints lane + commands.
+- [x] `cos validate --recommend` prints lane + commands. (verified: ls scripts/cos_validate.py)
 - [ ] Merge queue records recommended lane and executed lane.
-- [ ] `make test-laptop` remains available but is no longer the only trusted
+- [x] `make test-laptop` remains available but is no longer the only trusted (verified: grep "^test-laptop:" Makefile)
       confidence story.
 
 ### Validation
