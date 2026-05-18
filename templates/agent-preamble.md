@@ -61,7 +61,19 @@ INPUT SCHEMA:
   working_dir: path (optional) — absolute path to operate in
   ... custom fields per launch ...
 ```
-Validation rule: if a `required` field is missing or empty → output `ESCALATION: missing required input field: <field_name>` and stop.
+At task start, sub-agents MUST run the following validation and stop if it fails:
+```python
+import sys, json
+sys.path.insert(0, 'lib')
+from agent_input_validator import validate_input, format_escalation
+
+# schema_block: the full INPUT SCHEMA: ... text from this prompt
+# payload: dict of the inputs you received (task_description, etc.)
+ok, errors = validate_input(schema_block, payload)
+if not ok:
+    print(format_escalation(errors))
+    sys.exit(1)
+```
 Fields not declared in the schema should be treated as informational context.
 
 **CONTEXT BUDGET** (ADR-038 Wave 2 — Gap #2):
