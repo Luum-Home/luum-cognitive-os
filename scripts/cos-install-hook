@@ -126,8 +126,12 @@ echo "install-hook: resolved source: ${RESOLVED_SOURCE}"
 
 # Ensure executable
 if [[ ! -x "$RESOLVED_SOURCE" ]]; then
-  echo "install-hook: chmod +x ${RESOLVED_SOURCE}"
-  chmod +x "$RESOLVED_SOURCE"
+  if [[ "$DRY_RUN" == "true" ]]; then
+    echo "[dry-run] Would chmod +x ${RESOLVED_SOURCE}"
+  else
+    echo "install-hook: chmod +x ${RESOLVED_SOURCE}"
+    chmod +x "$RESOLVED_SOURCE"
+  fi
 fi
 
 validate_hook "$RESOLVED_SOURCE"
@@ -189,6 +193,13 @@ fi
 # ---------------------------------------------------------------------------
 # Register in cognitive-os.yaml via Python (preserves YAML structure)
 # ---------------------------------------------------------------------------
+COSYAML_BACKUP="$(mktemp)"
+cp "$COSYAML" "$COSYAML_BACKUP"
+cleanup_hook_backup() {
+  rm -f "$COSYAML_BACKUP"
+}
+trap cleanup_hook_backup EXIT
+
 python3 - "$COSYAML" "$EVENT_TYPE" "$MATCHER" "$HOOK_COMMAND" "$HOOK_NAME" << 'PYEOF'
 import sys, pathlib, re
 
@@ -240,8 +251,8 @@ PYEOF
 # ---------------------------------------------------------------------------
 echo "install-hook: running apply-efficiency-profile.sh ..."
 if ! bash "${PROJECT_ROOT}/scripts/apply-efficiency-profile.sh" 2>&1; then
-  echo "ERROR: apply-efficiency-profile.sh failed — rolling back cognitive-os.yaml change" >&2
-  git -C "$PROJECT_ROOT" checkout -- cognitive-os.yaml 2>/dev/null || true
+  echo "ERROR: apply-efficiency-profile.sh failed — restoring pre-install cognitive-os.yaml content" >&2
+  cp "$COSYAML_BACKUP" "$COSYAML"
   exit 1
 fi
 

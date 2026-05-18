@@ -173,4 +173,3 @@ bash scripts/demo-consumer-sdd-lane.sh
 Closure basis: Consumer SDD CLI shipped: cmd/cos/internal/cli/sdd.go implements the lane contract; demo and manual tests present; happy path operational.
 
 - `cmd/cos/internal/cli/sdd.go`
-

@@ -5,6 +5,9 @@ Validates frontmatter completeness, routing patterns, and structural integrity.
 import pathlib
 import re
 import pytest
+import stat
+import subprocess
+import tempfile
 
 PROJECT_ROOT = pathlib.Path(__file__).parents[2]
 SKILLS_DIR = PROJECT_ROOT / "skills"
@@ -169,6 +172,50 @@ class TestInstallSkillBackingScript:
             "cos-install-hook must not write settings.json directly — "
             "use apply-efficiency-profile.sh"
         )
+
+    def test_cos_install_hook_dry_run_does_not_chmod_before_exit(self):
+        script = PROJECT_ROOT / "scripts" / "cos-install-hook"
+        with tempfile.TemporaryDirectory(prefix=".cos-install-hook-test-", dir=PROJECT_ROOT) as tmp:
+            hook_path = pathlib.Path(tmp) / "dry-run-sample.sh"
+            hook_path.write_text(
+                "#!/usr/bin/env bash\n"
+                "# SCOPE: both\n"
+                "# EVENT: Stop\n"
+                "set -euo pipefail\n"
+                "exit 0\n",
+                encoding="utf-8",
+            )
+            hook_path.chmod(0o644)
+
+            result = subprocess.run(
+                [
+                    str(script),
+                    "dry-run-sample",
+                    "--source",
+                    str(hook_path),
+                    "--event",
+                    "Stop",
+                    "--dry-run",
+                ],
+                capture_output=True,
+                text=True,
+                cwd=str(PROJECT_ROOT),
+                timeout=30,
+            )
+
+            assert result.returncode == 0, result.stderr
+            assert not hook_path.stat().st_mode & stat.S_IXUSR, (
+                "cos-install-hook --dry-run must not chmod source hooks"
+            )
+
+    def test_cos_install_hook_rollback_uses_backup_not_git_checkout(self):
+        content = (PROJECT_ROOT / "scripts" / "cos-install-hook").read_text()
+        assert "COSYAML_BACKUP" in content
+        assert "git -C \"$PROJECT_ROOT\" checkout -- cognitive-os.yaml" not in content
+
+    def test_cos_install_skill_creates_driver_directory(self):
+        content = (PROJECT_ROOT / "scripts" / "cos-install-skill").read_text()
+        assert 'mkdir -p "$(dirname "$SYMLINK_TARGET")"' in content
 
 
 class TestInstallSkillDryRun:

@@ -165,4 +165,3 @@ python3 -m pytest \
 Closure basis: lib/rule_router.py fully implemented and wired; manifests/rule-routing-coverage.yaml shipped; PoC framing is obsolete.
 
 - `lib/rule_router.py`
-
