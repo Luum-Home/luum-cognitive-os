@@ -264,6 +264,7 @@ core_file_allowlist:
 - lib/dispatch_optimizer.py
 - lib/evolve_task_queue.py
 - lib/file_mutation_queue.py
+- lib/goal_budget.py  # ADR-251 manifest: goal-loop budget accountant (cos-native-goal-loop SDD)
 - lib/handoff_dispatcher.py
 - lib/handoff_envelope.py
 - lib/merge_queue.py
