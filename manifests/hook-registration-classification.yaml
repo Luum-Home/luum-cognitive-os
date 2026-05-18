@@ -494,3 +494,7 @@ entries:
   status: active
   rationale: "PostToolUse Agent hook enforcing decision-depth-gate rule deterministically. Warns when agent closes a finding via documentation alone without investigating the underlying invariant. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only."
   next_action: Keep active; promote to blocking after signal collection from metrics/decision-depth-gate.jsonl confirms false-positive rate is acceptable.
+- path: hooks/eas-validation-gate.sh
+  status: conditional_opt_in
+  rationale: "ADR-319/324 — Stop hook that runs scripts/eas_validate.py when COS_REVIEW_SURFACE or COS_EAS_PATH is set. Skips silently (<500ms) when neither env is present. Not registered globally because it only applies to sessions actively performing EAS-bound review work; review skills (sdd-verify, pr-review, code-review) should set COS_REVIEW_SURFACE before invoking. SCOPE: os-only."
+  next_action: Promote to active in standard profile once review skills wire the COS_REVIEW_SURFACE handoff end-to-end and metric/false-positive baseline is collected.
