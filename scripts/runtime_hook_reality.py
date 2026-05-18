@@ -323,9 +323,15 @@ def build_dependency_closure_report(
                     body = resolved.read_text(encoding="utf-8", errors="ignore")
                 except OSError:
                     body = ""
+                dispatcher_graceful_optional = Path(reference).name == "bash-hot-path-dispatcher.sh"
                 for nested, required in iter_runtime_path_mentions(_strip_shell_comments(body)):
                     # Hook-local libraries are covered by the copied _lib directory
                     # and usually appear as $HOOK_DIR/_lib, not project-root paths.
+                    # The Bash hot-path dispatcher intentionally degrades when a
+                    # conditional child gate is absent: _run_gate checks [ -x ]/[ -f ]
+                    # and returns 0 for missing gates. The active driver dependency
+                    # is the dispatcher itself; nested dispatcher candidates are
+                    # optional unless projected by the selected install profile.
                     nested_ref = _dependency_reference(
                         root,
                         reference=nested,
@@ -333,7 +339,7 @@ def build_dependency_closure_report(
                         event=hook_command.event,
                         command=hook_command.command,
                         install_scope=install_scope,
-                        required=required,
+                        required=False if dispatcher_graceful_optional else required,
                     )
                     references[(nested_ref.source, nested_ref.reference)] = nested_ref
 

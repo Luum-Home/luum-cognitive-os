@@ -155,7 +155,7 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert COS_WORK_TRAILER in pre_grep_email.stdout, "fixture should contain COS work trailer pre-rewrite"
     assert FIXTURE_HOME in pre_grep_email.stdout, "fixture should contain regex-rewritten home path pre-rewrite"
 
-    result = execute(fixture, confirmed=True)
+    result = execute(fixture, confirmed=True, adr_ref="ADR-269")
 
     assert result["status"] in {"ok", "completed-with-warnings"}
     assert result["pre_rewrite"]["commit_count"] == pre_count
@@ -228,7 +228,7 @@ def test_execute_restores_branch_upstream_tracking(tmp_path, monkeypatch) -> Non
     fake_home.mkdir()
     monkeypatch.setenv("HOME", str(fake_home))
 
-    result = execute(fixture, confirmed=True)
+    result = execute(fixture, confirmed=True, adr_ref="ADR-269")
 
     assert result["branch_upstreams_restored"] == ["main"]
     assert _run(["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], fixture).stdout.strip() == "origin/main"
@@ -253,7 +253,7 @@ def test_execute_metadata_rewrite_requires_explicit_env(tmp_path, monkeypatch) -
     fake_home.mkdir()
     monkeypatch.setenv("HOME", str(fake_home))
 
-    result = execute(fixture, confirmed=True)
+    result = execute(fixture, confirmed=True, adr_ref="ADR-269")
 
     authors = _run(["git", "log", "--all", "--format=%an <%ae>"], fixture).stdout
     assert SECRET_EMAIL not in authors
@@ -278,7 +278,7 @@ def test_execute_commit_message_rewrite_requires_explicit_env(tmp_path, monkeypa
     fake_home.mkdir()
     monkeypatch.setenv("HOME", str(fake_home))
 
-    result = execute(fixture, confirmed=True)
+    result = execute(fixture, confirmed=True, adr_ref="ADR-269")
 
     messages = _run(["git", "log", "--all", "--format=%B"], fixture).stdout
     assert COS_TRAILER not in messages
@@ -292,8 +292,19 @@ def test_execute_refuses_without_confirmation(tmp_path) -> None:
     _write_fixture_manifest(fixture)
 
     with pytest.raises(SanitizationError) as excinfo:
-        execute(fixture, confirmed=False)
+        execute(fixture, confirmed=False, adr_ref="ADR-269")
     assert excinfo.value.code == "operator-confirmation-required"
+
+
+def test_execute_refuses_without_adr_ref(tmp_path, monkeypatch) -> None:
+    fixture = tmp_path / "fixture-repo"
+    _make_fixture_repo(fixture)
+    _write_fixture_manifest(fixture)
+    monkeypatch.setenv("COS_ALLOW_DESTRUCTIVE_GIT", "1")
+
+    with pytest.raises(SanitizationError) as excinfo:
+        execute(fixture, confirmed=True)
+    assert excinfo.value.code == "adr-ref-required"
 
 
 def test_execute_refuses_with_dirty_worktree(tmp_path, monkeypatch) -> None:
@@ -311,7 +322,7 @@ def test_execute_refuses_with_dirty_worktree(tmp_path, monkeypatch) -> None:
     (tmp_path / "fake-home").mkdir()
 
     with pytest.raises(SanitizationError) as excinfo:
-        execute(fixture, confirmed=True)
+        execute(fixture, confirmed=True, adr_ref="ADR-269")
     assert excinfo.value.code == "working-tree-not-clean"
 
 
@@ -327,5 +338,5 @@ def test_execute_refuses_without_destructive_env(tmp_path, monkeypatch) -> None:
     (tmp_path / "fake-home").mkdir()
 
     with pytest.raises(SanitizationError) as excinfo:
-        execute(fixture, confirmed=True)
+        execute(fixture, confirmed=True, adr_ref="ADR-269")
     assert excinfo.value.code == "destructive-git-env-missing"
