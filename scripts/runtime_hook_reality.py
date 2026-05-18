@@ -618,7 +618,7 @@ def build_report(
                 "classification": classified_absence.get(hook.path),
             })
         elif hook.lifecycle_state not in INACTIVE_STATES and hook.maturity in BLOCKING_LABELS and not (hook.exit2_observable or hook.native_block_observable):
-            findings.append({"id": "blocking-hook-without-block-signal", "severity": "fail", "hook": hook.path})
+            findings.append({"id": "blocking-hook-without-exit2", "severity": "fail", "hook": hook.path})
         elif hook.hook_exists is False:
             findings.append({"id": "hook-file-missing", "severity": "fail", "hook": hook.path})
 
