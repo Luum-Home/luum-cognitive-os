@@ -183,6 +183,15 @@ class GoalState:
 
     Default is 5. Configurable per goal at creation time.
     """
+    dispatch_cursor: int = 0
+    """Byte offset into llm-dispatch.jsonl for bounded incremental reads.
+
+    check_budget advances this cursor after each read so that subsequent calls
+    start from where the last call left off, keeping the hot path O(new records)
+    rather than O(total file size).  If the file is smaller than the cursor
+    (log rotation), the cursor is reset to 0 and the file is re-read from the
+    start.
+    """
 
     # ------------------------------------------------------------------
     # Factory
@@ -253,6 +262,7 @@ class GoalState:
             "workspace_thread_id": self.workspace_thread_id,
             "consecutive_no_progress": self.consecutive_no_progress,
             "escalation_threshold": self.escalation_threshold,
+            "dispatch_cursor": self.dispatch_cursor,
         }
 
     @classmethod
@@ -278,6 +288,7 @@ class GoalState:
             workspace_thread_id=d.get("workspace_thread_id", "default"),
             consecutive_no_progress=d.get("consecutive_no_progress", 0),
             escalation_threshold=d.get("escalation_threshold", 5),
+            dispatch_cursor=d.get("dispatch_cursor", 0),
         )
 
     # ------------------------------------------------------------------

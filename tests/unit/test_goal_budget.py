@@ -274,10 +274,12 @@ class TestMaxCostUsd:
 class TestGoalDispatchTotals:
     def test_returns_zeros_for_absent_file(self, tmp_path):
         nonexistent = tmp_path / "no-file.jsonl"
+        goal = _make_goal()
         with patch("lib.dispatch._metrics_path", return_value=nonexistent):
-            tokens, cost = _goal_dispatch_totals("2026-01-01T00:00:00+00:00", tmp_path)
+            tokens, cost, cursor = _goal_dispatch_totals(goal, tmp_path)
         assert tokens == 0
         assert cost == 0.0
+        assert cursor == 0
 
     def test_accumulates_tokens_and_cost(self, tmp_path):
         metrics_path = tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
@@ -286,12 +288,18 @@ class TestGoalDispatchTotals:
             _make_dispatch_record("2026-05-01T11:00:00Z", 50, 75, 0.02),
         ]
         _write_dispatch_records(metrics_path, records)
+        goal = _make_goal()
+        # Set created_at before the records so all are counted
+        goal_dict = goal.to_dict()
+        goal_dict["created_at"] = "2026-05-01T09:00:00+00:00"
+        goal = GoalState.from_dict(goal_dict)
 
         with patch("lib.dispatch._metrics_path", return_value=metrics_path):
-            tokens, cost = _goal_dispatch_totals("2026-05-01T09:00:00Z", tmp_path)
+            tokens, cost, cursor = _goal_dispatch_totals(goal, tmp_path)
 
         assert tokens == 425  # 100+200+50+75
         assert abs(cost - 0.03) < 0.001
+        assert cursor > 0
 
     def test_skips_malformed_lines_gracefully(self, tmp_path):
         metrics_path = tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
@@ -299,12 +307,89 @@ class TestGoalDispatchTotals:
         with metrics_path.open("w") as fh:
             fh.write("{bad json\n")
             fh.write(json.dumps(_make_dispatch_record("2026-05-01T10:00:00Z", 10, 20, 0.01)) + "\n")
+        goal = _make_goal()
+        goal_dict = goal.to_dict()
+        goal_dict["created_at"] = "2026-05-01T09:00:00+00:00"
+        goal = GoalState.from_dict(goal_dict)
 
         with patch("lib.dispatch._metrics_path", return_value=metrics_path):
-            tokens, cost = _goal_dispatch_totals("2026-05-01T09:00:00Z", tmp_path)
+            tokens, cost, cursor = _goal_dispatch_totals(goal, tmp_path)
 
         assert tokens == 30  # Only valid record counted
         assert abs(cost - 0.01) < 0.0001
+
+    def test_dispatch_cursor_skips_already_consumed_records(self, tmp_path):
+        """Cursor advances so subsequent calls only read NEW records, no double-counting."""
+        metrics_path = tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
+        goal = _make_goal(max_tokens=999999)
+        goal_dict = goal.to_dict()
+        goal_dict["created_at"] = "2026-01-01T00:00:00+00:00"
+        goal = GoalState.from_dict(goal_dict)
+
+        # Write 5 initial records (100 tokens each)
+        records_first = [
+            _make_dispatch_record("2026-05-01T10:00:00Z", 50, 50, 0.001)
+            for _ in range(5)
+        ]
+        _write_dispatch_records(metrics_path, records_first)
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            tokens1, cost1, cursor1 = _goal_dispatch_totals(goal, tmp_path)
+
+        assert tokens1 == 500  # 5 * 100
+        assert cursor1 > 0
+
+        # Advance cursor on the goal
+        goal.dispatch_cursor = cursor1
+
+        # Append 3 more records (200 tokens each)
+        records_second = [
+            _make_dispatch_record("2026-05-01T11:00:00Z", 100, 100, 0.002)
+            for _ in range(3)
+        ]
+        with metrics_path.open("a", encoding="utf-8") as fh:
+            for rec in records_second:
+                fh.write(json.dumps(rec) + "\n")
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            tokens2, cost2, cursor2 = _goal_dispatch_totals(goal, tmp_path)
+
+        # Only the 3 new records should be counted — no double-counting of first 5
+        assert tokens2 == 600  # 3 * 200
+        assert cursor2 > cursor1
+
+    def test_dispatch_cursor_resets_on_rotation(self, tmp_path):
+        """When file size < cursor (log rotation), cursor resets to 0 and reads new file."""
+        metrics_path = tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
+        goal = _make_goal(max_tokens=999999)
+        goal_dict = goal.to_dict()
+        goal_dict["created_at"] = "2026-01-01T00:00:00+00:00"
+        goal = GoalState.from_dict(goal_dict)
+
+        # Write 5 records and simulate the cursor being at end of that file
+        records_old = [
+            _make_dispatch_record("2026-05-01T10:00:00Z", 50, 50, 0.001)
+            for _ in range(5)
+        ]
+        _write_dispatch_records(metrics_path, records_old)
+        old_file_size = metrics_path.stat().st_size
+        # Set cursor past current file size (simulates a much larger past file)
+        goal.dispatch_cursor = old_file_size + 10000
+
+        # Simulate log rotation: truncate and write 2 new records
+        records_new = [
+            _make_dispatch_record("2026-05-01T12:00:00Z", 70, 80, 0.003),
+            _make_dispatch_record("2026-05-01T12:01:00Z", 60, 90, 0.004),
+        ]
+        _write_dispatch_records(metrics_path, records_new)  # overwrites (truncate+rewrite)
+
+        with patch("lib.dispatch._metrics_path", return_value=metrics_path):
+            tokens, cost, new_cursor = _goal_dispatch_totals(goal, tmp_path)
+
+        # After rotation reset: both new records are read
+        assert tokens == 300  # 70+80 + 60+90
+        assert new_cursor > 0
+        assert new_cursor <= metrics_path.stat().st_size
 
 
 # ---------------------------------------------------------------------------
