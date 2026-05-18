@@ -559,7 +559,7 @@ class TestConcurrentGoalWritesAreLocked:  # noqa: D101
 # actual OS process boundaries — the only kind fcntl is designed to protect.
 
 
-def _worker_save(base_dir_str: str, wt_id: str, owner: str, result_queue) -> None:
+def _worker_save(base_dir_str: str, wt_id: str, owner: str, result_queue, timeout: float = 8.0) -> None:
     """Worker function run in a subprocess via multiprocessing.Process."""
     import sys
     from pathlib import Path
@@ -574,7 +574,7 @@ def _worker_save(base_dir_str: str, wt_id: str, owner: str, result_queue) -> Non
         workspace_thread_id=wt_id,
     )
     try:
-        store.save(goal, owner=owner, timeout=8.0)
+        store.save(goal, owner=owner, timeout=timeout)
         result_queue.put(("ok", owner, goal.goal_id))
     except GoalConflictError as exc:
         result_queue.put(("conflict", owner, str(exc)))
@@ -650,38 +650,52 @@ class TestConcurrentGoalWritesMultiprocess:
         assert statuses == {"ok"}, f"Expected both ok; got: {results}"
 
     def test_lock_conflict_raises_via_subprocess(self, tmp_path):
-        """Subprocess attempting to acquire lock held by current process gets GoalConflictError."""
+        """Subprocess attempting to acquire a lock the parent holds MUST get
+        GoalConflictError every run. Strict: no 'ok' fallback — if the child
+        ever succeeds, the fcntl invariant is broken and the test must fail.
+
+        Parent holds LOCK_EX on the workspace lock file for the full duration
+        the child runs; child uses a short 1.0s save timeout so the test
+        completes in ~1.5s.
+        """
         import fcntl
         import multiprocessing
 
         base_dir = tmp_path / "goals"
         base_dir.mkdir(parents=True, exist_ok=True)
 
-        # Pre-create the workspace dir and lock file held by this process
         from lib.goal_state import GoalStateStore
         store = GoalStateStore(base_dir=base_dir, workspace_thread_id="wt-held")
         store._ensure_dirs()
         lock_fh = store._lock_path.open("w")
         fcntl.flock(lock_fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
-
-        q: multiprocessing.Queue = multiprocessing.Queue()
-        p = multiprocessing.Process(
-            target=_worker_save,
-            args=(str(base_dir), "wt-held", "proc-blocked", q),
-        )
-        p.start()
-        p.join(timeout=10)
-
-        fcntl.flock(lock_fh, fcntl.LOCK_UN)
-        lock_fh.close()
+        try:
+            q: multiprocessing.Queue = multiprocessing.Queue()
+            p = multiprocessing.Process(
+                target=_worker_save,
+                args=(str(base_dir), "wt-held", "proc-blocked", q, 1.0),
+            )
+            p.start()
+            # Generous join — child will exit ~1.0s after start when its
+            # save-timeout fires; we don't want a flaky CI on slow boxes.
+            p.join(timeout=15)
+            assert not p.is_alive(), "Child process did not exit within 15s"
+        finally:
+            fcntl.flock(lock_fh, fcntl.LOCK_UN)
+            lock_fh.close()
 
         results = []
         while not q.empty():
             results.append(q.get_nowait())
 
-        assert len(results) == 1
-        # The subprocess must have gotten a conflict (timeout=8s but lock held by parent)
-        status = results[0][0]
-        assert status in ("conflict", "ok"), f"Unexpected status: {results}"
+        assert len(results) == 1, f"Expected exactly one result, got {results}"
+        status, owner, detail = results[0]
+        # MUST be conflict — parent held LOCK_EX for the full child lifetime.
+        # 'ok' here would mean the fcntl lock was bypassed (lock invariant broken).
+        # 'error' here would mean an unexpected exception masked the conflict.
+        assert status == "conflict", (
+            f"fcntl lock invariant broken: expected status='conflict', got "
+            f"status={status!r}, owner={owner!r}, detail={detail!r}"
+        )
 
 
