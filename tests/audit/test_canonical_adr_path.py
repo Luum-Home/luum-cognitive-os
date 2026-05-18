@@ -18,12 +18,11 @@ If this test fails:
 from __future__ import annotations
 
 import re
-import subprocess
 from pathlib import Path
 
 import pytest
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+from tests.audit._lib.tracked_code import REPO_ROOT, tracked_code_files
 
 # Allowlist: paths where the legacy string is acceptable.
 #   - This test file itself (we name the legacy path to forbid it).
@@ -42,39 +41,6 @@ def test_docs_adrs_bridge_does_not_exist() -> None:
             f"(symlink={bridge.is_symlink()}, dir={bridge.is_dir()}). "
             "Remove it; refer to ADRs via docs/02-Decisions/adrs instead."
         )
-
-
-def _collect_tracked_code_files() -> list[Path]:
-    """Tracked code files under scripts/ and lib/: .py, .sh, plus extensionless
-    executables whose shebang names python/bash/sh. Extensionless shebanged
-    scripts are common in this repo (e.g. scripts/cos-adr-close) and must be
-    scanned too — a previous bug in scripts/cos-adr-close (hardcoded
-    docs/adrs) slipped past the original .py/.sh-only filter."""
-    result = subprocess.run(
-        ["git", "-C", str(REPO_ROOT), "ls-files", "scripts/", "lib/"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    out: list[Path] = []
-    for line in result.stdout.splitlines():
-        p = Path(line)
-        if p.suffix in {".py", ".sh"}:
-            out.append(p)
-            continue
-        if p.suffix:  # has some other extension (.md, .yaml, ...)
-            continue
-        abs_path = REPO_ROOT / p
-        if not abs_path.is_file():
-            continue
-        try:
-            with abs_path.open("rb") as fh:
-                head = fh.read(80)
-        except OSError:
-            continue
-        if head.startswith(b"#!") and re.search(rb"\b(python|bash|sh)\b", head.split(b"\n", 1)[0]):
-            out.append(p)
-    return out
 
 
 # Legacy doc paths that were moved during the docs/ reorganization
@@ -97,7 +63,7 @@ def test_no_hardcoded_docs_adrs_in_production_code() -> None:
     paths that were moved during the docs/ reorganization. Covers .py, .sh,
     and extensionless shebanged scripts."""
     offenders: list[tuple[Path, int, str, str]] = []
-    for rel in _collect_tracked_code_files():
+    for rel in tracked_code_files("scripts/", "lib/"):
         if rel in ALLOWED_LEGACY_REFS:
             continue
         abs_path = REPO_ROOT / rel

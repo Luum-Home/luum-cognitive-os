@@ -138,20 +138,21 @@ def test_no_undefined_local_imports() -> None:
     """
     violations: list[tuple[str, int, str, str]] = []  # (file, line, module, expected_path)
 
-    for scan_dir in SCAN_DIRS:
-        if not scan_dir.exists():
+    # tracked_python_files covers both .py and extensionless shebanged Python
+    # scripts (e.g. scripts/cos-adr-close) — see tests/audit/_lib/tracked_code.py.
+    from tests.audit._lib.tracked_code import tracked_python_files
+    for rel in tracked_python_files("scripts/", "lib/"):
+        py_file = REPO / rel
+        if "__pycache__" in str(py_file):
             continue
-        for py_file in sorted(scan_dir.rglob("*.py")):
-            if "__pycache__" in str(py_file):
-                continue
 
-            try:
-                source = py_file.read_text(encoding="utf-8", errors="ignore")
-                tree = ast.parse(source, filename=str(py_file))
-            except SyntaxError:
-                continue  # Syntax errors are caught elsewhere
-            except OSError:
-                continue
+        try:
+            source = py_file.read_text(encoding="utf-8", errors="ignore")
+            tree = ast.parse(source, filename=str(py_file))
+        except SyntaxError:
+            continue  # Syntax errors are caught elsewhere
+        except OSError:
+            continue
 
             for node in ast.walk(tree):
                 modules_to_check: list[str] = []
