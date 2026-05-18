@@ -149,12 +149,12 @@ Practical consequences:
 | Industry Presets | REAL | **Partial** | Templates/presets yes; compliance automation should not be implied. |
 | Automation Workflows | DORMANT | **Remediated** | Section now says template/procedure surface, not turnkey ticket-to-production automation. |
 | Manifest-Driven Governance | REAL | **Remediated wording; backlog remains** | Universal “every primitive” claim removed; remaining evidence debt is tracked in the manifest tier warning backlog. |
-| Open-Source Core | REAL | **Remediated layout wording** | Feature docs now use current product zones instead of the old conceptual `core/` tree. |
+| Source-Available Core | REAL | **Remediated layout wording** | Feature docs now use current product zones and source-available wording instead of the old conceptual `core/` tree. |
 
 ## Priority Corrections
 
 1. **Use ADR-316 as the agentic literacy boundary.** This closes the exact concern raised on 2026-05-15 at the decision level.
-2. **Patch `features.md`** to align every section with its own status table, especially Multi-IDE, Automation, Observability, Manifest-Driven Governance, Developer Experience, SDD, and Open-Source Core layout.
+2. **Patch `features.md`** to align every section with its own status table, especially Multi-IDE, Automation, Observability, Manifest-Driven Governance, Developer Experience, SDD, and Source-Available Core layout.
 3. **Update `manifests/harness-projection.yaml` or the OpenCode architecture doc** so OpenCode signed-runtime-slice status is not contradictory.
 4. **Make feature claims profile-aware.** Replace global “hooks/skills/rules” counts with minimal/core/team/maintainer/lab counts.
 5. **Use the manifest tier warning backlog** at `docs/06-Daily/reports/manifest-tier-warning-backlog-2026-05-15.md` to reduce or justify the current 790 findings.

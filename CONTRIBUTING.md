@@ -152,6 +152,34 @@ prompts, hooks, and tests.
 - **Email**: `2144218+MatiasNAmendola@users.noreply.github.com` for security,
   licensing, or other matters that should not start in a public issue.
 
+## Community use and license expectations
+
+The project license is intended to keep normal community use available while
+reserving hosted or managed resale of Cognitive OS itself before the Change Date.
+The [`LICENSE`](LICENSE) file is authoritative. The
+[License FAQ](docs/09-Quality/legal/license-faq.md) and the lists below are the
+project's plain-language interpretation, not a replacement for the license text.
+
+Generally allowed before the Change Date under that interpretation:
+
+- self-hosting for your own organization;
+- internal company use;
+- production use for your own organization or for products where Cognitive OS
+  is not the primary product;
+- consulting where Cognitive OS is used as a tool; and
+- building applications or products where Cognitive OS is not the primary
+  product.
+
+Generally not allowed before the Change Date without a separate commercial
+arrangement under that interpretation when the primary value derives
+substantially from Cognitive OS:
+
+- hosted Cognitive OS;
+- managed agent runtime;
+- agent orchestration SaaS;
+- control plane SaaS for third-party agents; and
+- white-label resale of Cognitive OS.
+
 ## License
 
 By contributing, you agree your contributions will be licensed under FSL-1.1-MIT.

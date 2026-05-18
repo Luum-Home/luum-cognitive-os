@@ -1,4 +1,9 @@
-# Cognitive OS -- Open-Source Framework Design
+# Cognitive OS -- Source-Available Framework Design
+
+> **Historical naming note:** this document predates the FSL-1.1-MIT public-license
+> posture. In current public-facing language, use "source-available before MIT
+> conversion" rather than "open source" unless referring to the future MIT state
+> or generic ecosystem context.
 
 > Extracting a universal Agent Operating System from a real-world platform.
 > The goal: any project runs `cognitive-os init` and gets memory, fault tolerance, workflow, and discipline -- without knowing anything about fintech.
@@ -595,7 +600,7 @@ For an existing project, migration looks like this:
 - Remove duplicated files from `.claude/` that are now provided by cognitive-os
 - Keep project-specific files (architecture.md, services-config.md, etc.)
 
-### Phase 3: Open-source
+### Phase 3: Source-available public release
 - Create public GitHub repository
 - Write documentation (getting-started, architecture, plugins, contributing)
 - Create domain-specific plugins from extracted gates
@@ -637,11 +642,11 @@ For an existing project, migration looks like this:
 
 ### ADR-226 / ADR-227 / ADR-228 / ADR-230: Orchestration substrate (load-bearing for the OSS surface)
 
-**Status**: Accepted (Slice A or further) as of 2026-05-07. Tracking detail in [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+**Status**: Accepted (Slice A or further) as of 2026-05-07. Tracking detail in [`docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../../../docs/03-PoCs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
 
 **Context**: Prior to 2026-05-07, the framework's three pillars (governance, observability, cross-harness portability) had partial substrate. Governance gates lived in scattered hooks. Observability had `session_bus` as an event log without monotonic sequencing or per-session streams. Replay was aspirational. Cost gates were async dashboards (the November 2025 industry $47K incident showed this is insufficient). Multi-agent handoff had no protocol — cycle-induced failure rate of 41–87% per the MAST 2025 paper. Multi-agent state isolation depended on `git stash` as automation primitive (industry-recognized anti-pattern since 2012; Anthropic shipped the same class of bug as issue #11005).
 
-**Decision**: Promote the C1–C4 evaluation contract from chat directives to a versioned manifest at [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml). Then ship 14 ADRs (220–236, with ADR-229 as a consolidation tombstone) under that contract:
+**Decision**: Promote the C1–C4 evaluation contract from chat directives to a versioned manifest at [`manifests/orchestration-research-evaluation.yaml`](../../../manifests/orchestration-research-evaluation.yaml). Then ship 14 ADRs (220–236, with ADR-229 as a consolidation tombstone) under that contract:
 
 | ADR | Pillar served | Code surface |
 |---|---|---|
@@ -684,6 +689,6 @@ For an existing project, migration looks like this:
 
 **Context**: The framework needs a license that allows broad use while protecting against hyperscaler clones (Datadog, Dynatrace, etc.) offering the product as a managed service.
 
-**Decision**: FSL-1.1-MIT (Functional Source License 1.1 with MIT Future). Source-available with no commercial hosting/SaaS restriction for 2 years, then automatically converts to MIT. Follows the Sentry-validated approach.
+**Decision**: FSL-1.1-MIT (Functional Source License 1.1 with MIT Future). Source-available with a temporary Sell limitation that reserves hosted or managed resale of Cognitive OS before the Change Date, then automatically converts to MIT. Follows the Sentry-validated approach.
 
-**Consequences**: Companies can use cognitive-os internally without open-sourcing their projects. Competitors cannot offer it as a hosted product for 2 years. After the change date it becomes MIT — satisfying "eventually fully open" contributors. Not OSI-approved (source-available, not open-source by OSI definition).
+**Consequences**: Companies can use cognitive-os internally, self-host it for their own organization, run it in production, consult with it as a tool, and build products where Cognitive OS is not the primary product without open-sourcing their projects. Competitors cannot offer hosted Cognitive OS, managed agent runtime, agent orchestration SaaS, control plane SaaS for third-party agents, or white-label resale before the Change Date without a separate commercial arrangement when the primary value derives substantially from Cognitive OS. After the Change Date it becomes MIT — satisfying "eventually fully open" contributors. Not OSI-approved before conversion (source-available, not open-source by OSI definition).

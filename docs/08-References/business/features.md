@@ -1,7 +1,7 @@
 # Cognitive OS — Feature Matrix
 
 > This document details all Cognitive OS capabilities.
-> All core features are source-available under [FSL-1.1-MIT](../../LICENSE) — converts to MIT after 2 years. See [LICENSE](../../LICENSE) for terms.
+> All core features are source-available under [FSL-1.1-MIT](../../../LICENSE) — converts to MIT after 2 years. See [LICENSE](../../../LICENSE) for terms.
 
 ---
 
@@ -44,7 +44,7 @@ Source of truth: `rules/RULES-COMPACT.md`, weekly aspirational audit at
 | 16 | Industry Presets | REAL | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
 | 17 | Automation Workflows | DORMANT | Pipeline templates for ticket-to-code, bugfix, migration, deploy, and service scaffolding | Turnkey ticket-to-prod automation is operator-assembled, not pre-wired |
 | 18 | Manifest-Driven Governance | REAL | Schema-versioned manifests and audits cover the promoted governance surface | Primitive-level coverage is ratcheted; "every primitive" is not claimed until audits prove it |
-| 19 | Open-Source Core | REAL | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
+| 19 | Source-Available Core | REAL | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Self-host, use internally, run in production, contribute, and build products where Cognitive OS is not the primary product |
 
 ---
 
@@ -360,9 +360,9 @@ Pre-loaded best practices through a plugin architecture.
 
 ---
 
-## 13. Open-Source Core
+## 13. Source-Available Core
 
-Transparent, extensible, and community-driven.
+Transparent, extensible, and community-driven under FSL-1.1-MIT before the automatic MIT conversion.
 
 **Repository/product zones:**
 
@@ -406,7 +406,7 @@ claude
 
 | Tier | Description |
 |------|------------|
-| **Community (Free)** | Complete open-source core. Memory, skills, hooks, rules, plugins. Everything individual developers need. |
+| **Community (Free)** | Complete source-available core, with automatic MIT conversion. Memory, skills, hooks, rules, plugins. Everything individual developers need. |
 | **Team** | Team features: cloud shared memory, KPI dashboard, skill marketplace, team sync. |
 | **Enterprise** | Self-hosted, SSO/SAML, compliance reports, audit trail export, SLA, dedicated support. |
 

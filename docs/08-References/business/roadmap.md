@@ -66,6 +66,14 @@ The Cognitive OS core is fully operational as a development framework:
   - Discord server
   - GitHub Discussions
   - Announcements channel
+  - License FAQ that explicitly allows self-hosting, internal company use,
+    production use for your own organization or for products where Cognitive OS
+    is not the primary product, and consulting where Cognitive OS is used as a
+    tool
+  - Commercial-use boundary that reserves hosted Cognitive OS, managed agent
+    runtime, agent orchestration SaaS, control plane SaaS for third-party agents,
+    and white-label resale before the Change Date when the primary value derives
+    substantially from Cognitive OS
 
 ### Milestones
 - First external user successfully completes `cognitive-os init`
