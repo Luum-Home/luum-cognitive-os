@@ -25247,7 +25247,7 @@ primitives:
   maturity: blocking
   distribution: maintainer
   consumer_accessibility: lifecycle-declared-maintainer
-  governance_class: goal-loop-runtime
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - claude
@@ -25262,6 +25262,12 @@ primitives:
   - python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q
   docs_claim_level: blocking
   exit_behavior: native-block-json
+  repair_message: Re-run scripts/cos-goal status/doctor, attach fresh evidence with scripts/cos-goal evaluate, or archive the goal as budget_limited when budget is exhausted.
+  false_positive_tests:
+  - tests/behavior/test_goal_stop_hook.py
+  latency_budget_ms: 1500
+  rollback_or_repair_command: Disable the active goal or repair hooks/goal-stop-gate.sh and rerun goal-loop focused tests.
+  sunset_criteria: Remove only when goal persistence and Stop continuation are replaced by an equivalent harness-native contract.
   metrics_file: .cognitive-os/goals/current.json
 - id: hooks/eas-validation-gate.sh
   kind: hook
@@ -25270,7 +25276,7 @@ primitives:
   maturity: blocking
   distribution: maintainer
   consumer_accessibility: lifecycle-declared-shared-surface
-  governance_class: review-quality-gate
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - claude
@@ -25285,4 +25291,10 @@ primitives:
   - python3 -m pytest tests/hooks/test_eas_validation_gate.py tests/unit/test_bash_hot_path_dispatcher_projection.py -q
   docs_claim_level: blocking
   exit_behavior: native-block-json
+  repair_message: Resolve malformed or uncovered EAS rows, or explicitly clear COS_REVIEW_SURFACE for non-review sessions.
+  false_positive_tests:
+  - tests/hooks/test_eas_validation_gate.py
+  latency_budget_ms: 1500
+  rollback_or_repair_command: Fix the EAS markdown or temporarily unset COS_REVIEW_SURFACE; do not bypass without operator approval.
+  sunset_criteria: Remove only if review surfaces stop using EAS files or validation moves into an equivalent pre-archive gate.
   metrics_file: none

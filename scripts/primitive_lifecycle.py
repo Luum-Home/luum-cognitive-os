@@ -168,12 +168,12 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
             findings.append(Finding(primitive_id, "maturity", "blocking/default-on lifecycle_state requires blocking maturity"))
         if maturity == "blocking":
             kind = primitive.get("kind")
-            if kind == "hook" and exit_behavior != "exit_2":
-                findings.append(Finding(primitive_id, "exit_behavior", "blocking hook maturity requires exit_2 behavior"))
+            if kind == "hook" and exit_behavior not in {"exit_2", "native-block-json"}:
+                findings.append(Finding(primitive_id, "exit_behavior", "blocking hook maturity requires exit_2 or native-block-json behavior"))
             elif kind != "hook" and exit_behavior not in {"exit_2", "mixed"}:
                 findings.append(Finding(primitive_id, "exit_behavior", "blocking non-hook maturity requires exit_2 or mixed behavior"))
-        if exit_behavior == "exit_2" and maturity != "blocking":
-            findings.append(Finding(primitive_id, "maturity", "exit_2 behavior requires blocking maturity"))
+        if exit_behavior in {"exit_2", "native-block-json"} and maturity != "blocking":
+            findings.append(Finding(primitive_id, "maturity", f"{exit_behavior} behavior requires blocking maturity"))
         if docs_claim_level == "blocking" and maturity != "blocking":
             findings.append(Finding(primitive_id, "docs_claim_level", "blocking docs claim requires blocking maturity"))
         if maturity == "blocking" and docs_claim_level != "blocking":

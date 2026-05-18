@@ -17,9 +17,9 @@ platforms:
 - claude-code
 prerequisites: []
 routing_patterns:
-- pattern: "\b(tag|create)\s+(a\s+)?new\s+release\s+version\b"
+- pattern: '\b(tag|create)\s+(a\s+)?new\s+release\s+version\b'
   confidence: 0.99
-- pattern: "\btag\s+(a\s+)?release\b"
+- pattern: '\btag\s+(a\s+)?release\b'
   confidence: 0.94
 routing_intents:
 - intent: orchestrate_full_os_release
