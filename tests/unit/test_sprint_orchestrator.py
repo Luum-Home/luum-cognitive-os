@@ -184,6 +184,28 @@ def test_aggregate_test_results_returns_sprint_test_summary(tmp_path: Path) -> N
     assert result.failed >= 0
 
 
+def test_aggregate_test_results_reads_session_jsonl(tmp_path: Path) -> None:
+    """aggregate_test_results must call the real aggregator with its current API."""
+    session_dir = tmp_path / ".cognitive-os" / "sessions" / "session-1"
+    session_dir.mkdir(parents=True)
+    (session_dir / "test-results.jsonl").write_text(
+        '{"suite":"unit","runner":"pytest","passed":7,"failed":1,"skipped":2,"errors":3,"failures":["unit::test_x"]}\n',
+        encoding="utf-8",
+    )
+
+    result = aggregate_test_results(
+        sprint_id="sprint-real",
+        session_id="session-1",
+        project_dir=tmp_path,
+    )
+
+    assert result.passed == 7
+    assert result.failed == 1
+    assert result.skipped == 2
+    assert result.error == 3
+    assert result.task_count == 1
+
+
 def test_aggregate_test_results_stub_compat() -> None:
     """aggregate_test_results_stub remains backward-compatible and returns a dict."""
     result = aggregate_test_results_stub("sprint-y", [{"task": "t1"}, {"task": "t2"}])
