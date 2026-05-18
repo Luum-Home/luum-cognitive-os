@@ -24,6 +24,9 @@ from lib.sprint_orchestrator import (  # noqa: E402
     SprintTask,
     SprintTaskCompleted,
     SprintTaskLaunched,
+    SprintTestSummary,
+    aggregate_test_results,
+    aggregate_test_results_stub,
     default_sprints_dir,
     list_manifests,
     load_manifest,
@@ -147,3 +150,45 @@ def test_manifest_path_uses_project_dir(tmp_path: Path) -> None:
     p = manifest_path("sprint-xyz", tmp_path)
     assert p == tmp_path / ".cognitive-os" / "sprints" / "sprint-xyz.json"
     assert default_sprints_dir(tmp_path) == tmp_path / ".cognitive-os" / "sprints"
+
+
+def test_sprint_test_summary_event_roundtrip() -> None:
+    """SprintTestSummary registers in the canonical event registry and round-trips."""
+    ev = SprintTestSummary(
+        sprint_id="s1",
+        passed=10,
+        failed=2,
+        skipped=1,
+        error=0,
+        task_count=3,
+        has_regressions=True,
+        ended_at=99.0,
+        session_id="ses-abc",
+    )
+    data = ev.to_dict()
+    assert data["event_type"] == "sprint_test_summary"
+    assert data["passed"] == 10
+    assert data["has_regressions"] is True
+
+    restored = CanonicalEvent.from_dict(data)
+    assert type(restored) is SprintTestSummary
+    assert restored.to_dict() == data
+
+
+def test_aggregate_test_results_returns_sprint_test_summary(tmp_path: Path) -> None:
+    """aggregate_test_results always returns a SprintTestSummary even without aggregator data."""
+    result = aggregate_test_results(sprint_id="sprint-x", project_dir=tmp_path)
+    assert isinstance(result, SprintTestSummary)
+    assert result.sprint_id == "sprint-x"
+    assert result.passed >= 0
+    assert result.failed >= 0
+
+
+def test_aggregate_test_results_stub_compat() -> None:
+    """aggregate_test_results_stub remains backward-compatible and returns a dict."""
+    result = aggregate_test_results_stub("sprint-y", [{"task": "t1"}, {"task": "t2"}])
+    assert isinstance(result, dict)
+    assert result["sprint_id"] == "sprint-y"
+    assert result["task_count"] == 2
+    assert "passed" in result
+    assert "failed" in result
