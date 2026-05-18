@@ -67,8 +67,8 @@ compiles a validated ledger from fixture and live telemetry.
 
 ## Phase 4 — Validation and smoke tests
 
-- [ ] Unit-test ledger normalization from fixture metrics.
-- [ ] Unit-test signal-quality quarantine before rollups.
+- [x] Unit-test ledger normalization from fixture metrics. (verified: tests/unit/test_performance_ledger.py::test_compile_ledger_writes_sqlite_jsonl_and_latest_report uses _write_fixture_metrics)
+- [x] Unit-test signal-quality quarantine before rollups. (verified: tests/unit/test_performance_ledger_signal_quality.py::test_performance_ledger_preserves_adr_204_quality_counts asserts eligible_for_rollup exclusion)
 - [x] Unit-test proposal generation and duplicate suppression.
 - [x] Behavior-test full loop: fixture telemetry -> maintainer agent -> one
       bounded, human-approved proposal.
