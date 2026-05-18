@@ -84,8 +84,8 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 ## Phase 5 — Experiment and service launch gates (ADR-209, ADR-211)
 
-- [ ] Add Maintainer experiment/canary schema.
-- [ ] Add outcome-failure queue and regression handling.
+- [x] Add Maintainer experiment/canary schema. (verified: ls manifests/maintainer-experiment-schema.yaml lib/maintainer_experiment.py tests/unit/test_maintainer_experiment_contract.py)
+- [x] Add outcome-failure queue and regression handling. (verified: .venv/bin/python -m pytest tests/unit/test_outcome_failure_queue.py -q)
 - [x] Add initial service-mode readiness CLI that composes ADR-202 private content, ADR-205 trace, ADR-201 ledger, ADR-204 reward signals, ADR-201 Maintainer propose-only, ADR-209 experiment schema, ADR-164 mutation boundary, cloud private-content smoke, and ADR-206 public claim gate.
 
 ## Phase 6 — Fleet/cloud confidence boundary (ADR-210)
