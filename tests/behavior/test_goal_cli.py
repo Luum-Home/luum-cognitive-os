@@ -403,6 +403,71 @@ class TestGoalArchive:
 
 
 # ---------------------------------------------------------------------------
+# evaluate
+# ---------------------------------------------------------------------------
+
+
+class TestGoalEvaluate:
+    def test_evaluate_stores_explicit_evidence(self, base_args, tmp_path, capsys):
+        run(base_args + [
+            "create",
+            "--objective", "Evaluate me",
+            "--check", "done",
+        ])
+        capsys.readouterr()
+        evidence_file = tmp_path / "evidence.json"
+        evidence_file.write_text(json.dumps({
+            "iteration": 1,
+            "files_changed": ["lib/example.py"],
+            "commands_run": [
+                {"command": "pytest tests/example.py", "exit_code": 0, "output_excerpt": "1 passed"}
+            ],
+            "passing_checks": ["done"],
+            "acceptance_coverage": {"done": "pytest exited 0"},
+            "remaining_gaps": [],
+            "blockers": [],
+            "next_action": None,
+            "raw_summary": "Done.",
+        }))
+
+        rc = run(base_args + ["evaluate", "--evidence-file", str(evidence_file), "--json"])
+        assert rc == 0
+        payload = json.loads(capsys.readouterr().out)
+        assert payload["evidence_stored"] is True
+        assert payload["preview_verdict"]["verdict"] == "complete"
+
+        store = GoalStateStore(base_dir=tmp_path / "goals", workspace_thread_id="test-wt")
+        goal = store.load()
+        assert goal is not None
+        assert len(goal.evidence_history) == 1
+        assert goal.evidence_history[0].acceptance_coverage == {"done": "pytest exited 0"}
+
+    def test_evaluate_rejects_missing_coverage(self, base_args, tmp_path, capsys):
+        run(base_args + [
+            "create",
+            "--objective", "Evaluate me",
+            "--check", "done",
+        ])
+        capsys.readouterr()
+        evidence_file = tmp_path / "bad-evidence.json"
+        evidence_file.write_text(json.dumps({
+            "iteration": 1,
+            "files_changed": [],
+            "commands_run": [],
+            "passing_checks": [],
+            "acceptance_coverage": {},
+            "remaining_gaps": ["done"],
+            "blockers": [],
+            "next_action": "Provide proof",
+            "raw_summary": "Not done.",
+        }))
+
+        rc = run(base_args + ["evaluate", "--evidence-file", str(evidence_file)])
+        assert rc == 2
+        assert "acceptance_coverage" in capsys.readouterr().err
+
+
+# ---------------------------------------------------------------------------
 # doctor
 # ---------------------------------------------------------------------------
 
