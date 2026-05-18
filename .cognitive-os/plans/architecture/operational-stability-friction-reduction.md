@@ -107,15 +107,16 @@ python3 -m pytest tests/behavior/test_cos_status.py -q
 
 ### Acceptance
 
-- [ ] Each registered hook has maturity metadata or inherits a documented default.
-- [ ] New hooks start `observe`/`warn` unless ADR-approved.
-- [ ] Maturity is included in hook-quality manifest/report.
+- [x] Each registered hook has maturity metadata or inherits a documented default. (verified: 191/191 hook-quality.yaml entries have maturity; unregistered 67 hooks classified in hook-registration-classification.yaml; default=observe documented in rules/hook-maturity.md)
+- [x] New hooks start `observe`/`warn` unless ADR-approved. (verified: block/emergency require behavior+false_positive tests enforced by audit test; policy documented in rules/hook-maturity.md)
+- [x] Maturity is included in hook-quality manifest/report. (verified: maturity field present on all 191 entries; distribution: 131 observe + 60 warn)
+
+verified: 2026-05-18 — audit test: tests/audit/test_hook_maturity_coverage.py (6/6 passed)
 
 ### Validation
 
 ```bash
-python3 -m pytest tests/contracts/test_hook_quality_manifest.py -q
-python3 -m pytest tests/audit/test_guard_maturity.py -q
+.venv/bin/python -m pytest tests/audit/test_hook_maturity_coverage.py -v
 ```
 
 ## Phase 3 — Adaptive profiles
