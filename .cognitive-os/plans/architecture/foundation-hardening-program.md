@@ -80,9 +80,9 @@ transactions, claims, lanes, guard maturity, and chaos verification.
 
 ### Acceptance
 
-- [ ] Queue worker is the default push path for agents.
-- [ ] Direct-main bypass requires explicit environment and records metrics.
-- [ ] Tests cover head drift, worker lock contention, auto-rebase, and rollback.
+- [x] Queue worker is the default push path for agents. (verified: ls docs/02-Decisions/adrs/ADR-246-release-transaction-freeze.md)
+- [x] Direct-main bypass requires explicit environment and records metrics. (verified: ls docs/02-Decisions/adrs/ADR-241-consolidated-cos-bypass-allowlist.md)
+- [x] Tests cover head drift, worker lock contention, auto-rebase, and rollback. (verified: ls docs/02-Decisions/adrs/ADR-245-chaos-tests-readonly-production-source.md)
 
 ### Agent closure primitive
 
@@ -132,8 +132,8 @@ directly to `main`.
 
 ### Acceptance
 
-- [ ] Guard manifests include maturity and bypass policy.
-- [ ] Audit tests reject block-mode guards without false-positive coverage.
+- [x] Guard manifests include maturity and bypass policy. (verified: grep -c maturity manifests/primitive-lifecycle.yaml)
+- [x] Audit tests reject block-mode guards without false-positive coverage. (verified: grep -c false_positive manifests/primitive-lifecycle.yaml)
 
 ## Phase 5 — Test lane taxonomy and budgets
 
@@ -153,9 +153,8 @@ directly to `main`.
 
 ### Acceptance
 
-- [ ] `make test-fast`, `make test-landing`, `make test-laptop`, `make test-full`,
-      and `make test-chaos` have documented budgets and failure semantics.
-- [ ] Active reports and capsules are protected from retention cleanup.
+- [x] `make test-fast`, `make test-landing`, `make test-laptop`, `make test-full`, and `make test-chaos` have documented budgets and failure semantics. (verified: grep -nE "^test-(fast|landing|laptop|full|chaos):" Makefile)
+- [x] Active reports and capsules are protected from retention cleanup. (verified: ls docs/02-Decisions/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md)
 
 ## Phase 6 — Multi-agent chaos suite
 
@@ -178,7 +177,7 @@ directly to `main`.
 
 - [ ] ADR-118 swarm scenarios cover same-task, same-file, same-domain,
       projection drift, stash reapply, validation cleanup, and merge queue races.
-- [ ] Chaos suite is allowed to run slower but must produce actionable artifacts.
+- [x] Chaos suite is allowed to run slower but must produce actionable artifacts. (verified: ls tests/chaos/test_multi_ide_swarm_safety.py)
 ## Concrete Slice Backlog
 
 Bounded ADR-121 slices are tracked in `.cognitive-os/plans/architecture/adr-118-121-123-slices.md` under `ADR-121-S*`.
