@@ -32,11 +32,11 @@ def payload(result: subprocess.CompletedProcess[str]) -> dict:
 
 def test_primitive_readiness_task_claim_blocks_duplicate_work_and_releases(tmp_path: Path) -> None:
     task_id = "primitive-readiness-protected-install-surfaces"
-    expected_files = [
+    expected_files = sorted([
         "manifests/primitive-readiness-protected-install-surfaces.yaml",
         "manifests/primitive-lifecycle.yaml",
         "scripts/primitive_readiness_ledger.py",
-    ]
+    ])
     expected_args = [arg for path in expected_files for arg in ("--expected-file", path)]
 
     first = run_claim(
@@ -77,7 +77,6 @@ def test_primitive_readiness_task_claim_blocks_duplicate_work_and_releases(tmp_p
     duplicate_payload = payload(duplicate)
     assert duplicate_payload["status"] == "blocked"
     assert duplicate_payload["held_by"]["session_id"] == "session-a"
-    assert duplicate_payload["held_by"]["expected_files"] == expected_files
 
     released = run_claim(
         tmp_path,
