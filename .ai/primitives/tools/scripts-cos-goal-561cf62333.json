@@ -23,7 +23,7 @@
     "distribution": "maintainer",
     "docs_claim_level": "advisory",
     "exit_behavior": "mixed",
-    "governance_class": null,
+    "governance_class": "goal-loop-runtime",
     "lifecycle_state": "candidate",
     "maturity": "advisory",
     "owner_adr": "ADR-126",
@@ -54,7 +54,23 @@
     },
     "intent": "Thin executable wrapper for scripts/cos_goal.py goal-loop CLI operations.",
     "is_full_contract": true,
-    "projection_fidelity": {},
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
     "requires": [
       "respect_declared_scope",
       "preserve_evidence_commands"
@@ -62,13 +78,23 @@
     "source": "primitive-lifecycle-derived",
     "trigger": {
       "kind": "documented_or_on_demand",
-      "projection_targets": [],
+      "projection_targets": [
+        "scripts/cos-goal",
+        ".cognitive-os/goals/current.json"
+      ],
       "runtime_projection": false
     }
   },
   "portable_id": "scripts/cos-goal",
-  "projection_targets": [],
+  "projection_targets": [
+    "scripts/cos-goal",
+    ".cognitive-os/goals/current.json"
+  ],
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "scripts/cos-goal",
-  "supported_harnesses": []
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
 }

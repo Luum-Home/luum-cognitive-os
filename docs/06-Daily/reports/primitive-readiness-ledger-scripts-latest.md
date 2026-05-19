@@ -166,7 +166,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-generate-notices.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 5 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-ghost-skills.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-git-sync.sh` | lab | lifecycle | high | lifecycle-declared-consumer-candidate | sandbox | shell | 9 | keep non-default until tests and operator value justify promotion |
-| `scripts/cos-goal` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate |  | 8 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos-goal` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | claude, codex, shell | 8 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-governance-roi` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | active | shell | 8 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-governed-agent.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | claude, codex, shell | 11 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-governed-edit.sh` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | advisory | claude, codex, shell | 9 | keep lifecycle evidence and supported harness declarations current |
@@ -184,10 +184,10 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-imported-pattern-closure-audit` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-init-global.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 11 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-init.sh` | agentic-primitive | lifecycle | high | install-profile-managed | candidate | shell | 52 | profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive |
-| `scripts/cos-install-hook` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate |  | 4 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos-install-hook` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | claude, codex, shell | 4 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-install-projection-audit` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell, github-actions | 16 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-install-scope-dev-smoke` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 7 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos-install-skill` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate |  | 4 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos-install-skill` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | claude, codex, shell | 4 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-instance-init` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 17 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-integration-shard-plan` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | candidate | shell | 5 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-key-learnings-capture` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 12 | keep lifecycle evidence and supported harness declarations current |

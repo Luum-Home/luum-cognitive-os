@@ -21297,7 +21297,11 @@
       "role": "agentic-primitive",
       "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
       "total_consumers": 8,
       "wrapper_for": "scripts/cos_goal.py"
     },
@@ -22872,7 +22876,11 @@
       "role": "agentic-primitive",
       "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
       "total_consumers": 4,
       "wrapper_for": "scripts/apply-efficiency-profile.sh"
     },
@@ -23089,7 +23097,11 @@
       "role": "agentic-primitive",
       "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
       "total_consumers": 4,
       "wrapper_for": null
     },

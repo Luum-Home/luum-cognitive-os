@@ -25318,8 +25318,10 @@ primitives:
   exit_behavior: mixed
   metrics_file: none
   runtime_projection: false
-  projection_targets: &id002 []
-  false_positive_tests: &id003 []
+  projection_targets:
+  - scripts/cos-install-hook
+  - cognitive-os.yaml
+  false_positive_tests: &id002 []
   latency_budget_ms: 2000
   sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced
     by a stronger typed primitive manager.
@@ -25335,6 +25337,11 @@ primitives:
     issues, then retry.
   rollback_or_repair_command: Run scripts/cos-install-hook <name> --dry-run, fix missing
     source/registration issues, then retry.
+  governance_class: extension-installation
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
 - kind: script
   owner_adr: ADR-126
   lifecycle_state: candidate
@@ -25344,8 +25351,10 @@ primitives:
   exit_behavior: mixed
   metrics_file: none
   runtime_projection: false
-  projection_targets: *id002
-  false_positive_tests: *id003
+  projection_targets:
+  - scripts/cos-install-skill
+  - cognitive-os.yaml
+  false_positive_tests: *id002
   latency_budget_ms: 2000
   sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced
     by a stronger typed primitive manager.
@@ -25361,6 +25370,11 @@ primitives:
     issues, then retry.
   rollback_or_repair_command: Run scripts/cos-install-skill <name> --dry-run, fix
     missing source/catalog/routing issues, then retry.
+  governance_class: extension-installation
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
 - kind: script
   owner_adr: ADR-126
   lifecycle_state: candidate
@@ -25370,8 +25384,10 @@ primitives:
   exit_behavior: mixed
   metrics_file: none
   runtime_projection: false
-  projection_targets: *id002
-  false_positive_tests: *id003
+  projection_targets:
+  - scripts/cos-goal
+  - .cognitive-os/goals/current.json
+  false_positive_tests: *id002
   latency_budget_ms: 2000
   sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced
     by a stronger typed primitive manager.
@@ -25387,3 +25403,8 @@ primitives:
     repair goal CLI state before retry.
   rollback_or_repair_command: Run scripts/cos-goal doctor --json and goal-loop focused
     tests; repair goal CLI state before retry.
+  governance_class: goal-loop-runtime
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
