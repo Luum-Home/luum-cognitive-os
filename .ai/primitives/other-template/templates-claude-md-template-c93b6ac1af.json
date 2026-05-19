@@ -24,7 +24,7 @@
     "docs_claim_level": "observe",
     "exit_behavior": "data-only",
     "governance_class": "project-scaffold-surface",
-    "lifecycle_state": "candidate",
+    "lifecycle_state": "advisory",
     "maturity": "observe",
     "owner_adr": "ADR-019",
     "risk_class": "advisory",

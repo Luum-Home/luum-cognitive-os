@@ -34,13 +34,13 @@ coverage_scope:
     location: skills/*/SKILL.md
     routing_required: true
     rationale: Primary skill location, source-of-truth for the public router.
-    universe_size: 180
-    routed_count: 115
-    routed_percent: 63.9
+    universe_size: 181
+    routed_count: 117
+    routed_percent: 64.6
     disabled_count: 9
     name_mismatch_count: 3
-    eligible_for_routing: 168
-    eligible_routed_percent: 67.9
+    eligible_for_routing: 169
+    eligible_routed_percent: 68.0
   package_bundled_skills:
     location: packages/*/skills/*/SKILL.md
     routing_required: true
@@ -181,14 +181,26 @@ primary_router_orphan_allowlist:
   routing_class: runtime-projection-command
   rationale: Intentional command without tracked SKILL.md in git-clean validation;
     runtime projection may provide it at install time.
+- skill: compress
+  routing_class: name-field-mismatch
+  rationale: Frontmatter name for skills/caveman-compress/SKILL.md intentionally differs
+    from directory name; tracked in exemptions.name_field_mismatch.
 - skill: context-analysis
   routing_class: runtime-projection-command
   rationale: Intentional command without tracked SKILL.md in git-clean validation;
     runtime projection may provide it at install time.
+- skill: cost-predict
+  routing_class: name-field-mismatch
+  rationale: Frontmatter name for skills/cost-predictor/SKILL.md intentionally differs
+    from directory name; tracked in exemptions.name_field_mismatch.
 - skill: execution-plan
   routing_class: runtime-projection-command
   rationale: Intentional command without tracked SKILL.md in git-clean validation;
     runtime projection may provide it at install time.
+- skill: primitive-classifier
+  routing_class: name-field-mismatch
+  rationale: Frontmatter name for skills/component-classifier/SKILL.md intentionally
+    differs from directory name; tracked in exemptions.name_field_mismatch.
 - skill: sdd-new
   routing_class: meta-command
   rationale: Intentional command handled by an orchestration pipeline rather than
@@ -292,12 +304,6 @@ profile_note:
     - opt-in
     - lab
 unrouted_skill_allowlist:
-- skill: apply-improvements
-  routing_class: disabled-skill
-  rationale: See exemptions.disabled_skills
-- skill: bump-version
-  routing_class: disabled-skill
-  rationale: See exemptions.disabled_skills
 - skill: caveman-compress
   routing_class: name-field-mismatch
   rationale: See exemptions.name_field_mismatch
@@ -307,12 +313,6 @@ unrouted_skill_allowlist:
 - skill: cost-predictor
   routing_class: name-field-mismatch
   rationale: See exemptions.name_field_mismatch
-- skill: generate-changelog
-  routing_class: disabled-skill
-  rationale: See exemptions.disabled_skills
-- skill: push-release
-  routing_class: disabled-skill
-  rationale: See exemptions.disabled_skills
 - skill: tag-release
   routing_class: disabled-skill
   rationale: See exemptions.disabled_skills

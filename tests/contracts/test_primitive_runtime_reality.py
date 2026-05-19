@@ -46,7 +46,12 @@ def _has_blocking_exit_behavior(hook_path: str) -> bool:
     # Dispatcher-style hooks preserve blocking child exit codes instead of
     # spelling out exit 2 directly. Treat explicit rc propagation as real
     # blocking behavior, not an aspirational claim.
-    return 'return "$rc"' in text and 'exit $?' in text
+    if 'return "$rc"' in text and 'exit $?' in text:
+        return True
+    # Stop hooks can block through the harness-native structured JSON protocol
+    # while exiting 0. That is real runtime blocking and must not be forced into
+    # the legacy exit-2 shape.
+    return '"decision": "block"' in text or '"permissionDecision": "block"' in text
 
 
 def test_every_projected_hook_has_lifecycle_metadata() -> None:
@@ -75,7 +80,8 @@ def test_blocking_maturity_matches_real_exit2_behavior_and_tests() -> None:
         hook_path = str(item["id"])
         evidence = [str(command) for command in item.get("evidence_commands", [])]
         has_test_evidence = any("pytest" in command and "test" in command for command in evidence)
-        if item.get("exit_behavior") != "exit_2" or not _has_blocking_exit_behavior(hook_path) or not has_test_evidence:
+        exit_behavior = item.get("exit_behavior")
+        if exit_behavior not in {"exit_2", "native-block-json"} or not _has_blocking_exit_behavior(hook_path) or not has_test_evidence:
             offenders.append(hook_path)
     assert offenders == []
 

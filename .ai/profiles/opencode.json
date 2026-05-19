@@ -2047,7 +2047,7 @@
   "display_name": "OpenCode",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "opencode",
-  "lifecycle_primitives_supporting_harness": 0,
+  "lifecycle_primitives_supporting_harness": 1,
   "limitations": [
     "The signed runtime slice is model-free and plugin-wrapper based; it does not prove a paid/account-backed OpenCode LLM session.",
     "Structural opencode.json projection alone is not runtime enforcement. Runtime claims apply only to primitives covered by the signed cos-primitive-guard.js smoke.",

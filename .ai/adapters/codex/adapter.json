@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 721,
+  "projected_primitive_count": 722,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -655,6 +655,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "hooks/eas-validation-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-eas-validation-gate-sh-6879b3cb3f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "hooks/engram-auto-import.sh",
       "primitive_file": "primitives/hooks/hooks-engram-auto-import-sh-30346d2607.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -671,6 +678,13 @@
       "fidelity": "documented-only",
       "portable_id": "hooks/epic-task-detector.sh",
       "primitive_file": "primitives/hooks/hooks-epic-task-detector-sh-e56952c598.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/goal-stop-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-goal-stop-gate-sh-3765c43313.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -3282,13 +3296,6 @@
       "fidelity": "documented-only",
       "portable_id": "skills/caveman-compress/SKILL.md",
       "primitive_file": "primitives/skills/skills-caveman-compress-skill-md-59e1bf5e71.json",
-      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
-    },
-    {
-      "claims_runtime_enforcement": false,
-      "fidelity": "documented-only",
-      "portable_id": "skills/caveman-es/SKILL.md",
-      "primitive_file": "primitives/skills/skills-caveman-es-skill-md-c87e7b329e.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {

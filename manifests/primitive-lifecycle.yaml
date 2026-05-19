@@ -25257,17 +25257,23 @@ primitives:
   - .codex/hooks.json
   - hooks/goal-stop-gate.sh
   runtime_projection: true
-  behavior_evidence: Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.
+  behavior_evidence: Native Stop-hook block gate for active COS goals with budget/evaluator
+    hardening regressions.
   evidence_commands:
-  - python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q
+  - python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py
+    -q
   docs_claim_level: blocking
   exit_behavior: native-block-json
-  repair_message: Re-run scripts/cos-goal status/doctor, attach fresh evidence with scripts/cos-goal evaluate, or archive the goal as budget_limited when budget is exhausted.
+  repair_message: Re-run scripts/cos-goal status/doctor, attach fresh evidence with
+    scripts/cos-goal evaluate, or archive the goal as budget_limited when budget is
+    exhausted.
   false_positive_tests:
   - tests/behavior/test_goal_stop_hook.py
   latency_budget_ms: 1500
-  rollback_or_repair_command: Disable the active goal or repair hooks/goal-stop-gate.sh and rerun goal-loop focused tests.
-  sunset_criteria: Remove only when goal persistence and Stop continuation are replaced by an equivalent harness-native contract.
+  rollback_or_repair_command: Disable the active goal or repair hooks/goal-stop-gate.sh
+    and rerun goal-loop focused tests.
+  sunset_criteria: Remove only when goal persistence and Stop continuation are replaced
+    by an equivalent harness-native contract.
   metrics_file: .cognitive-os/goals/current.json
 - id: hooks/eas-validation-gate.sh
   kind: hook
@@ -25286,15 +25292,98 @@ primitives:
   - .codex/hooks.json
   - hooks/eas-validation-gate.sh
   runtime_projection: true
-  behavior_evidence: Native Stop-hook block gate when an active review surface has malformed or uncovered EAS rows.
+  behavior_evidence: Native Stop-hook block gate when an active review surface has
+    malformed or uncovered EAS rows.
   evidence_commands:
-  - python3 -m pytest tests/hooks/test_eas_validation_gate.py tests/unit/test_bash_hot_path_dispatcher_projection.py -q
+  - python3 -m pytest tests/hooks/test_eas_validation_gate.py tests/unit/test_bash_hot_path_dispatcher_projection.py
+    -q
   docs_claim_level: blocking
   exit_behavior: native-block-json
-  repair_message: Resolve malformed or uncovered EAS rows, or explicitly clear COS_REVIEW_SURFACE for non-review sessions.
+  repair_message: Resolve malformed or uncovered EAS rows, or explicitly clear COS_REVIEW_SURFACE
+    for non-review sessions.
   false_positive_tests:
   - tests/hooks/test_eas_validation_gate.py
   latency_budget_ms: 1500
-  rollback_or_repair_command: Fix the EAS markdown or temporarily unset COS_REVIEW_SURFACE; do not bypass without operator approval.
-  sunset_criteria: Remove only if review surfaces stop using EAS files or validation moves into an equivalent pre-archive gate.
+  rollback_or_repair_command: Fix the EAS markdown or temporarily unset COS_REVIEW_SURFACE;
+    do not bypass without operator approval.
+  sunset_criteria: Remove only if review surfaces stop using EAS files or validation
+    moves into an equivalent pre-archive gate.
   metrics_file: none
+- kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  risk_class: advisory
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  runtime_projection: false
+  projection_targets: &id002 []
+  false_positive_tests: &id003 []
+  latency_budget_ms: 2000
+  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced
+    by a stronger typed primitive manager.
+  id: scripts/cos-install-hook
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  behavior_evidence: Installs existing extension hooks into the active harness registration
+    without authoring new hooks.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_install_hook_cli.py tests/unit/test_install_hook_skill.py
+    -q
+  repair_message: Run scripts/cos-install-hook <name> --dry-run, fix missing source/registration
+    issues, then retry.
+  rollback_or_repair_command: Run scripts/cos-install-hook <name> --dry-run, fix missing
+    source/registration issues, then retry.
+- kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  risk_class: advisory
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  runtime_projection: false
+  projection_targets: *id002
+  false_positive_tests: *id003
+  latency_budget_ms: 2000
+  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced
+    by a stronger typed primitive manager.
+  id: scripts/cos-install-skill
+  distribution: team
+  consumer_accessibility: lifecycle-declared-consumer-candidate
+  behavior_evidence: Installs existing extension skills into active skill routing
+    without authoring new skills.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_install_skill_cli.py tests/unit/test_install_skill_skill.py
+    -q
+  repair_message: Run scripts/cos-install-skill <name> --dry-run, fix missing source/catalog/routing
+    issues, then retry.
+  rollback_or_repair_command: Run scripts/cos-install-skill <name> --dry-run, fix
+    missing source/catalog/routing issues, then retry.
+- kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  risk_class: advisory
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  runtime_projection: false
+  projection_targets: *id002
+  false_positive_tests: *id003
+  latency_budget_ms: 2000
+  sunset_criteria: Archive or demote if extension-install/goal CLI workflows are replaced
+    by a stronger typed primitive manager.
+  id: scripts/cos-goal
+  distribution: maintainer
+  consumer_accessibility: lifecycle-declared-maintainer
+  behavior_evidence: Thin executable wrapper for scripts/cos_goal.py goal-loop CLI
+    operations.
+  evidence_commands:
+  - python3 -m pytest tests/behavior/test_goal_cli.py tests/behavior/test_goal_stop_hook.py
+    -q
+  repair_message: Run scripts/cos-goal doctor --json and goal-loop focused tests;
+    repair goal CLI state before retry.
+  rollback_or_repair_command: Run scripts/cos-goal doctor --json and goal-loop focused
+    tests; repair goal CLI state before retry.

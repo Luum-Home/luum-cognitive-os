@@ -75,7 +75,7 @@
     "docs_claim_level": "observe",
     "exit_behavior": "skill-procedure",
     "governance_class": "skill-maintainer-only",
-    "lifecycle_state": "candidate",
+    "lifecycle_state": "advisory",
     "maturity": "observe",
     "owner_adr": "ADR-314",
     "risk_class": "advisory",

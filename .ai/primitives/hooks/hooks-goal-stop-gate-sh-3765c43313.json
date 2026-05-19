@@ -1,0 +1,98 @@
+{
+  "canonical_source": "hooks/goal-stop-gate.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.",
+    "evidence_commands": [
+      "python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q"
+    ],
+    "metrics_file": ".cognitive-os/goals/current.json"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "native-block-json",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-064",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.",
+      "evidence_commands": [
+        "python3 -m pytest tests/behavior/test_goal_stop_hook.py tests/unit/test_goal_evaluator.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/goals/current.json"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Native Stop-hook block gate for active COS goals with budget/evaluator hardening regressions.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        "hooks/goal-stop-gate.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "hooks/goal-stop-gate.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/goal-stop-gate.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/goal-stop-gate.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

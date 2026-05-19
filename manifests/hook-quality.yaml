@@ -524,6 +524,7 @@ hooks:
     - tests/unit/test_malformed_hook_input.py
     - tests/unit/test_performance_ledger_rollups.py
     - tests/unit/test_performance_monitor.py
+    - tests/unit/test_promote_from_telemetry_phase2.py
     - tests/unit/test_symbiosis_monitor.py
     - tests/unit/test_validate_tier_filter.py
     bypass_policy: not_required_observe_only
@@ -2438,6 +2439,7 @@ hooks:
     - tests/behavior/test_pentest_self.py
     - tests/unit/test_confidentiality_scanner.py
     - tests/unit/test_malformed_hook_input.py
+    - tests/unit/test_promote_from_telemetry_phase2.py
     - tests/unit/test_query_tailored_context.py
     - tests/unit/test_rate_limiter.py
     - tests/unit/test_rate_limiter_behavior.py

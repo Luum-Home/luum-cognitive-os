@@ -2,7 +2,7 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 335 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 337 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
@@ -385,7 +385,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 </details>
 
 <details>
-<summary>Tombstone ADRs (11)</summary>
+<summary>Tombstone ADRs (13)</summary>
 
 ## Tombstone
 
@@ -402,5 +402,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [224](ADR-224-shadow-state-snapshots-off-repo.md) | Tombstone (consolidated into ADR-227) | tombstone | not-applicable | 2026-05-08 | status: tombstone |
 | [229](ADR-229-tombstone.md) | Tombstone (consolidated into ADR-228) | tombstone | not-applicable | 2026-05-06 | status: tombstone |
 | [253](ADR-253-tombstone-squads.md) | Tombstone — squads orchestration superseded by ADR-251 | tombstone | not-applicable | 2026-05-08 | The `packages/squads/` orchestration package (multi-agent team coordination |
+| [326](ADR-326-tombstone-agent-escalation-capabilities.md) | Tombstone — agent-escalation-capabilities plan (Phase 3 tombstoned, Phases 1+2 archived) | tombstone | not-applicable | 2026-05-18 | The plan `.cognitive-os/plans/features/agent-escalation-capabilities.md` was |
+| [327](ADR-327-tombstone-workflow-engine.md) | Tombstone — workflow-engine plan superseded by shipped ADW substrate | tombstone | not-applicable | 2026-05-18 | The plan `.cognitive-os/plans/features/workflow-engine.md` was reconciled in two |
 
 </details>

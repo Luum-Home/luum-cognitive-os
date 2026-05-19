@@ -2047,7 +2047,7 @@
   "display_name": "Cursor",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "cursor",
-  "lifecycle_primitives_supporting_harness": 0,
+  "lifecycle_primitives_supporting_harness": 1,
   "limitations": [
     "Structural project rule/MCP file proof only; no Cursor account-backed runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed."

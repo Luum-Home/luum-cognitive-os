@@ -2047,7 +2047,7 @@
   "display_name": "Shell / CI",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "shell-ci",
-  "lifecycle_primitives_supporting_harness": 0,
+  "lifecycle_primitives_supporting_harness": 1,
   "limitations": [
     "Structural command/workflow projection and syntax proof only; generated commands may still need project dependencies at runtime.",
     "The disabled repository CI workflow is not re-enabled by this harness promotion."

@@ -62,25 +62,23 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "static-exit2-detected",
     "evidence_commands": [
       "bash -n hooks/task-completed.sh",
       "python3 -m pytest tests/unit/test_event_bus.py tests/unit/test_task_bridge.py -q"
     ],
-    "metrics_file": ".cognitive-os/metrics/task-completed.jsonl"
+    "interventions": [
+      ".cognitive-os/metrics/primitive-interventions.jsonl"
+    ],
+    "metrics": [
+      ".cognitive-os/metrics/task-completed.jsonl"
+    ],
+    "proof_tests": [
+      "tests/unit/test_event_bus.py",
+      "tests/unit/test_task_bridge.py"
+    ]
   },
   "family": "hook",
-  "lifecycle": {
-    "distribution": "team",
-    "docs_claim_level": "blocking",
-    "exit_behavior": "exit_2",
-    "governance_class": "runtime-safety",
-    "lifecycle_state": "demoted",
-    "maturity": "blocking",
-    "owner_adr": "ADR-126",
-    "risk_class": "blocking",
-    "runtime_projection": false
-  },
+  "lifecycle": null,
   "overlay_role": "generated-reference",
   "portable_contract": {
     "actions": {
@@ -166,6 +164,11 @@
   "schema_version": "portable-ai-primitive.v1",
   "source_id": "hooks/task-completed.sh",
   "supported_harnesses": [
-    "claude"
+    "claude",
+    "codex",
+    "cursor",
+    "opencode",
+    "shell-ci",
+    "vscode-copilot"
   ]
 }
