@@ -15,7 +15,7 @@ expected_skips:
   - id: external-host-tool-or-library
     lanes: [unit, audit, contract, system, behavior, hooks, integration]
     category: external-dependency
-    reason_pattern: '\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|git not available|curl|network|credential|daemon)\b.*(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional)|(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional).*\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|git|curl|network|credential|daemon)\b'
+    reason_pattern: '\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|git not available|curl|network|credential|daemon)\b.*(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional)|(not available|required|requires|not found|unresponsive|not installed|not running|unavailable|absent|missing|optional).*\b(docker|docker compose|docker-compose|jq|engram|lsof|flock|repomix|npx|node_modules|next|opencode|PyYAML|pyyaml|git|curl|network|credential|daemon)\b|binary is (not installed|present but not usable)'
     applies_when: Host dependency is absent in laptop-safe validation.
     opt_in_lane: install dependency or run the explicit integration/Docker/provider lane.
   - id: explicit-opt-in-resource-lane
