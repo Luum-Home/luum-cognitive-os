@@ -6,7 +6,7 @@
   "harness": "claude",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 757,
+  "projected_primitive_count": 760,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": true,
@@ -5233,6 +5233,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
+      "portable_id": "scripts/cos-goal",
+      "primitive_file": "primitives/tools/scripts-cos-goal-561cf62333.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
       "portable_id": "scripts/cos-governed-agent.sh",
       "primitive_file": "primitives/tools/scripts-cos-governed-agent-sh-792baeb0ce.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -5242,6 +5249,20 @@
       "fidelity": "documented-only",
       "portable_id": "scripts/cos-governed-edit.sh",
       "primitive_file": "primitives/tools/scripts-cos-governed-edit-sh-948253e6c8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-install-hook",
+      "primitive_file": "primitives/tools/scripts-cos-install-hook-6b7108860d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-install-skill",
+      "primitive_file": "primitives/tools/scripts-cos-install-skill-8bff19d184.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
