@@ -3,9 +3,9 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 177
+Total skills: 179
 
-## os (21)
+## os (23)
 
 | Skill | Description |
 |-------|-------------|
@@ -20,6 +20,8 @@ Total skills: 177
 | deps-update | Audit and upgrade Cognitive OS dependencies (engram, brew packages, |
 | generate-changelog | 'Use when you need this Cognitive OS skill: Move [Unreleased] CHANGELOG |
 | hook-timing | Analyze hook execution latency — full stats, live tail, per-event or |
+| install-hook | Install an extension hook from packaged extension directories into the active harness registration. |
+| install-skill | Install an extension skill from packaged extension directories or skills/extensions/ into active routing. |
 | memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible |
 | peer-card | Local user-memory peer card (read/edit/forget/explain) backed by Engram |
 | push-release | Push the release commit and tags to the remote — always requires explicit… |

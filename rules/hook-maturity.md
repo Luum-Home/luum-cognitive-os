@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 # Hook Maturity Policy
 
 ## Purpose

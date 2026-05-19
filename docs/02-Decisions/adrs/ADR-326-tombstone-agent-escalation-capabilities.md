@@ -25,7 +25,7 @@ Tombstone
 
 ---
 
-## Reason
+## Context
 
 The plan `.cognitive-os/plans/features/agent-escalation-capabilities.md` was
 reconciled in two passes (Sonnet 2026-05-10 + Opus refinement 2026-05-11):
@@ -51,6 +51,10 @@ following the convention established by ADR-003 / ADR-004 / ADR-005 / ADR-043
 Proposed: typed horizontal escalation signals (capability-ceiling detection),
 cross-model re-dispatch with context handoff, budget gates, retry-count tracking.
 
+## Decision
+
+Tombstone Phase 3 and reserve this ADR slot as the auditable closure record. Keep Phases 1+2 archived, not tombstoned, because their typed capability-signal protocol is not superseded by ADR-228 or ADR-251.
+
 ## Why tombstoned
 
 **Phase 3 (budget/retry/cost scope)**: Superseded by coexistence with shipped
@@ -71,6 +75,18 @@ manifest/audit path when demand signal fires.
 ## Date tombstoned
 
 2026-05-18 (Wave 7 zombie cleanup)
+
+## Consequences
+
+- ADR-326 remains a tombstone pointer, not a new implementation scope.
+- Future escalation-budget changes extend ADR-228 instead of reviving Phase 3.
+- Any reactivation of typed capability signals must open a new ADR and cite this tombstone.
+
+## Alternatives rejected
+
+- Implement Phase 3 as originally written — rejected because ADR-228, `hooks/dispatch-gate.sh`, and `lib/cost_dashboard.py` already own the shipped retry, budget, and cost-reporting surfaces.
+- Delete the stale plan without an ADR slot — rejected because tombstoned ADR slots keep plan reconciliation auditable and prevent future number reuse.
+- Tombstone Phases 1+2 too — rejected because their capability-ceiling signal protocol remains distinct and may be reactivated if demand appears.
 
 ## Slot policy
 

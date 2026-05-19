@@ -360,6 +360,7 @@ EXCLUDED_RULES=(
   "auto-rollback.md"               # → auto-rollback-trigger.sh (PostToolUse Agent)
   "response-compression.md"        # agent-instruction-only (no hook — see rules/ROADMAP.md §D24)
   "assumption-tracking.md"         # → assumption-tracker.sh (PostToolUse Agent)
+  "hook-maturity.md"               # contextual: hook maturity policy, enforced by hook-quality audits
 
   # ── B) Package-specific (only relevant when package is active) ────────
   "aguara-integration.md"          # packages/aguara-security — load when aguara used

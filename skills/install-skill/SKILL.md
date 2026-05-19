@@ -1,11 +1,11 @@
 ---
 name: install-skill
 description: 'Use when you need this Cognitive OS skill: Install an extension skill
-  from a local path, extension pack, or packages/cos-* into the active skill routing;
+  from a local path, extension pack, or packaged extension directories into the active skill routing;
   do not use when the skill already exists or when authoring a new skill from scratch.'
 routing_intents:
   - "Install a Cognitive OS extension skill by name from the extension registry"
-  - "Enable an opt-in skill from packages/cos-* or skills/extensions/"
+  - "Enable an opt-in skill from packaged extension directories or skills/extensions/"
   - "Symlink an extension skill into the active skill routing surface"
   - "Register an extension skill in cognitive-os.yaml extensions key"
   - "Make an extension pack skill invokable without a full COS migration"
@@ -28,7 +28,7 @@ routing_patterns:
     confidence: 0.75
   - pattern: \bactivate\s+extension\s+skill\b
     confidence: 0.78
-summary_line: Install an extension skill from packages/cos-* or skills/extensions/ into active routing.
+summary_line: Install an extension skill from packaged extension directories or skills/extensions/ into active routing.
 triggers:
   - install-skill
   - /install-skill
@@ -51,7 +51,7 @@ scratch, use `/add-skill`.
 ## Trigger
 
 When you want to activate an existing but unlinked extension skill — one that
-lives in `packages/cos-*/skills/` or `skills/extensions/` — and make it
+lives in `packaged extension directories/skills/` or `skills/extensions/` — and make it
 invokable via its slash command without running a full wave migration.
 
 ## Inputs
@@ -73,7 +73,7 @@ invokable via its slash command without running a full wave migration.
 - A feature plan asks you to ship an on-demand skill without executing a full
   wave migration.
 - The `system-reminder` does NOT list a skill you know exists under
-  `packages/cos-*/skills/` or `skills/extensions/`.
+  `packaged extension directories/skills/` or `skills/extensions/`.
 
 ## When NOT to use
 
@@ -96,7 +96,7 @@ scripts/cos-install-skill <name> --dry-run
 
 The script searches in this priority order:
 1. `--source <path>` if provided
-2. `packages/cos-*/skills/<name>/`
+2. `packaged extension directories/skills/<name>/`
 3. `skills/extensions/<name>/`
 4. `skills/<name>/` (present but unlinked)
 
@@ -119,7 +119,7 @@ symlink following the convention of existing skills.
 
 ### 4. Register in cognitive-os.yaml (if applicable)
 
-If the skill came from a `packages/cos-*/` pack, the script appends a record
+If the skill came from a `packaged extension directories/` pack, the script appends a record
 under `extensions:` in `cognitive-os.yaml` so future `apply-efficiency-profile.sh`
 runs know which extensions are active.
 

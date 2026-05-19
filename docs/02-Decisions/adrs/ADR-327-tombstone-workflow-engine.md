@@ -25,7 +25,7 @@ Tombstone
 
 ---
 
-## Reason
+## Context
 
 The plan `.cognitive-os/plans/features/workflow-engine.md` was reconciled in two
 passes (Sonnet 2026-05-10 + Opus refinement 2026-05-11), both agreeing on
@@ -57,6 +57,10 @@ Proposed: `lib/workflow_engine.py` implementing a YAML-defined DAG executor with
 `WorkflowEngine`, `WorkflowParser`, `DAGBuilder`, `StateManager` classes for
 SDD pipeline resumability and dependency-aware multi-step workflows.
 
+## Decision
+
+Tombstone the workflow-engine plan and reserve ADR-327 as the auditable closure record. The canonical path is to extend the shipped ADW substrate rather than create a parallel local workflow engine.
+
 ## Why tombstoned
 
 **Tombstone-by-coexistence**: The shipped ADW substrate (`.cognitive-os/workflows/`,
@@ -78,6 +82,18 @@ do not have a validated demand signal (≥3 pipeline-failure-recovery incidents)
 ## Date tombstoned
 
 2026-05-18 (Wave 7 zombie cleanup)
+
+## Consequences
+
+- ADR-327 remains a tombstone pointer, not a new implementation scope.
+- `lib/workflow_engine.py` and `lib/workflow_types.py` are intentionally not created.
+- Future resumability or DAG needs must extend ADR-036/ADR-226 or open a new ADR with ADW as the baseline.
+
+## Alternatives rejected
+
+- Implement the proposed workflow engine as-is — rejected because it duplicates the shipped ADW substrate without adding governance value.
+- Leave only the stale plan tombstone — rejected because ADR slots provide the repository-wide audit trail for closed architectural work.
+- Treat doctrine alone as the reason — rejected because the stronger reason is coexistence with already-shipped workflow primitives.
 
 ## Slot policy
 

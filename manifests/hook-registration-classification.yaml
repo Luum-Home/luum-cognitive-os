@@ -210,9 +210,9 @@ entries:
   rationale: Git pre-commit gate is installed through git hooks, not Claude settings.
   next_action: Keep out of Claude settings.
 - path: hooks/pyrefly-typecheck-advisory.sh
-  status: projected_elsewhere
-  rationale: Codex-only advisory typecheck hook projected through .codex/hooks.json; intentionally absent from Claude settings until cross-harness latency and dependency behavior are proven.
-  next_action: Keep Codex projection and revisit after pyrefly dependency drift is resolved.
+  status: active
+  rationale: Codex-only advisory typecheck hook is now registered through .codex/hooks.json; classification must not keep it in the unregistered queue.
+  next_action: Keep active in Codex projection and revisit cross-harness promotion after pyrefly dependency drift is resolved.
 - path: hooks/rate-limit-protection.sh
   status: deprecated
   rationale: Backward-compat shim for token-budget-monitor.
@@ -499,6 +499,6 @@ entries:
   rationale: "PostToolUse Agent hook enforcing decision-depth-gate rule deterministically. Warns when agent closes a finding via documentation alone without investigating the underlying invariant. Converts agent-instruction rule to hook-enforced because models are non-deterministic. SCOPE: os-only."
   next_action: Keep active; promote to blocking after signal collection from metrics/decision-depth-gate.jsonl confirms false-positive rate is acceptable.
 - path: hooks/eas-validation-gate.sh
-  status: conditional_opt_in
-  rationale: "ADR-319/324 — Stop hook that runs scripts/eas_validate.py when COS_REVIEW_SURFACE or COS_EAS_PATH is set. Skips silently (<500ms) when neither env is present. Not registered globally because it only applies to sessions actively performing EAS-bound review work; review skills (sdd-verify, pr-review, code-review) should set COS_REVIEW_SURFACE before invoking. SCOPE: os-only."
-  next_action: Promote to active in standard profile once review skills wire the COS_REVIEW_SURFACE handoff end-to-end and metric/false-positive baseline is collected.
+  status: active
+  rationale: "ADR-319/324 — Stop hook registered in settings and gated by COS_REVIEW_SURFACE or COS_EAS_PATH. It skips silently when no EAS-bound review surface is active, so the classification must reflect active registration rather than conditional absence. SCOPE: os-only."
+  next_action: Keep active with environment gating and review metric/false-positive baseline before increasing enforcement.

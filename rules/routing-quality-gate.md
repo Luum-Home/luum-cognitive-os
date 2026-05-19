@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 slug: routing-quality-gate
 scope: validation

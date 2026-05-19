@@ -1,11 +1,11 @@
 ---
 name: install-hook
 description: 'Use when you need this Cognitive OS skill: Install an extension hook
-  from a local path or packages/cos-* into the active harness and register it in
+  from a local path or packaged extension directories into the active harness and register it in
   cognitive-os.yaml; do not use when authoring a new hook from scratch.'
 routing_intents:
   - "Install a Cognitive OS extension hook by name from the extension registry"
-  - "Enable an opt-in hook from packages/cos-* without a full wave migration"
+  - "Enable an opt-in hook from packaged extension directories without a full wave migration"
   - "Wire a hook into the active harness settings surface"
   - "Register an extension hook in cognitive-os.yaml harness.hooks"
   - "Make a dormant or packaged hook active in the current harness"
@@ -28,7 +28,7 @@ routing_patterns:
     confidence: 0.75
   - pattern: \bactivate\s+extension\s+hook\b
     confidence: 0.78
-summary_line: Install an extension hook from packages/cos-* into the active harness registration.
+summary_line: Install an extension hook from packaged extension directories into the active harness registration.
 triggers:
   - install-hook
   - /install-hook
@@ -52,7 +52,7 @@ brand-new hook from scratch, use `/add-hook`.
 ## Trigger
 
 When you want to activate an existing but unregistered extension hook — one
-that lives in `packages/cos-*/hooks/` or `hooks/` with an `@on-demand` or
+that lives in `packaged extension directories/hooks/` or `hooks/` with an `@on-demand` or
 `@manual-trigger` marker — without running a full wave migration.
 
 ## Inputs
@@ -78,7 +78,7 @@ that lives in `packages/cos-*/hooks/` or `hooks/` with an `@on-demand` or
 
 - A feature plan asks you to ship an on-demand hook without executing a full
   wave migration.
-- A hook exists in `packages/cos-*/hooks/` but is not yet wired into
+- A hook exists in `packaged extension directories/hooks/` but is not yet wired into
   `cognitive-os.yaml`.
 - A hook in `hooks/` carries `@on-demand` or `@manual-trigger` and the
   operator now wants it active.
@@ -102,7 +102,7 @@ scripts/cos-install-hook <name> --dry-run
 
 The script searches in this priority order:
 1. `--source <path>` if provided
-2. `packages/cos-*/hooks/<name>.sh`
+2. `packaged extension directories/hooks/<name>.sh`
 3. `hooks/<name>.sh` (present but unregistered / marked @on-demand)
 
 ### 2. Validate the hook script

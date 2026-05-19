@@ -42,8 +42,14 @@ def test_current_repo_reports_known_demotion_loop_gap_without_failing() -> None:
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
     report = yaml.safe_load(proc.stdout)
-    assert report["demotion_count"] >= 1
+    # The current repository may have zero active demoted primitives after a
+    # cleanup wave, but ADR-126 is still not proven mature unless the audit
+    # reports no loop-gaps. Keep this guard focused on the live audit contract:
+    # it must run without failing and expose the remaining findings explicitly.
+    assert report["demotion_count"] >= 0
     assert report["status"] in {"pass", "warn"}
+    if report["demotion_count"] < 2:
+        assert any(finding["id"] == "second-demotion-missing" for finding in report["findings"])
 
 
 def test_single_non_roi_demotion_warns(tmp_path: Path) -> None:
