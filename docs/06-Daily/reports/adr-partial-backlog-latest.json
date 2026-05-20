@@ -1229,7 +1229,7 @@
     },
     {
       "adr": "ADR-121",
-      "classification_basis": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios",
+      "classification_basis": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice",
       "date": "2026-05-02",
       "decision_status": "accepted",
       "follow_up_adr": "",
@@ -1243,10 +1243,10 @@
       "implementation_status": "partial",
       "number": "121",
       "owner": "",
-      "partial_remaining": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios",
-      "partial_remaining_basis": "specific classification_basis",
+      "partial_remaining": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice",
+      "partial_remaining_basis": "manual Wave 5 slice reconciliation",
       "path": "docs/02-Decisions/adrs/ADR-121-foundation-hardening-program.md",
-      "remaining": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios",
+      "remaining": "program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 6 ADR-118 swarm scenarios; Phase 3 domain/registry ownership inventory has an initial executable slice",
       "remaining_in_scope": null,
       "title": "Foundation Hardening Program"
     },
