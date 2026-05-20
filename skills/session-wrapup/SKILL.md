@@ -26,6 +26,8 @@ routing:
   fallback_min_pressure: 0.7
 platforms:
 - claude-code
+- codex
+- generic-cli
 prerequisites: []
 routing_patterns:
 - pattern: \bsession[- ]?wrapup\b
