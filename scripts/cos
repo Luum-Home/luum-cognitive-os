@@ -95,6 +95,18 @@ case "$SUBCMD" in
     echo "cos: unknown measure target '${2:-}'. Try: cos measure harness-profiles" >&2
     exit 1
     ;;
+  land)
+    shift
+    exec bash "$SCRIPT_DIR/merge-to-main.sh" "$@"
+    ;;
+  merge)
+    if [ "${2:-}" = "queue" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-merge-queue.sh" "$@"
+    fi
+    echo "cos: unknown merge subcommand '${2:-}'. Try: cos merge queue {enqueue|peek|status|list|dequeue}" >&2
+    exit 1
+    ;;
   governance)
     if [ "${2:-}" = "roi" ]; then
       shift 2
@@ -391,6 +403,8 @@ Usage:
   cos measure harness-profiles [--json]  Compare minimal vs full harness surface
   cos governance roi [--json]            Estimate governance friction vs benefit
   cos governance readiness [--json]      Report architecture readiness and remaining gaps
+  cos land [--dry-run]                   Land current branch through protected merge-to-main path
+  cos merge queue ...                    Operate the local merge queue
   cos sprint <cmd>                       Run sprint orchestration commands
   cos subagent preflight --type TYPE --prompt TEXT
   cos agent worktree prepare --task-id ID --session-id ID [--json]

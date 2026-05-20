@@ -113,6 +113,27 @@ with lock_file.open("a", encoding="utf-8") as lf:
 PYEOF
 }
 
+
+step_record_validation_lane() {
+    local entry_id="$1"
+    local entry_json="$2"
+    mq_python "${entry_id}" "${entry_json}" <<'PYEOF'
+import json
+import sys
+from lib.merge_queue import record_validation_lane
+from lib.validation_lanes import recommend_lane
+
+entry_id = sys.argv[1]
+entry = json.loads(sys.argv[2])
+rec = recommend_lane(entry.get("expected_files") or [])
+recommended = entry.get("recommended_lane") or rec.recommended_lane
+rationale = entry.get("validation_rationale") or rec.rationale
+executed = entry.get("executed_lane") or "landing"
+record_validation_lane(entry_id, recommended_lane=recommended, executed_lane=executed, rationale=rationale)
+print(json.dumps({"recommended_lane": recommended, "executed_lane": executed, "rationale": rationale}))
+PYEOF
+}
+
 step_dequeue() {
     local entry_id="$1"
     local entry_status="$2"
@@ -355,11 +376,14 @@ main() {
 
     log "Processing entry ${entry_id}: branch=${session_branch} session=${session_id}"
 
-    # Mark in-progress.
+    # Mark in-progress and record validation lane evidence before gates run.
     if [[ "$DRY_RUN" != "1" ]]; then
         step_mark_in_progress "${entry_id}"
+        lane_json="$(step_record_validation_lane "${entry_id}" "${entry_json}")"
+        log "Validation lane: ${lane_json}"
     else
         log "[DRY-RUN] would mark ${entry_id} in-progress"
+        log "[DRY-RUN] would record executed validation lane: landing"
     fi
 
     # Run gate stack + merge — capture failures for clean dequeue.
