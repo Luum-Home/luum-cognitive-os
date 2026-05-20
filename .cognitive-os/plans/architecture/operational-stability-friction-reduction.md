@@ -145,7 +145,7 @@ verified: 2026-05-18 — audit test: tests/audit/test_hook_maturity_coverage.py 
 ### Acceptance
 
 - [x] `cos profile explain` shows why the profile was selected. (verified: scripts/cos_profile_explain.py prints profile+reasons)
-- [ ] `lean` still protects secrets and destructive operations.
+- [x] `lean` still protects secrets and destructive operations. (verified: lib/adaptive_profile.py guard_policy baseline protections; tests/unit/test_profile_resolver.py)
 - [x] `strict` is selected for main landing and multi-agent contention. (verified: lib/adaptive_profile.py:64-65)
 
 ### Validation
