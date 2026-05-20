@@ -256,3 +256,14 @@ def test_phase_policy_demotes_low_risk_process_in_reconstruction() -> None:
     decision = phase_allows_block("reconstruction", "process")
     assert decision["decision"] == "advisory"
     assert decision["allowed_to_block"] is False
+
+
+def test_phase_policy_covers_next_guard_adoption_categories() -> None:
+    from scripts.cos_governance_roi import phase_allows_block
+
+    assert phase_allows_block("reconstruction", "security")["allowed_to_block"] is True
+    assert phase_allows_block("reconstruction", "config-protection")["allowed_to_block"] is False
+    assert phase_allows_block("reconstruction", "release")["allowed_to_block"] is False
+    assert phase_allows_block("production", "config-protection")["allowed_to_block"] is True
+    assert phase_allows_block("production", "release")["allowed_to_block"] is True
+

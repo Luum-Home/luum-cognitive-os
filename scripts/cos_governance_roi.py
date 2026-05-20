@@ -90,23 +90,23 @@ HOOK_SEVERITY_HINTS: tuple[tuple[str, str], ...] = (
 PHASE_POLICIES: dict[str, dict[str, Any]] = {
     "reconstruction": {
         "strictness": "minimal-blocking",
-        "block": ["destructive-git", "destructive-file", "secret-write", "credential-leak", "work-loss", "protected-branch"],
-        "advisory": ["style", "process", "low-risk-structure"],
+        "block": ["destructive-git", "destructive-file", "secret-write", "credential-leak", "security", "work-loss", "protected-branch"],
+        "advisory": ["style", "process", "low-risk-structure", "config-protection", "release"],
     },
     "stabilization": {
         "strictness": "contract-focused",
-        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss", "destructive-git", "destructive-file", "work-loss", "protected-branch"],
-        "advisory": ["style", "low-signal-process"],
+        "block": ["contracts", "tests", "primitive-drift", "runtime-state-loss", "destructive-git", "destructive-file", "security", "work-loss", "protected-branch"],
+        "advisory": ["style", "low-signal-process", "config-protection", "release"],
     },
     "production": {
         "strictness": "strict-release",
-        "block": ["release", "security", "migration", "public-claim", "config-protection", "destructive-git", "destructive-file", "work-loss", "protected-branch"],
+        "block": ["release", "security", "migration", "public-claim", "config-protection", "destructive-git", "destructive-file", "work-loss", "protected-branch", "network-egress"],
         "advisory": ["low-risk-exploration"],
     },
     "maintenance": {
         "strictness": "regression-focused",
-        "block": ["regressions", "security", "unsafe-change", "data-loss", "destructive-git", "destructive-file", "work-loss", "protected-branch"],
-        "advisory": ["new-surface-expansion", "style"],
+        "block": ["regressions", "security", "unsafe-change", "data-loss", "destructive-git", "destructive-file", "work-loss", "protected-branch", "network-egress"],
+        "advisory": ["new-surface-expansion", "style", "release"],
     },
 }
 

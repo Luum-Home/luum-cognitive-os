@@ -15,6 +15,9 @@ implementation_files:
 - hooks/destructive-git-blocker.sh
 - hooks/destructive-rm-blocker.sh
 - hooks/direct-main-guard.sh
+- hooks/protected-config-write-guard.sh
+- hooks/network-egress-guard.sh
+- hooks/release-guard.sh
 - tests/unit/test_cos_governance_roi.py
 - tests/behavior/test_cos_status.py
 - tests/contracts/test_hook_timing_wrapper.py
@@ -32,7 +35,7 @@ tags:
 
 ## Status
 
-Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter are implemented. Initial hard-blocking hooks (`destructive-git-blocker`, `destructive-rm-blocker`, `direct-main-guard`) call the adapter. Full per-guard phase-policy enforcement remains incremental: each additional hard-blocking hook must call the policy adapter before returning a block.
+Accepted. Read-side dashboard, write-side catch logging, optional blocked-hook prompts, weighted severity normalization, and the executable phase-policy adapter are implemented. Initial hard-blocking hooks (`destructive-git-blocker`, `destructive-rm-blocker`, `direct-main-guard`) and the next high-friction guard set (`protected-config-write-guard`, `network-egress-guard`, `release-guard`) call the adapter. Full per-guard phase-policy enforcement remains incremental: each additional hard-blocking hook must call the policy adapter before returning a block.
 
 ## Context
 
@@ -138,8 +141,8 @@ Blocking posture is shaped by `cognitive-os.yaml → project.phase`:
 
 | Phase | Policy |
 |---|---|
-| `reconstruction` | Minimal blocking: destructive git, destructive file erasure, protected-branch writes, secrets, credential leaks, and work-loss risks block; style/process friction should be advisory. |
-| `stabilization` | Contract-focused blocking: tests, primitive drift, runtime-state loss, destructive operations, protected-branch writes, and contract failures can block. |
+| `reconstruction` | Minimal blocking: destructive git, destructive file erasure, protected-branch writes, secrets, credential leaks, security, and work-loss risks block; style/process/config/release friction should be advisory. |
+| `stabilization` | Contract-focused blocking: tests, primitive drift, runtime-state loss, destructive operations, security, protected-branch writes, and contract failures can block; config/release friction remains advisory until production. |
 | `production` | Strict release blocking: release, security, migration, public claims, protected config changes, destructive operations, and protected-branch writes block. |
 | `maintenance` | Regression-focused blocking: regressions, security issues, unsafe changes, destructive operations, protected-branch writes, and data loss block. |
 

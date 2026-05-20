@@ -3,6 +3,7 @@
 # PreToolUse guard: blocks exfiltration-shaped external network shell commands.
 set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/common.sh"
+[ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh"
 check_disabled_env "network-egress-guard"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
@@ -20,6 +21,10 @@ RESULT="$(python3 "$PROJECT_DIR/scripts/network_egress_guard.py" --policy "$POLI
 BLOCK="$(printf '%s' "$RESULT" | jq -r '.block // false' 2>/dev/null || echo false)"
 WARN="$(printf '%s' "$RESULT" | jq -r '.warn // false' 2>/dev/null || echo false)"
 if [ "$BLOCK" = "true" ]; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block security; then
+    cos_governance_policy_advisory_message "network-egress-guard" "security"
+    exit 0
+  fi
   echo "=== NETWORK EGRESS GUARD: BLOCKED ===" >&2
   echo "External network command contains exfiltration indicators." >&2
   printf '%s\n' "$RESULT" >&2

@@ -14,6 +14,8 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+[ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh"
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 
 # Read tool input from stdin
 input=$(cat)
@@ -28,6 +30,10 @@ first_line=$(echo "$command" | head -1)
 # ── Pattern 1: Writing directly to VERSION file ─────────────────────
 # Matches: echo "0.3.4" > VERSION, printf "1.0" > VERSION, etc.
 if echo "$first_line" | grep -qE '(echo|printf|cat|tee)\s+.*>\s*VERSION($|\s)'; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block release; then
+    cos_governance_policy_advisory_message "release-guard" "release"
+    exit 0
+  fi
   echo "BLOCKED: Manual VERSION file modification detected." >&2
   echo "" >&2
   echo "  Use \`cos release --patch|--minor|--major\` instead." >&2
@@ -39,6 +45,10 @@ fi
 # Matches: git tag v0.3.4, git tag 1.0.0, etc.
 # Does NOT match: git tag -d, git tag -l, or tags inside commit messages.
 if echo "$first_line" | grep -qE '^git\s+tag\s+v?[0-9]+\.[0-9]+'; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block release; then
+    cos_governance_policy_advisory_message "release-guard" "release"
+    exit 0
+  fi
   echo "BLOCKED: Manual git tag creation detected." >&2
   echo "" >&2
   echo "  Use \`cos release --patch|--minor|--major\` instead." >&2
@@ -48,6 +58,10 @@ fi
 
 # ── Pattern 3: sed/perl modifying VERSION file directly ─────────────
 if echo "$first_line" | grep -qE "^(sed|perl)\s.*\bVERSION\b"; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block release; then
+    cos_governance_policy_advisory_message "release-guard" "release"
+    exit 0
+  fi
   echo "BLOCKED: Manual VERSION file modification detected." >&2
   echo "" >&2
   echo "  Use \`cos release --patch|--minor|--major\` instead." >&2

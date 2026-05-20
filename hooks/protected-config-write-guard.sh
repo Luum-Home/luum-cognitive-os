@@ -5,6 +5,7 @@ set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/common.sh"
 [ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/safe-jsonl.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/safe-jsonl.sh"
 [ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/primitive-intervention.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/primitive-intervention.sh"
+[ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/governance-policy.sh"
 check_disabled_env "protected-config-write-guard"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
@@ -79,6 +80,10 @@ PY
 } 2>/dev/null || printf '{"blocked":[]}')"
 BLOCKED="$(printf '%s' "$RESULT" | jq -r '.blocked | join(", ")' 2>/dev/null || true)"
 if [ -n "$BLOCKED" ]; then
+  if type cos_governance_policy_allows_block >/dev/null 2>&1 && ! cos_governance_policy_allows_block config-protection; then
+    cos_governance_policy_advisory_message "protected-config-write-guard" "config-protection"
+    exit 0
+  fi
   echo "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===" >&2
   echo "Protected control-plane path(s): $BLOCKED" >&2
   echo "Set $APPROVAL_ENV=1 only after explicit human review." >&2
