@@ -3,7 +3,7 @@
 This report lists classified-but-unresolved primitive surface coverage debt. It intentionally excludes aligned gaps.
 
 Partial count: 51
-Total gaps in source report: 323
+Total gaps in source report: 349
 Unclassified gaps: 0
 By policy: {'codex-adapter-needed': 51}
 
