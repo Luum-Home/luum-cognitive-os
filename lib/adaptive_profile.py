@@ -6,6 +6,50 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+_BASELINE_PROTECTIONS: tuple[dict[str, str], ...] = (
+    {
+        "risk": "secrets",
+        "hook": "secret-detector",
+        "reason": "credential leaks are never low-risk, even in lean profile",
+    },
+    {
+        "risk": "destructive_git",
+        "hook": "destructive-git-blocker",
+        "reason": "destructive git can lose work or corrupt branch state",
+    },
+    {
+        "risk": "destructive_rm",
+        "hook": "destructive-rm-blocker",
+        "reason": "recursive deletion can lose uncommitted work",
+    },
+    {
+        "risk": "untracked_work_loss",
+        "hook": "untracked-work-preservation-guard",
+        "reason": "untracked files are operator work until proven disposable",
+    },
+)
+
+_PROFILE_POLICIES: dict[str, dict[str, Any]] = {
+    "lean": {
+        "semantics": "low-friction profile for clean, low-risk feature work",
+        "blocking_posture": "baseline-safety-only",
+        "minimum_protections": list(_BASELINE_PROTECTIONS),
+        "advisory_bias": "hygiene and process guards should observe/warn, not block",
+    },
+    "standard": {
+        "semantics": "normal implementation profile for dirty worktrees or moderate coordination risk",
+        "blocking_posture": "baseline-plus-coordination",
+        "minimum_protections": list(_BASELINE_PROTECTIONS),
+        "advisory_bias": "coordination and generated-state drift can warn or block by maturity metadata",
+    },
+    "strict": {
+        "semantics": "landing, main-branch, validation, or multi-agent contention profile",
+        "blocking_posture": "release-and-state-integrity",
+        "minimum_protections": list(_BASELINE_PROTECTIONS),
+        "advisory_bias": "contract, landing, runtime-state, and generated-artifact guards may block",
+    },
+}
+
 
 def git(project: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(["git", *args], cwd=project, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=60)
@@ -47,6 +91,16 @@ def validation_active(project: Path) -> bool:
     return False
 
 
+def profile_policy(profile: str) -> dict[str, Any]:
+    """Return executable semantics for an adaptive profile.
+
+    Lean is intentionally not a bypass. It lowers hygiene/process friction, but
+    it keeps the baseline protections that prevent secret leaks and destructive
+    work loss.
+    """
+    return _PROFILE_POLICIES.get(profile, _PROFILE_POLICIES["standard"])
+
+
 def resolve_profile(project: Path, *, landing_intent: bool = False, override: str | None = None) -> dict[str, Any]:
     project = project.resolve()
     signals = git_signals(project)
@@ -56,7 +110,14 @@ def resolve_profile(project: Path, *, landing_intent: bool = False, override: st
     reasons: list[str] = []
 
     if override:
-        return {"schema_version": "adaptive-profile.v1", "profile": override, "override": True, "reasons": ["operator override"], "signals": {**signals, "active_claims": claims, "worktree_count": wt_count, "validation_active": validation, "landing_intent": landing_intent}}
+        return {
+            "schema_version": "adaptive-profile.v1",
+            "profile": override,
+            "override": True,
+            "reasons": ["operator override"],
+            "signals": {**signals, "active_claims": claims, "worktree_count": wt_count, "validation_active": validation, "landing_intent": landing_intent},
+            "guard_policy": profile_policy(override),
+        }
 
     profile = "lean"
     if signals["dirty"] or signals["branch"] in {"main", "master"} or claims or wt_count > 1:
@@ -79,4 +140,11 @@ def resolve_profile(project: Path, *, landing_intent: bool = False, override: st
     if not reasons:
         reasons.append("clean low-risk feature work")
 
-    return {"schema_version": "adaptive-profile.v1", "profile": profile, "override": False, "reasons": reasons, "signals": {**signals, "active_claims": claims, "worktree_count": wt_count, "validation_active": validation, "landing_intent": landing_intent}}
+    return {
+        "schema_version": "adaptive-profile.v1",
+        "profile": profile,
+        "override": False,
+        "reasons": reasons,
+        "signals": {**signals, "active_claims": claims, "worktree_count": wt_count, "validation_active": validation, "landing_intent": landing_intent},
+        "guard_policy": profile_policy(profile),
+    }

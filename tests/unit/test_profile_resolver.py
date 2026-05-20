@@ -38,6 +38,19 @@ def test_clean_feature_branch_resolves_lean(tmp_path: Path) -> None:
     assert payload["reasons"] == ["clean low-risk feature work"]
 
 
+def test_lean_profile_keeps_secret_and_destructive_protections(tmp_path: Path) -> None:
+    payload = resolve_profile(repo(tmp_path))
+
+    assert payload["profile"] == "lean"
+    policy = payload["guard_policy"]
+    assert policy["blocking_posture"] == "baseline-safety-only"
+    protected = {item["risk"]: item["hook"] for item in policy["minimum_protections"]}
+    assert protected["secrets"] == "secret-detector"
+    assert protected["destructive_git"] == "destructive-git-blocker"
+    assert protected["destructive_rm"] == "destructive-rm-blocker"
+    assert protected["untracked_work_loss"] == "untracked-work-preservation-guard"
+
+
 def test_dirty_worktree_resolves_standard(tmp_path: Path) -> None:
     project = repo(tmp_path)
     (project / "README.md").write_text("dirty\n", encoding="utf-8")
@@ -64,3 +77,15 @@ def test_profile_explain_json_cli(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["schema_version"] == "adaptive-profile.v1"
     assert payload["profile"] == "lean"
+    assert payload["guard_policy"]["blocking_posture"] == "baseline-safety-only"
+
+
+def test_profile_explain_human_output_lists_minimum_protections(tmp_path: Path) -> None:
+    project = repo(tmp_path)
+
+    result = subprocess.run([str(SCRIPT), "--project-dir", str(project)], cwd=REPO, text=True, capture_output=True, check=False)
+
+    assert result.returncode == 0, result.stderr
+    assert "blocking_posture: baseline-safety-only" in result.stdout
+    assert "secrets: secret-detector" in result.stdout
+    assert "destructive_git: destructive-git-blocker" in result.stdout

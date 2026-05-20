@@ -30,6 +30,13 @@ def main(argv: list[str] | None = None) -> int:
         print("reasons:")
         for reason in payload["reasons"]:
             print(f"  - {reason}")
+        guard_policy = payload.get("guard_policy") or {}
+        print(f"blocking_posture: {guard_policy.get('blocking_posture', 'unknown')}")
+        protections = guard_policy.get("minimum_protections") or []
+        if protections:
+            print("minimum protections:")
+            for protection in protections:
+                print(f"  - {protection.get('risk')}: {protection.get('hook')}")
     return 0
 
 
