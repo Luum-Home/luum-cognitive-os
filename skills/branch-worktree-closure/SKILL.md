@@ -20,6 +20,12 @@ platforms:
 - codex
 - claude-code
 - generic-cli
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+    - skills/branch-worktree-closure/SKILL.md
+    - scripts/cos_work_inventory.py
 prerequisites:
 - git
 - python3

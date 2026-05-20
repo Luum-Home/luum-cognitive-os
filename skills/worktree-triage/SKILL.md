@@ -20,6 +20,12 @@ platforms:
 - codex
 - claude-code
 - generic-cli
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+    - skills/worktree-triage/SKILL.md
+    - git worktree list --porcelain
 prerequisites:
 - git
 routing_patterns:

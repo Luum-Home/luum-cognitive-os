@@ -17,6 +17,12 @@ summary_line: Inventory all pending work across plans, engram, tasks, todos, aud
   and git.
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: []
+platform_support:
+  generic-cli:
+    support_level: executable
+    evidence:
+    - skills/session-backlog/SKILL.md
+    - scripts/cos_session_backlog.py
 routing_patterns:
 - pattern: \bsession[- ]?backlog\b
   confidence: 0.95
