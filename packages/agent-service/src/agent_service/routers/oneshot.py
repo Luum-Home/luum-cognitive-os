@@ -11,6 +11,7 @@ from agent_service.models import (
     OneshotQueryRequest,
     QueryResponse,
 )
+from agent_service.runtime import run_oneshot_query
 from agent_service.sse import not_implemented_stream, sse_response
 
 
@@ -31,11 +32,8 @@ def _stub(endpoint: str, reason: str) -> JSONResponse:
     response_model=QueryResponse,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def oneshot_query(_payload: OneshotQueryRequest) -> JSONResponse:
-    return _stub(
-        "POST /api/v1/oneshot/query",
-        "oneshot sync query ships in Phase 2",
-    )
+async def oneshot_query(payload: OneshotQueryRequest) -> QueryResponse:
+    return run_oneshot_query(payload)
 
 
 @router.post("/query/stream")

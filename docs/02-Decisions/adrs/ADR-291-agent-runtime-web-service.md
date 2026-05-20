@@ -12,13 +12,14 @@ implementation_files:
 - packages/agent-service/src/agent_service/config.py
 - packages/agent-service/src/agent_service/sse.py
 - packages/agent-service/src/agent_service/store.py
+- packages/agent-service/src/agent_service/runtime.py
 - packages/agent-service/src/agent_service/routers/health.py
 - packages/agent-service/src/agent_service/routers/agent_config.py
 - packages/agent-service/src/agent_service/routers/oneshot.py
 - packages/agent-service/src/agent_service/routers/sessions.py
 - packages/agent-service/src/agent_service/routers/workspace.py
 tier: core
-partial_remaining: 'phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.'
+partial_remaining: 'phase-2-in-progress: 13 functional operations are live (health/version/agent options, 8 file-backed JSON session lifecycle/event endpoints, and 2 local sync query endpoints); remaining scope is 10 typed JSON 501 stubs, 3 SSE stub operations, full in-process agent-runner execution, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.'
 partial_remaining_basis: manual Wave 5 slice reconciliation
 tags:
 
@@ -27,9 +28,9 @@ tags:
 - sse
 - runtime
 classification_basis: phase-2-in-progress contract with 26 operations (25 distinct
-  path strings), 11 functional operations (health/version/agent options plus 8
-  file-backed JSON session lifecycle/event endpoints), 12 typed JSON 501 stubs,
-  and 3 SSE stub operations. The /csrf-token endpoint was removed in the security
+  path strings), 13 functional operations (health/version/agent options plus 8
+  file-backed JSON session lifecycle/event endpoints and 2 local sync query endpoints),
+  10 typed JSON 501 stubs, and 3 SSE stub operations. The /csrf-token endpoint was removed in the security
   pass; real CSRF defense remains a Phase 2 follow-up.
 verification:
   level: medium
@@ -237,7 +238,9 @@ In Phase 2-in-progress, the 3 original functional endpoints (`/health`,
 `/version`, `/agent/options`) still return real data, and the 8 bounded
 session-store operations (`list`, `create`, `details`, `events`,
 `events/latest`, `status`, `update`, `delete`) are backed by an atomic JSON
-file store. The remaining non-streaming operations return HTTP 501 with a
+file store. `sessions/query` and `oneshot/query` are functional through a
+deterministic local sync adapter that records session query/response events without
+spending LLM calls. The remaining non-streaming operations return HTTP 501 with a
 Pydantic-validated `NotImplementedResponse`; the 3 streaming operations still
 emit one typed SSE stub frame and close.
 
@@ -266,8 +269,8 @@ Shipped bounded slice:
 Remaining Phase 2 work:
 
 - Upgrade path from JSON to SQLite.
-- Implement `sessions/query` and `oneshot/query` synchronously by calling the
-  in-process agent runner.
+- Replace the local sync adapter with full in-process agent-runner execution when rate limiting and CSRF are present.
+- Implemented `sessions/query` and `oneshot/query` synchronously through the local sync adapter; full in-process agent-runner execution remains a follow-up.
 - Wire `/api/v1/models` to the existing model dispatch list.
 - CSRF token enforcement on mutating endpoints.
 - Rate limiting middleware.

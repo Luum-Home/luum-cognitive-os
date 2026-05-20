@@ -169,6 +169,25 @@ class JsonSessionStore:
             self._write(snapshot)
             return self._details(session)
 
+
+    def append_event(self, session_id: str, event_type: str, payload: dict[str, Any]) -> SessionEvent:
+        with self._lock:
+            snapshot = self._read()
+            session = self._get(snapshot, session_id)
+            now = _now()
+            event = SessionEvent(
+                event_id=uuid.uuid4().hex,
+                session_id=session_id,
+                timestamp=now,
+                type=event_type,
+                payload=dict(payload),
+            )
+            session.events.append(event)
+            session.updated_at = now
+            snapshot.sessions[session_id] = session
+            self._write(snapshot)
+            return event
+
     def delete(self, session_id: str) -> None:
         with self._lock:
             snapshot = self._read()

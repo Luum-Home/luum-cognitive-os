@@ -13,6 +13,7 @@ from agent_service.models import (
     SessionEventsPage,
     SessionLatestEvent,
     SessionListResponse,
+    QueryResponse,
     SessionStatusResponse,
 )
 
@@ -135,3 +136,47 @@ async def test_session_update_rejects_unknown_patch_fields(client, auth_headers)
         headers=auth_headers,
     )
     assert response.status_code == 400
+
+
+@pytest.mark.asyncio
+async def test_sync_query_records_session_events(client, auth_headers):
+    created = await client.post(
+        "/api/v1/sessions/create", json={}, headers=auth_headers
+    )
+    session_id = SessionCreateResponse.model_validate(created.json()).session_id
+
+    response = await client.post(
+        "/api/v1/sessions/query",
+        json={"session_id": session_id, "query": "summarize state"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    body = QueryResponse.model_validate(response.json())
+    assert body.session_id == session_id
+    assert body.finish_reason == "local_sync_adapter"
+    assert "summarize state" in body.response
+
+    events_response = await client.get(
+        f"/api/v1/sessions/events?sessionId={session_id}", headers=auth_headers
+    )
+    events = SessionEventsPage.model_validate(events_response.json())
+    assert [event.type for event in events.events][-2:] == [
+        "session.query",
+        "session.response",
+    ]
+
+
+@pytest.mark.asyncio
+async def test_oneshot_sync_query_returns_response(client, auth_headers):
+    response = await client.post(
+        "/api/v1/oneshot/query",
+        json={"query": "hello"},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 200
+    body = QueryResponse.model_validate(response.json())
+    assert body.session_id is None
+    assert body.finish_reason == "local_sync_adapter"
+    assert body.usage["llm_calls"] == 0

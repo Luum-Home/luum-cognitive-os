@@ -46,9 +46,7 @@ STUB_JSON_ENDPOINTS = [
     ("GET", "/api/v1/models", None),
     ("POST", "/api/v1/sessions/model", {"session_id": "s", "model_id": "m"}),
     ("GET", "/api/v1/share/config", None),
-    ("POST", "/api/v1/oneshot/query", {"query": "hi"}),
     ("POST", "/api/v1/sessions/share", {"session_id": "s"}),
-    ("POST", "/api/v1/sessions/query", {"session_id": "s", "query": "hi"}),
     ("POST", "/api/v1/sessions/abort", {"session_id": "s"}),
     ("GET", "/api/v1/sessions/workspace/files?sessionId=s", None),
     ("GET", "/api/v1/sessions/workspace/search?sessionId=s&query=q", None),
@@ -74,10 +72,11 @@ def test_total_endpoint_inventory():
         len(FUNCTIONAL)
         + len(IMPLEMENTED_SESSION_ENDPOINTS)
         + 6
+        + 2
         + len(STUB_JSON_ENDPOINTS)
         + len(SSE_STUB_ENDPOINTS)
     )
-    # 3 Phase-1 functional + 8 session-store operations + 12 JSON stubs
+    # 3 Phase-1 functional + 8 session-store operations + 2 sync query ops + 10 JSON stubs
     # + 3 SSE stubs = 26 endpoints across all routers.
     # (csrf-token removed in security pass — see routers/health.py docstring.)
     assert total == 26, f"expected 26 endpoints, found {total}"

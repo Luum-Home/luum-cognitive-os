@@ -24,6 +24,7 @@ from agent_service.models import (
     SessionStatusResponse,
     SessionUpdateRequest,
 )
+from agent_service.runtime import run_session_query
 from agent_service.sse import not_implemented_stream, sse_response
 from agent_service.store import InvalidSessionPatchError, JsonSessionStore, SessionNotFoundError
 
@@ -200,8 +201,22 @@ async def session_share(_payload: SessionShareRequest) -> JSONResponse:
     response_model=QueryResponse,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def session_query(_payload: QueryRequest) -> JSONResponse:
-    return _stub("POST /api/v1/sessions/query", "session-bound query ships in Phase 2")
+async def session_query(payload: QueryRequest, request: Request) -> QueryResponse:
+    try:
+        _store(request).append_event(
+            payload.session_id,
+            "session.query",
+            {"query": payload.query, "options": payload.options},
+        )
+    except SessionNotFoundError as exc:
+        raise _not_found(payload.session_id) from exc
+    response = run_session_query(payload)
+    _store(request).append_event(
+        payload.session_id,
+        "session.response",
+        {"finish_reason": response.finish_reason, "usage": response.usage},
+    )
+    return response
 
 
 @router.post("/query/stream")
