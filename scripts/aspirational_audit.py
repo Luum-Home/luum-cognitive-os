@@ -30,6 +30,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator, NamedTuple
+import subprocess
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Constants
@@ -456,12 +457,35 @@ def walk_skills(project_root: Path) -> Iterator[Path]:
 # Classifier
 # ──────────────────────────────────────────────────────────────────────────────
 
+def build_tracked_files(project_root: Path) -> set[str]:
+    """Return git-tracked relative paths, or an empty set outside git.
+
+    Contract tests can run this audit while other xdist workers create
+    temporary fixtures under hooks/ or skills/. In that mode we validate the
+    repository source-of-truth, not untracked test scratch files.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(project_root), "ls-files", "-z"],
+            capture_output=True,
+            check=False,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return set()
+    if result.returncode != 0:
+        return set()
+    return {item.decode("utf-8", errors="replace") for item in result.stdout.split(b"\0") if item}
+
+
 class Auditor:
-    def __init__(self, project_root: Path):
+    def __init__(self, project_root: Path, *, tracked_only: bool = False):
         self.project_root = project_root
         self.metrics_dir = project_root / ".cognitive-os" / "metrics"
         self.settings_path = project_root / ".claude" / "settings.json"
         self.excluded_path = project_root / "tests" / "contracts" / "EXCLUDED_HOOKS.txt"
+        self.tracked_only = tracked_only
+        self.tracked_files = build_tracked_files(project_root) if tracked_only else set()
 
         # Pre-build signal caches
         self.fire_counts = build_hook_fire_counts(self.metrics_dir)
@@ -716,6 +740,15 @@ class Auditor:
             "no invocations and not referenced in rules or docs"
         )
 
+    def _include_path(self, path: Path) -> bool:
+        if not self.tracked_only:
+            return True
+        try:
+            rel = path.relative_to(self.project_root).as_posix()
+        except ValueError:
+            return False
+        return rel in self.tracked_files
+
     def run(self) -> list[dict]:
         """
         Walk all components, classify each, and return list of MetricEvent dicts.
@@ -739,24 +772,32 @@ class Auditor:
 
         # Hooks
         for path in walk_hooks(self.project_root):
+            if not self._include_path(path):
+                continue
             rel = str(path.relative_to(self.project_root))
             cls = self.classify_hook(path)
             add_event(rel, cls)
 
         # Lib
         for path in walk_lib(self.project_root):
+            if not self._include_path(path):
+                continue
             rel = str(path.relative_to(self.project_root))
             cls = self.classify_lib(path)
             add_event(rel, cls)
 
         # Scripts
         for path in walk_scripts(self.project_root):
+            if not self._include_path(path):
+                continue
             rel = str(path.relative_to(self.project_root))
             cls = self.classify_script(path)
             add_event(rel, cls)
 
         # Skills
         for path in walk_skills(self.project_root):
+            if not self._include_path(path):
+                continue
             rel = str(path.relative_to(self.project_root))
             cls = self.classify_skill(path)
             add_event(rel, cls)
@@ -892,10 +933,12 @@ def main(argv: list[str] | None = None) -> int:
                         help="Exit 1 if DORMANT+ASPIRATIONAL ratio exceeds this fraction (0.0–1.0)")
     parser.add_argument("--project-root", type=Path, default=None,
                         help="Override project root (default: auto-detect from cwd)")
+    parser.add_argument("--tracked-only", action="store_true",
+                        help="Classify only git-tracked source files; useful for parallel contract tests")
     args = parser.parse_args(argv)
 
     project_root = args.project_root or find_project_root()
-    auditor = Auditor(project_root)
+    auditor = Auditor(project_root, tracked_only=args.tracked_only)
     events = auditor.run()
     summary = compute_summary(events)
 

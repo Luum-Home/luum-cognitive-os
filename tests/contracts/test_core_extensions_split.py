@@ -87,7 +87,7 @@ def test_aspirational_audit_reports_zero_active_dormant_debt() -> None:
     result = None
     for attempt in range(3):
         result = subprocess.run(
-            [sys.executable, "scripts/aspirational_audit.py", "--json"],
+            [sys.executable, "scripts/aspirational_audit.py", "--json", "--tracked-only"],
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,
