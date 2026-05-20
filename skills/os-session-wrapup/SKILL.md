@@ -1,6 +1,6 @@
 ---
 name: os-session-wrapup
-description: Use when closing or reviewing a Cognitive OS maintainer session after touching agentic primitives, projection settings, harness contracts, or release/public-readiness surfaces. Runs the generic session-wrapup first, then adds an SO-only component-reality check with aspirational/dormant counts; do not use in consumer projects.
+description: Use when closing or reviewing a Cognitive OS maintainer session after touching agentic primitives, projection settings, harness contracts, or release/public-readiness surfaces. Runs the generic session-wrapup first, then adds an SO-only component-reality check with unproven/dormant counts; do not use in consumer projects.
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-20
@@ -21,16 +21,16 @@ platform_support:
     support_level: documented-only
     evidence:
     - skills/os-session-wrapup/SKILL.md
-    - tests/hooks/test_os_session_wrapup_addendum_trigger.py
+    - test_os_session_wrapup_addendum_trigger.py
 prerequisites: []
 routing_patterns:
 - pattern: \bos[- ]?session[- ]?wrapup\b
   confidence: 0.95
-- pattern: \b(session[- ]?wrapup|wrap\s+up|close\s+session|end\s+session)\b.{0,80}\b(hooks?|skills?|rules?|scripts?|libs?|manifests?|primitives?|agentic\s+primitives?|wiring|surface|classification|aspirational|dormant|release|public)\b
+- pattern: \b(session[- ]?wrapup|wrap\s+up|close\s+session|end\s+session)\b.{0,80}\b(hooks?|skills?|rules?|scripts?|libs?|manifests?|primitives?|agentic\s+primitives?|wiring|surface|classification|unproven|dormant|release|public)\b
   confidence: 0.88
-- pattern: \b(todas?\s+las\s+)?primitivas?\b.{0,80}\b(controladas?|aspirational|dormant|clasificaci[oó]n|superficie|wiring|deuda)\b
+- pattern: \b(todas?\s+las\s+)?primitivas?\b.{0,80}\b(controladas?|unproven|dormant|classification|clasificacion|superficie|wiring|deuda)\b
   confidence: 0.88
-- pattern: \b(reality[- ]?check|component[- ]?reality[- ]?check|dogfooding|claims?\s+aspiracionales?)\b
+- pattern: \b(reality[- ]?check|component[- ]?reality[- ]?check|dogfooding|unproven\s+claims?)\b
   confidence: 0.82
 routing_intents:
 - intent: os_maintainer_session_close_with_reality_check
@@ -53,7 +53,7 @@ SO-maintainer checkout.
 
 Run the normal portable session close, then add an SO-only primitive reality
 check when the session touched agentic primitive surfaces or when the operator
-asks about dormant/aspirational debt.
+asks about dormant/unproven debt.
 
 ## When to use
 
@@ -61,7 +61,7 @@ Use this skill when any of these are true:
 
 - The operator invokes `/os-session-wrapup`.
 - The operator asks whether primitives are controlled, classified, real,
-  dormant, aspirational, wired, or ready for public/release claims.
+  dormant, unproven, wired, or ready for public/release claims.
 - The session added, removed, merged, or changed files under:
   `hooks/`, `skills/`, `rules/`, `scripts/`, `lib/`, `manifests/`,
   `.cognitive-os/`, `.codex/hooks.json`, or `.claude/settings.json`.
@@ -122,4 +122,4 @@ observable reality classification for the scanned surfaces.
 
 SO-only. Trigger on Cognitive OS maintainer session close, primitive-surface
 changes, release/public-readiness checks, dogfooding, or questions about
-aspirational/dormant primitive debt.
+unproven/dormant primitive debt.

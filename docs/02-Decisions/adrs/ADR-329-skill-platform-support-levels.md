@@ -129,6 +129,12 @@ Codex and Claude Code support can be stronger when there is hook or settings
 proof, but this ADR does not require every legacy platform to be fully migrated
 in the first slice.
 
+## Alternatives rejected
+
+- **Keep `platforms` as a flat list only** — rejected because it overstates support: `generic-cli` can mean manual documentation while `claude-code` or `codex` may be lifecycle-triggered.
+- **Require every platform to be executable immediately** — rejected because existing skills have valid documented/manual value and a hard migration would create noisy churn. The first strict ratchet targets `generic-cli`, the most ambiguous claim.
+- **Move all platform semantics into `primitive-contracts.yaml` only** — rejected because skills need self-contained metadata for loaders and audits that read `SKILL.md` directly.
+
 ## Consequences
 
 ### Positive
@@ -147,9 +153,9 @@ in the first slice.
 - `documented-only` is intentionally weaker than executable proof; product
   claims must use the support level, not only the platform list.
 
-## Acceptance Criteria
+## Verification
 
 ```bash
 python3 scripts/skill_platform_support_audit.py --project-dir . --strict
-python3 -m pytest tests/audit/test_skill_platform_support_audit.py -q
+python3 -m pytest tests/audit/test_skill_platform_support_audit.py tests/hooks/test_os_session_wrapup_addendum_trigger.py -q
 ```

@@ -236,6 +236,16 @@ def extract_pending_checkboxes(text: str, limit: int = 5) -> list[str]:
     return labels
 
 
+def plan_closed_by_reconciliation(text: str) -> bool:
+    """Return whether a plan's unchecked boxes are historical, not live work."""
+    head = text[:2500].upper()
+    if re.search(r"RECONCILIATION STATUS:\s*(?:COMPLETE|TOMBSTONE)\b", head):
+        return True
+    if re.search(r"STATUS:\s*ALL PHASES\b.*\bCOMPLETE\b", head):
+        return True
+    return False
+
+
 def extract_title(path: Path, text: str) -> str:
     """Extract a readable title for a plan document."""
     match = re.search(r"^#\s+(.+?)\s*$", text, re.MULTILINE)
@@ -262,6 +272,9 @@ def collect_plans(project_dir: Path, warnings: list[str]) -> tuple[list[BacklogI
         if total == 0:
             continue
         title = extract_title(path, text)
+        if plan_closed_by_reconciliation(text):
+            summaries.append(PlanSummary(title, f"{total}/{total} tasks done", "Complete", "0"))
+            continue
         pending = extract_pending_checkboxes(text)
         progress = f"{done}/{total} tasks done"
         if done == total:

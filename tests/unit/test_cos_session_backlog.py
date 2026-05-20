@@ -134,6 +134,32 @@ def test_reconciler_writes_backlog_and_metric_from_core_sources(tmp_path: Path) 
     assert "adr-ledger" in metric["sources"]
 
 
+def test_reconciler_skips_reconciled_complete_and_tombstone_plan_tasks(tmp_path: Path) -> None:
+    """Unchecked boxes in reconciled COMPLETE/TOMBSTONE plans are historical, not live backlog."""
+    project = tmp_path / "project"
+    plans = project / ".cognitive-os" / "plans" / "features"
+    plans.mkdir(parents=True)
+    (plans / "complete.md").write_text(
+        "<!--\nRECONCILIATION STATUS: COMPLETE — evidence verified\n-->\n"
+        "# Complete Plan\n\n- [x] Done\n- [ ] Historical unchecked item\n"
+    )
+    (plans / "tombstone.md").write_text(
+        "<!--\nRECONCILIATION STATUS: TOMBSTONE — do not implement\n-->\n"
+        "# Tombstone Plan\n\n- [ ] Do not revive engine\n"
+    )
+    (plans / "active.md").write_text("# Active Plan\n\n- [x] Done\n- [ ] Live task\n")
+
+    result = cos_session_backlog.reconcile(project, "session-1", include_engram=False)
+    task_names = {item.task for item in result.items}
+    summaries = {plan.name: plan for plan in result.plans}
+
+    assert "Live task" in task_names
+    assert "Historical unchecked item" not in task_names
+    assert "Do not revive engine" not in task_names
+    assert summaries["Complete Plan"].next_phase == "Complete"
+    assert summaries["Tombstone Plan"].progress == "1/1 tasks done"
+
+
 def test_cli_json_summary_reports_written_paths(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     """CLI mode writes outputs and reports a machine-readable summary."""
     project = tmp_path / "project"

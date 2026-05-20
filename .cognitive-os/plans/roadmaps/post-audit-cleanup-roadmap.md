@@ -9,16 +9,16 @@
 
 - [x] `feat(cos-status): expose per-distribution primitive counts` (verified: git log -1 e90981ed)
 - [x] `docs(plans): reconcile 8 op-stability checkboxes` (verified: git log -1 702dd977)
-- [ ] Wave 0 in flight (background agents): claim ledger merge (A), `lib/stash_ops.py` (B)
+- [x] Wave 0 in flight (background agents): claim ledger merge (A), `lib/stash_ops.py` (B). Verified 2026-05-20: `lib/task_claim_ledger.py` is a compatibility shim over `scripts/cos_task_claims.py` (commit 0bbd0980), `lib/stash_ops.py` exists as a symlink to `packages/agent-coordination/lib/stash_ops.py` with tests in `tests/unit/test_stash_ops.py` (commit 5dac1a33).
 
 ## Wave 0 — In flight (do not relaunch)
 
 | Item | Status |
 |---|---|
-| Unify `lib/task_claim_ledger.py` + `scripts/cos_task_claims.py` | running |
-| Create `lib/stash_ops.py` covering ADR-117 invariants 3/4/1 | running |
+| Unify `lib/task_claim_ledger.py` + `scripts/cos_task_claims.py` | done — `lib/task_claim_ledger.py` delegates to canonical `scripts/cos_task_claims.py` store (0bbd0980) |
+| Create `lib/stash_ops.py` covering ADR-117 invariants 3/4/1 | done — symlinked package implementation plus `tests/unit/test_stash_ops.py` (5dac1a33) |
 
-When these return: review, commit, then proceed to Wave 1.
+Wave 0 returned and was verified from git/code evidence on 2026-05-20; proceed to Wave 1.
 
 ## Wave 1 — Quick wins (~3-4 sessions, low risk)
 

@@ -220,7 +220,9 @@ func focusedWorkerPolicy() string {
 // deduped, sorted list of test files. Rules:
 //   - test files (path under tests/ matching test_*.py or *_test.py) are kept
 //     verbatim
-//   - source files map to tests/*/test_<basename>.py and tests/*/test_<basename>_*.py
+//   - source files first map to the fast same-name unit lane; if no unit match
+//     exists, focused mode falls back to any same-name test. Slower integration
+//     same-name tests remain available through explicit paths or cluster lanes.
 func mapChangedToTests(cfg *config.Config, changed []string) []string {
 	if len(changed) == 0 {
 		return nil
@@ -252,8 +254,11 @@ func mapChangedToTests(cfg *config.Config, changed []string) []string {
 		if base == "" {
 			continue
 		}
-		candidates := findTestFilesForBase(cfg.TestsDir, base)
-		for _, c := range candidates {
+			candidates := findFastFocusedTestsForBase(cfg.TestsDir, base)
+			if len(candidates) == 0 {
+				candidates = findTestFilesForBase(cfg.TestsDir, base)
+			}
+			for _, c := range candidates {
 			rel2, err := filepath.Rel(cfg.ProjectRoot, c)
 			if err != nil {
 				continue
@@ -263,6 +268,14 @@ func mapChangedToTests(cfg *config.Config, changed []string) []string {
 	}
 	sort.Strings(out)
 	return out
+}
+
+func findFastFocusedTestsForBase(testsDir, base string) []string {
+	unitDir := filepath.Join(testsDir, "unit")
+	if _, err := os.Stat(unitDir); err != nil {
+		return nil
+	}
+	return findTestFilesForBase(unitDir, base)
 }
 
 // isTestFile reports whether rel looks like a pytest test file.

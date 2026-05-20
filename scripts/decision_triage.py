@@ -22,6 +22,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass, asdict
@@ -82,6 +83,7 @@ HEDGE_BOOST = re.compile(
 RECENT_DAYS = 7    # Files modified within this many days are "recent"
 VERY_RECENT_DAYS = 3  # Files modified within this many days score higher
 OLD_ADR_DAYS = 30  # ADR questions older than this are downgraded toward soft
+ENGRAM_TIMEOUT_SECONDS = float(os.environ.get("COS_DECISION_TRIAGE_ENGRAM_TIMEOUT", "0.5"))
 
 # Score thresholds (>= → tier)
 CRITICAL_SCORE = 3
@@ -371,7 +373,7 @@ def _parse_engram_text_for_slugs(text: str) -> dict[str, bool]:
     return answered
 
 
-def _engram_search_for_answers(query: str, timeout: int = 5) -> dict[str, bool]:
+def _engram_search_for_answers(query: str, timeout: float = ENGRAM_TIMEOUT_SECONDS) -> dict[str, bool]:
     """Run one engram search and extract decision slugs from text output."""
     try:
         result = subprocess.run(
@@ -387,7 +389,7 @@ def _engram_search_for_answers(query: str, timeout: int = 5) -> dict[str, bool]:
         return {}
 
 
-def _probe_engram_available(timeout: int = 3) -> bool:
+def _probe_engram_available(timeout: float = ENGRAM_TIMEOUT_SECONDS) -> bool:
     """Return whether the Engram CLI is reachable for decision cross-reference.
 
     This probe is intentionally separate from answer retrieval so callers can
@@ -396,6 +398,8 @@ def _probe_engram_available(timeout: int = 3) -> bool:
     mark decisions as pending rather than silently treating an empty answer set
     as authoritative.
     """
+    if shutil.which("engram") is None:
+        return False
     try:
         probe = subprocess.run(
             ["engram", "search", "Decision answered probe"],
@@ -543,7 +547,7 @@ def write_report(decisions: list[Decision], output_path: Path) -> None:
 # Engram cross-reference (legacy — used by enrich_with_engram)
 # ---------------------------------------------------------------------------
 
-def _engram_search(query: str, timeout: int = 5) -> Optional[str]:
+def _engram_search(query: str, timeout: float = ENGRAM_TIMEOUT_SECONDS) -> Optional[str]:
     """Attempt an engram search via the engram CLI. Returns text output or None on failure.
 
     Uses the engram CLI subprocess (most stable contract — the Python module path
@@ -579,6 +583,9 @@ def enrich_with_engram(decisions: list[Decision]) -> tuple[list[Decision], bool]
     bulk queries. Engram is limited to 10 results per semantic query, so we use multiple
     targeted queries then fall back to individual per-slug lookups for critical decisions.
     """
+    if not decisions:
+        return decisions, False
+
     # Bulk queries first (fast, covers most answers). Keep availability separate
     # from answer count so "Engram up with zero answers" is not confused with
     # "Engram unavailable".
@@ -604,7 +611,7 @@ def enrich_with_engram(decisions: list[Decision]) -> tuple[list[Decision], bool]
         d for d in decisions
         if d.status != "ANSWERED" and d.urgency == "critical"
     ]
-    for d in unanswered_critical[:25]:
+    for d in unanswered_critical[:10]:
         slug = _infer_topic_key(d).removeprefix("decision/")
         result = _engram_search(slug)
         if result and ("answered" in result.lower() or "Decision answered:" in result):
@@ -828,7 +835,10 @@ def main(argv: list[str] | None = None) -> int:
 
     # Engram enrichment — must not crash on failure
     try:
-        decisions, engram_available = enrich_with_engram(decisions)
+        if decisions:
+            decisions, engram_available = enrich_with_engram(decisions)
+        else:
+            engram_available = False
     except Exception as exc:
         print(f"WARNING: engram enrichment failed: {exc}", file=sys.stderr)
         for d in decisions:

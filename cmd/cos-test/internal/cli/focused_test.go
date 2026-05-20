@@ -52,7 +52,7 @@ func TestIsTestFile(t *testing.T) {
 	}
 }
 
-func TestMapChangedToTests_SameNameHeuristic(t *testing.T) {
+func TestMapChangedToTests_PrefersFastUnitSameNameHeuristic(t *testing.T) {
 	cfg := newTestCfg(t)
 	writeFile(t, filepath.Join(cfg.TestsDir, "unit", "test_foo.py"))
 	writeFile(t, filepath.Join(cfg.TestsDir, "unit", "test_foo_extra.py"))
@@ -62,10 +62,20 @@ func TestMapChangedToTests_SameNameHeuristic(t *testing.T) {
 	got := mapChangedToTests(cfg, []string{"scripts/foo.py"})
 	sort.Strings(got)
 	want := []string{
-		"tests/integration/test_foo.py",
 		"tests/unit/test_foo.py",
 		"tests/unit/test_foo_extra.py",
 	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("mapChangedToTests = %v, want %v", got, want)
+	}
+}
+
+func TestMapChangedToTests_FallsBackWhenNoUnitSameNameMatch(t *testing.T) {
+	cfg := newTestCfg(t)
+	writeFile(t, filepath.Join(cfg.TestsDir, "integration", "test_foo.py"))
+
+	got := mapChangedToTests(cfg, []string{"scripts/foo.py"})
+	want := []string{"tests/integration/test_foo.py"}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("mapChangedToTests = %v, want %v", got, want)
 	}

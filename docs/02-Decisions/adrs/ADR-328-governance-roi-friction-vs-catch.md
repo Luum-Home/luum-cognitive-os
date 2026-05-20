@@ -178,6 +178,12 @@ Governance ROI: net=-10.27m ratio=unknown unknown catches=0 false+=0 phase=recon
 - Phase policy is coarse; individual guards still need local judgment and tests.
 - Full per-guard adoption requires touching each hard-blocking hook. Until then, `cos governance policy` is the contract new/changed blocking hooks must use.
 
+## Alternatives rejected
+
+- **Always-on strict governance for every phase** — rejected because dogfooding showed that low-risk exploratory work can pay more friction than safety value. Phase-aware policy keeps high-blast-radius blocks while demoting low-signal friction.
+- **Dashboard-only ROI with no write-side ledger** — rejected because block counts alone cannot distinguish real catches from false positives. Reviewed catch rows are required before ratios can justify keeping or cutting guards.
+- **Operator-forced catch review after every block** — rejected because mandatory feedback would add more friction than it measures. The prompt is non-blocking and defaults to skip.
+
 ## Verification
 
 ```bash

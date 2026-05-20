@@ -102,6 +102,8 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/06-Daily/reports/pending-plans-audit-2026-04-30.md",  # vaulted audit report
     "docs/06-Daily/reports/task-and-plan-reconciliation-2026-05-05.md",  # reconciliation report, not active plan
     "docs/06-Daily/reports/task-and-plan-reconciliation-2026-05-05.md",  # vaulted reconciliation report
+    "docs/06-Daily/reports/plan-closure-disposition-2026-05-20.md",  # disposition report from plan closure audit, not an active plan
+    "templates/agent-planning.md",  # prompt template; filename includes planning but is not an active plan
     # docs/99-Archive/archive/plans/ contains files other than token-optimization-masterplan.md
     # that were NOT listed in ADR-082's migration table.  They remain in place.
     "docs/99-Archive/archive/plans/",   # directory prefix — any file under here is exempt
