@@ -433,6 +433,7 @@ OS_ONLY_PRIMITIVE_PROOF_BASELINE = [
     'skills/cognitive-os-status/SKILL.md',
     'skills/cognitive-os-test/SKILL.md',
     'skills/component-reality-check/SKILL.md',
+    'skills/os-session-wrapup/SKILL.md',
     'skills/coordination-status/SKILL.md',
     'skills/cos-install-operations/SKILL.md',
     'skills/cos-maintainer-operations/SKILL.md',

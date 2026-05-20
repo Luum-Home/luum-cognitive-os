@@ -1380,6 +1380,10 @@ items:
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only
     declaration; no consumer-project surface evidence.
+- path: skills/os-session-wrapup/SKILL.md
+  status: maintainer-only
+  rationale: OS maintainer session-close addendum runs COS primitive reality audits
+    and must not project to consumer-project session-wrapup.
 - path: skills/coordination-status/SKILL.md
   status: maintainer-only
   rationale: Manual scope calibration iteration 014 added metadata for existing os-only

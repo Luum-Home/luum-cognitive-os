@@ -3718,6 +3718,13 @@ evidence:
   tests:
   - tests/red_team/portability/test_os_only_scope_family.py
   rationale: OS-only family proof verifies maintainer-only consumer surface and non-user-plane classification for internal COS primitives.
+- primitive: skills/os-session-wrapup/SKILL.md
+  harnesses:
+  - shell-ci
+  tests:
+  - tests/red_team/portability/test_os_only_scope_family.py
+  - tests/hooks/test_os_session_wrapup_addendum_trigger.py
+  rationale: OS-only family proof plus addendum hook tests verify maintainer-only consumer surface and trigger behavior for COS primitive reality checks.
 - primitive: skills/coordination-status/SKILL.md
   harnesses:
   - shell-ci

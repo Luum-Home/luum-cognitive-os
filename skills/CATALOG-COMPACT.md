@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 179
+Total skills: 180
 
 ## os (23)
 
@@ -33,7 +33,7 @@ Total skills: 179
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, |
 | vuln-remediation-flow | 'Use when you need this Cognitive OS skill: Lab-stage propose-only cloud |
 
-## os-dev (41)
+## os-dev (42)
 
 | Skill | Description |
 |-------|-------------|
@@ -59,6 +59,7 @@ Total skills: 179
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting. |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive |
+| os-session-wrapup | SO-only session close addendum that runs component-reality-check when primitive surfaces changed. |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
 | primitive-classifier | Classify a new agentic primitive (skill, hook, rule, lib) as CORE or |
 | primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |

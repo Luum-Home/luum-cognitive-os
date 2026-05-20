@@ -68,6 +68,7 @@
 | session-backlog | Inventory all pending work across plans, engram, tasks, audits, and git — produces prioritized backlog for future sessions | `/session-backlog` | both |
 | decision-triage | Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions. | `/decision-triage` | both |
 | session-wrapup | End-of-session routine: backlog inventory + engram save + session summary | `/session-wrapup` | both |
+| os-session-wrapup | SO-only session close addendum that runs component-reality-check when primitive surfaces changed | `/os-session-wrapup` | os-dev |
 | session-pending-brief | Bridge prompt → cos-session-start-projector → ranked attack list. |
 | session-pending-close | Atomic close of pending-truth task and/or ADR-decision items with audit trail. |
 | doc-sync | Detect and update stale documentation after code changes | `/doc-sync` | project |
@@ -273,6 +274,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **optimize-skill** — Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prompt
 - **pattern-audit** — Use when you need this Cognitive OS skill: Pattern/regex audit of a codebase with MANDATORY sample verification before publishing counts as severity. Prevents alarmist \"N occurrences = problem\" c...
 - **peer-card** — Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) backed by
+- **os-session-wrapup** — Use when closing or reviewing a Cognitive OS maintainer session after touching agentic primitives, projection settings, harness contracts, or release/public-readiness surfaces.
 - **pentest-self** — Self-penetration testing for Cognitive OS safety mesh. Validates that prompt injection defenses, permission boundaries, secret protections, rate limiting, scope controls, and data integrity guards ...
 - **persistent-agent** — Create persistent agents that maintain their own state across sessions. Generates a skill directory with identity profile, event log, and auto-fixation checklist for continuous learning.
 - **phoenix-trace-ui** — Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no
