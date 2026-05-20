@@ -17,6 +17,8 @@ if [ "${DISABLE_HOOK_SUBAGENT_BUDGET_ENFORCER:-0}" = "1" ]; then
 fi
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 INPUT="$(cat)"
 
 command -v python3 >/dev/null 2>&1 || exit 0
@@ -106,6 +108,7 @@ METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 mkdir -p "$RUNTIME_DIR" "$METRICS_DIR" 2>/dev/null || true
 COUNTER_FILE="$RUNTIME_DIR/subagent-tool-calls-$AGENT_ID"
 METRICS_FILE="$METRICS_DIR/subagent-budget-enforcer.jsonl"
+RESOURCE_LEDGER="$METRICS_DIR/ai-resource-ledger.jsonl"
 
 COUNT=0
 if [ -f "$COUNTER_FILE" ]; then
@@ -120,9 +123,11 @@ emit_metric() {
   local reason="$2"
   local ts
   ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  python3 - "$METRICS_FILE" "$ts" "$SESSION_ID" "$AGENT_ID" "$COUNT" "$BUDGET" "$action" "$reason" <<'PYEOF' 2>/dev/null || true
+  python3 - "$METRICS_FILE" "$RESOURCE_LEDGER" "$COS_ROOT" "$ts" "$SESSION_ID" "$AGENT_ID" "$COUNT" "$BUDGET" "$action" "$reason" <<'PYEOF' 2>/dev/null || true
 import json, sys
-path, ts, session_id, agent_id, count, budget, action, reason = sys.argv[1:]
+from pathlib import Path
+
+path, resource_ledger, cos_root, ts, session_id, agent_id, count, budget, action, reason = sys.argv[1:]
 entry = {
     "timestamp": ts,
     "session_id": session_id,
@@ -134,6 +139,27 @@ entry = {
 }
 with open(path, "a", encoding="utf-8") as fh:
     fh.write(json.dumps(entry, sort_keys=True) + "\n")
+
+sys.path.insert(0, cos_root)
+from lib.taximeter import resource_tick
+
+resource_tick(
+    session_id=session_id,
+    agent_id=agent_id,
+    task_id=reason,
+    provider="hook",
+    model="subagent-budget-enforcer",
+    tokens_in=0,
+    tokens_out=0,
+    estimated_cost_usd=0.0,
+    actual_cost_usd=0.0,
+    retry_count=0,
+    tool_calls=int(count),
+    reasoning_effort="none",
+    kind=f"subagent_budget_{action}",
+    source="subagent-budget-enforcer",
+    ledger_path=resource_ledger,
+)
 PYEOF
 }
 
