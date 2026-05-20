@@ -163,6 +163,42 @@ def test_skill_coverage_heuristic(tmp_path):
     assert "covered=2/3" in ev
 
 
+def test_skill_coverage_counts_aggregate_contract_suite(tmp_path):
+    repo = _minimal_repo(tmp_path)
+    for name in ("alpha-skill", "beta-skill", "gamma-skill"):
+        _write(repo / f"skills/{name}/SKILL.md", f"# {name}\n")
+    _write(
+        repo / "tests/audit/test_skills_contracts.py",
+        """from pathlib import Path
+
+import pytest
+
+
+def _skill_dirs():
+    return [
+        Path("skills/alpha-skill"),
+        Path("skills/beta-skill"),
+        Path("skills/gamma-skill"),
+    ]
+
+
+SKILL_DIRS = _skill_dirs()
+SKILL_IDS = [p.name for p in SKILL_DIRS if (p / "SKILL.md").name == "SKILL.md"]
+
+
+@pytest.mark.parametrize("skill_id", SKILL_IDS)
+def test_skill_contract(skill_id):
+    assert skill_id
+""",
+    )
+
+    score, ev = DogfoodScorer(repo)._score_skill_coverage()
+
+    assert score == 100.0
+    assert "covered=3/3" in ev
+    assert "aggregate_contracts=3" in ev
+
+
 def test_hook_wiring_good_and_bad(tmp_path):
     repo = _minimal_repo(tmp_path)
     _write(repo / "hooks/alpha.sh", "#!/usr/bin/env bash\n")
