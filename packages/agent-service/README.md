@@ -4,10 +4,12 @@ Agent Runtime Web Service for the Luum Cognitive OS — HTTP + Server-Sent
 Events surface that exposes the agent runtime as a standalone network service,
 independent of any IDE harness.
 
-This is **Phase 1**: a contract skeleton with 26 operations across 25
-distinct paths. Three are functional (health, version, agent options); the
-remaining 23 return HTTP 501 with a Pydantic-validated response body so
-clients can be built against a stable schema before Phase 2 ships.
+This is **Phase 2 in progress**: the Phase 1 contract skeleton remains
+stable at 26 operations across 25 distinct paths. Eleven operations are now
+functional: health, version, agent options, plus the file-backed session
+store endpoints for create/list/details/events/latest/status/update/delete.
+The remaining 15 operations still return typed 501 responses or SSE stub
+frames until later ADR-291 slices wire runtime execution and workspace access.
 
 The placeholder `/csrf-token` endpoint was removed in the security pass —
 it emitted unverified tokens with no server-side store. Real CSRF defense
@@ -62,6 +64,7 @@ OpenAPI JSON: <http://127.0.0.1:8088/openapi.json>
 | `COS_DISABLE_AGENT_SERVICE` | no | Kill switch. If `1`, `create_app()` raises `ServiceDisabledError` before any route is registered. |
 | `COS_AGENT_SERVICE_VERSION` | no | Override the version surfaced at `/api/v1/version`. Defaults to package version. |
 | `COS_AGENT_SERVICE_BUILD` | no | Build identifier surfaced at `/api/v1/version`. Defaults to `dev`. |
+| `COS_AGENT_SERVICE_SESSION_STORE` | no | JSON session store path. Defaults to `~/.cognitive-os/agent-service/sessions.json`. |
 
 ---
 
@@ -94,16 +97,16 @@ OpenAPI JSON: <http://127.0.0.1:8088/openapi.json>
 
 ### Sessions
 
-| Method | Path | Phase 1 |
+| Method | Path | Status |
 |---|---|---|
-| GET | `/api/v1/sessions` | 501 |
-| POST | `/api/v1/sessions/create` | 501 |
-| GET | `/api/v1/sessions/details?sessionId=X` | 501 |
-| GET | `/api/v1/sessions/events?sessionId=X` | 501 |
-| GET | `/api/v1/sessions/events/latest?sessionId=X` | 501 |
-| GET | `/api/v1/sessions/status?sessionId=X` | 501 |
-| POST | `/api/v1/sessions/update` | 501 |
-| POST | `/api/v1/sessions/delete` | 501 |
+| GET | `/api/v1/sessions` | functional — JSON file-backed |
+| POST | `/api/v1/sessions/create` | functional — JSON file-backed |
+| GET | `/api/v1/sessions/details?sessionId=X` | functional — JSON file-backed |
+| GET | `/api/v1/sessions/events?sessionId=X` | functional — JSON file-backed |
+| GET | `/api/v1/sessions/events/latest?sessionId=X` | functional — JSON file-backed |
+| GET | `/api/v1/sessions/status?sessionId=X` | functional — JSON file-backed |
+| POST | `/api/v1/sessions/update` | functional — JSON file-backed |
+| POST | `/api/v1/sessions/delete` | functional — JSON file-backed |
 | POST | `/api/v1/sessions/generate-summary` | SSE stub |
 | POST | `/api/v1/sessions/share` | 501 |
 | POST | `/api/v1/sessions/query` | 501 |
@@ -124,12 +127,13 @@ Total: **26 operations across 25 distinct paths**.
 
 ## Roadmap
 
-- **Phase 1** (this release): contract skeleton, auth, kill switch, OpenAPI,
-  3 functional endpoints, 23 stubs, full test suite.
-- **Phase 2**: file-backed then SQLite session store. Sync `oneshot/query` and
-  `sessions/query` wired to the in-process agent runner. Model dispatch list.
-  Real CSRF defense (double-submit, server-side store). Rate limiting (also
-  Phase-2 hard requirement before Phase 3, not after).
+- **Phase 1**: contract skeleton, auth, kill switch, OpenAPI, 3 functional
+  endpoints, 23 stubs, full test suite.
+- **Phase 2 slice shipped**: file-backed JSON session store for create/list,
+  details, events, latest event, status, update, and delete.
+- **Phase 2 remaining**: sync `oneshot/query` and `sessions/query` wired to the
+  in-process agent runner, model dispatch list, real CSRF defense
+  (double-submit, server-side store), and rate limiting.
 - **Phase 3**: real SSE streams from the agent runner event bus. Workspace
   inspection. Session abort. Signed share URLs.
 
@@ -156,4 +160,5 @@ python3 -m pytest packages/agent-service/tests -q
 ```
 
 The suite covers: full contract per endpoint, auth enforcement, kill switch,
-SSE frame format, OpenAPI exposure, and the four functional endpoints.
+SSE frame format, OpenAPI exposure, functional metadata endpoints, and the
+file-backed session lifecycle.

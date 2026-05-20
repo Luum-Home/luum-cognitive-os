@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Query, Request, status, HTTPException
 from fastapi.responses import JSONResponse
 
 from agent_service.auth import require_bearer
@@ -25,6 +25,7 @@ from agent_service.models import (
     SessionUpdateRequest,
 )
 from agent_service.sse import not_implemented_stream, sse_response
+from agent_service.store import InvalidSessionPatchError, JsonSessionStore, SessionNotFoundError
 
 
 router = APIRouter(
@@ -39,16 +40,31 @@ def _stub(endpoint: str, reason: str) -> JSONResponse:
     )
 
 
+def _store(request: Request) -> JsonSessionStore:
+    return request.app.state.session_store
+
+
+def _not_found(session_id: str) -> HTTPException:
+    return HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"session not found: {session_id}",
+    )
+
+
 @router.get(
     "",
     response_model=SessionListResponse,
     responses={501: {"model": NotImplementedResponse}},
 )
 async def list_sessions(
+    request: Request,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=200),
-) -> JSONResponse:
-    return _stub("GET /api/v1/sessions", "session store ships in Phase 2")
+) -> SessionListResponse:
+    sessions, total = _store(request).list(page=page, page_size=page_size)
+    return SessionListResponse(
+        sessions=sessions, page=page, page_size=page_size, total=total
+    )
 
 
 @router.post(
@@ -56,8 +72,15 @@ async def list_sessions(
     response_model=SessionCreateResponse,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def create_session(_payload: SessionCreateRequest) -> JSONResponse:
-    return _stub("POST /api/v1/sessions/create", "session store ships in Phase 2")
+async def create_session(
+    payload: SessionCreateRequest, request: Request
+) -> SessionCreateResponse:
+    session = _store(request).create(
+        workspace=payload.workspace, metadata=payload.metadata
+    )
+    return SessionCreateResponse(
+        session_id=session.session_id, created_at=session.created_at
+    )
 
 
 @router.get(
@@ -65,8 +88,13 @@ async def create_session(_payload: SessionCreateRequest) -> JSONResponse:
     response_model=SessionDetails,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def session_details(sessionId: str = Query(...)) -> JSONResponse:
-    return _stub("GET /api/v1/sessions/details", "session store ships in Phase 2")
+async def session_details(
+    request: Request, sessionId: str = Query(...)
+) -> SessionDetails:
+    try:
+        return _store(request).details(sessionId)
+    except SessionNotFoundError as exc:
+        raise _not_found(sessionId) from exc
 
 
 @router.get(
@@ -75,11 +103,17 @@ async def session_details(sessionId: str = Query(...)) -> JSONResponse:
     responses={501: {"model": NotImplementedResponse}},
 )
 async def session_events(
+    request: Request,
     sessionId: str = Query(...),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=50, ge=1, le=500),
-) -> JSONResponse:
-    return _stub("GET /api/v1/sessions/events", "event store ships in Phase 2")
+) -> SessionEventsPage:
+    try:
+        return _store(request).events(
+            session_id=sessionId, page=page, page_size=page_size
+        )
+    except SessionNotFoundError as exc:
+        raise _not_found(sessionId) from exc
 
 
 @router.get(
@@ -87,10 +121,13 @@ async def session_events(
     response_model=SessionLatestEvent,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def session_events_latest(sessionId: str = Query(...)) -> JSONResponse:
-    return _stub(
-        "GET /api/v1/sessions/events/latest", "event store ships in Phase 2"
-    )
+async def session_events_latest(
+    request: Request, sessionId: str = Query(...)
+) -> SessionLatestEvent:
+    try:
+        return _store(request).latest_event(sessionId)
+    except SessionNotFoundError as exc:
+        raise _not_found(sessionId) from exc
 
 
 @router.get(
@@ -98,8 +135,13 @@ async def session_events_latest(sessionId: str = Query(...)) -> JSONResponse:
     response_model=SessionStatusResponse,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def session_status(sessionId: str = Query(...)) -> JSONResponse:
-    return _stub("GET /api/v1/sessions/status", "session store ships in Phase 2")
+async def session_status(
+    request: Request, sessionId: str = Query(...)
+) -> SessionStatusResponse:
+    try:
+        return _store(request).status(sessionId)
+    except SessionNotFoundError as exc:
+        raise _not_found(sessionId) from exc
 
 
 @router.post(
@@ -107,8 +149,19 @@ async def session_status(sessionId: str = Query(...)) -> JSONResponse:
     response_model=SessionDetails,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def session_update(_payload: SessionUpdateRequest) -> JSONResponse:
-    return _stub("POST /api/v1/sessions/update", "session store ships in Phase 2")
+async def session_update(
+    payload: SessionUpdateRequest, request: Request
+) -> SessionDetails:
+    try:
+        return _store(request).update(
+            session_id=payload.session_id, patch=payload.patch
+        )
+    except SessionNotFoundError as exc:
+        raise _not_found(payload.session_id) from exc
+    except InvalidSessionPatchError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
 
 
 @router.post(
@@ -116,8 +169,14 @@ async def session_update(_payload: SessionUpdateRequest) -> JSONResponse:
     response_model=SessionDeleteRequest,
     responses={501: {"model": NotImplementedResponse}},
 )
-async def session_delete(_payload: SessionDeleteRequest) -> JSONResponse:
-    return _stub("POST /api/v1/sessions/delete", "session store ships in Phase 2")
+async def session_delete(
+    payload: SessionDeleteRequest, request: Request
+) -> SessionDeleteRequest:
+    try:
+        _store(request).delete(payload.session_id)
+    except SessionNotFoundError as exc:
+        raise _not_found(payload.session_id) from exc
+    return payload
 
 
 @router.post("/generate-summary")

@@ -12,6 +12,7 @@ from fastapi import FastAPI
 
 from agent_service.config import ServiceConfig, ServiceDisabledError
 from agent_service.routers import agent_config, health, oneshot, sessions, workspace
+from agent_service.store import JsonSessionStore
 
 
 __version__ = "0.1.0"
@@ -42,6 +43,9 @@ def create_app(config: ServiceConfig | None = None) -> FastAPI:
         redoc_url=None,
     )
     app.state.config = resolved
+    if resolved.session_store_path is None:
+        raise RuntimeError("agent service session store path is not configured")
+    app.state.session_store = JsonSessionStore(resolved.session_store_path)
     app.state.started_at = time.time()
 
     app.include_router(health.public_router)

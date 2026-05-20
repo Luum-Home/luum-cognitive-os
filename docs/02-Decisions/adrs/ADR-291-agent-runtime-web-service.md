@@ -11,22 +11,26 @@ implementation_files:
 - packages/agent-service/src/agent_service/auth.py
 - packages/agent-service/src/agent_service/config.py
 - packages/agent-service/src/agent_service/sse.py
+- packages/agent-service/src/agent_service/store.py
 - packages/agent-service/src/agent_service/routers/health.py
 - packages/agent-service/src/agent_service/routers/agent_config.py
 - packages/agent-service/src/agent_service/routers/oneshot.py
 - packages/agent-service/src/agent_service/routers/sessions.py
 - packages/agent-service/src/agent_service/routers/workspace.py
 tier: core
+partial_remaining: 'phase-2-in-progress: 11 functional operations are live (health/version/agent options plus 8 file-backed JSON session lifecycle/event endpoints); remaining scope is 12 typed JSON 501 stubs, 3 SSE stub operations, sync agent queries, models/runtime settings, CSRF, rate limiting, workspace/search, sharing, abort, and JSON-to-SQLite migration.'
+partial_remaining_basis: manual Wave 5 slice reconciliation
 tags:
+
 - service
 - http
 - sse
 - runtime
-classification_basis: phase-1 contract skeleton with 26 operations (25 distinct path
-  strings), 3 functional (health/version/agent options), 23 returning 501 with typed
-  schemas, full contract test suite. The /csrf-token endpoint was removed in the security
-  pass — it was token-shaped string theater without server-side store; real CSRF defense
-  ships with Phase 2.
+classification_basis: phase-2-in-progress contract with 26 operations (25 distinct
+  path strings), 11 functional operations (health/version/agent options plus 8
+  file-backed JSON session lifecycle/event endpoints), 12 typed JSON 501 stubs,
+  and 3 SSE stub operations. The /csrf-token endpoint was removed in the security
+  pass; real CSRF defense remains a Phase 2 follow-up.
 verification:
   level: medium
   commands:
@@ -36,7 +40,8 @@ verification:
   - bearer_token_enforced_on_protected_routes
   - kill_switch_blocks_startup
   - functional_endpoints_return_200
-  - stub_endpoints_return_501_with_valid_schema
+  - remaining_stub_endpoints_return_501_with_valid_schema
+  - file_backed_session_lifecycle_persists_across_app_recreation
   - sse_handlers_emit_well_formed_events
 ---
 
@@ -228,10 +233,13 @@ Counted as router operations (method + path). The shared path
 `/api/v1/runtime-settings` serves GET and POST, so the OpenAPI document
 exposes 25 distinct paths for the 26 operations.
 
-In Phase 1, the 3 functional endpoints (`/health`, `/version`,
-`/agent/options`) return real data. The remaining 23 return HTTP 501 with a
-Pydantic-validated `NotImplementedResponse` body so contracts can be exercised
-end-to-end by clients before Phase 2 ships.
+In Phase 2-in-progress, the 3 original functional endpoints (`/health`,
+`/version`, `/agent/options`) still return real data, and the 8 bounded
+session-store operations (`list`, `create`, `details`, `events`,
+`events/latest`, `status`, `update`, `delete`) are backed by an atomic JSON
+file store. The remaining non-streaming operations return HTTP 501 with a
+Pydantic-validated `NotImplementedResponse`; the 3 streaming operations still
+emit one typed SSE stub frame and close.
 
 ## Roadmap
 
@@ -248,9 +256,16 @@ end-to-end by clients before Phase 2 ships.
 
 ### Phase 2 — Session backend and sync query
 
-- File-backed JSON session store, upgrade path to SQLite.
-- Implement `sessions/create`, `details`, `events`, `events/latest`, `status`,
+Shipped bounded slice:
+
+- File-backed JSON session store at `COS_AGENT_SERVICE_SESSION_STORE`, defaulting
+  to `~/.cognitive-os/agent-service/sessions.json`.
+- Implemented `sessions/create`, `details`, `events`, `events/latest`, `status`,
   `update`, `delete`, `list`.
+
+Remaining Phase 2 work:
+
+- Upgrade path from JSON to SQLite.
 - Implement `sessions/query` and `oneshot/query` synchronously by calling the
   in-process agent runner.
 - Wire `/api/v1/models` to the existing model dispatch list.

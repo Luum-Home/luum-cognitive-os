@@ -15,6 +15,13 @@ from agent_service.models import (
     AgentOptionsResponse,
     HealthResponse,
     NotImplementedResponse,
+    SessionCreateResponse,
+    SessionDeleteRequest,
+    SessionDetails,
+    SessionEventsPage,
+    SessionLatestEvent,
+    SessionListResponse,
+    SessionStatusResponse,
     VersionResponse,
 )
 
@@ -26,6 +33,12 @@ FUNCTIONAL = {
 }
 
 
+IMPLEMENTED_SESSION_ENDPOINTS = [
+    ("GET", "/api/v1/sessions", None, SessionListResponse),
+    ("POST", "/api/v1/sessions/create", {}, SessionCreateResponse),
+]
+
+
 # (method, path, body or None, expects_json_501)
 STUB_JSON_ENDPOINTS = [
     ("GET", "/api/v1/runtime-settings", None),
@@ -34,14 +47,6 @@ STUB_JSON_ENDPOINTS = [
     ("POST", "/api/v1/sessions/model", {"session_id": "s", "model_id": "m"}),
     ("GET", "/api/v1/share/config", None),
     ("POST", "/api/v1/oneshot/query", {"query": "hi"}),
-    ("GET", "/api/v1/sessions", None),
-    ("POST", "/api/v1/sessions/create", {}),
-    ("GET", "/api/v1/sessions/details?sessionId=s", None),
-    ("GET", "/api/v1/sessions/events?sessionId=s", None),
-    ("GET", "/api/v1/sessions/events/latest?sessionId=s", None),
-    ("GET", "/api/v1/sessions/status?sessionId=s", None),
-    ("POST", "/api/v1/sessions/update", {"session_id": "s", "patch": {"a": 1}}),
-    ("POST", "/api/v1/sessions/delete", {"session_id": "s"}),
     ("POST", "/api/v1/sessions/share", {"session_id": "s"}),
     ("POST", "/api/v1/sessions/query", {"session_id": "s", "query": "hi"}),
     ("POST", "/api/v1/sessions/abort", {"session_id": "s"}),
@@ -65,8 +70,15 @@ SSE_STUB_ENDPOINTS = [
 
 
 def test_total_endpoint_inventory():
-    total = len(FUNCTIONAL) + len(STUB_JSON_ENDPOINTS) + len(SSE_STUB_ENDPOINTS)
-    # 3 functional + 20 JSON stubs + 3 SSE stubs = 26 endpoints across all routers.
+    total = (
+        len(FUNCTIONAL)
+        + len(IMPLEMENTED_SESSION_ENDPOINTS)
+        + 6
+        + len(STUB_JSON_ENDPOINTS)
+        + len(SSE_STUB_ENDPOINTS)
+    )
+    # 3 Phase-1 functional + 8 session-store operations + 12 JSON stubs
+    # + 3 SSE stubs = 26 endpoints across all routers.
     # (csrf-token removed in security pass — see routers/health.py docstring.)
     assert total == 26, f"expected 26 endpoints, found {total}"
 
@@ -80,6 +92,36 @@ async def test_all_endpoints_registered(app, client, auth_headers):
             r = await client.get(path, headers=headers)
         else:
             r = await client.post(path, json=body, headers=headers)
+        assert r.status_code != 404, f"endpoint missing: {method} {path}"
+
+    for method, path, body, _model in IMPLEMENTED_SESSION_ENDPOINTS:
+        if method == "GET":
+            r = await client.get(path, headers=auth_headers)
+        else:
+            r = await client.post(path, json=body, headers=auth_headers)
+        assert r.status_code != 404, f"endpoint missing: {method} {path}"
+
+    created = await client.post(
+        "/api/v1/sessions/create", json={}, headers=auth_headers
+    )
+    session_id = created.json()["session_id"]
+    session_paths = [
+        ("GET", f"/api/v1/sessions/details?sessionId={session_id}", None),
+        ("GET", f"/api/v1/sessions/events?sessionId={session_id}", None),
+        ("GET", f"/api/v1/sessions/events/latest?sessionId={session_id}", None),
+        ("GET", f"/api/v1/sessions/status?sessionId={session_id}", None),
+        (
+            "POST",
+            "/api/v1/sessions/update",
+            {"session_id": session_id, "patch": {"status": "idle"}},
+        ),
+        ("POST", "/api/v1/sessions/delete", {"session_id": session_id}),
+    ]
+    for method, path, body in session_paths:
+        if method == "GET":
+            r = await client.get(path, headers=auth_headers)
+        else:
+            r = await client.post(path, json=body, headers=auth_headers)
         assert r.status_code != 404, f"endpoint missing: {method} {path}"
 
     for method, path, body in STUB_JSON_ENDPOINTS + SSE_STUB_ENDPOINTS:
@@ -102,6 +144,55 @@ async def test_functional_endpoint_contract(client, auth_headers, path, spec):
     assert r.status_code == 200, f"{method} {path} -> {r.status_code}"
     # Body validates against the declared model — Pydantic raises if not.
     model.model_validate(r.json())
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("method,path,body,model", IMPLEMENTED_SESSION_ENDPOINTS)
+async def test_implemented_session_contract(client, auth_headers, method, path, body, model):
+    if method == "GET":
+        r = await client.get(path, headers=auth_headers)
+    else:
+        r = await client.post(path, json=body, headers=auth_headers)
+    assert r.status_code == 200, f"{method} {path} -> {r.status_code}"
+    model.model_validate(r.json())
+
+
+@pytest.mark.asyncio
+async def test_session_detail_contracts_require_existing_session(client, auth_headers):
+    created = await client.post(
+        "/api/v1/sessions/create", json={}, headers=auth_headers
+    )
+    session_id = SessionCreateResponse.model_validate(created.json()).session_id
+    specs = [
+        ("GET", f"/api/v1/sessions/details?sessionId={session_id}", None, SessionDetails),
+        ("GET", f"/api/v1/sessions/events?sessionId={session_id}", None, SessionEventsPage),
+        (
+            "GET",
+            f"/api/v1/sessions/events/latest?sessionId={session_id}",
+            None,
+            SessionLatestEvent,
+        ),
+        ("GET", f"/api/v1/sessions/status?sessionId={session_id}", None, SessionStatusResponse),
+        (
+            "POST",
+            "/api/v1/sessions/update",
+            {"session_id": session_id, "patch": {"status": "idle"}},
+            SessionDetails,
+        ),
+        (
+            "POST",
+            "/api/v1/sessions/delete",
+            {"session_id": session_id},
+            SessionDeleteRequest,
+        ),
+    ]
+    for method, path, body, model in specs:
+        if method == "GET":
+            r = await client.get(path, headers=auth_headers)
+        else:
+            r = await client.post(path, json=body, headers=auth_headers)
+        assert r.status_code == 200, f"{method} {path} -> {r.status_code}"
+        model.model_validate(r.json())
 
 
 @pytest.mark.asyncio
