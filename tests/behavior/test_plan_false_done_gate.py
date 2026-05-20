@@ -36,7 +36,10 @@ def test_archive_claim_fails_when_original_or_config_reference_survives(project_
     (project / "hooks" / "example-hook.sh").write_text("#!/usr/bin/env bash\n", encoding="utf-8")
     (project / "cognitive-os.yaml").write_text("hooks:\n  example: example-hook.sh\n", encoding="utf-8")
     plan = project / "plan.md"
-    plan.write_text("- [x] Archive hook example-hook.sh\n", encoding="utf-8")
+    plan.write_text(
+        "- [x] Archive hook example-hook.sh (verified: archive path checked) (work_id: 0123456789abcdef)\n",
+        encoding="utf-8",
+    )
 
     result = run_verify(project, plan)
     assert result.returncode == 2
@@ -50,7 +53,10 @@ def test_archive_claim_passes_after_bilateral_conditions_hold(project_with_plan:
     (project / "docs" / "archive" / "hooks" / "example-hook.sh").write_text("#!/usr/bin/env bash\n", encoding="utf-8")
     (project / "cognitive-os.yaml").write_text("hooks: {}\n", encoding="utf-8")
     plan = project / "plan.md"
-    plan.write_text("- [x] Archive hook example-hook.sh\n", encoding="utf-8")
+    plan.write_text(
+        "- [x] Archive hook example-hook.sh (verified: archive path checked) (work_id: 0123456789abcdef)\n",
+        encoding="utf-8",
+    )
 
     result = run_verify(project, plan)
     assert result.returncode == 0, result.stdout + result.stderr
@@ -58,7 +64,7 @@ def test_archive_claim_passes_after_bilateral_conditions_hold(project_with_plan:
 
 
 @pytest.mark.behavior
-def test_generic_high_stakes_done_claim_requires_inline_verified_record(project_with_plan: Path):
+def test_generic_high_stakes_done_claim_requires_inline_verified_record_and_work_id(project_with_plan: Path):
     project = project_with_plan
     plan = project / "plan.md"
     plan.write_text("- [x] Done production safety migration\n", encoding="utf-8")
@@ -66,7 +72,26 @@ def test_generic_high_stakes_done_claim_requires_inline_verified_record(project_
     result = run_verify(project, plan)
     assert result.returncode == 2
     assert "missing inline bilateral proof" in result.stdout
+    assert "missing work identity" in result.stdout
 
     plan.write_text("- [x] Done production safety migration (verified: pytest scenario passed)\n", encoding="utf-8")
+    result = run_verify(project, plan)
+    assert result.returncode == 2
+    assert "missing work identity" in result.stdout
+
+    plan.write_text(
+        "- [x] Done production safety migration (verified: pytest scenario passed) (work_id: 0123456789abcdef)\n",
+        encoding="utf-8",
+    )
+    result = run_verify(project, plan)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.behavior
+def test_non_high_stakes_checked_claim_does_not_require_work_id(project_with_plan: Path):
+    project = project_with_plan
+    plan = project / "plan.md"
+    plan.write_text("- [x] Draft notes reviewed\n", encoding="utf-8")
+
     result = run_verify(project, plan)
     assert result.returncode == 0, result.stdout + result.stderr

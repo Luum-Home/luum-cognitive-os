@@ -342,6 +342,72 @@ def verify_push_collisions(root: Path) -> list[GateFinding]:
         )
     return findings
 
+
+def _patch_id_from_diff(root: Path, diff_text: str) -> str | None:
+    if not diff_text.strip():
+        return None
+    proc = subprocess.run(
+        ["git", "patch-id", "--stable"],
+        cwd=str(root),
+        input=diff_text,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        timeout=60,
+    )
+    if proc.returncode != 0 or not proc.stdout.strip():
+        return None
+    return proc.stdout.split()[0]
+
+
+def staged_patch_id(root: Path) -> str | None:
+    diff = run_git(root, ["diff", "--cached", "--no-ext-diff", "--binary"])
+    if diff.returncode != 0:
+        return None
+    return _patch_id_from_diff(root, diff.stdout)
+
+
+def _first_existing_ref(root: Path, refs: Sequence[str]) -> str | None:
+    for ref in refs:
+        if run_git(root, ["rev-parse", "--verify", ref]).returncode == 0:
+            return ref
+    return None
+
+
+def recent_patch_ids(root: Path, base_ref: str, limit: int = 200) -> dict[str, list[str]]:
+    log = run_git(root, ["log", f"--max-count={limit}", "--format=%H", base_ref])
+    if log.returncode != 0:
+        return {}
+    by_patch: dict[str, list[str]] = {}
+    for sha in (line.strip() for line in log.stdout.splitlines() if line.strip()):
+        pid = _patch_id(root, sha)
+        if pid:
+            by_patch.setdefault(pid, []).append(sha)
+    return by_patch
+
+
+def verify_staged_patch_id_dedupe(root: Path) -> list[GateFinding]:
+    staged_pid = staged_patch_id(root)
+    if not staged_pid:
+        return []
+    base_ref = _first_existing_ref(root, ["origin/main", "main"])
+    if not base_ref:
+        return []
+    recent = recent_patch_ids(root, base_ref)
+    matches = recent.get(staged_pid, [])
+    if not matches:
+        return []
+    sha_list = ", ".join(sha[:12] for sha in matches[:5])
+    return [
+        GateFinding(
+            source="staged-diff",
+            status="FAIL",
+            message=f"duplicate staged diff: patch-id already exists on {base_ref}",
+            evidence=f"patch-id={staged_pid}; matching commit(s): {sha_list}; skip/drop duplicate work or rebase before committing",
+        )
+    ]
+
 def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateResult:
     findings: list[GateFinding] = []
 
@@ -351,6 +417,9 @@ def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateRe
 
     if mode in {"pre-commit", "pre-push"}:
         findings.extend(verify_staged_plans(root))
+
+    if mode == "pre-commit":
+        findings.extend(verify_staged_patch_id_dedupe(root))
 
     if command:
         subcommand = is_git_commit_or_push(command)

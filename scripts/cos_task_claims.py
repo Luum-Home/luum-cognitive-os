@@ -12,6 +12,7 @@ import fcntl
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import tempfile
 from datetime import datetime, timezone
@@ -327,6 +328,56 @@ def list_claims(project: Path, *, include_stale: bool = False) -> list[dict[str,
     )
 
 
+
+def git_ref_has_path(project: Path, ref: str, rel_path: str) -> bool:
+    if not rel_path or rel_path.startswith("/") or ".." in Path(rel_path).parts:
+        return False
+    proc = subprocess.run(
+        ["git", "cat-file", "-e", f"{ref}:{rel_path}"],
+        cwd=str(project),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+        timeout=30,
+    )
+    return proc.returncode == 0
+
+
+def watermark_landed_claims(project: Path, ref: str = "main", session: str | None = None) -> dict[str, Any]:
+    """Mark active claims completed when all declared outputs already exist in ref.
+
+    This is a recovery primitive for duplicate multi-session work: if another
+    session landed the declared outputs in main, the local pending claim is
+    completed by watermark instead of deleting evidence from the ledger.
+    """
+    session = session or session_id("watermark")
+    path = claims_path(project)
+    lock = path.parent / ".active-claims.lock"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    marked: list[dict[str, Any]] = []
+    with lock.open("w", encoding="utf-8") as lock_fh:
+        fcntl.flock(lock_fh, fcntl.LOCK_EX)
+        data = normalize_claims(read_json(path, {"claims": []}))
+        for claim in data.get("claims", []):
+            if not isinstance(claim, dict) or claim.get("status", "active") != "active":
+                continue
+            expected = [str(p) for p in (claim.get("expected_files") or []) if str(p).strip()]
+            if not expected:
+                continue
+            matched = [p for p in expected if git_ref_has_path(project, ref, p)]
+            if len(matched) != len(expected):
+                continue
+            claim["status"] = "completed-by-watermark"
+            claim["completed_at"] = now_iso()
+            claim["watermark_evidence"] = {"mode": "landed-ref", "ref": ref, "matched_paths": matched}
+            marked.append({"task_id": claim.get("task_id"), "session_id": claim.get("session_id"), "expected_files": matched})
+        data["updated_at"] = now_iso()
+        atomic_write_json(path, data)
+    for row in marked:
+        append_event(project, "complete", session, {**row, "watermark": True, "ref": ref})
+    return {"marked": marked, "count": len(marked), "ref": ref}
+
 def cmd_claim(args: argparse.Namespace) -> int:
     project = project_dir(args)
     task = read_json(Path(args.task_json), {}) if args.task_json else {"id": args.task_id, "description": args.description or "", "deliverable": args.deliverable or ""}
@@ -350,6 +401,11 @@ def cmd_complete(args: argparse.Namespace) -> int:
 
 def cmd_release(args: argparse.Namespace) -> int:
     print(json.dumps(release_task(project_dir(args), args.task_id, args.session_id), sort_keys=True))
+    return 0
+
+
+def cmd_watermark(args: argparse.Namespace) -> int:
+    print(json.dumps(watermark_landed_claims(project_dir(args), args.ref, args.session_id), sort_keys=True))
     return 0
 
 
@@ -391,6 +447,10 @@ def build_parser() -> argparse.ArgumentParser:
     release.add_argument("--task-id", required=True)
     release.add_argument("--session-id")
     release.set_defaults(func=cmd_release)
+    watermark = sub.add_parser("watermark")
+    watermark.add_argument("--ref", default="main")
+    watermark.add_argument("--session-id")
+    watermark.set_defaults(func=cmd_watermark)
     status = sub.add_parser("status")
     status.add_argument("--json", action="store_true")
     status.set_defaults(func=cmd_status)

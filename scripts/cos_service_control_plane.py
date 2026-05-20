@@ -9,6 +9,8 @@ Codex, provider APIs, Docker, Kubernetes, Redis, or any credential store.
 from __future__ import annotations
 
 import argparse
+import contextlib
+import fcntl
 import json
 import os
 import re
@@ -33,6 +35,7 @@ QUEUE_FILE = SERVICE_DIR / "queue.jsonl"
 LEASE_FILE = SERVICE_DIR / "leases.jsonl"
 ARTIFACTS_DIR = SERVICE_DIR / "artifacts"
 WORKSPACES_DIR = SERVICE_DIR / "workspaces"
+CLAIM_LOCK_FILE = SERVICE_DIR / "worker-claim.lock"
 
 TOKEN_PATTERNS = [
     re.compile(r"(?i)(api[_-]?key|auth[_-]?token|bearer|oauth)[=:]\S+"),
@@ -89,6 +92,29 @@ def resolve_project_dir(value: str | None = None) -> Path:
 
 def service_path(project_dir: Path, relative: Path) -> Path:
     return project_dir / relative
+
+
+@contextlib.contextmanager
+def exclusive_service_lock(project_dir: Path):
+    """Serialize queue claim/recovery decisions across concurrent workers."""
+    path = service_path(project_dir, CLAIM_LOCK_FILE)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a+", encoding="utf-8") as handle:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+def redact_project_path(project_dir: Path, path: Path) -> str:
+    """Return a portable artifact path when container/headless redaction is enabled."""
+    if os.environ.get("COS_REDACT_HOST_PATHS") == "1" or os.environ.get("COS_HEADLESS_CONTAINER_MODE") == "1":
+        try:
+            return str(path.resolve().relative_to(project_dir.resolve()))
+        except ValueError:
+            return "[REDACTED_HOST_PATH]"
+    return str(path)
 
 
 def append_jsonl(path: Path, payload: dict[str, Any]) -> None:
@@ -264,14 +290,15 @@ def acquire_lease(project_dir: Path, task_id: str, *, ttl_seconds: int, worker_i
     return lease
 
 
-def update_lease(project_dir: Path, lease: Lease, status: str) -> Lease:
-    now = iso(utc_now())
+def update_lease(project_dir: Path, lease: Lease, status: str, *, ttl_seconds: int | None = None) -> Lease:
+    now_dt = utc_now()
+    now = iso(now_dt)
     updated = Lease(
         lease_id=lease.lease_id,
         task_id=lease.task_id,
         worker_id=lease.worker_id,
         acquired_at=lease.acquired_at,
-        expires_at=lease.expires_at,
+        expires_at=iso(now_dt + timedelta(seconds=ttl_seconds)) if ttl_seconds is not None else lease.expires_at,
         heartbeat_at=now,
         status=status,
     )
@@ -286,6 +313,31 @@ def update_lease(project_dir: Path, lease: Lease, status: str) -> Lease:
         },
     )
     return updated
+
+
+def renew_lease(project_dir: Path, lease_id: str, *, worker_id: str, ttl_seconds: int) -> dict[str, Any]:
+    with exclusive_service_lock(project_dir):
+        lease = build_lease_state(project_dir).get(lease_id)
+        if not lease:
+            return {"ok": False, "status": "absent", "lease_id": lease_id}
+        if lease.get("worker_id") != worker_id:
+            return {"ok": False, "status": "blocked", "lease_id": lease_id, "held_by": lease}
+        if lease.get("status") != "active" or parse_iso(lease["expires_at"]) <= utc_now():
+            expired = update_lease(project_dir, Lease(**lease), "expired")
+            return {"ok": False, "status": "expired", "lease": asdict(expired)}
+        renewed = update_lease(project_dir, Lease(**lease), "active", ttl_seconds=ttl_seconds)
+        return {"ok": True, "status": "renewed", "lease": asdict(renewed)}
+
+
+def release_lease(project_dir: Path, lease_id: str, *, worker_id: str) -> dict[str, Any]:
+    with exclusive_service_lock(project_dir):
+        lease = build_lease_state(project_dir).get(lease_id)
+        if not lease:
+            return {"ok": True, "status": "absent", "lease_id": lease_id}
+        if lease.get("worker_id") != worker_id:
+            return {"ok": False, "status": "blocked", "lease_id": lease_id, "held_by": lease}
+        released = update_lease(project_dir, Lease(**lease), "released")
+        return {"ok": True, "status": "released", "lease": asdict(released)}
 
 
 def run_local_command(project_dir: Path, task: dict[str, Any], lease: Lease) -> dict[str, Any]:
@@ -318,8 +370,8 @@ def run_local_command(project_dir: Path, task: dict[str, Any], lease: Lease) -> 
         "returncode": result.returncode,
         "started_at": started_at,
         "completed_at": completed_at,
-        "artifact_dir": str(task_dir),
-        "workspace": str(workspace),
+        "artifact_dir": redact_project_path(project_dir, task_dir),
+        "workspace": redact_project_path(project_dir, workspace),
         "redactions": stdout_redactions + stderr_redactions,
     }
     atomic_write_json(task_dir / "task.json", task)
@@ -413,7 +465,7 @@ def run_host_cli_adapter(
         "status": status,
         "returncode": returncode,
         "reason": reason,
-        "artifact_dir": str(task_dir),
+        "artifact_dir": redact_project_path(project_dir, task_dir),
         "redactions": stdout_redactions + stderr_redactions,
         "provider_calls": provider_calls,
         "command_shape": ([Path(command_shape[0]).name] + command_shape[1:-1]) + ["<prompt>"],
@@ -453,13 +505,13 @@ def worker_run_once(
     simulate_crash_after_lease: bool = False,
     allow_provider_call: bool = False,
 ) -> dict[str, Any]:
-    expire_stale_leases(project_dir)
-    task = next_pending_task(project_dir)
-    if task is None:
-        return {"ok": True, "status": "idle", "reason": "no pending tasks"}
-
     worker_id = worker_id or f"worker-{uuid.uuid4().hex[:8]}"
-    lease = acquire_lease(project_dir, task["task_id"], ttl_seconds=ttl_seconds, worker_id=worker_id)
+    with exclusive_service_lock(project_dir):
+        expire_stale_leases(project_dir)
+        task = next_pending_task(project_dir)
+        if task is None:
+            return {"ok": True, "status": "idle", "reason": "no pending tasks"}
+        lease = acquire_lease(project_dir, task["task_id"], ttl_seconds=ttl_seconds, worker_id=worker_id)
     if simulate_crash_after_lease:
         return {
             "ok": False,
@@ -549,6 +601,17 @@ def build_parser() -> argparse.ArgumentParser:
     worker.add_argument("--simulate-crash-after-lease", action="store_true")
     worker.add_argument("--allow-provider-call", action="store_true")
 
+    renew = subparsers.add_parser("lease-renew", help="Renew an active worker lease.")
+    add_common(renew)
+    renew.add_argument("--lease-id", required=True)
+    renew.add_argument("--worker-id", required=True)
+    renew.add_argument("--ttl-seconds", type=int, default=300)
+
+    release = subparsers.add_parser("lease-release", help="Release an active worker lease.")
+    add_common(release)
+    release.add_argument("--lease-id", required=True)
+    release.add_argument("--worker-id", required=True)
+
     drain = subparsers.add_parser("queue-drain", help="Report local queue state.")
     add_common(drain)
     return parser
@@ -587,6 +650,10 @@ def main(argv: list[str] | None = None) -> int:
                 simulate_crash_after_lease=args.simulate_crash_after_lease,
                 allow_provider_call=args.allow_provider_call,
             )
+        elif args.subcommand == "lease-renew":
+            payload = renew_lease(project_dir, args.lease_id, worker_id=args.worker_id, ttl_seconds=args.ttl_seconds)
+        elif args.subcommand == "lease-release":
+            payload = release_lease(project_dir, args.lease_id, worker_id=args.worker_id)
         elif args.subcommand == "queue-drain":
             payload = queue_drain(project_dir)
         else:  # pragma: no cover

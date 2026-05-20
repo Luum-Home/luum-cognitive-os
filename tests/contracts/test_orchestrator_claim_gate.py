@@ -60,7 +60,7 @@ def test_staged_plan_with_verified_marker_passes(tmp_path: Path) -> None:
     plans = tmp_path / ".cognitive-os" / "plans"
     plans.mkdir(parents=True)
     plan = plans / "sprint.md"
-    plan.write_text("- [x] archived docs only (verified: python3 -m pytest tests/contracts/test_orchestrator_claim_gate.py -q -> pass)\n")
+    plan.write_text("- [x] archived docs only (verified: python3 -m pytest tests/contracts/test_orchestrator_claim_gate.py -q -> pass) (work_id: test-work-12345678)\n")
     subprocess.run(["git", "add", str(plan.relative_to(tmp_path))], cwd=tmp_path, check=True)
     result = evaluate(tmp_path, "pre-commit", command='git commit -m "close plan"')
     assert result.ok is True

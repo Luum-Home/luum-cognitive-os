@@ -148,8 +148,19 @@ while IFS= read -r line; do
   if printf '%s' "$line" | grep -qiE '^[[:space:]]*[-*][[:space:]]+\[[xX]\]'; then
     # Check if this line or immediate surrounding context contains (verified: ...)
     if printf '%s' "$line" | grep -qE '\(verified:[[:space:]]*[^)]+\)'; then
-      # Has verification reference — all good
-      _emit_metric "claim.passed" "$FILE_PATH" "$line" "$LINE_NUM"
+      if printf '%s' "$line" | grep -qE '\(work_id:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_.:-]{7,127}\)'; then
+        # Has verification reference and work identity — all good
+        _emit_metric "claim.passed" "$FILE_PATH" "$line" "$LINE_NUM"
+      else
+        VIOLATIONS_FOUND=true
+        _emit_metric "claim.failed" "$FILE_PATH" "$line" "$LINE_NUM"
+        printf '\n[plan-claim-validator] %s: %s L%d: checkbox marked [x] without (work_id: <hash>) proof identity\n' \
+          "$([ "$COS_PLAN_VALIDATOR_MODE" = "block" ] && echo "ERROR" || echo "WARN")" \
+          "$FILE_PATH" "$LINE_NUM" >&2
+        printf '  Content: %s\n' "$line" >&2
+        printf '  Expected format: - [x] task description (verified: pytest ...) (work_id: 0123456789abcdef)\n' >&2
+        printf '  Per Slice 1A stable work identity.\n\n' >&2
+      fi
     else
       # Missing (verified: ...) reference
       VIOLATIONS_FOUND=true
@@ -160,8 +171,8 @@ while IFS= read -r line; do
         "$([ "$COS_PLAN_VALIDATOR_MODE" = "block" ] && echo "ERROR" || echo "WARN")" \
         "$FILE_PATH" "$LINE_NUM" >&2
       printf '  Content: %s\n' "$line" >&2
-      printf '  Expected format: - [x] task description (verified: ls path/to/proof)\n' >&2
-      printf '  Per ADR-105 §3.2.\n\n' >&2
+      printf '  Expected format: - [x] task description (verified: pytest ...) (work_id: 0123456789abcdef)\n' >&2
+      printf '  Per ADR-105 §3.2 and Slice 1A stable work identity.\n\n' >&2
     fi
   fi
 done <<< "$NEW_CONTENT"
@@ -171,7 +182,7 @@ if $VIOLATIONS_FOUND; then
   if [ "$COS_PLAN_VALIDATOR_MODE" = "block" ]; then
     printf '[plan-claim-validator] BLOCK: refusing Edit/Write to plan file — checkbox(es) marked done without verification evidence.\n' >&2
     printf '  File: %s\n' "$FILE_PATH" >&2
-    printf '  Add (verified: <command>) to each completed checkbox.\n' >&2
+    printf '  Add (verified: <command>) and (work_id: <hash>) to each completed checkbox.\n' >&2
     exit 2
   fi
   # warn mode — allow through, already warned above

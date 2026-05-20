@@ -84,9 +84,10 @@ run_json_capture host_codex_probe "$ROOT/scripts/cos-auth-probe" --provider code
 run_json_capture host_claude_probe "$ROOT/scripts/cos-auth-probe" --provider claude --mode account-session --json
 run_json_capture container_codex_probe env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-auth-probe --provider codex --mode account-session --json
 run_json_capture container_claude_probe env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-auth-probe --provider claude --mode account-session --json
-run_json_capture submit env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-task-submit --kind local-command --task-id task-headless-service-drill --command 'printf service-ok > result.txt' --json
-run_json_capture worker env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-worker-run-once --worker-id docker-headless-drill --json
-run_json_capture drain env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-queue-drain --json
+run_json_capture maintainer_dry_run env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-maintainer-agent --project-dir /workspace --once --dry-run --json
+run_json_capture submit env COS_WORKSPACE="$WORKSPACE" COS_REDACT_HOST_PATHS=1 docker compose -f "$COMPOSE_FILE" run --rm -e COS_REDACT_HOST_PATHS=1 cos-worker scripts/cos-task-submit --kind local-command --task-id task-headless-service-drill --command 'printf service-ok > result.txt' --json
+run_json_capture worker env COS_WORKSPACE="$WORKSPACE" COS_REDACT_HOST_PATHS=1 docker compose -f "$COMPOSE_FILE" run --rm -e COS_REDACT_HOST_PATHS=1 cos-worker scripts/cos-worker-run-once --worker-id docker-headless-drill --json
+run_json_capture drain env COS_WORKSPACE="$WORKSPACE" COS_REDACT_HOST_PATHS=1 docker compose -f "$COMPOSE_FILE" run --rm -e COS_REDACT_HOST_PATHS=1 cos-worker scripts/cos-queue-drain --json
 
 PROVIDER_SMOKE_STATUS="skipped"
 if [ "$RUN_PROVIDER_SMOKE" = "1" ]; then
@@ -132,6 +133,7 @@ names = [
     "host_claude_probe",
     "container_codex_probe",
     "container_claude_probe",
+    "maintainer_dry_run",
     "submit",
     "worker",
     "drain",
@@ -141,8 +143,12 @@ if provider_smoke_status == "ran":
 results = {name: read(name) for name in names}
 worker_json = results["worker"].get("json") or {}
 drain_json = results["drain"].get("json") or {}
+maintainer_json = results["maintainer_dry_run"].get("json") or {}
 summary = {
     "ok": results["docker_self_test"]["exit_code"] == 0
+    and results["maintainer_dry_run"]["exit_code"] == 0
+    and maintainer_json.get("mode") == "propose-only"
+    and maintainer_json.get("dry_run") is True
     and results["submit"]["exit_code"] == 0
     and results["worker"]["exit_code"] == 0
     and worker_json.get("status") == "completed"
@@ -154,6 +160,9 @@ summary = {
     "host_claude_status": ((results["host_claude_probe"].get("json") or {}).get("status")),
     "container_codex_status": ((results["container_codex_probe"].get("json") or {}).get("status")),
     "container_claude_status": ((results["container_claude_probe"].get("json") or {}).get("status")),
+    "maintainer_agent_status": maintainer_json.get("status"),
+    "maintainer_agent_mode": maintainer_json.get("mode"),
+    "maintainer_agent_dry_run": maintainer_json.get("dry_run"),
     "local_task_status": worker_json.get("status"),
     "artifact_dir": (worker_json.get("result") or {}).get("artifact_dir"),
     "result_workspace": (worker_json.get("result") or {}).get("workspace"),
@@ -220,6 +229,8 @@ else:
     print(f"host_claude_status={summary['host_claude_status']}")
     print(f"container_codex_status={summary['container_codex_status']}")
     print(f"container_claude_status={summary['container_claude_status']}")
+    print(f"maintainer_agent_status={summary['maintainer_agent_status']}")
+    print(f"maintainer_agent_mode={summary['maintainer_agent_mode']}")
     print(f"local_task_status={summary['local_task_status']}")
     print(f"artifact_dir={summary['artifact_dir']}")
     print(f"workspace={summary['workspace']}")

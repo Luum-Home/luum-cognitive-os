@@ -27,6 +27,7 @@ HIGH_STAKES = re.compile(
 HOOK_FILE = re.compile(r"([A-Za-z0-9_.-]+\.sh)\b")
 CHECKED = re.compile(r"^\s*-?\s*\[x\]\s+(.*)$", re.IGNORECASE)
 VERIFIED = re.compile(r"\(\s*verified\s*:", re.IGNORECASE)
+WORK_ID = re.compile(r"\(\s*work_id\s*:\s*([A-Za-z0-9][A-Za-z0-9_.:-]{7,127})\s*\)", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -75,14 +76,6 @@ def verify_plan(root: Path, plan: Path) -> list[Finding]:
         if not HIGH_STAKES.search(claim):
             continue
 
-        hook_match = HOOK_FILE.search(claim)
-        archive_like = re.search(r"archiv(?:e|ed|ado|ar)", claim, re.IGNORECASE)
-        if archive_like and hook_match:
-            problems = _verify_hook_archive(root, hook_match.group(1))
-            if problems:
-                findings.append(Finding(lineno, "; ".join(problems)))
-            continue
-
         if not VERIFIED.search(line):
             findings.append(
                 Finding(
@@ -90,6 +83,20 @@ def verify_plan(root: Path, plan: Path) -> list[Finding]:
                     "high-stakes checked claim is missing inline bilateral proof '(verified: ...)'",
                 )
             )
+        if not WORK_ID.search(line):
+            findings.append(
+                Finding(
+                    lineno,
+                    "high-stakes checked claim is missing work identity '(work_id: <hash>)'",
+                )
+            )
+
+        hook_match = HOOK_FILE.search(claim)
+        archive_like = re.search(r"archiv(?:e|ed|ado|ar)", claim, re.IGNORECASE)
+        if archive_like and hook_match:
+            problems = _verify_hook_archive(root, hook_match.group(1))
+            if problems:
+                findings.append(Finding(lineno, "; ".join(problems)))
     return findings
 
 
