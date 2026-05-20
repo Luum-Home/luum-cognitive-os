@@ -76,6 +76,12 @@ if not ok:
 ```
 Fields not declared in the schema should be treated as informational context.
 
+**TRUST REPORT schema** (ADR-038 Wave 3):
+The `TRUST_REPORT:` header you emit is validated by `lib/trust_report_schema.py` (Pydantic v2).
+Rules enforced at parse time: SCORE 0-100, STATUS must match band (HIGH 90-100, MEDIUM 70-89,
+LOW 50-69, CRITICAL 0-49), UNCERTAINTIES ≥ 1 (100% confident = red flag per rules/trust-score.md).
+Parser: `lib/trust_report_parser.py` — raises `TrustReportParseError` with a helpful hint on malformed output.
+
 **CONTEXT BUDGET** (ADR-038 Wave 2 — Gap #2):
 Token budget layers (from `cognitive-os.yaml context_budget`). Informational — enforcement arrives in Wave 3:
 ```
