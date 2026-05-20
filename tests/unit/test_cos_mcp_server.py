@@ -32,6 +32,13 @@ from cos_mcp import (
 pytestmark = [pytest.mark.unit]
 
 
+@pytest.fixture(autouse=True)
+def disable_expensive_semantic_routing(monkeypatch):
+    """Keep MCP unit tests deterministic and free of embedding model work."""
+    monkeypatch.setenv("COS_SKILL_ROUTER_DISABLE_SEMANTIC", "1")
+    monkeypatch.setenv("COS_DISABLE_SEMANTIC_ROUTING", "1")
+
+
 # ---------------------------------------------------------------------------
 # Helper tests
 # ---------------------------------------------------------------------------

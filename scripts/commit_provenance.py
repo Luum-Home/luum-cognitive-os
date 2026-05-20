@@ -336,8 +336,19 @@ def append_provenance(
     session: str,
     kind: str,
     harness: str,
-    work_id: str,
+    work_id: str | None = None,
 ) -> str:
+    if work_id is None:
+        work_id = _hash_work_fingerprint(
+            "\n".join(
+                [
+                    f"session={session}",
+                    f"kind={kind}",
+                    f"harness={harness}",
+                    f"message={message}",
+                ]
+            )
+        )
     present = _message_trailer_keys(message)
     origin = f"kind={kind} session={session} harness={harness} work_id={work_id}"
     desired = {
