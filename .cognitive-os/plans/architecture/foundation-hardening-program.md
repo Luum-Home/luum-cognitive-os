@@ -1,15 +1,15 @@
 <!--
-RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P2 plan reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
+RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-20 (Wave 5 state-truth refresh)
+Reconciled-by: P2 plan reconciliation plus Worker ADR-121 Wave 5 docs reconciliation (see docs/06-Daily/reports/p2-plan-reconciliation-2026-05-10.md)
 Phase status:
 - Phase 1 (validation capsule hardening): DONE (all 5 acceptance items checked).
-- Phase 2 (single-writer main): MOSTLY DONE — branch-worktree-closure primitive cited; ADR-242 git-filter-repo wrapper preserves remote and ADR-243 post-rewrite push collision exception close the head-drift gap; ADR-246 release-transaction freeze covers high-risk publish paths; queue worker default-push acceptance item not formally checked but covered by protected-publication policy.
-- Phase 3 (WIP ownership ledger): PARTIAL — task/file claim ledger exists; stash provenance hardening landed via ADR-117 stash-mutation reversibility; full file/domain/registry coverage still partial.
-- Phase 4 (guard maturity levels): PARTIAL — manifest fields exist via cognitive-os.yaml + control-plane audit (ADR-248); explicit observe/warn/block/emergency annotation still inconsistent across older hooks.
+- Phase 2 (single-writer main): DONE for ADR-121 acceptance — branch-worktree-closure primitive, ADR-241/243 bypass metrics, ADR-245 chaos guard, and ADR-246 release transaction freeze cover the single-writer invariant.
+- Phase 3 (WIP ownership ledger): PARTIAL — task/file claim ledger exists; stash provenance hardening landed via ADR-117 stash-mutation reversibility; residual is full file/domain/registry ownership coverage plus inventory conflict actions.
+- Phase 4 (guard maturity levels): DONE for ADR-121 acceptance — manifest maturity/bypass fields and block-mode false-positive coverage are checked; any older-hook annotation cleanup is broader guard-metadata hygiene, not an ADR-121 open phase.
 - Phase 5 (test lane taxonomy and budgets): DONE — ADR-072 + .cognitive-os/test-lanes.yaml + cos-test focused/cluster/broad + ADR-237 test execution efficiency protocol close lane budgets and failure semantics; F1 sharded laptop integration (CHANGELOG [Unreleased]/Added) closes the only post-0.28 carry-over.
-- Phase 6 (multi-agent chaos suite): PARTIAL — ADR-118 swarm slice tracker still in plan; production-source read-only chaos guard + release-freeze chaos coverage shipped.
+- Phase 6 (multi-agent chaos suite): PARTIAL — production-source read-only chaos guard + release-freeze chaos coverage shipped; residual is ADR-118 swarm scenario coverage for same-task/same-file/same-domain/projection/stash/validation/merge-queue races.
 Major post-v0.28.0 closures consumed by this plan: ADR-242, ADR-243, ADR-244 (trust-report enforce), ADR-245 (prod-source readonly), ADR-246 (release transaction freeze), ADR-247, ADR-248, ADR-249.
-Recommendation: keep ACTIVE for Phase 3, Phase 4, Phase 6 residuals. Do NOT archive.
+Recommendation: keep ACTIVE for Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios only. Do NOT archive or claim full ADR closure.
 
 OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
 Opus DISAGREES with Sonnet's 5/17 checkbox count. Closer reading of Phase 2/4/5/6 acceptance lines:
@@ -20,7 +20,7 @@ Opus DISAGREES with Sonnet's 5/17 checkbox count. Closer reading of Phase 2/4/5/
 - Phase 5 acceptance items lines 145-147: ALL THREE closable post-v0.28.0 — F1 sharded laptop integration (CHANGELOG [Unreleased]/Added) + protected reports via ADR-200 retention controller + ADR-199 reaper protocol.
 - Phase 6 item 170 (chaos suite produces actionable artifacts): CLOSED via chaos guards added v0.28.0.
 - Phase 6 item 168 (ADR-118 swarm scenarios): still PARTIAL.
-Opus revised effective closure: ~12-13/17 (vs Sonnet's 5/17). Plan should stay MOSTLY DONE for: Phase 3 (file/domain/registry claim ledger full coverage), Phase 6 swarm scenarios, and explicit observe/warn/block/emergency annotation rollout to older hooks. Recommendation: keep ACTIVE; tick the now-closed acceptance items in a future tidy commit.
+Opus revised effective closure: ~12-13/17 (vs Sonnet's 5/17). Plan stays MOSTLY DONE, but the ADR-121 residuals are narrower than "phases 3-6": Phase 3 file/domain/registry ownership coverage plus inventory conflict actions, and Phase 6 ADR-118 swarm scenario coverage. The explicit observe/warn/block/emergency rollout to older hooks is tracked as broader guard-metadata hygiene after the Phase 4 ADR-121 acceptance checks closed.
 -->
 
 # Foundation Hardening Program

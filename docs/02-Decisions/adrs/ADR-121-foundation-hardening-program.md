@@ -4,7 +4,7 @@ adr: 121
 title: Foundation Hardening Program
 status: accepted
 implementation_status: partial
-classification_basis: 'program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open'
+classification_basis: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios'
 date: 2026-05-02
 supersedes: []
 superseded_by: null
@@ -16,7 +16,7 @@ implementation_files:
   - lib/validation_lanes.py
 tier: strict
 tags: [hardening, foundation, validation, invariants]
-partial_remaining: program ADR tracks phased hardening invariants; S1/S4 evidence exists while remaining phases stay open
+partial_remaining: 'program ADR is partial: Phase 1/2/4/5 acceptance is closed; residuals are Phase 3 ownership coverage and Phase 6 ADR-118 swarm scenarios'
 partial_remaining_basis: specific classification_basis
 ---
 
@@ -102,9 +102,13 @@ make test-laptop
 ```
 
 Phase-level acceptance is tracked in
-`.cognitive-os/plans/architecture/foundation-hardening-program.md` and requires
-border cases for live/stale/corrupt locks, concurrent WIP, guard false positives,
-main-head drift, branch/worktree closure, rollback, and cleanup/reaper races.
+`.cognitive-os/plans/architecture/foundation-hardening-program.md`. As of the
+2026-05-20 Wave 5 state-truth refresh, Phase 1, Phase 2, Phase 4, and Phase 5
+acceptance are closed for this ADR. The ADR remains partial because Phase 3
+still needs complete file/domain/registry ownership coverage plus inventory
+conflict actions, and Phase 6 still needs ADR-118 swarm scenarios across
+same-task, same-file, same-domain, projection, stash, validation, and merge-queue
+races.
 
 ## 2026-05-05 slice evidence update
 
