@@ -4,44 +4,20 @@
 
 | Metric | Value |
 |--------|-------|
-| Total components | 1209 |
-| REAL | 323 |
-| DORMANT | 176 |
-| ASPIRATIONAL | 69 |
-| METADATA | 66 |
-| DORMANT + ASPIRATIONAL ratio | 20.3% |
-
-## Continuation status after follow-up implementation
-
-This audit table is a point-in-time classification snapshot. The metrics above
-remain useful for the 2026-05-20 audit baseline, but several high-ROI items
-from the post-session backlog were closed after this report was generated.
-
-| Area | Current status | Evidence |
-|---|---|---|
-| DX Tax 5 unchecked items | CLOSED 5/5 | `16de846f` lean baseline protections; `b33d8668` hygiene/blocker split; `a0bc577d` merge-queue default landing path; `b93fdd8f` merge-to-main lane evidence; `c4ab4905` default/core install distribution boundary. |
-| Merge-queue lane recording | CLOSED | `scripts/merge-to-main.sh` persists `recommended_lane`, `executed_lane`, `validation_rationale`, and `changed_files`; covered by `tests/behavior/test_merge_to_main_lane_recording.py`. |
-| Default-core install boundary | CLOSED | `manifests/primitive-install-boundary.yaml` is now the default/core projection contract; `scripts/cos_init.py` consumes it; `tests/behavior/test_install_core_boundary.py` asserts default-installed primitives are boundary-declared core. |
-| Op Stability Phase 7 | CLOSED for the tracked exit criteria | Default/core projection is manifest-backed, `cos status --json` reports `profile` and `active_distribution`, and maintainer/lab tooling remains opt-in rather than default runtime. |
-| Op Stability Phase 8 | CLOSED | Productization criteria are checked in `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md`. |
-
-Remaining work after this continuation is no longer the DX Tax/default-core
-cluster. The next useful slices are governance policy adoption, telemetry
-adoption/trending, and any explicitly chosen long-tail dormant/aspirational
-cleanup.
+| Total components | 1211 |
+| REAL | 330 |
+| DORMANT | 21 |
+| ASPIRATIONAL | 0 |
+| METADATA | 87 |
+| DORMANT + ASPIRATIONAL ratio | 1.7% |
 
 ## Worst Offenders (ASPIRATIONAL + DORMANT)
 
-- `hooks/adoption-freeze-gate.sh`
-- `hooks/adr-detector.sh`
-- `hooks/agent-bash-cwd-enforcer.sh`
-- `hooks/agent-bus-monitor.sh`
-- `hooks/agent-message-inbox-guard.sh`
-- `scripts/cos_concurrent_status.py`
-- `skills/add-hook/SKILL.md`
-- `skills/add-mcp/SKILL.md`
-- `skills/add-rule/SKILL.md`
-- `skills/add-skill/SKILL.md`
+- `skills/audit-website/SKILL.md`
+- `skills/automaker-bridge/SKILL.md`
+- `skills/capability-snapshot/SKILL.md`
+- `skills/cognitive-os-benchmark/SKILL.md`
+- `skills/confidence-check/SKILL.md`
 
 ## Component Detail
 
@@ -79,54 +55,54 @@ cleanup.
 | `hooks/_lib/validation-lock.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/aci-observation-capture.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/adaptive-bypass.sh` | REAL | fire_count_7d=101, registered=True | fires actively (101 rows in hook-health.jsonl last 7d) |
-| `hooks/adoption-freeze-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/adr-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired | planned but not wired: FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired |
+| `hooks/adoption-freeze-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/adr-detector.sh` | METADATA | registered=False, excluded=True, category=FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired | whitelisted exclusion: FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired |
 | `hooks/adr-relevance-suggest.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/adr-section-validator.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/adversarial-review-gate.sh` | REAL | fire_count_7d=119, registered=True | fires actively (119 rows in hook-health.jsonl last 7d) |
-| `hooks/agent-bash-cwd-enforcer.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/agent-bus-monitor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running | planned but not wired: CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running |
+| `hooks/agent-bash-cwd-enforcer.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/agent-bus-monitor.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running | conditional integration: CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running |
 | `hooks/agent-checkpoint.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/agent-control-inbound-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/agent-launch-confirmed.sh` | REAL | fire_count_7d=101, registered=True | fires actively (101 rows in hook-health.jsonl last 7d) |
 | `hooks/agent-message-inbox-context.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/agent-message-inbox-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/agent-output-verifier.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired | planned but not wired: FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired |
+| `hooks/agent-message-inbox-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/agent-output-verifier.sh` | METADATA | registered=False, excluded=True, category=FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired | whitelisted exclusion: FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired |
 | `hooks/agent-prelaunch.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/agent-quota-advisor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: ADR-056 Level 1 advisory is only enabled when quota-aware dispatch control is turned on | planned but not wired: CONDITIONAL: ADR-056 Level 1 advisory is only enabled when quota-aware dispatch control is turned on |
-| `hooks/agent-quota-redirect.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: ADR-056 Level 2 intentionally remains opt-in because it blocks native Agent launches | planned but not wired: CONDITIONAL: ADR-056 Level 2 intentionally remains opt-in because it blocks native Agent launches |
-| `hooks/agent-qwen-bridge.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: ADR-056 Level 3 is a per-skill transparent bridge, not a global default hook | planned but not wired: CONDITIONAL: ADR-056 Level 3 is a per-skill transparent bridge, not a global default hook |
+| `hooks/agent-quota-advisor.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: ADR-056 Level 1 advisory is only enabled when quota-aware dispatch control is turned on | conditional integration: CONDITIONAL: ADR-056 Level 1 advisory is only enabled when quota-aware dispatch control is turned on |
+| `hooks/agent-quota-redirect.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: ADR-056 Level 2 intentionally remains opt-in because it blocks native Agent launches | conditional integration: CONDITIONAL: ADR-056 Level 2 intentionally remains opt-in because it blocks native Agent launches |
+| `hooks/agent-qwen-bridge.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: ADR-056 Level 3 is a per-skill transparent bridge, not a global default hook | conditional integration: CONDITIONAL: ADR-056 Level 3 is a per-skill transparent bridge, not a global default hook |
 | `hooks/agent-working-dir-inject.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/agnix-lint.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: superseded by architecture-compliance.sh for lint enforcement | whitelisted exclusion: DEPRECATED: superseded by architecture-compliance.sh for lint enforcement |
-| `hooks/aguara-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true | planned but not wired: CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true |
-| `hooks/ai-provider-identity-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: PostToolUse Edit/Write identity guard; projected only when provider identity policy is enabled. | planned but not wired: CONDITIONAL: PostToolUse Edit/Write identity guard; projected only when provider identity policy is enabled. |
-| `hooks/architecture-compliance.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Edit|Write — planned but not yet wired | planned but not wired: FUTURE: PostToolUse Edit\|Write — planned but not yet wired |
+| `hooks/aguara-scan.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true | conditional integration: CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true |
+| `hooks/ai-provider-identity-guard.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: PostToolUse Edit/Write identity guard; projected only when provider identity policy is enabled. | conditional integration: CONDITIONAL: PostToolUse Edit/Write identity guard; projected only when provider identity policy is enabled. |
+| `hooks/architecture-compliance.sh` | METADATA | registered=False, excluded=True, category=FUTURE: PostToolUse Edit|Write — planned but not yet wired | whitelisted exclusion: FUTURE: PostToolUse Edit\|Write — planned but not yet wired |
 | `hooks/aspirational-audit-weekly.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/assumption-tracker.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
-| `hooks/attribution-completeness-validator.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/attribution-completeness-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/audit-id-enricher.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/auto-checkpoint.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/auto-refine.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.3 — built by UX2 sprint; registration status unverified | planned but not wired: FUTURE: per rules/ROADMAP.md §2.3 — built by UX2 sprint; registration status unverified |
+| `hooks/auto-refine.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/auto-repair-dispatcher.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
 | `hooks/auto-rollback-trigger.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
 | `hooks/auto-skill-generator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/auto-verify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but registration not yet verified | planned but not wired: FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but registration not yet verified |
-| `hooks/background-agent-reminder.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired |
+| `hooks/auto-verify.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/background-agent-reminder.sh` | METADATA | registered=False, excluded=True, category=FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired | whitelisted exclusion: FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired |
 | `hooks/bash-hot-path-dispatcher.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/blast-radius.sh` | REAL | fire_count_7d=101, registered=True | fires actively (101 rows in hook-health.jsonl last 7d) |
-| `hooks/branch-ownership-lock.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/branch-ownership-lock.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/branch-ownership-release.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/claim-validator.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
 | `hooks/clarification-gate.sh` | REAL | fire_count_7d=101, registered=True | fires actively (101 rows in hook-health.jsonl last 7d) |
 | `hooks/clarification-interceptor.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference | whitelisted exclusion: DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference |
 | `hooks/clean-room-ast-similarity-gate.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: ADR-271 AST-similarity Tier-2 clone detector; manual trigger pending soak period per ADR-271 §Phase 3 | whitelisted exclusion: MANUAL_TRIGGER: ADR-271 AST-similarity Tier-2 clone detector; manual trigger pending soak period per ADR-271 §Phase 3 |
-| `hooks/code-review-on-commit.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events | planned but not wired: FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events |
+| `hooks/code-review-on-commit.sh` | METADATA | registered=False, excluded=True, category=FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events | whitelisted exclusion: FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events |
 | `hooks/codebase-itinerary-capture.sh` | REAL | fire_count_7d=537, registered=True | fires actively (537 rows in hook-health.jsonl last 7d) |
 | `hooks/cognitive-os-health.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status | whitelisted exclusion: MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status |
 | `hooks/completeness-check-llm.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: LLM-based variant; completeness-check.sh (rule-based) is the registered version | whitelisted exclusion: DEPRECATED: LLM-based variant; completeness-check.sh (rule-based) is the registered version |
 | `hooks/completeness-check.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/completion-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/concurrent-write-guard-codex-proxy.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Codex-only UserPromptSubmit degraded projection for ADR-111 Gate-3; registered through cognitive-os.yaml/.codex hooks, not default .claude/settings.json. | planned but not wired: CONDITIONAL: Codex-only UserPromptSubmit degraded projection for ADR-111 Gate-3; registered through cognitive-os.yaml/.codex hooks, not default .claude/settings.json. |
+| `hooks/concurrent-write-guard-codex-proxy.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/concurrent-write-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/confidence-gate-llm.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: LLM-based variant; confidence-gate.sh (rule-based) is the planned replacement | whitelisted exclusion: DEPRECATED: LLM-based variant; confidence-gate.sh (rule-based) is the planned replacement |
 | `hooks/confidence-gate.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
@@ -134,53 +110,53 @@ cleanup.
 | `hooks/consequence-evaluator.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/content-policy.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/context-budget-meter.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/context-diet.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired | planned but not wired: FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired |
+| `hooks/context-diet.sh` | METADATA | registered=False, excluded=True, category=FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired | whitelisted exclusion: FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired |
 | `hooks/context-watchdog.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/contextual-rule-loader.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired | planned but not wired: FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired |
+| `hooks/contextual-rule-loader.sh` | METADATA | registered=False, excluded=True, category=FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired | whitelisted exclusion: FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired |
 | `hooks/control-plane-audit-hourly.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/control-plane-audit.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/conversation-capture.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired | planned but not wired: FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired |
+| `hooks/conversation-capture.sh` | METADATA | registered=False, excluded=True, category=FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired | whitelisted exclusion: FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired |
 | `hooks/cos-executor-daemon-launcher.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/cos-executor-heartbeat.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: compatibility alias for cos-executor-daemon-launcher.sh; registering both would launch duplicate daemon checks | whitelisted exclusion: DEPRECATED: compatibility alias for cos-executor-daemon-launcher.sh; registering both would launch duplicate daemon checks |
 | `hooks/cos-session-start-projector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/cosd-auth-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/cosd-intent-submit.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle event payload can supply its required intent arguments yet | whitelisted exclusion: MANUAL_TRIGGER: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle event payload can supply its required intent arguments yet |
 | `hooks/crash-recovery.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/cross-session-coordination-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/cross-session-coordination-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/cross-session-event-emit.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/cross-session-peer-context.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/dangerous-env-flag-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/decision-depth-gate.sh` | REAL | fire_count_7d=109, registered=True | fires actively (109 rows in hook-health.jsonl last 7d) |
-| `hooks/dependency-license-classifier.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/dependency-license-classifier.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/dequeue-notify.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/destructive-git-blocker.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/destructive-rm-blocker.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/direct-main-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/destructive-git-blocker.sh` | REAL | fire_count_7d=201, registered=True | fires actively (201 rows in hook-health.jsonl last 7d) |
+| `hooks/destructive-rm-blocker.sh` | REAL | fire_count_7d=12, registered=True | fires actively (12 rows in hook-health.jsonl last 7d) |
+| `hooks/direct-main-guard.sh` | REAL | fire_count_7d=286, registered=True | fires actively (286 rows in hook-health.jsonl last 7d) |
 | `hooks/dispatch-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/doc-sync-detector.sh` | REAL | fire_count_7d=305, registered=True | fires actively (305 rows in hook-health.jsonl last 7d) |
 | `hooks/docker-drift-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/document-ingest-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/dod-gate.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.2 — built by UX2 sprint; registration status unverified | planned but not wired: FUTURE: per rules/ROADMAP.md §2.2 — built by UX2 sprint; registration status unverified |
-| `hooks/dry-run-preview.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired |
+| `hooks/dod-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/dry-run-preview.sh` | METADATA | registered=False, excluded=True, category=FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired | whitelisted exclusion: FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired |
 | `hooks/eas-validation-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/ecosystem-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired | planned but not wired: FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired |
+| `hooks/ecosystem-check.sh` | METADATA | registered=False, excluded=True, category=FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired | whitelisted exclusion: FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired |
 | `hooks/edit-lock-drain-parked.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/edit-lock-pre-tool.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/edit-lock-process-negotiations.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/edit-lock-session-end.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/engram-auto-import.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired | planned but not wired: FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired |
-| `hooks/engram-auto-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired | planned but not wired: FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired |
+| `hooks/engram-auto-import.sh` | METADATA | registered=False, excluded=True, category=FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired | whitelisted exclusion: FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired |
+| `hooks/engram-auto-sync.sh` | METADATA | registered=False, excluded=True, category=FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired | whitelisted exclusion: FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired |
 | `hooks/engram-crystallize-on-session-end.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/engram-daemon-launcher.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/engram-obsidian-export-on-stop.sh` | REAL | fire_count_7d=118, registered=True | fires actively (118 rows in hook-health.jsonl last 7d) |
+| `hooks/engram-obsidian-export-on-stop.sh` | REAL | fire_count_7d=127, registered=True | fires actively (127 rows in hook-health.jsonl last 7d) |
 | `hooks/engram-reinforce-on-access.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/epic-task-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: heuristic detector, not yet wired to any matcher | planned but not wired: FUTURE: heuristic detector, not yet wired to any matcher |
-| `hooks/error-learning.sh` | REAL | fire_count_7d=2169, registered=True | fires actively (2169 rows in hook-health.jsonl last 7d) |
+| `hooks/epic-task-detector.sh` | METADATA | registered=False, excluded=True, category=FUTURE: heuristic detector, not yet wired to any matcher | whitelisted exclusion: FUTURE: heuristic detector, not yet wired to any matcher |
+| `hooks/error-learning.sh` | REAL | fire_count_7d=2181, registered=True | fires actively (2181 rows in hook-health.jsonl last 7d) |
 | `hooks/error-pattern-detector.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/error-pipeline.sh` | REAL | fire_count_7d=2167, registered=True | fires actively (2167 rows in hook-health.jsonl last 7d) |
-| `hooks/external-cache-content-leak.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/external-pattern-cleanroom-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
-| `hooks/git-commit-scope-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/error-pipeline.sh` | REAL | fire_count_7d=2179, registered=True | fires actively (2179 rows in hook-health.jsonl last 7d) |
+| `hooks/external-cache-content-leak.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/external-pattern-cleanroom-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/git-commit-scope-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/git-context-capture.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/global-verify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: wired conditionally by apply-efficiency-profile.sh; not a global default — registered only when a profile is active — @on-demand | whitelisted exclusion: MANUAL_TRIGGER: wired conditionally by apply-efficiency-profile.sh; not a global default — registered only when a profile is active — @on-demand |
 | `hooks/goal-stop-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -192,38 +168,38 @@ cleanup.
 | `hooks/infra-health.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/infra-intent-detector.sh` | METADATA | registered=False, excluded=True, category=INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently | whitelisted exclusion: INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently |
 | `hooks/inject-phase-context.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/jupyter-sandbox.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired | planned but not wired: FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired |
-| `hooks/kpi-trigger.sh` | REAL | fire_count_7d=118, registered=True | fires actively (118 rows in hook-health.jsonl last 7d) |
+| `hooks/jupyter-sandbox.sh` | METADATA | registered=False, excluded=True, category=FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired | whitelisted exclusion: FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired |
+| `hooks/kpi-trigger.sh` | REAL | fire_count_7d=127, registered=True | fires actively (127 rows in hook-health.jsonl last 7d) |
 | `hooks/large-file-advisor.sh` | REAL | fire_count_7d=543, registered=True | fires actively (543 rows in hook-health.jsonl last 7d) |
-| `hooks/legal-review-required-on-runtime-import.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/legal-review-required-on-runtime-import.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/lethal-trifecta-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/lib-symlink-divergence-detector.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/lib-symlink-divergence-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/mcp-scan.sh` | REAL | fire_count_7d=10, registered=True | fires actively (10 rows in hook-health.jsonl last 7d) |
 | `hooks/memory-prefetch.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/memu-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired | planned but not wired: FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired |
-| `hooks/metrics-calibrator-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired | planned but not wired: FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired |
+| `hooks/memu-sync.sh` | METADATA | registered=False, excluded=True, category=FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired | whitelisted exclusion: FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired |
+| `hooks/metrics-calibrator-trigger.sh` | METADATA | registered=False, excluded=True, category=FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired | whitelisted exclusion: FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired |
 | `hooks/metrics-rotation.sh` | METADATA | registered=False, excluded=True, category=INFRA: rotates JSONL metrics files to prevent unbounded growth; invoked by cron or manually, not on every event | whitelisted exclusion: INFRA: rotates JSONL metrics files to prevent unbounded growth; invoked by cron or manually, not on every event |
-| `hooks/mlflow-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed | planned but not wired: CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed |
+| `hooks/mlflow-sync.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed | conditional integration: CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed |
 | `hooks/native-agent-heartbeat.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/network-egress-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/network-egress-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/notify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly | whitelisted exclusion: MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly |
-| `hooks/orchestrator-claim-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/orchestrator-claim-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/orchestrator-decision-trace.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/orchestrator-mode-detect.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: sourced library helper; not registered independently, sourced by other hooks on demand — @on-demand | whitelisted exclusion: MANUAL_TRIGGER: sourced library helper; not registered independently, sourced by other hooks on demand — @on-demand |
 | `hooks/orchestrator-skill-invocation-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/package-sync.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs package dependencies; triggered by CI or developer on demand, not by Claude hooks — @manual-trigger | whitelisted exclusion: MANUAL_TRIGGER: syncs package dependencies; triggered by CI or developer on demand, not by Claude hooks — @manual-trigger |
-| `hooks/parry-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Parry security integration | planned but not wired: CONDITIONAL: Parry security integration |
-| `hooks/pattern-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit|Write — not yet wired | planned but not wired: FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired |
+| `hooks/parry-scan.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: Parry security integration | conditional integration: CONDITIONAL: Parry security integration |
+| `hooks/pattern-check.sh` | METADATA | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit|Write — not yet wired | whitelisted exclusion: FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired |
 | `hooks/pending-truth-drift-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/pending-truth-staleness-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/pending-truth-staleness-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/pending-truth-verify-weekly.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/plan-claim-validator.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/post-agent-snapshot-restore.sh` | REAL | fire_count_7d=35, registered=True | fires actively (35 rows in hook-health.jsonl last 7d) |
 | `hooks/post-agent-verify.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
-| `hooks/post-git-orphan-notifier.sh` | REAL | fire_count_7d=2167, registered=True | fires actively (2167 rows in hook-health.jsonl last 7d) |
+| `hooks/post-git-orphan-notifier.sh` | REAL | fire_count_7d=2179, registered=True | fires actively (2179 rows in hook-health.jsonl last 7d) |
 | `hooks/pre-agent-snapshot.sh` | REAL | fire_count_7d=4, registered=True | fires actively (4 rows in hook-health.jsonl last 7d) |
 | `hooks/pre-cleanup-snapshot.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: snapshot before cleanup operations; invoked manually or by admin scripts on demand — @manual-trigger | whitelisted exclusion: MANUAL_TRIGGER: snapshot before cleanup operations; invoked manually or by admin scripts on demand — @manual-trigger |
-| `hooks/pre-commit-content-hash-dedupe.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/pre-commit-content-hash-dedupe.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/pre-commit-gate.sh` | METADATA | registered=False, excluded=True, category=GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8) | whitelisted exclusion: GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8) |
 | `hooks/pre-compaction-flush.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/predev-completeness-check.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
@@ -233,32 +209,32 @@ cleanup.
 | `hooks/project-docs-convention.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/promotion-proposer-weekly.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/prompt-quality-llm.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/protected-config-write-guard.sh` | REAL | fire_count_7d=3581, registered=True | fires actively (3581 rows in hook-health.jsonl last 7d) |
+| `hooks/protected-config-write-guard.sh` | REAL | fire_count_7d=3593, registered=True | fires actively (3593 rows in hook-health.jsonl last 7d) |
 | `hooks/pyrefly-typecheck-advisory.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/query-tailored-context-inject.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/rate-limit-detector.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/rate-limit-drain.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/rate-limit-precheck.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/rate-limit-precheck.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/rate-limit-protection.sh` | METADATA | deprecated_shim=True | DEPRECATED shim — short file with DEPRECATED marker |
-| `hooks/rate-limiter.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/rate-limiter.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/reaper-daemon-launcher.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/reaper-heartbeat.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: compatibility alias for reaper-daemon-launcher.sh; registering both would duplicate daemon scheduling | whitelisted exclusion: DEPRECATED: compatibility alias for reaper-daemon-launcher.sh; registering both would duplicate daemon scheduling |
-| `hooks/recap-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: syncs session recap to external system; planned for Stop event — not yet wired | planned but not wired: FUTURE: syncs session recap to external system; planned for Stop event — not yet wired |
+| `hooks/recap-sync.sh` | METADATA | registered=False, excluded=True, category=FUTURE: syncs session recap to external system; planned for Stop event — not yet wired | whitelisted exclusion: FUTURE: syncs session recap to external system; planned for Stop event — not yet wired |
 | `hooks/registration-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI | whitelisted exclusion: MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI |
 | `hooks/reinvention-check.sh` | REAL | fire_count_7d=176, registered=True | fires actively (176 rows in hook-health.jsonl last 7d) |
-| `hooks/release-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired |
+| `hooks/release-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/research-quality-validator.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/research-to-runtime-firewall.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/research-to-runtime-firewall.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/resource-check.sh` | METADATA | registered=False, excluded=True, category=INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook | whitelisted exclusion: INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook |
-| `hooks/result-truncator.sh` | REAL | fire_count_7d=2167, registered=True | fires actively (2167 rows in hook-health.jsonl last 7d) |
+| `hooks/result-truncator.sh` | REAL | fire_count_7d=2179, registered=True | fires actively (2179 rows in hook-health.jsonl last 7d) |
 | `hooks/review-spawner.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
 | `hooks/rule-frontmatter-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/rule-md-routing-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/rule-router-prompt-suggest.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/scope-creep-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/scope-marker-portability-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/scope-marker-portability-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/scope-proportionality.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/secret-detector.sh` | REAL | fire_count_7d=2707, registered=True | fires actively (2707 rows in hook-health.jsonl last 7d) |
+| `hooks/secret-detector.sh` | REAL | fire_count_7d=2718, registered=True | fires actively (2718 rows in hook-health.jsonl last 7d) |
 | `hooks/self-install.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/self-knowledge-refresh.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/semgrep-scan.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a global default hook — @on-demand | whitelisted exclusion: MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a global default hook — @on-demand |
@@ -269,8 +245,8 @@ cleanup.
 | `hooks/session-heartbeat.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-hygiene.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand | whitelisted exclusion: MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand |
 | `hooks/session-init.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/session-knowledge-extractor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: extracts learnings at session end; planned for Stop event — not yet wired | planned but not wired: FUTURE: extracts learnings at session end; planned for Stop event — not yet wired |
-| `hooks/session-learning.sh` | REAL | fire_count_7d=127, registered=True | fires actively (127 rows in hook-health.jsonl last 7d) |
+| `hooks/session-knowledge-extractor.sh` | METADATA | registered=False, excluded=True, category=FUTURE: extracts learnings at session end; planned for Stop event — not yet wired | whitelisted exclusion: FUTURE: extracts learnings at session end; planned for Stop event — not yet wired |
+| `hooks/session-learning.sh` | REAL | fire_count_7d=136, registered=True | fires actively (136 rows in hook-health.jsonl last 7d) |
 | `hooks/session-resume.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-sanity.sh` | ON_DEMAND | fire_count_7d=0, registered=True, on_demand_marker=True | registered + @on-demand marker — legit sleeper (not smoke) |
 | `hooks/session-start-stack-recommend.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -289,40 +265,40 @@ cleanup.
 | `hooks/skill-invocation-logger.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/skill-md-routing-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/skill-post-execution-analysis.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/skill-router-bash-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/skill-router-bash-gate.sh` | REAL | fire_count_7d=16, registered=True | fires actively (16 rows in hook-health.jsonl last 7d) |
 | `hooks/skill-router-prompt-suggest.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/skill-synthesis-scanner.sh` | REAL | fire_count_7d=118, registered=True | fires actively (118 rows in hook-health.jsonl last 7d) |
+| `hooks/skill-synthesis-scanner.sh` | REAL | fire_count_7d=127, registered=True | fires actively (127 rows in hook-health.jsonl last 7d) |
 | `hooks/skill-tracker.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
 | `hooks/skill-usage-tracker.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/spdx-header-required.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/spdx-header-required.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/stash-budget-warn.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/state-heartbeat.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/state-retention-audit.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: ADR-199/200 retention audit can archive/reap state; invoked by explicit retention/session cleanup flows, not a default hook matcher | whitelisted exclusion: MANUAL_TRIGGER: ADR-199/200 retention audit can archive/reap state; invoked by explicit retention/session cleanup flows, not a default hook matcher |
 | `hooks/subagent-budget-enforcer.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/subagent-capability-preflight.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: ADR-203 launch capability preflight wrapper; promote only when a concrete lifecycle projection exists | whitelisted exclusion: MANUAL_TRIGGER: ADR-203 launch capability preflight wrapper; promote only when a concrete lifecycle projection exists |
 | `hooks/subagent-context-injector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/subagent-input-schema-validator.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/subagent-input-schema-validator.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: ADR-038 Wave 2 input-schema validator is opt-in/profile-scoped until low false-positive rate is proven | conditional integration: CONDITIONAL: ADR-038 Wave 2 input-schema validator is opt-in/profile-scoped until low false-positive rate is proven |
 | `hooks/surface-fix-detector.sh` | REAL | fire_count_7d=305, registered=True | fires actively (305 rows in hook-health.jsonl last 7d) |
-| `hooks/symlink-mutation-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/symlink-mutation-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/sync-to-repo.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer | whitelisted exclusion: MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer |
 | `hooks/task-bridge-notify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks | whitelisted exclusion: MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks |
-| `hooks/task-completed.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: task-completion event handler; invoked by external task system, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: task-completion event handler; invoked by external task system, not by Claude events |
+| `hooks/task-completed.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/task-created.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/task-panel-sync.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs task panel state; invoked programmatically, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: syncs task panel state; invoked programmatically, not by Claude events |
 | `hooks/task-recorder.sh` | METADATA | registered=False, excluded=True, category=LIBRARY: sourced by dispatch-gate; not a standalone matcher | whitelisted exclusion: LIBRARY: sourced by dispatch-gate; not a standalone matcher |
 | `hooks/teammate-idle.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/telemetry-budget-violator-detect.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/telemetry-budget-violator-detect.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: ADR-304 control-plane audit hook invoked by telemetry aggregate/hourly lanes, not a default Claude lifecycle matcher | whitelisted exclusion: MANUAL_TRIGGER: ADR-304 control-plane audit hook invoked by telemetry aggregate/hourly lanes, not a default Claude lifecycle matcher |
 | `hooks/token-budget-monitor.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/tool-discovery-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired |
-| `hooks/tool-loop-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired | planned but not wired: FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired |
-| `hooks/tool-sequence-capture.sh` | REAL | fire_count_7d=3379, registered=True | fires actively (3379 rows in hook-health.jsonl last 7d) |
+| `hooks/tool-discovery-trigger.sh` | METADATA | registered=False, excluded=True, category=FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired | whitelisted exclusion: FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired |
+| `hooks/tool-loop-detector.sh` | METADATA | registered=False, excluded=True, category=FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired | whitelisted exclusion: FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired |
+| `hooks/tool-sequence-capture.sh` | REAL | fire_count_7d=3392, registered=True | fires actively (3392 rows in hook-health.jsonl last 7d) |
 | `hooks/trust-score-validator.sh` | REAL | fire_count_7d=85, registered=True | fires actively (85 rows in hook-health.jsonl last 7d) |
-| `hooks/untracked-work-preservation-guard.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/untracked-work-preservation-guard.sh` | REAL | fire_count_7d=175, registered=True | fires actively (175 rows in hook-health.jsonl last 7d) |
 | `hooks/usage-health-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event | whitelisted exclusion: MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event |
 | `hooks/user-prompt-capture.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/validation-lock-cleanup.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/validator-soak-weekly.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/valkey-ensure.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed | planned but not wired: CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed |
+| `hooks/valkey-ensure.sh` | ON_DEMAND | registered=False, excluded=True, category=CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed | conditional integration: CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed |
 | `hooks/work-queue-sync.sh` | REAL | fire_count_7d=88, registered=True | fires actively (88 rows in hook-health.jsonl last 7d) |
 | `hooks/worktree-submodule-fix.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: fixes git submodule state in worktrees; invoked manually after worktree operations — @manual-trigger | whitelisted exclusion: MANUAL_TRIGGER: fixes git submodule state in worktrees; invoked manually after worktree operations — @manual-trigger |
 | `lib/aci_observation.py` | REAL | callers=1, size_bytes=4212 | imported by 1 non-test caller(s) |
@@ -501,7 +477,7 @@ cleanup.
 | `lib/litellm_client.py` | REAL | callers=1, size_bytes=9140 | imported by 1 non-test caller(s) |
 | `lib/llm_routing_fallback.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=17010 | covered by test — legit sleeper (imported by test only) |
 | `lib/maintainer_experiment.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2766 | covered by test — legit sleeper (imported by test only) |
-| `lib/maintainer_impact.py` | REAL | callers=0, writes_jsonl=True, size_bytes=4640 | writes to an existing metrics JSONL file |
+| `lib/maintainer_impact.py` | REAL | callers=0, writes_jsonl=True, size_bytes=6721 | writes to an existing metrics JSONL file |
 | `lib/maintainer_proposals.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2634 | covered by test — legit sleeper (imported by test only) |
 | `lib/manifest_loader.py` | REAL | callers=2, size_bytes=15660 | imported by 2 non-test caller(s) |
 | `lib/mcp_thread_bridge.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=4746 | covered by test — legit sleeper (imported by test only) |
@@ -703,7 +679,7 @@ cleanup.
 | `scripts/align_skill_frontmatter.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=3309 | @on-demand marker — legit rarely-invoked script |
 | `scripts/apply-efficiency-profile.sh` | REAL | writes_jsonl=True, size_bytes=18453 | writes to an existing metrics JSONL file |
 | `scripts/approval_ledger.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3046 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/aspirational_audit.py` | REAL | writes_jsonl=True, size_bytes=35230 | writes to an existing metrics JSONL file |
+| `scripts/aspirational_audit.py` | REAL | writes_jsonl=True, size_bytes=37713 | writes to an existing metrics JSONL file |
 | `scripts/audit-consumer-dependence.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=5151 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/audit_adrs.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=31857 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/audit_engram_topic_keys.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=5135 | covered by test — legit sleeper (test proves it works when called) |
@@ -780,7 +756,7 @@ cleanup.
 | `scripts/cos-sessions.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=5570 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-smoke.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=1601 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-startup-recover.sh` | REAL | writes_jsonl=True, size_bytes=3185 | writes to an existing metrics JSONL file |
-| `scripts/cos-status.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=38338 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos-status.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=39413 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-subprocess-timeout-audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=6152 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-update.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=31283 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-usage-report.sh` | REAL | writes_jsonl=True, size_bytes=9382 | writes to an existing metrics JSONL file |
@@ -808,7 +784,7 @@ cleanup.
 | `scripts/cos_cleanup_preserved_wip.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14942 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_closure_discipline_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9836 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_codex_guard.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=552 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos_concurrent_status.py` | DORMANT | callers=0, size_bytes=939 | no observable production use, no test, no on-demand marker |
+| `scripts/cos_concurrent_status.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=939 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_consumer_fleet_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=1893 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_consumer_improvement_proposals.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2578 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_context_budget_report.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=1633 | covered by test — legit sleeper (test proves it works when called) |
@@ -838,7 +814,7 @@ cleanup.
 | `scripts/cos_governed_self_improvement.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=5254 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_headless_publication.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=6842 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_headless_safe_mode.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=6602 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos_init.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=78269 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_init.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=78282 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_install_projection_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=10052 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_install_scope_dev_smoke.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=26859 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_instance_init.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=10683 | covered by test — legit sleeper (test proves it works when called) |
@@ -1040,6 +1016,7 @@ cleanup.
 | `scripts/skill-router-benchmark.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=4952 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/skill-router-retrieval-audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=8422 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/skill_efficacy_report.py` | REAL | writes_jsonl=True, size_bytes=1102 | writes to an existing metrics JSONL file |
+| `scripts/skill_platform_support_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=5498 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/smoke-agent-quota-advisor.sh` | REAL | writes_jsonl=True, size_bytes=4130 | writes to an existing metrics JSONL file |
 | `scripts/smoke-agent-quota-redirect.sh` | REAL | writes_jsonl=True, size_bytes=2663 | writes to an existing metrics JSONL file |
 | `scripts/smoke-doc-review-personas.sh` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=2678 | @on-demand marker — legit rarely-invoked script |
@@ -1075,184 +1052,185 @@ cleanup.
 | `scripts/version.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=6067 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/weekly-aspirational-audit.sh` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=1104 | @on-demand marker — legit rarely-invoked script |
 | `scripts/write_context_marker.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9618 | covered by test — legit sleeper (test proves it works when called) |
-| `skills/__contracts__/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/add-hook/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/add-mcp/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/add-rule/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/add-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/adr-tombstone/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/agent-control/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/agent-dashboard/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/agent-kpis/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/agent-stress-test/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/analyze-improvements/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/apply-improvements/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/architecture-map-answer/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/arena/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/audit-integrity/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/__contracts__/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/add-hook/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/add-mcp/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/add-rule/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/add-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/adr-tombstone/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/agent-control/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/agent-dashboard/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/agent-kpis/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/agent-stress-test/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/analyze-improvements/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/apply-improvements/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/architecture-map-answer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/arena/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/audit-integrity/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/audit-website/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/auto-refine/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/auto-rollback/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/auto-refine/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/auto-rollback/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/automaker-bridge/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/batch-runner/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/branch-worktree-closure/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/browser-task/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/bump-version/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/batch-runner/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/branch-worktree-closure/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/browser-task/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/bump-version/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/capability-snapshot/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/catalog-full/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/caveman/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/caveman-compress/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/code-review/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cognee-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cognee-search/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/catalog-full/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/caveman/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/caveman-compress/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/code-review/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cognee-integration/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cognee-search/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/cognitive-os-benchmark/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cognitive-os-init/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cognitive-os-status/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cognitive-os-test/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/compat-test/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/component-classifier/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/component-reality-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/compose-prompt/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/cognitive-os-init/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cognitive-os-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cognitive-os-test/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/compat-test/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/component-classifier/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/component-reality-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/compose-prompt/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/confidence-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/contract-drift/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/contract-drift/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/conversation-memory/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/coordination-status/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cos-install-operations/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/cos-maintainer-operations/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/cos-status/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/cost-predictor/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/coverage-enforcement/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/decision-triage/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/deep-research/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/deep-tool-research/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/coordination-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cos-install-operations/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cos-maintainer-operations/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cos-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/cost-predictor/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/coverage-enforcement/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/decision-triage/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/deep-research/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/deep-tool-research/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/deepeval-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/deps-update/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/detect-patterns/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/detect-stack/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/deps-update/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/detect-patterns/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/detect-stack/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/devbox-checkpoint/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/doc-review-personas/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/doc-sync/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/docs-execution-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/document-feature/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/dod-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/dogfood-score/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/domain-model/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/error-analyzer/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/eval-repo/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/evaluate-plan/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/exhaustive-prompt/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/experimental/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/generate-changelog/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/generate-config/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/doc-review-personas/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/doc-sync/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/docs-execution-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/document-feature/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/dod-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/dogfood-score/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/domain-model/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/error-analyzer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/eval-repo/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/evaluate-plan/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/exhaustive-prompt/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/experimental/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/generate-changelog/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/generate-config/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/gpu-sandbox/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/harness-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/hook-timing/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/impact-analysis/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/harness-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/hook-timing/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/impact-analysis/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/install-hook/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, on_demand_marker=True | @on-demand marker — legit periodic/manual skill |
-| `skills/install-recommended/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/install-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/invariant-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/issue-pipeline/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/jupyter-execute/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/llm-status/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/memory-scan/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/install-recommended/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/install-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/invariant-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/issue-pipeline/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/jupyter-execute/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/llm-status/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/memory-scan/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/memu-context/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/metrics-calibrator/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/metrics-calibrator/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/model-optimizer/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/nemo-guardrails/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/ops-runbook/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/optimize-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/pattern-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/peer-card/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/pentest-self/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/nemo-guardrails/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/ops-runbook/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/optimize-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/os-session-wrapup/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/pattern-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/peer-card/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/pentest-self/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/persistent-agent/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/phoenix-trace-ui/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/plan-bug/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/plan-feature/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/planning-poker/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/pr-review/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/preserved-wip-cleanup/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/primitive-authoring/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/primitive-harness-coverage/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/primitive-harvester/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/primitive-surface-reduction/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/primitive-usage-map/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/private-mode/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/product-answer/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/project-scaffold/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/phoenix-trace-ui/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/plan-bug/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/plan-feature/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/planning-poker/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/pr-review/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/preserved-wip-cleanup/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/primitive-authoring/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/primitive-harness-coverage/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/primitive-harvester/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/primitive-surface-reduction/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/primitive-usage-map/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/private-mode/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/product-answer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/project-scaffold/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/promptfoo-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/proof-drill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/push-release/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/pyrefly-typecheck/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/queue-drain/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/radar-update/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/proof-drill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/push-release/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/pyrefly-typecheck/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=False, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/queue-drain/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/radar-update/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/ragas-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/readiness-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/recall-search/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/recommend-library/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/red-team/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/redteam-harness/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/release-os/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/repair-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/readiness-check/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/recall-search/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/recommend-library/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/red-team/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/redteam-harness/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/release-os/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/repair-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/repair-status/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/repo-forensics/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/repo-scout/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/research-protocol/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/repo-forensics/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/repo-scout/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/research-protocol/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/resolve-blockers/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/resource-governor/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/resume-tasks/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/retrospective/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/reverse-engineer/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/resource-governor/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/resume-tasks/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/retrospective/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/reverse-engineer/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/review-output/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/risk-register/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/rules-export/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/run-tests/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/risk-register/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/rules-export/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/run-tests/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/sandbox-sample/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/scaffold-project/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/scout/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-apply/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/scaffold-project/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/scout/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sdd-apply/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/sdd-compound/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-continue/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-explore/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-resume/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-spec/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-tasks/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sdd-verify/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/secret-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/security-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/security-red-team/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/self-improve/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/self-review/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/semgrep-scan/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/session-backlog/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/session-manager/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/session-pending-brief/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/session-pending-close/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/session-report-executive/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/session-wrapup/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/simulation-arena/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/singularity/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/skill-creator/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/smoke-test/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/so-vs-vanilla/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sprint/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/squad-manager/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/sre-agent/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/stash-quarantine/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/sdd-continue/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sdd-explore/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sdd-resume/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sdd-spec/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sdd-tasks/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sdd-verify/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/secret-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/security-audit/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/security-red-team/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/self-improve/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/self-review/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/semgrep-scan/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/session-backlog/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/session-manager/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/session-pending-brief/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/session-pending-close/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/session-report-executive/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/session-wrapup/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/simulation-arena/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/singularity/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/skill-creator/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/smoke-test/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/so-vs-vanilla/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sprint/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/squad-manager/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/sre-agent/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/stash-quarantine/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/strands-evals-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/synthesize-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/systematic-debugging/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/tag-release/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/test-contract-repair/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/test-driven-development/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/tool-discovery/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/synthesize-skill/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/systematic-debugging/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/tag-release/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/test-contract-repair/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/test-driven-development/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/tool-discovery/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
 | `skills/trust-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/validate-config/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/validate-release/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/verification-before-completion/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/vuln-remediation-flow/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/vulnerability-scan/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/web-crawler/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/webhook-trigger/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/wiki-ingest/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/worktree-triage/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/validate-config/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/validate-release/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/verification-before-completion/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/vuln-remediation-flow/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/vulnerability-scan/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/web-crawler/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/webhook-trigger/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/wiki-ingest/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |
+| `skills/worktree-triage/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, has_test=True | covered by test — legit on-demand skill without recent invocation |

@@ -180,3 +180,5 @@ subagent-capability-preflight.sh | MANUAL_TRIGGER: ADR-203 launch capability pre
 ai-provider-identity-guard.sh | CONDITIONAL: PostToolUse Edit/Write identity guard; projected only when provider identity policy is enabled.
 
 session-end-cleanup.sh | MANUAL_TRIGGER: session cleanup wrapper for cos-cleanup tier-1; invoked explicitly or by future Stop profile, not default matcher.
+subagent-input-schema-validator.sh | CONDITIONAL: ADR-038 Wave 2 input-schema validator is opt-in/profile-scoped until low false-positive rate is proven
+telemetry-budget-violator-detect.sh | MANUAL_TRIGGER: ADR-304 control-plane audit hook invoked by telemetry aggregate/hourly lanes, not a default Claude lifecycle matcher

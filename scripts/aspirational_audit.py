@@ -82,8 +82,8 @@ def has_covering_test(path: Path, project_root: Path) -> bool:
     Heuristic: tests/**/test_<stem>.py or tests/**/*test*<stem>* that contains
     the component's name as a literal string.
     """
-    stem = path.stem  # strip extension
-    # Normalize hook/script names: kebab-case → snake_case for test files
+    stem = path.parent.name if path.name == "SKILL.md" else path.stem
+    # Normalize hook/script/skill names: kebab-case → snake_case for test files
     stem_snake = stem.replace("-", "_")
     tests_dir = project_root / "tests"
     if not tests_dir.is_dir():

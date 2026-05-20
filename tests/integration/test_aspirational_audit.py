@@ -165,6 +165,40 @@ class TestHookClassification:
         comps = {e["payload"]["component"]: e["payload"] for e in events}
         assert comps["hooks/shim-hook.sh"]["classification"] == "METADATA"
 
+
+    def test_conditional_excluded_hook_is_on_demand(self, tmp_path):
+        """CONDITIONAL exclusions are on-demand, not active aspirational debt."""
+        project = make_project(tmp_path, settings=make_settings([]))
+        write_hook(project, "conditional-hook.sh")
+        write_excluded(project, ["conditional-hook.sh | CONDITIONAL: runs only when optional service is enabled"])
+        auditor = aa.Auditor(project)
+        events = auditor.run()
+        comps = {e["payload"]["component"]: e["payload"] for e in events}
+        assert comps["hooks/conditional-hook.sh"]["classification"] == "ON_DEMAND"
+
+    def test_future_excluded_hook_is_metadata_backlog(self, tmp_path):
+        """FUTURE exclusions are explicit backlog, outside active lifecycle debt."""
+        project = make_project(tmp_path, settings=make_settings([]))
+        write_hook(project, "future-hook.sh")
+        write_excluded(project, ["future-hook.sh | FUTURE: not yet wired by design"])
+        auditor = aa.Auditor(project)
+        events = auditor.run()
+        comps = {e["payload"]["component"]: e["payload"] for e in events}
+        assert comps["hooks/future-hook.sh"]["classification"] == "METADATA"
+
+    def test_cognitive_os_yaml_registry_counts_as_registered(self, tmp_path):
+        """Canonical cognitive-os.yaml registry prevents false aspirational hooks."""
+        project = make_project(tmp_path, settings=make_settings([]))
+        write_hook(project, "registered-by-cos.sh")
+        (project / "cognitive-os.yaml").write_text(
+            "hooks:\n  registered-by-cos:\n    script: hooks/registered-by-cos.sh\n    event: PreToolUse\n    matcher: Bash\n",
+            encoding="utf-8",
+        )
+        auditor = aa.Auditor(project)
+        events = auditor.run()
+        comps = {e["payload"]["component"]: e["payload"] for e in events}
+        assert comps["hooks/registered-by-cos.sh"]["classification"] == "DORMANT"
+
     def test_lib_helper_in_underscore_lib_is_metadata(self, tmp_path):
         """Hook in _lib/ → always METADATA."""
         project = make_project(tmp_path)
@@ -216,6 +250,38 @@ class TestLibClassification:
         comps = {e["payload"]["component"]: e["payload"] for e in events}
         # Should still be DORMANT because test files are excluded from caller scan
         assert comps["lib/test_mod.py"]["classification"] == "DORMANT"
+
+
+class TestSkillClassification:
+    def test_skill_with_covering_test_is_on_demand(self, tmp_path):
+        """A tested skill with no recent invocation is on-demand, not dormant."""
+        project = make_project(tmp_path)
+        skill_dir = project / "skills" / "rare-skill"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text("---\nname: rare-skill\n---\n# Rare Skill\n", encoding="utf-8")
+        tests_dir = project / "tests" / "skills"
+        tests_dir.mkdir(parents=True)
+        (tests_dir / "test_rare_skill.py").write_text("def test_rare_skill_contract(): assert True\n", encoding="utf-8")
+
+        auditor = aa.Auditor(project)
+        events = auditor.run()
+        comps = {e["payload"]["component"]: e["payload"] for e in events}
+
+        assert comps["skills/rare-skill/SKILL.md"]["classification"] == "ON_DEMAND"
+        assert comps["skills/rare-skill/SKILL.md"]["signals"]["has_test"] is True
+
+    def test_skill_without_invocation_or_evidence_is_aspirational(self, tmp_path):
+        """An unreferenced, untested skill remains aspirational."""
+        project = make_project(tmp_path)
+        skill_dir = project / "skills" / "paper-skill"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text("---\nname: paper-skill\n---\n# Paper Skill\n", encoding="utf-8")
+
+        auditor = aa.Auditor(project)
+        events = auditor.run()
+        comps = {e["payload"]["component"]: e["payload"] for e in events}
+
+        assert comps["skills/paper-skill/SKILL.md"]["classification"] == "ASPIRATIONAL"
 
 
 class TestCLIFlags:
@@ -280,7 +346,7 @@ class TestMetricEventSchema:
             assert row["event_type"] == "component.classified"
             assert "component" in row["payload"]
             assert "classification" in row["payload"]
-            assert row["payload"]["classification"] in ("REAL", "DORMANT", "ASPIRATIONAL", "METADATA")
+            assert row["payload"]["classification"] in ("REAL", "ON_DEMAND", "DORMANT", "ASPIRATIONAL", "METADATA")
 
 
 class TestDeprecationShim:
