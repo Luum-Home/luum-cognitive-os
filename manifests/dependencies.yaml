@@ -334,6 +334,52 @@ tools:
   syncable: 'no'
   auth_bound: false
   manual_url: https://github.com/newren/git-filter-repo
+- name: gitleaks
+  criticality: optional
+  check: gitleaks --version
+  install:
+    macos:
+      manager: brew
+      command: brew install gitleaks
+    linux:
+      manager: manual
+      url: https://github.com/gitleaks/gitleaks
+    windows_wsl:
+      manager: manual
+      url: https://github.com/gitleaks/gitleaks
+  consumed_by:
+  - scripts/secret-audit-gitleaks.sh
+  - scripts/install-gitleaks-trufflehog.sh
+  category: security
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/gitleaks/gitleaks
+- name: trufflehog
+  criticality: optional
+  check: trufflehog --version
+  install:
+    macos:
+      manager: brew
+      command: brew install trufflehog
+    linux:
+      manager: manual
+      url: https://github.com/trufflesecurity/trufflehog
+    windows_wsl:
+      manager: manual
+      url: https://github.com/trufflesecurity/trufflehog
+  consumed_by:
+  - scripts/secret-audit-trufflehog.sh
+  - scripts/install-gitleaks-trufflehog.sh
+  category: security
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/trufflesecurity/trufflehog
 - name: semgrep
   criticality: optional
   check: semgrep --version
