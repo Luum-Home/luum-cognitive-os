@@ -78,6 +78,14 @@ python:
     - mcp-scan
     typecheck:
     - pyrefly>=1.0,<1.1
+    audit:
+    - lingua-language-detector>=2.0
+    - tree-sitter>=0.23
+    - tree-sitter-python
+    - tree-sitter-typescript
+    - tree-sitter-javascript
+    - tree-sitter-go
+    - tree-sitter-bash
 tools:
 - name: jq
   criticality: required

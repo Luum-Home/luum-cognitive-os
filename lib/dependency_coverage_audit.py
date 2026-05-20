@@ -8,6 +8,7 @@ manifest, external-tool adoption policy, and dependency-lane files.
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 import subprocess
@@ -68,6 +69,7 @@ PLATFORM_BUILTINS = {
     "head",
     "ln",
     "ls",
+    "lsof",
     "mkdir",
     "mktemp",
     "mv",
@@ -96,7 +98,9 @@ PLATFORM_BUILTINS = {
     "python",
     "rsync",
     "sudo",
+    "sysctl",
     "tar",
+    "vm_stat",
 }
 
 # Helpers commonly exposed by sourced COS shell libraries. These should not be
@@ -389,12 +393,75 @@ def _command_candidates_from_line(line: str) -> list[tuple[str, str]]:
     return out
 
 
+def _literal_string(node: ast.AST) -> str | None:
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return node.value
+    return None
+
+
+def _call_name(node: ast.AST) -> str:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        base = _call_name(node.value)
+        return f"{base}.{node.attr}" if base else node.attr
+    return ""
+
+
+def _python_command_candidates(path: Path, rel: str) -> list[Candidate]:
+    """Extract real Python command probes without scanning string literals.
+
+    Regex line scanning previously treated examples such as
+    ``VALUE = "subprocess.run(['also-not-code'])"`` as real host-tool
+    dependencies. AST extraction keeps dependency coverage tied to executable
+    calls while preserving the same sources for `shutil.which(...)` and
+    `subprocess.run([...])` probes.
+    """
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8", errors="replace"))
+    except SyntaxError:
+        return []
+
+    rows: list[Candidate] = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        call = _call_name(node.func)
+        if call == "shutil.which" and node.args:
+            command = _literal_string(node.args[0])
+            if command:
+                cleaned = _clean_command_name(command, "shutil-which")
+                if cleaned:
+                    kind = "platform-builtin" if cleaned in PLATFORM_BUILTINS else "host-tool"
+                    rows.append(Candidate(cleaned, kind, (SourceRef(rel, getattr(node, "lineno", None), "shutil-which"),)))
+            continue
+        if call in {"subprocess.run", "subprocess.Popen", "subprocess.check_call", "subprocess.check_output"} and node.args:
+            argv = node.args[0]
+            if isinstance(argv, (ast.List, ast.Tuple)) and argv.elts:
+                command = _literal_string(argv.elts[0])
+                if command:
+                    is_local_script = command.startswith(("scripts/", "./scripts/"))
+                    cleaned = _clean_command_name(command, "subprocess")
+                    if cleaned:
+                        if is_local_script:
+                            kind = "internal-helper"
+                        elif cleaned in PLATFORM_BUILTINS:
+                            kind = "platform-builtin"
+                        else:
+                            kind = "host-tool"
+                        rows.append(Candidate(cleaned, kind, (SourceRef(rel, getattr(node, "lineno", None), "subprocess"),)))
+    return rows
+
+
 def collect_command_probes(root: Path) -> list[Candidate]:
     rows: list[Candidate] = []
     for path in _iter_files(root, (".py", ".sh",)):
         if path.suffix not in {".py", ".sh"} and not path.name.startswith("cos-"):
             continue
         rel = _rel(root, path)
+        if path.suffix == ".py":
+            rows.extend(_python_command_candidates(path, rel))
+            continue
         text = path.read_text(encoding="utf-8", errors="replace")
         internal = _defined_shell_functions(text) | KNOWN_INTERNAL_HELPERS
         for lineno, line in enumerate(text.splitlines(), start=1):
@@ -425,7 +492,6 @@ def build_report(root: Path, *, manifest_path: Path | None = None) -> dict[str, 
     command_rows = collect_command_probes(root)
 
     declared_host_tool_names = {row.name for row in command_rows if row.kind == "host-tool"}
-    declared_python_names = {row.name for row in package_rows if row.kind == "python"} | {row.name for row in command_rows if row.kind == "python"}
 
     missing_from_manifest: list[Candidate] = []
     platform_builtin: list[Candidate] = []

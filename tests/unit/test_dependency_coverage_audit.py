@@ -123,6 +123,31 @@ python3 -m pip install --user py2many
     assert ("py2many", "pip-install") in found
 
 
+def test_collect_command_probes_ignores_python_string_literal_examples(tmp_path: Path) -> None:
+    write(
+        tmp_path / "scripts" / "docstring_only.py",
+        '''"""Example: subprocess.run(["x"]) is documentation."""
+VALUE = "subprocess.run(['also-not-code'])"
+''',
+    )
+
+    rows = collect_command_probes(tmp_path)
+
+    assert "also-not-code" not in {row.name for row in rows}
+
+
+def test_collect_command_probes_classifies_local_script_subprocess_as_internal(tmp_path: Path) -> None:
+    write(
+        tmp_path / "scripts" / "driver.py",
+        'import subprocess\nsubprocess.run(["scripts/cos-self-improvement-loop", "--json"])\n',
+    )
+
+    rows = collect_command_probes(tmp_path)
+    by_name = {row.name: row.kind for row in rows}
+
+    assert by_name["cos-self-improvement-loop"] == "internal-helper"
+
+
 def test_cli_emits_json(tmp_path: Path) -> None:
     manifest = write_manifest(tmp_path)
     write(tmp_path / "scripts" / "probe.sh", "command -v shellcheck >/dev/null\n")
