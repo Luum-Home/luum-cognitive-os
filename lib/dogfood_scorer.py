@@ -240,17 +240,53 @@ class DogfoodScorer:
         ]
         if not skill_dirs:
             return None, "no SKILL.md files found"
+        aggregate_covered = self._aggregate_skill_contract_coverage(tests_dir, skill_dirs)
         covered = 0
         for sd in skill_dirs:
-            if self._skill_has_behavioral_test(sd.name, tests_dir):
+            if self._skill_has_behavioral_test(sd.name, tests_dir, aggregate_covered):
                 covered += 1
         total = len(skill_dirs)
         fraction = covered / total
         score = round(fraction * 100.0, 2)
-        return score, f"covered={covered}/{total} skills (heuristic FP~5-10%)"
+        return (
+            score,
+            f"covered={covered}/{total} skills "
+            f"aggregate_contracts={len(aggregate_covered)} (heuristic FP~5-10%)",
+        )
 
     @staticmethod
-    def _skill_has_behavioral_test(skill_name: str, tests_dir: Path) -> bool:
+    def _aggregate_skill_contract_coverage(tests_dir: Path, skill_dirs: list[Path]) -> set[str]:
+        """Return skills covered by aggregate parameterized contract suites.
+
+        Some contract tests intentionally cover every skill through a shared
+        discovery list instead of one test file per skill. Count only files that
+        look like skill-contract tests and contain real assertions. This keeps
+        the scorer from rewarding prose-only references while avoiding a false
+        negative for parameterized suites such as tests/audit/test_skills_contracts.py.
+        """
+        skill_names = {sd.name for sd in skill_dirs}
+        covered: set[str] = set()
+        for p in tests_dir.rglob("test_*skills*.py"):
+            try:
+                content = p.read_text(encoding="utf-8", errors="ignore")
+            except OSError:
+                continue
+            has_assertion = "assert" in content or "pytest.raises" in content
+            has_parametrize = "pytest.mark.parametrize" in content
+            discovers_skill_dirs = "SKILL_DIRS" in content or "_skill_dirs" in content
+            names_skill_md = "SKILL.md" in content
+            if has_assertion and has_parametrize and discovers_skill_dirs and names_skill_md:
+                covered.update(skill_names)
+        return covered
+
+    @staticmethod
+    def _skill_has_behavioral_test(
+        skill_name: str,
+        tests_dir: Path,
+        aggregate_covered: set[str] | None = None,
+    ) -> bool:
+        if aggregate_covered and skill_name in aggregate_covered:
+            return True
         snake = skill_name.replace("-", "_")
         candidate_names = {f"test_{snake}.py"}
         # Accept any nested test file matching the name pattern.
